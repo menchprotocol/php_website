@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-lg">
 
-            <p><b class="montserrat">MENCH</b> is an open-source protocol to organize and share ideas across expert sources. Creators use a simple web app to index and collectively organize ideas based on topics. Readers get to easily discover top ideas and keep up-to-date over the web or Messenger. In the last 30 days, there has been 10,000+ books published under "marketing" on amazon alone, not to mention all the videos, articles, courses and other digital content that hold valuable marketing ideas. How is someone into marketing supposed to keep up?</p>
+            <p><b class="montserrat">MENCH</b> is an open-source protocol to organize and share ideas across expert sources. Creators use a simple web app to index and collectively organize ideas based on topics. Readers easily discover top ideas and keep up-to-date over the web or Messenger. In the last 30 days, 10,000+ books have been published under "marketing" on amazon.com alone, not to mention all the videos, articles, online courses and other digital content that share valuable marketing ideas. How is someone into marketing supposed to keep up?</p>
 
             <p><b class="montserrat">MENCH</b> aims to democratize key ideas published anytime, anywhere.</p>
 
