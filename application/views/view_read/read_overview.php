@@ -21,17 +21,47 @@
 
         $common_prefix = common_prefix($published_ins, 'in_outcome');
 
-        //Create list:
-        $category_list = '<div class="list-group actionplan_list grey_list" style="font-size: 0.6em;">';
+        //Show featured blogs in this category:
+        echo '<div><span class="icon-block">'.$m['m_icon'].'</span> '.$m['m_name'].'</div>';
+        echo '<div class="list-group">';
         foreach($published_ins as $published_in){
-            $category_list .= echo_in_read($published_in, $common_prefix);
+            echo echo_in_read($published_in, $common_prefix);
         }
-        $category_list .= '</div>';
-
-        echo echo_tree_html_body($en_id, '<span class="icon-block">'.$m['m_icon'].'</span> '.$m['m_name'].' ['.count($published_ins).']', $category_list, false);
+        echo '</div>';
 
     }
 
     ?>
 
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('.featured-image').each(function() {
+            var maxWidth = 100; // Max width for the image
+            var maxHeight = 100;    // Max height for the image
+            var ratio = 0;  // Used for aspect ratio
+            var width = $(this).width();    // Current image width
+            var height = $(this).height();  // Current image height
+
+            // Check if the current width is larger than the max
+            if(width > maxWidth){
+                ratio = maxWidth / width;   // get ratio for scaling image
+                $(this).css("width", maxWidth); // Set new width
+                $(this).css("height", height * ratio);  // Scale height based on ratio
+                height = height * ratio;    // Reset height to match scaled image
+            }
+
+            var width = $(this).width();    // Current image width
+            var height = $(this).height();  // Current image height
+
+            // Check if current height is larger than max
+            if(height > maxHeight){
+                ratio = maxHeight / height; // get ratio for scaling image
+                $(this).css("height", maxHeight);   // Set new height
+                $(this).css("width", width * ratio);    // Scale width based on ratio
+                width = width * ratio;    // Reset width to match scaled image
+            }
+        });
+    });
+</script>

@@ -1200,7 +1200,7 @@ function echo_tree_actionplan($in, $autoexpand){
 
     $common_prefix = common_prefix($in__children, 'in_outcome');
     $return_html = '';
-    $return_html .= '<div class="list-group grey_list actionplan_list maxout public_ap">';
+    $return_html .= '<div class="list-group maxout public_ap">';
 
     foreach ($in__children as $in_level2_counter => $in_level2) {
 
@@ -1532,20 +1532,39 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 }
 
 
-function echo_in_read($in, $common_prefix = null, $hide_class = null)
+function echo_in_read($in, $common_prefix = null)
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
-    $session_en = superpower_assigned();
 
-    $ui = '<div class="list-group-item '.$hide_class .'">';
+    $ui = '<a href="/read/'.$in['in_id'] . '" class="list-group-item">';
 
-    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, $common_prefix).'</span>';
+    $ui .= '<b class="montserrat">'.echo_in_outcome($in['in_outcome'], false, $common_prefix).'</b>';
 
-    $ui .= '<div class="pull-right inline-block"><a class="btn btn-primary btn-read" href="/read/'.$in['in_id'] . '"><i class="fas fa-angle-right"></i></a></div>';
+    //Search for Blog Image:
+    foreach ($CI->READ_model->ln_fetch(array(
+        'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'ln_type_entity_id' => 4231, //Intent Note Messages
+        'ln_child_intent_id' => $in['in_id'],
+        'ln_parent_entity_id >' => 0, //Reference a player
+    ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
 
-    $ui .= '</div>';
+        //See if this player has an image:
+        $images = $CI->READ_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_entity_id' => 4260, //Image
+            'ln_child_entity_id' => $ln['ln_parent_entity_id'],
+        ), array(), 1);
+
+        //Did we find an image for this message?
+        if(count($images) > 0){
+            $ui .= '<div class="pull-right inline-block"><img class="featured-image" src="'.$images[0]['ln_content'].'" /></div>';
+            break;
+        }
+    }
+
+    $ui .= '</a>';
     return $ui;
 }
 

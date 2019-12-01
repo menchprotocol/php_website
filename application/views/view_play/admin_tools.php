@@ -47,7 +47,7 @@ if(!$action) {
     $en_all_11035 = $this->config->item('en_all_11035');
     echo '<h1>'.$en_all_11035[6287]['m_icon'].' '.$en_all_11035[6287]['m_name'].' <a href="/play/6287" style="font-size: 0.5em; color: #999;" title="'.$en_all_11035[6287]['m_name'].' entity controlling this tool" data-toggle="tooltip" data-placement="right">@6287</a></h1>';
 
-    echo '<div class="list-group actionplan_list grey_list maxout">';
+    echo '<div class="list-group maxout">';
     foreach ($moderation_tools as $tool_key => $tool_name) {
         echo '<a href="' . $tool_key . '" class="list-group-item">';
         echo '<span class="pull-right">';
@@ -60,7 +60,7 @@ if(!$action) {
 
 
     echo '<h1>Developer Tools</h1>';
-    echo '<div class="list-group actionplan_list grey_list maxout">';
+    echo '<div class="list-group maxout">';
     foreach ($developer_tools as $tool_key => $tool_name) {
         echo '<a href="' . $tool_key . '" target="_blank" class="list-group-item">';
         echo '<span class="pull-right">';
@@ -75,7 +75,7 @@ if(!$action) {
 
 
     echo '<h1>Automated Cron Jobs</h1>';
-    echo '<div class="list-group actionplan_list grey_list maxout">';
+    echo '<div class="list-group maxout">';
     foreach ($cron_jobs as $tool_key => $tool_name) {
         echo '<a href="' . $tool_key . '" target="_blank" class="list-group-item">';
         echo '<span class="pull-right">';

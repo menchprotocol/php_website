@@ -17,6 +17,23 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
 
     echo '<h1>' . echo_in_outcome($in['in_outcome']) . '</h1>';
 
+
+    //Action Plan Overview:
+    $step_info = echo_tree_steps($in, false);
+    $source_info = echo_tree_experts($in, false);
+    $user_info = echo_tree_users($in, false);
+
+    if($step_info || $source_info || $user_info){
+        echo '<div style="margin:5px 0;">';
+        echo $step_info;
+        echo $source_info;
+        echo $user_info;
+        echo '</div>';
+    }
+
+
+
+
     //Fetch & Display Intent Note Messages:
     foreach ($this->READ_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -28,21 +45,6 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
 
 
 
-    //Action Plan Overview:
-    $step_info = echo_tree_steps($in, false);
-    $source_info = echo_tree_experts($in, false);
-    $user_info = echo_tree_users($in, false);
-
-    if($step_info || $source_info || $user_info){
-        echo '<div style="margin:25px 0;" class="maxout">';
-        echo $step_info;
-        echo $source_info;
-        echo $user_info;
-        echo '</div>';
-    } else {
-        //Just give some space:
-        echo '<br />';
-    }
 
 
     //Check to see if added to Action Plan for logged-in users:
@@ -159,17 +161,17 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     if(count($in__other) > 0){
 
 
-        echo '<p style="margin:25px 0 15px;" class="other_intents">Or consider <a href="javascript:void(0)" onclick="$(\'.other_intents\').toggleClass(\'hidden\')">'.count($in__other).' other intentions</a>.</p>';
+        echo '<p style="margin:25px 0 15px;" class="other_intents"><a href="javascript:void(0)" onclick="$(\'.other_intents\').toggleClass(\'hidden\')">'.count($in__other).' related reads</a></p>';
 
 
         echo '<div class="other_intents hidden">';
         echo '<p style="margin:25px 0 15px;">Here are some other intentions I can help you with:</p>';
-        echo '<div class="list-group grey_list actionplan_list maxout">';
+        echo '<div class="list-group maxout">';
         $max_visible = 30;
 
         //Now fetch Recommended Intents:
         foreach ($in__other as $other_in) {
-            echo echo_in_read($other_in, null, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ));
+            echo echo_in_read($other_in, null);
         }
 
         if(count($already_printed) > $max_visible){
@@ -227,7 +229,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7588'))){
 
         //Give option to choose a child path:
-        echo '<div class="list-group actionplan_list grey_list" style="margin-top:40px;">';
+        echo '<div class="list-group" style="margin-top:40px;">';
         $in__children = $this->READ_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -237,7 +239,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
         $common_prefix = common_prefix($in__children, 'in_outcome');
 
         foreach ($in__children as $child_in) {
-            echo echo_in_read($child_in, $common_prefix, null);
+            echo echo_in_read($child_in, $common_prefix);
         }
         echo '</div>';
 

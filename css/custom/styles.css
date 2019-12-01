@@ -1116,17 +1116,6 @@ p a, td a {
     color:#222; font-size: 1.1em;
 }
 
-.grey_list .list-group-item {
-    background-color: #f4f5f7;
-    margin-bottom:5px;
-    padding: 12px 10px;
-    font-size: 1.1em !important;
-}
-
-.grey_list .list-group-item:hover {
-    background-color: #E5E5E5;
-}
-
 .list-group-item .inline-level {
     color: #070707;
     font-size: 0.9em;
@@ -1222,11 +1211,6 @@ h5, .h5 {
     font-size: 0.7em;
     padding-bottom: 7px;
     font-weight: bold;
-}
-
-.actionplan_list .fas, .actionplan_list .fal {
-    margin: 0 3px;
-    color: #070707;
 }
 
 .lp_action a {

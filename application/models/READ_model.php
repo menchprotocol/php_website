@@ -2972,6 +2972,7 @@ class READ_model extends CI_Model
                 //Assign data:
                 $recipient_en = $ens[0];
             }
+
         }
 
 
@@ -3986,7 +3987,7 @@ class READ_model extends CI_Model
                     array(
                         array(
                             'content_type' => 'text',
-                            'title' => 'Add To Action Plan',
+                            'title' => 'Start Reading',
                             'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
                         ),
                         array(

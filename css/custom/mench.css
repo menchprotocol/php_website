@@ -102,11 +102,13 @@ li a {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     width: 100%;
+    color:#070707;
 }
 
 #new_blog_title::placeholder{
       font-family: 'Montserrat', sans-serif;
-      font-weight: bold;
+    font-weight: bold;
+    color:#CCCCCC;
 }
 
 /* FONTS */

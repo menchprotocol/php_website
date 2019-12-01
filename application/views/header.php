@@ -30,6 +30,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
     <link href="/css/custom/mench.css?v=v<?= config_var(11060) ?>" rel="stylesheet"/>
 
+
     <?php
     //JS DATA
     echo '<script type="text/javascript">';
@@ -65,6 +66,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <script src="/js/lib/algoliasearch.min.js"></script>
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
     <script src="/js/custom/platform-js.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+
 </head>
 
 <body>
