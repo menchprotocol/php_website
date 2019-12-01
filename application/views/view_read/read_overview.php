@@ -38,6 +38,9 @@
 <script>
     $(document).ready(function() {
         $('.featured-image').each(function() {
+
+            console.log('image');
+
             var maxWidth = 100; // Max width for the image
             var maxHeight = 100;    // Max height for the image
             var ratio = 0;  // Used for aspect ratio
