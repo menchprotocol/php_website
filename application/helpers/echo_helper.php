@@ -1572,7 +1572,7 @@ function echo_in_read($in, $common_prefix = null)
 
         //Did we find an image for this message?
         if(count($embeds) > 0){
-            $youtube_id = extract_youtube_id($images[0]['ln_content']);
+            $youtube_id = extract_youtube_id($embeds[0]['ln_content']);
             if(strlen($youtube_id) > 0){
                 $ui .= '<div class="pull-right inline-block featured-image"><a href="/read/'.$in['in_id'] . '"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></a></div>';
                 break;

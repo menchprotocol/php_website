@@ -20,6 +20,7 @@
         }
 
         $common_prefix = common_prefix($published_ins, 'in_outcome');
+        $common_prefix = null;
 
         //Show featured blogs in this category:
         echo '<div><span class="icon-block">'.$m['m_icon'].'</span> '.$m['m_name'].'</div>';
