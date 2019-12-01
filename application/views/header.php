@@ -91,7 +91,7 @@ if(!isset($hide_header) || !$hide_header){
     ?>
 
     <!-- 3X NAVIGATION -->
-    <div class="container show-while-searching fixed-bottom <?= ( isset($basic_header) || !isset($session_en['en_id']) ? ' hidden ' : '' ) ?>">
+    <div class="container show-while-searching fixed-bottom <?= ( isset($basic_header) || !isset($session_en['en_id'] ) ? ' hidden ' : '' ) ?>">
         <div class="row">
             <table class="three-menus">
                 <tr>
