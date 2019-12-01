@@ -120,8 +120,8 @@ li a {
     text-transform: uppercase;
 }
 .featured-image{
-    max-width: 120px;
-    max-height: 200px;
+    max-width: 200px;
+    max-height: 120px;
 }
 .decimal-list{
     list-style: decimal;
