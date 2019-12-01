@@ -1559,7 +1559,7 @@ function echo_in_read($in, $common_prefix = null)
 
         //Did we find an image for this message?
         if(count($images) > 0){
-            $ui .= '<div class="pull-right inline-block"><img class="featured-image" src="'.$images[0]['ln_content'].'" /></div>';
+            $ui .= '<div class="pull-right inline-block center"><img class="featured-image" src="'.$images[0]['ln_content'].'" /></div>';
             break;
         }
     }

@@ -120,8 +120,8 @@ li a {
     text-transform: uppercase;
 }
 .featured-image{
-    max-width: 200px;
-    max-height: 120px;
+    max-width: 125px;
+    max-height: 125px;
 }
 .decimal-list{
     list-style: decimal;
@@ -271,6 +271,9 @@ img.no-radius {
     max-width:340px !important;
     padding: 15px;
     margin: 0 auto;
+}
+.center {
+    text-align: center !important;
 }
 
 .grey-box {

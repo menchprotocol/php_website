@@ -416,9 +416,6 @@ a.badge-primary:hover {
     z-index: 0 !important;
 }
 
-.center {
-    text-align: center;
-}
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
