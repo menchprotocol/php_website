@@ -115,6 +115,7 @@ li a {
 .montserrat, .new-player-input, .algolia-autocomplete {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
+    text-decoration: none;
 }
 .doupper, .new-player-input{
     text-transform: uppercase;

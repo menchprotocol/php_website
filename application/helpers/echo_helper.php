@@ -1538,9 +1538,9 @@ function echo_in_read($in, $common_prefix = null)
     //See if user is logged-in:
     $CI =& get_instance();
 
-    $ui = '<a href="/read/'.$in['in_id'] . '" class="list-group-item">';
+    $ui = '<div class="list-group-item">';
 
-    $ui .= '<b class="montserrat">'.echo_in_outcome($in['in_outcome'], false, $common_prefix).'</b>';
+    $ui .= '<a href="/read/'.$in['in_id'] . '" class="montserrat">'.echo_in_outcome($in['in_outcome'], false, $common_prefix).'</a>';
 
     //Search for Blog Image:
     foreach ($CI->READ_model->ln_fetch(array(
@@ -1559,12 +1559,29 @@ function echo_in_read($in, $common_prefix = null)
 
         //Did we find an image for this message?
         if(count($images) > 0){
-            $ui .= '<div class="pull-right inline-block featured-image"><img src="'.$images[0]['ln_content'].'" /></div>';
+            $ui .= '<div class="pull-right inline-block featured-image"><a href="/read/'.$in['in_id'] . '"><img src="'.$images[0]['ln_content'].'" /></a></div>';
             break;
         }
+
+        //Maybe we have an Embed Video?
+        $embeds = $CI->READ_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_entity_id' => 4257, //Embed
+            'ln_child_entity_id' => $ln['ln_parent_entity_id'],
+        ), array(), 1);
+
+        //Did we find an image for this message?
+        if(count($embeds) > 0){
+            $youtube_id = extract_youtube_id($images[0]['ln_content']);
+            if(strlen($youtube_id) > 0){
+                $ui .= '<div class="pull-right inline-block featured-image"><a href="/read/'.$in['in_id'] . '"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></a></div>';
+                break;
+            }
+        }
+
     }
 
-    $ui .= '</a>';
+    $ui .= '</div>';
     return $ui;
 }
 
