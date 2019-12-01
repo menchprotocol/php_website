@@ -119,10 +119,7 @@ li a {
 .doupper, .new-player-input{
     text-transform: uppercase;
 }
-.featured-image{
-    max-width: 125px;
-    max-height: 125px;
-}
+
 .decimal-list{
     list-style: decimal;
     margin-left:-12px;
@@ -272,10 +269,14 @@ img.no-radius {
     padding: 15px;
     margin: 0 auto;
 }
-.center {
+.featured-image {
     text-align: center !important;
+    width: 125px;
 }
-
+.featured-image img{
+    max-width: 125px;
+    max-height: 125px;
+}
 .grey-box {
     padding:0;
     margin: 25px 0;
