@@ -1539,7 +1539,7 @@ function echo_in_read($in, $common_prefix = null)
     $CI =& get_instance();
 
     $ui = '<div class="list-group-item">';
-    $ui = '<table class="table table-sm"><tr></tr>';
+    $ui = '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
 
     $ui .= '<td><a href="/read/'.$in['in_id'] . '" class="montserrat">'.echo_in_outcome($in['in_outcome'], false, $common_prefix).'</a></td>';
 
