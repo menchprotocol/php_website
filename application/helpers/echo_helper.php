@@ -1539,8 +1539,9 @@ function echo_in_read($in, $common_prefix = null)
     $CI =& get_instance();
 
     $ui = '<div class="list-group-item">';
+    $ui = '<table class="table table-sm"><tr></tr>';
 
-    $ui .= '<a href="/read/'.$in['in_id'] . '" class="montserrat">'.echo_in_outcome($in['in_outcome'], false, $common_prefix).'</a>';
+    $ui .= '<td><a href="/read/'.$in['in_id'] . '" class="montserrat">'.echo_in_outcome($in['in_outcome'], false, $common_prefix).'</a></td>';
 
     //Search for Blog Image:
     foreach ($CI->READ_model->ln_fetch(array(
@@ -1559,7 +1560,7 @@ function echo_in_read($in, $common_prefix = null)
 
         //Did we find an image for this message?
         if(count($images) > 0){
-            $ui .= '<div class="pull-right inline-block featured-image"><a href="/read/'.$in['in_id'] . '"><img src="'.$images[0]['ln_content'].'" /></a></div>';
+            $ui .= '<td class="featured-image"><div class="pull-right inline-block featured-image"><a href="/read/'.$in['in_id'] . '"><img src="'.$images[0]['ln_content'].'" /></a></div></td>';
             break;
         }
 
@@ -1574,14 +1575,16 @@ function echo_in_read($in, $common_prefix = null)
         if(count($embeds) > 0){
             $youtube_id = extract_youtube_id($embeds[0]['ln_content']);
             if(strlen($youtube_id) > 0){
-                $ui .= '<div class="pull-right inline-block featured-image"><a href="/read/'.$in['in_id'] . '"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></a></div>';
+                $ui .= '<td class="featured-image"><div class="pull-right inline-block featured-image"><a href="/read/'.$in['in_id'] . '"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></a></div></td>';
                 break;
             }
         }
 
     }
 
+    $ui .= '</tr></table>';
     $ui .= '</div>';
+
     return $ui;
 }
 
