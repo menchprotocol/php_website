@@ -9,7 +9,3 @@
         </div>
     </div>
 </div>
-
-MENCH
-
-Visit mench.com to mine or .
