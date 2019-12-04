@@ -1,6 +1,11 @@
 
 <div class="container">
 
+    <div class="alert alert-info" style="margin-bottom: 20px;">
+        <div><i class="fas fa-info-circle"></i> <b class="montserrat">MENCH</b> is an interactive publishing platform that allows anyone to share ideas that matter. Writers use a simple web app to create microblogs, each focused on a key idea. Microblogs can be linked together collaboratively to communicate bigger ideas, or cite expert sources to gain more credibility. Readers use the web or Messenger to interactively choose their next read. Players earn crypto-coins for each word they read or write.</div>
+        <div><a href="/play">Top Players</a> | <a href="/blog">Start Blogging</a></div>
+    </div>
+
     <?php
 
     //Go through all categories and see which ones have published courses:
@@ -23,7 +28,7 @@
         $common_prefix = null;
 
         //Show featured blogs in this category:
-        echo '<div><span class="icon-block">'.$m['m_icon'].'</span> '.$m['m_name'].'</div>';
+        echo '<div style="margin-top: 30px; font-size: 0.8em; color: #999;"><span class="icon-block">'.$m['m_icon'].'</span> '.$m['m_name'].'</div>';
         echo '<div class="list-group">';
         foreach($published_ins as $published_in){
             echo echo_in_read($published_in, $common_prefix);
