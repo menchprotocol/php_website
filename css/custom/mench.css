@@ -183,8 +183,13 @@ li a {
     border-radius: 50%;
 }
 
-img.no-radius, .alert {
+img.no-radius {
     border-radius:0 !important;
+}
+
+.alert{
+    padding: .75rem;
+    border-radius:0;
 }
 
 .btn-five{ margin-right:5px; }
