@@ -2,8 +2,8 @@
 <div class="container">
 
     <div class="alert alert-info" style="margin-bottom: 20px;">
-        <div><i class="fas fa-lightbulb-on"></i> <b class="montserrat">MENCH</b> is an interactive publishing platform that allows anyone to share ideas that matter. Writers use a simple web app to create microblogs, each focused on a key idea. Microblogs link together to communicate bigger ideas, or cite expert sources for more credibility. Readers use the web or Messenger to discover relevant ideas and choose their unique reading path. Players earn crypto-coins for each word they read or write.</div>
-        <div style="margin-top: 10px;"><a href="/play">Top Players</a> | <a href="/blog">Start Blogging</a></div>
+        <div><i class="fas fa-lightbulb-on"></i> <b class="montserrat">MENCH</b> is an interactive publishing platform that allows anyone to share ideas that matter. Writers use a simple web app to create microblogs, each focused on a key idea. Microblogs link together to communicate bigger ideas, or cite expert sources to gain credibility. Readers use the web or Messenger to discover relevant ideas and choose their unique reading path. Players earn crypto-coins for each word they read or write.</div>
+        <div style="margin-top: 10px;"><i class="fas fa-medal"></i> <a href="/play">Top Players</a> &nbsp;&nbsp; <i class="fas fa-pen-square"></i> <a href="/blog">Start Blogging</a></div>
     </div>
 
     <?php
