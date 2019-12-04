@@ -752,7 +752,6 @@ fragment PostListingItemSidebar_post on Post {
 
         echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-medal"></i></span> TOP PLAYERS</div>';
         echo '<table id="leaderboard" class="table table-sm table-striped">';
-        echo '</table>';
 
         //Did we find anyone?
         if(count($blog_coins) > 0){
@@ -824,6 +823,7 @@ fragment PostListingItemSidebar_post on Post {
             echo '<tr><td colspan="3"><div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> No Players Yet...</div></td></tr>';
         }
 
+        echo '</table>';
 
     }
 
