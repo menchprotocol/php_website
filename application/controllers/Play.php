@@ -750,6 +750,10 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
+        echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-medal"></i></span> TOP PLAYERS</div>';
+        echo '<table id="leaderboard" class="table table-sm table-striped">';
+        echo '</table>';
+
         //Did we find anyone?
         if(count($blog_coins) > 0){
             foreach ($blog_coins as $count=>$ln) {

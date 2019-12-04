@@ -2,9 +2,14 @@
 <div class="container">
 
     <div class="alert alert-info" style="margin-bottom: 20px;">
-        <div><i class="fas fa-lightbulb-on"></i> <b class="montserrat">MENCH</b> is an interactive publishing platform that allows anyone to share ideas that matter. Writers use a simple web app to create microblogs, each focused on a key idea. Microblogs link together to communicate bigger ideas, or cite expert sources to gain credibility. Readers use the web or Messenger to interactively read & discover top ideas. Players can customize their avatar, unlock superpowers & earn crypto-coins for each word they read or blog.</div>
-        <div style="margin-top: 10px;"><i class="fas fa-medal"></i> <a href="/play">Top Players</a> &nbsp; <i class="fas fa-pen-square"></i> <a href="/blog">Start Blogging</a></div>
+        <div class="read-topic"><span class="icon-block"><i class="fas fa-lightbulb-on"></i></span> HOW IT WORKS</div>
+        <div><b class="montserrat">MENCH</b> is an interactive publishing platform that allows anyone to share ideas that matter. Writers use a simple web app to create microblogs, each focused on a key idea. Microblogs link together to communicate bigger ideas, or cite expert sources to gain credibility. Readers use the web or Messenger to interactively read & discover top ideas. Players can customize their avatar, unlock superpowers & earn crypto-coins for each word they read or blog.</div>
+        <div style="margin-top:10px;"><i class="fas fa-pen-square"></i> <a href="/blog">Start Blogging</a><span class="top-players"> &nbsp; <i class="fas fa-medal"></i> <a href="javascript:void(0);" onclick="load_leaderboard()">Top Players</a></span></div>
     </div>
+
+
+    <div id="load_top_players"></div>
+
 
     <?php
 
@@ -28,7 +33,7 @@
         $common_prefix = null;
 
         //Show featured blogs in this category:
-        echo '<div style="margin-top: 30px; font-size: 0.8em; color: #999;"><span class="icon-block">'.$m['m_icon'].'</span> '.$m['m_name'].'</div>';
+        echo '<div class="read-topic"><span class="icon-block">'.$m['m_icon'].'</span> '.$m['m_name'].'</div>';
         echo '<div class="list-group">';
         foreach($published_ins as $published_in){
             echo echo_in_read($published_in, $common_prefix);

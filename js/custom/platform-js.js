@@ -29,8 +29,13 @@ function js_ln_create(new_ln_data){
 }
 
 function load_leaderboard(){
+
+    //Show loading icon:
+    $('#load_top_players').html('<i class="far fa-yin-yang fa-spin"></i>');
+    $('.top-players').addClass('hidden');
+
     $.post("/play/load_leaderboard/", { }, function (data) {
-        $('#leaderboard tbody').html(data);
+        $('#load_top_players').html(data);
         $('[data-toggle="tooltip"]').tooltip();
     });
 }

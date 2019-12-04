@@ -198,6 +198,13 @@ img.no-radius {
     border-color: #FFFFFF;
 }
 
+
+.read-topic{
+    margin-top: 30px;
+    font-size: 0.8em;
+    color: #999;
+    text-transform: uppercase;
+}
 .btn-five{ margin-right:5px; }
 .center-right{ padding-top:43px; }
 
