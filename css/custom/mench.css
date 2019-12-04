@@ -183,8 +183,8 @@ li a {
     border-radius: 50%;
 }
 
-img.no-radius {
-    border-radius:0% !important;
+img.no-radius, .alert {
+    border-radius:0 !important;
 }
 
 .btn-five{ margin-right:5px; }
