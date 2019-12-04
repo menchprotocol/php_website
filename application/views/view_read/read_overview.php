@@ -2,7 +2,7 @@
 <div class="container">
 
     <div class="alert alert-info" style="margin-bottom: 20px;">
-        <div><i class="fas fa-lightbulb-on"></i> <b class="montserrat">MENCH</b> is an interactive publishing platform that allows anyone to share ideas that matter. Writers use a simple web app to create microblogs, each focused on a key idea. Microblogs can be linked together collaboratively to communicate bigger ideas, or cite expert sources to <span class="read-more hidden">gain more credibility. Readers use the web or Messenger to interactively choose their next read. Players earn crypto-coins for each word they read or write.</span><span class="read-more">... <a href="javascript:void(0);" onclick="$('.read-more').toggleClass('hidden')">more</a></span></div>
+        <div><i class="fas fa-lightbulb-on"></i> <b class="montserrat">MENCH</b> is an interactive publishing platform that allows anyone to share ideas that matter. Writers use a simple web app to create microblogs, each focused on a key idea<span class="read-more hidden">. Microblogs can be linked together collaboratively to communicate bigger ideas, or cite expert sources for more credibility. Readers use the web or Messenger to interactively choose their next read. Players earn crypto-coins for each word they read or write.</span><span class="read-more">... <a href="javascript:void(0);" onclick="$('.read-more').toggleClass('hidden')">more</a></span></div>
         <div class="read-more hidden"><a href="/play">Top Players</a> | <a href="/blog">Start Blogging</a></div>
     </div>
 
