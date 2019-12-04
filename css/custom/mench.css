@@ -192,6 +192,12 @@ img.no-radius {
     border-radius:0;
 }
 
+.alert-info {
+    color: #070707;
+    background-color: #FFFFFF;
+    border-color: #FFFFFF;
+}
+
 .btn-five{ margin-right:5px; }
 .center-right{ padding-top:43px; }
 
