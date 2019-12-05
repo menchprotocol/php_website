@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-04 16:11:35 PST
+//Generated 2019-12-04 21:58:47 PST
 
 //TRANSACTION TYPE:
 $config['en_ids_12004'] = array(10671,4983,10573,4250,4601,6226,4231,10660,10676,10678,10679,10677,7545,7610,10686,10663,10664,10661,4229,4228,10675,10681,10685,10650,10662,10648,10644,10651,10647,4993,7757,10672,4251,10653,5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003,10689,10646,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10654,10657,10673,10656,10659,4235,6149,6969,4275,4283,6132,6415,6559,6560,6556,6578,7611,7563,10690,4266,4267,4282,5967,10683,7702,4570,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,7562,7495,4554,4556,4555,6563,4552,4553,5007,4246,7504,4994);
@@ -2450,7 +2450,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.0147',
+        'm_desc' => '1.01471',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -2912,7 +2912,7 @@ $config['en_all_2738'] = array(
     4536 => array(
         'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
-        'm_desc' => 'a blockchain game by earning crypto coins as you read or blog. Customize your avatar, unlock superpowers and collaborate with other players.',
+        'm_desc' => 'a publishing game by earning crypto-coins as you read or blog. Customize your avatar, unlock superpowers and collaborate with other players.',
         'm_parents' => array(2738,4463),
     ),
     6205 => array(
@@ -3217,7 +3217,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin no-radius">',
         'm_name' => 'MENCH',
         'm_desc' => '',
-        'm_parents' => array(12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
+        'm_parents' => array(4463,12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
     ),
     7555 => array(
         'm_icon' => '<i class="fas fa-paper-plane"></i>',
