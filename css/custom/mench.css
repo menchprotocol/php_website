@@ -198,6 +198,7 @@ img.no-radius {
     color: #070707;
     background-color: #FFFFFF;
     border-color: #FFFFFF;
+    font-size: 1.1em;
 }
 
 
@@ -865,4 +866,5 @@ label {
     .list-group-item { padding:0; }
     .featured-frame{ width:75px; }
     .featured-image { width:75px; height:75px; }
+    .alert-info { font-size: 1.2em; }
 }
