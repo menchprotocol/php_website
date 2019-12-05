@@ -290,9 +290,14 @@ img.no-radius {
     padding: 15px;
     margin: 0 auto;
 }
+
+.featured-frame{
+    text-align: center;
+    width: 100px;
+}
 .featured-image {
-    width: 90px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
     overflow: hidden;
     display: block;
 }
