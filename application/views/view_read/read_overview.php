@@ -5,9 +5,9 @@
 
     <div class="alert alert-info" style="margin-top: 0;">
         <div><b class="montserrat"><?= $en_all_4463[2738]['m_name'] ?></b> <?= $en_all_4463[2738]['m_desc'] ?></div>
-        <span class="top-players inline-block" style="padding: 10px 0;"><i class="fas fa-medal"></i> <a href="javascript:void(0);" onclick="load_leaderboard()" class="montserrat">SEE LEADERBOARD</a></span>
     </div>
 
+    <div class="top-players" style="padding: 10px 0;"><i class="fas fa-medal"></i> <a href="javascript:void(0);" onclick="load_leaderboard()" class="montserrat">SEE LEADERBOARD</a></div>
     <div id="load_top_players"></div>
 
     <?php
