@@ -5,7 +5,7 @@
 
     <div class="alert alert-info">
         <div><b class="montserrat"><?= $en_all_4463[2738]['m_name'] ?></b> <?= $en_all_4463[2738]['m_desc'] ?></div>
-        <div style="margin-top:10px;"><i class="fas fa-pen-square"></i> <a href="/blog">Start Blogging</a><span class="top-players"> &nbsp; <i class="fas fa-medal"></i> <a href="javascript:void(0);" onclick="load_leaderboard()">Top Players</a></span></div>
+        <div style="margin-top:10px;"><i class="fas fa-pen-square"></i> <a href="/blog" class="montserrat">START WRITING</a><span class="top-players"> &nbsp; <i class="fas fa-medal"></i> <a href="javascript:void(0);" onclick="load_leaderboard()" class="montserrat">LEADERBOARD</a></span></div>
     </div>
 
 
