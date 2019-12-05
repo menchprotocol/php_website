@@ -26,7 +26,7 @@ class Read extends CI_Controller
         }
 
         $this->load->view('header', array(
-            'title' => 'Blogging. Re-imagined.',
+            'title' => 'BLOGGING. REIMAGINED.',
             'hide_mench' => 1,
         ));
         $this->load->view('view_read/read_overview');
