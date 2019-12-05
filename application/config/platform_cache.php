@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-29 21:45:20 PST
+//Generated 2019-12-04 16:11:35 PST
 
 //TRANSACTION TYPE:
 $config['en_ids_12004'] = array(10671,4983,10573,4250,4601,6226,4231,10660,10676,10678,10679,10677,7545,7610,10686,10663,10664,10661,4229,4228,10675,10681,10685,10650,10662,10648,10644,10651,10647,4993,7757,10672,4251,10653,5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003,10689,10646,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10654,10657,10673,10656,10659,4235,6149,6969,4275,4283,6132,6415,6559,6560,6556,6578,7611,7563,10690,4266,4267,4282,5967,10683,7702,4570,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,7562,7495,4554,4556,4555,6563,4552,4553,5007,4246,7504,4994);
@@ -833,7 +833,7 @@ $config['en_all_12003'] = array(
 );
 
 //MENCH LEDGER:
-$config['en_ids_11999'] = array(12000,12001,12006,12004,12005,12003,12002,12009,12010,12011,12008,12007);
+$config['en_ids_11999'] = array(12000,12001,12006,12004,12005,12003,12002,12009,12010,12011,12007);
 $config['en_all_11999'] = array(
     12000 => array(
         'm_icon' => '<i class="fas ispink fa-atlas" aria-hidden="true"></i>',
@@ -851,7 +851,7 @@ $config['en_all_11999'] = array(
         'm_icon' => '<i class="fas fa-sliders-h ispink" aria-hidden="true"></i>',
         'm_name' => 'STATUS',
         'm_desc' => '',
-        'm_parents' => array(12054,4527,12047,12046,11999),
+        'm_parents' => array(12058,12054,4527,12047,12046,11999),
     ),
     12004 => array(
         'm_icon' => '<i class="fas ispink fa-shapes" aria-hidden="true"></i>',
@@ -894,12 +894,6 @@ $config['en_all_11999'] = array(
         'm_name' => 'REFERENCE',
         'm_desc' => '',
         'm_parents' => array(12054,12047,11999),
-    ),
-    12008 => array(
-        'm_icon' => '<i class="fas ispink fa-calculator-alt" aria-hidden="true"></i>',
-        'm_name' => 'METADATA',
-        'm_desc' => '',
-        'm_parents' => array(11999),
     ),
     12007 => array(
         'm_icon' => '<i class="fas ispink fa-comment" aria-hidden="true"></i>',
@@ -2456,7 +2450,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.01493',
+        'm_desc' => '1.0146',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -2516,7 +2510,7 @@ $config['en_all_6404'] = array(
     11986 => array(
         'm_icon' => '',
         'm_name' => 'TOP PLAYERS VISIBLE',
-        'm_desc' => '5',
+        'm_desc' => '3',
         'm_parents' => array(6404),
     ),
     11070 => array(
@@ -3703,7 +3697,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-sliders-h ispink" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION STATUS',
         'm_desc' => '',
-        'm_parents' => array(12054,4527,12047,12046,11999),
+        'm_parents' => array(12058,12054,4527,12047,12046,11999),
     ),
     12004 => array(
         'm_icon' => '<i class="fas ispink fa-shapes" aria-hidden="true"></i>',

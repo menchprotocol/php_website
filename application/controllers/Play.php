@@ -726,7 +726,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-        echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-medal"></i></span> leaderboard</div>';
+        echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-medal"></i></span>leaderboard</div>';
         echo '<table id="leaderboard" class="table table-sm table-striped">';
 
 
