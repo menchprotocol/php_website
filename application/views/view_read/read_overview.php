@@ -3,16 +3,11 @@
 
     <?php $en_all_4463 = $this->config->item('en_all_4463') ?>
 
-    <div class="alert alert-info">
+    <div class="alert alert-info" style="margin-top: 0;">
         <div><b class="montserrat"><?= $en_all_4463[2738]['m_name'] ?></b> <?= $en_all_4463[2738]['m_desc'] ?></div>
-        <div style="margin-top:10px;">
-            <span class="inline-block" style="padding: 0 12px 12px 0;"><i class="fas fa-pen-square"></i> <a href="/blog" class="montserrat">START WRITING</a></span>
-            <span class="top-players inline-block" style="padding: 0 0 12px 0;"><i class="fas fa-medal"></i> <a href="javascript:void(0);" onclick="load_leaderboard()" class="montserrat">TOP PLAYERS</a></span>
-        </div>
+        <span class="top-players inline-block" style="padding: 10px 0;"><i class="fas fa-medal"></i> <a href="javascript:void(0);" onclick="load_leaderboard()" class="montserrat">SEE LEADERBOARD</a></span>
+        <div id="load_top_players"></div>
     </div>
-
-
-    <div id="load_top_players"></div>
 
 
     <?php

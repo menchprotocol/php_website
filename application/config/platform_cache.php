@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-05 11:03:45 PST
+//Generated 2019-12-05 14:55:44 PST
 
 //MENCH GLOSSARY:
 $config['en_ids_4463'] = array(4535,4485,3084,2738,4536,4430,6199,3000,4755,6205);
@@ -29,7 +29,7 @@ $config['en_all_4463'] = array(
         'm_parents' => array(7552,4535,4527,4463),
     ),
     3084 => array(
-        'm_icon' => '<i class="fas fa-user-astronaut"></i>',
+        'm_icon' => '<i class="fas fa-user-astronaut" aria-hidden="true"></i>',
         'm_name' => 'EXPERTS',
         'm_desc' => 'People with experience in their respective industry that have shown a consistent commitment to advancing their industry.',
         'm_parents' => array(10571,4983,6827,4463),
@@ -1622,7 +1622,7 @@ $config['en_all_10712'] = array(
     ),
 );
 
-//PERSONAL DEVELOPMENT:
+//PERSONALITY TESTS:
 $config['en_ids_10711'] = array(10769,10770,10771,10772,7392,10773,10774,10775,10776,10777,10778,10779,10780,10781,10782,10783);
 $config['en_all_10711'] = array(
     10769 => array(
@@ -1723,7 +1723,7 @@ $config['en_all_10711'] = array(
     ),
 );
 
-//SOFTWARE ENGINEERING:
+//SOFTWARE SKILLS:
 $config['en_ids_10710'] = array(10726,10727,10728,10729,10730,10731,10733,10734);
 $config['en_all_10710'] = array(
     10726 => array(
@@ -1889,23 +1889,17 @@ $config['en_all_10746'] = array(
 );
 
 //FEATURED TOPICS:
-$config['en_ids_10869'] = array(10809,10712,10719,10746,10717,10721,10720,10716,10718,10711,10710,10725);
+$config['en_ids_10869'] = array(12066,10809,10746,10725,10721,10720,10719,10718,10717,10716,10712,10711,10710);
 $config['en_all_10869'] = array(
+    12066 => array(
+        'm_icon' => '<i class="far fa-play-circle" aria-hidden="true"></i>',
+        'm_name' => 'GETTING STARTED',
+        'm_desc' => '',
+        'm_parents' => array(10869),
+    ),
     10809 => array(
         'm_icon' => '<i class="far fa-palette" aria-hidden="true"></i>',
         'm_name' => 'ARTS & ENTERTAINMENT',
-        'm_desc' => '',
-        'm_parents' => array(4527,10869),
-    ),
-    10712 => array(
-        'm_icon' => '<i class="far fa-chart-line" aria-hidden="true"></i>',
-        'm_name' => 'BUSINESS',
-        'm_desc' => '',
-        'm_parents' => array(4527,10869),
-    ),
-    10719 => array(
-        'm_icon' => '<i class="far fa-pencil-ruler" aria-hidden="true"></i>',
-        'm_name' => 'DESIGN',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
     ),
@@ -1915,9 +1909,9 @@ $config['en_all_10869'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,10869),
     ),
-    10717 => array(
-        'm_icon' => '<i class="far fa-desktop"></i>',
-        'm_name' => 'IT & SOFTWARE',
+    10725 => array(
+        'm_icon' => '<i class="far fa-atom-alt"></i>',
+        'm_name' => 'TEACHING & ACADEMICS',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
     ),
@@ -1933,11 +1927,11 @@ $config['en_all_10869'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,10869),
     ),
-    10716 => array(
-        'm_icon' => '<i class="far fa-wallet" aria-hidden="true"></i>',
-        'm_name' => 'MONEY TOPIC',
+    10719 => array(
+        'm_icon' => '<i class="far fa-pencil-ruler" aria-hidden="true"></i>',
+        'm_name' => 'DESIGN',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,4527,10869),
+        'm_parents' => array(4527,10869),
     ),
     10718 => array(
         'm_icon' => '<i class="far fa-clipboard-list-check"></i>',
@@ -1945,21 +1939,33 @@ $config['en_all_10869'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,10869),
     ),
+    10717 => array(
+        'm_icon' => '<i class="far fa-desktop"></i>',
+        'm_name' => 'IT & SOFTWARE',
+        'm_desc' => '',
+        'm_parents' => array(4527,10869),
+    ),
+    10716 => array(
+        'm_icon' => '<i class="far fa-wallet" aria-hidden="true"></i>',
+        'm_name' => 'MONEY TOPIC',
+        'm_desc' => '',
+        'm_parents' => array(3311,11097,4527,10869),
+    ),
+    10712 => array(
+        'm_icon' => '<i class="far fa-chart-line" aria-hidden="true"></i>',
+        'm_name' => 'BUSINESS',
+        'm_desc' => '',
+        'm_parents' => array(4527,10869),
+    ),
     10711 => array(
-        'm_icon' => '<i class="far fa-smile"></i>',
-        'm_name' => 'PERSONAL DEVELOPMENT',
+        'm_icon' => '<i class="far fa-smile-plus" aria-hidden="true"></i>',
+        'm_name' => 'PERSONALITY TESTS',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
     ),
     10710 => array(
         'm_icon' => '<i class="far fa-code" aria-hidden="true"></i>',
-        'm_name' => 'SOFTWARE ENGINEERING',
-        'm_desc' => '',
-        'm_parents' => array(4527,10869),
-    ),
-    10725 => array(
-        'm_icon' => '<i class="far fa-atom-alt"></i>',
-        'm_name' => 'TEACHING & ACADEMICS',
+        'm_name' => 'SOFTWARE SKILLS',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
     ),
@@ -2515,7 +2521,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.01487',
+        'm_desc' => '1.0146',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -3339,8 +3345,8 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,10869),
     ),
     10711 => array(
-        'm_icon' => '<i class="far fa-smile"></i>',
-        'm_name' => 'PERSONAL DEVELOPMENT',
+        'm_icon' => '<i class="far fa-smile-plus" aria-hidden="true"></i>',
+        'm_name' => 'PERSONALITY TESTS',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
     ),
@@ -3718,7 +3724,7 @@ $config['en_all_4527'] = array(
     ),
     10710 => array(
         'm_icon' => '<i class="far fa-code" aria-hidden="true"></i>',
-        'm_name' => 'SOFTWARE ENGINEERING',
+        'm_name' => 'SOFTWARE SKILLS',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
     ),
@@ -5695,7 +5701,7 @@ $config['en_all_10571'] = array(
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3084 => array(
-        'm_icon' => '<i class="fas fa-user-astronaut"></i>',
+        'm_icon' => '<i class="fas fa-user-astronaut" aria-hidden="true"></i>',
         'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(10571,4983,6827,4463),
@@ -5783,7 +5789,7 @@ $config['en_all_4983'] = array(
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3084 => array(
-        'm_icon' => '<i class="fas fa-user-astronaut"></i>',
+        'm_icon' => '<i class="fas fa-user-astronaut" aria-hidden="true"></i>',
         'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(10571,4983,6827,4463),
@@ -6916,7 +6922,7 @@ $config['en_all_6194'] = array(
 $config['en_ids_6827'] = array(3084,4430);
 $config['en_all_6827'] = array(
     3084 => array(
-        'm_icon' => '<i class="fas fa-user-astronaut"></i>',
+        'm_icon' => '<i class="fas fa-user-astronaut" aria-hidden="true"></i>',
         'm_name' => 'EXPERTS',
         'm_desc' => 'Experienced in their respective industry with a track record of advancing their field of knowldge',
         'm_parents' => array(10571,4983,6827,4463),
