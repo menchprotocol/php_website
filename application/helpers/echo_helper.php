@@ -1445,7 +1445,7 @@ function echo_time_range($in, $micro = false, $hide_zero = false)
         $ui_time .= ' - ';
         $ui_time .= $the_max;
     }
-    $ui_time .= ($is_minutes ? ($micro ? 'm' : ' Minute'.echo__s($max_minutes)) : ($micro ? 'h' : ' Hour'.echo__s($max_hours)));
+    $ui_time .= strtoupper($is_minutes ? ($micro ? ' MIN' : ' MINUTE'.echo__s($max_minutes)) : ' HOUR'.echo__s($max_hours));
 
     //Generate UI to return:
     return $ui_time;
