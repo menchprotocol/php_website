@@ -726,12 +726,10 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-        echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-medal"></i></span>LEADERBOARD</div>';
         echo '<table id="leaderboard" class="table table-sm table-striped">';
 
-
         echo '<tr>';
-        echo '<td>&nbsp;</td>';
+        echo '<td><span class="parent-icon icon-block"><i class="fas fa-circle blue"></i></span><b class="montserrat blue">PLAYER</b></td>';
         echo '<td><span class="parent-icon icon-block"><i class="fas fa-circle ispink"></i></span><b class="montserrat ispink">READ</b></td>';
         echo '<td><span class="parent-icon icon-block"><i class="fas fa-circle yellow"></i></span><b class="montserrat yellow">BLOG</b></td>';
         echo '</tr>';
