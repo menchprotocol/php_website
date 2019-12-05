@@ -30,7 +30,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     max-width:767px;
 }
 .ln_content { overflow: hidden; width: 100%; }
-.table-sm td, .table-sm th { padding: .3rem 0; }
+.table-sm td, .table-sm th { padding: 5px 0; }
 .table {
     width: 100%;
     margin-bottom: 0;
