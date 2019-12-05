@@ -826,6 +826,7 @@ label {
     margin: 0 5px 10px;
     display: block;
     font-size: 1.3em;
+    line-height: 110%;
 }
 
 
@@ -857,7 +858,7 @@ label {
         max-width: none;
     }
     .icon-block-xlg{ min-width:48px; }
-    .list-group-item { padding:2px 0; }
+    .list-group-item { padding:0; }
     .featured-frame{ width:75px; }
     .featured-image { width:75px; height:75px; }
 }
