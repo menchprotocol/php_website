@@ -1540,7 +1540,7 @@ function echo_in_read($in, $common_prefix = null)
 
     $ui = '<div class="list-group-item">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
-    $ui .= '<td><a href="/read/'.$in['in_id'] . '" class="montserrat">'.echo_in_outcome($in['in_outcome'], false, $common_prefix).'</a></td>';
+    $ui .= '<td><a href="/'.$in['in_id'] . '" class="montserrat">'.echo_in_outcome($in['in_outcome'], false, $common_prefix).'</a></td>';
 
     //Search for Blog Image:
     $ui .= '<td class="featured-image">';
@@ -1560,7 +1560,7 @@ function echo_in_read($in, $common_prefix = null)
 
         //Did we find an image for this message?
         if(count($images) > 0){
-            $ui .= '<div class="pull-right inline-block featured-image"><a href="/read/'.$in['in_id'] . '"><img src="'.$images[0]['ln_content'].'" /></a></div>';
+            $ui .= '<div class="pull-right inline-block featured-image"><a href="/'.$in['in_id'] . '"><img src="'.$images[0]['ln_content'].'" /></a></div>';
             break;
         }
 
@@ -1575,7 +1575,7 @@ function echo_in_read($in, $common_prefix = null)
         if(count($embeds) > 0){
             $youtube_id = extract_youtube_id($embeds[0]['ln_content']);
             if(strlen($youtube_id) > 0){
-                $ui .= '<div class="pull-right inline-block featured-image"><a href="/read/'.$in['in_id'] . '"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></a></div>';
+                $ui .= '<div class="pull-right inline-block featured-image"><a href="/'.$in['in_id'] . '"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></a></div>';
                 break;
             }
         }

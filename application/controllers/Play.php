@@ -816,7 +816,7 @@ fragment PostListingItemSidebar_post on Post {
         if (isset($session_en['en__parents'][0])) {
             //Lead trainer and above, go to console:
             if($in_id > 0){
-                return redirect_message('/read/' . $in_id);
+                return redirect_message('/' . $in_id);
             } else {
                 return redirect_message('/play');
             }

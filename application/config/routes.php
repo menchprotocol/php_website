@@ -11,7 +11,7 @@ $route['blog']                      = "blog/blog_overview";
 
 $route['play/(:num)']               = "play/play_modify/$1";
 $route['blog/(:num)']               = "blog/blog_modify/$1";
-$route['read/(:num)']               = "read/read_blog/$1";
+$route['(:num)']                    = "read/read_blog/$1";
 
 
 //DEPRECATE SOON:

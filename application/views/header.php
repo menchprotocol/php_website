@@ -173,7 +173,7 @@ if(!isset($hide_header) || !$hide_header){
                     } else {
 
                         //TERMS
-                        //echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/read/8263" title="'.$en_all_11035[7540]['m_name'].'">'.$en_all_11035[7540]['m_icon'].'</a></td>';
+                        //echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/8263" title="'.$en_all_11035[7540]['m_name'].'">'.$en_all_11035[7540]['m_icon'].'</a></td>';
 
                         //Give option to signin
                         echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/play/signin" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';

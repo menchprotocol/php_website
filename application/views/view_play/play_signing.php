@@ -77,7 +77,7 @@ if(count($current_sign_in_attempt) == 0){
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ));
         if(count($ins) > 0){
-            echo '<p>To <a href="/read/'.$referrer_in_id.'">'.echo_in_outcome($ins[0]['in_outcome']).'</a></p>';
+            echo '<p>To <a href="/'.$referrer_in_id.'">'.echo_in_outcome($ins[0]['in_outcome']).'</a></p>';
         }
     } elseif(isset($_GET['url']) && strlen($_GET['url']) > 0){
         echo '<p>To access <u>'.urldecode($_GET['url']).'</u></p>';
