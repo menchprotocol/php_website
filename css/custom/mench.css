@@ -828,7 +828,11 @@ label {
     font-size: 1.3em;
     line-height: 110%;
 }
-
+.blog-info{
+    font-size: 0.7em;
+    color:#999;
+    margin: 0 6px;
+}
 
 
 
