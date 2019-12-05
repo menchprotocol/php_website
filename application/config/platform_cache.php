@@ -11,7 +11,72 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-04 21:58:47 PST
+//Generated 2019-12-04 22:00:21 PST
+
+//MENCH GLOSSARY:
+$config['en_ids_4463'] = array(4535,4485,3084,2738,4536,4430,6199,3000,4755,6205);
+$config['en_all_4463'] = array(
+    4535 => array(
+        'm_icon' => '<i class="fas fa-circle yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOG',
+        'm_desc' => 'Intents define the intention of an entity as defined similar to a SMART goal.',
+        'm_parents' => array(12003,2738,4463),
+    ),
+    4485 => array(
+        'm_icon' => '<i class="fas fa-comment-plus yellow"></i>',
+        'm_name' => 'BLOG NOTES',
+        'm_desc' => 'Intent notes are various information collected around intentions that enable Mench to operate as a Personal Assistant for students looking to accomplish an intent.',
+        'm_parents' => array(7552,4535,4527,4463),
+    ),
+    3084 => array(
+        'm_icon' => '<i class="fas fa-user-astronaut"></i>',
+        'm_name' => 'EXPERTS',
+        'm_desc' => 'People with experience in their respective industry that have shown a consistent commitment to advancing their industry.',
+        'm_parents' => array(10571,4983,6827,4463),
+    ),
+    2738 => array(
+        'm_icon' => '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin no-radius">',
+        'm_name' => 'MENCH',
+        'm_desc' => 'is an interactive publishing platform that allows anyone to share ideas that matter. Writers use a simple web app to create microblogs, each focused on a single key idea. Microblogs can link together to form bigger ideas, or can cite expert sources to gain credibility. Readers use the web or Messenger to interactively read & discover relevant ideas.',
+        'm_parents' => array(4463,12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
+    ),
+    4536 => array(
+        'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAY',
+        'm_desc' => 'Entities represent people, objects and things.',
+        'm_parents' => array(2738,4463),
+    ),
+    4430 => array(
+        'm_icon' => '<i class="far fa-user"></i>',
+        'm_name' => 'PLAYERS',
+        'm_desc' => 'Users connected to Mench Personal Assistant on Facebook Messenger.',
+        'm_parents' => array(10573,4983,6827,4426,4463),
+    ),
+    6199 => array(
+        'm_icon' => '<i class="fas fa-shield-check isblue"></i>',
+        'm_name' => 'PLAYER TRUST SCORE',
+        'm_desc' => 'Our measure of trust to the entity which ranks them among their peers',
+        'm_parents' => array(6232,4463,6214,6206),
+    ),
+    3000 => array(
+        'm_icon' => '<i class="far fa-thumbs-up"></i>',
+        'm_name' => 'PLAY SOURCES',
+        'm_desc' => 'We train the Mench personal assistant with sources produced by industry experts. Sources include videos, articles, books, online courses and other channels used by experts to share their knowledge.',
+        'm_parents' => array(7303,10571,4506,4527,4463),
+    ),
+    4755 => array(
+        'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
+        'm_name' => 'PRIVATE READ',
+        'm_desc' => 'Mench is open-source but most of our student generated content is private and accessible either by the student or Mench\'s core contributors.',
+        'm_parents' => array(4755,6771,4463,4426,4527),
+    ),
+    6205 => array(
+        'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
+        'm_name' => 'READ',
+        'm_desc' => 'An electronic log book containing a list of transactions and balances typically involving financial accounts.',
+        'm_parents' => array(12003,2738,4463),
+    ),
+);
 
 //TRANSACTION TYPE:
 $config['en_ids_12004'] = array(10671,4983,10573,4250,4601,6226,4231,10660,10676,10678,10679,10677,7545,7610,10686,10663,10664,10661,4229,4228,10675,10681,10685,10650,10662,10648,10644,10651,10647,4993,7757,10672,4251,10653,5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003,10689,10646,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10654,10657,10673,10656,10659,4235,6149,6969,4275,4283,6132,6415,6559,6560,6556,6578,7611,7563,10690,4266,4267,4282,5967,10683,7702,4570,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,7562,7495,4554,4556,4555,6563,4552,4553,5007,4246,7504,4994);
@@ -2450,7 +2515,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.01471',
+        'm_desc' => '1.0146',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -2965,7 +3030,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(7758,10809,10956,11047,7712,4983,7756,7585,10602,10589,11968,10990,4485,12012,7347,6146,7596,7588,4229,11018,4486,7302,4737,7356,7355,6201,11021,7309,7751,6150,10712,10719,10869,10627,10746,7703,7364,10717,10721,10720,11080,2738,7555,11999,11035,11059,11058,10716,6225,10718,10711,11054,6404,4527,6232,11039,6194,6827,4426,4997,4454,11028,4592,4537,6123,6177,11007,11089,11033,3000,7303,6206,11088,4755,6287,10571,7357,6345,6192,11081,6193,4600,5967,6255,4280,10590,10570,4277,6102,7704,6244,6274,7494,6144,7582,6103,10596,10539,10594,10692,10591,10593,7304,6186,7360,7359,4341,4593,10658,10592,11031,11084,6204,10710,10957,10725,6805,4986,7551,7358,12003,12006,12004);
+$config['en_ids_4527'] = array(7758,10809,10956,11047,7712,4983,7756,7585,10602,10589,11968,10990,4485,12012,7347,6146,7596,7588,4229,11018,4486,7302,4737,7356,7355,6201,11021,7309,7751,6150,10712,10719,10869,10627,10746,7703,7364,10717,10721,10720,11080,2738,7555,4463,11999,11035,11059,11058,10716,6225,10718,10711,11054,6404,4527,6232,11039,6194,6827,4426,4997,4454,11028,4592,4537,6123,6177,11007,11089,11033,3000,7303,6206,11088,4755,6287,10571,7357,6345,6192,11081,6193,4600,5967,6255,4280,10590,10570,4277,6102,7704,6244,6274,7494,6144,7582,6103,10596,10539,10594,10692,10591,10593,7304,6186,7360,7359,4341,4593,10658,10592,11031,11084,6204,10710,10957,10725,6805,4986,7551,7358,12003,12006,12004);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -3224,6 +3289,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'MENCH CHANNELS',
         'm_desc' => '',
         'm_parents' => array(7305,4527),
+    ),
+    4463 => array(
+        'm_icon' => '<i class="far fa-lightbulb-on" aria-hidden="true"></i>',
+        'm_name' => 'MENCH GLOSSARY',
+        'm_desc' => '',
+        'm_parents' => array(4527,7254),
     ),
     11999 => array(
         'm_icon' => '<i class="fas fa-atlas ispink"></i>',
