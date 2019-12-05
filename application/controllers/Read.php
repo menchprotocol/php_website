@@ -15,12 +15,18 @@ class Read extends CI_Controller
 
     function read_overview(){
 
-        if($this->uri->segment(1) != 'read'){
-            return redirect_message('/read'); //DEFAULT
+        //Simplify URL structure if needed:
+        if($this->uri->segment(1) == 'read'){
+            $read_id = $this->uri->segment(2);
+            if($read_id > 0){
+                return redirect_message('/'.$read_id);
+            } else {
+                return redirect_message('/');
+            }
         }
 
         $this->load->view('header', array(
-            'title' => 'READ',
+            'title' => 'Blogging. Re-imagined.',
         ));
         $this->load->view('view_read/read_overview');
         $this->load->view('footer');
