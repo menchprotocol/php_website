@@ -726,8 +726,14 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-        echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-medal"></i></span> TOP PLAYERS</div>';
+        echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-medal"></i></span> leaderboard</div>';
         echo '<table id="leaderboard" class="table table-sm table-striped">';
+
+        echo '<tr>';
+        echo '<td><b class="montserrat blue">PLAYER</b></td>';
+        echo '<td><b class="montserrat ispink">READ WORDS</b></td>';
+        echo '<td><b class="montserrat yellow">BLOG WORDS</b></td>';
+        echo '</tr>';
 
         //Did we find anyone?
         if(count($blog_coins) > 0){
