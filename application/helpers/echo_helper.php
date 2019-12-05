@@ -2196,7 +2196,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 function echo_rank($integer){
     if($integer==1){
-        return ' 🏅';
+        return $integer.' 🏅';
     } elseif($integer==2){
         return ' 🥈';
     } elseif($integer==3){
