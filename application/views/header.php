@@ -121,18 +121,12 @@ if(!isset($hide_header) || !$hide_header){
             <table class="mench-navigation">
                 <tr>
 
-                    <?php
-
-                    $mench_logo = '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin" />';
-                    echo '<td class="block-link block-logo">'. ( count($this->session->userdata('assigned_superpowers_en_ids')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');">'.$mench_logo.'</a>' : $mench_logo ) .'</td>';
-
-
-                    ?>
+                    <td class="block-link block-logo"><a href="/"><img src="/img/mench-v2-128.png" class="mench-logo mench-spin" /></a></td>
 
                     <td>
                         <div class="supwerpower_view">
 
-                            <span class=""><span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>">MENCH</span></span>
+                            <span class=""><span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>">ME<?= ( count($this->session->userdata('assigned_superpowers_en_ids')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');">M</a>' : 'M' ) ?>CH</span></span>
 
                             <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
