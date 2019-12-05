@@ -13,21 +13,6 @@ class Play extends CI_Controller
         date_default_timezone_set(config_var(11079));
     }
 
-    function home_page(){
-        //READ is default tab to load:
-        //return redirect_message('/read');
-
-        //Show notice for launching soon.
-
-        $this->load->view('header', array(
-            'basic_header' => 1,
-            'title' => 'Interactive Microblogging on Blockchain',
-        ));
-        $this->load->view('view_play/coming_soon');
-        $this->load->view('footer');
-
-    }
-
 
     function add_11158(){
 
@@ -637,15 +622,6 @@ fragment PostListingItemSidebar_post on Post {
 
     }
 
-    function play_overview(){
-        $this->load->view('header', array(
-            'title' => 'PLAY',
-        ));
-        $this->load->view('view_play/play_overview');
-        $this->load->view('footer');
-    }
-
-
 
     //Lists entities
     function play_modify($en_id)
@@ -794,7 +770,6 @@ fragment PostListingItemSidebar_post on Post {
             }
 
 
-
             //COUNT WORDS BLOG/READ:
             $words_blog = $this->READ_model->ln_fetch(array(
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
@@ -815,7 +790,7 @@ fragment PostListingItemSidebar_post on Post {
                          4535 => echo_number($words_blog[0]['total_words']), //BLOG
                      ) as $en_id => $current_count){
                 $handle = strtolower($en_all_2738[$en_id]['m_name']);
-                echo '<td><span class="'.$handle.'"><span class="parent-icon icon-block">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count" data-toggle="tooltip" data-placement="top" title="'.number_format($current_count, 0).' Engaged Players">'.( $en_id==4536 ? '<span class="montserrat">ALL</span>' : '' ).' '.$current_count.'</span></span></td>';
+                echo '<td><span class="'.$handle.'"><span class="parent-icon icon-block">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count" data-toggle="tooltip" data-placement="top" title="'.number_format(intval($current_count), 0).' Engaged Players">'.( $en_id==4536 ? '<span class="montserrat">ALL</span>' : '' ).' '.$current_count.'</span></span></td>';
             }
             echo '</tr>';
 
