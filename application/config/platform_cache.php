@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-04 22:33:22 PST
+//Generated 2019-12-04 22:35:46 PST
 
 //MENCH GLOSSARY:
 $config['en_ids_4463'] = array(4535,4485,3084,2738,4536,4430,6199,3000,4755,6205);
@@ -37,7 +37,7 @@ $config['en_all_4463'] = array(
     2738 => array(
         'm_icon' => '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin no-radius">',
         'm_name' => 'MENCH',
-        'm_desc' => 'is an interactive publishing platform that allows anyone to share ideas that matter. Writers use a simple web app to create microblogs, each focused on a key idea. Microblogs can link together to form bigger ideas, or can cite expert sources to gain credibility. Readers use the web or Messenger to read interactively.',
+        'm_desc' => 'is an interactive publishing platform that allows anyone to share ideas that matter. Writers use a simple web app to create microblogs, each focused on a key idea. Microblogs can link together to form bigger ideas, or can cite expert sources to gain credibility. Readers use the web or Messenger to read interactively. Everyone earns crypto-coins per each word they read or blog.',
         'm_parents' => array(4463,12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
     ),
     4536 => array(
