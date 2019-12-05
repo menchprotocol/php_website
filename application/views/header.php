@@ -88,7 +88,7 @@ if(isset($custom_header)){
 
 if(!isset($hide_header) || !$hide_header){
 
-    if(isset($session_en['en_id']) && !$basic_header){
+    if(isset($session_en['en_id']) && !isset($basic_header)){
         ?>
         <!-- 3X NAVIGATION -->
         <div class="container show-while-searching fixed-bottom">
