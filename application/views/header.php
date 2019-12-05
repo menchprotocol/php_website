@@ -88,31 +88,33 @@ if(isset($custom_header)){
 
 if(!isset($hide_header) || !$hide_header){
 
-    ?>
+    if(isset($session_en['en_id']) && !$basic_header){
+        ?>
+        <!-- 3X NAVIGATION -->
+        <div class="container show-while-searching fixed-bottom">
+            <div class="row">
+                <table class="three-menus">
+                    <tr>
+                        <?php
+                        foreach($this->config->item('en_all_2738') as $en_id => $m){
 
-    <!-- 3X NAVIGATION -->
-    <div class="container show-while-searching fixed-bottom <?= ( isset($basic_header) || !isset($session_en['en_id'] ) ? ' hidden ' : '' ) ?>">
-        <div class="row">
-            <table class="three-menus">
-                <tr>
-                    <?php
-                    foreach($this->config->item('en_all_2738') as $en_id => $m){
+                            $handle = strtolower($m['m_name']);
 
-                        $handle = strtolower($m['m_name']);
+                            //Switch betweenh reading/blogging if specific blog is loaded:
+                            $url_postfix = (intval($this->uri->segment(2) && isset($session_en['en_id']) && (($this->uri->segment(1)=='blog' && $en_id==6205) || ($this->uri->segment(1)=='read' && $en_id==4535))) ? '/'.$this->uri->segment(2) : ( isset($session_en['en_id']) && $en_id==4536 ? '/'.$session_en['en_id'] : '' ) );
 
-                        //Switch betweenh reading/blogging if specific blog is loaded:
-                        $url_postfix = (intval($this->uri->segment(2) && isset($session_en['en_id']) && (($this->uri->segment(1)=='blog' && $en_id==6205) || ($this->uri->segment(1)=='read' && $en_id==4535))) ? '/'.$this->uri->segment(2) : '' );
+                            echo '<td><a class="'.$handle.' border-'.$handle.( $this->uri->segment(1)==$handle ? ' focustab ': '' ).'" href="/'.$handle.$url_postfix.'">' . ( isset($session_en['en_id']) ? ( $en_id==4536 ? '<span class="parent-icon icon-block">'.$session_en['en_icon'].'</span><span class="mn_name montserrat">'.one_two_explode('',' ',$session_en['en_name']).'</span>' : '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="current_count mn_name montserrat"><i class="far fa-yin-yang fa-spin"></i></span>' ) : '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="mn_name montserrat">' . $m['m_name'] . '</span>' ) .'</a></td>';
 
-                        echo '<td><a class="'.$handle.' border-'.$handle.( $this->uri->segment(1)==$handle ? ' focustab ': '' ).'" href="/'.$handle.$url_postfix.'">' . ( isset($session_en['en_id']) ? ( $en_id==4536 ? '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="mn_name montserrat">'.$m['m_name'].'</span>' : '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="current_count mn_name montserrat"><i class="far fa-yin-yang fa-spin"></i></span>' ) : '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="mn_name montserrat">' . $m['m_name'] . '</span>' ) .'</a></td>';
-
-                    }
-                    ?>
-                </tr>
-            </table>
+                        }
+                        ?>
+                    </tr>
+                </table>
+            </div>
         </div>
-    </div>
 
-
+        <?php
+    }
+    ?>
 
 
     <!-- MENCH LINE -->
@@ -161,8 +163,6 @@ if(!isset($hide_header) || !$hide_header){
                             $en_all_11035 = $this->config->item('en_all_11035');
                             echo '<td class="block-link '.superpower_active(10984).'"><a href="/play/admin_tools" title="'.$en_all_11035[6287]['m_name'].'">'.$en_all_11035[6287]['m_icon'].'</a></td>';
                         }
-
-                        echo '<td class="block-link"><a href="/play/'.$session_en['en_id'].'" title="'.$session_en['en_name'].'">'.$session_en['en_icon'].'</a></td>';
 
                     } else {
 
