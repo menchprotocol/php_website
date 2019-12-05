@@ -1555,7 +1555,7 @@ function echo_in_read($in, $common_prefix = null)
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
     $ui .= '<a href="/'.$in['in_id'] . '" class="montserrat blog-url">'.echo_in_outcome($in['in_outcome'], false, $common_prefix).'</a>';
-    $ui .= '<span class="montserrat blog-info doupper">'.( $has_time_estimate ? echo_time_range($in, true).' READ ' : '' ).'BY <a href="/play/'.$authors[0]['en_id'].'" class="montserrat">'.$authors[0]['en_name'].'</a></span>';
+    $ui .= '<span class="montserrat blog-info doupper">'.( $has_time_estimate ? echo_time_range($in, true).' READ ' : '' ).'BY <a href="/play/'.$authors[0]['en_id'].'" class="montserrat">'.one_two_explode('',' ',$authors[0]['en_name']).'</a></span>';
     $ui .= '</td>';
 
     //Search for Blog Image:
