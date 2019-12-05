@@ -865,13 +865,13 @@ function echo_time_hours($seconds, $micro = false)
         //Under 30 seconds would not round up to even 1 minute, so don't show:
         return 0;
     } elseif ($seconds < 60) {
-        return $seconds . ($micro ? 's' : ' Seconds');
+        return 1 . ($micro ? ' MIN' : ' Minutes');
     } elseif ($seconds < 3600) {
-        return round($seconds / 60) . ($micro ? 'm' : ' Minutes');
+        return round($seconds / 60) . ($micro ? ' MIN' : ' Minutes');
     } else {
         //Roundup the hours:
         $hours = round($seconds / 3600);
-        return $hours . ($micro ? 'h' : ' Hour' . echo__s($hours));
+        return $hours . ' Hour' . echo__s($hours);
     }
 }
 
