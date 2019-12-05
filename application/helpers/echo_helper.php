@@ -2203,7 +2203,7 @@ function echo_rank($integer){
         return ' 🥉';
     } else {
         //return echo_ordinal_number($integer);
-        return null;
+        return $integer;
     }
 }
 
