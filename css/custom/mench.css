@@ -166,7 +166,10 @@ li a {
 .icon-block{ min-width: 34px; display: inline-block; text-align: center; }
 .icon-block-lg{ min-width:50px; display: inline-block; text-align: center; }
 .icon-block-xlg{ min-width:62px; display: inline-block; text-align: center; }
-
+.blog-url{
+    margin-left: 5px;
+    display: block;
+}
 .icon-block img,
 .en-icon img {
     width: 24px !important;
@@ -288,12 +291,13 @@ img.no-radius {
     margin: 0 auto;
 }
 .featured-image {
-    text-align: center !important;
-    width: 125px;
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    display: block;
 }
 .featured-image img{
-    max-width: 125px;
-    max-height: 87px;
+    height: 100%;
 }
 .grey-box {
     padding:0;
