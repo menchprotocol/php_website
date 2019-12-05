@@ -729,10 +729,11 @@ fragment PostListingItemSidebar_post on Post {
         echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-medal"></i></span> leaderboard</div>';
         echo '<table id="leaderboard" class="table table-sm table-striped">';
 
+
         echo '<tr>';
-        echo '<td><b class="montserrat blue">PLAYER</b></td>';
-        echo '<td><b class="montserrat ispink">READ WORDS</b></td>';
-        echo '<td><b class="montserrat yellow">BLOG WORDS</b></td>';
+        echo '<td><span class="parent-icon icon-block"><i class="fas fa-circle blue"></i></span><b class="montserrat blue">PLAYER</b></td>';
+        echo '<td><span class="parent-icon icon-block"><i class="fas fa-circle ispink"></i></span><b class="montserrat ispink">READ</b></td>';
+        echo '<td><span class="parent-icon icon-block"><i class="fas fa-circle yellow"></i></span><b class="montserrat yellow">BLOG</b></td>';
         echo '</tr>';
 
         //Did we find anyone?
@@ -796,7 +797,7 @@ fragment PostListingItemSidebar_post on Post {
                          4535 => echo_number($words_blog[0]['total_words']), //BLOG
                      ) as $en_id => $current_count){
                 $handle = strtolower($en_all_2738[$en_id]['m_name']);
-                echo '<td><span class="'.$handle.'"><span class="parent-icon icon-block">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count" data-toggle="tooltip" data-placement="top" title="'.number_format(intval($current_count), 0).' Engaged Players">'.( $en_id==4536 ? '<span class="montserrat">ALL</span>' : '' ).' '.$current_count.'</span></span></td>';
+                echo '<td><span class="'.$handle.'"><span class="parent-icon icon-block">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count" data-toggle="tooltip" data-placement="top" title="'.number_format(intval($current_count), 0).' Engaged Players">'.$current_count.'</span></span></td>';
             }
             echo '</tr>';
 
