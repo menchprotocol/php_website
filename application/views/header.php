@@ -99,7 +99,7 @@ if(!isset($hide_header) || !$hide_header){
                         foreach($this->config->item('en_all_2738') as $en_id => $m){
 
                             $identifier = strtolower($m['m_name']);
-                            $handle = ( $en_id==4535 ? $identifier : '' );
+                            $handle = ( $en_id==4535 ? '' : $identifier );
 
                             //Switch betweenh reading/blogging if specific blog is loaded:
                             $url_postfix = (intval($this->uri->segment(2) && isset($session_en['en_id']) && (($this->uri->segment(1)=='blog' && $en_id==6205) || ($this->uri->segment(1)=='read' && $en_id==4535))) ? $this->uri->segment(2) : ( isset($session_en['en_id']) && $en_id==4536 ? '/'.$session_en['en_id'] : '' ) );
