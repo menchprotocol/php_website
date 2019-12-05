@@ -196,8 +196,8 @@ img.no-radius {
 
 .alert-info {
     color: #070707;
-    background-color: #FFFFFF;
-    border-color: #FFFFFF;
+    background-color: transparent;
+    border:0;
     font-size: 1.1em;
 }
 
