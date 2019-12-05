@@ -731,7 +731,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
         echo '<tr>';
-        echo '<td><span class="parent-icon icon-block"><i class="fas fa-circle blue"></i></span><b class="montserrat blue">PLAYER</b></td>';
+        echo '<td>&nbsp;</td>';
         echo '<td><span class="parent-icon icon-block"><i class="fas fa-circle ispink"></i></span><b class="montserrat ispink">READ</b></td>';
         echo '<td><span class="parent-icon icon-block"><i class="fas fa-circle yellow"></i></span><b class="montserrat yellow">BLOG</b></td>';
         echo '</tr>';
