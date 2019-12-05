@@ -1442,7 +1442,7 @@ function echo_time_range($in, $micro = false, $hide_zero = false)
     $the_max = ($is_minutes ? $max_minutes : $max_hours );
     $ui_time = $the_min;
     if($the_min != $the_max){
-        $ui_time .= ' - ';
+        $ui_time .= ( $micro ? '-' : ' - ' );
         $ui_time .= $the_max;
     }
     $ui_time .= strtoupper($is_minutes ? ($micro ? ' MIN' : ' MINUTE'.echo__s($max_minutes)) : ' HOUR'.echo__s($max_hours));
