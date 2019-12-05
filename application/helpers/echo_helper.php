@@ -69,7 +69,7 @@ function echo_url_type($url, $en_type_link_id)
 
     } elseif ($en_type_link_id == 4260 /* Image URL */) {
 
-        return '<img src="' . $url . '" style="max-width:240px;" />';
+        return '<img src="' . $url . '" style="max-width:100%;" />';
 
     } elseif ($en_type_link_id == 4259 /* Audio URL */) {
 
