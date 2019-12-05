@@ -166,7 +166,6 @@ li a {
 .icon-block{ min-width: 34px; display: inline-block; text-align: center; }
 .icon-block-lg{ min-width:50px; display: inline-block; text-align: center; }
 .icon-block-xlg{ min-width:62px; display: inline-block; text-align: center; }
-.fixed-top td { vertical-align: bottom; }
 
 .icon-block img,
 .en-icon img {
