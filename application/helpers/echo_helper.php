@@ -1538,9 +1538,25 @@ function echo_in_read($in, $common_prefix = null)
     //See if user is logged-in:
     $CI =& get_instance();
 
+    $metadata = unserialize($in['in_metadata']);
+
+    //Now do measurements:
+    $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+
+
+    //Fetch primary author:
+    $authors = $CI->READ_model->ln_fetch(array(
+        'ln_type_entity_id' => 4250,
+        'ln_child_intent_id' => $in['in_id'],
+    ), array('ln_creator'), 1);
+
+
     $ui = '<div class="list-group-item">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
-    $ui .= '<td><a href="/'.$in['in_id'] . '" class="montserrat blog-url">'.echo_in_outcome($in['in_outcome'], false, $common_prefix).'</a></td>';
+    $ui .= '<td>';
+    $ui .= '<a href="/'.$in['in_id'] . '" class="montserrat blog-url">'.echo_in_outcome($in['in_outcome'], false, $common_prefix).'</a>';
+    $ui .= '<span style="font-size: 0.7em; color:#999;" class="montserrat">'.( $has_time_estimate ? strtolower(echo_time_range($in)).' READ ' : '' ).'BY <a href="/play/'.$authors[0]['en_id'].'" class="montserrat">'.$authors[0]['en_name'].'</a></span>';
+    $ui .= '</td>';
 
     //Search for Blog Image:
     $ui .= '<td class="featured-frame">';
