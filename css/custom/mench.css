@@ -112,7 +112,7 @@ li a {
 }
 
 /* FONTS */
-.montserrat, .new-player-input, .algolia-autocomplete {
+.montserrat, .new-player-input, .algolia-autocomplete, .read-topic {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     text-decoration: none;

@@ -1,7 +1,7 @@
 
 <div class="container">
 
-    <div class="read-topic"><span class="icon-block"><i class="fas fa-lightbulb-on"></i></span>HOW IT WORKS</div>
+    <div class="read-topic"><span class="icon-block"><i class="fas fa-lightbulb-on"></i></span>MENCH GLOSSARY</div>
     <div class="alert alert-info">
         <div><b class="montserrat">MENCH</b> is an interactive publishing game that allows anyone to share ideas that matter. Writers use a simple web app to create microblogs, each focused on a key idea. Microblogs link together to communicate bigger ideas, or cite expert sources to gain credibility. Readers use the web or Messenger to interactively read & discover top ideas. Players can customize their avatar, unlock superpowers & earn crypto-coins for each word they read or blog.</div>
         <div style="margin-top:10px;"><i class="fas fa-pen-square"></i> <a href="/blog">Start Blogging</a><span class="top-players"> &nbsp; <i class="fas fa-medal"></i> <a href="javascript:void(0);" onclick="load_leaderboard()">Top Players</a></span></div>
