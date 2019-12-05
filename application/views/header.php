@@ -126,7 +126,7 @@ if(!isset($hide_header) || !$hide_header){
                     <td>
                         <div class="supwerpower_view">
 
-                            <span><span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) || isset($hide_mench) ? ' hidden ' : '' ) ?>"><?= ( count($this->session->userdata('assigned_superpowers_en_ids')) ? 'ME<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');" style="text-decoration: none;">N</a>CH' : '<a href="/" style="text-decoration: none;">MENCH</a>' ) ?></span></span>
+                            <span class="<?= ( isset($hide_mench) ? ' hidden ' : '' ) ?>"><span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><?= ( count($this->session->userdata('assigned_superpowers_en_ids')) ? 'ME<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');" style="text-decoration: none;">N</a>CH' : '<a href="/" style="text-decoration: none;">MENCH</a>' ) ?></span></span>
 
                             <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
