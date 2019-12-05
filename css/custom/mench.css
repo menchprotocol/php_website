@@ -39,7 +39,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 table td { border: none !important; }
 
 h1 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'escrow', serif;
     font-size: 1.7em;
     margin-top:34px;
     margin-bottom:12px;
@@ -48,7 +48,7 @@ h1 {
 }
 
 h2 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'escrow', serif;
     font-size: 1.4em;
     color:#070707 !important;
     margin-top:34px;
@@ -61,7 +61,7 @@ h4 a{
 }
 
 h4.thin{
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'escrow', serif;
     padding:15px 0 0;
     font-size: 0.7em;
     color:#070707;
@@ -99,21 +99,21 @@ li a {
 #new_blog_title{
     background-color: transparent !important;
     font-size: 1.7em;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'escrow', serif;
     font-weight: bold;
     width: 100%;
     color:#070707;
 }
 
 #new_blog_title::placeholder{
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'escrow', serif;
     font-weight: bold;
     color:#CCCCCC;
 }
 
 /* FONTS */
 .montserrat, .new-player-input, .algolia-autocomplete, .read-topic {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'escrow', serif;
     font-weight: bold;
     text-decoration: none;
 }
@@ -139,7 +139,7 @@ li a {
     display: block;
     padding: .5rem .5rem;
     font-size: 0.8em;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'escrow', serif;
     text-transform: uppercase;
 }
 
@@ -150,7 +150,7 @@ li a {
 }
 
 .btn {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'escrow', serif;
     text-transform: uppercase;
     font-size: 0.8em !important;
     font-weight: 300 !important;
@@ -432,7 +432,7 @@ img.no-radius {
     display: block;
     padding: .4rem 0.7rem;
     font-size: 0.8em;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'escrow', serif;
     margin-right: 6px;
 }
 
