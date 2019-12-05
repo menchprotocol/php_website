@@ -302,7 +302,7 @@ img.no-radius {
     display: block;
 }
 .featured-image img{
-    height: 100%;
+    width: 100%;
 }
 .grey-box {
     padding:0;
@@ -822,7 +822,10 @@ label {
 .inputfile + label * {
     pointer-events: none;
 }
-
+.blolg-url{
+    margin: 0 5px 10px;
+    display: block;
+}
 
 
 
@@ -854,4 +857,6 @@ label {
     }
     .icon-block-xlg{ min-width:48px; }
     .list-group-item { padding:2px 0; }
+    .featured-frame{ width:75px; }
+    .featured-image { width:75px; height:75px; }
 }
