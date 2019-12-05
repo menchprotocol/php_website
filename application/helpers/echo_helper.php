@@ -2196,14 +2196,14 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 function echo_rank($integer){
     if($integer==1){
-        return $integer.' 🏅';
+        return ' 🏅';
     } elseif($integer==2){
         return ' 🥈';
     } elseif($integer==3){
         return ' 🥉';
     } else {
         //return echo_ordinal_number($integer);
-        return $integer;
+        return null;
     }
 }
 
