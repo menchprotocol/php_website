@@ -2410,7 +2410,7 @@ function echo_dropdown($cache_en_id, $selected_en_id = 0, $micro = false, $btn_c
     if($micro){
         $ui .= ( $selected_en_id > 0 ? $en_all_this[$selected_en_id]['m_icon'] : '' );
     } else {
-        $ui .= ( $selected_en_id > 0 ? $en_all_this[$selected_en_id]['m_icon'].' '.$en_all_this[$selected_en_id]['m_name'] : 'SELECT' );
+        $ui .= ( $selected_en_id > 0 ? $en_all_this[$selected_en_id]['m_icon'].' &nbsp;'.$en_all_this[$selected_en_id]['m_name'] : 'SELECT' );
     }
     $ui .= '</button>';
     $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
