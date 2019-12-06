@@ -111,6 +111,10 @@ li a {
     font-weight: bold;
 }
 
+.dropdown-item {
+    padding: 5px 1px;
+}
+
 /* FONTS */
 .montserrat, .new-player-input, .algolia-autocomplete, .read-topic {
     font-family: 'Montserrat', sans-serif;

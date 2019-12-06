@@ -2408,9 +2408,9 @@ function echo_dropdown($cache_en_id, $selected_en_id = 0, $micro = false, $btn_c
     $ui = '<div class="dropdown inline-block">';
     $ui .= '<button  class="btn btn-sm '.$btn_class.' dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
     if($micro){
-        $ui .= ( $selected_en_id > 0 ? $en_all_this[$selected_en_id]['m_icon'] : '' );
+        $ui .= ( $selected_en_id > 0 ? '<span class="icon-block">'.$en_all_this[$selected_en_id]['m_icon'].'</span>' : '' );
     } else {
-        $ui .= ( $selected_en_id > 0 ? $en_all_this[$selected_en_id]['m_icon'].' '.$en_all_this[$selected_en_id]['m_name'] : 'SELECT' );
+        $ui .= ( $selected_en_id > 0 ? '<span class="icon-block">'.$en_all_this[$selected_en_id]['m_icon'].'</span>'.$en_all_this[$selected_en_id]['m_name'] : 'SELECT' );
     }
     $ui .= '</button>';
     $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
