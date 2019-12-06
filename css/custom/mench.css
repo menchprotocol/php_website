@@ -112,7 +112,7 @@ li a {
 }
 
 .dropdown-item {
-    padding: 5px 1px;
+    padding: 5px 10px 5px 1px;
 }
 
 /* FONTS */
@@ -492,7 +492,7 @@ textarea.note-textarea{
 
 .note-edit>span{
     display: block;
-    padding:3px 0;
+    padding:3px 0 0;
 }
 
 /* ROTATIONS */

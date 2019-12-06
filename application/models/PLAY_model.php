@@ -730,6 +730,15 @@ class PLAY_model extends CI_Model
                         'ln_content' => $url,
                     ));
 
+                    //And to the player who added it:
+                    $this->READ_model->ln_create(array(
+                        'ln_creator_entity_id' => $ln_creator_entity_id,
+                        'ln_status_entity_id' => 6176, //Link Published
+                        'ln_type_entity_id' => 4230, //RAW
+                        'ln_parent_entity_id' => $ln_creator_entity_id,
+                        'ln_child_entity_id' => $en_url['en_id'],
+                    ));
+
                 } else {
                     //Log error:
                     $this->READ_model->ln_create(array(
