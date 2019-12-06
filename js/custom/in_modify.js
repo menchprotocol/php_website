@@ -26,7 +26,14 @@ $(document).ready(function () {
         if (event.keyCode == 13) {
             event.preventDefault();
         }
+    }).onfocus(function(event) {
+        //Clear default title
+        if ($('#new_blog_title').val() == 'Blog Title') {
+            $('#new_blog_title').val('');
+        }
     });
+
+
 
 
     //Lookout for intent link type changes:
@@ -38,7 +45,7 @@ $(document).ready(function () {
 
 function show_save_button(){
     //Detect changes in blog title to show the save button:
-    if($('#new_blog_title').val() == $('#current_blog_title').val()){
+    if($('#new_blog_title').val() == $('#current_blog_title').val() || $('#new_blog_title').val().length < 1){
         //Nothing changed, so nothing to save:
         $('#blog_title_save').addClass('hidden');
     } else {
