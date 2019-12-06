@@ -1878,7 +1878,7 @@ fragment PostListingItemSidebar_post on Post {
                 }
 
                 //Add contributor with its URL:
-                $sync_contributor = $this->PLAY_model->en_sync_url($_POST['ref_url_' . $contributor_num], $session_en['en_id'], array(), 0, $_POST['contributor_' . $contributor_num]);
+                $sync_contributor = $this->PLAY_model->en_sync_url($_POST['ref_url_' . $contributor_num], $session_en['en_id'], array($session_en['en_id']), 0, $_POST['contributor_' . $contributor_num]);
 
 
                 //Add contributor to People or Organizations entity:
@@ -1928,7 +1928,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
         //Save URL & domain:
-        $url_entity = $this->PLAY_model->en_sync_url($_POST['source_url'], $session_en['en_id'], array(), 0, $_POST['en_name']);
+        $url_entity = $this->PLAY_model->en_sync_url($_POST['source_url'], $session_en['en_id'], array($session_en['en_id']), 0, $_POST['en_name']);
         if (!$url_entity['status']) {
             return echo_json($url_entity);
         }

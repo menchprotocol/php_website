@@ -3088,7 +3088,7 @@ class READ_model extends CI_Model
 
             //BUGGY
             //No entity linked, but we have a URL that we should turn into an entity if not already:
-            $url_entity = $this->PLAY_model->en_sync_url($string_references['ref_urls'][0], ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ));
+            $url_entity = $this->PLAY_model->en_sync_url($string_references['ref_urls'][0], ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ), ( isset($recipient_en['en_id']) ? array($recipient_en['en_id']) : array() ));
 
             //Did we have an error?
             if (!$url_entity['status'] || !isset($url_entity['en_url']['en_id']) || intval($url_entity['en_url']['en_id']) < 1) {
