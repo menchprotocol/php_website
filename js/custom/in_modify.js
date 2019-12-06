@@ -30,6 +30,7 @@ $(document).ready(function () {
         //Clear default title
         if ($('#new_blog_title').val() == 'Blog Title') {
             $('#new_blog_title').val('');
+            $('#blog_title_save').addClass('hidden');
         }
     });
 
