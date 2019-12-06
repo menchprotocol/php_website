@@ -206,7 +206,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<td class="remove_loading" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'/firstname \');" data-toggle="tooltip" title="Mention readers first name" data-placement="top"><span class="icon-block en-icon"><i class="far fa-fingerprint"></i></span></a></td>';
 
             //Reference Player
-            $this_tab .= '<td class="remove_loading" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Reference players or content" data-placement="top"><span class="icon-block en-icon"><i class="far fa-at"></i></span></a></td>';
+            $this_tab .= '<td class="remove_loading" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Reference PLAYER" data-placement="top"><span class="icon-block en-icon"><i class="far fa-at"></i></span></a></td>';
 
             //Upload File:
             $this_tab .= '<td class="remove_loading" style="width:25px; padding: 10px 0 0 0;">';
