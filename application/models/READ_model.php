@@ -3342,7 +3342,7 @@ class READ_model extends CI_Model
                 } else {
 
                     //Show entity link with status:
-                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_entity_id']]['m_icon'].'</span><a href="/play/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name']  . '</a>', $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], '<span class="'.superpower_active(10983).'"><span class="icon-block">'.$en_all_6177[$ens[0]['en_status_entity_id']]['m_icon'].'</span><a href="/play/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name']  . '</a></span>', $output_body_message);
 
                 }
 
