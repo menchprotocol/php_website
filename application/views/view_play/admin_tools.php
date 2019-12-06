@@ -502,7 +502,7 @@ if(!$action) {
 
 
     $search_for_is_set = (isset($_GET['search_for']) && strlen($_GET['search_for'])>0);
-    $replace_with_is_set = (isset($_GET['replace_with']) && strlen($_GET['replace_with'])>0);
+    $replace_with_is_set = ((isset($_GET['replace_with']) && strlen($_GET['replace_with'])>0) || (isset($_GET['append_text']) && strlen($_GET['append_text'])>0));
     $qualifying_replacements = 0;
     $completed_replacements = 0;
     $replace_with_is_confirmed = false;
@@ -545,7 +545,8 @@ if(!$action) {
 
                 if($replace_with_is_set){
                     //Do replacement:
-                    $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']);
+                    $append_text = @$_GET['append_text'];
+                    $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']).$append_text;
                     $in_outcome_validation = $this->BLOG_model->in_outcome_validate($new_outcome);
 
                     if($in_outcome_validation['status']){
@@ -602,6 +603,10 @@ if(!$action) {
         //now give option to replace with:
         echo '<div class="mini-header">Replace With:</div>';
         echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
+
+        //now give option to replace with:
+        echo '<div class="mini-header">Append Text:</div>';
+        echo '<input type="text" class="form-control border maxout" name="append_text" value="'.@$_GET['append_text'].'"><br />';
     }
 
     if($replace_with_is_set && !$completed_replacements){
