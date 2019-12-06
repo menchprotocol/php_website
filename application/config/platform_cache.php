@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-05 20:14:10 PST
+//Generated 2019-12-05 20:55:10 PST
 
 //ABOUT MENCH:
 $config['en_ids_12066'] = array();
@@ -5597,8 +5597,8 @@ $config['en_all_6192'] = array(
         'm_parents' => array(7582,7751,7585,6144,6192),
     ),
     6914 => array(
-        'm_icon' => '<i class="fas fa-cubes "></i>',
-        'm_name' => 'MEET ALL REQUIREMENTS',
+        'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ALL',
         'm_desc' => '',
         'm_parents' => array(7582,10984,6192,7756,7585,7486,7485,7309,6997),
     ),
@@ -5856,25 +5856,25 @@ $config['en_all_7758'] = array(
 );
 
 //BLOG AUTO COMPLETABLE:
-$config['en_ids_7756'] = array(6914,6907,6677);
+$config['en_ids_7756'] = array(6677,6914,6907);
 $config['en_all_7756'] = array(
-    6914 => array(
-        'm_icon' => '<i class="fas fa-cubes "></i>',
-        'm_name' => 'MEET ALL REQUIREMENTS',
-        'm_desc' => '',
-        'm_parents' => array(7582,10984,6192,7756,7585,7486,7485,7309,6997),
-    ),
-    6907 => array(
-        'm_icon' => '<i class="fas fa-cube "></i>',
-        'm_name' => 'MEET ONE REQUIREMENT',
-        'm_desc' => '',
-        'm_parents' => array(10984,7756,7585,7486,7485,7309,6997,6193),
-    ),
     6677 => array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
         'm_desc' => '',
         'm_parents' => array(7756,7585,4559,6192),
+    ),
+    6914 => array(
+        'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ALL',
+        'm_desc' => '',
+        'm_parents' => array(7582,10984,6192,7756,7585,7486,7485,7309,6997),
+    ),
+    6907 => array(
+        'm_icon' => '<i class="fas fa-cube " aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ONE',
+        'm_desc' => '',
+        'm_parents' => array(10984,7756,7585,7486,7485,7309,6997,6193),
     ),
 );
 
@@ -6487,8 +6487,8 @@ $config['en_all_6193'] = array(
         'm_parents' => array(10984,7712,7489,7588,7585,6193),
     ),
     6907 => array(
-        'm_icon' => '<i class="fas fa-cube "></i>',
-        'm_name' => 'MEET ONE REQUIREMENT',
+        'm_icon' => '<i class="fas fa-cube " aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ONE',
         'm_desc' => '',
         'm_parents' => array(10984,7756,7585,7486,7485,7309,6997,6193),
     ),
@@ -6534,21 +6534,21 @@ $config['en_all_7585'] = array(
         'm_parents' => array(10984,7712,7489,7588,7585,6193),
     ),
     6907 => array(
-        'm_icon' => '<i class="fas fa-cube "></i>',
-        'm_name' => 'MEET ONE REQUIREMENT',
+        'm_icon' => '<i class="fas fa-cube " aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ONE',
         'm_desc' => 'User will complete by (a) choosing intent as their answer or by (b) completing any child intent',
         'm_parents' => array(10984,7756,7585,7486,7485,7309,6997,6193),
     ),
     6914 => array(
-        'm_icon' => '<i class="fas fa-cubes "></i>',
-        'm_name' => 'MEET ALL REQUIREMENTS',
+        'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ALL',
         'm_desc' => 'User will complete by (a) choosing intent as their answer or by (b) completing all child intents',
         'm_parents' => array(7582,10984,6192,7756,7585,7486,7485,7309,6997),
     ),
 );
 
 //READ LOGIN REQUIRED:
-$config['en_ids_7582'] = array(7637,6914,6683,12044);
+$config['en_ids_7582'] = array(7637,6683,6914,12044);
 $config['en_all_7582'] = array(
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
@@ -6556,17 +6556,17 @@ $config['en_all_7582'] = array(
         'm_desc' => '',
         'm_parents' => array(7582,7751,7585,6144,6192),
     ),
-    6914 => array(
-        'm_icon' => '<i class="fas fa-cubes "></i>',
-        'm_name' => 'MEET ALL REQUIREMENTS',
-        'm_desc' => '',
-        'm_parents' => array(7582,10984,6192,7756,7585,7486,7485,7309,6997),
-    ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard "></i>',
         'm_name' => 'REPLY & NEXT',
         'm_desc' => '',
         'm_parents' => array(7582,7585,6144,6192),
+    ),
+    6914 => array(
+        'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ALL',
+        'm_desc' => '',
+        'm_parents' => array(7582,10984,6192,7756,7585,7486,7485,7309,6997),
     ),
     12044 => array(
         'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
@@ -6672,14 +6672,14 @@ $config['en_all_7494'] = array(
 $config['en_ids_7309'] = array(6914,6907);
 $config['en_all_7309'] = array(
     6914 => array(
-        'm_icon' => '<i class="fas fa-cubes "></i>',
-        'm_name' => 'ALL REQUIREMENTS',
+        'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
+        'm_name' => 'ALL',
         'm_desc' => '',
         'm_parents' => array(7582,10984,6192,7756,7585,7486,7485,7309,6997),
     ),
     6907 => array(
-        'm_icon' => '<i class="fas fa-cube "></i>',
-        'm_name' => 'ONE REQUIREMENT',
+        'm_icon' => '<i class="fas fa-cube " aria-hidden="true"></i>',
+        'm_name' => 'ONE',
         'm_desc' => '',
         'm_parents' => array(10984,7756,7585,7486,7485,7309,6997,6193),
     ),
