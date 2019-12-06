@@ -647,6 +647,8 @@ textarea.note-textarea{
     border-radius: 0 !important;
     padding:7px 0;
     margin: 0 1px;
+    overflow: hidden;
+    width: 100%;
 }
 
 label {
