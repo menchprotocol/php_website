@@ -246,7 +246,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         echo '<div class="col-lg-12">';
 
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
-        echo '<ul class="nav nav-tabs nav-tabs-sm menu_bar">';
+        echo '<ul class="nav nav-tabs nav-tabs-sm">';
 
         foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
 

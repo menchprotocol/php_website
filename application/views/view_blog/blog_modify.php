@@ -39,7 +39,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '<div>';
             echo '<div class="inline-block">'.echo_dropdown(4737, $in['in_status_entity_id'], false, 'btn-blog').'</div>';
             echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="alert(\'Under Dev.\')" class="btn btn-sm btn-blog"><i class="far fa-bookmark"></i></a></div>';
-            echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-blog"><i class="fas fa-cog"></i></a></div>';
         echo '</div>';
 
         echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'">'.$in['in_outcome'].'</textarea>';
@@ -51,8 +50,14 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         echo '<div class="center-right">';
             echo '<div class="inline-block">'.echo_dropdown(7585, $in['in_completion_method_entity_id'], false, 'btn-blog').'</div>';
+            echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-blog"><i class="fas fa-cog"></i></a></div>';
         echo '</div>';
 
+    }
+
+    if(count($this->config->item('en_ids_'.$en_id)) <= 1){
+        //Nothing else to show:
+        continue;
     }
 
     echo '<ul class="nav nav-tabs nav-tabs-sm menu_bar hidden">';

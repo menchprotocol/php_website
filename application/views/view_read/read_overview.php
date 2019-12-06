@@ -7,7 +7,7 @@
         <div><b class="montserrat"><?= $en_all_4463[2738]['m_name'] ?></b> <?= $en_all_4463[2738]['m_desc'] ?></div>
     </div>
 
-    <div class="top-players"><span class="icon-block"><i class="fas fa-medal"></i></span><a href="javascript:void(0);" onclick="load_leaderboard()" class="montserrat">LIST TOP PLAYERS</a></div>
+    <div class="top-players"><span class="icon-block"><i class="fas fa-medal"></i></span><a href="javascript:void(0);" onclick="load_leaderboard()" class="montserrat">TOP PLAYERS</a></div>
     <div id="load_top_players"></div>
 
     <?php
