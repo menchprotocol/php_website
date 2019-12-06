@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-05 15:54:34 PST
+//Generated 2019-12-05 16:16:35 PST
 
 //GETTING STARTED:
 $config['en_ids_12066'] = array();
@@ -2679,14 +2679,8 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(4269,7291,6225,6287,7256,7540);
+$config['en_ids_11035'] = array(7291,6225,6287,7256,4269,7540);
 $config['en_all_11035'] = array(
-    4269 => array(
-        'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
-        'm_name' => 'LOGIN',
-        'm_desc' => '',
-        'm_parents' => array(11035),
-    ),
     7291 => array(
         'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
         'm_name' => 'LOGOUT',
@@ -2710,6 +2704,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'SEARCH MENCH',
         'm_desc' => '',
         'm_parents' => array(11993,11035,3323),
+    ),
+    4269 => array(
+        'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
+        'm_name' => 'SIGN IN OR SIGN UP',
+        'm_desc' => '',
+        'm_parents' => array(11035),
     ),
     7540 => array(
         'm_icon' => '<i class="fas fa-university" aria-hidden="true"></i>',
