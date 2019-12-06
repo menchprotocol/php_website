@@ -103,6 +103,7 @@ li a {
     font-weight: bold;
     width: 100%;
     color:#070707;
+    padding:5px 0 0;
 }
 
 #new_blog_title::placeholder{
