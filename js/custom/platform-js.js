@@ -31,7 +31,7 @@ function js_ln_create(new_ln_data){
 function load_leaderboard(){
 
     //Show loading icon:
-    $('#load_top_players').html('<p><i class="far fa-yin-yang fa-spin blue"></i> <b class="montserrat blue">LOADING...</b></p>');
+    $('#load_top_players').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">LOADING...</b></div>');
     $('.top-players').addClass('hidden');
 
     $.post("/play/load_leaderboard/", { }, function (data) {
