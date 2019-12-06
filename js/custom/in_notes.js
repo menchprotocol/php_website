@@ -364,6 +364,7 @@ function in_message_form_unlock(result, focus_ln_type_entity_id) {
     $('.add_note_' + focus_ln_type_entity_id).removeClass('is-working');
     $("#ln_content" + focus_ln_type_entity_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
+    $( '#notes_control_'+focus_ln_type_entity_id ).addClass('hidden');
 
     //What was the result?
     if (result.status) {
