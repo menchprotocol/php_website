@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-05 16:57:20 PST
+//Generated 2019-12-05 17:09:23 PST
 
 //ABOUT MENCH:
 $config['en_ids_12066'] = array();
@@ -42,7 +42,7 @@ $config['en_all_4463'] = array(
     2738 => array(
         'm_icon' => '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin no-radius">',
         'm_name' => 'MENCH',
-        'm_desc' => 'is an interactive publishing platform that allows anyone to discover & share ideas that matter. Write microblogs that focus on a single idea & link them together to form bigger ideas. Read interactively on the web or Messenger, set your avatar & earn crypto coins for every word you read or write.',
+        'm_desc' => 'is an interactive publishing platform that allows anyone to discover & share ideas that matter. Write microblogs each focused on a single idea & link them together to form bigger ideas. Read interactively on the web or Messenger, set your avatar & earn crypto coins for each word you read or write.',
         'm_parents' => array(4463,12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
     ),
     4536 => array(
