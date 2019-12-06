@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-05 16:16:35 PST
+//Generated 2019-12-05 16:19:36 PST
 
 //GETTING STARTED:
 $config['en_ids_12066'] = array();
@@ -2707,7 +2707,7 @@ $config['en_all_11035'] = array(
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
-        'm_name' => 'SIGN IN OR SIGN UP',
+        'm_name' => 'SIGN IN/UP',
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
