@@ -38,7 +38,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         echo '<div>';
             echo '<div class="inline-block">'.echo_dropdown(4737, $in['in_status_entity_id'], false, 'btn-blog').'</div>';
-            echo '<div class="inline-block" style="margin-left: 5px;"><a href="/'.$in['in_id'].'" class="btn btn-sm btn-read">VIEW AS READER &nbsp;<i class="fas fa-arrow-right"></i></a></div>';
+            echo '<div class="inline-block" style="margin-left: 5px;"><a href="/'.$in['in_id'].'" class="btn btn-sm btn-read">VIEW AS READER <i class="fas fa-arrow-right"></i></a></div>';
         echo '</div>';
 
         echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'">'.$in['in_outcome'].'</textarea>';
