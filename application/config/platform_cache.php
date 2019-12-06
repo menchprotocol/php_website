@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-06 12:04:13 PST
+//Generated 2019-12-06 12:05:43 PST
 
 //BLOG MODIFY:
 $config['en_ids_12079'] = array(10573,7585,4485,4737);
@@ -2047,7 +2047,7 @@ $config['en_all_11033'] = array(
         'm_icon' => '<i class="fas fa-play ispink" aria-hidden="true"></i>',
         'm_name' => 'READ STARTS',
         'm_desc' => '',
-        'm_parents' => array(11033,10964,10990,6771,4527),
+        'm_parents' => array(11033,10964,6771,4527),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-bookmark yellow" aria-hidden="true"></i>',
@@ -2816,7 +2816,7 @@ $config['en_all_11018'] = array(
 $config['en_ids_11021'] = array(10990,11018);
 $config['en_all_11021'] = array(
     10990 => array(
-        'm_icon' => '<i class="fas fa-toolbox yellow"></i>',
+        'm_icon' => '<i class="fas fa-toolbox yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG MANAGEMENT',
         'm_desc' => '',
         'm_parents' => array(11021,4527),
@@ -2830,19 +2830,13 @@ $config['en_all_11021'] = array(
 );
 
 //BLOG MANAGEMENT:
-$config['en_ids_10990'] = array(4231,7347,6146,7545,11047);
+$config['en_ids_10990'] = array(4231,6146,7545,11047);
 $config['en_all_10990'] = array(
     4231 => array(
         'm_icon' => '<i class="fas fa-comment yellow"></i>',
         'm_name' => 'BLOG MESSAGES',
         'm_desc' => 'READ over web or Messenger',
         'm_parents' => array(12004,11033,10990,10593,10589,7703,6345,4986,4603,4593,4485),
-    ),
-    7347 => array(
-        'm_icon' => '<i class="fas fa-play ispink" aria-hidden="true"></i>',
-        'm_name' => 'READ STARTS',
-        'm_desc' => 'READERS who bookmarked this BLOG.',
-        'm_parents' => array(11033,10964,10990,6771,4527),
     ),
     6146 => array(
         'm_icon' => '<i class="fas fa-shoe-prints rotate270 ispink" aria-hidden="true"></i>',
@@ -3146,7 +3140,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,4536),
     ),
     10990 => array(
-        'm_icon' => '<i class="fas fa-toolbox yellow"></i>',
+        'm_icon' => '<i class="fas fa-toolbox yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG MANAGEMENT',
         'm_desc' => '',
         'm_parents' => array(11021,4527),
@@ -3689,7 +3683,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-play ispink" aria-hidden="true"></i>',
         'm_name' => 'READ STARTS',
         'm_desc' => '',
-        'm_parents' => array(11033,10964,10990,6771,4527),
+        'm_parents' => array(11033,10964,6771,4527),
     ),
     10593 => array(
         'm_icon' => '<i class="fas fa-union ispink"></i>',
