@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-06 12:36:57 PST
+//Generated 2019-12-06 15:13:50 PST
 
 //BLOG MODIFY:
 $config['en_ids_12079'] = array(10573,7585,4485,4737);
@@ -71,7 +71,7 @@ $config['en_all_4463'] = array(
     2738 => array(
         'm_icon' => '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin no-radius">',
         'm_name' => 'MENCH',
-        'm_desc' => 'is an interactive publishing platform that allows anyone to discover & share ideas that matter. Write microblogs each focused on a single idea & link them together to form bigger ideas. Read interactively on the web or Messenger, set your avatar & earn crypto coins for each word you read or write.',
+        'm_desc' => 'is a game that connects 🔵PLAYERS and 🟡IDEAS. 🔵PLAYERS either 🔴READ or 🟡WRITE microblogs that each focus on a single 🟡IDEA, yet when linked together can form bigger 🟡IDEAS. 🔴READ interactively using the web or Messenger. Earn 1x 🔴COIN for each word you 🔴READ, and 1x 🟡COIN for each word you 🟡WRITE.',
         'm_parents' => array(4463,12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
     ),
     4536 => array(
@@ -2538,7 +2538,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.014699',
+        'm_desc' => '1.0146',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -2772,36 +2772,18 @@ $config['en_all_11028'] = array(
 );
 
 //BLOG 2ND GROUP:
-$config['en_ids_11018'] = array(11047,7545,6146,11020,11019,4601,4983,10573,11161);
+$config['en_ids_11018'] = array(11019,11020,4601,4983,10573,11161,6146,7545,11047);
 $config['en_all_11018'] = array(
-    11047 => array(
-        'm_icon' => '<i class="fas fa-caret-down"></i>',
-        'm_name' => 'BLOG ADMIN MENU',
-        'm_desc' => '',
-        'm_parents' => array(11018,10984,4527,11040),
-    ),
-    7545 => array(
-        'm_icon' => '<i class="fas fa-user-tag blue" aria-hidden="true"></i>',
-        'm_name' => 'BLOG PLAYER TAGS',
-        'm_desc' => '',
-        'm_parents' => array(11018,12004,11089,10967,10594,10589,7703,7551,4593,4485),
-    ),
-    6146 => array(
-        'm_icon' => '<i class="fas fa-shoe-prints rotate270 ispink" aria-hidden="true"></i>',
-        'm_name' => 'READ STEPS',
-        'm_desc' => '',
-        'm_parents' => array(11018,11033,10964,6771,4527),
+    11019 => array(
+        'm_icon' => '<i class="fas fa-fast-backward yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOG PREVIOUS',
+        'm_desc' => 'BLOGS that recommended this blog once READ',
+        'm_parents' => array(11018),
     ),
     11020 => array(
         'm_icon' => '<i class="fas fa-fast-forward yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG NEXT',
         'm_desc' => 'BLOGS to READ after this BLOG',
-        'm_parents' => array(11018),
-    ),
-    11019 => array(
-        'm_icon' => '<i class="fas fa-fast-backward yellow" aria-hidden="true"></i>',
-        'm_name' => 'BLOG PREVIOUS',
-        'm_desc' => 'BLOGS that recommended this blog once READ',
         'm_parents' => array(11018),
     ),
     4601 => array(
@@ -2827,6 +2809,24 @@ $config['en_all_11018'] = array(
         'm_name' => 'BLOG MASS UPDATE',
         'm_desc' => '',
         'm_parents' => array(10984,11018,11160),
+    ),
+    6146 => array(
+        'm_icon' => '<i class="fas fa-shoe-prints rotate270 ispink" aria-hidden="true"></i>',
+        'm_name' => 'READ STEPS',
+        'm_desc' => '',
+        'm_parents' => array(11018,11033,10964,6771,4527),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-user-tag blue" aria-hidden="true"></i>',
+        'm_name' => 'BLOG PLAYER TAGS',
+        'm_desc' => '',
+        'm_parents' => array(11018,12004,11089,10967,10594,10589,7703,7551,4593,4485),
+    ),
+    11047 => array(
+        'm_icon' => '<i class="fas fa-caret-down"></i>',
+        'm_name' => 'BLOG ADMIN MENU',
+        'm_desc' => '',
+        'm_parents' => array(11018,10984,4527,11040),
     ),
 );
 
