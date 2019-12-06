@@ -255,6 +255,15 @@ img.no-radius {
     width: 100% !important;
 }
 
+.content-image{
+    max-width:100%;
+    max-height:500px;
+}
+
+.edit-off .content-image{
+    max-height:250px;
+}
+
 .aa-dropdown-menu .aa-suggestion, .suggestion {
     background-color: #FFFFFF;
     border:1px solid #f4f5f7;
@@ -866,4 +875,5 @@ label {
     .list-group-item { padding:0; }
     .featured-frame{ width:75px; }
     .featured-image { width:75px; height:75px; }
+    .content-image{ max-height:300px; }
 }
