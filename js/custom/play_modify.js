@@ -173,6 +173,8 @@ $(document).ready(function () {
 
 function en_load_search(focus_element, is_en_parent, shortcut) {
 
+    load_js_algolia();
+
     $(focus_element + ' .new-player-input').focus(function() {
         $(focus_element + ' .algolia_search_pad' ).removeClass('hidden');
     }).focusout(function() {
