@@ -61,7 +61,7 @@ function echo_url_type($url, $en_type_link_id)
      * */
     if ($en_type_link_id == 4256 /* Generic URL */) {
 
-        return '<a href="' . $url . '" target="_blank"><span class="url_truncate">' . echo_url_clean($url) . '<i class="fas fa-external-link" style="font-size: 0.7em; padding-left:3px;"></i></span></a>';
+        return '<a href="' . $url . '" target="_blank"><span class="url_truncate">' . echo_url_clean($url) . '</span></a>';
 
     } elseif ($en_type_link_id == 4257 /* Embed Widget URL? */) {
 
