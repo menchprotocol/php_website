@@ -26,7 +26,7 @@ $(document).ready(function () {
         if (event.keyCode == 13) {
             event.preventDefault();
         }
-    }).onfocus(function(event) {
+    }).focus(function() {
         //Clear default title
         if ($('#new_blog_title').val() == 'Blog Title') {
             $('#new_blog_title').val('');
