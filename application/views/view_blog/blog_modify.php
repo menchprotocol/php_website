@@ -1,4 +1,6 @@
 
+<?php $en_all_6201 = $this->config->item('en_all_6201'); //Intent Table ?>
+
 <style>
     .in_child_icon_<?= $in['in_id'] ?> { display:none; }
 </style>
@@ -8,8 +10,6 @@
     //Include some cached entities:
     var show_counter_threshold = 0.80;
     var in_loaded_id = <?= $in['in_id'] ?>;
-    var js_en_all_4486 = <?= json_encode($this->config->item('en_all_4486')) ?>; // Intent Links
-    var js_en_all_7585 = <?= json_encode($this->config->item('en_all_7585')) ?>; // Intent Subtypes
 </script>
 <script src="/js/custom/in_notes.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 <script src="/js/custom/in_modify.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
@@ -42,7 +42,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-blog"><i class="fas fa-cog"></i></a></div>';
         echo '</div>';
 
-        echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="Blog Title">'.$in['in_outcome'].'</textarea>';
+        echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'">'.$in['in_outcome'].'</textarea>';
         echo '<input type="hidden" id="current_blog_title" value="'.$in['in_outcome'].'" />';
 
         echo '<div id="blog_title_save" class="hidden"><a href="javascript:in_save_title();" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="right" class="btn btn-blog">SAVE</a></div>';
