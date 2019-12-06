@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-05 16:19:36 PST
+//Generated 2019-12-05 16:32:43 PST
 
 //GETTING STARTED:
 $config['en_ids_12066'] = array();
@@ -42,7 +42,7 @@ $config['en_all_4463'] = array(
     2738 => array(
         'm_icon' => '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin no-radius">',
         'm_name' => 'MENCH',
-        'm_desc' => 'is an interactive publishing platform that allows anyone to share ideas that matter. Earn crypto coins for every word you read or write. Write microblogs that each focus on a key idea but can be linked to form bigger ideas. Read interactively on the web or Messenger, set your avatar & unlock superpowers as you grow.',
+        'm_desc' => 'an interactive publishing platform that allows anyone to share ideas that matter. Earn crypto coins for every word you read or write. Write microblogs that focus on a single idea but when linked together can form bigger ideas. Read interactively on the web or Messenger, set your avatar & unlock superpowers as you grow.',
         'm_parents' => array(4463,12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
     ),
     4536 => array(
@@ -2526,7 +2526,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.01461',
+        'm_desc' => '1.0146',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -6608,7 +6608,7 @@ $config['en_all_7555'] = array(
         'm_parents' => array(6225,7555,4426,4755),
     ),
     6196 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger isblue"></i>',
+        'm_icon' => '<i class="fab fa-facebook-messenger" aria-hidden="true"></i>',
         'm_name' => 'MESSENGER',
         'm_desc' => 'Establish a consistent connection with Mench on Messenger and get everything done in one place. (RECOMMENDED)',
         'm_parents' => array(4426,7555,3320),
@@ -7540,7 +7540,7 @@ $config['en_all_4426'] = array(
         'm_parents' => array(10967,11089,4758,4506,4426,4527),
     ),
     6196 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger isblue"></i>',
+        'm_icon' => '<i class="fab fa-facebook-messenger" aria-hidden="true"></i>',
         'm_name' => 'PLAYER MESSENGER',
         'm_desc' => '',
         'm_parents' => array(4426,7555,3320),
