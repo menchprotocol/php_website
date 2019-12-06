@@ -125,6 +125,8 @@ $(document).ready(function () {
         //Watch for focus:
         $(this).focus(function() {
             $( '#notes_control_'+focus_ln_type_entity_id ).removeClass('hidden');
+        }).keyup(function() {
+            $( '#notes_control_'+focus_ln_type_entity_id ).removeClass('hidden');
         });
 
         autosize($(this));
