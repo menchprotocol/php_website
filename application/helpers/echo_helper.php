@@ -2156,6 +2156,9 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 
 
+    //UNLINK
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-blog" href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-trash"></i></a></div>';
+
 
     //Count children:
     $child_links = $CI->READ_model->ln_fetch(array(
@@ -2166,8 +2169,11 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as in__child_count');
     $tree_count_range = $child_links[0]['in__child_count'];
 
+
+
     //FOLLOW
     $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-blog" href="/blog/' . $in['in_id'] . '">'.($tree_count_range > 0 ? '<span class="btn-counter">' . $tree_count_range . '</span> ' : '').'<i class="fas fa-angle-right"></i></a></div>';
+
 
 
 
