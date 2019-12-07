@@ -250,9 +250,18 @@ function in_modify_load(in_id, ln_id) {
 }
 
 function in_unlink(in_id, ln_id){
-    var r = confirm("Remove the link to ["+$('.in_outcome_'+in_id).text()+"]?");
+    var r = confirm("Unlink ["+$('.in_outcome_'+in_id).text()+"]?");
     if (r == true) {
-        in_ui_remove(in_id,ln_id);
+
+        //Fetch Intent Data to load modify widget:
+        $.post("/blog/in_unlink", {
+            in_id: in_id,
+            ln_id: ln_id,
+        }, function (data) {
+            if (data.status) {
+                in_ui_remove(in_id,ln_id);
+            }
+        });
     }
 }
 

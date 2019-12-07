@@ -210,6 +210,39 @@ class Blog extends CI_Controller {
 
     }
 
+    function in_unlink(){
+
+        //Authenticate Trainer:
+        $session_en = superpower_assigned();
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Expired Session or Missing Superpower',
+            ));
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Intent ID',
+            ));
+        } elseif (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Link ID',
+            ));
+        }
+
+        //Remove this link:
+        $this->READ_model->ln_update($_POST['ln_id'], array(
+            'ln_status_entity_id' => 6173, //Link Removed
+        ), $session_en['en_id'], 10686 /* Intent Link Unlinked */);
+
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Success',
+        ));
+
+    }
+
 
     function in_link_or_create()
     {
