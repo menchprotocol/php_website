@@ -19,7 +19,6 @@ $can_train = ( in_can_train($in['in_id'], $session_en['en_id']) );
 <script src="/js/custom/in_modify.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 <script src="/js/custom/in_train.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
-
 <?php
 
 $en_all_4485 = $this->config->item('en_all_4485'); //Intent Notes

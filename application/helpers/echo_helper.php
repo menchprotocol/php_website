@@ -1828,7 +1828,7 @@ function echo_in_marks($in_ln){
     $ln_metadata = unserialize($in_ln['ln_metadata']);
 
     //Return mark:
-    return ( $in_ln['ln_type_entity_id'] == 4228 ? ( !isset($ln_metadata['tr__assessment_points']) || $ln_metadata['tr__assessment_points'] == 0 ? '' : '<span style="'.( $ln_metadata['tr__assessment_points']>0 ? 'font-weight:bold;' : ( $ln_metadata['tr__assessment_points'] < 0 ? 'font-weight:bold;' : '' )).'">' . ( $ln_metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $ln_metadata['tr__assessment_points'].'</span>' ) : $ln_metadata['tr__conditional_score_min'] . ( $ln_metadata['tr__conditional_score_min']==$ln_metadata['tr__conditional_score_max'] ? '' : '-'.$ln_metadata['tr__conditional_score_max'] ).'%' );
+    return '['.( $in_ln['ln_type_entity_id'] == 4228 ? ( !isset($ln_metadata['tr__assessment_points']) || $ln_metadata['tr__assessment_points'] == 0 ? '' : '<span style="'.( $ln_metadata['tr__assessment_points']>0 ? 'font-weight:bold;' : ( $ln_metadata['tr__assessment_points'] < 0 ? 'font-weight:bold;' : '' )).'">' . ( $ln_metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $ln_metadata['tr__assessment_points'].'</span>' ) : $ln_metadata['tr__conditional_score_min'] . ( $ln_metadata['tr__conditional_score_min']==$ln_metadata['tr__conditional_score_max'] ? '' : '-'.$ln_metadata['tr__conditional_score_max'] ).'%' ).']';
 
 }
 
@@ -2104,11 +2104,6 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     $ui .= '<span class="icon-block ln_status_entity_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_entity_id']]['m_name'].' @'.$in['ln_status_entity_id'].': '.$en_all_6186[$in['ln_status_entity_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_entity_id']]['m_icon'] . '</span></span>';
 
 
-    //Show Completion Marks based on Intent Link Type:
-    $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>';
-
-
-
     //BLOG TYPE
     $ui .= '<span class="icon-block in_parent_type_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$in['in_completion_method_entity_id']]['m_name'].': '.$en_all_7585[$in['in_completion_method_entity_id']]['m_desc'].'">' . $en_all_7585[$in['in_completion_method_entity_id']]['m_icon'] . '</span></span>';
 
@@ -2116,6 +2111,9 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     //BLOG STATUS
     $ui .= '<span class="icon-block in_status_entity_id_' . $in['in_id'] . ( $is_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span></span>';
 
+
+    //Show Completion Marks based on Intent Link Type:
+    $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>&nbsp;';
 
 
     $ui .= '<b id="title_' . $ln_id . '" class="tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false) . '</b>';
@@ -2174,7 +2172,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
     $tree_count_range = $child_links[0]['in__child_count'];
     if($tree_count_range > 0){
-        $tree_count = '<span class="btn-counter '.superpower_active(10984).' children-counter-' . $in['in_id'] . '">' . $tree_count_range . '</span>';
+        $tree_count = '<span class="btn-counter children-counter-' . $in['in_id'] . '">' . $tree_count_range . '</span>';
     }
 
 

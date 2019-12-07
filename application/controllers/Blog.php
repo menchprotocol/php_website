@@ -191,6 +191,25 @@ class Blog extends CI_Controller {
 
     }
 
+    function in_submit_upvote($in_id){
+
+        //Make sure it's a logged in trainer:
+        $session_en = superpower_assigned(null, true);
+
+        //Log up-vote:
+        $this->READ_model->ln_create(array(
+            'ln_creator_entity_id' => $session_en['en_id'],
+            'ln_parent_entity_id' => $session_en['en_id'],
+            'ln_type_entity_id' => 4983, //Intent Note Up-Votes
+            'ln_content' => '@'.$session_en['en_id'],
+            'ln_child_intent_id' => $in_id,
+        ));
+
+        //Go back to intention:
+        return redirect_message('/blog/'.$in_id, '<div class="alert alert-success" role="alert"><i class="far fa-thumbs-up"></i> SUCCESSFULLY JOINED</div>');
+
+    }
+
 
     function in_link_or_create()
     {
