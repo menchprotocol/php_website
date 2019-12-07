@@ -2110,7 +2110,7 @@ fragment PostListingItemSidebar_post on Post {
         if (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
         } else {
-            $login_url = '/read';
+            $login_url = '/';
         }
 
         return echo_json(array(

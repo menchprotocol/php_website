@@ -55,10 +55,10 @@ class Read extends CI_Controller
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return redirect_message('/read', '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
+            return redirect_message('/', '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         } elseif(!in_array($ins[0]['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */)){
             //Return error:
-            return redirect_message('/read', '<div class="alert alert-danger" role="alert">BLOG is not yet published</div>');
+            return redirect_message('/', '<div class="alert alert-danger" role="alert">BLOG is not yet published</div>');
         }
 
         //Fetch/Create landing page view cookie:
@@ -1458,7 +1458,7 @@ class Read extends CI_Controller
                         array(
                             'title' => '🔴 READ',
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/read',
+                            'url' => 'https://mench.com/',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,

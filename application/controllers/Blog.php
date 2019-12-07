@@ -146,7 +146,7 @@ class Blog extends CI_Controller {
     function in_report_conditional_steps(){
 
         //Authenticate Trainer:
-        $session_en = superpower_assigned(10984 /* RUDOLPH */);
+        $session_en = superpower_assigned(10984);
 
         if (!$session_en) {
             return echo_json(array(
@@ -188,27 +188,6 @@ class Blog extends CI_Controller {
             'status' => 1,
             'message' => '<h3>'.$en_all_7585[$ins[0]['in_completion_method_entity_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_entity_id']]['m_icon'].' '.echo_in_outcome($ins[0]['in_outcome'], false).'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_completion_method_entity_id']),
         ));
-
-    }
-
-
-
-    function in_submit_upvote($in_id){
-
-        //Make sure it's a logged in trainer:
-        $session_en = superpower_assigned(null, true);
-
-        //Log up-vote:
-        $this->READ_model->ln_create(array(
-            'ln_creator_entity_id' => $session_en['en_id'],
-            'ln_parent_entity_id' => $session_en['en_id'],
-            'ln_type_entity_id' => 4983, //Intent Note Up-Votes
-            'ln_content' => '@'.$session_en['en_id'],
-            'ln_child_intent_id' => $in_id,
-        ));
-
-        //Go back to intention:
-        return redirect_message('/blog/'.$in_id, '<div class="alert alert-success" role="alert"><i class="far fa-thumbs-up"></i> SUCCESSFULLY JOINED</div>');
 
     }
 

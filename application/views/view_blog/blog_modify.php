@@ -1,5 +1,9 @@
 
-<?php $en_all_6201 = $this->config->item('en_all_6201'); //Intent Table ?>
+<?php
+$en_all_6201 = $this->config->item('en_all_6201'); //Intent Table
+
+$can_train = ( in_can_train($in['in_id'], $session_en['en_id']) );
+?>
 
 <style>
     .in_child_icon_<?= $in['in_id'] ?> { display:none; }
@@ -38,7 +42,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         echo '<div>';
             echo '<div class="inline-block">'.echo_dropdown(4737, $in['in_status_entity_id'], false, 'btn-blog').'</div>';
-            echo '<div class="inline-block" style="margin-left: 5px;"><a href="/'.$in['in_id'].'" class="btn btn-sm btn-read">VIEW AS READER <i class="fas fa-arrow-right"></i></a></div>';
+            echo '<div class="inline-block" style="margin-left: 5px;"><a href="/'.$in['in_id'].'" class="btn btn-sm btn-read">READ <i class="fas fa-arrow-right"></i></a></div>';
         echo '</div>';
 
         echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'">'.$in['in_outcome'].'</textarea>';
@@ -50,7 +54,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         echo '<div class="center-right">';
             echo '<div class="inline-block">'.echo_dropdown(7585, $in['in_completion_method_entity_id'], false, 'btn-blog').'</div>';
-            echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-blog"><i class="fas fa-cog"></i></a></div>';
         echo '</div>';
 
     }
@@ -58,7 +61,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     $show_tab_menu = count($this->config->item('en_ids_'.$en_id)) > 1;
 
     if($show_tab_menu){
-        echo '<ul class="nav nav-tabs nav-tabs-sm menu_bar hidden">';
+        echo '<ul class="nav nav-tabs nav-tabs-sm '.superpower_active(10984).'">';
     }
 
     foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){

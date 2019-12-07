@@ -815,7 +815,7 @@ function echo_random_message($message_key, $return_all = false){
             'Say next to continue',
         ),
         'read_recommendation' => array(
-            'What would you like to read next? Start a sentence with "I want to ..." or:  /link:BROWSE READS:https://mench.com/read',
+            'What would you like to read next? Start a sentence with "I want to ..." or:  /link:BROWSE READS:https://mench.com/',
         ),
 
     );
@@ -1637,6 +1637,7 @@ function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_leve
     $en_all_4737 = $CI->config->item('en_all_4737'); // Intent Statuses
     $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
 
+
     $ui = null;
     foreach($CI->READ_model->ln_fetch(array(
         'ln_parent_intent_id' => $starting_in,
@@ -2071,20 +2072,21 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     $en_all_7585 = $CI->config->item('en_all_7585'); //Intent Subtypes
     $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
 
-    $session_en = superpower_assigned();
-    $in_metadata = unserialize($in['in_metadata']); //Prepare Intent Metadata
-    $can_train = ( in_can_train($in['in_id'], $session_en['en_id']) );
-
-
     //Prep link metadata to be analyzed later:
     $ln_id = $in['ln_id'];
     $ln_metadata = unserialize($in['ln_metadata']);
 
 
+    $session_en = superpower_assigned();
+    $in_metadata = unserialize($in['in_metadata']); //Prepare Intent Metadata
+    $is_published = in_array($in['in_status_entity_id'], $CI->config->item('en_ids_7355'));
+    $is_link_published = in_array($in['ln_status_entity_id'], $CI->config->item('en_ids_7359'));
+
+
+
+
+
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_entity_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_linked_id . '" class="list-group-item blogs_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' intent_line_' . $in['in_id'] . ( $is_parent ? ' parent-intent ' : ' enable-sorting ' ) . ' in__tr_'.$ln_id.'">';
-
-
-
 
 
 
@@ -2096,14 +2098,14 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     $en_all_4486 = $CI->config->item('en_all_4486');
 
     //LINK TYPE
-    $ui .= '<span class="icon-block ln_type_' . $ln_id . superpower_active(10939) . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['ln_type_entity_id']]['m_name'] . ': ' . $en_all_4486[$in['ln_type_entity_id']]['m_desc'] . ' @'.$in['ln_type_entity_id'].'">' . $en_all_4486[$in['ln_type_entity_id']]['m_icon'] . '</span></span>';
+    $ui .= '<span class="icon-block ln_type_' . $ln_id . superpower_active(10984) . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['ln_type_entity_id']]['m_name'] . ': ' . $en_all_4486[$in['ln_type_entity_id']]['m_desc'] . ' @'.$in['ln_type_entity_id'].'">' . $en_all_4486[$in['ln_type_entity_id']]['m_icon'] . '</span></span>';
 
     //LINK STATUS
-    $ui .= '<span class="icon-block ln_status_entity_id_' . $ln_id . ( in_array($in['ln_status_entity_id'], $CI->config->item('en_ids_7359')) ? superpower_active(10939) : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_entity_id']]['m_name'].' @'.$in['ln_status_entity_id'].': '.$en_all_6186[$in['ln_status_entity_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_entity_id']]['m_icon'] . '</span></span>';
+    $ui .= '<span class="icon-block ln_status_entity_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_entity_id']]['m_name'].' @'.$in['ln_status_entity_id'].': '.$en_all_6186[$in['ln_status_entity_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_entity_id']]['m_icon'] . '</span></span>';
 
 
     //Show Completion Marks based on Intent Link Type:
-    $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10939) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>';
+    $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>';
 
 
 
@@ -2112,7 +2114,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 
     //BLOG STATUS
-    $ui .= '<span class="icon-block in_status_entity_id_' . $in['in_id'] . ( in_array($in['in_status_entity_id'], $CI->config->item('en_ids_7355')) ? superpower_active(10939) : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span></span>';
+    $ui .= '<span class="icon-block in_status_entity_id_' . $in['in_id'] . ( $is_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span></span>';
 
 
 
@@ -2146,26 +2148,13 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     }
 
     //Loop through parents:
-    foreach ($in['in__parents'] as $in_parent) {
+    $ui .= '<span class="'.superpower_active(10984).'">';
+    foreach ($in['in__parents'] as $in_parent){
         if($in_linked_id!=$in_parent['in_id']){
             $ui .= ' &nbsp;<a href="/blog/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_outcome']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_completion_method_entity_id']]['m_icon'] . '</a>';
         }
     }
-
-
-
-    //Can this trainer train this intent?
-    if($can_train){
-
-        //Modify Intent:
-        $ui .= '<a href="javascript:void(0);" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" class="btn btn-primary btn-blog"><i class="fas fa-cog"></i></a>';
-
-    } else {
-
-        //Give trainer option to join intention by up-voting it:
-        $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="/blog/in_submit_upvote/'.$in['in_id'].'" style="margin:-2px -8px 0 3px; width:82px;" href="#" data-toggle="tooltip" title="Join this intention by casting your up-vote" data-placement="bottom"><i class="far fa-thumbs-up"></i> JOIN</a> &nbsp;';
-
-    }
+    $ui .= '</span>';
 
 
 
@@ -2185,21 +2174,16 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
     $tree_count_range = $child_links[0]['in__child_count'];
     if($tree_count_range > 0){
-        $tree_count = '<span class="btn-counter children-counter-' . $in['in_id'] . '">' . $tree_count_range . '</span>';
+        $tree_count = '<span class="btn-counter '.superpower_active(10984).' children-counter-' . $in['in_id'] . '">' . $tree_count_range . '</span>';
     }
 
 
-
-    $ui .= '&nbsp;<a href="/blog/' . $in['in_id'] . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #ffd800 !important;">' . $tree_count . '<i class="fas fa-angle-right"></i></a>';
-
+    //FOLLOW
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-blog" href="/blog/' . $in['in_id'] . '">'.$tree_count.'<i class="fas fa-angle-right"></i></a></div>';
 
 
 
     $ui .= '</div>';
-
-
-
-
 
 
     $ui .= '</div>';
