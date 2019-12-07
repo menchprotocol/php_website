@@ -652,10 +652,10 @@ textarea.note-textarea{
 }
 
 .show-on-hover {
-    display:none;
+    display:none !important;
 }
 .is-msg:hover .show-on-hover {
-    display:inline-block;
+    display:inline-block !important;
 }
 
 .score-range{
