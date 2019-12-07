@@ -651,10 +651,18 @@ textarea.note-textarea{
     width: 100%;
 }
 
+.show-on-hover {
+    display:none;
+}
+.is-msg:hover .show-on-hover {
+    display:inline-block;
+}
+
 .score-range{
-    width: 110px;
+    width: 89px;
     display: inline-block;
     text-align: center;
+    font-size: 0.8em;
 }
 
 label {

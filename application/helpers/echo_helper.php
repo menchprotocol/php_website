@@ -242,7 +242,7 @@ function echo_in_note($ln)
     $ui .= '</div>';
 
     //Editing menu:
-    $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'">';
+    $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
 
         //Modify:
         $ui .= '<span title="Modify Message" data-toggle="tooltip" data-placement="top"><a href="javascript:in_note_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
@@ -252,7 +252,7 @@ function echo_in_note($ln)
             $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort fa-special-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents']) ? 'blog_note_sorting' : '' ).'"></i></span>';
         }
 
-    $ui .= '</div>';
+    $ui .= '</span></div>';
 
 
     //Text editing:
@@ -2157,27 +2157,17 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 
 
-    //Count children based on level:
-    $tree_count = null;
-    $tree_count_range = '0';
-
-
-    //Do a live child count:
+    //Count children:
     $child_links = $CI->READ_model->ln_fetch(array(
         'ln_parent_intent_id' => $in['in_id'],
         'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
     ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as in__child_count');
-
     $tree_count_range = $child_links[0]['in__child_count'];
-    if($tree_count_range > 0){
-        $tree_count = '<span class="btn-counter children-counter-' . $in['in_id'] . '">' . $tree_count_range . '</span>';
-    }
-
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-blog" href="/blog/' . $in['in_id'] . '">'.$tree_count.'<i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-blog" href="/blog/' . $in['in_id'] . '">'.($tree_count_range > 0 ? '<span class="btn-counter">' . $tree_count_range . '</span> ' : '').'<i class="fas fa-angle-right"></i></a></div>';
 
 
 
