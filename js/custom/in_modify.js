@@ -64,7 +64,7 @@ function show_save_button(){
 
 function in_save_title(){
     //Fetch Intent Data to load modify widget:
-    $('.title_update_status').html(' <b class="montserrat"><i class="far fa-yin-yang fa-spin"></i> SAVING...</b>').hide().fadeIn();
+    $('.title_update_status').html('<b class="montserrat"><i class="far fa-yin-yang fa-spin"></i> SAVING...</b>').hide().fadeIn();
 
 
     $.post("/blog/in_save_title", {
@@ -84,7 +84,8 @@ function in_save_title(){
 
         } else {
             //Show error:
-            alert('ERROR: '+data.message);
+            $('.title_update_status').html('<b class="montserrat ispink">ERROR: '+data.message+'</b>').hide().fadeIn();
+
         }
     });
 }
