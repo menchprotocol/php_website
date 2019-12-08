@@ -171,7 +171,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
 
         //Now fetch Recommended Intents:
         foreach ($in__other as $other_in) {
-            echo echo_in_read($other_in, null);
+            echo echo_in_read($other_in);
         }
 
         if(count($already_printed) > $max_visible){
@@ -236,10 +236,10 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
             'ln_parent_intent_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
-        $common_prefix = common_prefix($in__children, 'in_outcome');
+        //$common_prefix = common_prefix($in__children, 'in_outcome');
 
         foreach ($in__children as $child_in) {
-            echo echo_in_read($child_in, $common_prefix);
+            echo echo_in_read($child_in);
         }
         echo '</div>';
 

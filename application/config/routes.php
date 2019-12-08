@@ -7,6 +7,7 @@ $route['404_override']              = 'play/page_not_found';
 $route['default_controller']        = "read/read_overview";
 $route['read']                      = "read/read_overview";
 $route['blog']                      = "blog/blog_overview";
+$route['play']                      = "play/play_overview";
 
 $route['play/(:num)']               = "play/play_modify/$1";
 $route['blog/(:num)']               = "blog/blog_modify/$1";

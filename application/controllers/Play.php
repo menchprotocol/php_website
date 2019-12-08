@@ -687,6 +687,14 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
+    function play_overview(){
+        $this->load->view('header', array(
+            'title' => 'PLAY',
+        ));
+        $this->load->view('view_play/play_overview');
+        $this->load->view('footer');
+    }
+
     function load_leaderboard(){
 
         //Fetch top users per each direction

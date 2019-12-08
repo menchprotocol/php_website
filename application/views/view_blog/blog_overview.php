@@ -36,7 +36,7 @@
                         //Add here so we don't show this again:
                         array_push($already_shown, $bookmark_in['in_id']);
 
-                        echo echo_in_read($bookmark_in);
+                        echo echo_in_read($bookmark_in,'/blog');
                     }
                     echo '</div>';
 
@@ -49,9 +49,6 @@
 
                 //Add Blog
                 echo '<div><a href="/blog/new" class="btn btn-blog montserrat">NEW BLOG</a></div>';
-
-
-
 
 
                 $recent_ins = $this->READ_model->ln_fetch(array(
@@ -76,7 +73,7 @@
                         //Add here so we don't show this again:
                         array_push($already_shown, $recent_in['in_id']);
 
-                        echo echo_in_read($recent_in);
+                        echo echo_in_read($recent_in,'/blog');
 
                         if(count($already_shown) >= $show_max){
                             break;
