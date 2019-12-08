@@ -72,11 +72,10 @@ function in_save_title(){
 
             //Update on page:
             $('#current_blog_title, #new_blog_title').val(data.in_cleaned_outcome);
-            $('#blog_title_save').addClass('hidden');
             $('.title_update_status').html(data.message);
 
             setTimeout(function () {
-                $('.title_update_status').html('');
+                $('#blog_title_save').addClass('hidden');
             }, 1597);
 
         } else {
