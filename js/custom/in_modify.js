@@ -79,6 +79,7 @@ function in_save_title(){
 
             setTimeout(function () {
                 $('#blog_title_save').addClass('hidden');
+                $('.title_update_status').html('');
             }, 1597);
 
         } else {

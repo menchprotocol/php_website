@@ -47,7 +47,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '<input type="hidden" id="current_blog_title" value="'.$in['in_outcome'].'" />';
 
         echo '<div id="blog_title_save" class="hidden">';
-        echo '<a href="javascript:in_save_title();" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="right" class="btn btn-blog">SAVE</a>';
+        echo '<a href="javascript:in_save_title();" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="bottom" class="btn btn-blog">SAVE</a>';
         echo '&nbsp;<span class="title_counter hidden">[<span id="charNameNum">0</span>/'.config_var(11071).']</span>';
         echo '&nbsp;<span class="title_update_status"></span>';
         echo '</div>';
