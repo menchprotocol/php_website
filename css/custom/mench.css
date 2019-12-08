@@ -645,7 +645,7 @@ textarea.note-textarea{
     border: 0;
     background-color:#f4f5f7;
     border-radius: 0 !important;
-    padding: 5px 0 0;
+    padding:3px 0;
     margin: 0 1px;
     overflow: hidden;
     width: 100%;
@@ -899,4 +899,5 @@ label {
     .featured-frame{ width:75px; }
     .featured-image { width:75px; height:75px; }
     .content-image{ max-height:300px; }
+    .show-on-hover { display:inline-block !important; }
 }
