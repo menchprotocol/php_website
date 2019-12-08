@@ -64,8 +64,11 @@ function show_save_button(){
 
 function in_save_title(){
     //Fetch Intent Data to load modify widget:
+    $('.title_update_status').html(' <b class="montserrat"><i class="far fa-yin-yang fa-spin"></i> SAVING...</b>').hide().fadeIn();
+
+
     $.post("/blog/in_save_title", {
-        in_id: in_id,
+        in_id: in_loaded_id,
         in_outcome: $('#new_blog_title').val(),
     }, function (data) {
         if (data.status) {
