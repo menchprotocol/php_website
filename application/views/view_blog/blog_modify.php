@@ -50,7 +50,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '<a href="javascript:in_save_title();" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="right" class="btn btn-blog">SAVE</a>';
         echo '&nbsp;<span class="title_counter hidden">[<span id="charNameNum">0</span>/'.config_var(11071).']</span>';
         echo '&nbsp;<span class="title_update_status"></span>';
-        echo '<div>';
+        echo '</div>';
 
     } else {
 
