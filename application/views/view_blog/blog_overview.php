@@ -3,8 +3,10 @@
     <div class="row">
         <div class="col-lg">
 
-            <h1><span class="icon-block-xlg"><i class="far fa-bookmark"></i></span>BOOKMARKS</h1>
+
             <?php
+
+            echo '<h1><span class="icon-block-xlg"><i class="far fa-bookmark"></i></span>MY BOOKMARKS</h1>';
 
             $session_en = superpower_assigned();
             $already_shown = array();
@@ -12,7 +14,11 @@
 
             if(!$session_en){
 
-                echo 'Login to see your bookmarks & more';
+                echo '<div><a href="/play/signin" class="btn btn-play montserrat">SIGN IN/UP</a> to start blogging.</div>';
+
+            } elseif(!superpower_assigned(10939)) {
+
+                echo '<div><a href="/12867" class="btn btn-blog montserrat">START BLOGGING</a></div>';
 
             } else {
 
@@ -30,23 +36,27 @@
                         //Add here so we don't show this again:
                         array_push($already_shown, $bookmark_in['in_id']);
 
-                        echo echo_in_dashboard($bookmark_in);
+                        echo echo_in_read($bookmark_in);
                     }
                     echo '</div>';
 
                 } else {
 
                     //No bookmarks yet:
-                    $en_all_4527 = $this->config->item('en_all_4527'); //Platform Cache
-                    $en_all_4485 = $this->config->item('en_all_4485'); //Intent Notes
-                    echo '<div class="alert alert-warning" style="margin: 0"><div style="margin-bottom: 10px;"><i class="fas fa-exclamation-triangle"></i> You have not bookmarked any intention yet. You can bookmark a BLOG by navigating to it and then:</div>'.$en_all_4527[4485]['m_icon'] .' '. $en_all_4527[4485]['m_name'].' <i class="fas fa-chevron-right" style="margin: 0 7px;"></i> '.$en_all_4485[10573]['m_icon'] .' '. $en_all_4485[10573]['m_name'].' <i class="fas fa-chevron-right" style="margin: 0 7px;"></i> Add "<b>@'.$session_en['en_id'].'</b>" (Your Entity ID)</div>';
+                    echo '<div class="alert alert-info">No blogs created yet</div>';
 
                 }
+
+                //Add Blog
+                echo '<div><a href="/blog/new" class="btn btn-blog montserrat">NEW BLOG</a></div>';
+
+
 
 
 
                 $recent_ins = $this->READ_model->ln_fetch(array(
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+                    'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_entity_id' => 4993, //Trainer View Intent
                     'ln_creator_entity_id' => $session_en['en_id'], //For this trainer
@@ -55,7 +65,7 @@
 
                     $show_max = 10;
 
-                    echo '<h1><span class="icon-block-xlg"><i class="far fa-history"></i></span>RECENT</h1>';
+                    echo '<h1 style="margin-top:30px;"><span class="icon-block-xlg"><i class="far fa-history"></i></span>RECENT</h1>';
                     echo '<div class="list-group">';
                     foreach($recent_ins as $recent_in){
 
@@ -66,7 +76,7 @@
                         //Add here so we don't show this again:
                         array_push($already_shown, $recent_in['in_id']);
 
-                        echo echo_in_dashboard($recent_in);
+                        echo echo_in_read($recent_in);
 
                         if(count($already_shown) >= $show_max){
                             break;

@@ -61,6 +61,35 @@ function show_save_button(){
 }
 
 
+function in_save_dropdown(){
+    //Fetch Intent Data to load modify widget:
+    $('.title_update_status').html('<b class="montserrat"><i class="far fa-yin-yang fa-spin"></i> SAVING...</b>').hide().fadeIn();
+
+
+    $.post("/blog/in_save_title", {
+        in_id: in_loaded_id,
+        in_outcome: $('#new_blog_title').val(),
+    }, function (data) {
+        if (data.status) {
+
+            //Update on page:
+            $('.title_update_status').html(data.message);
+
+            setTimeout(function () {
+                $('#current_blog_title, #new_blog_title').val(data.in_cleaned_outcome);
+                $('#blog_title_save').addClass('hidden');
+                $('.title_update_status').html('');
+            }, 1597);
+
+        } else {
+            //Show error:
+            $('.title_update_status').html('<b class="montserrat ispink">ERROR: '+data.message+'</b>').hide().fadeIn();
+
+        }
+    });
+}
+
+
 
 function in_save_title(){
     //Fetch Intent Data to load modify widget:
