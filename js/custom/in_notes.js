@@ -24,7 +24,7 @@ function in_new_note_count(focus_ln_type_entity_id) {
     }
 
     //Only show counter if getting close to limit:
-    if(len > ( js_en_all_6404[11073]['m_desc'] * show_counter_threshold )){
+    if(len > ( js_en_all_6404[11073]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
         $('#blogNoteNewCount' + focus_ln_type_entity_id).removeClass('hidden');
     } else {
         $('#blogNoteNewCount' + focus_ln_type_entity_id).addClass('hidden');
@@ -46,7 +46,7 @@ function in_edit_note_count(ln_id) {
     }
 
     //Only show counter if getting close to limit:
-    if(len > ( js_en_all_6404[11073]['m_desc'] * show_counter_threshold )){
+    if(len > ( js_en_all_6404[11073]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
         $('#blogNoteCount' + ln_id).removeClass('hidden');
     } else {
         $('#blogNoteCount' + ln_id).addClass('hidden');

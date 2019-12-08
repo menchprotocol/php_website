@@ -22,9 +22,12 @@ $(document).ready(function () {
 
     autosize($('#new_blog_title'));
 
-    $('#new_blog_title').keypress(function(event) {
-        if (event.keyCode == 13) {
+    $('#new_blog_title').keypress(function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
             event.preventDefault();
+        } else if (e.ctrlKey && code == 13) {
+            in_save_title();
         }
     }).focus(function() {
         //Clear default title
@@ -36,7 +39,6 @@ $(document).ready(function () {
 
 
 
-
     //Lookout for intent link type changes:
     $('#ln_type_entity_id, #ln_status_entity_id').change(function () {
         in_adjust_link_ui();
@@ -45,6 +47,7 @@ $(document).ready(function () {
 });
 
 function show_save_button(){
+
     //Detect changes in blog title to show the save button:
     if($('#new_blog_title').val() == $('#current_blog_title').val() || $('#new_blog_title').val().length < 1 || $('#new_blog_title').val().toUpperCase() == js_en_all_6201[4736]['m_name']){
         //Nothing changed, so nothing to save:
@@ -52,11 +55,35 @@ function show_save_button(){
     } else {
         //Something changed, show save button:
         $('#blog_title_save').removeClass('hidden');
+
+        in_outcome_counter();
     }
 }
 
+
+
 function in_save_title(){
-    alert('Under Dev');
+    //Fetch Intent Data to load modify widget:
+    $.post("/blog/in_save_title", {
+        in_id: in_id,
+        in_outcome: $('#new_blog_title').val(),
+    }, function (data) {
+        if (data.status) {
+
+            //Update on page:
+            $('#current_blog_title, #new_blog_title').val(data.in_cleaned_outcome);
+            $('#blog_title_save').addClass('hidden');
+            $('.title_update_status').html(data.message);
+
+            setTimeout(function () {
+                $('.title_update_status').html('');
+            }, 1597);
+
+        } else {
+            //Show error:
+            alert('ERROR: '+data.message);
+        }
+    });
 }
 
 //This also has an equal PHP function echo_time_hours() which we want to make sure has more/less the same logic:
@@ -157,11 +184,18 @@ function in_adjust_link_ui() {
 
 
 function in_outcome_counter() {
-    var len = $('#in_outcome').val().length;
+    var len = $('#new_blog_title').val().length;
     if (len > js_en_all_6404[11071]['m_desc']) {
         $('#charNameNum').addClass('overload').text(len);
     } else {
         $('#charNameNum').removeClass('overload').text(len);
+    }
+
+    //Only show counter if getting close to limit:
+    if(len > ( js_en_all_6404[11071]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
+        $('.title_counter').removeClass('hidden');
+    } else {
+        $('.title_counter').addClass('hidden');
     }
 }
 

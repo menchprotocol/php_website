@@ -12,7 +12,6 @@ $can_train = ( in_can_train($in['in_id'], $session_en['en_id']) );
 
 <script>
     //Include some cached entities:
-    var show_counter_threshold = 0.80;
     var in_loaded_id = <?= $in['in_id'] ?>;
 </script>
 <script src="/js/custom/in_notes.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
@@ -47,7 +46,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'">'.$in['in_outcome'].'</textarea>';
         echo '<input type="hidden" id="current_blog_title" value="'.$in['in_outcome'].'" />';
 
-        echo '<div id="blog_title_save" class="hidden"><a href="javascript:in_save_title();" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="right" class="btn btn-blog">SAVE</a></div>';
+        echo '<div id="blog_title_save" class="hidden inline-block"><a href="javascript:in_save_title();" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="right" class="btn btn-blog">SAVE</a></div> &nbsp;<span class="title_counter hidden">[<span id="charNameNum">0</span>/'.config_var(11071).']</span>&nbsp;<span class="title_update_status inline-block"></span>';
 
     } else {
 

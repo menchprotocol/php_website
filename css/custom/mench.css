@@ -721,7 +721,10 @@ label {
 }
 
 /* STYLES */
-.btn{ text-decoration: none; }
+.btn{
+    text-decoration: none;
+    line-height: 1.1;
+}
 
 .btn-superpower {
     text-align: center;
