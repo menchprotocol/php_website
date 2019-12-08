@@ -24,10 +24,10 @@ $(document).ready(function () {
 
     $('#new_blog_title').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
-        if (code == 13) {
-            event.preventDefault();
-        } else if (e.ctrlKey && code == 13) {
+        if (e.ctrlKey && code == 13) {
             in_save_title();
+        } else if (code == 13) {
+            event.preventDefault();
         }
     }).focus(function() {
         //Clear default title
