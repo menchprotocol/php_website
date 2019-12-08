@@ -74,10 +74,10 @@ function in_save_title(){
         if (data.status) {
 
             //Update on page:
-            $('#current_blog_title, #new_blog_title').val(data.in_cleaned_outcome);
             $('.title_update_status').html(data.message);
 
             setTimeout(function () {
+                $('#current_blog_title, #new_blog_title').val(data.in_cleaned_outcome);
                 $('#blog_title_save').addClass('hidden');
                 $('.title_update_status').html('');
             }, 1597);
