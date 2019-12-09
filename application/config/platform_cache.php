@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-08 11:31:30 PST
+//Generated 2019-12-09 11:15:29 PST
 
 //BLOG MODIFY:
 $config['en_ids_12079'] = array(7585,4485,4737,4736,6205);
@@ -77,7 +77,7 @@ $config['en_all_4463'] = array(
     2738 => array(
         'm_icon' => '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin no-radius">',
         'm_name' => 'MENCH',
-        'm_desc' => 'is an interactive publishing platform that allows anyone to share & discover ideas that matter. Writers use simple publishing tools to create & organize microblogs, each focus on a single idea, yet when linked together can form bigger ideas. Readers use the web or Messenger to read microblogs interactively & choose their unique reading path.',
+        'm_desc' => 'is an interactive publishing platform that allows anyone to share & discover ideas that matter. Writers use simple publishing tools to create & organize microblogs that focus on a single idea but can link together to form bigger ideas. Readers use the web or Messenger to read microblogs by interactively choosing their unique reading path.',
         'm_parents' => array(4463,12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
     ),
     4536 => array(

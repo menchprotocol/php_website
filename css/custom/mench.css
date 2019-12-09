@@ -895,7 +895,7 @@ label {
         max-width: none;
     }
     .icon-block-xlg{ min-width:48px; }
-    .list-group-item { padding:0; }
+    .list-group-item { padding:1px 0; }
     .featured-frame{ width:75px; }
     .featured-image { width:75px; height:75px; }
     .content-image{ max-height:300px; }
