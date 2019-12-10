@@ -879,7 +879,7 @@ if(!$action) {
                     <span class="input-group-addon addon-lean addon-grey" style="color:#070707; font-weight: 300; border-left: 1px solid #ccc; border-right:0px solid #FFF;"> levels deep.</span>
                 </div>
             </div>
-            <input type="submit" class="btn btn-blog btn-sm" value="Go" style="display: inline-block; margin-top: -41px;" />
+            <input type="submit" class="btn btn-blog" value="Go" style="display: inline-block; margin-top: -41px;" />
         </div>';
 
     echo '</form>';

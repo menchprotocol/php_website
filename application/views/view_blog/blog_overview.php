@@ -6,7 +6,7 @@
 
             <?php
 
-            echo '<h1><span class="icon-block-xlg"><i class="far fa-bookmark"></i></span>MY BOOKMARKS</h1>';
+            echo '<h1><span class="icon-block-xlg"><i class="far fa-bookmark"></i></span>MY BLOGS</h1>';
 
             $session_en = superpower_assigned();
             $already_shown = array();
@@ -48,9 +48,10 @@
                 }
 
                 //Add Blog
-                echo '<div><a href="/blog/new" class="btn btn-blog montserrat">NEW BLOG</a></div>';
+                echo '<div style="margin-top: 10px;"><a href="/blog/new" class="btn btn-lg btn-blog montserrat">NEW BLOG</a></div>';
 
 
+                /*
                 $recent_ins = $this->READ_model->ln_fetch(array(
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
                     'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
@@ -83,6 +84,7 @@
                     echo '</div>';
 
                 }
+                */
 
             }
             ?>
