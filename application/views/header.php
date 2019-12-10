@@ -68,7 +68,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     <script src="https://kit.fontawesome.com/fbf7f3ae67.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/typeit@VERSION_NUMBER/dist/typeit.min.js" />
+    <script src="https://cdn.jsdelivr.net/npm/typeit@6.1.1/dist/typeit.min.js"></script>
     <script src="/js/lib/jquery.textcomplete.min.js"></script>
     <script src="/js/lib/autosize.min.js"></script>
     <script src="/js/lib/autocomplete.jquery.min.js"></script>
