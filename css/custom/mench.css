@@ -253,7 +253,7 @@ img.no-radius {
 }
 
 .htitle{
-    min-width:158px;
+    min-width:161px;
     display: inline-block;
 }
 
@@ -926,7 +926,7 @@ label {
     h4 span{
         margin-top: -18px;
     }
-    h1{ margin-left: 1.7em; }
+    h1{ font-size: 1.7em; }
     h2{ margin-left: 2px; }
     .three-menus .mn_name{
         min-width: 60px;
