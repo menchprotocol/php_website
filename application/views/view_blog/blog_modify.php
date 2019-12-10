@@ -95,7 +95,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             $counter = count($fetch_11019);
 
-            $this_tab .= '<div id="list-in-' . $in['in_id'] . '-1" class="list-group list-level-2">';
+            $this_tab .= '<div id="list-in-' . $in['in_id'] . '-1" class="list-group">';
 
             foreach ($fetch_11019 as $parent_in) {
                 $this_tab .= echo_in($parent_in, true);
@@ -129,15 +129,14 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $default_active = true;
 
             //List child intents:
-            $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children list-level-2">';
+            $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children">';
             foreach ($fetch_11020 as $child_in) {
                 $this_tab .= echo_in($child_in, $in['in_id']);
             }
 
             //Add child intent:
-            $this_tab .= '<div class="'.superpower_active(10939).'">';
             if(in_can_train($in['in_id'])){
-                $this_tab .= '<div class="list-group-item itemblog">
+                $this_tab .= '<div class="list-group-item itemblog '.superpower_active(10939).'">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2-child form-control-thick algolia_search"
@@ -152,7 +151,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 //Give option to request to join as Author:
 
             }
-            $this_tab .= '</div>';
             $this_tab .= '</div>';
 
 
