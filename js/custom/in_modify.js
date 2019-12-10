@@ -75,57 +75,8 @@ function in_update_dropdown(element_id, new_en_id){
     *
     * */
 
-    var current_selected = parseInt($('.dropi_'+element_id+'.active').attr('new-en-id'));
-    new_en_id = parseInt(new_en_id);
-    if(current_selected == new_en_id){
-        //Nothing changed:
-        return false;
-    }
+    return false;
 
-    //Are we deleting a status?
-    var is_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
-
-    if(is_delete){
-        //Seems to be deleting, confirm:
-        var r = confirm("Are you sure you want to archive this blog?");
-        if (r == false) {
-            return false;
-        }
-    }
-
-    //Show Loading...
-    var data_object = eval('js_en_all_'+element_id);
-    $('.dropd_'+element_id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">SAVING...</b>');
-
-    $.post("/blog/in_update_dropdown", {
-
-        in_id: in_loaded_id,
-        element_id: element_id,
-        new_en_id: new_en_id
-
-    }, function (data) {
-        if (data.status) {
-
-            //Update on page:
-            $('.dropd_'+element_id+' .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + data_object[new_en_id]['m_name']);
-            $('.dropd_'+element_id+' .dropi_' + element_id).removeClass('active');
-            $('.dropd_'+element_id+' .optiond_' + new_en_id).addClass('active');
-
-            if(is_delete){
-                //Go to main blog page:
-                window.location = '/blog';
-            }
-
-        } else {
-
-            //Reset to default:
-            $('.dropd_'+element_id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m_icon']+'</span>' + data_object[current_selected]['m_name']);
-
-            //Show error:
-            alert('ERROR: ' + data.message);
-
-        }
-    });
 }
 
 
