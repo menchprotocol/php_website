@@ -2407,7 +2407,7 @@ function echo_dropdown($cache_en_id, $selected_en_id, $btn_class = 'btn-primary'
     $en_all_this = $CI->config->item('en_all_'.$cache_en_id);
 
     //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
-    $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'" title="'.$en_all_12079[$cache_en_id]['m_desc'].'" data-toggle="tooltip" data-placement="right">';
+    $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'" title="'.$en_all_12079[$cache_en_id]['m_desc'].'" data-toggle="tooltip" data-placement="top">';
     $ui .= '<button  class="btn btn-sm '.$btn_class.' dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
     $ui .= '<span class="icon-block">' .$en_all_this[$selected_en_id]['m_icon'].'</span>'.$en_all_this[$selected_en_id]['m_name'];
     $ui .= '</button>';
