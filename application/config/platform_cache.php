@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-10 00:09:52 PST
+//Generated 2019-12-10 02:47:14 PST
 
 //BLOG MODIFY:
 $config['en_ids_12079'] = array(7585,4485,4737,4736,12090);
@@ -5645,25 +5645,25 @@ $config['en_all_6192'] = array(
     ),
     12044 => array(
         'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
-        'm_name' => 'START & NEXT',
+        'm_name' => 'START',
         'm_desc' => '',
         'm_parents' => array(4559,7756,6192,7582,7585),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
-        'm_name' => 'UPLOAD & NEXT',
+        'm_name' => 'UPLOAD',
         'm_desc' => '',
         'm_parents' => array(7582,7751,7585,6144,6192),
     ),
     6677 => array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
-        'm_name' => 'READ & NEXT',
+        'm_name' => 'READ',
         'm_desc' => '',
         'm_parents' => array(7756,7585,4559,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard "></i>',
-        'm_name' => 'REPLY & NEXT',
+        'm_name' => 'REPLY',
         'm_desc' => '',
         'm_parents' => array(7582,7585,6144,6192),
     ),
@@ -5907,7 +5907,7 @@ $config['en_ids_7756'] = array(6677,6914,6907,12044);
 $config['en_all_7756'] = array(
     6677 => array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
-        'm_name' => 'READ & NEXT',
+        'm_name' => 'READ',
         'm_desc' => '',
         'm_parents' => array(7756,7585,4559,6192),
     ),
@@ -5925,7 +5925,7 @@ $config['en_all_7756'] = array(
     ),
     12044 => array(
         'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
-        'm_name' => 'START & NEXT',
+        'm_name' => 'START',
         'm_desc' => '',
         'm_parents' => array(4559,7756,6192,7582,7585),
     ),
@@ -5936,7 +5936,7 @@ $config['en_ids_7751'] = array(7637);
 $config['en_all_7751'] = array(
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
-        'm_name' => 'BLOG UPLOAD & NEXT',
+        'm_name' => 'BLOG UPLOAD',
         'm_desc' => '',
         'm_parents' => array(7582,7751,7585,6144,6192),
     ),
@@ -5947,13 +5947,13 @@ $config['en_ids_6144'] = array(6683,7637);
 $config['en_all_6144'] = array(
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard "></i>',
-        'm_name' => 'REPLY & NEXT',
+        'm_name' => 'REPLY',
         'm_desc' => '',
         'm_parents' => array(7582,7585,6144,6192),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
-        'm_name' => 'UPLOAD & NEXT',
+        'm_name' => 'UPLOAD',
         'm_desc' => '',
         'm_parents' => array(7582,7751,7585,6144,6192),
     ),
@@ -6249,19 +6249,19 @@ $config['en_all_6204'] = array(
 );
 
 //BLOG ANSWER TYPES:
-$config['en_ids_7712'] = array(6684,7231);
+$config['en_ids_7712'] = array(7231,6684);
 $config['en_all_7712'] = array(
-    6684 => array(
-        'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
-        'm_name' => 'ONE',
-        'm_desc' => '',
-        'm_parents' => array(7712,7588,7585,6157,6193),
-    ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
-        'm_name' => 'SOME',
+        'm_name' => 'MULTI-SELECT',
         'm_desc' => '',
         'm_parents' => array(10984,7712,7489,7588,7585,6193),
+    ),
+    6684 => array(
+        'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
+        'm_name' => 'SELECT',
+        'm_desc' => '',
+        'm_parents' => array(7712,7588,7585,6157,6193),
     ),
 );
 
@@ -6508,19 +6508,19 @@ $config['en_all_4229'] = array(
 );
 
 //BLOG SELECT PUBLICLY:
-$config['en_ids_7588'] = array(6684,7231);
+$config['en_ids_7588'] = array(7231,6684);
 $config['en_all_7588'] = array(
-    6684 => array(
-        'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
-        'm_name' => 'ONE',
-        'm_desc' => '',
-        'm_parents' => array(7712,7588,7585,6157,6193),
-    ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
-        'm_name' => 'SOME',
+        'm_name' => 'MULTI-SELECT',
         'm_desc' => '',
         'm_parents' => array(10984,7712,7489,7588,7585,6193),
+    ),
+    6684 => array(
+        'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
+        'm_name' => 'SELECT',
+        'm_desc' => '',
+        'm_parents' => array(7712,7588,7585,6157,6193),
     ),
 );
 
@@ -6529,13 +6529,13 @@ $config['en_ids_6193'] = array(6684,7231,6907);
 $config['en_all_6193'] = array(
     6684 => array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
-        'm_name' => 'SELECT ONE',
+        'm_name' => 'SELECT',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
-        'm_name' => 'SELECT SOME',
+        'm_name' => 'MULTI-SELECT',
         'm_desc' => '',
         'm_parents' => array(10984,7712,7489,7588,7585,6193),
     ),
@@ -6552,37 +6552,37 @@ $config['en_ids_7585'] = array(12044,6677,6683,7637,6684,7231,6907,6914);
 $config['en_all_7585'] = array(
     12044 => array(
         'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
-        'm_name' => 'START & NEXT',
+        'm_name' => 'START',
         'm_desc' => 'A starting point where readers are asked to login to continue. This ensures that the reader starts saving the rest of the conversation history.',
         'm_parents' => array(4559,7756,6192,7582,7585),
     ),
     6677 => array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
-        'm_name' => 'READ & NEXT',
+        'm_name' => 'READ',
         'm_desc' => 'User will complete by reading intent messages only. No inputs required.',
         'm_parents' => array(7756,7585,4559,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard "></i>',
-        'm_name' => 'REPLY & NEXT',
+        'm_name' => 'REPLY',
         'm_desc' => 'User will complete by sending a text message',
         'm_parents' => array(7582,7585,6144,6192),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
-        'm_name' => 'UPLOAD & NEXT',
+        'm_name' => 'UPLOAD',
         'm_desc' => 'User completes by uploading a video, audio or image file',
         'm_parents' => array(7582,7751,7585,6144,6192),
     ),
     6684 => array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
-        'm_name' => 'SELECT ONE',
+        'm_name' => 'SELECT',
         'm_desc' => 'User will complete by choosing a child intent as their answer',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
-        'm_name' => 'SELECT SOME',
+        'm_name' => 'MULTI-SELECT',
         'm_desc' => 'User will complete by choosing one or more child intents as their answer',
         'm_parents' => array(10984,7712,7489,7588,7585,6193),
     ),
@@ -6605,7 +6605,7 @@ $config['en_ids_7582'] = array(6683,6914,6907,12044,7637);
 $config['en_all_7582'] = array(
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard "></i>',
-        'm_name' => 'REPLY & NEXT',
+        'm_name' => 'REPLY',
         'm_desc' => '',
         'm_parents' => array(7582,7585,6144,6192),
     ),
@@ -6623,13 +6623,13 @@ $config['en_all_7582'] = array(
     ),
     12044 => array(
         'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
-        'm_name' => 'START & NEXT',
+        'm_name' => 'START',
         'm_desc' => '',
         'm_parents' => array(4559,7756,6192,7582,7585),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
-        'm_name' => 'UPLOAD & NEXT',
+        'm_name' => 'UPLOAD',
         'm_desc' => '',
         'm_parents' => array(7582,7751,7585,6144,6192),
     ),
