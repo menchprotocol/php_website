@@ -668,16 +668,6 @@ textarea.note-textarea{
     background-color: transparent;
 }
 
-.itemblog:hover {
-    background-color:#ffee8e !important;
-}
-.itemplay:hover {
-    background-color:#b2defd !important;
-}
-.itemread:hover {
-    background-color:#fbc4ce !important;
-}
-
 .form-group {
     background-color: #FFFFFF;
 }
@@ -954,9 +944,18 @@ label {
     .content-image{ max-height:300px; }
     .show-on-hover { display:inline-block !important; }
     .show-max{display: none !important;}
-    .itemblog:hover { background-color:transparent !important; }
-    .itemplay:hover { background-color:transparent !important; }
-    .itemread:hover { background-color:transparent !important; }
     .form-control-thick { padding-left: 26px; }
 
+}
+
+@media (min-width:767px) {
+    .itemblog:hover {
+        background-color:#ffee8e !important;
+    }
+    .itemplay:hover {
+        background-color:#b2defd !important;
+    }
+    .itemread:hover {
+        background-color:#fbc4ce !important;
+    }
 }
