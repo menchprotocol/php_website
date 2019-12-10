@@ -867,7 +867,13 @@ label {
     margin: 0 6px;
 }
 
+.in_highlight, .in_highlight:hover, .in_highlight:focus{
+    background-color:#fff3a9 !important;
+}
 
+.en_highlight, .en_highlight:hover, .en_highlight:focus{
+    background-color:#c1dffb !important;
+}
 
 /* RESPONSIVE */
 @media (max-width:767px) {

@@ -20,15 +20,6 @@ class Blog extends CI_Controller {
         $this->load->view('footer');
     }
 
-
-    function demo(){
-        $this->load->view('header', array(
-            'title' => 'DEMO',
-        ));
-        $this->load->view('view_blog/demo');
-        $this->load->view('footer');
-    }
-
     function blog_modify($in_id){
 
         //Make sure user is logged in

@@ -455,7 +455,7 @@ function en_fetch_canonical_url(query_string, not_found){
 
 
 function remove_all_highlights(){
-    $('.object_highlight').removeClass('in_highlight').removeClass('en_highlight');
+    $('.object_highlight').removeClass('en_highlight');
 }
 
 function validURL(str) {

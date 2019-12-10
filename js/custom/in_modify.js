@@ -9,17 +9,6 @@ var match_search_loaded = 0; //Keeps track of when we load the match search
 
 $(document).ready(function () {
 
-    //Watch for intent status change:
-    $("#in_status_entity_id").change(function () {
-
-        //Should we show intent archiving warning?
-        if(parseInt(this.value) == 6182 /* Intent Removed */){
-            $('.notify_in_remove').removeClass('hidden');
-        } else {
-            $('.notify_in_remove').addClass('hidden');
-        }
-    });
-
     autosize($('#new_blog_title'));
 
     $('#new_blog_title').keypress(function(e) {
@@ -37,13 +26,6 @@ $(document).ready(function () {
         }
     });
 
-
-
-    //Lookout for intent link type changes:
-    $('#ln_type_entity_id, #ln_status_entity_id').change(function () {
-        in_adjust_link_ui();
-    });
-
 });
 
 function show_save_button(){
@@ -56,7 +38,6 @@ function show_save_button(){
         //Something changed, show save button:
         $('#blog_title_save').removeClass('hidden');
 
-        in_outcome_counter();
     }
 }
 
@@ -158,202 +139,6 @@ function in_save_title(){
     });
 }
 
-//This also has an equal PHP function echo_time_hours() which we want to make sure has more/less the same logic:
-function in_update_time(in_completion_seconds) {
-
-    in_completion_seconds = parseInt(in_completion_seconds);
-    if (in_completion_seconds < 1) {
-        return '0';
-    } else if (in_completion_seconds < 60) {
-        return in_completion_seconds + "s";
-    } else if (in_completion_seconds < 3600) {
-        //Show this in minutes:
-        return Math.round((in_completion_seconds / 60)) + "m";
-    } else {
-        //Show in rounded hours:
-        return Math.round((in_completion_seconds / 3600)) + "h";
-    }
-
-}
-
-
-
-function in_control_engagement_level() {
-
-    //*
-    //Fetch intent READ ID:
-    var ln_id = parseInt($('#modifybox').attr('intent-tr-id'));
-
-    if (!$('#modifybox').hasClass('hidden') && ln_id > 0) {
-
-        //Yes show that section:
-        $('.in-has-tr').removeClass('hidden');
-
-        //What's the selected intent status?
-        if (parseInt($('#ln_status_entity_id').find(":selected").val()) == 6173 /* Link Removed */) {
-            //About to delete? Notify them:
-            $('.notify_unlink_in').removeClass('hidden');
-        } else {
-            $('.notify_unlink_in').addClass('hidden');
-        }
-
-        //What's the intent link type?
-        if (parseInt($('#ln_type_entity_id').find(":selected").val()) == 4229 /* Conditional Step */) {
-            //Conditional Step Links is checked:
-            $('.score_range_box').removeClass('hidden');
-            $('.score_points').addClass('hidden');
-        } else {
-            //This should be a Required steo
-            //Any is selected, lock the completion settings as its not allowed for ANY Branches:
-            $('.score_range_box').addClass('hidden');
-            $('.score_points').removeClass('hidden');
-        }
-
-    } else {
-        //Main intent, no link, so hide entire section:
-        $('.in-has-tr').addClass('hidden');
-    }
-}
-
-
-
-function in_adjust_link_ui() {
-
-    //Fetch intent READ ID:
-    var ln_id = parseInt($('#modifybox').attr('intent-tr-id'));
-
-    if (!$('#modifybox').hasClass('hidden') && ln_id > 0) {
-
-        //Yes show that section:
-        $('.in-has-tr').removeClass('hidden');
-
-        //What's the selected intent status?
-        if (parseInt($('#ln_status_entity_id').find(":selected").val()) == 6173 /* Link Removed */) {
-            //About to delete? Notify them:
-            $('.notify_unlink_in').removeClass('hidden');
-        } else {
-            $('.notify_unlink_in').addClass('hidden');
-        }
-
-        //What's the intent link type?
-        if (parseInt($('#ln_type_entity_id').find(":selected").val()) == 4229 /* Conditional Step */) {
-            //Conditional Step Links is checked:
-            $('.score_range_box').removeClass('hidden');
-            $('.score_points').addClass('hidden');
-        } else {
-            //This should be a Required steo
-            //Any is selected, lock the completion settings as its not allowed for ANY Branches:
-            $('.score_range_box').addClass('hidden');
-            $('.score_points').removeClass('hidden');
-        }
-
-    } else {
-        //Main intent, no link, so hide entire section:
-        $('.in-has-tr').addClass('hidden');
-    }
-
-}
-
-
-function in_outcome_counter() {
-    var len = $('#new_blog_title').val().length;
-    if (len > js_en_all_6404[11071]['m_desc']) {
-        $('#charNameNum').addClass('overload').text(len);
-    } else {
-        $('#charNameNum').removeClass('overload').text(len);
-    }
-
-    //Only show counter if getting close to limit:
-    if(len > ( js_en_all_6404[11071]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
-        $('.title_counter').removeClass('hidden');
-    } else {
-        $('.title_counter').addClass('hidden');
-    }
-}
-
-
-
-function in_modify_load(in_id, ln_id) {
-
-    //Indicate Loading:
-    $('#modifybox .grey-box .loadcontent').addClass('hidden');
-    $('#modifybox .grey-box .loadbox').removeClass('hidden');
-    $('.fixed-box, .ajax-frame').addClass('hidden');
-    $("#modifybox").removeClass('hidden').hide().fadeIn();
-    $('#modifybox').attr('intent-tr-id', 0).attr('intent-id', 0);
-    $('.apply-recursive').addClass('hidden');
-    $('.save_intent_changes').html(' ');
-
-    //Reset & set new opacity:
-    remove_all_highlights();
-    $(".highlight_in_"+in_id).addClass('in_highlight');
-
-
-    //Set title:
-    $('.edit-header').html('<i class="fas fa-cog"></i> ' + $('.in_outcome_' + in_id + ':first').text());
-
-    //Fetch Intent Data to load modify widget:
-    $.post("/blog/in_load_data", {
-        in_id: in_id,
-        ln_id: ln_id,
-        is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
-    }, function (data) {
-        if (!data.status) {
-
-            //Opppsi, show the error:
-            alert('Error Loading Intent: ' + data.message);
-
-        } else {
-
-            //All good, let's load the data into the Modify Widget...
-
-            //Update variables:
-            $('#modifybox').attr('intent-tr-id', ln_id);
-            $('#modifybox').attr('intent-id', in_id);
-
-            //Load inputs:
-            $('#in_completion_seconds').val(data.in.in_completion_seconds);
-            $('.tr_in_link_title').text('');
-            $('#in_status_entity_id').val(data.in.in_status_entity_id).attr('original-status', data.in.in_status_entity_id); //Set the status before it gets changed by trainers
-            //Load intent link data if available:
-            if (ln_id > 0) {
-
-                //Always load:
-                $("#ln_status_entity_id").val(data.ln.ln_status_entity_id);
-                $('#tr__conditional_score_min').val(data.ln.ln_metadata.tr__conditional_score_min);
-                $('#tr__conditional_score_max').val(data.ln.ln_metadata.tr__conditional_score_max);
-                $('#tr__assessment_points').val(data.ln.ln_metadata.tr__assessment_points);
-                $('#ln_type_entity_id').val(data.ln.ln_type_entity_id);
-
-                //Link editing adjustments:
-                $('.tr_in_link_title').text(( $('.intent_line_' + in_id).hasClass('parent-intent') ? 'Child' : 'Parent' ));
-            }
-
-            //Make the frame visible:
-            $('.notify_in_remove, .notify_unlink_in').addClass('hidden'); //Hide potential previous notices
-            $('#modifybox .grey-box .loadcontent').removeClass('hidden');
-            $('#modifybox .grey-box .loadbox').addClass('hidden');
-
-            //Run UI Updating functions after we've removed the hidden class from #modifybox:
-            in_outcome_counter();
-            in_adjust_link_ui();
-
-            $('#in_completion_method_entity_id').val(data.in.in_completion_method_entity_id); //Set intent type
-
-            //Update intent outcome and set focus:
-            $('#in_outcome').val(data.in.in_outcome).focus();
-
-            //Reload Tooltip again:
-            $('[data-toggle="tooltip"]').tooltip();
-
-
-            //Status locked intent?
-            $('#in_status_entity_id').prop('disabled', false);
-            $('.in_status_entity_id_lock').addClass('hidden');
-
-        }
-    });
-}
 
 function in_unlink(in_id, ln_id){
     var r = confirm("Unlink ["+$('.in_outcome_'+in_id).text()+"]?");
@@ -375,9 +160,6 @@ function in_ui_remove(in_id,ln_id){
 
     //Fetch parent intent before removing element from DOM:
     var parent_in_id = parseInt($('.intent_line_' + in_id).attr('parent-intent-id'));
-
-    //Reset opacity:
-    remove_all_highlights();
 
     //Remove from UI:
     $('.in__tr_' + ln_id).html('<span style="color:#070707;"><i class="fas fa-trash-alt"></i></span>');
@@ -453,9 +235,6 @@ function in_modify_save() {
         }
     }
 
-    //Show spinner:
-    $('.save_intent_changes').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
-
 
 
     //Save the rest of the content:
@@ -463,8 +242,6 @@ function in_modify_save() {
 
         if (!data.status) {
 
-            //Ooops there was an error!
-            $('.save_intent_changes').html('<span style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
 
         } else {
 
@@ -504,8 +281,6 @@ function in_modify_save() {
                 $('.in_status_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_name'] + ': '+ js_en_all_4737[modify_data['in_status_entity_id']]['m_desc'] + '">'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_icon'] +'</span>');
 
 
-                //Update UI to confirm with user:
-                $('.save_intent_changes').html(data.message).hide().fadeIn();
 
 
                 //Did the outcome change?
@@ -530,14 +305,7 @@ function in_modify_save() {
 
             }
 
-            //Reload Tooltip again:
-            $('[data-toggle="tooltip"]').tooltip();
 
-
-            //Clear times:
-            setTimeout(function () {
-                $('.save_intent_changes').html(' ');
-            }, 1597);
         }
     });
 

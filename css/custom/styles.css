@@ -3354,14 +3354,6 @@ h4 .tip-badge {
     display: block;
 }
 
-.in_highlight, .in_highlight:hover, .in_highlight:focus{
-    background-color:#fff3a9 !important;
-}
-
-.en_highlight, .en_highlight:hover, .en_highlight:focus{
-    background-color:#c1dffb !important;
-}
-
 #platform_body .intent-active a, #platform_body .intent-active a:hover, #platform_body .intent-active a:focus, #platform_body .intent-inactive > a:hover , .intent-active .fas, .intent-inactive:hover .fas {
     background-color: #ffd800 !important;
     color: #070707 !important;
