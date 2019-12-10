@@ -11,15 +11,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-09 21:49:04 PST
+//Generated 2019-12-10 00:09:52 PST
 
 //BLOG MODIFY:
-$config['en_ids_12079'] = array(7585,4485,4737,4736,6205);
+$config['en_ids_12079'] = array(7585,4485,4737,4736,12090);
 $config['en_all_12079'] = array(
     7585 => array(
         'm_icon' => '<i class="fas fa-random yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG FLOW',
-        'm_desc' => '',
+        'm_desc' => 'Choose how the reader completes this blog and how the flow to the next one.',
         'm_parents' => array(12079,11054,6204,10651,6160,6194,6232,4527,6201),
     ),
     4485 => array(
@@ -29,9 +29,9 @@ $config['en_all_12079'] = array(
         'm_parents' => array(12079,7552,4535,4527,4463),
     ),
     4737 => array(
-        'm_icon' => '<i class="fas fa-sliders-h yellow"></i>',
+        'm_icon' => '<i class="fas fa-sliders-h yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG STATUS',
-        'm_desc' => '',
+        'm_desc' => 'Set blog status.',
         'm_parents' => array(12079,11054,6204,10648,6226,6160,6232,7302,6194,6201,4527),
     ),
     4736 => array(
@@ -40,11 +40,11 @@ $config['en_all_12079'] = array(
         'm_desc' => '',
         'm_parents' => array(12079,11071,10644,6232,6201),
     ),
-    6205 => array(
+    12090 => array(
         'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
-        'm_name' => 'READ',
-        'm_desc' => '',
-        'm_parents' => array(12079,12003,2738,4463),
+        'm_name' => 'PREVIEW',
+        'm_desc' => 'Read this blog and it\'s next blogs interactively.',
+        'm_parents' => array(12079),
     ),
 );
 
@@ -114,7 +114,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
         'm_name' => 'READ',
         'm_desc' => 'An electronic log book containing a list of transactions and balances typically involving financial accounts.',
-        'm_parents' => array(12079,12003,2738,4463),
+        'm_parents' => array(12090,12003,2738,4463),
     ),
 );
 
@@ -910,7 +910,7 @@ $config['en_all_12003'] = array(
         'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
         'm_name' => 'READ',
         'm_desc' => '',
-        'm_parents' => array(12079,12003,2738,4463),
+        'm_parents' => array(12090,12003,2738,4463),
     ),
 );
 
@@ -2162,7 +2162,7 @@ $config['en_all_6232'] = array(
         'm_parents' => array(10888,6204,7302,6160,6201,6194,6232,4527),
     ),
     4737 => array(
-        'm_icon' => '<i class="fas fa-sliders-h yellow"></i>',
+        'm_icon' => '<i class="fas fa-sliders-h yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG STATUS',
         'm_desc' => 'in_status_entity_id',
         'm_parents' => array(12079,11054,6204,10648,6226,6160,6232,7302,6194,6201,4527),
@@ -2637,7 +2637,7 @@ $config['en_all_11054'] = array(
         'm_parents' => array(11054,10984,11025,10662,4527),
     ),
     4737 => array(
-        'm_icon' => '<i class="fas fa-sliders-h yellow"></i>',
+        'm_icon' => '<i class="fas fa-sliders-h yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG STATUS',
         'm_desc' => '',
         'm_parents' => array(12079,11054,6204,10648,6226,6160,6232,7302,6194,6201,4527),
@@ -3037,7 +3037,7 @@ $config['en_all_2738'] = array(
         'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
         'm_name' => 'READ',
         'm_desc' => 'microblogs interactively by choosing your unique reading path. Earn 1x READ COIN for each word you read over the web or Facebook Messenger.',
-        'm_parents' => array(12079,12003,2738,4463),
+        'm_parents' => array(12090,12003,2738,4463),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle yellow" aria-hidden="true"></i>',
@@ -3218,7 +3218,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,4535),
     ),
     4737 => array(
-        'm_icon' => '<i class="fas fa-sliders-h yellow"></i>',
+        'm_icon' => '<i class="fas fa-sliders-h yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG STATUS',
         'm_desc' => '',
         'm_parents' => array(12079,11054,6204,10648,6226,6160,6232,7302,6194,6201,4527),
@@ -6152,7 +6152,7 @@ $config['en_all_6201'] = array(
         'm_parents' => array(10888,6204,7302,6160,6201,6194,6232,4527),
     ),
     4737 => array(
-        'm_icon' => '<i class="fas fa-sliders-h yellow"></i>',
+        'm_icon' => '<i class="fas fa-sliders-h yellow" aria-hidden="true"></i>',
         'm_name' => 'STATUS',
         'm_desc' => '',
         'm_parents' => array(12079,11054,6204,10648,6226,6160,6232,7302,6194,6201,4527),
@@ -6193,7 +6193,7 @@ $config['en_all_6204'] = array(
         'm_parents' => array(10888,6204,7302,6160,6201,6194,6232,4527),
     ),
     4737 => array(
-        'm_icon' => '<i class="fas fa-sliders-h yellow"></i>',
+        'm_icon' => '<i class="fas fa-sliders-h yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG STATUS',
         'm_desc' => '',
         'm_parents' => array(12079,11054,6204,10648,6226,6160,6232,7302,6194,6201,4527),
@@ -6878,7 +6878,7 @@ $config['en_all_7302'] = array(
         'm_parents' => array(10888,6204,7302,6160,6201,6194,6232,4527),
     ),
     4737 => array(
-        'm_icon' => '<i class="fas fa-sliders-h yellow"></i>',
+        'm_icon' => '<i class="fas fa-sliders-h yellow" aria-hidden="true"></i>',
         'm_name' => 'STATUS',
         'm_desc' => '',
         'm_parents' => array(12079,11054,6204,10648,6226,6160,6232,7302,6194,6201,4527),
@@ -6964,7 +6964,7 @@ $config['en_all_6194'] = array(
         'm_parents' => array(10888,6204,7302,6160,6201,6194,6232,4527),
     ),
     4737 => array(
-        'm_icon' => '<i class="fas fa-sliders-h yellow"></i>',
+        'm_icon' => '<i class="fas fa-sliders-h yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG STATUS',
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id=',
         'm_parents' => array(12079,11054,6204,10648,6226,6160,6232,7302,6194,6201,4527),

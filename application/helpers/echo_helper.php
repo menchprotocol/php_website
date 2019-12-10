@@ -493,7 +493,7 @@ function echo_ln($ln, $is_inner = false)
 
     $CI =& get_instance();
     $en_all_4593 = $CI->config->item('en_all_4593'); //Link Type
-    $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
+    $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_4341 = $CI->config->item('en_all_4341'); //Link Table
     $en_all_2738 = $CI->config->item('en_all_2738');
 
@@ -2107,7 +2107,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
     $en_all_4737 = $CI->config->item('en_all_4737'); //Intent Statuses
     $en_all_7585 = $CI->config->item('en_all_7585'); //Intent Subtypes
-    $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
+    $en_all_4527 = $CI->config->item('en_all_4527');
 
     //Prep link metadata to be analyzed later:
     $ln_id = $in['ln_id'];
@@ -2263,7 +2263,7 @@ function echo_en($en, $is_parent = false)
     $CI =& get_instance();
     $session_en = superpower_assigned();
     $en_all_6177 = $CI->config->item('en_all_6177'); //Entity Statuses
-    $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
+    $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_2738 = $CI->config->item('en_all_2738');
     $ln_id = (isset($en['ln_id']) ? $en['ln_id'] : 0);
     $ui = null;
@@ -2410,13 +2410,14 @@ function echo_en($en, $is_parent = false)
 function echo_dropdown($cache_en_id, $selected_en_id, $btn_class = 'btn-primary'){
 
     $CI =& get_instance();
-    $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
+    $en_all_12079 = $CI->config->item('en_all_12079');
+    $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_this = $CI->config->item('en_all_'.$cache_en_id);
 
-//data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
-    $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'">';
+    //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
+    $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'" title="'.$en_all_12079[$cache_en_id]['m_desc'].'" data-toggle="tooltip" data-placement="right">';
     $ui .= '<button  class="btn btn-sm '.$btn_class.' dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-    $ui .= '<span class="icon-block">'.$en_all_this[$selected_en_id]['m_icon'].'</span>'.$en_all_this[$selected_en_id]['m_name'];
+    $ui .= $en_all_this[$selected_en_id]['m_icon'].' &nbsp;'.$en_all_this[$selected_en_id]['m_name'];
     $ui .= '</button>';
     $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
 
@@ -2424,7 +2425,7 @@ function echo_dropdown($cache_en_id, $selected_en_id, $btn_class = 'btn-primary'
 
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
 
-        $ui .= '<a class="dropdown-item dropi_'.$cache_en_id.' montserrat optiond_'.$en_id.' doupper '.( $en_id==$selected_en_id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.','.$en_id.')"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+        $ui .= '<a class="dropdown-item dropi_'.$cache_en_id.' montserrat optiond_'.$en_id.' doupper '.( $en_id==$selected_en_id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.','.$en_id.')" title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
 
     }
 
