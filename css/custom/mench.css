@@ -726,7 +726,7 @@ label {
 }
 
 .list-group-item .montserrat{
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .player-settings.active{
