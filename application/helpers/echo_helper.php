@@ -1548,11 +1548,11 @@ function echo_in_read($in, $url_prefix = null)
     ), array('ln_creator'), 1);
 
 
-    $ui = '<div class="list-group-item '.( $url_prefix ? 'itemblog' : 'itemread' ).'">';
+    $ui = '<a href="'.$url_prefix.'/'.$in['in_id'] . '" class="list-group-item '.( $url_prefix ? 'itemblog' : 'itemread' ).'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
-    $ui .= '<a href="'.$url_prefix.'/'.$in['in_id'] . '" class="montserrat blog-url">'.echo_in_outcome($in['in_outcome'], false).'</a>';
-    $ui .= '<span class="montserrat blog-info doupper">'.( $has_time_estimate ? echo_time_range($in, true).' READ ' : '' ).'BY <a href="/play/'.$authors[0]['en_id'].'" class="montserrat">'.one_two_explode('',' ',$authors[0]['en_name']).'</a></span>';
+    $ui .= '<b class="montserrat blog-url">'.echo_in_outcome($in['in_outcome'], false).'</b>';
+    $ui .= '<span class="montserrat blog-info doupper">'.( $has_time_estimate ? echo_time_range($in, true).' READ ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']).'</span>';
     $ui .= '</td>';
 
     //Search for Blog Image:
@@ -1573,7 +1573,7 @@ function echo_in_read($in, $url_prefix = null)
 
         //Did we find an image for this message?
         if(count($images) > 0){
-            $ui .= '<div class="pull-right inline-block featured-frame"><a href="/'.$in['in_id'] . '" class="featured-image"><img src="'.$images[0]['ln_content'].'" /></a></div>';
+            $ui .= '<div class="pull-right inline-block featured-frame"><span class="featured-image"><img src="'.$images[0]['ln_content'].'" /></span></div>';
             break;
         }
 
@@ -1588,7 +1588,7 @@ function echo_in_read($in, $url_prefix = null)
         if(count($embeds) > 0){
             $youtube_id = extract_youtube_id($embeds[0]['ln_content']);
             if(strlen($youtube_id) > 0){
-                $ui .= '<div class="pull-right inline-block featured-frame"><a href="/'.$in['in_id'] . '" class="featured-image"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></a></div>';
+                $ui .= '<div class="pull-right inline-block featured-frame"><span class="featured-image"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
                 break;
             }
         }
@@ -1596,7 +1596,7 @@ function echo_in_read($in, $url_prefix = null)
     }
     $ui .= '</td>';
     $ui .= '</tr></table>';
-    $ui .= '</div>';
+    $ui .= '</a>';
 
     return $ui;
 }
