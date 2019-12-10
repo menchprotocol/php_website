@@ -9,7 +9,7 @@
 
         $(document).ready(function () {
 
-            var terms = {"Share Ideas.", "Quote Ideas.", "Link Ideas.", "Collaboratively."};
+            var terms = ['Share Ideas.', 'Quote Ideas.', 'Link Ideas.', 'Collaboratively.'];
 
             new TypeIt('.blog_content', {
                 speed: 50,
