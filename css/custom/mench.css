@@ -754,7 +754,7 @@ label {
 }
 
 .btn.dropdown-toggle{
-    margin-left: 0 !important;
+    padding-left: 0 !important;
 }
 
 .btn-superpower {
