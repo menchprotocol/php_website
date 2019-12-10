@@ -252,6 +252,10 @@ img.no-radius {
     z-index: 9999999 !important;
 }
 
+.htitle{
+    min-width: 80px;
+}
+
 .no-margin{
     margin: 0;
 }

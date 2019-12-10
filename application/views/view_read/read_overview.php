@@ -1,18 +1,18 @@
 
 <div class="container">
 
-    <h1 class="play no-margin"><span class="play_title"></span> <span class="play_content inline-block"></span></h1>
-    <h1 class="read no-margin"><span class="read_title"></span> <span class="read_content inline-block"></span></h1>
-    <h1 class="blog no-margin"><span class="blog_title"></span> <span class="blog_content inline-block"></span></h1>
+    <h1 class="play no-margin"><span class="htitle"><span class="play_title"></span></span><span class="play_content inline-block"></span></h1>
+    <h1 class="read no-margin"><span class="htitle"><span class="read_title"></span></span><span class="read_content inline-block"></span></h1>
+    <h1 class="blog no-margin"><span class="htitle"><span class="blog_title"></span></span><span class="blog_content inline-block"></span></h1>
 
     <script>
 
         $(document).ready(function () {
 
             //Load the three:
-            new TypeIt('.play_title', {   speed: 50,  startDelay: 1000 }).type('PLAY').go();
-            new TypeIt('.read_title', {   speed: 50,  startDelay: 2000 }).type('READ').go();
-            new TypeIt('.blog_title', {   speed: 50,  startDelay: 3000 }).type('BLOG').go();
+            new TypeIt('.play_title', {   speed: 50,  startDelay: 1000 }).type('PLAY').go().destroy();
+            new TypeIt('.read_title', {   speed: 50,  startDelay: 2000 }).type('READ').go().destroy();
+            new TypeIt('.blog_title', {   speed: 50,  startDelay: 3000 }).type('BLOG').go().destroy();
 
 
             var play_terms = ['A Publishing Game', 'A Crypto Game.', 'With Friends.'];
