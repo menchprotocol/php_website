@@ -2137,8 +2137,8 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
         //Fetch parents at this point:
         $in['in__parents'] = $CI->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
             'ln_child_intent_id' => $in['in_id'],
         ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
@@ -2164,8 +2164,8 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     $child_links = $CI->READ_model->ln_fetch(array(
         'ln_parent_intent_id' => $in['in_id'],
         'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
-        'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+        'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+        'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as in__child_count');
     $tree_count_range = $child_links[0]['in__child_count'];
 
@@ -2331,8 +2331,8 @@ function echo_en($en, $is_parent = false)
         $child_links = $CI->READ_model->ln_fetch(array(
             'ln_parent_entity_id' => $en['en_id'],
             'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
 
         if (count($child_links) > 0) {
@@ -2362,13 +2362,7 @@ function echo_en($en, $is_parent = false)
 
     $ui .= ' </div>';
 
-
-
-
-
     $ui .= '</div>';
-
-
     $ui .= '</div>';
 
     return $ui;
@@ -2376,20 +2370,16 @@ function echo_en($en, $is_parent = false)
 }
 
 
-function echo_dropdown($cache_en_id, $selected_en_id = 0, $micro = false, $btn_class = 'btn-primary'){
+function echo_dropdown($cache_en_id, $selected_en_id, $btn_class = 'btn-primary'){
 
     $CI =& get_instance();
     $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
     $en_all_this = $CI->config->item('en_all_'.$cache_en_id);
 
 //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
-    $ui = '<div class="dropdown inline-block">';
+    $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'">';
     $ui .= '<button  class="btn btn-sm '.$btn_class.' dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-    if($micro){
-        $ui .= ( $selected_en_id > 0 ? $en_all_this[$selected_en_id]['m_icon'] : '' );
-    } else {
-        $ui .= ( $selected_en_id > 0 ? $en_all_this[$selected_en_id]['m_icon'].' &nbsp;'.$en_all_this[$selected_en_id]['m_name'] : 'SELECT' );
-    }
+    $ui .= '<span class="icon-block">'.$en_all_this[$selected_en_id]['m_icon'].'</span>'.$en_all_this[$selected_en_id]['m_name'];
     $ui .= '</button>';
     $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
 
@@ -2398,7 +2388,8 @@ function echo_dropdown($cache_en_id, $selected_en_id = 0, $micro = false, $btn_c
         $is_set = ($en_id==$selected_en_id);
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
 
-        $ui .= '<a class="dropdown-item montserrat doupper '.( $is_set ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" href="javascript:void();" '.( !$is_set ? 'onclick="update_dropdown('.$cache_en_id.','.$en_id.')' : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+        $ui .= '<a class="dropdown-item montserrat optiond_'.$en_id.' doupper '.( $is_set ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.','.$en_id.')"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+
     }
 
     $ui .= '</div>';

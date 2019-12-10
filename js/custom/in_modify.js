@@ -27,7 +27,7 @@ $(document).ready(function () {
         if (e.ctrlKey && code == 13) {
             in_save_title();
         } else if (code == 13) {
-            event.preventDefault();
+            e.preventDefault();
         }
     }).focus(function() {
         //Clear default title
@@ -61,30 +61,65 @@ function show_save_button(){
 }
 
 
-function in_update_dropdown(element_id, in_field, new_en_id){
+function in_update_dropdown(element_id, new_en_id){
 
-    //Fetch Intent Data to load modify widget:
-    $('.title_update_status').html('<b class="montserrat"><i class="far fa-yin-yang fa-spin"></i> SAVING...</b>').hide().fadeIn();
+    /*
+    *
+    * WARNING:
+    *
+    * element_id Must be listed as children of:
+    *
+    * MEMORY CACHE @4527
+    * JS MEMORY CACHE @11054
+    *
+    *
+    * */
 
+    var current_selected = parseInt($('.dropd_'+element_id+'.active').attr('new-en-id'));
+    if(current_selected==parseInt(new_en_id)){
+        //Nothing changed:
+        return false;
+    }
 
-    $.post("/blog/in_save_title", {
+    //Are we deleting a status?
+    var is_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
+
+    if(is_delete){
+        //Seems to be deleting, confirm:
+        var r = confirm("Are you sure you want to archive this blog?");
+        if (!(r == true)) {
+            return false;
+        }
+    }
+
+    //Show Loading...
+    var data_object = eval('js_en_all_'+element_id);
+    $('.dropd_'+element_id+' .btn').text('<b class="montserrat"><i class="far fa-yin-yang fa-spin"></i> SAVING...</b>');
+
+    $.post("/blog/in_update_dropdown", {
         in_id: in_loaded_id,
-        in_outcome: $('#new_blog_title').val(),
+        element_id: element_id,
+        new_en_id: new_en_id,
     }, function (data) {
         if (data.status) {
 
             //Update on page:
-            $('.title_update_status').html(data.message);
+            $('.dropd_'+element_id+' .btn').text('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + data_object[new_en_id]['m_name']);
+            $('.dropd_'+element_id+' .optiond_' + current_selected).removeClass('active');
+            $('.dropd_'+element_id+' .optiond_' + new_en_id).addClass('active');
 
-            setTimeout(function () {
-                $('#current_blog_title, #new_blog_title').val(data.in_cleaned_outcome);
-                $('#blog_title_save').addClass('hidden');
-                $('.title_update_status').html('');
-            }, 1597);
+            if(is_delete){
+                //Go to main blog page:
+                window.location = '/blog';
+            }
 
         } else {
+
+            //Reset to default:
+            $('.dropd_'+element_id+' .btn').text('<span class="icon-block">'+data_object[current_selected]['m_icon']+'</span>' + data_object[current_selected]['m_name']);
+
             //Show error:
-            $('.title_update_status').html('<b class="montserrat ispink">ERROR: '+data.message+'</b>').hide().fadeIn();
+            alert('ERROR: ' + data.message);
 
         }
     });

@@ -39,7 +39,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     if($col_num==1){
 
         echo '<div>';
-            echo '<div class="inline-block">'.echo_dropdown(4737, $in['in_status_entity_id'], false, 'btn-blog').'</div>';
+            echo '<div class="inline-block">'.echo_dropdown(4737, $in['in_status_entity_id'], 'btn-blog').'</div>';
             echo '<div class="inline-block" style="margin-left: 5px;"><a href="/'.$in['in_id'].'" class="btn btn-sm btn-read">READ <i class="fas fa-arrow-right"></i></a></div>';
         echo '</div>';
 
@@ -55,7 +55,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } else {
 
         echo '<div class="center-right">';
-            echo '<div class="inline-block">'.echo_dropdown(7585, $in['in_completion_method_entity_id'], false, 'btn-blog').'</div>';
+            echo '<div class="inline-block">'.echo_dropdown(7585, $in['in_completion_method_entity_id'], 'btn-blog').'</div>';
         echo '</div>';
 
     }
@@ -206,7 +206,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<table class="table table-condensed hidden" id="notes_control_'.$en_id2.'"><tr>';
 
             //Save button:
-            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="right" class="btn btn-blog save_note_'.$en_id2.'">SAVE</a></td>';
+            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="right" class="btn btn-blog save_note_'.$en_id2.'">ADD</a></td>';
 
             //File counter:
             $this_tab .= '<td class="remove_loading" class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="blogNoteNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';

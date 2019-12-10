@@ -397,9 +397,9 @@ $(document).ready(function () {
 
 
 
-    $('#topnav li a').click(function (event) {
+    $('#topnav li a').click(function (e) {
 
-        event.preventDefault();
+        e.preventDefault();
         var hash = $(this).attr('href').replace('#', '');
 
         if (hash.length > 0 && $('#tab' + hash).length && !$('#tab' + hash).hasClass("hidden")) {

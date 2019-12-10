@@ -211,6 +211,51 @@ class Blog extends CI_Controller {
     }
 
 
+    function in_update_dropdown(){
+
+        //Maintain a manual index as a hack for the Intent/Entity tables for now:
+        $manual_converter = array(
+            7585 => 'in_completion_method_entity_id',
+            4737 => 'in_status_entity_id',
+        );
+
+        //Authenticate Trainer:
+        $session_en = superpower_assigned();
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Expired Session or Missing Superpower',
+            ));
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Intent ID',
+            ));
+        } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $manual_converter) || !count($this->config->item('en_ids_'.$_POST['element_id']))) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Element ID',
+            ));
+        } elseif (!isset($_POST['new_en_id']) || intval($_POST['new_en_id']) < 1 || !in_array($_POST['new_en_id'], $this->config->item('en_ids_'.$_POST['element_id']))) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Value ID',
+            ));
+        }
+
+        //Update Field:
+        $this->BLOG_model->in_update($_POST['in_id'], array(
+            $manual_converter[$_POST['element_id']] => $_POST['new_en_id'],
+        ), true, $session_en['en_id']);
+
+
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Updated successfully.',
+        ));
+
+    }
+
     function in_save_title(){
         //Authenticate Trainer:
         $session_en = superpower_assigned();
