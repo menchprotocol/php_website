@@ -252,11 +252,6 @@ img.no-radius {
     z-index: 9999999 !important;
 }
 
-.htitle{
-    min-width:161px;
-    display: inline-block;
-}
-
 .no-margin{
     margin: 0;
 }
@@ -952,7 +947,6 @@ label {
     .show-on-hover { display:inline-block !important; }
     .show-max{display: none !important;}
     .form-control-thick { padding-left: 26px; }
-    .htitle{ min-width:100px; }
 }
 
 @media (min-width:767px) {

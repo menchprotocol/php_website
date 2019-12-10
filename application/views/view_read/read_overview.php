@@ -1,23 +1,30 @@
 
 <div class="container">
 
-    <h1 class="play no-margin"><span class="htitle"><span class="play_title"></span></span><span class="play_content inline-block"></span></h1>
-    <h1 class="read no-margin"><span class="htitle"><span class="read_title"></span></span><span class="read_content inline-block"></span></h1>
-    <h1 class="blog no-margin"><span class="htitle"><span class="blog_title"></span></span><span class="blog_content inline-block"></span></h1>
+    <h1 class="play no-margin"><span class="play_title"></span> <span class="play_content"></span></h1>
+    <h1 class="read no-margin"><span class="read_title"></span> <span class="read_content"></span></h1>
+    <h1 class="blog no-margin"><span class="blog_title"></span> <span class="blog_content"></span></h1>
 
     <script>
 
         $(document).ready(function () {
 
-            //Load the three:
-            new TypeIt('.play_title', {   speed: 33,  startDelay: 1000 }).type('PLAY').go().destroy();
-            new TypeIt('.read_title', {   speed: 33,  startDelay: 2500 }).type('READ').go().destroy();
-            new TypeIt('.blog_title', {   speed: 33,  startDelay: 4000 }).type('BLOG').go().destroy();
+            //Terminology Index
+            var play_titles = ['PLAY', 'EARN'];
+            var play_terms = ['a learning-game', 'a free-game', 'a crypto-game', 'crypto-coins'];
+            var read_titles = ['READ', 'DISCOVER', 'LEARN'];
+            var read_terms = ['top ideas', 'on the web', 'on Messenger', '5K words/mo free', 'all for $5/mo', 'interactively'];
+            var blog_titles = ['BLOG', 'CREATE', 'WRITE'];
+            var blog_terms = ['expert ideas', 'your ideas', 'on the web', 'for Messenger', 'for cash income', 'collaboratively'];
 
+            //The Story
+            var story_timeline = 334;
+            console.log(story_timeline);
+            new TypeIt('.play_title', {   speed: 33,  startDelay:(story_timeline+=1500) }).type(play_titles[0]).go().destroy();
+            console.log(story_timeline);
+            new TypeIt('.read_title', {   speed: 33,  startDelay:(story_timeline+=1500) }).type(read_titles[0]).go().destroy();
+            new TypeIt('.blog_title', {   speed: 33,  startDelay:(story_timeline+=1500) }).type(blog_titles[0]).go().destroy();
 
-            var play_terms = ['A Publishing Game', 'A Crypto Game.', 'With Friends.'];
-            var read_terms = ['Relevant Ideas', 'On Messenger', 'On the web', 'Interactively.'];
-            var blog_terms = ['Your Ideas.', 'Expert Ideas.', 'For Messenger.', 'Collaboratively.'];
 
 
             new TypeIt('.blog_content', {
