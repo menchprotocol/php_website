@@ -394,6 +394,14 @@ img.no-radius {
     height: 100%;
 }
 
+.form-control:focus {
+    color: inherit;
+    background-color: transparent;
+    border-color: transparent;
+    outline: 0;
+    box-shadow: none;
+}
+
 
 .nav-tabs, .dropdown-menu {
     border-color:#070707 !important;
