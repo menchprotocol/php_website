@@ -2145,7 +2145,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>';
 
 
-    $ui .= '<b class="in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false) . '</b>';
+    $ui .= '<b class="in_outcome_' . $in['in_id'] . ' montserrat">' . echo_in_outcome($in['in_outcome'], false) . '</b>';
 
 
 
