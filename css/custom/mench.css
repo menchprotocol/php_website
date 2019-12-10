@@ -196,6 +196,7 @@ img.no-radius {
 .alert{
     padding: .5rem;
     border-radius:0;
+    margin-top: 0;
 }
 
 .alert-info {
@@ -497,7 +498,7 @@ textarea.note-textarea{
     color: #070707;
 }
 .i_content {
-    padding:0px 22px 0px 2px;
+    padding:0px 22px 0px 1px;
 }
 .text_message{
     margin:5px 0;

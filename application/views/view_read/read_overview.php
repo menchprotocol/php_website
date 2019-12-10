@@ -1,11 +1,33 @@
 
 <div class="container">
 
-    <?php $en_all_4463 = $this->config->item('en_all_4463') ?>
+    <h1 class="play">PLAY. <span class="plat_content inline-block"></span></h1><!-- A Publishing Game/A Crypto Game./With Friends. -->
+    <h1 class="read">READ. <span class="read_content inline-block"></span></h1><!-- Bright Ideas/Relevant Ideas/Interactively./On the web/On Messenger -->
+    <h1 class="blog">BLOG. <span class="blog_content inline-block"></span></h1><!-- Your Ideas./Quote Ideas./Link Ideas./Collaboratively. -->
 
-    <div class="alert alert-info" style="margin-top: 0;">
-        <div><b class="montserrat"><?= $en_all_4463[2738]['m_name'] ?></b> <?= $en_all_4463[2738]['m_desc'] ?></div>
-    </div>
+    <script>
+
+        $(document).ready(function () {
+
+            new TypeIt('.blog_content', {
+                speed: 50,
+                startDelay: 900
+            })
+            .type('Interactively.')
+            .pause(500)
+            .delete(2)
+            .pause(100)
+            .type('Using')
+            .pause(750)
+            .options({speed: 100, deleteSpeed: 75})
+            .delete(8)
+            .pause(750)
+            .type('Collaboratively.')
+            .go();
+
+        });
+
+    </script>
 
     <?php
 

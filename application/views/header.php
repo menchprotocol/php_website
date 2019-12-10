@@ -68,6 +68,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     <script src="https://kit.fontawesome.com/fbf7f3ae67.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typeit@VERSION_NUMBER/dist/typeit.min.js" />
     <script src="/js/lib/jquery.textcomplete.min.js"></script>
     <script src="/js/lib/autosize.min.js"></script>
     <script src="/js/lib/autocomplete.jquery.min.js"></script>
@@ -134,7 +135,7 @@ if(!isset($hide_header) || !$hide_header){
                     <td>
                         <div class="supwerpower_view">
 
-                            <span class="<?= ( isset($hide_mench) ? ' hidden ' : '' ) ?>"><span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><?= ( count($this->session->userdata('assigned_superpowers_en_ids')) ? 'ME<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');" style="text-decoration: none;">N</a>CH' : '<a href="/" style="text-decoration: none;">MENCH</a>' ) ?></span></span>
+                            <span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><?= ( count($this->session->userdata('assigned_superpowers_en_ids')) ? 'ME<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');" style="text-decoration: none;">N</a>CH' : '<a href="/" style="text-decoration: none;">MENCH</a>' ) ?></span>
 
                             <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
