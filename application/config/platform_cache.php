@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-10 02:47:14 PST
+//Generated 2019-12-10 02:56:01 PST
 
 //BLOG MODIFY:
 $config['en_ids_12079'] = array(7585,4485,4737,4736,12090);
@@ -6548,19 +6548,19 @@ $config['en_all_6193'] = array(
 );
 
 //BLOG FLOW:
-$config['en_ids_7585'] = array(12044,6677,6683,7637,6684,7231,6907,6914);
+$config['en_ids_7585'] = array(6677,12044,6683,7637,6684,7231,6907,6914);
 $config['en_all_7585'] = array(
-    12044 => array(
-        'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
-        'm_name' => 'START',
-        'm_desc' => 'A starting point where readers are asked to login to continue. This ensures that the reader starts saving the rest of the conversation history.',
-        'm_parents' => array(4559,7756,6192,7582,7585),
-    ),
     6677 => array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
         'm_name' => 'READ',
         'm_desc' => 'User will complete by reading intent messages only. No inputs required.',
         'm_parents' => array(7756,7585,4559,6192),
+    ),
+    12044 => array(
+        'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
+        'm_name' => 'START',
+        'm_desc' => 'A starting point where readers are asked to login to continue. This ensures that the reader starts saving the rest of the conversation history.',
+        'm_parents' => array(4559,7756,6192,7582,7585),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard "></i>',
