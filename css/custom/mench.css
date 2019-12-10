@@ -156,8 +156,7 @@ li a {
 .btn {
     font-family: 'Montserrat', sans-serif;
     text-transform: uppercase;
-    font-size: 0.8em !important;
-    font-weight: 300 !important;
+    font-size: 1em !important;
     border-radius: 0 !important;
 }
 
