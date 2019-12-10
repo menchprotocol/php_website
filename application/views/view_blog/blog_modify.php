@@ -101,7 +101,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= echo_in($parent_in, true);
             }
 
-            $this_tab .= '<div class="list_input grey-block '.superpower_active(10939).'">
+            $this_tab .= '<div class="list-group-item itemblog '.superpower_active(10939).'">
                             <div class="form-group is-empty" style="margin: 0; padding: 0;">
                                 <input type="text"
                                        class="form-control intentadder-level-2-parent form-control-thick algolia_search"
@@ -137,7 +137,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //Add child intent:
             $this_tab .= '<div class="'.superpower_active(10939).'">';
             if(in_can_train($in['in_id'])){
-                $this_tab .= '<div class="list_input grey-block">
+                $this_tab .= '<div class="list-group-item itemblog">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2-child form-control-thick algolia_search"

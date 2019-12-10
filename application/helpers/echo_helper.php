@@ -237,7 +237,7 @@ function echo_in_note($ln)
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
-    $ui .= '<div class="edit-off text_message" id="msgbody_' . $ln['ln_id'] . '" style="margin:2px 0 0 0;">';
+    $ui .= '<div class="edit-off text_message" id="msgbody_' . $ln['ln_id'] . '">';
     $ui .= $CI->READ_model->dispatch_message($ln['ln_content'], $session_en, false, array(), $ln['ln_child_intent_id']);
     $ui .= '</div>';
 

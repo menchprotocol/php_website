@@ -489,6 +489,9 @@ textarea.note-textarea{
 .i_content {
     padding:0px 22px 0px 2px;
 }
+.text_message{
+    margin:5px 0;
+}
 
 .note-edit>span{
     display: block;
