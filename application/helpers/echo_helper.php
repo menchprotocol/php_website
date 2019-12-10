@@ -1548,7 +1548,7 @@ function echo_in_read($in, $url_prefix = null)
     ), array('ln_creator'), 1);
 
 
-    $ui = '<div class="list-group-item itemread">';
+    $ui = '<div class="list-group-item '.( $url_prefix ? 'itemblog' : 'itemread' ).'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
     $ui .= '<a href="'.$url_prefix.'/'.$in['in_id'] . '" class="montserrat blog-url">'.echo_in_outcome($in['in_outcome'], false).'</a>';
