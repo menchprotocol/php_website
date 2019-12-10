@@ -678,6 +678,10 @@ textarea.note-textarea{
     background-color:#fbc4ce !important;
 }
 
+.form-group {
+    background-color: #FFFFFF;
+}
+
 .show-on-hover {
     display:none !important;
 }
@@ -946,4 +950,7 @@ label {
     .content-image{ max-height:300px; }
     .show-on-hover { display:inline-block !important; }
     .show-max{display: none !important;}
+    .itemblog:hover { background-color:inherit !important; }
+    .itemplay:hover { background-color:inherit !important; }
+    .itemread:hover { background-color:inherit !important; }
 }
