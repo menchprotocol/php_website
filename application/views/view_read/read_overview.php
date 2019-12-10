@@ -20,25 +20,28 @@
             var blog_terms = ['Your Ideas.', 'Expert Ideas.', 'Collaboratively.'];
 
 
-            new TypeIt('.blog_content', {
-                speed: 50,
-                startDelay: 4000
-            })
-            .type(blog_terms[0])
-            .pause(500)
-            .delete(blog_terms[0].length)
-            .pause(100)
-            .type(blog_terms[1])
-            .pause(750)
-            .options({speed: 100, deleteSpeed: 75})
-            .delete(blog_terms[1].length)
-            .pause(750)
-            .type(blog_terms[2])
-            .pause(1000)
-            .delete(blog_terms[2].length)
-            .pause(200)
-            .type(blog_terms[3])
-            .go();
+            setTimeout(function () {
+                new TypeIt('.blog_content', {
+                    speed: 50,
+                    startDelay:0
+                })
+                    .type(blog_terms[0])
+                    .pause(500)
+                    .delete(blog_terms[0].length)
+                    .pause(100)
+                    .type(blog_terms[1])
+                    .pause(750)
+                    .options({speed: 100, deleteSpeed: 75})
+                    .delete(blog_terms[1].length)
+                    .pause(750)
+                    .type(blog_terms[2])
+                    .pause(1000)
+                    .delete(blog_terms[2].length)
+                    .pause(200)
+                    .type(blog_terms[3])
+                    .go();
+            }, 4000);
+
 
         });
 
