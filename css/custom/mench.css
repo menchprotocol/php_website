@@ -682,6 +682,10 @@ textarea.note-textarea{
     background-color: #FFFFFF;
 }
 
+.list-group-item .form-group {
+    background-color: inherit;
+}
+
 .show-on-hover {
     display:none !important;
 }
