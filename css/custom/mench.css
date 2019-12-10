@@ -390,6 +390,8 @@ img.no-radius {
 .form-control, .border {
     border-radius:0;
     border:0 !important;
+    line-height: 1.1;
+    height: 100%;
 }
 
 
@@ -709,7 +711,7 @@ label {
 }
 
 .form-control-thick{
-    padding: 3px 10px 3px 30px;
+    padding: 3px 10px 3px 34px;
     font-weight: bold;
     font-size: 1em;
     color: #070707 !important;
