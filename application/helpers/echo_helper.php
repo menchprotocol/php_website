@@ -2385,10 +2385,9 @@ function echo_dropdown($cache_en_id, $selected_en_id, $btn_class = 'btn-primary'
 
     foreach ($en_all_this as $en_id => $m) {
 
-        $is_set = ($en_id==$selected_en_id);
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
 
-        $ui .= '<a class="dropdown-item montserrat optiond_'.$en_id.' doupper '.( $is_set ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.','.$en_id.')"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+        $ui .= '<a class="dropdown-item montserrat optiond_'.$en_id.' doupper '.( $en_id==$selected_en_id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.','.$en_id.')"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
 
     }
 

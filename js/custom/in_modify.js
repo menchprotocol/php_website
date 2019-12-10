@@ -76,6 +76,7 @@ function in_update_dropdown(element_id, new_en_id){
     * */
 
     var current_selected = parseInt($('.dropd_'+element_id+'.active').attr('new-en-id'));
+    console.log(current_selected);
     if(current_selected==parseInt(new_en_id)){
         //Nothing changed:
         return false;
@@ -105,7 +106,7 @@ function in_update_dropdown(element_id, new_en_id){
 
             //Update on page:
             $('.dropd_'+element_id+' .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + data_object[new_en_id]['m_name']);
-            $('.dropd_'+element_id+' .optiond_' + current_selected).removeClass('active');
+            $('.dropd_'+element_id+' .dropdown-menu').removeClass('active');
             $('.dropd_'+element_id+' .optiond_' + new_en_id).addClass('active');
 
             if(is_delete){
