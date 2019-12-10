@@ -3,26 +3,32 @@
 
     <h1 class="play">PLAY. <span class="plat_content inline-block"></span></h1><!-- A Publishing Game/A Crypto Game./With Friends. -->
     <h1 class="read">READ. <span class="read_content inline-block"></span></h1><!-- Bright Ideas/Relevant Ideas/Interactively./On the web/On Messenger -->
-    <h1 class="blog">BLOG. <span class="blog_content inline-block"></span></h1><!-- Your Ideas./Quote Ideas./Link Ideas./Collaboratively. -->
+    <h1 class="blog">BLOG. <span class="blog_content inline-block"></span></h1><!-- /// -->
 
     <script>
 
         $(document).ready(function () {
 
+            var terms = {'Share Ideas.', 'Quote Ideas.', 'Link Ideas.', 'Collaboratively.'};
+
             new TypeIt('.blog_content', {
                 speed: 50,
                 startDelay: 900
             })
-            .type('Interactively.')
+            .type(terms[0])
             .pause(500)
-            .delete(2)
+            .delete(terms[0].length)
             .pause(100)
-            .type('Using')
+            .type(terms[1])
             .pause(750)
             .options({speed: 100, deleteSpeed: 75})
-            .delete(8)
+            .delete(terms[1].length)
             .pause(750)
-            .type('Collaboratively.')
+            .type(terms[2])
+            .pause(1000)
+            .delete(terms[2].length)
+            .pause(200)
+            .type(terms[3])
             .go();
 
         });
