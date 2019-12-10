@@ -76,7 +76,7 @@ function in_update_dropdown(element_id, new_en_id){
 
     //Show Loading...
     var data_object = eval('js_en_all_'+element_id);
-    $('.dropd_'+element_id+' .btn').html('<i class="far fa-yin-yang fa-spin"></i> <b class="montserrat">SAVING...</b>');
+    $('.dropd_'+element_id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">SAVING...</b>');
 
     $.post("/blog/in_update_dropdown", {
 
@@ -88,7 +88,7 @@ function in_update_dropdown(element_id, new_en_id){
         if (data.status) {
 
             //Update on page:
-            $('.dropd_'+element_id+' .btn').html(data_object[new_en_id]['m_icon']+' ' + data_object[new_en_id]['m_name']);
+            $('.dropd_'+element_id+' .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + data_object[new_en_id]['m_name']);
             $('.dropd_'+element_id+' .dropi_' + element_id).removeClass('active');
             $('.dropd_'+element_id+' .optiond_' + new_en_id).addClass('active');
 
@@ -100,7 +100,7 @@ function in_update_dropdown(element_id, new_en_id){
         } else {
 
             //Reset to default:
-            $('.dropd_'+element_id+' .btn').html(data_object[current_selected]['m_icon']+' ' + data_object[current_selected]['m_name']);
+            $('.dropd_'+element_id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m_icon']+'</span>' + data_object[current_selected]['m_name']);
 
             //Show error:
             alert('ERROR: ' + data.message);
