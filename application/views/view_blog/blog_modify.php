@@ -39,9 +39,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     if($col_num==1){
 
         echo '<div>';
-            echo '<div class="inline-block"><a href="" class="btn btn-sm btn-blog" data-toggle="tooltip" title="Go Back" data-placement="right"><i class="fas fa-arrow-left"></i></a></div>';
+            echo '<div class="inline-block"><a href="" class="btn btn-blog" data-toggle="tooltip" title="Go Back" data-placement="right"><i class="fas fa-arrow-left"></i></a></div>';
             echo '<div class="inline-block" style="margin-left: 5px;">'.echo_dropdown(4737, $in['in_status_entity_id'], 'btn-blog').'</div>';
-            echo '<div class="inline-block" style="margin-left: 5px;"><a href="/'.$in['in_id'].'" class="btn btn-sm btn-read" data-toggle="tooltip" title="Read interactively" data-placement="right">PREVIEW <i class="fas fa-arrow-right"></i></a></div>';
+            echo '<div class="inline-block" style="margin-left: 5px;"><a href="/'.$in['in_id'].'" class="btn btn-read" data-toggle="tooltip" title="Read interactively" data-placement="right">PREVIEW <i class="fas fa-arrow-right"></i></a></div>';
         echo '</div>';
 
         echo '<div class="itemblog">';
