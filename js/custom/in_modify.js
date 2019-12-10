@@ -75,7 +75,7 @@ function in_update_dropdown(element_id, new_en_id){
     *
     * */
 
-    var current_selected = parseInt($('.dropd_'+element_id+'.active').attr('new-en-id'));
+    var current_selected = parseInt($('.dropd_'+element_id).hasClass('active').attr('new-en-id'));
     console.log(current_selected);
     if(current_selected==parseInt(new_en_id)){
         //Nothing changed:
