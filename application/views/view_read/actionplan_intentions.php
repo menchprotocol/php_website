@@ -20,7 +20,7 @@ if(count($user_intents) > 0){
     foreach ($user_intents as $priority => $ln) {
 
          //Display row:
-        echo '<a id="ap_in_'.$ln['in_id'].'" href="/actionplan/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item actionplan_sort">';
+        echo '<a id="ap_in_'.$ln['in_id'].'" href="/actionplan/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread actionplan_sort">';
 
         echo '<span class="pull-right" style="padding-right:8px; padding-left:10px;">';
         echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Remove from your Action Plan" data-placement="left"><i class="fas fa-comment-times" style="font-size:1.6em;"></i></span>';

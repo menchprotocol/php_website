@@ -194,7 +194,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             }
 
             //ADD NEW NOTE:
-            $this_tab .= '<div class="list-group-item add_note_' . $en_id2 . '">';
+            $this_tab .= '<div class="list-group-item itemblog add_note_' . $en_id2 . '">';
             $this_tab .= '<form class="box box' . $en_id2 . '" method="post" enctype="multipart/form-data">'; //Used for dropping files
 
 

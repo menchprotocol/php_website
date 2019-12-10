@@ -25,7 +25,7 @@ if(in_array($in['in_id'], $user_intentions_ids)){
     $found_grandpa_intersect = true;
 
     /*
-    echo '<a href="/actionplan" class="list-group-item">';
+    echo '<a href="/actionplan" class="list-group-item itemread">';
     echo '<span class="pull-left">';
     echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
     echo '</span>';

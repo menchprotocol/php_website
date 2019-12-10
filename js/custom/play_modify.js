@@ -338,7 +338,7 @@ function en_load_next_page(page, load_new_filter) {
         $('.load-more').remove();
 
         if (load_new_filter) {
-            $('#list-children').html(data + '<div id="new-children" class="list-group-item list_input grey-input">' + append_div + '</div>').hide().fadeIn();
+            $('#list-children').html(data + '<div id="new-children" class="list-group-item itemplay list_input grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
             en_load_search("#new-children", 0, 'w');
         } else {

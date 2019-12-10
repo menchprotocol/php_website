@@ -225,7 +225,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
     }
 
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item"><i class="far fa-yin-yang fa-spin"></i> Adding... </div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item itemblog"><i class="far fa-yin-yang fa-spin"></i> Adding... </div>');
 
     //Update backend:
     $.post("/blog/in_link_or_create", {

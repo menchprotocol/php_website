@@ -651,6 +651,16 @@ textarea.note-textarea{
     width: 100%;
 }
 
+.itemblog:hover {
+    background-color:#ffee8e !important;
+}
+.itemplay:hover {
+    background-color:#b2defd !important;
+}
+.itemread:hover {
+    background-color:#fbc4ce !important;
+}
+
 .show-on-hover {
     display:none !important;
 }

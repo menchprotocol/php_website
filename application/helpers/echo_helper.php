@@ -6,7 +6,7 @@ function echo_en_load_more($page, $limit, $en__child_count)
      * Gives an option to "Load More" entities when we have too many to show in one go
      * */
 
-    $ui = '<div class="load-more montserrat list-group-item" style="padding-bottom:20px;"><a href="javascript:void(0);" onclick="en_load_next_page(' . $page . ', 0)">';
+    $ui = '<div class="load-more montserrat list-group-item itemplay" style="padding-bottom:20px;"><a href="javascript:void(0);" onclick="en_load_next_page(' . $page . ', 0)">';
 
     //Regular section:
     $max_entities = (($page + 1) * $limit);
@@ -233,7 +233,7 @@ function echo_in_note($ln)
 
     //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item is-msg blogs_sortable msg_en_type_' . $ln['ln_type_entity_id'] . '" id="ul-nav-' . $ln['ln_id'] . '" tr-id="' . $ln['ln_id'] . '">';
+    $ui .= '<div class="list-group-item itemblog is-msg blogs_sortable msg_en_type_' . $ln['ln_type_entity_id'] . '" id="ul-nav-' . $ln['ln_id'] . '" tr-id="' . $ln['ln_id'] . '">';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
@@ -671,7 +671,7 @@ function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $com
     $completion_rate = $CI->READ_model->read__completion_progress($en_id, $in);
 
     //Open list:
-    $ui = '<a href="/actionplan/'.$in['in_id']. '" class="list-group-item">';
+    $ui = '<a href="/actionplan/'.$in['in_id']. '" class="list-group-item itemread">';
 
     $ui .= echo_in_outcome($in['in_outcome'], false, $common_prefix);
 
@@ -690,7 +690,7 @@ function echo_actionplan_step_parent($in)
 
     $CI =& get_instance();
 
-    $ui = '<a href="/actionplan/' . $in['in_id'] . '" class="list-group-item">';
+    $ui = '<a href="/actionplan/' . $in['in_id'] . '" class="list-group-item itemread">';
 
     $ui .= '<span class="pull-left">';
     $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
@@ -1548,7 +1548,7 @@ function echo_in_read($in, $url_prefix = null)
     ), array('ln_creator'), 1);
 
 
-    $ui = '<div class="list-group-item">';
+    $ui = '<div class="list-group-item itemread">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
     $ui .= '<a href="'.$url_prefix.'/'.$in['in_id'] . '" class="montserrat blog-url">'.echo_in_outcome($in['in_outcome'], false).'</a>';
@@ -1606,7 +1606,7 @@ function echo_in_dashboard($in)
 {
     $CI =& get_instance();
     $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
-    $ui = '<div class="list-group-item">';
+    $ui = '<div class="list-group-item itemblog">';
 
     //FOLLOW
     $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-blog" href="/blog/' . $in['in_id']. '"><i class="fas fa-angle-right"></i></a></div>';
@@ -1701,7 +1701,7 @@ function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
     if(count($CI->config->item('en_ids_'.$parent_en_id))){
 
         foreach($CI->config->item('en_all_'.$parent_en_id) as $en_id => $m) {
-            $ui .= '<a href="javascript:void(0);" onclick="radio_update('.$parent_en_id.','.$en_id.','.$enable_mulitiselect.')" class="list-group-item player-settings item-'.$en_id.' '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->READ_model->ln_fetch(array(
+            $ui .= '<a href="javascript:void(0);" onclick="radio_update('.$parent_en_id.','.$en_id.','.$enable_mulitiselect.')" class="list-group-item itemplay player-settings item-'.$en_id.' '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->READ_model->ln_fetch(array(
                     'ln_parent_entity_id' => $en_id,
                     'ln_child_entity_id' => $child_en_id,
                     'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
@@ -1735,7 +1735,7 @@ function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
     //Did we have too many items?
     if($count>=$show_max){
         //Show "Show more" button
-        $ui .= '<a href="javascript:void(0);" class="list-group-item player-settings extra-items-'.$parent_en_id.'" onclick="$(\'.extra-items-'.$parent_en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Show '.($count-$show_max).' more</a>';
+        $ui .= '<a href="javascript:void(0);" class="list-group-item itemplay player-settings extra-items-'.$parent_en_id.'" onclick="$(\'.extra-items-'.$parent_en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Show '.($count-$show_max).' more</a>';
     }
 
     $ui .= '</div>';
@@ -2123,7 +2123,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 
 
-    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_entity_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_linked_id . '" class="list-group-item blogs_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' intent_line_' . $in['in_id'] . ( $is_parent ? ' parent-intent ' : ' enable-sorting ' ) . ' in__tr_'.$ln_id.'">';
+    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_entity_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_linked_id . '" class="list-group-item itemblog blogs_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' intent_line_' . $in['in_id'] . ( $is_parent ? ' parent-intent ' : ' enable-sorting ' ) . ' in__tr_'.$ln_id.'">';
 
 
 
@@ -2292,7 +2292,7 @@ function echo_en($en, $is_parent = false)
     }
 
     //ROW
-    $ui .= '<div class="list-group-item en-item object_highlight '.( $is_hidden ? superpower_active(10967) : '' ).' highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-entity ' : '' ) . '" entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
+    $ui .= '<div class="list-group-item itemplay en-item object_highlight '.( $is_hidden ? superpower_active(10967) : '' ).' highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-entity ' : '' ) . '" entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
     $ui .= '<div class="col1 col-md">';

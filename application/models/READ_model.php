@@ -1941,17 +1941,17 @@ class READ_model extends CI_Model
                     if(!$progress_completed){
 
                         //Need to select answer:
-                        $next_step_message .= '<a href="/read/actionplan_answer_question/6157/' . $en_id . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '" class="list-group-item lightgreybg">';
+                        $next_step_message .= '<a href="/read/actionplan_answer_question/6157/' . $en_id . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '" class="list-group-item itemread lightgreybg">';
 
                     } elseif($was_selected){
 
                         //This was selected:
-                        $next_step_message .= '<a href="/actionplan/'.$child_in['in_id'] . '" class="list-group-item lightgreybg">';
+                        $next_step_message .= '<a href="/actionplan/'.$child_in['in_id'] . '" class="list-group-item itemread lightgreybg">';
 
                     } else {
 
                         //This was NOT selected and nothing else has been selected yet:
-                        $next_step_message .= '<span class="list-group-item" style="text-decoration: line-through;">';
+                        $next_step_message .= '<span class="list-group-item itemread" style="text-decoration: line-through;">';
 
                     }
 
