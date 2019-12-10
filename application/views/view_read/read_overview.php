@@ -17,7 +17,7 @@
 
             var play_terms = ['A Publishing Game', 'A Crypto Game.', 'With Friends.'];
             var read_terms = ['Relevant Ideas', 'On Messenger', 'On the web', 'Interactively.'];
-            var blog_terms = ['Your Ideas.', 'Quote Ideas.', 'For Messenger.', 'Collaboratively.'];
+            var blog_terms = ['Your Ideas.', 'Expert Ideas.', 'For Messenger.', 'Collaboratively.'];
 
 
             new TypeIt('.blog_content', {

@@ -40,7 +40,7 @@ table td { border: none !important; }
 
 h1 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.7em;
+    font-size: 2.4em;
     margin-top:34px;
     margin-bottom:12px;
     margin-left: 0;
@@ -253,7 +253,7 @@ img.no-radius {
 }
 
 .htitle{
-    min-width:115px;
+    min-width:158px;
     display: inline-block;
 }
 
@@ -926,6 +926,7 @@ label {
     h4 span{
         margin-top: -18px;
     }
+    h1{ margin-left: 1.7em; }
     h2{ margin-left: 2px; }
     .three-menus .mn_name{
         min-width: 60px;
