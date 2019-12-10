@@ -30,6 +30,14 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
     <link href="/css/custom/mench.css?v=v<?= config_var(11060) ?>" rel="stylesheet"/>
 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92774608-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-92774608-1');
+    </script>
 
     <?php
     //JS DATA
