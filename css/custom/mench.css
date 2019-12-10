@@ -725,8 +725,8 @@ label {
     color: #070707 !important;
 }
 
-.list-group-item .montserrat{
-    text-decoration: none !important;
+.list-group-item .montserrat, .list-group-item{
+    text-decoration: none;
 }
 
 .player-settings.active{
