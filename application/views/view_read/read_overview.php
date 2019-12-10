@@ -1,34 +1,43 @@
 
 <div class="container">
 
-    <h1 class="play">PLAY. <span class="plat_content inline-block"></span></h1><!-- A Publishing Game/A Crypto Game./With Friends. -->
-    <h1 class="read">READ. <span class="read_content inline-block"></span></h1><!-- Bright Ideas/Relevant Ideas/Interactively./On the web/On Messenger -->
-    <h1 class="blog">BLOG. <span class="blog_content inline-block"></span></h1><!-- /// -->
+    <h1 class="play no-margin"><span class="play_title"></span> <span class="play_content inline-block"></span></h1>
+    <h1 class="read no-margin"><span class="read_title"></span> <span class="read_content inline-block"></span></h1>
+    <h1 class="blog no-margin"><span class="blog_title"></span> <span class="blog_content inline-block"></span></h1>
 
     <script>
 
         $(document).ready(function () {
 
-            var terms = ['Share Ideas.', 'Quote Ideas.', 'Link Ideas.', 'Collaboratively.'];
+            //Load the three:
+            new TypeIt('.play_title', {   speed: 50,  startDelay: 1000 }).type('PLAY').go();
+            new TypeIt('.read_title', {   speed: 50,  startDelay: 2000 }).type('READ').go();
+            new TypeIt('.blog_title', {   speed: 50,  startDelay: 3000 }).type('BLOG').go();
+
+
+            var play_terms = ['A Publishing Game', 'A Crypto Game.', 'With Friends.'];
+            var read_terms = ['Bright Ideas', 'Relevant Ideas.', 'On the web', 'On Messenger', 'Interactively.'];
+            var blog_terms = ['Your Ideas.', 'Expert Ideas.', 'Collaboratively.'];
+
 
             new TypeIt('.blog_content', {
                 speed: 50,
-                startDelay: 900
+                startDelay: 4000
             })
-            .type(terms[0])
+            .type(blog_terms[0])
             .pause(500)
-            .delete(terms[0].length)
+            .delete(blog_terms[0].length)
             .pause(100)
-            .type(terms[1])
+            .type(blog_terms[1])
             .pause(750)
             .options({speed: 100, deleteSpeed: 75})
-            .delete(terms[1].length)
+            .delete(blog_terms[1].length)
             .pause(750)
-            .type(terms[2])
+            .type(blog_terms[2])
             .pause(1000)
-            .delete(terms[2].length)
+            .delete(blog_terms[2].length)
             .pause(200)
-            .type(terms[3])
+            .type(blog_terms[3])
             .go();
 
         });

@@ -252,8 +252,8 @@ img.no-radius {
     z-index: 9999999 !important;
 }
 
-.stats-select{
-    margin: 0 auto;
+.no-margin{
+    margin: 0;
 }
 
 .aa-dropdown-menu {
