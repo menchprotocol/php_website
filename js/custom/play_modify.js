@@ -204,11 +204,11 @@ function en_load_search(focus_element, is_en_parent, shortcut) {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block"><i class="fas fa-plus-circle add-plus blue"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus blue"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block"><i class="fas fa-plus-circle add-plus blue"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
+                return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus blue"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
             },
         }
     }]).keypress(function (e) {

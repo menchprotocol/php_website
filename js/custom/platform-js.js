@@ -275,7 +275,7 @@ $(document).ready(function () {
                         var search_body = $("#mench_search").val().substr(1);
                         if(!isNaN(search_body)){
                             //Valid Integer, Give option to go there:
-                            return '<a href="/' + ( $("#mench_search").val().charAt(0)=='#' ? 'intents' : 'entities' ) + '/' + search_body + '" class="suggestion"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i> Go to ' + data.query
+                            return '<a href="/' + ( $("#mench_search").val().charAt(0)=='#' ? 'intents' : 'entities' ) + '/' + search_body + '" class="suggestion"><span class="icon-block-sm"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
                         }
 
                     }
@@ -285,14 +285,14 @@ $(document).ready(function () {
                         return en_fetch_canonical_url(data.query, true);
                     } else if($("#mench_search").val().charAt(0)=='#'){
                         if(isNaN($("#mench_search").val().substr(1))){
-                            return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No BLOG found</div>';
+                            return '<div class="not-found"><span class="icon-block"><i class="fas fa-exclamation-triangle"></i></span>No BLOG found</div>';
                         }
                     } else if($("#mench_search").val().charAt(0)=='@'){
                         if(isNaN($("#mench_search").val().substr(1))) {
-                            return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No PLAY found</div>';
+                            return '<div class="not-found"><span class="icon-block"><i class="fas fa-exclamation-triangle"></i></span>No PLAY found</div>';
                         }
                     } else {
-                        return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No results found</div>';
+                        return '<div class="not-found"><span class="icon-block"><i class="fas fa-exclamation-triangle"></i></span>No results found</div>';
                     }
                 },
             }
