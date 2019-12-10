@@ -837,6 +837,9 @@ label {
     color:#FFFFFF !important;
 }
 
+.dropdown-menu{
+    font-size: 1em;
+}
 
 .is-msg .on-hover {
     /* Do not hide this for now: */
