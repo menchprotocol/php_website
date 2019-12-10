@@ -754,6 +754,10 @@ label {
     line-height: 1.1;
 }
 
+.btn.dropdown-toggle{
+    margin-left: 0 !important;
+}
+
 .btn-superpower {
     text-align: center;
     margin-left: 0;
