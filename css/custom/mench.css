@@ -954,7 +954,9 @@ label {
     .content-image{ max-height:300px; }
     .show-on-hover { display:inline-block !important; }
     .show-max{display: none !important;}
-    .itemblog:hover { background-color:inherit !important; }
-    .itemplay:hover { background-color:inherit !important; }
-    .itemread:hover { background-color:inherit !important; }
+    .itemblog:hover { background-color:transparent !important; }
+    .itemplay:hover { background-color:transparent !important; }
+    .itemread:hover { background-color:transparent !important; }
+    .form-control-thick { padding-left: 26px; }
+
 }
