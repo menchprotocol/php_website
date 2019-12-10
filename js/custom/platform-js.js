@@ -38,7 +38,7 @@ function echo_js_suggestion(alg_obj){
 
     var obj_full_name = ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name );
 
-    return '<span class="icon-block">' + alg_obj.alg_obj_icon + '</span>' + obj_full_name;
+    return '<span class="icon-block-sm">' + alg_obj.alg_obj_icon + '</span>' + obj_full_name;
 }
 
 
