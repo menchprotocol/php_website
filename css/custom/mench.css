@@ -654,6 +654,10 @@ textarea.note-textarea{
     width: 100%;
 }
 
+.list-group-item .form-control {
+    background-color: transparent;
+}
+
 .itemblog:hover {
     background-color:#ffee8e !important;
 }
