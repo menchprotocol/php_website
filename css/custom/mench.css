@@ -646,7 +646,7 @@ textarea.note-textarea{
     background-color:#f4f5f7;
     border-radius: 0 !important;
     padding:2px 0 1px;
-    margin: 0 1px;
+    margin: 0;
     overflow: hidden;
     width: 100%;
 }

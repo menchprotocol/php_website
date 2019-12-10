@@ -2104,10 +2104,12 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
     $CI =& get_instance();
 
-    $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
-    $en_all_4737 = $CI->config->item('en_all_4737'); //Intent Statuses
-    $en_all_7585 = $CI->config->item('en_all_7585'); //Intent Subtypes
+    $en_all_6186 = $CI->config->item('en_all_6186');
+    $en_all_4737 = $CI->config->item('en_all_4737');
+    $en_all_7585 = $CI->config->item('en_all_7585');
     $en_all_4527 = $CI->config->item('en_all_4527');
+    $en_all_4486 = $CI->config->item('en_all_4486');
+
 
     //Prep link metadata to be analyzed later:
     $ln_id = $in['ln_id'];
@@ -2120,19 +2122,9 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     $is_link_published = in_array($in['ln_status_entity_id'], $CI->config->item('en_ids_7359'));
 
 
-
-
-
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_entity_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_linked_id . '" class="list-group-item itemblog blogs_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' intent_line_' . $in['in_id'] . ( $is_parent ? ' parent-intent ' : ' enable-sorting ' ) . ' in__tr_'.$ln_id.'">';
 
 
-
-
-
-
-
-    //Fetch Intent-to-Intent Links:
-    $en_all_4486 = $CI->config->item('en_all_4486');
 
     //LINK TYPE
     $ui .= '<span class="icon-block ln_type_' . $ln_id . superpower_active(10984) . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['ln_type_entity_id']]['m_name'] . ': ' . $en_all_4486[$in['ln_type_entity_id']]['m_desc'] . ' @'.$in['ln_type_entity_id'].'">' . $en_all_4486[$in['ln_type_entity_id']]['m_icon'] . '</span></span>';
@@ -2150,10 +2142,10 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 
     //Show Completion Marks based on Intent Link Type:
-    $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>&nbsp;';
+    $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>';
 
 
-    $ui .= '<b id="title_' . $ln_id . '" class="tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false) . '</b>';
+    $ui .= '<b class="in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false) . '</b>';
 
 
 
