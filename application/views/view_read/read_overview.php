@@ -10,14 +10,14 @@
         $(document).ready(function () {
 
             //Load the three:
-            new TypeIt('.play_title', {   speed: 50,  startDelay: 1000 }).type('PLAY').go().destroy();
-            new TypeIt('.read_title', {   speed: 50,  startDelay: 2500 }).type('READ').go().destroy();
-            new TypeIt('.blog_title', {   speed: 50,  startDelay: 4000 }).type('BLOG').go().destroy();
+            new TypeIt('.play_title', {   speed: 33,  startDelay: 1000 }).type('PLAY').go().destroy();
+            new TypeIt('.read_title', {   speed: 33,  startDelay: 2500 }).type('READ').go().destroy();
+            new TypeIt('.blog_title', {   speed: 33,  startDelay: 4000 }).type('BLOG').go().destroy();
 
 
             var play_terms = ['A Publishing Game', 'A Crypto Game.', 'With Friends.'];
-            var read_terms = ['Bright Ideas', 'Relevant Ideas.', 'On the web', 'On Messenger', 'Interactively.'];
-            var blog_terms = ['Your Ideas.', 'Expert Ideas.', 'Collaboratively.'];
+            var read_terms = ['Relevant Ideas', 'On Messenger', 'On the web', 'Interactively.'];
+            var blog_terms = ['Your Ideas.', 'Quote Ideas.', 'For Messenger.', 'Collaboratively.'];
 
 
             new TypeIt('.blog_content', {
@@ -34,10 +34,6 @@
                 .delete(blog_terms[1].length)
                 .pause(750)
                 .type(blog_terms[2])
-                .pause(1000)
-                .delete(blog_terms[2].length)
-                .pause(200)
-                .type(blog_terms[3])
                 .go()
                 .destroy();
 
