@@ -907,5 +907,5 @@ label {
     .featured-image { width:75px; height:75px; }
     .content-image{ max-height:300px; }
     .show-on-hover { display:inline-block !important; }
-    .show-max{display: none;}
+    .show-max{display: none !important;}
 }
