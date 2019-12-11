@@ -38,17 +38,18 @@
 
         new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SAVE').pause(tempo(1)).go().destroy();
         new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('ORGANIZE').pause(tempo(0)).go().destroy();
-        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('WRITE').pause(tempo(1)).go().destroy();
+        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SHARE').pause(tempo(1)).go().destroy();
 
 
         new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').pause(tempo(1)).go().destroy();
         new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').pause(tempo(0)).go().destroy();
 
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').pause(tempo(1)).go().destroy();
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for chat apps').pause(tempo(0)).go().destroy();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').pause(tempo(1)).go();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for the new world').pause(tempo(2)).go().destroy();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for chat apps').pause(tempo(1)).go().destroy();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Messenger').pause(tempo(0)).go().destroy();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for WhatsApp').pause(tempo(0)).go().destroy();
 
-        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on Messenger').pause(tempo(1)).go().destroy();
-        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on WhatsApp').pause(tempo(0)).go().destroy();
         new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('READ').pause(tempo(0)).go().destroy();
         new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on Slack').pause(tempo(0)).go().destroy();
 
@@ -64,7 +65,7 @@
         new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('interactively').pause(tempo(1)).go().destroy();
 
         new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('PLAY').pause(tempo(0)).go().destroy();
-        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('for the fun of it').pause(tempo(1)).go().destroy();
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().pause(tempo(2)).type('it\'s fun').pause(tempo(1)).go().destroy();
 
         console.log(tl + ' seconds runtime');
 
