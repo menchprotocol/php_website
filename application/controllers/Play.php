@@ -691,7 +691,7 @@ fragment PostListingItemSidebar_post on Post {
         $this->load->view('header', array(
             'title' => 'PLAY. READ. BLOG.',
         ));
-        $this->load->view('view_play/play_mench');
+        $this->load->view('mench');
         $this->load->view('footer');
     }
 
