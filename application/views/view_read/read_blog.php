@@ -21,13 +21,11 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     //Action Plan Overview:
     $step_info = echo_tree_steps($in, false);
     $source_info = echo_tree_experts($in, false);
-    $user_info = echo_tree_users($in, false);
 
-    if($step_info || $source_info || $user_info){
+    if($step_info || $source_info){
         echo '<div style="margin:5px 0;">';
         echo $step_info;
         echo $source_info;
-        echo $user_info;
         echo '</div>';
     }
 

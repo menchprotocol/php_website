@@ -3971,10 +3971,9 @@ class READ_model extends CI_Model
                 $overview_message = '';
                 $step_info = echo_tree_steps($ins[0], true);
                 $source_info = echo_tree_experts($ins[0], true);
-                $user_info = echo_tree_users($ins[0], true);
 
                 if($source_info || $step_info || $user_info){
-                    $overview_message .= 'Here is an overview:' . "\n\n" . $step_info . $source_info . $user_info;
+                    $overview_message .= 'Here is an overview:' . "\n\n" . $step_info . $source_info;
                 }
 
                 $overview_message .= 'Should I add this intention to your Action Plan?';

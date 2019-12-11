@@ -891,8 +891,11 @@ function echo_tree_html_body($section_en_id, $pitch_title, $pitch_body, $autoexp
         </div></div>';
 }
 
+
+
 function echo_tree_users($in, $push_message = false, $autoexpand = false){
 
+    return false;
 
     //TODO Consider enabling later?
     //return null; //Disable for now
@@ -903,7 +906,6 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
      * and the percentage of them that have completed it...
      *
      * */
-
 
     //Count total users:
     $CI =& get_instance();
@@ -1166,11 +1168,12 @@ function echo_tree_steps($in, $push_message = 0, $autoexpand = false)
     } else {
 
         //HTML format
-        $pitch_title = '<span class="icon-block"><i class="fas fa-flag"></i></span>&nbsp;'.$metadata['in__metadata_max_steps'].' step'.echo__s($metadata['in__metadata_max_steps']).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : ' to complete' );
+        $pitch_title = ( $has_time_estimate ? strtolower(echo_time_range($in)).' READ' : '' );
 
-        $pitch_body .= '<div class="inner_actionplan">';
-        $pitch_body .= echo_tree_actionplan($in, false);
-        $pitch_body .= '</div>';
+
+        //$pitch_body .= '<div class="inner_actionplan">';
+        //$pitch_body .= echo_tree_actionplan($in, false);
+        //$pitch_body .= '</div>';
 
         return echo_tree_html_body(7613, $pitch_title, $pitch_body, $autoexpand);
 
