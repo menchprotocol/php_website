@@ -9,16 +9,16 @@
 
         function tempo(beat){
             if(beat==0){
-                return getRandomInt(0,2200);
+                return getRandomInt(0,987);
             } else if(beat==1){
-                return getRandomInt(2200,4900);
+                return getRandomInt(987,4181);
             } else if(beat==2){
-                return getRandomInt(4900,7000);
+                return getRandomInt(2584,6765);
             }
         }
 
         function speed(){
-            return getRandomInt(22,55);
+            return getRandomInt(5,55);
             //return 50;
         }
 
@@ -40,8 +40,8 @@
             new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).type(blog_titls[0]).go().destroy();
 
             new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).type(blog_terms[0]).pause(tempo(1)).go();
-            new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).empty().type(blog_terms[1]).pause(tempo(1)).go();
-            new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).empty().type(blog_terms[2]).pause(tempo(0)).go();
+            new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type(blog_terms[1]).pause(tempo(1)).go();
+            new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type(blog_terms[2]).pause(tempo(0)).go();
 
         });
 
