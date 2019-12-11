@@ -47,14 +47,11 @@
         new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('a social game').pause(tempo(1)).go();
         new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('relevant ideas').pause(tempo(1)).go();
         new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('your ideas').pause(tempo(1)).go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('anyone\'s ideas').pause(tempo(1)).go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('ideas that matter').pause(tempo(1)).go();
 
         new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SAVE').pause(tempo(1)).go();
         new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('ORGANIZE').pause(tempo(0)).go();
         new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SHARE').pause(tempo(1)).go();
-
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete(4).type('stories').pause(tempo(1)).go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete(7).type('inspirations').pause(tempo(1)).go();
 
         new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').pause(tempo(1)).go();
         new TypeIt('.read_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').pause(tempo(1)).go();
