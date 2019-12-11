@@ -62,22 +62,22 @@
         new TypeIt('.read_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LISTEN').go();
         new TypeIt('.read_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('READ').go();
 
-        new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('WRITE').go();
+        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl }).delete().type('on the web').go();
+        new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('PRODUCE').go();
         new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('CREATE').go();
         new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('BLOG').go();
 
-        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl }).delete().type('on the web').go();
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for a new world').go();
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for chat apps').go();
-        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for messenger').go();
+        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for messenger').go();
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for whatsapp').go();
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for slack').go();
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for alexa').go();
 
 
-        new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('superpowers').go();
-        new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('SUPERPOWERS').go();
         new TypeIt('.play_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('EARN').go();
+        new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl }).delete().type('superpowers').go();
+        new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SUPERPOWERS').go();
         new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('crypto-coins').go();
 
 
