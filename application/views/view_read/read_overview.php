@@ -23,76 +23,95 @@
 
     function stream(){
 
-        $('.no-margin').toggleClass('hidden');
-        $('.read_blogs').addClass('hidden');
+        $('.animate-trigger').addClass('hidden');
+        $('.animate-box').removeClass('hidden');
+
 
         //The Story
-
         var tl = 0;
-
-        new TypeIt('.play_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).type('PLAY').go();
-        new TypeIt('.read_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).type('READ').go();
-        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('BLOG').go();
-
-        new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('a social game').go();
-        new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('relevant ideas').go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('your ideas').go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('ideas that matter').go();
-
-        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('SAVE').go();
-        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('ORGANIZE').go();
-        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SHARE').go();
-
-        new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the go').go();
-        new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete(3).type('web').go();
-        new TypeIt('.read_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').go();
-
-        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('WRITE').go();
-
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for a new world').pause(tempo(2)).go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for chat apps').go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for messenger').go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for whatsapp').go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for slack').go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for alexa').go();
-
-
-        new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('superpowers').go();
-        new TypeIt('.play_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('EARN').go();
-        new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('crypto-coins').go();
-
-
-        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('BLOG').go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('collaboratively').go();
-
-        new TypeIt('.read_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('READ').go();
-        new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('interactively').go();
-
-        new TypeIt('.play_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('PLAY').go();
-        new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for the fun of it').go();
-
-        console.log(tl + ' seconds runtime');
+        var show_cursor = true;
 
         setTimeout(function () {
-            $('.read_blogs').removeClass('hidden');
-            $('.no-margin').toggleClass('hidden');
-        }, tl);
+
+            new TypeIt('.play_title', { cursor:show_cursor, speed:speed() }).type('PLAY').go();
+
+        }, tl+=tempo(0));
+
+        setTimeout(function () {
+
+            new TypeIt('.read_title', { cursor:show_cursor, speed:speed() }).type('READ').go();
+
+        }, tl+=tempo(1));
+
+        setTimeout(function () {
+
+            new TypeIt('.blog_title', { cursor:show_cursor, speed:speed() }).type('BLOG').go();
+
+        }, tl+=tempo(2));
+
+
+        /*
+
+        new TypeIt('.play_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(0) }).type('PLAY').go();
+        new TypeIt('.read_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).type('READ').go();
+        new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).type('BLOG').go();
+
+        new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).type('a social game').go();
+        new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).type('relevant ideas').go();
+        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).type('your ideas').go();
+        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('ideas that matter').go();
+
+        new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('SAVE').go();
+        new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('ORGANIZE').go();
+        new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SHARE').go();
+
+        new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the go').go();
+        new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on the web').go();
+        new TypeIt('.read_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').go();
+
+        new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('WRITE').go();
+
+        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').go();
+        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for a new world').pause(tempo(2)).go();
+        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for chat apps').go();
+        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for messenger').go();
+        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for whatsapp').go();
+        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for slack').go();
+        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for alexa').go();
+
+
+        new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('superpowers').go();
+        new TypeIt('.play_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('EARN').go();
+        new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('crypto-coins').go();
+
+
+        new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('BLOG').go();
+        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('collaboratively').go();
+
+        new TypeIt('.read_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('READ').go();
+        new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('interactively').go();
+
+        new TypeIt('.play_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('PLAY').go();
+        new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for the fun of it').go();
+
+        */
+
+        console.log(tl + ' seconds runtime');
 
     }
 
 </script>
 <div class="container">
 
-    <h1 class="no-margin hidden play"><span class="play_title"></span> <span class="play_content"></span></h1>
-    <h1 class="no-margin hidden read"><span class="read_title"></span> <span class="read_content"></span></h1>
-    <h1 class="no-margin hidden blog"><span class="blog_title"></span> <span class="blog_content"></span></h1>
+    <div class="animate-box hidden">
+        <h1 class="no-margin play"><span class="play_title"></span> <span class="play_content"></span></h1>
+        <h1 class="no-margin read"><span class="read_title"></span> <span class="read_content"></span></h1>
+        <h1 class="no-margin blog"><span class="blog_title"></span> <span class="blog_content"></span></h1>
+    </div>
 
-    <div class="no-margin"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-play montserrat"><i class="fas fa-play-circle"></i> Watch Animation</a></div>
+    <div class="animate-trigger"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-play montserrat"><i class="fas fa-play-circle"></i> Watch Animation</a></div>
 
     <?php
-    echo '<div class="read_blogs">';
-
     //Go through all categories and see which ones have published courses:
     foreach($this->config->item('en_all_10869') /* Course Categories */ as $en_id => $m) {
 
@@ -118,8 +137,6 @@
         echo '</div>';
 
     }
-
-    echo '</div>';
 
     ?>
 
