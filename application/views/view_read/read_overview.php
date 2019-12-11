@@ -45,6 +45,8 @@
 
         new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).type('micro blogs').go();
         new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('key ideas').go();
+        new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('anywhere').go();
+        new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('anytime').go();
         new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('ideas that matter').go();
         new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('interactively').go();
 
@@ -58,17 +60,12 @@
 
         new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the go').go();
         new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on the web').go();
-        new TypeIt('.read_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('WATCH').go();
-        new TypeIt('.read_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').go();
-        new TypeIt('.read_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('READ').go();
 
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on the web').go();
         new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('BLOG').go();
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for chat apps').go();
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for Messenger').go();
-        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for WhatsApp').go();
 
-        new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on WhatsApp').go();
         new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on Messenger').go();
 
         new TypeIt('.play_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('EARN').go();
@@ -79,9 +76,7 @@
 
 
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('collaboratively').go();
-        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for a new world').go();
 
-        new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('anywhere').go();
         new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('interactively').go();
 
         new TypeIt('.play_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('PLAY').go();
