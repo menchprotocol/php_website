@@ -9,11 +9,11 @@
 
         function tempo(beat){
             if(beat==0){
-                return getRandomInt(0,980);
+                return getRandomInt(0,2200);
             } else if(beat==1){
-                return getRandomInt(980,2500);
-            } else if(beat==2){
                 return getRandomInt(2200,4900);
+            } else if(beat==2){
+                return getRandomInt(4900,7000);
             }
         }
 
