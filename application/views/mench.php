@@ -18,7 +18,7 @@
     }
 
     function speed(){
-        return getRandomInt(30,100);
+        return getRandomInt(60,100);
         //return 50;
     }
 
