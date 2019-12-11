@@ -1,8 +1,8 @@
 <div class="container" style="width: 100%;">
 
-    <h1 class="no-margin"><a href="/play/signin" class="play"><span class="play_title"></span> <span class="play_content"></span></a></h1>
-    <h1 class="no-margin"><a href="/read" class="read"><span class="read_title"></span> <span class="read_content"></span></a></h1>
-    <h1 class="no-margin"><a href="/blog" class="blog"><span class="blog_title"></span> <span class="blog_content"></span></a></h1>
+    <h1 class="no-margin"><a href="/play/signin" class="play"><span class="play_title" style="text-decoration: none;"></span> <span class="play_content"></span></a></h1>
+    <h1 class="no-margin"><a href="/read" class="read"><span class="read_title" style="text-decoration: none;"></span> <span class="read_content"></span></a></h1>
+    <h1 class="no-margin"><a href="/blog" class="blog"><span class="blog_title" style="text-decoration: none;"></span> <span class="blog_content"></span></a></h1>
 
 </div>
 <script>
@@ -18,38 +18,60 @@
     }
 
     function speed(){
-        return getRandomInt(5,55);
+        return getRandomInt(50,100);
         //return 50;
     }
 
     function animate(){
 
-        //Terminology Index
-        var play_titls = ['PLAY', 'EARN', 'UNLOCK', 'RANK'];
-        var play_terms = ['a learning-game', 'a free-game', 'a crypto-game', 'crypto-coins', 'SUPERPOWERS', 'in leaderboard'];
-        var read_titls = ['READ', 'DISCOVER', 'LEARN'];
-        var read_terms = ['top ideas', 'on the web', 'on Messenger', '5K words/mo free', 'all for $5/mo', 'interactively'];
-        var blog_titls = ['BLOG', 'CREATE', 'WRITE'];
-        var blog_terms = ['single ideas', 'on the web', 'for Messenger', 'for cash income', 'collaboratively'];
-
         //The Story
+
         var tl = tempo(0);
 
-        new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).type(play_titls[0]).go().destroy();
-        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).type(read_titls[0]).go().destroy();
-        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).type(blog_titls[0]).go().destroy();
+        new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).type('PLAY').go().destroy();
+        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).type('READ').go().destroy();
+        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).type('BLOG').go().destroy();
 
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).type(blog_terms[0]).pause(tempo(1)).go().destroy();
-        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).type(read_terms[0]).pause(tempo(1)).go().destroy();
-        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).type(play_terms[0]).pause(tempo(1)).go().destroy();
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('a free-game').pause(tempo(1)).go().destroy();
+        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('top ideas').pause(tempo(1)).go().destroy();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('single ideas').pause(tempo(1)).go().destroy();
 
-        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type(read_titls[1]).pause(tempo(1)).go().destroy();
-        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type(read_titls[2]).pause(tempo(1)).go().destroy();
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('a learning-game').pause(tempo(1)).go().destroy();
 
-        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type(read_terms[1]).pause(tempo(1)).go().destroy();
 
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type(blog_terms[1]).pause(tempo(1)).go().destroy();
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type(blog_terms[2]).pause(tempo(0)).go().destroy();
+        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('DISCOVER').pause(tempo(1)).go().destroy();
+        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').pause(tempo(1)).go().destroy();
+
+        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').pause(tempo(1)).go().destroy();
+
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').pause(tempo(1)).go().destroy();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for Messenger').pause(tempo(0)).go().destroy();
+
+        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on Messenger').pause(tempo(1)).go().destroy();
+
+        new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('UNLOCK').pause(tempo(1)).go().destroy();
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('SUPERPOWERS').pause(tempo(1)).go().destroy();
+
+        new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('EARN').pause(tempo(1)).go().destroy();
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('crypto-coins').pause(tempo(1)).go().destroy();
+
+        new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('RANK').pause(tempo(1)).go().destroy();
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('in leaderboard').pause(tempo(1)).go().destroy();
+
+
+        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('READ').pause(tempo(1)).go().destroy();
+        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('5K words/mo free').pause(tempo(1)).go().destroy();
+        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('all for $5/mo').pause(tempo(1)).go().destroy();
+
+
+        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('CREATE').pause(tempo(1)).go().destroy();
+        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('WRITE').pause(tempo(1)).go().destroy();
+        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('BLOG').pause(tempo(1)).go().destroy();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for income/mo').pause(tempo(1)).go().destroy();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('collaboratively').pause(tempo(1)).go().destroy();
+
+
+
     }
 
 
