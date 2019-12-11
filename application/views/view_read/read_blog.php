@@ -161,11 +161,10 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     if(count($in__other) > 0){
 
 
-        echo '<p style="margin:25px 0 15px;" class="other_intents"><a href="javascript:void(0)" onclick="$(\'.other_intents\').toggleClass(\'hidden\')">'.count($in__other).' related reads</a></p>';
+        echo '<p style="margin:25px 0 15px;" class="other_intents"><a href="javascript:void(0)" onclick="$(\'.other_intents\').toggleClass(\'hidden\')">'.count($in__other).' similar reads</a></p>';
 
 
         echo '<div class="other_intents hidden">';
-        echo '<p style="margin:25px 0 15px;">Here are some other intentions I can help you with:</p>';
         echo '<div class="list-group maxout">';
         $max_visible = 30;
 
