@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //General:
 $route['translate_uri_dashes']      = FALSE;
 $route['404_override']              = 'play/page_not_found';
-$route['read']                      = "read/read_overview";
+$route['default_controller']        = "read/read_overview";
 $route['read']                      = "read/read_overview";
 $route['blog']                      = "blog/blog_overview";
 $route['play']                      = "play/play_overview";

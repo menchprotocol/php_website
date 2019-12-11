@@ -687,14 +687,6 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function play_mench(){
-        $this->load->view('header', array(
-            'title' => 'PLAY. READ. BLOG.',
-        ));
-        $this->load->view('mench');
-        $this->load->view('footer');
-    }
-
     function play_overview(){
         $this->load->view('header', array(
             'title' => 'PLAY',
