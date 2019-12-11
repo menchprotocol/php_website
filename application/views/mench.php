@@ -1,8 +1,8 @@
 <div class="container" style="width: 100%;">
 
-    <h1 class="no-margin"><a href="/play/signin" class="play"><span class="play_title" style="text-decoration: none;"></span> <span class="play_content"></span></a></h1>
-    <h1 class="no-margin"><a href="/read" class="read"><span class="read_title" style="text-decoration: none;"></span> <span class="read_content"></span></a></h1>
-    <h1 class="no-margin"><a href="/blog" class="blog"><span class="blog_title" style="text-decoration: none;"></span> <span class="blog_content"></span></a></h1>
+    <h1 class="no-margin"><a href="/play/signin" class="play" style="text-decoration: none;"><span class="play_title"></span> <span class="play_content"></span></a></h1>
+    <h1 class="no-margin"><a href="/read" class="read" style="text-decoration: none;"><span class="read_title"></span> <span class="read_content"></span></a></h1>
+    <h1 class="no-margin"><a href="/blog" class="blog" style="text-decoration: none;"><span class="blog_title"></span> <span class="blog_content"></span></a></h1>
 
 </div>
 <script>
@@ -18,7 +18,7 @@
     }
 
     function speed(){
-        return getRandomInt(50,100);
+        return getRandomInt(30,100);
         //return 50;
     }
 
@@ -36,8 +36,7 @@
         new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('top ideas').pause(tempo(1)).go().destroy();
         new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('single ideas').pause(tempo(1)).go().destroy();
 
-        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('a learning-game').pause(tempo(1)).go().destroy();
-
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('a learning-game').pause(tempo(1)).go().destroy();
 
         new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('DISCOVER').pause(tempo(1)).go().destroy();
         new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').pause(tempo(1)).go().destroy();
