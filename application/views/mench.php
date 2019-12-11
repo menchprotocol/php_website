@@ -2,6 +2,12 @@
     .container{
         max-width: none;
     }
+
+    @media (max-width:767px) { h1{ font-size: 2.6em; } }
+    @media (max-width:999px) { h1{ font-size: 3.2em; } }
+    @media (max-width:1500px) { h1{ font-size: 4.2em; } }
+    @media (max-width:1900px) { h1{ font-size: 4.7em; } }
+
 </style>
 
 <div class="container">
@@ -46,19 +52,22 @@
         new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('ORGANIZE').pause(tempo(0)).go().destroy();
         new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SHARE').pause(tempo(1)).go().destroy();
 
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete(4).type('stories').pause(tempo(1)).go().destroy();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete(7).type('inspirations').pause(tempo(1)).go().destroy();
 
         new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').pause(tempo(1)).go().destroy();
-        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').pause(tempo(0)).go().destroy();
+        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').pause(tempo(1)).go().destroy();
+
+        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('WRITE').pause(tempo(1)).go().destroy();
 
         new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').pause(tempo(1)).go();
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for the new world').pause(tempo(2)).go().destroy();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for a new world').pause(tempo(2)).go().destroy();
         new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for chat apps').pause(tempo(1)).go().destroy();
         new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Messenger').pause(tempo(0)).go().destroy();
         new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for WhatsApp').pause(tempo(0)).go().destroy();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Slack').pause(tempo(0)).go().destroy();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Alexa').pause(tempo(0)).go().destroy();
 
-        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('READ').pause(tempo(0)).go().destroy();
-        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on Slack').pause(tempo(0)).go().destroy();
-        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on Alexa').pause(tempo(0)).go().destroy();
 
         new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('a learning game').pause(tempo(1)).go();
         new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(0) }).delete().type('superpowers').pause(tempo(1)).go();
@@ -70,10 +79,11 @@
         new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('BLOG').pause(tempo(1)).go().destroy();
         new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('collaboratively').pause(tempo(1)).go().destroy();
 
+        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('READ').pause(tempo(0)).go().destroy();
         new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('interactively').pause(tempo(1)).go().destroy();
 
-        new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('PLAY').pause(tempo(0)).go().destroy();
-        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().pause(tempo(2)).type('it\'s fun').pause(tempo(1)).go().destroy();
+        new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('PLAY').go().destroy();
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(0) }).delete().pause(tempo(2)).type('it\'s fun').pause(tempo(1)).go().destroy();
 
         console.log(tl + ' seconds runtime');
 
