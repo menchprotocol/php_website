@@ -3,10 +3,10 @@
 
     function tempo(beat){
         if(beat==0){
-            return 1350;
+            return 1500;
             return getRandomInt(0,987);
         } else if(beat==1){
-            return 1600;
+            return 2000;
             return getRandomInt(987,4181);
         } else if(beat==2){
             return 3000;
@@ -51,6 +51,7 @@
         new TypeIt('.read_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').go();
 
         new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('WRITE').go();
+        new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('CREATE').go();
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl }).delete().go();
 
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).type('on the web').go();
@@ -63,7 +64,7 @@
 
 
         new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('superpowers').go();
-        new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('SUPERPOWERS').go();
+        new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('SUPERPOWERS').go();
         new TypeIt('.play_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('EARN').go();
         new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('crypto-coins').go();
 
