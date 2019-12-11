@@ -1,8 +1,8 @@
 <div class="container" style="width: 100%;">
 
-    <h1 class="play no-margin"><a href="/play/signin"><span class="play_title"></span> <span class="play_content"></span></a></h1>
-    <h1 class="read no-margin"><a href="/read"><span class="read_title"></span> <span class="read_content"></span></a></h1>
-    <h1 class="blog no-margin"><a href="/blog"><span class="blog_title"></span> <span class="blog_content"></span></a></h1>
+    <h1 class="no-margin"><a href="/play/signin" class="play"><span class="play_title"></span> <span class="play_content"></span></a></h1>
+    <h1 class="no-margin"><a href="/read" class="read"><span class="read_title"></span> <span class="read_content"></span></a></h1>
+    <h1 class="no-margin"><a href="/blog" class="blog"><span class="blog_title"></span> <span class="blog_content"></span></a></h1>
 
 </div>
 <script>
