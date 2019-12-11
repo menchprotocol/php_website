@@ -1,5 +1,4 @@
 
-<!--
 <script>
 
     function tempo(beat){
@@ -9,19 +8,20 @@
             return getRandomInt(987,4181);
         } else if(beat==2){
             return getRandomInt(2584,6765);
+        } else {
+            return 0;
         }
     }
 
     function speed(){
+        return 75;
         return getRandomInt(55,89);
-        //return 50;
     }
 
     function stream(){
 
         $('.no-margin').toggleClass('hidden');
         $('.read_blogs').addClass('hidden');
-
 
         //The Story
 
@@ -31,42 +31,42 @@
         new TypeIt('.read_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).type('READ').go();
         new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('BLOG').go();
 
-        new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('a social game').pause(tempo(1)).go();
-        new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('relevant ideas').pause(tempo(1)).go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('your ideas').pause(tempo(1)).go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('ideas that matter').pause(tempo(1)).go();
+        new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('a social game').go();
+        new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('relevant ideas').go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('your ideas').go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('ideas that matter').go();
 
-        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SAVE').pause(tempo(1)).go();
-        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('ORGANIZE').pause(tempo(0)).go();
-        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SHARE').pause(tempo(1)).go();
+        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SAVE').go();
+        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('ORGANIZE').go();
+        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SHARE').go();
 
-        new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').pause(tempo(1)).go();
-        new TypeIt('.read_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').pause(tempo(1)).go();
+        new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').go();
+        new TypeIt('.read_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').go();
 
-        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('WRITE').pause(tempo(1)).go();
+        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('WRITE').go();
 
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').pause(tempo(1)).go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').go();
         new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for a new world').pause(tempo(2)).go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for chat apps').pause(tempo(1)).go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Messenger').pause(tempo(0)).go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for WhatsApp').pause(tempo(0)).go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for Slack').pause(tempo(0)).go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Alexa').pause(tempo(0)).go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for chat apps').go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Messenger').go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for WhatsApp').go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for Slack').go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Alexa').go();
 
 
-        new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('superpowers').pause(tempo(1)).go();
-        //new TypeIt('.play_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('EARN').pause(tempo(0)).go();
-        new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('crypto-coins').pause(tempo(1)).go();
+        new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('superpowers').go();
+        new TypeIt('.play_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('EARN').go();
+        new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('crypto-coins').go();
 
 
-        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('BLOG').pause(tempo(1)).go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('collaboratively').pause(tempo(1)).go();
+        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('BLOG').go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('collaboratively').go();
 
-        new TypeIt('.read_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('READ').pause(tempo(0)).go();
-        new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('interactively').pause(tempo(1)).go();
+        new TypeIt('.read_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('READ').go();
+        new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('interactively').go();
 
-        //new TypeIt('.play_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('PLAY').go();
-        new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().pause(tempo(2)).type('for the fun of it').pause(tempo(1)).go();
+        new TypeIt('.play_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('PLAY').go();
+        new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for the fun of it').go();
 
         console.log(tl + ' seconds runtime');
 
@@ -78,14 +78,13 @@
     }
 
 </script>
--->
 <div class="container">
 
     <h1 class="no-margin hidden play"<span class="play_title"></span> <span class="play_content"></span></h1>
     <h1 class="no-margin hidden read"><span class="read_title"></span> <span class="read_content"></span></h1>
     <h1 class="no-margin hidden blog"><span class="blog_title"></span> <span class="blog_content"></span></h1>
 
-    <div class="no-margin hidden"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-play montserrat"><i class="fas fa-play-circle"></i> Watch Animation</a></div>
+    <div class="no-margin"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-play montserrat"><i class="fas fa-play-circle"></i> Watch Animation</a></div>
 
     <?php
     echo '<div class="read_blogs">';
