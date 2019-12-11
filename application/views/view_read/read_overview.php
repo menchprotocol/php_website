@@ -20,6 +20,8 @@
     function stream(){
 
         $('.no-margin').toggleClass('hidden');
+        $('.read_blogs').addClass('hidden');
+
 
         //The Story
 
@@ -53,7 +55,7 @@
 
 
         new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('superpowers').pause(tempo(1)).go();
-        new TypeIt('.play_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('EARN').pause(tempo(0)).go();
+        //new TypeIt('.play_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('EARN').pause(tempo(0)).go();
         new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('crypto-coins').pause(tempo(1)).go();
 
 
@@ -63,12 +65,13 @@
         new TypeIt('.read_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('READ').pause(tempo(0)).go();
         new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('interactively').pause(tempo(1)).go();
 
-        new TypeIt('.play_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('PLAY').go();
+        //new TypeIt('.play_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('PLAY').go();
         new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().pause(tempo(2)).type('for the fun of it').pause(tempo(1)).go();
 
         console.log(tl + ' seconds runtime');
 
         setTimeout(function () {
+            $('.read_blogs').removeClass('hidden');
             $('.no-margin').toggleClass('hidden');
         }, tl);
 
@@ -85,7 +88,7 @@
     <div class="no-margin"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-play montserrat"><i class="fas fa-play-circle"></i> Watch Animation</a></div>
 
     <?php
-    echo '<div style="margin-top: 10px;"></div>';
+    echo '<div style="margin-top: 10px;" class="read_blogs">';
 
     //Go through all categories and see which ones have published courses:
     foreach($this->config->item('en_all_10869') /* Course Categories */ as $en_id => $m) {
@@ -112,6 +115,8 @@
         echo '</div>';
 
     }
+
+    echo '</div>';
 
     ?>
 
