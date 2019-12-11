@@ -29,7 +29,7 @@
 
         //The Story
         var tl = 0;
-        var show_cursor = true;
+        var show_cursor = false;
 
 
         new TypeIt('.play_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(0) }).type('PLAY').go();
