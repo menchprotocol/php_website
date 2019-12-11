@@ -31,30 +31,11 @@
         var tl = 0;
         var show_cursor = true;
 
-        setTimeout(function () {
-
-            new TypeIt('.play_title', { cursor:show_cursor, speed:speed() }).type('PLAY').go();
-
-        }, tl+=tempo(0));
-
-        setTimeout(function () {
-
-            new TypeIt('.read_title', { cursor:show_cursor, speed:speed() }).type('READ').go();
-
-        }, tl+=tempo(1));
-
-        setTimeout(function () {
-
-            new TypeIt('.blog_title', { cursor:show_cursor, speed:speed() }).type('BLOG').go();
-
-        }, tl+=tempo(2));
-
-
-        /*
 
         new TypeIt('.play_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(0) }).type('PLAY').go();
         new TypeIt('.read_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).type('READ').go();
         new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).type('BLOG').go();
+
 
         new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).type('a social game').go();
         new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).type('relevant ideas').go();
@@ -72,7 +53,7 @@
         new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('WRITE').go();
 
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').go();
-        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for a new world').pause(tempo(2)).go();
+        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for a new world').go();
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for chat apps').go();
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for messenger').go();
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for whatsapp').go();
@@ -94,7 +75,6 @@
         new TypeIt('.play_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('PLAY').go();
         new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for the fun of it').go();
 
-        */
 
         console.log(tl + ' seconds runtime');
 
