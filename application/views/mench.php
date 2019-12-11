@@ -40,50 +40,50 @@
 
         var tl = tempo(0);
 
-        new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).type('PLAY').go().destroy();
-        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).type('READ').go().destroy();
-        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).type('BLOG').go().destroy();
+        new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).type('PLAY').go();
+        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).type('READ').go();
+        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).type('BLOG').go();
 
-        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('a social game').pause(tempo(1)).go().destroy();
-        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('relevant ideas').pause(tempo(1)).go().destroy();
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('your ideas').pause(tempo(1)).go().destroy();
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('a social game').pause(tempo(1)).go();
+        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('relevant ideas').pause(tempo(1)).go();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('your ideas').pause(tempo(1)).go();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).type('anyone\'s ideas').pause(tempo(1)).go();
 
-        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SAVE').pause(tempo(1)).go().destroy();
-        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('ORGANIZE').pause(tempo(0)).go().destroy();
-        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SHARE').pause(tempo(1)).go().destroy();
+        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SAVE').pause(tempo(1)).go();
+        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('ORGANIZE').pause(tempo(0)).go();
+        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SHARE').pause(tempo(1)).go();
 
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete(4).type('stories').pause(tempo(1)).go().destroy();
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete(7).type('inspirations').pause(tempo(1)).go().destroy();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete(4).type('stories').pause(tempo(1)).go();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete(7).type('inspirations').pause(tempo(1)).go();
 
-        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').pause(tempo(1)).go().destroy();
-        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').pause(tempo(1)).go().destroy();
+        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').pause(tempo(1)).go();
+        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').pause(tempo(1)).go();
 
-        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('WRITE').pause(tempo(1)).go().destroy();
+        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('WRITE').pause(tempo(1)).go();
 
         new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').pause(tempo(1)).go();
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for a new world').pause(tempo(2)).go().destroy();
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for chat apps').pause(tempo(1)).go().destroy();
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Messenger').pause(tempo(0)).go().destroy();
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for WhatsApp').pause(tempo(0)).go().destroy();
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Slack').pause(tempo(0)).go().destroy();
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Alexa').pause(tempo(0)).go().destroy();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for a new world').pause(tempo(2)).go();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for chat apps').pause(tempo(1)).go();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Messenger').pause(tempo(0)).go();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for WhatsApp').pause(tempo(0)).go();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for Slack').pause(tempo(0)).go();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Alexa').pause(tempo(0)).go();
 
 
-        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('a learning game').pause(tempo(1)).go();
-        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(0) }).delete().type('superpowers').pause(tempo(1)).go();
-        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(0) }).delete().type('SUPERPOWERS').pause(tempo(1)).go();
-        new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('EARN').pause(tempo(0)).go().destroy();
-        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(0) }).delete().type('crypto-coins').pause(tempo(1)).go().destroy();
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('superpowers').pause(tempo(1)).go();
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SUPERPOWERS').pause(tempo(1)).go();
+        new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('EARN').pause(tempo(0)).go();
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(0) }).delete().type('crypto-coins').pause(tempo(1)).go();
 
 
-        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('BLOG').pause(tempo(1)).go().destroy();
-        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('collaboratively').pause(tempo(1)).go().destroy();
+        new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('BLOG').pause(tempo(1)).go();
+        new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('collaboratively').pause(tempo(1)).go();
 
-        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('READ').pause(tempo(0)).go().destroy();
-        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('interactively').pause(tempo(1)).go().destroy();
+        new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('READ').pause(tempo(0)).go();
+        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('interactively').pause(tempo(1)).go();
 
-        new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('PLAY').go().destroy();
-        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(0) }).delete().pause(tempo(2)).type('it\'s fun').pause(tempo(1)).go().destroy();
+        new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('PLAY').go();
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(0) }).delete().pause(tempo(2)).type('for the fun of it').pause(tempo(1)).go();
 
         console.log(tl + ' seconds runtime');
 
