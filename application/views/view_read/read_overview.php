@@ -52,7 +52,7 @@
         new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('your ideas').go();
 
         new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('SAVE').go();
-        new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SORT').go();
+        new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('S;ORT').go();
         new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LINK').go();
         new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SHARE').go();
 
@@ -96,7 +96,7 @@
         <h1 class="no-margin blog"><span class="blog_title"></span> <span class="blog_content"></span></h1>
     </div>
 
-    <div class="animate-trigger"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-play montserrat"><i class="fas fa-play-circle"></i> Watch Animation</a></div>
+    <div class="animate-trigger"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-play montserrat"><i class="fas fa-play-circle"></i> WATCH 1 MIN INTRO</a></div>
 
     <?php
     //Go through all categories and see which ones have published courses:
