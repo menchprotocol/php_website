@@ -3,13 +3,13 @@
 
     function tempo(beat){
         if(beat==0){
-            return 334;
+            return 987;
             return getRandomInt(0,987);
         } else if(beat==1){
-            return 987;
+            return 1500;
             return getRandomInt(987,4181);
         } else if(beat==2){
-            return 1500;
+            return 3000;
             return getRandomInt(2584,6765);
         } else {
             return 0;
