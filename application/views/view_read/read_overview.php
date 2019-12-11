@@ -80,7 +80,7 @@
 </script>
 <div class="container">
 
-    <h1 class="no-margin hidden play"<span class="play_title"></span> <span class="play_content"></span></h1>
+    <h1 class="no-margin hidden play"><span class="play_title"></span> <span class="play_content"></span></h1>
     <h1 class="no-margin hidden read"><span class="read_title"></span> <span class="read_content"></span></h1>
     <h1 class="no-margin hidden blog"><span class="blog_title"></span> <span class="blog_content"></span></h1>
 
