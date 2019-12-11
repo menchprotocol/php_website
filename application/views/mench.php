@@ -1,4 +1,10 @@
-<div class="container" style="width: 100%;">
+<style>
+    .container{
+        max-width: none;
+    }
+</style>
+
+<div class="container">
 
     <h1 class="no-margin"><a href="/play/signin" class="play" style="text-decoration: none;"><span class="play_title"></span> <span class="play_content"></span></a></h1>
     <h1 class="no-margin"><a href="/read" class="read" style="text-decoration: none;"><span class="read_title"></span> <span class="read_content"></span></a></h1>
@@ -52,8 +58,10 @@
 
         new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('READ').pause(tempo(0)).go().destroy();
         new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on Slack').pause(tempo(0)).go().destroy();
+        new TypeIt('.read_content', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on Alexa').pause(tempo(0)).go().destroy();
 
-        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('a learning game').pause(tempo(1)).go().destroy();
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(2) }).delete().type('a learning game').pause(tempo(1)).go();
+        new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(0) }).delete().type('superpowers').pause(tempo(1)).go();
         new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(0) }).delete().type('SUPERPOWERS').pause(tempo(1)).go();
         new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).delete().type('EARN').pause(tempo(0)).go().destroy();
         new TypeIt('.play_content', { speed:speed(), startDelay:tl+=tempo(0) }).delete().type('crypto-coins').pause(tempo(1)).go().destroy();
