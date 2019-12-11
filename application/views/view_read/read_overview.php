@@ -23,11 +23,11 @@
 
         //The Story
 
-        var tl = tempo(0);
+        var tl = 0;
 
-        new TypeIt('.play_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).type('PLAY').go();
+        new TypeIt('.play_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).type('PLAY').go();
         new TypeIt('.read_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).type('READ').go();
-        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).type('BLOG').go();
+        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('BLOG').go();
 
         new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('a social game').pause(tempo(1)).go();
         new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('relevant ideas').pause(tempo(1)).go();
