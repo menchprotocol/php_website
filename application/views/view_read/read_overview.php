@@ -17,7 +17,7 @@
         //return 50;
     }
 
-    function animate(){
+    function stream(){
 
         //The Story
 
@@ -76,7 +76,7 @@
     <h1 class="no-margin hidden read"><span class="read_title"></span> <span class="read_content"></span></h1>
     <h1 class="no-margin hidden blog"><span class="blog_title"></span> <span class="blog_content"></span></h1>
 
-    <div class="no-margin"><a href="javascript:void(0);" onclick="$('.no-margin').toggleClass('hidden');animate();" class="btn btn-lg btn-play montserrat"><i class="fas fa-play-circle"></i> Watch Animation</a></div>
+    <div class="no-margin"><a href="javascript:void(0);" onclick="$('.no-margin').toggleClass('hidden');stream();" class="btn btn-lg btn-play montserrat"><i class="fas fa-play-circle"></i> Watch Animation</a></div>
 
     <?php
     echo '<div style="margin-top: 10px;"></div>';
