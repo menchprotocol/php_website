@@ -1,46 +1,4 @@
 
-<div class="container">
-
-
-    <h1 class="no-margin hidden"><a href="/play/signin" class="play" style="text-decoration: none;"><span class="play_title"></span> <span class="play_content"></span></a></h1>
-    <h1 class="no-margin hidden"><a href="/read" class="read" style="text-decoration: none;"><span class="read_title"></span> <span class="read_content"></span></a></h1>
-    <h1 class="no-margin hidden"><a href="/blog" class="blog" style="text-decoration: none;"><span class="blog_title"></span> <span class="blog_content"></span></a></h1>
-
-    <div class="no-margin"><a href="javascript:void(0);" onclick="$('.no-margin').toggleClass('hidden');animate();" class="btn btn-lg btn-blog montserrat"><i class="fas fa-play-circle"></i> Watch Animation</a></div>
-
-    <?php
-    echo '<div style="margin-top: 10px;"></div>';
-
-    //Go through all categories and see which ones have published courses:
-    foreach($this->config->item('en_all_10869') /* Course Categories */ as $en_id => $m) {
-
-        //Count total published courses here:
-        $published_ins = $this->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-            'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
-            'ln_type_entity_id' => 4601, //BLOG KEYWORDS
-            'ln_parent_entity_id' => $en_id,
-        ), array('in_child'), 0, 0, array('in_outcome' => 'ASC'));
-
-        if(!count($published_ins)){
-            continue;
-        }
-
-        //Show featured blogs in this category:
-        echo '<div class="read-topic"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</div>';
-        echo '<div class="list-group">';
-        foreach($published_ins as $published_in){
-            echo echo_in_read($published_in);
-        }
-        echo '</div>';
-
-    }
-
-    ?>
-
-</div>
-
 
 <script>
 
@@ -111,3 +69,44 @@
     }
 
 </script>
+
+<div class="container">
+
+    <h1 class="no-margin hidden play"<span class="play_title"></span> <span class="play_content"></span></h1>
+    <h1 class="no-margin hidden read"><span class="read_title"></span> <span class="read_content"></span></h1>
+    <h1 class="no-margin hidden blog"><span class="blog_title"></span> <span class="blog_content"></span></h1>
+
+    <div class="no-margin"><a href="javascript:void(0);" onclick="$('.no-margin').toggleClass('hidden');animate();" class="btn btn-lg btn-play montserrat"><i class="fas fa-play-circle"></i> Watch Animation</a></div>
+
+    <?php
+    echo '<div style="margin-top: 10px;"></div>';
+
+    //Go through all categories and see which ones have published courses:
+    foreach($this->config->item('en_all_10869') /* Course Categories */ as $en_id => $m) {
+
+        //Count total published courses here:
+        $published_ins = $this->READ_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
+            'ln_type_entity_id' => 4601, //BLOG KEYWORDS
+            'ln_parent_entity_id' => $en_id,
+        ), array('in_child'), 0, 0, array('in_outcome' => 'ASC'));
+
+        if(!count($published_ins)){
+            continue;
+        }
+
+        //Show featured blogs in this category:
+        echo '<div class="read-topic"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</div>';
+        echo '<div class="list-group">';
+        foreach($published_ins as $published_in){
+            echo echo_in_read($published_in);
+        }
+        echo '</div>';
+
+    }
+
+    ?>
+
+</div>
