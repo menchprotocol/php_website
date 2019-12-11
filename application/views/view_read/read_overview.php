@@ -7,43 +7,41 @@
 
     <script>
 
+        function tempo(beat){
+            if(beat==0){
+                return getRandomInt(0,980);
+            } else if(beat==1){
+                return getRandomInt(980,2500);
+            } else if(beat==2){
+                return getRandomInt(2200,4900);
+            }
+        }
+
+        function speed(){
+            return getRandomInt(22,55);
+            //return 50;
+        }
+
         $(document).ready(function () {
 
             //Terminology Index
-            var play_titles = ['PLAY', 'EARN'];
-            var play_terms = ['a learning-game', 'a free-game', 'a crypto-game', 'crypto-coins'];
-            var read_titles = ['READ', 'DISCOVER', 'LEARN'];
+            var play_titls = ['PLAY', 'EARN', 'UNLOCK', 'RANK'];
+            var play_terms = ['a learning-game', 'a free-game', 'a crypto-game', 'crypto-coins', 'SUPERPOWERS', 'in leaderboard'];
+            var read_titls = ['READ', 'DISCOVER', 'LEARN'];
             var read_terms = ['top ideas', 'on the web', 'on Messenger', '5K words/mo free', 'all for $5/mo', 'interactively'];
-            var blog_titles = ['BLOG', 'CREATE', 'WRITE'];
+            var blog_titls = ['BLOG', 'CREATE', 'WRITE'];
             var blog_terms = ['expert ideas', 'your ideas', 'on the web', 'for Messenger', 'for cash income', 'collaboratively'];
 
             //The Story
-            var story_timeline = 334;
-            console.log(story_timeline);
-            new TypeIt('.play_title', {   speed: 33,  startDelay:(story_timeline+=1500) }).type(play_titles[0]).go().destroy();
-            console.log(story_timeline);
-            new TypeIt('.read_title', {   speed: 33,  startDelay:(story_timeline+=1500) }).type(read_titles[0]).go().destroy();
-            new TypeIt('.blog_title', {   speed: 33,  startDelay:(story_timeline+=1500) }).type(blog_titles[0]).go().destroy();
+            var tl = tempo(0);
 
+            new TypeIt('.play_title', { speed:speed(), startDelay:tl+=tempo(1) }).type(play_titls[0]).go().destroy();
+            new TypeIt('.read_title', { speed:speed(), startDelay:tl+=tempo(1) }).type(read_titls[0]).go().destroy();
+            new TypeIt('.blog_title', { speed:speed(), startDelay:tl+=tempo(1) }).type(blog_titls[0]).go().destroy();
 
-
-            new TypeIt('.blog_content', {
-                speed: 50,
-                startDelay:6000
-            })
-                .type(blog_terms[0])
-                .pause(500)
-                .delete(blog_terms[0].length)
-                .pause(100)
-                .type(blog_terms[1])
-                .pause(750)
-                .options({speed: 100, deleteSpeed: 75})
-                .delete(blog_terms[1].length)
-                .pause(750)
-                .type(blog_terms[2])
-                .go()
-                .destroy();
-
+            new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).type(blog_terms[0]).pause(tempo(1)).go();
+            new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).empty().type(blog_terms[1]).pause(tempo(1)).go();
+            new TypeIt('.blog_content', { speed:speed(), startDelay:tl+=tempo(2) }).empty().type(blog_terms[2]).pause(tempo(0)).go();
 
         });
 
