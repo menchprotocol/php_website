@@ -3,10 +3,13 @@
 
     function tempo(beat){
         if(beat==0){
+            return 334;
             return getRandomInt(0,987);
         } else if(beat==1){
+            return 987;
             return getRandomInt(987,4181);
         } else if(beat==2){
+            return 1500;
             return getRandomInt(2584,6765);
         } else {
             return 0;
@@ -36,22 +39,23 @@
         new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).type('your ideas').go();
         new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('ideas that matter').go();
 
-        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SAVE').go();
+        new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('SAVE').go();
         new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('ORGANIZE').go();
         new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SHARE').go();
 
-        new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').go();
+        new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the go').go();
+        new TypeIt('.read_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete(3).type('web').go();
         new TypeIt('.read_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LEARN').go();
 
         new TypeIt('.blog_title', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('WRITE').go();
 
         new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the web').go();
         new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for a new world').pause(tempo(2)).go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for chat apps').go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Messenger').go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for WhatsApp').go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for Slack').go();
-        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for Alexa').go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for chat apps').go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('for messenger').go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for whatsapp').go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for slack').go();
+        new TypeIt('.blog_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(0) }).delete().type('for alexa').go();
 
 
         new TypeIt('.play_content', { cursor:false, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('superpowers').go();
