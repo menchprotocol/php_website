@@ -94,7 +94,7 @@
         <h1 class="no-margin blog"><span class="blog_title"></span> <span class="blog_content"></span></h1>
     </div>
 
-    <div class="animate-trigger" style="margin-top:30px;"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-play montserrat"><i class="fas fa-play-circle"></i> WATCH 1 MIN INTRO</a></div>
+    <div class="animate-trigger" style="padding-top:30px;"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-play montserrat"><i class="fas fa-play-circle"></i> WATCH 1 MIN INTRO</a></div>
 
     <?php
     //Go through all categories and see which ones have published courses:
