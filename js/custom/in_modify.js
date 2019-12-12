@@ -9,6 +9,10 @@ var match_search_loaded = 0; //Keeps track of when we load the match search
 
 $(document).ready(function () {
 
+    if($('#new_blog_title').val()=='TITLE'){
+        $('#new_blog_title').focus();
+    }
+
     autosize($('#new_blog_title'));
 
     $('#new_blog_title').keypress(function(e) {
