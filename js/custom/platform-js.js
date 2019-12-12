@@ -150,13 +150,6 @@ $(document).ready(function () {
     });
 
 
-    $('.itemread').bind('click', function(e) {
-        if (e.ctrlKey){
-            window.location = '/blog' +  $(this).attr('href', '/blog' +  $(this).attr('href'));
-        }
-    });
-
-
     //Navbar landing page?
     if (!$(".navbar").hasClass("no-adj")) {
         adj();
