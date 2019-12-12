@@ -89,19 +89,17 @@ if(count($current_sign_in_attempt) == 0){
         <!-- Step 1: Choose Channel -->
         <div id="step1" class="signup-steps hidden">
             <p>Choose a reading platform:</p>
-            <div class="row">
-                <?php
-                foreach ($this->config->item('en_all_7555') as $en_id => $m) {
-                    echo '<div style="padding:5px 0;">';
+            <?php
+            foreach ($this->config->item('en_all_7555') as $en_id => $m) {
+                echo '<div class="row" style="padding:5px 0;">';
 
-                    echo '<a class="btn btn-play" href="javascript:void(0);" onclick="select_channel('.$en_id.')"><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . ' <i class="fas fa-angle-right"></i></a>';
+                echo '<a class="btn btn-play" href="javascript:void(0);" onclick="select_channel('.$en_id.')"><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . ' <i class="fas fa-angle-right"></i></a>';
 
-                    echo '<div class="help_me_choose hidden"><i class="fal fa-info-circle"></i> '.$m['m_desc'].'<br /></div>';
+                echo '<div class="help_me_choose hidden"><i class="fal fa-info-circle"></i> '.$m['m_desc'].'<br /></div>';
 
-                    echo '</div>';
-                }
-                ?>
-            </div>
+                echo '</div>';
+            }
+            ?>
             <div class="row help_me_choose center" style="padding-top:20px;">
                 <div class="col-xs-12"><a href="javascript:void(0);" onclick="$('.help_me_choose').toggleClass('hidden')"><i class="fas fa-question-circle"></i> Help me choose</a></div>
             </div>
