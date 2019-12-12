@@ -12,6 +12,41 @@ class Blog extends CI_Controller {
         date_default_timezone_set(config_var(11079));
     }
 
+    function create(){
+
+        $session_en = superpower_assigned(10939, true);
+
+        //Create new intent:
+        $intent_new = $this->BLOG_model->in_create(array(
+            'in_outcome' => 'TITLE',
+            'in_completion_method_entity_id' => 12044, //START
+            'in_status_entity_id' => 6183, //Drafting
+        ), true, $session_en['en_id']);
+
+
+        //Add links:
+        $this->READ_model->ln_create(array(
+            'ln_status_entity_id' => 6176, //Link Published
+            'ln_type_entity_id' => 4983, //Authors
+            'ln_creator_entity_id' => $session_en['en_id'],
+            'ln_child_intent_id' => $intent_new['in_id'],
+            'ln_parent_entity_id' => $session_en['en_id'],
+            'ln_content' => '@'.$session_en['en_id'],
+        ), true);
+        $this->READ_model->ln_create(array(
+            'ln_status_entity_id' => 6176, //Link Published
+            'ln_type_entity_id' => 10573, //Bookmarks
+            'ln_creator_entity_id' => $session_en['en_id'],
+            'ln_child_intent_id' => $intent_new['in_id'],
+            'ln_parent_entity_id' => $session_en['en_id'],
+            'ln_content' => '@'.$session_en['en_id'],
+        ), true);
+
+        //Go this new blog:
+        return redirect_message('/blog/'.$intent_new['in_id']);
+
+    }
+
     function blog_overview(){
         $this->load->view('header', array(
             'title' => 'BLOG',

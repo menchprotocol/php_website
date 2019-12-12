@@ -48,7 +48,7 @@
                 }
 
                 //Add Blog
-                echo '<div style="margin-top: 10px;"><a href="/blog/new" class="btn btn-lg btn-blog montserrat">NEW BLOG</a></div>';
+                echo '<div style="margin-top: 10px;"><a href="/blog/create" class="btn btn-lg btn-blog montserrat">NEW BLOG</a></div>';
 
 
                 /*
