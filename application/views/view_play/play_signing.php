@@ -77,7 +77,7 @@ if(count($current_sign_in_attempt) == 0){
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ));
         if(count($ins) > 0){
-            echo '<p>To <a href="/'.$referrer_in_id.'">'.echo_in_outcome($ins[0]['in_outcome']).'</a></p>';
+            echo '<p class="text-center">To read <a href="/'.$referrer_in_id.'">'.echo_in_outcome($ins[0]['in_outcome']).'</a></p>';
         }
     } elseif(isset($_GET['url']) && strlen($_GET['url']) > 0){
         echo '<p>To access <u>'.urldecode($_GET['url']).'</u></p>';
@@ -88,18 +88,17 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 1: Choose Channel -->
         <div id="step1" class="signup-steps hidden">
-            <p>Choose a platform to continue:</p>
+            <p>Choose a reading platform:</p>
             <div class="row">
                 <?php
                 foreach ($this->config->item('en_all_7555') as $en_id => $m) {
-                    echo '<div class="col-xs-6"><a class="btn btn-play" href="javascript:void(0);" onclick="select_channel('.$en_id.')">' . $m['m_icon'] . ' ' . $m['m_name'] . ' &nbsp;&nbsp;<i class="fas fa-arrow-right"></i></a></div>';
-                }
-                ?>
-            </div>
-            <div class="row help_me_choose hidden">
-                <?php
-                foreach ($this->config->item('en_all_7555') as $en_id => $m) {
-                    echo '<div class="col-xs-6"><i class="fal fa-info-circle"></i> '.$m['m_desc'].'</div>';
+                    echo '<div style="padding:5px 0;">';
+
+                    echo '<a class="btn btn-play" href="javascript:void(0);" onclick="select_channel('.$en_id.')"><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . ' <i class="fas fa-angle-right"></i></a>';
+
+                    echo '<div class="help_me_choose hidden"><i class="fal fa-info-circle"></i> '.$m['m_desc'].'<br /></div>';
+
+                    echo '</div>';
                 }
                 ?>
             </div>
@@ -112,7 +111,7 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 2: Enter Email -->
         <div id="step2" class="signup-steps hidden">
-            <span class="medium-header"><?= $en_all_7555[3288]['m_icon'].' '.$en_all_7555[3288]['m_name'] ?></span>
+            <span class="medium-header"><i class="fas fa-envelope-open"></i> Email</span>
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="isred"></div>
             <span id="step2buttons">
