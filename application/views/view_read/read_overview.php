@@ -79,6 +79,10 @@
         new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).type('joyfully').go();
         new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).type('.').go();
 
+        new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().go();
+        new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl }).delete().go();
+        new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl }).delete().go();
+
     }
 
 </script>
