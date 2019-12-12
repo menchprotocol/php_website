@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-11 18:58:57 PST
+//Generated 2019-12-11 19:05:48 PST
 
 //READ FEATURED:
 $config['en_ids_12096'] = array(6683,6684,12044,7637);
@@ -6705,13 +6705,13 @@ $config['en_all_7555'] = array(
     3288 => array(
         'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
         'm_name' => 'WEB',
-        'm_desc' => 'Connect with Mench on a web browser like Chrome or Safari and receive notifications via Email.',
+        'm_desc' => 'Read on any web browser (Chrome, Safari, Firefix) & receive updates on email.',
         'm_parents' => array(6225,7555,4426,4755),
     ),
     6196 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger" aria-hidden="true"></i>',
         'm_name' => 'MESSENGER',
-        'm_desc' => 'Establish a consistent connection with Mench on Messenger and get everything done in one place. (RECOMMENDED)',
+        'm_desc' => 'Read & receive recommendations on Messenger. (recommended)',
         'm_parents' => array(4426,7555,3320),
     ),
 );
