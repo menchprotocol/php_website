@@ -498,9 +498,14 @@ textarea.note-textarea{
     font-size: 1em;
     color: #070707;
 }
+
 .i_content {
-    padding:0px 22px 0px 1px;
+    padding:0 0 15px 1px;
 }
+.blog .i_content {
+    padding:0 22px 0 1px;
+}
+
 .text_message{
     margin:5px 0;
 }

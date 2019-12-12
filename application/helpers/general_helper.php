@@ -667,6 +667,15 @@ function unique_players(){
     return $engaged_players[0]['count'];
 }
 
+function current_mench(){
+    $CI =& get_instance();
+    $part1 = $CI->uri->segment(1);
+    if($part1=='play' || $part1=='blog'){
+        return $part1;
+    } else {
+        return 'read';
+    }
+}
 
 function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
 {
