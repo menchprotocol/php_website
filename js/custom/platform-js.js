@@ -152,8 +152,7 @@ $(document).ready(function () {
 
     $('.itemread').bind('click', function(e) {
         if (e.ctrlKey){
-            e.preventDefault();
-            window.location = '/blog' +  $(this).attr('href');
+            window.location = '/blog' +  $(this).attr('href', '/blog' +  $(this).attr('href'));
         }
     });
 
