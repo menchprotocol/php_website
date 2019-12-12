@@ -64,7 +64,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
         } else {
 
             //Give option to add:
-            echo '<div id="added_to_actionplan"><a class="btn btn-blog" href="javascript:void(0);" onclick="add_to_actionplan()" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a></div>';
+            echo '<div id="added_to_actionplan"><a class="btn btn-read" href="javascript:void(0);" onclick="add_to_actionplan()" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a></div>';
 
 
         }
@@ -72,7 +72,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     } else {
 
         //Give option to add:
-        echo '<a class="btn btn-blog" href="/play/signin/'.$in['in_id'].'" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+        echo '<a class="btn btn-read" href="/play/signin/'.$in['in_id'].'" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
 
     }
 
