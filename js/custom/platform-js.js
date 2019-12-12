@@ -153,10 +153,7 @@ $(document).ready(function () {
     $('.itemread').bind('click', function(e) {
         if (e.ctrlKey){
             e.preventDefault();
-
-            window.open('https://mench.com/blog' +  $(this).attr('href'),'_blank')
-
-            //window.location = '/blog' +  $(this).attr('href');
+            window.location = '/blog' +  $(this).attr('href');
         }
     });
 
