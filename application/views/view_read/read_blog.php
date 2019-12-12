@@ -59,7 +59,12 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
             //Show when was added:
             echo '<p>BLOG already added to your BOOKMARKS.</p>';
 
-            echo '<a class="btn btn-read" href="/actionplan/'.$in['in_id'].'" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Resume&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+            echo '<a class="btn btn-read" href="/'.$in['in_id'].'" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Resume&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+
+            echo '<a class="read montserrat" href="/play/signin/'.$in['in_id'].'"><span class="icon-block"><i class="fas fa-circle ispink"></i></span>RESUME <i class="fas fa-angle-right"></i></a>';
+
+
+
 
         } else {
 
@@ -159,7 +164,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     if(count($in__other) > 0){
 
 
-        echo '<p style="margin:25px 0 15px;" class="other_intents"><a href="javascript:void(0)" onclick="$(\'.other_intents\').toggleClass(\'hidden\')">'.count($in__other).' similar reads</a></p>';
+        echo '<p style="margin:25px 0 15px;" class="other_intents"><a href="javascript:void(0)" onclick="$(\'.other_intents\').toggleClass(\'hidden\')">'.count($in__other).' nearby reads</a></p>';
 
 
         echo '<div class="other_intents hidden">';

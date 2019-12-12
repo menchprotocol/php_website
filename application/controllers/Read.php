@@ -836,7 +836,7 @@ class Read extends CI_Controller
             //All good:
             return echo_json(array(
                 'status' => 1,
-                'message' => '<i class="far fa-check-circle"></i> ADDED TO BOOKMARKS',
+                'message' => '<i class="far fa-check-circle"></i> REDIRECTING TO NEXT...',
                 'add_redirect' => '/actionplan/'.$_POST['in_id'],
             ));
         } else {
