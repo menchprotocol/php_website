@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-10 03:08:05 PST
+//Generated 2019-12-11 16:54:35 PST
 
 //BLOG MODIFY:
 $config['en_ids_12079'] = array(7585,4485,4737,4736,12090);
@@ -54,7 +54,7 @@ $config['en_all_12066'] = array(
 );
 
 //MENCH GLOSSARY:
-$config['en_ids_4463'] = array(4535,4485,3084,2738,4536,4430,6199,3000,4755,6205);
+$config['en_ids_4463'] = array(4535,4485,3084,4536,4430,6199,3000,4755,6205);
 $config['en_all_4463'] = array(
     4535 => array(
         'm_icon' => '<i class="fas fa-circle yellow" aria-hidden="true"></i>',
@@ -73,12 +73,6 @@ $config['en_all_4463'] = array(
         'm_name' => 'EXPERTS',
         'm_desc' => 'People with experience in their respective industry that have shown a consistent commitment to advancing their industry.',
         'm_parents' => array(10571,4983,6827,4463),
-    ),
-    2738 => array(
-        'm_icon' => '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin no-radius">',
-        'm_name' => 'MENCH',
-        'm_desc' => 'is an interactive publishing platform that allows anyone to discover & share ideas that matter. Writers create & organize microblogs, each focused on a single idea, but can link together to form bigger ideas. Readers use the web or Messenger to read interactively by choosing their unique reading path.',
-        'm_parents' => array(4463,12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
     ),
     4536 => array(
         'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
@@ -2544,7 +2538,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.156',
+        'm_desc' => '1.15',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -3335,7 +3329,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin no-radius">',
         'm_name' => 'MENCH',
         'm_desc' => '',
-        'm_parents' => array(4463,12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
+        'm_parents' => array(12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
     ),
     7555 => array(
         'm_icon' => '<i class="fas fa-paper-plane"></i>',
@@ -5647,7 +5641,7 @@ $config['en_all_6192'] = array(
         'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
         'm_name' => 'START',
         'm_desc' => '',
-        'm_parents' => array(4559,7756,6192,7582,7585),
+        'm_parents' => array(6144,4559,7756,6192,7582,7585),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
@@ -5927,7 +5921,7 @@ $config['en_all_7756'] = array(
         'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
         'm_name' => 'START',
         'm_desc' => '',
-        'm_parents' => array(4559,7756,6192,7582,7585),
+        'm_parents' => array(6144,4559,7756,6192,7582,7585),
     ),
 );
 
@@ -5943,13 +5937,19 @@ $config['en_all_7751'] = array(
 );
 
 //READER SUBMISSION REQUIRED:
-$config['en_ids_6144'] = array(6683,7637);
+$config['en_ids_6144'] = array(6683,12044,7637);
 $config['en_all_6144'] = array(
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard "></i>',
         'm_name' => 'REPLY',
         'm_desc' => '',
         'm_parents' => array(7582,7585,6144,6192),
+    ),
+    12044 => array(
+        'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
+        'm_name' => 'START',
+        'm_desc' => '',
+        'm_parents' => array(6144,4559,7756,6192,7582,7585),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
@@ -6554,7 +6554,7 @@ $config['en_all_7585'] = array(
         'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
         'm_name' => 'START',
         'm_desc' => 'A starting point where readers are asked to login to continue. This ensures that the reader starts saving the rest of the conversation history.',
-        'm_parents' => array(4559,7756,6192,7582,7585),
+        'm_parents' => array(6144,4559,7756,6192,7582,7585),
     ),
     6677 => array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
@@ -6625,7 +6625,7 @@ $config['en_all_7582'] = array(
         'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
         'm_name' => 'START',
         'm_desc' => '',
-        'm_parents' => array(4559,7756,6192,7582,7585),
+        'm_parents' => array(6144,4559,7756,6192,7582,7585),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',

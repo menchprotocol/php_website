@@ -85,7 +85,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     //Child intentions:
     $in__children = $this->READ_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
+        'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_6144')) . ')' => null,
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         'ln_type_entity_id' => 4228, //Intent Link Regular Step
         'ln_parent_intent_id' => $in['in_id'],
@@ -94,7 +94,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     //Parent intentions:
     $in__parents = $this->READ_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
+        'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_6144')) . ')' => null,
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         'ln_type_entity_id' => 4228, //Intent Link Regular Step
         'ln_child_intent_id' => $in['in_id'],
@@ -112,7 +112,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     ), array('in_parent')) as $parent_in) {
         $in__siblings = array_merge($in__siblings, $this->READ_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
+            'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_6144')) . ')' => null,
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
             'ln_parent_intent_id' => $parent_in['in_id'],
@@ -130,7 +130,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     ), array('in_child')) as $child_in) {
         $in__granchildren = array_merge($in__granchildren, $this->READ_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
+            'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_6144')) . ')' => null,
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
             'ln_parent_intent_id' => $child_in['in_id'],
