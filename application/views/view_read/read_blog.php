@@ -19,6 +19,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
 
 
     //Action Plan Overview:
+    /*
     $step_info = echo_tree_steps($in, false);
     $source_info = echo_tree_experts($in, false);
 
@@ -28,7 +29,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
         echo $source_info;
         echo '</div>';
     }
-
+    */
 
 
 
