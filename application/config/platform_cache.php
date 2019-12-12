@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-11 19:08:06 PST
+//Generated 2019-12-11 19:10:01 PST
 
 //READ FEATURED:
 $config['en_ids_12096'] = array(6683,6684,12044,7637);
@@ -6700,19 +6700,19 @@ $config['en_all_5967'] = array(
 );
 
 //MENCH READING CHANNELS:
-$config['en_ids_7555'] = array(3288,6196);
+$config['en_ids_7555'] = array(6196,3288);
 $config['en_all_7555'] = array(
-    3288 => array(
-        'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
-        'm_name' => 'WEB',
-        'm_desc' => 'Read on any web browser (Chrome, Safari, Firefix) & receive notifications on email.',
-        'm_parents' => array(6225,7555,4426,4755),
-    ),
     6196 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger" aria-hidden="true"></i>',
         'm_name' => 'MESSENGER',
         'm_desc' => 'Read & receive notifications on Messenger. (recommended)',
         'm_parents' => array(4426,7555,3320),
+    ),
+    3288 => array(
+        'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
+        'm_name' => 'WEB',
+        'm_desc' => 'Read on any web browser (Chrome, Safari, Firefix) & receive notifications on email.',
+        'm_parents' => array(6225,7555,4426,4755),
     ),
 );
 
