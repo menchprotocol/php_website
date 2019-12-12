@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-11 19:10:01 PST
+//Generated 2019-12-12 00:01:38 PST
 
 //READ FEATURED:
 $config['en_ids_12096'] = array(6683,6684,12044,7637);
@@ -6710,7 +6710,7 @@ $config['en_all_7555'] = array(
     ),
     3288 => array(
         'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
-        'm_name' => 'WEB',
+        'm_name' => 'WEB + EMAIL',
         'm_desc' => 'Read on any web browser (Chrome, Safari, Firefix) & receive notifications on email.',
         'm_parents' => array(6225,7555,4426,4755),
     ),
@@ -7243,7 +7243,7 @@ $config['en_all_6225'] = array(
     ),
     3288 => array(
         'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
-        'm_name' => 'WEB',
+        'm_name' => 'WEB + EMAIL',
         'm_desc' => '',
         'm_parents' => array(6225,7555,4426,4755),
     ),
@@ -7654,7 +7654,7 @@ $config['en_all_4426'] = array(
     ),
     3288 => array(
         'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER WEB',
+        'm_name' => 'PLAYER WEB + EMAIL',
         'm_desc' => '',
         'm_parents' => array(6225,7555,4426,4755),
     ),
@@ -7719,7 +7719,7 @@ $config['en_all_4755'] = array(
     ),
     3288 => array(
         'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER WEB',
+        'm_name' => 'PLAYER WEB + EMAIL',
         'm_desc' => '',
         'm_parents' => array(6225,7555,4426,4755),
     ),
