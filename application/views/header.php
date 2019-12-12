@@ -78,7 +78,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 </head>
 
-<body>
+<body class="<?= $this->uri->segment(1) ?>">
 
 <?php
 //Any message we need to show here?
