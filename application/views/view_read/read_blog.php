@@ -72,7 +72,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     } else {
 
         //Give option to add:
-        echo '<a class="btn btn-read" href="/play/signin/'.$in['in_id'].'" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+        echo '<a class="read montserrat" href="/play/signin/'.$in['in_id'].'"><span class="icon-block"><i class="fas fa-circle ispink"></i></span> NEXT <i class="fas fa-angle-right"></i></a>';
 
     }
 
