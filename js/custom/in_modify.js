@@ -9,8 +9,8 @@ var match_search_loaded = 0; //Keeps track of when we load the match search
 
 $(document).ready(function () {
 
-    if($('#new_blog_title').val()=='TITLE'){
-        $('#new_blog_title').focus();
+    if($('#new_blog_title').val()==js_en_all_6201[4736]['m_name']){
+        $('#new_blog_title').val('').focus();
     }
 
     autosize($('#new_blog_title'));

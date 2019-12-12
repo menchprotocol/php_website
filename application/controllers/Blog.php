@@ -16,9 +16,11 @@ class Blog extends CI_Controller {
 
         $session_en = superpower_assigned(10939, true);
 
+        $en_all_6201 = $this->config->item('en_all_6201'); //Intent Table
+
         //Create new intent:
         $intent_new = $this->BLOG_model->in_create(array(
-            'in_outcome' => 'TITLE',
+            'in_outcome' => $en_all_6201[4736]['m_name'],
             'in_completion_method_entity_id' => 12044, //START
             'in_status_entity_id' => 6183, //Drafting
         ), true, $session_en['en_id']);
