@@ -503,7 +503,7 @@ textarea.note-textarea{
     padding:0 0 15px 1px;
 }
 .toblog .i_content {
-    padding:0 22px 0 1px;
+    padding:0 22px 0 0;
 }
 
 .text_message{
