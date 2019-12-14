@@ -58,7 +58,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } else {
 
         echo '<div class="center-right">';
-            echo '<div class="inline-block">'.echo_dropdown(7585, $in['in_completion_method_entity_id'], 'btn-blog').'</div>';
+            echo '<div class="inline-block" style="margin-bottom: 10px;">'.echo_dropdown(7585, $in['in_completion_method_entity_id'], 'btn-blog').'</div>';
         echo '</div>';
 
     }

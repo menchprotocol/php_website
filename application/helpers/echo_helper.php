@@ -1612,7 +1612,7 @@ function echo_in_dashboard($in)
     $ui = '<div class="list-group-item itemblog">';
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-blog" href="/blog/' . $in['in_id']. '"><i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="/blog/' . $in['in_id']. '"><i class="fas fa-angle-right"></i></a></div>';
     $ui .= '<span class="icon-block">'.$en_all_7585[$in['in_completion_method_entity_id']]['m_icon'].'</span>';
     $ui .= '<b class="montserrat">'.echo_in_outcome($in['in_outcome'], false).'</b>';
     $ui .= '</div>';
@@ -2189,7 +2189,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 
     //UNLINK
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-blog" href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-trash"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-trash"></i></a></div>';
 
 
     //Count children:
@@ -2204,7 +2204,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-blog" href="/blog/' . $in['in_id'] . '">'.($tree_count_range > 0 ? '<span class="btn-counter">' . $tree_count_range . '</span> ' : '').'<i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="/blog/' . $in['in_id'] . '">'.($tree_count_range > 0 ? '<span class="btn-counter">' . $tree_count_range . '</span> ' : '').'<i class="fas fa-angle-right"></i></a></div>';
 
 
 
@@ -2375,11 +2375,11 @@ function echo_en($en, $is_parent = false)
 
 
     //MODIFY
-    $ui .= '<div class="pull-right inline-block '. superpower_active(10983) .'" style="padding-left:5px;"><a class="btn btn-primary btn-play" href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block '. superpower_active(10983) .'" style="padding-left:5px;"><a class="btn btn-play" href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog"></i></a></div>';
 
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '"><span class="'. superpower_active(10983) .'">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']).' ' : '') . '</span><i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-play" href="/play/' . $en['en_id']. '"><span class="'. superpower_active(10983) .'">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']).' ' : '') . '</span><i class="fas fa-angle-right"></i></a></div>';
 
 
     //ICON SET
@@ -2402,7 +2402,7 @@ function echo_en($en, $is_parent = false)
 }
 
 
-function echo_dropdown($cache_en_id, $selected_en_id, $btn_class = 'btn-primary'){
+function echo_dropdown($cache_en_id, $selected_en_id, $btn_class){
 
     $CI =& get_instance();
     $en_all_12079 = $CI->config->item('en_all_12079');
