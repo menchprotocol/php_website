@@ -2054,7 +2054,7 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
 
 
 
-function echo_in($in, $in_linked_id = 0, $is_parent = false)
+function echo_in($in, $in_linked_id, $is_parent, $can_manage)
 {
 
     /*
@@ -2192,7 +2192,9 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 
     //UNLINK
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="javascript:void(0);" title="Unlink blog" data-toggle="tooltip" data-placement="left" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink"></i></a></div>';
+    if($can_manage){
+        $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="javascript:void(0);" title="Unlink blog" data-toggle="tooltip" data-placement="left" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink"></i></a></div>';
+    }
 
 
     //Count children:

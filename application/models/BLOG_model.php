@@ -443,7 +443,7 @@ class BLOG_model extends CI_Model
             ), array(($is_parent ? 'in_parent' : 'in_child')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
-            $in_child_html = echo_in($new_ins[0], $in_linked_id, $is_parent);
+            $in_child_html = echo_in($new_ins[0], $in_linked_id, $is_parent, true /* Since they added it! */);
 
 
             //See if parent intent is locked:
