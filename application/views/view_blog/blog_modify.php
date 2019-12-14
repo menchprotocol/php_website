@@ -110,7 +110,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                        class="form-control intentadder-level-2-parent form-control-thick algolia_search"
                                        intent-id="' . $in['in_id'] . '"
                                        id="addintent-c-' . $in['in_id'] . '-1"
-                                       placeholder="ADD BLOG">
+                                       placeholder="+ BLOG">
                             </div>
                            <div class="algolia_search_pad in_pad_top hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus yellow"></i></span>Search blogs or create a new one...</b></div>
                     </div>';
@@ -146,7 +146,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                maxlength="' . config_var(11071) . '"
                                intent-id="' . $in['in_id'] . '"
                                id="addintent-c-' . $in['in_id'] . '-0"
-                               placeholder="ADD BLOG">
+                               placeholder="+ BLOG">
                     </div>
                    <div class="algolia_search_pad in_pad_bottom hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus yellow"></i></span>Search blogs or create a new one...</b></div>
             </div>';
