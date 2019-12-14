@@ -2,7 +2,7 @@
 <?php
 $en_all_6201 = $this->config->item('en_all_6201'); //Intent Table
 
-$can_manage = ( in_can_manage($in['in_id'], $session_en['en_id']) );
+$can_manage = in_can_manage($in['in_id']);
 ?>
 
 <style>

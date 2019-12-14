@@ -1832,18 +1832,16 @@ function echo_in_marks($in_ln){
 
 }
 
-function in_can_manage($in_id, $en_id = 0){
+function in_can_manage($in_id){
 
     $CI =& get_instance();
 
 
-    if(!$en_id){
-        //Fetch session:
-        $session_en = superpower_assigned();
-    }
+    //Fetch session:
+    $session_en = superpower_assigned();
 
 
-    if($en_id<1 && (!isset($session_en['en_id']) || $in_id < 1)){
+    if(!isset($session_en['en_id']) || $in_id < 1){
         return false;
     }
 
@@ -1853,7 +1851,7 @@ function in_can_manage($in_id, $en_id = 0){
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id' => 4983,
             'ln_child_intent_id' => $in_id,
-            'ln_parent_entity_id' => ( $en_id > 0 ? $en_id : $session_en['en_id'] ),
+            'ln_parent_entity_id' => $session_en['en_id'],
         )));
 }
 
