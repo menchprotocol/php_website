@@ -13,6 +13,10 @@ class Read extends CI_Controller
         date_default_timezone_set(config_var(11079));
     }
 
+    function next(){
+        return redirect_message('/read');
+    }
+
     function read_overview(){
 
         //Simplify URL structure if needed:
