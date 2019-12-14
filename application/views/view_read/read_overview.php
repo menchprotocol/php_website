@@ -86,9 +86,9 @@
 <div class="container">
 
     <div class="animate-box hidden">
-        <h1 class="no-margin play"><span class="play_title"></span> <span class="play_content"></span></h1>
-        <h1 class="no-margin read"><span class="read_title"></span> <span class="read_content"></span></h1>
-        <h1 class="no-margin blog"><span class="blog_title"></span> <span class="blog_content"></span></h1>
+        <h1 class="no-margin play"> <span class="play_title"></span> <span class="play_content"></span></h1>
+        <h1 class="no-margin read"> <span class="read_title"></span> <span class="read_content"></span></h1>
+        <h1 class="no-margin blog"> <span class="blog_title"></span> <span class="blog_content"></span></h1>
     </div>
 
     <div class="animate-trigger"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-read montserrat inline-block" style="margin-top: 20px;"><i class="fas fa-play-circle"></i> WATCH 1 MIN INTRO</a></div>
