@@ -39,11 +39,11 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     //ACCOUNT
     if(isset($session_en['en_id']) && $session_en['en_id']==$entity['en_id']){
 
-        echo '<a href="/play/myaccount" class="btn btn-play btn-five inline-block" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[6225]['m_desc'].'">'.$en_all_11035[6225]['m_icon'].' '.$en_all_11035[6225]['m_name'].'</a>';
+        echo '<a href="/play/myaccount" class="btn btn-play btn-five inline-block" data-toggle="tooltip" data-placement="bottom" style="padding-bottom:10px;" title="'.$en_all_11035[6225]['m_desc'].'">'.$en_all_11035[6225]['m_icon'].' '.$en_all_11035[6225]['m_name'].'</a>';
 
-        echo '<a href="/play" class="btn btn-play btn-five inline-block" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11087]['m_desc'].'">'.$en_all_11035[11087]['m_icon'].' '.$en_all_11035[11087]['m_name'].'</a>';
+        echo '<a href="/play" class="btn btn-play btn-five inline-block" data-toggle="tooltip" data-placement="bottom" style="padding-bottom:10px;" title="'.$en_all_11035[11087]['m_desc'].'">'.$en_all_11035[11087]['m_icon'].' '.$en_all_11035[11087]['m_name'].'</a>';
 
-        echo '<a href="/play/signout" class="btn btn-play btn-five inline-block" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[7291]['m_name'].'">'.$en_all_11035[7291]['m_icon'].'</a>';
+        echo '<a href="/play/signout" class="btn btn-play btn-five inline-block" style="padding-bottom:10px;"'.$en_all_11035[7291]['m_icon'].' '.$en_all_11035[11087]['m_name'].'</a>';
 
     }
 
