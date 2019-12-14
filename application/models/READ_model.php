@@ -2527,9 +2527,9 @@ class READ_model extends CI_Model
         $en_all_7703 = $this->config->item('en_all_7703'); //Load all link types
         $in_outcomes = array();
 
-        //Update potential subscribers:
+        //Inform authors:
         foreach($this->READ_model->ln_fetch(array(
-            'ln_type_entity_id' => 4983, //UP-VOTES
+            'ln_type_entity_id' => 4983,
             'ln_child_intent_id IN (' . join(',', $related_intents) . ')' => null, //Fetch subscribers for all intents
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
@@ -2747,7 +2747,7 @@ class READ_model extends CI_Model
             //Log successful Link for message delivery (Unless Trainers viewing HTML):
             if(isset($recipient_en['en_id']) && $push_message){
                 $this->READ_model->ln_create(array(
-                    'ln_status_entity_id' => ( $msg_dispatching['user_chat_channel']==3288 /* Mench on Chrome */ ? 6175 /* Link Drafting, so we dispatch later */ : 6176 /* Link Published */ ),
+                    'ln_status_entity_id' => ( $msg_dispatching['user_chat_channel']==12103 ? 6175 /* Link Drafting, so we dispatch later */ : 6176 /* Link Published */ ),
                     'ln_content' => $msg_dispatching['input_message'],
                     'ln_type_entity_id' => $output_message['message_type_en_id'],
                     'ln_creator_entity_id' => $recipient_en['en_id'],
@@ -3007,7 +3007,7 @@ class READ_model extends CI_Model
 
                 if(count($user_emails) > 0){
 
-                    $user_chat_channel = 3288; //Mench Email
+                    $user_chat_channel = 12103; //Web+Email
 
                 } else {
 
@@ -3395,12 +3395,12 @@ class READ_model extends CI_Model
                         if(!count($this->READ_model->ln_fetch(array(
                             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                             'ln_child_entity_id' => $string_references['ref_entities'][0],
-                            'ln_parent_entity_id IN ('.join(',' , $this->config->item('en_ids_4983')).')' => null, //Intent Note Up-Votes
+                            'ln_parent_entity_id IN ('.join(',' , $this->config->item('en_ids_4983')).')' => null,
                             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                         )))){
                             return array(
                                 'status' => 0,
-                                'message' => 'Up-voter must be either you OR an Experts, Expert Sources or Mench Users (See @4983 for supporting entities)',
+                                'message' => 'Invalid Player Reference. See @4983 for a list of valid player references.',
                             );
                         }
                     }

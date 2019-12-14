@@ -18,34 +18,21 @@ class Blog extends CI_Controller {
 
         $en_all_6201 = $this->config->item('en_all_6201'); //Intent Table
 
-        //Create new intent:
-        $intent_new = $this->BLOG_model->in_create(array(
-            'in_outcome' => $en_all_6201[4736]['m_name'],
-            'in_completion_method_entity_id' => 12044, //START
-            'in_status_entity_id' => 6183, //Drafting
-        ), true, $session_en['en_id']);
+        //Create intent:
+        $in = $this->BLOG_model->in_link_or_create($en_all_6201[4736]['m_name'], $session_en['en_id'], 0, false, 6183, 12044, $_POST['in_link_child_id']);
 
-
-        //Add links:
-        $this->READ_model->ln_create(array(
-            'ln_status_entity_id' => 6176, //Link Published
-            'ln_type_entity_id' => 4983, //Authors
-            'ln_creator_entity_id' => $session_en['en_id'],
-            'ln_child_intent_id' => $intent_new['in_id'],
-            'ln_parent_entity_id' => $session_en['en_id'],
-            'ln_content' => '@'.$session_en['en_id'],
-        ), true);
+        //Also add to bookmarks:
         $this->READ_model->ln_create(array(
             'ln_status_entity_id' => 6176, //Link Published
             'ln_type_entity_id' => 10573, //Bookmarks
             'ln_creator_entity_id' => $session_en['en_id'],
-            'ln_child_intent_id' => $intent_new['in_id'],
+            'ln_child_intent_id' => $in['new_in_id'],
             'ln_parent_entity_id' => $session_en['en_id'],
             'ln_content' => '@'.$session_en['en_id'],
         ), true);
 
         //Go this new blog:
-        return redirect_message('/blog/'.$intent_new['in_id']);
+        return redirect_message('/blog/'.$in['new_in_id']);
 
     }
 
@@ -228,7 +215,7 @@ class Blog extends CI_Controller {
         $this->READ_model->ln_create(array(
             'ln_creator_entity_id' => $session_en['en_id'],
             'ln_parent_entity_id' => $session_en['en_id'],
-            'ln_type_entity_id' => 4983, //Intent Note Up-Votes
+            'ln_type_entity_id' => 4983,
             'ln_content' => '@'.$session_en['en_id'],
             'ln_child_intent_id' => $in_id,
         ));
@@ -430,7 +417,7 @@ class Blog extends CI_Controller {
         }
 
         //All seems good, go ahead and try creating the intent:
-        return echo_json($this->BLOG_model->in_link_or_create($_POST['in_linked_id'], intval($_POST['is_parent']), trim($_POST['in_outcome']), $session_en['en_id'], 6183 /* Intent New */, $new_intent_type, $_POST['in_link_child_id']));
+        return echo_json($this->BLOG_model->in_link_or_create(trim($_POST['in_outcome']), $session_en['en_id'], $_POST['in_linked_id'], intval($_POST['is_parent']), 6183, $new_intent_type, $_POST['in_link_child_id']));
 
     }
 

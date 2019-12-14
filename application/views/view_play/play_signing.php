@@ -1,6 +1,5 @@
 <?php
 $en_all_6225 = $this->config->item('en_all_6225');
-$en_all_7555 = $this->config->item('en_all_7555');
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 $this_attempt = array(
@@ -164,7 +163,7 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 5: Check your email -->
         <div id="step5" class="signup-steps hidden">
-            <span class="medium-header"><?= $en_all_7555[3288]['m_icon'] ?> <span class="focus_email"></span></span>
+            <span class="medium-header"><i class="fas fa-envelope-open"></i> <span class="focus_email"></span></span>
             <span class="medium-header magic_result"></span>
         </div>
 

@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-13 14:27:58 PST
+//Generated 2019-12-13 18:09:50 PST
 
 //READ FEATURED:
 $config['en_ids_12096'] = array(6683,6684,12044,7637);
@@ -5762,7 +5762,7 @@ $config['en_all_10591'] = array(
 );
 
 //PUBLIC PLAYERS:
-$config['en_ids_10571'] = array(2997,4446,3005,3147,3084,4763,3000,2999,4883,3192,5948,2998);
+$config['en_ids_10571'] = array(2997,4446,3005,4763,3147,3084,3000,2999,4883,3192,5948,2998);
 $config['en_all_10571'] = array(
     2997 => array(
         'm_icon' => '<i class="far fa-newspaper" aria-hidden="true"></i>',
@@ -5782,6 +5782,12 @@ $config['en_all_10571'] = array(
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
+    4763 => array(
+        'm_icon' => '<i class="far fa-megaphone" aria-hidden="true"></i>',
+        'm_name' => 'CHANNELS',
+        'm_desc' => '',
+        'm_parents' => array(10571,4983,7614,6805,3000),
+    ),
     3147 => array(
         'm_icon' => '<i class="far fa-presentation" aria-hidden="true"></i>',
         'm_name' => 'COURSES',
@@ -5793,12 +5799,6 @@ $config['en_all_10571'] = array(
         'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(10571,4983,6827,4463),
-    ),
-    4763 => array(
-        'm_icon' => '<i class="far fa-megaphone" aria-hidden="true"></i>',
-        'm_name' => 'MARKETING CHANNELS',
-        'm_desc' => '',
-        'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3000 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -5850,7 +5850,7 @@ $config['en_all_10570'] = array(
 );
 
 //BLOG AUTHORS:
-$config['en_ids_4983'] = array(2997,4446,3005,3147,3084,4763,4430,2999,4883,3192,5948,2998);
+$config['en_ids_4983'] = array(2997,4446,3005,4763,3147,3084,4430,2999,4883,3192,5948,2998);
 $config['en_all_4983'] = array(
     2997 => array(
         'm_icon' => '<i class="far fa-newspaper" aria-hidden="true"></i>',
@@ -5870,6 +5870,12 @@ $config['en_all_4983'] = array(
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
+    4763 => array(
+        'm_icon' => '<i class="far fa-megaphone" aria-hidden="true"></i>',
+        'm_name' => 'CHANNELS',
+        'm_desc' => '',
+        'm_parents' => array(10571,4983,7614,6805,3000),
+    ),
     3147 => array(
         'm_icon' => '<i class="far fa-presentation" aria-hidden="true"></i>',
         'm_name' => 'COURSES',
@@ -5881,12 +5887,6 @@ $config['en_all_4983'] = array(
         'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(10571,4983,6827,4463),
-    ),
-    4763 => array(
-        'm_icon' => '<i class="far fa-megaphone" aria-hidden="true"></i>',
-        'm_name' => 'MARKETING CHANNELS',
-        'm_desc' => '',
-        'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     4430 => array(
         'm_icon' => '<i class="far fa-user"></i>',
@@ -6700,7 +6700,7 @@ $config['en_all_5967'] = array(
 );
 
 //MENCH READING CHANNELS:
-$config['en_ids_7555'] = array(6196,3288);
+$config['en_ids_7555'] = array(6196,12103);
 $config['en_all_7555'] = array(
     6196 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger" aria-hidden="true"></i>',
@@ -6708,11 +6708,11 @@ $config['en_all_7555'] = array(
         'm_desc' => 'Read & receive notifications on Messenger. (recommended)',
         'm_parents' => array(4426,7555,3320),
     ),
-    3288 => array(
-        'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
+    12103 => array(
+        'm_icon' => '<i class="fab fa-chrome"></i>',
         'm_name' => 'WEB+EMAIL',
         'm_desc' => 'Read on any web browser (Chrome, Safari, Firefix) & receive notifications on email.',
-        'm_parents' => array(6225,7555,4426,4755),
+        'm_parents' => array(7555),
     ),
 );
 
@@ -7048,7 +7048,7 @@ $config['en_all_6827'] = array(
 );
 
 //THING INTERACTION CONTENT REQUIRES TEXT:
-$config['en_ids_6805'] = array(3005,3147,4763,2999,4883,3192);
+$config['en_ids_6805'] = array(3005,4763,3147,2999,4883,3192);
 $config['en_all_6805'] = array(
     3005 => array(
         'm_icon' => '<i class="far fa-book" aria-hidden="true"></i>',
@@ -7056,15 +7056,15 @@ $config['en_all_6805'] = array(
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
-    3147 => array(
-        'm_icon' => '<i class="far fa-presentation" aria-hidden="true"></i>',
-        'm_name' => 'COURSES',
+    4763 => array(
+        'm_icon' => '<i class="far fa-megaphone" aria-hidden="true"></i>',
+        'm_name' => 'CHANNELS',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
-    4763 => array(
-        'm_icon' => '<i class="far fa-megaphone" aria-hidden="true"></i>',
-        'm_name' => 'MARKETING CHANNELS',
+    3147 => array(
+        'm_icon' => '<i class="far fa-presentation" aria-hidden="true"></i>',
+        'm_name' => 'COURSES',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
@@ -7242,10 +7242,10 @@ $config['en_all_6225'] = array(
         'm_parents' => array(6225,11072,10646,5000,4998,4999,6232,6206),
     ),
     3288 => array(
-        'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
-        'm_name' => 'WEB+EMAIL',
+        'm_icon' => '<i class="fas fa-envelope-open blue" aria-hidden="true"></i>',
+        'm_name' => 'EMAIL',
         'm_desc' => '',
-        'm_parents' => array(6225,7555,4426,4755),
+        'm_parents' => array(12103,6225,4426,4755),
     ),
     3286 => array(
         'm_icon' => '<i class="fas fa-key isblue" aria-hidden="true"></i>',
@@ -7620,8 +7620,14 @@ $config['en_all_4997'] = array(
 );
 
 //PLAYER LOCK:
-$config['en_ids_4426'] = array(4426,4997,6196,3286,4430,3288,4755);
+$config['en_ids_4426'] = array(3288,4426,4997,6196,3286,4430,4755);
 $config['en_all_4426'] = array(
+    3288 => array(
+        'm_icon' => '<i class="fas fa-envelope-open blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(12103,6225,4426,4755),
+    ),
     4426 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'PLAYER LOCK',
@@ -7652,12 +7658,6 @@ $config['en_all_4426'] = array(
         'm_desc' => '',
         'm_parents' => array(10573,4983,6827,4426,4463),
     ),
-    3288 => array(
-        'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER WEB+EMAIL',
-        'm_desc' => '',
-        'm_parents' => array(6225,7555,4426,4755),
-    ),
     4755 => array(
         'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
         'm_name' => 'PRIVATE READ',
@@ -7667,7 +7667,7 @@ $config['en_all_4426'] = array(
 );
 
 //PRIVATE READ:
-$config['en_ids_4755'] = array(7610,10681,10685,7757,4783,6232,6194,3286,3288,4755,6149,6969,4275,4283,6132,6415,6559,6560,6556,6578,7611,7563,4266,4267,4282,5967,7702,4570,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,7562,7495,4235,4554,4556,4555,6563,4552,4553,4246,7504);
+$config['en_ids_4755'] = array(7610,10681,10685,7757,4783,6232,6194,3288,3286,4755,6149,6969,4275,4283,6132,6415,6559,6560,6556,6578,7611,7563,4266,4267,4282,5967,7702,4570,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,7562,7495,4235,4554,4556,4555,6563,4552,4553,4246,7504);
 $config['en_all_4755'] = array(
     7610 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
@@ -7711,17 +7711,17 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4755,4758,4527,6212),
     ),
+    3288 => array(
+        'm_icon' => '<i class="fas fa-envelope-open blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(12103,6225,4426,4755),
+    ),
     3286 => array(
         'm_icon' => '<i class="fas fa-key isblue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER PASSWORD',
         'm_desc' => '',
         'm_parents' => array(4426,7578,6225,4755),
-    ),
-    3288 => array(
-        'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER WEB+EMAIL',
-        'm_desc' => '',
-        'm_parents' => array(6225,7555,4426,4755),
     ),
     4755 => array(
         'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
@@ -9087,7 +9087,7 @@ $config['en_all_4537'] = array(
 );
 
 //PLAY SOURCES:
-$config['en_ids_3000'] = array(2997,4446,3005,3147,4763,2999,4883,3192,5948,2998);
+$config['en_ids_3000'] = array(2997,4446,3005,4763,3147,2999,4883,3192,5948,2998);
 $config['en_all_3000'] = array(
     2997 => array(
         'm_icon' => '<i class="far fa-newspaper" aria-hidden="true"></i>',
@@ -9107,15 +9107,15 @@ $config['en_all_3000'] = array(
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
-    3147 => array(
-        'm_icon' => '<i class="far fa-presentation" aria-hidden="true"></i>',
-        'm_name' => 'COURSES',
+    4763 => array(
+        'm_icon' => '<i class="far fa-megaphone" aria-hidden="true"></i>',
+        'm_name' => 'CHANNELS',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
-    4763 => array(
-        'm_icon' => '<i class="far fa-megaphone" aria-hidden="true"></i>',
-        'm_name' => 'MARKETING CHANNELS',
+    3147 => array(
+        'm_icon' => '<i class="far fa-presentation" aria-hidden="true"></i>',
+        'm_name' => 'COURSES',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),

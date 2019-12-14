@@ -1218,7 +1218,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 //If trainer has up-voted then give them access to manage intent
                 foreach($CI->READ_model->ln_fetch(array(
                     'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_entity_id' => 4983, //Intent Note Up-Votes
+                    'ln_type_entity_id' => 4983,
                     'ln_child_intent_id' => $db_row['in_id'],
                     'ln_parent_entity_id >' => 0, //Where the author entity is stored
                 ), array(), 0) as $author){

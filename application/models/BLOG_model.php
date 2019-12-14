@@ -297,7 +297,7 @@ class BLOG_model extends CI_Model
         return $links_removed;
     }
 
-    function in_link_or_create($in_linked_id, $is_parent, $in_outcome, $ln_creator_entity_id, $new_in_status = 6183 /* Intent New */, $in_completion_method_entity_id = 6677 /* Intent Read-Only */, $link_in_id = 0)
+    function in_link_or_create($in_outcome, $ln_creator_entity_id, $in_linked_id = 0, $is_parent = false, $new_in_status = 6183, $in_completion_method_entity_id = 6677 /* Intent Read-Only */, $link_in_id = 0)
     {
 
         /*
@@ -315,21 +315,25 @@ class BLOG_model extends CI_Model
 
         //Validate Original intent:
         $linking_to_existing = (intval($link_in_id) > 0);
-        $linked_ins = $this->BLOG_model->in_fetch(array(
-            'in_id' => intval($in_linked_id),
-        ));
 
-        if (count($linked_ins) < 1) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Intent ID',
-            );
-        } elseif (!in_array($linked_ins[0]['in_status_entity_id'], $this->config->item('en_ids_7356')) /* Intent Statuses Active */) {
-            return array(
-                'status' => 0,
-                'message' => 'You can only link to active intents. This intent is not active.',
-            );
+        if($in_linked_id > 0){
+            $linked_ins = $this->BLOG_model->in_fetch(array(
+                'in_id' => intval($in_linked_id),
+            ));
+
+            if (count($linked_ins) < 1) {
+                return array(
+                    'status' => 0,
+                    'message' => 'Invalid Intent ID',
+                );
+            } elseif (!in_array($linked_ins[0]['in_status_entity_id'], $this->config->item('en_ids_7356')) /* Intent Statuses Active */) {
+                return array(
+                    'status' => 0,
+                    'message' => 'You can only link to active intents. This intent is not active.',
+                );
+            }
         }
+
 
         if ($linking_to_existing) {
 
@@ -382,7 +386,7 @@ class BLOG_model extends CI_Model
                     'message' => '[' . $intent_new['in_outcome'] . '] is already linked here.',
                 );
 
-            } elseif ($link_in_id == $in_linked_id) {
+            } elseif ($in_linked_id > 0 && $link_in_id == $in_linked_id) {
 
                 //Make sure none of the parents are the same:
                 return array(
@@ -415,64 +419,94 @@ class BLOG_model extends CI_Model
 
 
         //Create Intent Link:
-        $relation = $this->READ_model->ln_create(array(
-            'ln_creator_entity_id' => $ln_creator_entity_id,
-            'ln_type_entity_id' => 4228, //Intent Link Regular Step
-            ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
-            ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
-            'ln_order' => 1 + $this->READ_model->ln_max_order(array(
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
-                    'ln_parent_intent_id' => ( $is_parent ? $intent_new['in_id'] : $in_linked_id ),
-                )),
-        ), true);
+        if($in_linked_id > 0){
+
+            $relation = $this->READ_model->ln_create(array(
+                'ln_creator_entity_id' => $ln_creator_entity_id,
+                'ln_type_entity_id' => 4228, //Intent Link Regular Step
+                ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
+                ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
+                'ln_order' => 1 + $this->READ_model->ln_max_order(array(
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+                        'ln_parent_intent_id' => ( $is_parent ? $intent_new['in_id'] : $in_linked_id ),
+                    )),
+            ), true);
+
+            //Fetch and return full data to be properly shown on the UI using the echo_in() function
+            $new_ins = $this->READ_model->ln_fetch(array(
+                ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
+                ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            ), array(($is_parent ? 'in_parent' : 'in_child')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
-        //See if parent intent is locked:
-        if($linking_to_existing && in_is_unlockable($parent_in)){
-            //Yes, we need to check to see if this change triggers new completions:
+            $in_child_html = echo_in($new_ins[0], $in_linked_id, $is_parent);
 
-        }
 
-        //Add up-vote if not yet added:
-        if($ln_creator_entity_id > 0){
+            //See if parent intent is locked:
+            if($linking_to_existing && in_is_unlockable($parent_in)){
+                //Yes, we need to check to see if this change triggers new completions:
 
-            if(!count($this->READ_model->ln_fetch(array(
+            }
+
+            //Add author:
+            if($ln_creator_entity_id > 0){
+
+                if(!count($this->READ_model->ln_fetch(array(
                     ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
                     ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
                     'ln_parent_entity_id' => $ln_creator_entity_id,
-                    'ln_type_entity_id' => 4983, //Intent Note Up-Votes
+                    'ln_type_entity_id' => 4983,
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 )))){
 
-                //Add new up-vote:
-                $this->READ_model->ln_create(array(
-                    'ln_creator_entity_id' => $ln_creator_entity_id,
-                    'ln_parent_entity_id' => $ln_creator_entity_id,
-                    'ln_type_entity_id' => 4983, //Intent Note Up-Votes
-                    'ln_content' => '@'.$ln_creator_entity_id.' #'.( $is_parent ? $intent_new['in_id'] : $in_linked_id ), //Message content
-                    ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
-                    ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
-                ));
+                    //Add new up-vote:
+                    $this->READ_model->ln_create(array(
+                        'ln_creator_entity_id' => $ln_creator_entity_id,
+                        'ln_parent_entity_id' => $ln_creator_entity_id,
+                        'ln_type_entity_id' => 4983,
+                        'ln_content' => '@'.$ln_creator_entity_id.' #'.( $is_parent ? $intent_new['in_id'] : $in_linked_id ), //Message content
+                        ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
+                        ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
+                    ));
+                }
             }
+
+        } else {
+
+            $in_child_html = null;
+
+            //Add author:
+            if($ln_creator_entity_id > 0){
+
+                if(!count($this->READ_model->ln_fetch(array(
+                    'ln_child_intent_id' => $intent_new['in_id'],
+                    'ln_parent_entity_id' => $ln_creator_entity_id,
+                    'ln_type_entity_id' => 4983,
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                )))){
+
+                    //Add new up-vote:
+                    $this->READ_model->ln_create(array(
+                        'ln_creator_entity_id' => $ln_creator_entity_id,
+                        'ln_parent_entity_id' => $ln_creator_entity_id,
+                        'ln_type_entity_id' => 4983,
+                        'ln_content' => '@'.$ln_creator_entity_id,
+                        'ln_child_intent_id' => $intent_new['in_id'],
+                    ), true);
+                }
+            }
+
         }
-
-
-        //Fetch and return full data to be properly shown on the UI using the echo_in() function
-        $new_ins = $this->READ_model->ln_fetch(array(
-            ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
-            ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-        ), array(($is_parent ? 'in_parent' : 'in_child')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
-
 
         //Return result:
         return array(
             'status' => 1,
             'new_in_id' => $intent_new['in_id'],
-            'in_child_html' => echo_in($new_ins[0], $in_linked_id, $is_parent),
+            'in_child_html' => $in_child_html,
         );
 
     }

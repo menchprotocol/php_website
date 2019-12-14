@@ -61,12 +61,12 @@ function select_channel(pathway_chosen){
     if(parseInt(pathway_chosen) == 6196 /* Mench on Messenger */ ){
 
         //Remove button:
-        $('#step1button').html('<div style="font-size: 1.2em; padding-top:10px;"><i class="far fa-yin-yang fa-spin"></i> Taking you to Messenger...</div>');
+        $('#step1button').html('<div style="font-size: 1.2em; padding-top:10px;"><i class="far fa-yin-yang fa-spin"></i> Loading Messenger...</div>');
 
         //Log link:
         sign_on_messenger();
 
-    } else {
+    } else if (parseInt(pathway_chosen) == 12103) {
 
         //Log link:
         if(!logged_website){
