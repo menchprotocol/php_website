@@ -3219,7 +3219,7 @@ class READ_model extends CI_Model
             }
 
             //See if this entity has any parent links to be shown in this appendix
-            $parents_shown = 0;
+            $parents_media_shown = 0;
             $entity_appendix = null;
 
             //Determine what type of Media this reference has:
@@ -3240,12 +3240,12 @@ class READ_model extends CI_Model
                     }
 
 
-                    $parents_shown++;
-
 
                     //Any Type of URL: Generic, Embed, Video, Audio, Image & File
 
                     if ($parent_en['ln_type_entity_id'] == 4257) {
+
+                        $parents_media_shown++;
 
                         //Embed URL
                         if ($push_message) {
@@ -3276,6 +3276,8 @@ class READ_model extends CI_Model
                     } elseif ($push_message && array_key_exists($parent_en['ln_type_entity_id'], $en_all_11059)) {
 
                         //Raw media file: Audio, Video, Image OR File...
+
+                        $parents_media_shown++;
 
                         //Search for Facebook Attachment ID IF $push_message = TRUE
                         $fb_att_id = 0;
@@ -3345,7 +3347,7 @@ class READ_model extends CI_Model
                 } else {
 
                     //Show entity link with status:
-                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], '<span class="'.( $parents_shown > 0 ? superpower_active(10983) : '' ).'">'.( !in_array($ens[0]['en_status_entity_id'], $this->config->item('en_ids_7357')) ? '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_entity_id']]['m_icon'].'</span>' : '' ).'<a href="/play/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name']  . '</a></span>', $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], '<span class="'.( $parents_media_shown > 0 ? superpower_active(10983) : '' ).'">'.( !in_array($ens[0]['en_status_entity_id'], $this->config->item('en_ids_7357')) ? '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_entity_id']]['m_icon'].'</span>' : '' ).'<a href="/play/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name']  . '</a></span>', $output_body_message);
 
                 }
 
@@ -3417,7 +3419,7 @@ class READ_model extends CI_Model
 
 
                 //Add Intent up-vote to beginning:
-                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;"><span class="icon-block"><i class="far fa-thumbs-up ispink"></i></span>IF <a href="/blog/' . $upvote_child_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($upvote_child_ins[0]['in_outcome'], false, true) . '</a> THEN <a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($referenced_ins[0]['in_outcome'], false) . '</a></div>' . $output_body_message;
+                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;"><span class="icon-block"><i class="far fa-thumbs-up ispink"></i></span>IF <a href="/blog/' . $upvote_child_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($upvote_child_ins[0]['in_outcome'], false) . '</a> THEN <a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($referenced_ins[0]['in_outcome'], false) . '</a></div>' . $output_body_message;
 
             } else {
 
