@@ -111,7 +111,7 @@
         }
 
         //Show featured blogs in this category:
-        echo '<div class="read-topic"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</div>';
+        echo '<div class="read-topic"><span class="icon-block-sm">'.$m['m_icon'].'</span>'.$m['m_name'].'</div>';
         echo '<div class="list-group">';
         foreach($published_ins as $published_in){
             echo echo_in_read($published_in);
