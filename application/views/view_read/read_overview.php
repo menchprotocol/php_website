@@ -91,7 +91,7 @@
         <h1 class="no-margin blog"><span class="blog_title"></span> <span class="blog_content"></span></h1>
     </div>
 
-    <div class="animate-trigger" style="padding-top:20px;"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-read montserrat"><i class="fas fa-play-circle"></i> WATCH 1 MIN INTRO</a> <a href="/play" class="btn btn-lg btn-play montserrat"><i class="fas fa-users-crown"></i> Top 100 players</a></div>
+    <div class="animate-trigger"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-read montserrat inline-block" style="margin-top: 20px;"><i class="fas fa-play-circle"></i> WATCH 1 MIN INTRO</a> <a href="/play" class="btn btn-lg btn-play montserrat inline-block" style="margin-top: 20px;"><i class="fas fa-users-crown"></i> Top 100 players</a></div>
 
     <?php
     //Go through all categories and see which ones have published courses:
