@@ -2504,8 +2504,7 @@ fragment PostListingItemSidebar_post on Post {
         $magiclogin_url = 'https://mench.com/play/magiclogin/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magiclogin_url.'" target="_blank">' . $magiclogin_url . '</a></div>';
 
-        $password_reset_expiry_hours = ($this->config->item('password_reset_expiry')/3600);
-        $html_message .= '<br /><br /><div>Or reset password within '.$password_reset_expiry_hours.'-hour'.echo__s($password_reset_expiry_hours).':</div>';
+        $html_message .= '<br /><br /><div>You may also set a new password here:</div>';
         $setpassword_url = 'https://mench.com/play/resetpassword/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
 

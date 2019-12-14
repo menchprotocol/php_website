@@ -49,28 +49,29 @@
 
 
 
-<div class="landing-page-intro sign-in-page">
 
-    <div class="sign-logo"><img src="/img/bp_128.png" /></div>
 
-    <h1>Password Reset</h1>
 
-    <div class="login-content" style="margin-top:50px;">
 
-        <div id="step1" class="signup-steps">
+<div class="container center-info">
 
-            <!-- New Password-->
-            <span class="medium-header" style="padding-top: 20px;"><i class="far fa-key"></i> New Password for <span style="text-transform: lowercase !important;"><?= $validate_link['ln_content'] ?></span></span>
-            <div class="form-group is-empty"><input type="password" autocomplete="false" id="input_password" class="form-control border"></div>
-            <div class="form-group is-empty" style="font-size: 0.9em;">*At-least <?= config_var(11066) ?> characters</div>
+    <div class="sign-logo text-center"><img src="/img/mench-v2-128.png" class="mench-spin" /></div>
 
-            <!-- Apply Buttons -->
-            <div id="pass_reset_errors" class="isred"></div>
-            <span id="step2buttons">
+    <h1 class="text-center">Reset Password</h1>
+
+    <div id="step1" class="signup-steps">
+
+        <!-- New Password-->
+        <span class="medium-header" style="padding-top: 20px;"><i class="far fa-key"></i> New Password for <span style="text-transform: lowercase !important;"><?= $validate_link['ln_content'] ?></span></span>
+        <div class="form-group is-empty"><input type="password" autocomplete="false" id="input_password" class="form-control border"></div>
+        <div class="form-group is-empty" style="font-size: 0.9em;">*At-least <?= config_var(11066) ?> characters</div>
+
+        <!-- Apply Buttons -->
+        <div id="pass_reset_errors" class="isred"></div>
+        <span id="step2buttons">
                 <a href="javascript:void(0)" onclick="sign_reset_password_apply()" id="reset_pass_next" class="btn btn-blog pass btn-raised btn-round btn-next">Update & Sign-In <i class="fas fa-arrow-right"></i></a>
             </span>
 
-        </div>
     </div>
-</div>
 
+</div>
