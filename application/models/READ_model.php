@@ -3240,6 +3240,7 @@ class READ_model extends CI_Model
                     }
 
 
+                    $is_media = array_key_exists($parent_en['ln_type_entity_id'], $en_all_11059);
 
                     //Any Type of URL: Generic, Embed, Video, Audio, Image & File
 
@@ -3273,10 +3274,9 @@ class READ_model extends CI_Model
 
                         }
 
-                    } elseif ($push_message && array_key_exists($parent_en['ln_type_entity_id'], $en_all_11059)) {
+                    } elseif ($push_message && $is_media) {
 
                         //Raw media file: Audio, Video, Image OR File...
-
                         $parents_media_shown++;
 
                         //Search for Facebook Attachment ID IF $push_message = TRUE
@@ -3309,6 +3309,10 @@ class READ_model extends CI_Model
                         ));
 
                     } elseif(!$push_message){
+
+                        if($is_media){
+                            $parents_media_shown++;
+                        }
 
                         //HTML Format, append content to current output message:
                         $entity_appendix .= '<div class="entity-appendix">' . echo_url_type($parent_en['ln_content'], $parent_en['ln_type_entity_id']) . '</div>';
