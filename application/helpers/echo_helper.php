@@ -1832,23 +1832,28 @@ function echo_in_marks($in_ln){
 
 }
 
-function in_can_manage($in_id){
+function in_can_manage($in_id, $en_id = 0){
 
     $CI =& get_instance();
 
-    //Fetch session:
-    $session_en = superpower_assigned();
 
-    if(!isset($session_en['en_id']) || $in_id < 1){
+    if(!$en_id){
+        //Fetch session:
+        $session_en = superpower_assigned();
+    }
+
+
+    if($en_id<1 && (!isset($session_en['en_id']) || $in_id < 1)){
         return false;
     }
+
 
     //Allow trainer to manage ONLY IF they have up-voted the intent, which means they are part of it:
     return count($CI->READ_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id' => 4983,
             'ln_child_intent_id' => $in_id,
-            'ln_parent_entity_id' => $session_en['en_id'],
+            'ln_parent_entity_id' => ( $en_id > 0 ? $en_id : $session_en['en_id'] ),
         )));
 }
 
