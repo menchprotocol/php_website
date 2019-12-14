@@ -11,17 +11,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-13 19:13:48 PST
+//Generated 2019-12-13 20:03:34 PST
 
 //READ FEATURED:
-$config['en_ids_12096'] = array(12044,6683,6684,7637);
+$config['en_ids_12096'] = array(6683,6684,12044,7637);
 $config['en_all_12096'] = array(
-    12044 => array(
-        'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
-        'm_name' => 'LOGIN & NEXT',
-        'm_desc' => '',
-        'm_parents' => array(12096,6144,4559,7756,6192,7582,7585),
-    ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard " aria-hidden="true"></i>',
         'm_name' => 'REPLY & NEXT',
@@ -33,6 +27,12 @@ $config['en_all_12096'] = array(
         'm_name' => 'SELECT ONE',
         'm_desc' => '',
         'm_parents' => array(12096,7712,7588,7585,6157,6193),
+    ),
+    12044 => array(
+        'm_icon' => '<i class="fas fa-sign-in" aria-hidden="true"></i>',
+        'm_name' => 'SIGNIN & NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12096,6144,4559,7756,6192,7582,7585),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
@@ -48,7 +48,7 @@ $config['en_all_12079'] = array(
     7585 => array(
         'm_icon' => '<i class="fas fa-random yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG FLOW',
-        'm_desc' => 'Choose how the reader completes this blog and how the flow to the next one.',
+        'm_desc' => 'How to complete this & flow to the next blog.',
         'm_parents' => array(12079,11054,6204,10651,6160,6194,6232,4527,6201),
     ),
     4485 => array(
@@ -5664,19 +5664,19 @@ $config['en_all_7347'] = array(
 );
 
 //READ ALL:
-$config['en_ids_6192'] = array(12044,6914,7637,6677,6683);
+$config['en_ids_6192'] = array(6914,12044,7637,6677,6683);
 $config['en_all_6192'] = array(
-    12044 => array(
-        'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
-        'm_name' => 'LOGIN & NEXT',
-        'm_desc' => '',
-        'm_parents' => array(12096,6144,4559,7756,6192,7582,7585),
-    ),
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ALL',
         'm_desc' => '',
         'm_parents' => array(7582,10984,6192,7756,7585,7486,7485,7309,6997),
+    ),
+    12044 => array(
+        'm_icon' => '<i class="fas fa-sign-in" aria-hidden="true"></i>',
+        'm_name' => 'SIGNIN & NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12096,6144,4559,7756,6192,7582,7585),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
@@ -5932,14 +5932,8 @@ $config['en_all_7758'] = array(
 );
 
 //BLOG AUTO COMPLETABLE:
-$config['en_ids_7756'] = array(12044,6677,6914,6907);
+$config['en_ids_7756'] = array(6677,6914,6907,12044);
 $config['en_all_7756'] = array(
-    12044 => array(
-        'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
-        'm_name' => 'LOGIN & NEXT',
-        'm_desc' => '',
-        'm_parents' => array(12096,6144,4559,7756,6192,7582,7585),
-    ),
     6677 => array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
@@ -5958,6 +5952,12 @@ $config['en_all_7756'] = array(
         'm_desc' => '',
         'm_parents' => array(7582,10984,7756,7585,7486,7485,7309,6997,6193),
     ),
+    12044 => array(
+        'm_icon' => '<i class="fas fa-sign-in" aria-hidden="true"></i>',
+        'm_name' => 'SIGNIN & NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12096,6144,4559,7756,6192,7582,7585),
+    ),
 );
 
 //BLOG UPLOAD FILE:
@@ -5972,19 +5972,19 @@ $config['en_all_7751'] = array(
 );
 
 //READER SUBMISSION REQUIRED:
-$config['en_ids_6144'] = array(12044,6683,7637);
+$config['en_ids_6144'] = array(6683,12044,7637);
 $config['en_all_6144'] = array(
-    12044 => array(
-        'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
-        'm_name' => 'LOGIN & NEXT',
-        'm_desc' => '',
-        'm_parents' => array(12096,6144,4559,7756,6192,7582,7585),
-    ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard " aria-hidden="true"></i>',
         'm_name' => 'REPLY & NEXT',
         'm_desc' => '',
         'm_parents' => array(12096,7582,7585,6144,6192),
+    ),
+    12044 => array(
+        'm_icon' => '<i class="fas fa-sign-in" aria-hidden="true"></i>',
+        'm_name' => 'SIGNIN & NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12096,6144,4559,7756,6192,7582,7585),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
@@ -6588,62 +6588,56 @@ $config['en_all_7585'] = array(
     6677 => array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
-        'm_desc' => 'User will complete by reading intent messages only. No inputs required.',
+        'm_desc' => 'Complete by reading messages and moving to the next blog.',
         'm_parents' => array(7756,7585,4559,6192),
     ),
     12044 => array(
-        'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
-        'm_name' => 'LOGIN & NEXT',
-        'm_desc' => 'A starting point where readers are asked to login to continue. This ensures that the reader starts saving the rest of the conversation history.',
+        'm_icon' => '<i class="fas fa-sign-in" aria-hidden="true"></i>',
+        'm_name' => 'SIGNIN & NEXT',
+        'm_desc' => 'Complete by signing in (or up) and moving to the next blog.',
         'm_parents' => array(12096,6144,4559,7756,6192,7582,7585),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard " aria-hidden="true"></i>',
         'm_name' => 'REPLY & NEXT',
-        'm_desc' => 'User will complete by sending a text message',
+        'm_desc' => 'Complete by giving a text response and moving to the next blog.',
         'm_parents' => array(12096,7582,7585,6144,6192),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
         'm_name' => 'UPLOAD & NEXT',
-        'm_desc' => 'User completes by uploading a video, audio or image file',
+        'm_desc' => 'Complete by uploading a file (video, audio, image, pdf, etc...) and moving to the next blog.',
         'm_parents' => array(12096,7582,7751,7585,6144,6192),
     ),
     6684 => array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
         'm_name' => 'SELECT ONE',
-        'm_desc' => 'User will complete by choosing a child intent as their answer',
+        'm_desc' => 'Complete by selecting a single choice from the list of blogs.',
         'm_parents' => array(12096,7712,7588,7585,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
         'm_name' => 'SELECT SOME',
-        'm_desc' => 'User will complete by choosing one or more child intents as their answer',
+        'm_desc' => 'Complete by selecting 1 or more choices from the list of blogs.',
         'm_parents' => array(10984,7712,7489,7588,7585,6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube " aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ONE',
-        'm_desc' => 'User will complete by (a) choosing intent as their answer or by (b) completing any child intent',
+        'm_desc' => 'Complete by (a) choosing intent as their answer or by (b) completing any child intent',
         'm_parents' => array(7582,10984,7756,7585,7486,7485,7309,6997,6193),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ALL',
-        'm_desc' => 'User will complete by (a) choosing intent as their answer or by (b) completing all child intents',
+        'm_desc' => 'Complete by (a) choosing intent as their answer or by (b) completing all child intents',
         'm_parents' => array(7582,10984,6192,7756,7585,7486,7485,7309,6997),
     ),
 );
 
 //READ LOGIN REQUIRED:
-$config['en_ids_7582'] = array(12044,6683,6914,6907,7637);
+$config['en_ids_7582'] = array(6683,6914,6907,12044,7637);
 $config['en_all_7582'] = array(
-    12044 => array(
-        'm_icon' => '<i class="fas fa-play" aria-hidden="true"></i>',
-        'm_name' => 'LOGIN & NEXT',
-        'm_desc' => '',
-        'm_parents' => array(12096,6144,4559,7756,6192,7582,7585),
-    ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard " aria-hidden="true"></i>',
         'm_name' => 'REPLY & NEXT',
@@ -6661,6 +6655,12 @@ $config['en_all_7582'] = array(
         'm_name' => 'REQUIRE ONE',
         'm_desc' => '',
         'm_parents' => array(7582,10984,7756,7585,7486,7485,7309,6997,6193),
+    ),
+    12044 => array(
+        'm_icon' => '<i class="fas fa-sign-in" aria-hidden="true"></i>',
+        'm_name' => 'SIGNIN & NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12096,6144,4559,7756,6192,7582,7585),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
@@ -6873,7 +6873,7 @@ $config['en_all_7357'] = array(
 $config['en_ids_7356'] = array(6183,6184);
 $config['en_all_7356'] = array(
     6183 => array(
-        'm_icon' => '<i class="far fa-spinner fa-spin "></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin " aria-hidden="true"></i>',
         'm_name' => 'DRAFT',
         'm_desc' => '',
         'm_parents' => array(7356,4737),
@@ -7279,19 +7279,19 @@ $config['en_all_4737'] = array(
     6184 => array(
         'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PUBLISH',
-        'm_desc' => 'newly added by miner but not yet checked by moderator',
+        'm_desc' => 'visible to everyone',
         'm_parents' => array(7355,7356,4737),
     ),
     6183 => array(
-        'm_icon' => '<i class="far fa-spinner fa-spin "></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin " aria-hidden="true"></i>',
         'm_name' => 'DRAFT',
-        'm_desc' => 'newly added, pending review',
+        'm_desc' => 'visible to you only',
         'm_parents' => array(7356,4737),
     ),
     6182 => array(
-        'm_icon' => '<i class="far fa-trash-alt "></i>',
+        'm_icon' => '<i class="far fa-trash-alt " aria-hidden="true"></i>',
         'm_name' => 'ARCHIVE',
-        'm_desc' => 'archived',
+        'm_desc' => 'invisibile',
         'm_parents' => array(10671,4737),
     ),
 );

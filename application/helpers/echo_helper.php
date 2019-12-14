@@ -2189,7 +2189,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 
     //UNLINK
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-trash"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="javascript:void(0);" title="Unlink blog" data-toggle="tooltip" data-placement="left" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink"></i></a></div>';
 
 
     //Count children:
