@@ -2298,6 +2298,7 @@ function echo_en($en, $is_parent = false)
     $ui .= '<div class="col1 col-md">';
 
 
+    $ui .= '<span class="inline-block" style="padding-top: 5px;">';
 
 
     //LINK
@@ -2334,9 +2335,10 @@ function echo_en($en, $is_parent = false)
     $ui .= '<span class="icon-block en_status_entity_id_' . $en['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].' @'.$en['en_status_entity_id'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span></span>';
 
     //PLAYER NAME
-    $ui .= '<b class="inline-block montserrat '.extract_icon_color($en['en_icon']).' en_name_' . $en['en_id'] . '" style="padding-top:5px;">' . $en['en_name'] . '</b>';
+    $ui .= '<b class="montserrat '.extract_icon_color($en['en_icon']).' en_name_' . $en['en_id'] . '">' . $en['en_name'] . '</b>';
 
 
+    $ui .= '</span>';
 
     //Does this entity also include a link?
     if ($ln_id > 0) {
