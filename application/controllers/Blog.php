@@ -206,10 +206,10 @@ class Blog extends CI_Controller {
 
     }
 
-    function in_submit_upvote($in_id){
+    function in_become_author($in_id){
 
         //Make sure it's a logged in trainer:
-        $session_en = superpower_assigned(null, true);
+        $session_en = superpower_assigned(10984, true);
 
         //Log up-vote:
         $this->READ_model->ln_create(array(
