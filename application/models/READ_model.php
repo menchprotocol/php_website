@@ -3419,7 +3419,7 @@ class READ_model extends CI_Model
 
 
                 //Add Intent up-vote to beginning:
-                $output_body_message = '<div style="margin-bottom:5px;"><span class="icon-block"><i class="far fa-thumbs-up ispink"></i></span><a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($referenced_ins[0]['in_outcome'], false) . '</a></div>' . $output_body_message;
+                $output_body_message = '<div style="margin-bottom:5px;" class="'.superpower_active(10984).'"><span class="icon-block"><i class="far fa-thumbs-up ispink"></i></span><a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($referenced_ins[0]['in_outcome'], false) . '</a></div>' . $output_body_message;
 
             } else {
 
