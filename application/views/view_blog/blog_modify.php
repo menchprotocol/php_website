@@ -2,11 +2,12 @@
 <?php
 $en_all_6201 = $this->config->item('en_all_6201'); //Intent Table
 
-$can_train = ( in_can_train($in['in_id'], $session_en['en_id']) );
+$can_manage = ( in_can_manage($in['in_id'], $session_en['en_id']) );
 ?>
 
 <style>
     .in_child_icon_<?= $in['in_id'] ?> { display:none; }
+    <?= ( !$can_manage ? '.note-edit {display:none;}' : '' ) ?>
 </style>
 
 
@@ -26,6 +27,11 @@ $play_focus_found = false; //Used to determine the first tab to be opened
 
 
 echo '<div class="container" style="padding-bottom:54px;">';
+
+if(!$can_manage){
+    echo '<div class="alert alert-info"><i class="fas fa-exclamation-triangle yellow"></i> You are not a blog author.</div>';
+}
+
 echo '<div class="row">';
 $col_num = 0;
 foreach ($this->config->item('en_all_11021') as $en_id => $m){
@@ -39,11 +45,12 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     if($col_num==1){
 
         echo '<div>';
-            echo '<div class="inline-block">'.echo_dropdown(4737, $in['in_status_entity_id'], 'btn-blog').'</div>';
+            echo '<div class="inline-block">'.echo_dropdown(4737, $in['in_status_entity_id'], 'btn-blog', $can_manage).'</div>';
             echo '<div class="inline-block" style="margin-left: 5px;"><a href="/'.$in['in_id'].'" class="btn btn-read" data-toggle="tooltip" title="Read interactively" data-placement="right">PREVIEW <i class="fas fa-arrow-right"></i></a></div>';
         echo '</div>';
 
         echo '<div class="itemblog">';
+
         echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'">'.$in['in_outcome'].'</textarea>';
         echo '<input type="hidden" id="current_blog_title" value="'.$in['in_outcome'].'" />';
 
@@ -58,7 +65,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } else {
 
         echo '<div class="center-right">';
-            echo '<div class="inline-block" style="margin-bottom: 10px;">'.echo_dropdown(7585, $in['in_completion_method_entity_id'], 'btn-blog').'</div>';
+            echo '<div class="inline-block" style="margin-bottom: 10px;">'.echo_dropdown(7585, $in['in_completion_method_entity_id'], 'btn-blog', $can_manage).'</div>';
         echo '</div>';
 
     }
@@ -105,7 +112,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             }
 
             $this_tab .= '<div class="list-group-item itemblog '.superpower_active(10939).'">
-                            <div class="form-group is-empty" style="margin: 0; padding: 0;">
+                            <div class="form-group is-empty '.( $can_manage ? '' : ' hidden ' ).'" style="margin: 0; padding: 0;">
                                 <input type="text"
                                        class="form-control intentadder-level-2-parent form-control-thick algolia_search"
                                        intent-id="' . $in['in_id'] . '"
@@ -137,10 +144,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= echo_in($child_in, $in['in_id']);
             }
 
-            //Add child intent:
-            if(in_can_train($in['in_id'])){
-                $this_tab .= '<div class="list-group-item itemblog '.superpower_active(10939).'">
-                    <div class="form-group is-empty" style="margin: 0; padding: 0;">
+            $this_tab .= '<div class="list-group-item itemblog '.superpower_active(10939).'">
+                    <div class="form-group is-empty '.( $can_manage ? '' : ' hidden ' ).'" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2-child form-control-thick algolia_search"
                                maxlength="' . config_var(11071) . '"
@@ -150,10 +155,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                     </div>
                    <div class="algolia_search_pad in_pad_bottom hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus yellow"></i></span>Search blogs or create a new one...</b></div>
             </div>';
-            } else {
-                //Give option to request to join as Author:
-
-            }
             $this_tab .= '</div>';
 
 
