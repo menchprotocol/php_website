@@ -57,14 +57,13 @@
 
     <div class="sign-logo text-center"><img src="/img/mench-v2-128.png" class="mench-spin" /></div>
 
-    <h1 class="text-center">Reset Password</h1>
+    <h1 class="text-center">Set New Password</h1>
 
     <div id="step1" class="signup-steps">
 
         <!-- New Password-->
-        <span class="medium-header" style="padding-top: 20px;"><i class="far fa-key"></i> New Password for <span style="text-transform: lowercase !important;"><?= $validate_link['ln_content'] ?></span></span>
-        <div class="form-group is-empty"><input type="password" autocomplete="false" id="input_password" class="form-control border"></div>
-        <div class="form-group is-empty" style="font-size: 0.9em;">*At-least <?= config_var(11066) ?> characters</div>
+        <span class="medium-header" style="padding-top: 20px;"><i class="far fa-envelope-open blue"></i> <span style="text-transform: lowercase !important;"><?= $validate_link['ln_content'] ?></span></span>
+        <input type="password" autocomplete="false" id="input_password" class="form-control border">
 
         <!-- Apply Buttons -->
         <div id="pass_reset_errors" class="isred"></div>
