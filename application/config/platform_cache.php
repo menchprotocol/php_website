@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-13 20:03:34 PST
+//Generated 2019-12-13 21:04:13 PST
 
 //READ FEATURED:
 $config['en_ids_12096'] = array(6683,6684,12044,7637);
@@ -6588,37 +6588,37 @@ $config['en_all_7585'] = array(
     6677 => array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
-        'm_desc' => 'Complete by reading messages and moving to the next blog.',
+        'm_desc' => 'Read messages & move to the next blog.',
         'm_parents' => array(7756,7585,4559,6192),
     ),
     12044 => array(
         'm_icon' => '<i class="fas fa-sign-in" aria-hidden="true"></i>',
         'm_name' => 'SIGNIN & NEXT',
-        'm_desc' => 'Complete by signing in (or up) and moving to the next blog.',
+        'm_desc' => 'Sign in (or up) & move to the next blog.',
         'm_parents' => array(12096,6144,4559,7756,6192,7582,7585),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard " aria-hidden="true"></i>',
         'm_name' => 'REPLY & NEXT',
-        'm_desc' => 'Complete by giving a text response and moving to the next blog.',
+        'm_desc' => 'Give a text response & move to the next blog.',
         'm_parents' => array(12096,7582,7585,6144,6192),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
         'm_name' => 'UPLOAD & NEXT',
-        'm_desc' => 'Complete by uploading a file (video, audio, image, pdf, etc...) and moving to the next blog.',
+        'm_desc' => 'Upload a file & move to the next blog.',
         'm_parents' => array(12096,7582,7751,7585,6144,6192),
     ),
     6684 => array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
         'm_name' => 'SELECT ONE',
-        'm_desc' => 'Complete by selecting a single choice from the list of blogs.',
+        'm_desc' => 'Select one option from the list of blogs.',
         'm_parents' => array(12096,7712,7588,7585,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
         'm_name' => 'SELECT SOME',
-        'm_desc' => 'Complete by selecting 1 or more choices from the list of blogs.',
+        'm_desc' => 'Select 1 or more choices from the list of blogs.',
         'm_parents' => array(10984,7712,7489,7588,7585,6193),
     ),
     6907 => array(
