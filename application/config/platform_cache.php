@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-13 21:04:13 PST
+//Generated 2019-12-13 23:43:13 PST
 
 //READ FEATURED:
 $config['en_ids_12096'] = array(6683,6684,12044,7637);
@@ -2750,8 +2750,14 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(7291,6225,6287,7256,4269,7540);
+$config['en_ids_11035'] = array(11087,7291,6225,6287,7256,4269,7540);
 $config['en_all_11035'] = array(
+    11087 => array(
+        'm_icon' => '<i class="fas fa-users-crown blue" aria-hidden="true"></i>',
+        'm_name' => 'LEADERBOARD',
+        'm_desc' => 'List of top player',
+        'm_parents' => array(11035,4536),
+    ),
     7291 => array(
         'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
         'm_name' => 'LOGOUT',
