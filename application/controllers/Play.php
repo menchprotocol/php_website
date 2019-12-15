@@ -2438,7 +2438,7 @@ fragment PostListingItemSidebar_post on Post {
         if (strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
         } elseif(intval($_POST['referrer_in_id']) > 0) {
-            $login_url = '/actionplan/'.$_POST['referrer_in_id'];
+            $login_url = '/'.$_POST['referrer_in_id'];
         } else {
             //Go to home page and let them continue from there:
             $login_url = '/';
@@ -2526,7 +2526,7 @@ fragment PostListingItemSidebar_post on Post {
         if(superpower_assigned()){
             return redirect_message('/blog');
         } elseif(superpower_assigned()){
-            return redirect_message('/actionplan/next');
+            return redirect_message('/read/next');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
             return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Missing Email</div>');

@@ -20,7 +20,7 @@ if(count($user_intents) > 0){
     foreach ($user_intents as $priority => $ln) {
 
          //Display row:
-        echo '<a id="ap_in_'.$ln['in_id'].'" href="/actionplan/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread actionplan_sort">';
+        echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread actionplan_sort">';
 
         echo '<span class="pull-right" style="padding-right:8px; padding-left:10px;">';
         echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Remove from reading list" data-placement="left"><i class="fas fa-trash"></i></span>';
@@ -44,7 +44,7 @@ if(count($user_intents) > 0){
     echo '</div>';
 
     if($has_pending_intentions){
-        echo '<a class="btn btn-read inline-block" style="margin: 20px 0;" href="/actionplan/next">CONTINUE <i class="fas fa-angle-right"></i></a>';
+        echo '<a class="btn btn-read inline-block" style="margin: 20px 0;" href="/read/next">CONTINUE <i class="fas fa-angle-right"></i></a>';
     }
 
     //Give option to add

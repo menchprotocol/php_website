@@ -21,5 +21,5 @@ $route['(:num)']                    = "read/read_blog/$1";
 $route['actionplan']                = "read/actionplan/0";
 $route['actionplan/delete']         = "read/actionplan_delete";
 $route['actionplan/delete/(:num)']  = "read/actionplan_delete/$1";
-$route['actionplan/next']           = "read/actionplan/next";
+$route['actionplan/next']           = "read/read/next";
 $route['actionplan/(:num)']         = "read/actionplan/$1";

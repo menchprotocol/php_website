@@ -967,7 +967,7 @@ class READ_model extends CI_Model
 
             //Inform user:
             $this->READ_model->dispatch_message(
-                'I noticed that this intention has already been added to your Action Plan /link:Open 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
+                'I noticed that this intention has already been added to your Action Plan /link:Open 🚩Action Plan:https://mench.com/' . $ins[0]['in_id'],
                 array('en_id' => $en_id),
                 true
             );
@@ -1036,7 +1036,7 @@ class READ_model extends CI_Model
 
             if($echo_next_step){
                 $this->READ_model->dispatch_message(
-                    'Ok I added this intention to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
+                    'Ok I added this intention to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/' . $ins[0]['in_id'],
                     array('en_id' => $en_id),
                     true
                 );
@@ -1945,7 +1945,7 @@ class READ_model extends CI_Model
                     } elseif($was_selected){
 
                         //This was selected:
-                        $next_step_message .= '<a href="/actionplan/'.$child_in['in_id'] . '" class="list-group-item itemread lightgreybg">';
+                        $next_step_message .= '<a href="/'.$child_in['in_id'] . '" class="list-group-item itemread lightgreybg">';
 
                     } else {
 
@@ -2141,7 +2141,7 @@ class READ_model extends CI_Model
 
                 } else {
 
-                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/actionplan/next" class="btn btn-md btn-blog"><i class="fas fa-angle-right"></i></a></div>';
+                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/read/next" class="btn btn-md btn-blog"><i class="fas fa-angle-right"></i></a></div>';
 
                 }
             } else {
@@ -3952,7 +3952,7 @@ class READ_model extends CI_Model
 
                 //Let User know that they have already subscribed to this intention:
                 $this->READ_model->dispatch_message(
-                    'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. /link:See in 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
+                    'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. /link:See in 🚩Action Plan:https://mench.com/' . $ins[0]['in_id'],
                     $en,
                     true
                 );
