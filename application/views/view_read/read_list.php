@@ -50,6 +50,10 @@ if(count($user_intents) > 0){
     //Give option to add
     echo ' <a class="btn btn-read inline-block" href="/"><i class="fas fa-plus"></i> NEW READ</a>';
 
+
+    //Give option to delete all:
+    echo '<div class="pull-right"><a href="/actionplan/delete/'.$psid.'" style="font-size:0.8em; color:#AAA;" data-toggle="tooltip" title="Remove ALL reads from your reading list" data-placement="left"><i class="fas fa-trash"></i> All</a></div>';
+
     if($has_multiple_intentions){
         //Give sorting tip:
         echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: Prioritize your reads by holding them & dragging them up/down.</div>';
@@ -64,9 +68,6 @@ if(count($user_intents) > 0){
     echo ' <a class="btn btn-read inline-block" href="/"><i class="fas fa-plus"></i> READ</a>';
 
 }
-
-//Give option to delete all:
-echo '<div class="pull-right"><a href="/actionplan/delete/'.$psid.'" style="font-size:0.7em; color:#BBB;"><i class="fas fa-trash-alt"></i> Remove All Reads</a></div>';
 
 
 ?>
