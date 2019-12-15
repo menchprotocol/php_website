@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-14 16:32:44 PST
+//Generated 2019-12-14 22:01:55 PST
 
 //BLOG MODIFY:
 $config['en_ids_12079'] = array(7585,4485,4737,4736,12090);
@@ -5653,7 +5653,7 @@ $config['en_all_6192'] = array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
         'm_desc' => '',
-        'm_parents' => array(7756,7585,4559,6192),
+        'm_parents' => array(7582,7756,7585,4559,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard " aria-hidden="true"></i>',
@@ -5903,7 +5903,7 @@ $config['en_all_7756'] = array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
         'm_desc' => '',
-        'm_parents' => array(7756,7585,4559,6192),
+        'm_parents' => array(7582,7756,7585,4559,6192),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
@@ -6542,7 +6542,7 @@ $config['en_all_7585'] = array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
         'm_desc' => 'Read messages & move to the next blog.',
-        'm_parents' => array(7756,7585,4559,6192),
+        'm_parents' => array(7582,7756,7585,4559,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard " aria-hidden="true"></i>',
@@ -6583,8 +6583,14 @@ $config['en_all_7585'] = array(
 );
 
 //READ LOGIN REQUIRED:
-$config['en_ids_7582'] = array(6683,6914,6907,7231,7637);
+$config['en_ids_7582'] = array(6677,6683,6914,6907,7231,7637);
 $config['en_all_7582'] = array(
+    6677 => array(
+        'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
+        'm_name' => 'READ & NEXT',
+        'm_desc' => '',
+        'm_parents' => array(7582,7756,7585,4559,6192),
+    ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard " aria-hidden="true"></i>',
         'm_name' => 'REPLY & NEXT',
