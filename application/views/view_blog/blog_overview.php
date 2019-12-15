@@ -54,7 +54,6 @@
                 /*
                 $recent_ins = $this->READ_model->ln_fetch(array(
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                    'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_entity_id' => 4993, //Trainer View Intent
                     'ln_creator_entity_id' => $session_en['en_id'], //For this trainer

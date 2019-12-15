@@ -697,21 +697,12 @@ if(!$action) {
             'ln_parent_intent_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
-            $qualified_update = ( in_array($child_or['in_completion_method_entity_id'], $this->config->item('en_ids_7582')) /* READ LOGIN REQUIRED */ );
-
-            //Count completions:
-            if($qualified_update){
-
-                $user_steps = $this->READ_model->ln_fetch(array(
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
-                    'ln_parent_intent_id' => $child_or['in_id'],
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                ), array(), 0);
-                $all_steps += count($user_steps);
-
-            } else {
-                $user_steps = array();
-            }
+            $user_steps = $this->READ_model->ln_fetch(array(
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+                'ln_parent_intent_id' => $child_or['in_id'],
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            ), array(), 0);
+            $all_steps += count($user_steps);
 
             $all_children++;
             echo '<li>'.echo_en_cache('en_all_6186' /* Link Statuses */, $child_or['ln_status_entity_id']).' '.echo_en_cache('en_all_4737' /* Intent Statuses */, $child_or['in_status_entity_id']).' '.echo_en_cache('en_all_7585', $child_or['in_completion_method_entity_id']).' <a href="https://mench.com/blog/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_outcome($child_or['in_outcome']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';

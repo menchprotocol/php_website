@@ -1228,7 +1228,6 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Set published status if featured:
                 if(count($CI->READ_model->ln_fetch(array(
-                        'in_completion_method_entity_id IN (' . join(',', $CI->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
                         'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                         'ln_type_entity_id' => 4601, //BLOG KEYWORDS

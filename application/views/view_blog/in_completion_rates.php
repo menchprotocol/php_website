@@ -8,7 +8,6 @@ $total_completed = 0;
 
 //FEATUREF BLOGD
 foreach($this->READ_model->ln_fetch(array(
-    'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     'ln_type_entity_id' => 4601, //BLOG KEYWORDS

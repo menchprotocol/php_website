@@ -101,7 +101,6 @@
         $published_ins = $this->READ_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-            'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_12096')) . ')' => null,
             'ln_type_entity_id' => 4601, //BLOG KEYWORDS
             'ln_parent_entity_id' => $en_id,
         ), array('in_child'), 0, 0, array('in_outcome' => 'ASC'));

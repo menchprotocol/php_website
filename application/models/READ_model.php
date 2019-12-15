@@ -3868,7 +3868,6 @@ class READ_model extends CI_Model
             $in_id = intval($quick_reply_payload);
             $ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => $in_id,
-                'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ));
             if (count($ins) < 1) {
