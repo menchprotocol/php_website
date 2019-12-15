@@ -7,7 +7,7 @@
 
 <?php
 
-echo '<h1>Action Plan</h1>';
+echo '<h1><span class="icon-block-xlg"><i class="far fa-bookmark"></i></span>MY READS</h1>';
 
 if(count($user_intents) > 0){
 
@@ -23,7 +23,7 @@ if(count($user_intents) > 0){
         echo '<a id="ap_in_'.$ln['in_id'].'" href="/actionplan/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread actionplan_sort">';
 
         echo '<span class="pull-right" style="padding-right:8px; padding-left:10px;">';
-        echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Remove from your Action Plan" data-placement="left"><i class="fas fa-comment-times" style="font-size:1.6em;"></i></span>';
+        echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Remove from your reading list" data-placement="left"><i class="fas fa-trash" style="font-size:1.3em;"></i></span>';
         echo '</span>';
 
         $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $ln);
@@ -44,23 +44,27 @@ if(count($user_intents) > 0){
     echo '</div>';
 
     if($has_pending_intentions){
-        echo '<a class="btn btn-blog" href="/actionplan/next" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Next &nbsp;&nbsp;&nbsp;<i class="fas fa-angle-right"></i></a>';
+        echo '<a class="btn btn-read inline-block" href="/actionplan/next">CONTINUE <i class="fas fa-angle-right"></i></a>';
     }
 
     if($has_multiple_intentions){
         //Give sorting tip:
-        echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: You can prioritize your intentions by holding and dragging them up or down.</div>';
+        echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: Prioritize your reads by holding them & dragging them up/down.</div>';
     }
 
 } else {
 
     //Show warning:
-    echo '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> No intentions added to your action plan, yet. <a href="/">Browse intentions</a> to get started.</div>';
+    echo '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> No reads added to your reading list yet.</div>';
 
 }
 
-//Give everyone the option to delete:
-echo '<div style="text-align: right;"><a href="/actionplan/delete/'.$psid.'" style="font-size:0.6em; color:#DDD;"><i class="fas fa-trash-alt"></i> Clear Action Plan</a></div>';
+//Give option to add
+echo ' <a class="btn btn-read inline-block" href="/"><i class="fas fa-plus"></i> READ</a>';
+
+
+//Give option to delete all:
+echo '<div style="text-align: right;"><a href="/actionplan/delete/'.$psid.'" style="font-size:0.7em; color:#BBB;"><i class="fas fa-trash-alt"></i> Remove All Reads</a></div>';
 
 
 ?>

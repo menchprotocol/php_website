@@ -1125,7 +1125,7 @@ class Read extends CI_Controller
                 ));
 
                 //List all user intentions:
-                $this->load->view('view_read/actionplan_intentions', array(
+                $this->load->view('view_read/read_list', array(
                     'session_en' => $session_en,
                     'user_intents' => $user_intents,
                     'psid' => $psid,
