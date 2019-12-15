@@ -623,7 +623,7 @@ class READ_model extends CI_Model
             if($advance_step){
 
                 $this->READ_model->dispatch_message(
-                    'You have no intentions added to your Action Plan yet.',
+                    'You have no blogs in your reading list yet.',
                     array('en_id' => $en_id),
                     true
                 );
@@ -4174,14 +4174,6 @@ class READ_model extends CI_Model
                 //Did we publish anything?
                 if($published_answer){
 
-                    //Affirm answer received answer:
-                    $this->READ_model->dispatch_message(
-                        echo_random_message('affirm_progress'),
-                        $en,
-                        true
-                    );
-
-
                     //See if we also need to mark the answer as complete:
                     $this->READ_model->read__completion_auto_complete($en['en_id'], $answer_ins[0], 7485 /* User Step Answer Unlock */);
 
@@ -4447,22 +4439,22 @@ class READ_model extends CI_Model
                 'ln_metadata' => $quick_replies,
             ));
 
-        } elseif (substr($fb_received_message, 0, 9) == 'i want to' || substr($fb_received_message, 0, 6) == 'learn ') {
+        } elseif (substr($fb_received_message, 0, 11) == 'Search for ' || substr($fb_received_message, 0, 6) == 'learn ') {
 
 
             if(substr($fb_received_message, 0, 6) == 'learn '){
                 //learn
                 $master_command = trim(substr(trim($fb_received_message), 6));
             } else {
-                //I want to
-                $master_command = trim(substr(trim($fb_received_message), 9));
+                //Search for
+                $master_command = trim(substr(trim($fb_received_message), 11));
             }
 
 
             //Make sure algolia is enabled:
             if (!intval(config_var(11062))) {
                 $this->READ_model->dispatch_message(
-                    'Currently I cannot search for any intentions. Try again later.',
+                    'Currently I cannot search for any blogs. Try again later.',
                     $en,
                     true
                 );
@@ -4531,7 +4523,7 @@ class READ_model extends CI_Model
                     'output' => $search_results,
                 ),
                 'ln_creator_entity_id' => $en['en_id'], //user who searched
-                'ln_type_entity_id' => 4275, //User Text Command I Want To
+                'ln_type_entity_id' => 4275, //User Text Command Search for
             ));
 
 

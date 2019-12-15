@@ -48,7 +48,16 @@
                 }
 
                 //Add Blog
-                echo '<div style="margin-top: 10px;"><a href="/blog/create" class="blog montserrat"><i class="fas fa-circle yellow"></i> NEW BLOG <i class="fas fa-angle-right"></i></a></div>';
+                if(superpower_assigned(10939)){
+
+                    echo '<div style="margin-top: 10px;" class="'.superpower_active(10939).'"><a href="/blog/create" class="btn btn-blog"><i class="fas fa-plus"></i> BLOG</a></div>';
+
+                } else {
+
+                    //They don't have the superpower, so redirect them to what they need to read to gain it:
+                    echo '<div style="margin-top: 10px;"><a href="/13008" class="btn btn-blog">START BLOGGING <i class="fas fa-angle-right"></i></a></div>';
+
+                }
 
 
                 /*

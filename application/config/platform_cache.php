@@ -8487,7 +8487,7 @@ $config['en_all_4593'] = array(
     4275 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
         'm_name' => 'READER BLOG SEARCH',
-        'm_desc' => 'When students invokes the [I want to] command and search for a new intention that they would like to add to their Action Plan.',
+        'm_desc' => 'When students invokes the [Search for] command and search for a new intention that they would like to add to their Action Plan.',
         'm_parents' => array(12004,10639,10596,10589,6554,4755,4593),
     ),
     4283 => array(

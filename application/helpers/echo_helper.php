@@ -716,22 +716,10 @@ function echo_random_message($message_key, $return_all = false){
      * */
 
     $rotation_index = array(
-        'affirm_progress' => array(
-            'Got it 👍',
-            'Noted',
-            'Ok noted',
-            'Ok sweet',
-            'Confirmed',
-            '👌',
-            '👍',
-            null,
-            null,
-            null,
-            null,
-        ),
         'next_blog_is' => array(
             'Next: ',
             'Next blog is: ',
+            'The next blog is: ',
             'Ok moving on to the next blog: ',
             'Moving to the next blog: ',
         ),
@@ -809,13 +797,13 @@ function echo_random_message($message_key, $return_all = false){
             "Getting smarter ^~^",
         ),
         'command_me' => array(
-            'You can add a new intention to your Action Plan by sending me a message that starts with "I want to", for example: "I want to assess my back-end skills" or "I want to recruit top talent"',
+            'You can search for new blogs by sending me a message starting with "Search for", for example: "Search for assess my back-end skills" or "Search for recruit top talent"',
         ),
         'goto_next' => array(
             'Say next to continue',
         ),
         'read_recommendation' => array(
-            'What would you like to read next? Start a sentence with "I want to ..." or:  /link:BROWSE READS:https://mench.com/',
+            'What would you like to read next? Start a sentence with "Search for ..." or:  /link:BROWSE READS:https://mench.com/',
         ),
 
     );

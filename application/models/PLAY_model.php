@@ -1309,7 +1309,7 @@ class PLAY_model extends CI_Model
         if(!$fetch_result){
             //Let them know to complete their profile:
             $this->READ_model->dispatch_message(
-                'Hi! You can start by completing your profile information so I know who I am speaking to 🤗 /link:Update 👤My Account:https://mench.com/play/myaccount',
+                'Hi! I just added you as a new player. You can update your account at any time. 🤗 /link:Update My Account:https://mench.com/play/myaccount',
                 $added_en['en'],
                 true
             );

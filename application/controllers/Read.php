@@ -1884,13 +1884,6 @@ class Read extends CI_Controller
                                     'ln_timestamp' => date("Y-m-d H:i:s"),
                                 ));
 
-                                //Confirm with user:
-                                $this->READ_model->dispatch_message(
-                                    echo_random_message('affirm_progress'),
-                                    $en,
-                                    true
-                                );
-
                                 //Process on-complete automations:
                                 $this->READ_model->read__completion_checks($en['en_id'], $pending_req_submission[0], true, true);
 

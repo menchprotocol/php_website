@@ -53,9 +53,12 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_1
 
 } else {
 
-    echo '<div style="padding-bottom:40px;"><a class="btn btn-read" href="/'.$in['in_id'].'/next">'.( isset($session_en['en_id']) ? 'NEXT' : 'START READING' ).' <i class="fas fa-angle-right"></i></a></div>';
+    echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/'.$in['in_id'].'/next">'.( isset($session_en['en_id']) ? 'NEXT' : 'START READING' ).' <i class="fas fa-angle-right"></i></a></div>';
 
 }
+
+echo '<div style="padding-bottom:40px;" class="inline-block '.superpower_active(10939).'"><a class="btn btn-blog" href="/blog/'.$in['in_id'].'">MANAGE <i class="fas fa-angle-right"></i></a></div>';
+
 
 ?>
 
