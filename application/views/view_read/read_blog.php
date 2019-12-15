@@ -36,13 +36,7 @@ foreach ($this->READ_model->ln_fetch(array(
 
 
 
-//Call to action:
-if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7582')) /* READ LOGIN REQUIRED */){
-
-    echo '<a class="btn btn-read" href="/'.$in['in_id'].'/next">NEXT <i class="fas fa-angle-right"></i></a>';
-
-
-} elseif($in['in_completion_method_entity_id']==6684 /* Single Answer */) {
+if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_12107'))){
 
     //Give option to choose a child path:
     echo '<div class="list-group" style="margin-top:30px;">';
@@ -53,9 +47,13 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
         'ln_parent_intent_id' => $in['in_id'],
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
     foreach ($in__children as $child_in) {
-        echo echo_in_read($child_in, ( isset($session_en['en_id']) ? '/read/actionplan_answer_question/6157/' . $session_en['en_id'] . '/' . $in['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $in['in_id'] . $session_en['en_id']) : '' ), $in['in_id']);
+        echo echo_in_read($child_in, null, $in['in_id']);
     }
     echo '</div>';
+
+} else {
+
+    echo '<div style="padding-bottom:40px;"><a class="btn btn-read" href="/'.$in['in_id'].'/next">'.( isset($session_en['en_id']) ? 'NEXT' : 'START READING' ).' <i class="fas fa-angle-right"></i></a></div>';
 
 }
 
