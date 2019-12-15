@@ -47,6 +47,9 @@ if(count($user_intents) > 0){
         echo '<a class="btn btn-read inline-block" href="/actionplan/next">CONTINUE <i class="fas fa-angle-right"></i></a>';
     }
 
+    //Give option to add
+    echo ' <a class="btn btn-read inline-block" href="/"><i class="fas fa-plus"></i> NEW READ</a>';
+
     if($has_multiple_intentions){
         //Give sorting tip:
         echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: Prioritize your reads by holding them & dragging them up/down.</div>';
@@ -57,14 +60,13 @@ if(count($user_intents) > 0){
     //Show warning:
     echo '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> No reads added to your reading list yet.</div>';
 
+    //Give option to add
+    echo ' <a class="btn btn-read inline-block" href="/"><i class="fas fa-plus"></i> READ</a>';
+
 }
 
-//Give option to add
-echo ' <a class="btn btn-read inline-block" href="/"><i class="fas fa-plus"></i> READ</a>';
-
-
 //Give option to delete all:
-echo '<div style="text-align: right;"><a href="/actionplan/delete/'.$psid.'" style="font-size:0.7em; color:#BBB;"><i class="fas fa-trash-alt"></i> Remove All Reads</a></div>';
+echo '<div class="pull-right"><a href="/actionplan/delete/'.$psid.'" style="font-size:0.7em; color:#BBB;"><i class="fas fa-trash-alt"></i> Remove All Reads</a></div>';
 
 
 ?>
