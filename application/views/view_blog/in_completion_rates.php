@@ -17,7 +17,7 @@ foreach($this->READ_model->ln_fetch(array(
     //Count Enrolled Users:
     $enrolled_users = $this->READ_model->ln_fetch(array(
         'ln_parent_intent_id' => $in_published_tree['in_id'],
-        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -30,7 +30,7 @@ foreach($this->READ_model->ln_fetch(array(
     $common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
     $completed_users = $this->READ_model->ln_fetch(array(
         'ln_parent_intent_id' => end($common_steps),
-        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 

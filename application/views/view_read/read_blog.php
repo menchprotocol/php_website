@@ -1,21 +1,32 @@
-<div class="container">
+<script>
+    var in_loaded_id = <?= $in['in_id'] ?>;
+    var session_en_id = <?= ( isset($session_en['en_id']) ? intval($session_en['en_id']) : 0 ) ?>;
+</script>
+<script src="/js/custom/in_landing_page.js?v=v<?= config_var(11060) ?>"
+        type="text/javascript"></script>
 
+
+
+
+<div class="container">
 <?php
+
+echo '<h1>' . echo_in_outcome($in['in_outcome']) . '</h1>';
+
+//Fetch & Display Intent Note Messages:
+foreach ($this->READ_model->ln_fetch(array(
+    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'ln_type_entity_id' => 4231, //Intent Note Messages
+    'ln_child_intent_id' => $in['in_id'],
+), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
+    echo $this->READ_model->dispatch_message($ln['ln_content']);
+}
+
+
+
+
 if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7582')) /* READ LOGIN REQUIRED */){
 
-    //READER MUST LOGIN TO CONTINUE:
-    ?>
-
-    <script>
-        var in_loaded_id = <?= $in['in_id'] ?>;
-        var session_en_id = <?= ( isset($session_en['en_id']) ? intval($session_en['en_id']) : 0 ) ?>;
-    </script>
-    <script src="/js/custom/in_landing_page.js?v=v<?= config_var(11060) ?>"
-            type="text/javascript"></script>
-
-    <?php
-
-    echo '<h1>' . echo_in_outcome($in['in_outcome']) . '</h1>';
 
 
     //Action Plan Overview:
@@ -32,57 +43,10 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     */
 
 
-
-    //Fetch & Display Intent Note Messages:
-    foreach ($this->READ_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_entity_id' => 4231, //Intent Note Messages
-        'ln_child_intent_id' => $in['in_id'],
-    ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
-        echo $this->READ_model->dispatch_message($ln['ln_content']);
-    }
+    echo '<a class="btn btn-read" href="/'.$in['in_id'].'/next">NEXT <i class="fas fa-angle-right"></i></a>';
 
 
-
-
-
-    //Check to see if added to Action Plan for logged-in users:
-    if(isset($session_en['en_id'])){
-
-        if(count($this->READ_model->ln_fetch(array(
-                'ln_creator_entity_id' => $session_en['en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-                'ln_parent_intent_id' => $in['in_id'],
-            ))) > 0){
-
-            //Show when was added:
-            echo '<p>BLOG already added to your BOOKMARKS.</p>';
-
-            echo '<a class="btn btn-read" href="/'.$in['in_id'].'" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Resume&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
-
-            echo '<a class="read montserrat" href="/play/signin/'.$in['in_id'].'"><span class="icon-block"><i class="fas fa-circle ispink"></i></span>RESUME <i class="fas fa-angle-right"></i></a>';
-
-
-
-
-        } else {
-
-            //Give option to add:
-            echo '<div id="added_to_actionplan"><a class="read montserrat" href="javascript:void(0);" onclick="add_to_actionplan()"><span class="icon-block"><i class="fas fa-circle ispink"></i></span>NEXT <i class="fas fa-angle-right"></i></a></div>';
-
-        }
-
-    } else {
-
-        //Give option to add:
-        echo '<a class="read montserrat" href="/play/signin/'.$in['in_id'].'"><span class="icon-block"><i class="fas fa-circle ispink"></i></span>NEXT <i class="fas fa-angle-right"></i></a>';
-
-    }
-
-
-
-
+    /*
 
 
     //Start generating relevant intentions we can recommend as other intentions:
@@ -188,70 +152,23 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
 
     }
 
+    */
 
 
+} elseif($in['in_completion_method_entity_id']==6684 /* Single Answer */) {
 
-} else {
-
-
-
-
-
-
-
-
-    // GUEST READING
-    ?>
-
-
-    <script>
-        var in_loaded_id = <?= $in['in_id'] ?>;
-        var session_en_id = <?= ( isset($session_en['en_id']) ? intval($session_en['en_id']) : 0 ) ?>;
-    </script>
-    <script src="/js/custom/in_landing_page.js?v=v<?= config_var(11060) ?>"
-            type="text/javascript"></script>
-
-    <?php
-
-    //Intent Title:
-    echo '<h1 style="margin-bottom:30px;">' . echo_in_outcome($in['in_outcome']) . '</h1>';
-
-
-    //Fetch & Display Intent Note Messages:
-    foreach ($this->READ_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_entity_id' => 4231, //Intent Note Messages
-        'ln_child_intent_id' => $in['in_id'],
-    ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
-        echo $this->READ_model->dispatch_message($ln['ln_content']);
+    //Give option to choose a child path:
+    echo '<div class="list-group" style="margin-top:30px;">';
+    $in__children = $this->READ_model->ln_fetch(array(
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+        'ln_type_entity_id' => 4228, //Intent Link Regular Step
+        'ln_parent_intent_id' => $in['in_id'],
+    ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+    foreach ($in__children as $child_in) {
+        echo echo_in_read($child_in, ( isset($session_en['en_id']) ? '/read/actionplan_answer_question/6157/' . $session_en['en_id'] . '/' . $in['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $in['in_id'] . $session_en['en_id']) : '' ), $in['in_id']);
     }
-
-
-    //Intent Select Publicly? If so, allow user to choose path:
-    if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7588'))){
-
-        //Give option to choose a child path:
-        echo '<div class="list-group" style="margin-top:40px;">';
-        $in__children = $this->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-            'ln_type_entity_id' => 4228, //Intent Link Regular Step
-            'ln_parent_intent_id' => $in['in_id'],
-        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
-        //$common_prefix = common_prefix($in__children, 'in_outcome');
-
-        foreach ($in__children as $child_in) {
-            echo echo_in_read($child_in);
-        }
-        echo '</div>';
-
-    } else {
-
-        //Just show the Action Plan:
-        echo '<br />'.echo_tree_actionplan($in, $autoexpand);
-
-    }
-
+    echo '</div>';
 
 }
 ?>

@@ -44,7 +44,7 @@ if(count($user_intents) > 0){
     echo '</div>';
 
     if($has_pending_intentions){
-        echo '<a class="btn btn-blog" href="/actionplan/next" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Next &nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+        echo '<a class="btn btn-blog" href="/actionplan/next" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Next &nbsp;&nbsp;&nbsp;<i class="fas fa-angle-right"></i></a>';
     }
 
     if($has_multiple_intentions){

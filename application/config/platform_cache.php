@@ -158,7 +158,7 @@ $config['en_all_12004'] = array(
         'm_parents' => array(12004,11033,10990,10593,10589,7703,6345,4986,4603,4593,4485),
     ),
     10660 => array(
-        'm_icon' => '<i class="fas fa-angle-double-right"></i>',
+        'm_icon' => '<i class="fas fa-angle-right"></i>',
         'm_name' => 'BLOG MIGRATE PARENT BLOG',
         'm_desc' => '',
         'm_parents' => array(12004,7703,4593,10638,10589,10594,10658),
@@ -3841,7 +3841,7 @@ $config['en_all_4527'] = array(
 $config['en_ids_10658'] = array(10660,10676,10678,10679,10677,10686,10663,10664,10661,10675,10681,10685,10662,10689,10657,10673,10656,10659,10690,10683,7578);
 $config['en_all_10658'] = array(
     10660 => array(
-        'm_icon' => '<i class="fas fa-angle-double-right"></i>',
+        'm_icon' => '<i class="fas fa-angle-right"></i>',
         'm_name' => 'BLOG MIGRATE PARENT BLOG',
         'm_desc' => '',
         'm_parents' => array(12004,7703,4593,10638,10589,10594,10658),
@@ -4252,7 +4252,7 @@ $config['en_all_10594'] = array(
         'm_parents' => array(12004,11018,10984,11033,10594,10589,4593,7703,7551,4485),
     ),
     10660 => array(
-        'm_icon' => '<i class="fas fa-angle-double-right"></i>',
+        'm_icon' => '<i class="fas fa-angle-right"></i>',
         'm_name' => 'BLOG MIGRATE PARENT BLOG',
         'm_desc' => '',
         'm_parents' => array(12004,7703,4593,10638,10589,10594,10658),
@@ -5010,7 +5010,7 @@ $config['en_all_10589'] = array(
         'm_parents' => array(12004,11033,10990,10593,10589,7703,6345,4986,4603,4593,4485),
     ),
     10660 => array(
-        'm_icon' => '<i class="fas fa-angle-double-right"></i>',
+        'm_icon' => '<i class="fas fa-angle-right"></i>',
         'm_name' => 'BLOG MIGRATE PARENT BLOG',
         'm_desc' => '',
         'm_parents' => array(12004,7703,4593,10638,10589,10594,10658),

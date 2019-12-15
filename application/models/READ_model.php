@@ -1441,7 +1441,7 @@ class READ_model extends CI_Model
                 //Always add all the first users to the full list:
                 $qualified_completed_users = $this->READ_model->ln_fetch(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
                     'ln_parent_intent_id' => $child_in['in_id'],
                 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -1458,7 +1458,7 @@ class READ_model extends CI_Model
                     //Update list of qualified users:
                     $qualified_completed_users = $this->READ_model->ln_fetch(array(
                         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
                         'ln_parent_intent_id' => $child_in['in_id'],
                     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -1670,7 +1670,6 @@ class READ_model extends CI_Model
         //If TRUE, initial progression link will be logged as WORKING ON since we need user response:
         $is_two_step = in_array($progression_type_entity_id, $this->config->item('en_ids_6244'));
 
-        //Action Plan Steps Progressed:
         $step_progress_made = ( !$is_two_step && in_array($progression_type_entity_id, $this->config->item('en_ids_6255')));
 
         //If TRUE, we will auto move on to the next item:
@@ -1941,7 +1940,7 @@ class READ_model extends CI_Model
                     if(!$progress_completed){
 
                         //Need to select answer:
-                        $next_step_message .= '<a href="/read/actionplan_answer_question/6157/' . $en_id . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '" class="list-group-item itemread lightgreybg">';
+                        $next_step_message .= '<a href="/read/actionplan_answer_question/6157/' . $en_id . '/' . $ins[0]['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '/' . $child_in['in_id'] . '" class="list-group-item itemread lightgreybg">';
 
                     } elseif($was_selected){
 
@@ -2526,6 +2525,7 @@ class READ_model extends CI_Model
 
         $en_all_7703 = $this->config->item('en_all_7703'); //Load all link types
         $in_outcomes = array();
+        $insert_columns = array(); //TODO fix this
 
         //Inform authors:
         foreach($this->READ_model->ln_fetch(array(
@@ -2549,7 +2549,7 @@ class READ_model extends CI_Model
                     $this->READ_model->ln_create(array(
                         'ln_content' => 'Intent subscriber missing Mench email',
                         'ln_type_entity_id' => 7504, //Trainer Review Required
-                        'ln_creator_entity_id' => $insert_columns['ln_creator_entity_id'], //HERE
+                        //'ln_creator_entity_id' => $insert_columns['ln_creator_entity_id'], //HERE
                         'ln_parent_entity_id' => $subscriber_en['en_id'],
                         'ln_child_intent_id' => $subscriber_en['ln_child_intent_id'],
                     ));
@@ -3980,7 +3980,7 @@ class READ_model extends CI_Model
                 $step_info = echo_tree_steps($ins[0], true);
                 $source_info = echo_tree_experts($ins[0], true);
 
-                if($source_info || $step_info || $user_info){
+                if($source_info || $step_info){
                     $overview_message .= 'Here is an overview:' . "\n\n" . $step_info . $source_info;
                 }
 

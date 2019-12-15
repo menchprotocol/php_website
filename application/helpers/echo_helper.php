@@ -913,7 +913,7 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
 
     //Count users who have completed this intent:
     $enrolled_users_count = $CI->READ_model->ln_fetch(array(
-        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
         'ln_parent_intent_id' => $in['in_id'],
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -927,7 +927,7 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
     $in_metadata = unserialize($in['in_metadata']);
     $array_flatten = array_flatten($in_metadata['in__metadata_common_steps']);
     $completed_users_count = $CI->READ_model->ln_fetch(array(
-        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
         'ln_parent_intent_id' => end($array_flatten),
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -1532,31 +1532,57 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 }
 
 
-function echo_in_read($in, $url_prefix = null)
+function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
 
-    $metadata = unserialize($in['in_metadata']);
-
-    //Now do measurements:
-    $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-
-
-    //Fetch primary author:
-    $authors = $CI->READ_model->ln_fetch(array(
-        'ln_type_entity_id' => 4250,
-        'ln_child_intent_id' => $in['in_id'],
-    ), array('ln_creator'), 1);
 
 
     $ui = '<a href="'.$url_prefix.'/'.$in['in_id'] . '" class="list-group-item '.( $url_prefix ? 'itemblog' : 'itemread' ).'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_outcome($in['in_outcome'], false).'</b>';
-    $ui .= '<span class="montserrat blog-info doupper">'.( $has_time_estimate ? echo_time_range($in, true).' READ ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']).'</span>';
+
+    if($parent_in_id > 0){
+
+        //See if this user has completed this parent/child relation:
+        $session_en = superpower_assigned();
+
+        if(isset($session_en['en_id'])){
+
+            //See if this has been completed previously:
+            if(count($CI->READ_model->ln_fetch(array(
+                    'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
+                    'ln_parent_intent_id' => $parent_in_id,
+                    'ln_child_intent_id' => $in['in_id'],
+                ), array(), 0)) > 0){
+                $ui .= '<span class="montserrat blog-info doupper">PREVIOUSLY SELECTED</span>';
+            }
+
+        }
+
+    } else {
+
+        //Now do measurements:
+        $metadata = unserialize($in['in_metadata']);
+        $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+
+        //Fetch primary author:
+        $authors = $CI->READ_model->ln_fetch(array(
+            'ln_type_entity_id' => 4250,
+            'ln_child_intent_id' => $in['in_id'],
+        ), array('ln_creator'), 1);
+
+        $ui .= '<span class="montserrat blog-info doupper">'.( $has_time_estimate ? echo_time_range($in, true).' READ ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']).'</span>';
+
+    }
+
     $ui .= '</td>';
+
+
 
     //Search for Blog Image:
     $ui .= '<td class="featured-frame">';
@@ -1598,6 +1624,8 @@ function echo_in_read($in, $url_prefix = null)
 
     }
     $ui .= '</td>';
+
+
     $ui .= '</tr></table>';
     $ui .= '</a>';
 

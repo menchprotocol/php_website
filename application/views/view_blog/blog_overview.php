@@ -14,7 +14,7 @@
 
             if(!$session_en){
 
-                echo '<div><a href="/play/signin" class="btn btn-play montserrat">SIGN IN/UP</a> to start blogging.</div>';
+                echo '<div><a href="/signin" class="btn btn-play montserrat">SIGN IN/UP</a> to start blogging.</div>';
 
             } elseif(!superpower_assigned(10939)) {
 

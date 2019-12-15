@@ -1,17 +1,5 @@
 
 
-function add_to_actionplan(){
-    $('#added_to_actionplan').html('<span><i class="far fa-yin-yang fa-spin"></i></span> Adding...');
-    $.post("/read/actionplan_intention_add", {in_id: in_loaded_id}, function (data) {
-        //Show them success:
-        $('#added_to_actionplan').html(data.message);
-
-        //Redirect them:
-        window.location = data.add_redirect;
-    });
-}
-
-
 
 $(document).ready(function () {
 

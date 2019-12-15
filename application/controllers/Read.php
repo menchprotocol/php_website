@@ -13,9 +13,44 @@ class Read extends CI_Controller
         date_default_timezone_set(config_var(11079));
     }
 
-    function next(){
-        return redirect_message('/read');
+    function next($in_id = 0){
+
+        $session_en = superpower_assigned();
+
+        //Check to see if added to Action Plan for logged-in users:
+        if(isset($session_en['en_id'])){
+
+            $next_in_id = 0;
+
+            if($in_id > 0){
+
+                $ins = $this->BLOG_model->in_fetch(array(
+                    'in_id' => $in_id,
+                ));
+
+                //Find next blog based on player's reading list:
+                $next_in_id = $this->READ_model->read__step_next_find($session_en['en_id'], $ins[0]);
+
+            } else {
+
+                //Find the next intent in the Action Plan to skip:
+                $next_in_id = $this->READ_model->read__step_next_go($session_en['en_id'], false);
+
+            }
+
+            if($next_in_id > 0){
+                return redirect_message('/' . $next_in_id);
+            } else {
+                return redirect_message('/read');
+            }
+
+        } else {
+
+            return redirect_message('/signin/' . $in_id);
+
+        }
     }
+
 
     function read_overview(){
 
@@ -813,49 +848,6 @@ class Read extends CI_Controller
 
 
 
-    function actionplan_intention_add(){
-
-        /*
-         *
-         * The Ajax function to add a BLOG to the Action Plan from the landing page.
-         *
-         * */
-
-        //Validate input:
-        $session_en = superpower_assigned();
-        if (!$session_en) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
-            ));
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Intent ID',
-            ));
-        }
-
-        //Attempt to add intent to Action Plan:
-        if($this->READ_model->read__intention_add($session_en['en_id'], $_POST['in_id'], 0, false)){
-            //All good:
-            return echo_json(array(
-                'status' => 1,
-                'message' => '<i class="far fa-check-circle"></i> REDIRECTING TO NEXT...',
-                'add_redirect' => '/actionplan/'.$_POST['in_id'],
-            ));
-        } else {
-            //There was some error:
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Unable to add to Action Plan',
-            ));
-        }
-
-    }
-
-
-
-
     function actionplan_file_upload()
     {
 
@@ -1293,7 +1285,7 @@ class Read extends CI_Controller
     }
 
 
-    function actionplan_answer_question($answer_type_en_id, $en_id, $parent_in_id, $answer_in_id, $w_key)
+    function actionplan_answer_question($answer_type_en_id, $en_id, $parent_in_id, $w_key, $answer_in_id)
     {
 
         if ($w_key != md5($this->config->item('cred_password_salt') . $answer_in_id . $parent_in_id . $en_id)) {

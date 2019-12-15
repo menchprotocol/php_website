@@ -46,7 +46,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
             </p>
 
 
-            <p>Or <a href="/play/signin" style="font-weight: bold; text-decoration: underline;">login</a> if you already have an account.</p>
+            <p>Or <a href="/signin" style="font-weight: bold; text-decoration: underline;">login</a> if you already have an account.</p>
 
         </div>
 

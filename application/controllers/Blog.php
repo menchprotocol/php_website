@@ -468,7 +468,7 @@ class Blog extends CI_Controller {
 
         //Fetch Action Plan users:
         $actionplan_users = $this->READ_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
             'ln_parent_intent_id' => $ins[0]['in_id'],
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
@@ -1168,7 +1168,7 @@ class Blog extends CI_Controller {
         }
 
         $actionplan_users = $this->READ_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
             'ln_parent_intent_id' => $_POST['in_id'],
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');

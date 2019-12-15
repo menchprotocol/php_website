@@ -2136,7 +2136,7 @@ fragment PostListingItemSidebar_post on Post {
         //Make sure email input is provided:
         if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/play/signin', '<div class="alert alert-danger" role="alert">Missing Email</div>');
+            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Missing Email</div>');
         }
 
         //Validate READ ID and matching email:
@@ -2148,7 +2148,7 @@ fragment PostListingItemSidebar_post on Post {
 
         if(count($validate_links) < 1){
             //Probably already completed the reset password:
-            return redirect_message('/play/signin', '<div class="alert alert-danger" role="alert">Reset password link not found</div>');
+            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Reset password link not found</div>');
         }
 
         $this->load->view('header', array(
@@ -2529,7 +2529,7 @@ fragment PostListingItemSidebar_post on Post {
             return redirect_message('/actionplan/next');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/play/signin', '<div class="alert alert-danger" role="alert">Missing Email</div>');
+            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Missing Email</div>');
         }
 
         //Validate READ ID and matching email:
@@ -2540,10 +2540,10 @@ fragment PostListingItemSidebar_post on Post {
         )); //The user making the request
         if(count($validate_links) < 1){
             //Probably already completed the reset password:
-            return redirect_message('/play/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid data source</div>');
+            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid data source</div>');
         } elseif(strtotime($validate_links[0]['ln_timestamp']) + config_var(11065) < time()){
             //Probably already completed the reset password:
-            return redirect_message('/play/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
+            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
         }
 
         //Fetch entity:
@@ -2551,7 +2551,7 @@ fragment PostListingItemSidebar_post on Post {
             'en_id' => $validate_links[0]['ln_creator_entity_id'],
         ));
         if(count($ens) < 1){
-            return redirect_message('/play/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
+            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
         }
 
         //Log them in:
