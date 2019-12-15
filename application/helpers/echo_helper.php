@@ -1545,6 +1545,7 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_outcome($in['in_outcome'], false).'</b>';
 
+
     if($parent_in_id > 0){
 
         //See if this user has completed this parent/child relation:
@@ -1567,6 +1568,7 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
 
 
     //Now do measurements:
+    /*
     $metadata = unserialize($in['in_metadata']);
 
     if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
@@ -1583,6 +1585,7 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
         $ui .= '<span class="montserrat blog-info doupper">'.( $has_time_estimate ? echo_time_range($in, true).' READ ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']).'</span>';
 
     }
+    */
 
     $ui .= '</td>';
 
