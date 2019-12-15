@@ -44,7 +44,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
     if($col_num==1){
 
-        echo '<div>';
+        echo '<div style="margin-bottom: 5px;">';
             echo '<div class="inline-block">'.echo_dropdown(4737, $in['in_status_entity_id'], 'btn-blog', $can_manage).'</div>';
             echo '<div class="inline-block" style="margin-left: 5px;"><a href="/'.$in['in_id'].'" class="btn btn-read" data-toggle="tooltip" title="Read interactively" data-placement="right">PREVIEW <i class="fas fa-arrow-right"></i></a></div>';
         echo '</div>';
@@ -69,7 +69,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } else {
 
         echo '<div class="center-right">';
-            echo '<div class="inline-block" style="margin-bottom: 10px;">'.echo_dropdown(7585, $in['in_completion_method_entity_id'], 'btn-blog', $can_manage).'</div>';
+            echo '<div class="inline-block" style="margin-bottom:5px;">'.echo_dropdown(7585, $in['in_completion_method_entity_id'], 'btn-blog', $can_manage).'</div>';
         echo '</div>';
 
     }
