@@ -30,9 +30,9 @@ if(count($user_intents) > 0){
 
         $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $ln);
 
-        echo '<b class="actionplan-title montserrat in-title-'.$ln['in_id'].'">' . $ln['in_outcome'] . '</b>';
+        echo '<b class="actionplan-title montserrat in-title-'.$ln['in_id'].'" style="font-size:1.3em;">' . $ln['in_outcome'] . '</b>';
         echo '<div class="actionplan-overview">';
-        echo '<span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read">'.$completion_rate['completion_percentage'].'% READ</span>';
+        echo '<span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read" class="montserrat blog-info doupper">'.$completion_rate['completion_percentage'].'% READ</span>';
         echo '</div>';
         echo '</a>';
 
