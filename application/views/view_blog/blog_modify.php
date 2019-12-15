@@ -46,7 +46,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         echo '<div style="margin-bottom: 5px;">';
             echo '<div class="inline-block">'.echo_dropdown(4737, $in['in_status_entity_id'], 'btn-blog', $can_manage).'</div>';
-            echo '<div class="inline-block" style="margin-left: 5px;"><a href="/'.$in['in_id'].'" class="btn btn-read" data-toggle="tooltip" title="Read interactively" data-placement="right">PREVIEW <i class="fas fa-arrow-right"></i></a></div>';
+            echo '<div class="inline-block pull-right"><a href="/'.$in['in_id'].'" class="btn btn-read" data-toggle="tooltip" title="Read interactively" data-placement="right">PREVIEW <i class="fas fa-arrow-right"></i></a></div>';
         echo '</div>';
 
         echo '<div class="itemblog">';
