@@ -1581,10 +1581,24 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
 
     //Search for Blog Image:
     $ui .= '<td class="featured-frame">';
+    $ui .= echo_blog_thumbnail($in['in_id']);
+    $ui .= '</td>';
+
+
+    $ui .= '</tr></table>';
+    $ui .= '</a>';
+
+    return $ui;
+}
+
+function echo_blog_thumbnail($in_id){
+
+    $CI =& get_instance();
+
     foreach ($CI->READ_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'ln_type_entity_id' => 4231, //Intent Note Messages
-        'ln_child_intent_id' => $in['in_id'],
+        'ln_child_intent_id' => $in_id,
         'ln_parent_entity_id >' => 0, //Reference a player
     ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
 
@@ -1597,8 +1611,7 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
 
         //Did we find an image for this message?
         if(count($images) > 0){
-            $ui .= '<div class="pull-right inline-block featured-frame"><span class="featured-image"><img src="'.$images[0]['ln_content'].'" /></span></div>';
-            break;
+            return '<div class="pull-right inline-block featured-frame"><span class="featured-image"><img src="'.$images[0]['ln_content'].'" /></span></div>';
         }
 
         //Maybe we have an Embed Video?
@@ -1612,19 +1625,15 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
         if(count($embeds) > 0){
             $youtube_id = extract_youtube_id($embeds[0]['ln_content']);
             if(strlen($youtube_id) > 0){
-                $ui .= '<div class="pull-right inline-block featured-frame"><span class="featured-image"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
-                break;
+                return '<div class="pull-right inline-block featured-frame"><span class="featured-image"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
             }
         }
 
     }
-    $ui .= '</td>';
 
+    //Not found:
+    return null;
 
-    $ui .= '</tr></table>';
-    $ui .= '</a>';
-
-    return $ui;
 }
 
 

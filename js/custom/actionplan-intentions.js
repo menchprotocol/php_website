@@ -8,7 +8,6 @@ function actionplan_sort_save() {
         if(link_id > 0){
             sort_rank++;
             new_actionplan_order[sort_rank] = link_id;
-            $(".results-ln-" + link_id).html(ordinal_suffix_of(sort_rank));
         }
     });
 

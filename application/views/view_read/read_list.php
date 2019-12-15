@@ -23,16 +23,16 @@ if(count($user_intents) > 0){
         echo '<a id="ap_in_'.$ln['in_id'].'" href="/actionplan/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread actionplan_sort">';
 
         echo '<span class="pull-right" style="padding-right:8px; padding-left:10px;">';
-        echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Remove from your reading list" data-placement="left"><i class="fas fa-trash"></i></span>';
+        echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Remove from reading list" data-placement="left"><i class="fas fa-trash"></i></span>';
         echo '</span>';
+
+        echo echo_blog_thumbnail($ln['in_id']);
 
         $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $ln);
 
-        echo '<span class="actionplan-title in-title-'.$ln['in_id'].'">' . $ln['in_outcome'] . '</span>';
+        echo '<b class="actionplan-title montserrat in-title-'.$ln['in_id'].'">' . $ln['in_outcome'] . '</b>';
         echo '<div class="actionplan-overview">';
-
-        echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed">'.$completion_rate['completion_percentage'].'% Complete</span>';
-        echo ', <span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number(($priority+1)).'</span> Priority';
+        echo '<span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read">'.$completion_rate['completion_percentage'].'% READ</span>';
         echo '</div>';
         echo '</a>';
 
