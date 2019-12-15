@@ -52,7 +52,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '<div class="itemblog">';
 
         if($can_manage){
-            echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'">'.$in['in_outcome'].'</textarea>';
+            echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'" style="margin-bottom: 5px;">'.$in['in_outcome'].'</textarea>';
         } else {
             echo '<h1>'.$in['in_outcome'].'</h1>';
         }
