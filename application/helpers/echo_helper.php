@@ -1569,7 +1569,7 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
     //Now do measurements:
     $metadata = unserialize($in['in_metadata']);
 
-    if(count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
+    if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
 
         //It does have some children, let's show more details about it:
         $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
