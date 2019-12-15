@@ -99,22 +99,23 @@ if(count($current_sign_in_attempt) == 0){
 
                 echo '</div>';
             }
+            ?>
 
 
+            <div class="row help_me_choose center" style="padding-top:20px;">
+                <a href="javascript:void(0);" onclick="$('.help_me_choose').toggleClass('hidden')"><span class="icon-block"><i class="fas fa-question-circle"></i></span>Help me Choose</a>
+                <a href="javascript:void(0);" onclick="$('.vote-platforms').toggleClass('hidden')" class="vote-platforms"><span class="icon-block"><i class="fas fa-vote-yea"></i></span>Vote for New Platforms</a>
+            </div>
 
+
+            <?php
             echo '<div class="row vote-platforms vote-results hidden">';
             echo '<p style="padding-top: 30px;">Cast your vote for these upcoming platforms:</p>';
             foreach ($this->config->item('en_all_12105') as $en_id => $m) {
                 echo '<div style="padding:5px 0; width: 100%;"><a href="javascript:void(0);" onclick="vote_channel('.$en_id.')"><span class="icon-block"><i class="fas fa-vote-yea"></i></span><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . '</a></div>';
             }
             echo '</div>';
-
             ?>
-
-            <div class="row help_me_choose center" style="padding-top:20px;">
-                <a href="javascript:void(0);" onclick="$('.help_me_choose').toggleClass('hidden')"><span class="icon-block"><i class="fas fa-question-circle"></i></span>Help me Choose</a>
-                <a href="javascript:void(0);" onclick="$('.vote-platforms').toggleClass('hidden')" class="vote-platforms"><span class="icon-block"><i class="fas fa-vote-yea"></i></span>Vote for New Platforms</a>
-            </div>
 
         </div>
 
