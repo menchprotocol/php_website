@@ -140,10 +140,10 @@
 }
 
 .slider.noUi-connect {
-  background-color: #ffdf33;
+  background-color: #f4d52d;
 }
 .slider .noUi-handle {
-  border-color: #ffdf33;
+  border-color: #f4d52d;
 }
 .slider.slider-info .noUi-connect, .slider.slider-info.noUi-connect {
   background-color: #00bcd4;
@@ -401,7 +401,7 @@ h2.title {
 }
 
 .text-primary {
-  color: #ffdf33;
+  color: #f4d52d;
 }
 
 .text-danger {
@@ -635,7 +635,7 @@ h2.title {
 }
 .sidebar[data-color="purple"] .nav li.active a,
 .off-canvas-sidebar[data-color="purple"] .nav li.active a {
-  background-color: #ffdf33;
+  background-color: #f4d52d;
   box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2);
 }
 
@@ -844,7 +844,7 @@ h2.title {
 .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle, .open >
 .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:focus, .open >
 .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:hover {
-  background-color: #ffdf33;
+  background-color: #f4d52d;
   color: #FFFFFF;
 }
 .btn.btn-blog:focus, .btn.btn-blog:active, .btn.btn-blog:hover,
@@ -883,7 +883,7 @@ h2.title {
 .btn.btn-blog.btn-simple,
 .navbar .navbar-nav > li > a.btn.btn-blog.btn-simple {
   background-color: transparent;
-  color: #ffdf33;
+  color: #f4d52d;
   box-shadow: none;
 }
 .btn.btn-blog.btn-simple:hover, .btn.btn-blog.btn-simple:focus, .btn.btn-blog.btn-simple:active,
@@ -891,7 +891,7 @@ h2.title {
 .navbar .navbar-nav > li > a.btn.btn-blog.btn-simple:focus,
 .navbar .navbar-nav > li > a.btn.btn-blog.btn-simple:active {
   background-color: transparent;
-  color: #ffdf33;
+  color: #f4d52d;
 }
 .btn.btn-info,
 .navbar .navbar-nav > li > a.btn.btn-info {
@@ -1410,7 +1410,7 @@ h2.title {
 }
 .btn-group.open > .dropdown-toggle.btn.btn-blog,
 .btn-group-vertical.open > .dropdown-toggle.btn.btn-blog {
-  background-color: #ffdf33;
+  background-color: #f4d52d;
 }
 .btn-group.open > .dropdown-toggle.btn.btn-success,
 .btn-group-vertical.open > .dropdown-toggle.btn.btn-success {
@@ -1520,7 +1520,7 @@ body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
 }
 
 a {
-  color: #ffdf33;
+  color: #f4d52d;
 }
 a:hover, a:focus {
   color: #89229b;
@@ -1752,7 +1752,7 @@ output {
   background-color: #212121;
 }
 .label.label-primary {
-  background-color: #ffdf33;
+  background-color: #f4d52d;
 }
 .label.label-success {
   background-color: #4caf50;
@@ -1773,7 +1773,7 @@ output {
 .form-control,
 .form-group .form-control {
   border: 0;
-  background-image: linear-gradient(#ffdf33, #ffdf33), linear-gradient(#D2D2D2, #D2D2D2);
+  background-image: linear-gradient(#f4d52d, #f4d52d), linear-gradient(#D2D2D2, #D2D2D2);
   background-size: 0 2px, 100% 1px;
   background-repeat: no-repeat;
   background-position: center bottom, center calc(100% - 1px);
@@ -1832,13 +1832,13 @@ output {
 }
 .form-group.is-focused .form-control {
   outline: none;
-  background-image: linear-gradient(#ffdf33, #ffdf33), linear-gradient(#D2D2D2, #D2D2D2);
+  background-image: linear-gradient(#f4d52d, #f4d52d), linear-gradient(#D2D2D2, #D2D2D2);
   background-size: 100% 2px, 100% 1px;
   box-shadow: none;
   transition-duration: 0.3s;
 }
 .form-group.is-focused .form-control .material-input:after {
-  background-color: #ffdf33;
+  background-color: #f4d52d;
 }
 .form-group.is-focused.form-info .form-control {
   background-image: linear-gradient(#00bcd4, #00bcd4), linear-gradient(#D2D2D2, #D2D2D2);
@@ -2457,7 +2457,7 @@ fieldset[disabled] .form-group.is-focused .checkbox label {
   opacity: 0.2;
 }
 .checkbox input[type=checkbox]:checked + .checkbox-material .check {
-  background: #ffdf33;
+  background: #f4d52d;
 }
 .checkbox input[type=checkbox]:checked + .checkbox-material .check:before {
   color: #FFFFFF;
@@ -2555,7 +2555,7 @@ fieldset[disabled] .form-group.is-focused .radio label {
   height: 15px;
   width: 15px;
   border-radius: 100%;
-  background-color: #ffdf33;
+  background-color: #f4d52d;
   transform: scale3d(0, 0, 0);
 }
 .radio label .check:after {
@@ -2589,10 +2589,10 @@ fieldset[disabled] .form-group.is-focused .radio label {
   opacity: 1;
 }
 .radio input[type=radio]:checked ~ .check {
-  background-color: #ffdf33;
+  background-color: #f4d52d;
 }
 .radio input[type=radio]:checked ~ .circle {
-  border-color: #ffdf33;
+  border-color: #f4d52d;
 }
 .radio input[type=radio]:checked ~ .check {
   transform: scale3d(0.65, 0.65, 1);
@@ -2696,7 +2696,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   background-color: rgba(156, 39, 176, 0.7);
 }
 .togglebutton label input[type=checkbox]:checked + .toggle:after {
-  border-color: #ffdf33;
+  border-color: #f4d52d;
 }
 .togglebutton label input[type=checkbox]:checked + .toggle:active:after {
   box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 15px rgba(156, 39, 176, 0.1);
@@ -2773,7 +2773,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   padding: 15px 0;
 }
 .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
-  background-color: #ffdf33;
+  background-color: #f4d52d;
   color: #FFFFFF;
   box-shadow: 0 6px 10px -10px rgba(156, 39, 176, 0.28), 0 4px 10px 0px rgba(0, 0, 0, 0.12), 0 7px 4px -5px rgba(156, 39, 176, 0.2);
 }
@@ -3129,7 +3129,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   color: #fff;
 }
 .navbar.navbar-primary {
-  background-color: #ffdf33;
+  background-color: #f4d52d;
   color: #ffffff;
 }
 .navbar.navbar-primary .navbar-form .form-group input.form-control::-moz-placeholder,
@@ -3149,11 +3149,11 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 .navbar.navbar-primary .dropdown-menu li > a:hover, .navbar.navbar-primary .dropdown-menu li > a:focus {
   color: #FFFFFF;
-  background-color: #ffdf33;
+  background-color: #f4d52d;
   box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2);
 }
 .navbar.navbar-primary .dropdown-menu .active > a {
-  background-color: #ffdf33;
+  background-color: #f4d52d;
   color: #ffffff;
   box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2);
 }
@@ -3519,7 +3519,7 @@ footer .btn {
 .dropdown-menu li a:hover,
 .dropdown-menu li a:focus,
 .dropdown-menu li a:active {
-  background-color: #ffdf33;
+  background-color: #f4d52d;
   color: #FFFFFF;
 }
 .dropdown-menu .divider {
@@ -3530,7 +3530,7 @@ footer .btn {
 .navbar .dropdown-menu li a:active, .navbar.navbar-default .dropdown-menu li a:hover,
 .navbar.navbar-default .dropdown-menu li a:focus,
 .navbar.navbar-default .dropdown-menu li a:active {
-  background-color: #ffdf33;
+  background-color: #f4d52d;
   color: #FFFFFF;
   box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2);
 }
@@ -3815,7 +3815,7 @@ footer .btn {
 }
 
 .nav-tabs {
-  background: #ffdf33;
+  background: #f4d52d;
   border: 0;
   border-radius: 3px;
   padding: 0 15px;
@@ -4050,10 +4050,10 @@ footer .btn {
 }
 
 .ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {
-  stroke: #ffdf33;
+  stroke: #f4d52d;
 }
 .ct-series-d .ct-slice-pie, .ct-series-d .ct-area {
-  fill: #ffdf33;
+  fill: #f4d52d;
 }
 
 .ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {
@@ -4559,7 +4559,7 @@ footer .btn {
 }
 
 .ct-blue {
-  stroke: #ffdf33 !important;
+  stroke: #f4d52d !important;
 }
 
 .ct-azure {
