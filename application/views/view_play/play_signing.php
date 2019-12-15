@@ -104,7 +104,7 @@ if(count($current_sign_in_attempt) == 0){
 
             <div class="row center" style="padding-top:20px;">
                 <a href="javascript:void(0);" onclick="$('.help_me_choose').toggleClass('hidden')" class="help_me_choose"><span class="icon-block"><i class="fas fa-question-circle"></i></span>Help me Choose</a>
-                <a href="javascript:void(0);" onclick="$('.vote-platforms').toggleClass('hidden')" class="vote-platforms"><span class="icon-block"><i class="fas fa-vote-yea"></i></span>Vote for New Platforms</a>
+                <a href="javascript:void(0);" onclick="$('.vote-platforms').toggleClass('hidden')" class="vote-platforms"><span class="icon-block"><i class="fas fa-vote-yea"></i></span>Vote for Upcoming Platforms</a>
             </div>
 
 
