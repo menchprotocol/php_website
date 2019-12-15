@@ -66,7 +66,7 @@ function vote_channel(en_chosen){
         ln_child_entity_id: en_chosen,
     });
 
-    $('.vote-results').html('Vote casted. Choose a reading platform to continue.');
+    $('.vote-results').html('<i class="fas fa-vote-yea"></i> Vote casted. Choose a reading platform to continue.');
 
 }
 
