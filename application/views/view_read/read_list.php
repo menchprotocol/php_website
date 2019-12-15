@@ -23,7 +23,7 @@ if(count($user_intents) > 0){
         echo '<a id="ap_in_'.$ln['in_id'].'" href="/actionplan/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread actionplan_sort">';
 
         echo '<span class="pull-right" style="padding-right:8px; padding-left:10px;">';
-        echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Remove from your reading list" data-placement="left"><i class="fas fa-trash" style="font-size:1.3em;"></i></span>';
+        echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Remove from your reading list" data-placement="left"><i class="fas fa-trash"></i></span>';
         echo '</span>';
 
         $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $ln);
@@ -44,15 +44,15 @@ if(count($user_intents) > 0){
     echo '</div>';
 
     if($has_pending_intentions){
-        echo '<a class="btn btn-read inline-block" href="/actionplan/next">CONTINUE <i class="fas fa-angle-right"></i></a>';
+        echo '<a class="btn btn-read inline-block" style="margin: 20px 0;" href="/actionplan/next">CONTINUE <i class="fas fa-angle-right"></i></a>';
     }
 
     //Give option to add
-    echo ' <a class="btn btn-read inline-block" href="/"><i class="fas fa-plus"></i> NEW READ</a>';
+    echo ' <a class="btn btn-read inline-block" href="/"  style="margin: 20px 0;"><i class="fas fa-plus"></i> NEW READ</a>';
 
 
     //Give option to delete all:
-    echo '<div class="pull-right"><a href="/actionplan/delete/'.$psid.'" style="font-size:0.8em; color:#AAA;" data-toggle="tooltip" title="Remove ALL reads from your reading list" data-placement="left"><i class="fas fa-trash"></i> All</a></div>';
+    echo '<div class="pull-right"  style="margin: 20px 0;"><a href="/actionplan/delete/'.$psid.'" style="font-size:0.8em; color:#AAA;" data-toggle="tooltip" title="Remove ALL reads from your reading list" data-placement="left"><i class="fas fa-trash"></i> All</a></div>';
 
     if($has_multiple_intentions){
         //Give sorting tip:
