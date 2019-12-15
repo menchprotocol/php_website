@@ -57,7 +57,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_1
 
 }
 
-echo '<div style="padding-bottom:40px;" class="inline-block pull-right '.superpower_active(10939).'"><a class="btn btn-blog" href="/blog/'.$in['in_id'].'">EDIT <i class="fas fa-angle-right"></i></a></div>';
+echo '<div style="padding-bottom:40px;" class="inline-block pull-right '.superpower_active(10939).'"><a class="btn btn-blog" href="/blog/'.$in['in_id'].'">EDIT <i class="fas fa-pen-square"></i></a></div>';
 
 
 ?>
