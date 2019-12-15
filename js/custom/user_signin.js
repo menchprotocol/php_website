@@ -55,10 +55,27 @@ function sign_on_messenger(){
 
 }
 
-function select_channel(pathway_chosen){
 
 
-    if(parseInt(pathway_chosen) == 6196 /* Mench on Messenger */ ){
+function vote_channel(en_chosen){
+
+    //Cast Vote:
+    js_ln_create({
+        ln_type_entity_id: 12106,
+        ln_parent_entity_id: 12105,
+        ln_child_entity_id: en_chosen,
+    });
+
+    $('.vote-results').html('Vote casted. Choose a reading platform to continue.');
+
+}
+
+
+
+function select_channel(en_chosen){
+
+
+    if(parseInt(en_chosen) == 6196 /* Mench on Messenger */ ){
 
         //Remove button:
         $('#step1button').html('<div style="font-size: 1.2em; padding-top:10px;"><i class="far fa-yin-yang fa-spin"></i> Loading Messenger...</div>');
@@ -66,7 +83,7 @@ function select_channel(pathway_chosen){
         //Log link:
         sign_on_messenger();
 
-    } else if (parseInt(pathway_chosen) == 12103) {
+    } else if (parseInt(en_chosen) == 12103) {
 
         //Log link:
         if(!logged_website){
