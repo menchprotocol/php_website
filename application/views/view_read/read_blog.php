@@ -6,8 +6,6 @@
         type="text/javascript"></script>
 
 
-
-
 <div class="container">
 <?php
 
@@ -25,7 +23,6 @@ if($step_info || $source_info){
     echo '</div>';
 }
 */
-
 
 
 //MESSAGES:
