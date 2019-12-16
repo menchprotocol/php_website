@@ -39,7 +39,7 @@ if(js_pl_id < 1){
     //the Messenger Extensions JS SDK is done loading:
     window.extAsyncInit = function () {
         //Get context:
-        MessengerExtensions.getContext('<?= config_var(11076) ?>',
+        MessengerExtensions.getContext(js_en_all_6404[11076]['m_desc'],
             function success(thread_context) {
                 // success
                 //user ID was successfully obtained.
