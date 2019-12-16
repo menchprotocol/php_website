@@ -466,7 +466,7 @@ class Blog extends CI_Controller {
         }
 
 
-        //Fetch Action Plan users:
+        //Fetch READING LIST users:
         $actionplan_users = $this->READ_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
             'ln_parent_intent_id' => $ins[0]['in_id'],
@@ -489,7 +489,7 @@ class Blog extends CI_Controller {
 
         foreach($actionplan_users as $apu){
 
-            //Count user Action Plan Progression Completed:
+            //Count user READING LIST Progression Completed:
             $count_progression = $this->READ_model->ln_fetch(array(
                 'ln_creator_entity_id' => $apu['en_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //User Steps Progress

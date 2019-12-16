@@ -25,7 +25,7 @@ if($advance_step['status']){
     foreach($advance_step['current_progression_links'] as $pl){
 
         //Should we trigger on-complete links?
-        if(in_array($pl['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */) && in_array($pl['ln_type_entity_id'], $this->config->item('en_ids_6255') /* Action Plan Steps Progressed */)){
+        if(in_array($pl['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */) && in_array($pl['ln_type_entity_id'], $this->config->item('en_ids_6255') /* 🔴 READING LIST Steps Progressed */)){
             $trigger_on_complete_tips = true;
         }
 

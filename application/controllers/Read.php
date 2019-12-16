@@ -13,41 +13,51 @@ class Read extends CI_Controller
         date_default_timezone_set(config_var(11079));
     }
 
-    function next($in_id = 0){
+
+    function read_add($in_id){
 
         $session_en = superpower_assigned();
 
-        //Check to see if added to Action Plan for logged-in users:
-        if(isset($session_en['en_id'])){
+        //Check to see if added to READING LIST for logged-in users:
+        if(!isset($session_en['en_id'])){
+            return redirect_message('/');
+        }
 
-            $next_in_id = 0;
+        //Add this intention to their READING LIST:
+        if($this->READ_model->read__intention_add($session_en['en_id'], $in_id)){
 
-            if($in_id > 0){
-
-                $ins = $this->BLOG_model->in_fetch(array(
-                    'in_id' => $in_id,
-                ));
-
-                //Find next blog based on player's reading list:
-                $next_in_id = $this->READ_model->read__step_next_find($session_en['en_id'], $ins[0]);
-
-            } else {
-
-                //Find the next intent in the Action Plan to skip:
-                $next_in_id = $this->READ_model->read__step_next_go($session_en['en_id'], false);
-
-            }
-
+            //Find next blog based on player's reading list:
+            $ins = $this->BLOG_model->in_fetch(array(
+                'in_id' => $in_id,
+            ));
+            $next_in_id = $this->READ_model->read__step_next_find($session_en['en_id'], $ins[0]);
             if($next_in_id > 0){
-                return redirect_message('/' . $next_in_id);
+                return redirect_message('/' . $next_in_id, '<div class="alert alert-danger" role="alert">Successfully added blog to your 🔴 READING LIST.</div>');
             } else {
-                return redirect_message('/read');
+                return redirect_message('/read', '<div class="alert alert-danger" role="alert">No next read found in your 🔴 READING LIST.</div>');
             }
 
         } else {
+            //Failed to add to reading list:
+            return redirect_message('/read', '<div class="alert alert-danger" role="alert">Failed to add blog to your 🔴 READING LIST.</div>');
+        }
 
-            return redirect_message('/signin/' . $in_id);
 
+    }
+
+    function read_next(){
+
+        $session_en = superpower_assigned();
+        if(!isset($session_en['en_id'])){
+            return redirect_message('/signin');
+        }
+
+        //Find the next intent in the READING LIST to skip:
+        $next_in_id = $this->READ_model->read__step_next_go($session_en['en_id'], false);
+        if($next_in_id > 0){
+            return redirect_message('/' . $next_in_id);
+        } else {
+            return redirect_message('/read', '<div class="alert alert-danger" role="alert">No next read found in your 🔴 READING LIST.</div>');
         }
     }
 
@@ -72,6 +82,111 @@ class Read extends CI_Controller
 
     }
 
+
+    function read_list($in_id){
+
+        $session_en = superpower_assigned();
+
+        if(!$session_en){
+            //Probably loaded screen from Messenger:
+            $this->load->view('view_play/play_auth_pending');
+            return false;
+        }
+
+
+
+        //This is a special command to find the next intent:
+        if($in_id=='next'){
+
+            //See if we have pending messages:
+            $pending_messages = $this->READ_model->ln_fetch(array(
+                'ln_creator_entity_id' => $session_en['en_id'],
+                'ln_type_entity_id' => 4570, //User Received Email Message
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+            ), array(), 0, 0, array('ln_id' => 'ASC'));
+
+            //Find the next item to navigate them to:
+            $next_in_id = $this->READ_model->read__step_next_go($session_en['en_id'], false);
+            $in_id = ( $next_in_id > 0 ? $next_in_id : $next_in_id );
+
+        } else {
+
+            $pending_messages = array();
+            $in_id = intval($in_id);
+
+        }
+
+
+        //Did we find any pending messages?
+        if(count($pending_messages) > 0){
+
+            foreach($pending_messages as $pending_message){
+                //Update this message status to delivered as the user has read this email:
+                $this->READ_model->ln_update($pending_message['ln_id'], array(
+                    'ln_status_entity_id' => 6176 /* Link Published */,
+                ), $session_en['en_id'], 10683 /* User Read Email */);
+            }
+
+            //Show pending messages:
+            $this->load->view('view_read/read_messages', array(
+                'pending_messages' => $pending_messages,
+            ));
+
+        } else {
+
+            //Fetch user's intentions as we'd need to know their top-level goals:
+            $user_intents = $this->READ_model->ln_fetch(array(
+                'ln_creator_entity_id' => $session_en['en_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
+
+            //Show appropriate UI:
+            if ($in_id < 1) {
+
+                if(count($user_intents) > 0){
+                    //Log 🔴 READING LIST View:
+                    $this->READ_model->ln_create(array(
+                        'ln_type_entity_id' => 4283, //Opened 🔴 READING LIST
+                        'ln_creator_entity_id' => $session_en['en_id'],
+                    ));
+
+                    //List all user intentions:
+                    $this->load->view('view_read/read_list', array(
+                        'session_en' => $session_en,
+                        'user_intents' => $user_intents,
+                        'psid' => $psid,
+                    ));
+                } else {
+                    //Nothing in their reading list:
+                    return redirect_message('/');
+                }
+
+            } else {
+
+                //Fetch/validate selected intent:
+                $ins = $this->BLOG_model->in_fetch(array(
+                    'in_id' => $in_id,
+                ));
+
+                if (count($ins) < 1) {
+                    die('<div class="alert alert-danger" role="alert">Invalid Intent ID.</div>');
+                } elseif (!in_array($ins[0]['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */)) {
+                    die('<div class="alert alert-danger" role="alert">Intent is not made public yet.</div>');
+                }
+
+                //Load 🔴 READING LIST UI with relevant variables:
+                $this->load->view('view_read/actionplan_step', array(
+                    'session_en' => $session_en,
+                    'user_intents' => $user_intents,
+                    'advance_step' => $this->READ_model->read__step_echo($session_en['en_id'], $in_id, false),
+                    'in' => $ins[0], //Currently focused intention:
+                ));
+
+            }
+        }
+    }
 
 
     function read_blog($in_id = 0)
@@ -824,30 +939,6 @@ class Read extends CI_Controller
 
 
 
-    function actionplan($in_id = 0)
-    {
-
-        /*
-         *
-         * Loads user action plans "frame" which would
-         * then use JS/Facebook API to determine User
-         * PSID which then loads the Action Plan via
-         * actionplan_load() function below.
-         *
-         * */
-
-        $this->load->view('header', array(
-            'title' => '🚩 Action Plan',
-        ));
-        $this->load->view('view_read/actionplan_frame', array(
-            'in_id' => $in_id,
-        ));
-        $this->load->view('footer');
-
-    }
-
-
-
 
     function actionplan_file_upload()
     {
@@ -981,12 +1072,12 @@ class Read extends CI_Controller
         if(count($progress_links) > 0){
 
             //Yes they did have some:
-            $message = 'I deleted '.count($progress_links).' link'.echo__s(count($progress_links)).' to empty your Action Plan steps. You can also remove your Intentions using the "<i class="fas fa-comment-times" style="color: #222;"></i>" icon below.';
+            $message = 'I deleted '.count($progress_links).' blogs'.echo__s(count($progress_links)).' to empty your 🔴 READING LIST. You can also remove your Intentions using the "<i class="fas fa-comment-times" style="color: #222;"></i>" icon below.';
 
             //Log link:
             $clear_all_link = $this->READ_model->ln_create(array(
                 'ln_content' => $message,
-                'ln_type_entity_id' => 6415, //Action Plan Reset Steps
+                'ln_type_entity_id' => 6415, //🔴 READING LIST Reset Steps
                 'ln_creator_entity_id' => $en_id,
             ));
 
@@ -995,13 +1086,13 @@ class Read extends CI_Controller
                 $this->READ_model->ln_update($progress_link['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
                     'ln_parent_link_id' => $clear_all_link['ln_id'], //To indicate when it was removed
-                ), $en_id, 6415 /* User Cleared Action Plan */);
+                ), $en_id, 6415 /* User Cleared 🔴 READING LIST */);
             }
 
         } else {
 
             //Nothing to do:
-            $message = 'Your Action Plan was already empty as there was nothing to delete';
+            $message = 'Your 🔴 READING LIST was already empty as there was nothing to delete';
 
         }
 
@@ -1012,150 +1103,22 @@ class Read extends CI_Controller
 
 
 
-    function actionplan_delete($psid = 0)
+    function read_remove_all()
     {
 
         $session_en = superpower_assigned();
-        if (!$psid && !isset($session_en['en_id'])) {
+        if (!isset($session_en['en_id'])) {
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
-        } elseif (!is_dev_environment() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
-            die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
-        } elseif (!isset($session_en['en_id'])) {
-            //Messenger Webview, authenticate PSID:
-            $session_en = $this->PLAY_model->en_messenger_auth($psid);
-            //Make sure we found them:
-            if (!$session_en) {
-                //We could not authenticate the user!
-                die('<div class="alert alert-danger" role="alert">Credentials could not be validated</div>');
-            }
         }
 
         $this->load->view('header', array(
-            'title' => 'Clear Action Plan',
+            'title' => 'Clear 🔴 READING LIST',
         ));
-        $this->load->view('view_read/actionplan_delete', array(
+        $this->load->view('view_read/read_remove_all', array(
             'session_en' => $session_en,
         ));
         $this->load->view('footer');
 
-    }
-
-    function actionplan_load($psid, $in_id)
-    {
-
-        /*
-         *
-         * Action Plan Web UI used for both Messenger
-         * Webview and web-browser login
-         *
-         * */
-
-        //Authenticate user:
-        $session_en = superpower_assigned();
-        if (!is_dev_environment() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
-            die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
-        } elseif ($psid>0 && !isset($session_en['en_id'])) {
-            //Messenger Webview, authenticate PSID:
-            $session_en = $this->PLAY_model->en_messenger_auth($psid);
-            //Make sure we found them:
-            if (!$session_en) {
-                //We could not authenticate the user!
-                die('<div class="alert alert-danger" role="alert">Credentials could not be validated</div>');
-            }
-        }
-
-
-        //This is a special command to find the next intent:
-        if($in_id=='next'){
-
-            //See if we have pending messages:
-            $pending_messages = $this->READ_model->ln_fetch(array(
-                'ln_creator_entity_id' => $session_en['en_id'],
-                'ln_type_entity_id' => 4570, //User Received Email Message
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-            ), array(), 0, 0, array('ln_id' => 'ASC'));
-
-            //Find the next item to navigate them to:
-            $next_in_id = $this->READ_model->read__step_next_go($session_en['en_id'], false);
-            $in_id = ( $next_in_id > 0 ? $next_in_id : $next_in_id );
-
-        } else {
-
-            $pending_messages = array();
-            $in_id = intval($in_id);
-
-        }
-
-
-        //Did we find any pending messages?
-        if(count($pending_messages) > 0){
-
-            foreach($pending_messages as $pending_message){
-                //Update this message status to delivered as the user has read this email:
-                $this->READ_model->ln_update($pending_message['ln_id'], array(
-                    'ln_status_entity_id' => 6176 /* Link Published */,
-                ), $session_en['en_id'], 10683 /* User Read Email */);
-            }
-
-            //Show pending messages:
-            $this->load->view('view_read/actionplan_pending_messages', array(
-                'pending_messages' => $pending_messages,
-            ));
-
-        } else {
-
-            //Fetch user's intentions as we'd need to know their top-level goals:
-            $user_intents = $this->READ_model->ln_fetch(array(
-                'ln_creator_entity_id' => $session_en['en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-            ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
-
-            //Show appropriate UI:
-            if ($in_id < 1) {
-
-                if(count($user_intents) > 0){
-                    //Log Action Plan View:
-                    $this->READ_model->ln_create(array(
-                        'ln_type_entity_id' => 4283, //Opened Action Plan
-                        'ln_creator_entity_id' => $session_en['en_id'],
-                    ));
-
-                    //List all user intentions:
-                    $this->load->view('view_read/read_list', array(
-                        'session_en' => $session_en,
-                        'user_intents' => $user_intents,
-                        'psid' => $psid,
-                    ));
-                } else {
-                    //Nothing in their reading list:
-                    return redirect_message('/');
-                }
-
-            } else {
-
-                //Fetch/validate selected intent:
-                $ins = $this->BLOG_model->in_fetch(array(
-                    'in_id' => $in_id,
-                ));
-
-                if (count($ins) < 1) {
-                    die('<div class="alert alert-danger" role="alert">Invalid Intent ID.</div>');
-                } elseif (!in_array($ins[0]['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */)) {
-                    die('<div class="alert alert-danger" role="alert">Intent is not made public yet.</div>');
-                }
-
-                //Load Action Plan UI with relevant variables:
-                $this->load->view('view_read/actionplan_step', array(
-                    'session_en' => $session_en,
-                    'user_intents' => $user_intents,
-                    'advance_step' => $this->READ_model->read__step_echo($session_en['en_id'], $in_id, false),
-                    'in' => $ins[0], //Currently focused intention:
-                ));
-
-            }
-        }
     }
 
 
@@ -1166,7 +1129,7 @@ class Read extends CI_Controller
          * When users indicate they want to stop
          * a BLOG this function saves the changes
          * necessary and remove the intention from their
-         * Action Plan.
+         * 🔴 READING LIST.
          *
          * */
 
@@ -1183,7 +1146,7 @@ class Read extends CI_Controller
             ));
         }
 
-        //Call function to remove form action plan:
+        //Call function to remove form 🔴 READING LIST:
         $delete_result = $this->READ_model->read__intention_delete($_POST['en_creator_id'], $_POST['in_id'], 6155); //READER REMOVED BOOKMARK
 
         if(!$delete_result['status']){
@@ -1219,7 +1182,7 @@ class Read extends CI_Controller
         //Find the next item to navigate them to:
         $next_in_id = $this->READ_model->read__step_next_go($en_id, false);
         if ($next_in_id > 0) {
-            return redirect_message('/read/' . $next_in_id, $message);
+            return redirect_message('/' . $next_in_id, $message);
         } else {
             return redirect_message('/read', $message);
         }
@@ -1230,7 +1193,7 @@ class Read extends CI_Controller
     {
         /*
          *
-         * Saves the order of Action Plan intents based on
+         * Saves the order of 🔴 READING LIST intents based on
          * user preferences.
          *
          * */
@@ -1248,7 +1211,7 @@ class Read extends CI_Controller
         }
 
 
-        //Update the order of their Action Plan:
+        //Update the order of their 🔴 READING LIST:
         $results = array();
         foreach($_POST['new_actionplan_order'] as $ln_order => $ln_id){
             if(intval($ln_id) > 0 && intval($ln_order) > 0){
@@ -1265,7 +1228,7 @@ class Read extends CI_Controller
         if($top_priority){
             //Communicate top-priority with user:
             $this->READ_model->dispatch_message(
-                '🚩 Action Plan prioritised: Now our focus is to '.$top_priority['in']['in_outcome'].' ('.$top_priority['completion_rate']['completion_percentage'].'% done)',
+                '🔴 READING LIST prioritised with the focus on '.$top_priority['in']['in_outcome'].' ('.$top_priority['completion_rate']['completion_percentage'].'% done)',
                 array('en_id' => $_POST['en_creator_id']),
                 true,
                 array(
@@ -1291,9 +1254,9 @@ class Read extends CI_Controller
     {
 
         if ($w_key != md5($this->config->item('cred_password_salt') . $answer_in_id . $parent_in_id . $en_id)) {
-            return redirect_message('/read/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Authentication Key</div>');
+            return redirect_message('/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Authentication Key</div>');
         } elseif (!in_array($answer_type_en_id, $this->config->item('en_ids_7704'))) {
-            return redirect_message('/read/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid answer type</div>');
+            return redirect_message('/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid answer type</div>');
         }
 
         //Validate Answer Intent:
@@ -1302,7 +1265,7 @@ class Read extends CI_Controller
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ));
         if (count($answer_ins) < 1) {
-            return redirect_message('/read/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Answer</div>');
+            return redirect_message('/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Answer</div>');
         }
 
         //Fetch current progression links, if any:
@@ -1830,7 +1793,7 @@ class Read extends CI_Controller
 
                         //Yes, see if we have a pending requirement submission:
                         foreach($this->READ_model->ln_fetch(array(
-                            'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
+                            'ln_type_entity_id' => 6144, //🔴 READING LIST Submit Requirements
                             'ln_creator_entity_id' => $ln_data['ln_creator_entity_id'], //for this user
                             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -1865,11 +1828,11 @@ class Read extends CI_Controller
 
                             //Accept their answer:
 
-                            //Validate Action Plan step:
+                            //Validate 🔴 READING LIST step:
                             $pending_req_submission = $this->READ_model->ln_fetch(array(
                                 'ln_id' => $first_chioce['ln_id'],
                                 //Also validate other requirements:
-                                'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
+                                'ln_type_entity_id' => 6144, //🔴 READING LIST Submit Requirements
                                 'ln_creator_entity_id' => $en['en_id'], //for this user
                                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public

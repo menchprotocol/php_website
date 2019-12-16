@@ -670,8 +670,8 @@ class BLOG_model extends CI_Model
         $conditional_steps = array(); //To be populated only for Conditional Steps
         $metadata_this = array(
             '__in__metadata_common_steps' => array(), //The tree structure that would be shared with all users regardless of their quick replies (OR Intent Answers)
-            '__in__metadata_expansion_steps' => array(), //Intents that may exist as a link to expand an Action Plan tree by answering OR intents
-            '__in__metadata_expansion_conditional' => array(), //Intents that may exist as a link to expand an Action Plan tree via Conditional Step links
+            '__in__metadata_expansion_steps' => array(), //Intents that may exist as a link to expand an 🔴 READING LIST tree by answering OR intents
+            '__in__metadata_expansion_conditional' => array(), //Intents that may exist as a link to expand an 🔴 READING LIST tree via Conditional Step links
         );
 
         //Fetch children:

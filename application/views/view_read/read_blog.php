@@ -53,7 +53,33 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_1
 
 } else {
 
-    echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/'.$in['in_id'].'/next">'.( isset($session_en['en_id']) ? 'NEXT' : 'START READING' ).' <i class="fas fa-angle-right"></i></a></div>';
+    if(!isset($session_en['en_id'])){
+
+        echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/signin/'.$in['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
+
+    } elseif(count($this->READ_model->ln_fetch(array(
+            'ln_creator_entity_id' => $session_en['en_id'],
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_parent_intent_id' => $in['in_id'],
+        ))) > 0){
+
+        //Find next blog based on player's reading list:
+        $next_in_id = $this->READ_model->read__step_next_find($session_en['en_id'], $in);
+
+        if($next_in_id > 0){
+            echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/'.$next_in_id.'">NEXT <i class="fas fa-angle-right"></i></a></div>';
+        } else {
+            //They seemed to have completed reading this:
+            echo '<div class="alert alert-info"><i class="fas fa-exclamation-triangle"></i> You have completed this read.</div>';
+        }
+
+    } else {
+
+        echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/signin/'.$in['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
+
+    }
+
 
 }
 

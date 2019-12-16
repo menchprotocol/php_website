@@ -10,7 +10,7 @@ $moderation_tools = array(
     '/play/admin_tools/link_words_stats' => 'Link Words Stats',
     '/play/admin_tools/in_replace_outcomes' => 'Intent Search/Replace Outcomes',
     '/play/admin_tools/in_invalid_outcomes' => 'Intent Invalid Outcomes',
-    '/play/admin_tools/actionplan_debugger' => 'My Action Plan Debugger',
+    '/play/admin_tools/actionplan_debugger' => 'My 🔴 READING LIST Debugger',
     '/play/admin_tools/en_icon_search' => 'Entity Icon Search',
     '/play/admin_tools/moderate_intent_notes' => 'Moderate Intent Notes',
     '/play/admin_tools/identical_intent_outcomes' => 'Identical Intent Outcomes',
@@ -434,13 +434,13 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
 
-    //List this users Action Plan intents so they can choose:
-    echo '<div>Choose one of your action plan intentions to debug:</div><br />';
+    //List this users 🔴 READING LIST intents so they can choose:
+    echo '<div>Choose one of your 🔴 READING LIST blogs to debug:</div><br />';
 
     $user_intents = $this->READ_model->ln_fetch(array(
         'ln_creator_entity_id' => $session_en['en_id'],
-        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
     ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 

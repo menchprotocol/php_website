@@ -516,7 +516,7 @@ class READ_model extends CI_Model
 
         /*
          *
-         * Searches within a user Action Plan to find
+         * Searches within a user 🔴 READING LIST to find
          * first incomplete step.
          *
          * */
@@ -551,7 +551,7 @@ class READ_model extends CI_Model
 
             //Is this completed?
             $completed_steps = $this->READ_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',' , $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Steps
+                'ln_type_entity_id IN (' . join(',' , $this->config->item('en_ids_6146')) . ')' => null, //🔴 READING LIST Progression Steps
                 'ln_creator_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id' => $common_step_in_id,
                 'ln_status_entity_id' => 6176, //Link Published
@@ -576,7 +576,7 @@ class READ_model extends CI_Model
 
                 //See which path they got unlocked, if any:
                 $unlocked_conditions = $this->READ_model->ln_fetch(array(
-                    'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
+                    'ln_type_entity_id' => 6140, //🔴 READING LIST Conditional Step Unlocked
                     'ln_creator_entity_id' => $en_id, //Belongs to this User
                     'ln_parent_intent_id' => $common_step_in_id,
                     'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]) . ')' => null,
@@ -606,15 +606,15 @@ class READ_model extends CI_Model
 
         /*
          *
-         * Searches for the next Action Plan step
+         * Searches for the next 🔴 READING LIST step
          * and advance it IF $advance_step = TRUE
          *
          * */
 
         $user_intents = $this->READ_model->ln_fetch(array(
             'ln_creator_entity_id' => $en_id,
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -637,16 +637,16 @@ class READ_model extends CI_Model
 
             }
 
-            //No Action Plans found!
+            //No 🔴 READING LISTs found!
             return 0;
 
         }
 
 
-        //Looop through Action Plan intentions and see what's next:
+        //Looop through 🔴 READING LIST intentions and see what's next:
         foreach($user_intents as $user_intent){
 
-            //Find first incomplete step for this Action Plan intention:
+            //Find first incomplete step for this 🔴 READING LIST intention:
             $next_in_id = $this->READ_model->read__step_next_find($en_id, $user_intent);
 
             if($next_in_id < 0){
@@ -692,7 +692,7 @@ class READ_model extends CI_Model
 
                 //Inform user that they are now complete with all steps:
                 $this->READ_model->dispatch_message(
-                    'You just completed everything in your Action Plan 🙌',
+                    'You completed reading your entire 🔴 READING LIST',
                     array('en_id' => $en_id),
                     true
                 );
@@ -800,7 +800,7 @@ class READ_model extends CI_Model
         //Fetch common base and expansion paths from intent metadata:
         $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
 
-        //Add Action Plan Skipped Step Progression Links:
+        //Add 🔴 READING LIST Skipped Step Progression Links:
         foreach($flat_common_steps as $common_in_id){
 
             //Fetch current progression links, if any:
@@ -813,7 +813,7 @@ class READ_model extends CI_Model
 
             //Add skip link:
             $new_progression_link = $this->READ_model->ln_create(array(
-                'ln_type_entity_id' => 6143, //Action Plan Skipped Step
+                'ln_type_entity_id' => 6143, //🔴 READING LIST Skipped Step
                 'ln_creator_entity_id' => $en_id,
                 'ln_parent_intent_id' => $common_in_id,
                 'ln_status_entity_id' => 6176, //Link Published
@@ -841,7 +841,7 @@ class READ_model extends CI_Model
 
         /*
          *
-         * A function that goes through the Action Plan
+         * A function that goes through the 🔴 READING LIST
          * and finds the top-priority that the user
          * is currently working on.
          *
@@ -850,8 +850,8 @@ class READ_model extends CI_Model
         $top_priority_in = false;
         foreach($this->READ_model->ln_fetch(array(
             'ln_creator_entity_id' => $en_id,
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
 
@@ -881,7 +881,7 @@ class READ_model extends CI_Model
     function read__intention_delete($en_id, $in_id, $stop_method_id, $stop_feedback = null){
 
 
-        if(!in_array($stop_method_id, $this->config->item('en_ids_6150') /* Action Plan Intention Completed */)){
+        if(!in_array($stop_method_id, $this->config->item('en_ids_6150') /* 🔴 READING LIST Intention Completed */)){
             return array(
                 'status' => 0,
                 'message' => 'Invalid stop method',
@@ -899,17 +899,17 @@ class READ_model extends CI_Model
             );
         }
 
-        //Go ahead and remove from Action Plan:
+        //Go ahead and remove from 🔴 READING LIST:
         $user_intents = $this->READ_model->ln_fetch(array(
             'ln_creator_entity_id' => $en_id,
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'ln_parent_intent_id' => $in_id,
         ));
         if(count($user_intents) < 1){
             return array(
                 'status' => 0,
-                'message' => 'Could not locate Action Plan',
+                'message' => 'Could not locate 🔴 READING LIST',
             );
         }
 
@@ -944,157 +944,57 @@ class READ_model extends CI_Model
 
     }
 
-    function read__intention_add($en_id, $in_id, $recommender_in_id = 0, $echo_next_step = true){
+    function read__intention_add($en_id, $in_id, $recommender_in_id = 0){
 
         //Validate Intent ID:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ));
-
         if (count($ins) != 1) {
             return false;
         }
 
 
-        //Make sure not already added to this User's Action Plan:
-        if(count($this->READ_model->ln_fetch(array(
+        //Make sure not already added to this User's 🔴 READING LIST:
+        if(!count($this->READ_model->ln_fetch(array(
                 'ln_creator_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in_id,
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-            ))) > 0){
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            )))){
 
-            //Inform user:
-            $this->READ_model->dispatch_message(
-                'I noticed that this intention has already been added to your Action Plan /link:Open 🚩Action Plan:https://mench.com/read/' . $ins[0]['in_id'],
-                array('en_id' => $en_id),
-                true
-            );
-
-            $this->READ_model->dispatch_message(
-                'Say Next to continue...',
-                array('en_id' => $en_id),
-                true,
-                array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'GONEXT',
-                    )
-                )
-            );
-
-            return false;
-
-        }
-
-        $new_intent_order = 1 + ( $recommender_in_id > 0 ? 0 : $this->READ_model->ln_max_order(array( //Place this intent at the end of all intents the User is drafting...
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-                'ln_creator_entity_id' => $en_id, //Belongs to this User
-            )));
-
-
-        //Add intent to User's Action Plan:
-        $actionplan = $this->READ_model->ln_create(array(
-            'ln_type_entity_id' => ( $recommender_in_id > 0 ? 7495 /* User Intent Recommended */ : 4235 /* User Intent Set */ ),
-            'ln_status_entity_id' => 6175, //Link Drafting
-            'ln_creator_entity_id' => $en_id, //Belongs to this User
-            'ln_parent_intent_id' => $ins[0]['in_id'], //The Intent they are adding
-            'ln_child_intent_id' => $recommender_in_id, //Store the recommended intention
-            'ln_order' => $new_intent_order,
-        ));
-
-
-        //If the top intention, move all other intentions down by one step:
-        if($recommender_in_id > 0){
-
-            foreach($this->READ_model->ln_fetch(array(
-                'ln_id !=' => $actionplan['ln_id'], //Not the newly added intention
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
+            //Not added to their reading list so far, let's go ahead and add it:
+            $in_rank = 1;
+            $actionplan = $this->READ_model->ln_create(array(
+                'ln_type_entity_id' => ( $recommender_in_id > 0 ? 7495 /* User Intent Recommended */ : 4235 /* User Intent Set */ ),
                 'ln_status_entity_id' => 6175, //Link Drafting
                 'ln_creator_entity_id' => $en_id, //Belongs to this User
-            )) as $current_intentions){
+                'ln_parent_intent_id' => $ins[0]['in_id'], //The Intent they are adding
+                'ln_child_intent_id' => $recommender_in_id, //Store the recommended intention
+                'ln_order' => $in_rank, //Always place at the top of their reading list
+            ));
+
+
+            //Move other blogs down in the reading list:
+            foreach($this->READ_model->ln_fetch(array(
+                'ln_id !=' => $actionplan['ln_id'], //Not the newly added intention
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_creator_entity_id' => $en_id, //Belongs to this User
+            ), array(''), 0, 0, array('ln_order' => 'ASC')) as $current_intentions){
+
+                //Increase rank:
+                $in_rank++;
 
                 //Update order:
                 $this->READ_model->ln_update($current_intentions['ln_id'], array(
-                    'ln_order' => ($current_intentions['ln_order'] + 1),
+                    'ln_order' => $in_rank,
                 ), $en_id, 10681 /* Intents Ordered Automatically  */);
-
             }
 
-            if($echo_next_step){
-                $this->READ_model->dispatch_message(
-                    'Ok let\'s ' . $ins[0]['in_outcome'],
-                    array('en_id' => $en_id),
-                    true
-                );
-            }
-
-        } else {
-
-            if($echo_next_step){
-                $this->READ_model->dispatch_message(
-                    'Ok I added this intention to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/read/' . $ins[0]['in_id'],
-                    array('en_id' => $en_id),
-                    true
-                );
-            }
-
-        }
-
-
-
-
-        /*
-         *
-         * Not the immediate priority, so let them
-         * know that we will get to this when we
-         * get to it, unless they want to re-sort
-         * their Action Plan.
-         *
-         * */
-
-        //Fetch top intention that being workined on now:
-        $top_priority = $this->READ_model->read__intention_focus($en_id);
-
-        if($top_priority){
-            if($recommender_in_id > 0 || $top_priority['in']['in_id']==$ins[0]['in_id']){
-
-                if($echo_next_step){
-                    //The newly added intent is the top priority, so let's initiate first message for action plan tree:
-                    $this->READ_model->read__step_echo($en_id, $ins[0]['in_id']);
-                }
-
-            } else {
-
-                //A previously added intent is top-priority, so let them know:
-                $this->READ_model->dispatch_message(
-                    'But we will work on this intention later because based on your Action Plan\'s priorities, your current focus is to '.$top_priority['in']['in_outcome'].' which you have made '.$top_priority['completion_rate']['completion_percentage'].'% progress so far. Alternatively, you can sort your Action Plan\'s priorities. /link:Sort 🚩Action Plan:https://mench.com/read',
-                    array('en_id' => $en_id),
-                    true
-                );
-
-            }
-        } else {
-
-            //It seems the user already have this intention as completed:
-            $this->READ_model->dispatch_message(
-                'You seem to have completed this intention before, so there is nothing else to do now.',
-                array('en_id' => $en_id),
-                true
-            );
-
-
-            if($echo_next_step){
-                //READ RECOMMENDATIONS
-                $this->READ_model->dispatch_message(
-                    echo_random_message('read_recommendation'),
-                    array('en_id' => $en_id),
-                    true
-                );
-            }
+            //Try to auto complete it if possible:
+            $this->READ_model->read__completion_auto_complete($en_id, $ins[0], 4559 /* Read Messages Only */);
 
         }
 
@@ -1137,7 +1037,7 @@ class READ_model extends CI_Model
             //Make sure previous link unlocks have NOT happened before:
             $existing_expansions = $this->READ_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
+                'ln_type_entity_id' => 6140, //🔴 READING LIST Conditional Step Unlocked
                 'ln_creator_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in['in_id'],
                 'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
@@ -1217,10 +1117,10 @@ class READ_model extends CI_Model
                         'ln_content' => $message,
                     ));
 
-                    //Unlock Action Plan:
+                    //Unlock 🔴 READING LIST:
                     $this->READ_model->ln_create(array(
                         'ln_status_entity_id' => 6176, //Link Published
-                        'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
+                        'ln_type_entity_id' => 6140, //🔴 READING LIST Conditional Step Unlocked
                         'ln_creator_entity_id' => $en_id,
                         'ln_parent_intent_id' => $in['in_id'],
                         'ln_child_intent_id' => $locked_link['in_id'],
@@ -1273,7 +1173,7 @@ class READ_model extends CI_Model
 
                 //Does this parent and its grandparents have an intersection with the user intentions?
                 if(!array_intersect($grand_parent_ids, $user_intentions_ids)){
-                    //Parent tree is NOT part of their Action Plan:
+                    //Parent tree is NOT part of their 🔴 READING LIST:
                     continue;
                 }
 
@@ -1305,7 +1205,7 @@ class READ_model extends CI_Model
                         }
                     }
 
-                    //Terminate if we reached the Action Plan intention level:
+                    //Terminate if we reached the 🔴 READING LIST intention level:
                     if(in_array($p_id , $user_intentions_ids)){
                         break;
                     }
@@ -1323,7 +1223,7 @@ class READ_model extends CI_Model
         /*
          *
          * There are certain processes we need to run and messages
-         * we need to compile every time an Action Plan step/intent
+         * we need to compile every time an 🔴 READING LIST step/intent
          * is marked as complete. This function handles that workflow
          * with the following inputs:
          *
@@ -1372,7 +1272,7 @@ class READ_model extends CI_Model
          * */
 
         foreach($this->READ_model->ln_fetch(array(
-            'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //Action Plan Step Locked
+            'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //🔴 READING LIST Step Locked
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
 
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -1486,7 +1386,7 @@ class READ_model extends CI_Model
 
         /*
          *
-         * Advance the user action plan by 1 step
+         * Advance the user 🔴 READING LIST by 1 step
          *
          *
          * - $en_id:            The recipient who will receive the messages via
@@ -1558,7 +1458,7 @@ class READ_model extends CI_Model
          * https://mench.com/play/6146
          *
          * We'll start by assuming the most basic form of
-         * completion (Action Plan Auto Complete) and
+         * completion (🔴 READING LIST Auto Complete) and
          * build-up to more advance forms of completion
          * as we gather more data through-out this function.
          *
@@ -1566,7 +1466,7 @@ class READ_model extends CI_Model
          * 2-step completion method where users are
          * required to submit their response in order
          * to move to the next step as defined by
-         * Action Plan 2-Step Link Types:
+         * 🔴 READING LIST 2-Step Link Types:
          *
          * https://mench.com/play/6244
          *
@@ -1675,7 +1575,7 @@ class READ_model extends CI_Model
         //If TRUE, we will auto move on to the next item:
         $nothing_more_to_do = ( !$is_two_step && !$has_children && in_array($progression_type_entity_id, $this->config->item('en_ids_6274')) );
 
-        //Assume FALSE unless $nothing_more_to_do=TRUE and we do not have any next steps which means user has finished their Action Plan:
+        //Assume FALSE unless $nothing_more_to_do=TRUE and we do not have any next steps which means user has finished their 🔴 READING LIST:
         $recommend_recommend = false;
 
 
@@ -1739,7 +1639,7 @@ class READ_model extends CI_Model
         /*
          *
          * Check Conditional Steps in HTML
-         * Action Plan Webview only
+         * 🔴 READING LIST Webview only
          *
          * */
         if(!$push_message){
@@ -1788,7 +1688,7 @@ class READ_model extends CI_Model
 
 
             if($push_message){
-                $next_step_message .= 'Here are the intentions I recommend adding to your Action Plan to move forward:';
+                $next_step_message .= 'Here are the intentions I recommend adding to your 🔴 READING LIST to move forward:';
             } else {
                 $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
             }
@@ -1945,7 +1845,7 @@ class READ_model extends CI_Model
                     } elseif($was_selected){
 
                         //This was selected:
-                        $next_step_message .= '<a href="/read/'.$child_in['in_id'] . '" class="list-group-item itemread lightgreybg">';
+                        $next_step_message .= '<a href="/'.$child_in['in_id'] . '" class="list-group-item itemread lightgreybg">';
 
                     } else {
 
@@ -2146,7 +2046,7 @@ class READ_model extends CI_Model
                 }
             } else {
 
-                //This will happen for all intents viewed via HTML if all Action Plan steps are completed
+                //This will happen for all intents viewed via HTML if all 🔴 READING LIST steps are completed
                 //No next step found! Recommend if messenger
                 $recommend_recommend = $push_message;
 
@@ -2250,13 +2150,13 @@ class READ_model extends CI_Model
     function read__completion_marks($en_id, $in, $top_level = true)
     {
 
-        //Fetch/validate Action Plan Common Steps:
+        //Fetch/validate 🔴 READING LIST Common Steps:
         $in_metadata = unserialize($in['in_metadata']);
         if(!isset($in_metadata['in__metadata_common_steps'])){
 
             //Should not happen, log error:
             $this->READ_model->ln_create(array(
-                'ln_content' => 'completion_marks() Detected user Action Plan without in__metadata_common_steps value!',
+                'ln_content' => 'completion_marks() Detected user 🔴 READING LIST without in__metadata_common_steps value!',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_creator_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in['in_id'],
@@ -2384,7 +2284,7 @@ class READ_model extends CI_Model
     function read__completion_progress($en_id, $in, $top_level = true)
     {
 
-        //Fetch/validate Action Plan Common Steps:
+        //Fetch/validate 🔴 READING LIST Common Steps:
         $in_metadata = unserialize($in['in_metadata']);
         if(!isset($in_metadata['in__metadata_common_steps'])){
             //Since it's not there yet we assume the intent it self only!
@@ -2448,7 +2348,7 @@ class READ_model extends CI_Model
 
             //Now let's check if user has unlocked any Miletones:
             foreach($this->READ_model->ln_fetch(array(
-                'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
+                'ln_type_entity_id' => 6140, //🔴 READING LIST Conditional Step Unlocked
                 'ln_creator_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_conditional'])) . ')' => null,
@@ -2473,7 +2373,7 @@ class READ_model extends CI_Model
 
             /*
              *
-             * Completing an Action Plan depends on two factors:
+             * Completing an 🔴 READING LIST depends on two factors:
              *
              * 1) number of steps (some may have 0 time estimate)
              * 2) estimated seconds (usual ly accurate)
@@ -2500,12 +2400,12 @@ class READ_model extends CI_Model
 
 
     function read__intention_ids($en_id){
-        //Simply returns all the intention IDs for a user's Action Plan:
+        //Simply returns all the intention IDs for a user's 🔴 READING LIST:
         $user_intentions_ids = array();
         foreach($this->READ_model->ln_fetch(array(
             'ln_creator_entity_id' => $en_id,
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_parent'), 0) as $user_in){
             array_push($user_intentions_ids, intval($user_in['in_id']));
@@ -3778,8 +3678,8 @@ class READ_model extends CI_Model
                 $removed_intents = 0;
                 foreach ($this->READ_model->ln_fetch(array(
                     'ln_creator_entity_id' => $en['en_id'],
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 )) as $ln) {
                     $removed_intents++;
                     $this->READ_model->ln_update($ln['ln_id'], array(
@@ -3791,18 +3691,18 @@ class READ_model extends CI_Model
 
                 //Let them know about these changes:
                 $this->READ_model->dispatch_message(
-                    'Confirmed, I removed ' . $removed_intents . ' intention' . echo__s($removed_intents) . ' from your Action Plan. This is the final message you will receive from me unless you message me again. I hope you take good care of yourself 😘',
+                    'Confirmed, I removed ' . $removed_intents . ' blog' . echo__s($removed_intents) . ' from your 🔴 READING LIST. This is the final message you will receive from me unless you message me again. I hope you take good care of yourself 😘',
                     $en,
                     true
                 );
 
             } elseif (is_numeric($action_unsubscribe)) {
 
-                //User wants to Remove a specific Action Plan, validate it:
+                //User wants to Remove a specific 🔴 READING LIST, validate it:
                 $user_intents = $this->READ_model->ln_fetch(array(
                     'ln_creator_entity_id' => $en['en_id'],
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'ln_parent_intent_id' => $action_unsubscribe,
                 ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -3810,20 +3710,20 @@ class READ_model extends CI_Model
                 if (count($user_intents) < 1) {
                     return array(
                         'status' => 0,
-                        'message' => 'UNSUBSCRIBE_ Failed to skip a BLOG from the master Action Plan',
+                        'message' => 'UNSUBSCRIBE_ Failed to skip a BLOG from the master 🔴 READING LIST',
                     );
                 }
 
-                //Update status for this single Action Plan:
+                //Update status for this single 🔴 READING LIST:
                 $this->READ_model->ln_update($user_intents[0]['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
                 ), $en['en_id'], 6155 /* User Intent Cancelled */);
 
-                //Re-sort remaining Action Plan intentions:
+                //Re-sort remaining 🔴 READING LIST intentions:
                 foreach($this->READ_model->ln_fetch(array(
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
                     'ln_creator_entity_id' => $en['en_id'], //Belongs to this User
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
                     $this->READ_model->ln_update($ln['ln_id'], array(
                         'ln_order' => ($count+1),
@@ -3832,7 +3732,7 @@ class READ_model extends CI_Model
 
                 //Show success message to user:
                 $this->READ_model->dispatch_message(
-                    'I have successfully removed the intention to ' . $user_intents[0]['in_outcome'] . ' from your Action Plan.',
+                    'I have successfully removed [' . $user_intents[0]['in_outcome'] . '] from your 🔴 READING LIST.',
                     $en,
                     true,
                     array(
@@ -3874,7 +3774,7 @@ class READ_model extends CI_Model
 
                 //Confirm if they are interested to subscribe to this intention:
                 $this->READ_model->dispatch_message(
-                    '❌ Error: I cannot add this intention to your Action Plan because its not a starting-point intent.',
+                    '❌ Error: I cannot add this blog to your 🔴 READING LIST because its not yet published.',
                     $en,
                     true,
                     array(
@@ -3929,7 +3829,7 @@ class READ_model extends CI_Model
             //User has confirmed their desire to subscribe to a BLOG:
             $in_id = intval(one_two_explode('SUBSCRIBE-INITIATE_', '', $quick_reply_payload));
 
-            //Initiating a BLOG Action Plan:
+            //Initiating a BLOG 🔴 READING LIST:
             $ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => $in_id,
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -3942,17 +3842,17 @@ class READ_model extends CI_Model
                 );
             }
 
-            //Make sure intention has not already been added to user Action Plan:
+            //Make sure intention has not already been added to user 🔴 READING LIST:
             if (count($this->READ_model->ln_fetch(array(
                     'ln_creator_entity_id' => $en['en_id'],
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'ln_parent_intent_id' => $ins[0]['in_id'],
                 ))) > 0) {
 
                 //Let User know that they have already subscribed to this intention:
                 $this->READ_model->dispatch_message(
-                    'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. /link:See in 🚩Action Plan:https://mench.com/read/' . $ins[0]['in_id'],
+                    'The blog [' . $ins[0]['in_outcome'] . '] has already been added to your 🔴 READING LIST. /link:🔴 READING LIST:https://mench.com/' . $ins[0]['in_id'],
                     $en,
                     true
                 );
@@ -3973,7 +3873,7 @@ class READ_model extends CI_Model
 
             } else {
 
-                //Do final confirmation by giving User more context on this intention before adding to their Action Plan...
+                //Do final confirmation by giving User more context on this intention before adding to their 🔴 READING LIST...
 
                 //See if we have an overview:
                 $overview_message = '';
@@ -3984,7 +3884,7 @@ class READ_model extends CI_Model
                     $overview_message .= 'Here is an overview:' . "\n\n" . $step_info . $source_info;
                 }
 
-                $overview_message .= 'Should I add this intention to your Action Plan?';
+                $overview_message .= 'Should I add this blog to your 🔴 READING LIST?';
 
                 //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this intention:
                 $this->READ_model->dispatch_message(
@@ -4005,10 +3905,10 @@ class READ_model extends CI_Model
                     )
                 );
 
-                //Log as Action Plan Considered:
+                //Log as 🔴 READING LIST Considered:
                 $this->READ_model->ln_create(array(
                     'ln_creator_entity_id' => $en['en_id'],
-                    'ln_type_entity_id' => 6149, //Action Plan Intention Considered
+                    'ln_type_entity_id' => 6149, //🔴 READING LIST Intention Considered
                     'ln_parent_intent_id' => $ins[0]['in_id'],
                     'ln_content' => $overview_message, //A copy of their message
                 ));
@@ -4026,15 +3926,15 @@ class READ_model extends CI_Model
             $recommender_in_id = $in_ids[0];
             $recommended_in_id = $in_ids[1];
 
-            //Add this item to the tio of the Action Plan:
+            //Add this item to the tio of the 🔴 READING LIST:
             $this->READ_model->read__intention_add($en['en_id'], $recommended_in_id, $recommender_in_id);
 
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-CONFIRM_') == 1) {
 
-            //User has requested to add this intention to their Action Plan:
+            //User has requested to add this intention to their 🔴 READING LIST:
             $in_id = intval(one_two_explode('SUBSCRIBE-CONFIRM_', '', $quick_reply_payload));
 
-            //Add to Action Plan:
+            //Add to 🔴 READING LIST:
             $this->READ_model->read__intention_add($en['en_id'], $in_id);
 
         } elseif (substr_count($quick_reply_payload, 'SKIP-ACTIONPLAN_') == 1) {
@@ -4070,7 +3970,7 @@ class READ_model extends CI_Model
 
                 } elseif ($skip_action == 'skip-confirm') {
 
-                    //Actually skip and see if we've finished this Action Plan:
+                    //Actually skip and see if we've finished this 🔴 READING LIST:
                     $this->READ_model->read__step_skip_apply($en['en_id'], $in_id);
 
                     //Confirm the skip:
@@ -4148,27 +4048,17 @@ class READ_model extends CI_Model
                 //All good, let's save the answer:
                 $published_answer = false;
                 foreach($pending_answer_links as $ln){
-                    if(in_array($ln['ln_status_entity_id'], $this->config->item('en_ids_7364'))){
+                    //We just found a pending answer, so mark it as published while saving the answer:
+                    $this->READ_model->ln_update($ln['ln_id'], array(
+                        'ln_child_intent_id' => $answer_in_id, //Save answer
+                        'ln_status_entity_id' => 6176, //Link Published
+                        'ln_timestamp' => date("Y-m-d H:i:s"),
+                    ));
 
-                        //We just found a pending answer, so mark it as published while saving the answer:
-                        $this->READ_model->ln_update($ln['ln_id'], array(
-                            'ln_child_intent_id' => $answer_in_id, //Save answer
-                            'ln_status_entity_id' => 6176, //Link Published
-                            'ln_timestamp' => date("Y-m-d H:i:s"),
-                        ));
+                    //Update status:
+                    $published_answer = true;
 
-                        //Update status:
-                        $published_answer = true;
-
-                    } elseif($ln['ln_child_intent_id'] > 0 && $ln['ln_child_intent_id'] != $answer_in_id){
-
-                        //This is a published & different answer!
-                        return array(
-                            'status' => 0,
-                            'message' => 'ANSWERQUESTION_ updated a previously answered question',
-                        );
-
-                    }
+                    break;
                 }
 
                 //Did we publish anything?
@@ -4252,17 +4142,17 @@ class READ_model extends CI_Model
 
             $user_intents = $this->READ_model->ln_fetch(array(
                 'ln_creator_entity_id' => $en['en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
             if(count($user_intents)==0){
 
                 //Set message:
-                $message = 'I can\'t show you any stats because you don\'t have any intentions added to your Action Plan yet.';
+                $message = 'I can\'t show you any stats because you don\'t have any blogs added to your 🔴 READING LIST yet.';
 
-                //No Action Plan intentions!
+                //No 🔴 READING LIST intentions!
                 $this->READ_model->dispatch_message(
                     $message,
                     $en,
@@ -4280,9 +4170,9 @@ class READ_model extends CI_Model
             } else {
 
                 //Start composing a message for their stats:
-                $message = '🚩 Action Plan stats:';
+                $message = '🔴 READING LIST STATS:';
 
-                //Show them a list of their Action Plan and completion stats:
+                //Show them a list of their 🔴 READING LIST and completion stats:
                 foreach($user_intents as $user_intent){
                     //Completion Percentage so far:
                     $completion_rate = $this->READ_model->read__completion_progress($en['en_id'], $user_intent);
@@ -4314,7 +4204,7 @@ class READ_model extends CI_Model
 
         } elseif (in_array($fb_received_message, array('next', 'continue', 'go'))) {
 
-            //Give them the next step of their Action Plan:
+            //Give them the next step of their 🔴 READING LIST:
             $next_in_id = $this->READ_model->read__step_next_go($en['en_id'], true, true);
 
             //Log command trigger:
@@ -4326,7 +4216,7 @@ class READ_model extends CI_Model
 
         } elseif ($fb_received_message == 'skip') {
 
-            //Find the next intent in the Action Plan to skip:
+            //Find the next intent in the 🔴 READING LIST to skip:
             $next_in_id = $this->READ_model->read__step_next_go($en['en_id'], false);
 
             if($next_in_id > 0){
@@ -4337,7 +4227,7 @@ class READ_model extends CI_Model
             } else {
 
                 $this->READ_model->dispatch_message(
-                    'I could not find any Action Plan steps to skip.',
+                    'I could not find any blogs in your 🔴 READING LIST to skip.',
                     $en,
                     true,
                     array(
@@ -4360,19 +4250,19 @@ class READ_model extends CI_Model
 
         } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop', 'quit', 'resign', 'exit', 'cancel', 'abort'))) {
 
-            //List their Action Plan intentions and let user choose which one to unsubscribe:
+            //List their 🔴 READING LIST intentions and let user choose which one to unsubscribe:
             $user_intents = $this->READ_model->ln_fetch(array(
                 'ln_creator_entity_id' => $en['en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ), array('in_parent'), 10 /* Max quick replies allowed */, 0, array('ln_order' => 'ASC'));
 
 
-            //Do they have anything in their Action Plan?
+            //Do they have anything in their 🔴 READING LIST?
             if (count($user_intents) > 0) {
 
-                //Give them options to remove specific Action Plans:
+                //Give them options to remove specific 🔴 READING LISTs:
                 $quick_replies = array();
                 $message = 'Choose one of the following options:';
                 $increment = 1;
@@ -4471,7 +4361,7 @@ class READ_model extends CI_Model
 
 
 
-            //Show options for the User to add to their Action Plan:
+            //Show options for the User to add to their 🔴 READING LIST:
             $new_intent_count = 0;
             $quick_replies = array();
 
@@ -4486,11 +4376,11 @@ class READ_model extends CI_Model
                     continue;
                 }
 
-                //Make sure not already in Action Plan:
+                //Make sure not already in 🔴 READING LIST:
                 if(count($this->READ_model->ln_fetch(array(
                         'ln_creator_entity_id' => $en['en_id'],
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                         'ln_parent_intent_id' => $alg['alg_obj_id'],
                     ))) > 0){
                     continue;
@@ -4663,14 +4553,14 @@ class READ_model extends CI_Model
                 'ln_type_entity_id' => 4287, //Log Unrecognizable Message Received
             ));
 
-            //Call to Action: Does this user have any Action Plans?
+            //Call to Action: Does this user have any 🔴 READING LISTs?
             $next_in_id = $this->READ_model->read__step_next_go($en['en_id'], false);
 
             if($next_in_id > 0){
 
                 //Inform User of Mench's one-way communication limitation & that Mench did not understand their message:
                 $this->READ_model->dispatch_message(
-                    'You can continue with your Action Plan by saying "Next"',
+                    'You can continue with your 🔴 READING LIST by saying "Next"',
                     $en,
                     true,
                     array(

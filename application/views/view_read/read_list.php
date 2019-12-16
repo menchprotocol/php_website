@@ -13,12 +13,12 @@ echo '<h1><span class="icon-block-xlg"><i class="far fa-bookmark"></i></span>MY 
 $has_pending_intentions = false;
 $has_multiple_intentions = ( count($user_intents) >= 2 );
 
-//User has multiple Action Plans, so list all Action Plans to enable User to choose:
+//User has multiple 🔴 READING LISTs, so list all 🔴 READING LISTs to enable User to choose:
 echo '<div id="actionplan_steps" class="list-group actionplan-list '.( $has_multiple_intentions ? 'actionplan-sort' : '').'" style="margin-top:15px;">';
 foreach ($user_intents as $priority => $ln) {
 
     //Display row:
-    echo '<a id="ap_in_'.$ln['in_id'].'" href="/read/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread actionplan_sort">';
+    echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread actionplan_sort">';
 
     echo '<span class="pull-right" style="padding-right:8px; padding-left:10px;">';
     echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="fas fa-trash"></i></span>';
@@ -50,7 +50,7 @@ echo ' <a class="btn btn-read inline-block" href="/"  style="margin: 20px 0;"><i
 
 
 //Give option to delete all:
-echo '<div class="pull-right"  style="margin: 20px 0;"><a href="/actionplan/delete/'.$psid.'" style="font-size:0.8em; color:#AAA;" data-toggle="tooltip" title="Remove ALL reads from your reading list" data-placement="left"><i class="fas fa-trash"></i>ALL</a></div>';
+echo '<div class="pull-right"  style="margin: 20px 0;"><a href="/read/read_remove_all" style="font-size:0.8em; color:#AAA;" data-toggle="tooltip" title="Remove ALL reads from your reading list" data-placement="left"><i class="fas fa-trash"></i>ALL</a></div>';
 
 if($has_multiple_intentions){
     //Give sorting tip:

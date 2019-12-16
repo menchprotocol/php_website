@@ -110,7 +110,7 @@ if(count($current_sign_in_attempt) == 0){
 
             <?php
             echo '<div class="vote-platforms vote-results hidden">';
-            echo '<p style="padding-top: 30px;">Cast your vote for these upcoming platforms:</p>';
+            echo '<p style="padding-top: 30px;">Cast your vote for one of these upcoming platforms:</p>';
             foreach ($this->config->item('en_all_12105') as $en_id => $m) {
                 echo '<div style="padding:5px 0; width: 100%;"><a href="javascript:void(0);" onclick="vote_channel('.$en_id.')"><span class="icon-block"><i class="fas fa-vote-yea"></i></span><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . '</a></div>';
             }

@@ -838,7 +838,6 @@ fragment PostListingItemSidebar_post on Post {
             }
         }
 
-
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         $this->load->view('header', array(
             'hide_header' => 1,
@@ -2374,7 +2373,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-        //All good, create new entity:
+        //All good, create new player:
         $user_en = $this->PLAY_model->en_verify_create(trim($_POST['input_name']), 0, 6181, random_user_icon());
         if(!$user_en['status']){
             //We had an error, return it:
@@ -2428,11 +2427,14 @@ fragment PostListingItemSidebar_post on Post {
                 'in_id' => $_POST['referrer_in_id'],
             ));
 
-            //Add this intention to their Action Plan:
-            $this->READ_model->read__intention_add($user_en['en']['en_id'], $_POST['referrer_in_id'], 0, false);
+            //Add this intention to their READING LIST:
+            $this->READ_model->read__intention_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
+
+            $next_in_id = $this->READ_model->read__step_next_find($user_en['en']['en_id'], $referrer_ins[0]);
 
         } else {
             $referrer_ins = array();
+            $next_in_id = 0;
         }
 
 
@@ -2474,7 +2476,7 @@ fragment PostListingItemSidebar_post on Post {
         if (strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
         } elseif(intval($_POST['referrer_in_id']) > 0) {
-            $login_url = '/read/'.$_POST['referrer_in_id'];
+            $login_url = '/'.( $next_in_id > 0 ? $next_in_id : $_POST['referrer_in_id'] );
         } else {
             //Go to home page and let them continue from there:
             $login_url = '/';
@@ -2770,48 +2772,16 @@ fragment PostListingItemSidebar_post on Post {
 
     function myaccount()
     {
-        /*
-         *
-         * Loads user my account "frame" which would
-         * then use JS/Facebook API to determine User
-         * PSID which then loads their Account via
-         * myaccount_load() function below.
-         *
-         * */
-
-        $this->load->view('header', array(
-            'title' => '👤 My Account',
-        ));
-        $this->load->view('view_play/myaccount_frame');
-        $this->load->view('footer');
-    }
-
-
-    function myaccount_load($psid)
-    {
-
-        /*
-         *
-         * My Account Web UI used for both Messenger
-         * Webview and web-browser login
-         *
-         * */
 
         //Authenticate user:
         $session_en = superpower_assigned();
-        if (!$psid && !isset($session_en['en_id'])) {
-            die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
-        } elseif (!is_dev_environment() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
-            die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
-        } elseif (!isset($session_en['en_id'])) {
-            //Messenger Webview, authenticate PSID:
-            $session_en = $this->PLAY_model->en_messenger_auth($psid);
-            //Make sure we found them:
-            if (!$session_en) {
-                //We could not authenticate the user!
-                die('<div class="alert alert-danger" role="alert">Credentials could not be validated</div>');
-            }
+
+        if(!$session_en){
+            //Probably loaded screen from Messenger:
+            $this->load->view('view_play/play_auth_pending');
+            return false;
         }
+
 
         //Log My Account View:
         $this->READ_model->ln_create(array(
@@ -2823,7 +2793,6 @@ fragment PostListingItemSidebar_post on Post {
         $this->load->view('view_play/myaccount_manage', array(
             'session_en' => $session_en,
         ));
-
     }
 
 

@@ -1,7 +1,7 @@
 /*
 *
 * Functions related to adding/removing
-* intents via the Action Plan.
+* intents via the 🔴 READING LIST.
 *
 * */
 

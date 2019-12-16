@@ -11,7 +11,7 @@ function actionplan_sort_save() {
         }
     });
 
-    //Update Action Plan order:
+    //Update READING LIST order:
     if(sort_rank > 0){
         $.post("/read/actionplan_sort_save", {en_creator_id: en_creator_id, new_actionplan_order: new_actionplan_order}, function (data) {
             //Update UI to confirm with user:
@@ -23,7 +23,7 @@ function actionplan_sort_save() {
     }
 }
 
-//Watch for Action Plan removal click:
+//Watch for READING LIST removal click:
 $('.actionplan_remove', window.parent.document).on('click', function(e) {
 
     var in_id = $(this, window.parent.document).attr('in-id');

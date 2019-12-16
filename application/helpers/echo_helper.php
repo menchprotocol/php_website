@@ -671,7 +671,7 @@ function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $com
     $completion_rate = $CI->READ_model->read__completion_progress($en_id, $in);
 
     //Open list:
-    $ui = '<a href="/read/'.$in['in_id']. '" class="list-group-item itemread">';
+    $ui = '<a href="/'.$in['in_id']. '" class="list-group-item itemread">';
 
     $ui .= echo_in_outcome($in['in_outcome'], false, $common_prefix);
 
@@ -690,7 +690,7 @@ function echo_actionplan_step_parent($in)
 
     $CI =& get_instance();
 
-    $ui = '<a href="/read/' . $in['in_id'] . '" class="list-group-item itemread">';
+    $ui = '<a href="/' . $in['in_id'] . '" class="list-group-item itemread">';
 
     $ui .= '<span class="pull-left">';
     $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
@@ -711,7 +711,7 @@ function echo_random_message($message_key, $return_all = false){
      * To make Mench personal assistant feel more natural,
      * this function sends varying messages to communicate
      * specific things about Mench or about the user's
-     * progress towards their Action Plan.
+     * progress towards their 🔴 READING LIST.
      *
      * */
 
@@ -907,7 +907,7 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     if($enrolled_users_count[0]['totals'] < $min_user_show){
-        //No one has added this intention to their Action Plan yet:
+        //No one has added this intention to their 🔴 READING LIST yet:
         return false;
     }
 
@@ -1081,7 +1081,7 @@ function echo_tree_experts($in, $push_message = false, $autoexpand = false)
 
 
     $pitch_title = '<span class="icon-block"><i class="fas fa-shield-check"></i></span>&nbsp;';
-    $pitch_body = 'Action Plan references ';
+    $pitch_body = 'References ';
     if($source_count > 0){
         $pitch_title .= $source_count . ' source' . echo__s($source_count);
         $pitch_body .= trim($source_info);
@@ -1151,7 +1151,7 @@ function echo_tree_steps($in, $push_message = 0, $autoexpand = false)
 
     if ($push_message) {
 
-        return '🚩 ' . $pitch_body. "\n\n";
+        return '🔴 ' . $pitch_body. "\n\n";
 
     } else {
 
