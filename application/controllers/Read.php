@@ -65,7 +65,7 @@ class Read extends CI_Controller
         }
 
         $this->load->view('header', array(
-            'title' => 'BLOGGING. REIMAGINED.',
+            'title' => 'PLAY. READ. BLOG.',
         ));
         $this->load->view('view_read/read_overview');
         $this->load->view('footer');

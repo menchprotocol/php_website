@@ -803,7 +803,7 @@ function echo_random_message($message_key, $return_all = false){
             'Say next to continue',
         ),
         'read_recommendation' => array(
-            'What would you like to read next? Start a sentence with "Search for ..." or:  /link:BROWSE READS:https://mench.com/',
+            'What would you like to read next? Start a sentence with "Search for ..." or:  /link:BROWSE READS:https://mench.com/read',
         ),
 
     );
