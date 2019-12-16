@@ -3,7 +3,7 @@ function actionplan_sort_save() {
 
     var sort_rank = 0;
     var new_actionplan_order = [];
-    $("#actionplan_steps .actionplan_sort").each(function () {
+    $("#actionplan_steps .actionplan_sort", window.parent.document).each(function () {
         var link_id = parseInt($(this).attr('sort-link-id'));
         if(link_id > 0){
             sort_rank++;
@@ -40,12 +40,12 @@ $('.actionplan_remove').on('click', function(e) {
             } else {
 
                 //REMOVE BOOKMARK from UI:
-                $('#ap_in_'+in_id).fadeOut();
+                $('#ap_in_'+in_id, window.parent.document).fadeOut();
 
                 setTimeout(function () {
 
                     //Remove from body:
-                    $('#ap_in_'+in_id).remove();
+                    $('#ap_in_'+in_id, window.parent.document).remove();
 
                     //Re-sort:
                     setTimeout(function () {
