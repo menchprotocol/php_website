@@ -1527,12 +1527,10 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
     $CI =& get_instance();
 
 
-
     $ui = '<a href="'.$url_prefix.'/'.$in['in_id'] . '" class="list-group-item '.( $url_prefix ? 'itemblog' : 'itemread' ).'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_outcome($in['in_outcome'], false).'</b>';
-
 
     if($parent_in_id > 0){
 
