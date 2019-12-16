@@ -2048,6 +2048,39 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
+    function singin_check_psid($psid){
+
+        if (!isset($_GET['sr']) || !parse_signed_request($_GET['sr'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Failed to authenticate your origin',
+            ));
+        }
+
+        //Messenger Webview, authenticate PSID:
+        $session_en = $this->PLAY_model->en_messenger_auth($psid);
+
+        //Make sure we found them:
+        if ($session_en) {
+
+            //Set message before refreshing:
+            $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">Signed-in from Messenger</div>');
+
+            return echo_json(array(
+                'status' => 1,
+                'message' => 'Missing user ID',
+            ));
+
+        } else {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Failed to authenticate PSID',
+            ));
+
+        }
+
+    }
 
 
 
@@ -3369,7 +3402,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-    function update_my_coins(){
+    function update_coin_counter(){
 
         $session_en = superpower_assigned();
         if (!$session_en) {

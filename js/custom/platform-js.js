@@ -5,6 +5,63 @@ var searchbar_loaded = false;
 var fadeout_speed = 21;
 var updating_basic_stats = false;
 
+window['_fs_debug'] = false;
+window['_fs_host'] = 'fullstory.com';
+window['_fs_script'] = 'edge.fullstory.com/s/fs.js';
+window['_fs_org'] = 'QMKCQ';
+window['_fs_namespace'] = 'FS';
+(function(m,n,e,t,l,o,g,y){
+    if (e in m) {if(m.console && m.console.log) { m.console.log('FullStory namespace conflict. Please set window["_fs_namespace"].');} return;}
+    g=m[e]=function(a,b,s){g.q?g.q.push([a,b,s]):g._api(a,b,s);};g.q=[];
+    o=n.createElement(t);o.async=1;o.crossOrigin='anonymous';o.src='https://'+_fs_script;
+    y=n.getElementsByTagName(t)[0];y.parentNode.insertBefore(o,y);
+    g.identify=function(i,v,s){g(l,{uid:i},s);if(v)g(l,v,s)};g.setUserVars=function(v,s){g(l,v,s)};g.event=function(i,v,s){g('event',{n:i,p:v},s)};
+    g.shutdown=function(){g("rec",!1)};g.restart=function(){g("rec",!0)};
+    g.log = function(a,b) { g("log", [a,b]) };
+    g.consent=function(a){g("consent",!arguments.length||a)};
+    g.identifyAccount=function(i,v){o='account';v=v||{};v.acctId=i;g(o,v)};
+    g.clearUserCookie=function(){};
+})(window,document,window['_fs_namespace'],'script','user');
+
+if(js_pl_id < 1){
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'Messenger'));
+
+    //the Messenger Extensions JS SDK is done loading:
+    window.extAsyncInit = function () {
+        //Get context:
+        MessengerExtensions.getContext('<?= config_var(11076) ?>',
+            function success(thread_context) {
+                // success
+                //user ID was successfully obtained.
+                var psid = thread_context.psid;
+                var signed_request = thread_context.signed_request;
+                //Fetch Page:
+                $.post("/play/singin_check_psid/" + psid + "?sr=" + signed_request, {}, function (data) {
+                    if(data.status){
+                        //All good, refresh this page:
+                        location.reload();
+                    }
+                });
+            },
+            function error(err) {
+
+            }
+        );
+    };
+
+}
+
+
 
 function js_ln_create(new_ln_data){
     return $.post("/read/js_ln_create", new_ln_data, function (data) {
@@ -336,9 +393,9 @@ $(document).ready(function () {
     if(js_pl_id){
 
         //Update stats on load:
-        update_my_coins();
+        update_coin_counter();
 
-        setInterval(update_my_coins, fadeout_frequency);
+        setInterval(update_coin_counter, fadeout_frequency);
 
     }
 
@@ -405,7 +462,7 @@ $(document).ready(function () {
 
 
 //Update page count stats & refresh them visually once they change:
-var update_my_coins = function( ) {
+var update_coin_counter = function( ) {
     //your jQuery ajax code
 
     if(updating_basic_stats){
@@ -416,7 +473,7 @@ var update_my_coins = function( ) {
     updating_basic_stats = true;
 
     //Fetch latest stats:
-    $.post("/play/update_my_coins", { }, function (data) {
+    $.post("/play/update_coin_counter", { }, function (data) {
 
         if(data.blog_count != $('.blog .current_count').html()){
             $('.three-menus .blog .current_count').html(data.blog_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);

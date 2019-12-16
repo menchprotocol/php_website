@@ -52,7 +52,7 @@ class Read extends CI_Controller
     }
 
 
-    function read_overview(){
+    function read_home(){
 
         //Simplify URL structure if needed:
         if($this->uri->segment(1) == 'read'){
@@ -67,7 +67,7 @@ class Read extends CI_Controller
         $this->load->view('header', array(
             'title' => 'PLAY. READ. BLOG.',
         ));
-        $this->load->view('view_read/read_overview');
+        $this->load->view('view_read/read_home');
         $this->load->view('footer');
 
     }
@@ -1052,12 +1052,9 @@ class Read extends CI_Controller
 
         //Authenticate user:
         $session_en = superpower_assigned();
-        $is_messenger = false;
-        if (!$psid && !isset($session_en['en_id'])) {
-            die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
-        } elseif (!is_dev_environment() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
+        if (!is_dev_environment() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
-        } elseif (!isset($session_en['en_id'])) {
+        } elseif ($psid>0 && !isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:
             $session_en = $this->PLAY_model->en_messenger_auth($psid);
             //Make sure we found them:
@@ -1065,7 +1062,6 @@ class Read extends CI_Controller
                 //We could not authenticate the user!
                 die('<div class="alert alert-danger" role="alert">Credentials could not be validated</div>');
             }
-            $is_messenger = true;
         }
 
 

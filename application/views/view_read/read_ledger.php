@@ -217,7 +217,7 @@ $en_all_2738 = $this->config->item('en_all_2738');
     var link_filters = '<?= serialize(count($filters) > 0 ? $filters : array()) ?>';
     var link_join_by = '<?= serialize(count($join_by) > 0 ? $join_by : array()) ?>';
 </script>
-<script src="/js/custom/mench_ledger.js?v=v<?= config_var(11060) ?>"
+<script src="/js/custom/read_ledger.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <?php

@@ -61,11 +61,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     echo '</script>';
     ?>
 
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>
-
 
     <script src="https://kit.fontawesome.com/fbf7f3ae67.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/typeit@6.1.1/dist/typeit.min.js"></script>
@@ -75,27 +73,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <script src="/js/lib/algoliasearch.min.js"></script>
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
     <script src="/js/custom/platform-js.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
-
-
-    <script>
-        window['_fs_debug'] = false;
-        window['_fs_host'] = 'fullstory.com';
-        window['_fs_script'] = 'edge.fullstory.com/s/fs.js';
-        window['_fs_org'] = 'QMKCQ';
-        window['_fs_namespace'] = 'FS';
-        (function(m,n,e,t,l,o,g,y){
-            if (e in m) {if(m.console && m.console.log) { m.console.log('FullStory namespace conflict. Please set window["_fs_namespace"].');} return;}
-            g=m[e]=function(a,b,s){g.q?g.q.push([a,b,s]):g._api(a,b,s);};g.q=[];
-            o=n.createElement(t);o.async=1;o.crossOrigin='anonymous';o.src='https://'+_fs_script;
-            y=n.getElementsByTagName(t)[0];y.parentNode.insertBefore(o,y);
-            g.identify=function(i,v,s){g(l,{uid:i},s);if(v)g(l,v,s)};g.setUserVars=function(v,s){g(l,v,s)};g.event=function(i,v,s){g('event',{n:i,p:v},s)};
-            g.shutdown=function(){g("rec",!1)};g.restart=function(){g("rec",!0)};
-            g.log = function(a,b) { g("log", [a,b]) };
-            g.consent=function(a){g("consent",!arguments.length||a)};
-            g.identifyAccount=function(i,v){o='account';v=v||{};v.acctId=i;g(o,v)};
-            g.clearUserCookie=function(){};
-        })(window,document,window['_fs_namespace'],'script','user');
-    </script>
 
 </head>
 
