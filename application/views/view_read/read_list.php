@@ -23,7 +23,7 @@ if(count($user_intents) > 0){
         echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread actionplan_sort">';
 
         echo '<span class="pull-right" style="padding-right:8px; padding-left:10px;">';
-        echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Remove from reading list" data-placement="left"><i class="fas fa-trash"></i></span>';
+        echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="fas fa-trash"></i></span>';
         echo '</span>';
 
         echo echo_blog_thumbnail($ln['in_id']);
