@@ -1447,7 +1447,7 @@ class Read extends CI_Controller
                         array(
                             'title' => '🔵 PLAY',
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/play',
+                            'url' => 'https://mench.com/play/myaccount',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
@@ -1455,13 +1455,13 @@ class Read extends CI_Controller
                         array(
                             'title' => '🔴 READ',
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/',
+                            'url' => 'https://mench.com/read',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => '🟡 BLOG', //Yellow emoji is new so will appear soon (hopefully)
+                            'title' => '🟡 BLOG',
                             'type' => 'web_url',
                             'url' => 'https://mench.com/blog',
                             'webview_height_ratio' => 'tall',
