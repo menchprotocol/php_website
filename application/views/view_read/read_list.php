@@ -52,7 +52,7 @@ if(count($user_intents) > 0){
 
 
     //Give option to delete all:
-    echo '<div class="pull-right"  style="margin: 20px 0;"><a href="/actionplan/delete/'.$psid.'" style="font-size:0.8em; color:#AAA;" data-toggle="tooltip" title="Remove ALL reads from your reading list" data-placement="left"><i class="fas fa-trash"></i> ALL</a></div>';
+    echo '<div class="pull-right"  style="margin: 20px 0;"><a href="/actionplan/delete/'.$psid.'" style="font-size:0.8em; color:#AAA;" data-toggle="tooltip" title="Remove ALL reads from your reading list" data-placement="left"><i class="fas fa-trash"></i>ALL</a></div>';
 
     if($has_multiple_intentions){
         //Give sorting tip:

@@ -26,34 +26,36 @@ function actionplan_sort_save() {
 //Watch for Action Plan removal click:
 $('.actionplan_remove').on('click', function(e) {
 
-    //Find intent ID:
     var in_id = $(this).attr('in-id');
+    var r = confirm("Remove ["+$('.in-title-'+in_id).val()+"] from reading list?");
+    if (r == true) {
+        //Save changes:
+        $.post("/read/actionplan_stop_save", { en_creator_id:en_creator_id ,in_id:in_id }, function (data) {
+            //Update UI to confirm with user:
+            if (!data.status) {
 
-    //Save changes:
-    $.post("/read/actionplan_stop_save", {en_creator_id: en_creator_id, in_id: in_id}, function (data) {
-        //Update UI to confirm with user:
-        if (!data.status) {
+                //There was some sort of an error returned!
+                alert('ERROR: ' + data.message);
 
-            //There was some sort of an error returned!
-            alert('ERROR: ' + data.message);
+            } else {
 
-        } else {
+                //REMOVE BOOKMARK from UI:
+                $('#ap_in_'+in_id).fadeOut();
 
-            //REMOVE BOOKMARK from UI:
-            $('#ap_in_'+in_id).fadeOut();
-
-            setTimeout(function () {
-                //Remove from body:
-                $('#ap_in_'+in_id).remove();
-
-                //Re-sort:
                 setTimeout(function () {
-                    actionplan_sort_save();
-                }, 89);
 
-            }, 233);
-        }
-    });
+                    //Remove from body:
+                    $('#ap_in_'+in_id).remove();
+
+                    //Re-sort:
+                    setTimeout(function () {
+                        actionplan_sort_save();
+                    }, 89);
+
+                }, 233);
+            }
+        });
+    }
 
     return false;
 
