@@ -2063,6 +2063,9 @@ fragment PostListingItemSidebar_post on Post {
         //Make sure we found them:
         if ($session_en) {
 
+            //Activate Session:
+            $this->PLAY_model->en_activate_session($session_en);
+
             //Set message before refreshing:
             $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">Signed-in from Messenger</div>');
 
@@ -2145,7 +2148,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
         //Assign session & log link:
-        $this->PLAY_model->activate_session($ens[0]);
+        $this->PLAY_model->en_activate_session($ens[0]);
 
 
         if (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
@@ -2288,7 +2291,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
             //Log them in:
-            $ens[0] = $this->PLAY_model->activate_session($ens[0]);
+            $ens[0] = $this->PLAY_model->en_activate_session($ens[0]);
 
             //Their next intent in line:
             return echo_json(array(
@@ -2465,7 +2468,7 @@ fragment PostListingItemSidebar_post on Post {
         ));
 
         //Assign session & log login link:
-        $this->PLAY_model->activate_session($user_en['en']);
+        $this->PLAY_model->en_activate_session($user_en['en']);
 
 
         if (strlen($_POST['referrer_url']) > 0) {
@@ -2588,7 +2591,7 @@ fragment PostListingItemSidebar_post on Post {
         }
 
         //Log them in:
-        $ens[0] = $this->PLAY_model->activate_session($ens[0]);
+        $ens[0] = $this->PLAY_model->en_activate_session($ens[0]);
 
         //Take them to next step:
         return redirect_message( '/read/next' );

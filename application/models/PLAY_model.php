@@ -18,7 +18,7 @@ class PLAY_model extends CI_Model
 
 
 
-    function activate_session($en){
+    function en_activate_session($en){
 
         //PROFILE
         $en['en__parents'] = $this->READ_model->ln_fetch(array(
