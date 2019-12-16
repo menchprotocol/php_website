@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-15 14:20:23 PST
+//Generated 2019-12-15 21:26:53 PST
 
 //BLOG TYPE GUEST ACCESS:
 $config['en_ids_12107'] = array(6684,7231);
@@ -2596,7 +2596,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.15',
+        'm_desc' => '1.17',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -8487,7 +8487,7 @@ $config['en_all_4593'] = array(
     4275 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
         'm_name' => 'READER BLOG SEARCH',
-        'm_desc' => 'When students invokes the [Search for] command and search for a new intention that they would like to add to their Action Plan.',
+        'm_desc' => 'When students invokes the [I want to] command and search for a new intention that they would like to add to their Action Plan.',
         'm_parents' => array(12004,10639,10596,10589,6554,4755,4593),
     ),
     4283 => array(
