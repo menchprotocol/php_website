@@ -27,7 +27,7 @@ function actionplan_sort_save() {
 $('.actionplan_remove').on('click', function(e) {
 
     var in_id = $(this).attr('in-id');
-    var r = confirm("Remove ["+$('.in-title-'+in_id).val()+"] from reading list?");
+    var r = confirm("Remove ["+$('.in-title-'+in_id, window.parent.document).val()+"] from reading list?");
     if (r == true) {
         //Save changes:
         $.post("/read/actionplan_stop_save", { en_creator_id:en_creator_id ,in_id:in_id }, function (data) {
