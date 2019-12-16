@@ -1118,18 +1118,23 @@ class Read extends CI_Controller
             //Show appropriate UI:
             if ($in_id < 1) {
 
-                //Log Action Plan View:
-                $this->READ_model->ln_create(array(
-                    'ln_type_entity_id' => 4283, //Opened Action Plan
-                    'ln_creator_entity_id' => $session_en['en_id'],
-                ));
+                if(count($user_intents) > 0){
+                    //Log Action Plan View:
+                    $this->READ_model->ln_create(array(
+                        'ln_type_entity_id' => 4283, //Opened Action Plan
+                        'ln_creator_entity_id' => $session_en['en_id'],
+                    ));
 
-                //List all user intentions:
-                $this->load->view('view_read/read_list', array(
-                    'session_en' => $session_en,
-                    'user_intents' => $user_intents,
-                    'psid' => $psid,
-                ));
+                    //List all user intentions:
+                    $this->load->view('view_read/read_list', array(
+                        'session_en' => $session_en,
+                        'user_intents' => $user_intents,
+                        'psid' => $psid,
+                    ));
+                } else {
+                    //Nothing in their reading list:
+                    return redirect_message('/');
+                }
 
             } else {
 
