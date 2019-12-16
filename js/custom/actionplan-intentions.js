@@ -24,7 +24,7 @@ function actionplan_sort_save() {
 }
 
 //Watch for Action Plan removal click:
-$('.actionplan_remove').on('click', function(e) {
+$('.actionplan_remove', window.parent.document).on('click', function(e) {
 
     var in_id = $(this, window.parent.document).attr('in-id');
     var r = confirm("Remove ["+$('.in-title-'+in_id, window.parent.document).val()+"] from reading list?");

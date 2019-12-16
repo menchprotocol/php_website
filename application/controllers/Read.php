@@ -1184,7 +1184,7 @@ class Read extends CI_Controller
         //Call function to remove form action plan:
         $delete_result = $this->READ_model->read__intention_delete($_POST['en_creator_id'], $_POST['in_id'], 6155); //READER REMOVED BOOKMARK
 
-        if(!$delete_result['result']){
+        if(!$delete_result['status']){
             return echo_json($delete_result);
         } else {
             return echo_json(array(
