@@ -671,7 +671,7 @@ function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $com
     $completion_rate = $CI->READ_model->read__completion_progress($en_id, $in);
 
     //Open list:
-    $ui = '<a href="/'.$in['in_id']. '" class="list-group-item itemread">';
+    $ui = '<a href="/read/'.$in['in_id']. '" class="list-group-item itemread">';
 
     $ui .= echo_in_outcome($in['in_outcome'], false, $common_prefix);
 
@@ -690,7 +690,7 @@ function echo_actionplan_step_parent($in)
 
     $CI =& get_instance();
 
-    $ui = '<a href="/' . $in['in_id'] . '" class="list-group-item itemread">';
+    $ui = '<a href="/read/' . $in['in_id'] . '" class="list-group-item itemread">';
 
     $ui .= '<span class="pull-left">';
     $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';

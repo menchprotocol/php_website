@@ -69,6 +69,7 @@ class Read extends CI_Controller
         ));
         $this->load->view('view_read/read_overview');
         $this->load->view('footer');
+
     }
 
 
@@ -1005,7 +1006,7 @@ class Read extends CI_Controller
         }
 
         //Show basic UI for now:
-        return redirect_message('/actionplan', '<div class="alert alert-success" role="alert"><i class="fas fa-trash-alt"></i> '.$message.'</div>');
+        return redirect_message('/read', '<div class="alert alert-success" role="alert"><i class="fas fa-trash-alt"></i> '.$message.'</div>');
 
     }
 
@@ -1222,9 +1223,9 @@ class Read extends CI_Controller
         //Find the next item to navigate them to:
         $next_in_id = $this->READ_model->read__step_next_go($en_id, false);
         if ($next_in_id > 0) {
-            return redirect_message('/' . $next_in_id, $message);
+            return redirect_message('/read/' . $next_in_id, $message);
         } else {
-            return redirect_message('/actionplan', $message);
+            return redirect_message('/read', $message);
         }
 
     }
@@ -1294,9 +1295,9 @@ class Read extends CI_Controller
     {
 
         if ($w_key != md5($this->config->item('cred_password_salt') . $answer_in_id . $parent_in_id . $en_id)) {
-            return redirect_message('/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Authentication Key</div>');
+            return redirect_message('/read/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Authentication Key</div>');
         } elseif (!in_array($answer_type_en_id, $this->config->item('en_ids_7704'))) {
-            return redirect_message('/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid answer type</div>');
+            return redirect_message('/read/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid answer type</div>');
         }
 
         //Validate Answer Intent:
@@ -1305,7 +1306,7 @@ class Read extends CI_Controller
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ));
         if (count($answer_ins) < 1) {
-            return redirect_message('/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Answer</div>');
+            return redirect_message('/read/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Answer</div>');
         }
 
         //Fetch current progression links, if any:

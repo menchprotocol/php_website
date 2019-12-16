@@ -13,6 +13,7 @@ $route['signin']                    = "play/signin";
 
 $route['play/(:num)']               = "play/play_modify/$1";
 $route['blog/(:num)']               = "blog/blog_modify/$1";
+$route['read/(:num)']               = "read/actionplan/$1";
 $route['(:num)/next']               = "read/next/$1";
 $route['(:num)']                    = "read/read_blog/$1";
 
@@ -22,4 +23,3 @@ $route['actionplan']                = "read/actionplan/0";
 $route['actionplan/delete']         = "read/actionplan_delete";
 $route['actionplan/delete/(:num)']  = "read/actionplan_delete/$1";
 $route['actionplan/next']           = "read/read/next";
-$route['actionplan/(:num)']         = "read/actionplan/$1";

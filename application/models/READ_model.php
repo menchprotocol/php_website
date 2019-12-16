@@ -967,7 +967,7 @@ class READ_model extends CI_Model
 
             //Inform user:
             $this->READ_model->dispatch_message(
-                'I noticed that this intention has already been added to your Action Plan /link:Open 🚩Action Plan:https://mench.com/' . $ins[0]['in_id'],
+                'I noticed that this intention has already been added to your Action Plan /link:Open 🚩Action Plan:https://mench.com/read/' . $ins[0]['in_id'],
                 array('en_id' => $en_id),
                 true
             );
@@ -1036,7 +1036,7 @@ class READ_model extends CI_Model
 
             if($echo_next_step){
                 $this->READ_model->dispatch_message(
-                    'Ok I added this intention to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/' . $ins[0]['in_id'],
+                    'Ok I added this intention to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/read/' . $ins[0]['in_id'],
                     array('en_id' => $en_id),
                     true
                 );
@@ -1071,7 +1071,7 @@ class READ_model extends CI_Model
 
                 //A previously added intent is top-priority, so let them know:
                 $this->READ_model->dispatch_message(
-                    'But we will work on this intention later because based on your Action Plan\'s priorities, your current focus is to '.$top_priority['in']['in_outcome'].' which you have made '.$top_priority['completion_rate']['completion_percentage'].'% progress so far. Alternatively, you can sort your Action Plan\'s priorities. /link:Sort 🚩Action Plan:https://mench.com/actionplan',
+                    'But we will work on this intention later because based on your Action Plan\'s priorities, your current focus is to '.$top_priority['in']['in_outcome'].' which you have made '.$top_priority['completion_rate']['completion_percentage'].'% progress so far. Alternatively, you can sort your Action Plan\'s priorities. /link:Sort 🚩Action Plan:https://mench.com/read',
                     array('en_id' => $en_id),
                     true
                 );
@@ -1945,7 +1945,7 @@ class READ_model extends CI_Model
                     } elseif($was_selected){
 
                         //This was selected:
-                        $next_step_message .= '<a href="/'.$child_in['in_id'] . '" class="list-group-item itemread lightgreybg">';
+                        $next_step_message .= '<a href="/read/'.$child_in['in_id'] . '" class="list-group-item itemread lightgreybg">';
 
                     } else {
 
@@ -3952,7 +3952,7 @@ class READ_model extends CI_Model
 
                 //Let User know that they have already subscribed to this intention:
                 $this->READ_model->dispatch_message(
-                    'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. /link:See in 🚩Action Plan:https://mench.com/' . $ins[0]['in_id'],
+                    'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. /link:See in 🚩Action Plan:https://mench.com/read/' . $ins[0]['in_id'],
                     $en,
                     true
                 );

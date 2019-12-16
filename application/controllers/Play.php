@@ -2438,7 +2438,7 @@ fragment PostListingItemSidebar_post on Post {
         if (strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
         } elseif(intval($_POST['referrer_in_id']) > 0) {
-            $login_url = '/'.$_POST['referrer_in_id'];
+            $login_url = '/read/'.$_POST['referrer_in_id'];
         } else {
             //Go to home page and let them continue from there:
             $login_url = '/';
