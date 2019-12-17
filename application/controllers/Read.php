@@ -32,7 +32,7 @@ class Read extends CI_Controller
             ));
             $next_in_id = $this->READ_model->read__step_next_find($session_en['en_id'], $ins[0]);
             if($next_in_id > 0){
-                return redirect_message('/' . $next_in_id, '<div class="alert alert-danger" role="alert">Successfully added blog to your 🔴 READING LIST.</div>');
+                return redirect_message('/' . $next_in_id, '<div class="alert alert-success" role="alert">Successfully added to your 🔴 READING LIST.</div>');
             } else {
                 return redirect_message('/read', '<div class="alert alert-danger" role="alert">No next read found in your 🔴 READING LIST.</div>');
             }
@@ -119,7 +119,11 @@ class Read extends CI_Controller
         $session_en = superpower_assigned();
         if(!$session_en){
             //Probably loaded screen from Messenger:
+            $this->load->view('header', array(
+                'title' => 'AUTHENTICATING...',
+            ));
             $this->load->view('view_play/play_auth_pending');
+            $this->load->view('footer');
             return false;
         }
 

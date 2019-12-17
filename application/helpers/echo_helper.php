@@ -1520,38 +1520,77 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 }
 
 
-function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
+
+function echo_in_answer($in, $parent_in)
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
+    $session_en = superpower_assigned();
 
-    $ui = '<a href="'.( $url_prefix ? $url_prefix : ( $CI->uri->segment(1)=='read' ? '/read' : '' ) ).'/'.$in['in_id'] . '" class="list-group-item '.( $url_prefix ? 'itemblog' : 'itemread' ).'">';
+    if(isset($session_en['en_id'])){
+
+        $url = '/read/actionplan_answer_question/6157/' . $session_en['en_id'] . '/' . $parent_in_id . '/' . md5($CI->config->item('cred_password_salt') . $in['in_id'] . $parent_in_id . $session_en['en_id']) . '/' . $in['in_id'];
+        $was_answered_befroe = (count($CI->READ_model->ln_fetch(array(
+                'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
+                'ln_parent_intent_id' => $parent_in_id,
+                'ln_child_intent_id' => $in['in_id'],
+                'ln_creator_entity_id' => $session_en['en_id'],
+            ), array(), 0)) > 0);
+
+    } else {
+
+    }
+
+
+
+    $ui = '<a href="'.$url . '" class="list-group-item">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_outcome($in['in_outcome'], false).'</b>';
 
     if($parent_in_id > 0){
-
-        //See if this user has completed this parent/child relation:
-        $session_en = superpower_assigned();
-
         if(isset($session_en['en_id'])){
-
-            //See if this has been completed previously:
-            if(count($CI->READ_model->ln_fetch(array(
-                    'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
-                    'ln_parent_intent_id' => $parent_in_id,
-                    'ln_child_intent_id' => $in['in_id'],
-                    'ln_creator_entity_id' => $session_en['en_id'],
-                ), array(), 0)) > 0){
+            if($was_answered_befroe){
                 $ui .= '<span class="montserrat blog-info doupper">[PREVIOUSLY SELECTED]</span>';
             }
+        } else {
+
+
+
         }
     }
 
+    $ui .= '</td>';
 
+
+
+    //Search for Blog Image:
+    $ui .= '<td class="featured-frame">';
+    $ui .= echo_blog_thumbnail($in['in_id']);
+    $ui .= '</td>';
+
+
+    $ui .= '</tr></table>';
+    $ui .= '</a>';
+
+    return $ui;
+}
+
+
+
+function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
+{
+
+    //See if user is logged-in:
+    $CI =& get_instance();
+    $session_en = superpower_assigned();
+
+    $ui = '<a href="'.( $url_prefix ? $url_prefix : ( $CI->uri->segment(1)=='read' ? '/read' : '' ) ).'/'.$in['in_id'] . '" class="list-group-item '.( $url_prefix ? 'itemblog' : 'itemread' ).'">';
+    $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
+    $ui .= '<td>';
+    $ui .= '<b class="montserrat blog-url">'.echo_in_outcome($in['in_outcome'], false).'</b>';
 
     //Now do measurements:
     /*
@@ -1575,14 +1614,8 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
 
     $ui .= '</td>';
 
-
-
     //Search for Blog Image:
-    $ui .= '<td class="featured-frame">';
-    $ui .= echo_blog_thumbnail($in['in_id']);
-    $ui .= '</td>';
-
-
+    $ui .= '<td class="featured-frame">'.echo_blog_thumbnail($in['in_id']).'</td>';
     $ui .= '</tr></table>';
     $ui .= '</a>';
 

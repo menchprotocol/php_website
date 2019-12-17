@@ -2696,7 +2696,11 @@ fragment PostListingItemSidebar_post on Post {
 
         if(!$session_en){
             //Probably loaded screen from Messenger:
+            $this->load->view('header', array(
+                'title' => 'AUTHENTICATING...',
+            ));
             $this->load->view('view_play/play_auth_pending');
+            $this->load->view('footer');
             return false;
         }
 
