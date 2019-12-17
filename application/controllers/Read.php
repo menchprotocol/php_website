@@ -628,7 +628,7 @@ class Read extends CI_Controller
 
         //Now show all links for this link:
         foreach ($this->READ_model->ln_fetch(array(
-            'ln_parent_link_id' => $_POST['ln_id'],
+            'ln_parent_read_id' => $_POST['ln_id'],
         ), array(), 0, 0, array('ln_id' => 'DESC')) as $ln_child) {
             $ln_connections_ui .= '<div class="read-hisotry-child">' . echo_ln($ln_child, true) . '</div>';
         }
@@ -1056,7 +1056,7 @@ class Read extends CI_Controller
             foreach($progress_links as $progress_link){
                 $this->READ_model->ln_update($progress_link['ln_id'], array(
                     'ln_status_player_id' => 6173, //Link Removed
-                    'ln_parent_link_id' => $clear_all_link['ln_id'], //To indicate when it was removed
+                    'ln_parent_read_id' => $clear_all_link['ln_id'], //To indicate when it was removed
                 ), $en_id, 6415 /* User Cleared 🔴 READING LIST */);
             }
 
@@ -1262,7 +1262,7 @@ class Read extends CI_Controller
         //Archive previous progression links:
         foreach($current_progression_links as $ln){
             $this->READ_model->ln_update($ln['ln_id'], array(
-                'ln_parent_link_id' => $new_progression_link['ln_id'],
+                'ln_parent_read_id' => $new_progression_link['ln_id'],
                 'ln_status_player_id' => 6173, //Link Removed
             ), $en_id, 10685 /* User Step Iterated */);
         }
@@ -1816,7 +1816,7 @@ class Read extends CI_Controller
                                 $this->READ_model->ln_update($pending_req_submission[0]['ln_id'], array(
                                     'ln_content' => $new_message['ln_content'],
                                     'ln_status_player_id' => 6176, //Link Published
-                                    'ln_parent_link_id' => $new_message['ln_id'],
+                                    'ln_parent_read_id' => $new_message['ln_id'],
                                     'ln_timestamp' => date("Y-m-d H:i:s"),
                                 ));
 
@@ -1827,7 +1827,7 @@ class Read extends CI_Controller
 
                                 //Opppsi:
                                 $this->READ_model->ln_create(array(
-                                    'ln_parent_link_id' => $first_chioce['ln_id'],
+                                    'ln_parent_read_id' => $first_chioce['ln_id'],
                                     'ln_content' => 'messenger_webhook() failed to validate user response original step',
                                     'ln_type_player_id' => 4246, //Platform Bug Reports
                                     'ln_creator_player_id' => $en['en_id'], //for this user
@@ -2144,7 +2144,7 @@ class Read extends CI_Controller
                 //Log error:
                 $this->READ_model->ln_create(array(
                     'ln_type_player_id' => 4246, //Platform Bug Reports
-                    'ln_parent_link_id' => $ln['ln_id'],
+                    'ln_parent_read_id' => $ln['ln_id'],
                     'ln_content' => 'cron__sync_attachments() Failed to sync attachment to Facebook API: ' . (isset($result['ln_metadata']['result']['error']['message']) ? $result['ln_metadata']['result']['error']['message'] : 'Unknown Error'),
                     'ln_metadata' => array(
                         'payload' => $payload,

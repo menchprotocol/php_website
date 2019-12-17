@@ -600,7 +600,7 @@ function echo_ln($ln, $is_inner = false)
 
         //Count child links:
         $child_links = $CI->READ_model->ln_fetch(array(
-            'ln_parent_link_id' => $ln['ln_id'],
+            'ln_parent_read_id' => $ln['ln_id'],
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_child_links');
 
         $load_main = ( $link_connections_count <= $auto_load_max_connections ? 1 : 0 ); //Decide if we should auto-load the main connections for this link
@@ -1341,7 +1341,7 @@ function echo_en_messages($ln){
     //READ HISTORY:
     /*
     $count_msg_trs = $CI->READ_model->ln_fetch(array(
-        '( ln_id = ' . $ln['ln_id'] . ' OR ln_parent_link_id = ' . $ln['ln_id'] . ')' => null,
+        '( ln_id = ' . $ln['ln_id'] . ' OR ln_parent_read_id = ' . $ln['ln_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
     $ui .= '<li><a class="btn btn-blog" style="border:2px solid #f4d52d !important;" href="/read/view_json/' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
     */

@@ -128,7 +128,7 @@ class READ_model extends CI_Model
             if(strlen($ln_content) > 0 && count($fields_changed) > 0){
                 //Value has changed, log link:
                 $this->READ_model->ln_create(array(
-                    'ln_parent_link_id' => $id, //Link Reference
+                    'ln_parent_read_id' => $id, //Link Reference
                     'ln_creator_player_id' => $ln_creator_player_id,
                     'ln_type_player_id' => $ln_type_player_id,
                     'ln_content' => $ln_content,
@@ -240,7 +240,7 @@ class READ_model extends CI_Model
         }
 
         //Set some zero defaults if not set:
-        foreach (array('ln_child_blog_id', 'ln_parent_blog_id', 'ln_child_player_id', 'ln_parent_player_id', 'ln_parent_link_id', 'ln_external_id', 'ln_order') as $dz) {
+        foreach (array('ln_child_blog_id', 'ln_parent_blog_id', 'ln_child_player_id', 'ln_parent_player_id', 'ln_parent_read_id', 'ln_external_id', 'ln_order') as $dz) {
             if (!isset($insert_columns[$dz])) {
                 $insert_columns[$dz] = 0;
             }
@@ -398,7 +398,7 @@ class READ_model extends CI_Model
                         'ln_type_player_id' => 5967, //Link Carbon Copy Email
                         'ln_creator_player_id' => $to_en_id, //Sent to this user
                         'ln_metadata' => $dispatched_email, //Save a copy of email
-                        'ln_parent_link_id' => $insert_columns['ln_id'], //Save link
+                        'ln_parent_read_id' => $insert_columns['ln_id'], //Save link
 
                         //Import potential blog/player connections from link:
                         'ln_child_blog_id' => $insert_columns['ln_child_blog_id'],
@@ -822,7 +822,7 @@ class READ_model extends CI_Model
             //Archive current progression links:
             foreach($current_progression_links as $ln){
                 $this->READ_model->ln_update($ln['ln_id'], array(
-                    'ln_parent_link_id' => $new_progression_link['ln_id'],
+                    'ln_parent_read_id' => $new_progression_link['ln_id'],
                     'ln_status_player_id' => 6173, //Link Removed
                 ));
             }
@@ -1592,7 +1592,7 @@ class READ_model extends CI_Model
                 foreach($current_progression_links as $key=>$ln){
 
                     $this->READ_model->ln_update($ln['ln_id'], array(
-                        'ln_parent_link_id' => $new_progression_link['ln_id'],
+                        'ln_parent_read_id' => $new_progression_link['ln_id'],
                         'ln_status_player_id' => 6173, //Link Removed
                     ), $en_id, 10685 /* User Step Iterated */);
 
@@ -2512,7 +2512,7 @@ class READ_model extends CI_Model
                     'ln_type_player_id' => 7702, //User Intent Subscription Update
                     'ln_creator_player_id' => $subscriber_en['en_id'],
                     'ln_metadata' => $dispatched_email, //Save a copy of email
-                    'ln_parent_link_id' => $insert_columns['ln_id'], //Save link
+                    'ln_parent_read_id' => $insert_columns['ln_id'], //Save link
 
                     //Import potential intent/entity connections from link:
                     'ln_parent_blog_id' => $subscriber_en['ln_child_blog_id'],
@@ -4493,7 +4493,7 @@ class READ_model extends CI_Model
                                     'ln_metadata' => $ln_metadata,
                                     'ln_type_player_id' => 4246, //Platform Bug Reports
                                     'ln_creator_player_id' => $en['en_id'],
-                                    'ln_parent_link_id' => $last_quick_replies[0]['ln_id'],
+                                    'ln_parent_read_id' => $last_quick_replies[0]['ln_id'],
                                 ));
 
                             } else {
@@ -4502,7 +4502,7 @@ class READ_model extends CI_Model
                                 $this->READ_model->ln_create(array(
                                     'ln_creator_player_id' => $en['en_id'],
                                     'ln_type_player_id' => 4460, //User Sent Answer
-                                    'ln_parent_link_id' => $last_quick_replies[0]['ln_id'],
+                                    'ln_parent_read_id' => $last_quick_replies[0]['ln_id'],
                                     'ln_content' => $fb_received_message,
                                 ));
 

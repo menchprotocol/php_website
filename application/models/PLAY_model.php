@@ -364,7 +364,7 @@ class PLAY_model extends CI_Model
                 'ln_child_player_id' => $ln_creator_player_id,
                 'ln_parent_player_id' => $set_en_child_id,
                 'ln_type_player_id' => 4230, //Raw link
-                'ln_parent_link_id' => $updated_ln_id,
+                'ln_parent_read_id' => $updated_ln_id,
             ));
         }
 
