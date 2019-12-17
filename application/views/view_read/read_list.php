@@ -5,6 +5,9 @@
 </script>
 <script src="/js/custom/actionplan-intentions.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
+
+
+<div class="container">
 <?php
 
 echo '<h1><span class="icon-block-xlg"><i class="far fa-bookmark"></i></span>MY READS</h1>';
@@ -59,3 +62,4 @@ if($has_multiple_intentions){
 
 
 ?>
+</div>

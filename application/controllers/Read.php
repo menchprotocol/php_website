@@ -137,11 +137,17 @@ class Read extends CI_Controller
             'ln_creator_entity_id' => $session_en['en_id'],
         ));
 
-        //List all user intentions:
+
+        $this->load->view('header', array(
+            'title' => 'MY READING LIST',
+        ));
+
         $this->load->view('view_read/read_list', array(
             'session_en' => $session_en,
             'user_intents' => $user_intents,
         ));
+
+        $this->load->view('footer');
 
     }
 

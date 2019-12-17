@@ -2700,17 +2700,21 @@ fragment PostListingItemSidebar_post on Post {
             return false;
         }
 
-
         //Log My Account View:
         $this->READ_model->ln_create(array(
             'ln_type_entity_id' => 4282, //Opened My Account
             'ln_creator_entity_id' => $session_en['en_id'],
         ));
 
-        //Load UI:
+
+        $this->load->view('header', array(
+            'title' => 'MY ACCOUNT',
+        ));
         $this->load->view('view_play/myaccount_manage', array(
             'session_en' => $session_en,
         ));
+        $this->load->view('footer');
+
     }
 
 
