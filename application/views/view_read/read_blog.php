@@ -76,7 +76,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_1
 
     } else {
 
-        echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/signin/'.$in['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
+        echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/read/'.$in['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
 
     }
 
