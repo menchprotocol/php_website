@@ -657,7 +657,7 @@ function extract_icon_color($en_icon){
 function unique_players(){
     //COUNT PLAYERS:
     $CI =& get_instance();
-    $q = $CI->db->query('SELECT COUNT(*) FROM (SELECT DISTINCT ln_creator_player_id FROM table_links) AS temp;');
+    $q = $CI->db->query('SELECT COUNT(*) FROM (SELECT DISTINCT ln_creator_player_id FROM table_read) AS temp;');
     $engaged_players = $q->result_array();
     return $engaged_players[0]['count'];
 }

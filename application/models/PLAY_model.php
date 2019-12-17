@@ -97,7 +97,7 @@ class PLAY_model extends CI_Model
         }
 
         //Lets now add:
-        $this->db->insert('table_players', $insert_columns);
+        $this->db->insert('table_play', $insert_columns);
 
         //Fetch inserted id:
         if (!isset($insert_columns['en_id'])) {
@@ -146,7 +146,7 @@ class PLAY_model extends CI_Model
 
         //Fetch the target players:
         $this->db->select($select);
-        $this->db->from('table_players');
+        $this->db->from('table_play');
         foreach ($match_columns as $key => $value) {
             if (!is_null($value)) {
                 $this->db->where($key, $value);
@@ -224,7 +224,7 @@ class PLAY_model extends CI_Model
 
         //Update:
         $this->db->where('en_id', $id);
-        $this->db->update('table_players', $update_columns);
+        $this->db->update('table_play', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?

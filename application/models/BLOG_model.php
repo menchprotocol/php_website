@@ -28,7 +28,7 @@ class BLOG_model extends CI_Model
         }
 
         //Lets now add:
-        $this->db->insert('table_blogs', $insert_columns);
+        $this->db->insert('table_blog', $insert_columns);
 
         //Fetch inserted id:
         if (!isset($insert_columns['in_id'])) {
@@ -85,10 +85,10 @@ class BLOG_model extends CI_Model
 
         //The basic fetcher for blogs
         $this->db->select($select);
-        $this->db->from('table_blogs');
+        $this->db->from('table_blog');
 
         if (in_array('in_type', $join_objects)) {
-            $this->db->join('table_players', 'in_type_player_id=en_id', 'left');
+            $this->db->join('table_play', 'in_type_player_id=en_id', 'left');
         }
 
         foreach ($match_columns as $key => $value) {
@@ -169,7 +169,7 @@ class BLOG_model extends CI_Model
 
         //Update:
         $this->db->where('in_id', $id);
-        $this->db->update('table_blogs', $update_columns);
+        $this->db->update('table_blog', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?

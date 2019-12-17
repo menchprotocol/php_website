@@ -42,7 +42,7 @@ class READ_model extends CI_Model
 
         //Update:
         $this->db->where('ln_id', $id);
-        $this->db->update('table_links', $update_columns);
+        $this->db->update('table_read', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
@@ -152,24 +152,24 @@ class READ_model extends CI_Model
     {
 
         $this->db->select($select);
-        $this->db->from('table_links');
+        $this->db->from('table_read');
 
         //Any blog joins?
         if (in_array('in_parent', $join_objects)) {
-            $this->db->join('table_blogs', 'ln_parent_blog_id=in_id','left');
+            $this->db->join('table_blog', 'ln_parent_blog_id=in_id','left');
         } elseif (in_array('in_child', $join_objects)) {
-            $this->db->join('table_blogs', 'ln_child_blog_id=in_id','left');
+            $this->db->join('table_blog', 'ln_child_blog_id=in_id','left');
         }
 
         //Any player joins?
         if (in_array('en_parent', $join_objects)) {
-            $this->db->join('table_players', 'ln_parent_player_id=en_id','left');
+            $this->db->join('table_play', 'ln_parent_player_id=en_id','left');
         } elseif (in_array('en_child', $join_objects)) {
-            $this->db->join('table_players', 'ln_child_player_id=en_id','left');
+            $this->db->join('table_play', 'ln_child_player_id=en_id','left');
         } elseif (in_array('ln_type', $join_objects)) {
-            $this->db->join('table_players', 'ln_type_player_id=en_id','left');
+            $this->db->join('table_play', 'ln_type_player_id=en_id','left');
         } elseif (in_array('ln_creator', $join_objects)) {
-            $this->db->join('table_players', 'ln_creator_player_id=en_id','left');
+            $this->db->join('table_play', 'ln_creator_player_id=en_id','left');
         }
 
         foreach ($match_columns as $key => $value) {
@@ -251,7 +251,7 @@ class READ_model extends CI_Model
         $insert_columns['ln_words'] = ln_type_word_count($insert_columns);
 
         //Lets log:
-        $this->db->insert('table_links', $insert_columns);
+        $this->db->insert('table_read', $insert_columns);
 
 
         //Fetch inserted id:
@@ -439,7 +439,7 @@ class READ_model extends CI_Model
 
         //Counts the current highest order value
         $this->db->select('MAX(ln_order) as largest_order');
-        $this->db->from('table_links');
+        $this->db->from('table_read');
         foreach ($match_columns as $key => $value) {
             $this->db->where($key, $value);
         }

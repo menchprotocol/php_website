@@ -97,7 +97,7 @@ if(!$action) {
     if(isset($_GET['resetall'])){
 
         boost_power();
-        $this->db->query("UPDATE table_links SET ln_words=0;");
+        $this->db->query("UPDATE table_read SET ln_words=0;");
         echo '<div class="alert alert-warning">All link counts reset to zero.</div>';
 
     } elseif(isset($_GET['updateall']) || isset($_GET['updatesome'])){
@@ -267,7 +267,7 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
 
     $orphan_ins = $this->BLOG_model->in_fetch(array(
-        ' NOT EXISTS (SELECT 1 FROM table_links WHERE in_id=ln_child_blog_id AND ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_player_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
+        ' NOT EXISTS (SELECT 1 FROM table_read WHERE in_id=ln_child_blog_id AND ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_player_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
         'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
     ));
 
@@ -316,7 +316,7 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
 
     $orphan_ens = $this->PLAY_model->en_fetch(array(
-        ' NOT EXISTS (SELECT 1 FROM table_links WHERE en_id=ln_child_player_id AND ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status_player_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
+        ' NOT EXISTS (SELECT 1 FROM table_read WHERE en_id=ln_child_player_id AND ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status_player_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
         'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
     ), array('skip_en__parents'));
 
@@ -628,7 +628,7 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
 
     //Do a query to detect blogs with the exact same title:
-    $q = $this->db->query('select in1.* from table_blogs in1 where (select count(*) from table_blogs in2 where in2.in_outcome = in1.in_outcome AND in2.in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_outcome ASC');
+    $q = $this->db->query('select in1.* from table_blog in1 where (select count(*) from table_blog in2 where in2.in_outcome = in1.in_outcome AND in2.in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_outcome ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
@@ -651,7 +651,7 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
 
-    $q = $this->db->query('select en1.* from table_players en1 where (select count(*) from table_players en2 where en2.en_name = en1.en_name AND en2.en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')) > 1 AND en1.en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ') ORDER BY en1.en_name ASC');
+    $q = $this->db->query('select en1.* from table_play en1 where (select count(*) from table_play en2 where en2.en_name = en1.en_name AND en2.en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')) > 1 AND en1.en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ') ORDER BY en1.en_name ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
