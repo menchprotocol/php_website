@@ -71,7 +71,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_1
             echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/'.$next_in_id.'">NEXT <i class="fas fa-angle-right"></i></a></div>';
         } else {
             //They seemed to have completed reading this:
-            echo '<div class="alert alert-info"><i class="fas fa-exclamation-triangle"></i> You have completed this read.</div>';
+            echo '<div class="montserrat read doupper"><i class="fas fa-check-circle ispink"></i> YOU HAVE COMPLETED THIS READ</div>';
         }
 
     } else {
