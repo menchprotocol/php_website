@@ -1544,6 +1544,7 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
                     'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
                     'ln_parent_intent_id' => $parent_in_id,
                     'ln_child_intent_id' => $in['in_id'],
+                    'ln_creator_entity_id' => $session_en['en_id'],
                 ), array(), 0)) > 0){
                 $ui .= '<span class="montserrat blog-info doupper">[PREVIOUSLY SELECTED]</span>';
             }
