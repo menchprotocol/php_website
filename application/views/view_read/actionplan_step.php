@@ -6,6 +6,16 @@
 <?php
 
 
+/*
+$this->load->view('view_read/actionplan_step', array(
+    'session_en' => $session_en,
+    'user_intents' => $user_intents,
+    'advance_step' => $this->READ_model->read__step_echo($session_en['en_id'], $in_id, false),
+    'in' => $ins[0], //Currently focused intention:
+));
+*/
+
+
 //Start showing the page:
 $time_estimate = echo_time_range($in);
 
