@@ -9,7 +9,7 @@
 <div class="container">
 <?php
 
-echo '<h1>' . echo_in_outcome($in['in_outcome']) . '</h1>';
+echo '<h1>' . echo_in_title($in['in_title']) . '</h1>';
 
 //Overview:
 /*

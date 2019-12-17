@@ -23,7 +23,7 @@
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_player_id' => 10573, //Blog Note Bookmarks
             'ln_parent_player_id' => $session_en['en_id'], //For this trainer
-        ), array('in_child'), 0, 0, array('in_outcome' => 'ASC'));
+        ), array('in_child'), 0, 0, array('in_title' => 'ASC'));
         if(count($bookmark_ins)){
 
             echo '<div class="list-group">';

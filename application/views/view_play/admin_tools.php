@@ -277,7 +277,7 @@ if(!$action) {
         foreach ($orphan_ins as $count => $orphan_in) {
 
             //Show blog:
-            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_player_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_player_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_player_id']]['m_icon'] . '</span> <a href="/blog/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_outcome'].'</b></a>';
+            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_player_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_player_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_player_id']]['m_icon'] . '</span> <a href="/blog/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_title'].'</b></a>';
 
             //Do we need to remove?
             if($command1=='remove_all'){
@@ -444,7 +444,7 @@ if(!$action) {
     ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
     foreach ($user_intents as $priority => $ln) {
-        echo '<div>'.($priority+1).') <a href="/read/debug/' . $ln['in_id'] . '">' . echo_in_outcome($ln['in_outcome']) . '</a></div>';
+        echo '<div>'.($priority+1).') <a href="/read/debug/' . $ln['in_id'] . '">' . echo_in_title($ln['in_title']) . '</a></div>';
     }
 
 } elseif($action=='in_invalid_outcomes') {
@@ -456,7 +456,7 @@ if(!$action) {
     ));
 
     //Give an overview:
-    echo '<p>When the validation criteria change within the in_outcome_validate() function, this page lists all the intents that no longer have a valid outcome.</p>';
+    echo '<p>When the validation criteria change within the in_title_validate() function, this page lists all the intents that no longer have a valid outcome.</p>';
 
 
     //List the matching search:
@@ -471,16 +471,16 @@ if(!$action) {
     $invalid_outcomes = 0;
     foreach($active_ins as $count=>$in){
 
-        $in_outcome_validation = $this->BLOG_model->in_outcome_validate($in['in_outcome']);
+        $in_title_validation = $this->BLOG_model->in_title_validate($in['in_title']);
 
-        if(!$in_outcome_validation['status']){
+        if(!$in_title_validation['status']){
 
             $invalid_outcomes++;
 
             //Update blog:
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.$invalid_outcomes.'</td>';
-            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Blog Statuses */, $in['in_status_player_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></td>';
+            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Blog Statuses */, $in['in_status_player_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.echo_in_title($in['in_title']).'</a></td>';
             echo '</tr>';
 
         }
@@ -510,7 +510,7 @@ if(!$action) {
 
         $matching_results = $this->BLOG_model->in_fetch(array(
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-            'LOWER(in_outcome) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
+            'LOWER(in_title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
         ));
 
         //List the matching search:
@@ -545,29 +545,29 @@ if(!$action) {
                 if($replace_with_is_set){
                     //Do replacement:
                     $append_text = @$_GET['append_text'];
-                    $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']).$append_text;
-                    $in_outcome_validation = $this->BLOG_model->in_outcome_validate($new_outcome);
+                    $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_title']).$append_text;
+                    $in_title_validation = $this->BLOG_model->in_title_validate($new_outcome);
 
-                    if($in_outcome_validation['status']){
+                    if($in_title_validation['status']){
                         $qualifying_replacements++;
                     }
                 }
 
-                if($replace_with_is_confirmed && $in_outcome_validation['status']){
+                if($replace_with_is_confirmed && $in_title_validation['status']){
                     //Update blog:
                     $this->BLOG_model->in_update($in['in_id'], array(
-                        'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
+                        'in_title' => $in_title_validation['in_cleaned_outcome'],
                     ), true, $session_en['en_id']);
                 }
 
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
-                echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Blog Statuses */, $in['in_status_player_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.$in['in_outcome'].'</a></td>';
+                echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Blog Statuses */, $in['in_status_player_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.$in['in_title'].'</a></td>';
 
                 if($replace_with_is_set){
 
                     echo '<td style="text-align: left;">'.$new_outcome.'</td>';
-                    echo '<td style="text-align: left;">'.( !$in_outcome_validation['status'] ? ' <i class="fas fa-exclamation-triangle"></i> Error: '.$in_outcome_validation['message'] : ( $replace_with_is_confirmed && $in_outcome_validation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
+                    echo '<td style="text-align: left;">'.( !$in_title_validation['status'] ? ' <i class="fas fa-exclamation-triangle"></i> Error: '.$in_title_validation['message'] : ( $replace_with_is_confirmed && $in_title_validation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
                 } else {
                     //Show parents now:
                     echo '<td style="text-align: left;">';
@@ -581,7 +581,7 @@ if(!$action) {
                         'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                         'ln_child_blog_id' => $in['in_id'],
                     ), array('in_parent')) as $in_parent) {
-                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/blog/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_type_player_id']]['m_icon'] . '</a> &nbsp;</span>';
+                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/blog/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_title'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_type_player_id']]['m_icon'] . '</a> &nbsp;</span>';
                     }
 
                     echo '</td>';
@@ -628,19 +628,19 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
 
     //Do a query to detect blogs with the exact same title:
-    $q = $this->db->query('select in1.* from table_blog in1 where (select count(*) from table_blog in2 where in2.in_outcome = in1.in_outcome AND in2.in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_outcome ASC');
+    $q = $this->db->query('select in1.* from table_blog in1 where (select count(*) from table_blog in2 where in2.in_title = in1.in_title AND in2.in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_title ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
 
         $prev_title = null;
         foreach ($duplicates as $in) {
-            if ($prev_title != $in['in_outcome']) {
+            if ($prev_title != $in['in_title']) {
                 echo '<hr />';
-                $prev_title = $in['in_outcome'];
+                $prev_title = $in['in_title'];
             }
 
-            echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_player_id']]['m_name'].': '.$en_all_4737[$in['in_status_player_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_player_id']]['m_icon'] . '</span> <a href="/blog/' . $in['in_id'] . '"><b>' . $in['in_outcome'] . '</b></a> #' . $in['in_id'] . '</div>';
+            echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_player_id']]['m_name'].': '.$en_all_4737[$in['in_status_player_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_player_id']]['m_icon'] . '</span> <a href="/blog/' . $in['in_id'] . '"><b>' . $in['in_title'] . '</b></a> #' . $in['in_id'] . '</div>';
         }
 
     } else {
@@ -685,7 +685,7 @@ if(!$action) {
         'in_type_player_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
     ), array(), 0, 0, array('in_id' => 'DESC')) as $count => $in) {
 
-        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_player_id']).' '.echo_en_cache('en_all_6193' /* OR Intents */, $in['in_type_player_id']).' <b><a href="https://mench.com/blog/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></b></div>';
+        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_player_id']).' '.echo_en_cache('en_all_6193' /* OR Intents */, $in['in_type_player_id']).' <b><a href="https://mench.com/blog/'.$in['in_id'].'">'.echo_in_title($in['in_title']).'</a></b></div>';
 
         echo '<ul>';
         //Fetch all children for this OR:
@@ -704,7 +704,7 @@ if(!$action) {
             $all_steps += count($user_steps);
 
             $all_children++;
-            echo '<li>'.echo_en_cache('en_all_6186' /* Link Statuses */, $child_or['ln_status_player_id']).' '.echo_en_cache('en_all_4737' /* Intent Statuses */, $child_or['in_status_player_id']).' '.echo_en_cache('en_all_7585', $child_or['in_type_player_id']).' <a href="https://mench.com/blog/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_outcome($child_or['in_outcome']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
+            echo '<li>'.echo_en_cache('en_all_6186' /* Link Statuses */, $child_or['ln_status_player_id']).' '.echo_en_cache('en_all_4737' /* Intent Statuses */, $child_or['in_status_player_id']).' '.echo_en_cache('en_all_7585', $child_or['in_type_player_id']).' <a href="https://mench.com/blog/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_title($child_or['in_title']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
         }
         echo '</ul>';
         echo '<hr />';
@@ -753,12 +753,12 @@ if(!$action) {
 
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_player_id']]['m_icon'].'</span>';
-            echo '<a href="/blog/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_outcome'].'</a>';
+            echo '<a href="/blog/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
             echo '</div>';
 
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_player_id']]['m_icon'].'</span>';
-            echo '<a href="/blog/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].' [child]</a>';
+            echo '<a href="/blog/'.$in_ln['in_id'].'">'.$in_ln['in_title'].' [child]</a>';
             echo '</div>';
 
             if(count($this->READ_model->ln_fetch(array(
@@ -832,12 +832,12 @@ if(!$action) {
                 echo '<td style="text-align: left;">';
                 echo '<div>';
                 echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_player_id']]['m_icon'].'</span>';
-                echo '<a href="/blog/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_outcome'].'</a>';
+                echo '<a href="/blog/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
                 echo '</div>';
 
                 echo '<div>';
                 echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_player_id']]['m_icon'].'</span>';
-                echo '<a href="/blog/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].'</a>';
+                echo '<a href="/blog/'.$in_ln['in_id'].'">'.$in_ln['in_title'].'</a>';
                 echo '</div>';
                 echo '</td>';
                 echo '</tr>';

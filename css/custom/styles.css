@@ -826,18 +826,18 @@ input::-webkit-inner-spin-button {
     text-align: center;
 }
 
-.in_outcome {
+.in_title {
     line-height: 100%;
 }
 
-.in_outcome .title-main {
+.in_title .title-main {
     display: block;
     padding: 0 !important;
     font-size: 0.45em;
     line-height: 110% !important;
 }
 
-.in_outcome .title-sub {
+.in_title .title-sub {
     display: block;
     font-size: 0.3em;
     color: #999;
@@ -847,7 +847,7 @@ input::-webkit-inner-spin-button {
     margin: 5px 0 !important;
 }
 
-.in_outcome .title-sub i {
+.in_title .title-sub i {
     width: 20px;
     text-align: center;
 }
@@ -3263,11 +3263,11 @@ h4 .tip-badge {
     color: #FFF !important;
 }
 
-#b_in_outcome, #b_in_outcome::placeholder {
+#b_in_title, #b_in_title::placeholder {
     font-size: 18px !important;
 }
 
-#b_in_outcome::placeholder {
+#b_in_title::placeholder {
     color: #999;
 }
 

@@ -343,7 +343,6 @@ function en_count_references($en_input_id){
 
     $connectors_found = array();
     $CI =& get_instance();
-    return $connectors_found;
 
     foreach($CI->config->item('en_all_6194') /* Entity Database References */ as $en_id => $m){
         //Count rows:
@@ -1197,7 +1196,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
                 $export_row['alg_obj_status'] = intval($db_row['in_status_player_id']);
                 $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_player_id']]['m_icon']; //Entity type icon
-                $export_row['alg_obj_name'] = $db_row['in_outcome'];
+                $export_row['alg_obj_name'] = $db_row['in_title'];
 
 
                 //Add keywords:

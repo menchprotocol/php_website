@@ -231,7 +231,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
     $.post("/blog/in_link_or_create", {
         in_linked_id: in_linked_id,
         is_parent:is_parent,
-        in_outcome: intent_name,
+        in_title: intent_name,
         in_link_child_id: in_link_child_id
     }, function (data) {
 

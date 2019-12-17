@@ -103,7 +103,7 @@
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             'ln_type_player_id' => 4601, //BLOG KEYWORDS
             'ln_parent_player_id' => $en_id,
-        ), array('in_child'), 0, 0, array('in_outcome' => 'ASC'));
+        ), array('in_child'), 0, 0, array('in_title' => 'ASC'));
 
         if(!count($published_ins)){
             continue;

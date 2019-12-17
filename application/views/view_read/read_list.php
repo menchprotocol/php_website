@@ -24,7 +24,7 @@ foreach ($user_intents as $priority => $ln) {
 
     $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $ln);
 
-    echo '<b class="actionplan-title montserrat montserrat blog-url in-title-'.$ln['in_id'].'">' . $ln['in_outcome'] . '</b>';
+    echo '<b class="actionplan-title montserrat montserrat blog-url in-title-'.$ln['in_id'].'">' . $ln['in_title'] . '</b>';
     echo '<div class="actionplan-overview">';
     echo '<span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read" class="montserrat blog-info doupper">READ '.$completion_rate['completion_percentage'].'%</span>';
     echo '</div>';

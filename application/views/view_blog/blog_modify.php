@@ -52,11 +52,11 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '<div class="itemblog">';
 
         if($can_manage){
-            echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'" style="margin-bottom: 5px;">'.$in['in_outcome'].'</textarea>';
+            echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'" style="margin-bottom: 5px;">'.$in['in_title'].'</textarea>';
         } else {
-            echo '<h1>'.$in['in_outcome'].'</h1>';
+            echo '<h1>'.$in['in_title'].'</h1>';
         }
-        echo '<input type="hidden" id="current_blog_title" value="'.$in['in_outcome'].'" />';
+        echo '<input type="hidden" id="current_blog_title" value="'.$in['in_title'].'" />';
 
         echo '<div id="blog_title_save" class="hidden">';
         echo '<a href="javascript:in_save_title();" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="bottom" class="btn btn-blog">SAVE</a>';

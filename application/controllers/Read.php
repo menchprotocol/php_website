@@ -198,7 +198,7 @@ class Read extends CI_Controller
 
 
         $this->load->view('header', array(
-            'title' => echo_in_outcome($ins[0]['in_outcome'], true).' | READ',
+            'title' => echo_in_title($ins[0]['in_title'], true).' | READ',
         ));
 
 
@@ -690,7 +690,7 @@ class Read extends CI_Controller
             //Add blog node:
             $this->db->insert('gephi_nodes', array(
                 'id' => $id_prefix['in'].$in['in_id'],
-                'label' => $in['in_outcome'],
+                'label' => $in['in_title'],
                 //'size' => ( isset($in_metadata['in__metadata_max_seconds']) ? round(($in_metadata['in__metadata_max_seconds']/3600),0) : 0 ), //Max time
                 'size' => $node_size['in'],
                 'node_type' => 1, //Intent
@@ -1199,7 +1199,7 @@ class Read extends CI_Controller
         if($top_priority){
             //Communicate top-priority with user:
             $this->READ_model->dispatch_message(
-                '🔴 READING LIST prioritised with the focus on '.$top_priority['in']['in_outcome'].' ('.$top_priority['completion_rate']['completion_percentage'].'% done)',
+                '🔴 READING LIST prioritised with the focus on '.$top_priority['in']['in_title'].' ('.$top_priority['completion_rate']['completion_percentage'].'% done)',
                 array('en_id' => $_POST['js_pl_id']),
                 true,
                 array(

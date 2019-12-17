@@ -18,7 +18,7 @@ $time_estimate = echo_time_range($in);
 
 echo '<div style="padding-top:0px;">&nbsp;</div>';
 
-echo '<h1>' . echo_in_outcome($in['in_outcome']). '</h1>';
+echo '<h1>' . echo_in_title($in['in_title']). '</h1>';
 
 echo '<div class="sub_title">';
 

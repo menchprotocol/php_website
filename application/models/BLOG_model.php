@@ -19,12 +19,12 @@ class BLOG_model extends CI_Model
     {
 
         //What is required to create a new blog?
-        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_type_player_id', 'in_status_player_id'), $ln_creator_player_id)) {
+        if (detect_missing_columns($insert_columns, array('in_title', 'in_type_player_id', 'in_status_player_id'), $ln_creator_player_id)) {
             return false;
         }
 
-        if(!isset($insert_columns['in_completion_seconds']) || $insert_columns['in_completion_seconds'] < 0){
-            $insert_columns['in_completion_seconds'] = 0;
+        if(!isset($insert_columns['in_read_time']) || $insert_columns['in_read_time'] < 0){
+            $insert_columns['in_read_time'] = 0;
         }
 
         //Lets now add:
@@ -48,7 +48,7 @@ class BLOG_model extends CI_Model
                 $this->READ_model->ln_create(array(
                     'ln_creator_player_id' => $ln_creator_player_id,
                     'ln_child_blog_id' => $insert_columns['in_id'],
-                    'ln_content' => $insert_columns['in_outcome'],
+                    'ln_content' => $insert_columns['in_title'],
                     'ln_type_player_id' => 4250, //New Blog Created
                 ));
 
@@ -190,7 +190,7 @@ class BLOG_model extends CI_Model
                 $ln_parent_player_id = 0;
 
 
-                if($key=='in_outcome') {
+                if($key=='in_title') {
 
                     $ln_type_player_id = 10644; //Blog Iterated Outcome
                     $ln_content = word_change_calculator($before_data[0][$key], $value);
@@ -215,7 +215,7 @@ class BLOG_model extends CI_Model
                     $ln_parent_player_id = $value;
                     $ln_child_player_id = $before_data[0][$key];
 
-                } elseif($key=='in_completion_seconds') {
+                } elseif($key=='in_read_time') {
 
                     $ln_type_player_id = 10650; //Intent Iterated Completion Time
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']';
@@ -297,7 +297,7 @@ class BLOG_model extends CI_Model
         return $links_removed;
     }
 
-    function in_link_or_create($in_outcome, $ln_creator_player_id, $in_linked_id = 0, $is_parent = false, $new_in_status = 6183, $in_type_player_id = 6677 /* Intent Read-Only */, $link_in_id = 0)
+    function in_link_or_create($in_title, $ln_creator_player_id, $in_linked_id = 0, $is_parent = false, $new_in_status = 6183, $in_type_player_id = 6677 /* Intent Read-Only */, $link_in_id = 0)
     {
 
         /*
@@ -306,7 +306,7 @@ class BLOG_model extends CI_Model
          * appropriate links and return the blog view.
          *
          * Either creates a BLOG link between $in_linked_id & $link_in_id
-         * (IF $link_in_id>0) OR will create a new blog with outcome $in_outcome
+         * (IF $link_in_id>0) OR will create a new blog with outcome $in_title
          * and link it to $in_linked_id (In this case $link_in_id will be 0)
          *
          * p.s. Inputs have already been validated via blogs/in_link_or_create() function
@@ -383,7 +383,7 @@ class BLOG_model extends CI_Model
                 //Ooopsi, this is a duplicate!
                 return array(
                     'status' => 0,
-                    'message' => '[' . $intent_new['in_outcome'] . '] is already linked here.',
+                    'message' => '[' . $intent_new['in_title'] . '] is already linked here.',
                 );
 
             } elseif ($in_linked_id > 0 && $link_in_id == $in_linked_id) {
@@ -391,7 +391,7 @@ class BLOG_model extends CI_Model
                 //Make sure none of the parents are the same:
                 return array(
                     'status' => 0,
-                    'message' => 'You cannot add "' . $intent_new['in_outcome'] . '" as its own '.( $is_parent ? 'parent' : 'child' ).'.',
+                    'message' => 'You cannot add "' . $intent_new['in_title'] . '" as its own '.( $is_parent ? 'parent' : 'child' ).'.',
                 );
 
             }
@@ -401,16 +401,16 @@ class BLOG_model extends CI_Model
             //We are NOT linking to an existing blog, but instead, we're creating a new blog
 
             //Validate Intent Outcome:
-            $in_outcome_validation = $this->BLOG_model->in_outcome_validate($in_outcome);
-            if(!$in_outcome_validation['status']){
+            $in_title_validation = $this->BLOG_model->in_title_validate($in_title);
+            if(!$in_title_validation['status']){
                 //We had an error, return it:
-                return $in_outcome_validation;
+                return $in_title_validation;
             }
 
 
             //Create new blog:
             $intent_new = $this->BLOG_model->in_create(array(
-                'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
+                'in_title' => $in_title_validation['in_cleaned_outcome'],
                 'in_type_player_id' => $in_type_player_id,
                 'in_status_player_id' => $new_in_status,
             ), true, $ln_creator_player_id);
@@ -793,7 +793,7 @@ class BLOG_model extends CI_Model
         $common_totals = $this->BLOG_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-        ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_completion_seconds) as total_seconds');
+        ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_read_time) as total_seconds');
 
         $common_base_resources = array(
             'steps' => $common_totals[0]['total_steps'],
@@ -1066,24 +1066,24 @@ class BLOG_model extends CI_Model
 
     }
 
-    function in_outcome_validate($in_outcome){
+    function in_title_validate($in_title){
 
         //Validate:
-        if(!strlen(trim($in_outcome))){
+        if(!strlen(trim($in_title))){
 
             return array(
                 'status' => 0,
                 'message' => 'Title missing',
             );
 
-        } elseif(substr_count($in_outcome , '  ') > 0){
+        } elseif(substr_count($in_title , '  ') > 0){
 
             return array(
                 'status' => 0,
                 'message' => 'Title cannot include double spaces',
             );
 
-        } elseif (strlen($in_outcome) > config_var(11071)) {
+        } elseif (strlen($in_title) > config_var(11071)) {
 
             return array(
                 'status' => 0,
@@ -1095,7 +1095,7 @@ class BLOG_model extends CI_Model
         //All good, return success:
         return array(
             'status' => 1,
-            'in_cleaned_outcome' => trim($in_outcome),
+            'in_cleaned_outcome' => trim($in_title),
         );
 
     }

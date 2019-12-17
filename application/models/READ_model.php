@@ -97,7 +97,7 @@ class READ_model extends CI_Model
                                 'in_id' => $value,
                             ));
 
-                            $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $before_ins[0]['in_outcome'] . '] to [' . $after_ins[0]['in_outcome'] . ']' . "\n";
+                            $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $before_ins[0]['in_title'] . '] to [' . $after_ins[0]['in_title'] . ']' . "\n";
 
                         } elseif(in_array($key, array('ln_content', 'ln_order'))){
 
@@ -366,7 +366,7 @@ class READ_model extends CI_Model
 
                         //BLOG
                         $ins = $this->BLOG_model->in_fetch(array( 'in_id' => $insert_columns[$en_all_6232[$en_id]['m_desc']] ));
-                        $html_message .= '<div>' . $m['m_name'] . ': <a href="https://mench.com/blog/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_outcome'].'</a></div>';
+                        $html_message .= '<div>' . $m['m_name'] . ': <a href="https://mench.com/blog/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_title'].'</a></div>';
 
                     } elseif (in_array(6160 , $m['m_parents'])) {
 
@@ -678,7 +678,7 @@ class READ_model extends CI_Model
                     ));
 
                     $this->READ_model->dispatch_message(
-                        echo_random_message('next_blog_is') . $next_step_ins[0]['in_outcome'],
+                        echo_random_message('next_blog_is') . $next_step_ins[0]['in_title'],
                         array('en_id' => $en_id),
                         true
                     );
@@ -925,7 +925,7 @@ class READ_model extends CI_Model
 
         //Communicate with user:
         $this->READ_model->dispatch_message(
-            'I have removed the blog '.$ins[0]['in_outcome'].' from your Bookmarks.',
+            'I have removed the blog '.$ins[0]['in_title'].' from your Bookmarks.',
             array('en_id' => $en_id),
             true,
             array(
@@ -1104,11 +1104,11 @@ class READ_model extends CI_Model
                     $found_match++;
 
                     //It did match here! Log and notify user!
-                    $message = 'You completed the step to '.echo_in_outcome($in['in_outcome'], true).'. ';
+                    $message = 'You completed the step to '.echo_in_title($in['in_title'], true).'. ';
                     $message .= 'The result:';
                     $message .= "\n";
                     $message .= "\n==================";
-                    $message .= "\n" . echo_in_outcome($locked_link['in_outcome'], true);
+                    $message .= "\n" . echo_in_title($locked_link['in_title'], true);
                     $message .= "\n==================";
 
 
@@ -1710,7 +1710,7 @@ class READ_model extends CI_Model
                 } else {
 
                     //Add simple message:
-                    $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $push_message);
+                    $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_title($child_in['in_title'], $push_message);
                     $next_step_message .= ( $is_completed ? ' [COMPLETED]' : '' );
 
                 }
@@ -1819,7 +1819,7 @@ class READ_model extends CI_Model
                 if($push_message){
 
                     if(!in_array(($key+1), $answer_referencing)){
-                        $next_step_message .= "\n\n" . ($key+1).'. '.echo_in_outcome($child_in['in_outcome'], true);
+                        $next_step_message .= "\n\n" . ($key+1).'. '.echo_in_title($child_in['in_title'], true);
                     }
 
                     //Add answer options to Quick Reply:
@@ -1865,11 +1865,11 @@ class READ_model extends CI_Model
 
 
                     //Add to answer list:
-                    $potential_number = trim(str_replace('.','', echo_in_outcome($child_in['in_outcome'], true)));
+                    $potential_number = trim(str_replace('.','', echo_in_title($child_in['in_title'], true)));
                     if(is_numeric($potential_number) && intval($potential_number)>0 && intval($potential_number)<=$max_html_answers && isset($inline_answers[intval($potential_number)])){
                         $next_step_message .= $inline_answers[intval($potential_number)];
                     } else {
-                        $next_step_message .= echo_in_outcome($child_in['in_outcome']);
+                        $next_step_message .= echo_in_title($child_in['in_title']);
                     }
 
                 }
@@ -1926,7 +1926,7 @@ class READ_model extends CI_Model
 
                 //Are we still clean?
                 $key = 0;
-                $common_prefix = common_prefix($in__children, 'in_outcome', $max_and_list); //Look only up to the max number of listed intents
+                $common_prefix = common_prefix($in__children, 'in_title', $max_and_list); //Look only up to the max number of listed intents
 
                 foreach ($in__children as $child_in) {
 
@@ -1961,7 +1961,7 @@ class READ_model extends CI_Model
                     } else {
 
                         //Add simple message:
-                        $next_step_message .= ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $push_message, $common_prefix);
+                        $next_step_message .= ($key + 1) . '. ' . echo_in_title($child_in['in_title'], $push_message, $common_prefix);
 
                     }
 
@@ -2294,7 +2294,7 @@ class READ_model extends CI_Model
         $common_totals = $this->BLOG_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-        ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_completion_seconds) as total_seconds');
+        ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_read_time) as total_seconds');
 
         //Count completed for user:
         $common_completed = $this->READ_model->ln_fetch(array(
@@ -2303,7 +2303,7 @@ class READ_model extends CI_Model
             'ln_parent_blog_id IN (' . join(',', $flat_common_steps ) . ')' => null,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-        ), array('in_parent'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_completion_seconds) as completed_seconds');
+        ), array('in_parent'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_read_time) as completed_seconds');
 
         //Calculate common steps and expansion steps recursively for this user:
         $metadata_this = array(
@@ -2420,7 +2420,7 @@ class READ_model extends CI_Model
     function dispatch_subscription_email($related_intents){
 
         $en_all_7703 = $this->config->item('en_all_7703'); //Load all link types
-        $in_outcomes = array();
+        $in_titles = array();
         $insert_columns = array(); //TODO fix this
 
         //Inform authors:
@@ -2454,19 +2454,19 @@ class READ_model extends CI_Model
                 }
 
 
-                if(!isset($in_outcomes[$subscriber_en['ln_child_blog_id']])){
+                if(!isset($in_titles[$subscriber_en['ln_child_blog_id']])){
                     $ins = $this->BLOG_model->in_fetch(array(
                         'in_id' => $subscriber_en['ln_child_blog_id'],
                     ));
-                    $in_outcomes[$subscriber_en['ln_child_blog_id']] = echo_in_outcome($ins[0]['in_outcome']);
+                    $in_titles[$subscriber_en['ln_child_blog_id']] = echo_in_title($ins[0]['in_title']);
                 }
 
 
-                $subject = $in_outcomes[$subscriber_en['ln_child_blog_id']] . ' | ' . $en_all_7703[$insert_columns['ln_type_player_id']]['m_name'].' | Mench';
+                $subject = $in_titles[$subscriber_en['ln_child_blog_id']] . ' | ' . $en_all_7703[$insert_columns['ln_type_player_id']]['m_name'].' | Mench';
 
                 //Compose email body, start with link content:
                 $personalized_intro = '<div>Hi '.one_two_explode('',' ',$subscriber_en['en_name']).' 👋</div>';
-                $personalized_intro .= '<br /><div>There is new activity on the blog to '.$in_outcomes[$subscriber_en['ln_child_blog_id']].':</div>';
+                $personalized_intro .= '<br /><div>There is new activity on the blog to '.$in_titles[$subscriber_en['ln_child_blog_id']].':</div>';
 
                 //Append link object links:
                 $en_all_6232 = $this->config->item('en_all_6232'); //PLATFORM VARIABLES
@@ -2488,7 +2488,7 @@ class READ_model extends CI_Model
 
                         //BLOG
                         $ins = $this->BLOG_model->in_fetch(array( 'in_id' => $insert_columns[$en_all_6232[$en_id]['m_desc']] ));
-                        $personalized_intro .= '<div>' . $m['m_name'] . ': <a href="https://mench.com/blog/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_outcome'].'</a></div>';
+                        $personalized_intro .= '<div>' . $m['m_name'] . ': <a href="https://mench.com/blog/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_title'].'</a></div>';
 
                     } elseif(in_array(4367 , $m['m_parents'])){
 
@@ -3319,7 +3319,7 @@ class READ_model extends CI_Model
 
 
                 //Add Intent up-vote to beginning:
-                $output_body_message = '<div style="margin-bottom:5px;" class="'.superpower_active(10984).'"><span class="icon-block"><i class="far fa-thumbs-up ispink"></i></span><a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent" class="montserrat">' . echo_in_outcome($referenced_ins[0]['in_outcome'], false) . '</a></div>' . $output_body_message;
+                $output_body_message = '<div style="margin-bottom:5px;" class="'.superpower_active(10984).'"><span class="icon-block"><i class="far fa-thumbs-up ispink"></i></span><a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent" class="montserrat">' . echo_in_title($referenced_ins[0]['in_title'], false) . '</a></div>' . $output_body_message;
 
             } else {
 
@@ -3329,7 +3329,7 @@ class READ_model extends CI_Model
                 $output_body_message = trim(str_replace('#' . $referenced_ins[0]['in_id'], '', $output_body_message));
 
                 //Add Intent up-vote to beginning:
-                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;"><a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($referenced_ins[0]['in_outcome'], false) . '</a></div>' . $output_body_message;
+                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;"><a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_title($referenced_ins[0]['in_title'], false) . '</a></div>' . $output_body_message;
 
             }
 
@@ -3728,7 +3728,7 @@ class READ_model extends CI_Model
 
                 //Show success message to user:
                 $this->READ_model->dispatch_message(
-                    'I have successfully removed [' . $user_intents[0]['in_outcome'] . '] from your 🔴 READING LIST.',
+                    'I have successfully removed [' . $user_intents[0]['in_title'] . '] from your 🔴 READING LIST.',
                     $en,
                     true,
                     array(
@@ -3790,7 +3790,7 @@ class READ_model extends CI_Model
 
             //Confirm if they are interested to subscribe to this blog:
             $this->READ_model->dispatch_message(
-                'Hello hello 👋 are you interested to ' . $ins[0]['in_outcome'] . '?',
+                'Hello hello 👋 are you interested to ' . $ins[0]['in_title'] . '?',
                 $en,
                 true,
                 array(
@@ -3848,7 +3848,7 @@ class READ_model extends CI_Model
 
                 //Let User know that they have already subscribed to this blog:
                 $this->READ_model->dispatch_message(
-                    'The blog [' . $ins[0]['in_outcome'] . '] has already been added to your 🔴 READING LIST. /link:🔴 READING LIST:https://mench.com/' . $ins[0]['in_id'],
+                    'The blog [' . $ins[0]['in_title'] . '] has already been added to your 🔴 READING LIST. /link:🔴 READING LIST:https://mench.com/' . $ins[0]['in_id'],
                     $en,
                     true
                 );
@@ -4172,7 +4172,7 @@ class READ_model extends CI_Model
                 foreach($user_intents as $user_intent){
                     //Completion Percentage so far:
                     $completion_rate = $this->READ_model->read__completion_progress($en['en_id'], $user_intent);
-                    $message .= "\n\n" . $completion_rate['completion_percentage'].'% ['.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' step'.echo__s($completion_rate['steps_total']).'] '.echo_in_outcome($user_intent['in_outcome']);
+                    $message .= "\n\n" . $completion_rate['completion_percentage'].'% ['.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' step'.echo__s($completion_rate['steps_total']).'] '.echo_in_title($user_intent['in_title']);
                 }
 
                 //Dispatch Message:
@@ -4265,7 +4265,7 @@ class READ_model extends CI_Model
 
                 foreach ($user_intents as $counter => $in) {
                     //Construct unsubscribe confirmation body:
-                    $message .= "\n\n" . ($counter + $increment) . '. Stop ' . $in['in_outcome'];
+                    $message .= "\n\n" . ($counter + $increment) . '. Stop ' . $in['in_title'];
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => ($counter + $increment),
@@ -4390,7 +4390,7 @@ class READ_model extends CI_Model
 
                 //List Intent:
                 $time_range = echo_time_range($ins[0]);
-                $message .= "\n\n" . $new_intent_count . '. ' . $ins[0]['in_outcome'] . ( $time_range ? ' in ' . strip_tags($time_range) : '' );
+                $message .= "\n\n" . $new_intent_count . '. ' . $ins[0]['in_title'] . ( $time_range ? ' in ' . strip_tags($time_range) : '' );
                 array_push($quick_replies, array(
                     'content_type' => 'text',
                     'title' => $new_intent_count,

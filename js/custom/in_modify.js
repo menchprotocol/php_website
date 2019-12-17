@@ -122,7 +122,7 @@ function in_save_title(){
 
     $.post("/blog/in_save_title", {
         in_id: in_loaded_id,
-        in_outcome: $('#new_blog_title').val(),
+        in_title: $('#new_blog_title').val(),
     }, function (data) {
         if (data.status) {
 
@@ -145,7 +145,7 @@ function in_save_title(){
 
 
 function in_unlink(in_id, ln_id){
-    var r = confirm("Unlink ["+$('.in_outcome_'+in_id).text()+"]?");
+    var r = confirm("Unlink ["+$('.in_title_'+in_id).text()+"]?");
     if (r == true) {
 
         //Fetch Blog Data to load modify widget:
@@ -206,10 +206,10 @@ function in_modify_save() {
     //Prepare data to be modified for this blog:
     var modify_data = {
         in_id: in_id,
-        in_outcome: $('#in_outcome').val(),
+        in_title: $('#in_title').val(),
         in_status_player_id: parseInt($('#in_status_player_id').val()),
         in_type_player_id: parseInt($('#in_type_player_id').val()),
-        in_completion_seconds: ( $('#in_completion_seconds').val().length > 0 ? parseInt($('#in_completion_seconds').val()) : 0 ),
+        in_read_time: ( $('#in_read_time').val().length > 0 ? parseInt($('#in_read_time').val()) : 0 ),
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
 
         //Link variables:
@@ -288,15 +288,15 @@ function in_modify_save() {
 
 
                 //Did the outcome change?
-                if(data.formatted_in_outcome){
+                if(data.formatted_in_title){
                     //yes, update it:
-                    $(".in_outcome_" + modify_data['in_id']).html(data.formatted_in_outcome);
+                    $(".in_title_" + modify_data['in_id']).html(data.formatted_in_title);
 
                     //Set title:
-                    $('.edit-header').html('<i class="fas fa-cog"></i> ' + modify_data['in_outcome']);
+                    $('.edit-header').html('<i class="fas fa-cog"></i> ' + modify_data['in_title']);
 
                     //Also update possible child icons:
-                    $('.in_child_icon_' + modify_data['in_id']).attr('data-original-title', modify_data['in_outcome']);
+                    $('.in_child_icon_' + modify_data['in_id']).attr('data-original-title', modify_data['in_title']);
                 }
 
 

@@ -69,7 +69,7 @@ class Blog extends CI_Controller {
 
         //Load views:
         $this->load->view('header', array(
-            'title' => $ins[0]['in_outcome'].' | BLOG'
+            'title' => $ins[0]['in_title'].' | BLOG'
         ));
         $this->load->view('view_blog/blog_modify', array(
             'in' => $ins[0],
@@ -94,7 +94,7 @@ class Blog extends CI_Controller {
             'ln_parent_blog_id' => $in_id,
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $rank => $assessment_in){
 
-            echo '<br /><b>'.($rank+1). ') '. $assessment_in['in_outcome'].'</b><br />';
+            echo '<br /><b>'.($rank+1). ') '. $assessment_in['in_title'].'</b><br />';
 
             //Assessments:
             foreach($this->READ_model->ln_fetch(array(
@@ -104,7 +104,7 @@ class Blog extends CI_Controller {
                 'in_type_player_id IN (' . join(',', $this->config->item('en_ids_6193')) . ')' => null, //OR Blogs
                 'ln_parent_blog_id' => $assessment_in['in_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $rank2 => $assessment2_in){
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;'.($rank+1).'.'.($rank2+1). ') '. $assessment2_in['in_outcome'].'<br />';
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;'.($rank+1).'.'.($rank2+1). ') '. $assessment2_in['in_title'].'<br />';
 
                 //Questions:
                 foreach($this->READ_model->ln_fetch(array(
@@ -131,7 +131,7 @@ class Blog extends CI_Controller {
                     }
 
 
-                    echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.($rank+1).'.'.($rank2+1). '.'.($rank3+1). ') '. htmlentities($assessment3_in['in_outcome']).' ['.$ln_metadata['tr__assessment_points'].']<br />';
+                    echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.($rank+1).'.'.($rank2+1). '.'.($rank3+1). ') '. htmlentities($assessment3_in['in_title']).' ['.$ln_metadata['tr__assessment_points'].']<br />';
                 }
 
             }
@@ -201,7 +201,7 @@ class Blog extends CI_Controller {
         //Return report:
         return echo_json(array(
             'status' => 1,
-            'message' => '<h3>'.$en_all_7585[$ins[0]['in_type_player_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_player_id']]['m_icon'].' '.echo_in_outcome($ins[0]['in_outcome'], false).'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_player_id']),
+            'message' => '<h3>'.$en_all_7585[$ins[0]['in_type_player_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_player_id']]['m_icon'].' '.echo_in_title($ins[0]['in_title'], false).'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_player_id']),
         ));
 
     }
@@ -284,7 +284,7 @@ class Blog extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Intent ID',
             ));
-        } elseif (!isset($_POST['in_outcome']) || strlen($_POST['in_outcome']) < 1) {
+        } elseif (!isset($_POST['in_title']) || strlen($_POST['in_title']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Blog Title',
@@ -292,23 +292,23 @@ class Blog extends CI_Controller {
         }
 
         //Validate Intent Outcome:
-        $in_outcome_validation = $this->BLOG_model->in_outcome_validate($_POST['in_outcome']);
-        if(!$in_outcome_validation['status']){
+        $in_title_validation = $this->BLOG_model->in_title_validate($_POST['in_title']);
+        if(!$in_title_validation['status']){
             //We had an error, return it:
-            return echo_json($in_outcome_validation);
+            return echo_json($in_title_validation);
         }
 
 
         //This field has been updated, update one field at a time:
         $this->BLOG_model->in_update($_POST['in_id'], array(
-            'in_outcome' => $_POST['in_outcome'],
+            'in_title' => $_POST['in_title'],
         ), true, $session_en['en_id']);
 
 
         return echo_json(array(
             'status' => 1,
             'message' => 'Updated successfully.',
-            'in_cleaned_outcome' => $in_outcome_validation['in_cleaned_outcome'],
+            'in_cleaned_outcome' => $in_title_validation['in_cleaned_outcome'],
         ));
     }
 
@@ -352,7 +352,7 @@ class Blog extends CI_Controller {
         /*
          *
          * Either creates a BLOG link between in_linked_id & in_link_child_id
-         * OR will create a new blog with outcome in_outcome and then link it
+         * OR will create a new blog with outcome in_title and then link it
          * to in_linked_id (In this case in_link_child_id=0)
          *
          * */
@@ -374,12 +374,12 @@ class Blog extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Is Parent setting',
             ));
-        } elseif (!isset($_POST['in_outcome']) || !isset($_POST['in_link_child_id']) || ( strlen($_POST['in_outcome']) < 1 && intval($_POST['in_link_child_id']) < 1)) {
+        } elseif (!isset($_POST['in_title']) || !isset($_POST['in_link_child_id']) || ( strlen($_POST['in_title']) < 1 && intval($_POST['in_link_child_id']) < 1)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing either Intent Outcome OR Child Intent ID',
             ));
-        } elseif (strlen($_POST['in_outcome']) > config_var(11071)) {
+        } elseif (strlen($_POST['in_title']) > config_var(11071)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Intent outcome cannot be longer than '.config_var(11071).' characters',
@@ -417,7 +417,7 @@ class Blog extends CI_Controller {
         }
 
         //All seems good, go ahead and try creating the blog:
-        return echo_json($this->BLOG_model->in_link_or_create(trim($_POST['in_outcome']), $session_en['en_id'], $_POST['in_linked_id'], intval($_POST['is_parent']), 6183, $new_intent_type, $_POST['in_link_child_id']));
+        return echo_json($this->BLOG_model->in_link_or_create(trim($_POST['in_title']), $session_en['en_id'], $_POST['in_linked_id'], intval($_POST['is_parent']), 6183, $new_intent_type, $_POST['in_link_child_id']));
 
     }
 
@@ -594,15 +594,15 @@ class Blog extends CI_Controller {
                 'status' => 0,
                 'message' => 'Invalid in_type_player_id',
             ));
-        } elseif (!isset($_POST['in_outcome'])) {
+        } elseif (!isset($_POST['in_title'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing in_outcome',
+                'message' => 'Missing in_title',
             ));
-        } elseif (!isset($_POST['in_completion_seconds']) || intval($_POST['in_completion_seconds']) < 0) {
+        } elseif (!isset($_POST['in_read_time']) || intval($_POST['in_read_time']) < 0) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing in_completion_seconds',
+                'message' => 'Missing in_read_time',
             ));
         } elseif (!isset($_POST['in_status_player_id'])) {
             return echo_json(array(
@@ -646,25 +646,25 @@ class Blog extends CI_Controller {
 
 
         //Validate Intent Outcome:
-        $in_outcome_validation = $this->BLOG_model->in_outcome_validate($_POST['in_outcome']);
-        if(!$in_outcome_validation['status']){
+        $in_title_validation = $this->BLOG_model->in_title_validate($_POST['in_title']);
+        if(!$in_title_validation['status']){
             //We had an error, return it:
-            return echo_json($in_outcome_validation);
+            return echo_json($in_title_validation);
         }
 
         //Transform blog type into standard DB field:
         $in_current = $ins[0];
 
         //So we consistently have all variables in POST:
-        $_POST['in_outcome'] = $in_outcome_validation['in_cleaned_outcome'];
+        $_POST['in_title'] = $in_title_validation['in_cleaned_outcome'];
 
 
         //Prep new variables:
         $in_update = array(
             'in_type_player_id' => $_POST['in_type_player_id'],
             'in_status_player_id' => $_POST['in_status_player_id'],
-            'in_completion_seconds' => intval($_POST['in_completion_seconds']),
-            'in_outcome' => $_POST['in_outcome'],
+            'in_read_time' => intval($_POST['in_read_time']),
+            'in_title' => $_POST['in_title'],
         );
 
 
@@ -819,7 +819,7 @@ class Blog extends CI_Controller {
             'status' => 1,
             'message' => '<i class="fas fa-check"></i> Saved',
             'remove_from_ui' => $remove_from_ui,
-            'formatted_in_outcome' => ( isset($in_update['in_outcome']) ? echo_in_outcome($in_update['in_outcome'], false) : null ),
+            'formatted_in_title' => ( isset($in_update['in_title']) ? echo_in_title($in_update['in_title'], false) : null ),
             'recursive_update_count' => $recursive_update_count,
             'in__metadata_max_steps' => -( isset($in_metadata['in__metadata_max_steps']) ? $in_metadata['in__metadata_max_steps'] : 0 ),
 

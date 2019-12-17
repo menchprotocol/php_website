@@ -191,19 +191,19 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
     }
 }
 
-function echo_in_outcome($in_outcome, $push_message = false, $common_prefix = null){
+function echo_in_title($in_title, $push_message = false, $common_prefix = null){
 
     if(strlen($common_prefix) > 0){
-        $in_outcome = trim(substr($in_outcome, strlen($common_prefix)));
+        $in_title = trim(substr($in_title, strlen($common_prefix)));
     }
 
     if($push_message){
 
-        return $in_outcome;
+        return $in_title;
 
     } else {
 
-        return htmlentities(trim($in_outcome));
+        return htmlentities(trim($in_title));
 
     }
 
@@ -673,7 +673,7 @@ function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $com
     //Open list:
     $ui = '<a href="/'.$in['in_id']. '" class="list-group-item itemread">';
 
-    $ui .= echo_in_outcome($in['in_outcome'], false, $common_prefix);
+    $ui .= echo_in_title($in['in_title'], false, $common_prefix);
 
     if($is_unlocked_step){
         $en_all_4229 = $CI->config->item('en_all_4229'); //Link Metadata
@@ -696,7 +696,7 @@ function echo_actionplan_step_parent($in)
     $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
     $ui .= '</span>';
 
-    $ui .= ' <span>' . echo_in_outcome($in['in_outcome']).'</span>';
+    $ui .= ' <span>' . echo_in_title($in['in_title']).'</span>';
 
     $ui .= '</a>';
 
@@ -1146,7 +1146,7 @@ function echo_tree_steps($in, $push_message = 0, $autoexpand = false)
 
     //Now do measurements:
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-    $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : '' ).' to '.echo_in_outcome($in['in_outcome'], false).'.';
+    $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : '' ).' to '.echo_in_title($in['in_title'], false).'.';
 
 
     if ($push_message) {
@@ -1186,7 +1186,7 @@ function echo_tree_actionplan($in, $autoexpand){
     }
 
 
-    $common_prefix = common_prefix($in__children, 'in_outcome');
+    $common_prefix = common_prefix($in__children, 'in_title');
     $return_html = '';
     $return_html .= '<div class="list-group maxout public_ap">';
 
@@ -1230,7 +1230,7 @@ function echo_tree_actionplan($in, $autoexpand){
         }
 
 
-        $return_html .= '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome'], false, $common_prefix) . '</span>';
+        $return_html .= '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_title($in_level2['in_title'], false, $common_prefix) . '</span>';
 
 
         if($has_level2_content){
@@ -1259,7 +1259,7 @@ function echo_tree_actionplan($in, $autoexpand){
             if (count($in_level2_children) > 0) {
 
                 //See if they have a common base:
-                $common_prefix_granchild = common_prefix($in_level2_children, 'in_outcome');
+                $common_prefix_granchild = common_prefix($in_level2_children, 'in_title');
 
                 //List level 3:
                 $return_html .= '<ul class="action-plan-sub-list">';
@@ -1283,7 +1283,7 @@ function echo_tree_actionplan($in, $autoexpand){
                         $return_html .= '<span class="icon-block"><i class="fal fa-check-circle"></i></span>';
                     }
 
-                    $return_html .= echo_in_outcome($in_level3['in_outcome'], false, $common_prefix_granchild);
+                    $return_html .= echo_in_title($in_level3['in_title'], false, $common_prefix_granchild);
 
                     if(count($in_level3_messages) > 0){
                         $return_html .= '</a>';
@@ -1336,7 +1336,7 @@ function echo_en_messages($ln){
 
 
     //Referenced Intent:
-    $ui .= '<li><a class="btn btn-blog button-max" style="border:2px solid #f4d52d !important;" href="/blog/' . $ln['ln_child_blog_id'] . '" target="_parent" title="Message Intent: '.$ln['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_player_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_type_player_id']]['m_icon'].' '.$ln['in_outcome'].'</a></li>';
+    $ui .= '<li><a class="btn btn-blog button-max" style="border:2px solid #f4d52d !important;" href="/blog/' . $ln['ln_child_blog_id'] . '" target="_parent" title="Message Intent: '.$ln['in_title'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_player_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_type_player_id']]['m_icon'].' '.$ln['in_title'].'</a></li>';
 
     //READ HISTORY:
     /*
@@ -1548,7 +1548,7 @@ function echo_in_answer($in, $parent_in)
     $ui = '<a href="'.$url . '" class="list-group-item">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
-    $ui .= '<b class="montserrat blog-url">'.echo_in_outcome($in['in_outcome'], false).'</b>';
+    $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false).'</b>';
 
     if($parent_in_id > 0){
         if(isset($session_en['en_id'])){
@@ -1590,7 +1590,7 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
     $ui = '<a href="'.( $url_prefix ? $url_prefix : ( $CI->uri->segment(1)=='read' ? '/read' : '' ) ).'/'.$in['in_id'] . '" class="list-group-item '.( $url_prefix ? 'itemblog' : 'itemread' ).'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
-    $ui .= '<b class="montserrat blog-url">'.echo_in_outcome($in['in_outcome'], false).'</b>';
+    $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false).'</b>';
 
     //Now do measurements:
     /*
@@ -1677,7 +1677,7 @@ function echo_in_dashboard($in)
     //FOLLOW
     $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="/blog/' . $in['in_id']. '"><i class="fas fa-angle-right"></i></a></div>';
     $ui .= '<span class="icon-block">'.$en_all_7585[$in['in_type_player_id']]['m_icon'].'</span>';
-    $ui .= '<b class="montserrat">'.echo_in_outcome($in['in_outcome'], false).'</b>';
+    $ui .= '<b class="montserrat">'.echo_in_title($in['in_title'], false).'</b>';
     $ui .= '</div>';
     return $ui;
 
@@ -1725,7 +1725,7 @@ function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_leve
 
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Type: '.$en_all_7585[$in_ln['in_type_player_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_player_id']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Status: '.$en_all_4737[$in_ln['in_status_player_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_player_id']]['m_icon']. '</span>';
-        $ui .= '<a href="/play/admin_tools/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this intent"><u>' .   echo_in_outcome($in_ln['in_outcome'], false) . '</u></a>';
+        $ui .= '<a href="/play/admin_tools/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this intent"><u>' .   echo_in_title($in_ln['in_title'], false) . '</u></a>';
 
         $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_player_id'] == 4228 && in_array($parent_in_type_player_id , $CI->config->item('en_ids_6193') /* OR Intents */ )) || ($in_ln['ln_type_player_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
 
@@ -2214,7 +2214,7 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
     $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>';
 
 
-    $ui .= '<b class="in_outcome_' . $in['in_id'] . ' montserrat inline-block" style="padding-top:5px;">' . echo_in_outcome($in['in_outcome'], false) . '</b>';
+    $ui .= '<b class="in_title_' . $in['in_id'] . ' montserrat inline-block" style="padding-top:5px;">' . echo_in_title($in['in_title'], false) . '</b>';
 
 
 
@@ -2247,7 +2247,7 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
     $ui .= '<span class="'.superpower_active(10984).'">';
     foreach ($in['in__parents'] as $in_parent){
         if($in_linked_id!=$in_parent['in_id']){
-            $ui .= ' &nbsp;<a href="/blog/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_outcome']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_player_id']]['m_icon'] . '</a>';
+            $ui .= ' &nbsp;<a href="/blog/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_player_id']]['m_icon'] . '</a>';
         }
     }
     $ui .= '</span>';
