@@ -52,10 +52,11 @@ if($has_pending_intentions){
 echo ' <a class="btn btn-read inline-block" href="/"  style="margin: 20px 0;"><i class="fas fa-plus"></i> NEW READ</a>';
 
 
-//Give option to delete all:
-echo '<div class="pull-right"  style="margin: 20px 0;"><a href="/read/read_remove_all" style="font-size:0.8em; color:#AAA;" data-toggle="tooltip" title="Remove ALL reads from your reading list" data-placement="left"><i class="fas fa-trash"></i>ALL</a></div>';
-
 if($has_multiple_intentions){
+
+    //Give option to delete all:
+    echo '<div class="pull-right"  style="margin: 20px 0;"><a href="/read/read_remove_all" style="font-size:0.8em; color:#AAA; text-decoration: none;" class="montserrat doupper" data-toggle="tooltip" title="Remove ALL reads from your reading list" data-placement="left"><i class="fas fa-trash"></i> ALL</a></div>';
+
     //Give sorting tip:
     echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: Prioritize your reads by holding them & dragging them up/down.</div>';
 }
