@@ -343,6 +343,7 @@ function en_count_references($en_input_id){
 
     $connectors_found = array();
     $CI =& get_instance();
+    return 0;
 
     foreach($CI->config->item('en_all_6194') /* Entity Database References */ as $en_id => $m){
         //Count rows:
