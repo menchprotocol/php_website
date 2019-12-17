@@ -117,7 +117,7 @@ $config['en_all_4463'] = array(
     4485 => array(
         'm_icon' => '<i class="fas fa-comment-plus yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG NOTES',
-        'm_desc' => 'Intent notes are various information collected around intentions that enable Mench to operate as a Personal Assistant for students looking to accomplish an intent.',
+        'm_desc' => 'Intent notes are various information collected around blogs that enable Mench to operate as a Personal Assistant for students looking to accomplish an intent.',
         'm_parents' => array(12079,7552,4535,4527,4463),
     ),
     3084 => array(
@@ -7013,7 +7013,7 @@ $config['en_all_6827'] = array(
     4430 => array(
         'm_icon' => '<i class="far fa-user"></i>',
         'm_name' => 'PLAYERS',
-        'm_desc' => 'Users who are pursuing their intentions using Mench, mainly to get hired at their dream job',
+        'm_desc' => 'Users who are pursuing their blogs using Mench, mainly to get hired at their dream job',
         'm_parents' => array(10573,4983,6827,4426,4463),
     ),
 );
@@ -7356,7 +7356,7 @@ $config['en_all_6146'] = array(
     6143 => array(
         'm_icon' => '<i class="fas fa-fast-forward"></i>',
         'm_name' => 'STEP SKIPPED',
-        'm_desc' => 'Completed when students skip an intention and all its child intentions from their Action Plan',
+        'm_desc' => 'Completed when students skip an intention and all its child blogs from their Action Plan',
         'm_parents' => array(12004,10596,10589,6146,4755,4593),
     ),
     6144 => array(
@@ -8481,7 +8481,7 @@ $config['en_all_4593'] = array(
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
         'm_name' => 'READER BLOG CONSIDERED',
-        'm_desc' => 'When a student chooses to review a given intention from the intentions they have searched or have been recommended after selecting GET STARTED from a mench.com intent landing page.',
+        'm_desc' => 'When a student chooses to review a given intention from the blogs they have searched or have been recommended after selecting GET STARTED from a mench.com intent landing page.',
         'm_parents' => array(12004,10639,10596,10590,6153,4755,4593),
     ),
     6969 => array(
@@ -8499,13 +8499,13 @@ $config['en_all_4593'] = array(
     4283 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
         'm_name' => 'READER BLOGS LISTED',
-        'm_desc' => 'Once a student has added an Intention to their Action Plan, this link will be logged every time they access that Action Plan and view its intentions.',
+        'm_desc' => 'Once a student has added an Intention to their Action Plan, this link will be logged every time they access that Action Plan and view its blogs.',
         'm_parents' => array(12004,10639,10596,10590,6153,4755,4593),
     ),
     6132 => array(
         'm_icon' => '<i class="fas fa-sort"></i>',
         'm_name' => 'READER BLOGS SORTED',
-        'm_desc' => 'Student re-prioritized their top-level intentions to focus on intentions that currently matter the most.',
+        'm_desc' => 'Student re-prioritized their top-level blogs to focus on blogs that currently matter the most.',
         'm_parents' => array(12004,10539,10639,10589,6153,4506,4755,4593),
     ),
     6415 => array(

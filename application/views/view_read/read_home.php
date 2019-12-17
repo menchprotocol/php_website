@@ -99,10 +99,10 @@
 
         //Count total published courses here:
         $published_ins = $this->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-            'ln_type_entity_id' => 4601, //BLOG KEYWORDS
-            'ln_parent_entity_id' => $en_id,
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_type_player_id' => 4601, //BLOG KEYWORDS
+            'ln_parent_player_id' => $en_id,
         ), array('in_child'), 0, 0, array('in_outcome' => 'ASC'));
 
         if(!count($published_ins)){

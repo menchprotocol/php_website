@@ -15,7 +15,7 @@ $(document).ready(function() {
 
         source: function (q, cb) {
             algolia_index.search(q, {
-                filters: 'alg_obj_is_in=0', //Only search for entities
+                filters: 'alg_obj_is_in=0', //Only search for players
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {
@@ -133,7 +133,7 @@ function en_add_source_paste_url() {
 
 function en_add_source_process(){
 
-    //Compile parent entities and their descriptions:
+    //Compile parent players and their descriptions:
     var source_parent_ens = $(".source_parent_ens:checkbox:checked").map(function(){
         //Return a multi-dimensional array:
         return {
@@ -146,7 +146,7 @@ function en_add_source_process(){
     $('.add_source_body').addClass('hidden');
     $('.add_source_result').html('<div class="center"><span><i class="far fa-yin-yang fa-spin"></i></span> '+ echo_loading_notify() +'</div>');
 
-    //Fetch Intent Data to load modify widget:
+    //Fetch Blog Data to load modify widget:
     $.post("/play/en_add_source_process", {
 
         source_url: $('#source_url').val(),

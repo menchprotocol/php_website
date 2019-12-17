@@ -3,7 +3,7 @@
 echo '<div class="container">';
 
 //Define all moderation functions:
-$en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
+$en_all_4737 = $this->config->item('en_all_4737'); // Blog Statuses
 $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
 
 $moderation_tools = array(
@@ -108,7 +108,7 @@ if(!$action) {
         foreach($this->READ_model->ln_fetch(( isset($_GET['updateall']) ? array(
             'ln_words' => 0,
         ) : array(
-            'ln_type_entity_id IN (' . $_GET['updatesome'] . ')' => null,
+            'ln_type_player_id IN (' . $_GET['updatesome'] . ')' => null,
         )), array(), 0) as $ln){
             $this->READ_model->ln_update($ln['ln_id'], array(
                 'ln_words' => ln_type_word_count($ln),
@@ -134,7 +134,7 @@ if(!$action) {
 
     //Count them all:
     $all_stats = $this->READ_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ABS(ln_words)) as total_words');
 
 
@@ -155,7 +155,7 @@ if(!$action) {
 
         $words_stats = $this->READ_model->ln_fetch(array(
             $words_setting => 0,
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words');
 
         echo '<tr class="panel-title down-border">';
@@ -178,7 +178,7 @@ if(!$action) {
 
     //Show each link type:
     foreach ($this->READ_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array('ln_type'), 0, 0, array('total_words' => 'DESC'), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon') as $ln) {
 
         //Determine which weight group this belongs to:
@@ -205,10 +205,10 @@ if(!$action) {
     if(isset($_GET['update_user_icons'])){
 
         $base_filters = array(
-            'ln_parent_entity_id' => 1278, //people
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+            'ln_parent_player_id' => 1278, //people
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
         );
 
         if(!isset($_GET['force'])) {
@@ -237,14 +237,14 @@ if(!$action) {
 
     //Fetch pending notes:
     $pendin_in_notes = $this->READ_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
     ), array('in_child'), config_var(11064), 0, array('ln_id' => 'ASC'));
 
     echo '<div class="row">';
     echo '<div class="col-sm-6">';
     echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
-    //List intents and allow to modify and manage intent notes:
+    //List blogs and allow to modify and manage blog notes:
     if(count($pendin_in_notes) > 0){
         foreach($pendin_in_notes as $pendin_in_note){
             echo echo_in_read($pendin_in_note);
@@ -256,7 +256,7 @@ if(!$action) {
     echo '</div>';
     echo '<div class="col-sm-6">';
 
-    //Maybe give option to edit intent here?
+    //Maybe give option to edit blog here?
 
     echo '</div>';
     echo '</div>';
@@ -267,8 +267,8 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
 
     $orphan_ins = $this->BLOG_model->in_fetch(array(
-        ' NOT EXISTS (SELECT 1 FROM table_links WHERE in_id=ln_child_intent_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_entity_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
-        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+        ' NOT EXISTS (SELECT 1 FROM table_links WHERE in_id=ln_child_blog_id AND ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_player_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
+        'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
     ));
 
     if(count($orphan_ins) > 0){
@@ -276,18 +276,18 @@ if(!$action) {
         //List orphans:
         foreach ($orphan_ins as $count => $orphan_in) {
 
-            //Show intent:
-            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_entity_id']]['m_icon'] . '</span> <a href="/blog/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_outcome'].'</b></a>';
+            //Show blog:
+            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_player_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_player_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_player_id']]['m_icon'] . '</span> <a href="/blog/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_outcome'].'</b></a>';
 
             //Do we need to remove?
             if($command1=='remove_all'){
 
-                //Remove intent links:
+                //Remove blog links:
                 $links_removed = $this->BLOG_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
 
-                //Remove intent:
+                //Remove blog:
                 $this->BLOG_model->in_update($orphan_in['in_id'], array(
-                    'in_status_entity_id' => 6182, /* Intent Removed */
+                    'in_status_player_id' => 6182, /* Blog Removed */
                 ), true, $session_en['en_id']);
 
                 //Show confirmation:
@@ -295,7 +295,7 @@ if(!$action) {
 
             }
 
-            //Done showing the intent:
+            //Done showing the blog:
             echo '</div>';
         }
 
@@ -316,8 +316,8 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
 
     $orphan_ens = $this->PLAY_model->en_fetch(array(
-        ' NOT EXISTS (SELECT 1 FROM table_links WHERE en_id=ln_child_entity_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status_entity_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
-        'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+        ' NOT EXISTS (SELECT 1 FROM table_links WHERE en_id=ln_child_player_id AND ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status_player_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
+        'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
     ), array('skip_en__parents'));
 
     if(count($orphan_ens) > 0){
@@ -325,8 +325,8 @@ if(!$action) {
         //List orphans:
         foreach ($orphan_ens  as $count => $orphan_en) {
 
-            //Show entity:
-            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$orphan_en['en_status_entity_id']]['m_name'].': '.$en_all_6177[$orphan_en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$orphan_en['en_status_entity_id']]['m_icon'] . '</span> <a href="/play/'.$orphan_en['en_id'].'"><b>'.$orphan_en['en_name'].'</b></a>';
+            //Show player:
+            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$orphan_en['en_status_player_id']]['m_name'].': '.$en_all_6177[$orphan_en['en_status_player_id']]['m_desc'].'">' . $en_all_6177[$orphan_en['en_status_player_id']]['m_icon'] . '</span> <a href="/play/'.$orphan_en['en_id'].'"><b>'.$orphan_en['en_name'].'</b></a>';
 
             //Do we need to remove?
             if($command1=='remove_all'){
@@ -334,9 +334,9 @@ if(!$action) {
                 //Remove links:
                 $links_removed = $this->PLAY_model->en_unlink($orphan_en['en_id'], $session_en['en_id']);
 
-                //Remove entity:
+                //Remove player:
                 $this->PLAY_model->en_update($orphan_en['en_id'], array(
-                    'en_status_entity_id' => 6178, /* Entity Removed */
+                    'en_status_player_id' => 6178, /* Entity Removed */
                 ), true, $session_en['en_id']);
 
                 //Show confirmation:
@@ -376,7 +376,7 @@ if(!$action) {
     if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
 
         $matching_results = $this->PLAY_model->en_fetch(array(
-            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
             'LOWER(en_icon) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
         ));
 
@@ -408,7 +408,7 @@ if(!$action) {
 
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
-                echo '<td style="text-align: left;">'.echo_en_cache('en_all_6177' /* Entity Statuses */, $en['en_status_entity_id'], true, 'right').' <span class="icon-block">'.echo_en_icon($en['en_icon']).'</span><a href="/play/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
+                echo '<td style="text-align: left;">'.echo_en_cache('en_all_6177' /* Entity Statuses */, $en['en_status_player_id'], true, 'right').' <span class="icon-block">'.echo_en_icon($en['en_icon']).'</span><a href="/play/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
                 echo '</tr>';
 
             }
@@ -433,14 +433,14 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
 
-    //List this users 🔴 READING LIST intents so they can choose:
+    //List this users 🔴 READING LIST blogs so they can choose:
     echo '<div>Choose one of your 🔴 READING LIST blogs to debug:</div><br />';
 
     $user_intents = $this->READ_model->ln_fetch(array(
-        'ln_creator_entity_id' => $session_en['en_id'],
-        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+        'ln_creator_player_id' => $session_en['en_id'],
+        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
     ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
     foreach ($user_intents as $priority => $ln) {
@@ -452,7 +452,7 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
 
     $active_ins = $this->BLOG_model->in_fetch(array(
-        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+        'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
     ));
 
     //Give an overview:
@@ -477,10 +477,10 @@ if(!$action) {
 
             $invalid_outcomes++;
 
-            //Update intent:
+            //Update blog:
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.$invalid_outcomes.'</td>';
-            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></td>';
+            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Blog Statuses */, $in['in_status_player_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></td>';
             echo '</tr>';
 
         }
@@ -509,7 +509,7 @@ if(!$action) {
     if($search_for_is_set){
 
         $matching_results = $this->BLOG_model->in_fetch(array(
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
             'LOWER(in_outcome) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
         ));
 
@@ -554,7 +554,7 @@ if(!$action) {
                 }
 
                 if($replace_with_is_confirmed && $in_outcome_validation['status']){
-                    //Update intent:
+                    //Update blog:
                     $this->BLOG_model->in_update($in['in_id'], array(
                         'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
                     ), true, $session_en['en_id']);
@@ -562,7 +562,7 @@ if(!$action) {
 
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
-                echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.$in['in_outcome'].'</a></td>';
+                echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Blog Statuses */, $in['in_status_player_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.$in['in_outcome'].'</a></td>';
 
                 if($replace_with_is_set){
 
@@ -574,14 +574,14 @@ if(!$action) {
 
 
                     //Loop through parents:
-                    $en_all_7585 = $this->config->item('en_all_7585'); // Intent Subtypes
+                    $en_all_7585 = $this->config->item('en_all_7585'); // Blog Subtypes
                     foreach ($this->READ_model->ln_fetch(array(
-                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
-                        'ln_child_intent_id' => $in['in_id'],
+                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                        'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                        'ln_child_blog_id' => $in['in_id'],
                     ), array('in_parent')) as $in_parent) {
-                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/blog/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_completion_method_entity_id']]['m_icon'] . '</a> &nbsp;</span>';
+                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/blog/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_type_player_id']]['m_icon'] . '</a> &nbsp;</span>';
                     }
 
                     echo '</td>';
@@ -627,8 +627,8 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
 
-    //Do a query to detect intents with the exact same title:
-    $q = $this->db->query('select in1.* from table_intents in1 where (select count(*) from table_intents in2 where in2.in_outcome = in1.in_outcome AND in2.in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_outcome ASC');
+    //Do a query to detect blogs with the exact same title:
+    $q = $this->db->query('select in1.* from table_blogs in1 where (select count(*) from table_blogs in2 where in2.in_outcome = in1.in_outcome AND in2.in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_outcome ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
@@ -640,7 +640,7 @@ if(!$action) {
                 $prev_title = $in['in_outcome'];
             }
 
-            echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span> <a href="/blog/' . $in['in_id'] . '"><b>' . $in['in_outcome'] . '</b></a> #' . $in['in_id'] . '</div>';
+            echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_player_id']]['m_name'].': '.$en_all_4737[$in['in_status_player_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_player_id']]['m_icon'] . '</span> <a href="/blog/' . $in['in_id'] . '"><b>' . $in['in_outcome'] . '</b></a> #' . $in['in_id'] . '</div>';
         }
 
     } else {
@@ -651,7 +651,7 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
 
-    $q = $this->db->query('select en1.* from table_entities en1 where (select count(*) from table_entities en2 where en2.en_name = en1.en_name AND en2.en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')) > 1 AND en1.en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ') ORDER BY en1.en_name ASC');
+    $q = $this->db->query('select en1.* from table_players en1 where (select count(*) from table_players en2 where en2.en_name = en1.en_name AND en2.en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')) > 1 AND en1.en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ') ORDER BY en1.en_name ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
@@ -664,7 +664,7 @@ if(!$action) {
                 $prev_title = $en['en_name'];
             }
 
-            echo '<span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span> <a href="/play/' . $en['en_id'] . '"><b>' . $en['en_name'] . '</b></a> @' . $en['en_id'] . '<br />';
+            echo '<span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_player_id']]['m_name'].': '.$en_all_6177[$en['en_status_player_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_player_id']]['m_icon'] . '</span> <a href="/play/' . $en['en_id'] . '"><b>' . $en['en_name'] . '</b></a> @' . $en['en_id'] . '<br />';
         }
 
     } else {
@@ -678,33 +678,33 @@ if(!$action) {
     $all_steps = 0;
     $all_children = 0;
     $updated = 0;
-    $new_ln_type_entity_id = 7485; //User Step Answer Unlock
+    $new_ln_type_player_id = 7485; //User Step Answer Unlock
 
     foreach ($this->BLOG_model->in_fetch(array(
-        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-        'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
+        'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+        'in_type_player_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
     ), array(), 0, 0, array('in_id' => 'DESC')) as $count => $in) {
 
-        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id']).' '.echo_en_cache('en_all_6193' /* OR Intents */, $in['in_completion_method_entity_id']).' <b><a href="https://mench.com/blog/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></b></div>';
+        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_player_id']).' '.echo_en_cache('en_all_6193' /* OR Intents */, $in['in_type_player_id']).' <b><a href="https://mench.com/blog/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></b></div>';
 
         echo '<ul>';
         //Fetch all children for this OR:
         foreach($this->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-            'ln_type_entity_id' => 4228, //Intent Link Regular Step
-            'ln_parent_intent_id' => $in['in_id'],
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            'ln_type_player_id' => 4228, //Intent Link Regular Step
+            'ln_parent_blog_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
             $user_steps = $this->READ_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
-                'ln_parent_intent_id' => $child_or['in_id'],
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
+                'ln_parent_blog_id' => $child_or['in_id'],
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ), array(), 0);
             $all_steps += count($user_steps);
 
             $all_children++;
-            echo '<li>'.echo_en_cache('en_all_6186' /* Link Statuses */, $child_or['ln_status_entity_id']).' '.echo_en_cache('en_all_4737' /* Intent Statuses */, $child_or['in_status_entity_id']).' '.echo_en_cache('en_all_7585', $child_or['in_completion_method_entity_id']).' <a href="https://mench.com/blog/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_outcome($child_or['in_outcome']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
+            echo '<li>'.echo_en_cache('en_all_6186' /* Link Statuses */, $child_or['ln_status_player_id']).' '.echo_en_cache('en_all_4737' /* Intent Statuses */, $child_or['in_status_player_id']).' '.echo_en_cache('en_all_7585', $child_or['in_type_player_id']).' <a href="https://mench.com/blog/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_outcome($child_or['in_outcome']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
         }
         echo '</ul>';
         echo '<hr />';
@@ -729,9 +729,9 @@ if(!$action) {
     $counter = 0;
     $total_count = 0;
     foreach ($this->READ_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-        'ln_type_entity_id' => 4229, //Intent Link Locked Step
+        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+        'ln_type_player_id' => 4229, //Intent Link Locked Step
         'LENGTH(ln_metadata) > 0' => null,
     ), array('in_child'), 0, 0) as $in_ln) {
         //Echo HTML format of this message:
@@ -739,35 +739,35 @@ if(!$action) {
         $mark = echo_in_marks($in_ln);
         if($mark){
 
-            //Fetch parent intent:
+            //Fetch parent blog:
             $parent_ins = $this->BLOG_model->in_fetch(array(
-                'in_id' => $in_ln['ln_parent_intent_id'],
+                'in_id' => $in_ln['ln_parent_blog_id'],
             ));
 
             $counter++;
             echo '<tr>';
             echo '<td style="width: 50px;">'.$counter.'</td>';
             echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_in_marks($in_ln).'</td>';
-            echo '<td>'.$en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'].'</td>';
+            echo '<td>'.$en_all_6186[$in_ln['ln_status_player_id']]['m_icon'].'</td>';
             echo '<td style="text-align: left;">';
 
             echo '<div>';
-            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_entity_id']]['m_icon'].'</span>';
+            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_player_id']]['m_icon'].'</span>';
             echo '<a href="/blog/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_outcome'].'</a>';
             echo '</div>';
 
             echo '<div>';
-            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_entity_id']]['m_icon'].'</span>';
+            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_player_id']]['m_icon'].'</span>';
             echo '<a href="/blog/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].' [child]</a>';
             echo '</div>';
 
             if(count($this->READ_model->ln_fetch(array(
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                    'in_completion_method_entity_id NOT IN (6907,6914)' => null, //NOT AND/OR Lock
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
-                    'ln_child_intent_id' => $in_ln['in_id'],
-                ), array('in_parent'))) > 1 || $in_ln['in_completion_method_entity_id'] != 6677){
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+                    'in_type_player_id NOT IN (6907,6914)' => null, //NOT AND/OR Lock
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+                    'ln_child_blog_id' => $in_ln['in_id'],
+                ), array('in_parent'))) > 1 || $in_ln['in_type_player_id'] != 6677){
 
                 echo '<div>';
                 echo 'NOT COOL';
@@ -777,9 +777,9 @@ if(!$action) {
 
                 //Update user progression link type:
                 $user_steps = $this->READ_model->ln_fetch(array(
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
-                    'ln_parent_intent_id' => $in_ln['in_id'],
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
+                    'ln_parent_blog_id' => $in_ln['in_id'],
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 ), array(), 0);
 
                 $updated = 0;
@@ -809,9 +809,9 @@ if(!$action) {
 
         $counter = 0;
         foreach ($this->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-            'ln_type_entity_id' => 4228, //Intent Link Regular Step
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            'ln_type_player_id' => 4228, //Intent Link Regular Step
             'LENGTH(ln_metadata) > 0' => null,
         ), array('in_child'), 0, 0) as $in_ln) {
             //Echo HTML format of this message:
@@ -819,24 +819,24 @@ if(!$action) {
             $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
             if($tr__assessment_points!=0){
 
-                //Fetch parent intent:
+                //Fetch parent blog:
                 $parent_ins = $this->BLOG_model->in_fetch(array(
-                    'in_id' => $in_ln['ln_parent_intent_id'],
+                    'in_id' => $in_ln['ln_parent_blog_id'],
                 ));
 
                 $counter++;
                 echo '<tr>';
                 echo '<td style="width: 50px;">'.$counter.'</td>';
                 echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_in_marks($in_ln).'</td>';
-                echo '<td>'.$en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'].'</td>';
+                echo '<td>'.$en_all_6186[$in_ln['ln_status_player_id']]['m_icon'].'</td>';
                 echo '<td style="text-align: left;">';
                 echo '<div>';
-                echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_entity_id']]['m_icon'].'</span>';
+                echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_player_id']]['m_icon'].'</span>';
                 echo '<a href="/blog/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_outcome'].'</a>';
                 echo '</div>';
 
                 echo '<div>';
-                echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_entity_id']]['m_icon'].'</span>';
+                echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_player_id']]['m_icon'].'</span>';
                 echo '<a href="/blog/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].'</a>';
                 echo '</div>';
                 echo '</td>';

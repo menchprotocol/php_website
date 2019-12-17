@@ -1,6 +1,6 @@
 
 <?php
-$en_all_6201 = $this->config->item('en_all_6201'); //Intent Table
+$en_all_6201 = $this->config->item('en_all_6201'); //Blog Table
 
 $can_manage = in_can_manage($in['in_id']);
 ?>
@@ -12,7 +12,7 @@ $can_manage = in_can_manage($in['in_id']);
 
 
 <script>
-    //Include some cached entities:
+    //Include some cached players:
     var in_loaded_id = <?= $in['in_id'] ?>;
 </script>
 <script src="/js/custom/in_notes.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
@@ -21,7 +21,7 @@ $can_manage = in_can_manage($in['in_id']);
 
 <?php
 
-$en_all_4485 = $this->config->item('en_all_4485'); //Intent Notes
+$en_all_4485 = $this->config->item('en_all_4485'); //Blog Notes
 $play_focus_found = false; //Used to determine the first tab to be opened
 
 
@@ -45,7 +45,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     if($col_num==1){
 
         echo '<div style="margin-bottom: 5px;">';
-            echo '<div class="inline-block">'.echo_dropdown(4737, $in['in_status_entity_id'], 'btn-blog', $can_manage).'</div>';
+            echo '<div class="inline-block">'.echo_dropdown(4737, $in['in_status_player_id'], 'btn-blog', $can_manage).'</div>';
             echo '<div class="inline-block pull-right"><a href="/'.$in['in_id'].'" class="btn btn-read" data-toggle="tooltip" title="Read interactively" data-placement="right">PREVIEW <i class="fas fa-arrow-right"></i></a></div>';
         echo '</div>';
 
@@ -69,7 +69,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } else {
 
         echo '<div class="center-right">';
-            echo '<div class="inline-block" style="margin-bottom:5px;">'.echo_dropdown(7585, $in['in_completion_method_entity_id'], 'btn-blog', $can_manage).'</div>';
+            echo '<div class="inline-block" style="margin-bottom:5px;">'.echo_dropdown(7585, $in['in_type_player_id'], 'btn-blog', $can_manage).'</div>';
         echo '</div>';
 
     }
@@ -101,11 +101,11 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //BLOG TREE PREVIOUS
             $fetch_11019 = $this->READ_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
-                'ln_child_intent_id' => $in['in_id'],
-            ), array('in_parent'), 0, 0, array('ln_up_order' => 'ASC'));
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                'ln_child_blog_id' => $in['in_id'],
+            ), array('in_parent'), 0);
 
             $counter = count($fetch_11019);
 
@@ -133,16 +133,16 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //BLOG TREE NEXT
             $fetch_11020 = $this->READ_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
-                'ln_parent_intent_id' => $in['in_id'],
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                'ln_parent_blog_id' => $in['in_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
             $counter = count($fetch_11020);
             $default_active = true;
 
-            //List child intents:
+            //List child blogs:
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children">';
             foreach ($fetch_11020 as $child_in) {
                 $this_tab .= echo_in($child_in, $in['in_id'], false, $can_manage);
@@ -166,9 +166,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //READER READS & BOOKMARKS
             $item_counters = $this->READ_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
-                'ln_parent_intent_id' => $in['in_id'],
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
+                'ln_parent_blog_id' => $in['in_id'],
             ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 
             $counter = $item_counters[0]['totals'];
@@ -179,9 +179,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //BLOG NOTE
             $blog_notes = $this->READ_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_entity_id' => $en_id2,
-                'ln_child_intent_id' => $in['in_id'],
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_player_id' => $en_id2,
+                'ln_child_blog_id' => $in['in_id'],
             ), array(), 0, 0, array('ln_order' => 'ASC'));
 
             $counter = count($blog_notes);

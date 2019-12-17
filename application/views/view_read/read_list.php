@@ -6,11 +6,11 @@
 
 echo '<h1><span class="icon-block-xlg"><i class="far fa-bookmark"></i></span>MY READS</h1>';
 
-//See if we have 2 or more intentions:
-$has_multiple_intentions = ( count($user_intents) >= 2 );
+//See if we have 2 or more blogs:
+$has_multiple_blogs = ( count($user_intents) >= 2 );
 
 //User has multiple 🔴 READING LISTs, so list all 🔴 READING LISTs to enable User to choose:
-echo '<div id="actionplan_steps" class="list-group actionplan-list '.( $has_multiple_intentions ? 'actionplan-sort' : '').'" style="margin-top:15px;">';
+echo '<div id="actionplan_steps" class="list-group actionplan-list '.( $has_multiple_blogs ? 'actionplan-sort' : '').'" style="margin-top:15px;">';
 foreach ($user_intents as $priority => $ln) {
 
     //Display row:
@@ -37,7 +37,7 @@ echo '</div>';
 echo ' <a class="btn btn-read inline-block" href="/"  style="margin: 20px 0;"><i class="fas fa-plus"></i> NEW READ</a>';
 
 
-if($has_multiple_intentions){
+if($has_multiple_blogs){
 
     //Give option to delete all:
     echo '<div class="pull-right"  style="margin: 20px 0;"><a href="/read/read_remove_all" style="font-size:0.8em; color:#AAA; text-decoration: none;" class="montserrat doupper" data-toggle="tooltip" title="Remove ALL reads from your reading list" data-placement="left"><i class="fas fa-trash"></i> ALL</a></div>';

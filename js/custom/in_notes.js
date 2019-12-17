@@ -1,33 +1,33 @@
 
 /*
 *
-* Javascript function to manage Intent Notes
+* Javascript function to manage Blog Notes
 *
 * */
 
 
-function in_note_insert_string(focus_ln_type_entity_id, add_string) {
-    $('#ln_content' + focus_ln_type_entity_id).insertAtCaret(add_string);
-    in_new_note_count(focus_ln_type_entity_id);
+function in_note_insert_string(focus_ln_type_player_id, add_string) {
+    $('#ln_content' + focus_ln_type_player_id).insertAtCaret(add_string);
+    in_new_note_count(focus_ln_type_player_id);
 }
 
 
 //Count text area characters:
-function in_new_note_count(focus_ln_type_entity_id) {
+function in_new_note_count(focus_ln_type_player_id) {
 
     //Update count:
-    var len = $('#ln_content' + focus_ln_type_entity_id).val().length;
+    var len = $('#ln_content' + focus_ln_type_player_id).val().length;
     if (len > js_en_all_6404[11073]['m_desc']) {
-        $('#charNum' + focus_ln_type_entity_id).addClass('overload').text(len);
+        $('#charNum' + focus_ln_type_player_id).addClass('overload').text(len);
     } else {
-        $('#charNum' + focus_ln_type_entity_id).removeClass('overload').text(len);
+        $('#charNum' + focus_ln_type_player_id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
     if(len > ( js_en_all_6404[11073]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
-        $('#blogNoteNewCount' + focus_ln_type_entity_id).removeClass('hidden');
+        $('#blogNoteNewCount' + focus_ln_type_player_id).removeClass('hidden');
     } else {
-        $('#blogNoteNewCount' + focus_ln_type_entity_id).addClass('hidden');
+        $('#blogNoteNewCount' + focus_ln_type_player_id).addClass('hidden');
     }
 
 }
@@ -117,69 +117,69 @@ $(document).ready(function () {
     //Loop through all new note inboxes:
     $(".new-note").each(function () {
 
-        var focus_ln_type_entity_id = parseInt($(this).attr('note-type-id'));
+        var focus_ln_type_player_id = parseInt($(this).attr('note-type-id'));
 
         //Initiate @ search for all note text areas:
         in_message_inline_en_search($(this));
 
         //Watch for focus:
         $(this).focus(function() {
-            $( '#notes_control_'+focus_ln_type_entity_id ).removeClass('hidden');
+            $( '#notes_control_'+focus_ln_type_player_id ).removeClass('hidden');
         }).keyup(function() {
-            $( '#notes_control_'+focus_ln_type_entity_id ).removeClass('hidden');
+            $( '#notes_control_'+focus_ln_type_player_id ).removeClass('hidden');
         });
 
         autosize($(this));
 
         //Activate sorting:
-        in_notes_sort_load(focus_ln_type_entity_id);
+        in_notes_sort_load(focus_ln_type_player_id);
 
         var showFiles = function (files) {
-            $('.box' + focus_ln_type_entity_id).find('label').text(files.length > 1 ? ($('.box' + focus_ln_type_entity_id).find('input[type="file"]').attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
+            $('.box' + focus_ln_type_player_id).find('label').text(files.length > 1 ? ($('.box' + focus_ln_type_player_id).find('input[type="file"]').attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
         };
 
-        $('.box' + focus_ln_type_entity_id).find('input[type="file"]').on('drop', function (e) {
+        $('.box' + focus_ln_type_player_id).find('input[type="file"]').on('drop', function (e) {
             droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
             showFiles(droppedFiles);
         });
 
-        $('.box' + focus_ln_type_entity_id).find('input[type="file"]').on('change', function (e) {
+        $('.box' + focus_ln_type_player_id).find('input[type="file"]').on('change', function (e) {
             showFiles(e.target.files);
         });
 
         //Watch for message creation:
-        $('#ln_content' + focus_ln_type_entity_id).keydown(function (e) {
+        $('#ln_content' + focus_ln_type_player_id).keydown(function (e) {
             if (e.ctrlKey && e.keyCode == 13) {
-                in_note_add(focus_ln_type_entity_id);
+                in_note_add(focus_ln_type_player_id);
             }
         });
 
         //Watchout for file uplods:
-        $('.box' + focus_ln_type_entity_id).find('input[type="file"]').change(function () {
-            in_note_create_upload(droppedFiles, 'file', focus_ln_type_entity_id);
+        $('.box' + focus_ln_type_player_id).find('input[type="file"]').change(function () {
+            in_note_create_upload(droppedFiles, 'file', focus_ln_type_player_id);
         });
 
 
         //Should we auto start?
         if (isAdvancedUpload) {
 
-            $('.box' + focus_ln_type_entity_id).addClass('has-advanced-upload');
+            $('.box' + focus_ln_type_player_id).addClass('has-advanced-upload');
             var droppedFiles = false;
 
-            $('.box' + focus_ln_type_entity_id).on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
+            $('.box' + focus_ln_type_player_id).on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
             })
                 .on('dragover dragenter', function () {
-                    $('.add_note_' + focus_ln_type_entity_id).addClass('is-working');
+                    $('.add_note_' + focus_ln_type_player_id).addClass('is-working');
                 })
                 .on('dragleave dragend drop', function () {
-                    $('.add_note_' + focus_ln_type_entity_id).removeClass('is-working');
+                    $('.add_note_' + focus_ln_type_player_id).removeClass('is-working');
                 })
                 .on('drop', function (e) {
                     droppedFiles = e.originalEvent.dataTransfer.files;
                     e.preventDefault();
-                    in_note_create_upload(droppedFiles, 'drop', focus_ln_type_entity_id);
+                    in_note_create_upload(droppedFiles, 'drop', focus_ln_type_player_id);
                 });
         }
 
@@ -187,13 +187,13 @@ $(document).ready(function () {
 });
 
 
-function in_notes_sort_apply(focus_ln_type_entity_id) {
+function in_notes_sort_apply(focus_ln_type_player_id) {
 
     var new_ln_orders = [];
     var sort_rank = 0;
     var this_ln_id = 0;
 
-    $(".msg_en_type_" + focus_ln_type_entity_id).each(function () {
+    $(".msg_en_type_" + focus_ln_type_player_id).each(function () {
         this_ln_id = parseInt($(this).attr('tr-id'));
         if (this_ln_id > 0) {
             sort_rank++;
@@ -213,17 +213,17 @@ function in_notes_sort_apply(focus_ln_type_entity_id) {
     }
 }
 
-function in_notes_sort_load(focus_ln_type_entity_id) {
+function in_notes_sort_load(focus_ln_type_player_id) {
 
     var inner_content = null;
 
-    var sort_msg = Sortable.create( document.getElementById("in_notes_list_" + focus_ln_type_entity_id) , {
+    var sort_msg = Sortable.create( document.getElementById("in_notes_list_" + focus_ln_type_player_id) , {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         handle: ".blog_note_sorting", // Restricts sort start click/touch to the specified element
         draggable: ".blogs_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
-            in_notes_sort_apply(focus_ln_type_entity_id);
+            in_notes_sort_apply(focus_ln_type_player_id);
         },
         //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
         onChoose: function (evt/**Event*/) {
@@ -276,7 +276,7 @@ function in_note_modify_cancel(ln_id) {
     $("#ul-nav-" + ln_id + ">div").css('width', 'inherit');
 }
 
-function in_note_modify_save(ln_id, focus_ln_type_entity_id) {
+function in_note_modify_save(ln_id, focus_ln_type_player_id) {
 
     //Show loader:
     $("#ul-nav-" + ln_id + " .edit-updates").html('<div><i class="far fa-yin-yang fa-spin"></i></div>');
@@ -287,7 +287,7 @@ function in_note_modify_save(ln_id, focus_ln_type_entity_id) {
 
     var modify_data = {
         ln_id: parseInt(ln_id),
-        message_ln_status_entity_id: parseInt($("#message_status_" + ln_id).val()),
+        message_ln_status_player_id: parseInt($("#message_status_" + ln_id).val()),
         in_id: parseInt(in_loaded_id),
         ln_content: $("#ul-nav-" + ln_id + " textarea").val(),
     };
@@ -314,7 +314,7 @@ function in_note_modify_save(ln_id, focus_ln_type_entity_id) {
                         $("#ul-nav-" + ln_id).remove();
 
                         //Adjust sort for this message type:
-                        in_notes_sort_apply(focus_ln_type_entity_id);
+                        in_notes_sort_apply(focus_ln_type_player_id);
 
                     }, 610);
                 }, 610);
@@ -351,60 +351,60 @@ function in_note_modify_save(ln_id, focus_ln_type_entity_id) {
 
 
 
-function in_message_form_lock(focus_ln_type_entity_id) {
-    $('.save_note_' + focus_ln_type_entity_id).html('<span class="icon-block-lg"><i class="far fa-yin-yang fa-spin"></i></span>').attr('href', '#');
-    $('.add_note_' + focus_ln_type_entity_id).addClass('is-working');
-    $('#ln_content' + focus_ln_type_entity_id).prop("disabled", true);
+function in_message_form_lock(focus_ln_type_player_id) {
+    $('.save_note_' + focus_ln_type_player_id).html('<span class="icon-block-lg"><i class="far fa-yin-yang fa-spin"></i></span>').attr('href', '#');
+    $('.add_note_' + focus_ln_type_player_id).addClass('is-working');
+    $('#ln_content' + focus_ln_type_player_id).prop("disabled", true);
     $('.remove_loading').hide();
 }
 
 
-function in_message_form_unlock(result, focus_ln_type_entity_id) {
+function in_message_form_unlock(result, focus_ln_type_player_id) {
 
     //Update UI to unlock:
-    $('.save_note_' + focus_ln_type_entity_id).html('SAVE').attr('href', 'javascript:in_note_add('+focus_ln_type_entity_id+');');
-    $('.add_note_' + focus_ln_type_entity_id).removeClass('is-working');
-    $("#ln_content" + focus_ln_type_entity_id).prop("disabled", false).focus();
+    $('.save_note_' + focus_ln_type_player_id).html('SAVE').attr('href', 'javascript:in_note_add('+focus_ln_type_player_id+');');
+    $('.add_note_' + focus_ln_type_player_id).removeClass('is-working');
+    $("#ln_content" + focus_ln_type_player_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
-    $( '#notes_control_'+focus_ln_type_entity_id ).addClass('hidden');
+    $( '#notes_control_'+focus_ln_type_player_id ).addClass('hidden');
 
     //What was the result?
     if (result.status) {
 
         //Append data:
-        $(result.message).insertBefore( ".add_note_" + focus_ln_type_entity_id );
+        $(result.message).insertBefore( ".add_note_" + focus_ln_type_player_id );
 
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();
 
         //Hide any errors:
         setTimeout(function () {
-            $(".note_error_"+focus_ln_type_entity_id).fadeOut();
+            $(".note_error_"+focus_ln_type_player_id).fadeOut();
         }, 4181);
 
     } else {
 
-        $(".note_error_"+focus_ln_type_entity_id).html(result.message);
+        $(".note_error_"+focus_ln_type_player_id).html(result.message);
 
     }
 }
 
-function in_note_create_upload(droppedFiles, uploadType, focus_ln_type_entity_id) {
+function in_note_create_upload(droppedFiles, uploadType, focus_ln_type_player_id) {
 
     //Prevent multiple concurrent uploads:
-    if ($('.box' + focus_ln_type_entity_id).hasClass('is-uploading')) {
+    if ($('.box' + focus_ln_type_player_id).hasClass('is-uploading')) {
         return false;
     }
 
     if (isAdvancedUpload) {
 
         //Lock message:
-        in_message_form_lock(focus_ln_type_entity_id);
+        in_message_form_lock(focus_ln_type_player_id);
 
-        var ajaxData = new FormData($('.box' + focus_ln_type_entity_id).get(0));
+        var ajaxData = new FormData($('.box' + focus_ln_type_player_id).get(0));
         if (droppedFiles) {
             $.each(droppedFiles, function (i, file) {
-                var thename = $('.box' + focus_ln_type_entity_id).find('input[type="file"]').attr('name');
+                var thename = $('.box' + focus_ln_type_player_id).find('input[type="file"]').attr('name');
                 if (typeof thename == typeof undefined || thename == false) {
                     var thename = 'drop';
                 }
@@ -414,32 +414,32 @@ function in_note_create_upload(droppedFiles, uploadType, focus_ln_type_entity_id
 
         ajaxData.append('upload_type', uploadType);
         ajaxData.append('in_id', in_loaded_id);
-        ajaxData.append('focus_ln_type_entity_id', focus_ln_type_entity_id);
+        ajaxData.append('focus_ln_type_player_id', focus_ln_type_player_id);
 
         $.ajax({
             url: '/blog/in_note_create_upload',
-            type: $('.box' + focus_ln_type_entity_id).attr('method'),
+            type: $('.box' + focus_ln_type_player_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
             cache: false,
             contentType: false,
             processData: false,
             complete: function () {
-                $('.box' + focus_ln_type_entity_id).removeClass('is-uploading');
+                $('.box' + focus_ln_type_player_id).removeClass('is-uploading');
             },
             success: function (data) {
 
-                in_message_form_unlock(data, focus_ln_type_entity_id);
+                in_message_form_unlock(data, focus_ln_type_player_id);
 
                 //Adjust icon again:
-                $('.file_label_' + focus_ln_type_entity_id).html('<span class="icon-block en-icon"><i class="far fa-paperclip"></i></span>');
+                $('.file_label_' + focus_ln_type_player_id).html('<span class="icon-block en-icon"><i class="far fa-paperclip"></i></span>');
 
             },
             error: function (data) {
                 var result = [];
                 result.status = 0;
                 result.message = data.responseText;
-                in_message_form_unlock(result, focus_ln_type_entity_id);
+                in_message_form_unlock(result, focus_ln_type_player_id);
             }
         });
     } else {
@@ -447,17 +447,17 @@ function in_note_create_upload(droppedFiles, uploadType, focus_ln_type_entity_id
     }
 }
 
-function in_note_add(focus_ln_type_entity_id) {
+function in_note_add(focus_ln_type_player_id) {
 
     //Lock message:
-    in_message_form_lock(focus_ln_type_entity_id);
+    in_message_form_lock(focus_ln_type_player_id);
 
     //Update backend:
     $.post("/blog/in_note_create_text", {
 
         in_id: in_loaded_id, //Synonymous
-        ln_content: $('#ln_content' + focus_ln_type_entity_id).val(),
-        focus_ln_type_entity_id: focus_ln_type_entity_id,
+        ln_content: $('#ln_content' + focus_ln_type_player_id).val(),
+        focus_ln_type_player_id: focus_ln_type_player_id,
 
     }, function (data) {
 
@@ -465,13 +465,13 @@ function in_note_add(focus_ln_type_entity_id) {
         if (data.status) {
 
             //Reset input field:
-            $("#ln_content" + focus_ln_type_entity_id).val("");
-            in_new_note_count(focus_ln_type_entity_id);
+            $("#ln_content" + focus_ln_type_player_id).val("");
+            in_new_note_count(focus_ln_type_player_id);
 
         }
 
         //Unlock field:
-        in_message_form_unlock(data, focus_ln_type_entity_id);
+        in_message_form_unlock(data, focus_ln_type_player_id);
 
     });
 

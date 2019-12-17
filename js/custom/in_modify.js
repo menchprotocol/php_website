@@ -1,7 +1,7 @@
 /*
 *
-* Functions related to modifying intents
-* and managing intent notes.
+* Functions related to modifying blogs
+* and managing blog notes.
 *
 * */
 
@@ -116,7 +116,7 @@ function in_update_dropdown(element_id, new_en_id){
 
 
 function in_save_title(){
-    //Fetch Intent Data to load modify widget:
+    //Fetch Blog Data to load modify widget:
     $('.title_update_status').html('<b class="montserrat"><i class="far fa-yin-yang fa-spin"></i> SAVING...</b>').hide().fadeIn();
 
 
@@ -148,7 +148,7 @@ function in_unlink(in_id, ln_id){
     var r = confirm("Unlink ["+$('.in_outcome_'+in_id).text()+"]?");
     if (r == true) {
 
-        //Fetch Intent Data to load modify widget:
+        //Fetch Blog Data to load modify widget:
         $.post("/blog/in_unlink", {
             in_id: in_id,
             ln_id: ln_id,
@@ -162,7 +162,7 @@ function in_unlink(in_id, ln_id){
 
 function in_ui_remove(in_id,ln_id){
 
-    //Fetch parent intent before removing element from DOM:
+    //Fetch parent blog before removing element from DOM:
     var parent_in_id = parseInt($('.intent_line_' + in_id).attr('parent-intent-id'));
 
     //Remove from UI:
@@ -180,7 +180,7 @@ function in_ui_remove(in_id,ln_id){
         //Hide editing box:
         $('#modifybox').addClass('hidden');
 
-        //Re-sort sibling intents:
+        //Re-sort sibling blogs:
         in_sort_save(parent_in_id);
 
     }, 610);
@@ -203,37 +203,37 @@ function in_modify_save() {
     });
 
 
-    //Prepare data to be modified for this intent:
+    //Prepare data to be modified for this blog:
     var modify_data = {
         in_id: in_id,
         in_outcome: $('#in_outcome').val(),
-        in_status_entity_id: parseInt($('#in_status_entity_id').val()),
-        in_completion_method_entity_id: parseInt($('#in_completion_method_entity_id').val()),
+        in_status_player_id: parseInt($('#in_status_player_id').val()),
+        in_type_player_id: parseInt($('#in_type_player_id').val()),
         in_completion_seconds: ( $('#in_completion_seconds').val().length > 0 ? parseInt($('#in_completion_seconds').val()) : 0 ),
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
 
         //Link variables:
-        ln_id: parseInt($('#modifybox').attr('intent-tr-id')), //Will be zero for Level 1 intent!
+        ln_id: parseInt($('#modifybox').attr('intent-tr-id')), //Will be zero for Level 1 blog!
         top_level_ins: top_level_ins,
-        ln_type_entity_id: null,
+        ln_type_player_id: null,
         tr__conditional_score_min: null,
         tr__conditional_score_max: null,
         tr__assessment_points: null,
     };
 
 
-    //Do we have the intent Link?
+    //Do we have the blog Link?
     if (modify_data['ln_id'] > 0) {
 
-        modify_data['ln_status_entity_id'] = parseInt($('#ln_status_entity_id').val());
-        modify_data['ln_type_entity_id'] = parseInt($('#ln_type_entity_id').val());
+        modify_data['ln_status_player_id'] = parseInt($('#ln_status_player_id').val());
+        modify_data['ln_type_player_id'] = parseInt($('#ln_type_player_id').val());
 
-        if(modify_data['ln_type_entity_id'] == 4229){
+        if(modify_data['ln_type_player_id'] == 4229){
             //Conditional Step Links
             //Condition score range:
             modify_data['tr__conditional_score_min'] = $('#tr__conditional_score_min').val();
             modify_data['tr__conditional_score_max'] = $('#tr__conditional_score_max').val();
-        } else if(modify_data['ln_type_entity_id'] == 4228){
+        } else if(modify_data['ln_type_player_id'] == 4228){
             //Fixed link awarded points:
             modify_data['tr__assessment_points'] = $('#tr__assessment_points').val();
         }
@@ -249,7 +249,7 @@ function in_modify_save() {
 
         } else {
 
-            //Has the intent/intent-link been removed? Either way, we need to hide this row:
+            //Has the blog/blog-link been removed? Either way, we need to hide this row:
             if (data.remove_from_ui) {
 
                 //Remove from UI:
@@ -257,32 +257,32 @@ function in_modify_save() {
 
             } else {
 
-                //Intent has not been updated:
+                //Blog has not been updated:
 
                 //Did the Link update?
                 if (modify_data['ln_id'] > 0) {
 
-                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_4486[modify_data['ln_type_entity_id']]['m_name'] + ': '+ js_en_all_4486[modify_data['ln_type_entity_id']]['m_desc'] + '">'+ js_en_all_4486[modify_data['ln_type_entity_id']]['m_icon'] +'</span>');
+                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_4486[modify_data['ln_type_player_id']]['m_name'] + ': '+ js_en_all_4486[modify_data['ln_type_player_id']]['m_desc'] + '">'+ js_en_all_4486[modify_data['ln_type_player_id']]['m_icon'] +'</span>');
 
-                    $('.ln_status_entity_id_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_6186[modify_data['ln_status_entity_id']]['m_name'] + ': '+ js_en_all_6186[modify_data['ln_status_entity_id']]['m_desc'] + '">'+ js_en_all_6186[modify_data['ln_status_entity_id']]['m_icon'] +'</span>');
+                    $('.ln_status_player_id_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_6186[modify_data['ln_status_player_id']]['m_name'] + ': '+ js_en_all_6186[modify_data['ln_status_player_id']]['m_desc'] + '">'+ js_en_all_6186[modify_data['ln_status_player_id']]['m_icon'] +'</span>');
 
                     //Update Assessment
-                    $(".in_assessment_" + modify_data['ln_id']).html(( modify_data['ln_type_entity_id']==4228 ? ( modify_data['tr__assessment_points'] != 0 ? ( modify_data['tr__assessment_points'] > 0 ? '+' : '' ) + modify_data['tr__assessment_points'] : '' ) : modify_data['tr__conditional_score_min'] + ( modify_data['tr__conditional_score_min']==modify_data['tr__conditional_score_max'] ? '' : '-' + modify_data['tr__conditional_score_max'] ) + '%' ));
+                    $(".in_assessment_" + modify_data['ln_id']).html(( modify_data['ln_type_player_id']==4228 ? ( modify_data['tr__assessment_points'] != 0 ? ( modify_data['tr__assessment_points'] > 0 ? '+' : '' ) + modify_data['tr__assessment_points'] : '' ) : modify_data['tr__conditional_score_min'] + ( modify_data['tr__conditional_score_min']==modify_data['tr__conditional_score_max'] ? '' : '-' + modify_data['tr__conditional_score_max'] ) + '%' ));
 
                 }
 
 
                 //Update UI components...
 
-                //Always update 3x Intent icons...
+                //Always update 3x Blog icons...
 
-                $('.in_parent_type_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_7585[modify_data['in_completion_method_entity_id']]['m_name'] + ': '+ js_en_all_7585[modify_data['in_completion_method_entity_id']]['m_desc'] + '">'+ js_en_all_7585[modify_data['in_completion_method_entity_id']]['m_icon'] +'</span>');
+                $('.in_parent_type_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_7585[modify_data['in_type_player_id']]['m_name'] + ': '+ js_en_all_7585[modify_data['in_type_player_id']]['m_desc'] + '">'+ js_en_all_7585[modify_data['in_type_player_id']]['m_icon'] +'</span>');
 
                 //Also update possible child icons:
-                $('.in_child_icon_' + modify_data['in_id']).html(js_en_all_7585[modify_data['in_completion_method_entity_id']]['m_icon']);
+                $('.in_child_icon_' + modify_data['in_id']).html(js_en_all_7585[modify_data['in_type_player_id']]['m_icon']);
 
 
-                $('.in_status_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_name'] + ': '+ js_en_all_4737[modify_data['in_status_entity_id']]['m_desc'] + '">'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_icon'] +'</span>');
+                $('.in_status_player_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_4737[modify_data['in_status_player_id']]['m_name'] + ': '+ js_en_all_4737[modify_data['in_status_player_id']]['m_desc'] + '">'+ js_en_all_4737[modify_data['in_status_player_id']]['m_icon'] +'</span>');
 
 
 
@@ -302,7 +302,7 @@ function in_modify_save() {
 
                 //Should we try to check unlockable completions?
                 if(data.ins_unlocked_completions_count > 0){
-                    //We did complete/unlock some intents, inform trainer and refresh:
+                    //We did complete/unlock some blogs, inform trainer and refresh:
                     alert('Publishing this intent has just unlocked '+data.steps_unlocked_completions_count+' steps across '+data.ins_unlocked_completions_count+' intents. Page will be refreshed to reflect changes.');
                     window.location = "/blog/" + in_loaded_id;
                 }

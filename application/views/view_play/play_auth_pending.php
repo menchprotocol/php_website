@@ -1,3 +1,3 @@
 <div class="container">
-    <div class="alert alert-info">Authenticating your credentials...</div>
+    <span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">Authenticating your credentials...</b>
 </div>

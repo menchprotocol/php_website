@@ -3,11 +3,11 @@
 
 $(document).ready(function () {
 
-    check_in_en_status_entity_id();
+    check_in_en_status_player_id();
 
-    //Watch for intent status change:
-    $("#ln_type_entity_id").change(function () {
-        check_in_en_status_entity_id();
+    //Watch for blog status change:
+    $("#ln_type_player_id").change(function () {
+        check_in_en_status_player_id();
     });
 
     //Load first page of links:
@@ -16,17 +16,17 @@ $(document).ready(function () {
 });
 
 
-function check_in_en_status_entity_id(){
-    //Checks to see if the Intent/Entity status filter should be visible
-    //Would only make visible if Link type is Created Intent/Entity
+function check_in_en_status_player_id(){
+    //Checks to see if the Blog/Entity status filter should be visible
+    //Would only make visible if Link type is Created Blog/Entity
 
     //Hide both in/en status:
     $(".filter-statuses").addClass('hidden');
 
     //Show only if creating new in/en Link type:
-    if($("#ln_type_entity_id").val()==4250){
+    if($("#ln_type_player_id").val()==4250){
         $(".filter-in-status").removeClass('hidden');
-    } else if($("#ln_type_entity_id").val()==4251){
+    } else if($("#ln_type_player_id").val()==4251){
         $(".filter-en-status").removeClass('hidden');
     }
 }

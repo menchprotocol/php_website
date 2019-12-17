@@ -19,10 +19,10 @@
     } else {
 
         $bookmark_ins = $this->READ_model->ln_fetch(array(
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id' => 10573, //Intent Note Bookmarks
-            'ln_parent_entity_id' => $session_en['en_id'], //For this trainer
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_player_id' => 10573, //Blog Note Bookmarks
+            'ln_parent_player_id' => $session_en['en_id'], //For this trainer
         ), array('in_child'), 0, 0, array('in_outcome' => 'ASC'));
         if(count($bookmark_ins)){
 
@@ -58,10 +58,10 @@
 
         /*
         $recent_ins = $this->READ_model->ln_fetch(array(
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id' => 4993, //Trainer View Intent
-            'ln_creator_entity_id' => $session_en['en_id'], //For this trainer
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_player_id' => 4993, //Trainer View Blog
+            'ln_creator_player_id' => $session_en['en_id'], //For this trainer
         ), array('in_child'), 100);
         if(count($recent_ins)){
 

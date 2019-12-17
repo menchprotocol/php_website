@@ -27,24 +27,24 @@ if($step_info || $source_info){
 
 //MESSAGES:
 foreach ($this->READ_model->ln_fetch(array(
-    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    'ln_type_entity_id' => 4231, //Intent Note Messages
-    'ln_child_intent_id' => $in['in_id'],
+    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'ln_type_player_id' => 4231, //Blog Note Messages
+    'ln_child_blog_id' => $in['in_id'],
 ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
     echo $this->READ_model->dispatch_message($ln['ln_content']);
 }
 
 
 
-if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_12107'))){
+if(in_array($in['in_type_player_id'], $this->config->item('en_ids_12107'))){
 
     //Give option to choose a child path:
     echo '<div class="list-group" style="margin-top:30px;">';
     $in__children = $this->READ_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-        'ln_type_entity_id' => 4228, //Intent Link Regular Step
-        'ln_parent_intent_id' => $in['in_id'],
+        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+        'ln_type_player_id' => 4228, //Blog Link Regular Step
+        'ln_parent_blog_id' => $in['in_id'],
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
     foreach ($in__children as $child_in) {
         echo echo_in_read($child_in, null, $in['in_id']);
@@ -58,14 +58,14 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_1
         echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/signin/'.$in['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
 
     } elseif(count($this->READ_model->ln_fetch(array(
-            'ln_creator_entity_id' => $session_en['en_id'],
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Intention Set
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'ln_parent_intent_id' => $in['in_id'],
+            'ln_creator_player_id' => $session_en['en_id'],
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_parent_blog_id' => $in['in_id'],
         ))) > 0){
 
         //Find next blog based on player's reading list:
-        $next_in_id = $this->READ_model->read__step_next_find($session_en['en_id'], $in);
+        $next_in_id = $this->READ_model->read__blog_next_find($session_en['en_id'], $in);
 
         if($next_in_id > 0){
             echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/'.$next_in_id.'">NEXT <i class="fas fa-angle-right"></i></a></div>';

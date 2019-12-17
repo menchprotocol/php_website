@@ -11,108 +11,108 @@ $parent_tr_filter = ( isset($_GET['ln_parent_link_id']) && $_GET['ln_parent_link
 
 
 //Apply filters:
-if(isset($_GET['in_status_entity_id']) && strlen($_GET['in_status_entity_id']) > 0){
-    if(isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id']==4250){ //BLOG created
-        //Filter intent status based on
+if(isset($_GET['in_status_player_id']) && strlen($_GET['in_status_player_id']) > 0){
+    if(isset($_GET['ln_type_player_id']) && $_GET['ln_type_player_id']==4250){ //BLOG created
+        //Filter blog status based on
         $join_by = array('in_child');
 
-        if (substr_count($_GET['in_status_entity_id'], ',') > 0) {
+        if (substr_count($_GET['in_status_player_id'], ',') > 0) {
             //This is multiple:
-            $filters['( in_status_entity_id IN (' . $_GET['in_status_entity_id'] . '))'] = null;
+            $filters['( in_status_player_id IN (' . $_GET['in_status_player_id'] . '))'] = null;
         } else {
-            $filters['in_status_entity_id'] = intval($_GET['in_status_entity_id']);
+            $filters['in_status_player_id'] = intval($_GET['in_status_player_id']);
         }
     } else {
-        unset($_GET['in_status_entity_id']);
+        unset($_GET['in_status_player_id']);
     }
 }
 
 
 
-if(isset($_GET['in_completion_method_entity_id']) && strlen($_GET['in_completion_method_entity_id']) > 0){
-    if(isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id']==4250){ //BLOG created
-        //Filter intent status based on
+if(isset($_GET['in_type_player_id']) && strlen($_GET['in_type_player_id']) > 0){
+    if(isset($_GET['ln_type_player_id']) && $_GET['ln_type_player_id']==4250){ //BLOG created
+        //Filter blog status based on
         $join_by = array('in_child');
-        if (substr_count($_GET['in_completion_method_entity_id'], ',') > 0) {
+        if (substr_count($_GET['in_type_player_id'], ',') > 0) {
             //This is multiple:
-            $filters['( in_completion_method_entity_id IN (' . $_GET['in_completion_method_entity_id'] . '))'] = null;
+            $filters['( in_type_player_id IN (' . $_GET['in_type_player_id'] . '))'] = null;
         } else {
-            $filters['in_completion_method_entity_id'] = intval($_GET['in_completion_method_entity_id']);
+            $filters['in_type_player_id'] = intval($_GET['in_type_player_id']);
         }
     } else {
-        unset($_GET['in_completion_method_entity_id']);
+        unset($_GET['in_type_player_id']);
     }
 }
 
-if(isset($_GET['en_status_entity_id']) && strlen($_GET['en_status_entity_id']) > 0){
-    if(isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id']==4251){ //PLAYER Created
+if(isset($_GET['en_status_player_id']) && strlen($_GET['en_status_player_id']) > 0){
+    if(isset($_GET['ln_type_player_id']) && $_GET['ln_type_player_id']==4251){ //PLAYER Created
 
-        //Filter intent status based on
+        //Filter blog status based on
         $join_by = array('en_child');
 
-        if (substr_count($_GET['en_status_entity_id'], ',') > 0) {
+        if (substr_count($_GET['en_status_player_id'], ',') > 0) {
             //This is multiple:
-            $filters['( en_status_entity_id IN (' . $_GET['en_status_entity_id'] . '))'] = null;
+            $filters['( en_status_player_id IN (' . $_GET['en_status_player_id'] . '))'] = null;
         } else {
-            $filters['en_status_entity_id'] = intval($_GET['en_status_entity_id']);
+            $filters['en_status_player_id'] = intval($_GET['en_status_player_id']);
         }
     } else {
-        unset($_GET['en_status_entity_id']);
+        unset($_GET['en_status_player_id']);
     }
 }
 
-if(isset($_GET['ln_status_entity_id']) && strlen($_GET['ln_status_entity_id']) > 0){
-    if (substr_count($_GET['ln_status_entity_id'], ',') > 0) {
+if(isset($_GET['ln_status_player_id']) && strlen($_GET['ln_status_player_id']) > 0){
+    if (substr_count($_GET['ln_status_player_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_status_entity_id IN (' . $_GET['ln_status_entity_id'] . '))'] = null;
+        $filters['( ln_status_player_id IN (' . $_GET['ln_status_player_id'] . '))'] = null;
     } else {
-        $filters['ln_status_entity_id'] = intval($_GET['ln_status_entity_id']);
+        $filters['ln_status_player_id'] = intval($_GET['ln_status_player_id']);
     }
 }
 
-if(isset($_GET['ln_creator_entity_id']) && strlen($_GET['ln_creator_entity_id']) > 0){
-    if (substr_count($_GET['ln_creator_entity_id'], ',') > 0) {
+if(isset($_GET['ln_creator_player_id']) && strlen($_GET['ln_creator_player_id']) > 0){
+    if (substr_count($_GET['ln_creator_player_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_creator_entity_id IN (' . $_GET['ln_creator_entity_id'] . '))'] = null;
-    } elseif (intval($_GET['ln_creator_entity_id']) > 0) {
-        $filters['ln_creator_entity_id'] = $_GET['ln_creator_entity_id'];
+        $filters['( ln_creator_player_id IN (' . $_GET['ln_creator_player_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_creator_player_id']) > 0) {
+        $filters['ln_creator_player_id'] = $_GET['ln_creator_player_id'];
     }
 }
 
 
-if(isset($_GET['ln_parent_entity_id']) && strlen($_GET['ln_parent_entity_id']) > 0){
-    if (substr_count($_GET['ln_parent_entity_id'], ',') > 0) {
+if(isset($_GET['ln_parent_player_id']) && strlen($_GET['ln_parent_player_id']) > 0){
+    if (substr_count($_GET['ln_parent_player_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_parent_entity_id IN (' . $_GET['ln_parent_entity_id'] . '))'] = null;
-    } elseif (intval($_GET['ln_parent_entity_id']) > 0) {
-        $filters['ln_parent_entity_id'] = $_GET['ln_parent_entity_id'];
+        $filters['( ln_parent_player_id IN (' . $_GET['ln_parent_player_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_parent_player_id']) > 0) {
+        $filters['ln_parent_player_id'] = $_GET['ln_parent_player_id'];
     }
 }
 
-if(isset($_GET['ln_child_entity_id']) && strlen($_GET['ln_child_entity_id']) > 0){
-    if (substr_count($_GET['ln_child_entity_id'], ',') > 0) {
+if(isset($_GET['ln_child_player_id']) && strlen($_GET['ln_child_player_id']) > 0){
+    if (substr_count($_GET['ln_child_player_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_child_entity_id IN (' . $_GET['ln_child_entity_id'] . '))'] = null;
-    } elseif (intval($_GET['ln_child_entity_id']) > 0) {
-        $filters['ln_child_entity_id'] = $_GET['ln_child_entity_id'];
+        $filters['( ln_child_player_id IN (' . $_GET['ln_child_player_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_child_player_id']) > 0) {
+        $filters['ln_child_player_id'] = $_GET['ln_child_player_id'];
     }
 }
 
-if(isset($_GET['ln_parent_intent_id']) && strlen($_GET['ln_parent_intent_id']) > 0){
-    if (substr_count($_GET['ln_parent_intent_id'], ',') > 0) {
+if(isset($_GET['ln_parent_blog_id']) && strlen($_GET['ln_parent_blog_id']) > 0){
+    if (substr_count($_GET['ln_parent_blog_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_parent_intent_id IN (' . $_GET['ln_parent_intent_id'] . '))'] = null;
-    } elseif (intval($_GET['ln_parent_intent_id']) > 0) {
-        $filters['ln_parent_intent_id'] = $_GET['ln_parent_intent_id'];
+        $filters['( ln_parent_blog_id IN (' . $_GET['ln_parent_blog_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_parent_blog_id']) > 0) {
+        $filters['ln_parent_blog_id'] = $_GET['ln_parent_blog_id'];
     }
 }
 
-if(isset($_GET['ln_child_intent_id']) && strlen($_GET['ln_child_intent_id']) > 0){
-    if (substr_count($_GET['ln_child_intent_id'], ',') > 0) {
+if(isset($_GET['ln_child_blog_id']) && strlen($_GET['ln_child_blog_id']) > 0){
+    if (substr_count($_GET['ln_child_blog_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_child_intent_id IN (' . $_GET['ln_child_intent_id'] . '))'] = null;
-    } elseif (intval($_GET['ln_child_intent_id']) > 0) {
-        $filters['ln_child_intent_id'] = $_GET['ln_child_intent_id'];
+        $filters['( ln_child_blog_id IN (' . $_GET['ln_child_blog_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_child_blog_id']) > 0) {
+        $filters['ln_child_blog_id'] = $_GET['ln_child_blog_id'];
     }
 }
 
@@ -138,9 +138,9 @@ if(isset($_GET['any_en_id']) && strlen($_GET['any_en_id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_en_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_child_entity_id IN (' . $_GET['any_en_id'] . ') OR ln_parent_entity_id IN (' . $_GET['any_en_id'] . ') OR ln_creator_entity_id IN (' . $_GET['any_en_id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $filters['( ln_child_player_id IN (' . $_GET['any_en_id'] . ') OR ln_parent_player_id IN (' . $_GET['any_en_id'] . ') OR ln_creator_player_id IN (' . $_GET['any_en_id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_en_id']) > 0) {
-        $filters['( ln_child_entity_id = ' . $_GET['any_en_id'] . ' OR ln_parent_entity_id = ' . $_GET['any_en_id'] . ' OR ln_creator_entity_id = ' . $_GET['any_en_id'] . $parent_tr_filter . ' )'] = null;
+        $filters['( ln_child_player_id = ' . $_GET['any_en_id'] . ' OR ln_parent_player_id = ' . $_GET['any_en_id'] . ' OR ln_creator_player_id = ' . $_GET['any_en_id'] . $parent_tr_filter . ' )'] = null;
     }
 }
 
@@ -148,9 +148,9 @@ if(isset($_GET['any_in_id']) && strlen($_GET['any_in_id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_in_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_child_intent_id IN (' . $_GET['any_in_id'] . ') OR ln_parent_intent_id IN (' . $_GET['any_in_id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $filters['( ln_child_blog_id IN (' . $_GET['any_in_id'] . ') OR ln_parent_blog_id IN (' . $_GET['any_in_id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_in_id']) > 0) {
-        $filters['( ln_child_intent_id = ' . $_GET['any_in_id'] . ' OR ln_parent_intent_id = ' . $_GET['any_in_id'] . $parent_tr_filter . ')'] = null;
+        $filters['( ln_child_blog_id = ' . $_GET['any_in_id'] . ' OR ln_parent_blog_id = ' . $_GET['any_in_id'] . $parent_tr_filter . ')'] = null;
     }
 }
 
@@ -186,7 +186,7 @@ if(isset($_GET['end_range']) && is_valid_date($_GET['end_range'])){
 //Fetch unique link types recorded so far:
 $ini_filter = array();
 foreach($filters as $key => $value){
-    if(!includes_any($key, array('in_status_entity_id', 'in_completion_method_entity_id', 'en_status_entity_id'))){
+    if(!includes_any($key, array('in_status_player_id', 'in_type_player_id', 'en_status_player_id'))){
         $ini_filter[$key] = $value;
     }
 }
@@ -194,13 +194,13 @@ foreach($filters as $key => $value){
 
 
 //Make sure its a valid type considering other filters:
-if(isset($_GET['ln_type_entity_id'])){
+if(isset($_GET['ln_type_player_id'])){
 
-    if (substr_count($_GET['ln_type_entity_id'], ',') > 0) {
+    if (substr_count($_GET['ln_type_player_id'], ',') > 0) {
         //This is multiple:
-        $filters['ln_type_entity_id IN (' . $_GET['ln_type_entity_id'] . ')'] = null;
-    } elseif (intval($_GET['ln_type_entity_id']) > 0) {
-        $filters['ln_type_entity_id'] = intval($_GET['ln_type_entity_id']);
+        $filters['ln_type_player_id IN (' . $_GET['ln_type_player_id'] . ')'] = null;
+    } elseif (intval($_GET['ln_type_player_id']) > 0) {
+        $filters['ln_type_player_id'] = intval($_GET['ln_type_player_id']);
     }
 
 }
@@ -246,9 +246,9 @@ echo '<div class="container">';
     echo '<input type="text" name="any_in_id" value="' . ((isset($_GET['any_in_id'])) ? $_GET['any_in_id'] : '') . '" class="form-control border">';
     echo '</div></td>';
 
-    echo '<td><span class="mini-header">BLOG PREVIOUS:</span><input type="text" name="ln_parent_intent_id" value="' . ((isset($_GET['ln_parent_intent_id'])) ? $_GET['ln_parent_intent_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">BLOG PREVIOUS:</span><input type="text" name="ln_parent_blog_id" value="' . ((isset($_GET['ln_parent_blog_id'])) ? $_GET['ln_parent_blog_id'] : '') . '" class="form-control border"></td>';
 
-    echo '<td><span class="mini-header">BLOG NEXT:</span><input type="text" name="ln_child_intent_id" value="' . ((isset($_GET['ln_child_intent_id'])) ? $_GET['ln_child_intent_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">BLOG NEXT:</span><input type="text" name="ln_child_blog_id" value="' . ((isset($_GET['ln_child_blog_id'])) ? $_GET['ln_child_blog_id'] : '') . '" class="form-control border"></td>';
 
     echo '</tr></table>';
 
@@ -266,11 +266,11 @@ echo '<div class="container">';
     echo '<input type="text" name="any_en_id" value="' . ((isset($_GET['any_en_id'])) ? $_GET['any_en_id'] : '') . '" class="form-control border">';
     echo '</div></td>';
 
-    echo '<td><span class="mini-header">PLAYER CREATOR:</span><input type="text" name="ln_creator_entity_id" value="' . ((isset($_GET['ln_creator_entity_id'])) ? $_GET['ln_creator_entity_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">PLAYER CREATOR:</span><input type="text" name="ln_creator_player_id" value="' . ((isset($_GET['ln_creator_player_id'])) ? $_GET['ln_creator_player_id'] : '') . '" class="form-control border"></td>';
 
-    echo '<td><span class="mini-header">PLAYER PROFILE:</span><input type="text" name="ln_parent_entity_id" value="' . ((isset($_GET['ln_parent_entity_id'])) ? $_GET['ln_parent_entity_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">PLAYER PROFILE:</span><input type="text" name="ln_parent_player_id" value="' . ((isset($_GET['ln_parent_player_id'])) ? $_GET['ln_parent_player_id'] : '') . '" class="form-control border"></td>';
 
-    echo '<td><span class="mini-header">PLAYER PORTFOLIO:</span><input type="text" name="ln_child_entity_id" value="' . ((isset($_GET['ln_child_entity_id'])) ? $_GET['ln_child_entity_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">PLAYER PORTFOLIO:</span><input type="text" name="ln_child_player_id" value="' . ((isset($_GET['ln_child_player_id'])) ? $_GET['ln_child_player_id'] : '') . '" class="form-control border"></td>';
 
     echo '</tr></table>';
 
@@ -290,7 +290,7 @@ echo '<div class="container">';
 
     echo '<td><span class="mini-header">PARENT READ:</span><input type="text" name="ln_parent_link_id" value="' . ((isset($_GET['ln_parent_link_id'])) ? $_GET['ln_parent_link_id'] : '') . '" class="form-control border"></td>';
 
-    echo '<td><span class="mini-header">READ STATUS:</span><input type="text" name="ln_status_entity_id" value="' . ((isset($_GET['ln_status_entity_id'])) ? $_GET['ln_status_entity_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">READ STATUS:</span><input type="text" name="ln_status_player_id" value="' . ((isset($_GET['ln_status_player_id'])) ? $_GET['ln_status_player_id'] : '') . '" class="form-control border"></td>';
 
     echo '</tr></table>';
 
@@ -333,23 +333,23 @@ echo '</div></td>';
     echo '<div>';
     echo '<span class="mini-header">READ TYPE:</span>';
 
-    if(isset($_GET['ln_type_entity_id']) && substr_count($_GET['ln_type_entity_id'], ',')>0){
+    if(isset($_GET['ln_type_player_id']) && substr_count($_GET['ln_type_player_id'], ',')>0){
 
         //We have multiple predefined link types, so we must use a text input:
-        echo '<input type="text" name="ln_type_entity_id" value="' . $_GET['ln_type_entity_id'] . '" class="form-control border">';
+        echo '<input type="text" name="ln_type_player_id" value="' . $_GET['ln_type_player_id'] . '" class="form-control border">';
 
     } else {
 
-        echo '<select class="form-control border" name="ln_type_entity_id" id="ln_type_entity_id" class="border" style="width: 100% !important;">';
+        echo '<select class="form-control border" name="ln_type_player_id" id="ln_type_player_id" class="border" style="width: 100% !important;">';
 
-        if(isset($_GET['ln_creator_entity_id'])) {
+        if(isset($_GET['ln_creator_player_id'])) {
 
             //Fetch details for this user:
             $all_link_count = 0;
             $select_ui = '';
-            foreach ($this->READ_model->ln_fetch($ini_filter, array('ln_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as total_count, SUM(ABS(ln_words)) as total_words, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name') as $ln) {
+            foreach ($this->READ_model->ln_fetch($ini_filter, array('ln_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_player_id) as total_count, SUM(ABS(ln_words)) as total_words, en_name, ln_type_player_id', 'ln_type_player_id, en_name') as $ln) {
                 //Echo drop down:
-                $select_ui .= '<option value="' . $ln['ln_type_entity_id'] . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $ln['ln_type_entity_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . number_format($ln['total_count'], 0) . ')</option>';
+                $select_ui .= '<option value="' . $ln['ln_type_player_id'] . '" ' . ((isset($_GET['ln_type_player_id']) && $_GET['ln_type_player_id'] == $ln['ln_type_player_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . number_format($ln['total_count'], 0) . ')</option>';
                 $all_link_count += $ln['total_count'];
             }
 
@@ -363,7 +363,7 @@ echo '</div></td>';
             echo '<option value="0">All READ Types</option>';
             foreach($this->config->item('en_all_4593') /* READ Types */ as $en_id => $m){
                 //Echo drop down:
-                echo '<option value="' . $en_id . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $en_id) ? 'selected="selected"' : '') . '>' . $m['m_name'] . '</option>';
+                echo '<option value="' . $en_id . '" ' . ((isset($_GET['ln_type_player_id']) && $_GET['ln_type_player_id'] == $en_id) ? 'selected="selected"' : '') . '>' . $m['m_name'] . '</option>';
             }
 
         }
@@ -377,11 +377,11 @@ echo '</div></td>';
 
     //Optional BLOG/PLAYER status filter ONLY IF READ Type = Create New BLOG/PLAYER
 
-echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">BLOG Status(es)</span><input type="text" name="in_status_entity_id" value="' . ((isset($_GET['in_status_entity_id'])) ? $_GET['in_status_entity_id'] : '') . '" class="form-control border"></div>';
+echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">BLOG Status(es)</span><input type="text" name="in_status_player_id" value="' . ((isset($_GET['in_status_player_id'])) ? $_GET['in_status_player_id'] : '') . '" class="form-control border"></div>';
 
-    echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">BLOG Type(s)</span><input type="text" name="in_completion_method_entity_id" value="' . ((isset($_GET['in_completion_method_entity_id'])) ? $_GET['in_completion_method_entity_id'] : '') . '" class="form-control border"></div>';
+    echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">BLOG Type(s)</span><input type="text" name="in_type_player_id" value="' . ((isset($_GET['in_type_player_id'])) ? $_GET['in_type_player_id'] : '') . '" class="form-control border"></div>';
 
-    echo '<div class="filter-statuses filter-en-status hidden"><span class="mini-header">PLAYER Status(es)</span><input type="text" name="en_status_entity_id" value="' . ((isset($_GET['en_status_entity_id'])) ? $_GET['en_status_entity_id'] : '') . '" class="form-control border"></div>';
+    echo '<div class="filter-statuses filter-en-status hidden"><span class="mini-header">PLAYER Status(es)</span><input type="text" name="en_status_player_id" value="' . ((isset($_GET['en_status_player_id'])) ? $_GET['en_status_player_id'] : '') . '" class="form-control border"></div>';
 
     echo '</td>';
 

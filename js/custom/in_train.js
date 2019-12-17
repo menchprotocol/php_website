@@ -1,7 +1,7 @@
 /*
 *
 * Functions related to adding/removing
-* intents via the 🔴 READING LIST.
+* blogs via the 🔴 READING LIST.
 *
 * */
 
@@ -17,7 +17,7 @@ $(document).ready(function () {
         });
     });
 
-    //Load top/bottom intent searches:
+    //Load top/bottom blog searches:
     in_load_search(".intentadder-level-2-parent",1, 'q');
     in_load_search(".intentadder-level-2-child",0, 'w');
 
@@ -63,7 +63,7 @@ function prep_search_pad(){
 
 function in_load_search(focus_element, is_in_parent, shortcut) {
 
-    //Loads the intent search bar only once for the add intent inputs
+    //Loads the blog search bar only once for the add blog inputs
     if($(focus_element).hasClass('search-bar-loaded')){
         //Already loaded:
         return false;
@@ -136,7 +136,7 @@ function in_sort_save(in_id) {
     var sort_rank = 0;
 
     $("#" + s_element + " " + s_draggable).each(function () {
-        //Fetch variables for this intent:
+        //Fetch variables for this blog:
         var in_id = parseInt($(this).attr('intent-id'));
         var ln_id = parseInt($(this).attr('in-link-id'));
 
@@ -169,8 +169,8 @@ function in_sort_load(in_id) {
     var s_draggable = ".blogs_sortable";
     var theobject = document.getElementById(s_element);
     if (!theobject) {
-        //due to duplicate intents belonging in this tree:
-        //TODO Fix later to support duplicate intents
+        //due to duplicate blogs belonging in this tree:
+        //TODO Fix later to support duplicate blogs
         return false;
     }
 
@@ -191,7 +191,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
     /*
      *
      * Either creates a BLOG link between in_linked_id & in_link_child_id
-     * OR will create a new intent based on input text and then link it
+     * OR will create a new blog based on input text and then link it
      * to in_linked_id (In this case in_link_child_id=0)
      *
      * */
@@ -217,7 +217,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
 
 
-    //We either need the intent name (to create a new intent) or the in_link_child_id>0 to create a BLOG link:
+    //We either need the blog name (to create a new blog) or the in_link_child_id>0 to create a BLOG link:
     if (!in_link_child_id && intent_name.length < 1) {
         alert('Error: Enter something');
         input_field.focus();
@@ -243,7 +243,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
             //Add new
             add_to_list(sort_list_id, sort_handler, data.in_child_html);
 
-            //Reload sorting to enable sorting for the newly added intent:
+            //Reload sorting to enable sorting for the newly added blog:
             in_sort_load(in_linked_id);
 
             //Expand selections:

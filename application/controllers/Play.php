@@ -17,33 +17,33 @@ class Play extends CI_Controller
     function add_11158(){
 
         //A function that goes through Medium topics @11097 and fetches all the top Publishers @11158 within that topic
-        $ln_creator_entity_id = 1; //Shervin as Developer for logging all READS
+        $ln_creator_player_id = 1; //Shervin as Developer for logging all READS
 
         //Fetch URL:
         $medium_urls = $this->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-            'ln_parent_entity_id' => 1326, //Domain Names
-            'ln_child_entity_id' => 3311, //Medium URL
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            'ln_parent_player_id' => 1326, //Domain Names
+            'ln_child_player_id' => 3311, //Medium URL
         ));
 
 
         $topic_count = 0;
         foreach ($this->READ_model->ln_fetch(array(
-            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-            'ln_parent_entity_id' => 11097, //Medium Topic
+            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            'ln_parent_player_id' => 11097, //Medium Topic
         ), array('en_child')) as $medium_topic){
 
             $topic_count++;
 
             //Fetch this page:
             foreach ($this->READ_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_entity_id' => 4256, //URL
-                'ln_parent_entity_id' => 3311, //Medium Link
-                'ln_child_entity_id' => $medium_topic['en_id'],
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_player_id' => 4256, //URL
+                'ln_parent_player_id' => 3311, //Medium Link
+                'ln_child_player_id' => $medium_topic['en_id'],
             )) as $medium_topic_link){
 
                 //Fetch Publishers within this topic:
@@ -86,9 +86,9 @@ class Play extends CI_Controller
                     $full_url = rtrim($medium_urls[0]['ln_content'], '/') . '/@' . $author_handler;
 
                     $already_added = $this->READ_model->ln_fetch(array(
-                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                        'ln_type_entity_id' => 4256, //Generic URL
-                        'ln_parent_entity_id' => 3311, //Medium URL
+                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                        'ln_type_player_id' => 4256, //Generic URL
+                        'ln_parent_player_id' => 3311, //Medium URL
                         'ln_content' => $full_url,
                     ));
 
@@ -98,38 +98,38 @@ class Play extends CI_Controller
                         $newly_added++;
 
                         //Create new Player:
-                        $added_en = $this->PLAY_model->en_verify_create($author_handler, $ln_creator_entity_id, 6181, random_user_icon());
+                        $added_en = $this->PLAY_model->en_verify_create($author_handler, $ln_creator_player_id, 6181, random_user_icon());
 
                         //Create relevant READS:
 
                         $this->READ_model->ln_create(array(
-                            'ln_type_entity_id' => 4256, //Generic URL
-                            'ln_creator_entity_id' => $ln_creator_entity_id,
-                            'ln_parent_entity_id' => 3311, //Medium URL
-                            'ln_child_entity_id' => $added_en['en']['en_id'],
+                            'ln_type_player_id' => 4256, //Generic URL
+                            'ln_creator_player_id' => $ln_creator_player_id,
+                            'ln_parent_player_id' => 3311, //Medium URL
+                            'ln_child_player_id' => $added_en['en']['en_id'],
                             'ln_content' => $full_url,
                         ));
 
                         $this->READ_model->ln_create(array(
-                            'ln_type_entity_id' => 4230, //Raw link
-                            'ln_creator_entity_id' => $ln_creator_entity_id,
-                            'ln_parent_entity_id' => 1278, //People
-                            'ln_child_entity_id' => $added_en['en']['en_id'],
+                            'ln_type_player_id' => 4230, //Raw link
+                            'ln_creator_player_id' => $ln_creator_player_id,
+                            'ln_parent_player_id' => 1278, //People
+                            'ln_child_player_id' => $added_en['en']['en_id'],
                         ));
 
                         $this->READ_model->ln_create(array(
-                            'ln_type_entity_id' => 4230, //Raw link
-                            'ln_creator_entity_id' => $ln_creator_entity_id,
-                            'ln_parent_entity_id' => 11158, //Medium Publisher
-                            'ln_child_entity_id' => $added_en['en']['en_id'],
+                            'ln_type_player_id' => 4230, //Raw link
+                            'ln_creator_player_id' => $ln_creator_player_id,
+                            'ln_parent_player_id' => 11158, //Medium Publisher
+                            'ln_child_player_id' => $added_en['en']['en_id'],
                         ));
 
                         //Medium Topic
                         $this->READ_model->ln_create(array(
-                            'ln_type_entity_id' => 4230, //Raw link
-                            'ln_creator_entity_id' => $ln_creator_entity_id,
-                            'ln_parent_entity_id' => $medium_topic['en_id'],
-                            'ln_child_entity_id' => $added_en['en']['en_id'],
+                            'ln_type_player_id' => 4230, //Raw link
+                            'ln_creator_player_id' => $ln_creator_player_id,
+                            'ln_parent_player_id' => $medium_topic['en_id'],
+                            'ln_child_player_id' => $added_en['en']['en_id'],
                         ));
 
                     }
@@ -623,7 +623,7 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    //Lists entities
+    //Lists players
     function play_modify($en_id)
     {
 
@@ -647,15 +647,15 @@ fragment PostListingItemSidebar_post on Post {
             $new_order = ( $this->session->userdata('player_page_count') + 1 );
             $this->session->set_userdata('player_page_count', $new_order);
             $this->READ_model->ln_create(array(
-                'ln_creator_entity_id' => $session_en['en_id'],
-                'ln_type_entity_id' => 4994, //Trainer Opened Entity
-                'ln_child_entity_id' => $en_id,
+                'ln_creator_player_id' => $session_en['en_id'],
+                'ln_type_player_id' => 4994, //Trainer Opened Entity
+                'ln_child_player_id' => $en_id,
                 'ln_order' => $new_order,
             ));
 
         }
 
-        //Validate entity ID and fetch data:
+        //Validate player ID and fetch data:
         $ens = $this->PLAY_model->en_fetch(array(
             'en_id' => $en_id,
         ), array('en__child_count'));
@@ -706,9 +706,9 @@ fragment PostListingItemSidebar_post on Post {
 
         //Create FILTERS:
         $filters = array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
-            'ln_creator_entity_id >' => 0, //MUST HAVE LOGGED-IN PLAYER ASSIGNED
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
+            'ln_creator_player_id >' => 0, //MUST HAVE LOGGED-IN PLAYER ASSIGNED
         );
 
 
@@ -761,9 +761,9 @@ fragment PostListingItemSidebar_post on Post {
 
                 //COUNT this PLAYERS total READ COINS:
                 $read_coins = $this->READ_model->ln_fetch(array(
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
-                    'ln_creator_entity_id' => $ln['en_id'],
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
+                    'ln_creator_player_id' => $ln['en_id'],
                 ), array(), 1, 0, array(), 'SUM(ABS(ln_words)) as total_words');
 
 
@@ -774,14 +774,14 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<td><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="blue montserrat">'.$first_name.'</a>' : '<b class="blue montserrat">'.$first_name.'</b>' ).'</td>';
 
                 //READ
-                echo '<td>'.( $session_en ? '<a href="/read/ledger?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
+                echo '<td>'.( $session_en ? '<a href="/read/ledger?ln_status_player_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_player_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
 
                 //BLOG
                 echo '<td>'.
 
                     ( $session_en
 
-                        ? '<a href="/read/ledger?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</a>'
+                        ? '<a href="/read/ledger?ln_status_player_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_player_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</a>'
 
                         : '<span class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</span>'
 
@@ -795,13 +795,13 @@ fragment PostListingItemSidebar_post on Post {
 
             //COUNT WORDS BLOG/READ:
             $words_blog = $this->READ_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
 
             $words_read = $this->READ_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
 
 
@@ -870,7 +870,7 @@ fragment PostListingItemSidebar_post on Post {
 
         /*
          *
-         * Validates the input URL to be added as a new source entity
+         * Validates the input URL to be added as a new source player
          *
          * */
 
@@ -925,11 +925,11 @@ fragment PostListingItemSidebar_post on Post {
             //See if this is duplicate to either link:
             $en_lns = $this->READ_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
             ));
 
             //Are they both different?
-            if (count($en_lns) < 1 || ($en_lns[0]['ln_parent_entity_id'] != $detected_ln_type['en_url']['en_id'] && $en_lns[0]['ln_child_entity_id'] != $detected_ln_type['en_url']['en_id'])) {
+            if (count($en_lns) < 1 || ($en_lns[0]['ln_parent_player_id'] != $detected_ln_type['en_url']['en_id'] && $en_lns[0]['ln_child_player_id'] != $detected_ln_type['en_url']['en_id'])) {
                 //return error:
                 return echo_json($detected_ln_type);
             }
@@ -938,8 +938,8 @@ fragment PostListingItemSidebar_post on Post {
 
         return echo_json(array(
             'status' => 1,
-            'html_ui' => '<a href="/play/' . $detected_ln_type['ln_type_entity_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_desc'] . '">' . $en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_icon'] . ' ' . $en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_name'] . '</a>',
-            'en_link_preview' => echo_url_type($_POST['ln_content'], $detected_ln_type['ln_type_entity_id']),
+            'html_ui' => '<a href="/play/' . $detected_ln_type['ln_type_player_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $en_all_4592[$detected_ln_type['ln_type_player_id']]['m_desc'] . '">' . $en_all_4592[$detected_ln_type['ln_type_player_id']]['m_icon'] . ' ' . $en_all_4592[$detected_ln_type['ln_type_player_id']]['m_name'] . '</a>',
+            'en_link_preview' => echo_url_type($_POST['ln_content'], $detected_ln_type['ln_type_player_id']),
         ));
     }
 
@@ -999,13 +999,13 @@ fragment PostListingItemSidebar_post on Post {
         $en_focus_filter = intval($_POST['en_focus_filter']);
         $page = intval($_POST['page']);
         $filters = array(
-            'ln_parent_entity_id' => $parent_en_id,
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-            'en_status_entity_id IN (' . join(',', ( $en_focus_filter<0 /* Remove Filters*/ ? $this->config->item('en_ids_7358') /* Entity Statuses Active */ : array($en_focus_filter) /* This specific filter*/ )) . ')' => null,
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_parent_player_id' => $parent_en_id,
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            'en_status_player_id IN (' . join(',', ( $en_focus_filter<0 /* Remove Filters*/ ? $this->config->item('en_ids_7358') /* Entity Statuses Active */ : array($en_focus_filter) /* This specific filter*/ )) . ')' => null,
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         );
 
-        //Fetch & display next batch of children, ordered by en_trust_score DESC which is aligned with other entity ordering:
+        //Fetch & display next batch of children:
         $child_entities = $this->READ_model->ln_fetch($filters, array('en_child'), $items_per_page, ($page * $items_per_page), array(
             'ln_order' => 'ASC',
             'en_name' => 'ASC'
@@ -1054,7 +1054,7 @@ fragment PostListingItemSidebar_post on Post {
             ));
         }
 
-        //Validate parent entity:
+        //Validate parent player:
         $current_en = $this->PLAY_model->en_fetch(array(
             'en_id' => $_POST['en_id'],
         ));
@@ -1073,13 +1073,13 @@ fragment PostListingItemSidebar_post on Post {
         $is_url_input = false;
         $ur1 = array();
 
-        //Are we linking to an existing entity?
+        //Are we linking to an existing player?
         if (intval($_POST['en_existing_id']) > 0) {
 
-            //Validate this existing entity:
+            //Validate this existing player:
             $ens = $this->PLAY_model->en_fetch(array(
                 'en_id' => $_POST['en_existing_id'],
-                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+                'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
             ));
 
             if (count($ens) < 1) {
@@ -1095,7 +1095,7 @@ fragment PostListingItemSidebar_post on Post {
 
         } else {
 
-            //We are creating a new entity OR adding a URL...
+            //We are creating a new player OR adding a URL...
 
             //Is this a URL?
             if (filter_var($_POST['en_new_string'], FILTER_VALIDATE_URL)) {
@@ -1120,19 +1120,19 @@ fragment PostListingItemSidebar_post on Post {
                     //Let's first find/add the domain:
                     $domain_entity = $this->PLAY_model->en_sync_domain($_POST['en_new_string'], $session_en['en_id']);
 
-                    //Link to this entity:
+                    //Link to this player:
                     $entity_new = $domain_entity['en_domain'];
                 }
 
             } else {
 
-                //Create entity:
+                //Create player:
                 $added_en = $this->PLAY_model->en_verify_create($_POST['en_new_string'], $session_en['en_id']);
                 if(!$added_en['status']){
                     //We had an error, return it:
                     return echo_json($added_en);
                 } else {
-                    //Assign new entity:
+                    //Assign new player:
                     $entity_new = $added_en['en'];
                 }
 
@@ -1141,7 +1141,7 @@ fragment PostListingItemSidebar_post on Post {
         }
 
 
-        //We need to check to ensure this is not a duplicate link if linking to an existing entity:
+        //We need to check to ensure this is not a duplicate link if linking to an existing player:
         $ur2 = array();
 
         if (!$is_url_input) {
@@ -1149,41 +1149,41 @@ fragment PostListingItemSidebar_post on Post {
             //Add links only if not already added by the URL function:
             if ($_POST['is_parent']) {
 
-                $ln_child_entity_id = $current_en[0]['en_id'];
-                $ln_parent_entity_id = $entity_new['en_id'];
+                $ln_child_player_id = $current_en[0]['en_id'];
+                $ln_parent_player_id = $entity_new['en_id'];
 
             } else {
 
-                $ln_child_entity_id = $entity_new['en_id'];
-                $ln_parent_entity_id = $current_en[0]['en_id'];
+                $ln_child_player_id = $entity_new['en_id'];
+                $ln_parent_player_id = $current_en[0]['en_id'];
 
             }
 
 
             if (isset($url_entity['url_is_root']) && $url_entity['url_is_root']) {
 
-                $ln_type_entity_id = 4256; //Generic URL (Domains always are generic)
+                $ln_type_player_id = 4256; //Generic URL (Domains always are generic)
                 $ln_content = $url_entity['cleaned_url'];
 
             } elseif (isset($domain_entity['en_domain'])) {
 
-                $ln_type_entity_id = $url_entity['ln_type_entity_id'];
+                $ln_type_player_id = $url_entity['ln_type_player_id'];
                 $ln_content = $url_entity['cleaned_url'];
 
             } else {
 
-                $ln_type_entity_id = 4230; //Raw
+                $ln_type_player_id = 4230; //Raw
                 $ln_content = null;
 
             }
 
-            // Link to new OR existing entity:
+            // Link to new OR existing player:
             $ur2 = $this->READ_model->ln_create(array(
-                'ln_creator_entity_id' => $session_en['en_id'],
-                'ln_type_entity_id' => $ln_type_entity_id,
+                'ln_creator_player_id' => $session_en['en_id'],
+                'ln_type_player_id' => $ln_type_player_id,
                 'ln_content' => $ln_content,
-                'ln_child_entity_id' => $ln_child_entity_id,
-                'ln_parent_entity_id' => $ln_parent_entity_id,
+                'ln_child_player_id' => $ln_child_player_id,
+                'ln_parent_player_id' => $ln_parent_player_id,
             ));
         }
 
@@ -1192,10 +1192,10 @@ fragment PostListingItemSidebar_post on Post {
             'en_id' => $entity_new['en_id'],
         ));
 
-        //Return newly added or linked entity:
+        //Return newly added or linked player:
         return echo_json(array(
             'status' => 1,
-            'en_new_status' => $ens_latest[0]['en_status_entity_id'],
+            'en_new_status' => $ens_latest[0]['en_status_player_id'],
             'en_new_echo' => echo_en(array_merge($ens_latest[0], $ur2), $_POST['is_parent']),
         ));
     }
@@ -1210,11 +1210,11 @@ fragment PostListingItemSidebar_post on Post {
             ));
         }
 
-        //Simply counts the links for a given entity:
+        //Simply counts the links for a given player:
         $all_en_links = $this->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-            '(ln_child_entity_id = ' . $_POST['en_id'] . ' OR ln_parent_entity_id = ' . $_POST['en_id'] . ')' => null,
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            '(ln_child_player_id = ' . $_POST['en_id'] . ' OR ln_parent_player_id = ' . $_POST['en_id'] . ')' => null,
         ), array(), 999999);
 
         return echo_json(array(
@@ -1271,9 +1271,9 @@ fragment PostListingItemSidebar_post on Post {
 
         //Log Link:
         $this->READ_model->ln_create(array(
-            'ln_creator_entity_id' => $session_en['en_id'],
-            'ln_type_entity_id' => 5007, //TOGGLE SUPERPOWER
-            'ln_parent_entity_id' => $superpower_en_id,
+            'ln_creator_player_id' => $session_en['en_id'],
+            'ln_type_player_id' => 5007, //TOGGLE SUPERPOWER
+            'ln_parent_player_id' => $superpower_en_id,
             'ln_content' => 'SUPERPOWER TURNED '.$toggled_setting, //To be used when trainer logs in again
         ));
 
@@ -1319,12 +1319,12 @@ fragment PostListingItemSidebar_post on Post {
                 'status' => 0,
                 'message' => 'Missing name',
             ));
-        } elseif (!isset($_POST['en_status_entity_id'])) {
+        } elseif (!isset($_POST['en_status_player_id'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing status',
             ));
-        } elseif (!isset($_POST['ln_id']) || !isset($_POST['ln_content']) || !isset($_POST['ln_status_entity_id'])) {
+        } elseif (!isset($_POST['ln_id']) || !isset($_POST['ln_content']) || !isset($_POST['ln_status_player_id'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing entity link data',
@@ -1344,17 +1344,17 @@ fragment PostListingItemSidebar_post on Post {
 
         $remove_redirect_url = null;
         $remove_from_ui = 0;
-        $js_ln_type_entity_id = 0; //Detect link type based on content
+        $js_ln_type_player_id = 0; //Detect link type based on content
 
         //Prepare data to be updated:
         $en_update = array(
             'en_name' => trim($_POST['en_name']),
             'en_icon' => trim($_POST['en_icon']),
-            'en_status_entity_id' => intval($_POST['en_status_entity_id']),
+            'en_status_player_id' => intval($_POST['en_status_player_id']),
         );
 
         //Is this being removed?
-        if (!in_array($en_update['en_status_entity_id'], $this->config->item('en_ids_7358') /* Entity Statuses Active */) && !($en_update['en_status_entity_id'] == $ens[0]['en_status_entity_id'])) {
+        if (!in_array($en_update['en_status_player_id'], $this->config->item('en_ids_7358') /* Entity Statuses Active */) && !($en_update['en_status_player_id'] == $ens[0]['en_status_player_id'])) {
 
 
             //Make sure entity is not referenced in key DB reference fields:
@@ -1377,12 +1377,12 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-            //Count entity references in Intent Notes:
+            //Count entity references in Blog Notes:
             $messages = $this->READ_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-                'ln_parent_entity_id' => $_POST['en_id'],
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
+                'ln_parent_player_id' => $_POST['en_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
             //Assume no merge:
@@ -1393,7 +1393,7 @@ fragment PostListingItemSidebar_post on Post {
 
                 //Yes, validate this entity:
 
-                //Validate the input for updating linked intent:
+                //Validate the input for updating linked blog:
                 $merger_en_id = 0;
                 if (substr($_POST['en_merge'], 0, 1) == '@') {
                     $parts = explode(' ', $_POST['en_merge']);
@@ -1419,7 +1419,7 @@ fragment PostListingItemSidebar_post on Post {
                     //Finally validate merger entity:
                     $merged_ens = $this->PLAY_model->en_fetch(array(
                         'en_id' => $merger_en_id,
-                        'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+                        'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
                     ));
                     if (count($merged_ens) == 0) {
                         return echo_json(array(
@@ -1432,7 +1432,7 @@ fragment PostListingItemSidebar_post on Post {
 
             } elseif(count($messages) > 0){
 
-                //Cannot delete this entity until intent references are removed:
+                //Cannot delete this entity until blog references are removed:
                 return echo_json(array(
                     'status' => 0,
                     'message' => 'You can remove entity after removing all its intent note references',
@@ -1476,7 +1476,7 @@ fragment PostListingItemSidebar_post on Post {
             //Yes, first validate entity link:
             $en_lns = $this->READ_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ));
             if (count($en_lns) < 1) {
                 return echo_json(array(
@@ -1487,18 +1487,18 @@ fragment PostListingItemSidebar_post on Post {
 
 
             //Status change?
-            if($en_lns[0]['ln_status_entity_id']!=$_POST['ln_status_entity_id']){
+            if($en_lns[0]['ln_status_player_id']!=$_POST['ln_status_player_id']){
 
-                if (in_array($_POST['ln_status_entity_id'], $this->config->item('en_ids_7360') /* Link Statuses Active */)) {
-                    $ln_status_entity_id = 10656; //Entity Link Iterated Status
+                if (in_array($_POST['ln_status_player_id'], $this->config->item('en_ids_7360') /* Link Statuses Active */)) {
+                    $ln_status_player_id = 10656; //Entity Link Iterated Status
                 } else {
                     $remove_from_ui = 1;
-                    $ln_status_entity_id = 10673; //Entity Link Unlinked
+                    $ln_status_player_id = 10673; //Entity Link Unlinked
                 }
 
                 $this->READ_model->ln_update($_POST['ln_id'], array(
-                    'ln_status_entity_id' => intval($_POST['ln_status_entity_id']),
-                ), $session_en['en_id'], $ln_status_entity_id);
+                    'ln_status_player_id' => intval($_POST['ln_status_player_id']),
+                ), $session_en['en_id'], $ln_status_player_id);
             }
 
 
@@ -1506,7 +1506,7 @@ fragment PostListingItemSidebar_post on Post {
             if ($en_lns[0]['ln_content'] == $_POST['ln_content']) {
 
                 //Link content has not changed:
-                $js_ln_type_entity_id = $en_lns[0]['ln_type_entity_id'];
+                $js_ln_type_player_id = $en_lns[0]['ln_type_player_id'];
                 $ln_content = $en_lns[0]['ln_content'];
 
             } else {
@@ -1518,13 +1518,13 @@ fragment PostListingItemSidebar_post on Post {
 
                     return echo_json($detected_ln_type);
 
-                } elseif (in_array($detected_ln_type['ln_type_entity_id'], $this->config->item('en_ids_4537'))) {
+                } elseif (in_array($detected_ln_type['ln_type_player_id'], $this->config->item('en_ids_4537'))) {
 
                     //This is a URL, validate modification:
 
                     if ($detected_ln_type['url_is_root']) {
 
-                        if ($en_lns[0]['ln_parent_entity_id'] == 1326) {
+                        if ($en_lns[0]['ln_parent_player_id'] == 1326) {
 
                             //Override with the clean domain for consistency:
                             $_POST['ln_content'] = $detected_ln_type['url_clean_domain'];
@@ -1541,7 +1541,7 @@ fragment PostListingItemSidebar_post on Post {
 
                     } else {
 
-                        if ($en_lns[0]['ln_parent_entity_id'] == 1326) {
+                        if ($en_lns[0]['ln_parent_player_id'] == 1326) {
 
                             return echo_json(array(
                                 'status' => 0,
@@ -1550,7 +1550,7 @@ fragment PostListingItemSidebar_post on Post {
 
                         } elseif ($detected_ln_type['en_domain']) {
                             //We do have the domain mapped! Is this connected to the domain entity as its parent?
-                            if ($detected_ln_type['en_domain']['en_id'] != $en_lns[0]['ln_parent_entity_id']) {
+                            if ($detected_ln_type['en_domain']['en_id'] != $en_lns[0]['ln_parent_player_id']) {
                                 return echo_json(array(
                                     'status' => 0,
                                     'message' => 'Must link to <b>@' . $detected_ln_type['en_domain']['en_id'] . ' ' . $detected_ln_type['en_domain']['en_name'] . '</b> as their parent entity',
@@ -1570,20 +1570,20 @@ fragment PostListingItemSidebar_post on Post {
 
                 //Update variables:
                 $ln_content = $_POST['ln_content'];
-                $js_ln_type_entity_id = $detected_ln_type['ln_type_entity_id'];
+                $js_ln_type_player_id = $detected_ln_type['ln_type_player_id'];
 
 
                 $this->READ_model->ln_update($_POST['ln_id'], array(
                     'ln_content' => $ln_content,
-                    'ln_creator_entity_id' => $session_en['en_id'],
+                    'ln_creator_player_id' => $session_en['en_id'],
                     'ln_timestamp' => date("Y-m-d H:i:s"),
                 ), $session_en['en_id'], 10657 /* Entity Link Iterated Content */);
 
 
                 //Also, did the link type change based on the content change?
-                if($js_ln_type_entity_id!=$en_lns[0]['ln_type_entity_id']){
+                if($js_ln_type_player_id!=$en_lns[0]['ln_type_player_id']){
                     $this->READ_model->ln_update($_POST['ln_id'], array(
-                        'ln_type_entity_id' => $js_ln_type_entity_id,
+                        'ln_type_player_id' => $js_ln_type_player_id,
                     ), $session_en['en_id'], 10659 /* Entity Link Iterated Type */);
                 }
             }
@@ -1615,7 +1615,7 @@ fragment PostListingItemSidebar_post on Post {
             'message' => '<i class="fas fa-check"></i> ' . $success_message,
             'remove_from_ui' => $remove_from_ui,
             'remove_redirect_url' => $remove_redirect_url,
-            'js_ln_type_entity_id' => intval($js_ln_type_entity_id),
+            'js_ln_type_player_id' => intval($js_ln_type_player_id),
         );
 
         if (intval($_POST['ln_id']) > 0) {
@@ -1626,7 +1626,7 @@ fragment PostListingItemSidebar_post on Post {
             ), array('ln_creator'));
 
             //Prep last updated:
-            $return_array['ln_content'] = echo_ln_urls($ln_content, $js_ln_type_entity_id);
+            $return_array['ln_content'] = echo_ln_urls($ln_content, $js_ln_type_player_id);
             $return_array['ln_content_final'] = $ln_content; //In case content was updated
 
         }
@@ -1640,7 +1640,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
     function en_review_metadata($en_id){
-        //Fetch Intent:
+        //Fetch Blog:
         $ens = $this->PLAY_model->en_fetch(array(
             'en_id' => $en_id,
         ));
@@ -1745,7 +1745,7 @@ fragment PostListingItemSidebar_post on Post {
                     'message' => $en_all_3000[$this_parent_en['this_parent_en_id']]['m_name'] . ' description error: ' . $detected_ln_type['message'],
                 ));
 
-            } elseif (!in_array($detected_ln_type['ln_type_entity_id'], $contributor_type_requirement)) {
+            } elseif (!in_array($detected_ln_type['ln_type_player_id'], $contributor_type_requirement)) {
 
                 return echo_json(array(
                     'status' => 0,
@@ -1757,7 +1757,7 @@ fragment PostListingItemSidebar_post on Post {
             //Add expert source type to parent source array:
             array_push($parent_ens, array(
                 'this_parent_en_id' => $this_parent_en['this_parent_en_id'],
-                'this_parent_en_type' => $detected_ln_type['ln_type_entity_id'],
+                'this_parent_en_type' => $detected_ln_type['ln_type_player_id'],
                 'this_parent_en_desc' => trim($this_parent_en['this_parent_en_desc']),
             ));
 
@@ -1783,7 +1783,7 @@ fragment PostListingItemSidebar_post on Post {
                     'message' => 'Contributor #' . $contributor_num . ' role error: ' . $detected_role_ln_type['message'],
                 ));
 
-            } elseif (!in_array($detected_role_ln_type['ln_type_entity_id'], $contributor_type_requirement)) {
+            } elseif (!in_array($detected_role_ln_type['ln_type_player_id'], $contributor_type_requirement)) {
 
                 return echo_json(array(
                     'status' => 0,
@@ -1805,7 +1805,7 @@ fragment PostListingItemSidebar_post on Post {
 
                 //Validate existing entity reference:
                 $referenced_ens = $this->PLAY_model->en_fetch(array(
-                    'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
                     'en_id' => $ln_en_link_id,
                 ));
                 if (count($referenced_ens) < 1) {
@@ -1814,10 +1814,10 @@ fragment PostListingItemSidebar_post on Post {
                         'message' => 'Contributor #' . $contributor_num . ' entity ID @' . $ln_en_link_id . ' is invalid',
                     ));
                 } elseif(count($this->READ_model->ln_fetch(array( //Make sure this entity is linked to industry experts:
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-                        'ln_parent_entity_id' => 3084, //Industry Experts
-                        'ln_child_entity_id' => $referenced_ens[0]['en_id'],
-                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                        'ln_parent_player_id' => 3084, //Industry Experts
+                        'ln_child_player_id' => $referenced_ens[0]['en_id'],
+                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     ))) == 0){
                     return echo_json(array(
                         'status' => 0,
@@ -1828,7 +1828,7 @@ fragment PostListingItemSidebar_post on Post {
                 //Add contributor to parent source array:
                 array_push($parent_ens, array(
                     'this_parent_en_id' => $ln_en_link_id,
-                    'this_parent_en_type' => $detected_role_ln_type['ln_type_entity_id'],
+                    'this_parent_en_type' => $detected_role_ln_type['ln_type_player_id'],
                     'this_parent_en_desc' => trim($_POST['auth_role_' . $contributor_num]),
                 ));
 
@@ -1875,7 +1875,7 @@ fragment PostListingItemSidebar_post on Post {
                         'message' => 'Contributor #' . $contributor_num . ' error: ' . $detected_ln_type['message'],
                     ));
 
-                } elseif (!in_array($detected_ln_type['ln_type_entity_id'], $contributor_type_requirement)) {
+                } elseif (!in_array($detected_ln_type['ln_type_player_id'], $contributor_type_requirement)) {
 
                     return echo_json(array(
                         'status' => 0,
@@ -1890,11 +1890,11 @@ fragment PostListingItemSidebar_post on Post {
 
                 //Add contributor to People or Organizations entity:
                 $this->READ_model->ln_create(array(
-                    'ln_status_entity_id' => 6176, //Link Published
-                    'ln_creator_entity_id' => $session_en['en_id'],
-                    'ln_type_entity_id' => 4230, //Raw
-                    'ln_parent_entity_id' => $_POST['entity_parent_id_' . $contributor_num], //People or Organizations
-                    'ln_child_entity_id' => $sync_contributor['en_url']['en_id'],
+                    'ln_status_player_id' => 6176, //Link Published
+                    'ln_creator_player_id' => $session_en['en_id'],
+                    'ln_type_player_id' => 4230, //Raw
+                    'ln_parent_player_id' => $_POST['entity_parent_id_' . $contributor_num], //People or Organizations
+                    'ln_child_player_id' => $sync_contributor['en_url']['en_id'],
                 ), true);
 
 
@@ -1902,19 +1902,19 @@ fragment PostListingItemSidebar_post on Post {
                 if (strlen($_POST['why_expert_' . $contributor_num]) > 0) {
                     //Add contributor to industry experts:
                     $this->READ_model->ln_create(array(
-                        'ln_status_entity_id' => 6176, //Link Published
-                        'ln_creator_entity_id' => $session_en['en_id'],
+                        'ln_status_player_id' => 6176, //Link Published
+                        'ln_creator_player_id' => $session_en['en_id'],
                         'ln_content' => trim($_POST['why_expert_' . $contributor_num]),
-                        'ln_type_entity_id' => $detected_ln_type['ln_type_entity_id'],
-                        'ln_parent_entity_id' => 3084, //Industry Experts
-                        'ln_child_entity_id' => $sync_contributor['en_url']['en_id'],
+                        'ln_type_player_id' => $detected_ln_type['ln_type_player_id'],
+                        'ln_parent_player_id' => 3084, //Industry Experts
+                        'ln_child_player_id' => $sync_contributor['en_url']['en_id'],
                     ), true);
                 }
 
                 //Add contributor to parent source array:
                 array_push($parent_ens, array(
                     'this_parent_en_id' => $sync_contributor['en_url']['en_id'],
-                    'this_parent_en_type' => $detected_role_ln_type['ln_type_entity_id'],
+                    'this_parent_en_type' => $detected_role_ln_type['ln_type_player_id'],
                     'this_parent_en_desc' => trim($_POST['auth_role_' . $contributor_num]),
                 ));
 
@@ -1941,15 +1941,15 @@ fragment PostListingItemSidebar_post on Post {
         }
 
 
-        //Link content to all parent entities:
+        //Link content to all parent players:
         foreach ($parent_ens as $this_parent_en) {
             //Insert new relation:
             $this->READ_model->ln_create(array(
-                'ln_status_entity_id' => 6176, //Link Published
-                'ln_creator_entity_id' => $session_en['en_id'],
-                'ln_child_entity_id' => $url_entity['en_url']['en_id'],
-                'ln_parent_entity_id' => $this_parent_en['this_parent_en_id'],
-                'ln_type_entity_id' => $this_parent_en['this_parent_en_type'],
+                'ln_status_player_id' => 6176, //Link Published
+                'ln_creator_player_id' => $session_en['en_id'],
+                'ln_child_player_id' => $url_entity['en_url']['en_id'],
+                'ln_parent_player_id' => $this_parent_en['this_parent_en_id'],
+                'ln_type_player_id' => $this_parent_en['this_parent_en_type'],
                 'ln_content' => $this_parent_en['this_parent_en_desc'],
             ), true);
         }
@@ -2029,7 +2029,7 @@ fragment PostListingItemSidebar_post on Post {
         $ens = $this->PLAY_model->en_fetch(array(
             'en_id' => $_POST['login_en_id'],
         ));
-        if (!in_array($ens[0]['en_status_entity_id'], $this->config->item('en_ids_7357') /* Entity Statuses Public */)) {
+        if (!in_array($ens[0]['en_status_player_id'], $this->config->item('en_ids_7357') /* Entity Statuses Public */)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Your account entity is not public. Contact us to adjust your account.',
@@ -2038,10 +2038,10 @@ fragment PostListingItemSidebar_post on Post {
 
         //Authenticate password:
         $user_passwords = $this->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id' => 4255, //Text
-            'ln_parent_entity_id' => 3286, //Password
-            'ln_child_entity_id' => $ens[0]['en_id'],
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_player_id' => 4255, //Text
+            'ln_parent_player_id' => 3286, //Password
+            'ln_child_player_id' => $ens[0]['en_id'],
         ));
         if (count($user_passwords) == 0) {
             //They do not have a password assigned yet!
@@ -2049,7 +2049,7 @@ fragment PostListingItemSidebar_post on Post {
                 'status' => 0,
                 'message' => 'An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.',
             ));
-        } elseif (!in_array($user_passwords[0]['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */)) {
+        } elseif (!in_array($user_passwords[0]['ln_status_player_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */)) {
             //They do not have a password assigned yet!
             return echo_json(array(
                 'status' => 0,
@@ -2096,7 +2096,7 @@ fragment PostListingItemSidebar_post on Post {
         $validate_links = $this->READ_model->ln_fetch(array(
             'ln_id' => $ln_id,
             'ln_content' => $_GET['email'],
-            'ln_type_entity_id' => 7563, //User Signin Magic Link Email
+            'ln_type_player_id' => 7563, //User Signin Magic Link Email
         ), array('ln_creator')); //The user making the request
 
         if(count($validate_links) < 1){
@@ -2138,7 +2138,7 @@ fragment PostListingItemSidebar_post on Post {
             $validate_links = $this->READ_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_content' => $_POST['input_email'],
-                'ln_type_entity_id' => 7563, //User Signin Magic Link Email
+                'ln_type_player_id' => 7563, //User Signin Magic Link Email
             )); //The user making the request
             if(count($validate_links) < 1){
                 //Probably already completed the reset password:
@@ -2150,7 +2150,7 @@ fragment PostListingItemSidebar_post on Post {
 
             //Validate user:
             $ens = $this->PLAY_model->en_fetch(array(
-                'en_id' => $validate_links[0]['ln_creator_entity_id'],
+                'en_id' => $validate_links[0]['ln_creator_player_id'],
             ), array('skip_en__parents'));
             if(count($ens) < 1){
                 return echo_json(array(
@@ -2166,10 +2166,10 @@ fragment PostListingItemSidebar_post on Post {
 
             //Fetch their passwords to authenticate login:
             $user_passwords = $this->READ_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-                'ln_parent_entity_id' => 3286, //Mench Sign In Password
-                'ln_child_entity_id' => $ens[0]['en_id'],
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                'ln_parent_player_id' => 3286, //Mench Sign In Password
+                'ln_child_player_id' => $ens[0]['en_id'],
             ));
 
             if (count($user_passwords) > 0) {
@@ -2182,18 +2182,18 @@ fragment PostListingItemSidebar_post on Post {
                 //Update existing password:
                 $this->READ_model->ln_update($user_passwords[0]['ln_id'], array(
                     'ln_content' => $password_hash,
-                    'ln_type_entity_id' => $detected_ln_type['ln_type_entity_id'],
+                    'ln_type_player_id' => $detected_ln_type['ln_type_player_id'],
                 ), $ens[0]['en_id'], 7578 /* User Iterated Password */);
 
             } else {
 
                 //Create new password link:
                 $this->READ_model->ln_create(array(
-                    'ln_type_entity_id' => 4255, //Text link
+                    'ln_type_player_id' => 4255, //Text link
                     'ln_content' => $password_hash,
-                    'ln_parent_entity_id' => 3286, //Mench Password
-                    'ln_creator_entity_id' => $ens[0]['en_id'],
-                    'ln_child_entity_id' => $ens[0]['en_id'],
+                    'ln_parent_player_id' => 3286, //Mench Password
+                    'ln_creator_player_id' => $ens[0]['en_id'],
+                    'ln_child_player_id' => $ens[0]['en_id'],
                 ));
 
             }
@@ -2201,8 +2201,8 @@ fragment PostListingItemSidebar_post on Post {
 
             //Log password reset:
             $this->READ_model->ln_create(array(
-                'ln_creator_entity_id' => $ens[0]['en_id'],
-                'ln_type_entity_id' => 7578, //User Iterated Password
+                'ln_creator_player_id' => $ens[0]['en_id'],
+                'ln_type_player_id' => 7578, //User Iterated Password
                 'ln_content' => $password_hash, //A copy of their password set at this time
             ));
 
@@ -2210,7 +2210,7 @@ fragment PostListingItemSidebar_post on Post {
             //Log them in:
             $ens[0] = $this->PLAY_model->en_activate_session($ens[0]);
 
-            //Their next intent in line:
+            //Their next blog in line:
             return echo_json(array(
                 'status' => 1,
                 'login_url' => '/read/next',
@@ -2301,54 +2301,54 @@ fragment PostListingItemSidebar_post on Post {
 
         //Create user links:
         $this->READ_model->ln_create(array(
-            'ln_type_entity_id' => 4230, //Raw link
-            'ln_parent_entity_id' => 4430, //Mench User
-            'ln_creator_entity_id' => $user_en['en']['en_id'],
-            'ln_child_entity_id' => $user_en['en']['en_id'],
+            'ln_type_player_id' => 4230, //Raw link
+            'ln_parent_player_id' => 4430, //Mench User
+            'ln_creator_player_id' => $user_en['en']['en_id'],
+            'ln_child_player_id' => $user_en['en']['en_id'],
         ));
 
         $this->READ_model->ln_create(array(
-            'ln_type_entity_id' => 4230, //Raw link
-            'ln_parent_entity_id' => 1278, //People
-            'ln_creator_entity_id' => $user_en['en']['en_id'],
-            'ln_child_entity_id' => $user_en['en']['en_id'],
+            'ln_type_player_id' => 4230, //Raw link
+            'ln_parent_player_id' => 1278, //People
+            'ln_creator_player_id' => $user_en['en']['en_id'],
+            'ln_child_player_id' => $user_en['en']['en_id'],
         ));
 
         $this->READ_model->ln_create(array(
-            'ln_type_entity_id' => 4230, //Raw link
-            'ln_parent_entity_id' => 3504, //English Language (Since everything is in English so far)
-            'ln_creator_entity_id' => $user_en['en']['en_id'],
-            'ln_child_entity_id' => $user_en['en']['en_id'],
+            'ln_type_player_id' => 4230, //Raw link
+            'ln_parent_player_id' => 3504, //English Language (Since everything is in English so far)
+            'ln_creator_player_id' => $user_en['en']['en_id'],
+            'ln_child_player_id' => $user_en['en']['en_id'],
         ));
         $this->READ_model->ln_create(array(
-            'ln_type_entity_id' => 4255, //Text link
+            'ln_type_player_id' => 4255, //Text link
             'ln_content' => trim(strtolower($_POST['input_email'])),
-            'ln_parent_entity_id' => 3288, //Mench Email
-            'ln_creator_entity_id' => $user_en['en']['en_id'],
-            'ln_child_entity_id' => $user_en['en']['en_id'],
+            'ln_parent_player_id' => 3288, //Mench Email
+            'ln_creator_player_id' => $user_en['en']['en_id'],
+            'ln_child_player_id' => $user_en['en']['en_id'],
         ));
         $this->READ_model->ln_create(array(
-            'ln_type_entity_id' => 4255, //Text link
+            'ln_type_player_id' => 4255, //Text link
             'ln_content' => strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $user_en['en']['en_id'])),
-            'ln_parent_entity_id' => 3286, //Mench Password
-            'ln_creator_entity_id' => $user_en['en']['en_id'],
-            'ln_child_entity_id' => $user_en['en']['en_id'],
+            'ln_parent_player_id' => 3286, //Mench Password
+            'ln_creator_player_id' => $user_en['en']['en_id'],
+            'ln_child_player_id' => $user_en['en']['en_id'],
         ));
 
 
-        //Fetch referranl intent, if any:
+        //Fetch referranl blog, if any:
         if(intval($_POST['referrer_in_id']) > 0){
 
-            //Fetch the intent:
+            //Fetch the blog:
             $referrer_ins = $this->BLOG_model->in_fetch(array(
-                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                 'in_id' => $_POST['referrer_in_id'],
             ));
 
-            //Add this intention to their READING LIST:
-            $this->READ_model->read__intention_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
+            //Add this blog to their READING LIST:
+            $this->READ_model->read__blog_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
 
-            $next_in_id = $this->READ_model->read__step_next_find($user_en['en']['en_id'], $referrer_ins[0]);
+            $next_in_id = $this->READ_model->read__blog_next_find($user_en['en']['en_id'], $referrer_ins[0]);
 
         } else {
             $referrer_ins = array();
@@ -2379,9 +2379,9 @@ fragment PostListingItemSidebar_post on Post {
 
         //Log User Signin Joined Mench
         $invite_link = $this->READ_model->ln_create(array(
-            'ln_type_entity_id' => 7562, //User Signin Joined Mench
-            'ln_creator_entity_id' => $user_en['en']['en_id'],
-            'ln_parent_intent_id' => intval($_POST['referrer_in_id']),
+            'ln_type_player_id' => 7562, //User Signin Joined Mench
+            'ln_creator_player_id' => $user_en['en']['en_id'],
+            'ln_parent_blog_id' => intval($_POST['referrer_in_id']),
             'ln_metadata' => array(
                 'email_log' => $email_log,
             ),
@@ -2427,10 +2427,10 @@ fragment PostListingItemSidebar_post on Post {
         //Cleanup/validate email:
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
         $user_emails = $this->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_content' => $_POST['input_email'],
-            'ln_type_entity_id' => 4255, //Linked Entities Text (Email is text)
-            'ln_parent_entity_id' => 3288, //Mench Email
+            'ln_type_player_id' => 4255, //Linked Players Text (Email is text)
+            'ln_parent_player_id' => 3288, //Mench Email
         ), array('en_child'));
         if(count($user_emails) < 1){
             return echo_json(array(
@@ -2441,10 +2441,10 @@ fragment PostListingItemSidebar_post on Post {
 
         //Log email search attempt:
         $reset_link = $this->READ_model->ln_create(array(
-            'ln_type_entity_id' => 7563, //User Signin Magic Link Email
+            'ln_type_player_id' => 7563, //User Signin Magic Link Email
             'ln_content' => $_POST['input_email'],
-            'ln_creator_entity_id' => $user_emails[0]['en_id'], //User making request
-            'ln_parent_intent_id' => intval($_POST['referrer_in_id']),
+            'ln_creator_player_id' => $user_emails[0]['en_id'], //User making request
+            'ln_parent_blog_id' => intval($_POST['referrer_in_id']),
         ));
 
         //This is a new email, send invitation to join:
@@ -2492,7 +2492,7 @@ fragment PostListingItemSidebar_post on Post {
         $validate_links = $this->READ_model->ln_fetch(array(
             'ln_id' => $ln_id,
             'ln_content' => $_GET['email'],
-            'ln_type_entity_id' => 7563, //User Signin Magic Link Email
+            'ln_type_player_id' => 7563, //User Signin Magic Link Email
         )); //The user making the request
         if(count($validate_links) < 1){
             //Probably already completed the reset password:
@@ -2504,7 +2504,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //Fetch entity:
         $ens = $this->PLAY_model->en_fetch(array(
-            'en_id' => $validate_links[0]['ln_creator_entity_id'],
+            'en_id' => $validate_links[0]['ln_creator_player_id'],
         ));
         if(count($ens) < 1){
             return redirect_message('/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
@@ -2537,9 +2537,9 @@ fragment PostListingItemSidebar_post on Post {
 
 
         if(intval($_POST['referrer_in_id']) > 0){
-            //Fetch the intent:
+            //Fetch the blog:
             $referrer_ins = $this->BLOG_model->in_fetch(array(
-                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                 'in_id' => $_POST['referrer_in_id'],
             ));
         } else {
@@ -2549,10 +2549,10 @@ fragment PostListingItemSidebar_post on Post {
 
         //Search for email to see if it exists...
         $user_emails = $this->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_content' => $_POST['input_email'],
-            'ln_type_entity_id' => 4255, //Linked Entities Text (Email is text)
-            'ln_parent_entity_id' => 3288, //Mench Email
+            'ln_type_player_id' => 4255, //Linked Players Text (Email is text)
+            'ln_parent_player_id' => 3288, //Mench Email
         ), array('en_child'));
 
         if(count($user_emails) > 0){
@@ -2593,7 +2593,7 @@ fragment PostListingItemSidebar_post on Post {
         /*
          *
          * Saves the radio selection of some account fields
-         * that are displayed using echo_radio_entities()
+         * that are displayed using echo_radio_players()
          *
          * */
 
@@ -2625,15 +2625,15 @@ fragment PostListingItemSidebar_post on Post {
 
             //Fetch all possible answers based on parent entity:
             $filters = array(
-                'ln_parent_entity_id' => $_POST['parent_en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+                'ln_parent_player_id' => $_POST['parent_en_id'],
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
             );
 
             if($_POST['enable_mulitiselect'] && $_POST['was_already_selected']){
                 //Just remove this single item, not the other ones:
-                $filters['ln_child_entity_id'] = $_POST['selected_en_id'];
+                $filters['ln_child_player_id'] = $_POST['selected_en_id'];
             }
 
             //List all possible answers:
@@ -2644,14 +2644,14 @@ fragment PostListingItemSidebar_post on Post {
 
             //Remove selected options for this trainer:
             foreach($this->READ_model->ln_fetch(array(
-                'ln_parent_entity_id IN (' . join(',', $possible_answers) . ')' => null,
-                'ln_child_entity_id' => $_POST['js_pl_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_parent_player_id IN (' . join(',', $possible_answers) . ')' => null,
+                'ln_child_player_id' => $_POST['js_pl_id'],
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )) as $remove_en){
                 //Should usually remove a single option:
                 $this->READ_model->ln_update($remove_en['ln_id'], array(
-                    'ln_status_entity_id' => 6173, //Link Removed
+                    'ln_status_player_id' => 6173, //Link Removed
                 ), $_POST['js_pl_id'], 6224 /* User Account Updated */);
             }
 
@@ -2660,11 +2660,11 @@ fragment PostListingItemSidebar_post on Post {
         //Add new option if not already there:
         if(!$_POST['enable_mulitiselect'] || !$_POST['was_already_selected']){
             $this->READ_model->ln_create(array(
-                'ln_parent_entity_id' => $_POST['selected_en_id'],
-                'ln_child_entity_id' => $_POST['js_pl_id'],
-                'ln_creator_entity_id' => $_POST['js_pl_id'],
-                'ln_type_entity_id' => 4230, //Raw
-                'ln_status_entity_id' => 6176, //Link Published
+                'ln_parent_player_id' => $_POST['selected_en_id'],
+                'ln_child_player_id' => $_POST['js_pl_id'],
+                'ln_creator_player_id' => $_POST['js_pl_id'],
+                'ln_type_player_id' => 4230, //Raw
+                'ln_status_player_id' => 6176, //Link Published
             ));
         }
 
@@ -2672,12 +2672,12 @@ fragment PostListingItemSidebar_post on Post {
         //Log Account iteration link type:
         $_POST['account_update_function'] = 'myaccount_radio_update'; //Add this variable to indicate which My Account function created this link
         $this->READ_model->ln_create(array(
-            'ln_creator_entity_id' => $_POST['js_pl_id'],
-            'ln_type_entity_id' => 6224, //My Account Iterated
+            'ln_creator_player_id' => $_POST['js_pl_id'],
+            'ln_type_player_id' => 6224, //My Account Iterated
             'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_already_selected'] ? 'Removed' : 'Added' ),
             'ln_metadata' => $_POST,
-            'ln_parent_entity_id' => $_POST['parent_en_id'],
-            'ln_child_entity_id' => $_POST['selected_en_id'],
+            'ln_parent_player_id' => $_POST['parent_en_id'],
+            'ln_child_player_id' => $_POST['selected_en_id'],
         ));
 
         //All good:
@@ -2706,8 +2706,8 @@ fragment PostListingItemSidebar_post on Post {
 
         //Log My Account View:
         $this->READ_model->ln_create(array(
-            'ln_type_entity_id' => 4282, //Opened My Account
-            'ln_creator_entity_id' => $session_en['en_id'],
+            'ln_type_player_id' => 4282, //Opened My Account
+            'ln_creator_player_id' => $session_en['en_id'],
         ));
 
 
@@ -2752,7 +2752,7 @@ fragment PostListingItemSidebar_post on Post {
         //Check to make sure not duplicate:
         $duplicates = $this->PLAY_model->en_fetch(array(
             'en_id !=' => $_POST['en_id'],
-            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
             'LOWER(en_name)' => strtolower($_POST['en_name']),
         ));
         if (count($duplicates) > 0) {
@@ -2773,11 +2773,11 @@ fragment PostListingItemSidebar_post on Post {
         //Log Account iteration link type:
         $_POST['account_update_function'] = 'myaccount_save_full_name'; //Add this variable to indicate which My Account function created this link
         $this->READ_model->ln_create(array(
-            'ln_creator_entity_id' => $_POST['en_id'],
-            'ln_type_entity_id' => 6224, //My Account Iterated
+            'ln_creator_player_id' => $_POST['en_id'],
+            'ln_type_player_id' => 6224, //My Account Iterated
             'ln_content' => 'My Account Name Updated:'.$_POST['en_name'],
             'ln_metadata' => $_POST,
-            'ln_child_entity_id' => $_POST['en_id'],
+            'ln_child_player_id' => $_POST['en_id'],
         ));
 
         return echo_json(array(
@@ -2820,10 +2820,10 @@ fragment PostListingItemSidebar_post on Post {
 
             //Check to make sure not duplicate:
             $duplicates = $this->READ_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_entity_id' => 4319, //Phone are of type number
-                'ln_parent_entity_id' => 4783, //Phone Number
-                'ln_child_entity_id !=' => $_POST['en_id'],
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_player_id' => 4319, //Phone are of type number
+                'ln_parent_player_id' => 4783, //Phone Number
+                'ln_child_player_id !=' => $_POST['en_id'],
                 'ln_content' => $_POST['en_phone'],
             ));
             if (count($duplicates) > 0) {
@@ -2838,10 +2838,10 @@ fragment PostListingItemSidebar_post on Post {
 
         //Fetch existing phone:
         $user_phones = $this->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_child_entity_id' => $_POST['en_id'],
-            'ln_type_entity_id' => 4319, //Phone are of type number
-            'ln_parent_entity_id' => 4783, //Phone Number
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_child_player_id' => $_POST['en_id'],
+            'ln_type_player_id' => 4319, //Phone are of type number
+            'ln_parent_player_id' => 4783, //Phone Number
         ));
         if (count($user_phones) > 0) {
 
@@ -2849,7 +2849,7 @@ fragment PostListingItemSidebar_post on Post {
 
                 //Remove:
                 $this->READ_model->ln_update($user_phones[0]['ln_id'], array(
-                    'ln_status_entity_id' => 6173, //Link Removed
+                    'ln_status_player_id' => 6173, //Link Removed
                 ), $_POST['en_id'], 6224 /* User Account Updated */);
 
                 $return = array(
@@ -2882,11 +2882,11 @@ fragment PostListingItemSidebar_post on Post {
 
             //Create new link:
             $this->READ_model->ln_create(array(
-                'ln_status_entity_id' => 6176, //Link Published
-                'ln_creator_entity_id' => $_POST['en_id'],
-                'ln_child_entity_id' => $_POST['en_id'],
-                'ln_type_entity_id' => 4319, //Phone are of type number
-                'ln_parent_entity_id' => 4783, //Phone Number
+                'ln_status_player_id' => 6176, //Link Published
+                'ln_creator_player_id' => $_POST['en_id'],
+                'ln_child_player_id' => $_POST['en_id'],
+                'ln_type_player_id' => 4319, //Phone are of type number
+                'ln_parent_player_id' => 4783, //Phone Number
                 'ln_content' => $_POST['en_phone'],
             ), true);
 
@@ -2909,11 +2909,11 @@ fragment PostListingItemSidebar_post on Post {
         if($return['status']){
             $_POST['account_update_function'] = 'myaccount_save_phone'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->ln_create(array(
-                'ln_creator_entity_id' => $_POST['en_id'],
-                'ln_type_entity_id' => 6224, //My Account Iterated
+                'ln_creator_player_id' => $_POST['en_id'],
+                'ln_type_player_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_phone']) > 0 ? ': '.$_POST['en_phone'] : ''),
                 'ln_metadata' => $_POST,
-                'ln_child_entity_id' => $_POST['en_id'],
+                'ln_child_player_id' => $_POST['en_id'],
             ));
         }
 
@@ -2944,10 +2944,10 @@ fragment PostListingItemSidebar_post on Post {
 
             //Check to make sure not duplicate:
             $duplicates = $this->READ_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_entity_id' => 4255, //Emails are of type Text
-                'ln_parent_entity_id' => 3288, //Mench Email
-                'ln_child_entity_id !=' => $_POST['en_id'],
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_player_id' => 4255, //Emails are of type Text
+                'ln_parent_player_id' => 3288, //Mench Email
+                'ln_child_player_id !=' => $_POST['en_id'],
                 'LOWER(ln_content)' => $_POST['en_email'],
             ));
             if (count($duplicates) > 0) {
@@ -2962,10 +2962,10 @@ fragment PostListingItemSidebar_post on Post {
 
         //Fetch existing email:
         $user_emails = $this->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_child_entity_id' => $_POST['en_id'],
-            'ln_type_entity_id' => 4255, //Emails are of type Text
-            'ln_parent_entity_id' => 3288, //Mench Email
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_child_player_id' => $_POST['en_id'],
+            'ln_type_player_id' => 4255, //Emails are of type Text
+            'ln_parent_player_id' => 3288, //Mench Email
         ));
         if (count($user_emails) > 0) {
 
@@ -2973,7 +2973,7 @@ fragment PostListingItemSidebar_post on Post {
 
                 //Remove email:
                 $this->READ_model->ln_update($user_emails[0]['ln_id'], array(
-                    'ln_status_entity_id' => 6173, //Link Removed
+                    'ln_status_player_id' => 6173, //Link Removed
                 ), $_POST['en_id'], 6224 /* User Account Updated */);
 
                 $return = array(
@@ -3006,11 +3006,11 @@ fragment PostListingItemSidebar_post on Post {
 
             //Create new link:
             $this->READ_model->ln_create(array(
-                'ln_status_entity_id' => 6176, //Link Published
-                'ln_creator_entity_id' => $_POST['en_id'],
-                'ln_child_entity_id' => $_POST['en_id'],
-                'ln_type_entity_id' => 4255, //Emails are of type Text
-                'ln_parent_entity_id' => 3288, //Mench Email
+                'ln_status_player_id' => 6176, //Link Published
+                'ln_creator_player_id' => $_POST['en_id'],
+                'ln_child_player_id' => $_POST['en_id'],
+                'ln_type_player_id' => 4255, //Emails are of type Text
+                'ln_parent_player_id' => 3288, //Mench Email
                 'ln_content' => $_POST['en_email'],
             ), true);
 
@@ -3033,11 +3033,11 @@ fragment PostListingItemSidebar_post on Post {
             //Log Account iteration link type:
             $_POST['account_update_function'] = 'myaccount_save_email'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->ln_create(array(
-                'ln_creator_entity_id' => $_POST['en_id'],
-                'ln_type_entity_id' => 6224, //My Account Iterated
+                'ln_creator_player_id' => $_POST['en_id'],
+                'ln_type_player_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_email']) > 0 ? ': '.$_POST['en_email'] : ''),
                 'ln_metadata' => $_POST,
-                'ln_child_entity_id' => $_POST['en_id'],
+                'ln_child_player_id' => $_POST['en_id'],
             ));
         }
 
@@ -3068,10 +3068,10 @@ fragment PostListingItemSidebar_post on Post {
 
         //Fetch existing password:
         $user_passwords = $this->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id' => 4255, //Passwords are of type Text
-            'ln_parent_entity_id' => 3286, //Password
-            'ln_child_entity_id' => $_POST['en_id'],
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_player_id' => 4255, //Passwords are of type Text
+            'ln_parent_player_id' => 3286, //Password
+            'ln_child_player_id' => $_POST['en_id'],
         ));
 
         $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $_POST['en_id']));
@@ -3104,11 +3104,11 @@ fragment PostListingItemSidebar_post on Post {
 
             //Create new link:
             $this->READ_model->ln_create(array(
-                'ln_status_entity_id' => 6176, //Link Published
-                'ln_type_entity_id' => 4255, //Passwords are of type Text
-                'ln_parent_entity_id' => 3286, //Password
-                'ln_creator_entity_id' => $_POST['en_id'],
-                'ln_child_entity_id' => $_POST['en_id'],
+                'ln_status_player_id' => 6176, //Link Published
+                'ln_type_player_id' => 4255, //Passwords are of type Text
+                'ln_parent_player_id' => 3286, //Password
+                'ln_creator_player_id' => $_POST['en_id'],
+                'ln_child_player_id' => $_POST['en_id'],
                 'ln_content' => $hashed_password,
             ), true);
 
@@ -3124,11 +3124,11 @@ fragment PostListingItemSidebar_post on Post {
         if($return['status']){
             $_POST['account_update_function'] = 'myaccount_update_password'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->ln_create(array(
-                'ln_creator_entity_id' => $_POST['en_id'],
-                'ln_type_entity_id' => 6224, //My Account Iterated
+                'ln_creator_player_id' => $_POST['en_id'],
+                'ln_type_player_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$return['message'],
                 'ln_metadata' => $_POST,
-                'ln_child_entity_id' => $_POST['en_id'],
+                'ln_child_player_id' => $_POST['en_id'],
             ));
         }
 
@@ -3193,16 +3193,16 @@ fragment PostListingItemSidebar_post on Post {
 
             //Does this user have a social URL already?
             $social_url_exists = $this->READ_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_entity_id' => 4256, //Generic URL
-                'ln_parent_entity_id' => $social_en_id,
-                'ln_child_entity_id' => $_POST['en_id'],
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_player_id' => 4256, //Generic URL
+                'ln_parent_player_id' => $social_en_id,
+                'ln_child_player_id' => $_POST['en_id'],
             ));
 
             if (count($social_url_exists) > 0) {
 
                 //Make sure not for another entity:
-                if ($social_url_exists[0]['ln_child_entity_id'] != $_POST['en_id']) {
+                if ($social_url_exists[0]['ln_child_player_id'] != $_POST['en_id']) {
                     return echo_json(array(
                         'status' => 0,
                         'message' => $en_all_6123[$social_en_id]['m_name'] . ' URL already taken by another entity.',
@@ -3214,10 +3214,10 @@ fragment PostListingItemSidebar_post on Post {
 
                     //Check to make sure not duplicate
                     $duplicates = $this->READ_model->ln_fetch(array(
-                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_entity_id' => 4256, //Generic URL
-                        'ln_parent_entity_id' => $social_en_id,
-                        'ln_child_entity_id !=' => $_POST['en_id'],
+                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_player_id' => 4256, //Generic URL
+                        'ln_parent_player_id' => $social_en_id,
+                        'ln_child_player_id !=' => $_POST['en_id'],
                         'ln_content' => $social_url,
                     ));
                     if(count($duplicates) > 0){
@@ -3238,7 +3238,7 @@ fragment PostListingItemSidebar_post on Post {
 
                     //Remove profile:
                     $this->READ_model->ln_update($social_url_exists[0]['ln_id'], array(
-                        'ln_status_entity_id' => 6173, //Link Removed
+                        'ln_status_player_id' => 6173, //Link Removed
                     ), $_POST['en_id'], 6224 /* User Account Updated */);
 
                     $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' Removed. ';
@@ -3253,11 +3253,11 @@ fragment PostListingItemSidebar_post on Post {
 
                 //Create new link:
                 $this->READ_model->ln_create(array(
-                    'ln_status_entity_id' => 6176, //Link Published
-                    'ln_creator_entity_id' => $_POST['en_id'],
-                    'ln_child_entity_id' => $_POST['en_id'],
-                    'ln_type_entity_id' => 4256, //Generic URL
-                    'ln_parent_entity_id' => $social_en_id,
+                    'ln_status_player_id' => 6176, //Link Published
+                    'ln_creator_player_id' => $_POST['en_id'],
+                    'ln_child_player_id' => $_POST['en_id'],
+                    'ln_type_player_id' => 4256, //Generic URL
+                    'ln_parent_player_id' => $social_en_id,
                     'ln_content' => $social_url,
                 ), true);
 
@@ -3271,11 +3271,11 @@ fragment PostListingItemSidebar_post on Post {
             //Log Account iteration link type:
             $_POST['account_update_function'] = 'myaccount_save_social_profiles'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->ln_create(array(
-                'ln_creator_entity_id' => $_POST['en_id'],
-                'ln_type_entity_id' => 6224, //My Account Iterated
+                'ln_creator_player_id' => $_POST['en_id'],
+                'ln_type_player_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$success_messages,
                 'ln_metadata' => $_POST,
-                'ln_child_entity_id' => $_POST['en_id'],
+                'ln_child_player_id' => $_POST['en_id'],
             ));
 
             //All good, return combined success messages:
@@ -3309,15 +3309,15 @@ fragment PostListingItemSidebar_post on Post {
 
         //COUNT WORDS BLOG/READ:
         $words_blog = $this->READ_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_creator_entity_id' => $session_en['en_id'],
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_creator_player_id' => $session_en['en_id'],
         ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
 
         $words_read = $this->READ_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_creator_entity_id' => $session_en['en_id'],
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_creator_player_id' => $session_en['en_id'],
         ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
 
 
@@ -3336,17 +3336,17 @@ fragment PostListingItemSidebar_post on Post {
         /*
          *
          * This function prepares a PHP-friendly text to be copied to platform_cache.php
-         * (which is auto loaded) to provide a cache image of some entities in
+         * (which is auto loaded) to provide a cache image of some players in
          * the tree for faster application processing.
          *
          * */
 
-        //First first all entities that have Cache in PHP Config @4527 as their parent:
+        //First first all players that have Cache in PHP Config @4527 as their parent:
         $config_ens = $this->READ_model->ln_fetch(array(
-            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-            'ln_parent_entity_id' => 4527,
+            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            'ln_parent_player_id' => 4527,
         ), array('en_child'), 0);
 
         echo htmlentities('<?php').'<br /><br />';
@@ -3367,10 +3367,10 @@ fragment PostListingItemSidebar_post on Post {
 
             //Now fetch all its children:
             $children = $this->READ_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
-                'ln_parent_entity_id' => $en['ln_child_entity_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+                'ln_parent_player_id' => $en['ln_child_player_id'],
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
 
@@ -3384,8 +3384,8 @@ fragment PostListingItemSidebar_post on Post {
             }
 
             echo '<br />//'.$en['en_name'].':<br />';
-            echo '$config[\'en_ids_'.$en['ln_child_entity_id'].'\'] = array('.join(',',$child_ids).');<br />';
-            echo '$config[\'en_all_'.$en['ln_child_entity_id'].'\'] = array(<br />';
+            echo '$config[\'en_ids_'.$en['ln_child_player_id'].'\'] = array('.join(',',$child_ids).');<br />';
+            echo '$config[\'en_all_'.$en['ln_child_player_id'].'\'] = array(<br />';
             foreach($children as $child){
 
                 //Do we have an omit command?
@@ -3396,10 +3396,10 @@ fragment PostListingItemSidebar_post on Post {
                 //Fetch all parents for this child:
                 $child_parent_ids = array(); //To be populated soon
                 $child_parents = $this->READ_model->ln_fetch(array(
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
-                    'ln_child_entity_id' => $child['en_id'],
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+                    'ln_child_player_id' => $child['en_id'],
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 ), array('en_parent'), 0);
                 foreach($child_parents as $cp_en){
                     array_push($child_parent_ids, intval($cp_en['en_id']));

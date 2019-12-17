@@ -11,7 +11,7 @@ var $input = $('.drag-box').find('input[type="file"]'),
 
 $(document).ready(function () {
 
-    //Load entity search for mass update function:
+    //Load player search for mass update function:
     $('.en_quick_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
         $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
@@ -20,7 +20,7 @@ $(document).ready(function () {
 
         source: function (q, cb) {
             algolia_index.search(q, {
-                filters: 'alg_obj_is_in=0', //Search entities
+                filters: 'alg_obj_is_in=0', //Search players
                 hitsPerPage: 5,
             }, function (error, content) {
                 if (error) {
@@ -48,9 +48,9 @@ $(document).ready(function () {
         update_demo_icon();
     });
 
-    //Lookout for intent link related changes:
-    $('#ln_status_entity_id').change(function () {
-        if (parseInt($('#ln_status_entity_id').find(":selected").val()) == 6173 /* Link Removed */ ) {
+    //Lookout for blog link related changes:
+    $('#ln_status_player_id').change(function () {
+        if (parseInt($('#ln_status_player_id').find(":selected").val()) == 6173 /* Link Removed */ ) {
             //About to delete? Notify them:
             $('.notify_unlink_en').removeClass('hidden');
         } else {
@@ -62,9 +62,9 @@ $(document).ready(function () {
         mass_action_ui();
     });
 
-    $('#en_status_entity_id').change(function () {
+    $('#en_status_player_id').change(function () {
 
-        if (parseInt($('#en_status_entity_id').find(":selected").val()) == 6178 /* Entity Removed */) {
+        if (parseInt($('#en_status_player_id').find(":selected").val()) == 6178 /* Entity Removed */) {
 
             //Notify Trainer:
             $('.notify_en_remove').removeClass('hidden');
@@ -232,11 +232,11 @@ function mass_action_ui(){
 
 
 
-//Adds OR links entities to entities
+//Adds OR links players to players
 function en_add_or_link(en_existing_id, is_parent) {
 
-    //if en_existing_id>0 it means we're linking to an existing entity, in which case en_new_string should be null
-    //If en_existing_id=0 it means we are creating a new entity and then linking it, in which case en_new_string is required
+    //if en_existing_id>0 it means we're linking to an existing player, in which case en_new_string should be null
+    //If en_existing_id=0 it means we are creating a new player and then linking it, in which case en_new_string is required
 
     if (is_parent) {
         var input = $('#new-parent .new-player-input');
@@ -363,7 +363,7 @@ function en_ln_type_preview() {
     $('#en_type_link_id').html('<i class="far fa-yin-yang fa-spin"></i>');
 
 
-    //Fetch Intent Data to load modify widget:
+    //Fetch Blog Data to load modify widget:
     $.post("/play/en_ln_type_preview", {
         ln_content: $('#ln_content').val(),
         ln_id: parseInt($('#modifybox').attr('entity-link-id')),
@@ -415,7 +415,7 @@ function en_modify_load(en_id, ln_id) {
     var en_full_name = $(".en_name_" + en_id + ":first").text();
     $('#en_name').val(en_full_name.toUpperCase()).focus();
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
-    $('#en_status_entity_id').val($(".en___" + en_id + ":first").attr('en-status'));
+    $('#en_status_player_id').val($(".en___" + en_id + ":first").attr('en-status'));
     $('.save_entity_changes').html('');
     $('.entity_remove_stats').html('');
 
@@ -432,7 +432,7 @@ function en_modify_load(en_id, ln_id) {
     //Only show unlink button if not level 1
     if (parseInt(ln_id) > 0) {
 
-        $('#ln_status_entity_id').val($(".en___" + en_id + ":first").attr('ln-status'));
+        $('#ln_status_player_id').val($(".en___" + en_id + ":first").attr('ln-status'));
         $('#en_link_count').val('0');
 
 
@@ -567,7 +567,7 @@ function en_modify_save() {
         return false;
     }
 
-    //Are we about to remove an entity with a lot of links?
+    //Are we about to remove an player with a lot of links?
     var link_count= parseInt($('#en_link_count').val());
     var action_verb = ( $('#en_merge').val().length > 0 ? 'merge' : 'remove' );
     var confirm_string = action_verb + " " + link_count;
@@ -582,18 +582,18 @@ function en_modify_save() {
         }
     }
 
-    //Prepare data to be modified for this intent:
+    //Prepare data to be modified for this blog:
     var modify_data = {
         en_focus_id: en_focus_id, //Determines if we need to change location upon removing...
         en_id: parseInt($('#modifybox').attr('entity-id')),
         en_name: $('#en_name').val().toUpperCase(),
         en_icon: $('#en_icon').val(),
-        en_status_entity_id: $('#en_status_entity_id').val(), //The new status (might not have changed too)
+        en_status_player_id: $('#en_status_player_id').val(), //The new status (might not have changed too)
         en_merge: $('#en_merge').val(),
         //Link data:
         ln_id: parseInt($('#modifybox').attr('entity-link-id')),
         ln_content: $('#ln_content').val(),
-        ln_status_entity_id: $('#ln_status_entity_id').val(),
+        ln_status_player_id: $('#ln_status_player_id').val(),
     };
 
     //Show spinner:
@@ -606,11 +606,11 @@ function en_modify_save() {
 
             if(data.remove_from_ui){
 
-                //need to remove this entity:
-                //Intent has been either removed OR unlinked:
+                //need to remove this player:
+                //Blog has been either removed OR unlinked:
                 if (data.remove_redirect_url) {
 
-                    //move up 1 level as this was the focus intent:
+                    //move up 1 level as this was the focus blog:
                     window.location = data.remove_redirect_url;
 
                 } else {
@@ -642,14 +642,14 @@ function en_modify_save() {
 
 
                 //Entity Status:
-                $(".en___" + modify_data['en_id']).attr('en-status', modify_data['en_status_entity_id']);
-                $('.en_status_entity_id_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6177[modify_data['en_status_entity_id']]["m_name"] + ': ' + js_en_all_6177[modify_data['en_status_entity_id']]["m_desc"] + '">' + js_en_all_6177[modify_data['en_status_entity_id']]["m_icon"] + '</span>');
+                $(".en___" + modify_data['en_id']).attr('en-status', modify_data['en_status_player_id']);
+                $('.en_status_player_id_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6177[modify_data['en_status_player_id']]["m_name"] + ': ' + js_en_all_6177[modify_data['en_status_player_id']]["m_desc"] + '">' + js_en_all_6177[modify_data['en_status_player_id']]["m_icon"] + '</span>');
 
 
                 //Entity Icon:
                 var icon_is_set = ( modify_data['en_icon'].length > 0 ? 1 : 0 );
                 if(!icon_is_set){
-                    //Set entity default icon:
+                    //Set player default icon:
                     modify_data['en_icon'] = '<i class="fas fa-circle blue"></i>';
                 }
                 $('.en__icon_' + modify_data['en_id']).attr('en-is-set' , icon_is_set );
@@ -671,16 +671,16 @@ function en_modify_save() {
 
 
                     //Link Icon:
-                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + en_all_4592[data.js_ln_type_entity_id]["m_name"] + ': ' + en_all_4592[data.js_ln_type_entity_id]["m_desc"] + '">' + en_all_4592[data.js_ln_type_entity_id]["m_icon"] + '</span>');
+                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + en_all_4592[data.js_ln_type_player_id]["m_name"] + ': ' + en_all_4592[data.js_ln_type_player_id]["m_desc"] + '">' + en_all_4592[data.js_ln_type_player_id]["m_icon"] + '</span>');
 
                     //Link Status:
-                    $(".en___" + modify_data['en_id']).attr('ln-status', modify_data['ln_status_entity_id'])
-                    $('.ln_status_entity_id_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6186[modify_data['ln_status_entity_id']]["m_name"] + ': ' + js_en_all_6186[modify_data['ln_status_entity_id']]["m_desc"] + '">' + js_en_all_6186[modify_data['ln_status_entity_id']]["m_icon"] + '</span>');
+                    $(".en___" + modify_data['en_id']).attr('ln-status', modify_data['ln_status_player_id'])
+                    $('.ln_status_player_id_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6186[modify_data['ln_status_player_id']]["m_name"] + ': ' + js_en_all_6186[modify_data['ln_status_player_id']]["m_desc"] + '">' + js_en_all_6186[modify_data['ln_status_player_id']]["m_icon"] + '</span>');
 
                 }
 
 
-                //Update entity timestamp:
+                //Update player timestamp:
                 $('.save_entity_changes').html(data.message);
 
                 //Reload Tooltip again:

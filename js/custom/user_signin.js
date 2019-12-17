@@ -61,9 +61,9 @@ function vote_channel(en_chosen){
 
     //Cast Vote:
     js_ln_create({
-        ln_type_entity_id: 12106,
-        ln_parent_entity_id: 12105,
-        ln_child_entity_id: en_chosen,
+        ln_type_player_id: 12106,
+        ln_parent_player_id: 12105,
+        ln_child_player_id: en_chosen,
     });
 
     $('.vote-results').html('Vote successfully casted. Choose a reading platform to continue.');
@@ -125,7 +125,7 @@ function search_email(){
 
         if (data.status) {
 
-            //Update entity id IF existed already:
+            //Update player id IF existed already:
             $('#login_en_id').val(data.login_en_id);
 
             //Update email:

@@ -17,12 +17,6 @@ function includes_any($string, $items)
     return false;
 }
 
-function en_trust_score_sort($a, $b)
-{
-    //An array sorting function for entities based on their trust score:
-    return intval($b['en_trust_score']) - intval($a['en_trust_score']);
-}
-
 function load_algolia($index_name)
 {
     //Loads up algolia search engine functions
@@ -35,7 +29,7 @@ function load_algolia($index_name)
     }
 }
 
-function detect_missing_columns($insert_columns, $required_columns, $ln_creator_entity_id)
+function detect_missing_columns($insert_columns, $required_columns, $ln_creator_player_id)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach ($required_columns as $req_field) {
@@ -48,8 +42,8 @@ function detect_missing_columns($insert_columns, $required_columns, $ln_creator_
                     'insert_columns' => $insert_columns,
                     'required_columns' => $required_columns,
                 ),
-                'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_creator_entity_id' => $ln_creator_entity_id,
+                'ln_type_player_id' => 4246, //Platform Bug Reports
+                'ln_creator_player_id' => $ln_creator_player_id,
             ));
 
             return true; //We have an issue
@@ -124,11 +118,11 @@ function extract_references($ln_content)
     $ln_content = preg_replace('/[[:^print:]]/', ' ', $ln_content);
     $words = preg_split('/\s+/', $ln_content);
 
-    //Analyze the message to find referencing URLs and Entities in the message text:
+    //Analyze the message to find referencing URLs and Players in the message text:
     $string_references = array(
         'ref_urls' => array(),
         'ref_entities' => array(),
-        'ref_intents' => array(),
+        'ref_blogs' => array(),
         'ref_commands' => array(),
         'ref_custom' => array(),
     );
@@ -161,7 +155,7 @@ function extract_references($ln_content)
 
         } elseif (substr($word, 0, 1) == '#' && is_numeric(substr($word, 1)) && intval(substr($word, 1)) > 0) {
 
-            array_push($string_references['ref_intents'], intval(substr($word, 1)));
+            array_push($string_references['ref_blogs'], intval(substr($word, 1)));
 
         }
     }
@@ -225,7 +219,7 @@ function ln_detect_type($string)
 {
 
     /*
-     * Detect what type of entity-to-entity URL type should we create
+     * Detect what type of player-to-player URL type should we create
      * based on options listed in this tree: https://mench.com/play/4227
      * */
 
@@ -243,21 +237,21 @@ function ln_detect_type($string)
 
         return array(
             'status' => 1,
-            'ln_type_entity_id' => 4230, //Raw
+            'ln_type_player_id' => 4230, //Raw
         );
 
     } elseif (in_array(substr($string, 0, 3), array('fas', 'far', 'fal', 'fad')) && substr($string, 3, 4)==' fa-') {
 
         return array(
             'status' => 1,
-            'ln_type_entity_id' => 10669, //ICON
+            'ln_type_player_id' => 10669, //ICON
         );
 
     } elseif ((strlen(bigintval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(bigintval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {
 
         return array(
             'status' => 1,
-            'ln_type_entity_id' => 4319, //Number
+            'ln_type_player_id' => 4319, //Number
         );
 
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
@@ -271,7 +265,7 @@ function ln_detect_type($string)
         //Date/time:
         return array(
             'status' => 1,
-            'ln_type_entity_id' => 4318,
+            'ln_type_player_id' => 4318,
         );
 
     } else {
@@ -279,7 +273,7 @@ function ln_detect_type($string)
         //Regular text link:
         return array(
             'status' => 1,
-            'ln_type_entity_id' => 4255, //Text Link
+            'ln_type_player_id' => 4255, //Text Link
         );
 
     }
@@ -417,7 +411,7 @@ function curl_get_file_size( $url ) {
 
 function filter_cache_group($search_en_id, $cache_en_id){
 
-    //Determines which category an entity belongs to
+    //Determines which category an player belongs to
 
     $CI =& get_instance();
     foreach ($CI->config->item('en_all_'.$cache_en_id) as $en_id => $m) {
@@ -438,12 +432,12 @@ function ln_type_word_count($ln){
 
     $CI =& get_instance();
 
-    if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10596'))){
+    if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10596'))){
 
         //Nod:
         $link_words = number_format(1 / config_var(11067), 2);
 
-    } elseif(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10539'))){
+    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10539'))){
 
         //Word:
         $link_words = 1.00;
@@ -454,17 +448,17 @@ function ln_type_word_count($ln){
         $link_words = 0;
 
         //Consider each object link as a word:
-        foreach (array('ln_child_intent_id', 'ln_parent_intent_id', 'ln_child_entity_id', 'ln_parent_entity_id') as $dz) {
+        foreach (array('ln_child_blog_id', 'ln_parent_blog_id', 'ln_child_player_id', 'ln_parent_player_id') as $dz) {
             if (isset($ln[$dz]) && intval($ln[$dz]) > 0) {
                 $link_words++;
             }
         }
 
         //Is it a statement that has content??
-        if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10593') /* Statement */) && isset($ln['ln_content']) && strlen($ln['ln_content']) > 0){
+        if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10593') /* Statement */) && isset($ln['ln_content']) && strlen($ln['ln_content']) > 0){
 
             //Let's calculate the number of words in this statement based on it's content:
-            if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10627') /* Attachments */)){
+            if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10627') /* Attachments */)){
 
                 $file_size = curl_get_file_size($ln['ln_content']);
                 if($file_size > 0){
@@ -489,7 +483,7 @@ function ln_type_word_count($ln){
 
 
     //Give negative sign if output
-    if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10590'))){
+    if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10590'))){
         //This is an output, return negative:
         $link_words = -1 * $link_words;
     }
@@ -603,7 +597,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
 
 function in_is_unlockable($in){
     $CI =& get_instance();
-    return in_array($in['in_status_entity_id'], $CI->config->item('en_ids_7355') /* Intent Statuses Public */);
+    return in_array($in['in_status_player_id'], $CI->config->item('en_ids_7355') /* Blog Statuses Public */);
 }
 
 function redirect_message($url, $message = null)
@@ -662,7 +656,7 @@ function extract_icon_color($en_icon){
 function unique_players(){
     //COUNT PLAYERS:
     $CI =& get_instance();
-    $q = $CI->db->query('SELECT COUNT(*) FROM (SELECT DISTINCT ln_creator_entity_id FROM table_links) AS temp;');
+    $q = $CI->db->query('SELECT COUNT(*) FROM (SELECT DISTINCT ln_creator_player_id FROM table_links) AS temp;');
     $engaged_players = $q->result_array();
     return $engaged_players[0]['count'];
 }
@@ -744,7 +738,7 @@ function common_prefix($child_list, $child_field, $max_look = 0){
 
 
     if(count($child_list) < 2){
-        return null; //Cannot do this for less than 2 intents
+        return null; //Cannot do this for less than 2 blogs
     }
 
     //Go through each child one by one and see if each word exists in all:
@@ -755,7 +749,7 @@ function common_prefix($child_list, $child_field, $max_look = 0){
             break; //Look no more...
         }
 
-        //Make sure this is the same word across all intents:
+        //Make sure this is the same word across all blogs:
         $all_the_same = true;
         foreach($child_list as $child_item){
             $child_words = explode(' ', $child_item[$child_field]);
@@ -777,7 +771,7 @@ function common_prefix($child_list, $child_field, $max_look = 0){
     return trim($common_prefix);
 }
 
-function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null, $is_local = false, $page_title = null)
+function upload_to_cdn($file_url, $ln_creator_player_id = 0, $ln_metadata = null, $is_local = false, $page_title = null)
 {
 
     /*
@@ -835,7 +829,7 @@ function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null
             //Define new URL:
             $cdn_new_url = trim($result['ObjectURL']);
 
-            if($ln_creator_entity_id < 1){
+            if($ln_creator_player_id < 1){
                 //Just return URL:
                 return array(
                     'status' => 1,
@@ -843,8 +837,8 @@ function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null
                 );
             }
 
-            //Create and link new entity to CDN and uploader:
-            $url_entity = $CI->PLAY_model->en_sync_url($cdn_new_url, $ln_creator_entity_id, array(4396 /* Mench CDN Entity */, $ln_creator_entity_id), 0, $page_title);
+            //Create and link new player to CDN and uploader:
+            $url_entity = $CI->PLAY_model->en_sync_url($cdn_new_url, $ln_creator_player_id, array(4396 /* Mench CDN Entity */, $ln_creator_player_id), 0, $page_title);
 
             if(isset($url_entity['en_url']['en_id']) && $url_entity['en_url']['en_id'] > 0){
 
@@ -858,8 +852,8 @@ function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null
             } else {
 
                 $CI->READ_model->ln_create(array(
-                    'ln_type_entity_id' => 4246, //Platform Bug Reports
-                    'ln_creator_entity_id' => $ln_creator_entity_id,
+                    'ln_type_player_id' => 4246, //Platform Bug Reports
+                    'ln_creator_player_id' => $ln_creator_player_id,
                     'ln_content' => 'upload_to_cdn() Failed to create new entity from CDN file',
                     'ln_metadata' => array(
                         'file_url' => $file_url,
@@ -877,8 +871,8 @@ function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null
         } else {
 
             $CI->READ_model->ln_create(array(
-                'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_creator_entity_id' => $ln_creator_entity_id,
+                'ln_type_player_id' => 4246, //Platform Bug Reports
+                'ln_creator_player_id' => $ln_creator_player_id,
                 'ln_content' => 'upload_to_cdn() Failed to upload file to Mench CDN',
                 'ln_metadata' => array(
                     'file_url' => $file_url,
@@ -898,8 +892,8 @@ function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null
 
         //Log error:
         $CI->READ_model->ln_create(array(
-            'ln_type_entity_id' => 4246, //Platform Bug Reports
-            'ln_creator_entity_id' => $ln_creator_entity_id,
+            'ln_type_player_id' => 4246, //Platform Bug Reports
+            'ln_creator_player_id' => $ln_creator_player_id,
             'ln_content' => 'upload_to_cdn() Failed to load AWS S3 module',
             'ln_metadata' => array(
                 'file_url' => $file_url,
@@ -1038,7 +1032,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         );
     }
 
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Blog Subtypes
 
     //Define the support objects indexed on algolia:
     $input_obj_id = intval($input_obj_id);
@@ -1065,7 +1059,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
     } else {
 
-        //Do both intents and entities:
+        //Do both blogs and players:
         $fetch_objects = $valid_objects;
 
         if (!$return_row_only) {
@@ -1093,7 +1087,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             if($input_obj_id){
                 $limits['in_id'] = $input_obj_id;
             } else {
-                $limits['in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //Intent Statuses Active
+                $limits['in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //Blog Statuses Active
             }
 
             $db_rows['in'] = $CI->BLOG_model->in_fetch($limits, array('in__messages'));
@@ -1103,7 +1097,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             if($input_obj_id){
                 $limits['en_id'] = $input_obj_id;
             } else {
-                $limits['en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')'] = null; //Entity Statuses Active
+                $limits['en_status_player_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')'] = null; //Entity Statuses Active
             }
 
             $db_rows['en'] = $CI->PLAY_model->en_fetch($limits, array('en__parents'));
@@ -1152,16 +1146,15 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Count published children:
                 $published_child_count = $CI->READ_model->ln_fetch(array(
-                    'ln_parent_entity_id' => $db_row['en_id'],
-                    'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-                    'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+                    'ln_parent_player_id' => $db_row['en_id'],
+                    'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                    'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'en_status_player_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
                 ), array('en_child'), 0, 0, array(), 'COUNT(ln_id) AS published_child_count');
 
                 $export_row['alg_obj_is_in'] = 0;
                 $export_row['alg_obj_id'] = intval($db_row['en_id']);
-                $export_row['alg_obj_weight'] = intval($db_row['en_trust_score']);
-                $export_row['alg_obj_status'] = intval($db_row['en_status_entity_id']);
+                $export_row['alg_obj_status'] = intval($db_row['en_status_player_id']);
                 $export_row['alg_obj_icon'] = echo_en_icon($db_row['en_icon']);
                 $export_row['alg_obj_name'] = $db_row['en_name'];
 
@@ -1189,7 +1182,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
 
-                if($has_featured_parent_en && in_array(intval($db_row['en_status_entity_id']), $CI->config->item('en_ids_7357'))){
+                if($has_featured_parent_en && in_array(intval($db_row['en_status_player_id']), $CI->config->item('en_ids_7357'))){
                     array_push($export_row['_tags'], 'alg_is_published_featured');
                 }
 
@@ -1201,9 +1194,8 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 $export_row['alg_obj_is_in'] = 1; //This is a BLOG
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
-                $export_row['alg_obj_weight'] = ( isset($metadata['in__metadata_max_seconds']) ? intval($metadata['in__metadata_max_seconds']) : 0 );
-                $export_row['alg_obj_status'] = intval($db_row['in_status_entity_id']);
-                $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_completion_method_entity_id']]['m_icon']; //Entity type icon
+                $export_row['alg_obj_status'] = intval($db_row['in_status_player_id']);
+                $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_player_id']]['m_icon']; //Entity type icon
                 $export_row['alg_obj_name'] = $db_row['in_outcome'];
 
 
@@ -1215,24 +1207,24 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
 
 
-                //If trainer has up-voted then give them access to manage intent
+                //If trainer has up-voted then give them access to manage blog
                 foreach($CI->READ_model->ln_fetch(array(
-                    'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_entity_id' => 4983,
-                    'ln_child_intent_id' => $db_row['in_id'],
-                    'ln_parent_entity_id >' => 0, //Where the author entity is stored
+                    'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_player_id' => 4983,
+                    'ln_child_blog_id' => $db_row['in_id'],
+                    'ln_parent_player_id >' => 0, //Where the author player is stored
                 ), array(), 0) as $author){
-                    array_push($export_row['_tags'], 'alg_author_' . $author['ln_parent_entity_id']);
+                    array_push($export_row['_tags'], 'alg_author_' . $author['ln_parent_player_id']);
                 }
 
 
                 //Set published status if featured:
                 if(count($CI->READ_model->ln_fetch(array(
-                        'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                        'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_entity_id' => 4601, //BLOG KEYWORDS
-                        'ln_child_intent_id' => $db_row['in_id'],
-                        'ln_parent_entity_id IN (' . join(',', $featured_topic_ids) . ')' => null,
+                        'in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                        'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_player_id' => 4601, //BLOG KEYWORDS
+                        'ln_child_blog_id' => $db_row['in_id'],
+                        'ln_parent_player_id IN (' . join(',', $featured_topic_ids) . ')' => null,
                     ), array('in_child')))){
                     array_push($export_row['_tags'], 'alg_is_published_featured');
                 }
@@ -1268,7 +1260,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be removed?
-        if (in_array($all_db_rows[0][$input_obj_type . '_status_entity_id'], array(6178 /* Entity Removed */, 6182 /* Intent Removed */))) {
+        if (in_array($all_db_rows[0][$input_obj_type . '_status_entity_id'], array(6178 /* Entity Removed */, 6182 /* Blog Removed */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
@@ -1359,7 +1351,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 }
 
-function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_entity_id = 0)
+function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_player_id = 0)
 {
 
     $CI =& get_instance();
@@ -1436,13 +1428,13 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_entity_id 
 
         $affected_rows = $CI->BLOG_model->in_update($obj_id, array(
             'in_metadata' => $metadata,
-        ), false, $ln_creator_entity_id);
+        ), false, $ln_creator_player_id);
 
     } elseif ($obj_type == 'en') {
 
         $affected_rows = $CI->PLAY_model->en_update($obj_id, array(
             'en_metadata' => $metadata,
-        ), false, $ln_creator_entity_id);
+        ), false, $ln_creator_player_id);
 
     } elseif ($obj_type == 'ln') {
 
