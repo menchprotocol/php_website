@@ -43,8 +43,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
         echo '<a href="/play" class="btn btn-play btn-five inline-block" data-toggle="tooltip" data-placement="bottom" style="padding-top:10px;" title="'.$en_all_11035[11087]['m_desc'].'">'.$en_all_11035[11087]['m_icon'].' '.$en_all_11035[11087]['m_name'].'</a>';
 
-        echo '<a href="/play/signout" class="btn btn-play btn-five inline-block" style="padding-top:10px;">'.$en_all_11035[7291]['m_icon'].' '.$en_all_11035[7291]['m_name'].'</a>';
-
+        if(!intval($this->session->userdata('messenger_signin'))){
+            //Only give signout option if NOT logged-in from Messenger
+            echo '<a href="/play/signout" class="btn btn-play btn-five inline-block" style="padding-top:10px;">'.$en_all_11035[7291]['m_icon'].' '.$en_all_11035[7291]['m_name'].'</a>';
+        }
     }
 
     //MODIFY

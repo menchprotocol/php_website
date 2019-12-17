@@ -1965,88 +1965,6 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-
-    function cron__update_trust_score($en_id = 0)
-    {
-
-        /*
-         *
-         * Entities are measured through a custom algorithm that measure their "Trust Score"
-         * It's how we primarily assess the weight of each entity in our network.
-         * This function defines this algorithm.
-         *
-         * If $en_id not provided it would update all entities...
-         *
-         * */
-
-        if($en_id < 0){
-            //Gateway URL to give option to run...
-            die('<a href="/play/cron__update_trust_score">Click here</a> to start running this function.');
-        }
-
-        //Algorithm Weights:
-        $score_weights = array(
-            'score_parent' => 5, //Score per each parent entity
-            'score_children' => 2, //Score per each child entity
-            'score_link' => 0.25, //Score per each link of any type and any status
-            'score_trainer_words' => 0.10, // This is X where: 1 trainer credits = X score
-        );
-
-        //Fetch entities with/without filter:
-        $ens = $this->PLAY_model->en_fetch(array(
-            'en_id '.( $en_id > 0 ? '=' : '>=' ) => $en_id,
-        ));
-
-        //Fetch child entities:
-        foreach ($ens as $en){
-
-            //Calculate trust score:
-            $score = 0;
-
-            //Parents
-            $en_parents = $this->READ_model->ln_fetch(array(
-                'ln_child_entity_id' => $en['en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            $score += $en_parents[0]['totals'] * $score_weights['score_parent'];
-
-            //Children:
-            $en_children = $this->READ_model->ln_fetch(array(
-                'ln_parent_entity_id' => $en['en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            $score += $en_children[0]['totals'] * $score_weights['score_children'];
-
-            //READ HISTORY:
-            $en_lns = $this->READ_model->ln_fetch(array(
-                '(ln_parent_entity_id='.$en['en_id'].' OR ln_child_entity_id='.$en['en_id'].')' => null,
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            $score += $en_lns[0]['totals'] * $score_weights['score_link'];
-
-            //Mining credits:
-            $en_trainer_words = $this->READ_model->ln_fetch(array(
-                'ln_creator_entity_id' => $en['en_id'],
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            ), array(), 0, 0, array(), 'SUM(ABS(ln_words)) as total_words');
-            $score += $en_trainer_words[0]['total_words'] * $score_weights['score_trainer_words'];
-
-            //Do we need to update?
-            if($en['en_trust_score'] != $score){
-                //Yes:
-                $this->PLAY_model->en_update($en['en_id'], array(
-                    'en_trust_score' => round($score, 0),
-                ));
-            }
-        }
-
-        echo 'Successfully updated trust score for '.count($ens).' entities.';
-    }
-
-
-
-
     function singin_check_psid($psid){
 
         if (!isset($_GET['sr']) || !parse_signed_request($_GET['sr'])) {
@@ -2063,7 +1981,7 @@ fragment PostListingItemSidebar_post on Post {
         if ($session_en) {
 
             //Activate Session:
-            $this->PLAY_model->en_activate_session($session_en);
+            $this->PLAY_model->en_activate_session($session_en, 1);
 
             //Set message before refreshing:
             $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">Signed-in from Messenger</div>');

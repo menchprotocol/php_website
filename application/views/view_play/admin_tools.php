@@ -27,7 +27,6 @@ $moderation_tools = array(
 $cron_jobs = array(
     '/blog/cron__sync_common_base' => 'Sync Common Base Metadata',
     '/blog/cron__sync_extra_insights' => 'Sync Extra Insights Metadata',
-    '/play/cron__update_trust_score' => 'Update All Entity Trust Scores',
     '/read/cron__sync_algolia' => 'Sync Algolia Index [Limited calls!]',
     '/read/cron__sync_gephi' => 'Sync Gephi Graph Index',
     '/read/cron__clean_metadatas' => 'Clean Unused Metadata Variables',

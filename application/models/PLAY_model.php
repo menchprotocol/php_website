@@ -18,7 +18,7 @@ class PLAY_model extends CI_Model
 
 
 
-    function en_activate_session($en){
+    function en_activate_session($en, $messenger_signin = 0){
 
         //PROFILE
         $en['en__parents'] = $this->READ_model->ln_fetch(array(
@@ -27,6 +27,7 @@ class PLAY_model extends CI_Model
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array('en_parent'));
         $session_data['user'] = $en;
+        $session_data['messenger_signin'] = $messenger_signin;
 
 
 

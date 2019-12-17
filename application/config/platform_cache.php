@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-15 21:26:53 PST
+//Generated 2019-12-16 15:57:28 PST
 
 //BLOG TYPE GUEST ACCESS:
 $config['en_ids_12107'] = array(6684,7231);
@@ -807,7 +807,7 @@ $config['en_all_12004'] = array(
         'm_icon' => '<i class="fas fa-comments"></i>',
         'm_name' => 'READER STEP MESSAGES ONLY',
         'm_desc' => '',
-        'm_parents' => array(12004,10596,10589,7703,6274,6255,4755,6146,4593),
+        'm_parents' => array(7494,12004,10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -2596,7 +2596,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.171',
+        'm_desc' => '1.173',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -4821,7 +4821,7 @@ $config['en_all_10596'] = array(
         'm_icon' => '<i class="fas fa-comments"></i>',
         'm_name' => 'READER STEP MESSAGES ONLY',
         'm_desc' => '',
-        'm_parents' => array(12004,10596,10589,7703,6274,6255,4755,6146,4593),
+        'm_parents' => array(7494,12004,10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -5599,7 +5599,7 @@ $config['en_all_10589'] = array(
         'm_icon' => '<i class="fas fa-comments"></i>',
         'm_name' => 'READER STEP MESSAGES ONLY',
         'm_desc' => '',
-        'm_parents' => array(12004,10596,10589,7703,6274,6255,4755,6146,4593),
+        'm_parents' => array(7494,12004,10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -6485,7 +6485,7 @@ $config['en_all_7703'] = array(
         'm_icon' => '<i class="fas fa-comments"></i>',
         'm_name' => 'READER STEP MESSAGES ONLY',
         'm_desc' => '',
-        'm_parents' => array(12004,10596,10589,7703,6274,6255,4755,6146,4593),
+        'm_parents' => array(7494,12004,10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -6705,7 +6705,7 @@ $config['en_all_7551'] = array(
 );
 
 //READER STEPS UNLOCK:
-$config['en_ids_7494'] = array(7485,7486,6997);
+$config['en_ids_7494'] = array(7485,7486,4559,6997);
 $config['en_all_7494'] = array(
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
@@ -6718,6 +6718,12 @@ $config['en_all_7494'] = array(
         'm_name' => 'CHILDREN UNLOCK',
         'm_desc' => '',
         'm_parents' => array(12004,10596,10589,7703,7494,6244,6146,4755,4593,6255),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="fas fa-comments"></i>',
+        'm_name' => 'MESSAGES ONLY',
+        'm_desc' => '',
+        'm_parents' => array(7494,12004,10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
@@ -7071,7 +7077,7 @@ $config['en_all_6274'] = array(
         'm_icon' => '<i class="fas fa-comments"></i>',
         'm_name' => 'READER STEP MESSAGES ONLY',
         'm_desc' => '',
-        'm_parents' => array(12004,10596,10589,7703,6274,6255,4755,6146,4593),
+        'm_parents' => array(7494,12004,10596,10589,7703,6274,6255,4755,6146,4593),
     ),
 );
 
@@ -7094,7 +7100,7 @@ $config['en_all_6255'] = array(
         'm_icon' => '<i class="fas fa-comments"></i>',
         'm_name' => 'STEP MESSAGES ONLY',
         'm_desc' => '',
-        'm_parents' => array(12004,10596,10589,7703,6274,6255,4755,6146,4593),
+        'm_parents' => array(7494,12004,10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -7315,7 +7321,7 @@ $config['en_all_6146'] = array(
         'm_icon' => '<i class="fas fa-comments"></i>',
         'm_name' => 'STEP MESSAGES ONLY',
         'm_desc' => 'Completed when students complete a basic AND intent without any submission requirements',
-        'm_parents' => array(12004,10596,10589,7703,6274,6255,4755,6146,4593),
+        'm_parents' => array(7494,12004,10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -7938,7 +7944,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-comments"></i>',
         'm_name' => 'READER STEP MESSAGES ONLY',
         'm_desc' => '',
-        'm_parents' => array(12004,10596,10589,7703,6274,6255,4755,6146,4593),
+        'm_parents' => array(7494,12004,10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -8728,7 +8734,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-comments"></i>',
         'm_name' => 'READER STEP MESSAGES ONLY',
         'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
-        'm_parents' => array(12004,10596,10589,7703,6274,6255,4755,6146,4593),
+        'm_parents' => array(7494,12004,10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -9121,5 +9127,3 @@ $config['en_all_3000'] = array(
         'm_parents' => array(10571,4983,7614,3000),
     ),
 );
-
-
