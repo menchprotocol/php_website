@@ -62,16 +62,20 @@ class Read extends CI_Controller
         if(count($pending_messages) > 0){
 
             foreach($pending_messages as $pending_message){
-                //Update this message status to delivered as the user has read this email:
+                //Update message status to indicate the reader has read it:
                 $this->READ_model->ln_update($pending_message['ln_id'], array(
                     'ln_status_entity_id' => 6176 /* Link Published */,
                 ), $session_en['en_id'], 10683 /* User Read Email */);
             }
 
             //Show pending messages:
+            $this->load->view('header', array(
+                'title' => 'MESSAGES',
+            ));
             $this->load->view('view_read/read_messages', array(
                 'pending_messages' => $pending_messages,
             ));
+            $this->load->view('footer');
 
             return false;
 
