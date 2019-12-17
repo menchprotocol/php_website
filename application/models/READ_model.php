@@ -533,7 +533,7 @@ class READ_model extends CI_Model
             $check_termination_answers = array_merge($check_termination_answers , array_flatten($in_metadata['in__metadata_expansion_conditional']));
         }
         if(count($check_termination_answers) > 0 && count($this->READ_model->ln_fetch(array(
-                'ln_type_entity_id' => 7741, //User Step Intention Terminated
+                'ln_type_entity_id' => 7492,
                 'ln_creator_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id IN (' . join(',' , $check_termination_answers) . ')' => null, //All possible answers that might terminate...
                 'ln_status_entity_id' => 6176, //Link Published
@@ -1539,10 +1539,6 @@ class READ_model extends CI_Model
 
                 }
             }
-
-        } elseif($ins[0]['in_completion_method_entity_id']==7740 /* Intent Terminate */){
-
-            $progression_type_entity_id = 7741; //User Step Intention Terminated
 
         } elseif($completion_req_note){
 

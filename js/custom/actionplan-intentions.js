@@ -13,7 +13,7 @@ function actionplan_sort_save() {
 
     //Update READING LIST order:
     if(sort_rank > 0){
-        $.post("/read/actionplan_sort_save", {en_creator_id: en_creator_id, new_actionplan_order: new_actionplan_order}, function (data) {
+        $.post("/read/actionplan_sort_save", {js_pl_id: js_pl_id, new_actionplan_order: new_actionplan_order}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -30,7 +30,7 @@ $('.actionplan_remove', window.parent.document).on('click', function(e) {
     var r = confirm("Remove ["+$('.in-title-'+in_id, window.parent.document).text()+"] from reading list?");
     if (r == true) {
         //Save changes:
-        $.post("/read/actionplan_stop_save", { en_creator_id:en_creator_id ,in_id:in_id }, function (data) {
+        $.post("/read/actionplan_stop_save", { js_pl_id:js_pl_id ,in_id:in_id }, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
 

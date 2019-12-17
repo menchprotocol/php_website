@@ -1105,7 +1105,7 @@ class Read extends CI_Controller
          * */
 
 
-        if (!isset($_POST['en_creator_id']) || intval($_POST['en_creator_id']) < 1) {
+        if (!isset($_POST['js_pl_id']) || intval($_POST['js_pl_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid trainer ID',
@@ -1118,7 +1118,7 @@ class Read extends CI_Controller
         }
 
         //Call function to remove form 🔴 READING LIST:
-        $delete_result = $this->READ_model->read__intention_delete($_POST['en_creator_id'], $_POST['in_id'], 6155); //READER REMOVED BOOKMARK
+        $delete_result = $this->READ_model->read__intention_delete($_POST['js_pl_id'], $_POST['in_id'], 6155); //READER REMOVED BOOKMARK
 
         if(!$delete_result['status']){
             return echo_json($delete_result);
@@ -1169,7 +1169,7 @@ class Read extends CI_Controller
          *
          * */
 
-        if (!isset($_POST['en_creator_id']) || intval($_POST['en_creator_id']) < 1) {
+        if (!isset($_POST['js_pl_id']) || intval($_POST['js_pl_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid trainer ID',
@@ -1189,18 +1189,18 @@ class Read extends CI_Controller
                 //Update order of this link:
                 $results[$ln_order] = $this->READ_model->ln_update(intval($ln_id), array(
                     'ln_order' => $ln_order,
-                ), $_POST['en_creator_id'], 6132 /* Intents Ordered by User */);
+                ), $_POST['js_pl_id'], 6132 /* Intents Ordered by User */);
             }
         }
 
 
         //Fetch top intention that being workined on now:
-        $top_priority = $this->READ_model->read__intention_focus($_POST['en_creator_id']);
+        $top_priority = $this->READ_model->read__intention_focus($_POST['js_pl_id']);
         if($top_priority){
             //Communicate top-priority with user:
             $this->READ_model->dispatch_message(
                 '🔴 READING LIST prioritised with the focus on '.$top_priority['in']['in_outcome'].' ('.$top_priority['completion_rate']['completion_percentage'].'% done)',
-                array('en_id' => $_POST['en_creator_id']),
+                array('en_id' => $_POST['js_pl_id']),
                 true,
                 array(
                     array(

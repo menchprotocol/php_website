@@ -2597,7 +2597,7 @@ fragment PostListingItemSidebar_post on Post {
          *
          * */
 
-        if (!isset($_POST['en_creator_id']) || intval($_POST['en_creator_id']) < 1) {
+        if (!isset($_POST['js_pl_id']) || intval($_POST['js_pl_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid trainer ID',
@@ -2645,14 +2645,14 @@ fragment PostListingItemSidebar_post on Post {
             //Remove selected options for this trainer:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_parent_entity_id IN (' . join(',', $possible_answers) . ')' => null,
-                'ln_child_entity_id' => $_POST['en_creator_id'],
+                'ln_child_entity_id' => $_POST['js_pl_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )) as $remove_en){
                 //Should usually remove a single option:
                 $this->READ_model->ln_update($remove_en['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
-                ), $_POST['en_creator_id'], 6224 /* User Account Updated */);
+                ), $_POST['js_pl_id'], 6224 /* User Account Updated */);
             }
 
         }
@@ -2661,8 +2661,8 @@ fragment PostListingItemSidebar_post on Post {
         if(!$_POST['enable_mulitiselect'] || !$_POST['was_already_selected']){
             $this->READ_model->ln_create(array(
                 'ln_parent_entity_id' => $_POST['selected_en_id'],
-                'ln_child_entity_id' => $_POST['en_creator_id'],
-                'ln_creator_entity_id' => $_POST['en_creator_id'],
+                'ln_child_entity_id' => $_POST['js_pl_id'],
+                'ln_creator_entity_id' => $_POST['js_pl_id'],
                 'ln_type_entity_id' => 4230, //Raw
                 'ln_status_entity_id' => 6176, //Link Published
             ));
@@ -2672,7 +2672,7 @@ fragment PostListingItemSidebar_post on Post {
         //Log Account iteration link type:
         $_POST['account_update_function'] = 'myaccount_radio_update'; //Add this variable to indicate which My Account function created this link
         $this->READ_model->ln_create(array(
-            'ln_creator_entity_id' => $_POST['en_creator_id'],
+            'ln_creator_entity_id' => $_POST['js_pl_id'],
             'ln_type_entity_id' => 6224, //My Account Iterated
             'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_already_selected'] ? 'Removed' : 'Added' ),
             'ln_metadata' => $_POST,

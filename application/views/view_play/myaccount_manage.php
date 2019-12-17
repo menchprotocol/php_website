@@ -2,10 +2,6 @@
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 ?>
 
-<script>
-    //Set global variables:
-    var en_creator_id = <?= $session_en['en_id'] ?>;
-</script>
 <script src="/js/custom/messenger-myaccount.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
