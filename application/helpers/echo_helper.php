@@ -2198,6 +2198,8 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
     //LINK TYPE
     $ui .= '<span class="icon-block ln_type_' . $ln_id . superpower_active(10984) . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['ln_type_player_id']]['m_name'] . ': ' . $en_all_4486[$in['ln_type_player_id']]['m_desc'] . ' @'.$in['ln_type_player_id'].'">' . $en_all_4486[$in['ln_type_player_id']]['m_icon'] . '</span></span>';
 
+    $ui .= '<span class="icon-block' . superpower_active(10984) . '">'.echo_dropdown(4486, $in['ln_type_player_id'], 'btn-mini', $can_manage).'</span>';
+
     //LINK STATUS
     $ui .= '<span class="icon-block ln_status_player_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_player_id']]['m_name'].' @'.$in['ln_status_player_id'].': '.$en_all_6186[$in['ln_status_player_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_player_id']]['m_icon'] . '</span></span>';
 
@@ -2482,7 +2484,7 @@ function echo_dropdown($cache_en_id, $selected_en_id, $btn_class, $can_manage){
     //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
     $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'" title="'.$en_all_12079[$cache_en_id]['m_name'].': '.$en_all_12079[$cache_en_id]['m_desc'].'" data-toggle="tooltip" data-placement="right">';
     $ui .= '<button type="button"  class="btn '.$btn_class.( $can_manage ? ' dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false' : '' ).'">';
-    $ui .= '<span class="icon-block">' .$en_all_this[$selected_en_id]['m_icon'].'</span>'.$en_all_this[$selected_en_id]['m_name'];
+    $ui .= '<span class="icon-block">' .$en_all_this[$selected_en_id]['m_icon'].'</span>'.( $btn_class=='btn-mini' ? '' : $en_all_this[$selected_en_id]['m_name'] );
     $ui .= '</button>';
     $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
 
