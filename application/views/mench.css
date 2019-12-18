@@ -661,7 +661,7 @@ textarea.note-textarea{
     border-radius: 0 !important;
     padding:2px 0;
     margin: 0;
-    overflow: hidden;
+    overflow-x: hidden;
     width: 100%;
 }
 
