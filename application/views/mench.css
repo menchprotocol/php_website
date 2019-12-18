@@ -664,7 +664,7 @@ textarea.note-textarea{
     width: 100%;
 }
 
-.overflowhide{
+.overflowhide, .url_truncate{
     max-width: 100%;
     overflow: hidden;
 }
