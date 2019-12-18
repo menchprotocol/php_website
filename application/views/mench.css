@@ -661,9 +661,12 @@ textarea.note-textarea{
     border-radius: 0 !important;
     padding:2px 0;
     margin: 0;
-    overflow-x: hidden;
-    overflow-y: scroll;
     width: 100%;
+}
+
+.overflowhide{
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .list-group-item .form-control {

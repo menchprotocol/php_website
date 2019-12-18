@@ -2416,7 +2416,7 @@ function echo_en($en, $is_parent = false)
         $ui .= '</span>';
 
         //For JS editing only (HACK):
-        $ui .= '<span class="ln_content_val_' . $ln_id . ' hidden">' . $en['ln_content'] . '</span>';
+        $ui .= '<span class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</span>';
 
     }
 
