@@ -181,7 +181,7 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
 
     //Show Loading...
     var data_object = eval('js_en_all_'+element_id);
-    $('.dropd_'+element_id+'_'+ln_id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">SAVING...</b>');
+    $('.dropd_'+element_id+'_'+ln_id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">'+( ln_id>0 ? '' : 'SAVING...' )+'</b>');
 
     $.post("/blog/in_update_dropdown", {
 
