@@ -2490,7 +2490,7 @@ function echo_dropdown($cache_en_id, $selected_en_id, $btn_class, $can_manage, $
 
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
 
-        $ui .= '<a class="dropdown-item dropi_'.$cache_en_id.' montserrat optiond_'.$en_id.' doupper '.( $en_id==$selected_en_id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.','.$en_id.','.$ln_id.')" title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+        $ui .= '<a class="dropdown-item dropi_'.$cache_en_id.'_'.$ln_id.' montserrat optiond_'.$en_id.'_'.$ln_id.' doupper '.( $en_id==$selected_en_id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.','.$en_id.','.$ln_id.')" title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
 
     }
 

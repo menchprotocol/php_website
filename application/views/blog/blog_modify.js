@@ -161,7 +161,7 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
     *
     * */
 
-    var current_selected = parseInt($('.dropi_'+element_id+'.active').attr('new-en-id'));
+    var current_selected = parseInt($('.dropi_'+element_id+'_'+ln_id+'.active').attr('new-en-id'));
     new_en_id = parseInt(new_en_id);
     if(current_selected == new_en_id){
         //Nothing changed:
@@ -170,7 +170,6 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
 
     //Are we deleting a status?
     var is_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
-
     if(is_delete){
         //Seems to be deleting, confirm:
         var r = confirm("Are you sure you want to archive this blog?");
@@ -195,8 +194,8 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
 
             //Update on page:
             $('.dropd_'+element_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + ( ln_id>0 ? '' : data_object[new_en_id]['m_name'] ));
-            $('.dropd_'+element_id+'_'+ln_id+' .dropi_' + element_id).removeClass('active');
-            $('.dropd_'+element_id+'_'+ln_id+' .optiond_' + new_en_id).addClass('active');
+            $('.dropd_'+element_id+'_'+ln_id+' .dropi_' + element_id + '_' + ln_id).removeClass('active');
+            $('.dropd_'+element_id+'_'+ln_id+' .optiond_' + new_en_id+ '_' + ln_id).addClass('active');
 
             if(is_delete){
                 //Go to main blog page:
