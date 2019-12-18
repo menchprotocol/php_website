@@ -655,6 +655,17 @@ textarea.note-textarea{
     display: block;
 }
 
+.link_marks{
+    width: 120px;
+    display: inline-block;
+    font-size: 0.8em;
+}
+
+.link_marks .form-control{
+    width: 30px;
+    display: inline-block;
+}
+
 .list-group-item {
     border: 0;
     background-color:#f4f5f7;
