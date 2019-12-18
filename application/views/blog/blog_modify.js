@@ -192,6 +192,12 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
     }, function (data) {
         if (data.status) {
 
+            //Toggle Settings View based on link type:
+            if(element_id==4486){
+                $('.in__tr_'+ln_id+' .link_marks').addClass('hidden');
+                $('.in__tr_'+ln_id+' .settings_' + new_en_id).removeClass('hidden');
+            }
+
             //Update on page:
             $('.dropd_'+element_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + ( ln_id>0 ? '' : data_object[new_en_id]['m_name'] ));
             $('.dropd_'+element_id+'_'+ln_id+' .dropi_' + element_id + '_' + ln_id).removeClass('active');

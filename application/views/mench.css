@@ -656,16 +656,20 @@ textarea.note-textarea{
 }
 
 .link_marks{
-    width: 120px;
+    width: 100px;
     display: inline-block;
     font-size: 0.8em;
 }
 
 .link_marks .form-control{
-    width: 30px;
+    width: 34px;
     display: inline-block;
     padding: 2px;
     text-align: center;
+}
+
+.link_marks .form-control:hover{
+    background-color:#fff3a9 !important;
 }
 
 .list-group-item {
