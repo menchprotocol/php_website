@@ -194,7 +194,7 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
         if (data.status) {
 
             //Update on page:
-            $('.dropd_'+element_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + data_object[new_en_id]['m_name']);
+            $('.dropd_'+element_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + ( ln_id>0 ? '' : data_object[new_en_id]['m_name'] ));
             $('.dropd_'+element_id+'_'+ln_id+' .dropi_' + element_id).removeClass('active');
             $('.dropd_'+element_id+'_'+ln_id+' .optiond_' + new_en_id).addClass('active');
 
@@ -206,7 +206,7 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
         } else {
 
             //Reset to default:
-            $('.dropd_'+element_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m_icon']+'</span>' + data_object[current_selected]['m_name']);
+            $('.dropd_'+element_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m_icon']+'</span>' + ( ln_id>0 ? '' : data_object[current_selected]['m_name'] ));
 
             //Show error:
             alert('ERROR: ' + data.message);
