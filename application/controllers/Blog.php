@@ -272,7 +272,7 @@ class Blog extends CI_Controller {
         if($_POST['ln_id'] > 0){
 
             //Update Link:
-            $this->BLOG_model->ln_update($_POST['ln_id'], array(
+            $this->READ_model->ln_update($_POST['ln_id'], array(
                 $manual_converter[$_POST['element_id']] => $_POST['new_en_id'],
             ), $session_en['en_id'], $link_update_types[$_POST['element_id']]);
 
