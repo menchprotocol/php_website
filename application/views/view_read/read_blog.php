@@ -2,7 +2,7 @@
     var in_loaded_id = <?= $in['in_id'] ?>;
     var session_en_id = <?= ( isset($session_en['en_id']) ? intval($session_en['en_id']) : 0 ) ?>;
 </script>
-<script src="/application/voews/view_read/read_blog.js?v=v<?= config_var(11060) ?>"
+<script src="/application/views/view_read/read_blog.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 

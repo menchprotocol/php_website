@@ -2,7 +2,7 @@
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 ?>
 
-<script src="/application/voews/view_play/play_myaccount.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/view_play/play_myaccount.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
 

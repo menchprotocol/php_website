@@ -17,7 +17,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 <style>
     .en_child_icon_<?= $entity['en_id'] ?>{ display:none; }
 </style>
-<script src="/application/voews/view_play/play_modify.js?v=v<?= config_var(11060) ?>"
+<script src="/application/views/view_play/play_modify.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <div class="container">

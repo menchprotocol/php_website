@@ -15,7 +15,7 @@ $can_manage = in_can_manage($in['in_id']);
     //Include some cached players:
     var in_loaded_id = <?= $in['in_id'] ?>;
 </script>
-<script src="/application/voews/view_blog/blog_modify.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/view_blog/blog_modify.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <?php
 

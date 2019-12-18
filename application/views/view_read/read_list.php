@@ -1,5 +1,5 @@
 
-<script src="/application/voews/view_read/read_list.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/view_read/read_list.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
 <?php
