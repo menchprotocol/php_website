@@ -664,6 +664,8 @@ textarea.note-textarea{
 .link_marks .form-control{
     width: 30px;
     display: inline-block;
+    padding: 2px;
+    text-align: center;
 }
 
 .list-group-item {
