@@ -2120,57 +2120,6 @@ function echo_2level_players($main_obj, $all_link_types, $link_types_counts, $al
 function echo_in($in, $in_linked_id, $is_parent, $can_manage)
 {
 
-    /*
-     *
-     * The Main function to display blogs across three levels:
-     *
-     * - Level 1: Where the user is focused on
-     * - Level 2: The Children of the focused blog
-     * - Level 3: The Grandchildren of the focused blog
-     *
-     * */
-
-
-    /*
-     *
-     * OLD PHP CODE to manage blog link type, points and credit range
-     *
-     * TODO implement in new, simplified JS
-
-    <select class="form-control border" id="ln_type_player_id" style="margin-bottom: 12px;">
-        <?php
-        foreach ($this->config->item('en_all_4486') as $en_id => $m) {
-            echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
-        }
-        ?>
-    </select>
-
-    <div class="score_range_box hidden">
-        <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6103[6402]['m_icon'].' '.$en_all_6103[6402]['m_name'] ?></span>
-        <div class="form-group label-floating is-empty"
-             style="max-width:230px; margin:1px 0 10px;">
-            <div class="input-group border">
-                <span class="input-group-addon addon-lean addon-grey" style="color:#070707; font-weight: 300;">IF Scores </span>
-                <input style="padding-left:0; padding-right:0; text-align:right;" type="number" step="1" data-lpignore="true"
-                       maxlength="3" id="tr__conditional_score_min" value="" class="form-control">
-                <span class="input-group-addon addon-lean addon-grey" style="color:#070707; font-weight: 300; border-left: 1px solid #ccc;"><i
-                            class="fal fa-fas fa-percentage"></i> to </span>
-                <input style="padding-left:3px; padding-right:0; text-align:right;" type="number" step="1" data-lpignore="true"
-                       maxlength="3" id="tr__conditional_score_max" value="" class="form-control">
-                <span class="input-group-addon addon-lean addon-grey" style="color:#070707; font-weight: 300; border-left: 1px solid #ccc; border-right:0px solid #FFF;"><i
-                            class="fal fa-fas fa-percentage"></i></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="score_points hidden">
-        <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6103[4358]['m_icon'].' '.$en_all_6103[4358]['m_name'] ?></span>
-        <input class="form-control border" id="tr__assessment_points" value="">
-    </div>
-
-     *
-     * */
-
     $CI =& get_instance();
 
     $en_all_6186 = $CI->config->item('en_all_6186');
@@ -2178,7 +2127,6 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
     $en_all_7585 = $CI->config->item('en_all_7585');
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_4486 = $CI->config->item('en_all_4486');
-
 
     //Prep link metadata to be analyzed later:
     $ln_id = $in['ln_id'];

@@ -9,6 +9,17 @@ var match_search_loaded = 0; //Keeps track of when we load the match search
 
 $(document).ready(function () {
 
+
+    //Lookout for completion mark changes:
+    var wto;
+    $('.dynamic_update').change(function() {
+        clearTimeout(wto);
+        wto = setTimeout(function() {
+            // do stuff when user has been idle for 1 second
+            alert('changed');
+        }, 987);
+    });
+
     if($('#new_blog_title').val()==js_en_all_6201[4736]['m_name']){
         $('#new_blog_title').val('').focus();
     }
