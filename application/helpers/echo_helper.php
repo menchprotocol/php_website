@@ -2183,10 +2183,10 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
     //Prep link metadata to be analyzed later:
     $ln_id = $in['ln_id'];
     $ln_metadata = unserialize($in['ln_metadata']);
+    $in_metadata = unserialize($in['in_metadata']);
 
 
     $session_en = superpower_assigned();
-    $in_metadata = unserialize($in['in_metadata']); //Prepare Blog Metadata
     $is_published = in_array($in['in_status_player_id'], $CI->config->item('en_ids_7355'));
     $is_link_published = in_array($in['ln_status_player_id'], $CI->config->item('en_ids_7359'));
 
@@ -2198,8 +2198,16 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
     //LINK TYPE
     $ui .= '<span class="icon-block' . superpower_active(10984) . '">'.echo_dropdown(4486, $in['ln_type_player_id'], null, $can_manage, $in['ln_id']).'</span>';
 
+
     //LINK STATUS
     $ui .= '<span class="icon-block ln_status_player_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_player_id']]['m_name'].' @'.$in['ln_status_player_id'].': '.$en_all_6186[$in['ln_status_player_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_player_id']]['m_icon'] . '</span></span>';
+
+
+    //LINK MARKS
+    $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks"><input type="text" class="form-control dynamic_update" field-name="tr__assessment_points" ln-id="'.$in['ln_id'].'" value="'.( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ).'"> Marks</span>';
+
+    $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks"><input type="text" class="form-control dynamic_update" field-name="tr__conditional_score_min" ln-id="'.$in['ln_id'].'" value="'.( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ).'">-<input type="text" class="form-control dynamic_update" field-name="tr__conditional_score_max" ln-id="'.$in['ln_id'].'" value="'.( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ).'">%</span>';
+
 
 
     //BLOG TYPE
@@ -2208,10 +2216,6 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
 
     //BLOG STATUS
     $ui .= '<span class="icon-block in_status_player_id_' . $in['in_id'] . ( $is_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_player_id']]['m_name'].': '.$en_all_4737[$in['in_status_player_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_player_id']]['m_icon'] . '</span></span>';
-
-
-    //Show Completion Marks based on Blog Link Type:
-    $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>';
 
 
     $ui .= '<b class="in_title_' . $in['in_id'] . ' montserrat inline-block" style="padding-top:5px;">' . echo_in_title($in['in_title'], false) . '</b>';
