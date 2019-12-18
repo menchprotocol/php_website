@@ -232,6 +232,12 @@ class Blog extends CI_Controller {
         $manual_converter = array(
             7585 => 'in_type_player_id',
             4737 => 'in_status_player_id',
+            4486 => 'ln_type_player_id',
+        );
+
+        //Define link update types:
+        $link_update_types = array(
+            4486 => 10662,
         );
 
         //Authenticate Trainer:
@@ -246,6 +252,11 @@ class Blog extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Blog ID',
             ));
+        } elseif (!isset($_POST['ln_id'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Link ID',
+            ));
         } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $manual_converter) || !count($this->config->item('en_ids_'.$_POST['element_id']))) {
             return echo_json(array(
                 'status' => 0,
@@ -258,15 +269,25 @@ class Blog extends CI_Controller {
             ));
         }
 
-        //Update Field:
-        $this->BLOG_model->in_update($_POST['in_id'], array(
-            $manual_converter[$_POST['element_id']] => $_POST['new_en_id'],
-        ), true, $session_en['en_id']);
+        if($_POST['ln_id'] > 0){
+
+            //Update Link:
+            $this->BLOG_model->ln_update($_POST['ln_id'], array(
+                $manual_converter[$_POST['element_id']] => $_POST['new_en_id'],
+            ), $session_en['en_id'], $link_update_types[$_POST['element_id']]);
+
+        } else {
+
+            //Update Blog:
+            $this->BLOG_model->in_update($_POST['in_id'], array(
+                $manual_converter[$_POST['element_id']] => $_POST['new_en_id'],
+            ), true, $session_en['en_id']);
+
+        }
 
 
         return echo_json(array(
             'status' => 1,
-            'message' => 'Updated successfully.',
         ));
 
     }
