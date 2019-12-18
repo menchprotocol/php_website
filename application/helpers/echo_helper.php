@@ -2199,14 +2199,15 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
     $ui .= '<span class="icon-block' . superpower_active(10984) . '">'.echo_dropdown(4486, $in['ln_type_player_id'], null, $can_manage, $in['ln_id']).'</span>';
 
 
+    //LINK MARKS
+    $ui .= '<span class="' . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks"><span class="link_marks '.( $in['ln_type_player_id']==4228 ? : 'hidden' ).'"><input type="text" class="form-control dynamic_update" field-name="tr__assessment_points" ln-id="'.$in['ln_id'].'" value="'.( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ).'"> Marks</span></span>';
+
+    $ui .= '<span class="' . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks"><span class="link_marks '.( $in['ln_type_player_id']==4229 ? : 'hidden' ).'"><input type="text" class="form-control dynamic_update" field-name="tr__conditional_score_min" ln-id="'.$in['ln_id'].'" value="'.( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ).'">-<input type="text" class="form-control dynamic_update" field-name="tr__conditional_score_max" ln-id="'.$in['ln_id'].'" value="'.( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ).'">%</span></span>';
+
+
+
     //LINK STATUS
     $ui .= '<span class="icon-block ln_status_player_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_player_id']]['m_name'].' @'.$in['ln_status_player_id'].': '.$en_all_6186[$in['ln_status_player_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_player_id']]['m_icon'] . '</span></span>';
-
-
-    //LINK MARKS
-    $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks"><input type="text" class="form-control dynamic_update" field-name="tr__assessment_points" ln-id="'.$in['ln_id'].'" value="'.( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ).'"> Marks</span>';
-
-    $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks"><input type="text" class="form-control dynamic_update" field-name="tr__conditional_score_min" ln-id="'.$in['ln_id'].'" value="'.( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ).'">-<input type="text" class="form-control dynamic_update" field-name="tr__conditional_score_max" ln-id="'.$in['ln_id'].'" value="'.( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ).'">%</span>';
 
 
 
