@@ -11,13 +11,8 @@ $(document).ready(function () {
 
 
     //Lookout for completion mark changes:
-    var wto;
     $('.dynamic_update').change(function() {
-        clearTimeout(wto);
-        wto = setTimeout(function() {
-            // do stuff when user has been idle for 1 second
-            alert('changed');
-        }, 987);
+        alert('changed');
     });
 
     if($('#new_blog_title').val()==js_en_all_6201[4736]['m_name']){
