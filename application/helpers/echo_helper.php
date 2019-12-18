@@ -25,7 +25,7 @@ function echo_clean_db_name($field_name){
         return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('ln_', 'Link ', $field_name))));
     } elseif(substr($field_name, 0, 3) == 'in_'){
         //Blog field:
-        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('in_', 'Intent ', $field_name))));
+        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('in_', 'Blog ', $field_name))));
     } elseif(substr($field_name, 0, 3) == 'en_'){
         //Entity field:
         return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('en_', 'Entity ', $field_name))));
@@ -1197,14 +1197,14 @@ function echo_tree_actionplan($in, $autoexpand){
         $in_level2_children = $CI->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_player_id' => 4228, //Intent Link Regular Step
+            'ln_type_player_id' => 4228, //Blog Link Regular Step
             'ln_parent_blog_id' => $in_level2['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
         //Fetch messages:
         $in_level2_messages = $CI->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_player_id' => 4231, //Intent Note Messages
+            'ln_type_player_id' => 4231, //Blog Note Messages
             'ln_child_blog_id' => $in_level2['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1268,7 +1268,7 @@ function echo_tree_actionplan($in, $autoexpand){
                     //Fetch messages:
                     $in_level3_messages = $CI->READ_model->ln_fetch(array(
                         'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_player_id' => 4231, //Intent Note Messages
+                        'ln_type_player_id' => 4231, //Blog Note Messages
                         'ln_child_blog_id' => $in_level3['in_id'],
                     ), array(), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1323,8 +1323,8 @@ function echo_en_messages($ln){
 
     $CI =& get_instance();
     $session_en = superpower_assigned();
-    $en_all_7585 = $CI->config->item('en_all_7585'); //Intent Subtypes
-    $en_all_4737 = $CI->config->item('en_all_4737'); //Intent Statuses
+    $en_all_7585 = $CI->config->item('en_all_7585'); //Blog Subtypes
+    $en_all_4737 = $CI->config->item('en_all_4737'); //Blog Statuses
     $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
 
     $ui = '<div class="entities-msg">';
@@ -1335,8 +1335,8 @@ function echo_en_messages($ln){
     $ui .= '<ul class="msg-nav">';
 
 
-    //Referenced Intent:
-    $ui .= '<li><a class="btn btn-blog button-max" style="border:2px solid #f4d52d !important;" href="/blog/' . $ln['ln_child_blog_id'] . '" target="_parent" title="Message Intent: '.$ln['in_title'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_player_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_type_player_id']]['m_icon'].' '.$ln['in_title'].'</a></li>';
+    //Referenced Blog:
+    $ui .= '<li><a class="btn btn-blog button-max" style="border:2px solid #f4d52d !important;" href="/blog/' . $ln['ln_child_blog_id'] . '" target="_parent" title="Message Blog: '.$ln['in_title'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_player_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_type_player_id']]['m_icon'].' '.$ln['in_title'].'</a></li>';
 
     //READ HISTORY:
     /*
@@ -1378,7 +1378,7 @@ function echo_time_range($in, $micro = false, $hide_zero = false)
         //We don't have it, so fetch it:
         $CI =& get_instance();
         $ins = $CI->BLOG_model->in_fetch(array(
-            'in_id' => $in['in_id'], //We should always have Intent ID
+            'in_id' => $in['in_id'], //We should always have Blog ID
         ));
         if (count($ins) > 0) {
             $in = $ins[0];
@@ -1628,7 +1628,7 @@ function echo_blog_thumbnail($in_id){
 
     foreach ($CI->READ_model->ln_fetch(array(
         'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_player_id' => 4231, //Intent Note Messages
+        'ln_type_player_id' => 4231, //Blog Note Messages
         'ln_child_blog_id' => $in_id,
         'ln_parent_player_id >' => 0, //Reference a player
     ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
@@ -1671,7 +1671,7 @@ function echo_blog_thumbnail($in_id){
 function echo_in_dashboard($in)
 {
     $CI =& get_instance();
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Blog Subtypes
     $ui = '<div class="list-group-item itemblog">';
 
     //FOLLOW
@@ -1697,16 +1697,16 @@ function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_leve
     $CI =& get_instance();
     $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
     $en_all_4486 = $CI->config->item('en_all_4486');
-    $en_all_4737 = $CI->config->item('en_all_4737'); // Intent Statuses
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
+    $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Blog Subtypes
 
 
     $ui = null;
     foreach($CI->READ_model->ln_fetch(array(
         'ln_parent_blog_id' => $starting_in,
-        'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+        'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
         'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+        'in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $in_ln){
 
         //Prep Metadata:
@@ -1714,20 +1714,20 @@ function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_leve
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         $messages = $CI->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'ln_type_player_id' => 4231, //Intent Note Messages
+            'ln_type_player_id' => 4231, //Blog Note Messages
             'ln_child_blog_id' => $in_ln['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         //Display block:
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Link Type: '.$en_all_4486[$in_ln['ln_type_player_id']]['m_name'].'">'. $en_all_4486[$in_ln['ln_type_player_id']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Link Status: '.$en_all_6186[$in_ln['ln_status_player_id']]['m_name'].'">'. $en_all_6186[$in_ln['ln_status_player_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Link Type: '.$en_all_4486[$in_ln['ln_type_player_id']]['m_name'].'">'. $en_all_4486[$in_ln['ln_type_player_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Link Status: '.$en_all_6186[$in_ln['ln_status_player_id']]['m_name'].'">'. $en_all_6186[$in_ln['ln_status_player_id']]['m_icon'] . '</span>';
 
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Type: '.$en_all_7585[$in_ln['in_type_player_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_player_id']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Status: '.$en_all_4737[$in_ln['in_status_player_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_player_id']]['m_icon']. '</span>';
-        $ui .= '<a href="/play/admin_tools/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this intent"><u>' .   echo_in_title($in_ln['in_title'], false) . '</u></a>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Type: '.$en_all_7585[$in_ln['in_type_player_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_player_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Status: '.$en_all_4737[$in_ln['in_status_player_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_player_id']]['m_icon']. '</span>';
+        $ui .= '<a href="/play/play_admin/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this intent"><u>' .   echo_in_title($in_ln['in_title'], false) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_player_id'] == 4228 && in_array($parent_in_type_player_id , $CI->config->item('en_ids_6193') /* OR Intents */ )) || ($in_ln['ln_type_player_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_player_id'] == 4228 && in_array($parent_in_type_player_id , $CI->config->item('en_ids_6193') /* OR Blogs */ )) || ($in_ln['ln_type_player_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
 
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$in_ln['in_id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
@@ -1841,7 +1841,7 @@ function echo_en_stats_overview($cached_list, $report_name){
 
             $inner_ui .= '<tr>';
             $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/play/'.$group_en_id.'">'.$people_group['m_name'].'</a></td>';
-            $inner_ui .= '<td style="text-align: right;"><a href="/read/ledger?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_player_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_player_id=' . join(',', $CI->config->item('en_ids_'.$group_en_id)) . '">' . number_format($subset_total, 0) . '</a></td>';
+            $inner_ui .= '<td style="text-align: right;"><a href="/read/history?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_player_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_player_id=' . join(',', $CI->config->item('en_ids_'.$group_en_id)) . '">' . number_format($subset_total, 0) . '</a></td>';
             $inner_ui .= '</tr>';
 
         } else {
@@ -1858,7 +1858,7 @@ function echo_en_stats_overview($cached_list, $report_name){
 
             $inner_ui .= '<tr>';
             $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/play/'.$group_en_id.'">' . $people_group['m_name'] . '</a></td>';
-            $inner_ui .= '<td style="text-align: right;"><a href="/read/ledger?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_player_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_player_id=' . $group_en_id . '">' . number_format($child_links[0]['en__child_count'], 0) . '</a></td>';
+            $inner_ui .= '<td style="text-align: right;"><a href="/read/history?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_player_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_player_id=' . $group_en_id . '">' . number_format($child_links[0]['en__child_count'], 0) . '</a></td>';
             $inner_ui .= '</tr>';
 
         }
@@ -1921,7 +1921,7 @@ function in_can_manage($in_id){
 function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
 
     $CI =& get_instance();
-    $en_all_7302 = $CI->config->item('en_all_7302'); //Intent Stats
+    $en_all_7302 = $CI->config->item('en_all_7302'); //Blog Stats
 
     $ui =  '<table class="table table-sm table-striped stats-table mini-stats-table ">';
 
@@ -1934,13 +1934,13 @@ function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
         //Count this sub-type from the database:
         $in_count = $CI->BLOG_model->in_fetch(array(
             $in_field_name => $type_en_id,
-            'in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ), array(), 0, 0, array(), 'COUNT(in_id) as total_public_intents');
 
         //$ui .= this as the main title:
         $ui .= '<tr>';
         $ui .= '<td style="text-align: left;"><span class="icon-block">'.$in_type['m_icon'].'</span><a href="/play/'.$type_en_id.'">'.$in_type['m_name'].'</a></td>';
-        $ui .= '<td style="text-align: right;"><a href="/read/ledger?ln_type_player_id=4250&in_status_player_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($in_count[0]['total_public_intents'], 0).' Intent'.echo__s($in_count[0]['total_public_intents']).'">'.number_format($in_count[0]['total_public_intents']/$addup_total_count*100, 1).'%</a></td>';
+        $ui .= '<td style="text-align: right;"><a href="/read/history?ln_type_player_id=4250&in_status_player_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($in_count[0]['total_public_intents'], 0).' Blog'.echo__s($in_count[0]['total_public_intents']).'">'.number_format($in_count[0]['total_public_intents']/$addup_total_count*100, 1).'%</a></td>';
         $ui .= '</tr>';
 
     }
@@ -2048,11 +2048,11 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
             $rows .= '<td style="text-align: right;" class="'.( $show_in_advance_only ? superpower_active(10983) : '' ).'">';
             if($display_field=='total_count'){
 
-                $rows .= '<a href="/read/ledger?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Intent'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
+                $rows .= '<a href="/read/history?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Blog'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
 
             } elseif($display_field=='total_words'){
 
-                $rows .= '<a href="/read/ledger?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_words'], 0).' Word'.echo__s($ln['total_words']).'">'.number_format($ln['total_words'], 0) . '</a>';
+                $rows .= '<a href="/read/history?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_words'], 0).' Word'.echo__s($ln['total_words']).'">'.number_format($ln['total_words'], 0) . '</a>';
 
             }
             $rows .= '</td>';
@@ -2086,11 +2086,11 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
 
     if($display_field=='total_count'){
 
-        echo '<a href="/read/ledger?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Intent'.echo__s($total_sum).'">'.number_format($total_sum/$addup_total_count*100, 1).'%</a>';
+        echo '<a href="/read/history?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Blog'.echo__s($total_sum).'">'.number_format($total_sum/$addup_total_count*100, 1).'%</a>';
 
     } elseif($display_field=='total_words'){
 
-        echo '<a href="/read/ledger?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Word'.echo__s($total_sum).'">'.number_format($total_sum, 0).'</a>';
+        echo '<a href="/read/history?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Word'.echo__s($total_sum).'">'.number_format($total_sum, 0).'</a>';
 
     }
 
@@ -2186,7 +2186,7 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
 
 
     $session_en = superpower_assigned();
-    $in_metadata = unserialize($in['in_metadata']); //Prepare Intent Metadata
+    $in_metadata = unserialize($in['in_metadata']); //Prepare Blog Metadata
     $is_published = in_array($in['in_status_player_id'], $CI->config->item('en_ids_7355'));
     $is_link_published = in_array($in['ln_status_player_id'], $CI->config->item('en_ids_7359'));
 
@@ -2210,7 +2210,7 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
     $ui .= '<span class="icon-block in_status_player_id_' . $in['in_id'] . ( $is_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_player_id']]['m_name'].': '.$en_all_4737[$in['in_status_player_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_player_id']]['m_icon'] . '</span></span>';
 
 
-    //Show Completion Marks based on Intent Link Type:
+    //Show Completion Marks based on Blog Link Type:
     $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>';
 
 
@@ -2235,9 +2235,9 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
 
         //Fetch parents at this point:
         $in['in__parents'] = $CI->READ_model->ln_fetch(array(
-            'in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+            'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
             'ln_child_blog_id' => $in['in_id'],
         ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
 
@@ -2263,8 +2263,8 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
     //Count children:
     $child_links = $CI->READ_model->ln_fetch(array(
         'ln_parent_blog_id' => $in['in_id'],
-        'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
-        'in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+        'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+        'in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as in__child_count');
     $tree_count_range = $child_links[0]['in__child_count'];

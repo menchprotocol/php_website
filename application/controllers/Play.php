@@ -687,11 +687,11 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function play_overview(){
+    function play_leaderboard(){
         $this->load->view('header', array(
             'title' => 'PLAYER LEADERBOARD',
         ));
-        $this->load->view('view_play/play_overview');
+        $this->load->view('view_play/play_leaderboard');
         $this->load->view('footer');
     }
 
@@ -774,14 +774,14 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<td><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="blue montserrat">'.$first_name.'</a>' : '<b class="blue montserrat">'.$first_name.'</b>' ).'</td>';
 
                 //READ
-                echo '<td>'.( $session_en ? '<a href="/read/ledger?ln_status_player_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_player_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
+                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_player_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_player_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
 
                 //BLOG
                 echo '<td>'.
 
                     ( $session_en
 
-                        ? '<a href="/read/ledger?ln_status_player_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_player_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</a>'
+                        ? '<a href="/read/history?ln_status_player_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_player_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</a>'
 
                         : '<span class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</span>'
 
@@ -843,25 +843,11 @@ fragment PostListingItemSidebar_post on Post {
             'hide_header' => 1,
             'title' => $en_all_11035[4269]['m_name'],
         ));
-        $this->load->view('view_play/play_signing', array(
+        $this->load->view('view_play/play_signin', array(
             'referrer_in_id' => intval($in_id),
         ));
         $this->load->view('footer');
 
-    }
-
-
-    function add_source_wizard()
-    {
-        //Authenticate Trainer, redirect if failed:
-        $session_en = superpower_assigned(null, true);
-
-        //Show frame to be loaded in modal:
-        $this->load->view('header', array(
-            'title' => 'Add Source Wizard',
-        ));
-        $this->load->view('view_play/en_source_wizard');
-        $this->load->view('footer');
     }
 
 
@@ -2108,7 +2094,7 @@ fragment PostListingItemSidebar_post on Post {
             'hide_header' => 1,
             'title' => 'Reset Password',
         ));
-        $this->load->view('view_play/password_reset', array(
+        $this->load->view('view_play/play_password_reset', array(
             'validate_link' => $validate_links[0],
         ));
         $this->load->view('footer');
@@ -2539,7 +2525,7 @@ fragment PostListingItemSidebar_post on Post {
         if(intval($_POST['referrer_in_id']) > 0){
             //Fetch the blog:
             $referrer_ins = $this->BLOG_model->in_fetch(array(
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                 'in_id' => $_POST['referrer_in_id'],
             ));
         } else {
@@ -2578,11 +2564,11 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-    function page_not_found(){
+    function play_404(){
         $this->load->view('header', array(
             'title' => 'Page not found',
         ));
-        $this->load->view('view_play/page_not_found');
+        $this->load->view('view_play/play_404');
         $this->load->view('footer');
     }
 
@@ -2699,7 +2685,7 @@ fragment PostListingItemSidebar_post on Post {
             $this->load->view('header', array(
                 'title' => 'AUTHENTICATING...',
             ));
-            $this->load->view('view_play/play_auth_pending');
+            $this->load->view('view_play/play_authenticating');
             $this->load->view('footer');
             return false;
         }
@@ -2714,7 +2700,7 @@ fragment PostListingItemSidebar_post on Post {
         $this->load->view('header', array(
             'title' => 'MY ACCOUNT',
         ));
-        $this->load->view('view_play/myaccount_manage', array(
+        $this->load->view('view_play/play_myaccount', array(
             'session_en' => $session_en,
         ));
         $this->load->view('footer');
@@ -3353,7 +3339,7 @@ fragment PostListingItemSidebar_post on Post {
         echo 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'.'<br /><br />';
 
         echo '/*<br />
- * Keep a cache of certain parts of the Intent tree for faster processing<br />
+ * Keep a cache of certain parts of the Blog tree for faster processing<br />
  * So we don\'t have to make DB calls to figure them out every time!<br />
  * See here for all entities cached: https://mench.com/play/4527<br />
  *<br />
@@ -3420,7 +3406,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-    function admin_tools($action = null, $command1 = null, $command2 = null)
+    function play_admin($action = null, $command1 = null, $command2 = null)
     {
 
         boost_power();
@@ -3433,7 +3419,7 @@ fragment PostListingItemSidebar_post on Post {
             'title' => 'Moderation Tools',
         ));
 
-        $this->load->view('view_play/admin_tools' , array(
+        $this->load->view('view_play/play_admin' , array(
             'action' => $action,
             'command1' => $command1,
             'command2' => $command2,

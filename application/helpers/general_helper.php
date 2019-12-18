@@ -1362,7 +1362,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_player_id 
      *
      * $obj_type:               Either in, en or tr
      *
-     * $obj:                    The Entity, Intent or Link itself.
+     * $obj:                    The Entity, Blog or Link itself.
      *                          We're looking for the $obj ID and METADATA
      *
      * $new_fields:             The new array of metadata fields to be Set,

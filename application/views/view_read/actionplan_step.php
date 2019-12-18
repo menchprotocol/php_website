@@ -1,5 +1,4 @@
 
-<script src="/js/custom/actionplan-step.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 <?php
 
 

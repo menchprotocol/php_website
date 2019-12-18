@@ -5,14 +5,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 <html lang="en">
 <head>
 
-    <!--
-
-    JOIN MENCH @ https://mench.com/12747
-
-    -->
-
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/img/mench-v2-16.png">
+    <link rel="icon" type="image/png" href="/mench.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= (isset($title) ? $title . ' | ' : '') ?>MENCH</title>
 
@@ -20,22 +14,13 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:800&display=swap" rel="stylesheet">
 
-    <!--
-    <link href="/css/lib/material-dashboard.css" rel="stylesheet"/>
-    <link href="/css/lib/material-kit.css" rel="stylesheet"/>
-    <script src="/js/lib/material.min.js" type="text/javascript"></script>
-    <script src="/js/lib/material-dashboard.js" type="text/javascript"></script>
-    <link href="/css/custom/styles.css?v=v<?= config_var(11060) ?>" rel="stylesheet"/>
-    -->
-
-    <link href="/css/custom/mench.css?v=v<?= config_var(11060) ?>" rel="stylesheet"/>
+    <link href="/application/views/mench.css?v=v<?= config_var(11060) ?>" rel="stylesheet"/>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92774608-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'UA-92774608-1');
     </script>
 
@@ -64,15 +49,15 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>
-
     <script src="https://kit.fontawesome.com/fbf7f3ae67.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/typeit@6.1.1/dist/typeit.min.js"></script>
-    <script src="/js/lib/jquery.textcomplete.min.js"></script>
-    <script src="/js/lib/autosize.min.js"></script>
-    <script src="/js/lib/autocomplete.jquery.min.js"></script>
-    <script src="/js/lib/algoliasearch.min.js"></script>
-    <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
-    <script src="/js/custom/platform-js.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.5/jquery.textcomplete.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.37.0/autocomplete.jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/algoliasearch/3.35.1/algoliasearch.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.1/Sortable.min.js" type="text/javascript"></script>
+
+    <script src="/application/views/mench.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 </head>
 
@@ -128,7 +113,7 @@ if(!isset($hide_header) || !$hide_header){
             <table class="mench-navigation">
                 <tr>
 
-                    <td class="block-link block-logo"><a href="/"><img src="/img/mench-v2-128.png" class="mench-logo mench-spin" /></a></td>
+                    <td class="block-link block-logo"><a href="/"><img src="/mench.png" class="mench-logo mench-spin" /></a></td>
 
                     <td>
                         <div class="supwerpower_view">
@@ -166,7 +151,7 @@ if(!isset($hide_header) || !$hide_header){
 
                         if(superpower_assigned(10984)){
                             $en_all_11035 = $this->config->item('en_all_11035');
-                            echo '<td class="block-link '.superpower_active(10984).'"><a href="/play/admin_tools" title="'.$en_all_11035[6287]['m_name'].'">'.$en_all_11035[6287]['m_icon'].'</a></td>';
+                            echo '<td class="block-link '.superpower_active(10984).'"><a href="/play/play_admin" title="'.$en_all_11035[6287]['m_name'].'">'.$en_all_11035[6287]['m_icon'].'</a></td>';
                         }
 
                     } else {

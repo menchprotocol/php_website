@@ -2493,7 +2493,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(7254,4527),
     ),
     2738 => array(
-        'm_icon' => '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin no-radius">',
+        'm_icon' => '<img src="/mench.png" class="mench-logo mench-spin no-radius">',
         'm_name' => 'MENCH',
         'm_desc' => '',
         'm_parents' => array(12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),

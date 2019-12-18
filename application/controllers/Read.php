@@ -122,7 +122,7 @@ class Read extends CI_Controller
             $this->load->view('header', array(
                 'title' => 'AUTHENTICATING...',
             ));
-            $this->load->view('view_play/play_auth_pending');
+            $this->load->view('view_play/play_authenticating');
             $this->load->view('footer');
             return false;
         }
@@ -180,7 +180,7 @@ class Read extends CI_Controller
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return redirect_message('/', '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
+            return redirect_message('/', '<div class="alert alert-danger" role="alert">Blog #' . $in_id . ' not found</div>');
         } elseif(!in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7355') /* Blog Statuses Public */)){
             //Return error:
             return redirect_message('/', '<div class="alert alert-danger" role="alert">BLOG is not yet published</div>');
@@ -220,7 +220,7 @@ class Read extends CI_Controller
 
 
 
-    function ledger()
+    function read_history()
     {
         /*
          *
@@ -232,9 +232,9 @@ class Read extends CI_Controller
 
         //Load header:
         $this->load->view('header', array(
-            'title' => 'MENCH LEDGER',
+            'title' => 'READ HISTORY',
         ));
-        $this->load->view('view_read/mench_ledger');
+        $this->load->view('view_read/read_history');
         $this->load->view('footer');
     }
 
@@ -264,7 +264,7 @@ class Read extends CI_Controller
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
 
-            echo '<td style="text-align: right;">' . '<a href="/read/ledger?in_status_player_id=' . $en_id . '&ln_type_player_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
+            echo '<td style="text-align: right;">' . '<a href="/read/history?in_status_player_id=' . $en_id . '&ln_type_player_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
 
             echo '</tr>';
 
@@ -275,9 +275,9 @@ class Read extends CI_Controller
 
 
 
-        //Count all Intent Subtypes:
+        //Count all Blog Subtypes:
         $intent_types_counts = $this->BLOG_model->in_fetch(array(
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ), array('in_type'), 0, 0, array(), 'COUNT(in_type_player_id) as total_count, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
         //Count totals:
@@ -317,7 +317,7 @@ class Read extends CI_Controller
             //Display this status count:
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
-            echo '<td style="text-align: right;">' . '<a href="/read/ledger?en_status_player_id=' . $en_id . '&ln_type_player_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
+            echo '<td style="text-align: right;">' . '<a href="/read/history?en_status_player_id=' . $en_id . '&ln_type_player_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
             echo '</tr>';
 
         }
@@ -440,7 +440,7 @@ class Read extends CI_Controller
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
             echo '<td style="text-align: right;">';
-            echo '<a href="/read/ledger?ln_status_player_id=' . $en_id . '">' . number_format($objects_count[0]['totals'],0) . '</a>';
+            echo '<a href="/read/history?ln_status_player_id=' . $en_id . '">' . number_format($objects_count[0]['totals'],0) . '</a>';
             echo '</td>';
             echo '</tr>';
 
@@ -662,7 +662,7 @@ class Read extends CI_Controller
         $this->db->query("TRUNCATE TABLE public.gephi_edges CONTINUE IDENTITY RESTRICT;");
         $this->db->query("TRUNCATE TABLE public.gephi_nodes CONTINUE IDENTITY RESTRICT;");
 
-        //Load Intent-to-Intent Links:
+        //Load Blog-to-Blog Links:
         $en_all_4593 = $this->config->item('en_all_4593');
 
         //To make sure blog/player IDs are unique:
@@ -680,7 +680,7 @@ class Read extends CI_Controller
 
         //Add blogs:
         $ins = $this->BLOG_model->in_fetch(array(
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
         ));
         foreach($ins as $in){
 
@@ -693,15 +693,15 @@ class Read extends CI_Controller
                 'label' => $in['in_title'],
                 //'size' => ( isset($in_metadata['in__metadata_max_seconds']) ? round(($in_metadata['in__metadata_max_seconds']/3600),0) : 0 ), //Max time
                 'size' => $node_size['in'],
-                'node_type' => 1, //Intent
+                'node_type' => 1, //Blog
                 'node_status' => $in['in_status_player_id'],
             ));
 
             //Fetch children:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                 'ln_parent_blog_id' => $in['in_id'],
             ), array('in_child'), 0, 0) as $in_child){
 
@@ -756,8 +756,8 @@ class Read extends CI_Controller
         //Add messages:
         $messages = $this->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
         ), array('in_child'), 0, 0);
         foreach($messages as $message) {
 
@@ -774,7 +774,7 @@ class Read extends CI_Controller
             $this->db->insert('gephi_edges', array(
                 'source' => $message['ln_id'],
                 'target' => $id_prefix['in'].$message['ln_child_blog_id'],
-                'label' => 'Child Intent',
+                'label' => 'Child Blog',
                 'weight' => 1,
             ));
 
@@ -783,7 +783,7 @@ class Read extends CI_Controller
                 $this->db->insert('gephi_edges', array(
                     'source' => $id_prefix['in'].$message['ln_parent_blog_id'],
                     'target' => $message['ln_id'],
-                    'label' => 'Parent Intent',
+                    'label' => 'Parent Blog',
                     'weight' => 1,
                 ));
             }
@@ -842,7 +842,7 @@ class Read extends CI_Controller
         //Now let's start the cleanup process...
         $invalid_variables = array();
 
-        //Intent Metadata
+        //Blog Metadata
         foreach($this->BLOG_model->in_fetch(array()) as $in){
 
             if(strlen($in['in_metadata']) < 1){
@@ -953,14 +953,14 @@ class Read extends CI_Controller
 
         }
 
-        //Validate Intent:
+        //Validate Blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
         ));
         if(count($ins)<1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Intent ID',
+                'message' => 'Invalid Blog ID',
             ));
         }
 
@@ -1030,7 +1030,7 @@ class Read extends CI_Controller
         //Define what needs to be cleared:
         $clear_links = array_merge(
             $this->config->item('en_ids_6146'), //User Steps Completed
-            $this->config->item('en_ids_4229') //Intent Link Locked Step
+            $this->config->item('en_ids_4229') //Blog Link Locked Step
         );
 
         //Fetch their current progress links:
@@ -1043,7 +1043,7 @@ class Read extends CI_Controller
         if(count($progress_links) > 0){
 
             //Yes they did have some:
-            $message = 'I deleted '.count($progress_links).' blogs'.echo__s(count($progress_links)).' to empty your 🔴 READING LIST. You can also remove your Intentions using the "<i class="fas fa-comment-times" style="color: #222;"></i>" icon below.';
+            $message = 'I deleted '.count($progress_links).' blogs'.echo__s(count($progress_links)).' to empty your 🔴 READING LIST. You can also remove your Blogions using the "<i class="fas fa-comment-times" style="color: #222;"></i>" icon below.';
 
             //Log link:
             $clear_all_link = $this->READ_model->ln_create(array(
@@ -1189,7 +1189,7 @@ class Read extends CI_Controller
                 //Update order of this link:
                 $results[$ln_order] = $this->READ_model->ln_update(intval($ln_id), array(
                     'ln_order' => $ln_order,
-                ), $_POST['js_pl_id'], 6132 /* Intents Ordered by User */);
+                ), $_POST['js_pl_id'], 6132 /* Blogs Ordered by User */);
             }
         }
 
@@ -1216,7 +1216,7 @@ class Read extends CI_Controller
         //All good:
         return echo_json(array(
             'status' => 1,
-            'message' => count($_POST['new_actionplan_order']).' Intents Sorted',
+            'message' => count($_POST['new_actionplan_order']).' Blogs Sorted',
         ));
     }
 
@@ -1230,10 +1230,10 @@ class Read extends CI_Controller
             return redirect_message('/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid answer type</div>');
         }
 
-        //Validate Answer Intent:
+        //Validate Answer Blog:
         $answer_ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $answer_in_id,
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ));
         if (count($answer_ins) < 1) {
             return redirect_message('/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Answer</div>');
@@ -1287,13 +1287,13 @@ class Read extends CI_Controller
 
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ));
 
         if(count($ins) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Public Intent not found',
+                'message' => 'Public Blog not found',
             ));
         }
 
@@ -1521,7 +1521,7 @@ class Read extends CI_Controller
                     $is_quick_reply = (isset($im['message']['quick_reply']['payload']));
 
                     //Set more variables:
-                    $matching_types = array(); //Defines the supported Intent Subtypes
+                    $matching_types = array(); //Defines the supported Blog Subtypes
 
                     unset($ln_data); //Reset everything in case its set from the previous loop!
                     $ln_data = array(
@@ -1767,7 +1767,7 @@ class Read extends CI_Controller
                             'ln_type_player_id' => 6144, //🔴 READING LIST Submit Requirements
                             'ln_creator_player_id' => $ln_data['ln_creator_player_id'], //for this user
                             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-                            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                         ), array('in_parent'), 0) as $req_sub){
                             if(in_array($req_sub['in_type_player_id'], $matching_types)){
                                 array_push($pending_matches, $req_sub);
@@ -1806,7 +1806,7 @@ class Read extends CI_Controller
                                 'ln_type_player_id' => 6144, //🔴 READING LIST Submit Requirements
                                 'ln_creator_player_id' => $en['en_id'], //for this user
                                 'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-                                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                             ), array('in_parent'));
 
 

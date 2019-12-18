@@ -17,7 +17,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 <style>
     .en_child_icon_<?= $entity['en_id'] ?>{ display:none; }
 </style>
-<script src="/js/custom/play_modify.js?v=v<?= config_var(11060) ?>"
+<script src="/application/voews/view_play/play_modify.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <div class="container">
@@ -220,8 +220,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <div id="message-frame" class="fixed-box hidden" entity-id="">
 
         <h5 class="badge badge-h" data-toggle="tooltip"
-            title="Message management can only be done using Intents. Entity messages are listed below for view-only"
-            data-placement="bottom"><i class="fas fa-comment-plus"></i> Entity References within Intent Notes
+            title="Message management can only be done using Blogs. Entity messages are listed below for view-only"
+            data-placement="bottom"><i class="fas fa-comment-plus"></i> Entity References within Blog Notes
         </h5>
         <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
             <a href="#" onclick="modify_cancel()"><i class="fas fa-times-circle"></i></a>

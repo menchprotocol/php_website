@@ -36,11 +36,11 @@ class Blog extends CI_Controller {
 
     }
 
-    function blog_overview(){
+    function blog_list(){
         $this->load->view('header', array(
             'title' => 'BLOG',
         ));
-        $this->load->view('view_blog/blog_overview');
+        $this->load->view('view_blog/blog_list');
         $this->load->view('footer');
     }
 
@@ -171,7 +171,7 @@ class Blog extends CI_Controller {
         } elseif (!isset($_POST['starting_in']) || intval($_POST['starting_in']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Starting Intent',
+                'message' => 'Missing Starting Blog',
             ));
         } elseif (!isset($_POST['depth_levels']) || intval($_POST['depth_levels']) < 1) {
             return echo_json(array(
@@ -193,9 +193,9 @@ class Blog extends CI_Controller {
         }
 
 
-        //Load AND/OR Intents:
-        $en_all_7585 = $this->config->item('en_all_7585'); // Intent Subtypes
-        $en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
+        //Load AND/OR Blogs:
+        $en_all_7585 = $this->config->item('en_all_7585'); // Blog Subtypes
+        $en_all_4737 = $this->config->item('en_all_4737'); // Blog Statuses
 
 
         //Return report:
@@ -228,7 +228,7 @@ class Blog extends CI_Controller {
 
     function in_update_dropdown(){
 
-        //Maintain a manual index as a hack for the Intent/Entity tables for now:
+        //Maintain a manual index as a hack for the Blog/Entity tables for now:
         $manual_converter = array(
             7585 => 'in_type_player_id',
             4737 => 'in_status_player_id',
@@ -244,7 +244,7 @@ class Blog extends CI_Controller {
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Intent ID',
+                'message' => 'Missing Blog ID',
             ));
         } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $manual_converter) || !count($this->config->item('en_ids_'.$_POST['element_id']))) {
             return echo_json(array(
@@ -282,7 +282,7 @@ class Blog extends CI_Controller {
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Intent ID',
+                'message' => 'Missing Blog ID',
             ));
         } elseif (!isset($_POST['in_title']) || strlen($_POST['in_title']) < 1) {
             return echo_json(array(
@@ -291,7 +291,7 @@ class Blog extends CI_Controller {
             ));
         }
 
-        //Validate Intent Outcome:
+        //Validate Blog Outcome:
         $in_title_validation = $this->BLOG_model->in_title_validate($_POST['in_title']);
         if(!$in_title_validation['status']){
             //We had an error, return it:
@@ -324,7 +324,7 @@ class Blog extends CI_Controller {
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Intent ID',
+                'message' => 'Missing Blog ID',
             ));
         } elseif (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1) {
             return echo_json(array(
@@ -336,7 +336,7 @@ class Blog extends CI_Controller {
         //Remove this link:
         $this->READ_model->ln_update($_POST['ln_id'], array(
             'ln_status_player_id' => 6173, //Link Removed
-        ), $session_en['en_id'], 10686 /* Intent Link Unlinked */);
+        ), $session_en['en_id'], 10686 /* Blog Link Unlinked */);
 
         return echo_json(array(
             'status' => 1,
@@ -367,7 +367,7 @@ class Blog extends CI_Controller {
         } elseif (!isset($_POST['in_linked_id']) || intval($_POST['in_linked_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Parent Intent ID',
+                'message' => 'Missing Parent Blog ID',
             ));
         } elseif (!isset($_POST['is_parent']) || !in_array(intval($_POST['is_parent']), array(0,1))) {
             return echo_json(array(
@@ -377,12 +377,12 @@ class Blog extends CI_Controller {
         } elseif (!isset($_POST['in_title']) || !isset($_POST['in_link_child_id']) || ( strlen($_POST['in_title']) < 1 && intval($_POST['in_link_child_id']) < 1)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing either Intent Outcome OR Child Intent ID',
+                'message' => 'Missing either Blog Outcome OR Child Blog ID',
             ));
         } elseif (strlen($_POST['in_title']) > config_var(11071)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Intent outcome cannot be longer than '.config_var(11071).' characters',
+                'message' => 'Blog outcome cannot be longer than '.config_var(11071).' characters',
             ));
         } elseif($_POST['in_link_child_id'] >= 2147483647){
             return echo_json(array(
@@ -392,7 +392,7 @@ class Blog extends CI_Controller {
         }
 
 
-        $new_intent_type = 6677; //Intent Read-Only
+        $new_intent_type = 6677; //Blog Read-Only
         $linked_ins = array();
 
         if($_POST['in_link_child_id'] > 0){
@@ -400,14 +400,14 @@ class Blog extends CI_Controller {
             //Fetch link blog to determine blog type:
             $linked_ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => intval($_POST['in_link_child_id']),
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
             ));
 
             if(count($linked_ins)==0){
                 //validate linked blog:
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Intent #'.$_POST['in_link_child_id'].' is not active',
+                    'message' => 'Blog #'.$_POST['in_link_child_id'].' is not active',
                 ));
             }
 
@@ -423,11 +423,11 @@ class Blog extends CI_Controller {
 
 
 
-    function in_completion_rates(){
+    function blog_stats(){
         $this->load->view('header', array(
-            'title' => 'Completion Rates',
+            'title' => 'Blog Stats',
         ));
-        $this->load->view('view_blog/in_completion_rates');
+        $this->load->view('view_blog/blog_stats');
         $this->load->view('footer');
     }
 
@@ -445,12 +445,12 @@ class Blog extends CI_Controller {
         } elseif (!isset($_POST['in_loaded_id']) || intval($_POST['in_loaded_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Focus Intent ID',
+                'message' => 'Invalid Focus Blog ID',
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Intent ID',
+                'message' => 'Invalid Blog ID',
             ));
         }
 
@@ -461,7 +461,7 @@ class Blog extends CI_Controller {
         if(count($ins) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Intent not found',
+                'message' => 'Blog not found',
             ));
         }
 
@@ -516,7 +516,7 @@ class Blog extends CI_Controller {
             $item_ui .= '<a href="/blog/'.$_POST['in_loaded_id'].'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
             $item_ui .= '&nbsp;<a href="/play/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="User Entity"><i class="fas fa-at"></i></a>';
 
-            $item_ui .= '&nbsp;<a href="/read/ledger?ln_creator_player_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
+            $item_ui .= '&nbsp;<a href="/read/history?ln_creator_player_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
 
             $item_ui .= '</td>';
             $item_ui .= '</tr>';
@@ -612,7 +612,7 @@ class Blog extends CI_Controller {
         } elseif (count($ins) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Intent Not Found',
+                'message' => 'Blog Not Found',
             ));
         } elseif($ln_id > 0 && intval($_POST['ln_type_player_id']) == 4229){
             //Conditional Step Links, we require range values:
@@ -645,7 +645,7 @@ class Blog extends CI_Controller {
         }
 
 
-        //Validate Intent Outcome:
+        //Validate Blog Outcome:
         $in_title_validation = $this->BLOG_model->in_title_validate($_POST['in_title']);
         if(!$in_title_validation['status']){
             //We had an error, return it:
@@ -671,7 +671,7 @@ class Blog extends CI_Controller {
         //Prep current blog metadata:
         $in_metadata = unserialize($in_current['in_metadata']);
 
-        //Determines if Intent has been removed OR unlinked:
+        //Determines if Blog has been removed OR unlinked:
         $remove_from_ui = 0; //Assume not
 
         //Did anything change?
@@ -693,9 +693,9 @@ class Blog extends CI_Controller {
                     $links_removed = 0;
 
                     //Has blog been removed?
-                    if(!in_array($value, $this->config->item('en_ids_7356') /* Intent Statuses Active */)){
+                    if(!in_array($value, $this->config->item('en_ids_7356') /* Blog Statuses Active */)){
 
-                        //Intent has been removed:
+                        //Blog has been removed:
                         $remove_from_ui = 1;
 
                         //Unlink blog links:
@@ -731,7 +731,7 @@ class Blog extends CI_Controller {
             //Validate Link and inputs:
             $lns = $this->READ_model->ln_fetch(array(
                 'ln_id' => $ln_id,
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                 'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ), array(( $_POST['is_parent'] ? 'in_child' : 'in_parent')));
             if(count($lns) < 1){
@@ -747,9 +747,9 @@ class Blog extends CI_Controller {
                 if(!in_array($_POST['ln_status_player_id'], $this->config->item('en_ids_7360'))){
                     //No longer active:
                     $remove_from_ui = 1;
-                    $ln_type_player_id = 10686; //Intent Link Unlinked
+                    $ln_type_player_id = 10686; //Blog Link Unlinked
                 } else {
-                    $ln_type_player_id = 10661; //Intent Link Iterated Status
+                    $ln_type_player_id = 10661; //Blog Link Iterated Status
                 }
 
                 $this->READ_model->ln_update($ln_id, array(
@@ -763,7 +763,7 @@ class Blog extends CI_Controller {
                 if($_POST['ln_type_player_id'] != $lns[0]['ln_type_player_id']){
                     $this->READ_model->ln_update($ln_id, array(
                         'ln_type_player_id' => $_POST['ln_type_player_id'],
-                    ), $session_en['en_id'], 10662 /* Intent Link Iterated Type */);
+                    ), $session_en['en_id'], 10662 /* Blog Link Iterated Type */);
                 }
 
                 //Prep Metadata:
@@ -778,7 +778,7 @@ class Blog extends CI_Controller {
                         'ln_metadata' => array_merge( $ln_metadata, array(
                             'tr__assessment_points' => intval($_POST['tr__assessment_points']),
                         )),
-                    ), $session_en['en_id'], 10663 /* Intent Link Iterated Marks */, 'Marks iterated'.( isset($ln_metadata['tr__assessment_points']) ? ' from [' . $ln_metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['tr__assessment_points']. ']');
+                    ), $session_en['en_id'], 10663 /* Blog Link Iterated Marks */, 'Marks iterated'.( isset($ln_metadata['tr__assessment_points']) ? ' from [' . $ln_metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['tr__assessment_points']. ']');
                 }
 
                 if($_POST['ln_type_player_id'] == 4229 && (
@@ -792,7 +792,7 @@ class Blog extends CI_Controller {
                             'tr__conditional_score_min' => doubleval($_POST['tr__conditional_score_min']),
                             'tr__conditional_score_max' => doubleval($_POST['tr__conditional_score_max']),
                         )),
-                    ), $session_en['en_id'], 10664 /* Intent Link Iterated Score */, 'Score Range iterated'.( isset($ln_metadata['tr__conditional_score_min']) && isset($ln_metadata['tr__conditional_score_max']) ? ' from [' . $ln_metadata['tr__conditional_score_min'].'% - '.$ln_metadata['tr__conditional_score_max']. '%]' : '' ).' to [' . $_POST['tr__conditional_score_min'].'% - '.$_POST['tr__conditional_score_max']. '%]');
+                    ), $session_en['en_id'], 10664 /* Blog Link Iterated Score */, 'Score Range iterated'.( isset($ln_metadata['tr__conditional_score_min']) && isset($ln_metadata['tr__conditional_score_max']) ? ' from [' . $ln_metadata['tr__conditional_score_min'].'% - '.$ln_metadata['tr__conditional_score_max']. '%]' : '' ).' to [' . $_POST['tr__conditional_score_min'].'% - '.$_POST['tr__conditional_score_max']. '%]');
                 }
             }
         }
@@ -831,14 +831,14 @@ class Blog extends CI_Controller {
     }
 
     function in_review_metadata($in_id){
-        //Fetch Intent:
+        //Fetch Blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
         ));
         if(count($ins) > 0){
             echo_json(unserialize($ins[0]['in_metadata']));
         } else {
-            echo 'Intent #'.$in_id.' not found!';
+            echo 'Blog #'.$in_id.' not found!';
         }
     }
 
@@ -878,7 +878,7 @@ class Blog extends CI_Controller {
                 //Fetch for the record:
                 $children_before = $this->READ_model->ln_fetch(array(
                     'ln_parent_blog_id' => intval($_POST['in_id']),
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -886,13 +886,13 @@ class Blog extends CI_Controller {
                 foreach ($_POST['new_ln_orders'] as $rank => $ln_id) {
                     $this->READ_model->ln_update(intval($ln_id), array(
                         'ln_order' => intval($rank),
-                    ), $session_en['en_id'], 10675 /* Intents Ordered by Trainer */);
+                    ), $session_en['en_id'], 10675 /* Blogs Ordered by Trainer */);
                 }
 
                 //Fetch again for the record:
                 $children_after = $this->READ_model->ln_fetch(array(
                     'ln_parent_blog_id' => intval($_POST['in_id']),
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -923,7 +923,7 @@ class Blog extends CI_Controller {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Intent ID',
+                'message' => 'Invalid Blog ID',
             ));
 
         } elseif (!isset($_POST['focus_ln_type_player_id']) || intval($_POST['focus_ln_type_player_id']) < 1) {
@@ -939,12 +939,12 @@ class Blog extends CI_Controller {
         //Fetch/Validate the intent:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
         ));
         if(count($ins)<1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Intent',
+                'message' => 'Invalid Blog',
             ));
         }
 
@@ -1032,14 +1032,14 @@ class Blog extends CI_Controller {
 
         }
 
-        //Validate Intent:
+        //Validate Blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
         ));
         if(count($ins)<1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Intent ID',
+                'message' => 'Invalid Blog ID',
             ));
         }
 
@@ -1117,23 +1117,23 @@ class Blog extends CI_Controller {
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Intent ID',
+                'message' => 'Missing Blog ID',
             ));
         } elseif (!isset($_POST['ln_id'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Intent READ ID',
+                'message' => 'Missing Blog READ ID',
             ));
         }
 
-        //Fetch Intent:
+        //Fetch Blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
         ));
         if(count($ins) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Intent ID',
+                'message' => 'Invalid Blog ID',
             ));
         }
 
@@ -1146,14 +1146,14 @@ class Blog extends CI_Controller {
             //Fetch intent link:
             $lns = $this->READ_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                 'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ), array(( $_POST['is_parent'] ? 'in_child' : 'in_parent' )));
 
             if(count($lns) < 1){
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Intent READ ID',
+                    'message' => 'Invalid Blog READ ID',
                 ));
             }
 
@@ -1215,7 +1215,7 @@ class Blog extends CI_Controller {
                 //Log update and give credit to the session Trainer:
                 $this->READ_model->ln_update($ln_id, array(
                     'ln_order' => intval($ln_order),
-                ), $session_en['en_id'], 10676 /* Intent Notes Ordered */);
+                ), $session_en['en_id'], 10676 /* Blog Notes Ordered */);
             }
         }
 
@@ -1254,18 +1254,18 @@ class Blog extends CI_Controller {
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Intent ID',
+                'message' => 'Invalid Blog ID',
             ));
         }
 
-        //Validate Intent:
+        //Validate Blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
         ));
         if (count($ins) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Intent Not Found',
+                'message' => 'Blog Not Found',
             ));
         }
 
@@ -1295,7 +1295,7 @@ class Blog extends CI_Controller {
                 'ln_content' => $msg_validation['input_message'],
                 'ln_parent_player_id' => $msg_validation['ln_parent_player_id'],
                 'ln_parent_blog_id' => $msg_validation['ln_parent_blog_id'],
-            ), $session_en['en_id'], 10679 /* Intent Notes Iterated Content */, word_change_calculator($messages[0]['ln_content'], $msg_validation['input_message']));
+            ), $session_en['en_id'], 10679 /* Blog Notes Iterated Content */, word_change_calculator($messages[0]['ln_content'], $msg_validation['input_message']));
 
         }
 
@@ -1331,14 +1331,14 @@ class Blog extends CI_Controller {
                 //yes, do so and return results:
                 $affected_rows = $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_player_id' => $_POST['message_ln_status_player_id'],
-                ), $session_en['en_id'], 10677 /* Intent Notes Iterated Status */);
+                ), $session_en['en_id'], 10677 /* Blog Notes Iterated Status */);
 
             } else {
 
                 //New status is no longer active, so remove the intent note:
                 $affected_rows = $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_player_id' => $_POST['message_ln_status_player_id'],
-                ), $session_en['en_id'], 10678 /* Intent Notes Unlinked */);
+                ), $session_en['en_id'], 10678 /* Blog Notes Unlinked */);
 
                 //Return success:
                 if($affected_rows > 0){
@@ -1390,7 +1390,7 @@ class Blog extends CI_Controller {
         boost_power();
         $start_time = time();
         $filters = array(
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         );
         if($in_id > 0){
             $filters['in_id'] = $in_id;
@@ -1456,7 +1456,7 @@ class Blog extends CI_Controller {
 
             //Update all Recommended Blogs and their tree:
             foreach ($this->BLOG_model->in_fetch(array(
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             )) as $published_in) {
                 $tree = $this->BLOG_model->in_metadata_extra_insights($published_in['in_id']);
                 if($tree){
