@@ -667,6 +667,7 @@ textarea.note-textarea{
 .overflowhide, .url_truncate{
     max-width: 100%;
     overflow: hidden;
+    display: inline-block;
 }
 
 .list-group-item .form-control {
