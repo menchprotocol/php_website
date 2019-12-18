@@ -182,8 +182,13 @@ class Read extends CI_Controller
         if ( count($ins) < 1) {
             return redirect_message('/', '<div class="alert alert-danger" role="alert">Blog #' . $in_id . ' not found</div>');
         } elseif(!in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7355') /* Blog Statuses Public */)){
-            //Return error:
-            return redirect_message('/', '<div class="alert alert-danger" role="alert">BLOG is not yet published</div>');
+            if(superpower_assigned(10939)){
+                //Return error:
+                return redirect_message('/blog/'.$in_id );
+            } else {
+                //Return error:
+                return redirect_message('/', '<div class="alert alert-danger" role="alert">BLOG is not yet published</div>');
+            }
         }
 
         //Fetch/Create landing page view cookie:

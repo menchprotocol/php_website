@@ -35,17 +35,24 @@ foreach ($this->READ_model->ln_fetch(array(
 }
 
 
+//Fetch children:
+$in__children = $this->READ_model->ln_fetch(array(
+    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+    'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+    'ln_type_player_id' => 4228, //Blog Link Regular Step
+    'ln_parent_blog_id' => $in['in_id'],
+), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
-if(in_array($in['in_type_player_id'], $this->config->item('en_ids_12107'))){
 
-    //Give option to choose a child path:
+if(!count(count($in__children))){
+
+    //No children, so nothing else can be done from here:
+    echo '<div class="montserrat read doupper"><i class="fas fa-check-circle ispink"></i> YOU HAVE COMPLETED THIS READ</div>';
+
+} elseif(in_array($in['in_type_player_id'], $this->config->item('en_ids_6193'))){
+
+    //OR BLOG, Give option to choose a child path:
     echo '<div class="list-group" style="margin-top:30px;">';
-    $in__children = $this->READ_model->ln_fetch(array(
-        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-        'ln_type_player_id' => 4228, //Blog Link Regular Step
-        'ln_parent_blog_id' => $in['in_id'],
-    ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
     foreach ($in__children as $child_in) {
         echo echo_in_read($child_in, null, $in['in_id']);
     }
@@ -53,6 +60,7 @@ if(in_array($in['in_type_player_id'], $this->config->item('en_ids_12107'))){
 
 } else {
 
+    //AND BLOG
     if(!isset($session_en['en_id'])){
 
         echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/signin/'.$in['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
