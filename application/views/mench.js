@@ -437,7 +437,7 @@ $(document).ready(function () {
                 return echo_js_suggestion(suggestion);
             },
             empty: function (data) {
-                return 'No intents found';
+                return 'No blogs found';
             },
         }
 

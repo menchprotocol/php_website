@@ -111,7 +111,7 @@ function base64_url_decode($input)
 function extract_references($ln_content)
 {
 
-    //Analyzes a message text to extract Entity References (Like @123) and URLs
+    //Analyzes a message text to extract Player References (Like @123) and URLs
     $CI =& get_instance();
 
     //Replace non-ascii characters with space:
@@ -121,7 +121,7 @@ function extract_references($ln_content)
     //Analyze the message to find referencing URLs and Players in the message text:
     $string_references = array(
         'ref_urls' => array(),
-        'ref_entities' => array(),
+        'ref_players' => array(),
         'ref_blogs' => array(),
         'ref_commands' => array(),
         'ref_custom' => array(),
@@ -151,7 +151,7 @@ function extract_references($ln_content)
 
         } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1)) && intval(substr($word, 1)) > 0) {
 
-            array_push($string_references['ref_entities'], intval(substr($word, 1)));
+            array_push($string_references['ref_players'], intval(substr($word, 1)));
 
         } elseif (substr($word, 0, 1) == '#' && is_numeric(substr($word, 1)) && intval(substr($word, 1)) > 0) {
 
@@ -344,7 +344,7 @@ function en_count_references($en_input_id){
     $connectors_found = array();
     $CI =& get_instance();
 
-    foreach($CI->config->item('en_all_6194') /* Entity Database References */ as $en_id => $m){
+    foreach($CI->config->item('en_all_6194') /* Player Database References */ as $en_id => $m){
         //Count rows:
         $query = $CI->db->query( $m['m_desc'] . $en_input_id );
         foreach ($query->result() as $row)
@@ -838,14 +838,14 @@ function upload_to_cdn($file_url, $ln_creator_player_id = 0, $ln_metadata = null
             }
 
             //Create and link new player to CDN and uploader:
-            $url_entity = $CI->PLAY_model->en_sync_url($cdn_new_url, $ln_creator_player_id, array(4396 /* Mench CDN Entity */, $ln_creator_player_id), 0, $page_title);
+            $url_player = $CI->PLAY_model->en_sync_url($cdn_new_url, $ln_creator_player_id, array(4396 /* Mench CDN Player */, $ln_creator_player_id), 0, $page_title);
 
-            if(isset($url_entity['en_url']['en_id']) && $url_entity['en_url']['en_id'] > 0){
+            if(isset($url_player['en_url']['en_id']) && $url_player['en_url']['en_id'] > 0){
 
                 //All good:
                 return array(
                     'status' => 1,
-                    'cdn_en' => $url_entity['en_url'],
+                    'cdn_en' => $url_player['en_url'],
                     'cdn_url' => $cdn_new_url,
                 );
 
@@ -854,7 +854,7 @@ function upload_to_cdn($file_url, $ln_creator_player_id = 0, $ln_metadata = null
                 $CI->READ_model->ln_create(array(
                     'ln_type_player_id' => 4246, //Platform Bug Reports
                     'ln_creator_player_id' => $ln_creator_player_id,
-                    'ln_content' => 'upload_to_cdn() Failed to create new entity from CDN file',
+                    'ln_content' => 'upload_to_cdn() Failed to create new player from CDN file',
                     'ln_metadata' => array(
                         'file_url' => $file_url,
                         'ln_metadata' => $ln_metadata,
@@ -864,7 +864,7 @@ function upload_to_cdn($file_url, $ln_creator_player_id = 0, $ln_metadata = null
 
                 return array(
                     'status' => 0,
-                    'message' => 'Failed to create new entity from CDN file',
+                    'message' => 'Failed to create new player from CDN file',
                 );
             }
 
@@ -1097,7 +1097,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             if($input_obj_id){
                 $limits['en_id'] = $input_obj_id;
             } else {
-                $limits['en_status_player_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')'] = null; //Entity Statuses Active
+                $limits['en_status_player_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')'] = null; //Player Statuses Active
             }
 
             $db_rows['en'] = $CI->PLAY_model->en_fetch($limits, array('en__parents'));
@@ -1147,9 +1147,9 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 //Count published children:
                 $published_child_count = $CI->READ_model->ln_fetch(array(
                     'ln_parent_player_id' => $db_row['en_id'],
-                    'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                    'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                     'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'en_status_player_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+                    'en_status_player_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
                 ), array('en_child'), 0, 0, array(), 'COUNT(ln_id) AS published_child_count');
 
                 $export_row['alg_obj_is_in'] = 0;
@@ -1195,7 +1195,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_is_in'] = 1; //This is a BLOG
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
                 $export_row['alg_obj_status'] = intval($db_row['in_status_player_id']);
-                $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_player_id']]['m_icon']; //Entity type icon
+                $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_player_id']]['m_icon']; //Player type icon
                 $export_row['alg_obj_name'] = $db_row['in_title'];
 
 
@@ -1260,7 +1260,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be removed?
-        if (in_array($all_db_rows[0][$input_obj_type . '_status_player_id'], array(6178 /* Entity Removed */, 6182 /* Blog Removed */))) {
+        if (in_array($all_db_rows[0][$input_obj_type . '_status_player_id'], array(6178 /* Player Removed */, 6182 /* Blog Removed */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
@@ -1362,7 +1362,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_player_id 
      *
      * $obj_type:               Either in, en or tr
      *
-     * $obj:                    The Entity, Blog or Link itself.
+     * $obj:                    The Player, Blog or Link itself.
      *                          We're looking for the $obj ID and METADATA
      *
      * $new_fields:             The new array of metadata fields to be Set,

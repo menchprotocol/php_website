@@ -40,7 +40,7 @@ class Blog extends CI_Controller {
         $this->load->view('header', array(
             'title' => 'BLOG',
         ));
-        $this->load->view('view_blog/blog_list');
+        $this->load->view('blog/blog_list');
         $this->load->view('footer');
     }
 
@@ -71,7 +71,7 @@ class Blog extends CI_Controller {
         $this->load->view('header', array(
             'title' => $ins[0]['in_title'].' | BLOG'
         ));
-        $this->load->view('view_blog/blog_modify', array(
+        $this->load->view('blog/blog_modify', array(
             'in' => $ins[0],
             'session_en' => $session_en,
         ));
@@ -188,7 +188,7 @@ class Blog extends CI_Controller {
         if(count($ins) != 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Could not find intent #'.$_POST['starting_in'],
+                'message' => 'Could not find blog #'.$_POST['starting_in'],
             ));
         }
 
@@ -228,7 +228,7 @@ class Blog extends CI_Controller {
 
     function in_update_dropdown(){
 
-        //Maintain a manual index as a hack for the Blog/Entity tables for now:
+        //Maintain a manual index as a hack for the Blog/Player tables for now:
         $manual_converter = array(
             7585 => 'in_type_player_id',
             4737 => 'in_status_player_id',
@@ -392,7 +392,7 @@ class Blog extends CI_Controller {
         }
 
 
-        $new_intent_type = 6677; //Blog Read-Only
+        $new_blog_type = 6677; //Blog Read-Only
         $linked_ins = array();
 
         if($_POST['in_link_child_id'] > 0){
@@ -412,12 +412,12 @@ class Blog extends CI_Controller {
             }
 
             if(!intval($_POST['is_parent']) && in_array($linked_ins[0]['in_type_player_id'], $this->config->item('en_ids_7712'))){
-                $new_intent_type = 6914; //Require All
+                $new_blog_type = 6914; //Require All
             }
         }
 
         //All seems good, go ahead and try creating the blog:
-        return echo_json($this->BLOG_model->in_link_or_create(trim($_POST['in_title']), $session_en['en_id'], $_POST['in_linked_id'], intval($_POST['is_parent']), 6183, $new_intent_type, $_POST['in_link_child_id']));
+        return echo_json($this->BLOG_model->in_link_or_create(trim($_POST['in_title']), $session_en['en_id'], $_POST['in_linked_id'], intval($_POST['is_parent']), 6183, $new_blog_type, $_POST['in_link_child_id']));
 
     }
 
@@ -427,7 +427,7 @@ class Blog extends CI_Controller {
         $this->load->view('header', array(
             'title' => 'Blog Stats',
         ));
-        $this->load->view('view_blog/blog_stats');
+        $this->load->view('blog/blog_stats');
         $this->load->view('footer');
     }
 
@@ -471,7 +471,7 @@ class Blog extends CI_Controller {
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
             'ln_parent_blog_id' => $ins[0]['in_id'],
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
         ), array('ln_creator'), 500);
         if(count($actionplan_users) < 1){
             return echo_json(array(
@@ -514,7 +514,7 @@ class Blog extends CI_Controller {
             $item_ui .= '<td style="text-align:left;">';
 
             $item_ui .= '<a href="/blog/'.$_POST['in_loaded_id'].'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
-            $item_ui .= '&nbsp;<a href="/play/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="User Entity"><i class="fas fa-at"></i></a>';
+            $item_ui .= '&nbsp;<a href="/play/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="User Player"><i class="fas fa-at"></i></a>';
 
             $item_ui .= '&nbsp;<a href="/read/history?ln_creator_player_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
 
@@ -936,7 +936,7 @@ class Blog extends CI_Controller {
         }
 
 
-        //Fetch/Validate the intent:
+        //Fetch/Validate the blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
@@ -1104,7 +1104,7 @@ class Blog extends CI_Controller {
          * An AJAX function that is triggered every time a Trainer
          * selects to modify a BLOG. It will check the
          * Requires Manual Response of a BLOG so it can
-         * check proper boxes to help Trainer modify the intent.
+         * check proper boxes to help Trainer modify the blog.
          *
          * */
 
@@ -1143,7 +1143,7 @@ class Blog extends CI_Controller {
 
         if(intval($_POST['ln_id'])>0){
 
-            //Fetch intent link:
+            //Fetch blog link:
             $lns = $this->READ_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
@@ -1312,17 +1312,17 @@ class Blog extends CI_Controller {
                     //We're publishing, make sure potential player references are also published:
                     $string_references = extract_references($_POST['ln_content']);
 
-                    if (count($string_references['ref_entities']) > 0) {
+                    if (count($string_references['ref_players']) > 0) {
 
                         //We do have an player reference, what's its status?
                         $ref_ens = $this->PLAY_model->en_fetch(array(
-                            'en_id' => $string_references['ref_entities'][0],
+                            'en_id' => $string_references['ref_players'][0],
                         ));
 
-                        if(count($ref_ens)>0 && !in_array($ref_ens[0]['en_status_player_id'], $this->config->item('en_ids_7357') /* Entity Statuses Public */)){
+                        if(count($ref_ens)>0 && !in_array($ref_ens[0]['en_status_player_id'], $this->config->item('en_ids_7357') /* Player Statuses Public */)){
                             return echo_json(array(
                                 'status' => 0,
-                                'message' => 'You cannot published this message because its referenced entity is not yet public',
+                                'message' => 'You cannot published this message because its referenced player is not yet public',
                             ));
                         }
                     }
@@ -1335,7 +1335,7 @@ class Blog extends CI_Controller {
 
             } else {
 
-                //New status is no longer active, so remove the intent note:
+                //New status is no longer active, so remove the blog note:
                 $affected_rows = $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_player_id' => $_POST['message_ln_status_player_id'],
                 ), $session_en['en_id'], 10678 /* Blog Notes Unlinked */);
@@ -1378,7 +1378,7 @@ class Blog extends CI_Controller {
 
         /*
          *
-         * Updates common base metadata for published intents
+         * Updates common base metadata for published blogs
          *
          * */
 
@@ -1402,7 +1402,7 @@ class Blog extends CI_Controller {
         }
 
         $total_time = time() - $start_time;
-        $success_message = 'Common Base Metadata updated for '.count($published_ins).' published intent'.echo__s(count($published_ins)).'.';
+        $success_message = 'Common Base Metadata updated for '.count($published_ins).' published blog'.echo__s(count($published_ins)).'.';
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
             $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . $success_message . '</div>');
@@ -1469,7 +1469,7 @@ class Blog extends CI_Controller {
 
 
         $end_time = time() - $start_time;
-        $success_message = 'Extra Insights Metadata updated for '.$update_count.' intent'.echo__s($update_count).'.';
+        $success_message = 'Extra Insights Metadata updated for '.$update_count.' blog'.echo__s($update_count).'.';
 
         //Show json:
         echo_json(array(

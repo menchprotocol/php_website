@@ -5,7 +5,7 @@ class PLAY_model extends CI_Model
 
     /*
      *
-     * Entity related database functions
+     * Player related database functions
      *
      * */
 
@@ -22,7 +22,7 @@ class PLAY_model extends CI_Model
 
         //PROFILE
         $en['en__parents'] = $this->READ_model->ln_fetch(array(
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
             'ln_child_player_id' => $en['en_id'], //This child player
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array('en_parent'));
@@ -115,7 +115,7 @@ class PLAY_model extends CI_Model
             $this->READ_model->ln_create(array(
                 'ln_creator_player_id' => ($ln_creator_player_id > 0 ? $ln_creator_player_id : $insert_columns['en_id']),
                 'ln_child_player_id' => $insert_columns['en_id'],
-                'ln_type_player_id' => 4251, //New Entity Created
+                'ln_type_player_id' => 4251, //New Player Created
                 'ln_content' => $insert_columns['en_name'],
             ));
 
@@ -131,7 +131,7 @@ class PLAY_model extends CI_Model
             //Ooopsi, something went wrong!
             $this->READ_model->ln_create(array(
                 'ln_parent_player_id' => $ln_creator_player_id,
-                'ln_content' => 'en_create() failed to create a new entity',
+                'ln_content' => 'en_create() failed to create a new player',
                 'ln_type_player_id' => 4246, //Platform Bug Reports
                 'ln_creator_player_id' => $ln_creator_player_id,
                 'ln_metadata' => $insert_columns,
@@ -175,7 +175,7 @@ class PLAY_model extends CI_Model
             if (in_array('en__child_count', $join_objects)) {
 
                 //Count children:
-                $res[$key]['en__child_count'] = $this->PLAY_model->en_child_count($val['en_id'], $this->config->item('en_ids_7358') /* Entity Statuses Active */);
+                $res[$key]['en__child_count'] = $this->PLAY_model->en_child_count($val['en_id'], $this->config->item('en_ids_7358') /* Player Statuses Active */);
             }
 
 
@@ -188,10 +188,10 @@ class PLAY_model extends CI_Model
 
                 //Fetch parents by default:
                 $res[$key]['en__parents'] = $this->READ_model->ln_fetch(array(
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                     'ln_child_player_id' => $val['en_id'], //This child player
                     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
                 ), array('en_parent'), 0, 0, array('en_name' => 'ASC'));
 
             }
@@ -242,22 +242,22 @@ class PLAY_model extends CI_Model
 
                 if($key=='en_name') {
 
-                    $ln_type_player_id = 10646; //Entity Iterated Name
+                    $ln_type_player_id = 10646; //Player Iterated Name
                     $ln_content = word_change_calculator($before_data[0][$key], $value);
 
                 } elseif($key=='en_status_player_id') {
 
-                    if(in_array($value, $this->config->item('en_ids_7358') /* Entity Statuses Active */)){
-                        $ln_type_player_id = 10654; //Entity Iterated Status
+                    if(in_array($value, $this->config->item('en_ids_7358') /* Player Statuses Active */)){
+                        $ln_type_player_id = 10654; //Player Iterated Status
                     } else {
-                        $ln_type_player_id = 10672; //Entity Iterated Archived
+                        $ln_type_player_id = 10672; //Player Iterated Archived
                     }
-                    $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
+                    $en_all_6177 = $this->config->item('en_all_6177'); //Player Statuses
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_6177[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6177[$value]['m_name'] . ']';
 
                 } elseif($key=='en_icon') {
 
-                    $ln_type_player_id = 10653; //Entity Iterated Icon
+                    $ln_type_player_id = 10653; //Player Iterated Icon
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
@@ -375,17 +375,17 @@ class PLAY_model extends CI_Model
         //Fetch all player links:
         $adjusted_count = 0;
         foreach(array_merge(
-                //Entity references within blog notes:
+                //Player references within blog notes:
                     $this->READ_model->ln_fetch(array(
                         'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                         'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
                         'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
                         'ln_parent_player_id' => $en_id,
                     ), array('in_child'), 0, 0, array('ln_order' => 'ASC')),
-                    //Entity links:
+                    //Player links:
                     $this->READ_model->ln_fetch(array(
                         'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                         '(ln_child_player_id = ' . $en_id . ' OR ln_parent_player_id = ' . $en_id . ')' => null,
                     ), array(), 0)
                 ) as $adjust_tr){
@@ -405,14 +405,14 @@ class PLAY_model extends CI_Model
                 }
 
                 //Update Link:
-                $adjusted_count += $this->READ_model->ln_update($adjust_tr['ln_id'], $updating_fields, $ln_creator_player_id, 10689 /* Entity Link Merged */);
+                $adjusted_count += $this->READ_model->ln_update($adjust_tr['ln_id'], $updating_fields, $ln_creator_player_id, 10689 /* Player Link Merged */);
 
             } else {
 
                 //Remove this link:
                 $adjusted_count += $this->READ_model->ln_update($adjust_tr['ln_id'], array(
                     'ln_status_player_id' => 6173, //Link Removed
-                ), $ln_creator_player_id, 10673 /* Entity Link Unlinked */);
+                ), $ln_creator_player_id, 10673 /* Player Link Unlinked */);
 
             }
         }
@@ -425,7 +425,7 @@ class PLAY_model extends CI_Model
         /*
          *
          * Either finds/returns existing domains or adds it
-         * to the Domains entity if $ln_creator_player_id > 0
+         * to the Domains player if $ln_creator_player_id > 0
          *
          * */
 
@@ -445,10 +445,10 @@ class PLAY_model extends CI_Model
 
         //Check to see if we have domain linked already:
         $domain_links = $this->READ_model->ln_fetch(array(
-            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'ln_type_player_id' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
-            'ln_parent_player_id' => 1326, //Domain Entity
+            'ln_parent_player_id' => 1326, //Domain Player
             'ln_content' => $domain_analysis['url_clean_domain'],
         ), array('en_child'));
 
@@ -470,7 +470,7 @@ class PLAY_model extends CI_Model
                 'ln_creator_player_id' => $ln_creator_player_id,
                 'ln_status_player_id' => 6176, //Link Published
                 'ln_type_player_id' => 4256, //Generic URL (Domains are always generic)
-                'ln_parent_player_id' => 1326, //Domain Entity
+                'ln_parent_player_id' => 1326, //Domain Player
                 'ln_child_player_id' => $en_domain['en_id'],
                 'ln_content' => $domain_analysis['url_clean_domain'],
             ));
@@ -514,7 +514,7 @@ class PLAY_model extends CI_Model
         } elseif ((count($link_parent_en_ids) > 0 || $add_to_child_en_id > 0) && $ln_creator_player_id < 1) {
             return array(
                 'status' => 0,
-                'message' => 'Parent entity is required to add a parent URL',
+                'message' => 'Parent player is required to add a parent URL',
             );
         }
 
@@ -644,7 +644,7 @@ class PLAY_model extends CI_Model
 
                 //Make sure this is not a duplicate name:
                 $dup_name_us = $this->PLAY_model->en_fetch(array(
-                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
                     'en_name' => $page_title,
                 ));
 
@@ -666,10 +666,10 @@ class PLAY_model extends CI_Model
 
         //Fetch/Create domain player:
         $page_title = ( $domain_analysis['url_is_root'] && $name_was_passed ? $page_title : null );
-        $domain_entity = $this->PLAY_model->en_sync_domain($url, $ln_creator_player_id, $page_title);
-        if(!$domain_entity['status']){
+        $domain_player = $this->PLAY_model->en_sync_domain($url, $ln_creator_player_id, $page_title);
+        if(!$domain_player['status']){
             //We had an issue:
-            return $domain_entity;
+            return $domain_player;
         }
 
 
@@ -677,10 +677,10 @@ class PLAY_model extends CI_Model
         if ($domain_analysis['url_is_root']) {
 
             //URL is the domain in this case:
-            $en_url = $domain_entity['en_domain'];
+            $en_url = $domain_player['en_domain'];
 
             //IF the URL exists since the domain existed and the URL is the domain!
-            if ($domain_entity['domain_already_existed']) {
+            if ($domain_player['domain_already_existed']) {
                 $url_already_existed = 1;
             }
 
@@ -688,9 +688,9 @@ class PLAY_model extends CI_Model
 
             //Check to see if URL already exists:
             $url_links = $this->READ_model->ln_fetch(array(
-                'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+                'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
                 'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Player URL Links
                 'ln_content' => $url,
             ), array('en_child'));
 
@@ -710,7 +710,7 @@ class PLAY_model extends CI_Model
                     $page_title = $en_all_4592[$ln_type_player_id]['m_name'].' '.substr(md5($url), 0, 16);
                 }
 
-                //Create a new player for this URL ONLY If trainer entity is provided...
+                //Create a new player for this URL ONLY If trainer player is provided...
                 $added_en = $this->PLAY_model->en_verify_create($page_title, $ln_creator_player_id, 6181);
                 if($added_en['status']){
 
@@ -722,7 +722,7 @@ class PLAY_model extends CI_Model
                         'ln_creator_player_id' => $ln_creator_player_id,
                         'ln_status_player_id' => 6176, //Link Published
                         'ln_type_player_id' => $ln_type_player_id,
-                        'ln_parent_player_id' => $domain_entity['en_domain']['en_id'],
+                        'ln_parent_player_id' => $domain_player['en_domain']['en_id'],
                         'ln_child_player_id' => $en_url['en_id'],
                         'ln_content' => $url,
                     ));
@@ -733,7 +733,7 @@ class PLAY_model extends CI_Model
                         'ln_content' => 'en_sync_url['.$url.'] FAILED to en_verify_create['.$page_title.'] with error: '.$added_en['message'],
                         'ln_type_player_id' => 4246, //Platform Bug Reports
                         'ln_creator_player_id' => $ln_creator_player_id,
-                        'ln_parent_player_id' => $domain_entity['en_domain']['en_id'],
+                        'ln_parent_player_id' => $domain_player['en_domain']['en_id'],
                         'ln_metadata' => array(
                             'url' => $url,
                             'ln_creator_player_id' => $ln_creator_player_id,
@@ -745,7 +745,7 @@ class PLAY_model extends CI_Model
                 }
 
             } else {
-                //URL not found and no trainer entity provided to create the URL:
+                //URL not found and no trainer player provided to create the URL:
                 $en_url = array();
             }
         }
@@ -788,8 +788,8 @@ class PLAY_model extends CI_Model
                 'url_already_existed' => $url_already_existed,
                 'cleaned_url' => $url,
                 'ln_type_player_id' => $ln_type_player_id,
-                'page_title' => html_entity_decode($page_title, ENT_QUOTES),
-                'en_domain' => $domain_entity['en_domain'],
+                'page_title' => html_player_decode($page_title, ENT_QUOTES),
+                'en_domain' => $domain_player['en_domain'],
                 'en_url' => $en_url,
             )
         );
@@ -818,24 +818,24 @@ class PLAY_model extends CI_Model
 
 
         //Search and see if we can find $value in the link content:
-        $matching_entities = $this->READ_model->ln_fetch(array(
+        $matching_players = $this->READ_model->ln_fetch(array(
             'ln_parent_player_id' => $en_parent_id,
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
             'ln_content' => trim($value),
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ), array(), 0);
 
 
-        if (count($matching_entities) == 1) {
+        if (count($matching_players) == 1) {
 
             //Bingo, return result:
-            return intval($matching_entities[0]['ln_child_player_id']);
+            return intval($matching_players[0]['ln_child_player_id']);
 
         } else {
 
             //Ooooopsi, this value did not exist! Notify the Trainer so we can look into this:
             $this->READ_model->ln_create(array(
-                'ln_content' => 'en_search_match() found [' . count($matching_entities) . '] results as the children of en_id=[' . $en_parent_id . '] that had the value of [' . $value . '].',
+                'ln_content' => 'en_search_match() found [' . count($matching_players) . '] results as the children of en_id=[' . $en_parent_id . '] that had the value of [' . $value . '].',
                 'ln_type_player_id' => 4246, //Platform Bug Reports
                 'ln_child_player_id' => $en_parent_id,
             ));
@@ -875,14 +875,14 @@ class PLAY_model extends CI_Model
 
             return array(
                 'status' => 0,
-                'message' => 'Unknown searched entity. Format must be: @123 Entity Name',
+                'message' => 'Unknown searched player. Format must be: @123 Player Name',
             );
 
         } elseif($action_en_id==11956 && !is_valid_en_string($action_command2)){
 
             return array(
                 'status' => 0,
-                'message' => 'Unknown searched entity. Format must be: @123 Entity Name',
+                'message' => 'Unknown searched player. Format must be: @123 Player Name',
             );
 
         }
@@ -898,9 +898,9 @@ class PLAY_model extends CI_Model
         $applied_success = 0; //To be populated...
         $children = $this->READ_model->ln_fetch(array(
             'ln_parent_player_id' => $en_id,
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
         ), array('en_child'), 0);
 
 
@@ -926,29 +926,29 @@ class PLAY_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif (in_array($action_en_id, array(5981, 5982, 11956))) { //Add/Remove parent entity
+            } elseif (in_array($action_en_id, array(5981, 5982, 11956))) { //Add/Remove parent player
 
                 //What trainer searched for:
                 $parent_en_id = intval(one_two_explode('@',' ',$action_command1));
 
-                //See if child entity has searched parent entity:
+                //See if child player has searched parent player:
                 $child_parent_ens = $this->READ_model->ln_fetch(array(
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-                    'ln_child_player_id' => $en['en_id'], //This child entity
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                    'ln_child_player_id' => $en['en_id'], //This child player
                     'ln_parent_player_id' => $parent_en_id,
                     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ));
 
                 if($action_en_id==5981 && count($child_parent_ens)==0){
 
-                    //Parent Entity Addition
+                    //Parent Player Addition
 
                     //Does not exist, need to be added as parent:
                     $this->READ_model->ln_create(array(
                         'ln_status_player_id' => 6176, //Link Published
                         'ln_creator_player_id' => $ln_creator_player_id,
                         'ln_type_player_id' => 4230, //Raw
-                        'ln_child_player_id' => $en['en_id'], //This child entity
+                        'ln_child_player_id' => $en['en_id'], //This child player
                         'ln_parent_player_id' => $parent_en_id,
                     ));
 
@@ -958,12 +958,12 @@ class PLAY_model extends CI_Model
 
                     if($action_en_id==5982){
 
-                        //Parent Entity Removal
+                        //Parent Player Removal
                         foreach($child_parent_ens as $remove_tr){
 
                             $this->READ_model->ln_update($remove_tr['ln_id'], array(
                                 'ln_status_player_id' => 6173, //Link Removed
-                            ), $ln_creator_player_id, 10673 /* Entity Link Unlinked  */);
+                            ), $ln_creator_player_id, 10673 /* Player Link Unlinked  */);
 
                             $applied_success++;
                         }
@@ -977,7 +977,7 @@ class PLAY_model extends CI_Model
                             'ln_status_player_id' => 6176, //Link Published
                             'ln_creator_player_id' => $ln_creator_player_id,
                             'ln_type_player_id' => 4230, //Raw
-                            'ln_child_player_id' => $en['en_id'], //This child entity
+                            'ln_child_player_id' => $en['en_id'], //This child player
                             'ln_parent_player_id' => $parent_new_en_id,
                         ));
 
@@ -987,7 +987,7 @@ class PLAY_model extends CI_Model
 
                 }
 
-            } elseif ($action_en_id == 5943) { //Entity Mass Update Entity Icon
+            } elseif ($action_en_id == 5943) { //Player Mass Update Player Icon
 
                 $this->PLAY_model->en_update($en['en_id'], array(
                     'en_icon' => $action_command1,
@@ -995,7 +995,7 @@ class PLAY_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 5000 && substr_count($en['en_name'], $action_command1) > 0) { //Replace Entity Matching Name
+            } elseif ($action_en_id == 5000 && substr_count($en['en_name'], $action_command1) > 0) { //Replace Player Matching Name
 
                 $this->PLAY_model->en_update($en['en_id'], array(
                     'en_name' => str_replace($action_command1, $action_command2, $en['en_name']),
@@ -1003,7 +1003,7 @@ class PLAY_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 10625 && substr_count($en['en_icon'], $action_command1) > 0) { //Replace Entity Matching Icon
+            } elseif ($action_en_id == 10625 && substr_count($en['en_icon'], $action_command1) > 0) { //Replace Player Matching Icon
 
                 $this->PLAY_model->en_update($en['en_id'], array(
                     'en_icon' => str_replace($action_command1, $action_command2, $en['en_icon']),
@@ -1015,11 +1015,11 @@ class PLAY_model extends CI_Model
 
                 $this->READ_model->ln_update($en['ln_id'], array(
                     'ln_content' => str_replace($action_command1, $action_command2, $en['ln_content']),
-                ), $ln_creator_player_id, 10657 /* Entity Link Iterated Content  */);
+                ), $ln_creator_player_id, 10657 /* Player Link Iterated Content  */);
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 5003 && ($action_command1=='*' || $en['en_status_player_id']==$action_command1) && in_array($action_command2, $this->config->item('en_ids_6177'))) { //Update Matching Entity Status
+            } elseif ($action_en_id == 5003 && ($action_command1=='*' || $en['en_status_player_id']==$action_command1) && in_array($action_command2, $this->config->item('en_ids_6177'))) { //Update Matching Player Status
 
                 $this->PLAY_model->en_update($en['en_id'], array(
                     'en_status_player_id' => $action_command2,
@@ -1031,7 +1031,7 @@ class PLAY_model extends CI_Model
 
                 $this->READ_model->ln_update($en['ln_id'], array(
                     'ln_status_player_id' => $action_command2,
-                ), $ln_creator_player_id, ( in_array($action_command2, $this->config->item('en_ids_7360') /* Link Statuses Active */) ? 10656 /* Entity Link Iterated Status */ : 10673 /* Entity Link Unlinked */ ));
+                ), $ln_creator_player_id, ( in_array($action_command2, $this->config->item('en_ids_7360') /* Link Statuses Active */) ? 10656 /* Player Link Iterated Status */ : 10673 /* Player Link Unlinked */ ));
 
                 $applied_success++;
 
@@ -1039,15 +1039,15 @@ class PLAY_model extends CI_Model
         }
 
 
-        //Log mass entity edit link:
+        //Log mass player edit link:
         $this->READ_model->ln_create(array(
             'ln_creator_player_id' => $ln_creator_player_id,
             'ln_type_player_id' => $action_en_id,
             'ln_child_player_id' => $en_id,
             'ln_metadata' => array(
                 'payload' => $_POST,
-                'entities_total' => count($children),
-                'entities_updated' => $applied_success,
+                'players_total' => count($children),
+                'players_updated' => $applied_success,
                 'command1' => $action_command1,
                 'command2' => $action_command2,
             ),
@@ -1056,7 +1056,7 @@ class PLAY_model extends CI_Model
         //Return results:
         return array(
             'status' => 1,
-            'message' => $applied_success . '/' . count($children) . ' entities updated',
+            'message' => $applied_success . '/' . count($children) . ' players updated',
         );
 
     }
@@ -1064,13 +1064,13 @@ class PLAY_model extends CI_Model
     function en_child_count($en_id, $en_statuses)
     {
 
-        //Count the active children of entity:
+        //Count the active children of player:
         $en__child_count = 0;
 
         //Do a child count:
         $child_links = $this->READ_model->ln_fetch(array(
             'ln_parent_player_id' => $en_id,
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'en_status_player_id IN (' . join(',', $en_statuses) . ')' => null,
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
@@ -1087,9 +1087,9 @@ class PLAY_model extends CI_Model
 
         /*
          *
-         * Detects the User entity ID based on the
+         * Detects the User player ID based on the
          * PSID provided by the Facebook Webhook Call.
-         * This function returns the User's entity object $en
+         * This function returns the User's player object $en
          *
          */
 
@@ -1105,7 +1105,7 @@ class PLAY_model extends CI_Model
         //Try matching Facebook PSID to existing Users:
         $user_messenger = $this->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
             'ln_parent_player_id' => 6196, //Mench Messenger
             'ln_external_id' => $psid,
         ), array('en_child'));
@@ -1125,14 +1125,14 @@ class PLAY_model extends CI_Model
 
     }
 
-    function en_verify_create($en_name, $ln_creator_player_id = 0, $en_status_player_id = 6180 /* Entity Drafting */, $en_icon = null){
+    function en_verify_create($en_name, $ln_creator_player_id = 0, $en_status_player_id = 6180 /* Player Drafting */, $en_icon = null){
 
         //If PSID exists, make sure it's not a duplicate:
         if(!in_array($en_status_player_id, $this->config->item('en_ids_6177'))){
             //Invalid Status ID
             return array(
                 'status' => 0,
-                'message' => 'Invalid Entity Status',
+                'message' => 'Invalid Player Status',
             );
         }
 
@@ -1140,20 +1140,20 @@ class PLAY_model extends CI_Model
         if(strlen($en_name)<2){
             return array(
                 'status' => 0,
-                'message' => 'Entity name must be at-least 2 characters long',
+                'message' => 'Player name must be at-least 2 characters long',
             );
         }
 
 
         //Check to make sure name is not duplicate:
         $duplicate_ens = $this->PLAY_model->en_fetch(array(
-            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
             'LOWER(en_name)' => strtolower(trim($en_name)),
         ));
 
 
-        //Create entity
-        $entity_new = $this->PLAY_model->en_create(array(
+        //Create player
+        $player_new = $this->PLAY_model->en_create(array(
             'en_name' => trim($en_name),
             'en_icon' => $en_icon,
             'en_status_player_id' => $en_status_player_id,
@@ -1163,9 +1163,9 @@ class PLAY_model extends CI_Model
         if(count($duplicate_ens) > 0){
             //Log a link to inform Trainer of this:
             $this->READ_model->ln_create(array(
-                'ln_content' => 'Duplicate entity names detected for ['.$duplicate_ens[0]['en_name'].']',
+                'ln_content' => 'Duplicate player names detected for ['.$duplicate_ens[0]['en_name'].']',
                 'ln_type_player_id' => 7504, //Trainer Review Required
-                'ln_child_player_id' => $entity_new['en_id'],
+                'ln_child_player_id' => $player_new['en_id'],
                 'ln_parent_player_id' => $duplicate_ens[0]['en_id'],
                 'ln_creator_player_id' => $ln_creator_player_id,
             ));
@@ -1174,7 +1174,7 @@ class PLAY_model extends CI_Model
         //Return success:
         return array(
             'status' => 1,
-            'en' => $entity_new,
+            'en' => $player_new,
         );
 
     }
@@ -1184,7 +1184,7 @@ class PLAY_model extends CI_Model
 
         /*
          *
-         * This function will attempt to create a new User Entity
+         * This function will attempt to create a new User Player
          * Using the PSID provided by Facebook Graph API
          *
          * */
@@ -1198,7 +1198,7 @@ class PLAY_model extends CI_Model
             return false;
         } elseif(count($this->READ_model->ln_fetch(array(
                 'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                 'ln_parent_player_id' => 6196, //Mench Messenger
                 'ln_external_id' => $psid,
             )))>0){
@@ -1224,7 +1224,7 @@ class PLAY_model extends CI_Model
              *
              * */
 
-            //Create user entity:
+            //Create user player:
             $added_en = $this->PLAY_model->en_verify_create('User '.rand(100000000, 999999999), 0, 6181, random_user_icon());
 
         } else {
@@ -1232,7 +1232,7 @@ class PLAY_model extends CI_Model
             //We did find the profile, move ahead:
             $fb_profile = $graph_fetch['ln_metadata']['result'];
 
-            //Create user entity with their Facebook Graph name:
+            //Create user player with their Facebook Graph name:
             $added_en = $this->PLAY_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, 6181, random_user_icon());
 
 
@@ -1267,7 +1267,7 @@ class PLAY_model extends CI_Model
         }
 
 
-        //Note that new entity link is already logged in the entity creation function
+        //Note that new player link is already logged in the player creation function
         //Now create more relevant links:
 
         //Activate Mench Messenger
@@ -1312,7 +1312,7 @@ class PLAY_model extends CI_Model
             );
         }
 
-        //Return entity object:
+        //Return player object:
         return $added_en['en'];
 
     }

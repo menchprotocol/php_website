@@ -70,7 +70,7 @@ class BLOG_model extends CI_Model
 
             //Ooopsi, something went wrong!
             $this->READ_model->ln_create(array(
-                'ln_content' => 'in_create() failed to create a new intent',
+                'ln_content' => 'in_create() failed to create a new blog',
                 'ln_type_player_id' => 4246, //Platform Bug Reports
                 'ln_creator_player_id' => $ln_creator_player_id,
                 'ln_metadata' => $insert_columns,
@@ -272,7 +272,7 @@ class BLOG_model extends CI_Model
     function in_unlink($in_id, $ln_creator_player_id = 0){
 
         //Remove blog relations:
-        $intent_remove_links = array_merge(
+        $blog_remove_links = array_merge(
             $this->READ_model->ln_fetch(array( //Blog Links
                 'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
@@ -286,7 +286,7 @@ class BLOG_model extends CI_Model
         );
 
         $links_removed = 0;
-        foreach($intent_remove_links as $ln){
+        foreach($blog_remove_links as $ln){
             //Remove this link:
             $links_removed += $this->READ_model->ln_update($ln['ln_id'], array(
                 'ln_status_player_id' => 6173, //Link Removed
@@ -329,7 +329,7 @@ class BLOG_model extends CI_Model
             } elseif (!in_array($linked_ins[0]['in_status_player_id'], $this->config->item('en_ids_7356')) /* Blog Statuses Active */) {
                 return array(
                     'status' => 0,
-                    'message' => 'You can only link to active intents. This intent is not active.',
+                    'message' => 'You can only link to active blogs. This blog is not active.',
                 );
             }
         }
@@ -362,12 +362,12 @@ class BLOG_model extends CI_Model
             } elseif (!in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7356') /* Blog Statuses Active */)) {
                 return array(
                     'status' => 0,
-                    'message' => 'You can only link to active intents. This intent is not active.',
+                    'message' => 'You can only link to active blogs. This blog is not active.',
                 );
             }
 
             //All good so far, continue with linking:
-            $intent_new = $ins[0];
+            $blog_new = $ins[0];
 
             //Make sure this is not a duplicate blog for its parent:
             $dup_links = $this->READ_model->ln_fetch(array(
@@ -383,7 +383,7 @@ class BLOG_model extends CI_Model
                 //Ooopsi, this is a duplicate!
                 return array(
                     'status' => 0,
-                    'message' => '[' . $intent_new['in_title'] . '] is already linked here.',
+                    'message' => '[' . $blog_new['in_title'] . '] is already linked here.',
                 );
 
             } elseif ($in_linked_id > 0 && $link_in_id == $in_linked_id) {
@@ -391,7 +391,7 @@ class BLOG_model extends CI_Model
                 //Make sure none of the parents are the same:
                 return array(
                     'status' => 0,
-                    'message' => 'You cannot add "' . $intent_new['in_title'] . '" as its own '.( $is_parent ? 'parent' : 'child' ).'.',
+                    'message' => 'You cannot add "' . $blog_new['in_title'] . '" as its own '.( $is_parent ? 'parent' : 'child' ).'.',
                 );
 
             }
@@ -409,7 +409,7 @@ class BLOG_model extends CI_Model
 
 
             //Create new blog:
-            $intent_new = $this->BLOG_model->in_create(array(
+            $blog_new = $this->BLOG_model->in_create(array(
                 'in_title' => $in_title_validation['in_cleaned_outcome'],
                 'in_type_player_id' => $in_type_player_id,
                 'in_status_player_id' => $new_in_status,
@@ -425,18 +425,18 @@ class BLOG_model extends CI_Model
                 'ln_creator_player_id' => $ln_creator_player_id,
                 'ln_type_player_id' => 4228, //Blog Link Regular Step
                 ( $is_parent ? 'ln_child_blog_id' : 'ln_parent_blog_id' ) => $in_linked_id,
-                ( $is_parent ? 'ln_parent_blog_id' : 'ln_child_blog_id' ) => $intent_new['in_id'],
+                ( $is_parent ? 'ln_parent_blog_id' : 'ln_child_blog_id' ) => $blog_new['in_id'],
                 'ln_order' => 1 + $this->READ_model->ln_max_order(array(
                         'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                         'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                        'ln_parent_blog_id' => ( $is_parent ? $intent_new['in_id'] : $in_linked_id ),
+                        'ln_parent_blog_id' => ( $is_parent ? $blog_new['in_id'] : $in_linked_id ),
                     )),
             ), true);
 
             //Fetch and return full data to be properly shown on the UI using the echo_in() function
             $new_ins = $this->READ_model->ln_fetch(array(
                 ( $is_parent ? 'ln_child_blog_id' : 'ln_parent_blog_id' ) => $in_linked_id,
-                ( $is_parent ? 'ln_parent_blog_id' : 'ln_child_blog_id' ) => $intent_new['in_id'],
+                ( $is_parent ? 'ln_parent_blog_id' : 'ln_child_blog_id' ) => $blog_new['in_id'],
                 'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                 'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
@@ -457,7 +457,7 @@ class BLOG_model extends CI_Model
 
                 if(!count($this->READ_model->ln_fetch(array(
                     ( $is_parent ? 'ln_child_blog_id' : 'ln_parent_blog_id' ) => $in_linked_id,
-                    ( $is_parent ? 'ln_parent_blog_id' : 'ln_child_blog_id' ) => $intent_new['in_id'],
+                    ( $is_parent ? 'ln_parent_blog_id' : 'ln_child_blog_id' ) => $blog_new['in_id'],
                     'ln_parent_player_id' => $ln_creator_player_id,
                     'ln_type_player_id' => 4983,
                     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -468,9 +468,9 @@ class BLOG_model extends CI_Model
                         'ln_creator_player_id' => $ln_creator_player_id,
                         'ln_parent_player_id' => $ln_creator_player_id,
                         'ln_type_player_id' => 4983,
-                        'ln_content' => '@'.$ln_creator_player_id.' #'.( $is_parent ? $intent_new['in_id'] : $in_linked_id ), //Message content
+                        'ln_content' => '@'.$ln_creator_player_id.' #'.( $is_parent ? $blog_new['in_id'] : $in_linked_id ), //Message content
                         ( $is_parent ? 'ln_child_blog_id' : 'ln_parent_blog_id' ) => $in_linked_id,
-                        ( $is_parent ? 'ln_parent_blog_id' : 'ln_child_blog_id' ) => $intent_new['in_id'],
+                        ( $is_parent ? 'ln_parent_blog_id' : 'ln_child_blog_id' ) => $blog_new['in_id'],
                     ));
                 }
             }
@@ -483,7 +483,7 @@ class BLOG_model extends CI_Model
             if($ln_creator_player_id > 0){
 
                 if(!count($this->READ_model->ln_fetch(array(
-                    'ln_child_blog_id' => $intent_new['in_id'],
+                    'ln_child_blog_id' => $blog_new['in_id'],
                     'ln_parent_player_id' => $ln_creator_player_id,
                     'ln_type_player_id' => 4983,
                     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -495,7 +495,7 @@ class BLOG_model extends CI_Model
                         'ln_parent_player_id' => $ln_creator_player_id,
                         'ln_type_player_id' => 4983,
                         'ln_content' => '@'.$ln_creator_player_id,
-                        'ln_child_blog_id' => $intent_new['in_id'],
+                        'ln_child_blog_id' => $blog_new['in_id'],
                     ), true);
                 }
             }
@@ -505,7 +505,7 @@ class BLOG_model extends CI_Model
         //Return result:
         return array(
             'status' => 1,
-            'new_in_id' => $intent_new['in_id'],
+            'new_in_id' => $blog_new['in_id'],
             'in_child_html' => $in_child_html,
         );
 
@@ -664,13 +664,13 @@ class BLOG_model extends CI_Model
     function in_metadata_common_base($focus_in){
 
         //Set variables:
-        $is_first_intent = ( !isset($focus_in['ln_id']) ); //First blog does not have a link, just the blog
+        $is_first_blog = ( !isset($focus_in['ln_id']) ); //First blog does not have a link, just the blog
         $has_or_parent = in_array($focus_in['in_type_player_id'] , $this->config->item('en_ids_6193') /* OR Blogs */ );
-        $or_children = array(); //To be populated only if $focus_in is an OR intent
+        $or_children = array(); //To be populated only if $focus_in is an OR blog
         $conditional_steps = array(); //To be populated only for Conditional Steps
         $metadata_this = array(
             '__in__metadata_common_steps' => array(), //The tree structure that would be shared with all users regardless of their quick replies (OR Blog Answers)
-            '__in__metadata_expansion_steps' => array(), //Blogs that may exist as a link to expand an 🔴 READING LIST tree by answering OR intents
+            '__in__metadata_expansion_steps' => array(), //Blogs that may exist as a link to expand an 🔴 READING LIST tree by answering OR blogs
             '__in__metadata_expansion_conditional' => array(), //Blogs that may exist as a link to expand an 🔴 READING LIST tree via Conditional Step links
         );
 
@@ -682,7 +682,7 @@ class BLOG_model extends CI_Model
             'ln_parent_blog_id' => $focus_in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $in_child){
 
-            //Determine action based on parent intent type:
+            //Determine action based on parent blog type:
             if($in_child['ln_type_player_id']==4229){
 
                 //Conditional Step Link:
@@ -737,9 +737,9 @@ class BLOG_model extends CI_Model
 
 
         //Save common base:
-        if($is_first_intent){
+        if($is_first_blog){
 
-            //Make sure to add main intent to common tree:
+            //Make sure to add main blog to common tree:
             if(count($metadata_this['__in__metadata_common_steps']) > 0){
                 $metadata_this['__in__metadata_common_steps'] = array_merge( array(intval($focus_in['in_id'])) , array($metadata_this['__in__metadata_common_steps']));
             } else {
@@ -766,11 +766,11 @@ class BLOG_model extends CI_Model
          *
          * Generates additional insights like
          * min/max steps, time, cost and
-         * referenced players in intent notes.
+         * referenced players in blog notes.
          *
          * */
 
-        //Fetch this intent:
+        //Fetch this blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
@@ -784,12 +784,12 @@ class BLOG_model extends CI_Model
             return false;
         }
 
-        //Fetch common base and expansion paths from intent metadata:
+        //Fetch common base and expansion paths from blog metadata:
         $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
         $expansion_steps = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
         $locked_steps = ( isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0 ? $in_metadata['in__metadata_expansion_conditional'] : array() );
 
-        //Fetch totals for published common step intents:
+        //Fetch totals for published common step blogs:
         $common_totals = $this->BLOG_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
@@ -802,7 +802,7 @@ class BLOG_model extends CI_Model
 
         $metadata_this = array(
 
-            //Required steps/intents range to complete tree:
+            //Required steps/blogs range to complete tree:
             '__in__metadata_min_steps' => $common_base_resources['steps'],
             '__in__metadata_max_steps' => $common_base_resources['steps'],
 
@@ -810,7 +810,7 @@ class BLOG_model extends CI_Model
             '__in__metadata_min_seconds' => $common_base_resources['seconds'],
             '__in__metadata_max_seconds' => $common_base_resources['seconds'],
 
-            //Entity references within intent notes:
+            //Player references within blog notes:
             '__in__metadata_experts' => array(),
             '__in__metadata_sources' => array(),
 
@@ -825,13 +825,13 @@ class BLOG_model extends CI_Model
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4485')).')' => null, //Blog Notes
             '(ln_child_blog_id = ' . $in_id . ( count($flat_common_steps) > 0 ? ' OR ln_child_blog_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
         ), array('en_parent'), 0) as $note_en) {
 
-            //Referenced player in intent notes... Fetch parents:
+            //Referenced player in blog notes... Fetch parents:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_child_player_id' => $note_en['ln_parent_player_id'],
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Entity-to-Entity Links
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Player-to-Player Links
                 'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ), array(), 0) as $parent_en){
 
@@ -854,9 +854,9 @@ class BLOG_model extends CI_Model
 
                     //Industry Expert?
                     $expert_parents = $this->READ_model->ln_fetch(array(
-                        'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+                        'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
                         'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Entity-to-Entity Links
+                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Player-to-Player Links
                         'ln_parent_player_id' => 3084, //Industry Experts
                         'ln_child_player_id' => $parent_en['ln_parent_player_id'],
                     ), array('en_child'), 0);
@@ -983,7 +983,7 @@ class BLOG_model extends CI_Model
          * */
 
 
-        //Validate this locked intent:
+        //Validate this locked blog:
         if(!in_is_unlockable($in)){
             return array();
         }
@@ -1027,7 +1027,7 @@ class BLOG_model extends CI_Model
 
         //Return if we have options for step 1 OR step 2:
         if(count($child_unlock_paths) > 0){
-            //Return OR parents for unlocking this intent:
+            //Return OR parents for unlocking this blog:
             return $child_unlock_paths;
         }
 
