@@ -668,8 +668,8 @@ textarea.note-textarea{
     text-align: center;
 }
 
-.link_marks .form-control:hover, .link_marks .form-control:active{
-    background-color:#fff3a9 !important;
+.link_marks .form-control:hover{
+    background-color:#FFFFFF !important;
 }
 
 .list-group-item {
