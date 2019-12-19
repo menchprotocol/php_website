@@ -796,12 +796,12 @@ fragment PostListingItemSidebar_post on Post {
             //COUNT WORDS BLOG/READ:
             $words_blog = $this->READ_model->ln_fetch(array(
                 'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
 
             $words_read = $this->READ_model->ln_fetch(array(
                 'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
 
 
@@ -3296,13 +3296,13 @@ fragment PostListingItemSidebar_post on Post {
         //COUNT WORDS BLOG/READ:
         $words_blog = $this->READ_model->ln_fetch(array(
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'ln_creator_player_id' => $session_en['en_id'],
         ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
 
         $words_read = $this->READ_model->ln_fetch(array(
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'ln_creator_player_id' => $session_en['en_id'],
         ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
 
