@@ -642,7 +642,7 @@ function in_message_form_unlock(result, focus_ln_type_player_id) {
 
     } else {
 
-        $(".note_error_"+focus_ln_type_player_id).html(result.message);
+        $(".note_error_"+focus_ln_type_player_id).html('<span class="ispink">ERROR: '+result.message+'</span>');
 
     }
 }

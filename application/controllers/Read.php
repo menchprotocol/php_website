@@ -42,7 +42,6 @@ class Read extends CI_Controller
             return redirect_message('/read', '<div class="alert alert-danger" role="alert">Failed to add blog to your 🔴 READING LIST.</div>');
         }
 
-
     }
 
     function read_next(){
@@ -113,6 +112,24 @@ class Read extends CI_Controller
 
     }
 
+
+    function cron__weekly_coins(){
+
+        //Calculates the weekly coins issued:
+        $last_week_start = date("Y-m-d H:i:s", mktime(0, 0, 0, date("n"), date("j")-1, date("Y")));
+        $last_week_end = date("Y-m-d H:i:s", mktime(0, 0, 0, date("n"), date("j")-8, date("Y")));
+
+        echo $last_week_start.'<br />';
+        echo $last_week_end;
+
+        return false;
+        $blog_coins_last_week = $this->READ_model->ln_fetch(array(
+            'ln_words >' => 0,
+            'ln_timestamp >=' => null,
+            'ln_timestamp <' => null,
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
+    }
 
     function read_list(){
 
