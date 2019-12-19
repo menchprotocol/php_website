@@ -119,18 +119,52 @@ class Read extends CI_Controller
         $last_week_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-7, date("Y"));
         $last_week_start = date("Y-m-d H:i:s", $last_week_start_timestamp);
         $last_week_end = date("Y-m-d H:i:s", mktime(23, 59, 59, date("n"), date("j")-1, date("Y")));
+
+        //BLOG
         $blog_coins_new_last_week = $this->READ_model->ln_fetch(array(
             'ln_words >' => 0,
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ), array(), 0, 0, array(), 'SUM(ln_words) as gold_coins');
+        ), array(), 0, 0, array(), 'SUM(ln_words) as total');
         $blog_coins_total_last_week = $this->READ_model->ln_fetch(array(
             'ln_words >' => 0,
             'ln_timestamp <=' => $last_week_end,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ), array(), 0, 0, array(), 'SUM(ln_words) as gold_coins');
-        $growth_rate = number_format(( $blog_coins_total_last_week[0]['gold_coins'] / ( $blog_coins_total_last_week[0]['gold_coins'] - $blog_coins_new_last_week[0]['gold_coins'] ) * 100 ) - 100, 1);
+        ), array(), 0, 0, array(), 'SUM(ln_words) as total');
+        $blog_coins_growth_rate = number_format(( $blog_coins_total_last_week[0]['total'] / ( $blog_coins_total_last_week[0]['total'] - $blog_coins_new_last_week[0]['total'] ) * 100 ) - 100, 1);
+
+
+        //READ
+        $read_coins_new_last_week = $this->READ_model->ln_fetch(array(
+            'ln_words <' => 0,
+            'ln_timestamp >=' => $last_week_start,
+            'ln_timestamp <=' => $last_week_end,
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        ), array(), 0, 0, array(), 'ABS(SUM(ln_words)) as total');
+        $read_coins_total_last_week = $this->READ_model->ln_fetch(array(
+            'ln_words >' => 0,
+            'ln_timestamp <=' => $last_week_end,
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        ), array(), 0, 0, array(), 'SUM(ln_words) as total');
+        $read_coins_growth_rate = number_format(( $read_coins_total_last_week[0]['total'] / ( $read_coins_total_last_week[0]['total'] - $read_coins_new_last_week[0]['total'] ) * 100 ) - 100, 1);
+
+
+        //PLAY
+        $play_coins_new_last_week = $this->READ_model->ln_fetch(array(
+            'ln_type_player+_id' => 4251, //Player Created
+            'ln_timestamp >=' => $last_week_start,
+            'ln_timestamp <=' => $last_week_end,
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total');
+        $play_coins_total_last_week = $this->READ_model->ln_fetch(array(
+            'ln_words >' => 0,
+            'ln_timestamp <=' => $last_week_end,
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        ), array(), 0, 0, array(), 'SUM(ln_words) as total');
+        $play_coins_growth_rate = number_format(( $play_coins_total_last_week[0]['total'] / ( $play_coins_total_last_week[0]['total'] - $play_coins_new_last_week[0]['total'] ) * 100 ) - 100, 1);
+
+
 
         echo '<table style="border:0; margin:0; padding:0; width:100%;">';
 
@@ -141,9 +175,21 @@ class Read extends CI_Controller
         echo '</tr>';
 
         echo '<tr>';
-        echo '<td>🟡 BLOG</td>';
-        echo '<td title="'.number_format($blog_coins_new_last_week[0]['gold_coins'], 2).' New Coins" style="color:'.( $growth_rate > 0 ? '00CC00' : 'FF00000' ).';">'.( $growth_rate > 0 ? '+' : '-' ).$growth_rate.'%</td>';
-        echo '<td>'.number_format($blog_coins_total_last_week[0]['gold_coins'], 2).'</td>';
+        echo '<td>🟡BLOG</td>';
+        echo '<td title="'.number_format($blog_coins_new_last_week[0]['total'], 2).' New Coins" style="color:'.( $blog_coins_growth_rate > 0 ? '00CC00' : 'FF00000' ).';">'.( $blog_coins_growth_rate > 0 ? '+' : '-' ).$blog_coins_growth_rate.'%</td>';
+        echo '<td>'.number_format($blog_coins_total_last_week[0]['total'], 2).'</td>';
+        echo '</tr>';
+
+        echo '<tr>';
+        echo '<td>🔴READ</td>';
+        echo '<td title="'.number_format($read_coins_new_last_week[0]['total'], 2).' New Coins" style="color:'.( $read_coins_growth_rate > 0 ? '00CC00' : 'FF00000' ).';">'.( $read_coins_growth_rate > 0 ? '+' : '-' ).$read_coins_growth_rate.'%</td>';
+        echo '<td>'.number_format($read_coins_total_last_week[0]['total'], 2).'</td>';
+        echo '</tr>';
+
+        echo '<tr>';
+        echo '<td>🔵PLAY</td>';
+        echo '<td title="'.number_format($play_coins_new_last_week[0]['total'], 2).' New Coins" style="color:'.( $play_coins_growth_rate > 0 ? '00CC00' : 'FF00000' ).';">'.( $play_coins_growth_rate > 0 ? '+' : '-' ).$play_coins_growth_rate.'%</td>';
+        echo '<td>'.number_format($play_coins_total_last_week[0]['total'], 2).'</td>';
         echo '</tr>';
 
 
