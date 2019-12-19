@@ -218,6 +218,10 @@ img.no-radius {
     background-color:#FFFFFF;
 }
 
+.list-group{
+    margin-right: 1px;
+    margin-left: 1px;
+}
 .algolia_search_pad{
     height: 295px;
 }
