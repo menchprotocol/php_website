@@ -166,10 +166,10 @@ class Read extends CI_Controller
 
 
 
-        echo '<table style="border:0; margin:0; padding:0; width:233px;">';
+        echo '<table style="border:0; margin:0; padding:0; width:266px;">';
 
         echo '<tr>';
-        echo '<td>Coin Type</td>';
+        echo '<td></td>';
         echo '<td title="'.$last_week_start.' to '.$last_week_end.'">Week of '.date("M jS", $last_week_start_timestamp).'</td>';
         echo '</tr>';
 
