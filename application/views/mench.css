@@ -85,7 +85,7 @@ h4.thin span{
 
 a {
     color: #070707;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 a:hover {

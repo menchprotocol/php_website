@@ -165,22 +165,24 @@ class Read extends CI_Controller
         $play_coins_growth_rate = number_format(( $play_coins_total_last_week[0]['total'] / ( $play_coins_total_last_week[0]['total'] - $play_coins_new_last_week[0]['total'] ) * 100 ) - 100, 1);
 
 
-        ##Email Subject
-        $subject = 'MENCH 🟡BLOG '.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'% last week';
+        //Email Subject
+        $subject = 'MENCH 🟡 BLOG '.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'% Last Week';
 
+        //Email Body
         $html_message = '<br />';
-        $html_message .= '<div>Here are the growth stats for the week of '.date("M jS", $last_week_start_timestamp).':</div>';
+        $html_message .= '<div>Here are the growth stats for the <span title="'.$last_week_start.' to '.$last_week_end.'">week of '.date("M jS", $last_week_start_timestamp).'</span>:</div>';
         $html_message .= '<br />';
 
-        $html_message .= '<div>🟡BLOG '.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'% to '.echo_number($blog_coins_total_last_week[0]['total']).' [North Star]</div>';
-        $html_message .= '<div>🔴READ '.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'% to '.echo_number($read_coins_total_last_week[0]['total']).'</div>';
         $html_message .= '<div>🔵PLAY '.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'% to '.echo_number($play_coins_total_last_week[0]['total']).'</div>';
+        $html_message .= '<div>🔴READ '.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'% to '.echo_number($read_coins_total_last_week[0]['total']).'</div>';
+        $html_message .= '<div>🟡BLOG '.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'% to '.echo_number($blog_coins_total_last_week[0]['total']).' [North Star]</div>';
 
         $html_message .= '<br />';
         $html_message .= '<div>Cheers,</div>';
-        $html_message .= '<div>- <a href="https://mench.com?utm_source=mench&utm_medium=email" target="_blank">Mench</a></div>';
+        $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email" target="_blank">MENCH</a></div>';
 
 
+        $email_recipients = 0;
         //Send email to all subscribers:
         foreach($this->READ_model->ln_fetch(array(
             'ln_parent_player_id' => 12114,
@@ -198,9 +200,12 @@ class Read extends CI_Controller
                 if(filter_var($en_email['ln_content'], FILTER_VALIDATE_EMAIL)){
                     //Send Email
                     $this->READ_model->dispatch_emails(array($en_email['ln_content']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['en_name']).' 👋</div>'.$html_message);
+                    $email_recipients++;
                 }
             }
         }
+
+        echo 'Sent '.$email_recipients.' Stat Emails';
     }
 
     function read_list(){
