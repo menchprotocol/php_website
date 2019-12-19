@@ -170,10 +170,17 @@ class Blog extends CI_Controller {
 
     function in_update_text(){
 
+        return echo_json(array(
+            'status' => 0,
+            'message' => 'Missing tr__conditional_score_min or tr__conditional_score_max',
+            'original_val' => -1,
+        ));
+
         if (!isset($_POST['tr__conditional_score_min']) || !isset($_POST['tr__conditional_score_max'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing tr__conditional_score_min or tr__conditional_score_max',
+                'original_val' => -1,
             ));
         } elseif (!isset($_POST['tr__assessment_points'])) {
             return echo_json(array(

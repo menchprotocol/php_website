@@ -13,18 +13,16 @@ $(document).ready(function () {
     //Lookout for completion mark changes:
     $('.in_update_text').change(function() {
 
-        //Grey backfground to indicate saving...
+        //Grey background to indicate saving...
         $(this).addClass('dynamic_saving');
 
         $.post("/blog/in_update_text", {
 
+            identifier_id: $(this).attr('identifier_id'),
             field_name: $(this).attr('cache_en_id'),
-            field_value: $(this).val(),
-            ln_id: $(this).attr('identifier_id')
+            field_value: $(this).val()
 
         }, function (data) {
-
-            $(this).removeClass('dynamic_saving');
 
             if (!data.status) {
 
@@ -35,6 +33,10 @@ $(document).ready(function () {
                 alert('ERROR: ' + data.message);
 
             }
+
+            //Restore background:
+            $(this).removeClass('dynamic_saving');
+
         });
     });
 
