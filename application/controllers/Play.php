@@ -774,14 +774,14 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<td><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="blue montserrat">'.$first_name.'</a>' : '<b class="blue montserrat">'.$first_name.'</b>' ).'</td>';
 
                 //READ
-                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_player_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_player_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
+                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_player_id='.join(',', $this->config->item('en_ids_7360')).'&ln_type_player_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
 
                 //BLOG
                 echo '<td>'.
 
                     ( $session_en
 
-                        ? '<a href="/read/history?ln_status_player_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_player_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</a>'
+                        ? '<a href="/read/history?ln_status_player_id='.join(',', $this->config->item('en_ids_7360')).'&ln_type_player_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</a>'
 
                         : '<span class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</span>'
 
