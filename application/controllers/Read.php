@@ -171,25 +171,21 @@ class Read extends CI_Controller
         echo '<tr>';
         echo '<td>Coin Type</td>';
         echo '<td title="'.$last_week_start.' to '.$last_week_end.'">Week of '.date("M jS", $last_week_start_timestamp).'</td>';
-        echo '<td>Total Coins</td>';
         echo '</tr>';
 
         echo '<tr>';
         echo '<td>🟡BLOG</td>';
-        echo '<td title="'.number_format($blog_coins_new_last_week[0]['total'], 0).' New Coins" style="color:'.( $blog_coins_growth_rate >= 0 ? '00CC00' : 'FF0000' ).';">'.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'%</td>';
-        echo '<td>'.number_format($blog_coins_total_last_week[0]['total'], 0).'</td>';
+        echo '<td title="'.number_format($blog_coins_new_last_week[0]['total'], 0).' New Coins">'.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'% to '.number_format($blog_coins_total_last_week[0]['total'], 0).'</td>';
         echo '</tr>';
 
         echo '<tr>';
         echo '<td>🔴READ</td>';
-        echo '<td title="'.number_format($read_coins_new_last_week[0]['total'], 0).' New Coins" style="color:'.( $read_coins_growth_rate >= 0 ? '00CC00' : 'FF0000' ).';">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</td>';
-        echo '<td>'.number_format($read_coins_total_last_week[0]['total'], 0).'</td>';
+        echo '<td title="'.number_format($read_coins_new_last_week[0]['total'], 0).' New Coins">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'% to '.number_format($read_coins_total_last_week[0]['total'], 0).'</td>';
         echo '</tr>';
 
         echo '<tr>';
         echo '<td>🔵PLAY</td>';
-        echo '<td title="'.number_format($play_coins_new_last_week[0]['total'], 0).' New Coins" style="color:'.( $play_coins_growth_rate >= 0 ? '00CC00' : 'FF0000' ).';">'.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'%</td>';
-        echo '<td>'.number_format($play_coins_total_last_week[0]['total'], 0).'</td>';
+        echo '<td title="'.number_format($play_coins_new_last_week[0]['total'], 0).' New Coins">'.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'% to '.number_format($play_coins_total_last_week[0]['total'], 0).'</td>';
         echo '</tr>';
 
 
