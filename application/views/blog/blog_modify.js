@@ -13,12 +13,14 @@ $(document).ready(function () {
     //Lookout for completion mark changes:
     $('.in_update_text').change(function() {
 
+        var handler = '.text__'+$(this).attr('cache_en_id')+'_'+$(this).attr('in_ln__id');
+
         //Grey background to indicate saving...
-        $(this).addClass('dynamic_saving');
+        $(handler).addClass('dynamic_saving');
 
         $.post("/blog/in_update_text", {
 
-            identifier_id: $(this).attr('identifier_id'),
+            in_ln__id: $(this).attr('in_ln__id'),
             field_name: $(this).attr('cache_en_id'),
             field_value: $(this).val()
 
@@ -27,7 +29,7 @@ $(document).ready(function () {
             if (!data.status) {
 
                 //Reset to original value:
-                $(this).val(data.original_val);
+                $(handler).val(data.original_val);
 
                 //Show error:
                 alert('ERROR: ' + data.message);
@@ -35,7 +37,7 @@ $(document).ready(function () {
             }
 
             //Restore background:
-            $(this).removeClass('dynamic_saving');
+            $(handler).removeClass('dynamic_saving');
 
         });
     });

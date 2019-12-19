@@ -2426,10 +2426,10 @@ function echo_en($en, $is_parent = false)
 }
 
 
-function echo_in_text($cache_en_id, $current_value, $identifier_id, $can_manage){
+function echo_in_text($cache_en_id, $current_value, $in_ln__id, $can_manage){
     $CI =& get_instance();
     $en_all_12112 = $CI->config->item('en_all_12112');
-    return '<input '.( $can_manage ? '' : 'disabled' ).' type="text" class="form-control in_update_text" cache_en_id="'.$cache_en_id.'" identifier_id="'.$identifier_id.'" value="'.$current_value.'" data-toggle="tooltip" data-placement="top" title="'.$en_all_12112[$cache_en_id]['m_name'].( strlen($en_all_12112[$cache_en_id]['m_desc']) > 0 ? ': '.$en_all_12112[$cache_en_id]['m_desc'] : '' ).'">';
+    return '<input '.( $can_manage ? '' : 'disabled' ).' type="text" class="form-control in_update_text text__'.$cache_en_id.'_'.$in_ln__id.'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" value="'.$current_value.'" data-toggle="tooltip" data-placement="top" title="'.$en_all_12112[$cache_en_id]['m_name'].( strlen($en_all_12112[$cache_en_id]['m_desc']) > 0 ? ': '.$en_all_12112[$cache_en_id]['m_desc'] : '' ).'">';
 }
 
 function echo_dropdown($cache_en_id, $selected_en_id, $btn_class, $can_manage, $ln_id = 0){
