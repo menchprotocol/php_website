@@ -26,6 +26,7 @@ function actionplan_sort_save() {
 //Watch for READING LIST removal click:
 $('.actionplan_remove').on('click', function(e) {
 
+    e.preventDefault();
     var in_id = $(this).attr('in-id');
     var r = confirm("Remove ["+$('.in-title-'+in_id).text()+"] from reading list?");
     if (r == true) {
