@@ -168,15 +168,15 @@ class Read extends CI_Controller
         ##Email Subject
         $subject = 'MENCH 🟡BLOG '.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'% last week';
 
-        $html_message = '<br /><br />';
-        $html_message .= '<div>Here is the growth summary for the week of '.date("M jS", $last_week_start_timestamp).':</div>';
-        $html_message .= '<br /><br />';
+        $html_message = '<br />';
+        $html_message .= '<div>Here are the growth stats for the week of '.date("M jS", $last_week_start_timestamp).':</div>';
+        $html_message .= '<br />';
 
-        $html_message .= '<div>🟡BLOG grew by '.( $blog_coins_growth_rate >= 0 ? '' : '-' ).$blog_coins_growth_rate.'% to '.echo_number($blog_coins_total_last_week[0]['total']).' [North Star]</div>';
-        $html_message .= '<div>🔴READ grew by '.( $read_coins_growth_rate >= 0 ? '' : '-' ).$read_coins_growth_rate.'% to '.echo_number($read_coins_total_last_week[0]['total']).'</div>';
-        $html_message .= '<div>🔵PLAY grew by '.( $play_coins_growth_rate >= 0 ? '' : '-' ).$play_coins_growth_rate.'% to '.echo_number($play_coins_total_last_week[0]['total']).'</div>';
+        $html_message .= '<div>🟡BLOG '.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'% to '.echo_number($blog_coins_total_last_week[0]['total']).' [North Star]</div>';
+        $html_message .= '<div>🔴READ '.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'% to '.echo_number($read_coins_total_last_week[0]['total']).'</div>';
+        $html_message .= '<div>🔵PLAY '.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'% to '.echo_number($play_coins_total_last_week[0]['total']).'</div>';
 
-        $html_message .= '<br /><br />';
+        $html_message .= '<br />';
         $html_message .= '<div>Cheers,</div>';
         $html_message .= '<div>- <a href="https://mench.com?utm_source=mench&utm_medium=email" target="_blank">Mench</a></div>';
 
