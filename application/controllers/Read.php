@@ -143,25 +143,25 @@ class Read extends CI_Controller
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ), array(), 0, 0, array(), 'ABS(SUM(ln_words)) as total');
         $read_coins_total_last_week = $this->READ_model->ln_fetch(array(
-            'ln_words >' => 0,
+            'ln_words <' => 0,
             'ln_timestamp <=' => $last_week_end,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ), array(), 0, 0, array(), 'SUM(ln_words) as total');
+        ), array(), 0, 0, array(), 'ABS(SUM(ln_words)) as total');
         $read_coins_growth_rate = number_format(( $read_coins_total_last_week[0]['total'] / ( $read_coins_total_last_week[0]['total'] - $read_coins_new_last_week[0]['total'] ) * 100 ) - 100, 1);
 
 
         //PLAY
         $play_coins_new_last_week = $this->READ_model->ln_fetch(array(
-            'ln_type_player+_id' => 4251, //Player Created
+            'ln_type_player_id' => 4251, //Player Created
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total');
         $play_coins_total_last_week = $this->READ_model->ln_fetch(array(
-            'ln_words >' => 0,
+            'ln_type_player_id' => 4251, //Player Created
             'ln_timestamp <=' => $last_week_end,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ), array(), 0, 0, array(), 'SUM(ln_words) as total');
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total');
         $play_coins_growth_rate = number_format(( $play_coins_total_last_week[0]['total'] / ( $play_coins_total_last_week[0]['total'] - $play_coins_new_last_week[0]['total'] ) * 100 ) - 100, 1);
 
 
