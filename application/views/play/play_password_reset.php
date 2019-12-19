@@ -34,7 +34,7 @@
 
                 //Release field lock:
                 pass_is_resetting = false;
-                $('#reset_pass_next').html('UPDATE & SIGN-IN<i class="fas fa-arrow-right"></i>');
+                $('#reset_pass_next').html('UPDATE & SIGN-IN<i class="fas fa-angle-right"></i>');
                 $('#input_password').prop('disabled', false).css('background-color','#FFFFFF');
 
                 //Show errors:
@@ -68,7 +68,7 @@
         <!-- Apply Buttons -->
         <div id="pass_reset_errors" class="isred"></div>
         <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="sign_reset_password_apply()" id="reset_pass_next" class="btn btn-blog pass btn-raised btn-round btn-next">Update & Sign-In <i class="fas fa-arrow-right"></i></a>
+                <a href="javascript:void(0)" onclick="sign_reset_password_apply()" id="reset_pass_next" class="btn btn-blog pass btn-raised btn-round btn-next">Update & Sign-In <i class="fas fa-angle-right"></i></a>
             </span>
 
     </div>

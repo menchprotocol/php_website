@@ -21,7 +21,7 @@ $(document).ready(function () {
         $.post("/blog/in_update_text", {
 
             in_ln__id: $(this).attr('in_ln__id'),
-            field_name: $(this).attr('cache_en_id'),
+            cache_en_id: $(this).attr('cache_en_id'),
             field_value: $(this).val()
 
         }, function (data) {

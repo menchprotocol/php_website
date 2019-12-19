@@ -43,8 +43,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     if($col_num==1){
 
         echo '<div style="margin-bottom: 5px;">';
-            echo '<div class="inline-block">'.echo_dropdown(4737, $in['in_status_player_id'], 'btn-blog', $can_manage).'</div>';
-            echo '<div class="inline-block pull-right"><a href="/'.$in['in_id'].'" class="btn btn-read" data-toggle="tooltip" title="Read interactively" data-placement="right">PREVIEW <i class="fas fa-arrow-right"></i></a></div>';
+            echo '<div class="inline-block">'.echo_in_dropdown(4737, $in['in_status_player_id'], 'btn-blog', $can_manage).'</div>';
+            echo '<div class="inline-block pull-right"><a href="/'.$in['in_id'].'" class="btn btn-read" data-toggle="tooltip" title="Read interactively" data-placement="right">PREVIEW <i class="fas fa-angle-right"></i></a></div>';
         echo '</div>';
 
         echo '<div class="itemblog">';
@@ -67,7 +67,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } else {
 
         echo '<div class="center-right">';
-            echo '<div class="inline-block" style="margin-bottom:5px;">'.echo_dropdown(7585, $in['in_type_player_id'], 'btn-blog', $can_manage).'</div>';
+            echo '<div class="inline-block" style="margin-bottom:5px;">'.echo_in_dropdown(7585, $in['in_type_player_id'], 'btn-blog', $can_manage).'</div>';
             echo '<div class="inline-block '.superpower_active(10984).'" style="width:89px; margin:0 0 5px 5px;">'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $can_manage).'</div>';
         echo '</div>';
 

@@ -170,108 +170,162 @@ class Blog extends CI_Controller {
 
     function in_update_text(){
 
-        return echo_json(array(
-            'status' => 0,
-            'message' => 'Missing tr__conditional_score_min or tr__conditional_score_max',
-            'original_val' => -1,
-        ));
+        //Authenticate Trainer:
+        $session_en = superpower_assigned(10984);
+        $en_all_12112 = $this->config->item('en_all_12112');
 
-        if (!isset($_POST['tr__conditional_score_min']) || !isset($_POST['tr__conditional_score_max'])) {
+        if (!$session_en) {
+
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing tr__conditional_score_min or tr__conditional_score_max',
-                'original_val' => -1,
+                'message' => 'Expired Session or Missing Superpower',
+                'original_val' => '',
             ));
-        } elseif (!isset($_POST['tr__assessment_points'])) {
+
+        } elseif(!isset($_POST['in_ln__id']) || !isset($_POST['cache_en_id']) || !isset($_POST['field_value'])){
+
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing tr__assessment_points',
+                'message' => 'Missing core variables',
+                'original_val' => '',
             ));
-        } elseif (intval($_POST['tr__assessment_points'])!=$_POST['tr__assessment_points'] || $_POST['tr__assessment_points']<config_var(11056) || $_POST['tr__assessment_points']>config_var(11057)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => $en_all_6103[4358]['m_name'].' must be an integer between '.config_var(11056).' - '.config_var(11057),
+
+        } elseif($_POST['cache_en_id']==4362 /* READ TIME */){
+
+            $ins = $this->BLOG_model->in_fetch(array(
+                'in_id' => $_POST['in_ln__id'],
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
             ));
-        } elseif (!isset($_POST['in_type_player_id'])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid in_type_player_id',
-            ));
-        } elseif (!isset($_POST['in_title'])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing in_title',
-            ));
-        } elseif (!isset($_POST['in_read_time']) || intval($_POST['in_read_time']) < 0) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing in_read_time',
-            ));
-        } elseif (!isset($_POST['in_status_player_id'])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing in_status_player_id',
-            ));
-        } elseif (count($ins) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Blog Not Found',
-            ));
-        } elseif($ln_id > 0 && intval($_POST['ln_type_player_id']) == 4229){
-            //Conditional Step Links, we require range values:
-            if(strlen($_POST['tr__conditional_score_min']) < 1 || !is_numeric($_POST['tr__conditional_score_min'])){
+
+            if(!count($ins)){
+
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Missing MIN range, enter 0 or greater',
+                    'message' => 'Invalid Blog ID.',
+                    'original_val' => '',
                 ));
-            } elseif(strlen($_POST['tr__conditional_score_max']) < 1 || !is_numeric($_POST['tr__conditional_score_max'])){
+
+            } elseif(!is_numeric($_POST['field_value']) || $_POST['field_value'] < 0){
+
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Missing MAX range, enter 0 or greater',
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be a number greater than zero.',
+                    'original_val' => $ins[0]['in_read_time'],
                 ));
-            } elseif(doubleval($_POST['tr__conditional_score_min']) > doubleval($_POST['tr__conditional_score_max'])){
+
+            } elseif($_POST['field_value'] > config_var(11067)){
+
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'MIN range cannot be larger than MAX',
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' cannot be greater than '.config_var(11067).' Seconds. If so, break down the blog into smaller blogs.',
+                    'original_val' => $ins[0]['in_read_time'],
                 ));
+
+            } else {
+
+                //All good, go ahead and update:
+                $this->BLOG_model->in_update($_POST['in_ln__id'], array(
+                    'in_read_time' => $_POST['field_value'],
+                ), true, $session_en['en_id']);
+
+                return echo_json(array(
+                    'status' => 1,
+                ));
+
             }
+
+        } elseif($_POST['cache_en_id']==4358 /* READ MARKS */){
+
+            //Fetch/Validate Link:
+            $lns = $this->READ_model->ln_fetch(array(
+                'ln_id' => $_POST['in_ln__id'],
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+            ));
+            $ln_metadata = unserialize($lns[0]['ln_metadata']);
+
+            if(!count($lns)){
+
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Link ID.',
+                    'original_val' => '',
+                ));
+
+            } elseif(!is_numeric($_POST['field_value']) || fmod($_POST['field_value'], 1)>0 || $_POST['field_value'] < config_var(11056) ||  $_POST['field_value'] > config_var(11057)){
+
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be an integer between '.config_var(11056).' and '.config_var(11057).'.',
+                    'original_val' => ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : 0 ),
+                ));
+
+            } else {
+
+                //All good, go ahead and update:
+                $this->READ_model->ln_update($_POST['in_ln__id'], array(
+                    'ln_metadata' => array_merge($ln_metadata, array(
+                        'tr__assessment_points' => intval($_POST['field_value']),
+                    )),
+                ), $session_en['en_id'], 10663 /* Blog Link Iterated Marks */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' iterated'.( isset($ln_metadata['tr__assessment_points']) ? ' from [' . $ln_metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
+
+                return echo_json(array(
+                    'status' => 1,
+                ));
+
+            }
+
+        } elseif($_POST['cache_en_id']==4735 /* UNLOCK MIN SCORE */ || $_POST['cache_en_id']==4739 /* UNLOCK MAX SCORE */){
+
+            //Fetch/Validate Link:
+            $lns = $this->READ_model->ln_fetch(array(
+                'ln_id' => $_POST['in_ln__id'],
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+            ));
+            $ln_metadata = unserialize($lns[0]['ln_metadata']);
+            $field_name = ( $_POST['cache_en_id']==4735 ? 'tr__conditional_score_min' : 'tr__conditional_score_max' );
+
+            if(!count($lns)){
+
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Link ID.',
+                    'original_val' => '',
+                ));
+
+            } elseif(!is_numeric($_POST['field_value']) || fmod($_POST['field_value'], 1)>0 || $_POST['field_value'] < 0 || $_POST['field_value'] > 100){
+
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be an integer between 0 and 100.',
+                    'original_val' => ( isset($ln_metadata[$field_name]) ? $ln_metadata[$field_name] : '' ),
+                ));
+
+            } else {
+
+                //All good, go ahead and update:
+                $this->READ_model->ln_update($_POST['in_ln__id'], array(
+                    'ln_metadata' => array_merge($ln_metadata, array(
+                        $field_name => intval($_POST['field_value']),
+                    )),
+                ), $session_en['en_id'], 10664 /* Blog Link Iterated Score */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' iterated'.( isset($ln_metadata[$field_name]) ? ' from [' . $ln_metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
+
+                return echo_json(array(
+                    'status' => 1,
+                ));
+
+            }
+
+        } else {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Unkown Update Type ['.$_POST['cache_en_id'].']',
+                'original_val' => '',
+            ));
+
         }
-
-
-        //Prep Metadata:
-        $ln_metadata = ( strlen($lns[0]['ln_metadata']) > 0 ? unserialize($lns[0]['ln_metadata']) : array() );
-
-        if($_POST['ln_type_player_id'] == 4228 && (
-                (!isset($ln_metadata['tr__assessment_points']) && intval($_POST['tr__assessment_points'])!=0) ||
-                (isset($ln_metadata['tr__assessment_points']) && intval($ln_metadata['tr__assessment_points'])!=intval($_POST['tr__assessment_points']))
-            )){
-
-            $this->READ_model->ln_update($ln_id, array(
-                'ln_metadata' => array_merge( $ln_metadata, array(
-                    'tr__assessment_points' => intval($_POST['tr__assessment_points']),
-                )),
-            ), $session_en['en_id'], 10663 /* Blog Link Iterated Marks */, 'Marks iterated'.( isset($ln_metadata['tr__assessment_points']) ? ' from [' . $ln_metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['tr__assessment_points']. ']');
-        }
-
-        if($_POST['ln_type_player_id'] == 4229 && (
-                (!isset($ln_metadata['tr__conditional_score_max']) && intval($_POST['tr__conditional_score_max'])!=0) ||
-                (!isset($ln_metadata['tr__conditional_score_min']) && intval($_POST['tr__conditional_score_min'])!=0) ||
-                (isset($ln_metadata['tr__conditional_score_max']) && doubleval($ln_metadata['tr__conditional_score_max'])!=doubleval($_POST['tr__conditional_score_max'])) ||
-                (isset($ln_metadata['tr__conditional_score_min']) && doubleval($ln_metadata['tr__conditional_score_min'])!=doubleval($_POST['tr__conditional_score_min']))
-            )){
-            $this->READ_model->ln_update($ln_id, array(
-                'ln_metadata' => array_merge( $ln_metadata, array(
-                    'tr__conditional_score_min' => doubleval($_POST['tr__conditional_score_min']),
-                    'tr__conditional_score_max' => doubleval($_POST['tr__conditional_score_max']),
-                )),
-            ), $session_en['en_id'], 10664 /* Blog Link Iterated Score */, 'Score Range iterated'.( isset($ln_metadata['tr__conditional_score_min']) && isset($ln_metadata['tr__conditional_score_max']) ? ' from [' . $ln_metadata['tr__conditional_score_min'].'% - '.$ln_metadata['tr__conditional_score_max']. '%]' : '' ).' to [' . $_POST['tr__conditional_score_min'].'% - '.$_POST['tr__conditional_score_max']. '%]');
-        }
-
-
-        $this->BLOG_model->in_update($_POST['in_id'], array(
-            'in_read_time' => $_POST[$key],
-        ), true, $session_en['en_id']);
-
     }
 
     function in_update_dropdown(){

@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-18 16:58:58 PST
+//Generated 2019-12-18 18:16:12 PST
 
 //BLOG TEXT INPUTS:
 $config['en_ids_12112'] = array(4358,4362,4739,4735);
@@ -1622,7 +1622,7 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(11062,11071,11069,11079,11076,11077,11074,11075,11064,11985,11065,11063,11060,11067,11066,11072,11073,11057,11056,11061,12088,11162,11163,11986,11070);
+$config['en_ids_6404'] = array(11062,11071,11069,11079,11076,11077,11074,11075,11064,11985,11065,11063,11060,11067,11066,11072,11073,11057,11056,11061,12113,12088,11162,11163,11986,11070);
 $config['en_all_6404'] = array(
     11062 => array(
         'm_icon' => '',
@@ -1743,6 +1743,12 @@ $config['en_all_6404'] = array(
         'm_name' => 'READ MONTHLY FREE WORDS',
         'm_desc' => '2000',
         'm_parents' => array(6404),
+    ),
+    12113 => array(
+        'm_icon' => '',
+        'm_name' => 'READ TIME MAX',
+        'm_desc' => '5400',
+        'm_parents' => array(4362,6404),
     ),
     12088 => array(
         'm_icon' => '',
