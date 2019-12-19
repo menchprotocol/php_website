@@ -47,7 +47,7 @@ $in__children = $this->READ_model->ln_fetch(array(
 if(!count(count($in__children))){
 
     //No children, so nothing else can be done from here:
-    echo '<div class="montserrat read doupper"><i class="fas fa-check-circle ispink"></i> YOU HAVE COMPLETED THIS READ</div>';
+    echo '<div class="montserrat read doupper"><i class="fas fa-check-circle ispink"></i> NOTHING ELSE TO READ</div>';
 
 } elseif(in_array($in['in_type_player_id'], $this->config->item('en_ids_6193'))){
 
@@ -73,7 +73,7 @@ if(!count(count($in__children))){
         ))) > 0){
 
         //Find next blog based on player's reading list:
-        $next_in_id = $this->READ_model->read__blog_next_find($session_en['en_id'], $in);
+        $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $in);
 
         if($next_in_id > 0){
             echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/'.$next_in_id.'">NEXT <i class="fas fa-angle-right"></i></a></div>';

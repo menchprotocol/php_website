@@ -6,7 +6,7 @@
 $this->load->view('read/actionplan_step', array(
     'session_en' => $session_en,
     'user_blogs' => $user_blogs,
-    'advance_step' => $this->READ_model->read__blog_echo($session_en['en_id'], $in_id, false),
+    'advance_step' => $this->READ_model->read_echo($session_en['en_id'], $in_id, false),
     'in' => $ins[0], //Currently focused blog:
 ));
 */

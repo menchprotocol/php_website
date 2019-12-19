@@ -24,13 +24,13 @@ class Read extends CI_Controller
         }
 
         //Add this blog to their READING LIST:
-        if($this->READ_model->read__blog_add($session_en['en_id'], $in_id)){
+        if($this->READ_model->read_add($session_en['en_id'], $in_id)){
 
             //Find next blog based on player's reading list:
             $ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => $in_id,
             ));
-            $next_in_id = $this->READ_model->read__blog_next_find($session_en['en_id'], $ins[0]);
+            $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
             if($next_in_id > 0){
                 return redirect_message('/' . $next_in_id, '<div class="alert alert-success" role="alert">Successfully added to your 🔴 READING LIST.</div>');
             } else {
@@ -83,7 +83,7 @@ class Read extends CI_Controller
 
 
         //Find the next blog in the READING LIST to skip:
-        $next_in_id = $this->READ_model->read__blog_next_go($session_en['en_id'], false);
+        $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false);
         if($next_in_id > 0){
             return redirect_message('/' . $next_in_id);
         } else {
@@ -1217,7 +1217,7 @@ class Read extends CI_Controller
         }
 
         //Call function to remove form 🔴 READING LIST:
-        $delete_result = $this->READ_model->read__blog_delete($_POST['js_pl_id'], $_POST['in_id'], 6155); //READER REMOVED BOOKMARK
+        $delete_result = $this->READ_model->read_delete($_POST['js_pl_id'], $_POST['in_id'], 6155); //READER REMOVED BOOKMARK
 
         if(!$delete_result['status']){
             return echo_json($delete_result);
@@ -1234,7 +1234,7 @@ class Read extends CI_Controller
 
         //Just give them an overview of what they are about to skip:
         return echo_json(array(
-            'skip_step_preview' => 'WARNING: '.$this->READ_model->read__blog_skip_initiate($en_id, $in_id, false).' Are you sure you want to skip?',
+            'skip_step_preview' => 'WARNING: '.$this->READ_model->read_skip_initiate($en_id, $in_id, false).' Are you sure you want to skip?',
         ));
 
     }
@@ -1243,14 +1243,14 @@ class Read extends CI_Controller
     {
 
         //Actually go ahead and skip
-        $this->READ_model->read__blog_skip_apply($en_id, $in_id);
+        $this->READ_model->read_skip_apply($en_id, $in_id);
         //Assume its all good!
 
         //We actually skipped, draft message:
         $message = '<div class="alert alert-success" role="alert">I successfully skipped selected steps.</div>';
 
         //Find the next item to navigate them to:
-        $next_in_id = $this->READ_model->read__blog_next_go($en_id, false);
+        $next_in_id = $this->READ_model->read_next_go($en_id, false);
         if ($next_in_id > 0) {
             return redirect_message('/' . $next_in_id, $message);
         } else {
@@ -1294,7 +1294,7 @@ class Read extends CI_Controller
 
 
         //Fetch top blog that being workined on now:
-        $top_priority = $this->READ_model->read__blog_focus($_POST['js_pl_id']);
+        $top_priority = $this->READ_model->read_focus($_POST['js_pl_id']);
         if($top_priority){
             //Communicate top-priority with user:
             $this->READ_model->dispatch_message(
@@ -1399,7 +1399,7 @@ class Read extends CI_Controller
         //List the blog:
         return echo_json(array(
             'in_user' => array(
-                'next_in_id' => $this->READ_model->read__blog_next_find($session_en['en_id'], $ins[0]),
+                'next_in_id' => $this->READ_model->read_next_find($session_en['en_id'], $ins[0]),
                 'progress' => $this->READ_model->read__completion_progress($session_en['en_id'], $ins[0]),
                 'marks' => $this->READ_model->read__completion_marks($session_en['en_id'], $ins[0]),
             ),
@@ -1943,7 +1943,7 @@ class Read extends CI_Controller
 
 
                             //Load next option:
-                            $this->READ_model->read__blog_next_go($en['en_id'], true, true);
+                            $this->READ_model->read_next_go($en['en_id'], true, true);
 
 
                         } elseif(count($pending_mismatches) > 0){

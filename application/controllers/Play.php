@@ -2332,9 +2332,9 @@ fragment PostListingItemSidebar_post on Post {
             ));
 
             //Add this blog to their READING LIST:
-            $this->READ_model->read__blog_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
+            $this->READ_model->read_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
 
-            $next_in_id = $this->READ_model->read__blog_next_find($user_en['en']['en_id'], $referrer_ins[0]);
+            $next_in_id = $this->READ_model->read_next_find($user_en['en']['en_id'], $referrer_ins[0]);
 
         } else {
             $referrer_ins = array();

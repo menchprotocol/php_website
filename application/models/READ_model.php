@@ -512,7 +512,7 @@ class READ_model extends CI_Model
     }
 
 
-    function read__blog_next_find($en_id, $in){
+    function read_next_find($en_id, $in){
 
         /*
          *
@@ -566,7 +566,7 @@ class READ_model extends CI_Model
             } elseif($is_expansion){
 
                 //Completed step that has OR expansions, check recursively to see if next step within here:
-                $found_in_id = $this->READ_model->read__blog_next_find($en_id, $completed_steps[0]);
+                $found_in_id = $this->READ_model->read_next_find($en_id, $completed_steps[0]);
 
                 if($found_in_id != 0){
                     return $found_in_id;
@@ -586,7 +586,7 @@ class READ_model extends CI_Model
                 if(count($unlocked_conditions) > 0){
 
                     //Completed step that has OR expansions, check recursively to see if next step within here:
-                    $found_in_id = $this->READ_model->read__blog_next_find($en_id, $unlocked_conditions[0]);
+                    $found_in_id = $this->READ_model->read_next_find($en_id, $unlocked_conditions[0]);
 
                     if($found_in_id != 0){
                         return $found_in_id;
@@ -601,7 +601,7 @@ class READ_model extends CI_Model
 
     }
 
-    function read__blog_next_go($en_id, $advance_step, $send_title_message = false)
+    function read_next_go($en_id, $advance_step, $send_title_message = false)
     {
 
         /*
@@ -643,16 +643,16 @@ class READ_model extends CI_Model
         }
 
 
-        //Looop through 🔴 READING LIST blogs and see what's next:
+        //Loop through 🔴 READING LIST blogs and see what's next:
         foreach($user_blogs as $user_blog){
 
             //Find first incomplete step for this 🔴 READING LIST blog:
-            $next_in_id = $this->READ_model->read__blog_next_find($en_id, $user_blog);
+            $next_in_id = $this->READ_model->read_next_find($en_id, $user_blog);
 
             if($next_in_id < 0){
 
                 //We need to terminate this:
-                $this->READ_model->read__blog_delete($en_id, $user_blog['in_id'], 7757); //MENCH REMOVED BOOKMARK
+                $this->READ_model->read_delete($en_id, $user_blog['in_id'], 7757); //MENCH REMOVED BOOKMARK
                 break;
 
             } elseif($next_in_id > 0){
@@ -686,7 +686,7 @@ class READ_model extends CI_Model
                 }
 
                 //Yes, communicate it:
-                $this->READ_model->read__blog_echo($en_id, $next_in_id);
+                $this->READ_model->read_echo($en_id, $next_in_id);
 
             } else {
 
@@ -712,7 +712,7 @@ class READ_model extends CI_Model
 
     }
 
-    function read__blog_skip_initiate($en_id, $in_id, $push_message = true){
+    function read_skip_initiate($en_id, $in_id, $push_message = true){
 
         //Fetch this blog:
         $ins = $this->BLOG_model->in_fetch(array(
@@ -766,7 +766,7 @@ class READ_model extends CI_Model
         }
     }
 
-    function read__blog_skip_apply($en_id, $in_id)
+    function read_skip_apply($en_id, $in_id)
     {
 
         //Fetch blog common steps:
@@ -837,7 +837,7 @@ class READ_model extends CI_Model
 
     }
 
-    function read__blog_focus($en_id){
+    function read_focus($en_id){
 
         /*
          *
@@ -878,7 +878,7 @@ class READ_model extends CI_Model
 
     }
 
-    function read__blog_delete($en_id, $in_id, $stop_method_id, $stop_feedback = null){
+    function read_delete($en_id, $in_id, $stop_method_id, $stop_feedback = null){
 
 
         if(!in_array($stop_method_id, $this->config->item('en_ids_6150') /* 🔴 READING LIST Blog Completed */)){
@@ -944,7 +944,7 @@ class READ_model extends CI_Model
 
     }
 
-    function read__blog_add($en_id, $in_id, $recommender_in_id = 0){
+    function read_add($en_id, $in_id, $recommender_in_id = 0){
 
         //Validate Blog ID:
         $ins = $this->BLOG_model->in_fetch(array(
@@ -1160,7 +1160,7 @@ class READ_model extends CI_Model
         if($is_bottom_level){
 
             //Fetch user blogs:
-            $user_blogs_ids = $this->READ_model->read__blog_ids($en_id);
+            $user_blogs_ids = $this->READ_model->read_ids($en_id);
 
             //Fetch all parents trees for this blog
             $recursive_parents = $this->BLOG_model->in_fetch_recursive_public_parents($in['in_id']);
@@ -1381,7 +1381,64 @@ class READ_model extends CI_Model
     }
 
 
-    function read__blog_echo($en_id, $in_id, $push_message = true)
+    function read__echo($in_id, $recipient_en = array(), $push_message = true){
+
+        /*
+         * Function to read a Blog, it's messages,
+         * and necessary inputs to complete it.
+         *
+         */
+
+
+        //Fetch/Validate blog:
+        $ins = $this->BLOG_model->in_fetch(array(
+            'in_id' => $in_id,
+        ));
+
+        if (count($ins) < 1) {
+
+            $this->READ_model->ln_create(array(
+                'ln_type_player_id' => 4246, //Platform Bug Reports
+                'ln_creator_player_id' => ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ),
+                'ln_content' => 'step_echo() invalid blog ID',
+                'ln_parent_blog_id' => $in_id,
+            ));
+            echo echo_message('Invalid Blog ID', true, $recipient_en, $push_message);
+            return false;
+
+        }
+
+        if(!isset($recipient_en['en_id'])){
+            if($push_message){
+
+                //We cannot have a guest user on Messenger:
+                $this->READ_model->ln_create(array(
+                    'ln_type_player_id' => 4246, //Platform Bug Reports
+                    'ln_content' => 'read__echo() found guest user on Messenger',
+                    'ln_parent_blog_id' => $in_id,
+                ));
+                return false;
+
+            } else {
+
+                //Guest on the web:
+                $recipient_en['en_id'] = 0;
+                $recipient_en['en_name'] = 'Stranger';
+
+            }
+        } else {
+
+            //We have a user, see their privileges for this blog:
+            $can_manage = in_can_manage($in_id);
+
+        }
+
+
+
+    }
+
+
+    function read_echo($en_id, $in_id, $push_message = true)
     {
 
         /*
@@ -1514,7 +1571,6 @@ class READ_model extends CI_Model
 
         //Determine progression type
         //Let's figure out the progression method:
-        //TODO Migrate this logic to players and use something like array_intersect() to detect correlations
         if(in_is_unlockable($ins[0])){
 
             if($progress_completed){
@@ -1801,7 +1857,6 @@ class READ_model extends CI_Model
             //List OR child answers:
             foreach ($in__children as $key => $child_in) {
 
-
                 //Is this selected?
                 $was_selected       = ( $progress_completed && $current_progression_links[0]['ln_child_blog_id']==$child_in['in_id'] );
 
@@ -1912,15 +1967,6 @@ class READ_model extends CI_Model
             $has_multiple_children  = (count($in__children) > 1); //Do we have 2 or more children?
 
 
-            //Check to see if we need titles:
-            if($has_multiple_children){
-                foreach ($in__children as $count => $child_in) {
-                    if($count==$max_and_list){
-                        break;
-                    }
-                }
-            }
-
             //List AND children:
             if($has_multiple_children){
 
@@ -2022,7 +2068,7 @@ class READ_model extends CI_Model
             $next_in_id = 0;
             if(!$has_children){
                 //Let's see if we have a next step:
-                $next_in_id = $this->READ_model->read__blog_next_go($en_id, false);
+                $next_in_id = $this->READ_model->read_next_go($en_id, false);
             }
 
             if($has_children || $next_in_id>0){
@@ -2395,7 +2441,7 @@ class READ_model extends CI_Model
     }
 
 
-    function read__blog_ids($en_id){
+    function read_ids($en_id){
         //Simply returns all the blog IDs for a user's 🔴 READING LIST:
         $user_blogs_ids = array();
         foreach($this->READ_model->ln_fetch(array(
@@ -3899,7 +3945,7 @@ class READ_model extends CI_Model
         } elseif ($quick_reply_payload == 'GONEXT') {
 
             //Fetch and communicate next blog:
-            $this->READ_model->read__blog_next_go($en['en_id'], true, true);
+            $this->READ_model->read_next_go($en['en_id'], true, true);
 
         } elseif (substr_count($quick_reply_payload, 'ADD_RECOMMENDED_') == 1) {
 
@@ -3908,7 +3954,7 @@ class READ_model extends CI_Model
             $recommended_in_id = $in_ids[1];
 
             //Add this item to the tio of the 🔴 READING LIST:
-            $this->READ_model->read__blog_add($en['en_id'], $recommended_in_id, $recommender_in_id);
+            $this->READ_model->read_add($en['en_id'], $recommended_in_id, $recommender_in_id);
 
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-CONFIRM_') == 1) {
 
@@ -3916,7 +3962,7 @@ class READ_model extends CI_Model
             $in_id = intval(one_two_explode('SUBSCRIBE-CONFIRM_', '', $quick_reply_payload));
 
             //Add to 🔴 READING LIST:
-            $this->READ_model->read__blog_add($en['en_id'], $in_id);
+            $this->READ_model->read_add($en['en_id'], $in_id);
 
         } elseif (substr_count($quick_reply_payload, 'SKIP-ACTIONPLAN_') == 1) {
 
@@ -3939,7 +3985,7 @@ class READ_model extends CI_Model
 
                 //User has indicated they want to skip this tree and move on to the next item in-line:
                 //Lets confirm the implications of this SKIP to ensure they are aware:
-                $this->READ_model->read__blog_skip_initiate($en['en_id'], $in_id);
+                $this->READ_model->read_skip_initiate($en['en_id'], $in_id);
 
             } else {
 
@@ -3952,7 +3998,7 @@ class READ_model extends CI_Model
                 } elseif ($skip_action == 'skip-confirm') {
 
                     //Actually skip and see if we've finished this 🔴 READING LIST:
-                    $this->READ_model->read__blog_skip_apply($en['en_id'], $in_id);
+                    $this->READ_model->read_skip_apply($en['en_id'], $in_id);
 
                     //Confirm the skip:
                     $message = 'Got it! I successfully skipped selected steps';
@@ -3974,7 +4020,7 @@ class READ_model extends CI_Model
                 );
 
                 //Communicate next step:
-                $this->READ_model->read__blog_next_go($en['en_id'], true, true);
+                $this->READ_model->read_next_go($en['en_id'], true, true);
 
             }
 
@@ -4050,7 +4096,7 @@ class READ_model extends CI_Model
 
 
                     //Find/Advance to the next step:
-                    $this->READ_model->read__blog_next_go($en['en_id'], true, true);
+                    $this->READ_model->read_next_go($en['en_id'], true, true);
 
                 }
 
@@ -4186,7 +4232,7 @@ class READ_model extends CI_Model
         } elseif (in_array($fb_received_message, array('next', 'continue', 'go'))) {
 
             //Give them the next step of their 🔴 READING LIST:
-            $next_in_id = $this->READ_model->read__blog_next_go($en['en_id'], true, true);
+            $next_in_id = $this->READ_model->read_next_go($en['en_id'], true, true);
 
             //Log command trigger:
             $this->READ_model->ln_create(array(
@@ -4198,12 +4244,12 @@ class READ_model extends CI_Model
         } elseif ($fb_received_message == 'skip') {
 
             //Find the next blog in the 🔴 READING LIST to skip:
-            $next_in_id = $this->READ_model->read__blog_next_go($en['en_id'], false);
+            $next_in_id = $this->READ_model->read_next_go($en['en_id'], false);
 
             if($next_in_id > 0){
 
                 //Initiate skip request:
-                $this->READ_model->read__blog_skip_initiate($en['en_id'], $next_in_id);
+                $this->READ_model->read_skip_initiate($en['en_id'], $next_in_id);
 
             } else {
 
@@ -4535,7 +4581,7 @@ class READ_model extends CI_Model
             ));
 
             //Call to Action: Does this user have any 🔴 READING LISTs?
-            $next_in_id = $this->READ_model->read__blog_next_go($en['en_id'], false);
+            $next_in_id = $this->READ_model->read_next_go($en['en_id'], false);
 
             if($next_in_id > 0){
 
