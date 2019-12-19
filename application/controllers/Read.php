@@ -130,18 +130,19 @@ class Read extends CI_Controller
             'ln_timestamp <=' => $last_week_end,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ), array(), 0, 0, array(), 'SUM(ln_words) as gold_coins');
+        $growth_rate = number_format(( $blog_coins_total_last_week[0]['gold_coins'] / ( $blog_coins_total_last_week[0]['gold_coins'] - $blog_coins_new_last_week[0]['gold_coins'] ) * 100 ) - 100, 1);
 
         echo '<table style="border:0; margin:0; padding:0; width:100%;">';
 
         echo '<tr>';
         echo '<td>Coin Type</td>';
-        echo '<td title="'.$last_week_start.' to '.$last_week_end.'">Week of '.date("D M j S", $last_week_start_timestamp).'</td>';
+        echo '<td title="'.$last_week_start.' to '.$last_week_end.'">Week of '.date("M jS", $last_week_start_timestamp).'</td>';
         echo '<td>Total Coins</td>';
         echo '</tr>';
 
         echo '<tr>';
         echo '<td>🟡 BLOG</td>';
-        echo '<td title="'.number_format($blog_coins_new_last_week[0]['gold_coins'], 2).' New Coins">'.number_format(( $blog_coins_total_last_week[0]['gold_coins'] / ( $blog_coins_total_last_week[0]['gold_coins'] - $blog_coins_new_last_week[0]['gold_coins'] ) * 100 ) - 100, 1).'%</td>';
+        echo '<td title="'.number_format($blog_coins_new_last_week[0]['gold_coins'], 2).' New Coins" style="color:'.( $growth_rate > 0 ? '00CC00' : 'FF00000' ).';">'.( $growth_rate > 0 ? '+' : '-' ).$growth_rate.'%</td>';
         echo '<td>'.number_format($blog_coins_total_last_week[0]['gold_coins'], 2).'</td>';
         echo '</tr>';
 
