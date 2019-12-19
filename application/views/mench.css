@@ -28,8 +28,6 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     padding-left:0px;
     padding-right:0px;
     max-width:767px;
-    overflow: hidden;
-    padding-bottom: 50px;
 }
 .ln_content { overflow: hidden; width: 100%; }
 .table-sm td, .table-sm th { padding: 5px 0; }
