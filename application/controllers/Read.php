@@ -118,28 +118,30 @@ class Read extends CI_Controller
         //Calculates the weekly coins issued:
         $last_week_start = date("Y-m-d H:i:s", mktime(0, 0, 0, date("n"), date("j")-7, date("Y")));
         $last_week_end = date("Y-m-d H:i:s", mktime(23, 59, 59, date("n"), date("j")-1, date("Y")));
-        $blog_coins_last_week = $this->READ_model->ln_fetch(array(
+        $blog_coins_new_last_week = $this->READ_model->ln_fetch(array(
             'ln_words >' => 0,
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'SUM(ln_words) as gold_coins');
-
-        echo $last_week_start.'<br />';
-        echo $last_week_end.'<br />';
-        echo $blog_coins_last_week[0]['gold_coins'].'<br /><br />';
-
-        //Calculates the weekly coins issued:
-        $two_weeks_start = date("Y-m-d H:i:s", mktime(0, 0, 0, date("n"), date("j")-14, date("Y")));
-        $two_weeks_end = date("Y-m-d H:i:s", mktime(23, 59, 59, date("n"), date("j")-8, date("Y")));
-        $blog_coins_two_weeks = $this->READ_model->ln_fetch(array(
+        $blog_coins_total_last_week = $this->READ_model->ln_fetch(array(
             'ln_words >' => 0,
-            'ln_timestamp >=' => $two_weeks_start,
-            'ln_timestamp <=' => $two_weeks_end,
+            'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'SUM(ln_words) as gold_coins');
 
-        echo $two_weeks_start.'<br />';
-        echo $two_weeks_end.'<br />';
-        echo $blog_coins_two_weeks[0]['gold_coins'].'<br />';
+        echo '<table style="border:0; margin:0; padding:0; width:100%;">';
+
+        echo '<tr>';
+        echo '<td>Coin Type</td>';
+        echo '<td title="'.$last_week_start.' to '.$last_week_end.'">Week of '.date("D M jS", $last_week_start).'</td>';
+        echo '<td>Total Coins</td>';
+        echo '</tr>';
+
+        echo '<tr>';
+        echo '<td>🟡 BLOG</td>';
+        echo '<td title="'.$blog_coins_new_last_week[0]['gold_coins'].' New Coins">'.number_format(( $blog_coins_total_last_week[0]['gold_coins'] / ( $blog_coins_total_last_week[0]['gold_coins'] - $blog_coins_new_last_week[0]['gold_coins'] ) * 100 ), 1).'%</td>';
+        echo '<td>'.number_format($blog_coins_total_last_week[0]['gold_coins'], 2).'</td>';
+        echo '</tr>';
+
 
     }
 
