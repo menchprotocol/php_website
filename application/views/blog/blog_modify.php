@@ -68,7 +68,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         echo '<div class="center-right">';
             echo '<div class="inline-block" style="margin-bottom:5px;">'.echo_in_dropdown(7585, $in['in_type_player_id'], 'btn-blog', $can_manage).'</div>';
-            echo '<div class="inline-block '.superpower_active(10984).'" style="width:89px; margin:0 0 5px 5px;">'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $can_manage).'</div>';
+            echo '<div class="inline-block '.superpower_active(10984).'" style="width:89px; margin:0 0 5px 5px;">'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $can_manage, 0).'</div>';
         echo '</div>';
 
     }
