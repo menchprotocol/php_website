@@ -23,52 +23,58 @@ function actionplan_sort_save() {
     }
 }
 
-//Watch for READING LIST removal click:
-$('.actionplan_remove').on('click', function(e) {
 
-    e.preventDefault();
-    var in_id = $(this).attr('in-id');
-    var r = confirm("Remove ["+$('.in-title-'+in_id).text()+"] from reading list?");
-    if (r == true) {
-        //Save changes:
-        $.post("/read/actionplan_stop_save", { js_pl_id:js_pl_id ,in_id:in_id }, function (data) {
-            //Update UI to confirm with user:
-            if (!data.status) {
+$(document).ready(function () {
 
-                //There was some sort of an error returned!
-                alert('ERROR: ' + data.message);
+    //Watch for READING LIST removal click:
+    $('.actionplan_remove').on('click', function(e) {
 
-            } else {
+        var in_id = $(this).attr('in-id');
+        var r = confirm("Remove ["+$('.in-title-'+in_id).text()+"] from reading list?");
+        if (r == true) {
+            //Save changes:
+            $.post("/read/actionplan_stop_save", { js_pl_id:js_pl_id ,in_id:in_id }, function (data) {
+                //Update UI to confirm with user:
+                if (!data.status) {
 
-                //REMOVE BOOKMARK from UI:
-                $('#ap_in_'+in_id).fadeOut();
+                    //There was some sort of an error returned!
+                    alert('ERROR: ' + data.message);
 
-                setTimeout(function () {
+                } else {
 
-                    //Remove from body:
-                    $('#ap_in_'+in_id).remove();
+                    //REMOVE BOOKMARK from UI:
+                    $('#ap_in_'+in_id).fadeOut();
 
-                    //Re-sort:
                     setTimeout(function () {
-                        actionplan_sort_save();
-                    }, 89);
 
-                }, 233);
-            }
-        });
-    }
+                        //Remove from body:
+                        $('#ap_in_'+in_id).remove();
 
-    return false;
+                        //Re-sort:
+                        setTimeout(function () {
+                            actionplan_sort_save();
+                        }, 89);
+
+                    }, 233);
+                }
+            });
+        }
+
+        return false;
+
+    });
+
+
+    //Load sorter:
+    var sort = Sortable.create(document.getElementById('actionplan_steps'), {
+        animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
+        draggable: ".actionplan_sort", // Specifies which items inside the element should be sortable
+        handle: ".actionplan_sort", // Restricts sort start click/touch to the specified element
+        onUpdate: function (evt/**Event*/) {
+            actionplan_sort_save();
+        }
+    });
+
 
 });
 
-
-//Load sorter:
-var sort = Sortable.create(document.getElementById('actionplan_steps'), {
-    animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-    draggable: ".actionplan_sort", // Specifies which items inside the element should be sortable
-    handle: ".actionplan_sort", // Restricts sort start click/touch to the specified element
-    onUpdate: function (evt/**Event*/) {
-        actionplan_sort_save();
-    }
-});
