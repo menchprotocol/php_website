@@ -3,7 +3,7 @@ function actionplan_sort_save() {
 
     var sort_rank = 0;
     var new_actionplan_order = [];
-    $("#actionplan_steps .actionplan_sort", window.parent.document).each(function () {
+    $("#actionplan_steps .actionplan_sort").each(function () {
         var link_id = parseInt($(this).attr('sort-link-id'));
         if(link_id > 0){
             sort_rank++;
@@ -24,10 +24,10 @@ function actionplan_sort_save() {
 }
 
 //Watch for READING LIST removal click:
-$('.actionplan_remove', window.parent.document).on('click', function(e) {
+$('.actionplan_remove').on('click', function(e) {
 
-    var in_id = $(this, window.parent.document).attr('in-id');
-    var r = confirm("Remove ["+$('.in-title-'+in_id, window.parent.document).text()+"] from reading list?");
+    var in_id = $(this).attr('in-id');
+    var r = confirm("Remove ["+$('.in-title-'+in_id).text()+"] from reading list?");
     if (r == true) {
         //Save changes:
         $.post("/read/actionplan_stop_save", { js_pl_id:js_pl_id ,in_id:in_id }, function (data) {
@@ -40,12 +40,12 @@ $('.actionplan_remove', window.parent.document).on('click', function(e) {
             } else {
 
                 //REMOVE BOOKMARK from UI:
-                $('#ap_in_'+in_id, window.parent.document).fadeOut();
+                $('#ap_in_'+in_id).fadeOut();
 
                 setTimeout(function () {
 
                     //Remove from body:
-                    $('#ap_in_'+in_id, window.parent.document).remove();
+                    $('#ap_in_'+in_id).remove();
 
                     //Re-sort:
                     setTimeout(function () {
