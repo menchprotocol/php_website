@@ -165,30 +165,42 @@ class Read extends CI_Controller
         $play_coins_growth_rate = number_format(( $play_coins_total_last_week[0]['total'] / ( $play_coins_total_last_week[0]['total'] - $play_coins_new_last_week[0]['total'] ) * 100 ) - 100, 1);
 
 
+        ##Email Subject
+        $subject = 'MENCH 🟡BLOG '.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'% last week';
 
-        echo '<table style="border:0; margin:0; padding:0; width:266px;">';
+        $html_message = '<br /><br />';
+        $html_message .= '<div>Here is the growth summary for the week of '.date("M jS", $last_week_start_timestamp).':</div>';
+        $html_message .= '<br /><br />';
 
-        echo '<tr>';
-        echo '<td></td>';
-        echo '<td title="'.$last_week_start.' to '.$last_week_end.'">Week of '.date("M jS", $last_week_start_timestamp).'</td>';
-        echo '</tr>';
+        $html_message .= '<div>🟡BLOG grew by '.( $blog_coins_growth_rate >= 0 ? '' : '-' ).$blog_coins_growth_rate.'% to '.echo_number($blog_coins_total_last_week[0]['total']).' [North Star]</div>';
+        $html_message .= '<div>🔴READ grew by '.( $read_coins_growth_rate >= 0 ? '' : '-' ).$read_coins_growth_rate.'% to '.echo_number($read_coins_total_last_week[0]['total']).'</div>';
+        $html_message .= '<div>🔵PLAY grew by '.( $play_coins_growth_rate >= 0 ? '' : '-' ).$play_coins_growth_rate.'% to '.echo_number($play_coins_total_last_week[0]['total']).'</div>';
 
-        echo '<tr>';
-        echo '<td>🟡BLOG</td>';
-        echo '<td title="'.number_format($blog_coins_new_last_week[0]['total'], 0).' New Coins">'.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'% to '.number_format($blog_coins_total_last_week[0]['total'], 0).'</td>';
-        echo '</tr>';
-
-        echo '<tr>';
-        echo '<td>🔴READ</td>';
-        echo '<td title="'.number_format($read_coins_new_last_week[0]['total'], 0).' New Coins">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'% to '.number_format($read_coins_total_last_week[0]['total'], 0).'</td>';
-        echo '</tr>';
-
-        echo '<tr>';
-        echo '<td>🔵PLAY</td>';
-        echo '<td title="'.number_format($play_coins_new_last_week[0]['total'], 0).' New Coins">'.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'% to '.number_format($play_coins_total_last_week[0]['total'], 0).'</td>';
-        echo '</tr>';
+        $html_message .= '<br /><br />';
+        $html_message .= '<div>Cheers,</div>';
+        $html_message .= '<div>- <a href="https://mench.com?utm_source=mench&utm_medium=email" target="_blank">Mench</a></div>';
 
 
+        //Send email to all subscribers:
+        foreach($this->READ_model->ln_fetch(array(
+            'ln_parent_player_id' => 12114,
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+        ), array('en_child')) as $subscribed_player){
+            //Try fetching subscribers email:
+            foreach($this->READ_model->ln_fetch(array(
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_player_id' => 4255, //Linked Players Text (Email is text)
+                'ln_parent_player_id' => 3288, //Mench Email
+                'ln_child_player_id' => $subscribed_player['en_id'],
+            )) as $en_email){
+                if(filter_var($en_email['ln_content'], FILTER_VALIDATE_EMAIL)){
+                    //Send Email
+                    $this->READ_model->dispatch_emails(array($_POST['input_email']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['en_name']).' 👋</div>'.$html_message);
+                }
+            }
+        }
     }
 
     function read_list(){
