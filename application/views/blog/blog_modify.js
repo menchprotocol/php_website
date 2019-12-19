@@ -11,8 +11,31 @@ $(document).ready(function () {
 
 
     //Lookout for completion mark changes:
-    $('.dynamic_update').change(function() {
-        alert('changed');
+    $('.in_update_text').change(function() {
+
+        //Grey backfground to indicate saving...
+        $(this).addClass('dynamic_saving');
+
+        $.post("/blog/in_update_text", {
+
+            field_name: $(this).attr('cache_en_id'),
+            field_value: $(this).val(),
+            ln_id: $(this).attr('identifier_id')
+
+        }, function (data) {
+
+            $(this).removeClass('dynamic_saving');
+
+            if (!data.status) {
+
+                //Reset to original value:
+                $(this).val(data.original_val);
+
+                //Show error:
+                alert('ERROR: ' + data.message);
+
+            }
+        });
     });
 
     if($('#new_blog_title').val()==js_en_all_6201[4736]['m_name']){

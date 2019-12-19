@@ -2148,10 +2148,10 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
 
 
     //LINK MARKS
-    $ui .= '<span class="' . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks"><span class="link_marks settings_4228 '.( $in['ln_type_player_id']==4228 ? : 'hidden' ).'"><input '.( $can_manage ? '' : 'disabled' ).' type="text" maxlength="3" class="form-control dynamic_update" field-name="tr__assessment_points" ln-id="'.$in['ln_id'].'" value="'.( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : 0 ).'"> Marks</span></span>';
+    $ui .= '<span class="' . superpower_active(10984) . '"><span class="link_marks settings_4228 '.( $in['ln_type_player_id']==4228 ? : 'hidden' ).'">'.echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : 0 ), $in['ln_id'], $can_manage).' Marks</span></span>';
 
     //LINK CONDIITONAL RANGE
-    $ui .= '<span class="' . superpower_active(10984) . '" data-toggle="tooltip" data-placement="right" title="Conditional Range"><span class="link_marks settings_4229 '.( $in['ln_type_player_id']==4229 ? : 'hidden' ).'"><input '.( $can_manage ? '' : 'disabled' ).' type="text" maxlength="3" class="form-control dynamic_update" field-name="tr__conditional_score_min" ln-id="'.$in['ln_id'].'" value="'.( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : 0 ).'">-<input '.( $can_manage ? '' : 'disabled' ).' type="text" maxlength="3" class="form-control dynamic_update" field-name="tr__conditional_score_max" ln-id="'.$in['ln_id'].'" value="'.( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : 0 ).'">%</span></span>';
+    $ui .= '<span class="' . superpower_active(10984) . '"><span class="link_marks settings_4229 '.( $in['ln_type_player_id']==4229 ? : 'hidden' ).'">'.echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : 0 ), $in['ln_id'], $can_manage).'-'.echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : 0 ), $in['ln_id'], $can_manage).'%</span></span>';
 
 
 
@@ -2425,6 +2425,12 @@ function echo_en($en, $is_parent = false)
 
 }
 
+
+function echo_in_text($cache_en_id, $current_value, $identifier_id, $can_manage){
+    $CI =& get_instance();
+    $en_all_12112 = $CI->config->item('en_all_12112');
+    return '<input '.( $can_manage ? '' : 'disabled' ).' type="text" class="form-control in_update_text" cache_en_id="'.$cache_en_id.'" identifier_id="'.$identifier_id.'" value="'.$current_value.'" data-toggle="tooltip" data-placement="top" title="'.$en_all_12112[$cache_en_id]['m_name'].( strlen($en_all_12112[$cache_en_id]['m_desc']) > 0 ? ': '.$en_all_12112[$cache_en_id]['m_desc'] : '' ).'">';
+}
 
 function echo_dropdown($cache_en_id, $selected_en_id, $btn_class, $can_manage, $ln_id = 0){
 
