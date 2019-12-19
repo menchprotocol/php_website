@@ -160,10 +160,10 @@ li a {
 .inline-block{ display: inline-block !important; }
 .inline{ display: inline !important; }
 .hidden { display: none !important; }
-.icon-block-sm{ min-width: 28px; display: inline-block; text-align: center; }
-.icon-block{ min-width: 34px; display: inline-block; text-align: center; }
-.icon-block-lg{ min-width:50px; display: inline-block; text-align: center; }
-.icon-block-xlg{ min-width:62px; display: inline-block; text-align: center; }
+.icon-block-sm{ min-width: 28px; display: inline-block; text-align: center; margin-left: 1px; }
+.icon-block{ min-width: 34px; display: inline-block; text-align: center; margin-left: 1px; }
+.icon-block-lg{ min-width:50px; display: inline-block; text-align: center; margin-left: 1px; }
+.icon-block-xlg{ min-width:62px; display: inline-block; text-align: center; margin-left: 1px; }
 .blog-url{
     margin-left: 5px;
     display: block;
