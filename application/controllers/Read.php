@@ -166,7 +166,7 @@ class Read extends CI_Controller
 
 
 
-        echo '<table style="border:0; margin:0; padding:0; width:100%;">';
+        echo '<table style="border:0; margin:0; padding:0; width:233px;">';
 
         echo '<tr>';
         echo '<td>Coin Type</td>';
