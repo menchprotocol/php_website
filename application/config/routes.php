@@ -19,4 +19,6 @@ $route['(:num)']                    = "read/read_blog/$1";
 
 //BLOG
 $route['blog']                      = "blog/blog_list";
+$route['blog/create']               = "blog/blog_create";
+$route['blog/stats']                = "blog/blog_stats";
 $route['blog/(:num)']               = "blog/blog_modify/$1";

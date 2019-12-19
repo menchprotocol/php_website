@@ -2794,22 +2794,7 @@ class READ_model extends CI_Model
             $en_all_4485 = $this->config->item('en_all_4485');
 
             //Now check for blog referencing settings:
-            if(in_array(4985 , $en_all_4485[$message_type_en_id]['m_parents'])){
-
-                //Is it missing its required blog reference?
-                if(count($string_references['ref_blogs']) != 1){
-                    return array(
-                        'status' => 0,
-                        'message' => $en_all_4485[$message_type_en_id]['m_name'].' require a BLOG reference.',
-                    );
-                } elseif($message_in_id < 1){
-                    return array(
-                        'status' => 0,
-                        'message' => 'Message validator function missing required message blog ID.',
-                    );
-                }
-
-            } elseif(!in_array(4985 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_blogs']) > 0){
+            if(!in_array(4985 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_blogs']) > 0){
 
                 return array(
                     'status' => 0,
