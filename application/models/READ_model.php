@@ -1393,21 +1393,21 @@ class READ_model extends CI_Model
         //Fetch/Validate blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
         ));
-
         if (count($ins) < 1) {
-
             $this->READ_model->ln_create(array(
                 'ln_type_player_id' => 4246, //Platform Bug Reports
                 'ln_creator_player_id' => ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ),
                 'ln_content' => 'step_echo() invalid blog ID',
                 'ln_parent_blog_id' => $in_id,
             ));
-            echo echo_message('Invalid Blog ID', true, $recipient_en, $push_message);
+            echo_message('Invalid Blog ID', true, $recipient_en, $push_message);
             return false;
-
         }
 
+
+        //Validate Recipient, if specified:
         if(!isset($recipient_en['en_id'])){
             if($push_message){
 
@@ -1426,11 +1426,84 @@ class READ_model extends CI_Model
                 $recipient_en['en_name'] = 'Stranger';
 
             }
-        } else {
+        }
 
-            //We have a user, see their privileges for this blog:
-            $can_manage = in_can_manage($in_id);
 
+        //Make sure they can access it if the blog is drafting:
+        if(!in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7355'))){
+
+            //Allow them to read if they have blogging powers:
+            if($recipient_en['en_id'] > 0 && count($this->READ_model->ln_fetch(array(
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_child_player_id' => $recipient_en['en_id'],
+                    'ln_parent_player_id' => 10939,
+                ))) > 0){
+
+                //Inform them that they can read it because they are
+                echo_message('BLOG is drafting and not publicly visible.', false, $recipient_en, $push_message);
+
+            } else {
+
+                echo_message('Blog is not yet published.', true, $recipient_en, $push_message);
+                return false;
+
+            }
+        }
+
+
+
+        /*
+         *
+         * Display Messages
+         *
+         */
+        foreach ($this->READ_model->ln_fetch(array(
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_player_id' => 4231, //Blog Note Messages
+            'ln_child_blog_id' => $ins[0]['in_id'],
+        ), array(), 0, 0, array('ln_order' => 'ASC')) as $message_ln) {
+            echo $this->READ_model->dispatch_message(
+                $message_ln['ln_content'],
+                $recipient_en,
+                $push_message
+            );
+        }
+
+
+
+        /*
+         *
+         * Determine next Step
+         *
+         */
+        $in__children = $this->READ_model->ln_fetch(array(
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_type_player_id' => 4228, //Blog Link Regular Step
+            'ln_parent_blog_id' => $ins[0]['in_id'],
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+
+        $current_progression_links = $this->READ_model->ln_fetch(array(
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
+            'ln_creator_player_id' => $en_id,
+            'ln_parent_blog_id' => $ins[0]['in_id'],
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        ));
+
+        $progress_completed = false; //Assume FALSE, search and see...
+        foreach($current_progression_links as $current_progression_link){
+            if(in_array($current_progression_link['ln_status_player_id'], $this->config->item('en_ids_7359')/* Link Statuses Public */)){
+                $progress_completed = true;
+                break;
+            }
+        }
+
+
+
+        if (!in_array($in['in_type_player_id'], $this->config->item('en_ids_6144'))) {
+            //Does not have any requirements:
+            return null;
         }
 
 

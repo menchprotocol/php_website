@@ -2,13 +2,13 @@
 <?php
 $en_all_6201 = $this->config->item('en_all_6201'); //Blog Table
 
-$can_manage = in_can_manage($in['in_id']);
+$is_author = in_is_author($in['in_id']);
 $is_active = in_array($in['in_status_player_id'], $this->config->item('en_ids_7356'));
 ?>
 
 <style>
     .in_child_icon_<?= $in['in_id'] ?> { display:none; }
-    <?= ( !$can_manage ? '.note-edit {display:none;}' : '' ) ?>
+    <?= ( !$is_author ? '.note-edit {display:none;}' : '' ) ?>
 </style>
 
 
@@ -27,12 +27,7 @@ $play_focus_found = false; //Used to determine the first tab to be opened
 
 echo '<div class="container" style="padding-bottom:54px;">';
 
-
-if(!$is_active){
-    echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle ispink"></i> Blog must be un-archived before it can be modified.</div>';
-}
-
-if(!$can_manage){
+if(!$is_author){
     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle ispink"></i> You are not a blog author. <a href="/blog/in_become_author/'.$in['in_id'].'" class="inline-block montserrat '.superpower_active(10984).'">BECOME AUTHOR</a></div>';
 }
 
@@ -51,7 +46,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '<div style="margin-bottom: 5px;">';
 
             //Blog Status:
-            echo '<div class="inline-block">'.echo_in_dropdown(4737, $in['in_status_player_id'], 'btn-blog', $can_manage).'</div>';
+            echo '<div class="inline-block">'.echo_in_dropdown(4737, $in['in_status_player_id'], 'btn-blog', $is_author && $is_active).'</div>';
 
             //Give preview option if active:
             if($is_active){
@@ -61,8 +56,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '</div>';
 
 
-        echo '<div class="itemblog">';
-        if($can_manage && $is_active){
+        if($is_author && $is_active){
+
+            echo '<div class="itemblog">';
 
             echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'" style="margin-bottom: 5px;">'.$in['in_title'].'</textarea>';
 
@@ -74,16 +70,17 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             echo '&nbsp;<span class="title_update_status"></span>';
             echo '</div>';
 
+            echo '</div>';
+
         } else {
             echo '<h1>'.$in['in_title'].'</h1>';
         }
-        echo '</div>';
 
     } else {
 
         echo '<div class="center-right">';
-            echo '<div class="inline-block" style="margin-bottom:5px;">'.echo_in_dropdown(7585, $in['in_type_player_id'], 'btn-blog', $can_manage && $is_active).'</div>';
-            echo '<div class="inline-block '.superpower_active(10984).'" style="width:89px; margin:0 0 5px 5px;">'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $can_manage && $is_active, 0).'</div>';
+            echo '<div class="inline-block" style="margin-bottom:5px;">'.echo_in_dropdown(7585, $in['in_type_player_id'], 'btn-blog', $is_author && $is_active).'</div>';
+            echo '<div class="inline-block '.superpower_active(10984).'" style="width:89px; margin:0 0 5px 5px;">'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
         echo '</div>';
 
     }
@@ -126,11 +123,11 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-1" class="list-group">';
 
             foreach ($fetch_11019 as $parent_in) {
-                $this_tab .= echo_in($parent_in, 0, true, $can_manage && $is_active);
+                $this_tab .= echo_in($parent_in, 0, true, $is_author && $is_active);
             }
 
             $this_tab .= '<div class="list-group-item itemblog '.superpower_active(10939).'">
-                            <div class="form-group is-empty '.( $can_manage && $is_active ? '' : ' hidden ' ).'" style="margin: 0; padding: 0;">
+                            <div class="form-group is-empty '.( $is_author && $is_active ? '' : ' hidden ' ).'" style="margin: 0; padding: 0;">
                                 <input type="text"
                                        class="form-control blogadder-level-2-parent form-control-thick algolia_search"
                                        blog-id="' . $in['in_id'] . '"
@@ -159,11 +156,11 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //List child blogs:
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children">';
             foreach ($fetch_11020 as $child_in) {
-                $this_tab .= echo_in($child_in, $in['in_id'], false, $can_manage && $is_active);
+                $this_tab .= echo_in($child_in, $in['in_id'], false, $is_author && $is_active);
             }
 
             $this_tab .= '<div class="list-group-item itemblog '.superpower_active(10939).'">
-                    <div class="form-group is-empty '.( $can_manage && $is_active ? '' : ' hidden ' ).'" style="margin: 0; padding: 0;">
+                    <div class="form-group is-empty '.( $is_author && $is_active ? '' : ' hidden ' ).'" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control blogadder-level-2-child form-control-thick algolia_search"
                                maxlength="' . config_var(11071) . '"
@@ -214,7 +211,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             }
 
             //ADD NEW NOTE:
-            $this_tab .= '<div class="list-group-item itemblog add_note_' . $en_id2 . ( $can_manage && $is_active ? '' : ' hidden ' ).'">';
+            $this_tab .= '<div class="list-group-item itemblog add_note_' . $en_id2 . ( $is_author && $is_active ? '' : ' hidden ' ).'">';
             $this_tab .= '<form class="box box' . $en_id2 . '" method="post" enctype="multipart/form-data">'; //Used for dropping files
 
 

@@ -1895,21 +1895,20 @@ function echo_in_marks($in_ln){
 
 }
 
-function in_can_manage($in_id){
+function in_is_author($in_id, $session_en = array()){
 
     $CI =& get_instance();
 
-
-    //Fetch session:
-    $session_en = superpower_assigned();
-
+    if(!isset($session_en['en_id'])){
+        //Fetch from session:
+        $session_en = superpower_assigned();
+    }
 
     if(!isset($session_en['en_id']) || $in_id < 1){
         return false;
     }
 
-
-    //Allow trainer to manage ONLY IF they have up-voted the blog, which means they are part of it:
+    //Check if player is a blog author:
     return count($CI->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_player_id' => 4983,
@@ -2117,7 +2116,7 @@ function echo_2level_players($main_obj, $all_link_types, $link_types_counts, $al
 
 
 
-function echo_in($in, $in_linked_id, $is_parent, $can_manage)
+function echo_in($in, $in_linked_id, $is_parent, $is_author)
 {
 
     $CI =& get_instance();
@@ -2144,14 +2143,14 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
 
 
     //LINK TYPE
-    $ui .= '<span class="icon-block' . superpower_active(10984) . '">'.echo_in_dropdown(4486, $in['ln_type_player_id'], null, $can_manage, $in['ln_id']).'</span>';
+    $ui .= '<span class="icon-block' . superpower_active(10984) . '">'.echo_in_dropdown(4486, $in['ln_type_player_id'], null, $is_author, $in['ln_id']).'</span>';
 
 
     //LINK MARKS
-    $ui .= '<span class="' . superpower_active(10984) . '"><span class="link_marks settings_4228 '.( $in['ln_type_player_id']==4228 ? : 'hidden' ).'">'.echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $can_manage, ($in['ln_order']*10)+1 ).' Marks</span></span>';
+    $ui .= '<span class="' . superpower_active(10984) . '"><span class="link_marks settings_4228 '.( $in['ln_type_player_id']==4228 ? : 'hidden' ).'">'.echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+1 ).' Marks</span></span>';
 
     //LINK CONDIITONAL RANGE
-    $ui .= '<span class="' . superpower_active(10984) . '"><span class="link_marks settings_4229 '.( $in['ln_type_player_id']==4229 ? : 'hidden' ).'">'.echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $can_manage, ($in['ln_order']*10)+2).'-'.echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $can_manage, ($in['ln_order']*10)+3).'%</span></span>';
+    $ui .= '<span class="' . superpower_active(10984) . '"><span class="link_marks settings_4229 '.( $in['ln_type_player_id']==4229 ? : 'hidden' ).'">'.echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+2).'-'.echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+3).'%</span></span>';
 
 
 
@@ -2209,7 +2208,7 @@ function echo_in($in, $in_linked_id, $is_parent, $can_manage)
 
 
     //UNLINK
-    if($can_manage){
+    if($is_author){
         $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="javascript:void(0);" title="Unlink blog" data-toggle="tooltip" data-placement="left" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink"></i></a></div>';
     }
 
@@ -2281,13 +2280,13 @@ function echo_message($message, $is_error, $recipient_en, $push_message){
     if($push_message){
         $CI =& get_instance();
         $CI->READ_model->dispatch_message(
-            ( $is_error ? 'ERROR: ' : '') . $message,
+            ( $is_error ? 'ERROR: ' : 'NOTE: ') . $message,
             $recipient_en,
             true
         );
     } else {
         //HTML:
-        echo '<div class="alert '.( $is_error ? 'alert-danger' : 'alert-success' ).'">'.( $is_error ? '<i class="fas fa-exclamation-triangle"></i> ' : '' ).$message.' </div>';
+        echo '<div class="alert '.( $is_error ? 'alert-danger' : 'alert-info' ).'">'.( $is_error ? '<i class="fas fa-exclamation-triangle"></i> ' : '<i class="fas fa-info-circle"></i> ' ).$message.' </div>';
     }
 
 }
@@ -2416,16 +2415,18 @@ function echo_en($en, $is_parent = false)
     }
 
 
+    $ui .= '<div class="pull-right inline-block">';
+
     //MODIFY
-    $ui .= '<div class="pull-right inline-block '. superpower_active(10983) .'" style="padding-left:5px;"><a class="btn btn-play" href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog"></i></a></div>';
+    $ui .= '<div class="inline-block '. superpower_active(10983) .'" style="padding-left:5px;"><a class="btn btn-play" href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog"></i></a></div>';
 
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-play" href="/play/' . $en['en_id']. '"><span class="'. superpower_active(10983) .'">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']).' ' : '') . '</span><i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="inline-block" style="padding-left:5px"><a class="btn btn-play" href="/play/' . $en['en_id']. '"><span class="'. superpower_active(10983) .'">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']).' ' : '') . '</span><i class="fas fa-angle-right"></i></a></div>';
 
 
     //ICON SET
-    $ui .= '<div class="pull-right inline-block '. superpower_active(10983) .'">';
+    $ui .= '<div class="inline-block '. superpower_active(10983) .'">';
 
     //PARENTS
     if(count($en['en__parents']) > 0){
@@ -2433,6 +2434,8 @@ function echo_en($en, $is_parent = false)
             $ui .= ' <span class="en-icon en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span>';
         }
     }
+
+    $ui .= ' </div>';
 
     $ui .= ' </div>';
 
@@ -2444,13 +2447,13 @@ function echo_en($en, $is_parent = false)
 }
 
 
-function echo_in_text($cache_en_id, $current_value, $in_ln__id, $can_manage, $tabindex = 0){
+function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tabindex = 0){
     $CI =& get_instance();
     $en_all_12112 = $CI->config->item('en_all_12112');
-    return '<input '.( $can_manage ? '' : 'disabled' ).' type="text" tabindex="'.$tabindex.'" class="form-control in_update_text text__'.$cache_en_id.'_'.$in_ln__id.'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" value="'.$current_value.'" data-toggle="tooltip" data-placement="top" title="'.$en_all_12112[$cache_en_id]['m_name'].( strlen($en_all_12112[$cache_en_id]['m_desc']) > 0 ? ': '.$en_all_12112[$cache_en_id]['m_desc'] : '' ).'">';
+    return '<input '.( $is_author ? '' : 'disabled' ).' type="text" tabindex="'.$tabindex.'" class="form-control in_update_text text__'.$cache_en_id.'_'.$in_ln__id.'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" value="'.$current_value.'" data-toggle="tooltip" data-placement="top" title="'.$en_all_12112[$cache_en_id]['m_name'].( strlen($en_all_12112[$cache_en_id]['m_desc']) > 0 ? ': '.$en_all_12112[$cache_en_id]['m_desc'] : '' ).'">';
 }
 
-function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $can_manage, $ln_id = 0){
+function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author, $ln_id = 0){
 
     $CI =& get_instance();
     $en_all_12079 = $CI->config->item('en_all_12079');
@@ -2459,7 +2462,7 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $can_manage
 
     //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
     $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'_'.$ln_id.'" title="'.$en_all_12079[$cache_en_id]['m_name'].': '.$en_all_12079[$cache_en_id]['m_desc'].'" data-toggle="tooltip" data-placement="right">';
-    $ui .= '<button type="button"  class="btn '.$btn_class.( $can_manage ? ' dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false' : '' ).'">';
+    $ui .= '<button type="button"  class="btn '.$btn_class.( $is_author ? ' dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false' : '' ).'">';
     $ui .= '<span class="icon-block">' .$en_all_this[$selected_en_id]['m_icon'].'</span>'.( !$btn_class ? '' : $en_all_this[$selected_en_id]['m_name'] );
     $ui .= '</button>';
     $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
