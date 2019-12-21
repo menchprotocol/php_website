@@ -424,9 +424,6 @@ class READ_model extends CI_Model
         if($insert_columns['ln_parent_blog_id'] > 0){
             array_push($related_blogs, $insert_columns['ln_parent_blog_id']);
         }
-        if(count($related_blogs) > 0 && in_array($insert_columns['ln_status_player_id'] , $this->config->item('en_ids_7359') /* Link Statuses Public */) && in_array($insert_columns['ln_type_player_id'] , $this->config->item('en_ids_7703')) && $insert_columns['ln_type_player_id']!=7702 /* User Blog Subscription Update */ && !is_dev_environment()){
-
-        }
 
 
         //Return:
@@ -463,6 +460,8 @@ class READ_model extends CI_Model
 
         /*
          *
+         * TODO: DEPRECATE and replace with read_echo()
+         *
          * A function that marks a BLOG as complete IF
          * the blog has nothing of substance to be
          * further communicated/done by the user.
@@ -470,16 +469,6 @@ class READ_model extends CI_Model
          * $unlock_link_type_en_id Indicates the type of Unlocking that is about to happen
          *
          * */
-
-
-        if(!in_array($in['in_type_player_id'], $this->config->item('en_ids_7756'))){
-            //Not Auto Completable:
-            return false;
-        } elseif(!in_array($unlock_link_type_en_id, $this->config->item('en_ids_7494'))){
-            //Not a valid unlock step type:
-            return false;
-        }
-
 
         //Send messages, if any:
         foreach ($this->READ_model->ln_fetch(array(
@@ -614,7 +603,7 @@ class READ_model extends CI_Model
         $user_blogs = $this->READ_model->ln_fetch(array(
             'ln_creator_player_id' => $en_id,
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -851,7 +840,7 @@ class READ_model extends CI_Model
         foreach($this->READ_model->ln_fetch(array(
             'ln_creator_player_id' => $en_id,
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
 
@@ -903,7 +892,7 @@ class READ_model extends CI_Model
         $user_blogs = $this->READ_model->ln_fetch(array(
             'ln_creator_player_id' => $en_id,
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_parent_blog_id' => $in_id,
         ));
         if(count($user_blogs) < 1){
@@ -961,14 +950,13 @@ class READ_model extends CI_Model
                 'ln_creator_player_id' => $en_id,
                 'ln_parent_blog_id' => $in_id,
                 'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )))){
 
             //Not added to their reading list so far, let's go ahead and add it:
             $in_rank = 1;
             $actionplan = $this->READ_model->ln_create(array(
                 'ln_type_player_id' => ( $recommender_in_id > 0 ? 7495 /* User Blog Recommended */ : 4235 /* User Blog Set */ ),
-                'ln_status_player_id' => 6175, //Link Drafting
                 'ln_creator_player_id' => $en_id, //Belongs to this User
                 'ln_parent_blog_id' => $ins[0]['in_id'], //The Blog they are adding
                 'ln_child_blog_id' => $recommender_in_id, //Store the recommended blog
@@ -980,7 +968,7 @@ class READ_model extends CI_Model
             foreach($this->READ_model->ln_fetch(array(
                 'ln_id !=' => $actionplan['ln_id'], //Not the newly added blog
                 'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_creator_player_id' => $en_id, //Belongs to this User
             ), array(''), 0, 0, array('ln_order' => 'ASC')) as $current_blogs){
 
@@ -1160,7 +1148,7 @@ class READ_model extends CI_Model
         if($is_bottom_level){
 
             //Fetch user blogs:
-            $user_blogs_ids = $this->READ_model->read_ids($en_id);
+            $player_read_ids = $this->READ_model->read_ids($en_id);
 
             //Fetch all parents trees for this blog
             $recursive_parents = $this->BLOG_model->in_fetch_recursive_public_parents($in['in_id']);
@@ -1172,7 +1160,7 @@ class READ_model extends CI_Model
             foreach ($recursive_parents as $grand_parent_ids) {
 
                 //Does this parent and its grandparents have an intersection with the user blogs?
-                if(!array_intersect($grand_parent_ids, $user_blogs_ids)){
+                if(!array_intersect($grand_parent_ids, $player_read_ids)){
                     //Parent tree is NOT part of their 🔴 READING LIST:
                     continue;
                 }
@@ -1206,7 +1194,7 @@ class READ_model extends CI_Model
                     }
 
                     //Terminate if we reached the 🔴 READING LIST blog level:
-                    if(in_array($p_id , $user_blogs_ids)){
+                    if(in_array($p_id , $player_read_ids)){
                         break;
                     }
                 }
@@ -1341,7 +1329,7 @@ class READ_model extends CI_Model
                 //Always add all the first users to the full list:
                 $qualified_completed_users = $this->READ_model->ln_fetch(array(
                     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
                     'ln_parent_blog_id' => $child_in['in_id'],
                 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -1358,7 +1346,7 @@ class READ_model extends CI_Model
                     //Update list of qualified users:
                     $qualified_completed_users = $this->READ_model->ln_fetch(array(
                         'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
+                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
                         'ln_parent_blog_id' => $child_in['in_id'],
                     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -1381,7 +1369,7 @@ class READ_model extends CI_Model
     }
 
 
-    function read__echo($in_id, $recipient_en = array(), $push_message = true){
+    function read_echo($in_id, $recipient_en = array(), $push_message = true){
 
         /*
          * Function to read a Blog, it's messages,
@@ -1414,7 +1402,7 @@ class READ_model extends CI_Model
                 //We cannot have a guest user on Messenger:
                 $this->READ_model->ln_create(array(
                     'ln_type_player_id' => 4246, //Platform Bug Reports
-                    'ln_content' => 'read__echo() found guest user on Messenger',
+                    'ln_content' => 'read_echo() found guest user on Messenger',
                     'ln_parent_blog_id' => $in_id,
                 ));
                 return false;
@@ -1455,14 +1443,25 @@ class READ_model extends CI_Model
 
         /*
          *
-         * Display Messages
+         * Display Title & Messages
          *
          */
-        foreach ($this->READ_model->ln_fetch(array(
+        if(!$push_message){
+            echo '<h1>' . echo_in_title($ins[0]['in_title']) . '</h1>';
+        } else {
+            $this->READ_model->dispatch_message(
+                'You\'re reading: '.$ins[0]['in_title'],
+                $recipient_en,
+                $push_message
+            );
+        }
+
+        $in__messages = $this->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_player_id' => 4231, //Blog Note Messages
             'ln_child_blog_id' => $ins[0]['in_id'],
-        ), array(), 0, 0, array('ln_order' => 'ASC')) as $message_ln) {
+        ), array(), 0, 0, array('ln_order' => 'ASC'));
+        foreach ($in__messages as $message_ln) {
             echo $this->READ_model->dispatch_message(
                 $message_ln['ln_content'],
                 $recipient_en,
@@ -1472,323 +1471,94 @@ class READ_model extends CI_Model
 
 
 
+        $in_reading_list = false;
+        if($recipient_en['en_id'] > 0){
+
+            //Fetch entire reading list:
+            $player_read_ids = $this->READ_model->read_ids($recipient_en['en_id']);
+
+            //Fetch all parents trees for this blog
+            $recursive_parents = $this->BLOG_model->in_fetch_recursive_public_parents($ins[0]['in_id']);
+
+            //Go through parents trees and detect intersects with user blogs. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
+            foreach ($recursive_parents as $grand_parent_ids) {
+
+                //Does this parent and its grandparents have an intersection with the user blogs?
+                if (array_intersect($grand_parent_ids, $player_read_ids)) {
+                    //Blog is part of their 🔴 READING LIST:
+                    $in_reading_list = true;
+                    break;
+                }
+
+            }
+        }
+
+
         /*
          *
          * Determine next Step
          *
          */
-        $in__children = $this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_player_id' => 4228, //Blog Link Regular Step
-            'ln_parent_blog_id' => $ins[0]['in_id'],
-        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+        if(!$in_reading_list){
 
-        $current_progression_links = $this->READ_model->ln_fetch(array(
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
-            'ln_creator_player_id' => $en_id,
-            'ln_parent_blog_id' => $ins[0]['in_id'],
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ));
-
-        $progress_completed = false; //Assume FALSE, search and see...
-        foreach($current_progression_links as $current_progression_link){
-            if(in_array($current_progression_link['ln_status_player_id'], $this->config->item('en_ids_7359')/* Link Statuses Public */)){
-                $progress_completed = true;
-                break;
-            }
-        }
-
-
-
-        if (!in_array($in['in_type_player_id'], $this->config->item('en_ids_6144'))) {
-            //Does not have any requirements:
-            return null;
-        }
-
-
-
-    }
-
-
-    function read_echo($en_id, $in_id, $push_message = true)
-    {
-
-        /*
-         *
-         * Advance the user 🔴 READING LIST by 1 step
-         *
-         *
-         * - $en_id:            The recipient who will receive the messages via
-         *                      Facebook Messenger. Note that this function does
-         *                      not support an HTML format, only Messenger.
-         *
-         * - $in_id:            The next step blog to be completed now
-         *
-         * */
-
-        //Basic input validation:
-        if ($in_id < 1) {
-
-            return array(
-                'status' => 0,
-                'message' => 'Missing Blog ID',
-            );
-
-        } elseif ($en_id < 1) {
-
-            return array(
-                'status' => 0,
-                'message' => 'Missing recipient player ID',
-            );
-
-        }
-
-        //Fetch/Validate blog:
-        $ins = $this->BLOG_model->in_fetch(array(
-            'in_id' => $in_id,
-        ));
-
-        if (count($ins) < 1) {
-
-            $this->READ_model->ln_create(array(
-                'ln_type_player_id' => 4246, //Platform Bug Reports
-                'ln_creator_player_id' => $en_id,
-                'ln_content' => 'step_echo() called invalid blog',
-                'ln_parent_blog_id' => $ins[0]['in_id'],
-            ));
-
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Blog #' . $ins[0]['in_id'],
-            );
-
-        } elseif (!in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7355') /* Blog Statuses Public */)) {
-
-            $this->READ_model->ln_create(array(
-                'ln_type_player_id' => 4246, //Platform Bug Reports
-                'ln_creator_player_id' => $en_id,
-                'ln_content' => 'step_echo() called blog that is not yet public',
-                'ln_parent_blog_id' => $ins[0]['in_id'],
-            ));
-
-            return array(
-                'status' => 0,
-                'message' => 'Invalid #' . $ins[0]['in_id'].' is not yet public',
-            );
-
-        }
-
-
-        /*
-         *
-         * There are different ways to complete a BLOG
-         * as listed under User Steps Completed:
-         *
-         * https://mench.com/play/6146
-         *
-         * We'll start by assuming the most basic form of
-         * completion (🔴 READING LIST Auto Complete) and
-         * build-up to more advance forms of completion
-         * as we gather more data through-out this function.
-         *
-         * Also note that some progression types follow a
-         * 2-step completion method where users are
-         * required to submit their response in order
-         * to move to the next step as defined by
-         * 🔴 READING LIST 2-Step Link Types:
-         *
-         * https://mench.com/play/6244
-         *
-         * */
-
-
-        //Fetch submission requirements, messages, children and current progressions (if any):
-        $completion_req_note = $this->BLOG_model->in_create_content($ins[0], $push_message); //See if we have blog requirements
-        $in__messages = $this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_player_id' => 4231, //Blog Note Messages
-            'ln_child_blog_id' => $ins[0]['in_id'],
-        ), array(), 0, 0, array('ln_order' => 'ASC'));
-        $in__children = $this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_player_id' => 4228, //Blog Link Regular Step
-            'ln_parent_blog_id' => $ins[0]['in_id'],
-        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
-        $current_progression_links = $this->READ_model->ln_fetch(array(
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
-            'ln_creator_player_id' => $en_id,
-            'ln_parent_blog_id' => $ins[0]['in_id'],
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ));
-
-        $progress_completed = false; //Assume FALSE, search and see...
-        foreach($current_progression_links as $current_progression_link){
-            if(in_array($current_progression_link['ln_status_player_id'], $this->config->item('en_ids_7359')/* Link Statuses Public */)){
-                $progress_completed = true;
-                break;
-            }
-        }
-
-
-        //Define communication variables:
-        $next_step_message = '';
-        $next_step_quick_replies = array();
-
-        //Define step variables:
-        $has_children = (count($in__children) > 0);
-        $unlock_paths = array();
-
-
-
-        //Determine progression type
-        //Let's figure out the progression method:
-        if(in_is_unlockable($ins[0])){
-
-            if($progress_completed){
-
-                $progression_type_player_id = $current_progression_links[0]['ln_status_player_id'];
-
+            //Give option to add to reading list:
+            if($push_message){
+                $this->READ_model->dispatch_message(
+                    'Interested to read ' . $ins[0]['in_title'] . '?',
+                    $recipient_en,
+                    $push_message,
+                    array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Start Reading',
+                            'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
+                        ),
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Cancel',
+                            'payload' => 'SUBSCRIBE-REJECT',
+                        ),
+                    ),
+                    array(
+                        'ln_child_blog_id' => $ins[0]['in_id'],
+                    )
+                );
             } else {
-
-                //Find the paths to unlock:
-                $unlock_paths = $this->BLOG_model->in_unlock_paths($ins[0]);
-
-                //Set completion method:
-                if(count($unlock_paths) > 0){
-
-                    //Yes we have a path:
-                    $progression_type_player_id = 7486; //User Step Children Unlock
-
-                } else {
-
-                    //No path found:
-                    $progression_type_player_id = 7492; //User Step Dead End
-
-                }
+                echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
             }
-
-        } elseif($completion_req_note){
-
-            $progression_type_player_id = 6144; //User Step Requirement Sent
-
-        } elseif($has_children && $ins[0]['in_type_player_id']==6684 /* Blog Answer Single-Choice */){
-
-            $progression_type_player_id = 6157; //User Step Single-Answered
-
-        } elseif($has_children && $ins[0]['in_type_player_id']==7231 /* Blog Answer Multiple-Choice */){
-
-            //TODO Implement
-            $progression_type_player_id = 7489; //User Step Multi-Answered
-            $progression_type_player_id = 6157; //User Step Single-Answered
 
         } else {
 
-            $progression_type_player_id = 4559; //User Step Read Messages
-
-        }
-
-
-        //Let's learn more about the nature of this progression link:
-
-        //If TRUE, initial progression link will be logged as WORKING ON since we need user response:
-        $is_two_step = in_array($progression_type_player_id, $this->config->item('en_ids_6244'));
-
-        $step_progress_made = ( !$is_two_step && in_array($progression_type_player_id, $this->config->item('en_ids_6255')));
-
-        //If TRUE, we will auto move on to the next item:
-        $nothing_more_to_do = ( !$is_two_step && !$has_children && in_array($progression_type_player_id, $this->config->item('en_ids_6274')) );
-
-        //Assume FALSE unless $nothing_more_to_do=TRUE and we do not have any next steps which means user has finished their 🔴 READING LIST:
-        $recommend_recommend = false;
+            /*
+             * Already in player's reading list...
+             *
+             */
 
 
-
-        if(count($current_progression_links)<1 || ( !$is_two_step && !$progress_completed )){
-
-            //Log new link:
-            $new_progression_link = $this->READ_model->ln_create(array(
-                'ln_type_player_id' => $progression_type_player_id,
-                'ln_creator_player_id' => $en_id,
+            //Fetch Children:
+            $in__children = $this->READ_model->ln_fetch(array(
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'ln_type_player_id' => 4228, //Blog Link Regular Step
                 'ln_parent_blog_id' => $ins[0]['in_id'],
-                'ln_status_player_id' => ( $is_two_step ? 6175 /* Link Drafting */ : 6176 /* Link Published */ ),
+            ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+
+
+            //See if this user has completed this before:
+            $progress_completed = false;
+            $current_progression_links = $this->READ_model->ln_fetch(array(
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
+                'ln_creator_player_id' => $recipient_en['en_id'],
+                'ln_parent_blog_id' => $ins[0]['in_id'],
             ));
-
-            //Since we logged a new progression, let's remove the old ones if any:
-            if(!$is_two_step && count($current_progression_links) > 0){
-                //Archive previous progression links since new one was logged:
-                foreach($current_progression_links as $key=>$ln){
-
-                    $this->READ_model->ln_update($ln['ln_id'], array(
-                        'ln_parent_read_id' => $new_progression_link['ln_id'],
-                        'ln_status_player_id' => 6173, //Link Removed
-                    ), $en_id, 10685 /* User Step Iterated */);
-
-                    //Remove from array:
-                    unset($current_progression_links[$key]);
-                }
-            }
-
-            if(!$is_two_step){
-                $progress_completed = true;
-            }
-
-            //Add new progression link:
-            array_push($current_progression_links, $new_progression_link);
-
-        }
-
-
-
-        //Let's analyse the progress made so far to better understand how to deal with this step:
-        $user_can_skip = ( $is_two_step || $has_children ); //Assume TRUE unless proven otherwise...
-        if($user_can_skip){
             foreach($current_progression_links as $current_progression_link){
-                //Also make sure this was NOT an automated progression because there is no point in skipping those:
-                if(!$has_children && in_array($current_progression_link['ln_status_player_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */) && !in_array($current_progression_link['ln_type_player_id'], $this->config->item('en_ids_6274'))){
-                    $user_can_skip = false;
+                if(in_array($current_progression_link['ln_status_player_id'], $this->config->item('en_ids_7359')/* Link Statuses Public */) &&
+                    in_array($current_progression_link['ln_type_player_id'], $this->config->item('en_ids_6255')/* READ PROGRESS */)){
+                    $progress_completed = true;
                     break;
                 }
             }
-        }
-
-
-
-
-
-
-
-
-
-        /*
-         *
-         * Check Conditional Steps in HTML
-         * 🔴 READING LIST Webview only
-         *
-         * */
-        if(!$push_message){
-
-            $unlocked_steps = $this->READ_model->ln_fetch(array(
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                'ln_type_player_id' => 6140, //User Step Link Unlocked
-                'ln_creator_player_id' => $en_id,
-                'ln_parent_blog_id' => $ins[0]['in_id'],
-            ), array('in_child'), 0);
-
-            //Did we have any steps unlocked?
-            if(count($unlocked_steps) > 0){
-                //Yes! Show them:
-                $next_step_message .= '<div class="list-group" style="margin:0 0 0 0;">';
-                foreach($unlocked_steps as $unlocked_step){
-                    //Add HTML step to UI:
-                    $next_step_message .= echo_actionplan_step_child($en_id, $unlocked_step, true);
-                }
-                $next_step_message .= '</div>';
-            }
-
-        }
 
 
 
@@ -1800,430 +1570,640 @@ class READ_model extends CI_Model
 
 
 
-        /*
-         *
-         * Now let's see the blog type (AND or OR)
-         * and also count its children to see how
-         * we would need to advance the user.
-         *
-         * */
-
-        //Do we have any requirements?
-        if(count($unlock_paths) > 0){
+            //Define communication variables:
+            $next_step_quick_replies = array();
 
 
-            if($push_message){
-                $next_step_message .= 'Here are the blogs I recommend adding to your 🔴 READING LIST to move forward:';
-            } else {
-                $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
-            }
 
-            //List Unlock paths:
-            foreach ($unlock_paths as $key => $child_in) {
+            //Let's learn more about the nature of this progression link:
 
-                $child_progression_steps = $this->READ_model->ln_fetch(array(
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
+            //If TRUE, initial progression link will be logged as WORKING ON since we need user response:
+            $is_two_step = in_array($progression_type_player_id, $this->config->item('en_ids_6244'));
+
+            $step_progress_made = ( !$is_two_step && in_array($progression_type_player_id, $this->config->item('en_ids_6255'))); //READ PROGRESS
+
+            //If TRUE, we will auto move on to the next item:
+            $nothing_more_to_do = ( !$is_two_step && !count($in__children) && in_array($progression_type_player_id, $this->config->item('en_ids_6274')) );
+
+
+            if(count($current_progression_links)<1 || ( !$is_two_step && !$progress_completed )){
+
+                //Log new link:
+                $new_progression_link = $this->READ_model->ln_create(array(
+                    'ln_type_player_id' => $progression_type_player_id,
                     'ln_creator_player_id' => $en_id,
-                    'ln_parent_blog_id' => $child_in['in_id'],
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_parent_blog_id' => $ins[0]['in_id'],
+                    'ln_status_player_id' => ( $is_two_step ? 6175 /* Link Drafting */ : 6176 /* Link Published */ ),
                 ));
 
-                $is_completed = ( count($child_progression_steps) > 0 && in_array($child_progression_steps[0]['ln_status_player_id'], $this->config->item('en_ids_7359')));
-                $is_next = ( count($next_step_quick_replies)==0 && !$is_completed );
-
-                if(!$push_message){
-
-                    //Add HTML step to UI:
-                    $next_step_message .= echo_actionplan_step_child($en_id, $child_in);
-
-                } else {
-
-                    //Add simple message:
-                    $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_title($child_in['in_title'], $push_message);
-                    $next_step_message .= ( $is_completed ? ' [COMPLETED]' : '' );
-
+                if(!$is_two_step){
+                    $progress_completed = true;
                 }
 
-                //Add Call to Action:
-                if($is_next){
-                    //This is the next step:
-                    array_push($next_step_quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'ADD_RECOMMENDED_' . $ins[0]['in_id']. '_' . $child_in['in_id'],
-                    ));
-                }
+                //Add new progression link:
+                array_push($current_progression_links, $new_progression_link);
 
             }
 
-            if(!$push_message){
-                $next_step_message .= '</div>';
-            }
-
-        } elseif ($completion_req_note && !$progress_completed) {
-
-            //They still need to complete:
-            $next_step_message .= $completion_req_note;
-
-        } elseif($has_children && in_array($ins[0]['in_type_player_id'] , $this->config->item('en_ids_6193') /* OR Blogs */ )){
 
 
-            //Prep variables:
-            $too_many_children = ( $push_message && count($in__children) > 10);
-
-
-            if($push_message){
-
-                /*
-                 *
-                 * Let's see if we need to cleanup the OR answer
-                 * index by merging the answer response quick replies
-                 * (See Github Issue 2234 for more details)
-                 *
-                 * */
-
-                $answer_referencing = array(); //Start with nothing...
-                foreach ($in__messages as $message_ln) {
-                    //Let's see if we can find a reference:
-                    for ($num = 1; $num <= 10; $num++) {
-                        if(substr_count($message_ln['ln_content'] , $num.'. ')==1 || substr_count($message_ln['ln_content'] , $num.".\n")==1){
-                            //Make sure we have have the previous number:
-                            if($num==1 || in_array(($num-1),$answer_referencing)){
-                                array_push($answer_referencing, $num);
-                            }
-                        }
-                    }
-                }
-
-            } else {
-
-                //See if we need to move the message inside the HTML:
-                $max_html_answers = 30;
-                $inline_answers = array();
-
-                for ($num = 1; $num <= $max_html_answers; $num++) {
-                    foreach ($in__messages as $index => $message_ln) {
-
-                        $valid_num = null;
-                        if(substr_count($message_ln['ln_content'] , $num.'. ')==1){
-                            $valid_num = $num.'. ';
-                        } elseif(substr_count($message_ln['ln_content'] , $num.".\n")==1){
-                            $valid_num = $num.".\n";
-                        }
-
-                        if($valid_num){
-                            $inline_answers[$num] = one_two_explode($valid_num , "\n", $message_ln['ln_content']);
-                            $in__messages[$index]['ln_content'] = trim(str_replace($valid_num.$inline_answers[$num], '', $message_ln['ln_content']));
-                            break;
-                        }
-                    }
-                    //Terminate if not found:
-                    if(!isset($inline_answers[$num])){
+            //Let's analyse the progress made so far to better understand how to deal with this step:
+            $user_can_skip = ( $is_two_step || count($in__children) > 0 ); //Assume TRUE unless proven otherwise...
+            if($user_can_skip){
+                foreach($current_progression_links as $current_progression_link){
+                    //Also make sure this was NOT an automated progression because there is no point in skipping those:
+                    if(!count($in__children) && in_array($current_progression_link['ln_status_player_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */) && !in_array($current_progression_link['ln_type_player_id'], $this->config->item('en_ids_6274'))){
+                        $user_can_skip = false;
                         break;
                     }
                 }
+            }
 
-                $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /*
+             *
+             * List Conditional Links that are
+             * already unlocked (HTML ONLY)
+             *
+             * */
+            if(!$push_message){
+
+                $unlocked_steps = $this->READ_model->ln_fetch(array(
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                    'ln_type_player_id' => 6140, //User Step Link Unlocked
+                    'ln_creator_player_id' => $en_id,
+                    'ln_parent_blog_id' => $ins[0]['in_id'],
+                ), array('in_child'), 0);
+
+                //Did we have any steps unlocked?
+                if(count($unlocked_steps) > 0){
+                    //Yes! Show them:
+                    echo '<div class="list-group" style="margin:0 0 0 0;">';
+                    foreach($unlocked_steps as $unlocked_step){
+                        //Add HTML step to UI:
+                        echo echo_actionplan_step_child($en_id, $unlocked_step, true);
+                    }
+                    echo '</div>';
+                }
 
             }
 
-            //List OR child answers:
-            foreach ($in__children as $key => $child_in) {
 
-                //Is this selected?
-                $was_selected       = ( $progress_completed && $current_progression_links[0]['ln_child_blog_id']==$child_in['in_id'] );
 
-                //Fetch history if selected:
-                if($was_selected){
-                    $child_progression_steps = $this->READ_model->ln_fetch(array(
-                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
-                        'ln_creator_player_id' => $en_id,
-                        'ln_parent_blog_id' => $current_progression_links[0]['ln_child_blog_id'],
-                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    ));
+
+
+
+            if (in_array($ins[0]['in_type_player_id'], $this->config->item('en_ids_7712'))) {
+
+                //SELECT ANSWER
+                if(count($in__children) > 0){
+
+                    if ($ins[0]['in_type_player_id'] == 6684) {
+
+                        //SELECT ONE
+                        echo $this->READ_model->dispatch_message(
+                            'Select one option:',
+                            $recipient_en,
+                            $push_message
+                        );
+
+                    } elseif ($ins[0]['in_type_player_id'] == 7231) {
+
+                        //SELECT SOME
+                        echo $this->READ_model->dispatch_message(
+                            'Select one or more options:',
+                            $recipient_en,
+                            $push_message
+                        );
+
+                    }
+
+
+                    if(count($in__children) > 0){
+
+                        if ($push_message) {
+
+                        } else {
+
+                            //List children to choose from:
+                            echo '<div class="list-group" style="margin-top:30px;">';
+                            foreach ($in__children as $child_in) {
+                                echo echo_in_answer($child_in, null);
+                            }
+                            echo '</div>';
+
+                        }
+
+                    } else {
+                        //No children, show the next button:
+                        echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/'.$ins[0]['in_id'].'/next">NEXT <i class="fas fa-angle-right"></i></a></div>';
+                    }
                 }
+
+
+
+
+
+
+
+                //Prep variables:
+                $too_many_children = ( $push_message && count($in__children) > 10);
 
 
                 if($push_message){
 
-                    if(!in_array(($key+1), $answer_referencing)){
-                        $next_step_message .= "\n\n" . ($key+1).'. '.echo_in_title($child_in['in_title'], true);
-                    }
+                    /*
+                     *
+                     * Let's see if we need to cleanup the OR answer
+                     * index by merging the answer response quick replies
+                     * (See Github Issue 2234 for more details)
+                     *
+                     * */
 
-                    //Add answer options to Quick Reply:
-                    if(!$too_many_children){
-                        array_push($next_step_quick_replies, array(
-                            'content_type' => 'text',
-                            'title' => ($key+1),
-                            'payload' => 'ANSWERQUESTION_' . $progression_type_player_id . '_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
-                        ));
-                    }
-
-                } else {
-
-                    if(!$progress_completed){
-
-                        //Need to select answer:
-                        $next_step_message .= '<a href="/read/actionplan_answer_question/6157/' . $en_id . '/' . $ins[0]['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '/' . $child_in['in_id'] . '" class="list-group-item itemread lightgreybg">';
-
-                    } elseif($was_selected){
-
-                        //This was selected:
-                        $next_step_message .= '<a href="/'.$child_in['in_id'] . '" class="list-group-item itemread lightgreybg">';
-
-                    } else {
-
-                        //This was NOT selected and nothing else has been selected yet:
-                        $next_step_message .= '<span class="list-group-item itemread" style="text-decoration: line-through;">';
-
-                    }
-
-
-                    if($was_selected){
-
-                        //Selected Icon:
-                        $next_step_message .= '<i class="fas fa-check-circle"></i> ';
-
-                    } else {
-
-                        //Not selected icon:
-                        $next_step_message .= '<i class="far fa-circle"></i> ';
-
-                    }
-
-
-                    //Add to answer list:
-                    $potential_number = trim(str_replace('.','', echo_in_title($child_in['in_title'], true)));
-                    if(is_numeric($potential_number) && intval($potential_number)>0 && intval($potential_number)<=$max_html_answers && isset($inline_answers[intval($potential_number)])){
-                        $next_step_message .= $inline_answers[intval($potential_number)];
-                    } else {
-                        $next_step_message .= echo_in_title($child_in['in_title']);
-                    }
-
-                }
-
-
-                //HTML?
-                if(!$push_message){
-
-                    if($was_selected) {
-                        //Status Icon:
-                        $next_step_message .= '&nbsp;' . echo_en_cache('en_all_6186' /* Link Statuses */, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_player_id'] : 6175 /* Link Drafting */), false, null);
-                    }
-
-                    //Close tags:
-                    if(!$progress_completed || $was_selected){
-
-                        $next_step_message .= '</a>';
-
-                    } else {
-
-                        $next_step_message .= '</span>';
-
-                    }
-                }
-            }
-
-            if(!$push_message){
-                $next_step_message .= '</div>';
-            } else {
-                if($too_many_children) {
-                    //Give instructions on how to select path:
-                    //$next_step_message .= "\n\n" . 'Choose your answers by replying a number 1-12';
-                }
-            }
-
-        } elseif($has_children){
-
-            //AND Children
-            $max_and_list           = ( $push_message ? 5 : 30 );
-            $has_multiple_children  = (count($in__children) > 1); //Do we have 2 or more children?
-
-
-            //List AND children:
-            if($has_multiple_children){
-
-                //Are we still clean?
-                $key = 0;
-                $common_prefix = common_prefix($in__children, 'in_title', $max_and_list); //Look only up to the max number of listed blogs
-
-                foreach ($in__children as $child_in) {
-
-                    if($key==0){
-                        if(!$push_message){
-                            $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
-                        } else {
-                            $next_step_message .= "Here are the next steps:"."\n\n";
-                        }
-                    } else {
-                        if($push_message){
-
-                            $next_step_message .= "\n\n";
-
-                            //We know that the $next_step_message length cannot surpass the limit defined by facebook
-                            if (($key >= $max_and_list || strlen($next_step_message) > (config_var(11074) - 150))) {
-                                //We cannot add any more, indicate truncating:
-                                $remainder = count($in__children) - $max_and_list;
-                                $next_step_message .= '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
-                                break;
+                    $answer_referencing = array(); //Start with nothing...
+                    foreach ($in__messages as $message_ln) {
+                        //Let's see if we can find a reference:
+                        for ($num = 1; $num <= 10; $num++) {
+                            if(substr_count($message_ln['ln_content'] , $num.'. ')==1 || substr_count($message_ln['ln_content'] , $num.".\n")==1){
+                                //Make sure we have have the previous number:
+                                if($num==1 || in_array(($num-1),$answer_referencing)){
+                                    array_push($answer_referencing, $num);
+                                }
                             }
                         }
                     }
 
+                } else {
+
+                    //See if we need to move the message inside the HTML:
+                    $max_html_answers = 30;
+                    $inline_answers = array();
+
+                    for ($num = 1; $num <= $max_html_answers; $num++) {
+                        foreach ($in__messages as $index => $message_ln) {
+
+                            $valid_num = null;
+                            if(substr_count($message_ln['ln_content'] , $num.'. ')==1){
+                                $valid_num = $num.'. ';
+                            } elseif(substr_count($message_ln['ln_content'] , $num.".\n")==1){
+                                $valid_num = $num.".\n";
+                            }
+
+                            if($valid_num){
+                                $inline_answers[$num] = one_two_explode($valid_num , "\n", $message_ln['ln_content']);
+                                $in__messages[$index]['ln_content'] = trim(str_replace($valid_num.$inline_answers[$num], '', $message_ln['ln_content']));
+                                break;
+                            }
+                        }
+                        //Terminate if not found:
+                        if(!isset($inline_answers[$num])){
+                            break;
+                        }
+                    }
+
+                    echo '<div class="list-group" style="margin-top:10px;">';
+
+                }
+
+                //List OR child answers:
+                foreach ($in__children as $key => $child_in) {
+
+                    //Is this selected?
+                    $was_selected       = ( $progress_completed && $current_progression_links[0]['ln_child_blog_id']==$child_in['in_id'] );
+
+                    //Fetch history if selected:
+                    if($was_selected){
+                        $child_progression_steps = $this->READ_model->ln_fetch(array(
+                            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
+                            'ln_creator_player_id' => $en_id,
+                            'ln_parent_blog_id' => $current_progression_links[0]['ln_child_blog_id'],
+                            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                        ));
+                    }
 
 
-                    if(!$push_message){
 
-                        //Add HTML step to UI:
-                        $next_step_message .= echo_actionplan_step_child($en_id, $child_in, false, $common_prefix);
+                    if($push_message){
+
+                        if(!in_array(($key+1), $answer_referencing)){
+                            echo "\n\n" . ($key+1).'. '.echo_in_title($child_in['in_title'], true);
+                        }
+
+                        //Add answer options to Quick Reply:
+                        if(!$too_many_children){
+                            array_push($next_step_quick_replies, array(
+                                'content_type' => 'text',
+                                'title' => ($key+1),
+                                'payload' => 'ANSWERQUESTION_' . $progression_type_player_id . '_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
+                            ));
+                        }
 
                     } else {
 
-                        //Add simple message:
-                        $next_step_message .= ($key + 1) . '. ' . echo_in_title($child_in['in_title'], $push_message, $common_prefix);
+                        if(!$progress_completed){
+
+                            //Need to select answer:
+                            echo '<a href="/read/actionplan_answer_question/6157/' . $en_id . '/' . $ins[0]['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '/' . $child_in['in_id'] . '" class="list-group-item itemread lightgreybg">';
+
+                        } elseif($was_selected){
+
+                            //This was selected:
+                            echo '<a href="/'.$child_in['in_id'] . '" class="list-group-item itemread lightgreybg">';
+
+                        } else {
+
+                            //This was NOT selected and nothing else has been selected yet:
+                            echo '<span class="list-group-item itemread" style="text-decoration: line-through;">';
+
+                        }
+
+
+                        if($was_selected){
+
+                            //Selected Icon:
+                            echo '<i class="fas fa-check-circle"></i> ';
+
+                        } else {
+
+                            //Not selected icon:
+                            echo '<i class="far fa-circle"></i> ';
+
+                        }
+
+
+                        //Add to answer list:
+                        $potential_number = trim(str_replace('.','', echo_in_title($child_in['in_title'], true)));
+                        if(is_numeric($potential_number) && intval($potential_number)>0 && intval($potential_number)<=$max_html_answers && isset($inline_answers[intval($potential_number)])){
+                            echo $inline_answers[intval($potential_number)];
+                        } else {
+                            echo echo_in_title($child_in['in_title']);
+                        }
 
                     }
 
-                    $key++;
+
+                    //HTML?
+                    if(!$push_message){
+
+                        if($was_selected) {
+                            //Status Icon:
+                            echo '&nbsp;' . echo_en_cache('en_all_6186' /* Link Statuses */, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_player_id'] : 6175 /* Link Drafting */), false, null);
+                        }
+
+                        //Close tags:
+                        if(!$progress_completed || $was_selected){
+
+                            echo '</a>';
+
+                        } else {
+
+                            echo '</span>';
+
+                        }
+                    }
                 }
 
-                if(!$push_message && $key > 0){
-                    //Close the HTML tag we opened:
-                    $next_step_message .= '</div>';
+                if(!$push_message){
+                    echo '</div>';
+                } else {
+                    if($too_many_children) {
+                        //Give instructions on how to select path:
+                        //echo "\n\n" . 'Choose your answers by replying a number 1-12';
+                    }
                 }
 
 
+
+
+
+
+
+
+
+
+            } elseif (in_array($ins[0]['in_type_player_id'], $this->config->item('en_ids_7309'))) {
+
+
+                if($progress_completed){
+
+                    $progression_type_player_id = $current_progression_links[0]['ln_status_player_id'];
+
+                } else {
+
+                    //Find the paths to unlock:
+                    $unlock_paths = $this->BLOG_model->in_unlock_paths($ins[0]);
+
+                    //Set completion method:
+                    if(count($unlock_paths) > 0){
+
+                        //Yes we have a path:
+                        $progression_type_player_id = 7486; //User Step Children Unlock
+
+                        if($push_message){
+                            echo 'Here are the blogs I recommend adding to your 🔴 READING LIST to move forward:';
+                        } else {
+                            echo '<div class="list-group" style="margin-top:10px;">';
+                        }
+
+                        //List Unlock paths:
+                        foreach ($unlock_paths as $key => $child_in) {
+
+                            $child_progression_steps = $this->READ_model->ln_fetch(array(
+                                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
+                                'ln_creator_player_id' => $en_id,
+                                'ln_parent_blog_id' => $child_in['in_id'],
+                                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                            ));
+
+                            $is_completed = ( count($child_progression_steps) > 0 && in_array($child_progression_steps[0]['ln_status_player_id'], $this->config->item('en_ids_7359')));
+                            $is_next = ( count($next_step_quick_replies)==0 && !$is_completed );
+
+                            if(!$push_message){
+
+                                //Add HTML step to UI:
+                                echo echo_actionplan_step_child($en_id, $child_in);
+
+                            } else {
+
+                                //Add simple message:
+                                echo "\n\n" . ($key + 1) . '. ' . echo_in_title($child_in['in_title'], $push_message);
+                                echo ( $is_completed ? ' [COMPLETED]' : '' );
+
+                            }
+
+                            //Add Call to Action:
+                            if($is_next){
+                                //This is the next step:
+                                array_push($next_step_quick_replies, array(
+                                    'content_type' => 'text',
+                                    'title' => 'Next',
+                                    'payload' => 'ADD_RECOMMENDED_' . $ins[0]['in_id']. '_' . $child_in['in_id'],
+                                ));
+                            }
+
+                        }
+
+                        if(!$push_message){
+                            echo '</div>';
+                        }
+
+                    } else {
+
+                        //No path found:
+                        $progression_type_player_id = 7492; //User Step Dead End
+
+                    }
+                }
+
+
+                //MEET REQUIREMENTS
+                if($ins[0]['in_type_player_id']==6907){
+
+                    //MEET ONE REQUIREMENT
+
+                } elseif($ins[0]['in_type_player_id']==6914) {
+
+                    //MEET ALL REQUIREMENTS
+
+                }
+
+
+                //List Requirements:
+                if(count($in__children) > 0){
+
+                    if ($push_message) {
+
+                    } else {
+
+                        //List children to choose from:
+                        echo '<div class="list-group" style="margin-top:30px;">';
+                        foreach ($in__children as $child_in) {
+                            echo echo_in_read($child_in, null, $ins[0]['in_id']);
+                        }
+                        echo '</div>';
+
+                    }
+
+                } else {
+                    //No children, show the next button:
+                    echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/'.$ins[0]['in_id'].'/next">NEXT <i class="fas fa-angle-right"></i></a></div>';
+                }
+
+
+                //List ways to unlock requirements. if not completed already:
+                if(!$progress_completed){
+
+                }
+
+
+            } else {
+
+                if ($ins[0]['in_type_player_id'] == 6677) {
+
+                    //READ ONLY
+                    if(count(count($in__children)) > 0){
+
+
+                    } elseif(!$push_message) {
+
+                        echo '<div class="montserrat read doupper"><i class="fas fa-check-circle ispink"></i> NOTHING ELSE TO READ</div>';
+
+                    }
+
+                    $progression_type_player_id = 4559; //User Step Read Messages
+
+
+                    //Process on-complete automations:
+                    $this->READ_model->read__completion_checks($en_id, $ins[0], false, $step_progress_made);
+
+
+                } elseif ($ins[0]['in_type_player_id'] == 6683) {
+
+                    //TEXT REPLY
+                    if($push_message){
+
+                    } else {
+                        echo '<textarea id="user_new_content" class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
+                        echo '<span class="saving_result"></span>';
+                        echo '<p><a class="btn btn-blog" href="javascript:void(0);" onsubmit="">Save & Continue</a></p>';
+                    }
+
+                } elseif (in_array($ins[0]['in_type_player_id'], $this->config->item('en_ids_7751'))) {
+
+                    //FILE UPLOAD
+                    if($push_message){
+
+                    } else {
+
+                        echo '<p>Upload a file to continue.</p>';
+                        echo '<span class="saving_result"></span>';
+                        echo '<input class=" inputfile" type="file" id="user_new_content" /><label class=" btn btn-blog" for="file" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">Upload File</label>';
+
+                    }
+
+                } else {
+
+                    //UNKNOWN BLOG TYPE
+                    echo $this->READ_model->dispatch_message(
+                        'Error: Unknown Blog Type',
+                        $recipient_en,
+                        $push_message
+                    );
+
+                    $this->READ_model->ln_create(array(
+                        'ln_type_player_id' => 4246, //Platform Bug Reports
+                        'ln_creator_player_id' => $recipient_en['en_id'],
+                        'ln_content' => 'step_echo() unknown blog type',
+                        'ln_parent_blog_id' => $in_id,
+                    ));
+
+                }
+
+
+
+
+
+
+
+
+
+
+                if(count($in__children) > 0){
+
+                    if ($push_message) {
+
+                    } else {
+
+                        //List children to choose from:
+                        echo '<div class="list-group" style="margin-top:30px;">';
+                        foreach ($in__children as $child_in) {
+                            echo echo_in_read($child_in, null, $ins[0]['in_id']);
+                        }
+                        echo '</div>';
+
+                    }
+
+
+
+
+
+                    //AND Children
+                    $max_and_list           = ( $push_message ? 5 : 30 );
+                    $has_multiple_children  = (count($in__children) > 1); //Do we have 2 or more children?
+
+
+                    //List AND children:
+                    if($has_multiple_children){
+
+                        //Are we still clean?
+                        $key = 0;
+                        $common_prefix = common_prefix($in__children, 'in_title', $max_and_list); //Look only up to the max number of listed blogs
+
+                        foreach ($in__children as $child_in) {
+
+                            if($key==0){
+                                if(!$push_message){
+                                    echo '<div class="list-group" style="margin-top:10px;">';
+                                } else {
+                                    echo "Here are the next steps:"."\n\n";
+                                }
+                            } else {
+                                if($push_message){
+
+                                    echo "\n\n";
+
+                                    //We know that the $next_step_message length cannot surpass the limit defined by facebook
+                                    if (($key >= $max_and_list || strlen($next_step_message) > (config_var(11074) - 150))) {
+                                        //We cannot add any more, indicate truncating:
+                                        $remainder = count($in__children) - $max_and_list;
+                                        echo '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
+                                        break;
+                                    }
+                                }
+                            }
+
+
+
+                            if(!$push_message){
+
+                                //Add HTML step to UI:
+                                echo echo_actionplan_step_child($en_id, $child_in, false, $common_prefix);
+
+                            } else {
+
+                                //Add simple message:
+                                echo ($key + 1) . '. ' . echo_in_title($child_in['in_title'], $push_message, $common_prefix);
+
+                            }
+
+                            $key++;
+                        }
+
+                        if(!$push_message && $key > 0){
+                            //Close the HTML tag we opened:
+                            echo '</div>';
+                        }
+
+
+                    }
+
+
+
+
+
+
+
+
+
+
+                } else {
+                    //No children, show the next button:
+                    echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/'.$ins[0]['in_id'].'/next">NEXT <i class="fas fa-angle-right"></i></a></div>';
+                }
             }
-        }
 
 
 
 
-
-
-        /*
-         *
-         * Perform on-complete checks if we have
-         * JUST made progress on this step
-         *
-         * */
-        if(isset($new_progression_link['ln_status_player_id']) && in_array($new_progression_link['ln_status_player_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */)){
-
-            //Process on-complete automations:
-            $on_complete_messages = $this->READ_model->read__completion_checks($en_id, $ins[0], false, $step_progress_made);
-
-            if($step_progress_made && count($on_complete_messages) > 0){
-                //Add on-complete messages (if any) to the current messages:
-                $in__messages = array_merge($in__messages, $on_complete_messages);
-            }
-        }
-
-
-
-
-
-
-
-
-        /*
-         *
-         * Call to Action
-         *
-         * We've did everything we had to do for the current
-         * step, now let's see what's next and how should
-         * we move forward...
-         *
-         * */
-
-        //NEXT? Only possible if NOT a 2-step progress OR if progress has been made:
-        if(!$is_two_step || $progress_completed){
-
-            $next_in_id = 0;
-            if(!$has_children){
-                //Let's see if we have a next step:
-                $next_in_id = $this->READ_model->read_next_go($en_id, false);
-            }
-
-            if($has_children || $next_in_id>0){
-                //Option to go next:
+            //SKIP?
+            if($user_can_skip) {
+                //Give option to skip:
                 if($push_message){
 
+                    //Give option to skip User Blog:
                     array_push($next_step_quick_replies, array(
                         'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'GONEXT',
+                        'title' => 'Skip',
+                        'payload' => 'SKIP-ACTIONPLAN_skip-initiate_' . $ins[0]['in_id'],
                     ));
 
                 } else {
 
-                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/read/next" class="btn btn-md btn-blog"><i class="fas fa-angle-right"></i></a></div>';
+                    echo '<div style="font-size: 0.7em; margin-top: 10px;">Or <a href="javascript:void(0);" onclick="blog_skip(' . $en_id . ', ' . $ins[0]['in_id'] . ')"><u>Skip</u></a>.</div>';
 
                 }
-            } else {
-
-                //This will happen for all blogs viewed via HTML if all 🔴 READING LIST steps are completed
-                //No next step found! Recommend if messenger
-                $recommend_recommend = $push_message;
-
-            }
-        }
-
-        //SKIP?
-        if($user_can_skip) {
-            //Give option to skip:
-            if($push_message){
-
-                //Give option to skip User Blog:
-                array_push($next_step_quick_replies, array(
-                    'content_type' => 'text',
-                    'title' => 'Skip',
-                    'payload' => 'SKIP-ACTIONPLAN_skip-initiate_' . $ins[0]['in_id'],
-                ));
-
-            } else {
-
-                $next_step_message .= '<div style="font-size: 0.7em; margin-top: 10px;">Or <a href="javascript:void(0);" onclick="blog_skip(' . $en_id . ', ' . $ins[0]['in_id'] . ')"><u>Skip</u></a>.</div>';
-
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-        /*
-         *
-         * Let's start dispatch Messenger messages
-         *
-         * */
-        $compile_html_message = null; //Will be useful only IF $push_message=FALSE
-        $last_message_accepts_quick_replies = false; //Assume FALSE unless proven otherwise...
-        foreach ($in__messages as $count => $message_ln) {
-
-            //Since we can only append quick replies to text messages, let's see what is happening here:
-            $is_last_message = ( $count == (count($in__messages)-1) );
-            //No player reference and no /link command in order to accept quick replies...
-            if($is_last_message && ( !isset($message_ln['ln_parent_player_id']) || $message_ln['ln_parent_player_id']==0 ) && substr_count($message_ln['ln_content'], '/link:')==0){
-                //Since there is no player reference we can append our message here:
-                $last_message_accepts_quick_replies = true;
             }
 
-            $compile_html_message .= $this->READ_model->dispatch_message(
-                $message_ln['ln_content'],
-                array('en_id' => $en_id),
-                $push_message,
-                //This is when we have messages and need to append the "Next" Quick Reply to the last message:
-                ( $last_message_accepts_quick_replies && count($next_step_quick_replies) > 0 ? $next_step_quick_replies : array() )
-            );
-        }
-        if($push_message) {
 
-            if(strlen($next_step_message) > 0 || (!$last_message_accepts_quick_replies && count($next_step_quick_replies) > 0)){
+
+
+            if($push_message && count($next_step_quick_replies) > 0){
                 //Send messages over Messenger IF we have a message
                 $this->READ_model->dispatch_message(
                     ( strlen($next_step_message) > 0 ? $next_step_message : echo_random_message('goto_next') ),
@@ -2233,33 +2213,8 @@ class READ_model extends CI_Model
                 );
             }
 
-            if($recommend_recommend){
-                //READ RECOMMENDATIONS
-                $this->READ_model->dispatch_message(
-                    echo_random_message('read_recommendation'),
-                    array('en_id' => $en_id),
-                    true
-                );
-            }
 
         }
-
-
-
-
-
-
-
-        //Return data:
-        return array(
-            'status' => 1,
-            'message' => 'Success',
-            'current_progression_links' => $current_progression_links,
-
-            //Do we need to return the HTML UI?
-            'html_messages' => ( $push_message ? null : $compile_html_message . '<div class="msg" style="margin-top: 15px;">'.nl2br($next_step_message).'</div>' ),
-        );
-
     }
 
     function read__completion_marks($en_id, $in, $top_level = true)
@@ -2516,133 +2471,22 @@ class READ_model extends CI_Model
 
     function read_ids($en_id){
         //Simply returns all the blog IDs for a user's 🔴 READING LIST:
-        $user_blogs_ids = array();
+        $player_read_ids = array();
         foreach($this->READ_model->ln_fetch(array(
             'ln_creator_player_id' => $en_id,
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ), array('in_parent'), 0) as $user_in){
-            array_push($user_blogs_ids, intval($user_in['in_id']));
+            array_push($player_read_ids, intval($user_in['in_id']));
         }
-        return $user_blogs_ids;
+        return $player_read_ids;
     }
 
 
 
 
 
-
-
-
-
-    function dispatch_subscription_email($related_blogs){
-
-        $en_all_7703 = $this->config->item('en_all_7703'); //Load all link types
-        $in_titles = array();
-        $insert_columns = array(); //TODO fix this
-
-        //Inform authors:
-        foreach($this->READ_model->ln_fetch(array(
-            'ln_type_player_id' => 4983,
-            'ln_child_blog_id IN (' . join(',', $related_blogs) . ')' => null, //Fetch subscribers for all blogs
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
-        ), array('en_parent'), 0) as $subscriber_en){
-
-            //Try fetching subscribers email:
-            foreach($this->READ_model->ln_fetch(array(
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_player_id' => 4255, //Linked Players Text (Email is text)
-                'ln_parent_player_id' => 3288, //Mench Email
-                'ln_child_player_id' => $subscriber_en['en_id'],
-            )) as $en_email){
-
-                if(!filter_var($en_email['ln_content'], FILTER_VALIDATE_EMAIL)){
-
-                    //Subscriber is missing an email link:
-                    $this->READ_model->ln_create(array(
-                        'ln_content' => 'Blog subscriber missing Mench email',
-                        'ln_type_player_id' => 7504, //Trainer Review Required
-                        //'ln_creator_player_id' => $insert_columns['ln_creator_player_id'], //HERE
-                        'ln_parent_player_id' => $subscriber_en['en_id'],
-                        'ln_child_blog_id' => $subscriber_en['ln_child_blog_id'],
-                    ));
-
-                    continue;
-                }
-
-
-                if(!isset($in_titles[$subscriber_en['ln_child_blog_id']])){
-                    $ins = $this->BLOG_model->in_fetch(array(
-                        'in_id' => $subscriber_en['ln_child_blog_id'],
-                    ));
-                    $in_titles[$subscriber_en['ln_child_blog_id']] = echo_in_title($ins[0]['in_title']);
-                }
-
-
-                $subject = $in_titles[$subscriber_en['ln_child_blog_id']] . ' | ' . $en_all_7703[$insert_columns['ln_type_player_id']]['m_name'].' | Mench';
-
-                //Compose email body, start with link content:
-                $personalized_intro = '<div>Hi '.one_two_explode('',' ',$subscriber_en['en_name']).' 👋</div>';
-                $personalized_intro .= '<br /><div>There is new activity on the blog to '.$in_titles[$subscriber_en['ln_child_blog_id']].':</div>';
-
-                //Append link object links:
-                $en_all_6232 = $this->config->item('en_all_6232'); //PLATFORM VARIABLES
-
-                //Append link object links:
-                foreach ($this->config->item('en_all_11081') as $en_id => $m) {
-
-                    if (!intval($insert_columns[$en_all_6232[$en_id]['m_desc']])) {
-                        continue;
-                    }
-
-                    if(in_array(6160 , $m['m_parents'])){
-
-                        //PLAY
-                        $ens = $this->PLAY_model->en_fetch(array( 'en_id' => $insert_columns[$en_all_6232[$en_id]['m_desc']] ));
-                        $personalized_intro .= '<div>' . $m['m_name'] . ': <a href="https://mench.com/play/' . $ens[0]['en_id'] . '" target="_parent">@'.$ens[0]['en_id'].' '.$ens[0]['en_name'].'</a></div>';
-
-                    } elseif(in_array(6202 , $m['m_parents'])){
-
-                        //BLOG
-                        $ins = $this->BLOG_model->in_fetch(array( 'in_id' => $insert_columns[$en_all_6232[$en_id]['m_desc']] ));
-                        $personalized_intro .= '<div>' . $m['m_name'] . ': <a href="https://mench.com/blog/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_title'].'</a></div>';
-
-                    } elseif(in_array(4367 , $m['m_parents'])){
-
-                        //READ
-                        $personalized_intro .= '<div>' . $m['m_name'] . ' ID: <a href="https://mench.com/read/view_json/' . $insert_columns[$en_all_6232[$en_id]['m_desc']] . '" target="_parent">'.$insert_columns[$en_all_6232[$en_id]['m_desc']].'</a></div>';
-
-                    }
-
-                }
-
-                //Finally append READ ID:
-                $personalized_intro .= '<div>' . ( strlen($insert_columns['ln_content']) > 0 ? $insert_columns['ln_content'] : '<i>No link content</i>') . '</div><br />';
-                $personalized_intro .= '<div>READ ID: <a href="https://mench.com/read/view_json/' . $insert_columns['ln_id'] . '" target="_blank">' . $insert_columns['ln_id'] . '</a></div>';
-                $personalized_intro .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage this subscription via <a href="https://mench.com/blog/'.$subscriber_en['ln_child_blog_id'].'" target="_blank">#'.$subscriber_en['ln_child_blog_id'].'</a></div>';
-
-                //Send email:
-                $dispatched_email = $this->READ_model->dispatch_emails(array($en_email['ln_content']), $subject, $personalized_intro);
-
-                //Log emails sent:
-                $this->READ_model->ln_create(array(
-                    'ln_type_player_id' => 7702, //User Blog Subscription Update
-                    'ln_creator_player_id' => $subscriber_en['en_id'],
-                    'ln_metadata' => $dispatched_email, //Save a copy of email
-                    'ln_parent_read_id' => $insert_columns['ln_id'], //Save link
-
-                    //Import potential blog/player connections from link:
-                    'ln_parent_blog_id' => $subscriber_en['ln_child_blog_id'],
-                    'ln_child_player_id' => $insert_columns['ln_child_player_id'],
-                    'ln_parent_player_id' => $insert_columns['ln_parent_player_id'],
-                ));
-            }
-        }
-
-        return true;
-    }
 
     function dispatch_message($input_message, $recipient_en = array(), $push_message = false, $quick_replies = array(), $message_in_id = 0)
     {
@@ -2762,7 +2606,6 @@ class READ_model extends CI_Model
             //Log successful Link for message delivery (Unless Trainers viewing HTML):
             if(isset($recipient_en['en_id']) && $push_message){
                 $this->READ_model->ln_create(array(
-                    'ln_status_player_id' => ( $msg_dispatching['user_chat_channel']==12103 ? 6175 /* Link Drafting, so we dispatch later */ : 6176 /* Link Published */ ),
                     'ln_content' => $msg_dispatching['input_message'],
                     'ln_type_player_id' => $output_message['message_type_en_id'],
                     'ln_creator_player_id' => $recipient_en['en_id'],
@@ -3779,7 +3622,7 @@ class READ_model extends CI_Model
                 foreach ($this->READ_model->ln_fetch(array(
                     'ln_creator_player_id' => $en['en_id'],
                     'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 )) as $ln) {
                     $removed_blogs++;
                     $this->READ_model->ln_update($ln['ln_id'], array(
@@ -3802,7 +3645,7 @@ class READ_model extends CI_Model
                 $user_blogs = $this->READ_model->ln_fetch(array(
                     'ln_creator_player_id' => $en['en_id'],
                     'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_parent_blog_id' => $action_unsubscribe,
                 ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -3823,7 +3666,7 @@ class READ_model extends CI_Model
                 foreach($this->READ_model->ln_fetch(array(
                     'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
                     'ln_creator_player_id' => $en['en_id'], //Belongs to this User
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
                     $this->READ_model->ln_update($ln['ln_id'], array(
                         'ln_order' => ($count+1),
@@ -3946,7 +3789,7 @@ class READ_model extends CI_Model
             if (count($this->READ_model->ln_fetch(array(
                     'ln_creator_player_id' => $en['en_id'],
                     'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_parent_blog_id' => $ins[0]['in_id'],
                 ))) > 0) {
 
@@ -4243,7 +4086,7 @@ class READ_model extends CI_Model
             $user_blogs = $this->READ_model->ln_fetch(array(
                 'ln_creator_player_id' => $en['en_id'],
                 'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -4354,7 +4197,7 @@ class READ_model extends CI_Model
             $user_blogs = $this->READ_model->ln_fetch(array(
                 'ln_creator_player_id' => $en['en_id'],
                 'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             ), array('in_parent'), 10 /* Max quick replies allowed */, 0, array('ln_order' => 'ASC'));
 
@@ -4480,7 +4323,7 @@ class READ_model extends CI_Model
                 if(count($this->READ_model->ln_fetch(array(
                         'ln_creator_player_id' => $en['en_id'],
                         'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                         'ln_parent_blog_id' => $alg['alg_obj_id'],
                     ))) > 0){
                     continue;

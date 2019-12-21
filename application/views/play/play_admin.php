@@ -439,7 +439,7 @@ if(!$action) {
     $user_blogs = $this->READ_model->ln_fetch(array(
         'ln_creator_player_id' => $session_en['en_id'],
         'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
     ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -697,7 +697,7 @@ if(!$action) {
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
             $user_steps = $this->READ_model->ln_fetch(array(
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
+                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
                 'ln_parent_blog_id' => $child_or['in_id'],
                 'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ), array(), 0);
@@ -777,7 +777,7 @@ if(!$action) {
 
                 //Update user progression link type:
                 $user_steps = $this->READ_model->ln_fetch(array(
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
                     'ln_parent_blog_id' => $in_ln['in_id'],
                     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 ), array(), 0);

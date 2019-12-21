@@ -421,9 +421,6 @@ function echo_number($number, $micro = true, $push_message = false)
     }
 }
 
-function echo_a_an($string){
-    return ( in_array(strtolower(substr($string, 0,1)), array('a','e','i','o','u')) ? 'an' : 'a' );
-}
 
 function echo_ln_urls($ln_content, $ln_type_player_id){
 
@@ -901,7 +898,7 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
 
     //Count users who have completed this blog:
     $enrolled_users_count = $CI->READ_model->ln_fetch(array(
-        'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
+        'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
         'ln_parent_blog_id' => $in['in_id'],
         'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -1533,7 +1530,7 @@ function echo_in_answer($in, $parent_in)
         $url = '/read/actionplan_answer_question/6157/' . $session_en['en_id'] . '/' . $parent_in_id . '/' . md5($CI->config->item('cred_password_salt') . $in['in_id'] . $parent_in_id . $session_en['en_id']) . '/' . $in['in_id'];
         $was_answered_befroe = (count($CI->READ_model->ln_fetch(array(
                 'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
+                'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
                 'ln_parent_blog_id' => $parent_in_id,
                 'ln_child_blog_id' => $in['in_id'],
                 'ln_creator_player_id' => $session_en['en_id'],
@@ -2426,6 +2423,7 @@ function echo_en($en, $is_parent = false)
         }
     }
     $ui .= ' </div>';
+
 
     //FOLLOW
     $ui .= '<div class="inline-block" style="padding-left:5px"><a class="btn btn-play" href="/play/' . $en['en_id']. '"><span class="'. superpower_active(10983) .'">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']).' ' : '') . '</span><i class="fas fa-angle-right"></i></a></div>';

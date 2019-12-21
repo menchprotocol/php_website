@@ -16,6 +16,7 @@ $route['read/next']                 = "read/read_next";
 $route['read/(:num)']               = "read/read_add/$1";
 $route['read/history']              = "read/read_history";
 $route['(:num)']                    = "read/read_blog/$1";
+$route['(:num)/next']               = "read/read_next/$1";
 
 //BLOG
 $route['blog']                      = "blog/blog_list";

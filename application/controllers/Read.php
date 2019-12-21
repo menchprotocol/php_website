@@ -44,50 +44,37 @@ class Read extends CI_Controller
 
     }
 
-    function read_next(){
+    function read_next($in_id = 0){
 
         $session_en = superpower_assigned();
-        if(!isset($session_en['en_id'])){
+        if(!isset($session_en['en_id']) || !$session_en['en_id']){
             return redirect_message('/signin');
         }
 
+        if($in_id > 0){
 
-        //See if we have pending messages:
-        $pending_messages = $this->READ_model->ln_fetch(array(
-            'ln_creator_player_id' => $session_en['en_id'],
-            'ln_type_player_id' => 4570, //User Received Email Message
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-        ), array(), 0, 0, array('ln_id' => 'ASC'));
-        if(count($pending_messages) > 0){
+            $ins = $this->BLOG_model->in_fetch(array(
+                'in_id' => $in_id,
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            ));
 
-            foreach($pending_messages as $pending_message){
-                //Update message status to indicate the reader has read it:
-                $this->READ_model->ln_update($pending_message['ln_id'], array(
-                    'ln_status_player_id' => 6176 /* Link Published */,
-                ), $session_en['en_id'], 10683 /* User Read Email */);
+            //Find next blog based on player's reading list:
+            $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
+            if($next_in_id > 0){
+                return redirect_message('/' . $next_in_id);
+            } else {
+                return redirect_message('/read', '<div class="alert alert-danger" role="alert">No next read found in your reading list.</div>');
             }
 
-            //Show pending messages:
-            $this->load->view('header', array(
-                'title' => 'MESSAGES',
-            ));
-            $this->load->view('read/read_messages', array(
-                'pending_messages' => $pending_messages,
-            ));
-            $this->load->view('footer');
-
-            return false;
-
-        }
-
-
-
-        //Find the next blog in the READING LIST to skip:
-        $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false);
-        if($next_in_id > 0){
-            return redirect_message('/' . $next_in_id);
         } else {
-            return redirect_message('/read', '<div class="alert alert-danger" role="alert">No next read found in your reading list.</div>');
+
+            //Find the next blog in the READING LIST to skip:
+            $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false);
+            if($next_in_id > 0){
+                return redirect_message('/' . $next_in_id);
+            } else {
+                return redirect_message('/read', '<div class="alert alert-danger" role="alert">No next read found in your reading list.</div>');
+            }
         }
     }
 
@@ -226,7 +213,7 @@ class Read extends CI_Controller
             'ln_creator_player_id' => $session_en['en_id'],
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
         if(!count($user_blogs)){
             //Nothing in their reading list:
@@ -1172,26 +1159,6 @@ class Read extends CI_Controller
     }
 
 
-
-    function read_remove_all()
-    {
-
-        $session_en = superpower_assigned();
-        if (!isset($session_en['en_id'])) {
-            die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
-        }
-
-        $this->load->view('header', array(
-            'title' => 'Clear 🔴 READING LIST',
-        ));
-        $this->load->view('read/read_remove_all', array(
-            'session_en' => $session_en,
-        ));
-        $this->load->view('footer');
-
-    }
-
-
     function actionplan_stop_save(){
 
         /*
@@ -1951,11 +1918,11 @@ class Read extends CI_Controller
                             //Only focus on the first mismatch, ignore the rest if any!
                             $mismatch_focus = $pending_mismatches[0];
 
-                            $en_all_6144 = $this->config->item('en_all_6144'); //Requirement names
+                            $en_all_7585 = $this->config->item('en_all_7585');
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->READ_model->dispatch_message(
-                                'Error: You should '.$en_all_6144[$mismatch_focus['in_type_player_id']]['m_name'].' to complete this step.',
+                                'Error: You should '.$en_all_7585[$mismatch_focus['in_type_player_id']]['m_name'].' to complete this step.',
                                 $en,
                                 true
                             );
