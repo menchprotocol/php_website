@@ -1590,7 +1590,7 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
     if(!in_array($in['in_status_player_id'], $CI->config->item('en_ids_7355') /* Blog Statuses Public */)){
         //Show status:
         $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
-        $ui .= '<span class="icon-block">'.$en_all_4737[$in['in_status_player_id']]['m_icon'].'</span>';
+        $ui .= $en_all_4737[$in['in_status_player_id']]['m_icon'];
     }
     $ui .= '<b class="montserrat blog-url inline-block">'.echo_in_title($in['in_title'], false).'</b>';
 
