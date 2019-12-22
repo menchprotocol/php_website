@@ -675,7 +675,7 @@ class READ_model extends CI_Model
                 }
 
                 //Yes, communicate it:
-                $this->READ_model->read_echo($en_id, $next_in_id);
+                $this->READ_model->read_echo($next_in_id, array('en_id' => $en_id));
 
             } else {
 
@@ -1413,6 +1413,24 @@ class READ_model extends CI_Model
                 $recipient_en['en_id'] = 0;
                 $recipient_en['en_name'] = 'Stranger';
 
+            }
+        } elseif(!isset($recipient_en['en_name'])){
+
+            //Fetch name:
+            $ens = $this->PLAY_model->en_fetch(array(
+                'en_id' => $recipient_en['en_id'],
+                'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+            ), array('skip_en__parents')); //Just need player info, not its parents...
+
+            if(count($ens)){
+                $recipient_en = $ens[0];
+            } else {
+                $this->READ_model->ln_create(array(
+                    'ln_type_player_id' => 4246, //Platform Bug Reports
+                    'ln_content' => 'read_echo() could not locate player',
+                    'ln_parent_blog_id' => $in_id,
+                ));
+                return false;
             }
         }
 
