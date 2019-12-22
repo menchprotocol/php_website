@@ -1592,7 +1592,7 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
         $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
         $ui .= '<span class="icon-block">'.$en_all_4737[$in['in_status_player_id']]['m_icon'].'</span>';
     }
-    $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false).'</b>';
+    $ui .= '<b class="montserrat blog-url inline-block">'.echo_in_title($in['in_title'], false).'</b>';
 
     //Now do measurements:
     /*
