@@ -1547,7 +1547,9 @@ class READ_model extends CI_Model
             return true;
         }
 
-        return false;
+
+        echo 'Already in reading list';
+        return true;
 
         /*
          * Already in player's reading list...
