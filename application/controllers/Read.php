@@ -20,7 +20,7 @@ class Read extends CI_Controller
 
         //Check to see if added to READING LIST for logged-in users:
         if(!isset($session_en['en_id'])){
-            return redirect_message('/');
+            return redirect_message('/signin/'.$in_id);
         }
 
         //Add this blog to their READING LIST:
