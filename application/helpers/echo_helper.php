@@ -1587,6 +1587,11 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
     $ui = '<a href="'.( $url_prefix ? $url_prefix : ( $CI->uri->segment(1)=='read' ? '/read' : '' ) ).'/'.$in['in_id'] . '" class="list-group-item '.( $url_prefix ? 'itemblog' : 'itemread' ).'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
+    if(!in_array($in['in_status_player_id'], $this->config->item('en_ids_7355') /* Blog Statuses Public */)){
+        //Show status:
+        $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
+        $ui .= '<span class="icon-block">'.$en_all_4737[$in['in_status_player_id']]['m_icon'].'</span>';
+    }
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false).'</b>';
 
     //Now do measurements:
