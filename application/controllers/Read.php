@@ -153,16 +153,16 @@ class Read extends CI_Controller
 
 
         //Email Subject
-        $subject = 'MENCH 🟡 BLOG '.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'% Last Week';
+        $subject = 'MENCH 🟡 '.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'% Last Week';
 
         //Email Body
         $html_message = '<br />';
-        $html_message .= '<div>Here are the growth stats for the <span title="'.$last_week_start.' to '.$last_week_end.'">week of '.date("M jS", $last_week_start_timestamp).'</span>:</div>';
+        $html_message .= '<div>Growth stats for the <span title="'.$last_week_start.' to '.$last_week_end.'">week of '.date("M jS", $last_week_start_timestamp).'</span> are:</div>';
         $html_message .= '<br />';
 
-        $html_message .= '<div>🔵PLAY '.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'% to '.echo_number($play_coins_total_last_week[0]['total']).'</div>';
-        $html_message .= '<div>🔴READ '.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'% to '.echo_number($read_coins_total_last_week[0]['total']).'</div>';
-        $html_message .= '<div>🟡BLOG '.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'% to '.echo_number($blog_coins_total_last_week[0]['total']).' [North Star]</div>';
+        $html_message .= '<div><span style="width:55px; display: inline-block;">🔵PLAY</span><span style="width:40px; display: inline-block;">'.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'%</span>to '.echo_number($play_coins_total_last_week[0]['total']).'</div>';
+        $html_message .= '<div><span style="width:55px; display: inline-block;">🔴READ</span><span style="width:40px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</span>to '.echo_number($read_coins_total_last_week[0]['total']).'</div>';
+        $html_message .= '<div><span style="width:55px; display: inline-block;">🟡BLOG</span><span style="width:40px; display: inline-block;">'.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'%</span>to '.echo_number($blog_coins_total_last_week[0]['total']).' [PRIMARY]</div>';
 
         $html_message .= '<br />';
         $html_message .= '<div>Cheers,</div>';
@@ -173,6 +173,7 @@ class Read extends CI_Controller
         //Send email to all subscribers:
         foreach($this->READ_model->ln_fetch(array(
             'ln_parent_player_id' => 12114,
+            'ln_child_player_id' => 1,
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
