@@ -2322,7 +2322,7 @@ fragment PostListingItemSidebar_post on Post {
         ));
 
 
-        //Fetch referranl blog, if any:
+        //Fetch referral blog, if any:
         if(intval($_POST['referrer_in_id']) > 0){
 
             //Fetch the blog:
@@ -2331,14 +2331,16 @@ fragment PostListingItemSidebar_post on Post {
                 'in_id' => $_POST['referrer_in_id'],
             ));
 
-            //Add this blog to their READING LIST:
-            $this->READ_model->read_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
-
-            $next_in_id = $this->READ_model->read_next_find($user_en['en']['en_id'], $referrer_ins[0]);
+            if(count($referrer_ins)){
+                //Add this blog to their READING LIST:
+                $this->READ_model->read_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
+            } else {
+                //Cannot be added, likely because its not published:
+                $_POST['referrer_in_id'] = 0;
+            }
 
         } else {
             $referrer_ins = array();
-            $next_in_id = 0;
         }
 
 
@@ -2380,7 +2382,7 @@ fragment PostListingItemSidebar_post on Post {
         if (strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
         } elseif(intval($_POST['referrer_in_id']) > 0) {
-            $login_url = '/'.( $next_in_id > 0 ? $next_in_id : $_POST['referrer_in_id'] );
+            $login_url = '/'.$_POST['referrer_in_id'];
         } else {
             //Go to home page and let them continue from there:
             $login_url = '/';

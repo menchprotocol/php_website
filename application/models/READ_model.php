@@ -981,9 +981,6 @@ class READ_model extends CI_Model
                 ), $en_id, 10681 /* Blogs Ordered Automatically  */);
             }
 
-            //Try to auto complete it if possible:
-            $this->READ_model->read__completion_auto_complete($en_id, $ins[0], 4559 /* Read Messages Only */);
-
         }
 
         return true;
@@ -1436,6 +1433,7 @@ class READ_model extends CI_Model
 
 
         //Give bloggers access to drafting blogs
+        $blog_is_drafting = false;
         if(!in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7355'))){
 
             //Allow them to read if they have blogging powers:
@@ -1448,6 +1446,7 @@ class READ_model extends CI_Model
 
                 //Inform them that they can read it because they are
                 echo_message('Blog is not yet published. [For your preview only]', false, $recipient_en, $push_message);
+                $blog_is_drafting = true;
 
             } else {
 
@@ -1518,30 +1517,49 @@ class READ_model extends CI_Model
          */
         if(!$in_reading_list){
 
-            //Give option to add to reading list:
-            if($push_message){
-                $this->READ_model->dispatch_message(
-                    'Interested to read ' . $ins[0]['in_title'] . '?',
-                    $recipient_en,
-                    $push_message,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Start Reading',
-                            'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
-                        ),
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Cancel',
-                            'payload' => 'SUBSCRIBE-REJECT',
-                        ),
-                    ),
-                    array(
-                        'ln_child_blog_id' => $ins[0]['in_id'],
-                    )
-                );
+            if($blog_is_drafting){
+
+                $notice = 'Cannot read interactively until published live.';
+
+                //Give option to add to reading list:
+                if($push_message){
+                    $this->READ_model->dispatch_message(
+                        $notice,
+                        $recipient_en,
+                        $push_message
+                    );
+                } else {
+                    echo '<div style="padding-bottom:40px;"><i class="fal fa-info-circle"></i> '.$notice.'</div>';
+                }
+
             } else {
-                echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
+
+                //Give option to add to reading list:
+                if($push_message){
+                    $this->READ_model->dispatch_message(
+                        'Interested to read ' . $ins[0]['in_title'] . '?',
+                        $recipient_en,
+                        $push_message,
+                        array(
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Start Reading',
+                                'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
+                            ),
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Cancel',
+                                'payload' => 'SUBSCRIBE-REJECT',
+                            ),
+                        ),
+                        array(
+                            'ln_child_blog_id' => $ins[0]['in_id'],
+                        )
+                    );
+                } else {
+                    echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
+                }
+
             }
 
             return true;
