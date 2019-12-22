@@ -675,7 +675,7 @@ class READ_model extends CI_Model
                 }
 
                 //Yes, communicate it:
-                $this->READ_model->read_echo($next_in_id, array('en_id' => $en_id));
+                $this->READ_model->read_echo($next_in_id, array('en_id' => $en_id), true);
 
             } else {
 
@@ -1369,7 +1369,7 @@ class READ_model extends CI_Model
     }
 
 
-    function read_echo($in_id, $recipient_en = array(), $push_message = true){
+    function read_echo($in_id, $recipient_en = array(), $push_message = false){
 
         /*
          * Function to read a Blog, it's messages,
