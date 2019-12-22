@@ -160,9 +160,9 @@ class Read extends CI_Controller
         $html_message .= '<div>Growth stats for the <span title="'.$last_week_start.' to '.$last_week_end.'">week of '.date("M jS", $last_week_start_timestamp).'</span> are:</div>';
         $html_message .= '<br />';
 
-        $html_message .= '<div><span style="width:80px; display: inline-block;">🔵PLAY</span><span style="width:60px; display: inline-block;">'.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'%</span>to '.echo_number($play_coins_total_last_week[0]['total']).'</div>';
-        $html_message .= '<div><span style="width:80px; display: inline-block;">🔴READ</span><span style="width:60px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</span>to '.echo_number($read_coins_total_last_week[0]['total']).'</div>';
-        $html_message .= '<div><span style="width:80px; display: inline-block;">🟡BLOG</span><span style="width:60px; display: inline-block;">'.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'%</span>to '.echo_number($blog_coins_total_last_week[0]['total']).' [PRIMARY]</div>';
+        $html_message .= '<div><span style="width:70px; display: inline-block;">🔵PLAY</span><span style="width:50px; display: inline-block;">'.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'%</span>to '.echo_number($play_coins_total_last_week[0]['total']).'</div>';
+        $html_message .= '<div><span style="width:70px; display: inline-block;">🔴READ</span><span style="width:50px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</span>to '.echo_number($read_coins_total_last_week[0]['total']).'</div>';
+        $html_message .= '<div><span style="width:70px; display: inline-block;">🟡BLOG</span><span style="width:50px; display: inline-block;">'.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'%</span>to '.echo_number($blog_coins_total_last_week[0]['total']).' [PRIMARY]</div>';
 
         $html_message .= '<br />';
         $html_message .= '<div>Cheers,</div>';
