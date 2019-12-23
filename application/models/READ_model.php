@@ -3733,7 +3733,7 @@ class READ_model extends CI_Model
 
             //Confirm if they are interested to subscribe to this blog:
             $this->READ_model->dispatch_message(
-                'Hello hello 👋 are you interested to ' . $ins[0]['in_title'] . '?',
+                'Hi 👋 are you interested to ' . $ins[0]['in_title'] . '?',
                 $en,
                 true,
                 array(
