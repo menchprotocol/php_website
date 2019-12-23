@@ -334,7 +334,7 @@ class Read extends CI_Controller
             //Count this status:
             $objects_count = $this->BLOG_model->in_fetch(array(
                 'in_status_player_id' => $en_id
-            ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
+            ), 0, 0, array(), 'COUNT(in_id) as totals');
 
             //Display this status count:
             echo '<tr>';
@@ -354,7 +354,7 @@ class Read extends CI_Controller
         //Count all Blog Subtypes:
         $blog_types_counts = $this->BLOG_model->in_fetch(array(
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-        ), array('in_type'), 0, 0, array(), 'COUNT(in_type_player_id) as total_count, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        ), 0, 0, array(), 'COUNT(in_type_player_id) as total_count, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
         //Count totals:
         $addup_total_count = addup_array($blog_types_counts, 'total_count');
@@ -366,13 +366,9 @@ class Read extends CI_Controller
 
 
 
-
-
-
         //Players
         $en_all_7303 = $this->config->item('en_all_7303'); //Platform Dashboard
         $en_all_6177 = $this->config->item('en_all_6177'); //Player Statuses
-
 
 
 
@@ -388,7 +384,7 @@ class Read extends CI_Controller
             //Count this status:
             $objects_count = $this->PLAY_model->en_fetch(array(
                 'en_status_player_id' => $en_id
-            ), array(), 0, 0, array(), 'COUNT(en_id) as totals');
+            ), 0, 0, array(), 'COUNT(en_id) as totals');
 
             //Display this status count:
             echo '<tr>';
@@ -1296,7 +1292,7 @@ class Read extends CI_Controller
         }
 
         //Fetch current progression links, if any:
-        $current_progression_links = $this->READ_model->ln_fetch(array(
+        $read_progress = $this->READ_model->ln_fetch(array(
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
             'ln_creator_player_id' => $en_id,
             'ln_parent_blog_id' => $parent_in_id,
@@ -1316,7 +1312,7 @@ class Read extends CI_Controller
         $this->READ_model->read__completion_auto_complete($en_id, $answer_ins[0], 7485 /* User Step Answer Unlock */);
 
         //Archive previous progression links:
-        foreach($current_progression_links as $ln){
+        foreach($read_progress as $ln){
             $this->READ_model->ln_update($ln['ln_id'], array(
                 'ln_parent_read_id' => $new_progression_link['ln_id'],
                 'ln_status_player_id' => 6173, //Link Removed

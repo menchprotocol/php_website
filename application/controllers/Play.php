@@ -658,7 +658,7 @@ fragment PostListingItemSidebar_post on Post {
         //Validate player ID and fetch data:
         $ens = $this->PLAY_model->en_fetch(array(
             'en_id' => $en_id,
-        ), array('en__child_count'));
+        ));
 
         if (count($ens) < 1) {
             return redirect_message('/play', '<div class="alert alert-danger" role="alert">Invalid Player ID</div>');
@@ -829,7 +829,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //Check to see if they are already logged in?
         $session_en = superpower_assigned();
-        if (isset($session_en['en__parents'][0])) {
+        if (isset($session_en['en_id'])) {
             //Lead trainer and above, go to console:
             if($in_id > 0){
                 return redirect_message('/' . $in_id);
@@ -1201,7 +1201,7 @@ fragment PostListingItemSidebar_post on Post {
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
             '(ln_child_player_id = ' . $_POST['en_id'] . ' OR ln_parent_player_id = ' . $_POST['en_id'] . ')' => null,
-        ), array(), 999999);
+        ), array(), 0);
 
         return echo_json(array(
             'status' => 1,
@@ -1283,7 +1283,7 @@ fragment PostListingItemSidebar_post on Post {
         //Fetch current data:
         $ens = $this->PLAY_model->en_fetch(array(
             'en_id' => intval($_POST['en_id']),
-        ), array('en__parents'));
+        ));
 
         if (!$session_en) {
             return echo_json(array(
@@ -1446,7 +1446,14 @@ fragment PostListingItemSidebar_post on Post {
 
                 if($_POST['en_id'] == $_POST['en_focus_id']){
                     //Fetch parents to redirect to:
-                    $remove_redirect_url = '/play' . (isset($ens[0]['en__parents'][0]['en_id']) ? '/' . $ens[0]['en__parents'][0]['en_id'] : '');
+                    $en__parents = $this->READ_model->ln_fetch(array(
+                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                        'ln_child_player_id' => $_POST['en_id'],
+                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                        'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                    ), array('en_parent'), 1);
+
+                    $remove_redirect_url = '/play/' . ( count($en__parents) ? $en__parents[0]['en_id'] : $session_en['en_id'] );
                 }
 
                 //Display proper message:
@@ -2153,7 +2160,7 @@ fragment PostListingItemSidebar_post on Post {
             //Validate user:
             $ens = $this->PLAY_model->en_fetch(array(
                 'en_id' => $validate_links[0]['ln_creator_player_id'],
-            ), array('skip_en__parents'));
+            ));
             if(count($ens) < 1){
                 return echo_json(array(
                     'status' => 0,

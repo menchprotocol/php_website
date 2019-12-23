@@ -52,7 +52,7 @@ class Blog extends CI_Controller {
         //Validate/fetch BLOG:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
-        ), array('in__parents'));
+        ));
         if ( count($ins) < 1) {
             return redirect_message('/blog', '<div class="alert alert-danger" role="alert">BLOG #' . $in_id . ' not found</div>');
         }

@@ -80,16 +80,12 @@ class BLOG_model extends CI_Model
         }
     }
 
-    function in_fetch($match_columns = array(), $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
+    function in_fetch($match_columns = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
     {
 
         //The basic fetcher for blogs
         $this->db->select($select);
         $this->db->from('table_blog');
-
-        if (in_array('in_type', $join_objects)) {
-            $this->db->join('table_play', 'in_type_player_id=en_id', 'left');
-        }
 
         foreach ($match_columns as $key => $value) {
             $this->db->where($key, $value);
@@ -107,47 +103,7 @@ class BLOG_model extends CI_Model
             $this->db->limit($limit, $limit_offset);
         }
         $q = $this->db->get();
-        $ins = $q->result_array();
-
-        foreach ($ins as $key => $value) {
-
-            //Should we append Blog Notes?
-            if (in_array('in__messages', $join_objects)) {
-                $ins[$key]['in__messages'] = $this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
-                    'ln_child_blog_id' => $value['in_id'],
-                ), array(), 0, 0, array('ln_order' => 'ASC'));
-            }
-
-            //Should we fetch all parent blogs?
-            if (in_array('in__parents', $join_objects)) {
-
-                $ins[$key]['in__parents'] = $this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                    'ln_child_blog_id' => $value['in_id'],
-                ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child blogs
-
-            }
-
-            //Have we been asked to append any children/granchildren to this query?
-            if (in_array('in__children', $join_objects)) {
-
-                //Fetch immediate children:
-                $ins[$key]['in__children'] = $this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                    'ln_parent_blog_id' => $value['in_id'],
-                ), array('in_child'), 0, 0, array('ln_order' => 'ASC')); //Child blogs must be ordered
-
-            }
-        }
-
-        //Return everything that was collected:
-        return $ins;
+        return $q->result_array();
     }
 
     function in_update($id, $update_columns, $external_sync = false, $ln_creator_player_id = 0)
@@ -715,7 +671,7 @@ class BLOG_model extends CI_Model
         $common_totals = $this->BLOG_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-        ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_read_time) as total_seconds');
+        ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_read_time) as total_seconds');
 
         $common_base_resources = array(
             'steps' => $common_totals[0]['total_steps'],

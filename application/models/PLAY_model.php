@@ -21,11 +21,6 @@ class PLAY_model extends CI_Model
     function en_activate_session($en, $messenger_signin = 0){
 
         //PROFILE
-        $en['en__parents'] = $this->READ_model->ln_fetch(array(
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-            'ln_child_player_id' => $en['en_id'], //This child player
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        ), array('en_parent'));
         $session_data['user'] = $en;
         $session_data['messenger_signin'] = $messenger_signin;
 
@@ -36,7 +31,11 @@ class PLAY_model extends CI_Model
         $session_data['activate_superpowers_en_ids'] = array(); //Only superpowers activated by player
 
 
-        foreach($en['en__parents'] as $en_parent){
+        foreach($this->READ_model->ln_fetch(array(
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+            'ln_child_player_id' => $en['en_id'], //This child player
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        ), array('en_parent')) as $en_parent){
             if(in_array($en_parent['en_id'], $this->config->item('en_ids_10957')) && in_array($en_parent['en_status_player_id'], $this->config->item('en_ids_7357')) && in_array($en_parent['ln_status_player_id'], $this->config->item('en_ids_7359'))){
 
                 //It's assigned!
@@ -141,7 +140,7 @@ class PLAY_model extends CI_Model
         }
     }
 
-    function en_fetch($match_columns = array(), $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('en_name' => 'ASC'), $select = '*', $group_by = null)
+    function en_fetch($match_columns = array(), $limit = 0, $limit_offset = 0, $order_columns = array('en_name' => 'ASC'), $select = '*', $group_by = null)
     {
 
         //Fetch the target players:
@@ -165,39 +164,7 @@ class PLAY_model extends CI_Model
         }
 
         $q = $this->db->get();
-        $res = $q->result_array();
-
-
-        //Now fetch parents:
-        foreach ($res as $key => $val) {
-
-            //This will Count ALL the children:
-            if (in_array('en__child_count', $join_objects)) {
-
-                //Count children:
-                $res[$key]['en__child_count'] = $this->PLAY_model->en_child_count($val['en_id'], $this->config->item('en_ids_7358') /* Player Statuses Active */);
-            }
-
-
-            //Always fetch player parents unless explicitly requested not to:
-            if (in_array('skip_en__parents', $join_objects) || !isset($val['en_id'])) {
-
-                $res[$key]['en__parents'] = array();
-
-            } else {
-
-                //Fetch parents by default:
-                $res[$key]['en__parents'] = $this->READ_model->ln_fetch(array(
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_child_player_id' => $val['en_id'], //This child player
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
-                ), array('en_parent'), 0, 0, array('en_name' => 'ASC'));
-
-            }
-        }
-
-        return $res;
+        return $q->result_array();
     }
 
     function en_update($id, $update_columns, $external_sync = false, $ln_creator_player_id = 0)
@@ -1073,10 +1040,10 @@ class PLAY_model extends CI_Model
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'en_status_player_id IN (' . join(',', $en_statuses) . ')' => null,
-        ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
+        ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
 
         if (count($child_links) > 0) {
-            $en__child_count = intval($child_links[0]['en__child_count']);
+            $en__child_count = intval($child_links[0]['totals']);
         }
 
         return $en__child_count;

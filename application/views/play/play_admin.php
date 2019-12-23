@@ -318,7 +318,7 @@ if(!$action) {
     $orphan_ens = $this->PLAY_model->en_fetch(array(
         ' NOT EXISTS (SELECT 1 FROM table_read WHERE en_id=ln_child_player_id AND ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status_player_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
         'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
-    ), array('skip_en__parents'));
+    ));
 
     if(count($orphan_ens) > 0){
 
@@ -683,7 +683,7 @@ if(!$action) {
     foreach ($this->BLOG_model->in_fetch(array(
         'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
         'in_type_player_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
-    ), array(), 0, 0, array('in_id' => 'DESC')) as $count => $in) {
+    ), 0, 0, array('in_id' => 'DESC')) as $count => $in) {
 
         echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Blog Statuses */, $in['in_status_player_id']).' '.echo_en_cache('en_all_6193' /* OR Blogs */, $in['in_type_player_id']).' <b><a href="https://mench.com/blog/'.$in['in_id'].'">'.echo_in_title($in['in_title']).'</a></b></div>';
 

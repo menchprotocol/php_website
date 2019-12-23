@@ -701,8 +701,8 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
     } else {
 
         //Block access:
-        if(isset($session_en['en__parents'][0])){
-            $goto_url = '/play';
+        if(isset($session_en['en_id'])){
+            $goto_url = '/play/'.$session_en['en_id'];
         } else {
             $goto_url = '/signin?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
@@ -1090,7 +1090,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $limits['in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //Blog Statuses Active
             }
 
-            $db_rows['in'] = $CI->BLOG_model->in_fetch($limits, array('in__messages'));
+            $db_rows['in'] = $CI->BLOG_model->in_fetch($limits);
 
         } elseif ($loop_obj == 'en') {
 
@@ -1100,7 +1100,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $limits['en_status_player_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')'] = null; //Player Statuses Active
             }
 
-            $db_rows['en'] = $CI->PLAY_model->en_fetch($limits, array('en__parents'));
+            $db_rows['en'] = $CI->PLAY_model->en_fetch($limits);
 
         }
 
@@ -1163,7 +1163,12 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 //Add keywords:
                 $has_featured_parent_en = false;
                 $export_row['alg_obj_keywords'] = '';
-                foreach ($db_row['en__parents'] as $ln) {
+                foreach ($this->READ_model->ln_fetch(array(
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                    'ln_child_player_id' => $db_row['en_id'], //This child player
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                ), array('en_parent'), 0, 0, array('en_name' => 'ASC')) as $ln) {
 
                     //Always add to tags:
                     array_push($export_row['_tags'], 'alg_author_' . $ln['en_id']);
@@ -1201,7 +1206,11 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Add keywords:
                 $export_row['alg_obj_keywords'] = '';
-                foreach ($db_row['in__messages'] as $ln) {
+                foreach ($this->READ_model->ln_fetch(array(
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
+                    'ln_child_blog_id' => $db_row['in_id'],
+                ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
                     $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
                 }
                 $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
