@@ -116,10 +116,13 @@ li a {
 }
 
 /* FONTS */
-.montserrat, .new-player-input, .algolia-autocomplete, .read-topic, .btn {
+.montserrat, .new-player-input, .algolia-autocomplete, .read-topic, .btn, .player-name {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     text-decoration: none;
+}
+.player-appendix a {
+    text-decoration: underline;
 }
 .doupper, .new-player-input{
     text-transform: uppercase;
