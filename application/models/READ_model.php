@@ -1471,6 +1471,9 @@ class READ_model extends CI_Model
             //Fetch all parents trees for this blog
             $recursive_parents = $this->BLOG_model->in_fetch_recursive_public_parents($ins[0]['in_id']);
 
+            print_r($player_read_ids);
+            print_r($recursive_parents);
+
             //Go through parents trees and detect intersects with user blogs. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
             foreach ($recursive_parents as $grand_parent_ids) {
 
