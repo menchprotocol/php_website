@@ -173,7 +173,6 @@ class Read extends CI_Controller
         //Send email to all subscribers:
         foreach($this->READ_model->ln_fetch(array(
             'ln_parent_player_id' => 12114,
-            'ln_child_player_id' => 1,
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
@@ -258,22 +257,14 @@ class Read extends CI_Controller
         //Fetch data:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
         ));
 
         //Make sure we found it:
         if ( count($ins) < 1) {
             return redirect_message('/', '<div class="alert alert-danger" role="alert">Blog #' . $in_id . ' not found</div>');
-        } elseif(!in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7355') /* Blog Statuses Public */)){
-            if(superpower_assigned(10939)){
-                //Return error:
-                return redirect_message('/blog/'.$in_id );
-            } else {
-                //Return error:
-                return redirect_message('/', '<div class="alert alert-danger" role="alert">BLOG is not yet published</div>');
-            }
         }
 
-        //Fetch/Create landing page view cookie:
 
         //Log Blog Viewed by User:
         $this->READ_model->ln_create(array(
@@ -282,7 +273,6 @@ class Read extends CI_Controller
             'ln_parent_blog_id' => $in_id,
             'ln_order' => fetch_cookie_order('7610_'.$in_id),
         ));
-
 
         $this->load->view('header', array(
             'title' => echo_in_title($ins[0]['in_title'], true).' | READ',
