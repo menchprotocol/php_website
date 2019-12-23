@@ -1517,7 +1517,7 @@ class READ_model extends CI_Model
                         'ln_child_blog_id' => $ins[0]['in_id'],
                     )
                 );
-            } else {
+            } elseif(!isset($_GET['autoexpand'])) {
                 echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
             }
 
