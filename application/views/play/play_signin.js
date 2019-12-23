@@ -34,14 +34,14 @@ function goto_step(this_step_count){
     $('#step'+step_count+' :input:visible:first').focus();
 }
 
-function confirm_sign_on_messenger(){
+function confirm_sign_on_messenger(referrer_in_id){
     var r = confirm("Ok, I will take you to Messenger now...");
     if (r == true) {
-        sign_on_messenger();
+        sign_on_messenger(referrer_in_id);
     }
 }
 
-function sign_on_messenger(){
+function sign_on_messenger(referrer_in_id){
 
     if(!logged_messenger){
         js_ln_create(channel_choice_messenger);
@@ -50,7 +50,7 @@ function sign_on_messenger(){
 
     //Redirect to Messenger with a bit of delay to log the link above:
     setTimeout(function () {
-        window.location = 'https://m.me/menchblogs';
+        window.location = 'https://m.me/menchblogs' + ( referrer_in_id > 0 ? '?ref=' + referrer_in_id : '' );
     }, 377);
 
 }
@@ -72,7 +72,7 @@ function vote_channel(en_chosen){
 
 
 
-function select_channel(en_chosen){
+function select_channel(en_chosen, referrer_in_id){
 
 
     if(parseInt(en_chosen) == 6196 /* Mench on Messenger */ ){
@@ -81,7 +81,7 @@ function select_channel(en_chosen){
         $('#step1button').html('<div style="font-size: 1.2em; padding-top:10px;"><i class="far fa-yin-yang fa-spin"></i> Loading Messenger...</div>');
 
         //Log link:
-        sign_on_messenger();
+        sign_on_messenger(referrer_in_id);
 
     } else if (parseInt(en_chosen) == 12103) {
 
