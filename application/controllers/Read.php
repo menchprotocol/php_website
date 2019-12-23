@@ -1509,13 +1509,6 @@ class Read extends CI_Controller
             return print_r('unknown page');
         }
 
-
-        $this->READ_model->ln_create(array(
-            'ln_content' => 'facebook_webhook() test',
-            'ln_metadata' => $ln_metadata,
-            'ln_type_player_id' => 4246, //Platform Bug Reports
-        ));
-
         //Loop through entries:
         foreach ($ln_metadata['entry'] as $entry) {
 
