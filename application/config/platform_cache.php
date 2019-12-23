@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-23 00:08:12 PST
+//Generated 2019-12-23 00:39:09 PST
 
 //BLOG TEXT INPUTS:
 $config['en_ids_12112'] = array(4358,4362,4739,4735);
@@ -1783,7 +1783,7 @@ $config['en_all_6404'] = array(
 );
 
 //PLATFORM MEMORY JAVASCRIPT:
-$config['en_ids_11054'] = array(4486,4737,7356,6201,7585,6404,6177,6186);
+$config['en_ids_11054'] = array(4486,4737,7356,7355,6201,7585,6404,6177,6186);
 $config['en_all_11054'] = array(
     4486 => array(
         'm_icon' => '<i class="fas fa-link yellow" aria-hidden="true"></i>',
@@ -1800,6 +1800,12 @@ $config['en_all_11054'] = array(
     7356 => array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
         'm_name' => 'BLOG STATUSES ACTIVE',
+        'm_desc' => '',
+        'm_parents' => array(11054,10891,4527),
+    ),
+    7355 => array(
+        'm_icon' => '<i class="far fa-eye"></i>',
+        'm_name' => 'BLOG STATUSES PUBLIC',
         'm_desc' => '',
         'm_parents' => array(11054,10891,4527),
     ),
@@ -2370,7 +2376,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="far fa-eye"></i>',
         'm_name' => 'BLOG STATUSES PUBLIC',
         'm_desc' => '',
-        'm_parents' => array(10891,4527),
+        'm_parents' => array(11054,10891,4527),
     ),
     11021 => array(
         'm_icon' => '<i class="fas fa-list-alt yellow" aria-hidden="true"></i>',
