@@ -124,7 +124,7 @@ li a {
 .player-appendix a {
     text-decoration: underline;
 }
-.doupper, .new-player-input{
+.doupper, .new-player-input, .player-name{
     text-transform: uppercase;
 }
 
