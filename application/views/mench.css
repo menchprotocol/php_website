@@ -121,7 +121,7 @@ li a {
     font-weight: bold;
     text-decoration: none;
 }
-.player-appendix a {
+.player-appendix a, .player-appendix a .url_truncate {
     text-decoration: underline;
 }
 .doupper, .new-player-input, .player-name{
