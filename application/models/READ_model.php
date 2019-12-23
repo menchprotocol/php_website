@@ -1450,7 +1450,12 @@ class READ_model extends CI_Model
 
             } else {
 
-                echo_message('Blog is not yet published.', true, $recipient_en, $push_message);
+                echo_message('Blog is not yet published. ['.$recipient_en['en_id'].']'.count($this->READ_model->ln_fetch(array(
+                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_child_player_id' => $recipient_en['en_id'],
+                        'ln_parent_player_id' => 10939,
+                    ))), true, $recipient_en, $push_message);
                 return false;
 
             }
