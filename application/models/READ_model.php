@@ -1378,7 +1378,7 @@ class READ_model extends CI_Model
         //Fetch/Validate blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ));
         if (count($ins) < 1) {
             $this->READ_model->ln_create(array(
@@ -1430,32 +1430,6 @@ class READ_model extends CI_Model
                 return false;
             }
         }
-
-
-        //Give bloggers access to drafting blogs
-        $blog_is_drafting = false;
-        if(!in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7355'))){
-
-            //Allow them to read if they have blogging powers:
-            if($recipient_en['en_id'] > 0 && count($this->READ_model->ln_fetch(array(
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_child_player_id' => $recipient_en['en_id'],
-                    'ln_parent_player_id' => 10939,
-                ))) > 0){
-
-                //Inform them that they can read it because they are
-                echo_message('Blog is not yet published. [For your preview only]', false, $recipient_en, $push_message);
-                $blog_is_drafting = true;
-
-            } else {
-
-                echo_message('Blog is not yet published.', true, $recipient_en, $push_message);
-                return false;
-
-            }
-        }
-
 
 
         /*
@@ -1517,49 +1491,30 @@ class READ_model extends CI_Model
          */
         if(!$in_reading_list){
 
-            if($blog_is_drafting){
-
-                $notice = 'Cannot read interactively until published live.';
-
-                //Give option to add to reading list:
-                if($push_message){
-                    $this->READ_model->dispatch_message(
-                        $notice,
-                        $recipient_en,
-                        $push_message
-                    );
-                } else {
-                    echo '<div style="padding-bottom:40px;"><i class="fal fa-info-circle"></i> '.$notice.'</div>';
-                }
-
-            } else {
-
-                //Give option to add to reading list:
-                if($push_message){
-                    $this->READ_model->dispatch_message(
-                        'Interested to read ' . $ins[0]['in_title'] . '?',
-                        $recipient_en,
-                        $push_message,
+            //Give option to add to reading list:
+            if($push_message){
+                $this->READ_model->dispatch_message(
+                    'Interested to read ' . $ins[0]['in_title'] . '?',
+                    $recipient_en,
+                    $push_message,
+                    array(
                         array(
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Start Reading',
-                                'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
-                            ),
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Cancel',
-                                'payload' => 'SUBSCRIBE-REJECT',
-                            ),
+                            'content_type' => 'text',
+                            'title' => 'Start Reading',
+                            'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
                         ),
                         array(
-                            'ln_child_blog_id' => $ins[0]['in_id'],
-                        )
-                    );
-                } else {
-                    echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
-                }
-
+                            'content_type' => 'text',
+                            'title' => 'Cancel',
+                            'payload' => 'SUBSCRIBE-REJECT',
+                        ),
+                    ),
+                    array(
+                        'ln_child_blog_id' => $ins[0]['in_id'],
+                    )
+                );
+            } else {
+                echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
             }
 
             return true;

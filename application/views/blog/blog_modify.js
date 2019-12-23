@@ -179,6 +179,15 @@ function show_save_button(){
     }
 }
 
+function read_preview(){
+    if(parseInt($('.dropi_4737_0.active').attr('new-en-id')) in js_en_all_7355){
+        //Blog is public, go to preview:
+        window.location = '/' + in_loaded_id;
+    } else {
+        //Inform them that they cannot read yet:
+        alert('Publish blog before reading it.');
+    }
+}
 
 function in_update_dropdown(element_id, new_en_id, ln_id){
 

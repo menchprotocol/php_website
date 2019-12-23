@@ -257,12 +257,13 @@ class Read extends CI_Controller
         //Fetch data:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
         ));
 
         //Make sure we found it:
         if ( count($ins) < 1) {
             return redirect_message('/', '<div class="alert alert-danger" role="alert">Blog #' . $in_id . ' not found</div>');
+        } elseif(!in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7355') /* Blog Statuses Public */)){
+            return redirect_message('/', '<div class="alert alert-danger" role="alert">Blog #' . $in_id . ' not published yet</div>');
         }
 
 
@@ -277,7 +278,6 @@ class Read extends CI_Controller
         $this->load->view('header', array(
             'title' => echo_in_title($ins[0]['in_title'], true).' | READ',
         ));
-
 
         //Load specific view based on Blog Level:
         $this->load->view('read/read_blog', array(

@@ -48,10 +48,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //Blog Status:
             echo '<div class="inline-block">'.echo_in_dropdown(4737, $in['in_status_player_id'], 'btn-blog', $is_author && $is_active).'</div>';
 
-            //Give preview option if active:
-            if($is_active){
-                echo '<div class="inline-block pull-right"><a href="/'.$in['in_id'].'" class="btn btn-read" data-toggle="tooltip" title="Read interactively" data-placement="right">PREVIEW <i class="fas fa-angle-right"></i></a></div>';
-            }
+            //Give preview option:
+            echo '<div class="inline-block pull-right"><a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Read interactively" data-placement="left">READ <i class="fas fa-angle-right"></i></a></div>';
 
         echo '</div>';
 
