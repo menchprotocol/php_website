@@ -1216,7 +1216,7 @@ function echo_tree_actionplan($in, $autoexpand){
         $return_html .= '<div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">';
 
 
-        $return_html .= '<h5 class="panel-title">';
+        $return_html .= '<h5 class="panel-title montserrat">';
 
         if($has_level2_content){
             $return_html .= '<a class="js-ln-create-steps-review" blog-id="'.$in_level2['in_id'].'" role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
