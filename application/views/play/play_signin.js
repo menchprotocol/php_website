@@ -215,6 +215,7 @@ function singin_check_password(){
         login_en_id: $('#login_en_id').val(),
         input_password: $('#input_password').val(),
         referrer_url: referrer_url,
+        referrer_in_id: referrer_in_id,
     }, function (data) {
 
         if (data.status) {

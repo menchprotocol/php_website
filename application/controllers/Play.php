@@ -2007,6 +2007,11 @@ fragment PostListingItemSidebar_post on Post {
                 'status' => 0,
                 'message' => 'Missing referrer URL',
             ));
+        } elseif (!isset($_POST['referrer_in_id'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing blog referrer',
+            ));
         }
 
 
@@ -2050,11 +2055,22 @@ fragment PostListingItemSidebar_post on Post {
         }
 
 
+        //All good...
+
+        //Was there a blog to read?
+        if(intval($_POST['referrer_in_id']) > 0){
+            //Add this blog to their READING LIST:
+            $this->READ_model->read_add($ens[0]['en_id'], $_POST['referrer_in_id']);
+        }
+
+
         //Assign session & log link:
         $this->PLAY_model->en_activate_session($ens[0]);
 
 
-        if (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
+        if (intval($_POST['referrer_in_id']) > 0) {
+            $login_url = '/'.$_POST['referrer_in_id'];
+        } elseif (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
         } else {
             $login_url = '/';
@@ -2331,7 +2347,7 @@ fragment PostListingItemSidebar_post on Post {
                 'in_id' => $_POST['referrer_in_id'],
             ));
 
-            if(count($referrer_ins)){
+            if(count($referrer_ins) > 0){
                 //Add this blog to their READING LIST:
                 $this->READ_model->read_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
             } else {
