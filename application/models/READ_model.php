@@ -1468,20 +1468,21 @@ class READ_model extends CI_Model
             //Fetch entire reading list:
             $player_read_ids = $this->READ_model->read_ids($recipient_en['en_id']);
 
-            //Fetch all parents trees for this blog
-            $recursive_parents = $this->BLOG_model->in_fetch_recursive_public_parents($ins[0]['in_id']);
+            if(in_array($ins[0]['in_id'], $player_read_ids)){
+                $in_reading_list = true;
+            } else {
+                //Fetch all parents trees for this blog
+                $recursive_parents = $this->BLOG_model->in_fetch_recursive_public_parents($ins[0]['in_id']);
 
-            print_r($player_read_ids);
-            print_r($recursive_parents);
+                //Go through parents trees and detect intersects with user blogs. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
+                foreach ($recursive_parents as $grand_parent_ids) {
 
-            //Go through parents trees and detect intersects with user blogs. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-            foreach ($recursive_parents as $grand_parent_ids) {
-
-                //Does this parent and its grandparents have an intersection with the user blogs?
-                if (array_intersect($grand_parent_ids, $player_read_ids)) {
-                    //Blog is part of their 🔴 READING LIST:
-                    $in_reading_list = true;
-                    break;
+                    //Does this parent and its grandparents have an intersection with the user blogs?
+                    if (array_intersect($grand_parent_ids, $player_read_ids)) {
+                        //Blog is part of their 🔴 READING LIST:
+                        $in_reading_list = true;
+                        break;
+                    }
                 }
             }
         }
