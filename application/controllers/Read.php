@@ -1510,6 +1510,12 @@ class Read extends CI_Controller
         }
 
 
+        $this->READ_model->ln_create(array(
+            'ln_content' => 'facebook_webhook() test',
+            'ln_metadata' => $ln_metadata,
+            'ln_type_player_id' => 4246, //Platform Bug Reports
+        ));
+
         //Loop through entries:
         foreach ($ln_metadata['entry'] as $entry) {
 
@@ -1606,13 +1612,6 @@ class Read extends CI_Controller
                         $ln_data['ln_type_player_id'] = 4460;
                         $ln_data['ln_content'] = $im['message']['text']; //Quick reply always has a text
 
-                        //Test message:
-                        $this->READ_model->dispatch_message(
-                            'Hi quick rpely '.$im['message']['quick_reply']['payload'],
-                            $en,
-                            true
-                        );
-
                         //Digest quick reply:
                         $quick_reply_results = $this->READ_model->digest_received_payload($en, $im['message']['quick_reply']['payload']);
 
@@ -1628,13 +1627,6 @@ class Read extends CI_Controller
                         }
 
                     } elseif (isset($im['message']['text'])) {
-
-                        //Test message:
-                        $this->READ_model->dispatch_message(
-                            'Hi text '.$im['message']['text'],
-                            $en,
-                            true
-                        );
 
                         //Set message content:
                         $ln_data['ln_content'] = $im['message']['text'];
