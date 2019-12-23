@@ -1525,7 +1525,6 @@ class READ_model extends CI_Model
         }
 
 
-        echo 'Already in reading list';
         return true;
 
         /*

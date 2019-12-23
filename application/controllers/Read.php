@@ -24,22 +24,21 @@ class Read extends CI_Controller
         }
 
         //Add this blog to their READING LIST:
-        if($this->READ_model->read_add($session_en['en_id'], $in_id)){
-
-            //Find next blog based on player's reading list:
-            $ins = $this->BLOG_model->in_fetch(array(
-                'in_id' => $in_id,
-            ));
-            $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
-            if($next_in_id > 0){
-                return redirect_message('/' . $next_in_id, '<div class="alert alert-success" role="alert">Successfully added to your 🔴 READING LIST.</div>');
-            } else {
-                return redirect_message('/read', '<div class="alert alert-danger" role="alert">No next read found in your 🔴 READING LIST.</div>');
-            }
-
-        } else {
+        if(!$this->READ_model->read_add($session_en['en_id'], $in_id)){
             //Failed to add to reading list:
             return redirect_message('/read', '<div class="alert alert-danger" role="alert">Failed to add blog to your 🔴 READING LIST.</div>');
+        }
+
+
+        //Find next blog based on player's reading list:
+        $ins = $this->BLOG_model->in_fetch(array(
+            'in_id' => $in_id,
+        ));
+        $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
+        if($next_in_id > 0){
+            return redirect_message('/' . $next_in_id, '<div class="alert alert-success" role="alert">Successfully added to your 🔴 READING LIST.</div>');
+        } else {
+            return redirect_message('/read', '<div class="alert alert-danger" role="alert">No next read found in your 🔴 READING LIST.</div>');
         }
 
     }
@@ -1607,6 +1606,13 @@ class Read extends CI_Controller
                         $ln_data['ln_type_player_id'] = 4460;
                         $ln_data['ln_content'] = $im['message']['text']; //Quick reply always has a text
 
+                        //Test message:
+                        $this->READ_model->dispatch_message(
+                            'Hi quick rpely '.$im['message']['quick_reply']['payload'],
+                            $en,
+                            true
+                        );
+
                         //Digest quick reply:
                         $quick_reply_results = $this->READ_model->digest_received_payload($en, $im['message']['quick_reply']['payload']);
 
@@ -1622,6 +1628,13 @@ class Read extends CI_Controller
                         }
 
                     } elseif (isset($im['message']['text'])) {
+
+                        //Test message:
+                        $this->READ_model->dispatch_message(
+                            'Hi text '.$im['message']['text'],
+                            $en,
+                            true
+                        );
 
                         //Set message content:
                         $ln_data['ln_content'] = $im['message']['text'];
