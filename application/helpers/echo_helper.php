@@ -2295,7 +2295,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message){
             //Has this been completed before by this user?
             $completion_rate = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $child_in);
             $is_next = ($completion_rate['completion_percentage']<100 && !$found_incomplete);
-            $footnotes = ( $is_next ? '[UP NEXT]' : '['.$completion_rate['completion_percentage'].'% COMPLETED]' );
+            $footnotes = ( $is_next ? '[UP NEXT]' : ( $completion_rate['completion_percentage'] > 0 ? '['.$completion_rate['completion_percentage'].'% COMPLETED]' : '' ));
 
             if($push_message){
 
