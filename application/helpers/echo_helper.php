@@ -2299,8 +2299,8 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message){
 
         } else {
             //HTML:
-            echo '<div>Next reads are:</div>';
-            echo '<div class="list-group" style="margin-top:30px;">';
+            echo '<div class="montserrat" style="margin-top:30px;"><span class="icon-block"><i class="far fa-chevron-circle-right"></i></span>UP NEXT:</div>';
+            echo '<div class="list-group">';
         }
 
         //List children so they know what's ahead:
@@ -2362,7 +2362,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message){
         } else {
             echo '</div>';
             if($found_upcoming > 0){
-                echo '<div class="is_upcoming montserrat" style="padding:5px 0;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><i class="far fa-plus-circle"></i> '.$found_upcoming.' MORE</a></div>';
+                echo '<div class="is_upcoming montserrat" style="padding:5px 0;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><span class="icon-block"><i class="far fa-plus-circle"></i></span>'.$found_upcoming.' MORE</a></div>';
             }
         }
 
