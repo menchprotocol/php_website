@@ -379,7 +379,7 @@ class BLOG_model extends CI_Model
 
             $relation = $this->READ_model->ln_create(array(
                 'ln_creator_player_id' => $ln_creator_player_id,
-                'ln_type_player_id' => 4228, //Blog Link Regular Step
+                'ln_type_player_id' => 4228, //Blog Link Regular Read
                 ( $is_parent ? 'ln_child_blog_id' : 'ln_parent_blog_id' ) => $in_linked_id,
                 ( $is_parent ? 'ln_parent_blog_id' : 'ln_child_blog_id' ) => $blog_new['in_id'],
                 'ln_order' => 1 + $this->READ_model->ln_max_order(array(
@@ -399,7 +399,7 @@ class BLOG_model extends CI_Model
             ), array(($is_parent ? 'in_parent' : 'in_child')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
-            $in_child_html = echo_in($new_ins[0], $in_linked_id, $is_parent, true /* Since they added it! */);
+            $child_in_html = echo_in($new_ins[0], $in_linked_id, $is_parent, true /* Since they added it! */);
 
 
             //See if parent blog is locked:
@@ -433,7 +433,7 @@ class BLOG_model extends CI_Model
 
         } else {
 
-            $in_child_html = null;
+            $child_in_html = null;
 
             //Add author:
             if($ln_creator_player_id > 0){
@@ -462,7 +462,7 @@ class BLOG_model extends CI_Model
         return array(
             'status' => 1,
             'new_in_id' => $blog_new['in_id'],
-            'in_child_html' => $in_child_html,
+            'in_child_html' => $child_in_html,
         );
 
     }
@@ -517,12 +517,12 @@ class BLOG_model extends CI_Model
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
             'ln_parent_blog_id' => $in_id,
-        ), array('in_child')) as $in_child){
+        ), array('in_child')) as $child_in){
 
-            array_push($child_ids, intval($in_child['in_id']));
+            array_push($child_ids, intval($child_in['in_id']));
 
             //Fetch parents of parents:
-            $recursive_children = $this->BLOG_model->in_recursive_child_ids($in_child['in_id'], false);
+            $recursive_children = $this->BLOG_model->in_recursive_child_ids($child_in['in_id'], false);
 
             //Add to current array if we found anything:
             if(count($recursive_children) > 0){
@@ -545,11 +545,11 @@ class BLOG_model extends CI_Model
         $is_first_blog = ( !isset($focus_in['ln_id']) ); //First blog does not have a link, just the blog
         $has_or_parent = in_array($focus_in['in_type_player_id'] , $this->config->item('en_ids_6193') /* OR Blogs */ );
         $or_children = array(); //To be populated only if $focus_in is an OR blog
-        $conditional_steps = array(); //To be populated only for Conditional Steps
+        $conditional_steps = array(); //To be populated only for Conditional Reads
         $metadata_this = array(
             '__in__metadata_common_steps' => array(), //The tree structure that would be shared with all users regardless of their quick replies (OR Blog Answers)
             '__in__metadata_expansion_steps' => array(), //Blogs that may exist as a link to expand an 🔴 READING LIST tree by answering OR blogs
-            '__in__metadata_expansion_conditional' => array(), //Blogs that may exist as a link to expand an 🔴 READING LIST tree via Conditional Step links
+            '__in__metadata_expansion_conditional' => array(), //Blogs that may exist as a link to expand an 🔴 READING LIST tree via Conditional Read links
         );
 
         //Fetch children:
@@ -558,26 +558,26 @@ class BLOG_model extends CI_Model
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
             'ln_parent_blog_id' => $focus_in['in_id'],
-        ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $in_child){
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_in){
 
             //Determine action based on parent blog type:
-            if($in_child['ln_type_player_id']==4229){
+            if($child_in['ln_type_player_id']==4229){
 
-                //Conditional Step Link:
-                array_push($conditional_steps, intval($in_child['in_id']));
+                //Conditional Read Link:
+                array_push($conditional_steps, intval($child_in['in_id']));
 
             } elseif($has_or_parent){
 
-                //OR parent Blog with Fixed Step Link:
-                array_push($or_children, intval($in_child['in_id']));
+                //OR parent Blog with Fixed Read Link:
+                array_push($or_children, intval($child_in['in_id']));
 
             } else {
 
-                //AND parent Blog with Fixed Step Link:
-                array_push($metadata_this['__in__metadata_common_steps'], intval($in_child['in_id']));
+                //AND parent Blog with Fixed Read Link:
+                array_push($metadata_this['__in__metadata_common_steps'], intval($child_in['in_id']));
 
                 //Go recursively down:
-                $child_recursion = $this->BLOG_model->in_metadata_common_base($in_child);
+                $child_recursion = $this->BLOG_model->in_metadata_common_base($child_in);
 
 
                 //Aggregate recursion data:
@@ -869,11 +869,11 @@ class BLOG_model extends CI_Model
         $child_unlock_paths = array();
 
 
-        //Step 1: Is there an OR parent that we can simply answer and unlock?
+        //Read 1: Is there an OR parent that we can simply answer and unlock?
         foreach($this->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_player_id' => 4228, //Blog Link Regular Step
+            'ln_type_player_id' => 4228, //Blog Link Regular Read
             'ln_child_blog_id' => $in['in_id'],
             'in_type_player_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
         ), array('in_parent'), 0) as $in_or_parent){
@@ -883,11 +883,11 @@ class BLOG_model extends CI_Model
         }
 
 
-        //Step 2: Are there any locked link parents that the user might be able to unlock?
+        //Read 2: Are there any locked link parents that the user might be able to unlock?
         foreach($this->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_player_id' => 4229, //Blog Link Locked Step
+            'ln_type_player_id' => 4229, //Blog Link Locked Read
             'ln_child_blog_id' => $in['in_id'],
         ), array('in_parent'), 0) as $in_locked_parent){
             if(in_is_unlockable($in_locked_parent)){
@@ -910,11 +910,11 @@ class BLOG_model extends CI_Model
         }
 
 
-        //Step 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
+        //Read 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
         $in__children = $this->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_player_id' => 4228, //Blog Link Regular Step
+            'ln_type_player_id' => 4228, //Blog Link Regular Read
             'ln_parent_blog_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
         if(count($in__children) < 1){
@@ -923,20 +923,20 @@ class BLOG_model extends CI_Model
         }
 
         //Go through children to see if any/all can be completed:
-        foreach($in__children as $in_child){
-            if(in_is_unlockable($in_child)){
+        foreach($in__children as $child_in){
+            if(in_is_unlockable($child_in)){
 
                 //Need to check recursively:
-                foreach($this->BLOG_model->in_unlock_paths($in_child) as $locked_path){
+                foreach($this->BLOG_model->in_unlock_paths($child_in) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $locked_path['in_id'])) {
                         array_push($child_unlock_paths, $locked_path);
                     }
                 }
 
-            } elseif(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $in_child['in_id'])) {
+            } elseif(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $child_in['in_id'])) {
 
                 //Not locked, so this can be completed:
-                array_push($child_unlock_paths, $in_child);
+                array_push($child_unlock_paths, $child_in);
 
             }
         }

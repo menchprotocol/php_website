@@ -729,7 +729,7 @@ fragment PostListingItemSidebar_post on Post {
         */
 
         //Fetch leaderboard:
-        $blog_coins = $this->READ_model->ln_fetch($filters, array('ln_creator'), $load_max, 0, array('total_words' => 'DESC'), 'SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        $blog_coins = $this->READ_model->ln_fetch($filters, array('en_creator'), $load_max, 0, array('total_words' => 'DESC'), 'SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
 
 
@@ -1616,7 +1616,7 @@ fragment PostListingItemSidebar_post on Post {
             //Fetch player link:
             $lns = $this->READ_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
-            ), array('ln_creator'));
+            ), array('en_creator'));
 
             //Prep last updated:
             $return_array['ln_content'] = echo_ln_urls($ln_content, $js_ln_type_player_id);
@@ -2106,7 +2106,7 @@ fragment PostListingItemSidebar_post on Post {
             'ln_id' => $ln_id,
             'ln_content' => $_GET['email'],
             'ln_type_player_id' => 7563, //User Signin Magic Link Email
-        ), array('ln_creator')); //The user making the request
+        ), array('en_creator')); //The user making the request
 
         if(count($validate_links) < 1){
             //Probably already completed the reset password:
@@ -2524,7 +2524,7 @@ fragment PostListingItemSidebar_post on Post {
         //Log them in:
         $ens[0] = $this->PLAY_model->en_activate_session($ens[0]);
 
-        //Take them to next step:
+        //Take them to next read:
         return redirect_message( '/read/next' );
     }
 

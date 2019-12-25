@@ -179,7 +179,7 @@ if(!$action) {
     //Show each link type:
     foreach ($this->READ_model->ln_fetch(array(
         'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-    ), array('ln_type'), 0, 0, array('total_words' => 'DESC'), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon') as $ln) {
+    ), array('en_type'), 0, 0, array('total_words' => 'DESC'), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon') as $ln) {
 
         //Determine which weight group this belongs to:
         $word_weight = filter_cache_group($ln['en_id'], 10592);
@@ -678,7 +678,7 @@ if(!$action) {
     $all_steps = 0;
     $all_children = 0;
     $updated = 0;
-    $new_ln_type_player_id = 7485; //User Step Answer Unlock
+    $new_ln_type_player_id = 7485; //User Read Answer Unlock
 
     foreach ($this->BLOG_model->in_fetch(array(
         'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
@@ -692,7 +692,7 @@ if(!$action) {
         foreach($this->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-            'ln_type_player_id' => 4228, //Blog Link Regular Step
+            'ln_type_player_id' => 4228, //Blog Link Regular Read
             'ln_parent_blog_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
@@ -731,7 +731,7 @@ if(!$action) {
     foreach ($this->READ_model->ln_fetch(array(
         'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-        'ln_type_player_id' => 4229, //Blog Link Locked Step
+        'ln_type_player_id' => 4229, //Blog Link Locked Read
         'LENGTH(ln_metadata) > 0' => null,
     ), array('in_child'), 0, 0) as $in_ln) {
         //Echo HTML format of this message:
@@ -811,7 +811,7 @@ if(!$action) {
         foreach ($this->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-            'ln_type_player_id' => 4228, //Blog Link Regular Step
+            'ln_type_player_id' => 4228, //Blog Link Regular Read
             'LENGTH(ln_metadata) > 0' => null,
         ), array('in_child'), 0, 0) as $in_ln) {
             //Echo HTML format of this message:

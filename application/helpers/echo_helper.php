@@ -665,8 +665,6 @@ function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $com
 
     $CI =& get_instance();
 
-    $completion_rate = $CI->READ_model->read__completion_progress($en_id, $in);
-
     //Open list:
     $ui = '<a href="/'.$in['in_id']. '" class="list-group-item itemread">';
 
@@ -1107,7 +1105,7 @@ function echo_step_range($in, $educational_mode = false){
         return ( $educational_mode ? 'Unknown number of steps' : false );
     }
 
-    //Is this a range or a single step value?
+    //Is this a range or a single read value?
     if($metadata['in__metadata_min_steps'] != $metadata['in__metadata_max_steps']){
 
         //It's a range:
@@ -1115,7 +1113,7 @@ function echo_step_range($in, $educational_mode = false){
 
     } else {
 
-        //A single step value, nothing to educate about here:
+        //A single read value, nothing to educate about here:
         return $metadata['in__metadata_max_steps']. ' Step'.echo__s($metadata['in__metadata_max_steps']);
 
     }
@@ -1132,7 +1130,7 @@ function echo_tree_steps($in, $push_message = 0, $autoexpand = false)
      * */
 
     if (!echo_step_range($in)) {
-        //No steps, return null:
+        //No reads, return null:
         return false;
     }
 
@@ -1174,7 +1172,7 @@ function echo_tree_actionplan($in, $autoexpand){
     $in__children = $CI->READ_model->ln_fetch(array(
         'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-        'ln_type_player_id' => 4228, //Blog Link Regular Step
+        'ln_type_player_id' => 4228, //Blog Link Regular Read
         'ln_parent_blog_id' => $in['in_id'],
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1194,7 +1192,7 @@ function echo_tree_actionplan($in, $autoexpand){
         $in_level2_children = $CI->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_player_id' => 4228, //Blog Link Regular Step
+            'ln_type_player_id' => 4228, //Blog Link Regular Read
             'ln_parent_blog_id' => $in_level2['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1577,7 +1575,7 @@ function echo_in_answer($in, $parent_in)
 
 
 
-function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
+function echo_in_read($in, $url_prefix = null, $footnotes = null, $common_prefix = null)
 {
 
     //See if user is logged-in:
@@ -1592,7 +1590,11 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
         $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
         $ui .= '<span class="icon-block-sm">'.$en_all_4737[$in['in_status_player_id']]['m_icon'].'</span>';
     }
-    $ui .= '<b class="montserrat blog-url inline-block">'.echo_in_title($in['in_title'], false).'</b>';
+    $ui .= '<b class="montserrat blog-url inline-block">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
+
+    if($footnotes){
+        $ui .= '<span class="montserrat blog-info doupper">'.$footnotes.'</span>';
+    }
 
     //Now do measurements:
     /*
@@ -1607,7 +1609,7 @@ function echo_in_read($in, $url_prefix = null, $parent_in_id = 0)
         $authors = $CI->READ_model->ln_fetch(array(
             'ln_type_player_id' => 4250,
             'ln_child_blog_id' => $in['in_id'],
-        ), array('ln_creator'), 1);
+        ), array('en_creator'), 1);
 
         $ui .= '<span class="montserrat blog-info doupper">'.( $has_time_estimate ? echo_time_range($in, true).' READ ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']).'</span>';
 
@@ -2266,26 +2268,105 @@ function echo_caret($en_id, $m, $url_append){
     return $ui;
 }
 
-function echo_next($in, $recipient_en, $push_message){
+function echo_in_list($in_id, $in__children, $recipient_en, $push_message){
+
+    $CI =& get_instance();
+
+    if(count($in__children)){
+
+        if($push_message){
+
+            $message_content = 'Next reads are:'."\n\n";
+            $msg_quick_reply = array();
+
+        } else {
+            //HTML:
+            echo '<div>Next reads are:</div>';
+            echo '<div class="list-group" style="margin-top:30px;">';
+        }
+
+        //List children so they know what's ahead:
+        $found_incomplete = false;
+        $max_and_list = ( $push_message ? 5 : 0 );
+        $common_prefix = common_prefix($in__children, 'in_title', $max_and_list);
+
+        foreach($in__children as $key => $child_in){
+
+            //Has this been completed before by this user?
+            $completion_rate = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $child_in);
+            $is_next = ($completion_rate['completion_percentage']<100 && !$found_incomplete);
+            $footnotes = ( $is_next ? '[UP NEXT]' : '['.$completion_rate['completion_percentage'].'% COMPLETED]' );
+
+            if($push_message){
+
+                $message_content .= ($key+1).'. '.echo_in_title($child_in['in_title'], $push_message, $common_prefix).' '.$footnotes."\n";
+
+                if($is_next){
+                    array_push($msg_quick_reply, array(
+                        'content_type' => 'text',
+                        'title' => 'NEXT',
+                        'payload' => 'GONEXT_'.$child_in['in_id'],
+                    ));
+                }
+
+                //We know that the $next_step_message length cannot surpass the limit defined by facebook
+                if (($key >= $max_and_list || strlen($message_content) > (config_var(11074) - 150))) {
+                    //We cannot add any more, indicate truncating:
+                    $remainder = count($in__children) - $max_and_list;
+                    $message_content .= "\n\n".'... plus ' . $remainder . ' more read' . echo__s($remainder) . '.';
+                    break;
+                }
+
+            } else {
+
+                echo echo_in_read($child_in, null, $footnotes, $common_prefix);
+
+            }
+
+            if($is_next){
+                //We found the next incomplete step:
+                $found_incomplete = true;
+            }
+        }
+
+        if($push_message){
+            $this->READ_model->dispatch_message(
+                $message_content,
+                $recipient_en,
+                true,
+                $msg_quick_reply
+            );
+        } else {
+            echo '</div>';
+        }
+
+    } else {
+
+        echo_in_next($in_id, $recipient_en, $push_message);
+
+    }
+}
+
+function echo_in_next($in_id, $recipient_en, $push_message){
 
     //A function to display warning/success messages to users:
     if($push_message){
         $CI =& get_instance();
         $CI->READ_model->dispatch_message(
-            'Say next when you\'re ready.',
+            'Say next to read on.',
             $recipient_en,
             true,
             array(
                 array(
                     'content_type' => 'text',
                     'title' => 'Next',
-                    'payload' => 'GONEXT',
+                    'payload' => 'GONEXT_'.$in_id,
                 )
             )
         );
     } else {
         //HTML:
-        echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/'.$in['in_id'].'/next">NEXT <i class="fas fa-angle-right"></i></a></div>';
+        echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/'.$in_id.'/next">NEXT <i class="fas fa-angle-right"></i></a></div>';
     }
 
 }

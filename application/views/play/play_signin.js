@@ -25,7 +25,7 @@ $(document).ready(function () {
 
 function goto_step(this_step_count){
 
-    //Update step count:
+    //Update read count:
     step_count = this_step_count;
 
     $('.signup-steps').addClass('hidden');
@@ -133,7 +133,7 @@ function search_email(){
             $('.focus_email').html(data.clean_input_email);
             $('#email_errors').html('&nbsp;');
 
-            //Go to next step:
+            //Go to next read:
             goto_step(( data.email_existed_already ? 3 /* To ask for password */ : 4 /* To check their email and create new account */ ));
 
         } else {
@@ -173,7 +173,7 @@ function add_account(){
             $('#new_account_errors').html('&nbsp;');
 
             setTimeout(function () {
-                //Redirect to next step:
+                //Redirect to next read:
                 window.location = data.login_url;
             }, 377);
 

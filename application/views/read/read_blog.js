@@ -16,7 +16,7 @@ $(document).ready(function () {
                 ln_type_player_id: 7611, //Blog User Engage
                 ln_parent_player_id: section_en_id, //The section this user engaged with
                 ln_parent_blog_id: in_loaded_id,
-                ln_child_blog_id: 0, //Since they just opened the heading, not a sub-section of Steps Overview
+                ln_child_blog_id: 0, //Since they just opened the heading, not a sub-section of Reads Overview
                 ln_order: '7611_' + section_en_id + '_' + in_loaded_id, //The section for this blog
             });
         }
@@ -27,7 +27,7 @@ $(document).ready(function () {
         //Only log engagement if opening:
         if($(this).attr('aria-expanded')=='false'){
 
-            var section_en_id = 7613; //Steps Overview
+            var section_en_id = 7613; //Reads Overview
             var child_in_id = parseInt($(this).attr('blog-id'));
 
             //Log this section:

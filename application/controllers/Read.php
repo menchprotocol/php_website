@@ -528,7 +528,7 @@ class Read extends CI_Controller
         //Count all rows:
         $link_types_counts = $this->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        ), array('ln_type'), 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        ), array('en_type'), 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
         //Count totals:
         $addup_total_count = addup_array($link_types_counts, 'total_count');
@@ -775,15 +775,15 @@ class Read extends CI_Controller
                 'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
                 'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                 'ln_parent_blog_id' => $in['in_id'],
-            ), array('in_child'), 0, 0) as $in_child){
+            ), array('in_child'), 0, 0) as $child_in){
 
                 $this->db->insert('gephi_edges', array(
-                    'source' => $id_prefix['in'].$in_child['ln_parent_blog_id'],
-                    'target' => $id_prefix['in'].$in_child['ln_child_blog_id'],
-                    'label' => $en_all_4593[$in_child['ln_type_player_id']]['m_name'], //TODO maybe give visibility to condition here?
+                    'source' => $id_prefix['in'].$child_in['ln_parent_blog_id'],
+                    'target' => $id_prefix['in'].$child_in['ln_child_blog_id'],
+                    'label' => $en_all_4593[$child_in['ln_type_player_id']]['m_name'], //TODO maybe give visibility to condition here?
                     'weight' => 1,
-                    'edge_type_en_id' => $in_child['ln_type_player_id'],
-                    'edge_status' => $in_child['ln_status_player_id'],
+                    'edge_type_en_id' => $child_in['ln_type_player_id'],
+                    'edge_status' => $child_in['ln_status_player_id'],
                 ));
 
             }
@@ -1101,8 +1101,8 @@ class Read extends CI_Controller
 
         //Define what needs to be cleared:
         $clear_links = array_merge(
-            $this->config->item('en_ids_6146'), //User Steps Completed
-            $this->config->item('en_ids_4229') //Blog Link Locked Step
+            $this->config->item('en_ids_6146'), //User Reads Completed
+            $this->config->item('en_ids_4229') //Blog Link Locked Read
         );
 
         //Fetch their current progress links:
@@ -1120,7 +1120,7 @@ class Read extends CI_Controller
             //Log link:
             $clear_all_link = $this->READ_model->ln_create(array(
                 'ln_content' => $message,
-                'ln_type_player_id' => 6415, //🔴 READING LIST Reset Steps
+                'ln_type_player_id' => 6415, //🔴 READING LIST Reset Reads
                 'ln_creator_player_id' => $en_id,
             ));
 
@@ -1258,7 +1258,7 @@ class Read extends CI_Controller
                     array(
                         'content_type' => 'text',
                         'title' => 'Next',
-                        'payload' => 'GONEXT',
+                        'payload' => 'GONEXT_',
                     )
                 )
             );
@@ -1293,7 +1293,7 @@ class Read extends CI_Controller
 
         //Fetch current progression links, if any:
         $read_progress = $this->READ_model->ln_fetch(array(
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
             'ln_creator_player_id' => $en_id,
             'ln_parent_blog_id' => $parent_in_id,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -1309,14 +1309,14 @@ class Read extends CI_Controller
         ));
 
         //See if we also need to mark the child as complete:
-        $this->READ_model->read__completion_auto_complete($en_id, $answer_ins[0], 7485 /* User Step Answer Unlock */);
+        $this->READ_model->read__completion_auto_complete($en_id, $answer_ins[0], 7485 /* User Read Answer Unlock */);
 
         //Archive previous progression links:
         foreach($read_progress as $ln){
             $this->READ_model->ln_update($ln['ln_id'], array(
                 'ln_parent_read_id' => $new_progression_link['ln_id'],
                 'ln_status_player_id' => 6173, //Link Removed
-            ), $en_id, 10685 /* User Step Iterated */);
+            ), $en_id, 10685 /* User Read Iterated */);
         }
 
         return redirect_message('/read/next', '<p><i class="far fa-check-circle"></i> I saved your answer.</p>');
@@ -1850,7 +1850,7 @@ class Read extends CI_Controller
 
                             //Accept their answer:
 
-                            //Validate 🔴 READING LIST step:
+                            //Validate 🔴 READING LIST read:
                             $pending_req_submission = $this->READ_model->ln_fetch(array(
                                 'ln_id' => $first_chioce['ln_id'],
                                 //Also validate other requirements:
@@ -1928,7 +1928,7 @@ class Read extends CI_Controller
                                     array(
                                         'content_type' => 'text',
                                         'title' => 'Next',
-                                        'payload' => 'GONEXT',
+                                        'payload' => 'GONEXT_',
                                     )
                                 )
                             );

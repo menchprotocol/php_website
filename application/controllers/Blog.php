@@ -601,7 +601,7 @@ class Blog extends CI_Controller {
             'ln_parent_blog_id' => $ins[0]['in_id'],
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
-        ), array('ln_creator'), 500);
+        ), array('en_creator'), 500);
         if(count($actionplan_users) < 1){
             return echo_json(array(
                 'status' => 0,
@@ -637,7 +637,7 @@ class Blog extends CI_Controller {
             $item_ui .= ( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->READ_model->dispatch_message($apu['ln_content']).'</div>' : '' );
             $item_ui .= '</td>';
 
-            $item_ui .= '<td style="text-align:left;"><a href="/read/view_json/'.$apu['ln_id'].'" target="_blank">'.echo_en_cache('en_all_6255' /* User Steps Progress */, $apu['ln_type_player_id']).'</a></td>';
+            $item_ui .= '<td style="text-align:left;"><a href="/read/view_json/'.$apu['ln_id'].'" target="_blank">'.echo_en_cache('en_all_6255' /* User Reads Progress */, $apu['ln_type_player_id']).'</a></td>';
             $item_ui .= '<td style="text-align:left;">'.echo_number($count_progression[0]['totals']).'</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
             $item_ui .= '<td style="text-align:left;">';
@@ -1185,7 +1185,7 @@ class Blog extends CI_Controller {
 
         /*
          *
-         * Updates tree insights (like min/max steps, time & cost)
+         * Updates tree insights (like min/max reads, time & cost)
          * based on its common and expansion tree.
          *
          * */
