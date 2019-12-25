@@ -1685,7 +1685,7 @@ function echo_blog_thumbnail($in_id){
     }
 
     //Not found:
-    return null;
+    return '<div class="pull-right inline-block"><i class="fas fa-chevron-circle-right ispink"></i></div>';
 
 }
 
@@ -2362,7 +2362,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message){
         } else {
             echo '</div>';
             if($found_upcoming > 0){
-                echo '<div class="is_upcoming" style="text-align: right;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');">'.$found_upcoming.' more</a></div>';
+                echo '<div class="is_upcoming montserrat" style="padding:5px 0;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><i class="far fa-circle-plus"></i> '.$found_upcoming.' MORE</a></div>';
             }
         }
 
