@@ -32,7 +32,7 @@
                 //Add here so we don't show this again:
                 array_push($already_shown, $bookmark_in['in_id']);
 
-                echo echo_in_read($bookmark_in,'/blog');
+                echo echo_in_blog($bookmark_in);
             }
             echo '</div>';
 
@@ -78,7 +78,7 @@
                 //Add here so we don't show this again:
                 array_push($already_shown, $recent_in['in_id']);
 
-                echo echo_in_read($recent_in,'/blog');
+                echo echo_in_blog($recent_in);
 
                 if(count($already_shown) >= $show_max){
                     break;

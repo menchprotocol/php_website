@@ -1624,7 +1624,7 @@ class READ_model extends CI_Model
 
                     //SELECT ONE
                     echo $this->READ_model->dispatch_message(
-                        'Select one option:',
+                        'Select one option to continue:',
                         $recipient_en,
                         $push_message
                     );
@@ -1633,7 +1633,7 @@ class READ_model extends CI_Model
 
                     //SELECT SOME
                     echo $this->READ_model->dispatch_message(
-                        'Select one or more options:',
+                        'Select one or more options to continue:',
                         $recipient_en,
                         $push_message
                     );

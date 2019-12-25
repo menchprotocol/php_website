@@ -1574,15 +1574,13 @@ function echo_in_answer($in, $parent_in)
 }
 
 
-
-function echo_in_read($in, $url_prefix = null, $footnotes = null, $common_prefix = null)
+function echo_in_blog($in)
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
-    $session_en = superpower_assigned();
 
-    $ui = '<a href="'.( $url_prefix ? $url_prefix : ( $CI->uri->segment(1)=='read' ? '/read' : '' ) ).'/'.$in['in_id'] . '" class="list-group-item '.( $url_prefix ? 'itemblog' : 'itemread' ).'">';
+    $ui = '<a href="/blog/'.$in['in_id'] . '" class="list-group-item itemblog">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
     if(!in_array($in['in_status_player_id'], $CI->config->item('en_ids_7355') /* Blog Statuses Public */)){
@@ -1590,8 +1588,28 @@ function echo_in_read($in, $url_prefix = null, $footnotes = null, $common_prefix
         $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
         $ui .= '<span class="icon-block-sm">'.$en_all_4737[$in['in_status_player_id']]['m_icon'].'</span>';
     }
-    $ui .= '<b class="montserrat blog-url inline-block">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
+    $ui .= '<b class="montserrat blog-url inline-block">'.echo_in_title($in['in_title'], false).'</b>';
+    $ui .= '</td>';
 
+    //Search for Blog Image:
+    $ui .= '<td class="featured-frame">'.echo_blog_thumbnail($in['in_id']).'</td>';
+    $ui .= '</tr></table>';
+    $ui .= '</a>';
+
+    return $ui;
+}
+
+
+function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_class = null)
+{
+
+    //See if user is logged-in:
+    $CI =& get_instance();
+
+    $ui = '<a href="/'.$in['in_id'] . '" class="list-group-item itemread '.$extra_class.'">';
+    $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
+    $ui .= '<td>';
+    $ui .= '<b class="montserrat blog-url inline-block">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
     if($footnotes){
         $ui .= '<span class="montserrat blog-info doupper">'.$footnotes.'</span>';
     }
@@ -2287,6 +2305,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message){
 
         //List children so they know what's ahead:
         $found_incomplete = false;
+        $found_upcoming = 0;
         $max_and_list = ( $push_message ? 5 : 0 );
         $common_prefix = common_prefix($in__children, 'in_title', $max_and_list);
 
@@ -2295,6 +2314,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message){
             //Has this been completed before by this user?
             $completion_rate = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $child_in);
             $is_next = ($completion_rate['completion_percentage']<100 && !$found_incomplete);
+            $is_upcoming = ($found_incomplete && $completion_rate['completion_percentage']==0);
             $footnotes = ( $is_next ? '[UP NEXT]' : ( $completion_rate['completion_percentage'] > 0 ? '['.$completion_rate['completion_percentage'].'% COMPLETED]' : '' ));
 
             if($push_message){
@@ -2319,13 +2339,16 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message){
 
             } else {
 
-                echo echo_in_read($child_in, null, $footnotes, $common_prefix);
+                echo echo_in_read($child_in, $footnotes, $common_prefix, ( $is_upcoming ? 'hidden is_upcoming' : '' ));
 
             }
 
             if($is_next){
                 //We found the next incomplete step:
                 $found_incomplete = true;
+            }
+            if($is_upcoming){
+                $found_upcoming++;
             }
         }
 
@@ -2338,6 +2361,9 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message){
             );
         } else {
             echo '</div>';
+            if($found_upcoming > 0){
+                echo '<div class="is_upcoming" style="text-align: right;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');">'.$found_upcoming.' more</a></div>';
+            }
         }
 
     } else {
