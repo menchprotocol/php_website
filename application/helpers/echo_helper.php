@@ -1563,7 +1563,7 @@ function echo_in_answer($in, $parent_in)
 
     //Search for Blog Image:
     $ui .= '<td class="featured-frame">';
-    $ui .= echo_blog_thumbnail($in['in_id']);
+    $ui .= echo_in_thumbnail($in['in_id']);
     $ui .= '</td>';
 
 
@@ -1592,7 +1592,7 @@ function echo_in_blog($in)
     $ui .= '</td>';
 
     //Search for Blog Image:
-    $ui .= '<td class="featured-frame">'.echo_blog_thumbnail($in['in_id']).'</td>';
+    $ui .= '<td class="featured-frame">'.echo_in_thumbnail($in['in_id']).'</td>';
     $ui .= '</tr></table>';
     $ui .= '</a>';
 
@@ -1637,14 +1637,14 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     $ui .= '</td>';
 
     //Search for Blog Image:
-    $ui .= '<td class="featured-frame">'.echo_blog_thumbnail($in['in_id']).'</td>';
+    $ui .= '<td class="featured-frame">'.echo_in_thumbnail($in['in_id']).'</td>';
     $ui .= '</tr></table>';
     $ui .= '</a>';
 
     return $ui;
 }
 
-function echo_blog_thumbnail($in_id){
+function echo_in_thumbnail($in_id){
 
     $CI =& get_instance();
 
@@ -1685,7 +1685,7 @@ function echo_blog_thumbnail($in_id){
     }
 
     //Not found:
-    return '<div class="pull-right inline-block"><i class="fas fa-chevron-circle-right ispink"></i></div>';
+    return '<div class="pull-right inline-block"><i class="fas fa-chevron-circle-right ispink large-icon"></i></div>';
 
 }
 

@@ -20,7 +20,7 @@ foreach ($user_blogs as $priority => $ln) {
     echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="fas fa-trash"></i></span>';
     echo '</span>';
 
-    echo echo_blog_thumbnail($ln['in_id']);
+    echo echo_in_thumbnail($ln['in_id']);
 
     $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $ln);
 
