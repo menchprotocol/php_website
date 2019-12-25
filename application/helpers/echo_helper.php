@@ -2362,7 +2362,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message){
         } else {
             echo '</div>';
             if($found_upcoming > 0){
-                echo '<div class="is_upcoming montserrat" style="padding:5px 0;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><i class="far fa-circle-plus"></i> '.$found_upcoming.' MORE</a></div>';
+                echo '<div class="is_upcoming montserrat" style="padding:5px 0;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><i class="far fa-plus-circle"></i> '.$found_upcoming.' MORE</a></div>';
             }
         }
 
