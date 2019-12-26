@@ -1630,13 +1630,13 @@ class READ_model extends CI_Model
 
                 if(count($previously_answered) > 0 && !$push_message){
 
-                    //List answers:
                     echo '<div class="selected_before">';
-                    echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, 'PREVIOUSLY SELECTED');
 
+                        //List answers:
+                        echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, 'PREVIOUSLY SELECTED');
 
-                    //Allow to edit:
-                    echo ' <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
+                        //Allow to edit:
+                        echo ' <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b> EDIT ANSWER</b></a>';
 
                     echo '</div>';
 
