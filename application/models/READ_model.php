@@ -1686,17 +1686,18 @@ class READ_model extends CI_Model
 
                         echo '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
 
+                        echo '<td>';
+
                         if ($ins[0]['in_type_player_id'] == 6684) {
 
-                            echo '<td><i class="far fa-circle"></i></td>';
+                            echo '<span class="icon-block"><i class="far fa-circle"></i></span>';
 
                         } elseif ($ins[0]['in_type_player_id'] == 7231) {
 
-                            echo '<td><i class="far fa-square"></i></td>';
+                            echo '<span class="icon-block"><i class="far fa-square"></i></span>';
 
                         }
 
-                        echo '<td>';
                         echo '<b class="montserrat blog-url">'.echo_in_title($child_in['in_title'], false).'</b>';
                         if($previously_selected){
                             echo '<span class="montserrat blog-info doupper">[PREVIOUSLY SELECTED]</span>';
