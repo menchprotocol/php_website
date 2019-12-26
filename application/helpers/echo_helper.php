@@ -1553,7 +1553,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url inline-block">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
     if($footnotes){
-        $ui .= '<span class="montserrat blog-info doupper">'.$footnotes.'</span>';
+        $ui .= '<span class="montserrat blog-info doupper inline-block '.$extra_class.'">'.$footnotes.'</span>';
     }
 
     //Now do measurements:
@@ -1606,7 +1606,7 @@ function echo_in_thumbnail($in_id){
 
         //Did we find an image for this message?
         if(count($images) > 0){
-            return '<div class="pull-right inline-block featured-frame"><span class="featured-image"><img src="'.$images[0]['ln_content'].'" /></span></div>';
+            return '<div class="inline-block featured-frame"><span class="featured-image"><img src="'.$images[0]['ln_content'].'" /></span></div>';
         }
 
         //Maybe we have an Embed Video?
@@ -1620,14 +1620,14 @@ function echo_in_thumbnail($in_id){
         if(count($embeds) > 0){
             $youtube_id = extract_youtube_id($embeds[0]['ln_content']);
             if(strlen($youtube_id) > 0){
-                return '<div class="pull-right inline-block featured-frame"><span class="featured-image"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
+                return '<div class="inline-block featured-frame"><span class="featured-image"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
             }
         }
 
     }
 
     //Not found:
-    return '<div class="pull-right inline-block"><i class="fas fa-chevron-circle-right ispink large-icon"></i></div>';
+    return '<div class="inline-block"><i class="fas fa-chevron-circle-right ispink large-icon"></i></div>';
 
 }
 
@@ -2228,7 +2228,7 @@ function echo_caret($en_id, $m, $url_append){
     return $ui;
 }
 
-function echo_in_list($in_id, $in__children, $recipient_en, $push_message){
+function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $header_title){
 
     $CI =& get_instance();
 
@@ -2236,12 +2236,12 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message){
 
         if($push_message){
 
-            $message_content = 'Next reads are:'."\n\n";
+            $message_content = $header_title.':'."\n\n";
             $msg_quick_reply = array();
 
         } else {
             //HTML:
-            echo '<div class="montserrat" style="margin-top:30px;"><span class="icon-block"><i class="far fa-chevron-circle-right"></i></span>UP NEXT:</div>';
+            echo '<div class="montserrat" style="margin-top:30px;"><span class="icon-block"><i class="far fa-chevron-circle-right"></i></span>'.$header_title.':</div>';
             echo '<div class="list-group">';
         }
 

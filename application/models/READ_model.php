@@ -1619,6 +1619,30 @@ class READ_model extends CI_Model
 
             } else {
 
+
+                //Have they already selected answers? If so, show them their selection and focus on navigation:
+                $previously_answered = $this->READ_model->ln_fetch(array(
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
+                    'ln_parent_blog_id' => $ins[0]['in_id'],
+                    'ln_creator_player_id' => $recipient_en['en_id'],
+                ));
+
+                if(count($previously_answered) > 0 && !$push_message){
+
+                    //List answers:
+                    echo '<div class="selected_before">';
+                    echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, 'PREVIOUSLY SELECTED');
+
+
+                    //Allow to edit:
+                    echo ' <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
+
+                    echo '</div>';
+
+                }
+
+
                 if($push_message){
 
                     $msg_quick_reply = array();
@@ -1638,6 +1662,8 @@ class READ_model extends CI_Model
                     }
 
                 } else {
+
+                    echo '<div class="selected_before '.( count($previously_answered)>0 ? 'hidden' : '' ).'">';
 
                     //HTML:
                     if ($ins[0]['in_type_player_id'] == 6684) {
@@ -1682,26 +1708,23 @@ class READ_model extends CI_Model
 
                     } else {
 
-                        echo '<a href="/read/actionplan_answer_question/6157/' . $recipient_en['en_id'] . '/' . $ins[0]['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $recipient_en['en_id']) . '/' . $child_in['in_id'] . '" class="list-group-item itemread">';
+                        //echo '<a href="/read/actionplan_answer_question/6157/' . $recipient_en['en_id'] . '/' . $ins[0]['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $recipient_en['en_id']) . '/' . $child_in['in_id'] . '" class="list-group-item itemread">';
+                        echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['ln_id'].', '.$ins[0]['in_type_player_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" class="ln_answer_'.$child_in['ln_id'].' answer-item list-group-item itemread">';
 
                         echo '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
 
-
                         if ($ins[0]['in_type_player_id'] == 6684) {
 
-                            echo '<td class="icon-block"><i class="far fa-circle"></i></td>';
+                            echo '<td class="icon-block"><i class="'.( $previously_selected ? 'fas fa-check-circle' : 'far fa-circle' ).'"></i></td>';
 
                         } elseif ($ins[0]['in_type_player_id'] == 7231) {
 
-                            echo '<td class="icon-block"><i class="far fa-square"></i></td>';
+                            echo '<td class="icon-block"><i class="'.( $previously_selected ? 'fas fa-check-square' : 'far fa-square' ).'"></i></td>';
 
                         }
 
-                        echo '<td>';
-                        echo '<b class="montserrat blog-url" style="margin-left: 0;">'.echo_in_title($child_in['in_title'], false).'</b>';
-                        if($previously_selected){
-                            echo '<span class="montserrat blog-info doupper inline-block">[PREVIOUSLY SELECTED]</span>';
-                        }
+                        echo '<td style="width: 100%;">';
+                        echo '<b class="montserrat blog-url" style="margin-left:0;">'.echo_in_title($child_in['in_title'], false).'</b>';
                         echo '</td>';
 
                         echo '<td class="featured-frame">' . echo_in_thumbnail($child_in['in_id']) . '</td>';
@@ -1743,9 +1766,10 @@ class READ_model extends CI_Model
                 } else {
 
                     //Button to submit selection:
-                    echo '<div><a class="btn btn-read" href="">SAVE & CONTINUE <i class="fas fa-angle-right"></i></a></div>';
+                    echo '<div><a class="btn btn-read" href="">'.( count($previously_answered)>0 ? 'UPDATE' : 'SAVE' ).' & CONTINUE <i class="fas fa-angle-right"></i></a></div>';
 
                     //Close list:
+                    echo '</div>';
                     echo '</div>';
 
                 }
@@ -1832,7 +1856,6 @@ class READ_model extends CI_Model
                         'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     ));
                 }
-
 
 
                 if($push_message){
@@ -2064,7 +2087,7 @@ class READ_model extends CI_Model
                 }
 
                 //Always show the next list:
-                echo_in_list($ins[0]['in_id'], $in__children, $recipient_en, $push_message);
+                echo_in_list($ins[0]['in_id'], $in__children, $recipient_en, $push_message, 'UP NEXT');
 
             } elseif ($ins[0]['in_type_player_id'] == 6683) {
 
