@@ -2292,6 +2292,10 @@ class READ_model extends CI_Model
     function read__completion_progress($en_id, $in, $top_level = true)
     {
 
+        if(!isset($in['in_metadata'])){
+            return false;
+        }
+
         //Fetch/validate 🔴 READING LIST Common Reads:
         $in_metadata = unserialize($in['in_metadata']);
         if(!isset($in_metadata['in__metadata_common_steps'])){
