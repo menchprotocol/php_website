@@ -1689,11 +1689,11 @@ class READ_model extends CI_Model
 
                         if ($ins[0]['in_type_player_id'] == 6684) {
 
-                            echo '<td><span class="icon-block"><i class="far fa-circle"></i></span></td>';
+                            echo '<td class="icon-block"><i class="far fa-circle"></i></td>';
 
                         } elseif ($ins[0]['in_type_player_id'] == 7231) {
 
-                            echo '<td><span class="icon-block"><i class="far fa-square"></i></span></td>';
+                            echo '<td class="icon-block"><i class="far fa-square"></i></td>';
 
                         }
 
