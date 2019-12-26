@@ -493,7 +493,7 @@ class READ_model extends CI_Model
 
 
         //Process on-complete automations:
-        $this->READ_model->read__completion_checks($en_id, $in, true, true);
+        $this->READ_model->read__completion_checks($en_id, $in, true);
 
 
         //All good:
@@ -819,7 +819,7 @@ class READ_model extends CI_Model
         }
 
         //Process on-complete automations:
-        $this->READ_model->read__completion_checks($en_id, $ins[0], true, false);
+        $this->READ_model->read__completion_checks($en_id, $ins[0], true);
 
         //Return number of skipped steps:
         return count($flat_common_steps);
@@ -1202,7 +1202,7 @@ class READ_model extends CI_Model
         return $unlock_steps_messages;
     }
 
-    function read__completion_checks($en_id, $in, $send_message, $step_progress_made){
+    function read__completion_checks($en_id, $in, $send_message){
 
 
         /*
@@ -1215,7 +1215,6 @@ class READ_model extends CI_Model
          * - $in_id The blog that was marked as complete
          * - $en_id The player who marked it as complete
          * - $send_message IF TRUE would send messages to $en_id and IF FASLE would return raw messages
-         * - $step_progress_made WILL also trigger on-complete messages if the user actually completed
          *
          * */
 
@@ -1594,7 +1593,7 @@ class READ_model extends CI_Model
 
 
 
-        if (in_array($ins[0]['in_type_player_id'], $this->config->item('en_ids_7712'))) {
+        if (in_array($ins[0]['in_type_player_id'], $this->config->item('en_ids_7712'))){
 
             //SELECT ANSWER
 
@@ -1620,46 +1619,72 @@ class READ_model extends CI_Model
 
             } else {
 
-                if ($ins[0]['in_type_player_id'] == 6684) {
+                if($push_message){
 
-                    //SELECT ONE
-                    echo $this->READ_model->dispatch_message(
-                        'Select one option to continue:',
-                        $recipient_en,
-                        $push_message
-                    );
+                    if ($ins[0]['in_type_player_id'] == 6684) {
 
-                } elseif ($ins[0]['in_type_player_id'] == 7231) {
+                        //SELECT ONE
+                        $message_content = 'Select one option to continue:'."\n\n";
 
-                    //SELECT SOME
-                    echo $this->READ_model->dispatch_message(
-                        'Select one or more options to continue:',
-                        $recipient_en,
-                        $push_message
-                    );
+                    } elseif ($ins[0]['in_type_player_id'] == 7231) {
 
-                }
-
-
-                if(count($in__children) > 0){
-
-                    if ($push_message) {
-
-                    } else {
-
-                        //List children to choose from:
-                        echo '<div class="list-group" style="margin-top:30px;">';
-                        foreach ($in__children as $child_in) {
-                            echo echo_in_answer($child_in, null);
-                        }
-                        echo '</div>';
+                        //SELECT SOME
+                        $message_content = 'Select one or more options to continue:'."\n\n";
 
                     }
 
                 } else {
 
+                    //HTML:
+                    if ($ins[0]['in_type_player_id'] == 6684) {
+
+                        echo '<div class="montserrat" style="margin-top:30px;"><span class="icon-block"><i class="fas fa-check"></i></span>SELECT ONE OPTION:</div>';
+
+                    } elseif ($ins[0]['in_type_player_id'] == 7231) {
+
+                        echo '<div class="montserrat" style="margin-top:30px;"><span class="icon-block"><i class="fas fa-tasks"></i></span>SELECT ONE OR MORE OPTIONS:</div>';
+
+                    }
+
+                    //Open for list to be printed:
+                    echo '<div class="list-group">';
+
                 }
 
+
+                //List children to choose from:
+                foreach ($in__children as $child_in) {
+
+                    if ($push_message) {
+
+                        $this->READ_model->dispatch_message(
+                            $message_content,
+                            $recipient_en,
+                            $push_message
+                        );
+
+                    } else {
+
+                        echo echo_in_answer($child_in, $ins[0]);
+
+                    }
+                }
+
+
+                if ($push_message) {
+
+                    $this->READ_model->dispatch_message(
+                        $message_content,
+                        $recipient_en,
+                        $push_message
+                    );
+
+                } else {
+
+                    //Close list:
+                    echo '</div>';
+
+                }
             }
 
 
@@ -1970,7 +1995,7 @@ class READ_model extends CI_Model
                     ));
 
                     //Process on-complete automations:
-                    $this->READ_model->read__completion_checks($recipient_en['en_id'], $ins[0], false, $step_progress_made);
+                    $this->READ_model->read__completion_checks($recipient_en['en_id'], $ins[0], false);
 
                 }
 

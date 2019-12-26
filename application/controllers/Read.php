@@ -1872,7 +1872,7 @@ class Read extends CI_Controller
                                 ));
 
                                 //Process on-complete automations:
-                                $this->READ_model->read__completion_checks($en['en_id'], $pending_req_submission[0], true, true);
+                                $this->READ_model->read__completion_checks($en['en_id'], $pending_req_submission[0], true);
 
                             } else {
 

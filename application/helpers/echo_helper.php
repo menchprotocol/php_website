@@ -1705,7 +1705,7 @@ function echo_in_dashboard($in)
 
 }
 
-function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_levels, $parent_in_type_player_id){
+function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_levels, $parent_in_type_player_id){
 
     if($depth_levels<=0){
         //End recursion:
@@ -1766,7 +1766,7 @@ function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_leve
         $ui .= '</div>';
 
         //Go Recursively down:
-        $ui .=  echo_in_answer_scores($in_ln['in_id'], $depth_levels, $original_depth_levels, $in_ln['in_type_player_id']);
+        $ui .=  echo_in_scores_answer($in_ln['in_id'], $depth_levels, $original_depth_levels, $in_ln['in_type_player_id']);
 
     }
 
@@ -2353,7 +2353,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message){
         }
 
         if($push_message){
-            $this->READ_model->dispatch_message(
+            $CI->READ_model->dispatch_message(
                 $message_content,
                 $recipient_en,
                 true,

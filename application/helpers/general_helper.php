@@ -1163,11 +1163,11 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 //Add keywords:
                 $has_featured_parent_en = false;
                 $export_row['alg_obj_keywords'] = '';
-                foreach ($this->READ_model->ln_fetch(array(
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                foreach ($CI->READ_model->ln_fetch(array(
+                    'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                     'ln_child_player_id' => $db_row['en_id'], //This child player
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                    'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'en_status_player_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
                 ), array('en_parent'), 0, 0, array('en_name' => 'ASC')) as $ln) {
 
                     //Always add to tags:
@@ -1206,9 +1206,9 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Add keywords:
                 $export_row['alg_obj_keywords'] = '';
-                foreach ($this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
+                foreach ($CI->READ_model->ln_fetch(array(
+                    'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_type_player_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
                     'ln_child_blog_id' => $db_row['in_id'],
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
                     $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
