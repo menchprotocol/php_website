@@ -1698,7 +1698,7 @@ class READ_model extends CI_Model
 
                         }
 
-                        echo '<b class="montserrat blog-url inline-block">'.echo_in_title($child_in['in_title'], false).'</b>';
+                        echo '<b class="montserrat blog-url inline-block" style="margin-left: 0;">'.echo_in_title($child_in['in_title'], false).'</b>';
                         if($previously_selected){
                             echo '<span class="montserrat blog-info doupper inline-block">[PREVIOUSLY SELECTED]</span>';
                         }
