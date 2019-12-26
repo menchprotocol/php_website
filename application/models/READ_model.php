@@ -1621,14 +1621,18 @@ class READ_model extends CI_Model
 
                 if($push_message){
 
+                    $msg_quick_reply = array();
+
                     if ($ins[0]['in_type_player_id'] == 6684) {
 
                         //SELECT ONE
+                        $quick_replies_allowed = ( count($in__children) <= config_var(12124) );
                         $message_content = 'Select one option to continue:'."\n\n";
 
                     } elseif ($ins[0]['in_type_player_id'] == 7231) {
 
                         //SELECT SOME
+                        $quick_replies_allowed = ( count($in__children)==1 );
                         $message_content = 'Select one or more options to continue:'."\n\n";
 
                     }
@@ -1653,19 +1657,56 @@ class READ_model extends CI_Model
 
 
                 //List children to choose from:
-                foreach ($in__children as $child_in) {
+                foreach ($in__children as $key => $child_in) {
+
+                    //Has this been previously selected?
+                    $previously_selected = count($this->READ_model->ln_fetch(array(
+                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
+                        'ln_parent_blog_id' => $ins[0]['in_id'],
+                        'ln_child_blog_id' => $child_in['in_id'],
+                        'ln_creator_player_id' => $recipient_en['en_id'],
+                    )));
 
                     if ($push_message) {
 
-                        $this->READ_model->dispatch_message(
-                            $message_content,
-                            $recipient_en,
-                            $push_message
-                        );
+                        $message_content .= ($key+1).'. '.echo_in_title($child_in['in_title'], $push_message).( $previously_selected ? ' [Previously Selected]' : '' )."\n";
+
+                        if($quick_replies_allowed){
+                            array_push($msg_quick_reply, array(
+                                'content_type' => 'text',
+                                'title' => 'NEXT',
+                                'payload' => 'GONEXT_'.$child_in['in_id'],
+                            ));
+                        }
 
                     } else {
 
-                        echo echo_in_answer($child_in, $ins[0]);
+                        echo '<a href="/read/actionplan_answer_question/6157/' . $recipient_en['en_id'] . '/' . $ins[0]['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $recipient_en['en_id']) . '/' . $child_in['in_id'] . '" class="list-group-item itemread">';
+
+                        echo '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
+
+                        if ($ins[0]['in_type_player_id'] == 6684) {
+
+                            echo '<td><i class="far fa-circle"></i></td>';
+
+                        } elseif ($ins[0]['in_type_player_id'] == 7231) {
+
+                            echo '<td><i class="far fa-square"></i></td>';
+
+                        }
+
+                        echo '<td>';
+                        echo '<b class="montserrat blog-url">'.echo_in_title($child_in['in_title'], false).'</b>';
+                        if($previously_selected){
+                            echo '<span class="montserrat blog-info doupper">[PREVIOUSLY SELECTED]</span>';
+                        }
+                        echo '</td>';
+
+                        echo '<td class="featured-frame">' . echo_in_thumbnail($child_in['in_id']) . '</td>';
+
+                        echo '</tr></table>';
+                        echo '</a>';
 
                     }
                 }
@@ -1673,13 +1714,35 @@ class READ_model extends CI_Model
 
                 if ($push_message) {
 
+                    if(!$quick_replies_allowed){
+
+                        if ($ins[0]['in_type_player_id'] == 6684) {
+
+                            $message_content .= "\n\n".'Reply with a number between 1 - '.count($in__children).' to continue.';
+
+                        } elseif ($ins[0]['in_type_player_id'] == 7231) {
+
+                            $message_content .= "\n\n".'Reply with one or more numbers between 1 - '.count($in__children).' to continue (add space between). For example, to select the first option reply "1", or to select the first & ';
+
+                            if(count($in__children) >= 3){
+                                $message_content .= 'third option reply "1 3"';
+                            } else {
+                                $message_content .= 'second option reply "1 2"';
+                            }
+                        }
+                    }
+
                     $this->READ_model->dispatch_message(
                         $message_content,
                         $recipient_en,
-                        $push_message
+                        $push_message,
+                        $msg_quick_reply
                     );
 
                 } else {
+
+                    //Button to submit selection:
+                    echo '<div><a class="btn btn-read" href="">SAVE & CONTINUE <i class="fas fa-angle-right"></i></a></div>';
 
                     //Close list:
                     echo '</div>';
