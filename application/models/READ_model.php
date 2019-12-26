@@ -1626,7 +1626,7 @@ class READ_model extends CI_Model
                     'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
                     'ln_parent_blog_id' => $ins[0]['in_id'],
                     'ln_creator_player_id' => $recipient_en['en_id'],
-                ));
+                ), array('in_child'));
 
                 if(count($previously_answered) > 0 && !$push_message){
 
