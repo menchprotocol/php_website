@@ -115,6 +115,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
     </div>
 
-    <div style="margin: 20px 0;"><a href="/play/<?= $session_en['en_id'] ?>" class="btn btn-play"><span class="icon-block"><i class="fas fa-angle-left"></i></span><?= one_two_explode('', ' ', $session_en['en_name']) ?></a></div>
+    <div style="margin: 20px 0;"><a href="/play/<?= $session_en['en_id'] ?>" class="btn btn-play"><span class="icon-block"><i class="fas fa-angle-left"></i></span>BACK</a></div>
 
 </div>
