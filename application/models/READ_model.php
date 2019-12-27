@@ -1691,11 +1691,11 @@ class READ_model extends CI_Model
                     //HTML:
                     if ($ins[0]['in_type_player_id'] == 6684) {
 
-                        echo '<div class="montserrat" style="margin-top:30px;"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE ANSWER:</div>';
+                        echo '<div class="montserrat" style="padding:10px 0;"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE ANSWER:</div>';
 
                     } elseif ($ins[0]['in_type_player_id'] == 7231) {
 
-                        echo '<div class="montserrat" style="margin-top:30px;"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE OR MORE ANSWERS:</div>';
+                        echo '<div class="montserrat" style="padding:10px 0;"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE OR MORE ANSWERS:</div>';
 
                     }
 
