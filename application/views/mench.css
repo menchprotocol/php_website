@@ -174,7 +174,6 @@ li a {
 .icon-block-xlg{ min-width:62px; display: inline-block; text-align: center; margin-left: 1px; }
 .blog-url{
     margin-left: 5px;
-    display: block;
 }
 .icon-block-sm img,
 .icon-block img,
@@ -925,7 +924,6 @@ label {
 }
 .blog-url{
     margin: 0 5px 0;
-    display: block;
     font-size: 1.3em;
     line-height: 110%;
 }
