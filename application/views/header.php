@@ -105,12 +105,12 @@ if(!isset($hide_header) || !$hide_header){
             <table class="mench-navigation">
                 <tr>
 
-                    <td class="block-link block-logo"><a href="<?= (isset($session_en['en_id']) ? '/read' : '/') ?>"><img src="/mench.png" class="mench-logo mench-spin" /></a></td>
+                    <td class="block-link block-logo"><a href="/"><img src="/mench.png" class="mench-logo mench-spin" /></a></td>
 
                     <td>
                         <div class="supwerpower_view">
 
-                            <span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="<?= (isset($session_en['en_id']) ? '/read' : '/') ?>" style="text-decoration: none;">MENCH</a><?= ( count($this->session->userdata('assigned_superpowers_en_ids')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');" style="color:transparent;">|</a>' : '' ) ?></span>
+                            <span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="/" style="text-decoration: none;">MENCH</a><?= ( count($this->session->userdata('assigned_superpowers_en_ids')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');" style="color:transparent;">|</a>' : '' ) ?></span>
 
                             <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
