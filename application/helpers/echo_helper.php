@@ -2164,7 +2164,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     //Sort
     if(!$is_parent){
-        $ui .= '<div class="pull-right inline-block icon-block"><i class="fas fa-sort"></i></div>';
+        $ui .= '<div class="pull-right inline-block icon-block" style="padding-top: 5px;"><i class="fas fa-sort"></i></div>';
     }
 
     //UNLINK
