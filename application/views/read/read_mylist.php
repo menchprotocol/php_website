@@ -14,7 +14,7 @@ echo '<div id="actionplan_steps" class="list-group actionplan-list" style="margi
 foreach ($user_blogs as $priority => $ln) {
 
     //Display row:
-    echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread '.( $has_multiple_blogs && 0 ? 'actionplan_sort' : '').'">';
+    echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread '.( $has_multiple_blogs ? 'actionplan_sort' : '').'">';
 
     echo '<span class="pull-right" style="padding-right:8px; padding-left:10px;">';
     echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="fas fa-trash"></i></span>';
@@ -26,6 +26,9 @@ foreach ($user_blogs as $priority => $ln) {
 
     echo '<b class="actionplan-title montserrat montserrat blog-url in-title-'.$ln['in_id'].'">' . $ln['in_title'] . '</b>';
     echo '<div class="actionplan-overview">';
+    if($has_multiple_blogs){
+        echo '<span class="icon-block"><i class="fas fa-sort" style="color:#999;"></i></span> ';
+    }
     echo '<span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read" class="montserrat blog-info doupper">READ '.$completion_rate['completion_percentage'].'%</span>';
     echo '</div>';
     echo '</a>';

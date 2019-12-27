@@ -30,7 +30,7 @@ $(document).ready(function () {
     $('.actionplan_remove').on('click', function(e) {
 
         var in_id = $(this).attr('in-id');
-        var r = confirm("Remove ["+$('.in-title-'+in_id).text()+"] from reading list?");
+        var r = confirm("Remove ["+$('.in-title-'+in_id).text()+"] from your reading list?");
         if (r == true) {
             //Save changes:
             $.post("/read/actionplan_stop_save", { js_pl_id:js_pl_id ,in_id:in_id }, function (data) {
@@ -69,7 +69,7 @@ $(document).ready(function () {
     var sort = Sortable.create(document.getElementById('actionplan_steps'), {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: ".actionplan_sort", // Specifies which items inside the element should be sortable
-        handle: ".actionplan_sort", // Restricts sort start click/touch to the specified element
+        handle: ".fa-sort", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             actionplan_sort_save();
         }
