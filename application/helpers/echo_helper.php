@@ -1553,7 +1553,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url inline-block">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
     if($footnotes){
-        $ui .= '<span class="montserrat blog-info doupper inline-block '.$extra_class.'">'.$footnotes.'</span>';
+        $ui .= '<span class="'.$extra_class.'""><span class="montserrat blog-info doupper inline-block>'.$footnotes.'</span></span>';
     }
 
     //Now do measurements:
