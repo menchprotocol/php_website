@@ -2162,14 +2162,17 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '</span>';
 
 
-    //Sort
-    if(!$is_parent){
-        $ui .= '<div class="pull-right inline-block icon-block '. superpower_active(10939) .'" style="padding-top: 5px;"><i class="fas fa-sort"></i></div>';
-    }
 
-    //UNLINK
     if($is_author){
+
+        //Sort
+        if(!$is_parent){
+            $ui .= '<div class="pull-right inline-block icon-block '. superpower_active(10939) .'" style="padding-top: 5px;"><i class="fas fa-sort"></i></div>';
+        }
+
+        //UNLINK
         $ui .= '<div class="pull-right inline-block '. superpower_active(10939) .'" style="padding-left:3px"><a class="btn btn-blog" href="javascript:void(0);" title="Unlink blog" data-toggle="tooltip" data-placement="left" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink"></i></a></div>';
+
     }
 
 
@@ -2183,10 +2186,8 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $tree_count_range = $child_links[0]['in__child_count'];
 
 
-
     //FOLLOW
     $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="/blog/' . $in['in_id'] . '">'.($tree_count_range > 0 ? '<span class="btn-counter">' . $tree_count_range . '</span> ' : '').'<i class="fas fa-angle-right"></i></a></div>';
-
 
 
 
