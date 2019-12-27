@@ -40,7 +40,7 @@ echo ' <a class="btn btn-read inline-block" href="/"  style="margin: 20px 0;"><i
 if($has_multiple_blogs){
 
     //Give option to delete all:
-    echo '<div class="pull-right clear-reading-list" style="margin: 20px 0;"><a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="font-size:0.8em; color:#AAA; text-decoration: none;" class="montserrat doupper" data-toggle="tooltip" title="Remove ALL reads from your reading list" data-placement="left"><i class="fas fa-trash"></i> ALL</a></div>';
+    echo '<div class="pull-right clear-reading-list" style="margin: 20px 0;"><a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="font-size:0.8em; color:#AAA; text-decoration: none;" class="montserrat doupper" data-toggle="tooltip" title="Remove ALL reads from your reading list" data-placement="left">ALL<span class="icon-block"><i class="fas fa-trash"></i></span></a></div>';
 
     $timestamp = time();
 
@@ -55,7 +55,7 @@ if($has_multiple_blogs){
 
 
     //Give sorting tip:
-    echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: Prioritize your reads by holding them & dragging them up/down.</div>';
+    echo '<div class="actionplan-tip"><span class="icon-block"><i class="fas fa-lightbulb"></i></span>TIP: Prioritize your reads by holding them & dragging them up/down.</div>';
 }
 
 
