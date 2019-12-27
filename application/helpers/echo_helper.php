@@ -1627,7 +1627,8 @@ function echo_in_thumbnail($in_id){
     }
 
     //Not found:
-    return '<div class="inline-block pull-right"><i class="fas fa-chevron-circle-right ispink large-icon"></i></div>';
+    return null;
+    //return '<div class="inline-block pull-right"><i class="fas fa-chevron-circle-right ispink large-icon"></i></div>';
 
 }
 
