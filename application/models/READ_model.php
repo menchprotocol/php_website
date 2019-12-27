@@ -1637,7 +1637,7 @@ class READ_model extends CI_Model
                         echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, 'PREVIOUSLY SELECTED');
 
                         //Allow to edit:
-                        echo ' <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b> EDIT ANSWER</b></a>';
+                        echo ' <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><b class="montserrat">EDIT ANSWER</b></a>';
 
                     echo '</div>';
 
