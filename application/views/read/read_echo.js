@@ -77,11 +77,11 @@ $(document).ready(function () {
 });
 
 
-function select_answer(ln_id){
+function select_answer(in_id){
 
     //Allow answer to be saved/updated:
     var in_type_player_id = parseInt($('.list-answers').attr('in_type_player_id'));
-    var current_status = parseInt($('.ln_answer_'+ln_id).attr('is-selected'));
+    var current_status = parseInt($('.ln_answer_'+in_id).attr('is-selected'));
 
     //Clear all if single selection:
     if(in_type_player_id == 6684){
@@ -95,20 +95,20 @@ function select_answer(ln_id){
         //Already Selected, remove selection:
         if(in_type_player_id == 7231){
             //Multi Selection
-            $('.ln_answer_'+ln_id).attr('is-selected', 0);
-            $('.ln_answer_'+ln_id+' .check-icon i').removeClass('fas fa-check-square').addClass('far fa-square');
+            $('.ln_answer_'+in_id).attr('is-selected', 0);
+            $('.ln_answer_'+in_id+' .check-icon i').removeClass('fas fa-check-square').addClass('far fa-square');
         }
 
     } else if(current_status==0){
 
         //Already Selected, remove selection:
-        $('.ln_answer_'+ln_id).attr('is-selected', 1);
+        $('.ln_answer_'+in_id).attr('is-selected', 1);
         if(in_type_player_id == 6684){
             //Single Selection
-            $('.ln_answer_'+ln_id+' .check-icon i').removeClass('far fa-circle').addClass('fas fa-check-circle');
+            $('.ln_answer_'+in_id+' .check-icon i').removeClass('far fa-circle').addClass('fas fa-check-circle');
         } else if(in_type_player_id == 7231){
             //Multi Selection
-            $('.ln_answer_'+ln_id+' .check-icon i').removeClass('far fa-square').addClass('fas fa-check-square');
+            $('.ln_answer_'+in_id+' .check-icon i').removeClass('far fa-square').addClass('fas fa-check-square');
         }
 
     }
@@ -119,11 +119,13 @@ function read_save_answer(){
 
     //Check
     var selected_answers = [];
-    $(".list-answers .answer-item").each(function () {
-        if (parseInt($(this).attr('is-selected'))==1) {
-            selected_answers.push(parseInt($(this).attr('ln_id')));
+    $(".answer-item").each(function () {
+        if ($(this).attr('is-selected')=='1') {
+            selected_answers.push(parseInt($(this).attr('selected-in-id')));
         }
     });
+
+    console.log(selected_answers);
 
     if(selected_answers.length > 0){
         //Show Loading:

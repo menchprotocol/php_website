@@ -1711,7 +1711,7 @@ class READ_model extends CI_Model
                     } else {
 
                         //echo '<a href="/read/actionplan_answer_question/6157/' . $recipient_en['en_id'] . '/' . $ins[0]['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $recipient_en['en_id']) . '/' . $child_in['in_id'] . '" class="list-group-item itemread">';
-                        echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['ln_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" ln_id="'.$child_in['ln_id'].'" class="ln_answer_'.$child_in['ln_id'].' answer-item list-group-item itemread">';
+                        echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['in_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" selected-in-id="'.$child_in['in_id'].'" class="ln_answer_'.$child_in['in_id'].' answer-item list-group-item itemread">';
 
                         echo '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
 
