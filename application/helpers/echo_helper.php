@@ -1551,7 +1551,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     $ui = '<a href="/'.$in['in_id'] . '" class="list-group-item itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
-    $ui .= '<b class="montserrat blog-url inline-block">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
+    $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
     if($footnotes){
         $ui .= '<span class="montserrat blog-info doupper inline-block '.$footnote_class.'">'.$footnotes.'</span>';
     }
