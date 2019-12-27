@@ -19,7 +19,7 @@ $route['(:num)']                    = "read/read_echo/$1";
 $route['(:num)/next']               = "read/read_next/$1";
 
 //BLOG
-$route['blog']                      = "blog/blog_list";
+$route['blog']                      = "blog/blog_mylist";
 $route['blog/create']               = "blog/blog_create";
 $route['blog/stats']                = "blog/blog_stats";
 $route['blog/(:num)']               = "blog/blog_modify/$1";

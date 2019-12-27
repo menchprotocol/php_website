@@ -2,7 +2,7 @@
 
     <?php
 
-    echo '<h1><span class="icon-block-xlg"><i class="fas fa-circle yellow"></i></span>MY BLOGS</h1>';
+    echo '<h1 class="yellow"><span class="icon-block-xlg"><i class="fas fa-circle yellow"></i></span>MY BLOGS</h1>';
 
     $session_en = superpower_assigned();
     $already_shown = array();

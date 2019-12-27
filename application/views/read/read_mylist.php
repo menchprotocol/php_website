@@ -4,7 +4,7 @@
 <div class="container">
 <?php
 
-echo '<h1><span class="icon-block-xlg"><i class="fas fa-circle ispink"></i></span>MY READS</h1>';
+echo '<h1 class="ispink"><span class="icon-block-xlg"><i class="fas fa-circle ispink"></i></span>MY READS</h1>';
 
 //See if we have 2 or more blogs:
 $has_multiple_blogs = ( count($user_blogs) >= 2 );
