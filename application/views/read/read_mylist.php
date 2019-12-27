@@ -46,8 +46,8 @@ if($has_multiple_blogs){
 
     echo '<div class="clear-reading-list hidden">';
 
-        echo '<p><span class="icon-block-xlg"><i class="fas fa-exclamation-triangle"></i></span><b class="ispink montserrat">WARNING:</b> You are about to remove all blogs from your reading list.</p>';
-        echo '<p style="margin-top:20px;"><a href="/read/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('cred_password_salt') . $timestamp).'" class="btn btn-read"><span class="icon-block"><i class="fas fa-trash-alt"></i></span> REMOVE ALL</a> or <a href="/read" STYLE="text-decoration: underline;">Cancel</a></p>';
+        echo '<p><span class="icon-block"><i class="fas fa-exclamation-triangle"></i></span><b class="ispink montserrat">WARNING:</b> You are about to remove all blogs from your reading list.</p>';
+        echo '<p style="margin-top:20px;"><a href="/read/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('cred_password_salt') . $timestamp).'" class="btn btn-read"><span class="icon-block"><i class="fas fa-trash-alt"></i></span> REMOVE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
 
     echo '</div>';
 
