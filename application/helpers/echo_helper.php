@@ -2131,7 +2131,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '<span class="icon-block in_status_player_id_' . $in['in_id'] . ( $is_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_player_id']]['m_name'].': '.$en_all_4737[$in['in_status_player_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_player_id']]['m_icon'] . '</span></span>';
 
 
-    $ui .= '<b class="in_title_' . $in['in_id'] . ' montserrat inline-block" style="padding-top:5px;">' . echo_in_title($in['in_title'], false) . '</b>';
+    $ui .= '<b class="in_title_' . $in['in_id'] . ' montserrat" style="padding-top:5px;">' . echo_in_title($in['in_title'], false) . '</b>';
 
 
 
