@@ -1530,7 +1530,7 @@ function echo_in_blog($in)
         $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
         $ui .= '<span class="icon-block-sm">'.$en_all_4737[$in['in_status_player_id']]['m_icon'].'</span>';
     }
-    $ui .= '<b class="montserrat blog-url inline-block">'.echo_in_title($in['in_title'], false).'</b>';
+    $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false).'</b>';
     $ui .= '</td>';
 
     //Search for Blog Image:
@@ -1542,7 +1542,7 @@ function echo_in_blog($in)
 }
 
 
-function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_class = null, $footnote_class = null)
+function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_class = null, $footnote_class = null, $show_icon = false)
 {
 
     //See if user is logged-in:
@@ -1579,14 +1579,14 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     $ui .= '</td>';
 
     //Search for Blog Image:
-    $ui .= '<td class="featured-frame">'.echo_in_thumbnail($in['in_id']).'</td>';
+    $ui .= '<td class="featured-frame">'.echo_in_thumbnail($in['in_id'], $show_icon).'</td>';
     $ui .= '</tr></table>';
     $ui .= '</a>';
 
     return $ui;
 }
 
-function echo_in_thumbnail($in_id){
+function echo_in_thumbnail($in_id, $show_icon = false){
 
     $CI =& get_instance();
 
@@ -1627,8 +1627,7 @@ function echo_in_thumbnail($in_id){
     }
 
     //Not found:
-    return null;
-    //return '<div class="inline-block pull-right"><i class="fas fa-chevron-circle-right ispink large-icon"></i></div>';
+    return ( $show_icon ? '<div class="inline-block pull-right"><i class="fas fa-chevron-circle-right ispink large-icon"></i></div>' : null );
 
 }
 
@@ -2287,7 +2286,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
 
             } else {
 
-                echo echo_in_read($child_in, $footnotes, $common_prefix, ( $is_upcoming ? 'hidden is_upcoming' : '' ), ( $is_upcoming ? '' : 'hidden is_upcoming' ));
+                echo echo_in_read($child_in, $footnotes, $common_prefix, ( $is_upcoming ? 'hidden is_upcoming' : '' ), ( $is_upcoming ? '' : 'hidden is_upcoming' ), true);
 
             }
 
