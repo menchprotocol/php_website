@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-27 10:56:52 PST
+//Generated 2019-12-27 10:58:26 PST
 
 //BLOG TEXT INPUTS:
 $config['en_ids_12112'] = array(4358,4362,4739,4735);
@@ -95,7 +95,7 @@ $config['en_all_12079'] = array(
     7585 => array(
         'm_icon' => '<i class="fas fa-random yellow" aria-hidden="true"></i>',
         'm_name' => 'TYPE',
-        'm_desc' => 'How to complete this blog & advance to the next one',
+        'm_desc' => 'How to complete this blog & advance onwards',
         'm_parents' => array(12079,11054,6204,10651,6160,6194,6232,4527,6201),
     ),
 );
