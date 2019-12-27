@@ -125,28 +125,21 @@ function read_save_answer(){
         }
     });
 
-    console.log(selected_answers);
-
-    if(selected_answers.length > 0){
-        //Show Loading:
-        $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
-        $.post("/read/read_save_answer", {
-            in_loaded_id:in_loaded_id,
-            selected_answers:selected_answers
-        }, function (data) {
-            if (data.status) {
-                $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">SAVED</span>');
-                setTimeout(function () {
-                    $('.result-update').html('');
-                }, 1597);
-            } else {
-                $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-triangle ispink"></i></span><span class="montserrat ispink">ERROR: '+data.message+'</span>');
-            }
-        });
-    } else {
-        //Show Error:
-        $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
-    }
+    //Show Loading:
+    $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
+    $.post("/read/read_save_answer", {
+        in_loaded_id:in_loaded_id,
+        selected_answers:selected_answers
+    }, function (data) {
+        if (data.status) {
+            $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">SAVED</span>');
+            setTimeout(function () {
+                $('.result-update').html('');
+            }, 1597);
+        } else {
+            $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-triangle ispink"></i></span><span class="montserrat ispink">ERROR: '+data.message+'</span>');
+        }
+    });
 }
 
 
