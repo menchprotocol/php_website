@@ -194,7 +194,7 @@ class Read extends CI_Controller
         echo 'Sent '.$email_recipients.' Stat Emails';
     }
 
-    function read_list(){
+    function read_mylist(){
 
         $session_en = superpower_assigned();
         if(!$session_en){
@@ -230,7 +230,7 @@ class Read extends CI_Controller
             'title' => 'MY READING LIST',
         ));
 
-        $this->load->view('read/read_list', array(
+        $this->load->view('read/read_mylist', array(
             'session_en' => $session_en,
             'user_blogs' => $user_blogs,
         ));
@@ -240,7 +240,7 @@ class Read extends CI_Controller
     }
 
 
-    function read_blog($in_id = 0)
+    function read_echo($in_id = 0)
     {
 
         /*
@@ -279,7 +279,7 @@ class Read extends CI_Controller
         ));
 
         //Load specific view based on Blog Level:
-        $this->load->view('read/read_blog', array(
+        $this->load->view('read/read_echo', array(
             'in' => $ins[0],
             'session_en' => $session_en,
             'autoexpand' => (isset($_GET['autoexpand']) && intval($_GET['autoexpand'])),
@@ -293,6 +293,63 @@ class Read extends CI_Controller
 
 
 
+    function read_save_answer(){
+
+        $session_en = superpower_assigned();
+        if (!$session_en) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Expired Session, login and try again',
+            ));
+
+        } elseif (!isset($_POST['in_loaded_id']) || !isset($_POST['selected_answers'])|| !is_array($_POST['selected_answers'])) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing core data.',
+            ));
+
+        } elseif (!count($_POST['selected_answers'])) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'No answer selected.',
+            ));
+
+        }
+
+        $ins = $this->BLOG_model->in_fetch(array(
+            'in_id' => $_POST['in_loaded_id'],
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+        ));
+        if (!count($ins)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid blog ID',
+            ));
+        }
+
+        //See if we had previously answered:
+        $previously_answered = $this->READ_model->ln_fetch(array(
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
+            'ln_parent_blog_id' => $ins[0]['in_id'],
+            'ln_creator_player_id' => $session_en['en_id'],
+        ), array('in_child'));
+
+        $answers_newly_removed = 0;
+        $answers_newly_added = 0;
+        if(count($previously_answered) > 0){
+            foreach ($previously_answered as $previously_answer){
+                if(!in_array($previously_answer['in_id'], $_POST['selected_answers'])){
+
+                }
+            }
+        }
+
+
+    }
 
 
 

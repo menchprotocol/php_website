@@ -1428,6 +1428,7 @@ class READ_model extends CI_Model
                 ));
                 return false;
             }
+
         }
 
 
@@ -1628,6 +1629,7 @@ class READ_model extends CI_Model
                     'ln_creator_player_id' => $recipient_en['en_id'],
                 ), array('in_child'));
 
+
                 if(count($previously_answered) > 0 && !$push_message){
 
                     echo '<div class="selected_before">';
@@ -1677,7 +1679,7 @@ class READ_model extends CI_Model
                     }
 
                     //Open for list to be printed:
-                    echo '<div class="list-group">';
+                    echo '<div class="list-group list-answers" in_type_player_id="'.$ins[0]['in_type_player_id'].'">';
 
                 }
 
@@ -1709,17 +1711,17 @@ class READ_model extends CI_Model
                     } else {
 
                         //echo '<a href="/read/actionplan_answer_question/6157/' . $recipient_en['en_id'] . '/' . $ins[0]['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $recipient_en['en_id']) . '/' . $child_in['in_id'] . '" class="list-group-item itemread">';
-                        echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['ln_id'].', '.$ins[0]['in_type_player_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" class="ln_answer_'.$child_in['ln_id'].' answer-item list-group-item itemread">';
+                        echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['ln_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" ln_id="'.$child_in['ln_id'].'" class="ln_answer_'.$child_in['ln_id'].' answer-item list-group-item itemread">';
 
                         echo '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
 
                         if ($ins[0]['in_type_player_id'] == 6684) {
 
-                            echo '<td class="icon-block"><i class="'.( $previously_selected ? 'fas fa-check-circle' : 'far fa-circle' ).'"></i></td>';
+                            echo '<td class="icon-block check-icon"><i class="'.( $previously_selected ? 'fas fa-check-circle' : 'far fa-circle' ).'"></i></td>';
 
                         } elseif ($ins[0]['in_type_player_id'] == 7231) {
 
-                            echo '<td class="icon-block"><i class="'.( $previously_selected ? 'fas fa-check-square' : 'far fa-square' ).'"></i></td>';
+                            echo '<td class="icon-block check-icon"><i class="'.( $previously_selected ? 'fas fa-check-square' : 'far fa-square' ).'"></i></td>';
 
                         }
 
@@ -1766,7 +1768,7 @@ class READ_model extends CI_Model
                 } else {
 
                     //Button to submit selection:
-                    echo '<div><a class="btn btn-read" href="">'.( count($previously_answered)>0 ? 'UPDATE' : 'SAVE' ).' & CONTINUE <i class="fas fa-angle-right"></i></a></div>';
+                    echo '<div><a class="btn btn-read" href="javascript:void(0)" onclick="read_save_answer()">'.( count($previously_answered)>0 ? 'UPDATE' : 'SAVE' ).' & CONTINUE <i class="fas fa-angle-right"></i></a> <span class="result-update"></span></div>';
 
                     //Close list:
                     echo '</div>';

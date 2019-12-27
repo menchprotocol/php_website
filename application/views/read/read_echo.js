@@ -77,7 +77,75 @@ $(document).ready(function () {
 });
 
 
+function select_answer(ln_id){
 
+    //Allow answer to be saved/updated:
+    var in_type_player_id = parseInt($('.list-answers').attr('in_type_player_id'));
+    var current_status = parseInt($('.ln_answer_'+ln_id).attr('is-selected'));
+
+    //Clear all if single selection:
+    if(in_type_player_id == 6684){
+        //Single Selection, clear all:
+        $('.answer-item').attr('is-selected', 0);
+        $('.check-icon').removeClass('fas fa-check-circle').addClass('far fa-circle');
+    }
+
+    if(current_status==1){
+
+        //Already Selected, remove selection:
+        if(in_type_player_id == 7231){
+            //Multi Selection
+            $('.ln_answer_'+ln_id).attr('is-selected', 0);
+            $('.ln_answer_'+ln_id+' .check-icon').removeClass('fas fa-check-square').addClass('far fa-square');
+        }
+
+    } else if(current_status==0){
+
+        //Already Selected, remove selection:
+        $('.ln_answer_'+ln_id).attr('is-selected', 1);
+        if(in_type_player_id == 6684){
+            //Single Selection
+            $('.ln_answer_'+ln_id+' .check-icon').removeClass('far fa-circle').addClass('fas fa-check-circle');
+        } else if(in_type_player_id == 7231){
+            //Multi Selection
+            $('.ln_answer_'+ln_id+' .check-icon').removeClass('far fa-square').addClass('fas fa-check-square');
+        }
+
+    }
+
+}
+
+function read_save_answer(){
+
+    //Check
+    var selected_answers = [];
+    $(".list-answers .answer-item").each(function () {
+        if (parseInt($(this).attr('is-selected'))==1) {
+            selected_answers.push(parseInt($(this).attr('ln_id')));
+        }
+    });
+
+    if(selected_answers.length > 0){
+        //Show Loading:
+        $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
+        $.post("/read/read_save_answer", {
+            in_loaded_id:in_loaded_id,
+            selected_answers:selected_answers
+        }, function (data) {
+            if (data.status) {
+                $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">SAVED</span>');
+                setTimeout(function () {
+                    $('.result-update').html('');
+                }, 1597);
+            } else {
+                $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-triangle ispink"></i></span><span class="montserrat ispink">ERROR: '+data.message+'</span>');
+            }
+        });
+    } else {
+        //Show Error:
+        $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
+    }
+}
 
 
 function blog_skip(en_id, in_id) {
