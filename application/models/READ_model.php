@@ -1620,7 +1620,6 @@ class READ_model extends CI_Model
 
             } else {
 
-
                 //Have they already selected answers? If so, show them their selection and focus on navigation:
                 $previously_answered = $this->READ_model->ln_fetch(array(
                     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -1646,6 +1645,28 @@ class READ_model extends CI_Model
 
 
                 if($push_message){
+
+
+                    /*
+                     *
+                     * Let's see if we need to cleanup the OR answer
+                     * index by merging the answer response quick replies
+                     * (See Github Issue 2234 for more details)
+                     *
+                     * */
+
+                    $answer_referencing = array(); //Start with nothing...
+                    foreach ($in__messages as $message_ln) {
+                        //Let's see if we can find a reference:
+                        for ($num = 1; $num <= config_var(12124); $num++) {
+                            if(substr_count($message_ln['ln_content'] , $num.'. ')==1 || substr_count($message_ln['ln_content'] , $num.".\n")==1){
+                                //Make sure we have have the previous number:
+                                if($num==1 || in_array(($num-1),$answer_referencing)){
+                                    array_push($answer_referencing, $num);
+                                }
+                            }
+                        }
+                    }
 
                     $msg_quick_reply = array();
 
@@ -1698,13 +1719,15 @@ class READ_model extends CI_Model
 
                     if ($push_message) {
 
-                        $message_content .= ($key+1).'. '.echo_in_title($child_in['in_title'], $push_message).( $previously_selected ? ' [Previously Selected]' : '' )."\n";
+                        if(!in_array(($key+1), $answer_referencing)){
+                            $message_content .= ($key+1).'. '.echo_in_title($child_in['in_title'], $push_message).( $previously_selected ? ' [Previously Selected]' : '' )."\n";
+                        }
 
                         if($quick_replies_allowed){
                             array_push($msg_quick_reply, array(
                                 'content_type' => 'text',
                                 'title' => 'NEXT',
-                                'payload' => 'GONEXT_'.$child_in['in_id'],
+                                'payload' => 'ANSWERQUESTION_' . $ins[0]['in_type_player_id'] . '_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
                             ));
                         }
 
@@ -1776,179 +1799,6 @@ class READ_model extends CI_Model
 
                 }
             }
-
-
-
-
-
-
-
-
-            //Prep variables:
-            $too_many_children = ( $push_message && count($in__children) > 10);
-
-
-            if($push_message){
-
-                /*
-                 *
-                 * Let's see if we need to cleanup the OR answer
-                 * index by merging the answer response quick replies
-                 * (See Github Issue 2234 for more details)
-                 *
-                 * */
-
-                $answer_referencing = array(); //Start with nothing...
-                foreach ($in__messages as $message_ln) {
-                    //Let's see if we can find a reference:
-                    for ($num = 1; $num <= 10; $num++) {
-                        if(substr_count($message_ln['ln_content'] , $num.'. ')==1 || substr_count($message_ln['ln_content'] , $num.".\n")==1){
-                            //Make sure we have have the previous number:
-                            if($num==1 || in_array(($num-1),$answer_referencing)){
-                                array_push($answer_referencing, $num);
-                            }
-                        }
-                    }
-                }
-
-            } else {
-
-                //See if we need to move the message inside the HTML:
-                $max_html_answers = 30;
-                $inline_answers = array();
-
-                for ($num = 1; $num <= $max_html_answers; $num++) {
-                    foreach ($in__messages as $index => $message_ln) {
-
-                        $valid_num = null;
-                        if(substr_count($message_ln['ln_content'] , $num.'. ')==1){
-                            $valid_num = $num.'. ';
-                        } elseif(substr_count($message_ln['ln_content'] , $num.".\n")==1){
-                            $valid_num = $num.".\n";
-                        }
-
-                        if($valid_num){
-                            $inline_answers[$num] = one_two_explode($valid_num , "\n", $message_ln['ln_content']);
-                            $in__messages[$index]['ln_content'] = trim(str_replace($valid_num.$inline_answers[$num], '', $message_ln['ln_content']));
-                            break;
-                        }
-                    }
-                    //Terminate if not found:
-                    if(!isset($inline_answers[$num])){
-                        break;
-                    }
-                }
-
-                echo '<div class="list-group" style="margin-top:10px;">';
-
-            }
-
-            //List OR child answers:
-            foreach ($in__children as $key => $child_in) {
-
-                //Is this selected?
-                $was_selected       = ( count($read_progress) && $read_progress[0]['ln_child_blog_id']==$child_in['in_id'] );
-
-                //Fetch history if selected:
-                if($was_selected){
-                    $child_progression_steps = $this->READ_model->ln_fetch(array(
-                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
-                        'ln_creator_player_id' => $recipient_en['en_id'],
-                        'ln_parent_blog_id' => $read_progress[0]['ln_child_blog_id'],
-                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    ));
-                }
-
-
-                if($push_message){
-
-                    if(!in_array(($key+1), $answer_referencing)){
-                        echo "\n\n" . ($key+1).'. '.echo_in_title($child_in['in_title'], true);
-                    }
-
-                    //Add answer options to Quick Reply:
-                    if(!$too_many_children){
-                        array_push($next_step_quick_replies, array(
-                            'content_type' => 'text',
-                            'title' => ($key+1),
-                            'payload' => 'ANSWERQUESTION_' . $progression_type_player_id . '_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
-                        ));
-                    }
-
-                } else {
-
-                    if(!count($read_progress)){
-
-                        //Need to select answer:
-                        echo '<a href="/read/actionplan_answer_question/6157/' . $recipient_en['en_id'] . '/' . $ins[0]['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $recipient_en['en_id']) . '/' . $child_in['in_id'] . '" class="list-group-item itemread lightgreybg">';
-
-                    } elseif($was_selected){
-
-                        //This was selected:
-                        echo '<a href="/'.$child_in['in_id'] . '" class="list-group-item itemread lightgreybg">';
-
-                    } else {
-
-                        //This was NOT selected and nothing else has been selected yet:
-                        echo '<span class="list-group-item itemread" style="text-decoration: line-through;">';
-
-                    }
-
-
-                    if($was_selected){
-
-                        //Selected Icon:
-                        echo '<i class="fas fa-check-circle"></i> ';
-
-                    } else {
-
-                        //Not selected icon:
-                        echo '<i class="far fa-circle"></i> ';
-
-                    }
-
-
-                    //Add to answer list:
-                    $potential_number = trim(str_replace('.','', echo_in_title($child_in['in_title'], true)));
-                    if(is_numeric($potential_number) && intval($potential_number)>0 && intval($potential_number)<=$max_html_answers && isset($inline_answers[intval($potential_number)])){
-                        echo $inline_answers[intval($potential_number)];
-                    } else {
-                        echo echo_in_title($child_in['in_title']);
-                    }
-
-                }
-
-
-                //HTML?
-                if(!$push_message){
-
-                    if($was_selected) {
-                        //Status Icon:
-                        echo '&nbsp;' . echo_en_cache('en_all_6186' /* Link Statuses */, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_player_id'] : 6175 /* Link Drafting */), false, null);
-                    }
-
-                    //Close tags:
-                    if(!count($read_progress) || $was_selected){
-
-                        echo '</a>';
-
-                    } else {
-
-                        echo '</span>';
-
-                    }
-                }
-            }
-
-            if(!$push_message){
-                echo '</div>';
-            } else {
-                if($too_many_children) {
-                    //Give instructions on how to select path:
-                    //echo "\n\n" . 'Choose your answers by replying a number 1-12';
-                }
-            }
-
 
         } elseif (in_array($ins[0]['in_type_player_id'], $this->config->item('en_ids_7309'))) {
 
