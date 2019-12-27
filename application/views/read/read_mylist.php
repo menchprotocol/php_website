@@ -4,17 +4,17 @@
 <div class="container">
 <?php
 
-echo '<h1><span class="icon-block-xlg"><i class="fas fa-circle ispink"></i></span>MY READING LIST</h1>';
+echo '<h1><span class="icon-block-xlg"><i class="fas fa-circle ispink"></i></span>MY READS</h1>';
 
 //See if we have 2 or more blogs:
 $has_multiple_blogs = ( count($user_blogs) >= 2 );
 
 //User has multiple 🔴 READING LISTs, so list all 🔴 READING LISTs to enable User to choose:
-echo '<div id="actionplan_steps" class="list-group actionplan-list '.( $has_multiple_blogs && 0 ? 'actionplan-sort' : '').'" style="margin-top:15px;">';
+echo '<div id="actionplan_steps" class="list-group actionplan-list" style="margin-top:15px;">';
 foreach ($user_blogs as $priority => $ln) {
 
     //Display row:
-    echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread actionplan_sort">';
+    echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread '.( $has_multiple_blogs && 0 ? 'actionplan_sort' : '').'">';
 
     echo '<span class="pull-right" style="padding-right:8px; padding-left:10px;">';
     echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="fas fa-trash"></i></span>';
