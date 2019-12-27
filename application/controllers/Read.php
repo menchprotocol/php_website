@@ -303,14 +303,14 @@ class Read extends CI_Controller
                 'message' => 'Expired Session, login and try again',
             ));
 
-        } elseif (!isset($_POST['in_loaded_id']) || !isset($_POST['selected_answers'])) {
+        } elseif (!isset($_POST['in_loaded_id'])) {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing core data.',
+                'message' => 'Missing blog id.',
             ));
 
-        } elseif (!is_array($_POST['selected_answers']) || !count($_POST['selected_answers'])) {
+        } elseif (!isset($_POST['selected_answers']) || !is_array($_POST['selected_answers']) || !count($_POST['selected_answers'])) {
 
             return echo_json(array(
                 'status' => 0,
@@ -347,6 +347,12 @@ class Read extends CI_Controller
                 }
             }
         }
+
+
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Saved successfully',
+        ));
 
 
     }

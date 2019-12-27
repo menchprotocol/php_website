@@ -132,7 +132,7 @@ function read_save_answer(){
         selected_answers:selected_answers
     }, function (data) {
         if (data.status) {
-            $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">SAVED</span>');
+            $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
             setTimeout(function () {
                 $('.result-update').html('');
             }, 1597);
