@@ -115,7 +115,7 @@ function select_answer(in_id){
 
 }
 
-function read_save_answer(){
+function read_answer(){
 
     //Check
     var selected_answers = [];
@@ -127,7 +127,7 @@ function read_save_answer(){
 
     //Show Loading:
     $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
-    $.post("/read/read_save_answer", {
+    $.post("/read/read_answer", {
         in_loaded_id:in_loaded_id,
         selected_answers:selected_answers
     }, function (data) {

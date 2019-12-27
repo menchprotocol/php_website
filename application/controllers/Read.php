@@ -293,7 +293,7 @@ class Read extends CI_Controller
 
 
 
-    function read_save_answer(){
+    function read_answer(){
 
         $session_en = superpower_assigned();
         if (!$session_en) {
