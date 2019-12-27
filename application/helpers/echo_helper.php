@@ -2509,11 +2509,11 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
 
     //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
     $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'_'.$ln_id.'">';
-    $ui .= '<span title="'.$en_all_12079[$cache_en_id]['m_name'].': '.$en_all_12079[$cache_en_id]['m_desc'].'" data-toggle="tooltip" data-placement="right">';
     $ui .= '<button type="button" '.( $is_author ? 'class="btn dropdown-toggle '.$btn_class.'" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.$btn_class.'"' ).' >';
+    $ui .= '<span title="'.$en_all_12079[$cache_en_id]['m_name'].': '.$en_all_12079[$cache_en_id]['m_desc'].'" data-toggle="tooltip" data-placement="right">';
     $ui .= '<span class="icon-block">' .$en_all_this[$selected_en_id]['m_icon'].'</span>'.( !$btn_class ? '' : $en_all_this[$selected_en_id]['m_name'] );
-    $ui .= '</button>';
     $ui .= '</span>';
+    $ui .= '</button>';
     $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$cache_en_id.'">';
 
     foreach ($en_all_this as $en_id => $m) {
