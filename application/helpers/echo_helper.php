@@ -1542,7 +1542,7 @@ function echo_in_blog($in)
 }
 
 
-function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_class = null)
+function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_class = null, $footnote_class = null)
 {
 
     //See if user is logged-in:
@@ -1553,7 +1553,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url inline-block">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
     if($footnotes){
-        $ui .= '<span class="'.$extra_class.'"><span class="montserrat blog-info doupper inline-block">'.$footnotes.'</span></span>';
+        $ui .= '<span class="montserrat blog-info doupper inline-block '.$footnote_class.'">'.$footnotes.'</span>';
     }
 
     //Now do measurements:
@@ -2281,7 +2281,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
 
             } else {
 
-                echo echo_in_read($child_in, $footnotes, $common_prefix, ( $is_upcoming ? 'hidden is_upcoming' : '' ));
+                echo echo_in_read($child_in, $footnotes, $common_prefix, ( $is_upcoming ? 'hidden is_upcoming' : '' ), ( $is_upcoming ? '' : 'hidden is_upcoming' ));
 
             }
 
