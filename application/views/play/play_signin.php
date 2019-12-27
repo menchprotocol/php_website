@@ -79,7 +79,7 @@ if(count($current_sign_in_attempt) == 0){
             echo '<p class="text-center">To read <a href="/'.$referrer_in_id.'">'.echo_in_title($ins[0]['in_title']).'</a> for FREE!</p>';
         }
     } elseif(isset($_GET['url']) && strlen($_GET['url']) > 0){
-        echo '<p>To access <u>'.urldecode($_GET['url']).'</u></p>';
+        echo '<p class="text-center">To access <u>'.urldecode($_GET['url']).'</u></p>';
     }
     ?>
 
