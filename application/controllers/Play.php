@@ -2703,17 +2703,7 @@ fragment PostListingItemSidebar_post on Post {
     {
 
         //Authenticate user:
-        $session_en = superpower_assigned();
-
-        if(!$session_en){
-            //Probably loaded screen from Messenger:
-            $this->load->view('header', array(
-                'title' => 'AUTHENTICATING...',
-            ));
-            $this->load->view('play/play_authenticating');
-            $this->load->view('footer');
-            return false;
-        }
+        $session_en = superpower_assigned(null, true);
 
         //Log My Account View:
         $this->READ_model->ln_create(array(

@@ -43,8 +43,7 @@ if(js_pl_id < 1){
         //Get context:
         MessengerExtensions.getContext(js_en_all_6404[11076]['m_desc'],
             function success(thread_context) {
-                // success
-                //user ID was successfully obtained.
+                //user ID was successfully authenticated
                 var psid = thread_context.psid;
                 var signed_request = thread_context.signed_request;
                 //Fetch Page:

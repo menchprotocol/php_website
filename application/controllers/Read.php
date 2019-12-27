@@ -196,16 +196,7 @@ class Read extends CI_Controller
 
     function read_mylist(){
 
-        $session_en = superpower_assigned();
-        if(!$session_en){
-            //Probably loaded screen from Messenger:
-            $this->load->view('header', array(
-                'title' => 'AUTHENTICATING...',
-            ));
-            $this->load->view('play/play_authenticating');
-            $this->load->view('footer');
-            return false;
-        }
+        $session_en = superpower_assigned(null, true);
 
         //Fetch reading list:
         $user_blogs = $this->READ_model->ln_fetch(array(
