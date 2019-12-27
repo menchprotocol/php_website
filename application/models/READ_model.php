@@ -1634,7 +1634,7 @@ class READ_model extends CI_Model
                     echo '<div class="selected_before">';
 
                         //List answers:
-                        echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-history"></i></span>PREVIOUSLY SELECTED');
+                        echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-history"></i></span>YOUR PREVIOUS ANSWER');
 
                         //Allow to edit:
                         echo ' <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><b class="montserrat">EDIT ANSWER</b></a>';
@@ -1691,11 +1691,11 @@ class READ_model extends CI_Model
                     //HTML:
                     if ($ins[0]['in_type_player_id'] == 6684) {
 
-                        echo '<div class="montserrat" style="margin-top:30px;"><span class="icon-block"><i class="fas fa-check"></i></span>SELECT ONE OPTION:</div>';
+                        echo '<div class="montserrat" style="margin-top:30px;"><span class="icon-block"><i class="fas fa-check"></i></span>SELECT ONE ANSWER:</div>';
 
                     } elseif ($ins[0]['in_type_player_id'] == 7231) {
 
-                        echo '<div class="montserrat" style="margin-top:30px;"><span class="icon-block"><i class="fas fa-tasks"></i></span>SELECT ONE OR MORE OPTIONS:</div>';
+                        echo '<div class="montserrat" style="margin-top:30px;"><span class="icon-block"><i class="fas fa-tasks"></i></span>SELECT ONE OR MORE ANSWERS:</div>';
 
                     }
 
