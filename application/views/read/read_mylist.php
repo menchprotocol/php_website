@@ -40,16 +40,15 @@ echo ' <a class="btn btn-read inline-block" href="/"  style="margin: 20px 0;"><i
 if($has_multiple_blogs){
 
     //Give option to delete all:
-    echo '<div class="pull-right clear-reading-list" style="margin: 20px 0;"><a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="font-size:0.8em; color:#AAA; text-decoration: none;" class="montserrat doupper" data-toggle="tooltip" title="Remove ALL reads from your reading list" data-placement="left">ALL<span class="icon-block"><i class="fas fa-trash"></i></span></a></div>';
+    echo '<div class="pull-right clear-reading-list" style="margin: 20px 0;"><a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="font-size:0.8em; color:#AAA; text-decoration: none;" class="montserrat doupper">ALL<span class="icon-block"><i class="fas fa-trash"></i></span></a></div>';
 
     $timestamp = time();
 
     echo '<div class="clear-reading-list hidden">';
 
-        echo '<h1 style="color:#FF0000; margin-bottom:30px;"><i class="fas fa-trash-alt"></i> Clear my 🔴 READING LIST</h1>';
-        echo '<p  style="color:#FF0000;"><b>WARNING:</b> You are about to remove all blogs from your reading list.</p>';
-        echo '<p  style="color:#FF0000;">Choose an option to continue:</p>';
-        echo '<p  style="margin-top:20px;"><a href="/read/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('cred_password_salt') . $timestamp).'" class="btn btn-blog" style="background-color: #FF0000; color: #FFF;"><i class="fas fa-trash-alt"></i> Clear 🔴 READING LIST</a> or <a href="/read" class="btn btn-blog grey"><i class="fas fa-undo-alt"></i> Cancel & Go Back</a></p>';
+        echo '<h1 style="margin-bottom:20px;"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>CLEAR MY READING LIST</h1>';
+        echo '<p><b class="ispink montserrat">WARNING:</b> You are about to remove all blogs from your reading list.</p>';
+        echo '<p style="margin-top:20px;"><a href="/read/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('cred_password_salt') . $timestamp).'" class="btn btn-read"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Clear 🔴 READING LIST</a> or <a href="/read">Cancel</a></p>';
 
     echo '</div>';
 
