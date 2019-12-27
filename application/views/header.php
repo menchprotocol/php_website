@@ -105,7 +105,7 @@ if(!isset($hide_header) || !$hide_header){
             <table class="mench-navigation">
                 <tr>
 
-                    <td class="block-link block-logo"><a href="/"><img src="/mench.png" class="mench-logo mench-spin" /></a></td>
+                    <td class="block-link block-logo"><a href="<?= (isset($session_en['en_id']) ? '/read' : '/') ?>"><img src="/mench.png" class="mench-logo mench-spin" /></a></td>
 
                     <td>
                         <div class="supwerpower_view">
