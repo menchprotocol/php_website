@@ -968,7 +968,6 @@ label {
     .container {
         max-width: none;
     }
-    .icon-block-xlg{ min-width:59px; }
     .featured-frame{ width:75px; }
     .featured-image { width:75px; height:75px; }
     .content-image{ max-height:300px; }
