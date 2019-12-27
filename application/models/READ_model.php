@@ -902,7 +902,6 @@ class READ_model extends CI_Model
             );
         }
 
-
         //Remove Bookmark:
         foreach($user_blogs as $ln){
             $this->READ_model->ln_update($ln['ln_id'], array(
@@ -910,21 +909,6 @@ class READ_model extends CI_Model
                 'ln_status_player_id' => 6173, //ARCHIVED
             ), $en_id, $stop_method_id);
         }
-
-
-        //Communicate with user:
-        $this->READ_model->dispatch_message(
-            'I have removed the blog '.$ins[0]['in_title'].' from your Bookmarks.',
-            array('en_id' => $en_id),
-            true,
-            array(
-                array(
-                    'content_type' => 'text',
-                    'title' => 'Next',
-                    'payload' => 'GONEXT_',
-                )
-            )
-        );
 
         return array(
             'status' => 1,

@@ -1296,7 +1296,6 @@ class Read extends CI_Controller
             ));
         }
 
-
         //Update the order of their 🔴 READING LIST:
         $results = array();
         foreach($_POST['new_actionplan_order'] as $ln_order => $ln_id){
@@ -1307,26 +1306,6 @@ class Read extends CI_Controller
                 ), $_POST['js_pl_id'], 6132 /* Blogs Ordered by User */);
             }
         }
-
-
-        //Fetch top blog that being workined on now:
-        $top_priority = $this->READ_model->read_focus($_POST['js_pl_id']);
-        if($top_priority){
-            //Communicate top-priority with user:
-            $this->READ_model->dispatch_message(
-                '🔴 READING LIST prioritised with the focus on '.$top_priority['in']['in_title'].' ('.$top_priority['completion_rate']['completion_percentage'].'% done)',
-                array('en_id' => $_POST['js_pl_id']),
-                true,
-                array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'GONEXT_',
-                    )
-                )
-            );
-        }
-
 
         //All good:
         return echo_json(array(
