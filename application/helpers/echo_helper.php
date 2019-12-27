@@ -2145,7 +2145,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
      *
      * */
 
-    $ui .= '<div style="padding-left:5px;" class="pull-right inline-block '. superpower_active(10939) .'">';
+    $ui .= '<div style="padding-left:5px;" class="pull-right inline-block">';
 
     //Loop through parents:
     $ui .= '<span class="'.superpower_active(10984).'">';
@@ -2164,12 +2164,12 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     //Sort
     if(!$is_parent){
-        $ui .= '<div class="pull-right inline-block icon-block" style="padding-top: 5px;"><i class="fas fa-sort"></i></div>';
+        $ui .= '<div class="pull-right inline-block icon-block '. superpower_active(10939) .'" style="padding-top: 5px;"><i class="fas fa-sort"></i></div>';
     }
 
     //UNLINK
     if($is_author){
-        $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="javascript:void(0);" title="Unlink blog" data-toggle="tooltip" data-placement="left" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink"></i></a></div>';
+        $ui .= '<div class="pull-right inline-block '. superpower_active(10939) .'" style="padding-left:3px"><a class="btn btn-blog" href="javascript:void(0);" title="Unlink blog" data-toggle="tooltip" data-placement="left" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink"></i></a></div>';
     }
 
 
