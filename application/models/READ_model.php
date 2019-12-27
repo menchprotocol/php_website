@@ -1634,7 +1634,7 @@ class READ_model extends CI_Model
                     echo '<div class="selected_before">';
 
                         //List answers:
-                        echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, 'PREVIOUSLY SELECTED');
+                        echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-history"></i></span>PREVIOUSLY SELECTED');
 
                         //Allow to edit:
                         echo ' <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><b class="montserrat">EDIT ANSWER</b></a>';
@@ -1939,7 +1939,7 @@ class READ_model extends CI_Model
                 }
 
                 //Always show the next list:
-                echo_in_list($ins[0]['in_id'], $in__children, $recipient_en, $push_message, 'UP NEXT');
+                echo_in_list($ins[0]['in_id'], $in__children, $recipient_en, $push_message, '<span class="icon-block"><i class="far fa-chevron-circle-right"></i></span>UP NEXT');
 
             } elseif ($ins[0]['in_type_player_id'] == 6683) {
 
