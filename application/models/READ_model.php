@@ -1791,7 +1791,7 @@ class READ_model extends CI_Model
                 } else {
 
                     //Button to submit selection:
-                    echo '<div><a class="btn btn-read" href="javascript:void(0)" onclick="read_save_answer()">'.( count($previously_answered)>0 ? 'UPDATE' : 'SAVE' ).' & CONTINUE <i class="fas fa-angle-right"></i></a> <span class="result-update"></span></div>';
+                    echo '<div style="padding: 10px 0;"><a class="btn btn-read" href="javascript:void(0)" onclick="read_save_answer()">'.( count($previously_answered)>0 ? 'UPDATE' : 'SAVE' ).' & CONTINUE <i class="fas fa-angle-right"></i></a> <span class="result-update"></span></div>';
 
                     //Close list:
                     echo '</div>';
