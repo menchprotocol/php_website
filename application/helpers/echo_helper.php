@@ -1606,7 +1606,7 @@ function echo_in_thumbnail($in_id){
 
         //Did we find an image for this message?
         if(count($images) > 0){
-            return '<div class="inline-block featured-frame"><span class="featured-image"><img src="'.$images[0]['ln_content'].'" /></span></div>';
+            return '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="'.$images[0]['ln_content'].'" /></span></div>';
         }
 
         //Maybe we have an Embed Video?
@@ -1620,14 +1620,14 @@ function echo_in_thumbnail($in_id){
         if(count($embeds) > 0){
             $youtube_id = extract_youtube_id($embeds[0]['ln_content']);
             if(strlen($youtube_id) > 0){
-                return '<div class="inline-block featured-frame"><span class="featured-image"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
+                return '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
             }
         }
 
     }
 
     //Not found:
-    return '<div class="inline-block"><i class="fas fa-chevron-circle-right ispink large-icon"></i></div>';
+    return '<div class="inline-block pull-right"><i class="fas fa-chevron-circle-right ispink large-icon"></i></div>';
 
 }
 
