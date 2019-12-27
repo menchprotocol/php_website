@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-25 16:29:30 PST
+//Generated 2019-12-27 10:56:52 PST
 
 //BLOG TEXT INPUTS:
 $config['en_ids_12112'] = array(4358,4362,4739,4735);
@@ -25,7 +25,7 @@ $config['en_all_12112'] = array(
     4362 => array(
         'm_icon' => '<i class="far fa-clock ispink" aria-hidden="true"></i>',
         'm_name' => 'READ TIME',
-        'm_desc' => 'Estimated number of seconds to complete this blog',
+        'm_desc' => 'Estimated number of seconds to read this blog',
         'm_parents' => array(12112,6232,4341),
     ),
     4739 => array(
@@ -95,7 +95,7 @@ $config['en_all_12079'] = array(
     7585 => array(
         'm_icon' => '<i class="fas fa-random yellow" aria-hidden="true"></i>',
         'm_name' => 'TYPE',
-        'm_desc' => 'Set how readers complete this blog & advance to the next blog',
+        'm_desc' => 'How to complete this blog & advance to the next one',
         'm_parents' => array(12079,11054,6204,10651,6160,6194,6232,4527,6201),
     ),
 );
@@ -1705,7 +1705,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.176',
+        'm_desc' => '1.18',
         'm_parents' => array(6404),
     ),
     11067 => array(
