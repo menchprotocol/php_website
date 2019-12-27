@@ -27,7 +27,7 @@ foreach ($user_blogs as $priority => $ln) {
     echo '<b class="actionplan-title montserrat montserrat blog-url in-title-'.$ln['in_id'].'">' . $ln['in_title'] . '</b>';
     echo '<div class="actionplan-overview">';
     if($has_multiple_blogs){
-        echo '<span class="icon-block"><i class="fas fa-sort" style="color:#999;"></i></span> ';
+        echo '<span class="icon-block"><i class="fas fa-sort" style="color:#999;"></i></span>';
     }
     echo '<span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read" class="montserrat blog-info doupper">READ '.$completion_rate['completion_percentage'].'%</span>';
     echo '</div>';

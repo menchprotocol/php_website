@@ -487,7 +487,7 @@ function in_notes_sort_load(focus_ln_type_player_id) {
     var sort_msg = Sortable.create( document.getElementById("in_notes_list_" + focus_ln_type_player_id) , {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         handle: ".blog_note_sorting", // Restricts sort start click/touch to the specified element
-        draggable: ".blogs_sortable", // Specifies which items inside the element should be sortable
+        draggable: ".notes_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
             in_notes_sort_apply(focus_ln_type_player_id);
@@ -790,17 +790,17 @@ function prep_search_pad(){
 
 }
 
-function in_load_search(focus_element, is_in_parent, shortcut) {
+function in_load_search(element_focus, is_in_parent, shortcut) {
 
     //Loads the blog search bar only once for the add blog inputs
-    if($(focus_element).hasClass('search-bar-loaded')){
+    if($(element_focus).hasClass('search-bar-loaded')){
         //Already loaded:
         return false;
     }
 
 
     //Not yet loaded, continue with loading it:
-    $(focus_element).addClass('search-bar-loaded').on('autocomplete:selected', function (event, suggestion, dataset) {
+    $(element_focus).addClass('search-bar-loaded').on('autocomplete:selected', function (event, suggestion, dataset) {
 
         in_link_or_create($(this).attr('blog-id'), is_in_parent, suggestion.alg_obj_id);
 
@@ -808,7 +808,7 @@ function in_load_search(focus_element, is_in_parent, shortcut) {
 
         source: function (q, cb) {
 
-            if($(focus_element).val().charAt(0)=='#'){
+            if($(element_focus).val().charAt(0)=='#'){
                 cb([]);
                 return;
             } else {
@@ -835,15 +835,15 @@ function in_load_search(focus_element, is_in_parent, shortcut) {
                 return echo_js_suggestion(suggestion);
             },
             header: function (data) {
-                if (!($(focus_element).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('blog-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle yellow add-plus"></i></span><b>' + data.query + '</b></a>';
+                if (!($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('blog-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle yellow add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
-                if($(focus_element).val().charAt(0)=='#'){
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('blog-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
+                if($(element_focus).val().charAt(0)=='#'){
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('blog-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
                 } else {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('blog-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle yellow add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('blog-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle yellow add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
             },
         }
@@ -859,12 +859,10 @@ function in_load_search(focus_element, is_in_parent, shortcut) {
 
 function in_sort_save(in_id) {
 
-    var s_element = "list-in-" + in_loaded_id + '-0';
-    var s_draggable = ".blogs_sortable";
     var new_ln_orders = [];
     var sort_rank = 0;
 
-    $("#" + s_element + " " + s_draggable).each(function () {
+    $("#list-in-" + in_loaded_id + "-0 .blogs_sortable").each(function () {
         //Fetch variables for this blog:
         var in_id = parseInt($(this).attr('blog-id'));
         var ln_id = parseInt($(this).attr('in-link-id'));
@@ -894,19 +892,16 @@ function in_sort_load(in_id) {
 
 
     var element_key = null;
-    var s_element = "list-in-" + in_loaded_id + '-0';
-    var s_draggable = ".blogs_sortable";
-    var theobject = document.getElementById(s_element);
+    var theobject = document.getElementById("list-in-" + in_loaded_id + "-0");
     if (!theobject) {
         //due to duplicate blogs belonging in this tree:
-        //TODO Fix later to support duplicate blogs
         return false;
     }
 
     var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        draggable: s_draggable, // Specifies which items inside the element should be sortable
-        handle: ".enable-sorting", // Restricts sort start click/touch to the specified element
+        draggable: ".blogs_sortable", // Specifies which items inside the element should be sortable
+        handle: ".fa-sort", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             in_sort_save(in_id);
         }

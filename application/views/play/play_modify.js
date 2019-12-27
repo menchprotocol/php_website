@@ -171,14 +171,14 @@ $(document).ready(function () {
 
 
 
-function en_load_search(focus_element, is_en_parent, shortcut) {
+function en_load_search(element_focus, is_en_parent, shortcut) {
 
     load_js_algolia();
 
-    $(focus_element + ' .new-player-input').focus(function() {
-        $(focus_element + ' .algolia_search_pad' ).removeClass('hidden');
+    $(element_focus + ' .new-player-input').focus(function() {
+        $(element_focus + ' .algolia_search_pad' ).removeClass('hidden');
     }).focusout(function() {
-        $(focus_element + ' .algolia_search_pad' ).addClass('hidden');
+        $(element_focus + ' .algolia_search_pad' ).addClass('hidden');
     }).on('autocomplete:selected', function (event, suggestion, dataset) {
 
         en_add_or_link(suggestion.alg_obj_id, is_en_parent);
