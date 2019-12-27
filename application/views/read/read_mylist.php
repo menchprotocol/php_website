@@ -54,9 +54,6 @@ if($has_multiple_blogs){
 
     echo '</div>';
 
-
-    //Give sorting tip:
-    echo '<div class="actionplan-tip"><span class="icon-block"><i class="fas fa-lightbulb"></i></span>TIP: Prioritize your reads by holding them & dragging them up/down.</div>';
 }
 
 
