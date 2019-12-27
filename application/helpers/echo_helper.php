@@ -2241,7 +2241,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
 
         } else {
             //HTML:
-            echo '<div class="montserrat" style="margin-top:30px;">'.$header_title.':</div>';
+            echo '<div class="montserrat" style="padding:15px 0;">'.$header_title.':</div>';
             echo '<div class="list-group">';
         }
 
