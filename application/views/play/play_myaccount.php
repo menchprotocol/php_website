@@ -6,8 +6,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 <div class="container">
 
-    <a href="/play/<?= $session_en['en_id'] ?>" class="btn btn-play"><i class="fas fa-angle-left"></i><?= $session_en['en_name'] ?></a>
-
     <h1 class="blue"><span class="icon-block-xlg en-icon"><?= $en_all_11035[6225]['m_icon'] ?></span><?= $en_all_11035[6225]['m_name'] ?></h1>
 
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="max-width: 500px;">
@@ -116,5 +114,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         ?>
 
     </div>
+
+    <a href="/play/<?= $session_en['en_id'] ?>" class="btn btn-play"><span class="icon-block"><i class="fas fa-angle-left"></i></span><?= $session_en['en_name'] ?></a>
 
 </div>
