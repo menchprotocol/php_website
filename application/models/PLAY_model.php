@@ -751,7 +751,7 @@ class PLAY_model extends CI_Model
                 'url_already_existed' => $url_already_existed,
                 'cleaned_url' => $url,
                 'ln_type_player_id' => $ln_type_player_id,
-                'page_title' => html_player_decode($page_title, ENT_QUOTES),
+                'page_title' => html_entity_decode($page_title, ENT_QUOTES),
                 'en_domain' => $domain_player['en_domain'],
                 'en_url' => $en_url,
             )
