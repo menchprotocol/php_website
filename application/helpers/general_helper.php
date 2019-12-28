@@ -22,11 +22,9 @@ function load_algolia($index_name)
     //Loads up algolia search engine functions
     $CI =& get_instance();
     $cred_algolia = $CI->config->item('cred_algolia');
-    if (intval(config_var(11062))) {
-        require_once('application/libraries/algoliasearch.php');
-        $client = new \AlgoliaSearch\Client($cred_algolia['application_id'], $cred_algolia['api_key']);
-        return $client->initIndex($index_name);
-    }
+    require_once('application/libraries/algoliasearch.php');
+    $client = new \AlgoliaSearch\Client($cred_algolia['application_id'], $cred_algolia['api_key']);
+    return $client->initIndex($index_name);
 }
 
 function detect_missing_columns($insert_columns, $required_columns, $ln_creator_player_id)
@@ -1014,13 +1012,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
     $valid_objects = array('en','in');
 
-    if (!intval(config_var(11062))) {
-        //Algolia is disabled, so avoid syncing:
-        return array(
-            'status' => 0,
-            'message' => 'Algolia disabled',
-        );
-    } elseif($input_obj_type && !in_array($input_obj_type , $valid_objects)){
+    if($input_obj_type && !in_array($input_obj_type , $valid_objects)){
         return array(
             'status' => 0,
             'message' => 'Object type is invalid',

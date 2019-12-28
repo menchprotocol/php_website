@@ -488,7 +488,6 @@ class READ_model extends CI_Model
             'ln_type_player_id' => ( in_is_unlockable($in) ? $unlock_link_type_en_id : 4559 /* User Read Read Messages */ ),
             'ln_creator_player_id' => $en_id,
             'ln_parent_blog_id' => $in['in_id'],
-            'ln_status_player_id' => 6176, //Link Published
         ));
 
 
@@ -805,7 +804,6 @@ class READ_model extends CI_Model
                 'ln_type_player_id' => 6143, //🔴 READING LIST Skipped Read
                 'ln_creator_player_id' => $en_id,
                 'ln_parent_blog_id' => $common_in_id,
-                'ln_status_player_id' => 6176, //Link Published
             ));
 
             //Archive current progression links:
@@ -1088,7 +1086,6 @@ class READ_model extends CI_Model
 
                     //Unlock 🔴 READING LIST:
                     $this->READ_model->ln_create(array(
-                        'ln_status_player_id' => 6176, //Link Published
                         'ln_type_player_id' => 6140, //🔴 READING LIST Conditional Read Unlocked
                         'ln_creator_player_id' => $en_id,
                         'ln_parent_blog_id' => $in['in_id'],
@@ -1717,8 +1714,7 @@ class READ_model extends CI_Model
 
                     } else {
 
-                        //echo '<a href="/read/actionplan_answer_question/6157/' . $recipient_en['en_id'] . '/' . $ins[0]['in_id'] . '/' . md5($this->config->item('cred_password_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $recipient_en['en_id']) . '/' . $child_in['in_id'] . '" class="list-group-item itemread">';
-                        echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['in_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" selected-in-id="'.$child_in['in_id'].'" class="ln_answer_'.$child_in['in_id'].' answer-item list-group-item itemread">';
+                        echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['in_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ins="'.$child_in['in_id'].'" class="ln_answer_'.$child_in['in_id'].' answer-item list-group-item itemread">';
 
                         echo '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
 
@@ -3335,6 +3331,105 @@ class READ_model extends CI_Model
     }
 
 
+    function read_answer($en_id, $question_in_id, $answer_in_ids){
+
+        $ins = $this->BLOG_model->in_fetch(array(
+            'in_id' => $question_in_id,
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+        ));
+        if (!count($ins)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid blog ID',
+            ));
+        } elseif (!in_array($ins[0]['in_type_player_id'], $this->config->item('en_ids_7712'))) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Blog type',
+            ));
+        }
+
+        //See if we had previously answered:
+        $previously_answered = $this->READ_model->ln_fetch(array(
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
+            'ln_parent_blog_id' => $ins[0]['in_id'],
+            'ln_creator_player_id' => $en_id,
+        ), array('in_child'));
+
+        //See if any of previous answers need to be removed;
+        $already_answered = array();
+        $answers_newly_removed = 0;
+        if(count($previously_answered) > 0){
+            foreach ($previously_answered as $previously_answer){
+                if(!in_array($previously_answer['in_id'], $answer_in_ids)){
+                    $answers_newly_removed += $this->READ_model->ln_update($previously_answer['ln_id'], array(
+                        'ln_status_player_id' => 6173, //Link Removed
+                    ), $en_id, 12129 /* READ ANSWER ARCHIVED */);
+                } else {
+                    array_push($already_answered, $previously_answer['in_id']);
+                }
+            }
+        }
+
+        //See if new answers need to be added:
+        $answers_newly_added = 0;
+        $answer_index = array(
+            6684 => 6157, //One
+            7231 => 7489, //Some
+        );
+        foreach($answer_in_ids as $answer_in_id){
+
+            //Validate child blog:
+            $child_ins = $this->BLOG_model->in_fetch(array(
+                'in_id' => $answer_in_id,
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            ));
+            if(!count($child_ins)){
+                $this->READ_model->ln_create(array(
+                    'ln_content' => 'read_answer() selected unpublished answer',
+                    'ln_type_player_id' => 4246, //Platform Bug Reports
+                    'ln_creator_player_id' => $en_id,
+                    'ln_parent_blog_id' => $ins[0]['in_id'],
+                    'ln_child_blog_id' => $child_ins[0]['in_id'],
+                ));
+                continue;
+            }
+
+            //Make sure not saved before:
+            if(!in_array($child_ins[0]['in_id'], $already_answered)){
+
+                $this->READ_model->ln_create(array(
+                    'ln_type_player_id' => $answer_index[$ins[0]['in_type_player_id']],
+                    'ln_creator_player_id' => $en_id,
+                    'ln_parent_blog_id' => $ins[0]['in_id'],
+                    'ln_child_blog_id' => $child_ins[0]['in_id'],
+                ));
+
+                //See if we also need to mark the child as complete:
+                $this->READ_model->read__completion_auto_complete($session_en, $child_ins[0], 7485 /* User Read Answer Unlock */);
+
+                $answers_newly_added++;
+            }
+        }
+
+        if($answers_newly_added>0 || $answers_newly_removed>0){
+            //All good, something happened:
+            return echo_json(array(
+                'status' => 1,
+                'message' => ($answers_newly_added>0 ? $answers_newly_added.' answer'.echo__s($answers_newly_added).' saved' : '').($answers_newly_removed>0 ? ($answers_newly_added>0 ? ' & ' : '').$answers_newly_removed.' answer'.echo__s($answers_newly_removed).' removed' : ''),
+                'next_in_id' => ( $answers_newly_added==1 && !$answers_newly_removed ? $child_ins[0]['in_id'] : $ins[0]['in_id'] ),
+            ));
+        } else {
+            //No change, let them know:
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Nothing changed',
+            ));
+        }
+
+    }
+
     function digest_received_payload($en, $quick_reply_payload)
     {
 
@@ -4069,16 +4164,6 @@ class READ_model extends CI_Model
             }
 
 
-            //Make sure algolia is enabled:
-            if (!intval(config_var(11062))) {
-                $this->READ_model->dispatch_message(
-                    'Currently I cannot search for any blogs. Try again later.',
-                    $en,
-                    true
-                );
-                return false;
-            }
-
 
             $search_index = load_algolia('alg_index');
             $res = $search_index->search($master_command, [
@@ -4135,7 +4220,6 @@ class READ_model extends CI_Model
             $this->READ_model->ln_create(array(
                 'ln_content' => ( $new_blog_count > 0 ? $message : 'Found ' . $new_blog_count . ' blog' . echo__s($new_blog_count) . ' matching [' . $master_command . ']' ),
                 'ln_metadata' => array(
-                    'app_enable_algolia' => intval(config_var(11062)),
                     'new_blog_count' => $new_blog_count,
                     'input_data' => $master_command,
                     'output' => $search_results,

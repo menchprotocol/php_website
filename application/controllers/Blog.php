@@ -23,7 +23,6 @@ class Blog extends CI_Controller {
 
         //Also add to bookmarks:
         $this->READ_model->ln_create(array(
-            'ln_status_player_id' => 6176, //Link Published
             'ln_type_player_id' => 10573, //Bookmarks
             'ln_creator_player_id' => $session_en['en_id'],
             'ln_child_blog_id' => $in['new_in_id'],
@@ -808,7 +807,6 @@ class Blog extends CI_Controller {
 
         //Create Message:
         $ln = $this->READ_model->ln_create(array(
-            'ln_status_player_id' => 6176, //Link Published
             'ln_creator_player_id' => $session_en['en_id'],
             'ln_order' => 1 + $this->READ_model->ln_max_order(array(
                     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -918,7 +916,6 @@ class Blog extends CI_Controller {
 
         //Create message:
         $ln = $this->READ_model->ln_create(array(
-            'ln_status_player_id' => 6176, //Link Published
             'ln_creator_player_id' => $session_en['en_id'],
             'ln_type_player_id' => $_POST['focus_ln_type_player_id'],
             'ln_parent_player_id' => $cdn_status['cdn_en']['en_id'],

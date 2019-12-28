@@ -2164,6 +2164,21 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     if($is_author){
 
+        $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
+
+        //Sort:
+        if(in_array(4603, $en_all_4485[$ln['ln_type_player_id']]['m_parents'])){
+            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort fa-special-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_player_id']]['m_parents']) ? 'blog_note_sorting' : '' ).'"></i></span>';
+        }
+
+        //Modify:
+        $ui .= '<span title="Modify Message" data-toggle="tooltip" data-placement="top"><a href="javascript:in_note_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
+
+        $ui .= '</span></div>';
+
+
+
+
         //Sort
         if(!$is_parent){
             $ui .= '<div class="pull-right inline-block icon-block '. superpower_active(10939) .'" style="padding-top: 5px;"><i class="fas fa-sort"></i></div>';

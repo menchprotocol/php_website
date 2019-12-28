@@ -1,12 +1,4 @@
-//Loadup algolia when any related field is focused on:
-var algolia_loaded = false;
-var fadeout_frequency = 30000; //milli seconds
-var searchbar_loaded = false;
-var fadeout_speed = 21;
-var updating_basic_stats = false;
-
-
-
+//Full Story:
 window['_fs_debug'] = false;
 window['_fs_host'] = 'fullstory.com';
 window['_fs_script'] = 'edge.fullstory.com/s/fs.js';
@@ -25,6 +17,8 @@ window['_fs_namespace'] = 'FS';
     g.clearUserCookie=function(){};
 })(window,document,window['_fs_namespace'],'script','user');
 
+
+//Facebook Messenger Auto-Login
 if(js_pl_id < 1){
 
     (function (d, s, id) {
@@ -63,15 +57,15 @@ if(js_pl_id < 1){
 }
 
 
-
+//JS READ Creator:
 function js_ln_create(new_ln_data){
     return $.post("/read/js_ln_create", new_ln_data, function (data) {
         return data;
     });
 }
 
-function load_leaderboard(){
 
+function load_leaderboard(){
     //Show loading icon:
     $('#load_top_players').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">LOADING...</b></div>');
     $('.top-players').addClass('hidden');
@@ -168,6 +162,7 @@ function echo_saving_notify(){
     return random_saving_message[Math.floor(Math.random()*random_saving_message.length)];
 }
 
+var algolia_loaded = false;
 function load_js_algolia() {
     $(".algolia_search").focus(function () {
         //Loadup Algolia once:
@@ -376,6 +371,7 @@ var isAdvancedUpload = function () {
 
 
 
+var searchbar_loaded = false;
 function load_searchbar(){
     if(searchbar_loaded){
         return false;
@@ -396,7 +392,7 @@ $(document).ready(function () {
         //Update stats on load:
         update_coin_counter();
 
-        setInterval(update_coin_counter, fadeout_frequency);
+        setInterval(update_coin_counter, js_en_all_6404[12130]['m_desc']);
 
     }
 
@@ -463,6 +459,7 @@ $(document).ready(function () {
 
 
 //Update page count stats & refresh them visually once they change:
+var updating_basic_stats = false;
 var update_coin_counter = function( ) {
     //your jQuery ajax code
 
@@ -472,6 +469,7 @@ var update_coin_counter = function( ) {
 
     //Now we're updating:
     updating_basic_stats = true;
+    var fadeout_speed = 21;
 
     //Fetch latest stats:
     $.post("/play/update_coin_counter", { }, function (data) {

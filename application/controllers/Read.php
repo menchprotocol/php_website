@@ -288,63 +288,25 @@ class Read extends CI_Controller
 
         $session_en = superpower_assigned();
         if (!$session_en) {
-
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Expired Session, login and try again',
             ));
-
         } elseif (!isset($_POST['in_loaded_id'])) {
-
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing blog id.',
             ));
-
-        } elseif (!isset($_POST['selected_answers']) || !is_array($_POST['selected_answers']) || !count($_POST['selected_answers'])) {
-
+        } elseif (!isset($_POST['answered_ins']) || !is_array($_POST['answered_ins']) || !count($_POST['answered_ins'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'No answer selected.',
             ));
-
         }
 
-        $ins = $this->BLOG_model->in_fetch(array(
-            'in_id' => $_POST['in_loaded_id'],
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-        ));
-        if (!count($ins)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid blog ID',
-            ));
-        }
-
-        //See if we had previously answered:
-        $previously_answered = $this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
-            'ln_parent_blog_id' => $ins[0]['in_id'],
-            'ln_creator_player_id' => $session_en['en_id'],
-        ), array('in_child'));
-
-        $answers_newly_removed = 0;
-        $answers_newly_added = 0;
-        if(count($previously_answered) > 0){
-            foreach ($previously_answered as $previously_answer){
-                if(!in_array($previously_answer['in_id'], $_POST['selected_answers'])){
-
-                }
-            }
-        }
-
-
-        return echo_json(array(
-            'status' => 1,
-            'message' => 'Saved successfully',
-        ));
-
+        //Save answer:
+        $result = $this->READ_model->read_answer($session_en['en_id'], $_POST['in_loaded_id'], $_POST['answered_ins']);
+        return echo_json($result);
 
     }
 
@@ -1115,7 +1077,6 @@ class Read extends CI_Controller
 
         //Create message:
         $ln = $this->READ_model->ln_create(array(
-            'ln_status_player_id' => 6176, //Link Published
             'ln_creator_player_id' => $session_en['en_id'],
             'ln_type_player_id' => $_POST['focus_ln_type_player_id'],
             'ln_parent_player_id' => $cdn_status['cdn_en']['en_id'],
@@ -1304,59 +1265,6 @@ class Read extends CI_Controller
             'message' => count($_POST['new_actionplan_order']).' Blogs Sorted',
         ));
     }
-
-
-    function actionplan_answer_question($answer_type_en_id, $en_id, $parent_in_id, $w_key, $answer_in_id)
-    {
-
-        if ($w_key != md5($this->config->item('cred_password_salt') . $answer_in_id . $parent_in_id . $en_id)) {
-            return redirect_message('/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Authentication Key</div>');
-        } elseif (!in_array($answer_type_en_id, $this->config->item('en_ids_7704'))) {
-            return redirect_message('/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid answer type</div>');
-        }
-
-        //Validate Answer Blog:
-        $answer_ins = $this->BLOG_model->in_fetch(array(
-            'in_id' => $answer_in_id,
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-        ));
-        if (count($answer_ins) < 1) {
-            return redirect_message('/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Answer</div>');
-        }
-
-        //Fetch current progression links, if any:
-        $read_progress = $this->READ_model->ln_fetch(array(
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
-            'ln_creator_player_id' => $en_id,
-            'ln_parent_blog_id' => $parent_in_id,
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ));
-
-        //All good, save chosen OR path
-        $new_progression_link = $this->READ_model->ln_create(array(
-            'ln_creator_player_id' => $en_id,
-            'ln_type_player_id' => $answer_type_en_id,
-            'ln_parent_blog_id' => $parent_in_id,
-            'ln_child_blog_id' => $answer_in_id,
-            'ln_status_player_id' => 6176, //Link Published
-        ));
-
-        //See if we also need to mark the child as complete:
-        $this->READ_model->read__completion_auto_complete($en_id, $answer_ins[0], 7485 /* User Read Answer Unlock */);
-
-        //Archive previous progression links:
-        foreach($read_progress as $ln){
-            $this->READ_model->ln_update($ln['ln_id'], array(
-                'ln_parent_read_id' => $new_progression_link['ln_id'],
-                'ln_status_player_id' => 6173, //Link Removed
-            ), $en_id, 10685 /* User Read Iterated */);
-        }
-
-        return redirect_message('/read/next', '<p><i class="far fa-check-circle"></i> I saved your answer.</p>');
-
-    }
-
-
 
 
     function debug($in_id){

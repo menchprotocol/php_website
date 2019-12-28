@@ -435,7 +435,6 @@ class PLAY_model extends CI_Model
             //And link player to the domains player:
             $this->READ_model->ln_create(array(
                 'ln_creator_player_id' => $ln_creator_player_id,
-                'ln_status_player_id' => 6176, //Link Published
                 'ln_type_player_id' => 4256, //Generic URL (Domains are always generic)
                 'ln_parent_player_id' => 1326, //Domain Player
                 'ln_child_player_id' => $en_domain['en_id'],
@@ -687,7 +686,6 @@ class PLAY_model extends CI_Model
                     //Always link URL to its parent domain:
                     $this->READ_model->ln_create(array(
                         'ln_creator_player_id' => $ln_creator_player_id,
-                        'ln_status_player_id' => 6176, //Link Published
                         'ln_type_player_id' => $ln_type_player_id,
                         'ln_parent_player_id' => $domain_player['en_domain']['en_id'],
                         'ln_child_player_id' => $en_url['en_id'],
@@ -724,7 +722,6 @@ class PLAY_model extends CI_Model
             foreach($link_parent_en_ids as $p_en_id){
                 $this->READ_model->ln_create(array(
                     'ln_creator_player_id' => $ln_creator_player_id,
-                    'ln_status_player_id' => 6176, //Link Published
                     'ln_type_player_id' => 4230, //Raw
                     'ln_parent_player_id' => $p_en_id,
                     'ln_child_player_id' => $en_url['en_id'],
@@ -736,7 +733,6 @@ class PLAY_model extends CI_Model
             //Link URL to its parent domain:
             $this->READ_model->ln_create(array(
                 'ln_creator_player_id' => $ln_creator_player_id,
-                'ln_status_player_id' => 6176, //Link Published
                 'ln_type_player_id' => 4230, //Raw
                 'ln_child_player_id' => $add_to_child_en_id,
                 'ln_parent_player_id' => $en_url['en_id'],
@@ -912,7 +908,6 @@ class PLAY_model extends CI_Model
 
                     //Does not exist, need to be added as parent:
                     $this->READ_model->ln_create(array(
-                        'ln_status_player_id' => 6176, //Link Published
                         'ln_creator_player_id' => $ln_creator_player_id,
                         'ln_type_player_id' => 4230, //Raw
                         'ln_child_player_id' => $en['en_id'], //This child player
@@ -941,7 +936,6 @@ class PLAY_model extends CI_Model
 
                         //Add as a parent because it meets the condition
                         $this->READ_model->ln_create(array(
-                            'ln_status_player_id' => 6176, //Link Published
                             'ln_creator_player_id' => $ln_creator_player_id,
                             'ln_type_player_id' => 4230, //Raw
                             'ln_child_player_id' => $en['en_id'], //This child player

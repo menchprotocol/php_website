@@ -1883,7 +1883,6 @@ fragment PostListingItemSidebar_post on Post {
 
                 //Add contributor to People or Organizations player:
                 $this->READ_model->ln_create(array(
-                    'ln_status_player_id' => 6176, //Link Published
                     'ln_creator_player_id' => $session_en['en_id'],
                     'ln_type_player_id' => 4230, //Raw
                     'ln_parent_player_id' => $_POST['player_parent_id_' . $contributor_num], //People or Organizations
@@ -1895,7 +1894,6 @@ fragment PostListingItemSidebar_post on Post {
                 if (strlen($_POST['why_expert_' . $contributor_num]) > 0) {
                     //Add contributor to industry experts:
                     $this->READ_model->ln_create(array(
-                        'ln_status_player_id' => 6176, //Link Published
                         'ln_creator_player_id' => $session_en['en_id'],
                         'ln_content' => trim($_POST['why_expert_' . $contributor_num]),
                         'ln_type_player_id' => $detected_ln_type['ln_type_player_id'],
@@ -1938,7 +1936,6 @@ fragment PostListingItemSidebar_post on Post {
         foreach ($parent_ens as $this_parent_en) {
             //Insert new relation:
             $this->READ_model->ln_create(array(
-                'ln_status_player_id' => 6176, //Link Published
                 'ln_creator_player_id' => $session_en['en_id'],
                 'ln_child_player_id' => $url_player['en_url']['en_id'],
                 'ln_parent_player_id' => $this_parent_en['this_parent_en_id'],
@@ -2675,7 +2672,6 @@ fragment PostListingItemSidebar_post on Post {
                 'ln_child_player_id' => $_POST['js_pl_id'],
                 'ln_creator_player_id' => $_POST['js_pl_id'],
                 'ln_type_player_id' => 4230, //Raw
-                'ln_status_player_id' => 6176, //Link Published
             ));
         }
 
@@ -2883,7 +2879,6 @@ fragment PostListingItemSidebar_post on Post {
 
             //Create new link:
             $this->READ_model->ln_create(array(
-                'ln_status_player_id' => 6176, //Link Published
                 'ln_creator_player_id' => $_POST['en_id'],
                 'ln_child_player_id' => $_POST['en_id'],
                 'ln_type_player_id' => 4319, //Phone are of type number
@@ -3007,7 +3002,6 @@ fragment PostListingItemSidebar_post on Post {
 
             //Create new link:
             $this->READ_model->ln_create(array(
-                'ln_status_player_id' => 6176, //Link Published
                 'ln_creator_player_id' => $_POST['en_id'],
                 'ln_child_player_id' => $_POST['en_id'],
                 'ln_type_player_id' => 4255, //Emails are of type Text
@@ -3105,7 +3099,6 @@ fragment PostListingItemSidebar_post on Post {
 
             //Create new link:
             $this->READ_model->ln_create(array(
-                'ln_status_player_id' => 6176, //Link Published
                 'ln_type_player_id' => 4255, //Passwords are of type Text
                 'ln_parent_player_id' => 3286, //Password
                 'ln_creator_player_id' => $_POST['en_id'],
@@ -3254,7 +3247,6 @@ fragment PostListingItemSidebar_post on Post {
 
                 //Create new link:
                 $this->READ_model->ln_create(array(
-                    'ln_status_player_id' => 6176, //Link Published
                     'ln_creator_player_id' => $_POST['en_id'],
                     'ln_child_player_id' => $_POST['en_id'],
                     'ln_type_player_id' => 4256, //Generic URL

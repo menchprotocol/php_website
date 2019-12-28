@@ -118,10 +118,10 @@ function select_answer(in_id){
 function read_answer(){
 
     //Check
-    var selected_answers = [];
+    var answered_ins = [];
     $(".answer-item").each(function () {
         if ($(this).attr('is-selected')=='1') {
-            selected_answers.push(parseInt($(this).attr('selected-in-id')));
+            answered_ins.push(parseInt($(this).attr('answered_ins')));
         }
     });
 
@@ -129,7 +129,7 @@ function read_answer(){
     $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
     $.post("/read/read_answer", {
         in_loaded_id:in_loaded_id,
-        selected_answers:selected_answers
+        answered_ins:answered_ins
     }, function (data) {
         if (data.status) {
             $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
