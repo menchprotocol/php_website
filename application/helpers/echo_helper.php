@@ -2175,7 +2175,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         }
 
         //Unlink:
-        $ui .= '<span title="Unlink blog" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-minus-square"></i></a></span>';
+        $ui .= '<span title="Unlink blog" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink"></i></a></span>';
 
         $ui .= '</span></div>';
 
@@ -2193,7 +2193,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding:0 25px 0 3px;"><a class="btn btn-blog" href="/blog/' . $in['in_id'] . '">'.($tree_count_range > 0 ? '<span class="btn-counter">' . $tree_count_range . '</span> ' : '').'<i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding:0 27px 0 3px;"><a class="btn btn-blog" href="/blog/' . $in['in_id'] . '">'.($tree_count_range > 0 ? '<span class="btn-counter">' . $tree_count_range . '</span> ' : '').'<i class="fas fa-angle-right"></i></a></div>';
 
 
     $ui .= '</div>';
