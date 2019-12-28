@@ -690,7 +690,7 @@ textarea.note-textarea{
 }
 
 .blog-left {
-    padding-top: 3px;
+    padding: 3px 27px 0 0;
     display: block;
     float: left;
 }
