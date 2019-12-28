@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-27 23:06:50 PST
+//Generated 2019-12-27 23:14:56 PST
 
 //BLOG STATUSES FEATURED:
 $config['en_ids_12138'] = array(12137);
@@ -6070,7 +6070,7 @@ $config['en_all_4737'] = array(
     6183 => array(
         'm_icon' => '<i class="far fa-spinner fa-spin " aria-hidden="true"></i>',
         'm_name' => 'DRAFT',
-        'm_desc' => 'visible to blog authors only',
+        'm_desc' => 'visible to you & blog authors only',
         'm_parents' => array(10648,7356,4737),
     ),
     6182 => array(
