@@ -689,6 +689,12 @@ textarea.note-textarea{
     width: 100%;
 }
 
+.blog-left {
+    padding-top: 4px;
+    display: block;
+    float: left;
+}
+
 .show-on-hover .fa-sort {
     margin-bottom: 2px;
 }
