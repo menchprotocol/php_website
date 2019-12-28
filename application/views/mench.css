@@ -178,9 +178,9 @@ li a {
 .icon-block-sm img,
 .icon-block img,
 .en-icon img {
-    width: 24px !important;
-    margin: -13px 0 -8px -2px !important;
-    height: 24px !important;
+    width: 24px;
+    margin: -13px 0 -8px -2px;
+    height: 24px;
     border-radius: 50%;
 }
 
@@ -652,11 +652,12 @@ textarea.note-textarea{
 .mench-logo{
     font-size: 1.44em;
     line-height: 100%;
-    width: 35px;
-    margin-left: 10.3px;
-    margin-right:4px;
-    margin-bottom: 5px;
+    width: 35px !important;
+    margin-left: 10px !important;
+    margin-right: 4px !important;
+    margin-bottom: 3px !important;
     display: block;
+    height: 35px !important;
 }
 
 .link_marks{

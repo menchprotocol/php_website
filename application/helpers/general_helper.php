@@ -433,7 +433,7 @@ function ln_type_word_count($ln){
     if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10596'))){
 
         //Nod:
-        $link_words = number_format(1 / config_var(11067), 2);
+        $link_words = 0.01;
 
     } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10539'))){
 

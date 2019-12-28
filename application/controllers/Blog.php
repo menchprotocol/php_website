@@ -212,11 +212,11 @@ class Blog extends CI_Controller {
                     'original_val' => $ins[0]['in_read_time'],
                 ));
 
-            } elseif($_POST['field_value'] > config_var(11067)){
+            } elseif($_POST['field_value'] > config_var(12113)){
 
                 return echo_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' cannot be greater than '.config_var(11067).' Seconds. If so, break down the blog into smaller blogs.',
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' cannot be greater than '.config_var(12113).' Seconds. If so, break down the blog into smaller blogs.',
                     'original_val' => $ins[0]['in_read_time'],
                 ));
 
