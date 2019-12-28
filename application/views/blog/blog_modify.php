@@ -132,7 +132,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                        id="addblog-c-' . $in['in_id'] . '-1"
                                        placeholder="+ BLOG">
                             </div>
-                           <div class="algolia_search_pad in_pad_top hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus yellow"></i></span>Search blogs or create a new one...</b></div>
+                           <div class="algolia_search_pad in_pad_top hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus yellow"></i></span>Create or search featured blogs...</b></div>
                     </div>';
 
             $this_tab .= '</div>';
@@ -166,7 +166,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                id="addblog-c-' . $in['in_id'] . '-0"
                                placeholder="+ BLOG">
                     </div>
-                   <div class="algolia_search_pad in_pad_bottom hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus yellow"></i></span>Search blogs or create a new one...</b></div>
+                   <div class="algolia_search_pad in_pad_bottom hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus yellow"></i></span>Create or search featured blogs...</b></div>
             </div>';
             $this_tab .= '</div>';
 
