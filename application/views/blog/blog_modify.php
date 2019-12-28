@@ -234,7 +234,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //Upload File:
             $this_tab .= '<td class="remove_loading" style="width:36px; padding: 10px 0 0 0;">';
-            $this_tab .= '<input class="inputfile hidden" type="file" id="fileBlogType'.$en_id2.'" />';
+            $this_tab .= '<input class="inputfile hidden" type="file" name="file" id="fileBlogType'.$en_id2.'" />';
             $this_tab .= '<label class="file_label_'.$en_id2.'" for="fileBlogType'.$en_id2.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block en-icon"><i class="far fa-paperclip"></i></span></label>';
             $this_tab .= '</td>';
 

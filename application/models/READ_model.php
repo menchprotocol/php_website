@@ -1927,7 +1927,7 @@ class READ_model extends CI_Model
                 if($push_message){
 
                 } else {
-                    echo '<textarea id="user_new_content" class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
+                    echo '<textarea class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
                     echo '<span class="saving_result"></span>';
                     echo '<p><a class="btn btn-blog" href="javascript:void(0);" onsubmit="">Save & Continue</a></p>';
                 }
@@ -1941,7 +1941,7 @@ class READ_model extends CI_Model
 
                     echo '<p>Upload a file to continue.</p>';
                     echo '<span class="saving_result"></span>';
-                    echo '<input class=" inputfile" type="file" id="user_new_content" id="fileType'.$ins[0]['in_type_player_id'].'" /><label class=" btn btn-blog" for="fileType'.$ins[0]['in_type_player_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">Upload File</label>';
+                    echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_player_id'].'" /><label class=" btn btn-blog" for="fileType'.$ins[0]['in_type_player_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">Upload File</label>';
 
                 }
 
