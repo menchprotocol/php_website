@@ -2746,20 +2746,6 @@ fragment PostListingItemSidebar_post on Post {
         //Cleanup:
         $_POST['en_name'] = trim($_POST['en_name']);
 
-        //Check to make sure not duplicate:
-        $duplicates = $this->PLAY_model->en_fetch(array(
-            'en_id !=' => $_POST['en_id'],
-            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
-            'LOWER(en_name)' => strtolower($_POST['en_name']),
-        ));
-        if (count($duplicates) > 0) {
-            //This is a duplicate, disallow:
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Name already in-use. Add a pre-fix or post-fix to make it unique.',
-            ));
-        }
-
 
         //Update name and notify
         $this->PLAY_model->en_update($_POST['en_id'], array(
