@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-27 17:05:46 PST
+//Generated 2019-12-27 18:36:31 PST
 
 //BLOG TEXT INPUTS:
 $config['en_ids_12112'] = array(4358,4362,4739,4735);
@@ -1627,7 +1627,7 @@ $config['en_all_6404'] = array(
     11071 => array(
         'm_icon' => '',
         'm_name' => 'BLOG TITLE MAX LENGTH',
-        'm_desc' => '99',
+        'm_desc' => '89',
         'm_parents' => array(6404),
     ),
     11069 => array(
