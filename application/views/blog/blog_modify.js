@@ -115,7 +115,9 @@ $(document).ready(function () {
         in_notes_sort_load(focus_ln_type_player_id);
 
         var showFiles = function (files) {
-            $('.box' + focus_ln_type_player_id).find('label').text(files.length > 1 ? ($('.box' + focus_ln_type_player_id).find('input[type="file"]').attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
+            if(typeof files[0] !== 'undefined'){
+                $('.box' + focus_ln_type_player_id).find('label').text(files.length > 1 ? ($('.box' + focus_ln_type_player_id).find('input[type="file"]').attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
+            }
         };
 
         $('.box' + focus_ln_type_player_id).find('input[type="file"]').on('drop', function (e) {
