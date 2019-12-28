@@ -8,7 +8,7 @@ $total_completed = 0;
 
 //FEATUREF BLOGD
 foreach($this->READ_model->ln_fetch(array(
-    'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+    'in_status_player_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     'ln_type_player_id' => 4601, //BLOG KEYWORDS
     'ln_parent_player_id IN (' . join(',', featured_topic_ids()) . ')' => null,

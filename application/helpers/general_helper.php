@@ -1221,7 +1221,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Set published status if featured:
                 if(count($CI->READ_model->ln_fetch(array(
-                        'in_status_player_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                        'in_status_player_id IN (' . join(',', $CI->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
                         'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                         'ln_type_player_id' => 4601, //BLOG KEYWORDS
                         'ln_child_blog_id' => $db_row['in_id'],
