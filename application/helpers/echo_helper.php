@@ -2172,7 +2172,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         }
 
         //Unlink:
-        $ui .= '<span title="Unlink blog" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="far fa-trash"></i></a></span>';
+        $ui .= '<span title="Unlink blog" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-minus-square"></i></a></span>';
 
         $ui .= '</span></div>';
 

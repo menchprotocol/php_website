@@ -684,9 +684,13 @@ textarea.note-textarea{
     border: 0;
     background-color:#f4f5f7;
     border-radius: 0 !important;
-    padding:2px 0;
+    padding:5px 0;
     margin: 0;
     width: 100%;
+}
+
+.show-on-hover .fa-sort {
+    margin-bottom: 3px;
 }
 
 .overflowhide, .url_truncate{
