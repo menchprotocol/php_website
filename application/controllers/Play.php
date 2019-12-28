@@ -1176,7 +1176,14 @@ fragment PostListingItemSidebar_post on Post {
         //Fetch latest version:
         $ens_latest = $this->PLAY_model->en_fetch(array(
             'en_id' => $player_new['en_id'],
+            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
         ));
+        if(!count($ens_latest)){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Failed to create/fetch new player',
+            ));
+        }
 
         //Return newly added or linked player:
         return echo_json(array(
@@ -1184,6 +1191,7 @@ fragment PostListingItemSidebar_post on Post {
             'en_new_status' => $ens_latest[0]['en_status_player_id'],
             'en_new_echo' => echo_en(array_merge($ens_latest[0], $ur2), $_POST['is_parent']),
         ));
+
     }
 
     function en_count_to_be_removed_links()
