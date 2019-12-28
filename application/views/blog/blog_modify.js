@@ -48,6 +48,7 @@ $(document).ready(function () {
 
     autosize($('#new_blog_title'));
 
+
     $('#new_blog_title').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (e.ctrlKey && code == 13) {
@@ -167,6 +168,9 @@ $(document).ready(function () {
 });
 
 function show_save_button(){
+
+    //Counter:
+    in_title_count();
 
     //Detect changes in blog title to show the save button:
     if($('#new_blog_title').val() == $('#current_blog_title').val() || $('#new_blog_title').val().length < 1 || $('#new_blog_title').val().toUpperCase() == js_en_all_6201[4736]['m_name']){
@@ -371,6 +375,27 @@ function in_new_note_count(focus_ln_type_player_id) {
         $('#blogNoteNewCount' + focus_ln_type_player_id).addClass('hidden');
     }
 
+}
+
+
+
+//Count text area characters:
+function in_title_count() {
+
+    //Update count:
+    var len = $('#new_blog_title').val().length;
+    if (len > js_en_all_6404[11071]['m_desc']) {
+        $('#charTitleNum').addClass('overload').text(len);
+    } else {
+        $('#charTitleNum').removeClass('overload').text(len);
+    }
+
+    //Only show counter if getting close to limit:
+    if(len > ( js_en_all_6404[11071]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
+        $('.title_counter').removeClass('hidden');
+    } else {
+        $('.title_counter').addClass('hidden');
+    }
 }
 
 function in_edit_note_count(ln_id) {

@@ -115,7 +115,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
                         <!-- Player Name -->
-                        <span class="mini-header" style="margin-top:20px;"><?= $en_all_6206[6197]['m_icon'].' '.$en_all_6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charNameNum">0</span>/<?= config_var(11072) ?></span>]</span>
+                        <span class="mini-header" style="margin-top:20px;"><?= $en_all_6206[6197]['m_icon'].' '.$en_all_6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(11072) ?></span>]</span>
                         <span class="white-wrapper">
                                 <textarea class="form-control text-edit border montserrat doupper" id="en_name"
                                           onkeyup="en_name_word_count()" data-lpignore="true"
@@ -186,7 +186,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                                     </textarea>
                                 </span>
 
-                                <span><input class="inputfile" type="file" name="file" id="file" /><label class="" for="file" data-toggle="tooltip" title="Upload files up to <?= config_var(11063) ?> MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></span>
+                                <span><input class="inputfile" type="file" name="file" /><label class="" for="file" data-toggle="tooltip" title="Upload files up to <?= config_var(11063) ?> MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></span>
                             </form>
 
 

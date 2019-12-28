@@ -64,7 +64,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             echo '<div id="blog_title_save" class="hidden">';
             echo '<a href="javascript:in_save_title();" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="bottom" class="btn btn-blog">SAVE</a>';
-            echo '&nbsp;<span class="title_counter hidden">[<span id="charNameNum">0</span>/'.config_var(11071).']</span>';
+            echo '&nbsp;<span class="title_counter hidden">[<span id="charTitleNum">0</span>/'.config_var(11071).']</span>';
             echo '&nbsp;<span class="title_update_status"></span>';
             echo '</div>';
 
@@ -234,7 +234,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //Upload File:
             $this_tab .= '<td class="remove_loading" style="width:36px; padding: 10px 0 0 0;">';
-            $this_tab .= '<input class="inputfile hidden" type="file" name="file" id="file" />';
+            $this_tab .= '<input class="inputfile hidden" type="file" name="file" />';
             $this_tab .= '<label class="file_label_'.$en_id2.'" for="file" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block en-icon"><i class="far fa-paperclip"></i></span></label>';
             $this_tab .= '</td>';
 

@@ -308,9 +308,9 @@ function en_filter_status(new_val) {
 function en_name_word_count() {
     var len = $('#en_name').val().length;
     if (len > js_en_all_6404[11072]['m_desc']) {
-        $('#charNameNum').addClass('overload').text(len);
+        $('#charEnNum').addClass('overload').text(len);
     } else {
-        $('#charNameNum').removeClass('overload').text(len);
+        $('#charEnNum').removeClass('overload').text(len);
     }
 }
 
