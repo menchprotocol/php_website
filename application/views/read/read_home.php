@@ -100,7 +100,7 @@
         //Count total published courses here:
         $published_ins = $this->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
             'ln_type_player_id' => 4601, //BLOG KEYWORDS
             'ln_parent_player_id' => $en_id,
         ), array('in_child'), 0, 0, array('in_title' => 'ASC'));
