@@ -255,7 +255,13 @@ class Read extends CI_Controller
         if ( count($ins) < 1) {
             return redirect_message('/', '<div class="alert alert-danger" role="alert">Blog #' . $in_id . ' not found</div>');
         } elseif(!in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7355') /* Blog Statuses Public */)){
-            return redirect_message('/', '<div class="alert alert-danger" role="alert">Blog #' . $in_id . ' not published yet</div>');
+            if(superpower_assigned(10939)){
+                //Give them blog access:
+                return redirect_message('/blog/' . $in_id);
+            } else {
+                //Inform them not published:
+                return redirect_message('/', '<div class="alert alert-danger" role="alert">Blog #' . $in_id . ' not published yet</div>');
+            }
         }
 
         $this->load->view('header', array(
