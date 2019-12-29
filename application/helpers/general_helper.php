@@ -433,7 +433,7 @@ function ln_type_word_count($ln){
     if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10596'))){
 
         //Nod:
-        $link_words = 0.01;
+        $link_words = 0.000001;
 
     } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10539'))){
 
@@ -492,6 +492,17 @@ function ln_type_word_count($ln){
 }
 
 
+function ln_type_direction($ln){
+    if($ln['ln_coins'] > 0){
+        return 10589;
+    } elseif($ln['ln_coins'] < 0){
+        return 10590;
+    } else {
+        //Must be zero:
+        return 12145;
+    }
+}
+
 function ln_type_coin_count($ln){
 
     $CI =& get_instance();
@@ -499,7 +510,7 @@ function ln_type_coin_count($ln){
     if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10596'))){
 
         //Nod:
-        $link_words = 0.01;
+        $link_words = 0.000001;
 
     } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10539'))){
 
