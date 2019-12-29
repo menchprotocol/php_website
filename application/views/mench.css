@@ -940,7 +940,7 @@ label {
 .blog-info{
     font-size: 0.7em;
     color:#999;
-    margin: 0 6px;
+    margin:5px 0 0;
 }
 
 .in_highlight, .in_highlight:hover, .in_highlight:focus{
