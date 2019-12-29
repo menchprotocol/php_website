@@ -158,8 +158,8 @@ if(!$action) {
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$words_setting.' 0</td>';
         echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_links'], 0).'</td>';
-        echo '<td style="text-align: left;">'.number_format(round($words_stats[0]['total_coins']), 0).'</td>';
-        echo '<td style="text-align: left;">'.number_format(round($words_stats[0]['total_words']), 0).'</td>';
+        echo '<td style="text-align: left;">'.number_format(round($words_stats[0]['total_coins']), 6).'</td>';
+        echo '<td style="text-align: left;">'.number_format(round($words_stats[0]['total_words']), 6).'</td>';
         echo '</tr>';
 
     }
@@ -176,13 +176,15 @@ if(!$action) {
     ), array('en_type'), 0, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, SUM(ln_coins) as total_coins, en_name, en_icon, en_id, ln_type_player_id', 'en_id, en_name, en_icon, ln_type_player_id') as $ln) {
 
         //Determine which weight group this belongs to:
+        $word_rate = filter_cache_group($ln['en_id'], 10592);
         $coin_rate = filter_cache_group($ln['en_id'], 12140);
+        $direction = filter_cache_group($ln['en_id'], 10591);
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span><a href="/play/'.$ln['en_id'].'" class="montserrat doupper">'.$ln['en_name'].'</a></td>';
-        echo '<td style="text-align: left;">'.number_format($ln['total_links'], 0).'</td>';
-        echo '<td style="text-align: left;"><span class="icon-block">'.$coin_rate['m_icon'].'</span>'.number_format(round($ln['total_coins']), 0).'</td>';
-        echo '<td style="text-align: left;"><span class="icon-block">'.$en_all_10591[ln_type_direction_en_id($ln)]['m_icon'].'</span>'.number_format(round($ln['total_words']), 0).'</td>';
+        echo '<td style="text-align: left;"><span class="icon-block">'.$direction['m_icon'].'</span>'.number_format($ln['total_links'], 0).'</td>';
+        echo '<td style="text-align: left;"><span class="icon-block">'.$coin_rate['m_icon'].'</span>'.number_format(round($ln['total_coins']), 6).'</td>';
+        echo '<td style="text-align: left;"><span class="icon-block">'.$word_rate['m_icon'].'</span>'.number_format(round($ln['total_words']), 6).'</td>';
         echo '</tr>';
 
     }
@@ -213,7 +215,7 @@ if(!$action) {
                 'en_icon' => random_user_icon(),
             ));
         }
-        echo '<div class="alert alert-success"><i class="fas fa-check-circle"></i> '.$updated.' User profiles updated with random animal icons</div>';
+        echo '<div class="alert alert-success"><i class="fas fa-check-circle"></i> '.$updated.' User profiles updated with new random animal icons</div>';
     }
 
     for($i=0;$i<750;$i++){

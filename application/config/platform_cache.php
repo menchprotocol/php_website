@@ -11,7 +11,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-29 13:47:18 PST
+//Generated 2019-12-29 14:09:04 PST
+
+//READ TYPE WORDS:
+$config['en_ids_10592'] = array(10596,10539,10594,10593);
+$config['en_all_10592'] = array(
+    10596 => array(
+        'm_icon' => '<i class="fal fa-file-word" aria-hidden="true"></i>',
+        'm_name' => 'MICRO',
+        'm_desc' => 'A hundredth of a word',
+        'm_parents' => array(4527,10592),
+    ),
+    10539 => array(
+        'm_icon' => '<i class="far fa-file-word" aria-hidden="true"></i>',
+        'm_name' => 'ONE',
+        'm_desc' => 'A word',
+        'm_parents' => array(4527,10592),
+    ),
+    10594 => array(
+        'm_icon' => '<i class="fas fa-file-word" aria-hidden="true"></i>',
+        'm_name' => 'ONE + LINKS',
+        'm_desc' => 'A word plus connections each as an extra word',
+        'm_parents' => array(4527,10592),
+    ),
+    10593 => array(
+        'm_icon' => '<i class="fad fa-file-word" aria-hidden="true"></i>',
+        'm_name' => 'STATEMENT + LINKS',
+        'm_desc' => 'The number of words within the content plus connections each as an extra word',
+        'm_parents' => array(4527,10592),
+    ),
+);
 
 //READ TYPE COINS:
 $config['en_ids_12140'] = array(12141,12142);
@@ -3073,7 +3102,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(12066,7758,10809,10711,10956,12145,10990,11018,11047,4983,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11021,6201,12112,7585,10602,7309,7712,7751,6150,10712,10719,10869,10627,12141,10746,7364,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,12142,10716,6225,10718,6404,4527,11054,6232,11039,6194,6827,4592,4426,4997,4454,4986,7551,11028,4537,6123,6177,11007,6206,11089,11033,3000,7303,11088,4755,6287,10571,7357,6192,11081,6193,6146,4600,6345,5967,4280,10570,4277,6102,7704,7494,10590,7347,6103,10692,6255,7304,6186,7360,7359,4341,4593,12140,10591,10658,11031,11084,6204,10710,10957,10725,6805,7358,10596,10539,10594,10593);
+$config['en_ids_4527'] = array(12066,7758,10809,10711,10956,12145,10990,11018,11047,4983,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11021,6201,12112,7585,10602,7309,7712,7751,6150,10712,10719,10869,10627,12141,10746,7364,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,12142,10716,6225,10718,6404,4527,11054,6232,11039,6194,6827,4592,4426,4997,4454,4986,7551,11028,4537,6123,6177,11007,6206,11089,11033,3000,7303,11088,4755,6287,10571,7357,6192,11081,6193,6146,4600,6345,5967,4280,10570,4277,6102,7704,7494,10590,7347,6103,10692,6255,7304,6186,7360,7359,4341,4593,12140,10591,10592,10658,11031,11084,6204,10710,10957,10725,6805,7358,10596,10539,10594,10593);
 $config['en_all_4527'] = array(
     12066 => array(
         'm_icon' => '<i class="far fa-info-circle" aria-hidden="true"></i>',
@@ -3716,6 +3745,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'READ TYPE DIRECTIONS',
         'm_desc' => '',
         'm_parents' => array(12144,6204,7304,4527),
+    ),
+    10592 => array(
+        'm_icon' => '<i class="fas fa-file-word" aria-hidden="true"></i>',
+        'm_name' => 'READ TYPE WORDS',
+        'm_desc' => '',
+        'm_parents' => array(4527,12144,6204),
     ),
     10658 => array(
         'm_icon' => '<i class="fas fa-sync ispink"></i>',
@@ -6105,7 +6140,7 @@ $config['en_all_6204'] = array(
         'm_icon' => '<i class="fas fa-file-word" aria-hidden="true"></i>',
         'm_name' => 'READ TYPE WORDS',
         'm_desc' => '',
-        'm_parents' => array(12144,6204),
+        'm_parents' => array(4527,12144,6204),
     ),
     3289 => array(
         'm_icon' => '<i class="fas fa-map-marked isblue"></i>',

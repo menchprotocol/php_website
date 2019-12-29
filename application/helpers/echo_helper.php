@@ -617,8 +617,8 @@ function echo_ln($ln, $is_inner = false)
 
 
     //Link coins
-    $en_all_10591 = $this->config->item('en_all_10591');
-    $ui .= '<span class="read-micro-data"><span data-toggle="tooltip" data-placement="top" title="TRANSACTION COINS AWARDED" style="min-width:30px; display: inline-block;">'.$en_all_10591[ln_type_direction_en_id($ln)]['m_icon'].'</i> '. number_format(abs($ln['ln_coins']), (fmod($ln['ln_coins'],1)==0 ? 0 : 6)) .' COIN'.strtoupper(echo__s($ln['ln_coins'])).'</span></span> &nbsp;';
+    $direction = filter_cache_group($ln['ln_type_player_id'], 10591);
+    $ui .= '<span class="read-micro-data"><span data-toggle="tooltip" data-placement="top" title="TRANSACTION COINS AWARDED" style="min-width:30px; display: inline-block;">'.$direction['m_icon'].'</i> '. number_format(abs($ln['ln_coins']), (fmod($ln['ln_coins'],1)==0 ? 0 : 6)) .' COIN'.strtoupper(echo__s($ln['ln_coins'])).'</span></span> &nbsp;';
 
     //Link words
     $ui .= '<span class="read-micro-data"><span data-toggle="tooltip" data-placement="top" title="TRANSACTION WORDS READ" style="min-width:30px; display: inline-block;"><i class="fas fa-file-word '.( $ln['ln_words'] > 0 ? 'yellow' : ( $ln['ln_words'] == 0 ? 'blue' : 'ispink' ) ).'"></i> '. number_format(abs($ln['ln_words']), (fmod($ln['ln_words'],1)==0 ? 0 : 6)) .' WORD'.strtoupper(echo__s($ln['ln_words'])).'</span></span> &nbsp;';

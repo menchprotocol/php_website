@@ -444,19 +444,6 @@ function ln_type_direction_rate($ln){
     }
 }
 
-function ln_type_direction_en_id($ln){
-    //Returns directions based on type
-    $CI =& get_instance();
-    if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10590'))){
-        return 10590;
-    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10589'))){
-        return 10589;
-    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_12145'))){
-        return 12145;
-    }
-}
-
-
 function ln_type_word_rate($ln){
 
     $CI =& get_instance();
