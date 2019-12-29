@@ -57,14 +57,17 @@ class Blog extends CI_Controller {
         }
 
         //Update session count and log link:
-        $new_order = ( $this->session->userdata('player_page_count') + 1 );
-        $this->session->set_userdata('player_page_count', $new_order);
-        $this->READ_model->ln_create(array(
-            'ln_creator_player_id' => $session_en['en_id'],
-            'ln_type_player_id' => 4993, //Trainer Opened Blog
-            'ln_child_blog_id' => $in_id,
-            'ln_order' => $new_order,
-        ));
+        if(isset($session_en['en_id']) && $session_en['en_id'] > 0){
+            $new_order = ( $this->session->userdata('player_page_count') + 1 );
+            $this->session->set_userdata('player_page_count', $new_order);
+            $this->READ_model->ln_create(array(
+                'ln_creator_player_id' => $session_en['en_id'],
+                'ln_type_player_id' => 4993, //Trainer Opened Blog
+                'ln_child_blog_id' => $in_id,
+                'ln_order' => $new_order,
+            ));
+        }
+
 
         //Load views:
         $this->load->view('header', array(

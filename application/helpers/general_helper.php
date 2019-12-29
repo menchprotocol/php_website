@@ -640,11 +640,11 @@ function superpower_active($superpower_en_id, $boolean_only = false){
 }
 
 function extract_icon_color($en_icon){
-    if(!strlen($en_icon) || substr_count($en_icon, 'blue')==1){
+    if(!strlen($en_icon) || substr_count($en_icon, 'blue')>0){
         return ' blue ';
-    } elseif(substr_count($en_icon, 'yellow')==1){
+    } elseif(substr_count($en_icon, 'yellow')>0){
         return ' yellow ';
-    } elseif(substr_count($en_icon, 'ispink')==1){
+    } elseif(substr_count($en_icon, 'ispink')>0){
         return ' ispink ';
     } else {
         return '';

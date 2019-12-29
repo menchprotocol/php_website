@@ -198,6 +198,7 @@ class Read extends CI_Controller
 
         $session_en = superpower_assigned(null, true);
 
+
         //Fetch reading list:
         $user_blogs = $this->READ_model->ln_fetch(array(
             'ln_creator_player_id' => $session_en['en_id'],
@@ -255,15 +256,6 @@ class Read extends CI_Controller
         } elseif(!in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7355') /* Blog Statuses Public */)){
             return redirect_message('/', '<div class="alert alert-danger" role="alert">Blog #' . $in_id . ' not published yet</div>');
         }
-
-
-        //Log Blog Viewed by User:
-        $this->READ_model->ln_create(array(
-            'ln_creator_player_id' => ( isset($session_en['en_id']) ? intval($session_en['en_id']) : 0 ), //if user was available, they are logged as parent player
-            'ln_type_player_id' => 7610, //Blog Viewed by User
-            'ln_parent_blog_id' => $in_id,
-            'ln_order' => fetch_cookie_order('7610_'.$in_id),
-        ));
 
         $this->load->view('header', array(
             'title' => echo_in_title($ins[0]['in_title'], true).' | READ',

@@ -1413,6 +1413,7 @@ class READ_model extends CI_Model
         }
 
 
+
         /*
          *
          * Display Title & Messages
@@ -1441,6 +1442,15 @@ class READ_model extends CI_Model
             );
         }
 
+
+
+        //Log Blog Viewed by User:
+        $this->READ_model->ln_create(array(
+            'ln_creator_player_id' => ( isset($recipient_en['en_id']) ? intval($recipient_en['en_id']) : 0 ),
+            'ln_type_player_id' => 7610, //Blog Viewed by User
+            'ln_parent_blog_id' => $ins[0]['in_id'],
+            'ln_order' => fetch_cookie_order('7610_'.$in_id),
+        ));
 
 
         $in_reading_list = false;
