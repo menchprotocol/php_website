@@ -136,7 +136,7 @@ if(!$action) {
     $full_coins = $this->READ_model->ln_fetch(array(
         'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_12141')) . ')' => null, //Full
         'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_transactions, SUM(ABS(ln_words)) as total_words');
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_transactions, SUM(ABS(ln_words)) as total_words, SUM(ABS(ln_coins)) as total_coins');
     echo '<tr class="panel-title down-border" style="font-weight: bold;">';
     echo '<td style="text-align: left;" class="montserrat doupper">'.$en_all_12140[12141]['m_icon'].' '.$en_all_12140[12141]['m_name'].'</td>';
     echo '<td style="text-align: left;">'.number_format(abs($full_coins[0]['total_coins']), 0).'</td>';
@@ -147,7 +147,7 @@ if(!$action) {
     $micro_coins = $this->READ_model->ln_fetch(array(
         'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_12142')) . ')' => null, //Micro
         'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_transactions, SUM(ABS(ln_words)) as total_words');
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_transactions, SUM(ABS(ln_words)) as total_words, SUM(ABS(ln_coins)) as total_coins');
     echo '<tr class="panel-title down-border" style="font-weight: bold;">';
     echo '<td style="text-align: left;" class="montserrat doupper">'.$en_all_12140[12142]['m_icon'].' '.$en_all_12140[12142]['m_name'].'</td>';
     echo '<td style="text-align: left;">'.number_format(abs($micro_coins[0]['total_coins']), 6).'</td>';
