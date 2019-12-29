@@ -938,6 +938,7 @@ label {
     margin: 0 5px 0;
     font-size: 1.3em;
     line-height: 110%;
+    display: inline-flex;
 }
 .blog-info{
     font-size: 0.7em;

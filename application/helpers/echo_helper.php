@@ -1553,28 +1553,30 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
     if($footnotes){
+
         $ui .= '<span class="montserrat blog-info doupper inline-block '.$footnote_class.'">'.$footnotes.'</span>';
+
+    } else {
+
+        //Now do measurements:
+        $metadata = unserialize($in['in_metadata']);
+        if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
+
+            //It does have some children, let's show more details about it:
+            $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+
+            //Fetch primary author:
+            $authors = $CI->READ_model->ln_fetch(array(
+                'ln_type_player_id' => 4250,
+                'ln_child_blog_id' => $in['in_id'],
+            ), array('en_creator'), 1);
+
+            $ui .= '<span class="montserrat blog-info doupper">'.( $has_time_estimate ? echo_time_range($in, true).' READ ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']).'</span>';
+
+        }
+
     }
 
-    //Now do measurements:
-    /*
-    $metadata = unserialize($in['in_metadata']);
-
-    if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
-
-        //It does have some children, let's show more details about it:
-        $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-
-        //Fetch primary author:
-        $authors = $CI->READ_model->ln_fetch(array(
-            'ln_type_player_id' => 4250,
-            'ln_child_blog_id' => $in['in_id'],
-        ), array('en_creator'), 1);
-
-        $ui .= '<span class="montserrat blog-info doupper">'.( $has_time_estimate ? echo_time_range($in, true).' READ ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']).'</span>';
-
-    }
-    */
 
     $ui .= '</td>';
 
