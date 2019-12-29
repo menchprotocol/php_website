@@ -2301,8 +2301,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
             if($is_next){
                 //We found the next incomplete step:
                 $found_incomplete = true;
-            }
-            if($is_upcoming){
+            } else {
                 $found_upcoming++;
             }
         }
