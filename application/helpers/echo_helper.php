@@ -1554,7 +1554,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
     if($footnotes){
 
-        $ui .= '<span class="montserrat blog-info doupper inline-block '.$footnote_class.'">'.$footnotes.'</span>';
+        $ui .= '<div class="montserrat blog-info doupper '.$footnote_class.'">'.$footnotes.'</div>';
 
     } else {
 
@@ -1571,7 +1571,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
                 'ln_child_blog_id' => $in['in_id'],
             ), array('en_creator'), 1);
 
-            $ui .= '<span class="montserrat blog-info doupper">'.( $has_time_estimate ? echo_time_range($in, true).' READ ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']).'</span>';
+            $ui .= '<div class="montserrat blog-info doupper">'.( $has_time_estimate ? echo_time_range($in, true).' READ ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']).'</div>';
 
         }
 
