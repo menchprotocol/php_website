@@ -702,12 +702,13 @@ fragment PostListingItemSidebar_post on Post {
         $load_max = config_var(11985);
         $show_max = config_var(11986);
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
+        $blogger_full_coins = array_intersect($this->config->item('en_ids_10589'), $this->config->item('en_ids_12141'));
 
 
         //Create FILTERS:
         $filters = array(
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
+            'ln_type_player_id IN (' . join(',', $blogger_full_coins) . ')' => null,
             'ln_creator_player_id >' => 0, //MUST HAVE LOGGED-IN PLAYER ASSIGNED
         );
 
@@ -758,11 +759,12 @@ fragment PostListingItemSidebar_post on Post {
                 }
 
                 $first_name = one_two_explode('',' ',$ln['en_name']);
+                $reader_full_coins = array_intersect($this->config->item('en_ids_10590'), $this->config->item('en_ids_12141'));
 
                 //COUNT this PLAYERS total READ COINS:
                 $read_coins = $this->READ_model->ln_fetch(array(
                     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
+                    'ln_type_player_id IN (' . join(',', $reader_full_coins) . ')' => null, //READERS X FULL COINS
                     'ln_creator_player_id' => $ln['en_id'],
                 ), array(), 1, 0, array(), 'SUM(ABS(ln_coins)) as total_coins');
 
@@ -774,14 +776,14 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<td><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="blue montserrat">'.$first_name.'</a>' : '<b class="blue montserrat">'.$first_name.'</b>' ).'</td>';
 
                 //READ
-                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_player_id='.join(',', $this->config->item('en_ids_7360')).'&ln_type_player_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' ).'</td>';
+                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_player_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_player_id='.join(',', $reader_full_coins).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' ).'</td>';
 
                 //BLOG
                 echo '<td>'.
 
                     ( $session_en
 
-                        ? '<a href="/read/history?ln_status_player_id='.join(',', $this->config->item('en_ids_7360')).'&ln_type_player_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>'
+                        ? '<a href="/read/history?ln_status_player_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_player_id='.join(',', $blogger_full_coins).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>'
 
                         : '<span class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>'
 
