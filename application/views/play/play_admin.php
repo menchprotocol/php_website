@@ -126,9 +126,7 @@ if(!$action) {
     echo '<tr class="panel-title down-border">';
     echo '<td style="text-align: left;">Group</td>';
     echo '<td style="text-align: left;">Links</td>';
-    echo '<td style="text-align: left;">%</td>';
     echo '<td style="text-align: left;">Words</td>';
-    echo '<td style="text-align: left;">%</td>';
     echo '<td style="text-align: left;">Words/Link</td>';
     echo '</tr>';
 
@@ -147,7 +145,7 @@ if(!$action) {
     echo '</tr>';
 
     //Add some empty space:
-    echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="6">&nbsp;</td></tr>';
+    echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="4">&nbsp;</td></tr>';
 
     //Now do a high level stats:
     foreach (array('ln_coins =', 'ln_coins >', 'ln_coins <') as $words_setting) {
@@ -170,7 +168,7 @@ if(!$action) {
     $en_all_10591 = $this->config->item('en_all_10591');
 
     //Add some empty space:
-    echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="6">&nbsp;</td></tr>';
+    echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="4">&nbsp;</td></tr>';
 
     //Show each link type:
     foreach ($this->READ_model->ln_fetch(array(
