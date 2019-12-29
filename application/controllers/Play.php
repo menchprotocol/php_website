@@ -707,6 +707,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //Create FILTERS:
         $filters = array(
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_player_id IN (' . join(',', $blogger_full_coins) . ')' => null,
             'ln_creator_player_id >' => 0, //MUST HAVE LOGGED-IN PLAYER ASSIGNED
@@ -730,7 +731,7 @@ fragment PostListingItemSidebar_post on Post {
         */
 
         //Fetch leaderboard:
-        $blog_coins = $this->READ_model->ln_fetch($filters, array('en_creator'), $load_max, 0, array('total_coins' => 'DESC'), 'SUM(ABS(ln_coins)) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        $blog_coins = $this->READ_model->ln_fetch($filters, array('en_creator', 'in_child'), $load_max, 0, array('total_coins' => 'DESC'), 'SUM(ABS(ln_coins)) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
 
 
