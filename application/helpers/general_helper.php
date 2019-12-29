@@ -517,9 +517,9 @@ function ln_type_coin_rate($ln){
         //Micro:
         return $direction_rate * 0.000001;
 
-    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_4527'))){
+    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_12141'))){
 
-        //Word:
+        //Full:
         return $direction_rate * 1.00;
 
     } else {
