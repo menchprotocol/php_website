@@ -688,6 +688,12 @@ textarea.note-textarea{
     width: 100%;
 }
 
+.itemplay{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+
 .blog-left {
     padding: 3px 27px 0 0;
     display: block;
