@@ -152,7 +152,7 @@ if(!$action) {
 
         $words_stats = $this->READ_model->ln_fetch(array(
             $words_setting => 0,
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, SUM(ln_coins) as total_coins');
 
         echo '<tr class="panel-title down-border">';
@@ -172,7 +172,7 @@ if(!$action) {
 
     //Show each link type:
     foreach ($this->READ_model->ln_fetch(array(
-        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array('en_type'), 0, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, SUM(ln_coins) as total_coins, en_name, en_icon, en_id, ln_type_player_id', 'en_id, en_name, en_icon, ln_type_player_id') as $ln) {
 
         //Determine which weight group this belongs to:
