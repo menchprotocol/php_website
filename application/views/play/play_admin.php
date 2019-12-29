@@ -170,7 +170,6 @@ if(!$action) {
     }
 
 
-    $en_all_10592 = $this->config->item('en_all_10592');
     $en_all_10591 = $this->config->item('en_all_10591');
 
     //Add some empty space:
