@@ -703,6 +703,7 @@ fragment PostListingItemSidebar_post on Post {
         $show_max = config_var(11986);
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
         $blogger_full_coins = array_intersect($this->config->item('en_ids_10589'), $this->config->item('en_ids_12141'));
+        $reader_full_coins = array_intersect($this->config->item('en_ids_10590'), $this->config->item('en_ids_12141'));
 
 
         //Create FILTERS:
@@ -760,7 +761,6 @@ fragment PostListingItemSidebar_post on Post {
                 }
 
                 $first_name = one_two_explode('',' ',$ln['en_name']);
-                $reader_full_coins = array_intersect($this->config->item('en_ids_10590'), $this->config->item('en_ids_12141'));
 
                 //COUNT this PLAYERS total READ COINS:
                 $read_coins = $this->READ_model->ln_fetch(array(
@@ -798,12 +798,13 @@ fragment PostListingItemSidebar_post on Post {
 
             //COUNT WORDS BLOG/READ:
             $words_blog = $this->READ_model->ln_fetch(array(
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
+                'ln_type_player_id IN (' . join(',', $blogger_full_coins) . ')' => null,
                 'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            ), array(), 0, 0, array(), 'SUM(ln_coins) as total_coins');
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            ), array('in_child'), 0, 0, array(), 'SUM(ln_coins) as total_coins');
 
             $words_read = $this->READ_model->ln_fetch(array(
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
+                'ln_type_player_id IN (' . join(',', $reader_full_coins) . ')' => null,
                 'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ), array(), 0, 0, array(), 'SUM(ln_coins) as total_coins');
 
@@ -3297,15 +3298,19 @@ fragment PostListingItemSidebar_post on Post {
             return false;
         }
 
+        $blogger_full_coins = array_intersect($this->config->item('en_ids_10589'), $this->config->item('en_ids_12141'));
+        $reader_full_coins = array_intersect($this->config->item('en_ids_10590'), $this->config->item('en_ids_12141'));
+
         //COUNT WORDS BLOG/READ:
         $words_blog = $this->READ_model->ln_fetch(array(
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
+            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_type_player_id IN (' . join(',', $blogger_full_coins) . ')' => null, //BLOGGERS
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_creator_player_id' => $session_en['en_id'],
-        ), array(), 0, 0, array(), 'SUM(ln_coins) as total_coins');
+        ), array('in_child'), 0, 0, array(), 'SUM(ln_coins) as total_coins');
 
         $words_read = $this->READ_model->ln_fetch(array(
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
+            'ln_type_player_id IN (' . join(',', $reader_full_coins) . ')' => null, //READERS
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_creator_player_id' => $session_en['en_id'],
         ), array(), 0, 0, array(), 'SUM(ln_coins) as total_coins');
