@@ -737,11 +737,6 @@ fragment PostListingItemSidebar_post on Post {
         //Fetch leaderboard:
         $blog_coins = $this->READ_model->ln_fetch($filters_blog, array('en_creator', 'in_child'), $load_max, 0, array('total_coins' => 'DESC'), 'SUM(ABS(ln_coins)) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
-        $bloggers_found = count($blog_coins);
-        $show_readers = $load_max - $bloggers_found;
-
-
-
 
         echo '<table id="leaderboard" class="table table-sm table-striped">';
 
@@ -797,6 +792,9 @@ fragment PostListingItemSidebar_post on Post {
 
         }
 
+        //TODO retire once we hit 100+ bloggers:
+        $bloggers_found = count($blog_coins);
+        $show_readers = $load_max - $bloggers_found;
         if($show_readers > 0){
 
             $read_coins = $this->READ_model->ln_fetch($filters_read, array('en_creator'), $show_readers, 0, array('total_coins' => 'DESC'), 'SUM(ABS(ln_coins)) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
