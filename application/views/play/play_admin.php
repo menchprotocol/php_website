@@ -273,6 +273,7 @@ if(!$action) {
     $orphan_ins = $this->BLOG_model->in_fetch(array(
         ' NOT EXISTS (SELECT 1 FROM table_read WHERE in_id=ln_child_blog_id AND ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_player_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
         'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+        'in_id !=' => config_var(12156), //Not the North Star
     ));
 
     if(count($orphan_ins) > 0){

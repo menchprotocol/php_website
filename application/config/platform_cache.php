@@ -11,14 +11,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-29 14:09:04 PST
+//Generated 2019-12-29 15:46:34 PST
 
 //READ TYPE WORDS:
 $config['en_ids_10592'] = array(10596,10539,10594,10593);
 $config['en_all_10592'] = array(
     10596 => array(
         'm_icon' => '<i class="fal fa-file-word" aria-hidden="true"></i>',
-        'm_name' => 'MICRO',
+        'm_name' => 'DECIMAL',
         'm_desc' => 'A hundredth of a word',
         'm_parents' => array(4527,10592),
     ),
@@ -2468,7 +2468,7 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(11071,11069,12130,11079,11077,11074,11064,11985,11065,11063,12124,11076,11075,11060,11066,11072,11073,11057,11056,11061,12113,12088,11162,11163,11986,11070);
+$config['en_ids_6404'] = array(11071,11069,12130,11079,11077,11074,11064,11985,11065,11063,12124,11076,11075,11060,12156,11066,11072,11073,11057,11056,11061,12113,12088,11162,11163,11986,11070);
 $config['en_all_6404'] = array(
     11071 => array(
         'm_icon' => '',
@@ -2552,6 +2552,12 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
         'm_desc' => '1.181',
+        'm_parents' => array(6404),
+    ),
+    12156 => array(
+        'm_icon' => '',
+        'm_name' => 'NORTH STAR BLOG',
+        'm_desc' => '7766',
         'm_parents' => array(6404),
     ),
     11066 => array(
@@ -3808,7 +3814,7 @@ $config['en_all_4527'] = array(
     ),
     10596 => array(
         'm_icon' => '<i class="fal fa-file-word" aria-hidden="true"></i>',
-        'm_name' => 'WORD MICRO',
+        'm_name' => 'WORD DECIMAL',
         'm_desc' => '',
         'm_parents' => array(4527,10592),
     ),
@@ -4427,7 +4433,7 @@ $config['en_all_10593'] = array(
     ),
 );
 
-//WORD MICRO:
+//WORD DECIMAL:
 $config['en_ids_10596'] = array(6226,10681,4993,4246,5001,10625,5943,5865,4999,4998,5000,5981,11956,5982,5003,10689,7504,5007,10659,4994,12129,12119,6157,7489,7487,7488,7610,6149,6969,4275,4283,6559,6560,6556,6578,6415,7611,7563,10690,4266,4267,4282,5967,10683,4577,4278,4279,4268,4287,7560,7561,7564,7559,7558,7562,4559,7495,6144,6143,7492,7485,7486,6997,12117);
 $config['en_all_10596'] = array(
     6226 => array(
