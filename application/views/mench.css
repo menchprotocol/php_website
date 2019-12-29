@@ -683,7 +683,7 @@ textarea.note-textarea{
     border: 0;
     background-color:#f4f5f7;
     border-radius: 0 !important;
-    padding:5px;
+    padding:3px 7px;
     margin: 0;
     width: 100%;
 }
