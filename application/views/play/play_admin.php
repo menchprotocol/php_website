@@ -179,7 +179,7 @@ if(!$action) {
         $coin_rate = filter_cache_group($ln['en_id'], 12140);
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span> <a href="/play/'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
+        echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span><a href="/play/'.$ln['en_id'].'" class="montserrat doupper">'.$ln['en_name'].'</a></td>';
         echo '<td style="text-align: left;">'.number_format($ln['total_links'], 0).'</td>';
         echo '<td style="text-align: left;"><span class="icon-block">'.$coin_rate['m_icon'].'</span>'.number_format(round($ln['total_coins']), 0).'</td>';
         echo '<td style="text-align: left;"><span class="icon-block">'.$en_all_10591[ln_type_direction_en_id($ln)]['m_icon'].'</span>'.number_format(round($ln['total_words']), 0).'</td>';
