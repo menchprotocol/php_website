@@ -172,9 +172,6 @@ li a {
 .icon-block{ min-width: 34px; display: inline-block; text-align: center; margin-left: 1px; }
 .icon-block-lg{ min-width:50px; display: inline-block; text-align: center; margin-left: 1px; }
 .icon-block-xlg{ min-width:57px; display: inline-block; text-align: center; margin-left: 1px; }
-.blog-url{
-    margin-left: 5px;
-}
 .icon-block-sm img,
 .icon-block img,
 .en-icon img {
@@ -308,7 +305,7 @@ img.no-radius {
 .featured-frame{
     text-align: center;
     width: 100px;
-    margin-right:6px;
+    margin-left:5px;
 }
 .featured-image {
     width: 100px;
@@ -686,7 +683,7 @@ textarea.note-textarea{
     border: 0;
     background-color:#f4f5f7;
     border-radius: 0 !important;
-    padding:5px 0;
+    padding:5px;
     margin: 0;
     width: 100%;
 }
@@ -936,10 +933,9 @@ label {
     pointer-events: none;
 }
 .blog-url{
-    margin: 0 5px 0;
+    margin:0;
     font-size: 1.3em;
     line-height: 110%;
-    display: inline-flex;
 }
 .blog-info{
     font-size: 0.7em;
