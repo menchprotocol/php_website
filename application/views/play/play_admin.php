@@ -124,42 +124,52 @@ if(!$action) {
     echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
     echo '<tr class="panel-title down-border">';
-    echo '<td style="text-align: left;">Group</td>';
-    echo '<td style="text-align: left;">Links</td>';
+    echo '<td style="text-align: left;">Type</td>';
     echo '<td style="text-align: left;">Coins</td>';
     echo '<td style="text-align: left;">Words</td>';
     echo '</tr>';
 
 
     //Count them all:
-    $all_stats = $this->READ_model->ln_fetch(array(
+    $en_all_12140 = $this->config->item('en_all_12140');
+
+    $full_coins = $this->READ_model->ln_fetch(array(
+        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_12141')) . ')' => null, //Full
         'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ABS(ln_words)) as total_words, SUM(ABS(ln_coins)) as total_coins');
-
-
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_transactions, SUM(ABS(ln_words)) as total_words');
     echo '<tr class="panel-title down-border" style="font-weight: bold;">';
-    echo '<td style="text-align: left;">Total</td>';
-    echo '<td style="text-align: left;">'.number_format($all_stats[0]['total_links'], 0).'</td>';
-    echo '<td style="text-align: left;">'.number_format(round($all_stats[0]['total_coins']), 0).'</td>';
-    echo '<td style="text-align: left;">'.number_format(round($all_stats[0]['total_words']), 0).'</td>';
+    echo '<td style="text-align: left;" class="montserrat doupper">'.$en_all_12140[12141]['m_icon'].' '.$en_all_12140[12141]['m_name'].'</td>';
+    echo '<td style="text-align: left;">'.number_format(abs($full_coins[0]['total_coins']), 0).'</td>';
+    echo '<td style="text-align: left;">'.number_format(round($full_coins[0]['total_words']), 2).'</td>';
+    echo '</tr>';
+
+
+    $micro_coins = $this->READ_model->ln_fetch(array(
+        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_12142')) . ')' => null, //Micro
+        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_transactions, SUM(ABS(ln_words)) as total_words');
+    echo '<tr class="panel-title down-border" style="font-weight: bold;">';
+    echo '<td style="text-align: left;" class="montserrat doupper">'.$en_all_12140[12142]['m_icon'].' '.$en_all_12140[12142]['m_name'].'</td>';
+    echo '<td style="text-align: left;">'.number_format(abs($micro_coins[0]['total_coins']), 6).'</td>';
+    echo '<td style="text-align: left;">'.number_format(round($micro_coins[0]['total_words']), 2).'</td>';
     echo '</tr>';
 
     //Add some empty space:
     echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="4">&nbsp;</td></tr>';
 
     //Now do a high level stats:
-    foreach (array('ln_coins =', 'ln_coins >', 'ln_coins <') as $words_setting) {
+    foreach (array('ln_coins =', 'ln_coins >', 'ln_coins <') as $set) {
 
         $words_stats = $this->READ_model->ln_fetch(array(
-            $words_setting => 0,
+            $set => 0,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, SUM(ln_coins) as total_coins');
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_transactions, SUM(ln_words) as total_words, SUM(ln_coins) as total_coins');
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$words_setting.' 0</td>';
-        echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_links'], 0).'</td>';
-        echo '<td style="text-align: left;">'.number_format(round($words_stats[0]['total_coins']), 6).'</td>';
-        echo '<td style="text-align: left;">'.number_format(round($words_stats[0]['total_words']), 6).'</td>';
+        echo '<td style="text-align: left;">'.$set.' 0</td>';
+        echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_transactions'], 0).'</td>';
+        echo '<td style="text-align: left;">'.number_format(round($words_stats[0]['total_coins']), ( fmod($words_stats[0]['total_coins'],1)>0 ? 6 : 0)).'</td>';
+        echo '<td style="text-align: left;">'.number_format(round($words_stats[0]['total_words']), 2).'</td>';
         echo '</tr>';
 
     }
@@ -173,7 +183,7 @@ if(!$action) {
     //Show each link type:
     foreach ($this->READ_model->ln_fetch(array(
         'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    ), array('en_type'), 0, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, SUM(ln_coins) as total_coins, en_name, en_icon, en_id, ln_type_player_id', 'en_id, en_name, en_icon, ln_type_player_id') as $ln) {
+    ), array('en_type'), 0, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_transactions, SUM(ln_words) as total_words, SUM(ln_coins) as total_coins, en_name, en_icon, en_id, ln_type_player_id', 'en_id, en_name, en_icon, ln_type_player_id') as $ln) {
 
         //Determine which weight group this belongs to:
         $word_rate = filter_cache_group($ln['en_id'], 10592);
@@ -182,9 +192,9 @@ if(!$action) {
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span><a href="/play/'.$ln['en_id'].'" class="montserrat doupper">'.$ln['en_name'].'</a></td>';
-        echo '<td style="text-align: left;"><span class="icon-block">'.$direction['m_icon'].'</span>'.number_format($ln['total_links'], 0).'</td>';
-        echo '<td style="text-align: left;"><span class="icon-block">'.$coin_rate['m_icon'].'</span>'.number_format(round($ln['total_coins']), 6).'</td>';
-        echo '<td style="text-align: left;"><span class="icon-block">'.$word_rate['m_icon'].'</span>'.number_format(round($ln['total_words']), 6).'</td>';
+        echo '<td style="text-align: left;"><span class="icon-block">'.$direction['m_icon'].'</span>'.number_format($ln['total_transactions'], 0).'</td>';
+        echo '<td style="text-align: left;"><span class="icon-block">'.$coin_rate['m_icon'].'</span>'.number_format(round($ln['total_coins']), ( fmod($ln['total_coins'],1)>0 ? 6 : 0)).'</td>';
+        echo '<td style="text-align: left;"><span class="icon-block">'.$word_rate['m_icon'].'</span>'.number_format(round($ln['total_words']), 2).'</td>';
         echo '</tr>';
 
     }

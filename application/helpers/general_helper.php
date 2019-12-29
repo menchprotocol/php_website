@@ -453,8 +453,8 @@ function ln_type_word_rate($ln){
 
     if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10596'))){
 
-        //Micro:
-        return $direction_rate * 0.000001;
+        //Decimal:
+        return $direction_rate * 0.01;
 
     } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10539'))){
 
