@@ -426,96 +426,53 @@ function config_var($config_en_id){
     return $en_all_6404[$config_en_id]['m_desc'];
 }
 
-function ln_type_word_count($ln){
+
+
+function ln_type_direction_rate($ln){
 
     $CI =& get_instance();
 
-    if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10596'))){
-
-        //Nod:
-        $link_words = 0.000001;
-
-    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10539'))){
-
-        //Word:
-        $link_words = 1.00;
-
-    } else {
-
-        //Word OR Statement + Connection:
-        $link_words = 0;
-
-        //Consider each object link as a word:
-        foreach (array('ln_child_blog_id', 'ln_parent_blog_id', 'ln_child_player_id', 'ln_parent_player_id') as $dz) {
-            if (isset($ln[$dz]) && intval($ln[$dz]) > 0) {
-                $link_words++;
-            }
-        }
-
-        //Is it a statement that has content??
-        if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10593') /* Statement */) && isset($ln['ln_content']) && strlen($ln['ln_content']) > 0){
-
-            //Let's calculate the number of words in this statement based on it's content:
-            if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10627') /* Attachments */)){
-
-                $file_size = curl_get_file_size($ln['ln_content']);
-                if($file_size > 0){
-                    //Convert file size to words:
-                    $link_words =+ number_format( $file_size / config_var(11069), 2 );
-                } else {
-                    //File size could not be determined, so let's just add a default:
-                    $link_words += number_format( config_var(11070), 2);
-                }
-
-            } else {
-                $link_words += substr_count(str_replace('  ',' ', strip_tags($ln['ln_content'])), ' ');
-            }
-
-        }
-
-        if($link_words < 1){
-            //Must be at-least one:
-            $link_words = 1;
-        }
-    }
-
-
-    //Give negative sign if output
     if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10590'))){
-        //This is an output, return negative:
-        $link_words = -1 * $link_words;
+        return -1;
+    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10589'))){
+        return 1;
+    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_12145'))){
+        return 0;
+    } else {
+        //should not happen:
+        return 0;
     }
-
-
-    return $link_words;
-
 }
 
-
-function ln_type_direction($ln){
-    if($ln['ln_coins'] > 0){
-        return 10589;
-    } elseif($ln['ln_coins'] < 0){
+function ln_type_direction_en_id($ln){
+    //Returns directions based on type
+    $CI =& get_instance();
+    if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10590'))){
         return 10590;
-    } else {
-        //Must be zero:
+    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10589'))){
+        return 10589;
+    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_12145'))){
         return 12145;
     }
 }
 
-function ln_type_coin_count($ln){
+
+function ln_type_word_rate($ln){
 
     $CI =& get_instance();
 
+    //Determine direction:
+    $direction_rate = ln_type_direction_rate($ln);
+
     if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10596'))){
 
-        //Nod:
-        $link_words = 0.000001;
+        //Micro:
+        return $direction_rate * 0.000001;
 
     } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10539'))){
 
         //Word:
-        $link_words = 1.00;
+        return $direction_rate * 1.00;
 
     } else {
 
@@ -554,19 +511,38 @@ function ln_type_coin_count($ln){
             //Must be at-least one:
             $link_words = 1;
         }
+
+        return ($direction_rate * $link_words);
+
     }
-
-
-    //Give negative sign if output
-    if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10590'))){
-        //This is an output, return negative:
-        $link_words = -1 * $link_words;
-    }
-
-
-    return $link_words;
-
 }
+
+
+function ln_type_coin_rate($ln){
+
+    $CI =& get_instance();
+
+    //Determine direction:
+    $direction_rate = ln_type_direction_rate($ln);
+
+    if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_12142'))){
+
+        //Micro:
+        return $direction_rate * 0.000001;
+
+    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_4527'))){
+
+        //Word:
+        return $direction_rate * 1.00;
+
+    } else {
+
+        //Should not happen:
+        return 0;
+
+    }
+}
+
 
 function word_change_calculator($before_string, $after_string){
 

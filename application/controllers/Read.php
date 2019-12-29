@@ -108,31 +108,31 @@ class Read extends CI_Controller
 
         //BLOG
         $blog_coins_new_last_week = $this->READ_model->ln_fetch(array(
-            'ln_words >' => 0,
+            'ln_coins >' => 0,
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ), array(), 0, 0, array(), 'SUM(ln_words) as total');
+        ), array(), 0, 0, array(), 'SUM(ln_coins) as total');
         $blog_coins_total_last_week = $this->READ_model->ln_fetch(array(
-            'ln_words >' => 0,
+            'ln_coins >' => 0,
             'ln_timestamp <=' => $last_week_end,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ), array(), 0, 0, array(), 'SUM(ln_words) as total');
+        ), array(), 0, 0, array(), 'SUM(ln_coins) as total');
         $blog_coins_growth_rate = number_format(( $blog_coins_total_last_week[0]['total'] / ( $blog_coins_total_last_week[0]['total'] - $blog_coins_new_last_week[0]['total'] ) * 100 ) - 100, 1);
 
 
         //READ
         $read_coins_new_last_week = $this->READ_model->ln_fetch(array(
-            'ln_words <' => 0,
+            'ln_coins <' => 0,
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ), array(), 0, 0, array(), 'ABS(SUM(ln_words)) as total');
+        ), array(), 0, 0, array(), 'ABS(SUM(ln_coins)) as total');
         $read_coins_total_last_week = $this->READ_model->ln_fetch(array(
-            'ln_words <' => 0,
+            'ln_coins <' => 0,
             'ln_timestamp <=' => $last_week_end,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ), array(), 0, 0, array(), 'ABS(SUM(ln_words)) as total');
+        ), array(), 0, 0, array(), 'ABS(SUM(ln_coins)) as total');
         $read_coins_growth_rate = number_format(( $read_coins_total_last_week[0]['total'] / ( $read_coins_total_last_week[0]['total'] - $read_coins_new_last_week[0]['total'] ) * 100 ) - 100, 1);
 
 
@@ -537,13 +537,13 @@ class Read extends CI_Controller
         //Count all rows:
         $link_types_counts = $this->READ_model->ln_fetch(array(
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        ), array('en_type'), 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        ), array('en_type'), 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ABS(ln_coins)) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
         //Count totals:
         $addup_total_count = addup_array($link_types_counts, 'total_count');
 
         //Link Direction
-        echo_2level_stats('Types', 10591, 4593, $link_types_counts, $addup_total_count, 'ln_type_player_id', 'total_words');
+        echo_2level_stats('Types', 10591, 4593, $link_types_counts, $addup_total_count, 'ln_type_player_id', 'total_coins');
 
 
     }
@@ -582,14 +582,14 @@ class Read extends CI_Controller
 
         //Fetch links and total link counts:
         $lns = $this->READ_model->ln_fetch($filters, $join_by, $item_per_page, $query_offset);
-        $lns_count = $this->READ_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ABS(ln_words)) as total_words');
+        $lns_count = $this->READ_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ABS(ln_coins)) as total_coins');
         $total_items_loaded = ($query_offset+count($lns));
         $has_more_links = ($lns_count[0]['total_count'] > 0 && $total_items_loaded < $lns_count[0]['total_count']);
 
 
         //Display filter notes:
         if($total_items_loaded > 0){
-            $message .= '<div class="montserrat" style="margin:0 0 15px 0;"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' TRANSACTIONS ['.number_format($lns_count[0]['total_words'], 2).' COINS]:</div>';
+            $message .= '<div class="montserrat" style="margin:0 0 15px 0;"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' TRANSACTIONS ['.number_format($lns_count[0]['total_coins'], 2).' COINS]:</div>';
         }
         //
 

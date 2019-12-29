@@ -729,7 +729,7 @@ fragment PostListingItemSidebar_post on Post {
         */
 
         //Fetch leaderboard:
-        $blog_coins = $this->READ_model->ln_fetch($filters, array('en_creator'), $load_max, 0, array('total_words' => 'DESC'), 'SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        $blog_coins = $this->READ_model->ln_fetch($filters, array('en_creator'), $load_max, 0, array('total_coins' => 'DESC'), 'SUM(ABS(ln_coins)) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
 
 
@@ -753,7 +753,7 @@ fragment PostListingItemSidebar_post on Post {
                     echo '<tr class="see_more_who"></tr>';
 
                 }
-                if($ln['total_words'] < 1){
+                if($ln['total_coins'] < 1){
                     continue;
                 }
 
@@ -764,7 +764,7 @@ fragment PostListingItemSidebar_post on Post {
                     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
                     'ln_creator_player_id' => $ln['en_id'],
-                ), array(), 1, 0, array(), 'SUM(ABS(ln_words)) as total_words');
+                ), array(), 1, 0, array(), 'SUM(ABS(ln_coins)) as total_coins');
 
 
                 echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
@@ -774,16 +774,16 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<td><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="blue montserrat">'.$first_name.'</a>' : '<b class="blue montserrat">'.$first_name.'</b>' ).'</td>';
 
                 //READ
-                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_player_id='.join(',', $this->config->item('en_ids_7360')).'&ln_type_player_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
+                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_player_id='.join(',', $this->config->item('en_ids_7360')).'&ln_type_player_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' ).'</td>';
 
                 //BLOG
                 echo '<td>'.
 
                     ( $session_en
 
-                        ? '<a href="/read/history?ln_status_player_id='.join(',', $this->config->item('en_ids_7360')).'&ln_type_player_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</a>'
+                        ? '<a href="/read/history?ln_status_player_id='.join(',', $this->config->item('en_ids_7360')).'&ln_type_player_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_player_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>'
 
-                        : '<span class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</span>'
+                        : '<span class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>'
 
                     )
 
@@ -797,20 +797,20 @@ fragment PostListingItemSidebar_post on Post {
             $words_blog = $this->READ_model->ln_fetch(array(
                 'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
                 'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
+            ), array(), 0, 0, array(), 'SUM(ln_coins) as total_coins');
 
             $words_read = $this->READ_model->ln_fetch(array(
                 'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
                 'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
+            ), array(), 0, 0, array(), 'SUM(ln_coins) as total_coins');
 
 
             //Add total counts row:
             echo '<tr>';
             foreach (array(
                          4536 => echo_number(unique_players()), //PLAY
-                         6205 => echo_number(abs($words_read[0]['total_words'])), //READ
-                         4535 => echo_number($words_blog[0]['total_words']), //BLOG
+                         6205 => echo_number(abs($words_read[0]['total_coins'])), //READ
+                         4535 => echo_number($words_blog[0]['total_coins']), //BLOG
                      ) as $en_id => $current_count){
                 $handle = strtolower($en_all_2738[$en_id]['m_name']);
                 echo '<td><span class="'.$handle.'"><span class="parent-icon icon-block">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count">'.( $en_id==4536 ? '<span class="montserrat">ALL</span> ' : '' ).$current_count.'</span></span></td>';
@@ -3299,18 +3299,18 @@ fragment PostListingItemSidebar_post on Post {
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'ln_creator_player_id' => $session_en['en_id'],
-        ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
+        ), array(), 0, 0, array(), 'SUM(ln_coins) as total_coins');
 
         $words_read = $this->READ_model->ln_fetch(array(
             'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'ln_creator_player_id' => $session_en['en_id'],
-        ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
+        ), array(), 0, 0, array(), 'SUM(ln_coins) as total_coins');
 
 
         return echo_json(array(
-            'blog_count' => number_format($words_blog[0]['total_words'], 0),
-            'read_count' => number_format(abs($words_read[0]['total_words']), 0)
+            'blog_count' => number_format($words_blog[0]['total_coins'], 0),
+            'read_count' => number_format(abs($words_read[0]['total_coins']), 0)
         ));
 
     }

@@ -616,8 +616,12 @@ function echo_ln($ln, $is_inner = false)
     }
 
 
+    //Link coins
+    $en_all_10591 = $this->config->item('en_all_10591');
+    $ui .= '<span class="read-micro-data"><span data-toggle="tooltip" data-placement="top" title="TRANSACTION COINS AWARDED" style="min-width:30px; display: inline-block;">'.$en_all_10591[ln_type_direction_en_id($ln)]['m_icon'].'</i> '. number_format(abs($ln['ln_coins']), (fmod($ln['ln_coins'],1)==0 ? 0 : 6)) .' COIN'.strtoupper(echo__s($ln['ln_coins'])).'</span></span> &nbsp;';
+
     //Link words
-    $ui .= '<span class="read-micro-data"><span data-toggle="tooltip" data-placement="top" title="TRANSACTION COINS AWARDED" style="min-width:30px; display: inline-block;"><i class="fas fa-circle '.( $ln['ln_words'] > 0 ? 'yellow' : 'ispink' ).'"></i> '. number_format(abs($ln['ln_words']), (fmod($ln['ln_words'],1)==0 ? 0 : 2)) .' COIN'.strtoupper(echo__s($ln['ln_words'])).'</span></span> &nbsp;';
+    $ui .= '<span class="read-micro-data"><span data-toggle="tooltip" data-placement="top" title="TRANSACTION WORDS READ" style="min-width:30px; display: inline-block;"><i class="fas fa-file-word '.( $ln['ln_words'] > 0 ? 'yellow' : ( $ln['ln_words'] == 0 ? 'blue' : 'ispink' ) ).'"></i> '. number_format(abs($ln['ln_words']), (fmod($ln['ln_words'],1)==0 ? 0 : 6)) .' WORD'.strtoupper(echo__s($ln['ln_words'])).'</span></span> &nbsp;';
 
 
     if($ln['ln_order'] > 0){
@@ -1924,8 +1928,8 @@ function echo_2level_stats($stat_name, $stats_en_id, $mother_en_id, $link_types_
 
     echo '<tr class="panel-title down-border">';
     echo '<td style="text-align: left;">'.$stat_name.'</td>';
-    if($display_field=='total_words'){
-        echo '<td style="text-align: right;">Words</td>';
+    if($display_field=='total_coins'){
+        echo '<td style="text-align: right;">COINS</td>';
     } else {
         echo '<td>&nbsp;</td>';
     }
@@ -1979,7 +1983,7 @@ function echo_2level_players($main_obj, $all_link_types, $link_types_counts, $al
         }
 
         $ln = filter_array($link_types_counts, 'in_type_player_id', $en_id);
-        $show_in_advance_only = ($display_field=='total_words' && (in_array($en_id, $CI->config->item('en_ids_10596')) /* Nod */ || abs($ln['total_words']) < 100 ));
+        $show_in_advance_only = ($display_field=='total_coins' && abs($ln[$display_field]) < 1 );
 
         if( !$ln['total_count'] ){
             continue;
@@ -1990,8 +1994,8 @@ function echo_2level_players($main_obj, $all_link_types, $link_types_counts, $al
         //Addup counter:
         if($display_field=='total_count'){
             $total_sum += $ln['total_count'];
-        } elseif($display_field=='total_words'){
-            $total_sum += abs($ln['total_words']);
+        } elseif($display_field=='total_coins'){
+            $total_sum += abs($ln['total_coins']);
         }
 
         //Subrow UI:
@@ -2015,9 +2019,9 @@ function echo_2level_players($main_obj, $all_link_types, $link_types_counts, $al
 
                 $rows .= '<a href="/read/history?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Blog'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
 
-            } elseif($display_field=='total_words'){
+            } elseif($display_field=='total_coins'){
 
-                $rows .= '<a href="/read/history?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_words'], 0).' Word'.echo__s($ln['total_words']).'">'.number_format($ln['total_words'], 0) . '</a>';
+                $rows .= '<a href="/read/history?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_coins'], 0).' Coin'.echo__s($ln['total_coins']).'">'.number_format($ln['total_coins'], 0) . '</a>';
 
             }
             $rows .= '</td>';
@@ -2053,9 +2057,9 @@ function echo_2level_players($main_obj, $all_link_types, $link_types_counts, $al
 
         echo '<a href="/read/history?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Blog'.echo__s($total_sum).'">'.number_format($total_sum/$addup_total_count*100, 1).'%</a>';
 
-    } elseif($display_field=='total_words'){
+    } elseif($display_field=='total_coins'){
 
-        echo '<a href="/read/history?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Word'.echo__s($total_sum).'">'.number_format($total_sum, 0).'</a>';
+        echo '<a href="/read/history?ln_status_player_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Coin'.echo__s($total_sum).'">'.number_format($total_sum, 0).'</a>';
 
     }
 

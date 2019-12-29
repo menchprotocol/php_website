@@ -213,6 +213,9 @@ class READ_model extends CI_Model
         if (isset($insert_columns['ln_words'])) {
             unset($insert_columns['ln_words']);
         }
+        if (isset($insert_columns['ln_coins'])) {
+            unset($insert_columns['ln_coins']);
+        }
 
         //Clean metadata is provided:
         if (isset($insert_columns['ln_metadata']) && is_array($insert_columns['ln_metadata'])) {
@@ -248,8 +251,8 @@ class READ_model extends CI_Model
 
 
         //Determine word weight
-        $insert_columns['ln_words'] = ln_type_word_count($insert_columns);
-        $insert_columns['ln_coins'] = ln_type_coin_count($insert_columns);
+        $insert_columns['ln_words'] = ln_type_word_rate($insert_columns);
+        $insert_columns['ln_coins'] = ln_type_coin_rate($insert_columns);
 
         //Lets log:
         $this->db->insert('table_read', $insert_columns);

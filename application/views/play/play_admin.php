@@ -97,8 +97,8 @@ if(!$action) {
     if(isset($_GET['resetall'])){
 
         boost_power();
-        $this->db->query("UPDATE table_read SET ln_words=0;");
-        echo '<div class="alert alert-warning">All link counts reset to zero.</div>';
+        $this->db->query("UPDATE table_read SET ln_words=0, ln_coins=0;");
+        echo '<div class="alert alert-warning">All word/coin counts were set to zero.</div>';
 
     } elseif(isset($_GET['updateall']) || isset($_GET['updatesome'])){
 
@@ -106,16 +106,17 @@ if(!$action) {
         boost_power();
         $updated = 0;
         foreach($this->READ_model->ln_fetch(( isset($_GET['updateall']) ? array(
-            'ln_words' => 0,
+            'ln_id >' => 0, //All
         ) : array(
             'ln_type_player_id IN (' . $_GET['updatesome'] . ')' => null,
         )), array(), 0) as $ln){
             $this->READ_model->ln_update($ln['ln_id'], array(
-                'ln_words' => ln_type_word_count($ln),
+                'ln_words' => ln_type_word_rate($ln),
+                'ln_coins' => ln_type_coin_rate($ln),
             ));
             $updated++;
         }
-        echo '<div class="alert alert-warning">'.$updated.' links updated with new word counts.</div>';
+        echo '<div class="alert alert-warning">'.$updated.' links updated with new coin/word counts.</div>';
 
     }
 
@@ -149,12 +150,12 @@ if(!$action) {
     echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="6">&nbsp;</td></tr>';
 
     //Now do a high level stats:
-    foreach (array('ln_words =', 'ln_words >', 'ln_words <') as $words_setting) {
+    foreach (array('ln_coins =', 'ln_coins >', 'ln_coins <') as $words_setting) {
 
         $words_stats = $this->READ_model->ln_fetch(array(
             $words_setting => 0,
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, SUM(ln_words) as total_coins');
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, SUM(ln_coins) as total_coins');
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$words_setting.' 0</td>';
@@ -174,7 +175,7 @@ if(!$action) {
     //Show each link type:
     foreach ($this->READ_model->ln_fetch(array(
         'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-    ), array('en_type'), 0, 0, array('total_words' => 'DESC'), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, SUM(ln_words) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon') as $ln) {
+    ), array('en_type'), 0, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, SUM(ln_coins) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon') as $ln) {
 
         //Determine which weight group this belongs to:
         $word_weight = filter_cache_group($ln['en_id'], 10592);
@@ -182,7 +183,7 @@ if(!$action) {
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span> <a href="/play/'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
         echo '<td style="text-align: left;">'.number_format($ln['total_links'], 0).'</td>';
-        echo '<td style="text-align: left;"><span class="icon-block">'.$en_all_10591[ln_type_direction($ln)]['m_icon'].'</span>'.number_format(round($ln['total_words']), 0).'</td>';
+        echo '<td style="text-align: left;"><span class="icon-block">'.$en_all_10591[ln_type_direction_en_id($ln)]['m_icon'].'</span>'.number_format(round($ln['total_words']), 0).'</td>';
         echo '<td style="text-align: left;"><span class="icon-block">'.$word_weight['m_icon'].'</span>'.number_format(round($ln['total_coins']), 0).'</td>';
         echo '</tr>';
 
