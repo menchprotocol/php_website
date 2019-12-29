@@ -308,6 +308,7 @@ img.no-radius {
 .featured-frame{
     text-align: center;
     width: 100px;
+    margin-right:6px;
 }
 .featured-image {
     width: 100px;
