@@ -126,8 +126,8 @@ if(!$action) {
     echo '<tr class="panel-title down-border">';
     echo '<td style="text-align: left;">Group</td>';
     echo '<td style="text-align: left;">Links</td>';
+    echo '<td style="text-align: left;">Coins</td>';
     echo '<td style="text-align: left;">Words</td>';
-    echo '<td style="text-align: left;">Words/Link</td>';
     echo '</tr>';
 
 
@@ -140,8 +140,8 @@ if(!$action) {
     echo '<tr class="panel-title down-border" style="font-weight: bold;">';
     echo '<td style="text-align: left;">Total</td>';
     echo '<td style="text-align: left;">'.number_format($all_stats[0]['total_links'], 0).'</td>';
-    echo '<td style="text-align: left;">'.number_format(round($all_stats[0]['total_words']), 0).'</td>';
     echo '<td style="text-align: left;">'.number_format(round($all_stats[0]['total_coins']), 0).'</td>';
+    echo '<td style="text-align: left;">'.number_format(round($all_stats[0]['total_words']), 0).'</td>';
     echo '</tr>';
 
     //Add some empty space:
@@ -158,8 +158,8 @@ if(!$action) {
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$words_setting.' 0</td>';
         echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_links'], 0).'</td>';
-        echo '<td style="text-align: left;">'.number_format(round($words_stats[0]['total_words']), 0).'</td>';
         echo '<td style="text-align: left;">'.number_format(round($words_stats[0]['total_coins']), 0).'</td>';
+        echo '<td style="text-align: left;">'.number_format(round($words_stats[0]['total_words']), 0).'</td>';
         echo '</tr>';
 
     }
@@ -181,8 +181,8 @@ if(!$action) {
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span> <a href="/play/'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
         echo '<td style="text-align: left;">'.number_format($ln['total_links'], 0).'</td>';
-        echo '<td style="text-align: left;"><span class="icon-block">'.$en_all_10591[ln_type_direction_en_id($ln)]['m_icon'].'</span>'.number_format(round($ln['total_words']), 0).'</td>';
         echo '<td style="text-align: left;"><span class="icon-block">'.$coin_rate['m_icon'].'</span>'.number_format(round($ln['total_coins']), 0).'</td>';
+        echo '<td style="text-align: left;"><span class="icon-block">'.$en_all_10591[ln_type_direction_en_id($ln)]['m_icon'].'</span>'.number_format(round($ln['total_words']), 0).'</td>';
         echo '</tr>';
 
     }
