@@ -175,7 +175,7 @@ if(!$action) {
     //Show each link type:
     foreach ($this->READ_model->ln_fetch(array(
         'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-    ), array('en_type'), 0, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, SUM(ln_coins) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon') as $ln) {
+    ), array('en_type'), 0, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, SUM(ln_coins) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon, ln_type_player_id') as $ln) {
 
         //Determine which weight group this belongs to:
         $coin_rate = filter_cache_group($ln['en_id'], 12140);
