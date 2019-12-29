@@ -37,7 +37,8 @@ foreach ($user_blogs as $priority => $ln) {
 echo '</div>';
 
 //Give option to add
-echo ' <a class="btn btn-read inline-block" href="/"  style="margin: 20px 0;"><i class="fas fa-plus"></i> NEW READ</a>';
+echo ' <a class="btn btn-read inline-block" href="/"  style="margin: 20px 0;"><i class="fas fa-plus"></i> READ</a>';
+echo ' <a class="btn btn-read inline-block" href="/read/next"  style="margin: 20px 0;">NEXT <i class="fas fa-angle-right"></i></a>';
 
 
 if($has_multiple_blogs){
