@@ -1539,9 +1539,7 @@ function echo_in_blog($in)
 
     //Now do measurements:
     $metadata = unserialize($in['in_metadata']);
-    $has_time_estimate = ( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0 && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0);
-
-    if($has_time_estimate){
+    if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0 && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
         $ui .= echo_time_range($in, true).' READ';
     }
 
@@ -1555,9 +1553,6 @@ function echo_in_blog($in)
         ), array('en_parent'), 0);
         if(count($featured_topics) > 0){
             //It has been featured, list topics:
-            if($has_time_estimate){
-                $ui .= ' | ';
-            }
             $ui .= 'FEATURED IN';
             foreach($featured_topics as $topic){
                 $ui .= '<span class="icon-block-sm">'.$topic['en_icon'].'</span>'.$topic['en_name'];
