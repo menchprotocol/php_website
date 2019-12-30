@@ -321,7 +321,7 @@ function in_ui_remove(in_id,ln_id){
     var parent_in_id = parseInt($('.blog_line_' + in_id).attr('parent-blog-id'));
 
     //Remove from UI:
-    $('.in__tr_' + ln_id).html('<span style="color:#070707;"><i class="fas fa-trash-alt"></i></span>');
+    $('.in__tr_' + ln_id).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i></span>');
 
     //Hide the editor & saving results:
     $('.in__tr_' + ln_id).fadeOut();

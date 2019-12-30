@@ -619,7 +619,7 @@ function en_modify_save() {
                     remove_all_highlights();
 
                     //Remove from UI:
-                    $('.tr_' + modify_data['ln_id']).html('<span style="color:#070707;"><i class="fas fa-trash-alt"></i> Removed</span>').fadeOut();
+                    $('.tr_' + modify_data['ln_id']).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i> Removed</span>').fadeOut();
 
                     //Disappear in a while:
                     setTimeout(function () {
