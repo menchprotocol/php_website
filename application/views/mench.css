@@ -739,6 +739,10 @@ label {
     margin-bottom: 0;
 }
 
+.dolight{
+    color: #DDDDDD;
+}
+
 .player-settings{
     color: #070707;
     text-decoration: none;
