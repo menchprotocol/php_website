@@ -1540,7 +1540,7 @@ function echo_in_blog($in)
     //Now do measurements:
     $metadata = unserialize($in['in_metadata']);
     if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0 && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-        $ui .= echo_time_range($in, true).' READ';
+        $ui .= echo_time_range($in, true).' READ ';
     }
 
     if(in_array($in['in_status_player_id'], $CI->config->item('en_ids_12138') /* Blog Statuses Featured */)){
