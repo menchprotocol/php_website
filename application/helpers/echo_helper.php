@@ -1530,7 +1530,7 @@ function echo_in_blog($in)
     $ui = '<a href="/blog/'.$in['in_id'] . '" class="list-group-item itemblog">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
-    $ui .= '<span class="icon-block-sm">'.$en_all_4737[$in['in_status_player_id']]['m_icon'].'</span>';
+    $ui .= '<span class="icon-block">'.$en_all_4737[$in['in_status_player_id']]['m_icon'].'</span>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false).'</b>';
 
     if(in_array($in['in_status_player_id'], $CI->config->item('en_ids_12138') /* Blog Statuses Featured */)){
