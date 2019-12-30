@@ -1555,18 +1555,19 @@ function echo_in_blog($in)
         if(count($featured_topics) > 0){
             //It has been featured, list topics:
             if($has_time_estimate){
-                $ui .= ' & ';
+                $ui .= ' | ';
             }
             $ui .= 'FEATURED IN';
             foreach($featured_topics as $topic){
                 $ui .= '<span class="icon-block-sm">'.$topic['en_icon'].'</span>'.$topic['en_name'];
             }
-            $ui .= '</div>';
         } else {
             //Inform that it's not yet featyred
-            $ui .= '<div class="montserrat blog-info doupper"><span data-toggle="tooltip" title="MENCH Editors have not yet reviewed this blog" data-placement="top">FEATURE REVIEW PENDING <i class="far fa-spinner fa-spin" aria-hidden="true"></i></span></div>';
+            $ui .= '<span data-toggle="tooltip" title="MENCH Editors have not yet reviewed this blog" data-placement="top">FEATURE REVIEW PENDING <i class="far fa-spinner fa-spin" aria-hidden="true"></i></span>';
         }
     }
+
+    $ui .= '</div>'; //End Footnote
 
     $ui .= '</td>';
 
