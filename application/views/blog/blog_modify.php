@@ -55,7 +55,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 'ln_parent_player_id IN (' . join(',', featured_topic_ids()) . ')' => null,
                 'ln_child_blog_id' => $in['in_id'],
             ), array('en_parent'), 0) as $topic){
-                echo ' <span class="icon-block" data-toggle="tooltip" title="FEATURED IN '.$topic['en_name'].'" data-placement="bottom">'.$topic['en_icon'].'</span>';
+                echo '<span class="icon-block" data-toggle="tooltip" title="FEATURED IN '.$topic['en_name'].'" data-placement="bottom">'.$topic['en_icon'].'</span>';
             }
 
             //Preview option:
