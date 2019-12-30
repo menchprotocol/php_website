@@ -388,11 +388,29 @@ class Blog extends CI_Controller {
             ), true, $session_en['en_id']);
 
             //See if Blog is being removed:
-            if($_POST['element_id']==4737 && !in_array($_POST['new_en_id'], $this->config->item('en_ids_7356'))){
-                //Remove all blog links:
-                $this->BLOG_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
-            }
+            if($_POST['element_id']==4737){
 
+                //Remove all blog links?
+                if(!in_array($_POST['new_en_id'], $this->config->item('en_ids_7356'))){
+
+                    $this->BLOG_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
+
+                //Notify moderators of Feature request?
+                } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && superpower_assigned(10939) && !count($this->READ_model->ln_fetch(array(
+                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_player_id' => 4601, //BLOG KEYWORDS
+                        'ln_parent_player_id IN (' . join(',', featured_topic_ids()) . ')' => null,
+                        'ln_child_blog_id' => $_POST['in_id'],
+                    )))){
+                    //Inform moderators:
+                    $this->READ_model->ln_create(array(
+                        'ln_content' => 'Blogger requesting feature review',
+                        'ln_type_player_id' => 7504, //Trainer Review Required
+                        'ln_creator_player_id' => $session_en['en_id'],
+                        'ln_child_blog_id' => $_POST['in_id'],
+                    ));
+                }
+            }
         }
 
 
