@@ -1535,7 +1535,6 @@ function echo_in_blog($in)
 
     //Footnote
     $ui .= '<div class="montserrat blog-info doupper">';
-    $ui .= '<span class="icon-block">&nbsp;</span>';
 
     //Now do measurements:
     $metadata = unserialize($in['in_metadata']);
