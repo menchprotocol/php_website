@@ -95,6 +95,7 @@
 
     <?php
     //Go through all categories and see which ones have published courses:
+    $listed_in_ids = array();
     foreach($this->config->item('en_all_10869') /* Course Categories */ as $en_id => $m) {
 
         //Count total published courses here:
@@ -110,13 +111,23 @@
         }
 
         //Show featured blogs in this category:
-        echo '<div class="read-topic"><span class="icon-block-sm">'.$m['m_icon'].'</span>'.$m['m_name'].'</div>';
-        echo '<div class="list-group">';
+        $topic_in_count = 0;
+        $featured_ui = '';
         foreach($published_ins as $published_in){
-            echo echo_in_read($published_in);
+            if(in_array($published_in['in_id'], $listed_in_ids)){
+                break;
+            }
+            array_push($listed_in_ids, $published_in['in_id']);
+            $featured_ui .= echo_in_read($published_in);
+            $topic_in_count++;
         }
-        echo '</div>';
 
+        if($topic_in_count > 0){
+            echo '<div class="read-topic"><span class="icon-block-sm">'.$m['m_icon'].'</span>'.$m['m_name'].'</div>';
+            echo '<div class="list-group">';
+            echo $featured_ui;
+            echo '</div>';
+        }
     }
 
     ?>
