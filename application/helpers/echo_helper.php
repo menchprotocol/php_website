@@ -1525,15 +1525,12 @@ function echo_in_blog($in)
 
     //See if user is logged-in:
     $CI =& get_instance();
+    $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
 
     $ui = '<a href="/blog/'.$in['in_id'] . '" class="list-group-item itemblog">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
-    if(!in_array($in['in_status_player_id'], $CI->config->item('en_ids_7355') /* Blog Statuses Public */)){
-        //Show status:
-        $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
-        $ui .= '<span class="icon-block-sm">'.$en_all_4737[$in['in_status_player_id']]['m_icon'].'</span>';
-    }
+    $ui .= '<span class="icon-block-sm">'.$en_all_4737[$in['in_status_player_id']]['m_icon'].'</span>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false).'</b>';
 
     if(in_array($in['in_status_player_id'], $CI->config->item('en_ids_12138') /* Blog Statuses Featured */)){
