@@ -71,7 +71,7 @@ echo ' <a class="btn btn-read inline-block" href="/read/next"  style="margin: 20
 if($has_multiple_blogs){
 
     //Give option to delete all:
-    echo '<div class="pull-right clear-reading-list" style="padding:25px 0 0;"><a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="montserrat doupper dolight"><span class="icon-block"><i class="fal fa-trash-alt"></i></span></a></div>';
+    echo '<div class="pull-right clear-reading-list" style="padding:25px 0 0;"><a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="montserrat doupper dolight"><span class="icon-block-lg"><i class="far fa-trash-alt"></i></span></a></div>';
 
     $timestamp = time();
 
