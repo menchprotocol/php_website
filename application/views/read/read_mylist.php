@@ -45,17 +45,17 @@ foreach ($user_blogs as $priority => $ln) {
 
 
 
-    $ui .= '<div class="note-edit edit-off"><span class="show-on-hover">';
+    echo '<div class="note-edit edit-off"><span class="show-on-hover">';
 
     //Sort:
     if($has_multiple_blogs){
-        $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort"></i></span>';
+        echo '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort"></i></span>';
     }
 
     //Remove:
-    $ui .= '<span title="Remove from list" data-toggle="tooltip" data-placement="left"><span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
+    echo '<span title="Remove from list" data-toggle="tooltip" data-placement="left"><span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
 
-    $ui .= '</span></div>';
+    echo '</span></div>';
 
 
     echo '</a>';
