@@ -48,20 +48,23 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //Blog Status:
             echo '<div class="inline-block">'.echo_in_dropdown(4737, $in['in_status_player_id'], 'btn-blog', $is_author && $is_active).'</div>';
 
-            //Blog Featured Icons:
-            $featured_topics = $this->READ_model->ln_fetch(array(
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_player_id' => 4601, //BLOG KEYWORDS
-                'ln_parent_player_id IN (' . join(',', featured_topic_ids()) . ')' => null,
-                'ln_child_blog_id' => $in['in_id'],
-            ), array('en_parent'), 0);
-            if(count($featured_topics) > 0){
-                foreach($featured_topics as $topic){
-                    echo '<span class="icon-block" data-toggle="tooltip" title="FEATURED IN '.$topic['en_name'].'" data-placement="bottom">'.$topic['en_icon'].'</span>';
+            if(in_array($in['in_status_player_id'], $this->config->item('en_ids_12138') /* Blog Statuses Featured */)){
+                //Blog Featured Icons:
+                $featured_topics = $this->READ_model->ln_fetch(array(
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_player_id' => 4601, //BLOG KEYWORDS
+                    'ln_parent_player_id IN (' . join(',', featured_topic_ids()) . ')' => null,
+                    'ln_child_blog_id' => $in['in_id'],
+                ), array('en_parent'), 0);
+                if(count($featured_topics) > 0){
+                    foreach($featured_topics as $topic){
+                        echo '<span class="icon-block" data-toggle="tooltip" title="FEATURED IN '.$topic['en_name'].'" data-placement="bottom">'.$topic['en_icon'].'</span>';
+                    }
+                } else {
+                    echo '<span data-toggle="tooltip" title="FEATURE REVIEW PENDING: MENCH Editors have not yet reviewed this blog" data-placement="top" class="icon-block"><i class="far fa-spinner fa-spin" aria-hidden="true"></i></span>';
                 }
-            } else {
-                echo '<span data-toggle="tooltip" title="FEATURE REVIEW PENDING: MENCH Editors have not yet reviewed this blog" data-placement="top" class="icon-block"><i class="far fa-spinner fa-spin" aria-hidden="true"></i></span>';
             }
+
 
 
             //Preview option:
