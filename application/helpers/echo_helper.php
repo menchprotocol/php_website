@@ -1538,8 +1538,8 @@ function echo_in_blog($in)
 
     if(in_array($in['in_status_player_id'], $CI->config->item('en_ids_12138') /* Blog Statuses Featured */)){
         //Featured, check verification status:
-        $featured_topics = $this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        $featured_topics = $CI->READ_model->ln_fetch(array(
+            'ln_status_player_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_player_id' => 4601, //BLOG KEYWORDS
             'ln_parent_player_id IN (' . join(',', featured_topic_ids()) . ')' => null,
             'ln_child_blog_id' => $in['in_id'],
