@@ -307,23 +307,18 @@ class READ_model extends CI_Model
             $sub_emails = array();
             $sub_en_ids = array();
             foreach(explode(',', one_two_explode('&var_en_subscriber_ids=','', $en_all_5967[$insert_columns['ln_type_player_id']]['m_desc'])) as $subscriber_en_id){
-
-                //Do not email the trainer themselves, as already they know about their own engagement:
-                if($insert_columns['ln_type_player_id']==4246 /* Always report bugs */ || $subscriber_en_id != $insert_columns['ln_creator_player_id']){
-
-                    //Try fetching subscribers email:
-                    foreach($this->READ_model->ln_fetch(array(
-                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
-                        'ln_type_player_id' => 4255, //Linked Players Text (Email is text)
-                        'ln_parent_player_id' => 3288, //Mench Email
-                        'ln_child_player_id' => $subscriber_en_id,
-                    ), array('en_child')) as $en_email){
-                        if(filter_var($en_email['ln_content'], FILTER_VALIDATE_EMAIL)){
-                            //All good, add to list:
-                            array_push($sub_en_ids , $en_email['en_id']);
-                            array_push($sub_emails , $en_email['ln_content']);
-                        }
+                //Try fetching subscribers email:
+                foreach($this->READ_model->ln_fetch(array(
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+                    'ln_type_player_id' => 4255, //Linked Players Text (Email is text)
+                    'ln_parent_player_id' => 3288, //Mench Email
+                    'ln_child_player_id' => $subscriber_en_id,
+                ), array('en_child')) as $en_email){
+                    if(filter_var($en_email['ln_content'], FILTER_VALIDATE_EMAIL)){
+                        //All good, add to list:
+                        array_push($sub_en_ids , $en_email['en_id']);
+                        array_push($sub_emails , $en_email['ln_content']);
                     }
                 }
             }
