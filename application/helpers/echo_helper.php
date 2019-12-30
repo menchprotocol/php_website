@@ -1550,7 +1550,7 @@ function echo_in_blog($in)
             $ui .= '</div>';
         } else {
             //Inform that it's not yet featyred
-            $ui .= '<div class="montserrat blog-info doupper"><span data-toggle="tooltip" title="MENCH Editors have not yet reviewed your blog" data-placement="top"><i class="far fa-spinner fa-spin" aria-hidden="true"></i> FEATURE REVIEW PENDING</span></div>';
+            $ui .= '<div class="montserrat blog-info doupper"><span data-toggle="tooltip" title="MENCH Editors have not yet reviewed this blog" data-placement="top"><i class="far fa-spinner fa-spin" aria-hidden="true"></i> FEATURE REVIEW PENDING</span></div>';
         }
     }
 
