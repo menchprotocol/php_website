@@ -1533,6 +1533,17 @@ function echo_in_blog($in)
     $ui .= '<span class="icon-block">'.$en_all_4737[$in['in_status_player_id']]['m_icon'].'</span>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false).'</b>';
 
+    //Footnote
+    $ui .= '<div class="montserrat blog-info doupper">';
+
+    //Now do measurements:
+    $metadata = unserialize($in['in_metadata']);
+    $has_time_estimate = ( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0 && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0);
+
+    if($has_time_estimate){
+        $ui .= echo_time_range($in, true).' READ';
+    }
+
     if(in_array($in['in_status_player_id'], $CI->config->item('en_ids_12138') /* Blog Statuses Featured */)){
         //Featured, check verification status:
         $featured_topics = $CI->READ_model->ln_fetch(array(
@@ -1543,14 +1554,17 @@ function echo_in_blog($in)
         ), array('en_parent'), 0);
         if(count($featured_topics) > 0){
             //It has been featured, list topics:
-            $ui .= '<div class="montserrat blog-info doupper">FEATURED IN';
+            if($has_time_estimate){
+                $ui .= ' & ';
+            }
+            $ui .= 'FEATURED IN';
             foreach($featured_topics as $topic){
                 $ui .= '<span class="icon-block-sm">'.$topic['en_icon'].'</span>'.$topic['en_name'];
             }
             $ui .= '</div>';
         } else {
             //Inform that it's not yet featyred
-            $ui .= '<div class="montserrat blog-info doupper"><span data-toggle="tooltip" title="MENCH Editors have not yet reviewed this blog" data-placement="top"><i class="far fa-spinner fa-spin" aria-hidden="true"></i> FEATURE REVIEW PENDING</span></div>';
+            $ui .= '<div class="montserrat blog-info doupper"><span data-toggle="tooltip" title="MENCH Editors have not yet reviewed this blog" data-placement="top">FEATURE REVIEW PENDING <i class="far fa-spinner fa-spin" aria-hidden="true"></i></span></div>';
         }
     }
 
