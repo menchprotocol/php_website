@@ -16,7 +16,7 @@ foreach ($user_blogs as $priority => $ln) {
     //Display row:
     echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread '.( $has_multiple_blogs ? 'actionplan_sort' : '').'">';
 
-    echo echo_in_thumbnail($ln['in_id'], true);
+    echo '<span style="padding-right: 13px;">'.echo_in_thumbnail($ln['in_id'], true).'</span>';
 
     echo '<b class="actionplan-title montserrat montserrat blog-url in-title-'.$ln['in_id'].'">' . $ln['in_title'] . '</b>';
 
