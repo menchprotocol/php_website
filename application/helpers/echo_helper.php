@@ -246,11 +246,11 @@ function echo_in_note($ln)
 
         //Sort:
         if(in_array(4603, $en_all_4485[$ln['ln_type_player_id']]['m_parents'])){
-            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_player_id']]['m_parents']) ? 'blog_note_sorting' : '' ).'"></i></span>';
+            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_player_id']]['m_parents']) ? 'blog_note_sorting' : '' ).'"></i></span>';
         }
 
         //Modify:
-        $ui .= '<span title="Modify Message" data-toggle="tooltip" data-placement="top"><a href="javascript:in_note_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
+        $ui .= '<span title="Modify Message" data-toggle="tooltip" data-placement="left"><a href="javascript:in_note_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
 
     $ui .= '</span></div>';
 
@@ -1576,7 +1576,7 @@ function echo_in_blog($in)
 }
 
 
-function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_class = null, $footnote_class = null, $show_icon = false)
+function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_class = null, $show_icon = false)
 {
 
     //See if user is logged-in:
@@ -1586,30 +1586,33 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
-    if($footnotes){
 
-        $ui .= '<div class="montserrat blog-info doupper '.$footnote_class.'">'.$footnotes.'</div>';
 
-    } else {
+    //Now do measurements:
+    $ui .= '<div class="montserrat blog-info doupper">';
 
-        //Now do measurements:
-        $metadata = unserialize($in['in_metadata']);
-        if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
+    $metadata = unserialize($in['in_metadata']);
+    if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
 
-            //It does have some children, let's show more details about it:
-            $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+        //It does have some children, let's show more details about it:
+        $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
-            //Fetch primary author:
-            $authors = $CI->READ_model->ln_fetch(array(
-                'ln_type_player_id' => 4250,
-                'ln_child_blog_id' => $in['in_id'],
-            ), array('en_creator'), 1);
+        //Fetch primary author:
+        $authors = $CI->READ_model->ln_fetch(array(
+            'ln_type_player_id' => 4250,
+            'ln_child_blog_id' => $in['in_id'],
+        ), array('en_creator'), 1);
 
-            $ui .= '<div class="montserrat blog-info doupper">'.( $has_time_estimate ? echo_time_range($in, true).' READ ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']).'</div>';
-
-        }
+        $ui .= ( $has_time_estimate ? echo_time_range($in, true).' READ ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']);
 
     }
+
+    if($footnotes){
+        $ui .= ' '.$footnotes;
+    }
+
+    $ui .= '</div>';
+
 
 
     $ui .= '</td>';
@@ -2207,11 +2210,11 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
         //Sort:
         if(!$is_parent){
-            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort"></i></span>';
+            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort"></i></span>';
         }
 
         //Unlink:
-        $ui .= '<span title="Unlink blog" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink"></i></a></span>';
+        $ui .= '<span title="Unlink blog" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink"></i></a></span>';
 
         $ui .= '</span></div>';
 
@@ -2304,7 +2307,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
             $completion_rate = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $child_in);
             $is_next = ($completion_rate['completion_percentage']<100 && !$found_incomplete);
             $is_upcoming = ($completion_rate['completion_percentage']==0 && $found_incomplete);
-            $footnotes = ( $is_next ? '[UP NEXT]' : ( $completion_rate['completion_percentage'] > 0 ? '['.$completion_rate['completion_percentage'].'% COMPLETED]' : '' ));
+            $footnotes = ( $is_next ? 'UP NEXT' : ( $completion_rate['completion_percentage'] > 0 ? $completion_rate['completion_percentage'].'% DONE' : '' ));
 
             if($push_message){
 
@@ -2328,7 +2331,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
 
             } else {
 
-                echo echo_in_read($child_in, $footnotes, $common_prefix, ( !$is_next ? 'hidden is_upcoming' : '' ), ( $is_next ? '' : 'hidden is_upcoming' ), true);
+                echo echo_in_read($child_in, $footnotes, $common_prefix, ( !$is_next ? 'hidden is_upcoming' : '' ), true);
 
             }
 
