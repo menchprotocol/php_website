@@ -56,17 +56,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             } elseif($acc_en_id==3286 /* Password */){
 
-                $user_passwords = $this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_player_id' => 4255, //Text
-                    'ln_parent_player_id' => 3286, //Password
-                    'ln_child_player_id' => $session_en['en_id'], //For this user
-                ));
-
                 echo '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border" placeholder="Set new password..." /></span>
                         <a href="javascript:void(0)" onclick="myaccount_update_password()" class="btn btn-play">Save</a>
-                        <span class="saving-account save_password"></span>
-                        <p>Note: '. ( count($user_passwords) > 0 ? 'Password updated '.echo_time_difference(strtotime($user_passwords[0]['ln_timestamp'])).' ago.' : 'You have not yet set a password.') .'</p>';
+                        <span class="saving-account save_password"></span>';
 
             } elseif($acc_en_id==4783 /* Phone */){
 
