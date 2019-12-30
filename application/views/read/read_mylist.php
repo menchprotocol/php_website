@@ -65,6 +65,7 @@ echo '</div>';
 
 //Give option to add
 echo ' <a class="btn btn-read inline-block" href="/"  style="margin: 20px 0;"><i class="fas fa-plus"></i> READ</a>';
+echo '<span class="'.superpower_active(10964).'"> <a class="btn btn-read inline-block" href="/read/history"  style="margin: 20px 0;"><i class="fas fa-atlas"></i> HISTORY</a></span>';
 echo ' <a class="btn btn-read inline-block" href="/read/next"  style="margin: 20px 0;">NEXT <i class="fas fa-angle-right"></i></a>';
 
 
