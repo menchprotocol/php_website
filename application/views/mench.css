@@ -586,11 +586,6 @@ textarea.note-textarea{
     margin-left:2px;
 }
 
-.three-menus .mn_name{
-    margin-left:0;
-    display: inline-block;
-}
-
 .three-menus a{
     padding:8px 0 6px;
     display: block;
@@ -971,9 +966,6 @@ label {
         margin-top: 68px;
     }
     h2{ margin-left: 2px; }
-    .three-menus .mn_name{
-        min-width: 60px;
-    }
     .icon-block{ min-width:26px; }
     .mini-hidden{
         display: none;
