@@ -1531,7 +1531,7 @@ function echo_in_blog($in)
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false).'</b>';
-    $ui .= '<span class="icon-block">'.$en_all_4737[$in['in_status_player_id']]['m_icon'].'</span>';
+    $ui .= '<span class="icon-block" data-toggle="tooltip" title="'.$en_all_4737[$in['in_status_player_id']]['m_name'].': '.$en_all_4737[$in['in_status_player_id']]['m_desc'].'" data-placement="top">'.$en_all_4737[$in['in_status_player_id']]['m_icon'].'</span>';
 
     //Footnote
     $ui .= '<div class="montserrat blog-info doupper">';
