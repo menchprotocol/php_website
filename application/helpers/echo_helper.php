@@ -1552,7 +1552,7 @@ function echo_in_blog($in)
         ), array('en_parent'), 0);
         if(count($featured_topics) > 0){
             //It has been featured, list topics:
-            $ui .= 'FEATURED IN';
+            $ui .= 'IN';
             foreach($featured_topics as $topic){
                 $ui .= '<span class="icon-block-sm">'.$topic['en_icon'].'</span>'.$topic['en_name'];
             }
