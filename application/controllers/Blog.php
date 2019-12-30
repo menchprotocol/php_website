@@ -1074,7 +1074,7 @@ class Blog extends CI_Controller {
                 'ln_content' => $msg_validation['input_message'],
                 'ln_parent_player_id' => $msg_validation['ln_parent_player_id'],
                 'ln_parent_blog_id' => $msg_validation['ln_parent_blog_id'],
-            ), $session_en['en_id'], 10679 /* Blog Notes Iterated Content */, word_change_calculator($messages[0]['ln_content'], $msg_validation['input_message']));
+            ), $session_en['en_id'], 10679 /* Blog Notes Iterated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
 
         }
 

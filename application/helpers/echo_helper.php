@@ -617,11 +617,11 @@ function echo_ln($ln, $is_inner = false)
 
 
     //Link coins
-    $direction = filter_cache_group($ln['ln_type_player_id'], 10591);
-    $ui .= '<span class="read-micro-data"><span data-toggle="tooltip" data-placement="top" title="TRANSACTION COINS AWARDED" style="min-width:30px; display: inline-block;">'.$direction['m_icon'].'</i> '. number_format(abs($ln['ln_coins']), (fmod($ln['ln_coins'],1)==0 ? 0 : 6)) .' COIN'.strtoupper(echo__s($ln['ln_coins'])).'</span></span> &nbsp;';
+    if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_12141'))){
+        $direction = filter_cache_group($ln['ln_type_player_id'], 10591);
+        $ui .= '<span class="read-micro-data"><span style="min-width:30px; display: inline-block;">'.$direction['m_icon'].'</i> 1 COIN</span></span> &nbsp;';
+    }
 
-    //Link words
-    $ui .= '<span class="read-micro-data"><span data-toggle="tooltip" data-placement="top" title="TRANSACTION WORDS READ" style="min-width:30px; display: inline-block;"><i class="fas fa-file-word '.( $ln['ln_words'] > 0 ? 'yellow' : ( $ln['ln_words'] == 0 ? 'blue' : 'ispink' ) ).'"></i> '. number_format(abs($ln['ln_words']), 2) .' WORD'.strtoupper(echo__s($ln['ln_words'])).'</span></span> &nbsp;';
 
 
     if($ln['ln_order'] > 0){

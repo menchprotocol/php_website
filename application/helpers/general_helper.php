@@ -428,110 +428,7 @@ function config_var($config_en_id){
 
 
 
-function ln_type_direction_rate($ln){
-
-    $CI =& get_instance();
-
-    if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10590'))){
-        return -1;
-    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10589'))){
-        return 1;
-    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_12145'))){
-        return 0;
-    } else {
-        //should not happen:
-        return 0;
-    }
-}
-
-function ln_type_word_rate($ln){
-
-    $CI =& get_instance();
-
-    //Determine direction:
-    $direction_rate = ln_type_direction_rate($ln);
-
-    if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10596'))){
-
-        //Decimal:
-        return $direction_rate * 0.01;
-
-    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10539'))){
-
-        //Word:
-        return $direction_rate * 1.00;
-
-    } else {
-
-        //Word OR Statement + Connection:
-        $link_words = 0;
-
-        //Consider each object link as a word:
-        foreach (array('ln_child_blog_id', 'ln_parent_blog_id', 'ln_child_player_id', 'ln_parent_player_id') as $dz) {
-            if (isset($ln[$dz]) && intval($ln[$dz]) > 0) {
-                $link_words++;
-            }
-        }
-
-        //Is it a statement that has content??
-        if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10593') /* Statement */) && isset($ln['ln_content']) && strlen($ln['ln_content']) > 0){
-
-            //Let's calculate the number of words in this statement based on it's content:
-            if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_10627') /* Attachments */)){
-
-                $file_size = curl_get_file_size($ln['ln_content']);
-                if($file_size > 0){
-                    //Convert file size to words:
-                    $link_words =+ number_format( $file_size / config_var(11069), 2 );
-                } else {
-                    //File size could not be determined, so let's just add a default:
-                    $link_words += number_format( config_var(11070), 2);
-                }
-
-            } else {
-                $link_words += substr_count(str_replace('  ',' ', strip_tags($ln['ln_content'])), ' ');
-            }
-
-        }
-
-        if($link_words < 1){
-            //Must be at-least one:
-            $link_words = 1;
-        }
-
-        return ($direction_rate * $link_words);
-
-    }
-}
-
-
-function ln_type_coin_rate($ln){
-
-    $CI =& get_instance();
-
-    //Determine direction:
-    $direction_rate = ln_type_direction_rate($ln);
-
-    if(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_12142'))){
-
-        //Micro:
-        return $direction_rate * 0.000001;
-
-    } elseif(in_array($ln['ln_type_player_id'], $CI->config->item('en_ids_12141'))){
-
-        //Full:
-        return $direction_rate * 1.00;
-
-    } else {
-
-        //Should not happen:
-        return 0;
-
-    }
-}
-
-
-function word_change_calculator($before_string, $after_string){
+function update_description($before_string, $after_string){
 
     //See whats added, what's removed:
     $before_words = explode(' ', $before_string);
@@ -633,6 +530,16 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
     }
 }
 
+function coin_types(){
+    //Returns the transaction types that issue coins grouped by object type
+    $CI =& get_instance();
+    return array(
+        'play' => array_intersect($CI->config->item('en_ids_12145'), $CI->config->item('en_ids_12141')),
+        'read' => array_intersect($CI->config->item('en_ids_10590'), $CI->config->item('en_ids_12141')),
+        'blog' => array_intersect($CI->config->item('en_ids_10589'), $CI->config->item('en_ids_12141')),
+    );
+}
+
 function in_is_unlockable($in){
     $CI =& get_instance();
     return in_array($in['in_status_player_id'], $CI->config->item('en_ids_7355') /* Blog Statuses Public */);
@@ -689,14 +596,6 @@ function extract_icon_color($en_icon){
     } else {
         return '';
     }
-}
-
-function unique_players(){
-    //COUNT PLAYERS:
-    $CI =& get_instance();
-    $q = $CI->db->query('SELECT COUNT(*) FROM (SELECT DISTINCT ln_creator_player_id FROM table_read) AS temp;');
-    $engaged_players = $q->result_array();
-    return $engaged_players[0]['count'];
 }
 
 function current_mench(){

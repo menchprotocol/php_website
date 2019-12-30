@@ -347,7 +347,7 @@ echo '</div></td>';
             //Fetch details for this user:
             $all_link_count = 0;
             $select_ui = '';
-            foreach ($this->READ_model->ln_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_player_id) as total_count, SUM(ABS(ln_words)) as total_words, SUM(ABS(ln_coins)) as total_coins, en_name, ln_type_player_id', 'ln_type_player_id, en_name') as $ln) {
+            foreach ($this->READ_model->ln_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_player_id) as total_count, en_name, ln_type_player_id', 'ln_type_player_id, en_name') as $ln) {
                 //Echo drop down:
                 $select_ui .= '<option value="' . $ln['ln_type_player_id'] . '" ' . ((isset($_GET['ln_type_player_id']) && $_GET['ln_type_player_id'] == $ln['ln_type_player_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . number_format($ln['total_count'], 0) . ')</option>';
                 $all_link_count += $ln['total_count'];

@@ -210,7 +210,7 @@ class PLAY_model extends CI_Model
                 if($key=='en_name') {
 
                     $ln_type_player_id = 10646; //Player Iterated Name
-                    $ln_content = word_change_calculator($before_data[0][$key], $value);
+                    $ln_content = update_description($before_data[0][$key], $value);
 
                 } elseif($key=='en_status_player_id') {
 

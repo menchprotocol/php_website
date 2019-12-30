@@ -53,7 +53,7 @@ class READ_model extends CI_Model
 
                     //Since it's a statement we want to determine the change in content:
                     if($before_data[0]['ln_content']!=$update_columns['ln_content']){
-                        $ln_content .= word_change_calculator($before_data[0]['ln_content'], $update_columns['ln_content']);
+                        $ln_content .= update_description($before_data[0]['ln_content'], $update_columns['ln_content']);
                     }
 
                 } else {
@@ -209,14 +209,6 @@ class READ_model extends CI_Model
             return false;
         }
 
-        //Unset un-allowed columns to be manually added:
-        if (isset($insert_columns['ln_words'])) {
-            unset($insert_columns['ln_words']);
-        }
-        if (isset($insert_columns['ln_coins'])) {
-            unset($insert_columns['ln_coins']);
-        }
-
         //Clean metadata is provided:
         if (isset($insert_columns['ln_metadata']) && is_array($insert_columns['ln_metadata'])) {
             $insert_columns['ln_metadata'] = serialize($insert_columns['ln_metadata']);
@@ -248,11 +240,6 @@ class READ_model extends CI_Model
                 $insert_columns[$dz] = 0;
             }
         }
-
-
-        //Determine word weight
-        $insert_columns['ln_words'] = ln_type_word_rate($insert_columns);
-        $insert_columns['ln_coins'] = ln_type_coin_rate($insert_columns);
 
         //Lets log:
         $this->db->insert('table_read', $insert_columns);

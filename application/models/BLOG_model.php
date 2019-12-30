@@ -24,7 +24,7 @@ class BLOG_model extends CI_Model
         }
 
         if(!isset($insert_columns['in_read_time']) || $insert_columns['in_read_time'] < 0){
-            $insert_columns['in_read_time'] = 0;
+            $insert_columns['in_read_time'] = config_var(12176);
         }
 
         //Lets now add:
@@ -149,7 +149,7 @@ class BLOG_model extends CI_Model
                 if($key=='in_title') {
 
                     $ln_type_player_id = 10644; //Blog Iterated Outcome
-                    $ln_content = word_change_calculator($before_data[0][$key], $value);
+                    $ln_content = update_description($before_data[0][$key], $value);
 
                 } elseif($key=='in_status_player_id'){
 
