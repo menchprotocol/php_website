@@ -39,7 +39,7 @@
         } else {
 
             //No bookmarks yet:
-            echo '<div class="alert alert-info">No blogs created yet</div>';
+            echo '<div class="alert alert-warning">No blogs created yet</div>';
 
         }
 
