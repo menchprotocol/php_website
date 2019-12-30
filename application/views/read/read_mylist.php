@@ -16,7 +16,7 @@ foreach ($user_blogs as $priority => $ln) {
     //Display row:
     echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread '.( $has_multiple_blogs ? 'actionplan_sort' : '').'">';
 
-    echo '<span style="padding-right: 13px;">'.echo_in_thumbnail($ln['in_id'], true).'</span>';
+    echo echo_in_thumbnail($ln['in_id'], true, 'margin-right-18');
 
     echo '<b class="actionplan-title montserrat montserrat blog-url in-title-'.$ln['in_id'].'">' . $ln['in_title'] . '</b>';
 
@@ -39,7 +39,7 @@ foreach ($user_blogs as $priority => $ln) {
 
     }
 
-    echo ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read" class="montserrat blog-info doupper">'.$completion_rate['completion_percentage'].'% DONE</span>';
+    echo ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read">'.$completion_rate['completion_percentage'].'% DONE</span>';
 
     echo '</div>';
 
