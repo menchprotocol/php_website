@@ -48,7 +48,17 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //Blog Status:
             echo '<div class="inline-block">'.echo_in_dropdown(4737, $in['in_status_player_id'], 'btn-blog', $is_author && $is_active).'</div>';
 
-            //Give preview option:
+            //Blog Featured Icons:
+            foreach($this->READ_model->ln_fetch(array(
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_player_id' => 4601, //BLOG KEYWORDS
+                'ln_parent_player_id IN (' . join(',', featured_topic_ids()) . ')' => null,
+                'ln_child_blog_id' => $in['in_id'],
+            ), array('en_parent'), 0) as $topic){
+                $ui .= ' <span class="icon-block" data-toggle="tooltip" title="FEATURED IN '.$topic['en_name'].'" data-placement="bottom">'.$topic['en_icon'].'</span>';
+            }
+
+            //Preview option:
             echo '<div class="inline-block pull-right"><a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fas fa-angle-right"></i></a></div>';
 
         echo '</div>';

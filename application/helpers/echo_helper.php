@@ -1535,6 +1535,28 @@ function echo_in_blog($in)
         $ui .= '<span class="icon-block-sm">'.$en_all_4737[$in['in_status_player_id']]['m_icon'].'</span>';
     }
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false).'</b>';
+
+    if(in_array($in['in_status_player_id'], $CI->config->item('en_ids_12138') /* Blog Statuses Featured */)){
+        //Featured, check verification status:
+        $featured_topics = $this->READ_model->ln_fetch(array(
+            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_player_id' => 4601, //BLOG KEYWORDS
+            'ln_parent_player_id IN (' . join(',', featured_topic_ids()) . ')' => null,
+            'ln_child_blog_id' => $in['in_id'],
+        ), array('en_parent'), 0);
+        if(count($featured_topics) > 0){
+            //It has been featured, list topics:
+            $ui .= '<div class="montserrat blog-info doupper">FEATURED IN';
+            foreach($featured_topics as $topic){
+                $ui .= ' <span class="icon-block">'.$topic['en_icon'].'</span>'.$topic['en_name'];
+            }
+            $ui .= '</div>';
+        } else {
+            //Inform that it's not yet featyred
+            $ui .= '<div class="montserrat blog-info doupper" data-toggle="tooltip" title="MENCH Editors have not yet reviewed your blog" data-placement="top"><i class="far fa-spinner fa-spin" aria-hidden="true"></i> FEATURE REVIEW PENDING</div>';
+        }
+    }
+
     $ui .= '</td>';
 
     //Search for Blog Image:
