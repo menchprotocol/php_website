@@ -49,7 +49,7 @@ foreach ($user_blogs as $priority => $ln) {
 
     //Sort:
     if($has_multiple_blogs){
-        echo '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort"></i></span>';
+        echo '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort" style="margin-bottom:7px;"></i></span>';
     }
 
     //Remove:
