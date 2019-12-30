@@ -1548,7 +1548,7 @@ function echo_in_blog($in)
             //It has been featured, list topics:
             $ui .= '<div class="montserrat blog-info doupper">FEATURED IN';
             foreach($featured_topics as $topic){
-                $ui .= ' <span class="icon-block">'.$topic['en_icon'].'</span>'.$topic['en_name'];
+                $ui .= '<span class="icon-block-sm">'.$topic['en_icon'].'</span>'.$topic['en_name'];
             }
             $ui .= '</div>';
         } else {
