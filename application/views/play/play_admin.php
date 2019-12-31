@@ -7,9 +7,10 @@ $en_all_4737 = $this->config->item('en_all_4737'); // Blog Statuses
 $en_all_6177 = $this->config->item('en_all_6177'); //Player Statuses
 
 $moderation_tools = array(
-    '/play/play_admin/link_coins_words_stats' => 'Read Coin/Word Stats',
+    '/play/play_admin/link_coins_words_stats' => 'Coin Stats',
     '/play/play_admin/in_replace_outcomes' => 'Blog Search/Replace Titles',
     '/play/play_admin/in_invalid_outcomes' => 'Blog Invalid Titles',
+    '/play/play_admin/in_crossovers' => 'Blog Crossover Parent/Children',
     '/play/play_admin/actionplan_debugger' => 'My 🔴 READING LIST Debugger',
     '/play/play_admin/en_icon_search' => 'Player Icon Search',
     '/play/play_admin/moderate_blog_notes' => 'Moderate Blog Notes',
@@ -388,6 +389,26 @@ if(!$action) {
     foreach ($user_blogs as $priority => $ln) {
         echo '<div>'.($priority+1).') <a href="/read/debug/' . $ln['in_id'] . '">' . echo_in_title($ln['in_title']) . '</a></div>';
     }
+
+} elseif($action=='in_crossovers') {
+
+    $active_ins = $this->BLOG_model->in_fetch(array(
+        'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+    ));
+    $found = 0;
+    foreach($active_ins as $count=>$in){
+
+        $recursive_children = $this->BLOG_model->in_recursive_child_ids($in['in_id'], false);
+        $recursive_parents = $this->BLOG_model->in_fetch_recursive_public_parents($in['in_id']);
+        $crossovers = array_intersect($recursive_children, $recursive_parents);
+        if(count($crossovers) > 0){
+            //Ooooopsi, this should not happen:
+            echo $in['in_titile'].' Has Parent/Child crossover for #'.join(' & #', $crossovers).'<hr />';
+            $found++;
+        }
+    }
+
+    echo 'Found '.$found.' Crossovers.';
 
 } elseif($action=='in_invalid_outcomes') {
 
