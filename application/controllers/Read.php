@@ -158,20 +158,20 @@ class Read extends CI_Controller
 
 
         //Email Subject
-        $subject = 'MENCH Weekly Growth Stats';
+        $subject = 'MENCH Weekly Growth Report';
 
         //Email Body
         $html_message = '<br />';
-        $html_message .= '<div>Growth stats for the <span title="'.$last_week_start.' to '.$last_week_end.'" style="border-bottom:1px dotted #CCC;">week of '.date("M jS", $last_week_start_timestamp).'</span>:</div>';
+        $html_message .= '<div>Growth for the <span title="'.$last_week_start.' to '.$last_week_end.'" style="border-bottom:1px dotted #CCC;">week of '.date("M jS", $last_week_start_timestamp).'</span>:</div>';
         $html_message .= '<br />';
 
-        $html_message .= '<div style="padding-bottom:7px;"><span style="width:75px; display: inline-block;">🔵PLAY</span><span style="width:55px; display: inline-block;">'.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'%</span>to '.number_format($play_coins_last_week[0]['total_coins'], 0).'</div>';
-        $html_message .= '<div style="padding-bottom:7px;"><span style="width:75px; display: inline-block;">🔴READ</span><span style="width:55px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</span>to '.number_format($read_coins_last_week[0]['total_coins'], 0).'</div>';
-        $html_message .= '<div style="padding-bottom:7px;"><span style="width:75px; display: inline-block;">🟡BLOG</span><span style="width:55px; display: inline-block;">'.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'%</span>to '.number_format($blog_coins_last_week[0]['total_coins'], 0).'</div>';
+        $html_message .= '<div style="padding-bottom:7px;"><span style="width:75px; display: inline-block;">🔵PLAY</span><span style="width:55px; display: inline-block;">'.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'%</span>to <span title="'.number_format($play_coins_last_week[0]['total_coins'], 0).'" style="border-bottom:1px dotted #CCC;">'.echo_number($play_coins_last_week[0]['total_coins']).'</span></div>';
+        $html_message .= '<div style="padding-bottom:7px;"><span style="width:75px; display: inline-block;">🔴READ</span><span style="width:55px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</span>to <span title="'.number_format($read_coins_last_week[0]['total_coins'], 0).'" style="border-bottom:1px dotted #CCC;">'.echo_number($read_coins_last_week[0]['total_coins']).'</span></div>';
+        $html_message .= '<div style="padding-bottom:7px;"><span style="width:75px; display: inline-block;">🟡BLOG</span><span style="width:55px; display: inline-block;">'.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'%</span>to <span title="'.number_format($blog_coins_last_week[0]['total_coins'], 0).'" style="border-bottom:1px dotted #CCC;">'.echo_number($blog_coins_last_week[0]['total_coins']).'</span></div>';
 
         $html_message .= '<br />';
         $html_message .= '<div>Cheers,</div>';
-        $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email" target="_blank">MENCH</a></div>';
+        $html_message .= '<div><a href="https://mench.com" target="_blank">MENCH</a></div>';
 
 
         $email_recipients = 0;

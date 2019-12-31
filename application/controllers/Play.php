@@ -2421,7 +2421,7 @@ fragment PostListingItemSidebar_post on Post {
         $html_message .= '<br /><br />';
         $html_message .= '<div>Cheers,</div><br />';
         $html_message .= '<div>Mench</div>';
-        $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=signup" target="_blank">mench.com</a></div>';
+        $html_message .= '<div><a href="https://mench.com" target="_blank">mench.com</a></div>';
 
         //Send Welcome Email:
         $email_log = $this->READ_model->dispatch_emails(array($_POST['input_email']), $subject, $html_message);
@@ -2514,7 +2514,7 @@ fragment PostListingItemSidebar_post on Post {
         $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
 
         $html_message .= '<br /><br />';
-        $html_message .= '<div>- <a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=resetpass" target="_blank">Mench</a></div>';
+        $html_message .= '<div>- <a href="https://mench.com" target="_blank">Mench</a></div>';
 
         //Send email:
         $this->READ_model->dispatch_emails(array($_POST['input_email']), $subject, $html_message);
