@@ -285,6 +285,36 @@ class READ_model extends CI_Model
         }
 
 
+        //Do we need to check for entity tagging after read success?
+        if(in_array($insert_columns['ln_type_player_id'] , $this->config->item('en_ids_6255')) && in_array($insert_columns['ln_status_player_id'] , $this->config->item('en_ids_7359')) && $insert_columns['ln_parent_blog_id'] > 0 && $insert_columns['ln_creator_player_id'] > 0){
+            //See if completed intent has any entity tags to be assigned:
+            foreach($this->READ_model->ln_fetch(array(
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_player_id' => 7545, //ENTITY TAGGING
+                'ln_child_blog_id' => $insert_columns['ln_parent_blog_id'],
+                'ln_parent_player_id >' => 0, //Entity to be tagged for this blog
+            )) as $ln_tag){
+
+                //Assign tag:
+                $this->READ_model->ln_create(array(
+                    'ln_type_player_id' => 4230, //Raw link
+                    'ln_creator_player_id' => $ln_tag['ln_creator_player_id'], //This child player
+                    'ln_parent_player_id' => $ln_tag['ln_parent_player_id'],
+                    'ln_child_player_id' => $insert_columns['ln_creator_player_id'],
+                ));
+
+                //Track Tag:
+                $this->READ_model->ln_create(array(
+                    'ln_type_player_id' => 12197, //Tag Player
+                    'ln_creator_player_id' => $ln_tag['ln_creator_player_id'], //This child player
+                    'ln_parent_player_id' => $ln_tag['ln_parent_player_id'],
+                    'ln_child_player_id' => $insert_columns['ln_creator_player_id'],
+                    'ln_parent_blog_id' => $insert_columns['ln_parent_blog_id'],
+                ));
+
+            }
+        }
+
 
         //See if this link type has any subscribers:
         if(in_array($insert_columns['ln_type_player_id'] , $this->config->item('en_ids_5967')) && $insert_columns['ln_type_player_id']!=5967 /* Email Sent causes endless loop */ && !is_dev_environment()){
