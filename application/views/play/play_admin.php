@@ -264,7 +264,7 @@ if(!$action) {
 
 
         $detected_ln_type = ln_detect_type($player_link['ln_content']);
-        //echo $detected_ln_type['status'].' / '.$detected_ln_type['ln_type_player_id'].' / '.$player_link['ln_type_player_id'];
+        echo $player_link['ln_id'].' / '.$detected_ln_type['status'].' / '.$detected_ln_type['ln_type_player_id'].' / '.$player_link['ln_type_player_id'].'<br />';
         if ($detected_ln_type['status']){
             if(!($detected_ln_type['ln_type_player_id'] == $player_link['ln_type_player_id'])){
                 $fixed++;
