@@ -307,6 +307,17 @@ class BLOG_model extends CI_Model
             } else {
                 $parent_in = $linked_ins[0];
                 $child_in = $ins[0];
+
+                //Prevent parent duplicate:
+                $recursive_parents = $this->BLOG_model->in_fetch_recursive_public_parents($parent_in['in_id']);
+                foreach ($recursive_parents as $grand_parent_ids) {
+                    if (in_array($child_in['in_id'], $grand_parent_ids)) {
+                        return array(
+                            'status' => 0,
+                            'message' => 'Blog already set as parent, so it cannot be added as child',
+                        );
+                    }
+                }
             }
 
 
