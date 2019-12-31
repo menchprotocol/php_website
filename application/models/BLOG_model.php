@@ -310,7 +310,7 @@ class BLOG_model extends CI_Model
                 if (in_array($parent_in['in_id'], $recursive_children)) {
                     return array(
                         'status' => 0,
-                        'message' => 'Blog already set as child, so it cannot be added as parent]',
+                        'message' => 'Blog already set as child, so it cannot be added as parent',
                     );
                 }
 

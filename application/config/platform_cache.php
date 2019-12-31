@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-30 18:39:51 PST
+//Generated 2019-12-31 06:22:01 PST
 
 //READ TYPE ISSUE COINS:
 $config['en_ids_12141'] = array(4250,4251,6157,7489,7487,4559,6144,7485,7486,6997,12117);
@@ -1720,7 +1720,7 @@ $config['en_all_6404'] = array(
     12176 => array(
         'm_icon' => '',
         'm_name' => 'BLOG DEFAULT TIME',
-        'm_desc' => '59',
+        'm_desc' => '29',
         'm_parents' => array(6404),
     ),
     12156 => array(
