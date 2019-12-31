@@ -6,7 +6,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/mench.png">
+    <link rel="icon" type="image/png" class="mench-spin" href="/mench.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= (isset($title) ? $title . ' | ' : '') ?>MENCH</title>
 
