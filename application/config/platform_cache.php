@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-31 07:07:20 PST
+//Generated 2019-12-31 07:12:20 PST
 
 //READ TYPE ISSUE COINS:
 $config['en_ids_12141'] = array(4250,4251,6157,7489,7487,4559,6144,7485,7486,6997,12117);

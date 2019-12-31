@@ -295,23 +295,29 @@ class READ_model extends CI_Model
                 'ln_parent_player_id >' => 0, //Entity to be tagged for this blog
             )) as $ln_tag){
 
-                //Assign tag:
-                $this->READ_model->ln_create(array(
-                    'ln_type_player_id' => 4230, //Raw link
-                    'ln_creator_player_id' => $ln_tag['ln_creator_player_id'], //This child player
+                //Assign tag if NOT already assigned:
+                if(!count($this->READ_model->ln_fetch(array(
+                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                     'ln_parent_player_id' => $ln_tag['ln_parent_player_id'],
                     'ln_child_player_id' => $insert_columns['ln_creator_player_id'],
-                ));
+                )))){
+                    $this->READ_model->ln_create(array(
+                        'ln_type_player_id' => 4230, //Raw link
+                        'ln_creator_player_id' => $ln_tag['ln_creator_player_id'], //This child player
+                        'ln_parent_player_id' => $ln_tag['ln_parent_player_id'],
+                        'ln_child_player_id' => $insert_columns['ln_creator_player_id'],
+                    ));
 
-                //Track Tag:
-                $this->READ_model->ln_create(array(
-                    'ln_type_player_id' => 12197, //Tag Player
-                    'ln_creator_player_id' => $ln_tag['ln_creator_player_id'], //This child player
-                    'ln_parent_player_id' => $ln_tag['ln_parent_player_id'],
-                    'ln_child_player_id' => $insert_columns['ln_creator_player_id'],
-                    'ln_parent_blog_id' => $insert_columns['ln_parent_blog_id'],
-                ));
-
+                    //Track Tag:
+                    $this->READ_model->ln_create(array(
+                        'ln_type_player_id' => 12197, //Tag Player
+                        'ln_creator_player_id' => $ln_tag['ln_creator_player_id'], //This child player
+                        'ln_parent_player_id' => $ln_tag['ln_parent_player_id'],
+                        'ln_child_player_id' => $insert_columns['ln_creator_player_id'],
+                        'ln_parent_blog_id' => $insert_columns['ln_parent_blog_id'],
+                    ));
+                }
             }
         }
 
