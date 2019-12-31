@@ -118,16 +118,18 @@
 
             //Count total published courses here:
             $published_ins = $this->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_id IN (' . join(',', $home_page_ins) . ')' => null,
                 'in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id' => 4601, //BLOG KEYWORDS
                 'ln_parent_play_id' => $en_id,
-                'ln_child_blog_id IN (' . join(',', $home_page_ins) . ')' => null,
             ), array('in_child'), 0, 0, array('in_title' => 'ASC'));
 
             if(!count($published_ins)){
                 continue;
             }
+
+            echo count($published_ins).'<hr />';
 
             //Show featured blogs in this category:
             $topic_in_count = 0;
