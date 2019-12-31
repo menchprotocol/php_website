@@ -109,6 +109,7 @@
         array_push($home_page_ins, $home_in['in_id']);
     }
 
+    echo join(',',$home_page_ins);
 
     //Go through all categories and see which ones have published courses:
     if(count($home_page_ins) > 0){
