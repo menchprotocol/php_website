@@ -109,8 +109,6 @@
         array_push($home_page_ins, $home_in['in_id']);
     }
 
-    echo join(',',$home_page_ins);
-
     //Go through all categories and see which ones have published courses:
     if(count($home_page_ins) > 0){
         $listed_in_ids = array();
@@ -128,8 +126,6 @@
             if(!count($published_ins)){
                 continue;
             }
-
-            echo count($published_ins).'<hr />';
 
             //Show featured blogs in this category:
             $topic_in_count = 0;
