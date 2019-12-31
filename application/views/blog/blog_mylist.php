@@ -51,7 +51,7 @@
         } else {
 
             //They don't have the superpower, so redirect them to what they need to read to gain it:
-            echo '<div style="margin-top: 10px;"><a href="/13008" class="btn btn-blog">START BLOGGING <i class="fas fa-angle-right"></i></a></div>';
+            echo '<div style="margin-top: 10px;"><a href="/'.config_var(10939).'" class="btn btn-blog">START BLOGGING <i class="fas fa-angle-right"></i></a></div>';
 
         }
 

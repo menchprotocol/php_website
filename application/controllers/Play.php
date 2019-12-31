@@ -1301,7 +1301,7 @@ fragment PostListingItemSidebar_post on Post {
             'ln_creator_player_id' => $session_en['en_id'],
             'ln_type_player_id' => 5007, //TOGGLE SUPERPOWER
             'ln_parent_player_id' => $superpower_en_id,
-            'ln_content' => 'SUPERPOWER TURNED '.$toggled_setting, //To be used when trainer logs in again
+            'ln_content' => 'SUPERPOWER '.$toggled_setting, //To be used when trainer logs in again
         ));
 
         //Return to JS function:
