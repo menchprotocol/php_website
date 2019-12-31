@@ -259,14 +259,12 @@ if(!$action) {
 
     $fixed = 0;
     foreach($this->READ_model->ln_fetch(array(
-        'ln_id' => 2116610,
-        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
     )) as $player_link){
 
 
         $detected_ln_type = ln_detect_type($player_link['ln_content']);
-        echo $detected_ln_type['status'].' / '.$detected_ln_type['ln_type_player_id'].' / '.$player_link['ln_type_player_id'];
+        //echo $detected_ln_type['status'].' / '.$detected_ln_type['ln_type_player_id'].' / '.$player_link['ln_type_player_id'];
         if ($detected_ln_type['status']){
             if(!($detected_ln_type['ln_type_player_id'] == $player_link['ln_type_player_id'])){
                 $fixed++;
