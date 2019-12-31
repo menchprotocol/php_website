@@ -230,7 +230,7 @@ $(document).ready(function () {
         $('#mench_search').prop("disabled", true).val('Loading...').css('background-color','#f4f5f7').css('font-size','0.8em');
 
         if (parseInt(suggestion.alg_obj_is_in)==1) {
-            window.location = "/" + suggestion.alg_obj_id;
+            window.location = "/" + ( js_assigned_superpowers_en_ids.includes(10939) ? 'blog/' : '' ) + suggestion.alg_obj_id;
         } else {
             window.location = "/play/" + suggestion.alg_obj_id;
         }
