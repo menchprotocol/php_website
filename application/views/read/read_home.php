@@ -101,10 +101,10 @@
     //Fetch all home page blogs:
     $home_page_ins = array();
     foreach($this->READ_model->ln_fetch(array(
-        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'in_status_player_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
-        'ln_type_player_id' => 4601, //BLOG KEYWORDS
-        'ln_parent_player_id' => 12198, //HOME FEATURED
+        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
+        'ln_type_play_id' => 4601, //BLOG KEYWORDS
+        'ln_parent_play_id' => 12198, //HOME FEATURED
     ), array('in_child'), 0) as $home_in){
         array_push($home_page_ins, $home_in['in_id']);
     }
@@ -117,10 +117,10 @@
 
             //Count total published courses here:
             $published_ins = $this->READ_model->ln_fetch(array(
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
-                'ln_type_player_id' => 4601, //BLOG KEYWORDS
-                'ln_parent_player_id' => $en_id,
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
+                'ln_type_play_id' => 4601, //BLOG KEYWORDS
+                'ln_parent_play_id' => $en_id,
                 'ln_child_blog_id IN (' . join(',', $home_page_ins) . ')' => null,
             ), array('in_child'), 0, 0, array('in_title' => 'ASC'));
 

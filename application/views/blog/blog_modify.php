@@ -3,7 +3,7 @@
 $en_all_6201 = $this->config->item('en_all_6201'); //Blog Table
 
 $is_author = in_is_author($in['in_id']);
-$is_active = in_array($in['in_status_player_id'], $this->config->item('en_ids_7356'));
+$is_active = in_array($in['in_status_play_id'], $this->config->item('en_ids_7356'));
 ?>
 
 <style>
@@ -46,14 +46,14 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '<div style="margin-bottom: 5px;">';
 
             //Blog Status:
-            echo '<div class="inline-block">'.echo_in_dropdown(4737, $in['in_status_player_id'], 'btn-blog', $is_author && $is_active).'</div>';
+            echo '<div class="inline-block">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-blog', $is_author && $is_active).'</div>';
 
-            if(in_array($in['in_status_player_id'], $this->config->item('en_ids_12138') /* Blog Statuses Featured */)){
+            if(in_array($in['in_status_play_id'], $this->config->item('en_ids_12138') /* Blog Statuses Featured */)){
                 //Blog Featured Icons:
                 $featured_topics = $this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_player_id' => 4601, //BLOG KEYWORDS
-                    'ln_parent_player_id IN (' . join(',', featured_topic_ids()) . ')' => null,
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id' => 4601, //BLOG KEYWORDS
+                    'ln_parent_play_id IN (' . join(',', featured_topic_ids()) . ')' => null,
                     'ln_child_blog_id' => $in['in_id'],
                 ), array('en_parent'), 0);
                 if(count($featured_topics) > 0){
@@ -96,7 +96,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } else {
 
         echo '<div class="center-right">';
-            echo '<div class="inline-block" style="margin-bottom:5px;">'.echo_in_dropdown(7585, $in['in_type_player_id'], 'btn-blog', $is_author && $is_active).'</div>';
+            echo '<div class="inline-block" style="margin-bottom:5px;">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active).'</div>';
             echo '<div class="inline-block '.superpower_active(10984).'" style="width:89px; margin:0 0 5px 5px;">'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
         echo '</div>';
 
@@ -129,9 +129,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //BLOG TREE PREVIOUS
             $fetch_11019 = $this->READ_model->ln_fetch(array(
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                 'ln_child_blog_id' => $in['in_id'],
             ), array('in_parent'), 0);
 
@@ -161,9 +161,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //BLOG TREE NEXT
             $fetch_11020 = $this->READ_model->ln_fetch(array(
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                 'ln_parent_blog_id' => $in['in_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -194,8 +194,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //READER READS & BOOKMARKS
             $item_counters = $this->READ_model->ln_fetch(array(
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
                 'ln_parent_blog_id' => $in['in_id'],
             ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -207,8 +207,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //BLOG NOTE
             $blog_notes = $this->READ_model->ln_fetch(array(
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_player_id' => $en_id2,
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_play_id' => $en_id2,
                 'ln_child_blog_id' => $in['in_id'],
             ), array(), 0, 0, array('ln_order' => 'ASC'));
 

@@ -23,10 +23,10 @@ class Blog extends CI_Controller {
 
         //Also add to bookmarks:
         $this->READ_model->ln_create(array(
-            'ln_type_player_id' => 10573, //Bookmarks
-            'ln_creator_player_id' => $session_en['en_id'],
+            'ln_type_play_id' => 10573, //Bookmarks
+            'ln_creator_play_id' => $session_en['en_id'],
             'ln_child_blog_id' => $in['new_in_id'],
-            'ln_parent_player_id' => $session_en['en_id'],
+            'ln_parent_play_id' => $session_en['en_id'],
             'ln_content' => '@'.$session_en['en_id'],
         ), true);
 
@@ -55,7 +55,7 @@ class Blog extends CI_Controller {
         if ( count($ins) < 1) {
             return redirect_message('/blog', '<div class="alert alert-danger" role="alert">BLOG #' . $in_id . ' not found</div>');
         } elseif(!isset($session_en['en_id'])){
-            if(in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7355'))){
+            if(in_array($ins[0]['in_status_play_id'], $this->config->item('en_ids_7355'))){
                 //Blog is published, so let them read:
                 return redirect_message('/'.$in_id);
             } else {
@@ -68,8 +68,8 @@ class Blog extends CI_Controller {
             $new_order = ( $this->session->userdata('player_page_count') + 1 );
             $this->session->set_userdata('player_page_count', $new_order);
             $this->READ_model->ln_create(array(
-                'ln_creator_player_id' => $session_en['en_id'],
-                'ln_type_player_id' => 4993, //Trainer Opened Blog
+                'ln_creator_play_id' => $session_en['en_id'],
+                'ln_type_play_id' => 4993, //Trainer Opened Blog
                 'ln_child_blog_id' => $in_id,
                 'ln_order' => $new_order,
             ));
@@ -134,7 +134,7 @@ class Blog extends CI_Controller {
         //Fetch/Validate blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $_POST['starting_in'],
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
         ));
         if(count($ins) != 1){
             return echo_json(array(
@@ -152,7 +152,7 @@ class Blog extends CI_Controller {
         //Return report:
         return echo_json(array(
             'status' => 1,
-            'message' => '<h3>'.$en_all_7585[$ins[0]['in_type_player_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_player_id']]['m_icon'].' '.echo_in_title($ins[0]['in_title'], false).'</h3>'.echo_in_scores_answer($_POST['starting_in'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_player_id']),
+            'message' => '<h3>'.$en_all_7585[$ins[0]['in_type_play_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_play_id']]['m_icon'].' '.echo_in_title($ins[0]['in_title'], false).'</h3>'.echo_in_scores_answer($_POST['starting_in'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_play_id']),
         ));
 
     }
@@ -164,9 +164,9 @@ class Blog extends CI_Controller {
 
         //Log up-vote:
         $this->READ_model->ln_create(array(
-            'ln_creator_player_id' => $session_en['en_id'],
-            'ln_parent_player_id' => $session_en['en_id'],
-            'ln_type_player_id' => 4983,
+            'ln_creator_play_id' => $session_en['en_id'],
+            'ln_parent_play_id' => $session_en['en_id'],
+            'ln_type_play_id' => 4983,
             'ln_content' => '@'.$session_en['en_id'],
             'ln_child_blog_id' => $in_id,
         ));
@@ -203,7 +203,7 @@ class Blog extends CI_Controller {
 
             $ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => $_POST['in_ln__id'],
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
             ));
 
             if(!count($ins)){
@@ -248,8 +248,8 @@ class Blog extends CI_Controller {
             //Fetch/Validate Link:
             $lns = $this->READ_model->ln_fetch(array(
                 'ln_id' => $_POST['in_ln__id'],
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
             ));
             $ln_metadata = unserialize($lns[0]['ln_metadata']);
 
@@ -289,8 +289,8 @@ class Blog extends CI_Controller {
             //Fetch/Validate Link:
             $lns = $this->READ_model->ln_fetch(array(
                 'ln_id' => $_POST['in_ln__id'],
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
             ));
             $ln_metadata = unserialize($lns[0]['ln_metadata']);
             $field_name = ( $_POST['cache_en_id']==4735 ? 'tr__conditional_score_min' : 'tr__conditional_score_max' );
@@ -341,9 +341,9 @@ class Blog extends CI_Controller {
 
         //Maintain a manual index as a hack for the Blog/Player tables for now:
         $manual_converter = array(
-            7585 => 'in_type_player_id',
-            4737 => 'in_status_player_id',
-            4486 => 'ln_type_player_id',
+            7585 => 'in_type_play_id',
+            4737 => 'in_status_play_id',
+            4486 => 'ln_type_play_id',
         );
 
         //Define link update types:
@@ -404,16 +404,16 @@ class Blog extends CI_Controller {
 
                 //Notify moderators of Feature request?
                 } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !count($this->READ_model->ln_fetch(array(
-                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_player_id' => 4601, //BLOG KEYWORDS
-                        'ln_parent_player_id IN (' . join(',', featured_topic_ids()) . ')' => null,
+                        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_play_id' => 4601, //BLOG KEYWORDS
+                        'ln_parent_play_id IN (' . join(',', featured_topic_ids()) . ')' => null,
                         'ln_child_blog_id' => $_POST['in_id'],
                     )))){
                     //Inform moderators:
                     $this->READ_model->ln_create(array(
                         'ln_content' => 'Blogger requesting feature review',
-                        'ln_type_player_id' => 7504, //Trainer Review Required
-                        'ln_creator_player_id' => $session_en['en_id'],
+                        'ln_type_play_id' => 7504, //Trainer Review Required
+                        'ln_creator_play_id' => $session_en['en_id'],
                         'ln_child_blog_id' => $_POST['in_id'],
                     ));
                 }
@@ -491,7 +491,7 @@ class Blog extends CI_Controller {
 
         //Remove this link:
         $this->READ_model->ln_update($_POST['ln_id'], array(
-            'ln_status_player_id' => 6173, //Link Removed
+            'ln_status_play_id' => 6173, //Link Removed
         ), $session_en['en_id'], 10686 /* Blog Link Unlinked */);
 
         return echo_json(array(
@@ -556,7 +556,7 @@ class Blog extends CI_Controller {
             //Fetch link blog to determine blog type:
             $linked_ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => intval($_POST['in_link_child_id']),
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
             ));
 
             if(count($linked_ins)==0){
@@ -567,7 +567,7 @@ class Blog extends CI_Controller {
                 ));
             }
 
-            if(!intval($_POST['is_parent']) && in_array($linked_ins[0]['in_type_player_id'], $this->config->item('en_ids_7712'))){
+            if(!intval($_POST['is_parent']) && in_array($linked_ins[0]['in_type_play_id'], $this->config->item('en_ids_7712'))){
                 $new_blog_type = 6914; //Require All
             }
         }
@@ -624,10 +624,10 @@ class Blog extends CI_Controller {
 
         //Fetch READING LIST users:
         $actionplan_users = $this->READ_model->ln_fetch(array(
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
             'ln_parent_blog_id' => $ins[0]['in_id'],
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
         ), array('en_creator'), 500);
         if(count($actionplan_users) < 1){
             return echo_json(array(
@@ -647,8 +647,8 @@ class Blog extends CI_Controller {
 
             //Count user READING LIST Progression Completed:
             $count_progression = $this->READ_model->ln_fetch(array(
-                'ln_creator_player_id' => $apu['en_id'],
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+                'ln_creator_play_id' => $apu['en_id'],
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
 
@@ -664,7 +664,7 @@ class Blog extends CI_Controller {
             $item_ui .= ( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->READ_model->dispatch_message($apu['ln_content']).'</div>' : '' );
             $item_ui .= '</td>';
 
-            $item_ui .= '<td style="text-align:left;"><a href="/read/view_json/'.$apu['ln_id'].'" target="_blank">'.echo_en_cache('en_all_6255' /* User Reads Progress */, $apu['ln_type_player_id']).'</a></td>';
+            $item_ui .= '<td style="text-align:left;"><a href="/read/view_json/'.$apu['ln_id'].'" target="_blank">'.echo_en_cache('en_all_6255' /* User Reads Progress */, $apu['ln_type_play_id']).'</a></td>';
             $item_ui .= '<td style="text-align:left;">'.echo_number($count_progression[0]['totals']).'</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
             $item_ui .= '<td style="text-align:left;">';
@@ -672,7 +672,7 @@ class Blog extends CI_Controller {
             $item_ui .= '<a href="/blog/'.$_POST['in_loaded_id'].'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
             $item_ui .= '&nbsp;<a href="/play/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="User Player"><i class="fas fa-at"></i></a>';
 
-            $item_ui .= '&nbsp;<a href="/read/history?ln_creator_player_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
+            $item_ui .= '&nbsp;<a href="/read/history?ln_creator_play_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
 
             $item_ui .= '</td>';
             $item_ui .= '</tr>';
@@ -755,8 +755,8 @@ class Blog extends CI_Controller {
                 //Fetch for the record:
                 $children_before = $this->READ_model->ln_fetch(array(
                     'ln_parent_blog_id' => intval($_POST['in_id']),
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
                 //Update them all:
@@ -769,8 +769,8 @@ class Blog extends CI_Controller {
                 //Fetch again for the record:
                 $children_after = $this->READ_model->ln_fetch(array(
                     'ln_parent_blog_id' => intval($_POST['in_id']),
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
                 //Display message:
@@ -803,7 +803,7 @@ class Blog extends CI_Controller {
                 'message' => 'Invalid Blog ID',
             ));
 
-        } elseif (!isset($_POST['focus_ln_type_player_id']) || intval($_POST['focus_ln_type_player_id']) < 1) {
+        } elseif (!isset($_POST['focus_ln_type_play_id']) || intval($_POST['focus_ln_type_play_id']) < 1) {
 
             return echo_json(array(
                 'status' => 0,
@@ -816,7 +816,7 @@ class Blog extends CI_Controller {
         //Fetch/Validate the blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
         ));
         if(count($ins)<1){
             return echo_json(array(
@@ -826,7 +826,7 @@ class Blog extends CI_Controller {
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->READ_model->dispatch_validate_message($_POST['ln_content'], $session_en, false, array(), $_POST['focus_ln_type_player_id'], $_POST['in_id']);
+        $msg_validation = $this->READ_model->dispatch_validate_message($_POST['ln_content'], $session_en, false, array(), $_POST['focus_ln_type_play_id'], $_POST['in_id']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -835,15 +835,15 @@ class Blog extends CI_Controller {
 
         //Create Message:
         $ln = $this->READ_model->ln_create(array(
-            'ln_creator_player_id' => $session_en['en_id'],
+            'ln_creator_play_id' => $session_en['en_id'],
             'ln_order' => 1 + $this->READ_model->ln_max_order(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'ln_type_player_id' => intval($_POST['focus_ln_type_player_id']),
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_type_play_id' => intval($_POST['focus_ln_type_play_id']),
                     'ln_child_blog_id' => intval($_POST['in_id']),
                 )),
             //Referencing attributes:
-            'ln_type_player_id' => intval($_POST['focus_ln_type_player_id']),
-            'ln_parent_player_id' => $msg_validation['ln_parent_player_id'],
+            'ln_type_play_id' => intval($_POST['focus_ln_type_play_id']),
+            'ln_parent_play_id' => $msg_validation['ln_parent_play_id'],
             'ln_parent_blog_id' => $msg_validation['ln_parent_blog_id'],
             'ln_child_blog_id' => intval($_POST['in_id']),
             'ln_content' => $msg_validation['input_message'],
@@ -853,7 +853,7 @@ class Blog extends CI_Controller {
         return echo_json(array(
             'status' => 1,
             'message' => echo_in_note(array_merge($ln, array(
-                'ln_child_player_id' => $session_en['en_id'],
+                'ln_child_play_id' => $session_en['en_id'],
             ))),
         ));
     }
@@ -878,7 +878,7 @@ class Blog extends CI_Controller {
                 'message' => 'Missing BLOG',
             ));
 
-        } elseif (!isset($_POST['focus_ln_type_player_id'])) {
+        } elseif (!isset($_POST['focus_ln_type_play_id'])) {
 
             return echo_json(array(
                 'status' => 0,
@@ -944,13 +944,13 @@ class Blog extends CI_Controller {
 
         //Create message:
         $ln = $this->READ_model->ln_create(array(
-            'ln_creator_player_id' => $session_en['en_id'],
-            'ln_type_player_id' => $_POST['focus_ln_type_player_id'],
-            'ln_parent_player_id' => $cdn_status['cdn_en']['en_id'],
+            'ln_creator_play_id' => $session_en['en_id'],
+            'ln_type_play_id' => $_POST['focus_ln_type_play_id'],
+            'ln_parent_play_id' => $cdn_status['cdn_en']['en_id'],
             'ln_child_blog_id' => intval($_POST['in_id']),
             'ln_content' => '@' . $cdn_status['cdn_en']['en_id'], //Just place the player reference as the entire message
             'ln_order' => 1 + $this->READ_model->ln_max_order(array(
-                    'ln_type_player_id' => $_POST['focus_ln_type_player_id'],
+                    'ln_type_play_id' => $_POST['focus_ln_type_play_id'],
                     'ln_child_blog_id' => $_POST['in_id'],
                 )),
         ));
@@ -965,7 +965,7 @@ class Blog extends CI_Controller {
         echo_json(array(
             'status' => 1,
             'message' => echo_in_note(array_merge($new_messages[0], array(
-                'ln_child_player_id' => $session_en['en_id'],
+                'ln_child_play_id' => $session_en['en_id'],
             ))),
         ));
     }
@@ -1027,7 +1027,7 @@ class Blog extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing READ ID',
             ));
-        } elseif (!isset($_POST['message_ln_status_player_id'])) {
+        } elseif (!isset($_POST['message_ln_status_play_id'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Message Status',
@@ -1058,7 +1058,7 @@ class Blog extends CI_Controller {
         //Validate Message:
         $messages = $this->READ_model->ln_fetch(array(
             'ln_id' => intval($_POST['ln_id']),
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ));
         if (count($messages) < 1) {
             return echo_json(array(
@@ -1068,7 +1068,7 @@ class Blog extends CI_Controller {
         }
 
         //Validate new message:
-        $msg_validation = $this->READ_model->dispatch_validate_message($_POST['ln_content'], $session_en, false, array(), $messages[0]['ln_type_player_id'], $_POST['in_id']);
+        $msg_validation = $this->READ_model->dispatch_validate_message($_POST['ln_content'], $session_en, false, array(), $messages[0]['ln_type_play_id'], $_POST['in_id']);
         if (!$msg_validation['status']) {
 
             //There was some sort of an error:
@@ -1079,7 +1079,7 @@ class Blog extends CI_Controller {
             //Now update the DB:
             $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                 'ln_content' => $msg_validation['input_message'],
-                'ln_parent_player_id' => $msg_validation['ln_parent_player_id'],
+                'ln_parent_play_id' => $msg_validation['ln_parent_play_id'],
                 'ln_parent_blog_id' => $msg_validation['ln_parent_blog_id'],
             ), $session_en['en_id'], 10679 /* Blog Notes Iterated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
 
@@ -1087,13 +1087,13 @@ class Blog extends CI_Controller {
 
 
         //Did the message status change?
-        if($messages[0]['ln_status_player_id'] != $_POST['message_ln_status_player_id']){
+        if($messages[0]['ln_status_play_id'] != $_POST['message_ln_status_play_id']){
 
             //Are we deleting this message?
-            if(in_array($_POST['message_ln_status_player_id'], $this->config->item('en_ids_7360') /* Link Statuses Active */)){
+            if(in_array($_POST['message_ln_status_play_id'], $this->config->item('en_ids_7360') /* Link Statuses Active */)){
 
                 //If making the link public, all referenced players must also be public...
-                if(in_array($_POST['message_ln_status_player_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */)){
+                if(in_array($_POST['message_ln_status_play_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */)){
 
                     //We're publishing, make sure potential player references are also published:
                     $string_references = extract_references($_POST['ln_content']);
@@ -1105,7 +1105,7 @@ class Blog extends CI_Controller {
                             'en_id' => $string_references['ref_players'][0],
                         ));
 
-                        if(count($ref_ens)>0 && !in_array($ref_ens[0]['en_status_player_id'], $this->config->item('en_ids_7357') /* Player Statuses Public */)){
+                        if(count($ref_ens)>0 && !in_array($ref_ens[0]['en_status_play_id'], $this->config->item('en_ids_7357') /* Player Statuses Public */)){
                             return echo_json(array(
                                 'status' => 0,
                                 'message' => 'You cannot published this message because its referenced player is not yet public',
@@ -1116,14 +1116,14 @@ class Blog extends CI_Controller {
 
                 //yes, do so and return results:
                 $affected_rows = $this->READ_model->ln_update(intval($_POST['ln_id']), array(
-                    'ln_status_player_id' => $_POST['message_ln_status_player_id'],
+                    'ln_status_play_id' => $_POST['message_ln_status_play_id'],
                 ), $session_en['en_id'], 10677 /* Blog Notes Iterated Status */);
 
             } else {
 
                 //New status is no longer active, so remove the blog note:
                 $affected_rows = $this->READ_model->ln_update(intval($_POST['ln_id']), array(
-                    'ln_status_player_id' => $_POST['message_ln_status_player_id'],
+                    'ln_status_play_id' => $_POST['message_ln_status_play_id'],
                 ), $session_en['en_id'], 10678 /* Blog Notes Unlinked */);
 
                 //Return success:
@@ -1150,7 +1150,7 @@ class Blog extends CI_Controller {
             'status' => 1,
             'remove_from_ui' => 0,
             'message' => $this->READ_model->dispatch_message($msg_validation['input_message'], $session_en, false, array(), $_POST['in_id']),
-            'message_new_status_icon' => '<span title="' . $en_all_6186[$_POST['message_ln_status_player_id']]['m_name'] . ': ' . $en_all_6186[$_POST['message_ln_status_player_id']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $en_all_6186[$_POST['message_ln_status_player_id']]['m_icon'] . '</span>', //This might have changed
+            'message_new_status_icon' => '<span title="' . $en_all_6186[$_POST['message_ln_status_play_id']]['m_name'] . ': ' . $en_all_6186[$_POST['message_ln_status_play_id']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $en_all_6186[$_POST['message_ln_status_play_id']]['m_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
 
@@ -1176,7 +1176,7 @@ class Blog extends CI_Controller {
         boost_power();
         $start_time = time();
         $filters = array(
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         );
         if($in_id > 0){
             $filters['in_id'] = $in_id;
@@ -1242,7 +1242,7 @@ class Blog extends CI_Controller {
 
             //Update all Recommended Blogs and their tree:
             foreach ($this->BLOG_model->in_fetch(array(
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             )) as $published_in) {
                 $tree = $this->BLOG_model->in_metadata_extra_insights($published_in['in_id']);
                 if($tree){

@@ -15,11 +15,11 @@ class BLOG_model extends CI_Model
     }
 
 
-    function in_create($insert_columns, $external_sync = false, $ln_creator_player_id = 0)
+    function in_create($insert_columns, $external_sync = false, $ln_creator_play_id = 0)
     {
 
         //What is required to create a new blog?
-        if (detect_missing_columns($insert_columns, array('in_title', 'in_type_player_id', 'in_status_player_id'), $ln_creator_player_id)) {
+        if (detect_missing_columns($insert_columns, array('in_title', 'in_type_play_id', 'in_status_play_id'), $ln_creator_play_id)) {
             return false;
         }
 
@@ -37,7 +37,7 @@ class BLOG_model extends CI_Model
 
         if ($insert_columns['in_id'] > 0) {
 
-            if ($ln_creator_player_id > 0) {
+            if ($ln_creator_play_id > 0) {
 
                 if($external_sync){
                     //Update Algolia:
@@ -46,10 +46,10 @@ class BLOG_model extends CI_Model
 
                 //Log link new player:
                 $this->READ_model->ln_create(array(
-                    'ln_creator_player_id' => $ln_creator_player_id,
+                    'ln_creator_play_id' => $ln_creator_play_id,
                     'ln_child_blog_id' => $insert_columns['in_id'],
                     'ln_content' => $insert_columns['in_title'],
-                    'ln_type_player_id' => 4250, //New Blog Created
+                    'ln_type_play_id' => 4250, //New Blog Created
                 ));
 
                 //Fetch to return the complete player data:
@@ -71,8 +71,8 @@ class BLOG_model extends CI_Model
             //Ooopsi, something went wrong!
             $this->READ_model->ln_create(array(
                 'ln_content' => 'in_create() failed to create a new blog',
-                'ln_type_player_id' => 4246, //Platform Bug Reports
-                'ln_creator_player_id' => $ln_creator_player_id,
+                'ln_type_play_id' => 4246, //Platform Bug Reports
+                'ln_creator_play_id' => $ln_creator_play_id,
                 'ln_metadata' => $insert_columns,
             ));
             return false;
@@ -106,7 +106,7 @@ class BLOG_model extends CI_Model
         return $q->result_array();
     }
 
-    function in_update($id, $update_columns, $external_sync = false, $ln_creator_player_id = 0)
+    function in_update($id, $update_columns, $external_sync = false, $ln_creator_play_id = 0)
     {
 
         if (count($update_columns) == 0) {
@@ -114,7 +114,7 @@ class BLOG_model extends CI_Model
         }
 
         //Fetch current blog filed values so we can compare later on after we've updated it:
-        if($ln_creator_player_id > 0){
+        if($ln_creator_play_id > 0){
             $before_data = $this->BLOG_model->in_fetch(array('in_id' => $id));
         }
 
@@ -129,7 +129,7 @@ class BLOG_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows > 0 && $ln_creator_player_id > 0) {
+        if ($affected_rows > 0 && $ln_creator_play_id > 0) {
 
 
             //Note that unlike player modification, we require a trainer player ID to log the modification link:
@@ -142,38 +142,38 @@ class BLOG_model extends CI_Model
                 }
 
                 //Assume no player links unless specifically defined:
-                $ln_child_player_id = 0;
-                $ln_parent_player_id = 0;
+                $ln_child_play_id = 0;
+                $ln_parent_play_id = 0;
 
 
                 if($key=='in_title') {
 
-                    $ln_type_player_id = 10644; //Blog Iterated Outcome
+                    $ln_type_play_id = 10644; //Blog Iterated Outcome
                     $ln_content = update_description($before_data[0][$key], $value);
 
-                } elseif($key=='in_status_player_id'){
+                } elseif($key=='in_status_play_id'){
 
                     if(in_array($value, $this->config->item('en_ids_7356') /* Blog Statuses Active */)){
-                        $ln_type_player_id = 10648; //Blog Iterated Status
+                        $ln_type_play_id = 10648; //Blog Iterated Status
                     } else {
-                        $ln_type_player_id = 10671; //Blog Iterated Archived
+                        $ln_type_play_id = 10671; //Blog Iterated Archived
                     }
                     $en_all_4737 = $this->config->item('en_all_4737'); //Blog Statuses
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_4737[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4737[$value]['m_name'] . ']';
-                    $ln_parent_player_id = $value;
-                    $ln_child_player_id = $before_data[0][$key];
+                    $ln_parent_play_id = $value;
+                    $ln_child_play_id = $before_data[0][$key];
 
-                } elseif($key=='in_type_player_id'){
+                } elseif($key=='in_type_play_id'){
 
-                    $ln_type_player_id = 10651; //Blog Iterated Subtype
+                    $ln_type_play_id = 10651; //Blog Iterated Subtype
                     $en_all_7585 = $this->config->item('en_all_7585'); //Blog Subtypes
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_7585[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_7585[$value]['m_name'] . ']';
-                    $ln_parent_player_id = $value;
-                    $ln_child_player_id = $before_data[0][$key];
+                    $ln_parent_play_id = $value;
+                    $ln_child_play_id = $before_data[0][$key];
 
                 } elseif($key=='in_read_time') {
 
-                    $ln_type_player_id = 10650; //Blog Iterated Completion Time
+                    $ln_type_play_id = 10650; //Blog Iterated Completion Time
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
@@ -186,11 +186,11 @@ class BLOG_model extends CI_Model
 
                 //Value has changed, log link:
                 $this->READ_model->ln_create(array(
-                    'ln_creator_player_id' => $ln_creator_player_id,
-                    'ln_type_player_id' => $ln_type_player_id,
+                    'ln_creator_play_id' => $ln_creator_play_id,
+                    'ln_type_play_id' => $ln_type_play_id,
                     'ln_child_blog_id' => $id,
-                    'ln_child_player_id' => $ln_child_player_id,
-                    'ln_parent_player_id' => $ln_parent_player_id,
+                    'ln_child_play_id' => $ln_child_play_id,
+                    'ln_parent_play_id' => $ln_parent_play_id,
                     'ln_content' => $ln_content,
                     'ln_metadata' => array(
                         'in_id' => $id,
@@ -212,8 +212,8 @@ class BLOG_model extends CI_Model
             //This should not happen:
             $this->READ_model->ln_create(array(
                 'ln_child_blog_id' => $id,
-                'ln_type_player_id' => 4246, //Platform Bug Reports
-                'ln_creator_player_id' => $ln_creator_player_id,
+                'ln_type_play_id' => 4246, //Platform Bug Reports
+                'ln_creator_play_id' => $ln_creator_play_id,
                 'ln_content' => 'in_update() Failed to update',
                 'ln_metadata' => array(
                     'input' => $update_columns,
@@ -225,18 +225,18 @@ class BLOG_model extends CI_Model
         return $affected_rows;
     }
 
-    function in_unlink($in_id, $ln_creator_player_id = 0){
+    function in_unlink($in_id, $ln_creator_play_id = 0){
 
         //Remove blog relations:
         $blog_remove_links = array_merge(
             $this->READ_model->ln_fetch(array( //Blog Links
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                 '(ln_child_blog_id = '.$in_id.' OR ln_parent_blog_id = '.$in_id.')' => null,
             ), array(), 0),
             $this->READ_model->ln_fetch(array( //Blog Notes
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
                 '(ln_child_blog_id = '.$in_id.' OR ln_parent_blog_id = '.$in_id.')' => null,
             ), array(), 0)
         );
@@ -245,15 +245,15 @@ class BLOG_model extends CI_Model
         foreach($blog_remove_links as $ln){
             //Remove this link:
             $links_removed += $this->READ_model->ln_update($ln['ln_id'], array(
-                'ln_status_player_id' => 6173, //Link Removed
-            ), $ln_creator_player_id, 10686 /* Blog Link Unlinked */);
+                'ln_status_play_id' => 6173, //Link Removed
+            ), $ln_creator_play_id, 10686 /* Blog Link Unlinked */);
         }
 
         //Return links removed:
         return $links_removed;
     }
 
-    function in_link_or_create($in_title, $ln_creator_player_id, $in_linked_id = 0, $is_parent = false, $new_in_status = 6183, $in_type_player_id = 6677 /* Blog Read-Only */, $link_in_id = 0)
+    function in_link_or_create($in_title, $ln_creator_play_id, $in_linked_id = 0, $is_parent = false, $new_in_status = 6183, $in_type_play_id = 6677 /* Blog Read-Only */, $link_in_id = 0)
     {
 
         /*
@@ -282,7 +282,7 @@ class BLOG_model extends CI_Model
                     'status' => 0,
                     'message' => 'Invalid Blog ID',
                 );
-            } elseif (!in_array($linked_ins[0]['in_status_player_id'], $this->config->item('en_ids_7356')) /* Blog Statuses Active */) {
+            } elseif (!in_array($linked_ins[0]['in_status_play_id'], $this->config->item('en_ids_7356')) /* Blog Statuses Active */) {
                 return array(
                     'status' => 0,
                     'message' => 'You can only link to active blogs. This blog is not active.',
@@ -336,7 +336,7 @@ class BLOG_model extends CI_Model
                     'status' => 0,
                     'message' => 'Invalid Linked Blog ID',
                 );
-            } elseif (!in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7356') /* Blog Statuses Active */)) {
+            } elseif (!in_array($ins[0]['in_status_play_id'], $this->config->item('en_ids_7356') /* Blog Statuses Active */)) {
                 return array(
                     'status' => 0,
                     'message' => 'You can only link to active blogs. This blog is not active.',
@@ -350,8 +350,8 @@ class BLOG_model extends CI_Model
             $dup_links = $this->READ_model->ln_fetch(array(
                 'ln_parent_blog_id' => $parent_in['in_id'],
                 'ln_child_blog_id' => $child_in['in_id'],
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ));
 
             //Check for issues:
@@ -388,9 +388,9 @@ class BLOG_model extends CI_Model
             //Create new blog:
             $blog_new = $this->BLOG_model->in_create(array(
                 'in_title' => $in_title_validation['in_cleaned_outcome'],
-                'in_type_player_id' => $in_type_player_id,
-                'in_status_player_id' => $new_in_status,
-            ), true, $ln_creator_player_id);
+                'in_type_play_id' => $in_type_play_id,
+                'in_status_play_id' => $new_in_status,
+            ), true, $ln_creator_play_id);
 
         }
 
@@ -399,13 +399,13 @@ class BLOG_model extends CI_Model
         if($in_linked_id > 0){
 
             $relation = $this->READ_model->ln_create(array(
-                'ln_creator_player_id' => $ln_creator_player_id,
-                'ln_type_player_id' => 4228, //Blog Link Regular Read
+                'ln_creator_play_id' => $ln_creator_play_id,
+                'ln_type_play_id' => 4228, //Blog Link Regular Read
                 ( $is_parent ? 'ln_child_blog_id' : 'ln_parent_blog_id' ) => $in_linked_id,
                 ( $is_parent ? 'ln_parent_blog_id' : 'ln_child_blog_id' ) => $blog_new['in_id'],
                 'ln_order' => 1 + $this->READ_model->ln_max_order(array(
-                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                         'ln_parent_blog_id' => ( $is_parent ? $blog_new['in_id'] : $in_linked_id ),
                     )),
             ), true);
@@ -414,9 +414,9 @@ class BLOG_model extends CI_Model
             $new_ins = $this->READ_model->ln_fetch(array(
                 ( $is_parent ? 'ln_child_blog_id' : 'ln_parent_blog_id' ) => $in_linked_id,
                 ( $is_parent ? 'ln_parent_blog_id' : 'ln_child_blog_id' ) => $blog_new['in_id'],
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
             ), array(($is_parent ? 'in_parent' : 'in_child')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
@@ -430,22 +430,22 @@ class BLOG_model extends CI_Model
             }
 
             //Add author:
-            if($ln_creator_player_id > 0){
+            if($ln_creator_play_id > 0){
 
                 if(!count($this->READ_model->ln_fetch(array(
                     ( $is_parent ? 'ln_child_blog_id' : 'ln_parent_blog_id' ) => $in_linked_id,
                     ( $is_parent ? 'ln_parent_blog_id' : 'ln_child_blog_id' ) => $blog_new['in_id'],
-                    'ln_parent_player_id' => $ln_creator_player_id,
-                    'ln_type_player_id' => 4983,
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_parent_play_id' => $ln_creator_play_id,
+                    'ln_type_play_id' => 4983,
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 )))){
 
                     //Add new up-vote:
                     $this->READ_model->ln_create(array(
-                        'ln_creator_player_id' => $ln_creator_player_id,
-                        'ln_parent_player_id' => $ln_creator_player_id,
-                        'ln_type_player_id' => 4983,
-                        'ln_content' => '@'.$ln_creator_player_id.' #'.( $is_parent ? $blog_new['in_id'] : $in_linked_id ), //Message content
+                        'ln_creator_play_id' => $ln_creator_play_id,
+                        'ln_parent_play_id' => $ln_creator_play_id,
+                        'ln_type_play_id' => 4983,
+                        'ln_content' => '@'.$ln_creator_play_id.' #'.( $is_parent ? $blog_new['in_id'] : $in_linked_id ), //Message content
                         ( $is_parent ? 'ln_child_blog_id' : 'ln_parent_blog_id' ) => $in_linked_id,
                         ( $is_parent ? 'ln_parent_blog_id' : 'ln_child_blog_id' ) => $blog_new['in_id'],
                     ));
@@ -457,21 +457,21 @@ class BLOG_model extends CI_Model
             $child_in_html = null;
 
             //Add author:
-            if($ln_creator_player_id > 0){
+            if($ln_creator_play_id > 0){
 
                 if(!count($this->READ_model->ln_fetch(array(
                     'ln_child_blog_id' => $blog_new['in_id'],
-                    'ln_parent_player_id' => $ln_creator_player_id,
-                    'ln_type_player_id' => 4983,
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_parent_play_id' => $ln_creator_play_id,
+                    'ln_type_play_id' => 4983,
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 )))){
 
                     //Add new up-vote:
                     $this->READ_model->ln_create(array(
-                        'ln_creator_player_id' => $ln_creator_player_id,
-                        'ln_parent_player_id' => $ln_creator_player_id,
-                        'ln_type_player_id' => 4983,
-                        'ln_content' => '@'.$ln_creator_player_id,
+                        'ln_creator_play_id' => $ln_creator_play_id,
+                        'ln_parent_play_id' => $ln_creator_play_id,
+                        'ln_type_play_id' => 4983,
+                        'ln_content' => '@'.$ln_creator_play_id,
                         'ln_child_blog_id' => $blog_new['in_id'],
                     ), true);
                 }
@@ -495,9 +495,9 @@ class BLOG_model extends CI_Model
 
         //Fetch parents:
         foreach($this->READ_model->ln_fetch(array(
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
             'ln_child_blog_id' => $in_id,
         ), array('in_parent')) as $in_parent){
 
@@ -534,9 +534,9 @@ class BLOG_model extends CI_Model
 
         //Fetch parents:
         foreach($this->READ_model->ln_fetch(array(
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
             'ln_parent_blog_id' => $in_id,
         ), array('in_child')) as $child_in){
 
@@ -564,7 +564,7 @@ class BLOG_model extends CI_Model
 
         //Set variables:
         $is_first_blog = ( !isset($focus_in['ln_id']) ); //First blog does not have a link, just the blog
-        $has_or_parent = in_array($focus_in['in_type_player_id'] , $this->config->item('en_ids_6193') /* OR Blogs */ );
+        $has_or_parent = in_array($focus_in['in_type_play_id'] , $this->config->item('en_ids_6193') /* OR Blogs */ );
         $or_children = array(); //To be populated only if $focus_in is an OR blog
         $conditional_steps = array(); //To be populated only for Conditional Reads
         $metadata_this = array(
@@ -575,14 +575,14 @@ class BLOG_model extends CI_Model
 
         //Fetch children:
         foreach($this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
             'ln_parent_blog_id' => $focus_in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_in){
 
             //Determine action based on parent blog type:
-            if($child_in['ln_type_player_id']==4229){
+            if($child_in['ln_type_play_id']==4229){
 
                 //Conditional Read Link:
                 array_push($conditional_steps, intval($child_in['in_id']));
@@ -672,7 +672,7 @@ class BLOG_model extends CI_Model
         //Fetch this blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ));
         if(count($ins) < 1){
             return false;
@@ -691,7 +691,7 @@ class BLOG_model extends CI_Model
         //Fetch totals for published common step blogs:
         $common_totals = $this->BLOG_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_read_time) as total_seconds');
 
         $common_base_resources = array(
@@ -720,29 +720,29 @@ class BLOG_model extends CI_Model
         //Add-up Blog Note References:
         //The players we need to check and see if they are industry experts:
         foreach ($this->READ_model->ln_fetch(array(
-            'ln_parent_player_id >' => 0, //Blog Notes that reference an player
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4485')).')' => null, //Blog Notes
+            'ln_parent_play_id >' => 0, //Blog Notes that reference an player
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4485')).')' => null, //Blog Notes
             '(ln_child_blog_id = ' . $in_id . ( count($flat_common_steps) > 0 ? ' OR ln_child_blog_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
         ), array('en_parent'), 0) as $note_en) {
 
             //Referenced player in blog notes... Fetch parents:
             foreach($this->READ_model->ln_fetch(array(
-                'ln_child_player_id' => $note_en['ln_parent_player_id'],
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Player-to-Player Links
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_child_play_id' => $note_en['ln_parent_play_id'],
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Player-to-Player Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ), array(), 0) as $parent_en){
 
-                if(in_array($parent_en['ln_parent_player_id'], $this->config->item('en_ids_3000'))){
+                if(in_array($parent_en['ln_parent_play_id'], $this->config->item('en_ids_3000'))){
 
                     //Expert Source:
-                    if (!isset($metadata_this['__in__metadata_sources'][$parent_en['ln_parent_player_id']][$note_en['en_id']])) {
+                    if (!isset($metadata_this['__in__metadata_sources'][$parent_en['ln_parent_play_id']][$note_en['en_id']])) {
                         //Add since it's not there:
-                        $metadata_this['__in__metadata_sources'][$parent_en['ln_parent_player_id']][$note_en['en_id']] = $note_en;
+                        $metadata_this['__in__metadata_sources'][$parent_en['ln_parent_play_id']][$note_en['en_id']] = $note_en;
                     }
 
-                } elseif($parent_en['ln_parent_player_id']==3084) {
+                } elseif($parent_en['ln_parent_play_id']==3084) {
 
                     //Industry Expert:
                     if (!isset($metadata_this['__in__metadata_experts'][$note_en['en_id']])) {
@@ -753,18 +753,18 @@ class BLOG_model extends CI_Model
 
                     //Industry Expert?
                     $expert_parents = $this->READ_model->ln_fetch(array(
-                        'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
-                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Player-to-Player Links
-                        'ln_parent_player_id' => 3084, //Industry Experts
-                        'ln_child_player_id' => $parent_en['ln_parent_player_id'],
+                        'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+                        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Player-to-Player Links
+                        'ln_parent_play_id' => 3084, //Industry Experts
+                        'ln_child_play_id' => $parent_en['ln_parent_play_id'],
                     ), array('en_child'), 0);
 
                     if(count($expert_parents) > 0){
 
                         //Yes, Industry Expert:
-                        if (!isset($metadata_this['__in__metadata_experts'][$parent_en['ln_parent_player_id']])) {
-                            $metadata_this['__in__metadata_experts'][$parent_en['ln_parent_player_id']] = $expert_parents[0];
+                        if (!isset($metadata_this['__in__metadata_experts'][$parent_en['ln_parent_play_id']])) {
+                            $metadata_this['__in__metadata_experts'][$parent_en['ln_parent_play_id']] = $expert_parents[0];
                         }
 
                     } else {
@@ -892,11 +892,11 @@ class BLOG_model extends CI_Model
 
         //Read 1: Is there an OR parent that we can simply answer and unlock?
         foreach($this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_player_id' => 4228, //Blog Link Regular Read
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_type_play_id' => 4228, //Blog Link Regular Read
             'ln_child_blog_id' => $in['in_id'],
-            'in_type_player_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
+            'in_type_play_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
         ), array('in_parent'), 0) as $in_or_parent){
             if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $in_or_parent['in_id'])) {
                 array_push($child_unlock_paths, $in_or_parent);
@@ -906,9 +906,9 @@ class BLOG_model extends CI_Model
 
         //Read 2: Are there any locked link parents that the user might be able to unlock?
         foreach($this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_player_id' => 4229, //Blog Link Locked Read
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_type_play_id' => 4229, //Blog Link Locked Read
             'ln_child_blog_id' => $in['in_id'],
         ), array('in_parent'), 0) as $in_locked_parent){
             if(in_is_unlockable($in_locked_parent)){
@@ -933,9 +933,9 @@ class BLOG_model extends CI_Model
 
         //Read 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
         $in__children = $this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_player_id' => 4228, //Blog Link Regular Read
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_type_play_id' => 4228, //Blog Link Regular Read
             'ln_parent_blog_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
         if(count($in__children) < 1){

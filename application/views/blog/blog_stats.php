@@ -8,17 +8,17 @@ $total_completed = 0;
 
 //FEATUREF BLOGD
 foreach($this->READ_model->ln_fetch(array(
-    'in_status_player_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
-    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    'ln_type_player_id' => 4601, //BLOG KEYWORDS
-    'ln_parent_player_id IN (' . join(',', featured_topic_ids()) . ')' => null,
+    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
+    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'ln_type_play_id' => 4601, //BLOG KEYWORDS
+    'ln_parent_play_id IN (' . join(',', featured_topic_ids()) . ')' => null,
 ), array('in_child'), 0) as $in_published_tree){
 
     //Count Enrolled Users:
     $enrolled_users = $this->READ_model->ln_fetch(array(
         'ln_parent_blog_id' => $in_published_tree['in_id'],
-        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
-        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     if($enrolled_users[0]['totals'] < 1){
@@ -30,8 +30,8 @@ foreach($this->READ_model->ln_fetch(array(
     $common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
     $completed_users = $this->READ_model->ln_fetch(array(
         'ln_parent_blog_id' => end($common_steps),
-        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
-        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     $total_enrolled += $enrolled_users[0]['totals'];

@@ -31,8 +31,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     echo '<div class="inline-block" style="padding-bottom:10px; padding-left:10px;">';
 
     //STATUS
-    $is_published = in_array($player['en_status_player_id'], $this->config->item('en_ids_7357'));
-    echo '<span class="icon-block en_status_player_id_' . $player['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$player['en_status_player_id']]['m_name'].': '.$en_all_6177[$player['en_status_player_id']]['m_desc'].'">' . $en_all_6177[$player['en_status_player_id']]['m_icon'] . '</span></span>';
+    $is_published = in_array($player['en_status_play_id'], $this->config->item('en_ids_7357'));
+    echo '<span class="icon-block en_status_play_id_' . $player['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$player['en_status_play_id']]['m_name'].': '.$en_all_6177[$player['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$player['en_status_play_id']]['m_icon'] . '</span></span>';
 
 
     //ACCOUNT
@@ -92,7 +92,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                         <!-- Player Status -->
                         <span class="mini-header"><?= $en_all_6206[6177]['m_icon'].' '.$en_all_6206[6177]['m_name'] ?></span>
-                        <select class="form-control border" id="en_status_player_id">
+                        <select class="form-control border" id="en_status_play_id">
                             <?php
                             foreach($this->config->item('en_all_6177') /* Player Statuses */ as $en_id => $m){
                                 echo '<option value="' . $en_id . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
@@ -158,7 +158,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
                             <span class="mini-header"><?= $en_all_4341[6186]['m_icon'].' '.$en_all_4341[6186]['m_name'] ?></span>
-                            <select class="form-control border" id="ln_status_player_id">
+                            <select class="form-control border" id="ln_status_play_id">
                                 <?php
                                 foreach($this->config->item('en_all_6186') /* Link Statuses */ as $en_id => $m){
                                     echo '<option value="' . $en_id . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
@@ -277,10 +277,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 $default_active = true; //LEFT
 
                 $fetch_11030 = $this->READ_model->ln_fetch(array(
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
-                    'ln_child_player_id' => $player['en_id'],
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                    'ln_child_play_id' => $player['en_id'],
                 ), array('en_parent'), 0);
 
                 $counter = count($fetch_11030);
@@ -306,19 +306,19 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 //COUNT TOTAL
                 $child_links = $this->READ_model->ln_fetch(array(
-                    'ln_parent_player_id' => $player['en_id'],
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                    'ln_parent_play_id' => $player['en_id'],
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
                 ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
                 $counter = $child_links[0]['totals'];
 
 
                 $fetch_11029 = $this->READ_model->ln_fetch(array(
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
-                    'ln_parent_player_id' => $player['en_id'],
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                    'ln_parent_play_id' => $player['en_id'],
                 ), array('en_child'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
                 $this_tab .= '<div id="list-children" class="list-group">';
@@ -350,11 +350,11 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 //Fetch current count for each status from DB:
                 $player_count = $this->PLAY_model->en_child_count($player['en_id'], $this->config->item('en_ids_7358') /* Player Statuses Active */);
                 $child_en_filters = $this->READ_model->ln_fetch(array(
-                    'ln_parent_player_id' => $player['en_id'],
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
-                ), array('en_child'), 0, 0, array('en_status_player_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_player_id', 'en_status_player_id');
+                    'ln_parent_play_id' => $player['en_id'],
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                ), array('en_child'), 0, 0, array('en_status_play_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_play_id', 'en_status_play_id');
 
                 //Only show filtering UI if we find child players with different statuses (Otherwise no need to filter):
                 if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $player_count) {
@@ -370,8 +370,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                     //Show each specific filter based on DB counts:
                     foreach ($child_en_filters as $c_c) {
-                        $st = $en_all_6177[$c_c['en_status_player_id']];
-                        $tab_content .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_player_id'] . '" onclick="en_filter_status(' . $c_c['en_status_player_id'] . ')" class="nav-link u-status-filter u-status-' . $c_c['en_status_player_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="hide-small"> ' . $st['m_name'] . '</span> [<span class="count-u-status-' . $c_c['en_status_player_id'] . '">' . $c_c['totals'] . '</span>]</a></li>';
+                        $st = $en_all_6177[$c_c['en_status_play_id']];
+                        $tab_content .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_play_id'] . '" onclick="en_filter_status(' . $c_c['en_status_play_id'] . ')" class="nav-link u-status-filter u-status-' . $c_c['en_status_play_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="hide-small"> ' . $st['m_name'] . '</span> [<span class="count-u-status-' . $c_c['en_status_play_id'] . '">' . $c_c['totals'] . '</span>]</a></li>';
                     }
 
                     $tab_content .= '</div>';
@@ -382,9 +382,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 //READER READS & BOOKMARKS
                 $item_counters = $this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
-                    'ln_creator_player_id' => $player['en_id'],
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
+                    'ln_creator_play_id' => $player['en_id'],
                 ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 
                 $counter = $item_counters[0]['totals'];
@@ -393,9 +393,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 //BLOG NOTES
                 $blog_note_filters = array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'ln_type_player_id' => $en_id2,
-                    '(ln_creator_player_id='.$player['en_id'].' OR ln_child_player_id='.$player['en_id'].' OR ln_parent_player_id='.$player['en_id'].')' => null,
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_type_play_id' => $en_id2,
+                    '(ln_creator_play_id='.$player['en_id'].' OR ln_child_play_id='.$player['en_id'].' OR ln_parent_play_id='.$player['en_id'].')' => null,
                 );
 
                 //COUNT ONLY

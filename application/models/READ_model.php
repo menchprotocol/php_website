@@ -14,16 +14,16 @@ class READ_model extends CI_Model
         parent::__construct();
     }
 
-    function ln_update($id, $update_columns, $ln_creator_player_id = 0, $ln_type_player_id = 0, $ln_content = '')
+    function ln_update($id, $update_columns, $ln_creator_play_id = 0, $ln_type_play_id = 0, $ln_content = '')
     {
 
         if (count($update_columns) == 0) {
             return false;
-        } elseif ($ln_type_player_id>0 && !in_array($ln_type_player_id, $this->config->item('en_ids_4593'))) {
+        } elseif ($ln_type_play_id>0 && !in_array($ln_type_play_id, $this->config->item('en_ids_4593'))) {
             return false;
         }
 
-        if($ln_creator_player_id > 0){
+        if($ln_creator_play_id > 0){
             //Fetch link before updating:
             $before_data = $this->READ_model->ln_fetch(array(
                 'ln_id' => $id,
@@ -46,10 +46,10 @@ class READ_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
-        if ($affected_rows > 0 && $ln_creator_player_id > 0 && $ln_type_player_id > 0) {
+        if ($affected_rows > 0 && $ln_creator_play_id > 0 && $ln_type_play_id > 0) {
 
             if(strlen($ln_content) == 0){
-                if(in_array($ln_type_player_id, $this->config->item('en_ids_10593') /* Statement */)){
+                if(in_array($ln_type_play_id, $this->config->item('en_ids_10593') /* Statement */)){
 
                     //Since it's a statement we want to determine the change in content:
                     if($before_data[0]['ln_content']!=$update_columns['ln_content']){
@@ -65,17 +65,17 @@ class READ_model extends CI_Model
                         }
 
                         //Now determine what type is this:
-                        if($key=='ln_status_player_id'){
+                        if($key=='ln_status_play_id'){
 
                             $en_all_6186 = $this->config->item('en_all_6186'); //Link Statuses
                             $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $en_all_6186[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6186[$value]['m_name'] . ']'."\n";
 
-                        } elseif($key=='ln_type_player_id'){
+                        } elseif($key=='ln_type_play_id'){
 
                             $en_all_4593 = $this->config->item('en_all_4593'); //Link Types
                             $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $en_all_4593[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4593[$value]['m_name'] . ']'."\n";
 
-                        } elseif(in_array($key, array('ln_parent_player_id', 'ln_child_player_id'))) {
+                        } elseif(in_array($key, array('ln_parent_play_id', 'ln_child_play_id'))) {
 
                             //Fetch new/old player names:
                             $before_ens = $this->PLAY_model->en_fetch(array(
@@ -129,16 +129,16 @@ class READ_model extends CI_Model
                 //Value has changed, log link:
                 $this->READ_model->ln_create(array(
                     'ln_parent_read_id' => $id, //Link Reference
-                    'ln_creator_player_id' => $ln_creator_player_id,
-                    'ln_type_player_id' => $ln_type_player_id,
+                    'ln_creator_play_id' => $ln_creator_play_id,
+                    'ln_type_play_id' => $ln_type_play_id,
                     'ln_content' => $ln_content,
                     'ln_metadata' => array(
                         'ln_id' => $id,
                         'fields_changed' => $fields_changed,
                     ),
                     //Copy old values for parent/child blog/player links:
-                    'ln_parent_player_id' => $before_data[0]['ln_parent_player_id'],
-                    'ln_child_player_id'  => $before_data[0]['ln_child_player_id'],
+                    'ln_parent_play_id' => $before_data[0]['ln_parent_play_id'],
+                    'ln_child_play_id'  => $before_data[0]['ln_child_play_id'],
                     'ln_parent_blog_id' => $before_data[0]['ln_parent_blog_id'],
                     'ln_child_blog_id'  => $before_data[0]['ln_child_blog_id'],
                 ));
@@ -163,13 +163,13 @@ class READ_model extends CI_Model
 
         //Any player joins?
         if (in_array('en_parent', $join_objects)) {
-            $this->db->join('table_play', 'ln_parent_player_id=en_id','left');
+            $this->db->join('table_play', 'ln_parent_play_id=en_id','left');
         } elseif (in_array('en_child', $join_objects)) {
-            $this->db->join('table_play', 'ln_child_player_id=en_id','left');
+            $this->db->join('table_play', 'ln_child_play_id=en_id','left');
         } elseif (in_array('en_type', $join_objects)) {
-            $this->db->join('table_play', 'ln_type_player_id=en_id','left');
+            $this->db->join('table_play', 'ln_type_play_id=en_id','left');
         } elseif (in_array('en_creator', $join_objects)) {
-            $this->db->join('table_play', 'ln_creator_player_id=en_id','left');
+            $this->db->join('table_play', 'ln_creator_play_id=en_id','left');
         }
 
         foreach ($match_columns as $key => $value) {
@@ -200,12 +200,12 @@ class READ_model extends CI_Model
     {
 
         //Set some defaults:
-        if (!isset($insert_columns['ln_creator_player_id']) || intval($insert_columns['ln_creator_player_id']) < 1) {
-            $insert_columns['ln_creator_player_id'] = 0;
+        if (!isset($insert_columns['ln_creator_play_id']) || intval($insert_columns['ln_creator_play_id']) < 1) {
+            $insert_columns['ln_creator_play_id'] = 0;
         }
 
         //Only require link type:
-        if (detect_missing_columns($insert_columns, array('ln_type_player_id'), $insert_columns['ln_creator_player_id'])) {
+        if (detect_missing_columns($insert_columns, array('ln_type_play_id'), $insert_columns['ln_creator_play_id'])) {
             return false;
         }
 
@@ -230,12 +230,12 @@ class READ_model extends CI_Model
             $insert_columns['ln_timestamp'] = $d->format("Y-m-d H:i:s.u");
         }
 
-        if (!isset($insert_columns['ln_status_player_id'])|| is_null($insert_columns['ln_status_player_id'])) {
-            $insert_columns['ln_status_player_id'] = 6176; //Link Published
+        if (!isset($insert_columns['ln_status_play_id'])|| is_null($insert_columns['ln_status_play_id'])) {
+            $insert_columns['ln_status_play_id'] = 6176; //Link Published
         }
 
         //Set some zero defaults if not set:
-        foreach (array('ln_child_blog_id', 'ln_parent_blog_id', 'ln_child_player_id', 'ln_parent_player_id', 'ln_parent_read_id', 'ln_external_id', 'ln_order') as $dz) {
+        foreach (array('ln_child_blog_id', 'ln_parent_blog_id', 'ln_child_play_id', 'ln_parent_play_id', 'ln_parent_read_id', 'ln_external_id', 'ln_order') as $dz) {
             if (!isset($insert_columns[$dz])) {
                 $insert_columns[$dz] = 0;
             }
@@ -254,8 +254,8 @@ class READ_model extends CI_Model
 
             //This should not happen:
             $this->READ_model->ln_create(array(
-                'ln_type_player_id' => 4246, //Platform Bug Reports
-                'ln_creator_player_id' => $insert_columns['ln_creator_player_id'],
+                'ln_type_play_id' => 4246, //Platform Bug Reports
+                'ln_creator_play_id' => $insert_columns['ln_creator_play_id'],
                 'ln_content' => 'ln_create() Failed to create',
                 'ln_metadata' => array(
                     'input' => $insert_columns,
@@ -267,12 +267,12 @@ class READ_model extends CI_Model
 
         //Sync algolia?
         if ($external_sync) {
-            if ($insert_columns['ln_parent_player_id'] > 0) {
-                $algolia_sync = update_algolia('en', $insert_columns['ln_parent_player_id']);
+            if ($insert_columns['ln_parent_play_id'] > 0) {
+                $algolia_sync = update_algolia('en', $insert_columns['ln_parent_play_id']);
             }
 
-            if ($insert_columns['ln_child_player_id'] > 0) {
-                $algolia_sync = update_algolia('en', $insert_columns['ln_child_player_id']);
+            if ($insert_columns['ln_child_play_id'] > 0) {
+                $algolia_sync = update_algolia('en', $insert_columns['ln_child_play_id']);
             }
 
             if ($insert_columns['ln_parent_blog_id'] > 0) {
@@ -286,7 +286,7 @@ class READ_model extends CI_Model
 
 
         //Do we need to check for entity tagging after read success?
-        if(in_array($insert_columns['ln_type_player_id'] , $this->config->item('en_ids_6255')) && in_array($insert_columns['ln_status_player_id'] , $this->config->item('en_ids_7359')) && $insert_columns['ln_parent_blog_id'] > 0 && $insert_columns['ln_creator_player_id'] > 0){
+        if(in_array($insert_columns['ln_type_play_id'] , $this->config->item('en_ids_6255')) && in_array($insert_columns['ln_status_play_id'] , $this->config->item('en_ids_7359')) && $insert_columns['ln_parent_blog_id'] > 0 && $insert_columns['ln_creator_play_id'] > 0){
 
             //See what this is:
             $detected_ln_type = ln_detect_type($insert_columns['ln_content']);
@@ -294,35 +294,35 @@ class READ_model extends CI_Model
             if ($detected_ln_type['status']) {
                 //See if completed intent has any entity tags to be assigned:
                 foreach($this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_player_id' => 7545, //ENTITY TAGGING
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id' => 7545, //ENTITY TAGGING
                     'ln_child_blog_id' => $insert_columns['ln_parent_blog_id'],
-                    'ln_parent_player_id >' => 0, //Entity to be tagged for this blog
+                    'ln_parent_play_id >' => 0, //Entity to be tagged for this blog
                 )) as $ln_tag){
 
                     //Assign tag if parent/child link NOT already assigned:
                     if(!count($this->READ_model->ln_fetch(array(
-                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                        'ln_parent_player_id' => $ln_tag['ln_parent_player_id'],
-                        'ln_child_player_id' => $insert_columns['ln_creator_player_id'],
+                        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                        'ln_parent_play_id' => $ln_tag['ln_parent_play_id'],
+                        'ln_child_play_id' => $insert_columns['ln_creator_play_id'],
                         'LOWER(ln_content)' => strtolower($insert_columns['ln_content']),
                     )))){
 
                         $this->READ_model->ln_create(array(
-                            'ln_type_player_id' => $detected_ln_type['ln_type_player_id'],
+                            'ln_type_play_id' => $detected_ln_type['ln_type_play_id'],
                             'ln_content' => $insert_columns['ln_content'],
-                            'ln_creator_player_id' => $ln_tag['ln_creator_player_id'],
-                            'ln_parent_player_id' => $ln_tag['ln_parent_player_id'],
-                            'ln_child_player_id' => $insert_columns['ln_creator_player_id'],
+                            'ln_creator_play_id' => $ln_tag['ln_creator_play_id'],
+                            'ln_parent_play_id' => $ln_tag['ln_parent_play_id'],
+                            'ln_child_play_id' => $insert_columns['ln_creator_play_id'],
                         ));
 
                         //Track Tag:
                         $this->READ_model->ln_create(array(
-                            'ln_type_player_id' => 12197, //Tag Player
-                            'ln_creator_player_id' => $ln_tag['ln_creator_player_id'],
-                            'ln_parent_player_id' => $ln_tag['ln_parent_player_id'],
-                            'ln_child_player_id' => $insert_columns['ln_creator_player_id'],
+                            'ln_type_play_id' => 12197, //Tag Player
+                            'ln_creator_play_id' => $ln_tag['ln_creator_play_id'],
+                            'ln_parent_play_id' => $ln_tag['ln_parent_play_id'],
+                            'ln_child_play_id' => $insert_columns['ln_creator_play_id'],
                             'ln_parent_blog_id' => $insert_columns['ln_parent_blog_id'],
                         ));
                     }
@@ -332,20 +332,20 @@ class READ_model extends CI_Model
 
 
         //See if this link type has any subscribers:
-        if(in_array($insert_columns['ln_type_player_id'] , $this->config->item('en_ids_5967')) && $insert_columns['ln_type_player_id']!=5967 /* Email Sent causes endless loop */ && !is_dev_environment()){
+        if(in_array($insert_columns['ln_type_play_id'] , $this->config->item('en_ids_5967')) && $insert_columns['ln_type_play_id']!=5967 /* Email Sent causes endless loop */ && !is_dev_environment()){
 
             //Try to fetch subscribers:
             $en_all_5967 = $this->config->item('en_all_5967'); //Include subscription details
             $sub_emails = array();
             $sub_en_ids = array();
-            foreach(explode(',', one_two_explode('&var_en_subscriber_ids=','', $en_all_5967[$insert_columns['ln_type_player_id']]['m_desc'])) as $subscriber_en_id){
+            foreach(explode(',', one_two_explode('&var_en_subscriber_ids=','', $en_all_5967[$insert_columns['ln_type_play_id']]['m_desc'])) as $subscriber_en_id){
                 //Try fetching subscribers email:
                 foreach($this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
-                    'ln_type_player_id' => 4255, //Linked Players Text (Email is text)
-                    'ln_parent_player_id' => 3288, //Mench Email
-                    'ln_child_player_id' => $subscriber_en_id,
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+                    'ln_type_play_id' => 4255, //Linked Players Text (Email is text)
+                    'ln_parent_play_id' => 3288, //Mench Email
+                    'ln_child_play_id' => $subscriber_en_id,
                 ), array('en_child')) as $en_email){
                     if(filter_var($en_email['ln_content'], FILTER_VALIDATE_EMAIL)){
                         //All good, add to list:
@@ -361,11 +361,11 @@ class READ_model extends CI_Model
 
                 //yes, start drafting email to be sent to them...
 
-                if($insert_columns['ln_creator_player_id'] > 0){
+                if($insert_columns['ln_creator_play_id'] > 0){
 
                     //Fetch trainer details:
                     $trainer_ens = $this->PLAY_model->en_fetch(array(
-                        'en_id' => $insert_columns['ln_creator_player_id'],
+                        'en_id' => $insert_columns['ln_creator_play_id'],
                     ));
 
                     $trainer_name = $trainer_ens[0]['en_name'];
@@ -379,7 +379,7 @@ class READ_model extends CI_Model
 
 
                 //Email Subject:
-                $subject = 'Notification: '  . $trainer_name . ' ' . $en_all_5967[$insert_columns['ln_type_player_id']]['m_name'];
+                $subject = 'Notification: '  . $trainer_name . ' ' . $en_all_5967[$insert_columns['ln_type_play_id']]['m_name'];
 
                 //Compose email body, start with link content:
                 $html_message = '<div>' . ( strlen($insert_columns['ln_content']) > 0 ? $insert_columns['ln_content'] : '<i>No link content</i>') . '</div><br />';
@@ -426,16 +426,16 @@ class READ_model extends CI_Model
                 //Log emails sent:
                 foreach($sub_en_ids as $to_en_id){
                     $this->READ_model->ln_create(array(
-                        'ln_type_player_id' => 5967, //Link Carbon Copy Email
-                        'ln_creator_player_id' => $to_en_id, //Sent to this user
+                        'ln_type_play_id' => 5967, //Link Carbon Copy Email
+                        'ln_creator_play_id' => $to_en_id, //Sent to this user
                         'ln_metadata' => $dispatched_email, //Save a copy of email
                         'ln_parent_read_id' => $insert_columns['ln_id'], //Save link
 
                         //Import potential blog/player connections from link:
                         'ln_child_blog_id' => $insert_columns['ln_child_blog_id'],
                         'ln_parent_blog_id' => $insert_columns['ln_parent_blog_id'],
-                        'ln_child_player_id' => $insert_columns['ln_child_player_id'],
-                        'ln_parent_player_id' => $insert_columns['ln_parent_player_id'],
+                        'ln_child_play_id' => $insert_columns['ln_child_play_id'],
+                        'ln_parent_play_id' => $insert_columns['ln_parent_play_id'],
                     ));
                 }
 
@@ -503,8 +503,8 @@ class READ_model extends CI_Model
 
         //Send messages, if any:
         foreach ($this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_player_id' => 4231, //Blog Note Messages
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id' => 4231, //Blog Note Messages
             'ln_child_blog_id' => $in['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC')) as $message_ln) {
             $this->READ_model->dispatch_message(
@@ -516,8 +516,8 @@ class READ_model extends CI_Model
 
         //Ok, now we can mark it as complete:
         $this->READ_model->ln_create(array(
-            'ln_type_player_id' => ( in_is_unlockable($in) ? $unlock_link_type_en_id : 4559 /* User Read Read Messages */ ),
-            'ln_creator_player_id' => $en_id,
+            'ln_type_play_id' => ( in_is_unlockable($in) ? $unlock_link_type_en_id : 4559 /* User Read Read Messages */ ),
+            'ln_creator_play_id' => $en_id,
             'ln_parent_blog_id' => $in['in_id'],
         ));
 
@@ -552,10 +552,10 @@ class READ_model extends CI_Model
             $check_termination_answers = array_merge($check_termination_answers , array_flatten($in_metadata['in__metadata_expansion_conditional']));
         }
         if(count($check_termination_answers) > 0 && count($this->READ_model->ln_fetch(array(
-                'ln_type_player_id' => 7492,
-                'ln_creator_player_id' => $en_id, //Belongs to this User
+                'ln_type_play_id' => 7492,
+                'ln_creator_play_id' => $en_id, //Belongs to this User
                 'ln_parent_blog_id IN (' . join(',' , $check_termination_answers) . ')' => null, //All possible answers that might terminate...
-                'ln_status_player_id' => 6176, //Link Published
+                'ln_status_play_id' => 6176, //Link Published
             ))) > 0){
             return -1;
         }
@@ -570,10 +570,10 @@ class READ_model extends CI_Model
 
             //Is this completed?
             $completed_steps = $this->READ_model->ln_fetch(array(
-                'ln_type_player_id IN (' . join(',' , $this->config->item('en_ids_6146')) . ')' => null, //🔴 READING LIST Progression Reads
-                'ln_creator_player_id' => $en_id, //Belongs to this User
+                'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_6146')) . ')' => null, //🔴 READING LIST Progression Reads
+                'ln_creator_play_id' => $en_id, //Belongs to this User
                 'ln_parent_blog_id' => $common_step_in_id,
-                'ln_status_player_id' => 6176, //Link Published
+                'ln_status_play_id' => 6176, //Link Published
             ),  ( $is_expansion ? array('in_child') : array() ));
 
             //Have they completed this?
@@ -595,11 +595,11 @@ class READ_model extends CI_Model
 
                 //See which path they got unlocked, if any:
                 $unlocked_conditions = $this->READ_model->ln_fetch(array(
-                    'ln_type_player_id' => 6140, //🔴 READING LIST Conditional Read Unlocked
-                    'ln_creator_player_id' => $en_id, //Belongs to this User
+                    'ln_type_play_id' => 6140, //🔴 READING LIST Conditional Read Unlocked
+                    'ln_creator_play_id' => $en_id, //Belongs to this User
                     'ln_parent_blog_id' => $common_step_in_id,
                     'ln_child_blog_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]) . ')' => null,
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 ), array('in_child'));
 
                 if(count($unlocked_conditions) > 0){
@@ -631,10 +631,10 @@ class READ_model extends CI_Model
          * */
 
         $user_blogs = $this->READ_model->ln_fetch(array(
-            'ln_creator_player_id' => $en_id,
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_creator_play_id' => $en_id,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
         if(count($user_blogs) == 0){
@@ -736,14 +736,14 @@ class READ_model extends CI_Model
         //Fetch this blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ));
         if(count($ins) < 1){
             $this->READ_model->ln_create(array(
                 'ln_child_blog_id' => $in_id,
                 'ln_content' => 'step_skip_initiate() did not locate the published blog',
-                'ln_type_player_id' => 4246, //Platform Bug Reports
-                'ln_creator_player_id' => $en_id,
+                'ln_type_play_id' => 4246, //Platform Bug Reports
+                'ln_creator_play_id' => $en_id,
             ));
             return false;
         }
@@ -791,13 +791,13 @@ class READ_model extends CI_Model
         //Fetch blog common steps:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ));
         if(count($ins) < 1){
             $this->READ_model->ln_create(array(
                 'ln_content' => 'step_skip_apply() failed to locate published blog',
-                'ln_type_player_id' => 4246, //Platform Bug Reports
-                'ln_creator_player_id' => $en_id,
+                'ln_type_play_id' => 4246, //Platform Bug Reports
+                'ln_creator_play_id' => $en_id,
                 'ln_parent_blog_id' => $in_id,
             ));
             return 0;
@@ -809,8 +809,8 @@ class READ_model extends CI_Model
         if(!isset($in_metadata['in__metadata_common_steps'])){
             $this->READ_model->ln_create(array(
                 'ln_content' => 'step_skip_apply() failed to locate metadata common steps',
-                'ln_type_player_id' => 4246, //Platform Bug Reports
-                'ln_creator_player_id' => $en_id,
+                'ln_type_play_id' => 4246, //Platform Bug Reports
+                'ln_creator_play_id' => $en_id,
                 'ln_parent_blog_id' => $in_id,
             ));
             return 0;
@@ -824,16 +824,16 @@ class READ_model extends CI_Model
 
             //Fetch current progression links, if any:
             $read_progress = $this->READ_model->ln_fetch(array(
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
-                'ln_creator_player_id' => $en_id,
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
+                'ln_creator_play_id' => $en_id,
                 'ln_parent_blog_id' => $common_in_id,
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ));
 
             //Add skip link:
             $new_progression_link = $this->READ_model->ln_create(array(
-                'ln_type_player_id' => 6143, //🔴 READING LIST Skipped Read
-                'ln_creator_player_id' => $en_id,
+                'ln_type_play_id' => 6143, //🔴 READING LIST Skipped Read
+                'ln_creator_play_id' => $en_id,
                 'ln_parent_blog_id' => $common_in_id,
             ));
 
@@ -841,7 +841,7 @@ class READ_model extends CI_Model
             foreach($read_progress as $ln){
                 $this->READ_model->ln_update($ln['ln_id'], array(
                     'ln_parent_read_id' => $new_progression_link['ln_id'],
-                    'ln_status_player_id' => 6173, //Link Removed
+                    'ln_status_play_id' => 6173, //Link Removed
                 ));
             }
 
@@ -867,10 +867,10 @@ class READ_model extends CI_Model
 
         $top_priority_in = false;
         foreach($this->READ_model->ln_fetch(array(
-            'ln_creator_player_id' => $en_id,
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_creator_play_id' => $en_id,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
 
             //See progress rate so far:
@@ -919,9 +919,9 @@ class READ_model extends CI_Model
 
         //Go ahead and remove from 🔴 READING LIST:
         $user_blogs = $this->READ_model->ln_fetch(array(
-            'ln_creator_player_id' => $en_id,
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_creator_play_id' => $en_id,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_parent_blog_id' => $in_id,
         ));
         if(count($user_blogs) < 1){
@@ -935,7 +935,7 @@ class READ_model extends CI_Model
         foreach($user_blogs as $ln){
             $this->READ_model->ln_update($ln['ln_id'], array(
                 'ln_content' => $stop_feedback,
-                'ln_status_player_id' => 6173, //ARCHIVED
+                'ln_status_play_id' => 6173, //ARCHIVED
             ), $en_id, $stop_method_id);
         }
 
@@ -951,7 +951,7 @@ class READ_model extends CI_Model
         //Validate Blog ID:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ));
         if (count($ins) != 1) {
             return false;
@@ -960,17 +960,17 @@ class READ_model extends CI_Model
 
         //Make sure not already added to this User's 🔴 READING LIST:
         if(!count($this->READ_model->ln_fetch(array(
-                'ln_creator_player_id' => $en_id,
+                'ln_creator_play_id' => $en_id,
                 'ln_parent_blog_id' => $in_id,
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )))){
 
             //Not added to their reading list so far, let's go ahead and add it:
             $in_rank = 1;
             $actionplan = $this->READ_model->ln_create(array(
-                'ln_type_player_id' => ( $recommender_in_id > 0 ? 7495 /* User Blog Recommended */ : 4235 /* User Blog Set */ ),
-                'ln_creator_player_id' => $en_id, //Belongs to this User
+                'ln_type_play_id' => ( $recommender_in_id > 0 ? 7495 /* User Blog Recommended */ : 4235 /* User Blog Set */ ),
+                'ln_creator_play_id' => $en_id, //Belongs to this User
                 'ln_parent_blog_id' => $ins[0]['in_id'], //The Blog they are adding
                 'ln_child_blog_id' => $recommender_in_id, //Store the recommended blog
                 'ln_order' => $in_rank, //Always place at the top of their reading list
@@ -980,9 +980,9 @@ class READ_model extends CI_Model
             //Move other blogs down in the reading list:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_id !=' => $actionplan['ln_id'], //Not the newly added blog
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_creator_player_id' => $en_id, //Belongs to this User
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_creator_play_id' => $en_id, //Belongs to this User
             ), array(''), 0, 0, array('ln_order' => 'ASC')) as $current_blogs){
 
                 //Increase rank:
@@ -1034,9 +1034,9 @@ class READ_model extends CI_Model
 
             //Make sure previous link unlocks have NOT happened before:
             $existing_expansions = $this->READ_model->ln_fetch(array(
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_player_id' => 6140, //🔴 READING LIST Conditional Read Unlocked
-                'ln_creator_player_id' => $en_id,
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_play_id' => 6140, //🔴 READING LIST Conditional Read Unlocked
+                'ln_creator_play_id' => $en_id,
                 'ln_parent_blog_id' => $in['in_id'],
                 'ln_child_blog_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
             ));
@@ -1054,8 +1054,8 @@ class READ_model extends CI_Model
                     'ln_parent_blog_id' => $in['in_id'],
                     'ln_child_blog_id' => $existing_expansions[0]['ln_child_blog_id'],
                     'ln_content' => 'completion_recursive_up() detected duplicate Label Expansion entries',
-                    'ln_type_player_id' => 4246, //Platform Bug Reports
-                    'ln_creator_player_id' => $en_id,
+                    'ln_type_play_id' => 4246, //Platform Bug Reports
+                    'ln_creator_play_id' => $en_id,
                 ));
                 */
 
@@ -1074,9 +1074,9 @@ class READ_model extends CI_Model
             //Detect potential conditional steps to be Unlocked:
             $found_match = 0;
             $locked_links = $this->READ_model->ln_fetch(array(
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_player_id' => 4229, //Blog Link Locked Read
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_play_id' => 4229, //Blog Link Locked Read
                 'ln_parent_blog_id' => $in['in_id'],
                 'ln_child_blog_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
             ), array('in_child'), 0, 0);
@@ -1117,8 +1117,8 @@ class READ_model extends CI_Model
 
                     //Unlock 🔴 READING LIST:
                     $this->READ_model->ln_create(array(
-                        'ln_type_player_id' => 6140, //🔴 READING LIST Conditional Read Unlocked
-                        'ln_creator_player_id' => $en_id,
+                        'ln_type_play_id' => 6140, //🔴 READING LIST Conditional Read Unlocked
+                        'ln_creator_play_id' => $en_id,
                         'ln_parent_blog_id' => $in['in_id'],
                         'ln_child_blog_id' => $locked_link['in_id'],
                         'ln_content' => $message,
@@ -1139,8 +1139,8 @@ class READ_model extends CI_Model
             if($found_match != 1){
                 $this->READ_model->ln_create(array(
                     'ln_content' => 'completion_recursive_up() found ['.$found_match.'] routing logic matches!',
-                    'ln_type_player_id' => 4246, //Platform Bug Reports
-                    'ln_creator_player_id' => $en_id,
+                    'ln_type_play_id' => 4246, //Platform Bug Reports
+                    'ln_creator_play_id' => $en_id,
                     'ln_parent_blog_id' => $in['in_id'],
                     'ln_metadata' => array(
                         'completion_rate' => $completion_rate,
@@ -1187,7 +1187,7 @@ class READ_model extends CI_Model
                     //Fetch parent blog:
                     $parent_ins = $this->BLOG_model->in_fetch(array(
                         'in_id' => $p_id,
-                        'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                     ));
 
                     //Now see if this child completion resulted in a full parent completion:
@@ -1268,11 +1268,11 @@ class READ_model extends CI_Model
          * */
 
         foreach($this->READ_model->ln_fetch(array(
-            'in_type_player_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //🔴 READING LIST Read Locked
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'in_type_play_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //🔴 READING LIST Read Locked
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
 
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_player_id' => 4228, //Blog Link Regular Read
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id' => 4228, //Blog Link Regular Read
             'ln_child_blog_id' => $in_id,
         ), array('in_parent')) as $in_locked_parent){
 
@@ -1298,9 +1298,9 @@ class READ_model extends CI_Model
 
 
         $in__children = $this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_player_id' => 4228, //Blog Link Regular Read
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_type_play_id' => 4228, //Blog Link Regular Read
             'ln_parent_blog_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
         if(count($in__children) < 1){
@@ -1323,7 +1323,7 @@ class READ_model extends CI_Model
          * OR Blogs are completed when a single child is completed
          *
          * */
-        $requires_all_children = ( $in['in_type_player_id'] == 6914 /* AND Lock, meaning all children are needed */ );
+        $requires_all_children = ( $in['in_type_play_id'] == 6914 /* AND Lock, meaning all children are needed */ );
 
         //Generate list of users who have completed it:
         $qualified_completed_users = array();
@@ -1336,8 +1336,8 @@ class READ_model extends CI_Model
 
                 //Always add all the first users to the full list:
                 $qualified_completed_users = $this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
                     'ln_parent_blog_id' => $child_in['in_id'],
                 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -1353,8 +1353,8 @@ class READ_model extends CI_Model
 
                     //Update list of qualified users:
                     $qualified_completed_users = $this->READ_model->ln_fetch(array(
-                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+                        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
                         'ln_parent_blog_id' => $child_in['in_id'],
                     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -1389,12 +1389,12 @@ class READ_model extends CI_Model
         //Fetch/Validate blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ));
         if (count($ins) < 1) {
             $this->READ_model->ln_create(array(
-                'ln_type_player_id' => 4246, //Platform Bug Reports
-                'ln_creator_player_id' => ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ),
+                'ln_type_play_id' => 4246, //Platform Bug Reports
+                'ln_creator_play_id' => ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ),
                 'ln_content' => 'step_echo() invalid blog ID',
                 'ln_parent_blog_id' => $in_id,
             ));
@@ -1409,7 +1409,7 @@ class READ_model extends CI_Model
 
                 //We cannot have a guest user on Messenger:
                 $this->READ_model->ln_create(array(
-                    'ln_type_player_id' => 4246, //Platform Bug Reports
+                    'ln_type_play_id' => 4246, //Platform Bug Reports
                     'ln_content' => 'read_echo() found guest user on Messenger',
                     'ln_parent_blog_id' => $in_id,
                 ));
@@ -1427,14 +1427,14 @@ class READ_model extends CI_Model
             //Fetch name:
             $ens = $this->PLAY_model->en_fetch(array(
                 'en_id' => $recipient_en['en_id'],
-                'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
             ));
 
             if(count($ens)){
                 $recipient_en = $ens[0];
             } else {
                 $this->READ_model->ln_create(array(
-                    'ln_type_player_id' => 4246, //Platform Bug Reports
+                    'ln_type_play_id' => 4246, //Platform Bug Reports
                     'ln_content' => 'read_echo() could not locate player',
                     'ln_parent_blog_id' => $in_id,
                 ));
@@ -1461,8 +1461,8 @@ class READ_model extends CI_Model
         }
 
         $in__messages = $this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_player_id' => 4231, //Blog Note Messages
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id' => 4231, //Blog Note Messages
             'ln_child_blog_id' => $ins[0]['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
         foreach ($in__messages as $message_ln) {
@@ -1477,8 +1477,8 @@ class READ_model extends CI_Model
 
         //Log Blog Viewed by User:
         $this->READ_model->ln_create(array(
-            'ln_creator_player_id' => ( isset($recipient_en['en_id']) ? intval($recipient_en['en_id']) : 0 ),
-            'ln_type_player_id' => 7610, //Blog Viewed by User
+            'ln_creator_play_id' => ( isset($recipient_en['en_id']) ? intval($recipient_en['en_id']) : 0 ),
+            'ln_type_play_id' => 7610, //Blog Viewed by User
             'ln_parent_blog_id' => $ins[0]['in_id'],
             'ln_order' => fetch_cookie_order('7610_'.$in_id),
         ));
@@ -1564,10 +1564,10 @@ class READ_model extends CI_Model
         if(!$push_message){
 
             $unlocked_steps = $this->READ_model->ln_fetch(array(
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                'ln_type_player_id' => 6140, //User Read Link Unlocked
-                'ln_creator_player_id' => $recipient_en['en_id'],
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'ln_type_play_id' => 6140, //User Read Link Unlocked
+                'ln_creator_play_id' => $recipient_en['en_id'],
                 'ln_parent_blog_id' => $ins[0]['in_id'],
             ), array('in_child'), 0);
 
@@ -1587,18 +1587,18 @@ class READ_model extends CI_Model
 
         //Fetch Children:
         $in__children = $this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_player_id' => 4228, //Blog Link Regular Read
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_type_play_id' => 4228, //Blog Link Regular Read
             'ln_parent_blog_id' => $ins[0]['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
 
         //Fetch progress history:
         $read_progress = $this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
-            'ln_creator_player_id' => $recipient_en['en_id'],
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+            'ln_creator_play_id' => $recipient_en['en_id'],
             'ln_parent_blog_id' => $ins[0]['in_id'],
         ));
 
@@ -1606,7 +1606,7 @@ class READ_model extends CI_Model
         $next_step_quick_replies = array();
 
 
-        if (in_array($ins[0]['in_type_player_id'], $this->config->item('en_ids_7712'))){
+        if (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7712'))){
 
             //SELECT ANSWER
 
@@ -1615,14 +1615,14 @@ class READ_model extends CI_Model
 
                 //Mark this as complete since there is no child to choose from:
                 if(!count($this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_player_id' => 12119, //READ ANSWER MISSING
-                    'ln_creator_player_id' => $recipient_en['en_id'],
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id' => 12119, //READ ANSWER MISSING
+                    'ln_creator_play_id' => $recipient_en['en_id'],
                     'ln_parent_blog_id' => $ins[0]['in_id'],
                 )))){
                     $this->READ_model->ln_create(array(
-                        'ln_type_player_id' => 12119, //READ ANSWER MISSING
-                        'ln_creator_player_id' => $recipient_en['en_id'],
+                        'ln_type_play_id' => 12119, //READ ANSWER MISSING
+                        'ln_creator_play_id' => $recipient_en['en_id'],
                         'ln_parent_blog_id' => $ins[0]['in_id'],
                     ));
                 }
@@ -1634,10 +1634,10 @@ class READ_model extends CI_Model
 
                 //Have they already selected answers? If so, show them their selection and focus on navigation:
                 $previously_answered = $this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
                     'ln_parent_blog_id' => $ins[0]['in_id'],
-                    'ln_creator_player_id' => $recipient_en['en_id'],
+                    'ln_creator_play_id' => $recipient_en['en_id'],
                 ), array('in_child'));
 
 
@@ -1682,13 +1682,13 @@ class READ_model extends CI_Model
 
                     $msg_quick_reply = array();
 
-                    if ($ins[0]['in_type_player_id'] == 6684) {
+                    if ($ins[0]['in_type_play_id'] == 6684) {
 
                         //SELECT ONE
                         $quick_replies_allowed = ( count($in__children) <= config_var(12124) );
                         $message_content = 'Select one option to continue:'."\n\n";
 
-                    } elseif ($ins[0]['in_type_player_id'] == 7231) {
+                    } elseif ($ins[0]['in_type_play_id'] == 7231) {
 
                         //SELECT SOME
                         $quick_replies_allowed = ( count($in__children)==1 );
@@ -1701,18 +1701,18 @@ class READ_model extends CI_Model
                     echo '<div class="selected_before '.( count($previously_answered)>0 ? 'hidden' : '' ).'">';
 
                     //HTML:
-                    if ($ins[0]['in_type_player_id'] == 6684) {
+                    if ($ins[0]['in_type_play_id'] == 6684) {
 
                         echo '<div class="montserrat padding-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE ANSWER:</div>';
 
-                    } elseif ($ins[0]['in_type_player_id'] == 7231) {
+                    } elseif ($ins[0]['in_type_play_id'] == 7231) {
 
                         echo '<div class="montserrat padding-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE OR MORE ANSWERS:</div>';
 
                     }
 
                     //Open for list to be printed:
-                    echo '<div class="list-group list-answers" in_type_player_id="'.$ins[0]['in_type_player_id'].'">';
+                    echo '<div class="list-group list-answers" in_type_play_id="'.$ins[0]['in_type_play_id'].'">';
 
                 }
 
@@ -1722,11 +1722,11 @@ class READ_model extends CI_Model
 
                     //Has this been previously selected?
                     $previously_selected = count($this->READ_model->ln_fetch(array(
-                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
+                        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
                         'ln_parent_blog_id' => $ins[0]['in_id'],
                         'ln_child_blog_id' => $child_in['in_id'],
-                        'ln_creator_player_id' => $recipient_en['en_id'],
+                        'ln_creator_play_id' => $recipient_en['en_id'],
                     )));
 
                     if ($push_message) {
@@ -1739,7 +1739,7 @@ class READ_model extends CI_Model
                             array_push($msg_quick_reply, array(
                                 'content_type' => 'text',
                                 'title' => 'NEXT',
-                                'payload' => 'ANSWERQUESTION_' . $ins[0]['in_type_player_id'] . '_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
+                                'payload' => 'ANSWERQUESTION_' . $ins[0]['in_type_play_id'] . '_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
                             ));
                         }
 
@@ -1749,11 +1749,11 @@ class READ_model extends CI_Model
 
                         echo '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
 
-                        if ($ins[0]['in_type_player_id'] == 6684) {
+                        if ($ins[0]['in_type_play_id'] == 6684) {
 
                             echo '<td class="icon-block check-icon"><i class="'.( $previously_selected ? 'fas fa-check-circle' : 'far fa-circle' ).'"></i></td>';
 
-                        } elseif ($ins[0]['in_type_player_id'] == 7231) {
+                        } elseif ($ins[0]['in_type_play_id'] == 7231) {
 
                             echo '<td class="icon-block check-icon"><i class="'.( $previously_selected ? 'fas fa-check-square' : 'far fa-square' ).'"></i></td>';
 
@@ -1776,11 +1776,11 @@ class READ_model extends CI_Model
 
                     if(!$quick_replies_allowed){
 
-                        if ($ins[0]['in_type_player_id'] == 6684) {
+                        if ($ins[0]['in_type_play_id'] == 6684) {
 
                             $message_content .= "\n\n".'Reply with a number between 1 - '.count($in__children).' to continue.';
 
-                        } elseif ($ins[0]['in_type_player_id'] == 7231) {
+                        } elseif ($ins[0]['in_type_play_id'] == 7231) {
 
                             $message_content .= "\n\n".'Reply with one or more numbers between 1 - '.count($in__children).' to continue (add space between). For example, to select the first option reply "1", or to select the first & ';
 
@@ -1811,12 +1811,12 @@ class READ_model extends CI_Model
                 }
             }
 
-        } elseif (in_array($ins[0]['in_type_player_id'], $this->config->item('en_ids_7309'))) {
+        } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7309'))) {
 
 
             if(count($read_progress)){
 
-                $progression_type_player_id = $read_progress[0]['ln_status_player_id'];
+                $progression_type_play_id = $read_progress[0]['ln_status_play_id'];
 
             } else {
 
@@ -1827,7 +1827,7 @@ class READ_model extends CI_Model
                 if(count($unlock_paths) > 0){
 
                     //Yes we have a path:
-                    $progression_type_player_id = 7486; //User Read Children Unlock
+                    $progression_type_play_id = 7486; //User Read Children Unlock
 
                     if($push_message){
                         echo 'Here are the blogs I recommend adding to your 🔴 READING LIST to move forward:';
@@ -1839,13 +1839,13 @@ class READ_model extends CI_Model
                     foreach ($unlock_paths as $key => $child_in) {
 
                         $child_progression_steps = $this->READ_model->ln_fetch(array(
-                            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
-                            'ln_creator_player_id' => $recipient_en['en_id'],
+                            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
+                            'ln_creator_play_id' => $recipient_en['en_id'],
                             'ln_parent_blog_id' => $child_in['in_id'],
-                            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                         ));
 
-                        $is_completed = ( count($child_progression_steps) > 0 && in_array($child_progression_steps[0]['ln_status_player_id'], $this->config->item('en_ids_7359')));
+                        $is_completed = ( count($child_progression_steps) > 0 && in_array($child_progression_steps[0]['ln_status_play_id'], $this->config->item('en_ids_7359')));
                         $is_next = ( count($next_step_quick_replies)==0 && !$is_completed );
 
                         if(!$push_message){
@@ -1880,18 +1880,18 @@ class READ_model extends CI_Model
                 } else {
 
                     //No path found:
-                    $progression_type_player_id = 7492; //User Read Dead End
+                    $progression_type_play_id = 7492; //User Read Dead End
 
                 }
             }
 
 
             //MEET REQUIREMENTS
-            if($ins[0]['in_type_player_id']==6907){
+            if($ins[0]['in_type_play_id']==6907){
 
                 //MEET ONE REQUIREMENT
 
-            } elseif($ins[0]['in_type_player_id']==6914) {
+            } elseif($ins[0]['in_type_play_id']==6914) {
 
                 //MEET ALL REQUIREMENTS
 
@@ -1930,7 +1930,7 @@ class READ_model extends CI_Model
 
         } else {
 
-            if ($ins[0]['in_type_player_id'] == 6677) {
+            if ($ins[0]['in_type_play_id'] == 6677) {
 
                 //READ ONLY
 
@@ -1939,8 +1939,8 @@ class READ_model extends CI_Model
 
                     //Log progress link:
                     $this->READ_model->ln_create(array(
-                        'ln_type_player_id' => 4559, //READ MESSAGES
-                        'ln_creator_player_id' => $recipient_en['en_id'],
+                        'ln_type_play_id' => 4559, //READ MESSAGES
+                        'ln_creator_play_id' => $recipient_en['en_id'],
                         'ln_parent_blog_id' => $ins[0]['in_id'],
                     ));
 
@@ -1952,7 +1952,7 @@ class READ_model extends CI_Model
                 //Always show the next list:
                 echo_in_list($ins[0]['in_id'], $in__children, $recipient_en, $push_message, '<span class="icon-block"><i class="far fa-chevron-circle-right"></i></span>UP NEXT');
 
-            } elseif ($ins[0]['in_type_player_id'] == 6683) {
+            } elseif ($ins[0]['in_type_play_id'] == 6683) {
 
                 //TEXT REPLY
                 if($push_message){
@@ -1963,7 +1963,7 @@ class READ_model extends CI_Model
                     echo '<div class="padding-top-down"><a class="btn btn-blog" href="javascript:void(0);" onsubmit="">Save & Continue</a></div>';
                 }
 
-            } elseif (in_array($ins[0]['in_type_player_id'], $this->config->item('en_ids_7751'))) {
+            } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7751'))) {
 
                 //FILE UPLOAD
                 if($push_message){
@@ -1972,7 +1972,7 @@ class READ_model extends CI_Model
 
                     echo '<p>Upload a file to continue.</p>';
                     echo '<span class="saving_result"></span>';
-                    echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_player_id'].'" /><label class=" btn btn-blog" for="fileType'.$ins[0]['in_type_player_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">Upload File</label>';
+                    echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_play_id'].'" /><label class=" btn btn-blog" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">Upload File</label>';
 
                 }
 
@@ -1986,8 +1986,8 @@ class READ_model extends CI_Model
                 );
 
                 $this->READ_model->ln_create(array(
-                    'ln_type_player_id' => 4246, //Platform Bug Reports
-                    'ln_creator_player_id' => $recipient_en['en_id'],
+                    'ln_type_play_id' => 4246, //Platform Bug Reports
+                    'ln_creator_play_id' => $recipient_en['en_id'],
                     'ln_content' => 'step_echo() unknown blog type',
                     'ln_parent_blog_id' => $in_id,
                 ));
@@ -2028,8 +2028,8 @@ class READ_model extends CI_Model
             //Should not happen, log error:
             $this->READ_model->ln_create(array(
                 'ln_content' => 'completion_marks() Detected user 🔴 READING LIST without in__metadata_common_steps value!',
-                'ln_type_player_id' => 4246, //Platform Bug Reports
-                'ln_creator_player_id' => $en_id,
+                'ln_type_play_id' => 4246, //Platform Bug Reports
+                'ln_creator_play_id' => $en_id,
                 'ln_parent_blog_id' => $in['in_id'],
             ));
 
@@ -2074,9 +2074,9 @@ class READ_model extends CI_Model
 
                 //Calculate min/max points for this based on answers:
                 foreach($this->READ_model->ln_fetch(array(
-                    'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_player_id' => 4228, //Blog Link Regular Read
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id' => 4228, //Blog Link Regular Read
                     'ln_parent_blog_id' => $question_in_id,
                     'ln_child_blog_id IN (' . join(',', $answers_in_ids) . ')' => null, //Limit to cached answers
                 ), array('in_child')) as $in_answer){
@@ -2109,22 +2109,22 @@ class READ_model extends CI_Model
 
             //Now let's check user answers to see what they have done:
             foreach($this->READ_model->ln_fetch(array(
-                'ln_creator_player_id' => $en_id, //Belongs to this User
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
+                'ln_creator_play_id' => $en_id, //Belongs to this User
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
                 'ln_parent_blog_id IN (' . join(',', $question_in_ids ) . ')' => null,
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )) as $expansion_in) {
 
                 //Addup data for this blog:
                 $metadata_this['steps_answered_count'] += 1;
 
                 //Calculate if answered:
-                if(in_array($expansion_in['ln_type_player_id'], $this->config->item('en_ids_7704') /* User Read Answered Successfully */)){
+                if(in_array($expansion_in['ln_type_play_id'], $this->config->item('en_ids_7704') /* User Read Answered Successfully */)){
 
                     //Fetch blog data:
                     $ins = $this->BLOG_model->in_fetch(array(
                         'in_id' => $expansion_in['ln_child_blog_id'],
-                        'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                     ));
 
                     if(count($ins) > 0){
@@ -2172,16 +2172,16 @@ class READ_model extends CI_Model
         //Count totals:
         $common_totals = $this->BLOG_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_read_time) as total_seconds');
 
         //Count completed for user:
         $common_completed = $this->READ_model->ln_fetch(array(
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
-            'ln_creator_player_id' => $en_id, //Belongs to this User
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
+            'ln_creator_play_id' => $en_id, //Belongs to this User
             'ln_parent_blog_id IN (' . join(',', $flat_common_steps ) . ')' => null,
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ), array('in_parent'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_read_time) as completed_seconds');
 
         //Calculate common steps and expansion steps recursively for this user:
@@ -2198,12 +2198,12 @@ class READ_model extends CI_Model
 
             //Now let's check user answers to see what they have done:
             foreach($this->READ_model->ln_fetch(array(
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7704') ) . ')' => null, //User Read Answered Successfully
-                'ln_creator_player_id' => $en_id, //Belongs to this User
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7704') ) . ')' => null, //User Read Answered Successfully
+                'ln_creator_play_id' => $en_id, //Belongs to this User
                 'ln_parent_blog_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_blog_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             ), array('in_child')) as $expansion_in) {
 
                 //Fetch recursive:
@@ -2223,12 +2223,12 @@ class READ_model extends CI_Model
 
             //Now let's check if user has unlocked any Miletones:
             foreach($this->READ_model->ln_fetch(array(
-                'ln_type_player_id' => 6140, //🔴 READING LIST Conditional Read Unlocked
-                'ln_creator_player_id' => $en_id, //Belongs to this User
+                'ln_type_play_id' => 6140, //🔴 READING LIST Conditional Read Unlocked
+                'ln_creator_play_id' => $en_id, //Belongs to this User
                 'ln_parent_blog_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_blog_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_conditional'])) . ')' => null,
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             ), array('in_child')) as $expansion_in) {
 
                 //Fetch recursive:
@@ -2283,10 +2283,10 @@ class READ_model extends CI_Model
         //Simply returns all the blog IDs for a user's 🔴 READING LIST:
         $player_read_ids = array();
         foreach($this->READ_model->ln_fetch(array(
-            'ln_creator_player_id' => $en_id,
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_creator_play_id' => $en_id,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ), array('in_parent'), 0) as $user_in){
             array_push($player_read_ids, intval($user_in['in_id']));
         }
@@ -2349,8 +2349,8 @@ class READ_model extends CI_Model
 
             //Log Error Link:
             $this->READ_model->ln_create(array(
-                'ln_type_player_id' => 4246, //Platform Bug Reports
-                'ln_creator_player_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
+                'ln_type_play_id' => 4246, //Platform Bug Reports
+                'ln_creator_play_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                 'ln_content' => 'dispatch_validate_message() returned error [' . $msg_dispatching['message'] . '] for input message [' . $input_message . ']',
                 'ln_metadata' => array(
                     'input_message' => $input_message,
@@ -2383,8 +2383,8 @@ class READ_model extends CI_Model
 
                         //Ooopsi, we did! Log error Transcation:
                         $this->READ_model->ln_create(array(
-                            'ln_type_player_id' => 4246, //Platform Bug Reports
-                            'ln_creator_player_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
+                            'ln_type_play_id' => 4246, //Platform Bug Reports
+                            'ln_creator_play_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                             'ln_content' => 'dispatch_message() failed to send message via Facebook Graph API. See Metadata log for more details.',
                             'ln_metadata' => array(
                                 'input_message' => $input_message,
@@ -2417,9 +2417,9 @@ class READ_model extends CI_Model
             if(isset($recipient_en['en_id']) && $push_message){
                 $this->READ_model->ln_create(array(
                     'ln_content' => $msg_dispatching['input_message'],
-                    'ln_type_player_id' => $output_message['message_type_en_id'],
-                    'ln_creator_player_id' => $recipient_en['en_id'],
-                    'ln_parent_player_id' => $msg_dispatching['ln_parent_player_id'], //Might be set if message had a referenced player
+                    'ln_type_play_id' => $output_message['message_type_en_id'],
+                    'ln_creator_play_id' => $recipient_en['en_id'],
+                    'ln_parent_play_id' => $msg_dispatching['ln_parent_play_id'], //Might be set if message had a referenced player
                     'ln_metadata' => array(
                         'input_message' => $input_message,
                         'output_message' => $output_message,
@@ -2611,7 +2611,7 @@ class READ_model extends CI_Model
             //Fetch full player data:
             $ens = $this->PLAY_model->en_fetch(array(
                 'en_id' => $recipient_en['en_id'],
-                'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
             ));
 
             if (count($ens) < 1) {
@@ -2636,10 +2636,10 @@ class READ_model extends CI_Model
         if ($push_message) {
 
             $user_messenger = $this->READ_model->ln_fetch(array(
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                'ln_parent_player_id' => 6196, //Mench Messenger
-                'ln_child_player_id' => $recipient_en['en_id'],
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                'ln_parent_play_id' => 6196, //Mench Messenger
+                'ln_child_play_id' => $recipient_en['en_id'],
                 'ln_external_id >' => 0,
             ));
 
@@ -2652,10 +2652,10 @@ class READ_model extends CI_Model
 
                 //See if they have an email:
                 $user_emails = $this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_child_player_id' => $recipient_en['en_id'],
-                    'ln_type_player_id' => 4255, //Linked Players Text (Email is text)
-                    'ln_parent_player_id' => 3288, //Mench Email
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_child_play_id' => $recipient_en['en_id'],
+                    'ln_type_play_id' => 4255, //Linked Players Text (Email is text)
+                    'ln_parent_play_id' => 3288, //Mench Email
                 ));
 
                 if(count($user_emails) > 0){
@@ -2694,10 +2694,10 @@ class READ_model extends CI_Model
 
             //Fetch recipient notification type:
             $lns_comm_level = $this->READ_model->ln_fetch(array(
-                'ln_parent_player_id IN (' . join(',', $this->config->item('en_ids_4454')) . ')' => null,
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                'ln_child_player_id' => $recipient_en['en_id'],
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_parent_play_id IN (' . join(',', $this->config->item('en_ids_4454')) . ')' => null,
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                'ln_child_play_id' => $recipient_en['en_id'],
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ));
 
             //Start validating communication settings we fetched to ensure everything is A-OK:
@@ -2716,17 +2716,17 @@ class READ_model extends CI_Model
                     'message' => 'User has more than 1 Notification Level parent player relation',
                 );
 
-            } elseif (!array_key_exists($lns_comm_level[0]['ln_parent_player_id'], $en_all_11058)) {
+            } elseif (!array_key_exists($lns_comm_level[0]['ln_parent_play_id'], $en_all_11058)) {
 
                 return array(
                     'status' => 0,
-                    'message' => 'Fetched unknown Notification Level [' . $lns_comm_level[0]['ln_parent_player_id'] . ']',
+                    'message' => 'Fetched unknown Notification Level [' . $lns_comm_level[0]['ln_parent_play_id'] . ']',
                 );
 
             } else {
 
                 //All good, Set notification type:
-                $notification_type = $en_all_11058[$lns_comm_level[0]['ln_parent_player_id']]['m_desc'];
+                $notification_type = $en_all_11058[$lns_comm_level[0]['ln_parent_play_id']]['m_desc'];
 
             }
         }
@@ -2879,17 +2879,17 @@ class READ_model extends CI_Model
             if(!($this->uri->segment(1)=='play' && $this->uri->segment(2)==$string_references['ref_players'][0])){
 
                 foreach ($this->READ_model->ln_fetch(array(
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Player-to-Player URL
-                    'ln_child_player_id' => $string_references['ref_players'][0], //This child player
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'en_status_player_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Player-to-Player URL
+                    'ln_child_play_id' => $string_references['ref_players'][0], //This child player
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
                 ), array('en_parent'), 0) as $parent_en) {
 
-                    $is_media = array_key_exists($parent_en['ln_type_player_id'], $en_all_11059);
+                    $is_media = array_key_exists($parent_en['ln_type_play_id'], $en_all_11059);
 
                     //Any Type of URL: Generic, Embed, Video, Audio, Image & File
 
-                    if ($parent_en['ln_type_player_id'] == 4257) {
+                    if ($parent_en['ln_type_play_id'] == 4257) {
 
                         $parents_media_shown++;
 
@@ -2906,7 +2906,7 @@ class READ_model extends CI_Model
 
                             //Generic URL:
                             array_push($fb_media_attachments, array(
-                                'ln_type_player_id' => 4552, //Text Message Sent
+                                'ln_type_play_id' => 4552, //Text Message Sent
                                 'ln_content' => $ln_content,
                                 'fb_att_id' => 0,
                                 'fb_att_type' => null,
@@ -2937,17 +2937,17 @@ class READ_model extends CI_Model
 
                         //Push raw file to Media Array:
                         array_push($fb_media_attachments, array(
-                            'ln_type_player_id' => $master_media_sent_conv[$parent_en['ln_type_player_id']],
+                            'ln_type_play_id' => $master_media_sent_conv[$parent_en['ln_type_play_id']],
                             'ln_content' => ($fb_att_id > 0 ? null : $parent_en['ln_content']),
                             'fb_att_id' => $fb_att_id,
-                            'fb_att_type' => $en_all_11059[$parent_en['ln_type_player_id']]['m_desc'],
+                            'fb_att_type' => $en_all_11059[$parent_en['ln_type_play_id']]['m_desc'],
                         ));
 
-                    } elseif($push_message && $parent_en['ln_type_player_id'] == 4256){
+                    } elseif($push_message && $parent_en['ln_type_play_id'] == 4256){
 
                         //Generic URL:
                         array_push($fb_media_attachments, array(
-                            'ln_type_player_id' => 4552, //Text Message Sent
+                            'ln_type_play_id' => 4552, //Text Message Sent
                             'ln_content' => $parent_en['ln_content'],
                             'fb_att_id' => 0,
                             'fb_att_type' => null,
@@ -2960,7 +2960,7 @@ class READ_model extends CI_Model
                         }
 
                         //HTML Format, append content to current output message:
-                        $player_appendix .= '<div class="player-appendix">' . echo_url_type($parent_en['ln_content'], $parent_en['ln_type_player_id']) . '</div>';
+                        $player_appendix .= '<div class="player-appendix">' . echo_url_type($parent_en['ln_content'], $parent_en['ln_type_play_id']) . '</div>';
 
                     }
                 }
@@ -2996,7 +2996,7 @@ class READ_model extends CI_Model
                 } else {
 
                     //Show player link with status:
-                    $output_body_message = str_replace('@' . $string_references['ref_players'][0], '<span class="'.( $parents_media_shown > 0 ? superpower_active(10983) : '' ).'">'.( !in_array($ens[0]['en_status_player_id'], $this->config->item('en_ids_7357')) ? '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_player_id']]['m_icon'].'</span>' : '' ).'<span class="icon-block">'.echo_en_icon($ens[0]['en_icon']).'</span><a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/play/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a></span>', $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_players'][0], '<span class="'.( $parents_media_shown > 0 ? superpower_active(10983) : '' ).'">'.( !in_array($ens[0]['en_status_play_id'], $this->config->item('en_ids_7357')) ? '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_play_id']]['m_icon'].'</span>' : '' ).'<span class="icon-block">'.echo_en_icon($ens[0]['en_icon']).'</span><a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/play/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a></span>', $output_body_message);
 
                 }
 
@@ -3014,7 +3014,7 @@ class READ_model extends CI_Model
 
             $referenced_ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => $string_references['ref_blogs'][0], //Note: We will only have a single reference per message
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
             ));
             if (count($referenced_ins) < 1) {
                 return array(
@@ -3029,7 +3029,7 @@ class READ_model extends CI_Model
                 //Fetch the referenced blog:
                 $upvote_child_ins = $this->BLOG_model->in_fetch(array(
                     'in_id' => $message_in_id,
-                    'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
                 ));
                 if (count($upvote_child_ins) < 1) {
                     return array(
@@ -3047,10 +3047,10 @@ class READ_model extends CI_Model
 
                         //Reference is not the logged-in trainer, let's check to make sure it's an expert source
                         if(!count($this->READ_model->ln_fetch(array(
-                            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                            'ln_child_player_id' => $string_references['ref_players'][0],
-                            'ln_parent_player_id IN ('.join(',' , $this->config->item('en_ids_4983')).')' => null,
-                            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                            'ln_child_play_id' => $string_references['ref_players'][0],
+                            'ln_parent_play_id IN ('.join(',' , $this->config->item('en_ids_4983')).')' => null,
+                            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                         )))){
                             return array(
                                 'status' => 0,
@@ -3101,7 +3101,7 @@ class READ_model extends CI_Model
          * text message has a referenced player with a one or more
          * media file (Like video, image, file or audio).
          *
-         * The format of this will be array( $ln_child_player_id => $ln_content )
+         * The format of this will be array( $ln_child_play_id => $ln_content )
          * to define both message and it's type.
          *
          * See all sent message types here: https://mench.com/play/4280
@@ -3179,9 +3179,9 @@ class READ_model extends CI_Model
                         'push_message' => $push_message,
                         'quick_replies' => $quick_replies,
                     ),
-                    'ln_type_player_id' => 4246, //Platform Bug Reports
-                    'ln_creator_player_id' => $recipient_en['en_id'],
-                    'ln_parent_player_id' => $message_type_en_id,
+                    'ln_type_play_id' => 4246, //Platform Bug Reports
+                    'ln_creator_play_id' => $recipient_en['en_id'],
+                    'ln_parent_play_id' => $message_type_en_id,
                     'ln_child_blog_id' => $message_in_id,
                 ));
 
@@ -3236,7 +3236,7 @@ class READ_model extends CI_Model
 
                     //Add to output message:
                     array_push($output_messages, array(
-                        'message_type_en_id' => $fb_media_attachment['ln_type_player_id'],
+                        'message_type_en_id' => $fb_media_attachment['ln_type_play_id'],
                         'message_body' => array(
                             'recipient' => array(
                                 'id' => $user_messenger[0]['ln_external_id'],
@@ -3268,7 +3268,7 @@ class READ_model extends CI_Model
             'input_message' => trim($input_message),
             'output_messages' => $output_messages,
             'user_chat_channel' => $user_chat_channel,
-            'ln_parent_player_id' => (count($string_references['ref_players']) > 0 ? $string_references['ref_players'][0] : 0),
+            'ln_parent_play_id' => (count($string_references['ref_players']) > 0 ? $string_references['ref_players'][0] : 0),
             'ln_parent_blog_id' => (count($string_references['ref_blogs']) > 0 ? $string_references['ref_blogs'][0] : 0),
         );
 
@@ -3343,7 +3343,7 @@ class READ_model extends CI_Model
             $message_error = 'READ_model->facebook_graph() failed to ' . $action . ' ' . $graph_url;
             $this->READ_model->ln_create(array(
                 'ln_content' => $message_error,
-                'ln_type_player_id' => 4246, //Platform Bug Reports
+                'ln_type_play_id' => 4246, //Platform Bug Reports
                 'ln_metadata' => $ln_metadata,
             ));
 
@@ -3371,14 +3371,14 @@ class READ_model extends CI_Model
 
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $question_in_id,
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ));
         if (!count($ins)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid blog ID',
             ));
-        } elseif (!in_array($ins[0]['in_type_player_id'], $this->config->item('en_ids_7712'))) {
+        } elseif (!in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7712'))) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Blog type',
@@ -3387,10 +3387,10 @@ class READ_model extends CI_Model
 
         //See if we had previously answered:
         $previously_answered = $this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
             'ln_parent_blog_id' => $ins[0]['in_id'],
-            'ln_creator_player_id' => $en_id,
+            'ln_creator_play_id' => $en_id,
         ), array('in_child'));
 
         //See if any of previous answers need to be removed;
@@ -3400,7 +3400,7 @@ class READ_model extends CI_Model
             foreach ($previously_answered as $previously_answer){
                 if(!in_array($previously_answer['in_id'], $answer_in_ids)){
                     $answers_newly_removed += $this->READ_model->ln_update($previously_answer['ln_id'], array(
-                        'ln_status_player_id' => 6173, //Link Removed
+                        'ln_status_play_id' => 6173, //Link Removed
                     ), $en_id, 12129 /* READ ANSWER ARCHIVED */);
                 } else {
                     array_push($already_answered, $previously_answer['in_id']);
@@ -3419,13 +3419,13 @@ class READ_model extends CI_Model
             //Validate child blog:
             $child_ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => $answer_in_id,
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             ));
             if(!count($child_ins)){
                 $this->READ_model->ln_create(array(
                     'ln_content' => 'read_answer() selected unpublished answer',
-                    'ln_type_player_id' => 4246, //Platform Bug Reports
-                    'ln_creator_player_id' => $en_id,
+                    'ln_type_play_id' => 4246, //Platform Bug Reports
+                    'ln_creator_play_id' => $en_id,
                     'ln_parent_blog_id' => $ins[0]['in_id'],
                     'ln_child_blog_id' => $child_ins[0]['in_id'],
                 ));
@@ -3436,8 +3436,8 @@ class READ_model extends CI_Model
             if(!in_array($child_ins[0]['in_id'], $already_answered)){
 
                 $this->READ_model->ln_create(array(
-                    'ln_type_player_id' => $answer_index[$ins[0]['in_type_player_id']],
-                    'ln_creator_player_id' => $en_id,
+                    'ln_type_play_id' => $answer_index[$ins[0]['in_type_play_id']],
+                    'ln_creator_play_id' => $en_id,
                     'ln_parent_blog_id' => $ins[0]['in_id'],
                     'ln_child_blog_id' => $child_ins[0]['in_id'],
                 ));
@@ -3521,13 +3521,13 @@ class READ_model extends CI_Model
                 //User wants to completely unsubscribe from Mench:
                 $removed_blogs = 0;
                 foreach ($this->READ_model->ln_fetch(array(
-                    'ln_creator_player_id' => $en['en_id'],
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_creator_play_id' => $en['en_id'],
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 )) as $ln) {
                     $removed_blogs++;
                     $this->READ_model->ln_update($ln['ln_id'], array(
-                        'ln_status_player_id' => 6173, //Link Removed
+                        'ln_status_play_id' => 6173, //Link Removed
                     ), $en['en_id'], 6155 /* User Blog Cancelled */);
                 }
 
@@ -3544,9 +3544,9 @@ class READ_model extends CI_Model
 
                 //User wants to Remove a specific 🔴 READING LIST, validate it:
                 $user_blogs = $this->READ_model->ln_fetch(array(
-                    'ln_creator_player_id' => $en['en_id'],
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_creator_play_id' => $en['en_id'],
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_parent_blog_id' => $action_unsubscribe,
                 ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -3560,14 +3560,14 @@ class READ_model extends CI_Model
 
                 //Update status for this single 🔴 READING LIST:
                 $this->READ_model->ln_update($user_blogs[0]['ln_id'], array(
-                    'ln_status_player_id' => 6173, //Link Removed
+                    'ln_status_play_id' => 6173, //Link Removed
                 ), $en['en_id'], 6155 /* User Blog Cancelled */);
 
                 //Re-sort remaining 🔴 READING LIST blogs:
                 foreach($this->READ_model->ln_fetch(array(
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                    'ln_creator_player_id' => $en['en_id'], //Belongs to this User
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+                    'ln_creator_play_id' => $en['en_id'], //Belongs to this User
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
                     $this->READ_model->ln_update($ln['ln_id'], array(
                         'ln_order' => ($count+1),
@@ -3612,7 +3612,7 @@ class READ_model extends CI_Model
             $in_id = intval($quick_reply_payload);
             $ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => $in_id,
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             ));
             if (count($ins) < 1) {
 
@@ -3676,7 +3676,7 @@ class READ_model extends CI_Model
             //Initiating a BLOG 🔴 READING LIST:
             $ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => $in_id,
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             ));
 
             if (count($ins) != 1) {
@@ -3688,9 +3688,9 @@ class READ_model extends CI_Model
 
             //Make sure blog has not already been added to user 🔴 READING LIST:
             if (count($this->READ_model->ln_fetch(array(
-                    'ln_creator_player_id' => $en['en_id'],
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_creator_play_id' => $en['en_id'],
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_parent_blog_id' => $ins[0]['in_id'],
                 ))) > 0) {
 
@@ -3751,8 +3751,8 @@ class READ_model extends CI_Model
 
                 //Log as 🔴 READING LIST Considered:
                 $this->READ_model->ln_create(array(
-                    'ln_creator_player_id' => $en['en_id'],
-                    'ln_type_player_id' => 6149, //🔴 READING LIST Blog Considered
+                    'ln_creator_play_id' => $en['en_id'],
+                    'ln_type_play_id' => 6149, //🔴 READING LIST Blog Considered
                     'ln_parent_blog_id' => $ins[0]['in_id'],
                     'ln_content' => $overview_message, //A copy of their message
                 ));
@@ -3866,14 +3866,14 @@ class READ_model extends CI_Model
 
             //Extract variables:
             $quickreply_parts = explode('_', one_two_explode('ANSWERQUESTION_', '', $quick_reply_payload));
-            $progression_type_player_id = intval($quickreply_parts[0]);
+            $progression_type_play_id = intval($quickreply_parts[0]);
             $question_in_id = intval($quickreply_parts[1]);
             $answer_in_id = intval($quickreply_parts[2]);
 
-            if($question_in_id < 1 || $answer_in_id < 1 || $progression_type_player_id < 1){
+            if($question_in_id < 1 || $answer_in_id < 1 || $progression_type_play_id < 1){
                 return array(
                     'status' => 0,
-                    'message' => 'ANSWERQUESTION_ missing core variables ['.$question_in_id.'] & ['.$answer_in_id.'] & ['.$progression_type_player_id.']',
+                    'message' => 'ANSWERQUESTION_ missing core variables ['.$question_in_id.'] & ['.$answer_in_id.'] & ['.$progression_type_play_id.']',
                 );
             }
 
@@ -3881,11 +3881,11 @@ class READ_model extends CI_Model
             //Validate Answer Blog:
             $answer_ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => $answer_in_id,
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             ));
             $question_ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => $question_in_id,
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             ));
             if(count($answer_ins) < 1 || count($question_ins) < 1){
                 return array(
@@ -3897,10 +3897,10 @@ class READ_model extends CI_Model
 
             //We should already have a link for question, so let's find and update it:
             $pending_answer_links = $this->READ_model->ln_fetch(array(
-                'ln_creator_player_id' => $en['en_id'],
-                'ln_type_player_id' => $progression_type_player_id,
+                'ln_creator_play_id' => $en['en_id'],
+                'ln_type_play_id' => $progression_type_play_id,
                 'ln_parent_blog_id' => $question_in_id,
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             ));
             if(count($pending_answer_links) > 0){
 
@@ -3910,7 +3910,7 @@ class READ_model extends CI_Model
                     //We just found a pending answer, so mark it as published while saving the answer:
                     $this->READ_model->ln_update($ln['ln_id'], array(
                         'ln_child_blog_id' => $answer_in_id, //Save answer
-                        'ln_status_player_id' => 6176, //Link Published
+                        'ln_status_play_id' => 6176, //Link Published
                         'ln_timestamp' => date("Y-m-d H:i:s"),
                     ));
 
@@ -4000,10 +4000,10 @@ class READ_model extends CI_Model
         if (in_array($fb_received_message, array('stats', 'stat', 'statistics'))) {
 
             $user_blogs = $this->READ_model->ln_fetch(array(
-                'ln_creator_player_id' => $en['en_id'],
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'ln_creator_play_id' => $en['en_id'],
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
             if(count($user_blogs)==0){
@@ -4056,8 +4056,8 @@ class READ_model extends CI_Model
 
             //Log command trigger:
             $this->READ_model->ln_create(array(
-                'ln_creator_player_id' => $en['en_id'],
-                'ln_type_player_id' => 6556, //User Commanded Stats
+                'ln_creator_play_id' => $en['en_id'],
+                'ln_type_play_id' => 6556, //User Commanded Stats
                 'ln_content' => $message,
             ));
 
@@ -4068,8 +4068,8 @@ class READ_model extends CI_Model
 
             //Log command trigger:
             $this->READ_model->ln_create(array(
-                'ln_creator_player_id' => $en['en_id'],
-                'ln_type_player_id' => 6559, //User Commanded Next
+                'ln_creator_play_id' => $en['en_id'],
+                'ln_type_play_id' => 6559, //User Commanded Next
                 'ln_parent_blog_id' => $next_in_id,
             ));
 
@@ -4102,8 +4102,8 @@ class READ_model extends CI_Model
 
             //Log command trigger:
             $this->READ_model->ln_create(array(
-                'ln_creator_player_id' => $en['en_id'],
-                'ln_type_player_id' => 6560, //User Commanded Skip
+                'ln_creator_play_id' => $en['en_id'],
+                'ln_type_play_id' => 6560, //User Commanded Skip
                 'ln_parent_blog_id' => $next_in_id,
             ));
 
@@ -4111,10 +4111,10 @@ class READ_model extends CI_Model
 
             //List their 🔴 READING LIST blogs and let user choose which one to unsubscribe:
             $user_blogs = $this->READ_model->ln_fetch(array(
-                'ln_creator_player_id' => $en['en_id'],
-                'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'ln_creator_play_id' => $en['en_id'],
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             ), array('in_parent'), 10 /* Max quick replies allowed */, 0, array('ln_order' => 'ASC'));
 
 
@@ -4182,8 +4182,8 @@ class READ_model extends CI_Model
 
             //Log command trigger:
             $this->READ_model->ln_create(array(
-                'ln_creator_player_id' => $en['en_id'],
-                'ln_type_player_id' => 6578, //User Text Commanded Stop
+                'ln_creator_play_id' => $en['en_id'],
+                'ln_type_play_id' => 6578, //User Text Commanded Stop
                 'ln_content' => $message,
                 'ln_metadata' => $quick_replies,
             ));
@@ -4219,7 +4219,7 @@ class READ_model extends CI_Model
                 //Fetch metadata:
                 $ins = $this->BLOG_model->in_fetch(array(
                     'in_id' => $alg['alg_obj_id'],
-                    'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                 ));
                 if(count($ins) < 1){
                     continue;
@@ -4227,9 +4227,9 @@ class READ_model extends CI_Model
 
                 //Make sure not already in 🔴 READING LIST:
                 if(count($this->READ_model->ln_fetch(array(
-                        'ln_creator_player_id' => $en['en_id'],
-                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_creator_play_id' => $en['en_id'],
+                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+                        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                         'ln_parent_blog_id' => $alg['alg_obj_id'],
                     ))) > 0){
                     continue;
@@ -4260,8 +4260,8 @@ class READ_model extends CI_Model
                     'input_data' => $master_command,
                     'output' => $search_results,
                 ),
-                'ln_creator_player_id' => $en['en_id'], //user who searched
-                'ln_type_player_id' => 4275, //User Text Command Search for
+                'ln_creator_play_id' => $en['en_id'], //user who searched
+                'ln_type_play_id' => 4275, //User Text Command Search for
             ));
 
 
@@ -4317,8 +4317,8 @@ class READ_model extends CI_Model
             //We could not match the user command to any other command...
             //Now try to fetch the last quick reply that the user received from us:
             $last_quick_replies = $this->READ_model->ln_fetch(array(
-                'ln_creator_player_id' => $en['en_id'],
-                'ln_type_player_id' => 6563, //User Received Quick Reply
+                'ln_creator_play_id' => $en['en_id'],
+                'ln_type_play_id' => 6563, //User Received Quick Reply
             ), array(), 1);
 
             if(count($last_quick_replies) > 0){
@@ -4343,8 +4343,8 @@ class READ_model extends CI_Model
                                 $this->READ_model->ln_create(array(
                                     'ln_content' => 'digest_received_payload() for custom response ['.$fb_received_message.'] returned error ['.$quick_reply_results['message'].']',
                                     'ln_metadata' => $ln_metadata,
-                                    'ln_type_player_id' => 4246, //Platform Bug Reports
-                                    'ln_creator_player_id' => $en['en_id'],
+                                    'ln_type_play_id' => 4246, //Platform Bug Reports
+                                    'ln_creator_play_id' => $en['en_id'],
                                     'ln_parent_read_id' => $last_quick_replies[0]['ln_id'],
                                 ));
 
@@ -4352,8 +4352,8 @@ class READ_model extends CI_Model
 
                                 //All good, log link:
                                 $this->READ_model->ln_create(array(
-                                    'ln_creator_player_id' => $en['en_id'],
-                                    'ln_type_player_id' => 4460, //User Sent Answer
+                                    'ln_creator_play_id' => $en['en_id'],
+                                    'ln_type_play_id' => 4460, //User Sent Answer
                                     'ln_parent_read_id' => $last_quick_replies[0]['ln_id'],
                                     'ln_content' => $fb_received_message,
                                 ));
@@ -4373,8 +4373,8 @@ class READ_model extends CI_Model
             //Let's check to see if a Mench Trainer has not started a manual conversation with them via Facebook Inbox Chat:
             if (count($this->READ_model->ln_fetch(array(
                     'ln_order' => 1, //A HACK to identify messages sent from us via Facebook Page Inbox
-                    'ln_creator_player_id' => $en['en_id'],
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //User Received Messages with Messenger
+                    'ln_creator_play_id' => $en['en_id'],
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //User Received Messages with Messenger
                     'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
                 ), array(), 1)) > 0) {
 
@@ -4396,9 +4396,9 @@ class READ_model extends CI_Model
 
             //Log link:
             $this->READ_model->ln_create(array(
-                'ln_creator_player_id' => $en['en_id'], //User who initiated this message
+                'ln_creator_play_id' => $en['en_id'], //User who initiated this message
                 'ln_content' => $fb_received_message,
-                'ln_type_player_id' => 4287, //Log Unrecognizable Message Received
+                'ln_type_play_id' => 4287, //Log Unrecognizable Message Received
             ));
 
             //Call to Action: Does this user have any 🔴 READING LISTs?

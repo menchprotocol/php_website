@@ -49,8 +49,8 @@ $(document).ready(function () {
     });
 
     //Lookout for blog link related changes:
-    $('#ln_status_player_id').change(function () {
-        if (parseInt($('#ln_status_player_id').find(":selected").val()) == 6173 /* Link Removed */ ) {
+    $('#ln_status_play_id').change(function () {
+        if (parseInt($('#ln_status_play_id').find(":selected").val()) == 6173 /* Link Removed */ ) {
             //About to delete? Notify them:
             $('.notify_unlink_en').removeClass('hidden');
         } else {
@@ -62,9 +62,9 @@ $(document).ready(function () {
         mass_action_ui();
     });
 
-    $('#en_status_player_id').change(function () {
+    $('#en_status_play_id').change(function () {
 
-        if (parseInt($('#en_status_player_id').find(":selected").val()) == 6178 /* Player Removed */) {
+        if (parseInt($('#en_status_play_id').find(":selected").val()) == 6178 /* Player Removed */) {
 
             //Notify Trainer:
             $('.notify_en_remove').removeClass('hidden');
@@ -415,7 +415,7 @@ function en_modify_load(en_id, ln_id) {
     var en_full_name = $(".en_name_" + en_id + ":first").text();
     $('#en_name').val(en_full_name.toUpperCase()).focus();
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
-    $('#en_status_player_id').val($(".en___" + en_id + ":first").attr('en-status'));
+    $('#en_status_play_id').val($(".en___" + en_id + ":first").attr('en-status'));
     $('.save_player_changes').html('');
     $('.player_remove_stats').html('');
 
@@ -432,7 +432,7 @@ function en_modify_load(en_id, ln_id) {
     //Only show unlink button if not level 1
     if (parseInt(ln_id) > 0) {
 
-        $('#ln_status_player_id').val($(".en___" + en_id + ":first").attr('ln-status'));
+        $('#ln_status_play_id').val($(".en___" + en_id + ":first").attr('ln-status'));
         $('#en_link_count').val('0');
 
 
@@ -588,12 +588,12 @@ function en_modify_save() {
         en_id: parseInt($('#modifybox').attr('player-id')),
         en_name: $('#en_name').val().toUpperCase(),
         en_icon: $('#en_icon').val(),
-        en_status_player_id: $('#en_status_player_id').val(), //The new status (might not have changed too)
+        en_status_play_id: $('#en_status_play_id').val(), //The new status (might not have changed too)
         en_merge: $('#en_merge').val(),
         //Link data:
         ln_id: parseInt($('#modifybox').attr('player-link-id')),
         ln_content: $('#ln_content').val(),
-        ln_status_player_id: $('#ln_status_player_id').val(),
+        ln_status_play_id: $('#ln_status_play_id').val(),
     };
 
     //Show spinner:
@@ -642,8 +642,8 @@ function en_modify_save() {
 
 
                 //Player Status:
-                $(".en___" + modify_data['en_id']).attr('en-status', modify_data['en_status_player_id']);
-                $('.en_status_player_id_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6177[modify_data['en_status_player_id']]["m_name"] + ': ' + js_en_all_6177[modify_data['en_status_player_id']]["m_desc"] + '">' + js_en_all_6177[modify_data['en_status_player_id']]["m_icon"] + '</span>');
+                $(".en___" + modify_data['en_id']).attr('en-status', modify_data['en_status_play_id']);
+                $('.en_status_play_id_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6177[modify_data['en_status_play_id']]["m_name"] + ': ' + js_en_all_6177[modify_data['en_status_play_id']]["m_desc"] + '">' + js_en_all_6177[modify_data['en_status_play_id']]["m_icon"] + '</span>');
 
 
                 //Player Icon:
@@ -671,11 +671,11 @@ function en_modify_save() {
 
 
                     //Link Icon:
-                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + en_all_4592[data.js_ln_type_player_id]["m_name"] + ': ' + en_all_4592[data.js_ln_type_player_id]["m_desc"] + '">' + en_all_4592[data.js_ln_type_player_id]["m_icon"] + '</span>');
+                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + en_all_4592[data.js_ln_type_play_id]["m_name"] + ': ' + en_all_4592[data.js_ln_type_play_id]["m_desc"] + '">' + en_all_4592[data.js_ln_type_play_id]["m_icon"] + '</span>');
 
                     //Link Status:
-                    $(".en___" + modify_data['en_id']).attr('ln-status', modify_data['ln_status_player_id'])
-                    $('.ln_status_player_id_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6186[modify_data['ln_status_player_id']]["m_name"] + ': ' + js_en_all_6186[modify_data['ln_status_player_id']]["m_desc"] + '">' + js_en_all_6186[modify_data['ln_status_player_id']]["m_icon"] + '</span>');
+                    $(".en___" + modify_data['en_id']).attr('ln-status', modify_data['ln_status_play_id'])
+                    $('.ln_status_play_id_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6186[modify_data['ln_status_play_id']]["m_name"] + ': ' + js_en_all_6186[modify_data['ln_status_play_id']]["m_desc"] + '">' + js_en_all_6186[modify_data['ln_status_play_id']]["m_icon"] + '</span>');
 
                 }
 

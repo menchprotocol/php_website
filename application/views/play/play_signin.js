@@ -61,9 +61,9 @@ function vote_channel(en_chosen){
 
     //Cast Vote:
     js_ln_create({
-        ln_type_player_id: 12106,
-        ln_parent_player_id: 12105,
-        ln_child_player_id: en_chosen,
+        ln_type_play_id: 12106,
+        ln_parent_play_id: 12105,
+        ln_child_play_id: en_chosen,
     });
 
     $('.vote-results').html('Vote successfully casted. Choose a reading platform to continue.');

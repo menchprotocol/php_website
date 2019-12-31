@@ -31,7 +31,7 @@ foreach ($user_blogs as $priority => $ln) {
 
         //Fetch primary author:
         $authors = $this->READ_model->ln_fetch(array(
-            'ln_type_player_id' => 4250,
+            'ln_type_play_id' => 4250,
             'ln_child_blog_id' => $ln['in_id'],
         ), array('en_creator'), 1);
 

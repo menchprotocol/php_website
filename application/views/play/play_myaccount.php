@@ -44,10 +44,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             } elseif($acc_en_id==3288 /* Mench Email */){
 
                 $user_emails = $this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_child_player_id' => $session_en['en_id'],
-                    'ln_type_player_id' => 4255, //Linked Players Text (Email is text)
-                    'ln_parent_player_id' => 3288, //Mench Email
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_child_play_id' => $session_en['en_id'],
+                    'ln_type_play_id' => 4255, //Linked Players Text (Email is text)
+                    'ln_parent_play_id' => 3288, //Mench Email
                 ));
 
                 echo '<span class="white-wrapper"><input type="email" id="en_email" class="form-control border" value="'.( count($user_emails) > 0 ? $user_emails[0]['ln_content'] : '' ).'" placeholder="you@gmail.com" /></span>
@@ -63,10 +63,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             } elseif($acc_en_id==4783 /* Phone */){
 
                 $user_phones = $this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_child_player_id' => $session_en['en_id'],
-                    'ln_type_player_id' => 4319, //Phone are of type number
-                    'ln_parent_player_id' => 4783, //Phone Number
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_child_play_id' => $session_en['en_id'],
+                    'ln_type_play_id' => 4319, //Phone are of type number
+                    'ln_parent_play_id' => 4783, //Phone Number
                 ));
 
                 echo '<span class="white-wrapper"><input type="number" id="en_phone" class="form-control border" value="'.( count($user_phones) > 0 ? $user_phones[0]['ln_content'] : '' ).'" placeholder="Set phone number..." /></span>
@@ -76,10 +76,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             } elseif($acc_en_id==6123 /* Social Profiles */){
 
                 $user_social_profiles = $this->READ_model->ln_fetch(array(
-                    'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_player_id' => 4256, //Generic URL
-                    'ln_parent_player_id IN ('.join(',', $this->config->item('en_ids_6123')).')' => null, //Any social profile
-                    'ln_child_player_id' => $session_en['en_id'], //For this user
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id' => 4256, //Generic URL
+                    'ln_parent_play_id IN ('.join(',', $this->config->item('en_ids_6123')).')' => null, //Any social profile
+                    'ln_child_play_id' => $session_en['en_id'], //For this user
                 ));
 
                 echo '<script> var en_ids_6123 = ' . json_encode($this->config->item('en_ids_6123')) . '; </script>'; //Used for JS variables:
@@ -87,7 +87,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 echo '<table style="width: 100%;">';
                 foreach($this->config->item('en_all_6123') as $acc_en_id => $acc_detail){
                     //Do we have this social profile?
-                    $profile_array = filter_array($user_social_profiles, 'ln_parent_player_id', $acc_en_id);
+                    $profile_array = filter_array($user_social_profiles, 'ln_parent_play_id', $acc_en_id);
                     echo '<tr>';
                     echo '<td style="padding:0 5px 2px 0 !important; width: 26px; font-size: 1.2em !important;">'.$acc_detail['m_icon'].'</td>';
                     echo '<td style="width: 100%; padding-bottom:5px;"><span class="white-wrapper"><input type="url" value="'.( $profile_array ? $profile_array['ln_content'] : '' ).'" parent-en-id="'.$acc_en_id.'" class="form-control border social_profile_url" placeholder="'.$acc_detail['m_name'].'" style="display: inline-block;" /></span></td>';
