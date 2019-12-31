@@ -47,7 +47,7 @@ class PLAY_model extends CI_Model
                     'ln_parent_player_id' => $en_parent['en_id'],
                     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 ), array(), 1); //Fetch the single most recent supoerpower toggle only
-                if(!count($last_advance_settings) > 0 || substr_count($last_advance_settings[0]['ln_content'] , ' DEACTIVATED')==1){
+                if(!count($last_advance_settings) || !substr_count($last_advance_settings[0]['ln_content'] , ' DEACTIVATED')){
                     array_push($session_data['activate_superpowers_en_ids'], intval($en_parent['en_id']));
                 }
             }
