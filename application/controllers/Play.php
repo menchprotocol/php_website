@@ -3057,21 +3057,20 @@ fragment PostListingItemSidebar_post on Post {
         //COUNT WORDS BLOG/READ:
         $words_blog = $this->READ_model->ln_fetch(array(
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_player_id IN (' . join(',', $coin_types['blog']) . ')' => null, //BLOGGERS
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_player_id IN (' . join(',', $coin_types['blog']) . ')' => null, //BLOGGERS
             'ln_creator_player_id' => $session_en['en_id'],
         ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
         $words_read = $this->READ_model->ln_fetch(array(
-            'ln_type_player_id IN (' . join(',', $coin_types['read']) . ')' => null, //READERS
             'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_player_id IN (' . join(',', $coin_types['read']) . ')' => null, //READERS
             'ln_creator_player_id' => $session_en['en_id'],
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
-
         return echo_json(array(
             'blog_count' => number_format($words_blog[0]['total_coins'], 0),
-            'read_count' => number_format(abs($words_read[0]['total_coins']), 0)
+            'read_count' => number_format($words_read[0]['total_coins'], 0)
         ));
 
     }

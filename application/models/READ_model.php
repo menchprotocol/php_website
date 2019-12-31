@@ -287,36 +287,45 @@ class READ_model extends CI_Model
 
         //Do we need to check for entity tagging after read success?
         if(in_array($insert_columns['ln_type_player_id'] , $this->config->item('en_ids_6255')) && in_array($insert_columns['ln_status_player_id'] , $this->config->item('en_ids_7359')) && $insert_columns['ln_parent_blog_id'] > 0 && $insert_columns['ln_creator_player_id'] > 0){
-            //See if completed intent has any entity tags to be assigned:
-            foreach($this->READ_model->ln_fetch(array(
-                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_player_id' => 7545, //ENTITY TAGGING
-                'ln_child_blog_id' => $insert_columns['ln_parent_blog_id'],
-                'ln_parent_player_id >' => 0, //Entity to be tagged for this blog
-            )) as $ln_tag){
 
-                //Assign tag if NOT already assigned:
-                if(!count($this->READ_model->ln_fetch(array(
+            //See what this is:
+            $detected_ln_type = ln_detect_type($insert_columns['ln_content']);
+
+            if ($detected_ln_type['status']) {
+                //See if completed intent has any entity tags to be assigned:
+                foreach($this->READ_model->ln_fetch(array(
                     'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_parent_player_id' => $ln_tag['ln_parent_player_id'],
-                    'ln_child_player_id' => $insert_columns['ln_creator_player_id'],
-                )))){
-                    $this->READ_model->ln_create(array(
-                        'ln_type_player_id' => 4230, //Raw link
-                        'ln_creator_player_id' => $ln_tag['ln_creator_player_id'], //This child player
-                        'ln_parent_player_id' => $ln_tag['ln_parent_player_id'],
-                        'ln_child_player_id' => $insert_columns['ln_creator_player_id'],
-                    ));
+                    'ln_type_player_id' => 7545, //ENTITY TAGGING
+                    'ln_child_blog_id' => $insert_columns['ln_parent_blog_id'],
+                    'ln_parent_player_id >' => 0, //Entity to be tagged for this blog
+                )) as $ln_tag){
 
-                    //Track Tag:
-                    $this->READ_model->ln_create(array(
-                        'ln_type_player_id' => 12197, //Tag Player
-                        'ln_creator_player_id' => $ln_tag['ln_creator_player_id'], //This child player
+                    //Assign tag if parent/child link NOT already assigned:
+                    if(!count($this->READ_model->ln_fetch(array(
+                        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                         'ln_parent_player_id' => $ln_tag['ln_parent_player_id'],
                         'ln_child_player_id' => $insert_columns['ln_creator_player_id'],
-                        'ln_parent_blog_id' => $insert_columns['ln_parent_blog_id'],
-                    ));
+                        'LOWER(ln_content)' => strtolower($insert_columns['ln_content']),
+                    )))){
+
+                        $this->READ_model->ln_create(array(
+                            'ln_type_player_id' => $detected_ln_type['ln_type_player_id'],
+                            'ln_content' => $insert_columns['ln_content'],
+                            'ln_creator_player_id' => $ln_tag['ln_creator_player_id'],
+                            'ln_parent_player_id' => $ln_tag['ln_parent_player_id'],
+                            'ln_child_player_id' => $insert_columns['ln_creator_player_id'],
+                        ));
+
+                        //Track Tag:
+                        $this->READ_model->ln_create(array(
+                            'ln_type_player_id' => 12197, //Tag Player
+                            'ln_creator_player_id' => $ln_tag['ln_creator_player_id'],
+                            'ln_parent_player_id' => $ln_tag['ln_parent_player_id'],
+                            'ln_child_player_id' => $insert_columns['ln_creator_player_id'],
+                            'ln_parent_blog_id' => $insert_columns['ln_parent_blog_id'],
+                        ));
+                    }
                 }
             }
         }
@@ -1531,7 +1540,7 @@ class READ_model extends CI_Model
                     )
                 );
             } elseif(!isset($_GET['autoexpand'])) {
-                echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
+                echo '<div class="inline-block padding-top-down"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
             }
 
             return true;
@@ -1593,18 +1602,8 @@ class READ_model extends CI_Model
             'ln_parent_blog_id' => $ins[0]['in_id'],
         ));
 
-        /*
-        $read_skipped = $this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_player_id' => 6143, //READ SKIPPED
-            'ln_creator_player_id' => $recipient_en['en_id'],
-            'ln_parent_blog_id' => $ins[0]['in_id'],
-        ));
-        */
-
         //Define communication variables:
         $next_step_quick_replies = array();
-
 
 
         if (in_array($ins[0]['in_type_player_id'], $this->config->item('en_ids_7712'))){
@@ -1704,11 +1703,11 @@ class READ_model extends CI_Model
                     //HTML:
                     if ($ins[0]['in_type_player_id'] == 6684) {
 
-                        echo '<div class="montserrat" style="padding:15px 0;"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE ANSWER:</div>';
+                        echo '<div class="montserrat padding-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE ANSWER:</div>';
 
                     } elseif ($ins[0]['in_type_player_id'] == 7231) {
 
-                        echo '<div class="montserrat" style="padding:15px 0;"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE OR MORE ANSWERS:</div>';
+                        echo '<div class="montserrat padding-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE OR MORE ANSWERS:</div>';
 
                     }
 
@@ -1803,7 +1802,7 @@ class READ_model extends CI_Model
                 } else {
 
                     //Button to submit selection:
-                    echo '<div style="padding:15px 0;"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($previously_answered)>0 ? 'UPDATE' : 'SAVE' ).' & CONTINUE <i class="fas fa-angle-right"></i></a> <span class="result-update"></span></div>';
+                    echo '<div class="padding-top-down"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($previously_answered)>0 ? 'UPDATE' : 'SAVE' ).' & CONTINUE <i class="fas fa-angle-right"></i></a> <span class="result-update"></span></div>';
 
                     //Close list:
                     echo '</div>';
@@ -1961,7 +1960,7 @@ class READ_model extends CI_Model
                 } else {
                     echo '<textarea class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
                     echo '<span class="saving_result"></span>';
-                    echo '<p><a class="btn btn-blog" href="javascript:void(0);" onsubmit="">Save & Continue</a></p>';
+                    echo '<div class="padding-top-down"><a class="btn btn-blog" href="javascript:void(0);" onsubmit="">Save & Continue</a></div>';
                 }
 
             } elseif (in_array($ins[0]['in_type_player_id'], $this->config->item('en_ids_7751'))) {

@@ -189,6 +189,10 @@ li a {
     border-radius: 50%;
 }
 
+.padding-top-down{
+    padding:15px 0;
+}
+
 img.no-radius {
     border-radius:0 !important;
 }

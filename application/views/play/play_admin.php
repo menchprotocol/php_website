@@ -13,6 +13,7 @@ $moderation_tools = array(
     '/play/play_admin/in_crossovers' => 'Blog Crossover Parent/Children',
     '/play/play_admin/actionplan_debugger' => 'My 🔴 READING LIST Debugger',
     '/play/play_admin/en_icon_search' => 'Player Icon Search',
+    '/play/play_admin/sync_player_links' => 'Player Sync Link Types',
     '/play/play_admin/moderate_blog_notes' => 'Moderate Blog Notes',
     '/play/play_admin/identical_blog_outcomes' => 'Identical Blog Titles',
     '/play/play_admin/identical_player_names' => 'Identical Player Names',
@@ -253,6 +254,30 @@ if(!$action) {
     } else {
         echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No orphans found!</div>';
     }
+
+} elseif($action=='sync_player_links') {
+
+    $fixed = 0;
+    foreach($this->READ_model->ln_fetch(array(
+        'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+    )) as $player_link){
+
+        $detected_ln_type = ln_detect_type($_POST['ln_content']);
+        if ($detected_ln_type['status']){
+            if($detected_ln_type['ln_type_player_id'] != $player_link['ln_type_player_id']){
+                $fixed++;
+                $this->READ_model->ln_update($player_link['ln_id'], array(
+                    'ln_type_player_id' => $detected_ln_type['ln_type_player_id'],
+                ));
+            }
+        } else {
+            echo 'ERROR for Link ID '.$player_link['ln_id'].': '.$detected_ln_type['message'].'<hr />';
+        }
+
+    }
+
+    echo $fixed.' Links Fixed.';
 
 } elseif($action=='orphan_players') {
 
