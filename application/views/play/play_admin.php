@@ -257,6 +257,7 @@ if(!$action) {
 
 } elseif($action=='sync_player_links') {
 
+    $scanned = 0;
     $fixed = 0;
     foreach($this->READ_model->ln_fetch(array(
         'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
@@ -267,6 +268,7 @@ if(!$action) {
             continue;
         }
 
+        $scanned++;
         $detected_ln_type = ln_detect_type($player_link['ln_content']);
         if ($detected_ln_type['status']){
             if(!($detected_ln_type['ln_type_player_id'] == $player_link['ln_type_player_id'])){
@@ -281,7 +283,7 @@ if(!$action) {
 
     }
 
-    echo $fixed.' Links Fixed.';
+    echo $fixed.'/'.$scanned.' Links Fixed.';
 
 } elseif($action=='orphan_players') {
 
