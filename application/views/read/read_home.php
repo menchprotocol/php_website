@@ -136,7 +136,7 @@
             $featured_ui = '';
             foreach($published_ins as $published_in){
                 if(in_array($published_in['in_id'], $listed_in_ids)){
-                    break;
+                    continue;
                 }
                 array_push($listed_in_ids, $published_in['in_id']);
                 $featured_ui .= echo_in_read($published_in);
