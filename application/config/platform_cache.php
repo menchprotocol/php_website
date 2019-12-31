@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-30 17:14:05 PST
+//Generated 2019-12-30 17:34:17 PST
 
 //READ TYPE ISSUE COINS:
 $config['en_ids_12141'] = array(4250,4251,6157,7489,7487,4559,6144,7485,7486,6997,12117);
@@ -1649,9 +1649,9 @@ $config['en_all_11080'] = array(
         'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
     ),
     4260 => array(
-        'm_icon' => '<i class="far fa-image blue"></i>',
+        'm_icon' => '<i class="far fa-image blue" aria-hidden="true"></i>',
         'm_name' => 'IMAGE',
-        'm_desc' => 'jpeg|jpg|png|gif|tiff|bmp|img|svg|ico',
+        'm_desc' => 'jpeg|jpg|png|gif|tiff|bmp|img|svg|ico|webp',
         'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),
     ),
     4258 => array(
@@ -1678,7 +1678,7 @@ $config['en_all_11059'] = array(
         'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
     ),
     4260 => array(
-        'm_icon' => '<i class="far fa-image blue"></i>',
+        'm_icon' => '<i class="far fa-image blue" aria-hidden="true"></i>',
         'm_name' => 'IMAGE',
         'm_desc' => 'image',
         'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),
@@ -3184,7 +3184,7 @@ $config['en_all_10627'] = array(
         'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
     ),
     4260 => array(
-        'm_icon' => '<i class="far fa-image blue"></i>',
+        'm_icon' => '<i class="far fa-image blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER LINK IMAGE',
         'm_desc' => '',
         'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),
@@ -3303,7 +3303,7 @@ $config['en_all_10593'] = array(
         'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
     ),
     4260 => array(
-        'm_icon' => '<i class="far fa-image blue"></i>',
+        'm_icon' => '<i class="far fa-image blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER LINK IMAGE',
         'm_desc' => '',
         'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),
@@ -4003,7 +4003,7 @@ $config['en_all_10589'] = array(
         'm_parents' => array(10589,4593,6198,4592),
     ),
     4260 => array(
-        'm_icon' => '<i class="far fa-image blue"></i>',
+        'm_icon' => '<i class="far fa-image blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER LINK IMAGE',
         'm_desc' => '',
         'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),
@@ -6473,7 +6473,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10589,4593,6198,4592),
     ),
     4260 => array(
-        'm_icon' => '<i class="far fa-image blue"></i>',
+        'm_icon' => '<i class="far fa-image blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER LINK IMAGE',
         'm_desc' => '',
         'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),
@@ -7072,7 +7072,7 @@ $config['en_all_4592'] = array(
         'm_parents' => array(10589,4593,6198,4592),
     ),
     4260 => array(
-        'm_icon' => '<i class="far fa-image blue"></i>',
+        'm_icon' => '<i class="far fa-image blue" aria-hidden="true"></i>',
         'm_name' => 'IMAGE',
         'm_desc' => '',
         'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),
@@ -7212,7 +7212,7 @@ $config['en_all_4537'] = array(
         'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
     ),
     4260 => array(
-        'm_icon' => '<i class="far fa-image blue"></i>',
+        'm_icon' => '<i class="far fa-image blue" aria-hidden="true"></i>',
         'm_name' => 'IMAGE',
         'm_desc' => 'Link notes contain a URL to a raw image file.',
         'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),

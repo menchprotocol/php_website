@@ -1118,7 +1118,6 @@ class Read extends CI_Controller
             die('Invalid Secret Key');
         }
 
-
         //Define what needs to be cleared:
         $clear_links = array_merge(
             $this->config->item('en_ids_6146'), //User Reads Completed

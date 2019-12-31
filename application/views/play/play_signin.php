@@ -76,7 +76,7 @@ if(count($current_sign_in_attempt) == 0){
             'in_status_player_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ));
         if(count($ins) > 0){
-            echo '<p class="text-center">To read <a href="/'.$referrer_in_id.'">'.echo_in_title($ins[0]['in_title']).'</a> for FREE!</p>';
+            echo '<p class="text-center">To read <a href="/'.$referrer_in_id.'"><b>'.echo_in_title($ins[0]['in_title']).'</b></a> for FREE!</p>';
         }
     } elseif(isset($_GET['url']) && strlen($_GET['url']) > 0){
         echo '<p class="text-center">To access <u>'.urldecode($_GET['url']).'</u></p>';
@@ -129,7 +129,7 @@ if(count($current_sign_in_attempt) == 0){
                 <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-play transparent pass btn-raised btn-round <?= ( $referrer_in_id > 0 ? '' : ' hidden ' ) ?>"><i class="fas fa-angle-left"></i></a>
                 <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-play pass btn-raised btn-round"><i class="fas fa-angle-right"></i></a>
             </span>
-            <span id="messenger_sign" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 ? ' hidden ' : '' ) ?>">OR <a href="javascript:void(0)" onclick="confirm_sign_on_messenger(<?= $referrer_in_id ?>)" class="underdot" style="font-size:1em !important;">USE MESSENGER</a> <i class="fab fa-facebook-messenger blue"></i></span>
+            <span id="messenger_sign" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 ? ' hidden ' : '' ) ?>">OR <a href="javascript:void(0)" onclick="confirm_sign_on_messenger(<?= $referrer_in_id ?>)" class="dounderline">USE MESSENGER</a> <i class="fab fa-facebook-messenger blue"></i></span>
         </div>
 
 
@@ -170,7 +170,7 @@ if(count($current_sign_in_attempt) == 0){
                 <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-play pass btn-raised btn-round"><i class="fas fa-angle-right"></i></a>
             </span>
 
-            <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="magicemail()" class="underdot" style="font-size:1em !important;">MAGIC LINK</a> <i class="fas fa-envelope-open blue"></i></span>
+            <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="magicemail()" class="dounderline">MAGIC LINK</a> <i class="fas fa-envelope-open blue"></i></span>
 
         </div>
 
