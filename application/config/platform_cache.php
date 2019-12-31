@@ -11,7 +11,209 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-31 07:12:20 PST
+//Generated 2019-12-31 14:24:23 PST
+
+//PLAYER TIMEZONE:
+$config['en_ids_3289'] = array(3486,3487,3485,3488,3484,3483,3489,3482,3490,3481,3491,3480,3492,3479,3493,3478,3494,3495,3477,3496,3476,3475,3497,3498,3474,3499,3473,3500,3501);
+$config['en_all_3289'] = array(
+    3486 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT 0:00 LONDON',
+        'm_desc' => '0',
+        'm_parents' => array(3289),
+    ),
+    3487 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+01:00 AMSTERDAM/PARIS',
+        'm_desc' => '1',
+        'm_parents' => array(3289),
+    ),
+    3485 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-01:00 AZORES',
+        'm_desc' => '-1',
+        'm_parents' => array(3289),
+    ),
+    3488 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+02:00 ATHENS',
+        'm_desc' => '2',
+        'm_parents' => array(3289),
+    ),
+    3484 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-02:00 STANLEY',
+        'm_desc' => '-2',
+        'm_parents' => array(3289),
+    ),
+    3483 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-03:00 BUENOS AIRES',
+        'm_desc' => '-3',
+        'm_parents' => array(3289),
+    ),
+    3489 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+03:00 MOSCOW',
+        'm_desc' => '3',
+        'm_parents' => array(3289),
+    ),
+    3482 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-03:30 NEWFOUNDLAND',
+        'm_desc' => '-3.5',
+        'm_parents' => array(3289),
+    ),
+    3490 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+03:30 TEHRAN',
+        'm_desc' => '3.5',
+        'm_parents' => array(3289),
+    ),
+    3481 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-04:00 ATLANTIC TIME',
+        'm_desc' => '-4',
+        'm_parents' => array(3289),
+    ),
+    3491 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+04:00 BAKU',
+        'm_desc' => '4',
+        'm_parents' => array(3289),
+    ),
+    3480 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-04:30 CARACAS',
+        'm_desc' => '-4.5',
+        'm_parents' => array(3289),
+    ),
+    3492 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+04:30 KABUL',
+        'm_desc' => '4.5',
+        'm_parents' => array(3289),
+    ),
+    3479 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-05:00 EASTERN TIME',
+        'm_desc' => '-5',
+        'm_parents' => array(3289),
+    ),
+    3493 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+05:00 KARACHI',
+        'm_desc' => '5',
+        'm_parents' => array(3289),
+    ),
+    3478 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-06:00 CENTRAL TIME',
+        'm_desc' => '-6',
+        'm_parents' => array(3289),
+    ),
+    3494 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+06:00 EKATERINBURG',
+        'm_desc' => '6',
+        'm_parents' => array(3289),
+    ),
+    3495 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+07:00 BANGKOK',
+        'm_desc' => '7',
+        'm_parents' => array(3289),
+    ),
+    3477 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-07:00 MOUNTAIN TIME',
+        'm_desc' => '-7',
+        'm_parents' => array(3289),
+    ),
+    3496 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+08:00 HONG KONG/PERTH',
+        'm_desc' => '8',
+        'm_parents' => array(3289),
+    ),
+    3476 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-08:00 PACIFIC STANDARD TIME',
+        'm_desc' => '-8',
+        'm_parents' => array(3289),
+    ),
+    3475 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-09:00 ALASKA',
+        'm_desc' => '-9',
+        'm_parents' => array(3289),
+    ),
+    3497 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+09:00 TOKYO',
+        'm_desc' => '9',
+        'm_parents' => array(3289),
+    ),
+    3498 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+09:30 DARWIN',
+        'm_desc' => '9.5',
+        'm_parents' => array(3289),
+    ),
+    3474 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-10:00 HAWAII',
+        'm_desc' => '-10',
+        'm_parents' => array(3289),
+    ),
+    3499 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+10:00 SYDNEY',
+        'm_desc' => '10',
+        'm_parents' => array(3289),
+    ),
+    3473 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-11:00 SAMOA',
+        'm_desc' => '-11',
+        'm_parents' => array(3289),
+    ),
+    3500 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+11:00 VLADIVOSTOK',
+        'm_desc' => '11',
+        'm_parents' => array(3289),
+    ),
+    3501 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+12:00 FIJI',
+        'm_desc' => '12',
+        'm_parents' => array(3289),
+    ),
+);
+
+//GENDER:
+$config['en_ids_3290'] = array(3292,3291,6121);
+$config['en_all_3290'] = array(
+    3292 => array(
+        'm_icon' => '<i class="fal fa-female" aria-hidden="true"></i>',
+        'm_name' => 'FEMALE',
+        'm_desc' => 'f',
+        'm_parents' => array(3290),
+    ),
+    3291 => array(
+        'm_icon' => '<i class="fal fa-male" aria-hidden="true"></i>',
+        'm_name' => 'MALE',
+        'm_desc' => 'm',
+        'm_parents' => array(3290),
+    ),
+    6121 => array(
+        'm_icon' => '<i class="fal fa-venus-mars"></i>',
+        'm_name' => 'OTHER GENDER',
+        'm_desc' => '',
+        'm_parents' => array(3290),
+    ),
+);
 
 //READ TYPE ISSUE COINS:
 $config['en_ids_12141'] = array(4250,4251,6157,7489,7487,4559,6144,7485,7486,6997,12117);
@@ -193,7 +395,7 @@ $config['en_all_12079'] = array(
     ),
 );
 
-//ABOUT MENCH:
+//INTERACTIVE PUBLISHING:
 $config['en_ids_12066'] = array();
 $config['en_all_12066'] = array(
 );
@@ -211,7 +413,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fas fa-comment-plus yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG NOTES',
         'm_desc' => 'Intent notes are various information collected around intentions that enable Mench to operate as a Personal Assistant for students looking to accomplish an intent.',
-        'm_parents' => array(7552,4535,4527,4463),
+        'm_parents' => array(4535,4527,4463),
     ),
     3084 => array(
         'm_icon' => '<i class="fas fa-user-astronaut" aria-hidden="true"></i>',
@@ -398,7 +600,7 @@ $config['en_all_10725'] = array(
         'm_icon' => '<i class="fas fa-language isblue" aria-hidden="true"></i>',
         'm_name' => 'LANGUAGES',
         'm_desc' => '',
-        'm_parents' => array(10725,7552,6122),
+        'm_parents' => array(10725,6122),
     ),
     10850 => array(
         'm_icon' => '<i class="far fa-chalkboard-teacher"></i>',
@@ -905,7 +1107,7 @@ $config['en_all_10712'] = array(
     ),
 );
 
-//ASSESSMENTS:
+//SELF DISCOVERY:
 $config['en_ids_10711'] = array(10769,10770,10771,10772,7392,10773,10774,10775,10776,10777,10778,10779,10780,10781,10782,10783);
 $config['en_all_10711'] = array(
     10769 => array(
@@ -1175,8 +1377,8 @@ $config['en_all_10746'] = array(
 $config['en_ids_10869'] = array(12066,10809,10746,10725,10721,10720,10719,10718,10717,10716,10712,10711,10710);
 $config['en_all_10869'] = array(
     12066 => array(
-        'm_icon' => '<i class="far fa-info-circle" aria-hidden="true"></i>',
-        'm_name' => 'ABOUT MENCH',
+        'm_icon' => '<i class="fas fa-exchange rotate90" aria-hidden="true"></i>',
+        'm_name' => 'INTERACTIVE PUBLISHING',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
     ),
@@ -1241,8 +1443,8 @@ $config['en_all_10869'] = array(
         'm_parents' => array(4527,10869),
     ),
     10711 => array(
-        'm_icon' => '<i class="far fa-weight" aria-hidden="true"></i>',
-        'm_name' => 'ASSESSMENTS',
+        'm_icon' => '<i class="far fa-yin-yang" aria-hidden="true"></i>',
+        'm_name' => 'SELF DISCOVERY',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
     ),
@@ -2355,14 +2557,8 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(12066,7758,10809,10711,10956,12145,10990,11018,11047,4983,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11021,6201,12112,7585,10602,7309,7712,7751,6150,10712,10719,10869,10627,10746,7364,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,10716,6225,10718,6404,4527,11054,6232,11039,6194,6827,4592,4426,4997,4454,4986,7551,11028,4537,6123,6177,11007,6206,11089,11033,3000,7303,11088,4755,6287,10571,7357,6192,11081,6193,6146,6345,5967,4280,10570,4277,6102,7704,7494,10590,7347,6103,10692,6255,7304,6186,7360,7359,4341,4593,10593,10591,12141,10658,11031,11084,6204,10710,10957,10725,6805,7358);
+$config['en_ids_4527'] = array(7758,10809,10956,12145,10990,11018,11047,4983,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11021,6201,12112,7585,10602,7309,7712,7751,6150,10712,10719,10869,10627,3290,10746,7364,12066,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,10716,6225,10718,6404,4527,11054,6232,11039,6194,6827,4592,4426,4997,4454,4986,7551,11028,4537,6123,6177,11007,6206,3289,11089,11033,3000,7303,11088,4755,6287,10571,7357,6192,11081,6193,6146,6345,5967,4280,10570,4277,6102,7704,7494,10590,7347,6103,10692,6255,7304,6186,7360,7359,4341,4593,10593,10591,12141,10658,10711,11031,11084,6204,10710,10957,10725,6805,7358);
 $config['en_all_4527'] = array(
-    12066 => array(
-        'm_icon' => '<i class="far fa-info-circle" aria-hidden="true"></i>',
-        'm_name' => 'ABOUT MENCH',
-        'm_desc' => '',
-        'm_parents' => array(4527,10869),
-    ),
     7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
         'm_name' => 'ACTION PLAN BLOGION SUCCESSFUL',
@@ -2372,12 +2568,6 @@ $config['en_all_4527'] = array(
     10809 => array(
         'm_icon' => '<i class="far fa-palette" aria-hidden="true"></i>',
         'm_name' => 'ARTS & ENTERTAINMENT',
-        'm_desc' => '',
-        'm_parents' => array(4527,10869),
-    ),
-    10711 => array(
-        'm_icon' => '<i class="far fa-weight" aria-hidden="true"></i>',
-        'm_name' => 'ASSESSMENTS',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
     ),
@@ -2451,7 +2641,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-comment-plus yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG NOTES',
         'm_desc' => '',
-        'm_parents' => array(7552,4535,4527,4463),
+        'm_parents' => array(4535,4527,4463),
     ),
     12012 => array(
         'm_icon' => '<i class="far fa-sliders-h yellow" aria-hidden="true"></i>',
@@ -2567,6 +2757,12 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6771),
     ),
+    3290 => array(
+        'm_icon' => '<i class="far fa-transgender blue"></i>',
+        'm_name' => 'GENDER',
+        'm_desc' => '',
+        'm_parents' => array(4527,6204),
+    ),
     10746 => array(
         'm_icon' => '<i class="far fa-industry"></i>',
         'm_name' => 'INDUSTRY',
@@ -2578,6 +2774,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'INTERACTION STATUSES INCOMPLETE',
         'm_desc' => '',
         'm_parents' => array(10624,4527),
+    ),
+    12066 => array(
+        'm_icon' => '<i class="fas fa-exchange rotate90" aria-hidden="true"></i>',
+        'm_name' => 'INTERACTIVE PUBLISHING',
+        'm_desc' => '',
+        'm_parents' => array(4527,10869),
     ),
     10717 => array(
         'm_icon' => '<i class="far fa-desktop"></i>',
@@ -2727,7 +2929,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-volume blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER NOTIFICATION LEVEL',
         'm_desc' => '',
-        'm_parents' => array(7552,6225,6204,4527),
+        'm_parents' => array(6225,6204,4527),
     ),
     4986 => array(
         'm_icon' => '<i class="fal fa-at" aria-hidden="true"></i>',
@@ -2776,6 +2978,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'PLAYER TABLE',
         'm_desc' => '',
         'm_parents' => array(4527,7735,4536),
+    ),
+    3289 => array(
+        'm_icon' => '<i class="fas fa-map-marked isblue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER TIMEZONE',
+        'm_desc' => '',
+        'm_parents' => array(6225,4527,6204),
     ),
     11089 => array(
         'm_icon' => '<i class="fas fa-eye blue" aria-hidden="true"></i>',
@@ -2993,6 +3201,12 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6205),
     ),
+    10711 => array(
+        'm_icon' => '<i class="far fa-yin-yang" aria-hidden="true"></i>',
+        'm_name' => 'SELF DISCOVERY',
+        'm_desc' => '',
+        'm_parents' => array(4527,10869),
+    ),
     11031 => array(
         'm_icon' => '<i class="fas fa-text yellow" aria-hidden="true"></i>',
         'm_name' => 'SHOW BLOG TAB NAMES',
@@ -3009,7 +3223,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-check"></i>',
         'm_name' => 'SINGLE SELECTABLE',
         'm_desc' => '',
-        'm_parents' => array(4428,4506,4527,4758),
+        'm_parents' => array(4527,4758),
     ),
     10710 => array(
         'm_icon' => '<i class="far fa-code" aria-hidden="true"></i>',
@@ -4634,7 +4848,7 @@ $config['en_all_6201'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['en_ids_6204'] = array(10956,4737,7585,10602,3290,4454,6177,11007,6186,4593,10591,3289);
+$config['en_ids_6204'] = array(10956,4737,7585,10602,3290,4454,6177,11007,3289,6186,4593,10591);
 $config['en_all_6204'] = array(
     10956 => array(
         'm_icon' => '<i class="fas fa-paw blue"></i>',
@@ -4664,13 +4878,13 @@ $config['en_all_6204'] = array(
         'm_icon' => '<i class="far fa-transgender blue"></i>',
         'm_name' => 'GENDER',
         'm_desc' => '',
-        'm_parents' => array(6204),
+        'm_parents' => array(4527,6204),
     ),
     4454 => array(
         'm_icon' => '<i class="fas fa-volume blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER NOTIFICATION LEVEL',
         'm_desc' => '',
-        'm_parents' => array(7552,6225,6204,4527),
+        'm_parents' => array(6225,6204,4527),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h isblue" aria-hidden="true"></i>',
@@ -4683,6 +4897,12 @@ $config['en_all_6204'] = array(
         'm_name' => 'PLAYER SUBSCRIPTION',
         'm_desc' => '',
         'm_parents' => array(4527,6204,6225),
+    ),
+    3289 => array(
+        'm_icon' => '<i class="fas fa-map-marked isblue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER TIMEZONE',
+        'm_desc' => '',
+        'm_parents' => array(6225,4527,6204),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
@@ -4701,12 +4921,6 @@ $config['en_all_6204'] = array(
         'm_name' => 'READ TYPE DIRECTIONS',
         'm_desc' => '',
         'm_parents' => array(12144,6204,7304,4527),
-    ),
-    3289 => array(
-        'm_icon' => '<i class="fas fa-map-marked isblue"></i>',
-        'm_name' => 'TIMEZONE',
-        'm_desc' => '',
-        'm_parents' => array(6204),
     ),
 );
 
@@ -5372,7 +5586,7 @@ $config['en_all_4986'] = array(
 );
 
 //MY ACCOUNT:
-$config['en_ids_6225'] = array(6197,3288,3286,11007,6123,4454);
+$config['en_ids_6225'] = array(6197,3288,3286,11007,3289,6123,4454);
 $config['en_all_6225'] = array(
     6197 => array(
         'm_icon' => '<i class="fas fa-fingerprint isblue" aria-hidden="true"></i>',
@@ -5398,6 +5612,12 @@ $config['en_all_6225'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6204,6225),
     ),
+    3289 => array(
+        'm_icon' => '<i class="fas fa-map-marked isblue" aria-hidden="true"></i>',
+        'm_name' => 'TIMEZONE',
+        'm_desc' => '',
+        'm_parents' => array(6225,4527,6204),
+    ),
     6123 => array(
         'm_icon' => '<i class="fab fa-twitter-square blue" aria-hidden="true"></i>',
         'm_name' => 'SOCIAL PROFILES',
@@ -5408,7 +5628,7 @@ $config['en_all_6225'] = array(
         'm_icon' => '<i class="fas fa-volume blue" aria-hidden="true"></i>',
         'm_name' => 'NOTIFICATION LEVEL',
         'm_desc' => '',
-        'm_parents' => array(7552,6225,6204,4527),
+        'm_parents' => array(6225,6204,4527),
     ),
 );
 

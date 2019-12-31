@@ -105,44 +105,47 @@
         'in_status_player_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
         'ln_type_player_id' => 4601, //BLOG KEYWORDS
         'ln_parent_player_id' => 12198, //HOME FEATURED
-    ), array('in_child'), 0, 0, array('in_title' => 'ASC')) as $home_in){
+    ), array('in_child'), 0) as $home_in){
         array_push($home_page_ins, $home_in['in_id']);
     }
 
 
     //Go through all categories and see which ones have published courses:
-    $listed_in_ids = array();
-    foreach($this->config->item('en_all_10869') /* Course Categories */ as $en_id => $m) {
+    if(count($home_page_ins) > 0){
+        $listed_in_ids = array();
+        foreach($this->config->item('en_all_10869') /* Course Categories */ as $en_id => $m) {
 
-        //Count total published courses here:
-        $published_ins = $this->READ_model->ln_fetch(array(
-            'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_player_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
-            'ln_type_player_id' => 4601, //BLOG KEYWORDS
-            'ln_parent_player_id' => $en_id,
-        ), array('in_child'), 0, 0, array('in_title' => 'ASC'));
+            //Count total published courses here:
+            $published_ins = $this->READ_model->ln_fetch(array(
+                'ln_status_player_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_player_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
+                'ln_type_player_id' => 4601, //BLOG KEYWORDS
+                'ln_parent_player_id' => $en_id,
+                'ln_child_blog_id IN (' . join(',', $home_page_ins) . ')' => null,
+            ), array('in_child'), 0, 0, array('in_title' => 'ASC'));
 
-        if(!count($published_ins)){
-            continue;
-        }
-
-        //Show featured blogs in this category:
-        $topic_in_count = 0;
-        $featured_ui = '';
-        foreach($published_ins as $published_in){
-            if(in_array($published_in['in_id'], $listed_in_ids)){
-                break;
+            if(!count($published_ins)){
+                continue;
             }
-            array_push($listed_in_ids, $published_in['in_id']);
-            $featured_ui .= echo_in_read($published_in);
-            $topic_in_count++;
-        }
 
-        if($topic_in_count > 0){
-            echo '<div class="read-topic"><span class="icon-block-sm">'.$m['m_icon'].'</span>'.$m['m_name'].'</div>';
-            echo '<div class="list-group">';
-            echo $featured_ui;
-            echo '</div>';
+            //Show featured blogs in this category:
+            $topic_in_count = 0;
+            $featured_ui = '';
+            foreach($published_ins as $published_in){
+                if(in_array($published_in['in_id'], $listed_in_ids)){
+                    break;
+                }
+                array_push($listed_in_ids, $published_in['in_id']);
+                $featured_ui .= echo_in_read($published_in);
+                $topic_in_count++;
+            }
+
+            if($topic_in_count > 0){
+                echo '<div class="read-topic"><span class="icon-block-sm">'.$m['m_icon'].'</span>'.$m['m_name'].'</div>';
+                echo '<div class="list-group">';
+                echo $featured_ui;
+                echo '</div>';
+            }
         }
     }
 

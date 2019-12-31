@@ -1134,7 +1134,7 @@ class Read extends CI_Controller
         if(count($progress_links) > 0){
 
             //Yes they did have some:
-            $message = 'I deleted '.count($progress_links).' blogs'.echo__s(count($progress_links)).' to empty your 🔴 READING LIST.';
+            $message = 'Removed '.count($progress_links).' blog'.echo__s(count($progress_links)).' from your list.';
 
             //Log link:
             $clear_all_link = $this->READ_model->ln_create(array(
