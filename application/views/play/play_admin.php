@@ -265,7 +265,7 @@ if(!$action) {
 
         $detected_ln_type = ln_detect_type($player_link['ln_content']);
         if ($detected_ln_type['status']){
-            if($detected_ln_type['ln_type_player_id'] != $player_link['ln_type_player_id']){
+            if(!($detected_ln_type['ln_type_player_id'] == $player_link['ln_type_player_id'])){
                 $fixed++;
                 $this->READ_model->ln_update($player_link['ln_id'], array(
                     'ln_type_player_id' => $detected_ln_type['ln_type_player_id'],

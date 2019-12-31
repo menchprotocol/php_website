@@ -231,7 +231,7 @@ function ln_detect_type($string)
             'message' => 'String is ['.(strlen($string) - config_var(11073)).'] characters longer than the allowed length of '.config_var(11073).' characters.',
         );
 
-    } elseif (is_null($string) || strlen($string) == 0) {
+    } elseif (is_null($string) || !strlen($string)) {
 
         return array(
             'status' => 1,
