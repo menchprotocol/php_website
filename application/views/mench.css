@@ -199,13 +199,18 @@ img.no-radius {
 }
 .alert-warning {
     color: #000000;
-    background-color: #f4d52d;
-    border-color: #f4d52d;
+    background-color: #ffee8e;
+    border-color: #ffee8e;
 }
 .alert-danger {
     color: #000000;
-    background-color: #FC1B44;
-    border-color: #FC1B44;
+    background-color: #fbc4ce;
+    border-color: #fbc4ce;
+}
+.alert-info {
+    color: #000000;
+    background-color: #b2defd;
+    border-color: #b2defd;
 }
 
 .margin-right-18{
