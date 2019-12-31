@@ -82,7 +82,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             echo '<input type="hidden" id="current_blog_title" value="'.$in['in_title'].'" />';
 
             echo '<div id="blog_title_save" class="hidden">';
-            echo '<a href="javascript:in_save_title();" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="bottom" class="btn btn-blog">SAVE</a>';
+            echo '<a href="javascript:in_save_title();" class="btn btn-blog">SAVE</a>';
             echo '&nbsp;<span class="title_counter hidden">[<span id="charTitleNum">0</span>/'.config_var(11071).']</span>';
             echo '&nbsp;<span class="title_update_status"></span>';
             echo '</div>';
@@ -240,7 +240,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<table class="table table-condensed hidden" id="notes_control_'.$en_id2.'"><tr>';
 
             //Save button:
-            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="bottom" class="btn btn-blog save_note_'.$en_id2.'">ADD</a></td>';
+            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" class="btn btn-blog save_note_'.$en_id2.'">ADD</a></td>';
 
             //File counter:
             $this_tab .= '<td class="remove_loading" class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="blogNoteNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
