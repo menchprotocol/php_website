@@ -258,13 +258,15 @@ if(!$action) {
 } elseif($action=='sync_player_links') {
 
     $scanned = 0;
+    $skipped = 0;
     $fixed = 0;
     foreach($this->READ_model->ln_fetch(array(
         'ln_type_player_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-    ), array()) as $player_link){
+    ), array(), 0) as $player_link){
 
         if(filter_var($player_link['ln_content'], FILTER_VALIDATE_URL)){
             //SKIP URLS:
+            $skipped++;
             continue;
         }
 
@@ -283,7 +285,7 @@ if(!$action) {
 
     }
 
-    echo $fixed.'/'.$scanned.' Links Fixed.';
+    echo $fixed.'/'.$scanned.' Links Fixed & '.$skipped.' Skipped.';
 
 } elseif($action=='orphan_players') {
 
