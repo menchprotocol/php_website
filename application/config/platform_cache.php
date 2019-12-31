@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-30 13:48:24 PST
+//Generated 2019-12-30 17:14:05 PST
 
 //READ TYPE ISSUE COINS:
 $config['en_ids_12141'] = array(4250,4251,6157,7489,7487,4559,6144,7485,7486,6997,12117);
@@ -1715,12 +1715,18 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12176,11071,11077,11074,12124,11076,11075,11064,11985,11986,11065,11063,12130,11060,11079,11073,12156,11066,11072,11057,11056,12113,12088,11061,11162,11163);
+$config['en_ids_6404'] = array(12176,12156,11071,11077,11074,12124,11076,11075,10939,11064,11985,11986,11065,11063,12130,11060,11079,11073,11066,11072,11057,11056,12113,12088,11061,11162,11163);
 $config['en_all_6404'] = array(
     12176 => array(
         'm_icon' => '',
         'm_name' => 'BLOG DEFAULT TIME',
         'm_desc' => '59',
+        'm_parents' => array(6404),
+    ),
+    12156 => array(
+        'm_icon' => '',
+        'm_name' => 'BLOG NORTH STAR',
+        'm_desc' => '7766',
         'm_parents' => array(6404),
     ),
     11071 => array(
@@ -1758,6 +1764,12 @@ $config['en_all_6404'] = array(
         'm_name' => 'FACEBOOK MENCH PAGE ID',
         'm_desc' => '381488558920384',
         'm_parents' => array(6404),
+    ),
+    10939 => array(
+        'm_icon' => '<i class="far fa-badger-honey yellow" aria-hidden="true"></i>',
+        'm_name' => 'HONEY BADGER',
+        'm_desc' => '13008',
+        'm_parents' => array(6404,10957),
     ),
     11064 => array(
         'm_icon' => '',
@@ -1811,12 +1823,6 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'MESSAGE MAX LENGTH',
         'm_desc' => '610',
-        'm_parents' => array(6404),
-    ),
-    12156 => array(
-        'm_icon' => '',
-        'm_name' => 'NORTH STAR BLOG ID',
-        'm_desc' => '7766',
         'm_parents' => array(6404),
     ),
     11066 => array(
@@ -2149,7 +2155,7 @@ $config['en_all_10957'] = array(
         'm_icon' => '<i class="far fa-badger-honey yellow" aria-hidden="true"></i>',
         'm_name' => 'HONEY BADGER',
         'm_desc' => 'THE POWER TO BLOG',
-        'm_parents' => array(10957),
+        'm_parents' => array(6404,10957),
     ),
     10984 => array(
         'm_icon' => '<i class="far fa-deer-rudolph yellow" aria-hidden="true"></i>',
@@ -2159,7 +2165,7 @@ $config['en_all_10957'] = array(
     ),
     10964 => array(
         'm_icon' => '<i class="far fa-elephant ispink" aria-hidden="true"></i>',
-        'm_name' => 'ELEPHANT',
+        'm_name' => 'DUMBO',
         'm_desc' => 'THE POWER TO READ',
         'm_parents' => array(10957),
     ),
@@ -2418,7 +2424,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(6768,4527),
     ),
     10589 => array(
-        'm_icon' => '<i class="fas fa-caret-circle-up yellow" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-plus-circle yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOGGING',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
@@ -2904,7 +2910,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4506,4527,7493),
     ),
     10590 => array(
-        'm_icon' => '<i class="fas fa-caret-circle-down ispink" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-info-circle ispink" aria-hidden="true"></i>',
         'm_name' => 'READING',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
@@ -2982,7 +2988,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(12144,6204,7304,4527),
     ),
     12141 => array(
-        'm_icon' => '<i class="fas fa-circle" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-coin" aria-hidden="true"></i>',
         'm_name' => 'READ TYPE ISSUE COINS',
         'm_desc' => '',
         'm_parents' => array(12144,4527),
@@ -4239,7 +4245,7 @@ $config['en_all_10602'] = array(
 $config['en_ids_10591'] = array(10589,12145,10590);
 $config['en_all_10591'] = array(
     10589 => array(
-        'm_icon' => '<i class="fas fa-caret-circle-up yellow" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-plus-circle yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOGGING',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
@@ -4251,7 +4257,7 @@ $config['en_all_10591'] = array(
         'm_parents' => array(4527,10591),
     ),
     10590 => array(
-        'm_icon' => '<i class="fas fa-caret-circle-down ispink" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-info-circle ispink" aria-hidden="true"></i>',
         'm_name' => 'READING',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
