@@ -1606,6 +1606,15 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
 
     }
 
+    $session_en = superpower_assigned();
+    if(isset($session_en['en_id'])){
+        $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $in);
+        if($completion_rate['completion_percentage'] > 0){
+            $ui .= ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read">'.$completion_rate['completion_percentage'].'% DONE</span>';
+        }
+    }
+
+
     if($footnotes){
         $ui .= ' '.$footnotes;
     }
