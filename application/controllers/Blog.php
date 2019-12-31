@@ -54,9 +54,13 @@ class Blog extends CI_Controller {
         ));
         if ( count($ins) < 1) {
             return redirect_message('/blog', '<div class="alert alert-danger" role="alert">BLOG #' . $in_id . ' not found</div>');
-        } elseif(in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7355')) && !isset($session_en['en_id'])){
-            //Blog is published, so let them read:
-            return redirect_message('/'.$in_id);
+        } elseif(!isset($session_en['en_id'])){
+            if(in_array($ins[0]['in_status_player_id'], $this->config->item('en_ids_7355'))){
+                //Blog is published, so let them read:
+                return redirect_message('/'.$in_id);
+            } else {
+                $session_en = superpower_assigned(null, true);
+            }
         }
 
         //Update session count and log link:
