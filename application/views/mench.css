@@ -197,6 +197,16 @@ img.no-radius {
     border-radius:0;
     margin-top: 0;
 }
+.alert-warning {
+    color: #000000;
+    background-color: #f4d52d;
+    border-color: #f4d52d;
+}
+.alert-danger {
+    color: #000000;
+    background-color: #FC1B44;
+    border-color: #FC1B44;
+}
 
 .margin-right-18{
     margin-right: 18px;
@@ -742,11 +752,7 @@ label {
 .dolight{
     color: #DDDDDD;
 }
-.alert-warning {
-    color: #000000;
-    background-color: #f4d52d;
-    border-color: #f4d52d;
-}
+
 .player-settings{
     color: #000000;
     text-decoration: none;
