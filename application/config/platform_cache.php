@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-12-31 16:08:32 PST
+//Generated 2019-12-31 16:21:28 PST
 
 //PLAYER TIMEZONE:
 $config['en_ids_3289'] = array(3486,3487,3485,3488,3484,3483,3489,3482,3490,3481,3491,3480,3492,3479,3493,3478,3494,3495,3477,3496,3476,3475,3497,3498,3474,3499,3473,3500,3501);
@@ -1377,7 +1377,7 @@ $config['en_all_10746'] = array(
 $config['en_ids_10869'] = array(12066,10809,10746,10725,10721,10720,10719,10718,10717,10716,10712,10711,10710);
 $config['en_all_10869'] = array(
     12066 => array(
-        'm_icon' => '<i class="fas fa-sync mench-spin" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-sync-alt mench-spin" aria-hidden="true"></i>',
         'm_name' => 'INTERACTIVE PUBLISHING',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
@@ -1395,7 +1395,7 @@ $config['en_all_10869'] = array(
         'm_parents' => array(4527,10869),
     ),
     10725 => array(
-        'm_icon' => '<i class="fas fa-atom-alt"></i>',
+        'm_icon' => '<i class="fas fa-atom-alt mench-spin" aria-hidden="true"></i>',
         'm_name' => 'TEACHING & ACADEMICS',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
@@ -1407,7 +1407,7 @@ $config['en_all_10869'] = array(
         'm_parents' => array(4527,10869),
     ),
     10720 => array(
-        'm_icon' => '<i class="fas fa-bullseye-arrow" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-bullseye-arrow mench-spin" aria-hidden="true"></i>',
         'm_name' => 'MARKETING',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
@@ -2776,7 +2776,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(10624,4527),
     ),
     12066 => array(
-        'm_icon' => '<i class="fas fa-sync mench-spin" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-sync-alt mench-spin" aria-hidden="true"></i>',
         'm_name' => 'INTERACTIVE PUBLISHING',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
@@ -2794,7 +2794,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,10869),
     ),
     10720 => array(
-        'm_icon' => '<i class="fas fa-bullseye-arrow" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-bullseye-arrow mench-spin" aria-hidden="true"></i>',
         'm_name' => 'MARKETING',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
@@ -3238,7 +3238,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(5007,11008,4527),
     ),
     10725 => array(
-        'm_icon' => '<i class="fas fa-atom-alt"></i>',
+        'm_icon' => '<i class="fas fa-atom-alt mench-spin" aria-hidden="true"></i>',
         'm_name' => 'TEACHING & ACADEMICS',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
