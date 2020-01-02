@@ -36,7 +36,7 @@
 
         if(superpower_assigned(10939)) {
 
-            echo '<div style="padding:10px 0;" class="'.superpower_active(10939).'"><a href="/blog/create" class="btn btn-blog"><i class="fas fa-plus"></i> BLOG</a></div>';
+            echo '<div style="padding:10px 0;" class="'.superpower_active(10939).'"><a href="/blog/create" class="btn btn-blog"><i class="fas fa-plus"></i> NEW BLOG</a></div>';
 
         } else {
 

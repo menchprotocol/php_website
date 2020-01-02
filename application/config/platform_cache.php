@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 14:02:19 PST
+//Generated 2020-01-02 14:57:25 PST
 
 //FEATURED BY:
 $config['en_ids_12201'] = array(10939,12198,10869,5008);
@@ -58,7 +58,7 @@ $config['en_all_3289'] = array(
         'm_parents' => array(3289),
     ),
     3485 => array(
-        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_icon' => '<i class="fal fa-map" aria-hidden="true"></i>',
         'm_name' => 'GMT-01:00 AZORES',
         'm_desc' => '-1',
         'm_parents' => array(3289),
@@ -457,7 +457,7 @@ $config['en_all_4463'] = array(
         'm_parents' => array(12155,2738,4463),
     ),
     4536 => array(
-        'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle blue"></i>',
         'm_name' => 'MENCH PLAY',
         'm_desc' => 'Entities represent people, objects and things.',
         'm_parents' => array(12155,2738,4463),
@@ -2246,7 +2246,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035),
     ),
     6287 => array(
-        'm_icon' => '<i class="far fa-tools" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-tools" aria-hidden="true"></i>',
         'm_name' => 'PRO BLOGGING',
         'm_desc' => '',
         'm_parents' => array(11035,4527,7284),
@@ -2544,7 +2544,7 @@ $config['en_all_10956'] = array(
 $config['en_ids_2738'] = array(4536,6205,4535);
 $config['en_all_2738'] = array(
     4536 => array(
-        'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle blue"></i>',
         'm_name' => 'PLAY',
         'm_desc' => 'a publishing game by earning crypto-coins as you read or blog. Customize your avatar, unlock superpowers and collaborate with other players.',
         'm_parents' => array(12155,2738,4463),
@@ -3058,7 +3058,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4755,6771,4463,4426,4527),
     ),
     6287 => array(
-        'm_icon' => '<i class="far fa-tools" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-tools" aria-hidden="true"></i>',
         'm_name' => 'PRO BLOGGING',
         'm_desc' => '',
         'm_parents' => array(11035,4527,7284),
@@ -3708,7 +3708,7 @@ $config['en_all_10590'] = array(
         'm_parents' => array(10590,10888,10639,10570,4506,6150,4593,4755),
     ),
     6149 => array(
-        'm_icon' => '<i class="ispink fas fa-search-plus"></i>',
+        'm_icon' => '<i class="far fa-search-plus ispink" aria-hidden="true"></i>',
         'm_name' => 'READER BLOG CONSIDERED',
         'm_desc' => '',
         'm_parents' => array(10639,10590,6153,4755,4593),
@@ -6132,7 +6132,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(10590,10888,10639,10570,4506,6150,4593,4755),
     ),
     6149 => array(
-        'm_icon' => '<i class="ispink fas fa-search-plus"></i>',
+        'm_icon' => '<i class="far fa-search-plus ispink" aria-hidden="true"></i>',
         'm_name' => 'READER BLOG CONSIDERED',
         'm_desc' => '',
         'm_parents' => array(10639,10590,6153,4755,4593),
@@ -6893,7 +6893,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10590,10888,10639,10570,4506,6150,4593,4755),
     ),
     6149 => array(
-        'm_icon' => '<i class="ispink fas fa-search-plus"></i>',
+        'm_icon' => '<i class="far fa-search-plus ispink" aria-hidden="true"></i>',
         'm_name' => 'READER BLOG CONSIDERED',
         'm_desc' => 'When a student chooses to review a given intention from the intentions they have searched or have been recommended after selecting GET STARTED from a mench.com intent landing page.',
         'm_parents' => array(10639,10590,6153,4755,4593),
