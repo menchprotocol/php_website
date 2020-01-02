@@ -108,6 +108,9 @@ li a {
     width: 137px !important;
     padding: 15px 0 20px;
 }
+.avatar-item.active{
+    background-color: #b2defd;
+}
 
 .avatar-item .avatar-icon {
     display: block;
