@@ -102,6 +102,28 @@ li a {
     text-decoration: none;
 }
 
+.avatar-item {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+}
+
+.avatar-item .avatar-icon {
+    display: inline-block;
+    text-align: center;
+    width: 100px;
+    height: 80px;
+    font-size: 2em;
+}
+
+.avatar-item .avatar-name {
+    display: inline-block;
+    text-align: center;
+    width: 100px;
+    height: 80px;
+    font-size: 2em;
+}
+
 #new_blog_title{
     background-color: transparent;
     font-size: 1.7em;

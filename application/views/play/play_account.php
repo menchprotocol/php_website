@@ -54,14 +54,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             } elseif($acc_en_id==10956 /* AVATARS */){
 
-                $counter = 0;
                 echo '<div class="list-group">';
                 foreach($this->config->item('en_all_10956') as $en_id => $m) {
-                    $counter++;
-                    echo '<a href="javascript:void(0);" onclick="update_avatar('.$en_id.')" class="list-group-item itemplay item-square '.( $m['m_icon']==$session_en['en_icon'] ? ' active' : '' ).'"><div class="avatar-block">'.$m['m_icon'].'</div><div class="avatar-name">'.$m['m_name'].'</div></a>';
-                    if(fmod($counter, 3)==0){
-                        echo '<br />';
-                    }
+                    echo '<a href="javascript:void(0);" onclick="update_avatar('.$en_id.')" class="list-group-item itemplay avatar-item item-square '.( $m['m_icon']==$session_en['en_icon'] ? ' active' : '' ).'"><div class="avatar-icon">'.$m['m_icon'].'</div><div class="avatar-name montserrat">'.$m['m_name'].'</div></a>';
                 }
                 echo '</div>';
 
