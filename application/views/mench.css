@@ -103,25 +103,25 @@ li a {
 }
 
 .avatar-item {
-    display: inline-block;
-    width: 100px;
+    display: block;
+    float: left;
+    width: 200px;
     height: 100px;
 }
 
 .avatar-item .avatar-icon {
-    display: inline-block;
+    display: block;
     text-align: center;
-    width: 100px;
+    width: 200px;
     height: 80px;
-    font-size: 2em;
+    font-size: 4em;
 }
 
 .avatar-item .avatar-name {
-    display: inline-block;
+    display: block;
     text-align: center;
-    width: 100px;
-    height: 80px;
-    font-size: 2em;
+    width: 200px;
+    font-size:1em;
 }
 
 #new_blog_title{
