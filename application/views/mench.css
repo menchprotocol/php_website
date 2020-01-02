@@ -109,7 +109,7 @@ li a {
     padding: 15px 0 20px;
 }
 .avatar-item.active{
-    background-color: #b2defd;
+    background-color: #b2defd !important;
 }
 
 .avatar-item .avatar-icon {
@@ -852,7 +852,7 @@ label {
 }
 
 .panel-collapse {
-    padding-bottom:38px;
+    padding-bottom:10px;
     padding-left: 38px;
 }
 
