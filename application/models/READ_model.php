@@ -1509,8 +1509,10 @@ class READ_model extends CI_Model
          */
         if(!$push_message){
 
-            //BLOG TYPE + TITLE
-            echo '<h1><span class="icon-block-xlg icon_photo '.superpower_active(10939).'">'.echo_en_cache('en_all_7585', $ins[0]['in_type_play_id'], true, 'bottom').'</span>' . echo_in_title($ins[0]['in_title']) . '</h1>';
+            //<span class="icon-block-xlg icon_photo '.superpower_active(10939).'">'.echo_en_cache('en_all_7585', $ins[0]['in_type_play_id'], true, 'bottom').'</span>
+            //BLOG TITLE
+            echo '<h1>' . echo_in_title($ins[0]['in_title']) . '</h1>';
+
         } else {
             $this->READ_model->dispatch_message(
                 'You\'re reading: '.$ins[0]['in_title'],
