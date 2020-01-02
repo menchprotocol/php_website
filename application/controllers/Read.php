@@ -1813,7 +1813,6 @@ class Read extends CI_Controller
                                     'ln_content' => $new_message['ln_content'],
                                     'ln_status_play_id' => 6176, //Link Published
                                     'ln_parent_read_id' => $new_message['ln_id'],
-                                    'ln_timestamp' => date("Y-m-d H:i:s"),
                                 ));
 
                                 //Process on-complete automations:

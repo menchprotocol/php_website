@@ -300,32 +300,89 @@ class READ_model extends CI_Model
                     'ln_parent_play_id >' => 0, //Entity to be tagged for this blog
                 )) as $ln_tag){
 
+                    //Generate stats:
+                    $links_added = 0;
+                    $links_edited = 0;
+                    $links_removed = 0;
+
+
                     //Assign tag if parent/child link NOT already assigned:
-                    if(!count($this->READ_model->ln_fetch(array(
+                    $existing_links = $this->READ_model->ln_fetch(array(
                         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                         'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                         'ln_parent_play_id' => $ln_tag['ln_parent_play_id'],
                         'ln_child_play_id' => $insert_columns['ln_creator_play_id'],
-                        'LOWER(ln_content)' => strtolower($insert_columns['ln_content']),
-                    )))){
+                    ));
 
+                    if(count($existing_links)){
+
+                        //Link already exists, see if content value is the same:
+                        if($existing_links[0]['ln_content'] == $insert_columns['ln_content'] && $existing_links[0]['ln_type_play_id'] == $detected_ln_type['ln_type_play_id']){
+
+                            //Everything is the same, nothing to do here:
+                            continue;
+
+                        } else {
+
+                            $links_edited++;
+
+                            //Content value has changed, update the link:
+                            $this->READ_model->ln_update($existing_links[0]['ln_id'], array(
+                                'ln_content' => $insert_columns['ln_content'],
+                            ), $insert_columns['ln_creator_play_id'], 10657 /* Player Link Iterated Content  */);
+
+                            //Also, did the link type change based on the content change?
+                            if($existing_links[0]['ln_type_play_id'] != $detected_ln_type['ln_type_play_id']){
+                                $this->READ_model->ln_update($existing_links[0]['ln_id'], array(
+                                    'ln_type_play_id' => $detected_ln_type['ln_type_play_id'],
+                                ), $insert_columns['ln_creator_play_id'], 10659 /* Player Link Iterated Type */);
+                            }
+
+                        }
+
+                    } else {
+
+                        //See if we need to remove single selectable links:
+                        foreach($this->config->item('en_ids_6204') as $single_select_en_id){
+                            $single_selectable = $this->config->item('en_ids_'.$single_select_en_id);
+                            if(is_array($single_selectable) && count($single_selectable) && in_array($ln_tag['ln_parent_play_id'], $single_selectable)){
+                                //Remove other siblings, if any:
+                                foreach($this->READ_model->ln_fetch(array(
+                                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                                    'ln_parent_play_id IN (' . join(',', $single_selectable) . ')' => null,
+                                    'ln_parent_play_id !=' => $ln_tag['ln_parent_play_id'],
+                                    'ln_child_play_id' => $insert_columns['ln_creator_play_id'],
+                                )) as $single_selectable_siblings_preset){
+                                    $links_removed += $this->READ_model->ln_update($single_selectable_siblings_preset['ln_id'], array(
+                                        'ln_status_play_id' => 6173, //Link Removed
+                                    ), $insert_columns['ln_creator_play_id'], 10673 /* Player Link Unlinked */);
+                                }
+                            }
+                        }
+
+                        //Create link:
+                        $links_added++;
                         $this->READ_model->ln_create(array(
                             'ln_type_play_id' => $detected_ln_type['ln_type_play_id'],
                             'ln_content' => $insert_columns['ln_content'],
-                            'ln_creator_play_id' => $ln_tag['ln_creator_play_id'],
+                            'ln_creator_play_id' => $insert_columns['ln_creator_play_id'],
                             'ln_parent_play_id' => $ln_tag['ln_parent_play_id'],
                             'ln_child_play_id' => $insert_columns['ln_creator_play_id'],
                         ));
 
-                        //Track Tag:
-                        $this->READ_model->ln_create(array(
-                            'ln_type_play_id' => 12197, //Tag Player
-                            'ln_creator_play_id' => $ln_tag['ln_creator_play_id'],
-                            'ln_parent_play_id' => $ln_tag['ln_parent_play_id'],
-                            'ln_child_play_id' => $insert_columns['ln_creator_play_id'],
-                            'ln_parent_blog_id' => $insert_columns['ln_parent_blog_id'],
-                        ));
                     }
+
+                    //Track Tag:
+                    $this->READ_model->ln_create(array(
+                        'ln_type_play_id' => 12197, //Tag Player
+                        'ln_creator_play_id' => $insert_columns['ln_creator_play_id'],
+                        'ln_parent_play_id' => $ln_tag['ln_parent_play_id'],
+                        'ln_child_play_id' => $insert_columns['ln_creator_play_id'],
+                        'ln_parent_blog_id' => $insert_columns['ln_parent_blog_id'],
+                        'ln_content' => $links_added.' added, '.$links_edited.' edited & '.$links_removed.' removed with new content ['.$insert_columns['ln_content'].']',
+                    ));
+
                 }
             }
         }
@@ -3911,7 +3968,6 @@ class READ_model extends CI_Model
                     $this->READ_model->ln_update($ln['ln_id'], array(
                         'ln_child_blog_id' => $answer_in_id, //Save answer
                         'ln_status_play_id' => 6176, //Link Published
-                        'ln_timestamp' => date("Y-m-d H:i:s"),
                     ));
 
                     //Update status:

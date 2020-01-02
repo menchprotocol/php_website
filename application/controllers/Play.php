@@ -1609,8 +1609,6 @@ fragment PostListingItemSidebar_post on Post {
 
                 $this->READ_model->ln_update($_POST['ln_id'], array(
                     'ln_content' => $ln_content,
-                    'ln_creator_play_id' => $session_en['en_id'],
-                    'ln_timestamp' => date("Y-m-d H:i:s"),
                 ), $session_en['en_id'], 10657 /* Player Link Iterated Content */);
 
 
