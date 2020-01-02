@@ -1058,7 +1058,7 @@ label {
     .show-max{display: none !important;}
     .form-control-thick { padding-left: 26px; }
     .blog-left, .texttype_4736 { width:75%; }
-
+    .avatar-item { width:87px !important; padding: 10px 0 13px; }
 }
 
 @media (min-width:767px) {
