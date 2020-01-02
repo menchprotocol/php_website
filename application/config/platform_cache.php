@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 04:50:34 PST
+//Generated 2020-01-02 04:52:15 PST
 
 //FEATURED BY:
 $config['en_ids_12201'] = array(10939,12198,10869,5008);
@@ -1491,29 +1491,6 @@ $config['en_all_10869'] = array(
     ),
 );
 
-//PLAYER SUBSCRIPTION:
-$config['en_ids_11007'] = array(11010,11011,11012);
-$config['en_all_11007'] = array(
-    11010 => array(
-        'm_icon' => '<i class="fas fa-check-circle blue" aria-hidden="true"></i>',
-        'm_name' => '100 READS/MONTH FOR FREE',
-        'm_desc' => '',
-        'm_parents' => array(11061,11007),
-    ),
-    11011 => array(
-        'm_icon' => '<i class="fas fa-usd-circle ispink" aria-hidden="true"></i>',
-        'm_name' => 'UNLIMITED FOR $5/MONTH',
-        'm_desc' => '',
-        'm_parents' => array(11162,11007),
-    ),
-    11012 => array(
-        'm_icon' => '<i class="fas fa-usd-circle yellow" aria-hidden="true"></i>',
-        'm_name' => 'UNLIMITED FOR $50/YEAR',
-        'm_desc' => '',
-        'm_parents' => array(11163,11007),
-    ),
-);
-
 //SHOW PLAY TAB NAMES:
 $config['en_ids_11084'] = array(11029,11030);
 $config['en_all_11084'] = array(
@@ -2251,8 +2228,8 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035),
     ),
     6225 => array(
-        'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
-        'm_name' => 'MY PLAYER',
+        'm_icon' => '<i class="fas fa-cog blue" aria-hidden="true"></i>',
+        'm_name' => 'MY ACCOUNT',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(11035,4758,4527),
     ),
@@ -2622,7 +2599,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(12066,10725,7758,10809,12145,10990,11018,11047,4983,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11021,6201,12112,7585,10602,7309,7712,7751,6150,10712,10719,12201,10627,10716,3290,10746,7364,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,6225,6404,4527,11054,6232,11039,6194,10956,6827,4426,4997,4454,4986,7551,11028,4537,6177,11007,10957,6206,3289,4592,11089,11033,3000,7303,11088,4755,6287,10718,10571,7357,6192,11081,6193,6146,6345,5967,4280,10570,4277,6102,7704,7494,10590,7347,6103,10692,6255,7304,6186,7360,7359,4341,4593,10593,10591,12141,10658,10711,11031,11084,6204,10710,6805,7358,10869);
+$config['en_ids_4527'] = array(12066,10725,7758,10809,12145,10990,11018,11047,4983,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11021,6201,12112,7585,10602,7309,7712,7751,6150,10712,10719,12201,10627,10716,3290,10746,7364,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,6225,6404,4527,11054,6232,11039,6194,10956,6827,4426,4997,4454,4986,7551,11028,4537,6177,10957,6206,3289,4592,11089,11033,3000,7303,11088,4755,6287,10718,10571,7357,6192,11081,6193,6146,6345,5967,4280,10570,4277,6102,7704,7494,10590,7347,6103,10692,6255,7304,6186,7360,7359,4341,4593,10593,10591,12141,10658,10711,11031,11084,6204,10710,6805,7358,10869);
 $config['en_all_4527'] = array(
     12066 => array(
         'm_icon' => '<i class="far fa-info-circle" aria-hidden="true"></i>',
@@ -2919,8 +2896,8 @@ $config['en_all_4527'] = array(
         'm_parents' => array(7254,6196,4527),
     ),
     6225 => array(
-        'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
-        'm_name' => 'MY PLAYER',
+        'm_icon' => '<i class="fas fa-cog blue" aria-hidden="true"></i>',
+        'm_name' => 'MY ACCOUNT',
         'm_desc' => '',
         'm_parents' => array(11035,4758,4527),
     ),
@@ -3019,12 +2996,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'PLAYER STATUS',
         'm_desc' => '',
         'm_parents' => array(11054,7303,6204,5003,10654,6160,6232,6194,6206,4527),
-    ),
-    11007 => array(
-        'm_icon' => '<i class="fas fa-usd-circle isblue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER SUBSCRIPTION',
-        'm_desc' => '',
-        'm_parents' => array(4527,6204,6225),
     ),
     10957 => array(
         'm_icon' => '<i class="fas fa-magic blue" aria-hidden="true"></i>',
@@ -4907,7 +4878,7 @@ $config['en_all_6201'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['en_ids_6204'] = array(4737,7585,10602,3290,10956,4454,6177,11007,3289,6186,4593,10591);
+$config['en_ids_6204'] = array(4737,7585,10602,3290,10956,4454,6177,3289,6186,4593,10591);
 $config['en_all_6204'] = array(
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h yellow" aria-hidden="true"></i>',
@@ -4950,12 +4921,6 @@ $config['en_all_6204'] = array(
         'm_name' => 'PLAYER STATUS',
         'm_desc' => '',
         'm_parents' => array(11054,7303,6204,5003,10654,6160,6232,6194,6206,4527),
-    ),
-    11007 => array(
-        'm_icon' => '<i class="fas fa-usd-circle isblue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER SUBSCRIPTION',
-        'm_desc' => '',
-        'm_parents' => array(4527,6204,6225),
     ),
     3289 => array(
         'm_icon' => '<i class="fas fa-map-marked isblue" aria-hidden="true"></i>',
@@ -5644,8 +5609,8 @@ $config['en_all_4986'] = array(
     ),
 );
 
-//MY PLAYER:
-$config['en_ids_6225'] = array(10956,6197,3288,3286,11007,4454);
+//MY ACCOUNT:
+$config['en_ids_6225'] = array(10956,6197,3288,3286,4454);
 $config['en_all_6225'] = array(
     10956 => array(
         'm_icon' => '<i class="fas fa-paw blue" aria-hidden="true"></i>',
@@ -5670,12 +5635,6 @@ $config['en_all_6225'] = array(
         'm_name' => 'PASSWORD',
         'm_desc' => '',
         'm_parents' => array(4426,7578,6225,4755),
-    ),
-    11007 => array(
-        'm_icon' => '<i class="fas fa-usd-circle isblue" aria-hidden="true"></i>',
-        'm_name' => 'SUBSCRIPTION',
-        'm_desc' => '',
-        'm_parents' => array(4527,6204,6225),
     ),
     4454 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger blue" aria-hidden="true"></i>',
