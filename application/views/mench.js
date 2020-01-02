@@ -483,24 +483,20 @@ var update_coin_counter = function( ) {
             }
         }
 
-        if(data.blog_count != $('.three-menus .blog .current_count').html()){
-            if(!data.blog_count){
-                $('.three-menus .blog .blog_name').removeClass('show-max');
-                $('.three-menus .blog .current_count').html('');
-            } else {
-                $('.three-menus .blog .blog_name').addClass('show-max');
-                $('.three-menus .blog .current_count').html(data.blog_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
-            }
+        if(!data.blog_count < 1){
+            $('.three-menus .blog .blog_name').removeClass('show-max');
+            $('.three-menus .blog .current_count').html('');
+        } else if(data.blog_count != $('.three-menus .blog .current_count').html()){
+            $('.three-menus .blog .blog_name').addClass('show-max');
+            $('.three-menus .blog .current_count').html(data.blog_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
-        if(data.read_count != $('.three-menus .read .current_count').html()){
-            if(!data.read_count){
-                $('.three-menus .read .read_name').removeClass('show-max');
-                $('.three-menus .read .current_count').html('');
-            } else {
-                $('.three-menus .read .read_name').addClass('show-max');
-                $('.three-menus .read .current_count').html(data.read_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
-            }
+        if(data.read_count < 1){
+            $('.three-menus .read .read_name').removeClass('show-max');
+            $('.three-menus .read .current_count').html('');
+        } else if(data.read_count != $('.three-menus .read .current_count').html()){
+            $('.three-menus .read .read_name').addClass('show-max');
+            $('.three-menus .read .current_count').html(data.read_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
         updating_basic_stats = false;
