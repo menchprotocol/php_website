@@ -3435,20 +3435,20 @@ class READ_model extends CI_Model
             'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
         ));
         if (!count($ins)) {
-            return echo_json(array(
+            return array(
                 'status' => 0,
                 'message' => 'Invalid blog ID',
-            ));
+            );
         } elseif (!count($ens)) {
-            return echo_json(array(
+            return array(
                 'status' => 0,
                 'message' => 'Invalid play ID',
-            ));
+            );
         } elseif (!in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7712'))) {
-            return echo_json(array(
+            return array(
                 'status' => 0,
                 'message' => 'Invalid Blog type',
-            ));
+            );
         }
 
         //See if we had previously answered:
@@ -3517,17 +3517,17 @@ class READ_model extends CI_Model
 
         if($answers_newly_added>0 || $answers_newly_removed>0){
             //All good, something happened:
-            return echo_json(array(
+            return array(
                 'status' => 1,
                 'message' => ($answers_newly_added>0 ? $answers_newly_added.' answer'.echo__s($answers_newly_added).' saved' : '').($answers_newly_removed>0 ? ($answers_newly_added>0 ? ' & ' : '').$answers_newly_removed.' answer'.echo__s($answers_newly_removed).' removed' : ''),
                 'next_in_id' => ( $answers_newly_added==1 && !$answers_newly_removed ? $child_ins[0]['in_id'] : $ins[0]['in_id'] ),
-            ));
+            );
         } else {
             //No change, let them know:
-            return echo_json(array(
+            return array(
                 'status' => 0,
                 'message' => 'Nothing changed',
-            ));
+            );
         }
 
     }
