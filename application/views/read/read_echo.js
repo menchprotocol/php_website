@@ -134,7 +134,8 @@ function read_answer(){
         if (data.status) {
             $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
             setTimeout(function () {
-                $('.result-update').html('');
+                //Go to redirect message:
+                window.location = '/' + data.next_in_id;
             }, 1597);
         } else {
             $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-triangle ispink"></i></span><span class="montserrat ispink">ERROR: '+data.message+'</span>');

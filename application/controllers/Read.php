@@ -310,8 +310,7 @@ class Read extends CI_Controller
         }
 
         //Save answer:
-        $result = $this->READ_model->read_answer($session_en['en_id'], $_POST['in_loaded_id'], $_POST['answered_ins']);
-        return echo_json($result);
+        return echo_json($this->READ_model->read_answer($session_en['en_id'], $_POST['in_loaded_id'], $_POST['answered_ins']));
 
     }
 
