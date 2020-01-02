@@ -476,7 +476,7 @@ var update_coin_counter = function( ) {
     $.post("/play/update_coin_counter", { }, function (data) {
 
         if(data.play_count != $('.play .current_count').html()){
-            if(play_count > 1){
+            if(data.play_count > 1){
                 $('.three-menus .play .current_count').html(data.play_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
             } else {
                 $('.three-menus .play .current_count').html('');
