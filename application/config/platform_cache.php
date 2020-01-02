@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 01:51:20 PST
+//Generated 2020-01-02 02:03:55 PST
 
 //FEATURED BY:
 $config['en_ids_12201'] = array(10939,12198,10869,5008);
@@ -2241,7 +2241,7 @@ $config['en_all_11035'] = array(
     11087 => array(
         'm_icon' => '<i class="fas fa-users-crown blue" aria-hidden="true"></i>',
         'm_name' => 'LEADERBOARD',
-        'm_desc' => 'List of top player',
+        'm_desc' => '',
         'm_parents' => array(11035,4536),
     ),
     7291 => array(
@@ -2251,15 +2251,15 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035),
     ),
     6225 => array(
-        'm_icon' => '<i class="fas fa-cog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cog blue" aria-hidden="true"></i>',
         'm_name' => 'MY ACCOUNT',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(11035,4758,4527),
     ),
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle blue" aria-hidden="true"></i>',
-        'm_name' => 'MY COIN',
-        'm_desc' => 'View your player coin and it\'s relation to other coins.',
+        'm_name' => 'MY PUBLIC PROFILE',
+        'm_desc' => '',
         'm_parents' => array(11035),
     ),
     12200 => array(
@@ -2913,7 +2913,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(7254,6196,4527),
     ),
     6225 => array(
-        'm_icon' => '<i class="fas fa-cog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cog blue" aria-hidden="true"></i>',
         'm_name' => 'MY ACCOUNT',
         'm_desc' => '',
         'm_parents' => array(11035,4758,4527),
