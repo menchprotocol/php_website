@@ -122,7 +122,7 @@ if(!isset($hide_header) || !$hide_header){
                                         $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
 
                                         //Superpower already unlocked:
-                                        echo '<a class="btn btn-sm btn-superpower icon-block-sm superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('activate_superpowers_en_ids')) ? 'active' : '' ).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].' @'.$superpower_en_id.'">'.$m['m_icon'].'</a>';
+                                        echo '<a class="btn btn-sm btn-superpower icon-block superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('activate_superpowers_en_ids')) ? 'active' : '' ).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].' @'.$superpower_en_id.'">'.$m['m_icon'].'</a>';
 
                                     }
                                 }
