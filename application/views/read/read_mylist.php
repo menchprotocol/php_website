@@ -23,6 +23,7 @@ echo '<div class="pull-right inline-block">';
 echo '</div>';
 
 
+echo '<div class="doclear">&nbsp;</div>';
 
 
 //See if we have 2 or more blogs:
