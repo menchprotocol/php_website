@@ -2570,7 +2570,7 @@ function echo_en($en, $is_parent = false)
 function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tabindex = 0){
     $CI =& get_instance();
     $en_all_12112 = $CI->config->item('en_all_12112');
-    return '<input '.( $is_author ? '' : 'disabled' ).' type="text" tabindex="'.$tabindex.'" class="form-control in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' texttype_'.$cache_en_id.'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" value="'.$current_value.'" data-toggle="tooltip" data-placement="top" title="'.$en_all_12112[$cache_en_id]['m_name'].( strlen($en_all_12112[$cache_en_id]['m_desc']) > 0 ? ': '.$en_all_12112[$cache_en_id]['m_desc'] : '' ).'">';
+    return '<input '.( $is_author ? '' : 'disabled' ).' type="text" tabindex="'.$tabindex.'" class="form-control in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' texttype_'.$cache_en_id.'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" value="'.$current_value.'" title="EDIT '.$en_all_12112[$cache_en_id]['m_name'].( strlen($en_all_12112[$cache_en_id]['m_desc']) > 0 ? ': '.$en_all_12112[$cache_en_id]['m_desc'] : '' ).'">';
 }
 
 function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author, $ln_id = 0){

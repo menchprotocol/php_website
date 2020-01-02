@@ -730,6 +730,8 @@ textarea.note-textarea{
 }
 .texttype_4736{
     display: inline-block;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .show-on-hover .fa-sort {
