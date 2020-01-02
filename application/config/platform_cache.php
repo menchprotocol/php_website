@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 04:26:22 PST
+//Generated 2020-01-02 04:50:34 PST
 
 //FEATURED BY:
 $config['en_ids_12201'] = array(10939,12198,10869,5008);
@@ -2251,8 +2251,8 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035),
     ),
     6225 => array(
-        'm_icon' => '<i class="fas fa-cog blue" aria-hidden="true"></i>',
-        'm_name' => 'MY ACCOUNT',
+        'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
+        'm_name' => 'MY PLAYER',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(11035,4758,4527),
     ),
@@ -2919,8 +2919,8 @@ $config['en_all_4527'] = array(
         'm_parents' => array(7254,6196,4527),
     ),
     6225 => array(
-        'm_icon' => '<i class="fas fa-cog blue" aria-hidden="true"></i>',
-        'm_name' => 'MY ACCOUNT',
+        'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
+        'm_name' => 'MY PLAYER',
         'm_desc' => '',
         'm_parents' => array(11035,4758,4527),
     ),
@@ -5644,7 +5644,7 @@ $config['en_all_4986'] = array(
     ),
 );
 
-//MY ACCOUNT:
+//MY PLAYER:
 $config['en_ids_6225'] = array(10956,6197,3288,3286,11007,4454);
 $config['en_all_6225'] = array(
     10956 => array(
