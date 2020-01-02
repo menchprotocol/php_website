@@ -26,7 +26,7 @@ class Read extends CI_Controller
         //Add this blog to their READING LIST:
         if(!$this->READ_model->read_add($session_en['en_id'], $in_id)){
             //Failed to add to reading list:
-            return redirect_message('/read', '<div class="alert alert-danger" role="alert">Failed to add blog to your 🔴 READING LIST.</div>');
+            return redirect_message('/read', '<div class="alert alert-danger" role="alert">Failed to add blog to your reading list.</div>');
         }
 
 
@@ -36,9 +36,9 @@ class Read extends CI_Controller
         ));
         $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
         if($next_in_id > 0){
-            return redirect_message('/' . $next_in_id, '<div class="alert alert-success" role="alert">Successfully added to your 🔴 READING LIST.</div>');
+            return redirect_message('/' . $next_in_id, '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i> Successfully added to your reading list.</div>');
         } else {
-            return redirect_message('/read', '<div class="alert alert-danger" role="alert">No next read found in your 🔴 READING LIST.</div>');
+            return redirect_message('/read', '<div class="alert alert-danger" role="alert">No next read found in your reading list.</div>');
         }
 
     }
