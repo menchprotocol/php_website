@@ -48,17 +48,17 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             //Print account fields that are either Single Selectable or Multi Selectable:
             $is_multi_selectable  = in_array(6122 , $acc_detail['m_parents']);
             $is_single_selectable = in_array(6204 , $acc_detail['m_parents']);
-            if($is_multi_selectable || $is_single_selectable){
-
-                echo echo_radio_players($acc_en_id, $session_en['en_id'], ( $is_multi_selectable ? 1 : 0 ));
-
-            } elseif($acc_en_id==10956 /* AVATARS */){
+            if($acc_en_id==10956 /* AVATARS */){
 
                 echo '<div class="list-group">';
                 foreach($this->config->item('en_all_10956') as $en_id => $m) {
                     echo '<a href="javascript:void(0);" onclick="update_avatar('.$en_id.')" class="list-group-item itemplay avatar-item item-square '.( $m['m_icon']==$session_en['en_icon'] ? ' active' : '' ).'"><div class="avatar-icon">'.$m['m_icon'].'</div><div class="avatar-name montserrat">'.$m['m_name'].'</div></a>';
                 }
                 echo '</div>';
+
+            } elseif($is_multi_selectable || $is_single_selectable){
+
+                echo echo_radio_players($acc_en_id, $session_en['en_id'], ( $is_multi_selectable ? 1 : 0 ));
 
             } elseif($acc_en_id==6197 /* Full Name */){
 
