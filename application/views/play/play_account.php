@@ -42,7 +42,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     </div>
                     <div id="collapse'.$acc_en_id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="openEn'.$acc_en_id.'">
                         <div class="panel-body player-list">
-                            <p>'.$acc_detail['m_desc'].'</p>';
+                            '.( strlen($acc_detail['m_desc']) > 0 ? '<p>'.$acc_detail['m_desc'].'</p>' : '' );
 
 
             //Print account fields that are either Single Selectable or Multi Selectable:
