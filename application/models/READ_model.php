@@ -3430,10 +3430,19 @@ class READ_model extends CI_Model
             'in_id' => $question_in_id,
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ));
+        $ens = $this->PLAY_model->en_fetch(array(
+            'en_id' => $en_id,
+            'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+        ));
         if (!count($ins)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid blog ID',
+            ));
+        } elseif (!count($ens)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid play ID',
             ));
         } elseif (!in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7712'))) {
             return echo_json(array(
@@ -3500,7 +3509,7 @@ class READ_model extends CI_Model
                 ));
 
                 //See if we also need to mark the child as complete:
-                $this->READ_model->read__completion_auto_complete($session_en, $child_ins[0], 7485 /* User Read Answer Unlock */);
+                //$this->READ_model->read__completion_auto_complete($ens[0], $child_ins[0], 7485 /* User Read Answer Unlock */);
 
                 $answers_newly_added++;
             }
