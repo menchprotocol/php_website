@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 15:10:11 PST
+//Generated 2020-01-02 15:14:51 PST
 
 //FEATURED BY:
 $config['en_ids_12201'] = array(10939,12198,10869,5008);
@@ -2234,13 +2234,13 @@ $config['en_all_11039'] = array(
 $config['en_ids_11035'] = array(11087,7291,6225,12205,12200,6287,7256,4269,7540);
 $config['en_all_11035'] = array(
     11087 => array(
-        'm_icon' => '<i class="fas fa-users-crown blue" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-users-crown blue" aria-hidden="true"></i>',
         'm_name' => 'LEADERBOARD',
         'm_desc' => '',
         'm_parents' => array(11035,4536),
     ),
     7291 => array(
-        'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-power-off" aria-hidden="true"></i>',
         'm_name' => 'LOGOUT',
         'm_desc' => '',
         'm_parents' => array(11035),
@@ -2252,13 +2252,13 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035,4758,4527),
     ),
     12205 => array(
-        'm_icon' => '<i class="fas fa-user-circle blue" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-circle blue" aria-hidden="true"></i>',
         'm_name' => 'MY PUBLIC PROFILE',
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
     12200 => array(
-        'm_icon' => '<i class="fas fa-bell-plus" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bell-plus" aria-hidden="true"></i>',
         'm_name' => 'NEW GITHUB ISSUE',
         'm_desc' => 'Report a bug or a new idea that could make playing, reading or blogging easier. [Opens in a new window]',
         'm_parents' => array(11035),
@@ -2276,13 +2276,13 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11993,11035,3323),
     ),
     4269 => array(
-        'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
     7540 => array(
-        'm_icon' => '<i class="fas fa-university" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-university" aria-hidden="true"></i>',
         'm_name' => 'TERMS OF SERVICE',
         'm_desc' => '',
         'm_parents' => array(11035),
