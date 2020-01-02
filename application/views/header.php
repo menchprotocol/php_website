@@ -126,7 +126,7 @@ if(!isset($hide_header) || !$hide_header){
                                 }
 
                                 //Option to revert back:
-                                echo '&nbsp;&nbsp;<a class="btn btn-sm btn-superpower icon-block" href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');" title="Back to Normal ;)"><i class="far fa-times" style="font-size: 0.8em;"></i></a>';
+                                echo '&nbsp;<a class="btn btn-sm btn-superpower icon-block" style="cursor: alias !important;" href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');" title="Back to Normal ;)"><i class="far fa-times"></i></a>';
 
                             }
                             ?>
