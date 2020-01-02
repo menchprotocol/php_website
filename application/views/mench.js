@@ -483,7 +483,7 @@ var update_coin_counter = function( ) {
             }
         }
 
-        if(!data.blog_count < 1){
+        if(data.blog_count < 1){
             $('.three-menus .blog .blog_name').removeClass('show-max');
             $('.three-menus .blog .current_count').html('');
         } else if(data.blog_count != $('.three-menus .blog .current_count').html()){
