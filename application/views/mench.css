@@ -298,9 +298,10 @@ img.no-radius {
 }
 
 .panel-body .form-control {
-    padding: 5px 0;
+    padding:7px 0;
     font-size: 1.2em;
-    width: 100%;
+    display: inline-block;
+    color:#000;
 }
 
 .edit-off .content-image{
