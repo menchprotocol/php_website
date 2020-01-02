@@ -10,13 +10,13 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <div class="pull-right inline-block">
         <?php
 
-        echo '<a href="/play/'.$session_en['en_id'].'" class="btn btn-play btn-five inline-block '.superpower_active(10983).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12205]['m_name'].'">'.$en_all_11035[12205]['m_icon'].'</a>';
+        echo '<a href="/play/'.$session_en['en_id'].'" class="btn btn-play btn-five icon-block-lg '.superpower_active(10983).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12205]['m_name'].'">'.$en_all_11035[12205]['m_icon'].'</a>';
 
-        echo '<a href="/play" class="btn btn-play btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11087]['m_name'].'">'.$en_all_11035[11087]['m_icon'].'</a>';
+        echo '<a href="/play" class="btn btn-play btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11087]['m_name'].'">'.$en_all_11035[11087]['m_icon'].'</a>';
 
         if(!intval($this->session->userdata('messenger_signin'))){
             //Only give signout option if NOT logged-in from Messenger
-            echo '<a href="/play/signout" class="btn btn-play btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[7291]['m_name'].'">'.$en_all_11035[7291]['m_icon'].'</a>';
+            echo '<a href="/play/signout" class="btn btn-play btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[7291]['m_name'].'">'.$en_all_11035[7291]['m_icon'].'</a>';
         }
         ?>
     </div>
