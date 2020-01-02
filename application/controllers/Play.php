@@ -3052,32 +3052,30 @@ fragment PostListingItemSidebar_post on Post {
 
         $coin_types = coin_types();
 
-        //Count child players:
-        $child_links = $this->READ_model->ln_fetch(array(
-            'ln_parent_play_id' => $session_en['en_id'],
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        $play_coins = $this->READ_model->ln_fetch(array(
             'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
-        ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id IN (' . join(',', $coin_types['play']) . ')' => null,
+            'ln_creator_play_id' => $session_en['en_id'],
+        ), array('en_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
-        //COUNT WORDS BLOG/READ:
-        $words_blog = $this->READ_model->ln_fetch(array(
+        $blog_coins = $this->READ_model->ln_fetch(array(
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id IN (' . join(',', $coin_types['blog']) . ')' => null, //BLOGGERS
             'ln_creator_play_id' => $session_en['en_id'],
         ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
-        $words_read = $this->READ_model->ln_fetch(array(
+        $read_coins = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id IN (' . join(',', $coin_types['read']) . ')' => null, //READERS
             'ln_creator_play_id' => $session_en['en_id'],
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
         return echo_json(array(
-            'play_count' => number_format(($child_links[0]['totals'] + 1 /* For Player coin as the parent */), 0),
-            'blog_count' => number_format($words_blog[0]['total_coins'], 0),
-            'read_count' => number_format($words_read[0]['total_coins'], 0)
+            'play_count' => number_format($play_coins[0]['total_coins'], 0),
+            'blog_count' => number_format($blog_coins[0]['total_coins'], 0),
+            'read_count' => number_format($read_coins[0]['total_coins'], 0)
         ));
 
     }
