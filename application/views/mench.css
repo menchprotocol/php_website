@@ -105,7 +105,7 @@ li a {
 .avatar-item {
     display: block;
     float: left;
-    width: 137px !important;
+    width: 136px !important;
     padding: 20px 0  !important;
 }
 .avatar-item.active{

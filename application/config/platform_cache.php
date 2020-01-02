@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 03:00:46 PST
+//Generated 2020-01-02 03:57:23 PST
 
 //FEATURED BY:
 $config['en_ids_12201'] = array(10939,12198,10869,5008);
@@ -2439,7 +2439,7 @@ $config['en_all_10957'] = array(
 );
 
 //PLAYER AVATAR:
-$config['en_ids_10956'] = array(10965,10979,10978,10963,10966,10976,10962,10975,10982,10970,10972,10969,10959,10960,10981,10968,10974,10958);
+$config['en_ids_10956'] = array(10965,10979,10978,10963,10966,12207,10976,10962,10975,10982,10970,10972,10969,10959,10960,10981,10968,10974,12206,10958);
 $config['en_all_10956'] = array(
     10965 => array(
         'm_icon' => '<i class="far fa-dog blue"></i>',
@@ -2468,6 +2468,12 @@ $config['en_all_10956'] = array(
     10966 => array(
         'm_icon' => '<i class="far fa-deer blue"></i>',
         'm_name' => 'HONEY',
+        'm_desc' => '',
+        'm_parents' => array(10956),
+    ),
+    12207 => array(
+        'm_icon' => '<i class="far fa-badger-honey blue"></i>',
+        'm_name' => 'HONEY BADGER',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
@@ -2540,6 +2546,12 @@ $config['en_all_10956'] = array(
     10974 => array(
         'm_icon' => '<i class="far fa-snake blue"></i>',
         'm_name' => 'SNAKY',
+        'm_desc' => '',
+        'm_parents' => array(10956),
+    ),
+    12206 => array(
+        'm_icon' => '<i class="far fa-spider blue"></i>',
+        'm_name' => 'SPIDER',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
