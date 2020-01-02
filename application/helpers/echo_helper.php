@@ -2311,6 +2311,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
 
         //List children so they know what's ahead:
         $found_incomplete = false;
+        $found_done = 0;
         $found_upcoming = 0;
         $max_and_list = ( $push_message ? 5 : 0 );
         $common_prefix = common_prefix($in__children, 'in_title', $max_and_list);
@@ -2321,6 +2322,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
         //First analyze overall list to see how things are:
         foreach($in__children as $key => $child_in) {
             $completion_rate[$key] = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $child_in);
+            $found_done += ( $completion_rate[$key]['completion_percentage']==100 ? 1 : 0 );
             if($completion_rate[$key]['completion_percentage']<100 && !$found_incomplete){
                 //We found the next incomplete step:
                 $found_incomplete = true;
@@ -2329,15 +2331,18 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
                 $found_upcoming++;
             }
         }
+
+        //If all done, everything would be visible:
+        $all_done = ( $found_done == count($in__children) );
+
         if($next_key < 0){
-            $next_key = 0;
             $found_upcoming--;
         }
 
         foreach($in__children as $key => $child_in){
 
             //Has this been completed before by this user?
-            $footnotes = ( $next_key==$key ? 'UP NEXT' : ( $completion_rate[$key]['completion_percentage'] > 0 ? $completion_rate[$key]['completion_percentage'].'% DONE' : '' ));
+            $footnotes = ( $next_key==$key && !$all_done ? 'UP NEXT' : ( $completion_rate[$key]['completion_percentage'] > 0 ? $completion_rate[$key]['completion_percentage'].'% DONE' : '' ));
 
             if($push_message){
 
@@ -2361,7 +2366,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
 
             } else {
 
-                echo echo_in_read($child_in, $footnotes, $common_prefix, ( $next_key>=0 && $next_key!=$key ? 'hidden is_upcoming' : '' ), true);
+                echo echo_in_read($child_in, $footnotes, $common_prefix, ( $next_key>=0 && $next_key!=$key && !$all_done ? 'hidden is_upcoming' : '' ), true);
 
             }
         }
@@ -2375,7 +2380,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
             );
         } else {
             echo '</div>';
-            if($found_upcoming > 0){
+            if($found_upcoming > 0 && !$all_done){
                 echo '<div class="is_upcoming montserrat" style="padding:5px 0;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><span class="icon-block"><i class="far fa-plus-circle"></i></span>'.$found_upcoming.' MORE</a></div>';
             }
         }

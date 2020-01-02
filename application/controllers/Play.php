@@ -3052,6 +3052,14 @@ fragment PostListingItemSidebar_post on Post {
 
         $coin_types = coin_types();
 
+        //Count child players:
+        $child_links = $this->READ_model->ln_fetch(array(
+            'ln_parent_play_id' => $session_en['en_id'],
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+        ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
+
         //COUNT WORDS BLOG/READ:
         $words_blog = $this->READ_model->ln_fetch(array(
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
@@ -3067,6 +3075,7 @@ fragment PostListingItemSidebar_post on Post {
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
         return echo_json(array(
+            'play_count' => number_format(($child_links[0]['totals'] + 1 /* For Player coin as the parent */), 0),
             'blog_count' => number_format($words_blog[0]['total_coins'], 0),
             'read_count' => number_format($words_read[0]['total_coins'], 0)
         ));
