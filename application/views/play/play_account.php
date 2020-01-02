@@ -80,7 +80,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             } elseif($acc_en_id==3286 /* Password */){
 
-                echo '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border" placeholder="Set new password..." /></span>
+                echo '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
                         <a href="javascript:void(0)" onclick="account_update_password()" class="btn btn-play">Save</a>
                         <span class="saving-account save_password"></span>';
 
