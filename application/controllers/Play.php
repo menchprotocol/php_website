@@ -2360,7 +2360,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-    function myaccount_radio_update()
+    function account_radio_update()
     {
         /*
          *
@@ -2441,7 +2441,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
         //Log Account iteration link type:
-        $_POST['account_update_function'] = 'myaccount_radio_update'; //Add this variable to indicate which My Account function created this link
+        $_POST['account_update_function'] = 'account_radio_update'; //Add this variable to indicate which My Account function created this link
         $this->READ_model->ln_create(array(
             'ln_creator_play_id' => $_POST['js_pl_id'],
             'ln_type_play_id' => 6224, //My Account Iterated
@@ -2459,7 +2459,7 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function myaccount()
+    function account()
     {
 
         //Authenticate user:
@@ -2475,7 +2475,7 @@ fragment PostListingItemSidebar_post on Post {
         $this->load->view('header', array(
             'title' => 'MY ACCOUNT',
         ));
-        $this->load->view('play/play_myaccount', array(
+        $this->load->view('play/play_account', array(
             'session_en' => $session_en,
         ));
         $this->load->view('footer');
@@ -2491,7 +2491,7 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function myaccount_save_full_name()
+    function account_save_full_name()
     {
 
 
@@ -2518,7 +2518,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
         //Log Account iteration link type:
-        $_POST['account_update_function'] = 'myaccount_save_full_name'; //Add this variable to indicate which My Account function created this link
+        $_POST['account_update_function'] = 'account_save_full_name'; //Add this variable to indicate which My Account function created this link
         $this->READ_model->ln_create(array(
             'ln_creator_play_id' => $_POST['en_id'],
             'ln_type_play_id' => 6224, //My Account Iterated
@@ -2534,7 +2534,7 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function myaccount_save_phone(){
+    function account_save_phone(){
 
         if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
             return echo_json(array(
@@ -2653,7 +2653,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //Log Account iteration link type:
         if($return['status']){
-            $_POST['account_update_function'] = 'myaccount_save_phone'; //Add this variable to indicate which My Account function created this link
+            $_POST['account_update_function'] = 'account_save_phone'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->ln_create(array(
                 'ln_creator_play_id' => $_POST['en_id'],
                 'ln_type_play_id' => 6224, //My Account Iterated
@@ -2667,7 +2667,7 @@ fragment PostListingItemSidebar_post on Post {
 
     }
 
-    function myaccount_save_email()
+    function account_save_email()
     {
 
 
@@ -2776,7 +2776,7 @@ fragment PostListingItemSidebar_post on Post {
 
         if($return['status']){
             //Log Account iteration link type:
-            $_POST['account_update_function'] = 'myaccount_save_email'; //Add this variable to indicate which My Account function created this link
+            $_POST['account_update_function'] = 'account_save_email'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->ln_create(array(
                 'ln_creator_play_id' => $_POST['en_id'],
                 'ln_type_play_id' => 6224, //My Account Iterated
@@ -2794,7 +2794,7 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function myaccount_update_password()
+    function account_update_password()
     {
 
 
@@ -2866,7 +2866,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //Log Account iteration link type:
         if($return['status']){
-            $_POST['account_update_function'] = 'myaccount_update_password'; //Add this variable to indicate which My Account function created this link
+            $_POST['account_update_function'] = 'account_update_password'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->ln_create(array(
                 'ln_creator_play_id' => $_POST['en_id'],
                 'ln_type_play_id' => 6224, //My Account Iterated
@@ -2883,7 +2883,7 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function myaccount_save_social_profiles()
+    function account_save_social_profiles()
     {
 
 
@@ -3012,7 +3012,7 @@ fragment PostListingItemSidebar_post on Post {
         if(strlen($success_messages) > 0){
 
             //Log Account iteration link type:
-            $_POST['account_update_function'] = 'myaccount_save_social_profiles'; //Add this variable to indicate which My Account function created this link
+            $_POST['account_update_function'] = 'account_save_social_profiles'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->ln_create(array(
                 'ln_creator_play_id' => $_POST['en_id'],
                 'ln_type_play_id' => 6224, //My Account Iterated

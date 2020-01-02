@@ -1377,7 +1377,7 @@ class Read extends CI_Controller
                         array(
                             'title' => '🔵 PLAY',
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/play/myaccount',
+                            'url' => 'https://mench.com/play/account',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,

@@ -34,20 +34,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     $is_published = in_array($player['en_status_play_id'], $this->config->item('en_ids_7357'));
     echo '<span class="icon-block en_status_play_id_' . $player['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$player['en_status_play_id']]['m_name'].': '.$en_all_6177[$player['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$player['en_status_play_id']]['m_icon'] . '</span></span>';
 
-
-    //ACCOUNT
-    if(isset($session_en['en_id']) && $session_en['en_id']==$player['en_id']){
-
-        echo '<a href="/play/myaccount" class="btn btn-play btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[6225]['m_desc'].'">'.$en_all_11035[6225]['m_icon'].' '.$en_all_11035[6225]['m_name'].'</a>';
-
-        echo '<a href="/play" class="btn btn-play btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11087]['m_name'].'">'.$en_all_11035[11087]['m_icon'].'</a>';
-
-        if(!intval($this->session->userdata('messenger_signin'))){
-            //Only give signout option if NOT logged-in from Messenger
-            echo '<a href="/play/signout" class="btn btn-play btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[7291]['m_name'].'">'.$en_all_11035[7291]['m_icon'].'</a>';
-        }
-    }
-
     //MODIFY
     echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $player['en_id'] . ',0)" class="btn btn-play btn-five inline-block '. superpower_active(10983) .'"><i class="fas fa-cog"></i></a>';
 
