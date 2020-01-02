@@ -6,7 +6,21 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 <div class="container">
 
-    <h1 class="blue"><span class="icon-block-xlg en-icon"><?= $en_all_11035[6225]['m_icon'] ?></span><?= $en_all_11035[6225]['m_name'] ?></h1>
+    <h1 class="blue pull-left"><span class="icon-block-xlg en-icon"><?= $en_all_11035[6225]['m_icon'] ?></span><?= $en_all_11035[6225]['m_name'] ?></h1>
+    <div class="pull-right inline-block">
+        <?php
+        echo '<a href="/play/'.$session_en['en_id'].'" class="btn btn-play btn-five inline-block '.superpower_active(10983).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12205]['m_name'].'">'.$en_all_11035[12205]['m_icon'].'</a>';
+
+        echo '<a href="/play" class="btn btn-play btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11087]['m_name'].'">'.$en_all_11035[11087]['m_icon'].'</a>';
+
+        if(!intval($this->session->userdata('messenger_signin'))){
+            //Only give signout option if NOT logged-in from Messenger
+            echo '<a href="/play/signout" class="btn btn-play btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[7291]['m_name'].'">'.$en_all_11035[7291]['m_icon'].'</a>';
+        }
+        ?>
+    </div>
+
+    <div style="clear: both;">&nbsp;</div>
 
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="max-width: 500px;">
 
@@ -105,19 +119,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         }
         ?>
 
-    </div>
-
-    <div>
-    <?php
-    echo '<a href="/play/'.$session_en['en_id'].'" class="btn btn-play btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12205]['m_desc'].'">'.$en_all_11035[12205]['m_icon'].' '.$en_all_11035[12205]['m_name'].'</a>';
-
-    echo '<a href="/play" class="btn btn-play btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11087]['m_name'].'">'.$en_all_11035[11087]['m_icon'].'</a>';
-
-    if(!intval($this->session->userdata('messenger_signin'))){
-        //Only give signout option if NOT logged-in from Messenger
-        echo '<a href="/play/signout" class="btn btn-play btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[7291]['m_name'].'">'.$en_all_11035[7291]['m_icon'].'</a>';
-    }
-    ?>
     </div>
 
 </div>
