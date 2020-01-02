@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 15:50:04 PST
+//Generated 2020-01-02 15:53:25 PST
 
 //BROWSE READS:
 $config['en_ids_12201'] = array(10939,12198,10869,5008);
@@ -2231,7 +2231,7 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(12201,11087,7291,6225,12205,12200,12211,6287,11046,7256,4269,7540);
+$config['en_ids_11035'] = array(12201,11087,7291,12213,6225,12205,12212,12200,12211,6287,11046,7256,4269,7540);
 $config['en_all_11035'] = array(
     12201 => array(
         'm_icon' => '<i class="fad fa-plus ispink" aria-hidden="true"></i>',
@@ -2251,8 +2251,14 @@ $config['en_all_11035'] = array(
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
+    12213 => array(
+        'm_icon' => '<i class="fas fa-circle yellow"></i>',
+        'm_name' => 'MY BLOGS',
+        'm_desc' => '',
+        'm_parents' => array(11035),
+    ),
     6225 => array(
-        'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle blue"></i>',
         'm_name' => 'MY PLAYER',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(11035,4758,4527),
@@ -2260,6 +2266,12 @@ $config['en_all_11035'] = array(
     12205 => array(
         'm_icon' => '<i class="fad fa-user-circle blue" aria-hidden="true"></i>',
         'm_name' => 'MY PUBLIC PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(11035),
+    ),
+    12212 => array(
+        'm_icon' => '<i class="fas fa-circle ispink"></i>',
+        'm_name' => 'MY READS',
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
@@ -2932,7 +2944,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(7254,6196,4527),
     ),
     6225 => array(
-        'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle blue"></i>',
         'm_name' => 'MY PLAYER',
         'm_desc' => '',
         'm_parents' => array(11035,4758,4527),

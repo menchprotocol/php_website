@@ -155,11 +155,13 @@
     //Player Navigation
     if(isset($session_en['en_id']) && $session_en['en_id'] > 0){
 
-        echo '<a class="btn btn-read inline-block" href="/read"  style="margin: 20px 0;">MY READS <i class="fas fa-angle-right"></i></a>';
+        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+
+        echo '<a class="btn btn-read inline-block" href="/read"  style="margin: 20px 0;">'.$en_all_11035[12212]['m_name'].' '.$en_all_11035[12212]['m_icon'].'</a>';
 
         $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false, false);
         if ($next_in_id > 0) {
-            echo ' <a class="btn btn-read inline-block" href="/read/'.$next_in_id.'"  style="margin: 20px 0;">NEXT READ <i class="fas fa-angle-right"></i></a>';
+            echo ' <a class="btn btn-read inline-block" href="/read/'.$next_in_id.'"  style="margin: 20px 0;">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a>';
         }
     }
 
