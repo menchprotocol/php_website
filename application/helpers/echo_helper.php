@@ -2290,7 +2290,7 @@ function echo_caret($en_id, $m, $url_append){
     return $ui;
 }
 
-function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $header_title){
+function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $header_title = null){
 
     $CI =& get_instance();
 
@@ -2298,12 +2298,14 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
 
         if($push_message){
 
-            $message_content = $header_title.':'."\n\n";
+            $message_content = ( $header_title ? $header_title.':'."\n\n" : '' );
             $msg_quick_reply = array();
 
         } else {
             //HTML:
-            echo '<div class="montserrat" style="padding:15px 0;">'.$header_title.':</div>';
+            if($header_title){
+                echo '<div class="montserrat" style="padding:15px 0;">'.$header_title.':</div>';
+            }
             echo '<div class="list-group">';
         }
 
