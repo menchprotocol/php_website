@@ -63,6 +63,7 @@ h4{
 h4 a{
     text-decoration:none;
     padding:5px 0;
+    display: inline-block;
 }
 
 h4.thin{
@@ -300,7 +301,7 @@ img.no-radius {
 .panel-body .form-control {
     padding:7px 0;
     font-size: 1.2em;
-    display: inline-block;
+    width: 100%;
     color:#000;
 }
 
