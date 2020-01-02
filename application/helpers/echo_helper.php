@@ -2312,20 +2312,32 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
         $found_upcoming = 0;
         $max_and_list = ( $push_message ? 5 : 0 );
         $common_prefix = common_prefix($in__children, 'in_title', $max_and_list);
+        $completion_rate = array();
+        $next_key = -1;
+
+
+        //First analyze overall list to see how things are:
+        foreach($in__children as $key => $child_in) {
+            $completion_rate[$key] = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $child_in);
+            if($completion_rate[$key]['completion_percentage']<100 && !$found_incomplete){
+                //We found the next incomplete step:
+                $found_incomplete = true;
+                $next_key = $key;
+            } else {
+                $found_upcoming++;
+            }
+        }
 
         foreach($in__children as $key => $child_in){
 
             //Has this been completed before by this user?
-            $completion_rate = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $child_in);
-            $is_next = ($completion_rate['completion_percentage']<100 && !$found_incomplete);
-            $is_upcoming = ($completion_rate['completion_percentage']==0 && $found_incomplete);
-            $footnotes = ( $is_next ? 'UP NEXT' : ( $completion_rate['completion_percentage'] > 0 ? $completion_rate['completion_percentage'].'% DONE' : '' ));
+            $footnotes = ( $next_key==$key ? 'UP NEXT' : ( $completion_rate[$key]['completion_percentage'] > 0 ? $completion_rate[$key]['completion_percentage'].'% DONE' : '' ));
 
             if($push_message){
 
                 $message_content .= ($key+1).'. '.echo_in_title($child_in['in_title'], $push_message, $common_prefix).' '.$footnotes."\n";
 
-                if($is_next){
+                if($next_key==$key){
                     array_push($msg_quick_reply, array(
                         'content_type' => 'text',
                         'title' => 'NEXT',
@@ -2343,15 +2355,8 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
 
             } else {
 
-                echo echo_in_read($child_in, $footnotes, $common_prefix, ( !$is_next ? 'hidden is_upcoming' : '' ), true);
+                echo echo_in_read($child_in, $footnotes, $common_prefix, ( $next_key>=0 && $next_key!=$key ? 'hidden is_upcoming' : '' ), true);
 
-            }
-
-            if($is_next){
-                //We found the next incomplete step:
-                $found_incomplete = true;
-            } else {
-                $found_upcoming++;
             }
         }
 
