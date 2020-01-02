@@ -2327,6 +2327,10 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $head
                 $found_upcoming++;
             }
         }
+        if($next_key < 0){
+            $next_key = 0;
+            $found_upcoming--;
+        }
 
         foreach($in__children as $key => $child_in){
 
