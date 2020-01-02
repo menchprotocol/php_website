@@ -155,7 +155,7 @@
     //Player Navigation
     if(isset($session_en['en_id']) && $session_en['en_id'] > 0){
 
-        echo '<a class="btn btn-read inline-block" href="/read"  style="margin: 20px 0;"><i class="fas fa-atlas"></i> MY READS <i class="fas fa-angle-right"></i></a>';
+        echo '<a class="btn btn-read inline-block" href="/read"  style="margin: 20px 0;">MY READS <i class="fas fa-angle-right"></i></a>';
 
         $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false, false);
         if ($next_in_id > 0) {
