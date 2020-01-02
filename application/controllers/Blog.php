@@ -403,11 +403,6 @@ class Blog extends CI_Controller {
                 'status' => 0,
                 'message' => 'Invalid Value ID',
             ));
-        } elseif (!isset()) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Value ID',
-            ));
         }
 
         if($_POST['ln_id'] > 0){
