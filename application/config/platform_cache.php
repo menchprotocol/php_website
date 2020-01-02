@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 15:48:09 PST
+//Generated 2020-01-02 15:50:04 PST
 
 //BROWSE READS:
 $config['en_ids_12201'] = array(10939,12198,10869,5008);
@@ -2223,7 +2223,7 @@ $config['en_all_11039'] = array(
         'm_parents' => array(7279,11039),
     ),
     11046 => array(
-        'm_icon' => '<i class="fas fa-atlas ispink" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-atlas ispink" aria-hidden="true"></i>',
         'm_name' => 'READ HISTORY',
         'm_desc' => '/read/history?any_en_id=',
         'm_parents' => array(11035,11039),
@@ -2234,7 +2234,7 @@ $config['en_all_11039'] = array(
 $config['en_ids_11035'] = array(12201,11087,7291,6225,12205,12200,12211,6287,11046,7256,4269,7540);
 $config['en_all_11035'] = array(
     12201 => array(
-        'm_icon' => '<i class="fas fa-plus ispink" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-plus ispink" aria-hidden="true"></i>',
         'm_name' => 'BROWSE READS',
         'm_desc' => '',
         'm_parents' => array(11035,4527,4536),
@@ -2270,7 +2270,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035),
     ),
     12211 => array(
-        'm_icon' => '<i class="fas fa-arrow-right ispink" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-arrow-right ispink" aria-hidden="true"></i>',
         'm_name' => 'NEXT READ',
         'm_desc' => '',
         'm_parents' => array(11035),
@@ -2282,7 +2282,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035,4527,7284),
     ),
     11046 => array(
-        'm_icon' => '<i class="fas fa-atlas ispink" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-atlas ispink" aria-hidden="true"></i>',
         'm_name' => 'READ HISTORY',
         'm_desc' => '',
         'm_parents' => array(11035,11039),
@@ -2818,7 +2818,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(6771,4527),
     ),
     12201 => array(
-        'm_icon' => '<i class="fas fa-plus ispink" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-plus ispink" aria-hidden="true"></i>',
         'm_name' => 'BROWSE READS',
         'm_desc' => '',
         'm_parents' => array(11035,4527,4536),
