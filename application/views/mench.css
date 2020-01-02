@@ -113,15 +113,8 @@ li a {
     display: block;
     text-align: center;
     width: 100% !important;
-    margin-bottom: 5px;
+    margin:20px 0;
     font-size: 3.3em;
-}
-
-.avatar-item .avatar-name {
-    display: block;
-    text-align: center;
-    width: 100% !important;
-    font-size:1em;
 }
 
 #new_blog_title{
