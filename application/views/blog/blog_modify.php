@@ -61,7 +61,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                         echo '<span class="icon-block" data-toggle="tooltip" title="FEATURED IN '.$topic['en_name'].'" data-placement="bottom">'.$topic['en_icon'].'</span>';
                     }
                 } else {
-                    echo '<span data-toggle="tooltip" title="FEATURE REVIEW PENDING: MENCH Editors have not yet reviewed this blog" data-placement="top" class="icon-block"><i class="far fa-spinner fa-spin" aria-hidden="true"></i></span>';
+                    echo '<span data-toggle="tooltip" title="FEATURE REVIEW PENDING: MENCH Editors have not yet reviewed this blog" data-placement="top" class="icon-block"><i class="far fa-spinner fa-spin"></i></span>';
                 }
             }
 

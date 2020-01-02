@@ -1558,7 +1558,7 @@ function echo_in_blog($in)
             }
         } else {
             //Inform that it's not yet featyred
-            $ui .= '<span data-toggle="tooltip" title="MENCH Editors have not yet reviewed this blog" data-placement="top">FEATURE REVIEW PENDING <i class="far fa-spinner fa-spin" aria-hidden="true"></i></span>';
+            $ui .= '<span data-toggle="tooltip" title="MENCH Editors have not yet reviewed this blog" data-placement="top">FEATURE REVIEW PENDING <i class="far fa-spinner fa-spin"></i></span>';
         }
     }
 

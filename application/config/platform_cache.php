@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 04:55:29 PST
+//Generated 2020-01-02 14:02:19 PST
 
 //FEATURED BY:
 $config['en_ids_12201'] = array(10939,12198,10869,5008);
@@ -2030,7 +2030,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.2014',
+        'm_desc' => '1.20',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -2252,7 +2252,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035,4527,7284),
     ),
     7256 => array(
-        'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
         'm_name' => 'SEARCH MENCH',
         'm_desc' => '',
         'm_parents' => array(11993,11035,3323),
