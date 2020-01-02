@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-01 20:53:13 PST
+//Generated 2020-01-01 23:37:53 PST
 
 //PLAYER TIMEZONE:
 $config['en_ids_3289'] = array(3486,3487,3485,3488,3484,3483,3489,3482,3490,3481,3491,3480,3492,3479,3493,3478,3494,3495,3477,3496,3476,3475,3497,3498,3474,3499,3473,3500,3501);
@@ -2012,7 +2012,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.201',
+        'm_desc' => '1.20',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -2195,7 +2195,7 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(11087,7291,6225,6287,7256,4269,7540);
+$config['en_ids_11035'] = array(11087,7291,6225,12200,6287,7256,4269,7540);
 $config['en_all_11035'] = array(
     11087 => array(
         'm_icon' => '<i class="fas fa-users-crown blue" aria-hidden="true"></i>',
@@ -2214,6 +2214,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'MY ACCOUNT',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(11035,4758,4527),
+    ),
+    12200 => array(
+        'm_icon' => '<i class="fas fa-bell-plus" aria-hidden="true"></i>',
+        'm_name' => 'NEW GITHUB ISSUE',
+        'm_desc' => 'Report a bug or a new idea that could make playing, reading or blogging easier. [Opens in a new window]',
+        'm_parents' => array(11035),
     ),
     6287 => array(
         'm_icon' => '<i class="far fa-tools" aria-hidden="true"></i>',

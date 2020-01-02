@@ -138,10 +138,11 @@ if(!isset($hide_header) || !$hide_header){
 
                     if (isset($session_en['en_id'])) {
 
-                        if(superpower_assigned(10984)){
-                            $en_all_11035 = $this->config->item('en_all_11035');
-                            echo '<td class="block-link '.superpower_active(10984).'"><a href="/play/play_admin" title="'.$en_all_11035[6287]['m_name'].'">'.$en_all_11035[6287]['m_icon'].'</a></td>';
-                        }
+                        $en_all_11035 = $this->config->item('en_all_11035');
+
+                        echo '<td class="block-link '.superpower_active(10984).'"><a href="/play/play_admin" title="'.$en_all_11035[6287]['m_name'].'">'.$en_all_11035[6287]['m_icon'].'</a></td>';
+
+                        echo '<td class="block-link '.superpower_active(10939).'"><a href="https://github.com/menchblogs/platform/issues/new" target="_blank" title="'.$en_all_11035[12200]['m_name'].': '.$en_all_11035[12200]['m_desc'].'">'.$en_all_11035[12200]['m_icon'].'</a></td>';
 
                     } else {
 
