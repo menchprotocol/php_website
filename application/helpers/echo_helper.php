@@ -11,7 +11,6 @@ function echo_en_load_more($page, $limit, $en__child_count)
     //Regular section:
     $max_players = (($page + 1) * $limit);
     $max_players = ($max_players > $en__child_count ? $en__child_count : $max_players);
-    //$ui .= '<span class="icon-block"><i class="far fa-search-plus"></i></span>LOAD ' . (($page * $limit) + 1) . ' - ' . $max_players . ' OF ' . $en__child_count; //May not be accurate due to HIDDEN PLAYERS that are not displayed publicly...
     $ui .= '<span class="icon-block"><i class="far fa-search-plus"></i></span>LOAD MORE';
     $ui .= '</a></div>';
 
