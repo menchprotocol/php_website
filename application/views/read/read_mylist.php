@@ -6,6 +6,25 @@
 
 echo '<h1 class="ispink"><span class="icon-block-xlg"><i class="fas fa-circle ispink"></i></span>MY READS</h1>';
 
+echo '<div class="pull-right inline-block">';
+
+    $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+
+    echo '<a href="/" class="btn btn-read btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12201]['m_name'].'">'.$en_all_11035[12201]['m_icon'].'</a>';
+
+    echo '<a href="/read/history" class="btn btn-read btn-five inline-block '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11046]['m_name'].'">'.$en_all_11035[11046]['m_icon'].'</a>';
+
+
+    $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false, false);
+    if ($next_in_id > 0) {
+        echo '<a href="/read/'.$next_in_id.'" class="btn btn-read btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12211]['m_name'].'">'.$en_all_11035[12211]['m_icon'].'</a>';
+    }
+
+echo '</div>';
+
+
+
+
 //See if we have 2 or more blogs:
 $has_multiple_blogs = ( count($user_blogs) >= 2 );
 
@@ -62,16 +81,6 @@ foreach ($user_blogs as $priority => $ln) {
 }
 
 echo '</div>';
-
-//Give option to add
-echo ' <a class="btn btn-read inline-block" href="/"  style="margin: 20px 0;"><i class="fas fa-plus"></i> NEW READ</a>';
-
-echo '<span class="'.superpower_active(10964).'"> <a class="btn btn-read inline-block" href="/read/history"  style="margin: 20px 0;"><i class="fas fa-atlas"></i> HISTORY</a></span>';
-
-$next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false, false);
-if ($next_in_id > 0) {
-    echo ' <a class="btn btn-read inline-block" href="/read/'.$next_in_id.'"  style="margin: 20px 0;">NEXT READ <i class="fas fa-angle-right"></i></a>';
-}
 
 
 if($has_multiple_blogs){
