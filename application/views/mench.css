@@ -283,10 +283,7 @@ img.no-radius {
     display: block;
 }
 .gateway{
-    color:transparent;
-}
-.gateway:hover{
-    background-color: #FFFFFF;
+    color:transparent !important;
 }
 .pull-right{
     float:right;
