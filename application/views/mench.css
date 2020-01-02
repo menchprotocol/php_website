@@ -41,7 +41,7 @@ table td { border: none !important; }
 h1 {
     font-family: 'Montserrat', sans-serif;
     font-size: 2em;
-    margin-top:34px;
+    margin-top:0;
     margin-bottom:12px;
     margin-left: 0;
     padding-left: 0;
@@ -51,7 +51,7 @@ h2 {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.4em;
     color:#000000 !important;
-    margin-top:34px;
+    margin-top:0;
     margin-bottom: 21px;
     margin-left: 3px;
 }
