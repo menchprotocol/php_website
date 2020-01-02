@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 02:03:55 PST
+//Generated 2020-01-02 03:00:46 PST
 
 //FEATURED BY:
 $config['en_ids_12201'] = array(10939,12198,10869,5008);
@@ -2403,7 +2403,7 @@ $config['en_all_10990'] = array(
     ),
 );
 
-//SUPERPOWERS:
+//PLAYER SUPERPOWERS:
 $config['en_ids_10957'] = array(10939,10984,10964,10983,10967);
 $config['en_all_10957'] = array(
     10939 => array(
@@ -2434,117 +2434,117 @@ $config['en_all_10957'] = array(
         'm_icon' => '<i class="far fa-bat blue" aria-hidden="true"></i>',
         'm_name' => 'BATMAN',
         'm_desc' => 'THE POWER TO PLAY PROFESSIONALLY',
-        'm_parents' => array(10983,10957),
+        'm_parents' => array(10957),
     ),
 );
 
-//AVATARS:
+//PLAYER AVATAR:
 $config['en_ids_10956'] = array(10965,10979,10978,10963,10966,10976,10962,10975,10982,10970,10972,10969,10959,10960,10981,10968,10974,10958);
 $config['en_all_10956'] = array(
     10965 => array(
-        'm_icon' => '<i class="far fa-dog"></i>',
+        'm_icon' => '<i class="far fa-dog blue"></i>',
         'm_name' => 'DOGY',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10979 => array(
-        'm_icon' => '<i class="far fa-duck"></i>',
+        'm_icon' => '<i class="far fa-duck blue"></i>',
         'm_name' => 'DONALD',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10978 => array(
-        'm_icon' => '<i class="far fa-fish"></i>',
+        'm_icon' => '<i class="far fa-fish blue"></i>',
         'm_name' => 'FISHY',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10963 => array(
-        'm_icon' => '<i class="far fa-hippo"></i>',
+        'm_icon' => '<i class="far fa-hippo blue"></i>',
         'm_name' => 'HIPPOY',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10966 => array(
-        'm_icon' => '<i class="far fa-deer"></i>',
+        'm_icon' => '<i class="far fa-deer blue"></i>',
         'm_name' => 'HONEY',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10976 => array(
-        'm_icon' => '<i class="far fa-horse"></i>',
+        'm_icon' => '<i class="far fa-horse blue"></i>',
         'm_name' => 'HORSY',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10962 => array(
-        'm_icon' => '<i class="far fa-monkey"></i>',
+        'm_icon' => '<i class="far fa-monkey blue"></i>',
         'm_name' => 'HUMAN',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10975 => array(
-        'm_icon' => '<i class="far fa-kiwi-bird"></i>',
+        'm_icon' => '<i class="far fa-kiwi-bird blue"></i>',
         'm_name' => 'KIWI',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10982 => array(
-        'm_icon' => '<i class="far fa-cat"></i>',
+        'm_icon' => '<i class="far fa-cat blue"></i>',
         'm_name' => 'MIMY',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10970 => array(
-        'm_icon' => '<i class="far fa-cow"></i>',
+        'm_icon' => '<i class="far fa-cow blue"></i>',
         'm_name' => 'MOMY',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10972 => array(
-        'm_icon' => '<i class="far fa-turtle"></i>',
+        'm_icon' => '<i class="far fa-turtle blue"></i>',
         'm_name' => 'NINJA',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10969 => array(
-        'm_icon' => '<i class="far fa-pig"></i>',
+        'm_icon' => '<i class="far fa-pig blue"></i>',
         'm_name' => 'PIGGY',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10959 => array(
-        'm_icon' => '<i class="far fa-ram"></i>',
+        'm_icon' => '<i class="far fa-ram blue"></i>',
         'm_name' => 'RAMRAM',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10960 => array(
-        'm_icon' => '<i class="far fa-rabbit"></i>',
+        'm_icon' => '<i class="far fa-rabbit blue"></i>',
         'm_name' => 'ROGER',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10981 => array(
-        'm_icon' => '<i class="far fa-crow"></i>',
+        'm_icon' => '<i class="far fa-crow blue"></i>',
         'm_name' => 'RUSSEL',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10968 => array(
-        'm_icon' => '<i class="far fa-sheep"></i>',
+        'm_icon' => '<i class="far fa-sheep blue"></i>',
         'm_name' => 'SHEEPY',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10974 => array(
-        'm_icon' => '<i class="far fa-snake"></i>',
+        'm_icon' => '<i class="far fa-snake blue"></i>',
         'm_name' => 'SNAKY',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
     10958 => array(
-        'm_icon' => '<i class="far fa-squirrel"></i>',
+        'm_icon' => '<i class="far fa-squirrel blue"></i>',
         'm_name' => 'SQUIRRELY',
         'm_desc' => '',
         'm_parents' => array(10956),
@@ -2610,7 +2610,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(12066,10725,7758,10809,10956,12145,10990,11018,11047,4983,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11021,6201,12112,7585,10602,7309,7712,7751,6150,10712,10719,12201,10627,10716,3290,10746,7364,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,6225,6404,4527,11054,6232,11039,6194,6827,4426,4997,4454,4986,7551,11028,4537,6123,6177,11007,6206,3289,4592,11089,11033,3000,7303,11088,4755,6287,10718,10571,7357,6192,11081,6193,6146,6345,5967,4280,10570,4277,6102,7704,7494,10590,7347,6103,10692,6255,7304,6186,7360,7359,4341,4593,10593,10591,12141,10658,10711,11031,11084,6204,10710,10957,6805,7358,10869);
+$config['en_ids_4527'] = array(12066,10725,7758,10809,12145,10990,11018,11047,4983,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11021,6201,12112,7585,10602,7309,7712,7751,6150,10712,10719,12201,10627,10716,3290,10746,7364,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,6225,6404,4527,11054,6232,11039,6194,10956,6827,4426,4997,4454,4986,7551,11028,4537,6123,6177,11007,10957,6206,3289,4592,11089,11033,3000,7303,11088,4755,6287,10718,10571,7357,6192,11081,6193,6146,6345,5967,4280,10570,4277,6102,7704,7494,10590,7347,6103,10692,6255,7304,6186,7360,7359,4341,4593,10593,10591,12141,10658,10711,11031,11084,6204,10710,6805,7358,10869);
 $config['en_all_4527'] = array(
     12066 => array(
         'm_icon' => '<i class="far fa-info-circle" aria-hidden="true"></i>',
@@ -2635,12 +2635,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'ARTS/FUN',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
-    ),
-    10956 => array(
-        'm_icon' => '<i class="fas fa-paw blue"></i>',
-        'm_name' => 'AVATARS',
-        'm_desc' => '',
-        'm_parents' => array(6204,11008,4527),
     ),
     12145 => array(
         'm_icon' => '<i class="fas fa-dot-circle blue" aria-hidden="true"></i>',
@@ -2954,6 +2948,12 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4755,4758,4527,6212),
     ),
+    10956 => array(
+        'm_icon' => '<i class="fas fa-paw blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER AVATAR',
+        'm_desc' => '',
+        'm_parents' => array(6225,6204,11008,4527),
+    ),
     6827 => array(
         'm_icon' => '<i class="far fa-users-crown"></i>',
         'm_name' => 'PLAYER GROUPS',
@@ -2973,8 +2973,8 @@ $config['en_all_4527'] = array(
         'm_parents' => array(10967,11089,4758,4506,4426,4527),
     ),
     4454 => array(
-        'm_icon' => '<i class="fas fa-volume blue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER NOTIFICATION LEVEL',
+        'm_icon' => '<i class="fab fa-facebook-messenger blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER NOTIFICATIONS',
         'm_desc' => '',
         'm_parents' => array(6225,6204,4527),
     ),
@@ -3004,7 +3004,7 @@ $config['en_all_4527'] = array(
     ),
     6123 => array(
         'm_icon' => '<i class="fab fa-twitter-square blue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER SOCIAL PROFILES',
+        'm_name' => 'PLAYER SOCIAL LINKS',
         'm_desc' => '',
         'm_parents' => array(6225,4527),
     ),
@@ -3020,6 +3020,12 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6204,6225),
     ),
+    10957 => array(
+        'm_icon' => '<i class="fas fa-magic blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER SUPERPOWERS',
+        'm_desc' => '',
+        'm_parents' => array(5007,11008,4527),
+    ),
     6206 => array(
         'm_icon' => '<i class="far fa-table isblue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER TABLE',
@@ -3030,7 +3036,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-map-marked isblue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER TIMEZONE',
         'm_desc' => '',
-        'm_parents' => array(6225,4527,6204),
+        'm_parents' => array(4527,6204),
     ),
     4592 => array(
         'm_icon' => '<i class="fas fa-link blue" aria-hidden="true"></i>',
@@ -3289,12 +3295,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'SOFTWARE',
         'm_desc' => '',
         'm_parents' => array(4527,10869),
-    ),
-    10957 => array(
-        'm_icon' => '<i class="fas fa-magic blue" aria-hidden="true"></i>',
-        'm_name' => 'SUPERPOWERS',
-        'm_desc' => '',
-        'm_parents' => array(5007,11008,4527),
     ),
     6805 => array(
         'm_icon' => '<i class="far fa-align-left"></i>',
@@ -4901,14 +4901,8 @@ $config['en_all_6201'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['en_ids_6204'] = array(10956,4737,7585,10602,3290,4454,6177,11007,3289,6186,4593,10591);
+$config['en_ids_6204'] = array(4737,7585,10602,3290,10956,4454,6177,11007,3289,6186,4593,10591);
 $config['en_all_6204'] = array(
-    10956 => array(
-        'm_icon' => '<i class="fas fa-paw blue"></i>',
-        'm_name' => 'AVATARS',
-        'm_desc' => '',
-        'm_parents' => array(6204,11008,4527),
-    ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG STATUS',
@@ -4933,9 +4927,15 @@ $config['en_all_6204'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6204),
     ),
+    10956 => array(
+        'm_icon' => '<i class="fas fa-paw blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER AVATAR',
+        'm_desc' => '',
+        'm_parents' => array(6225,6204,11008,4527),
+    ),
     4454 => array(
-        'm_icon' => '<i class="fas fa-volume blue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER NOTIFICATION LEVEL',
+        'm_icon' => '<i class="fab fa-facebook-messenger blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER NOTIFICATIONS',
         'm_desc' => '',
         'm_parents' => array(6225,6204,4527),
     ),
@@ -4955,7 +4955,7 @@ $config['en_all_6204'] = array(
         'm_icon' => '<i class="fas fa-map-marked isblue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER TIMEZONE',
         'm_desc' => '',
-        'm_parents' => array(6225,4527,6204),
+        'm_parents' => array(4527,6204),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
@@ -5150,7 +5150,7 @@ $config['en_all_7555'] = array(
     ),
     12103 => array(
         'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
-        'm_name' => 'WEB+EMAIL',
+        'm_name' => 'WEBSITE',
         'm_desc' => 'Read using modern web browsers & receive notifications using email.',
         'm_parents' => array(7555),
     ),
@@ -5639,8 +5639,14 @@ $config['en_all_4986'] = array(
 );
 
 //MY ACCOUNT:
-$config['en_ids_6225'] = array(6197,3288,3286,11007,3289,6123,4454);
+$config['en_ids_6225'] = array(10956,6197,3288,3286,11007,6123,4454);
 $config['en_all_6225'] = array(
+    10956 => array(
+        'm_icon' => '<i class="fas fa-paw blue" aria-hidden="true"></i>',
+        'm_name' => 'AVATAR',
+        'm_desc' => '',
+        'm_parents' => array(6225,6204,11008,4527),
+    ),
     6197 => array(
         'm_icon' => '<i class="fas fa-fingerprint isblue" aria-hidden="true"></i>',
         'm_name' => 'FULL NAME',
@@ -5665,21 +5671,15 @@ $config['en_all_6225'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6204,6225),
     ),
-    3289 => array(
-        'm_icon' => '<i class="fas fa-map-marked isblue" aria-hidden="true"></i>',
-        'm_name' => 'TIMEZONE',
-        'm_desc' => '',
-        'm_parents' => array(6225,4527,6204),
-    ),
     6123 => array(
         'm_icon' => '<i class="fab fa-twitter-square blue" aria-hidden="true"></i>',
-        'm_name' => 'SOCIAL PROFILES',
+        'm_name' => 'SOCIAL LINKS',
         'm_desc' => '',
         'm_parents' => array(6225,4527),
     ),
     4454 => array(
-        'm_icon' => '<i class="fas fa-volume blue" aria-hidden="true"></i>',
-        'm_name' => 'NOTIFICATION LEVEL',
+        'm_icon' => '<i class="fab fa-facebook-messenger blue" aria-hidden="true"></i>',
+        'm_name' => 'NOTIFICATIONS',
         'm_desc' => '',
         'm_parents' => array(6225,6204,4527),
     ),
@@ -5826,7 +5826,7 @@ $config['en_all_6146'] = array(
     ),
 );
 
-//PLAYER SOCIAL PROFILES:
+//PLAYER SOCIAL LINKS:
 $config['en_ids_6123'] = array(2793,3303,3302,3311,3300);
 $config['en_all_6123'] = array(
     2793 => array(
@@ -6050,8 +6050,14 @@ $config['en_all_4997'] = array(
 );
 
 //PLAYER LOCK:
-$config['en_ids_4426'] = array(3288,4426,4997,6196,3286,4430,4755);
+$config['en_ids_4426'] = array(6196,3288,4426,4997,3286,4430,4755);
 $config['en_all_4426'] = array(
+    6196 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger" aria-hidden="true"></i>',
+        'm_name' => 'MENCH MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(4426,7555,3320),
+    ),
     3288 => array(
         'm_icon' => '<i class="fas fa-envelope-open blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER EMAIL',
@@ -6069,12 +6075,6 @@ $config['en_all_4426'] = array(
         'm_name' => 'PLAYER MASS UPDATE',
         'm_desc' => '',
         'm_parents' => array(10967,11089,4758,4506,4426,4527),
-    ),
-    6196 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER MESSENGER',
-        'm_desc' => '',
-        'm_parents' => array(4426,7555,3320),
     ),
     3286 => array(
         'm_icon' => '<i class="fas fa-key isblue" aria-hidden="true"></i>',
@@ -7389,7 +7389,7 @@ $config['en_all_4592'] = array(
     ),
 );
 
-//PLAYER NOTIFICATION LEVEL:
+//PLAYER NOTIFICATIONS:
 $config['en_ids_4454'] = array(4456,4457,4458);
 $config['en_all_4454'] = array(
     4456 => array(

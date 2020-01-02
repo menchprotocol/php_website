@@ -26,15 +26,17 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="max-width: 500px;">
 
         <?php
+        echo '<div class="list-group">';
         //Display account fields ordered with their player links:
         foreach($this->config->item('en_all_6225') as $acc_en_id => $acc_detail){
 
             //Print header:
-            echo '<div class="panel panel-default">
+            echo '<div class="list-group-item">
+                    <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="openEn'.$acc_en_id.'">
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'.$acc_en_id.'" aria-expanded="true" aria-controls="collapse'.$acc_en_id.'">
-                                <span class="icon-block" style="width:38px;">'.$acc_detail['m_icon'].'</span>'.$acc_detail['m_name'].'
+                                <span class="icon-block" style="width:38px;">'.$acc_detail['m_icon'].'</span><b class="montserrat doupper '.extract_icon_color($acc_detail['m_icon']).'">'.$acc_detail['m_name'].'</b>
                             </a>
                         </h4>
                     </div>
@@ -49,6 +51,19 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             if($is_multi_selectable || $is_single_selectable){
 
                 echo echo_radio_players($acc_en_id, $session_en['en_id'], ( $is_multi_selectable ? 1 : 0 ));
+
+            } elseif($acc_en_id==10956 /* AVATARS */){
+
+                $counter = 0;
+                echo '<div class="list-group">';
+                foreach($this->config->item('en_all_10956') as $en_id => $m) {
+                    $counter++;
+                    echo '<a href="javascript:void(0);" onclick="update_avatar('.$en_id.')" class="list-group-item itemplay item-square '.( $m['m_icon']==$session_en['en_icon'] ? ' active' : '' ).'"><div class="avatar-block">'.$m['m_icon'].'</div><div class="avatar-name">'.$m['m_name'].'</div></a>';
+                    if(fmod($counter, 3)==0){
+                        echo '<br />';
+                    }
+                }
+                echo '</div>';
 
             } elseif($acc_en_id==6197 /* Full Name */){
 
@@ -116,8 +131,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             }
 
             //Print footer:
-            echo '</div></div></div>';
+            echo '</div></div></div></div>';
         }
+        echo '</div>';
         ?>
 
     </div>
