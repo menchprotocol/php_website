@@ -10,7 +10,7 @@ echo '<h1 class="ispink"><span class="icon-block-xlg"><i class="fas fa-circle is
 $has_multiple_blogs = ( count($user_blogs) >= 2 );
 
 //User has multiple 🔴 READING LISTs, so list all 🔴 READING LISTs to enable User to choose:
-echo '<div id="actionplan_steps" class="list-group actionplan-list" style="margin-top:15px;">';
+echo '<div id="actionplan_steps" class="list-group actionplan-list">';
 foreach ($user_blogs as $priority => $ln) {
 
     //Display row:
