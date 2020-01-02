@@ -7,7 +7,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 <div class="container">
 
     <h1 class="blue pull-left inline-block"><span class="icon-block-xlg en-icon"><?= $en_all_11035[6225]['m_icon'] ?></span><?= $en_all_11035[6225]['m_name'] ?></h1>
-    <div class="pull-right inline-block" style="padding-top: 7px;">
+    <div class="pull-right inline-block">
         <?php
 
         echo '<a href="/play" class="btn btn-play btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11087]['m_name'].'">'.$en_all_11035[11087]['m_icon'].'</a>';
