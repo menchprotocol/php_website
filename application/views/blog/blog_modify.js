@@ -36,8 +36,11 @@ $(document).ready(function () {
 
             }
 
-            //Restore background:
-            $(handler).removeClass('dynamic_saving');
+            setTimeout(function () {
+                //Restore background:
+                $(handler).removeClass('dynamic_saving');
+            }, 987);
+
 
         });
     });
