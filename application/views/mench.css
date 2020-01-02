@@ -105,22 +105,23 @@ li a {
 .avatar-item {
     display: block;
     float: left;
-    width: 200px;
-    height: 100px;
+    width: 160px !important;
+    height: 140px;
 }
 
 .avatar-item .avatar-icon {
     display: block;
     text-align: center;
-    width: 200px;
-    height: 80px;
+    width: 100% !important;
+    height: 100px;
+    margin-top: 5px;
     font-size: 4em;
 }
 
 .avatar-item .avatar-name {
     display: block;
     text-align: center;
-    width: 200px;
+    width: 100% !important;
     font-size:1em;
 }
 
