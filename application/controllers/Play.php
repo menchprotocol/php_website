@@ -2900,12 +2900,16 @@ fragment PostListingItemSidebar_post on Post {
 
         $coin_types = coin_types();
 
-        $play_coins = $this->READ_model->ln_fetch(array(
-            'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $coin_types['play']) . ')' => null,
-            'ln_creator_play_id' => $session_en['en_id'],
-        ), array('en_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+        $play_coin_count = 1;
+        if(superpower_assigned(10967)){
+            $play_coins = $this->READ_model->ln_fetch(array(
+                'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_play_id IN (' . join(',', $coin_types['play']) . ')' => null,
+                'ln_creator_play_id' => $session_en['en_id'],
+            ), array('en_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+            $play_coin_count = $play_coins[0]['total_coins'];
+        }
 
         $blog_coins = $this->READ_model->ln_fetch(array(
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
@@ -2921,7 +2925,7 @@ fragment PostListingItemSidebar_post on Post {
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
         return echo_json(array(
-            'play_count' => number_format($play_coins[0]['total_coins'], 0),
+            'play_count' => number_format($play_coin_count, 0),
             'blog_count' => number_format($blog_coins[0]['total_coins'], 0),
             'read_count' => number_format($read_coins[0]['total_coins'], 0)
         ));
