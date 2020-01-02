@@ -63,7 +63,7 @@ h4{
 h4 a{
     text-decoration:none;
     padding:5px 0;
-    display: inline-block;
+    display: block;
 }
 
 h4.thin{
@@ -854,7 +854,7 @@ label {
 
 .panel-collapse {
     padding-bottom:10px;
-    padding-left: 38px;
+    padding-left:9px;
 }
 
 .no-cursor{
