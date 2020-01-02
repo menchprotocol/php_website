@@ -107,8 +107,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
     </div>
 
-    <div style="margin: 20px 0;"><a href="/play/<?= $session_en['en_id'] ?>" class="btn btn-play"><span class="icon-block"><i class="fas fa-angle-left"></i></span>BACK</a></div>
-
+    <div>
     <?php
     echo '<a href="/play/'.$session_en['en_id'].'" class="btn btn-play btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12205]['m_desc'].'">'.$en_all_11035[12205]['m_icon'].' '.$en_all_11035[12205]['m_name'].'</a>';
 
@@ -118,7 +117,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         //Only give signout option if NOT logged-in from Messenger
         echo '<a href="/play/signout" class="btn btn-play btn-five inline-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[7291]['m_name'].'">'.$en_all_11035[7291]['m_icon'].'</a>';
     }
-
     ?>
+    </div>
 
 </div>
