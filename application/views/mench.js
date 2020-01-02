@@ -475,9 +475,14 @@ var update_coin_counter = function( ) {
     //Fetch latest stats:
     $.post("/play/update_coin_counter", { }, function (data) {
 
-        if(data.play_count != $('.play .current_count').html() && play_count > 1){
-            $('.three-menus .play .current_count').html(data.play_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        if(data.play_count != $('.play .current_count').html()){
+            if(play_count > 1){
+                $('.three-menus .play .current_count').html(data.play_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+            } else {
+                $('.three-menus .play .current_count').html('');
+            }
         }
+
         if(data.blog_count != $('.blog .current_count').html()){
             $('.three-menus .blog .current_count').html(data.blog_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
