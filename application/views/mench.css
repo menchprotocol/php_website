@@ -56,8 +56,13 @@ h2 {
     margin-left: 3px;
 }
 
+h4{
+    margin: 0;
+}
+
 h4 a{
     text-decoration:none;
+    padding:5px 0;
 }
 
 h4.thin{
@@ -290,6 +295,12 @@ img.no-radius {
 .content-image{
     max-width:100%;
     max-height:500px;
+}
+
+.panel-body .form-control {
+    padding: 5px 0;
+    font-size: 1.2em;
+    width: 100%;
 }
 
 .edit-off .content-image{
@@ -1001,9 +1012,6 @@ label {
 @media (max-width:767px) {
     body {
         font-size:1.15em;
-    }
-    h4 span{
-        margin-top: -18px;
     }
     h1{
         font-size: 1.6em;

@@ -23,7 +23,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
     <div style="clear: both;">&nbsp;</div>
 
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="max-width: 500px;">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
         <?php
         echo '<div class="list-group">';
