@@ -4,7 +4,7 @@
 <div class="container">
 <?php
 
-echo '<h1 class="ispink"><span class="icon-block-xlg"><i class="fas fa-circle ispink"></i></span>MY READS</h1>';
+echo '<h1 class="ispink inline-block pull-left"><span class="icon-block-xlg"><i class="fas fa-circle ispink"></i></span>MY READS</h1>';
 
 echo '<div class="pull-right inline-block">';
 
