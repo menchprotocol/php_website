@@ -105,17 +105,16 @@ li a {
 .avatar-item {
     display: block;
     float: left;
-    width: 160px !important;
-    height: 140px;
+    width: 130px !important;
+    padding: 10px 0;
 }
 
 .avatar-item .avatar-icon {
     display: block;
     text-align: center;
     width: 100% !important;
-    height: 100px;
-    margin-top: 5px;
-    font-size: 4em;
+    margin-bottom: 5px;
+    font-size: 3.3em;
 }
 
 .avatar-item .avatar-name {
