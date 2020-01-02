@@ -17,5 +17,5 @@
     echo '<div class="inline-block padding-top-down pull-right '.superpower_active(10939).'"><a class="btn btn-blog" href="/blog/'.$in['in_id'].'">EDIT <i class="fas fa-pen-square"></i></a></div>';
 
     ?>
-    <div style="clear: both;">&nbsp;</div>
+    <div class="doclear">&nbsp;</div>
 </div>

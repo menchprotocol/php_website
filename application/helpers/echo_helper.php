@@ -1350,7 +1350,7 @@ function echo_en_messages($ln){
     $ui .= '<li style="margin: 0 3px 0 0;"><span title="'.$en_all_6186[$ln['ln_status_play_id']]['m_name'].': '.$en_all_6186[$ln['ln_status_play_id']]['m_desc'].'" data-toggle="tooltip" data-placement="top">'.$en_all_6186[$ln['ln_status_play_id']]['m_icon'].'</span></li>';
 
 
-    $ui .= '<li style="clear: both;">&nbsp;</li>';
+    $ui .= '<li class="doclear">&nbsp;</li>';
 
     $ui .= '</ul>';
 

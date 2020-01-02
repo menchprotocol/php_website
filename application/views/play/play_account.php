@@ -21,7 +21,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         ?>
     </div>
 
-    <div style="clear: both;">&nbsp;</div>
+    <div class="doclear">&nbsp;</div>
 
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
@@ -53,7 +53,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 foreach($this->config->item('en_all_10956') as $en_id => $m) {
                     echo '<a href="javascript:void(0);" onclick="update_avatar('.$en_id.')" class="list-group-item itemplay avatar-item item-square '.( one_two_explode('class="','"',$m['m_icon'])==one_two_explode('class="','"',$session_en['en_icon']) ? ' active ' : '' ).'"><div class="avatar-icon">'.$m['m_icon'].'</div></a>';
                 }
-                echo '<div style="margin-bottom:0; clear: both;">&nbsp;</div>';
+                echo '<div class="doclear">&nbsp;</div>';
 
             } elseif($is_multi_selectable || $is_single_selectable){
 

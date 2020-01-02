@@ -811,6 +811,12 @@ label {
 .dolight{
     color: #DDDDDD;
 }
+.doclear{
+    clear: both;
+    line-height: 100%;
+    margin: 0;
+    height: 0px;
+}
 
 .player-settings{
     color: #000000;
