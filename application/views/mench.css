@@ -282,7 +282,12 @@ img.no-radius {
 .algolia_search_pad b{
     display: block;
 }
-
+.gateway{
+    color:transparent;
+}
+.gateway:hover{
+    background-color: #FFFFFF;
+}
 .pull-right{
     float:right;
 }
