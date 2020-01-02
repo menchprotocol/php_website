@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 01:47:09 PST
+//Generated 2020-01-02 01:51:20 PST
 
 //FEATURED BY:
 $config['en_ids_12201'] = array(10939,12198,10869,5008);
@@ -2236,7 +2236,7 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(11087,7291,6225,12200,12205,6287,7256,4269,7540);
+$config['en_ids_11035'] = array(11087,7291,6225,12205,12200,6287,7256,4269,7540);
 $config['en_all_11035'] = array(
     11087 => array(
         'm_icon' => '<i class="fas fa-users-crown blue" aria-hidden="true"></i>',
@@ -2256,16 +2256,16 @@ $config['en_all_11035'] = array(
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(11035,4758,4527),
     ),
+    12205 => array(
+        'm_icon' => '<i class="fas fa-user-circle blue" aria-hidden="true"></i>',
+        'm_name' => 'MY COIN',
+        'm_desc' => 'View your player coin and it\'s relation to other coins.',
+        'm_parents' => array(11035),
+    ),
     12200 => array(
         'm_icon' => '<i class="fas fa-bell-plus" aria-hidden="true"></i>',
         'm_name' => 'NEW GITHUB ISSUE',
         'm_desc' => 'Report a bug or a new idea that could make playing, reading or blogging easier. [Opens in a new window]',
-        'm_parents' => array(11035),
-    ),
-    12205 => array(
-        'm_icon' => '<i class="fas fa-user-circle blue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER COIN',
-        'm_desc' => 'View your player coin and it\'s relation to other coins.',
         'm_parents' => array(11035),
     ),
     6287 => array(
