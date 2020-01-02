@@ -39,7 +39,7 @@ $(document).ready(function () {
             setTimeout(function () {
                 //Restore background:
                 $(handler).removeClass('dynamic_saving');
-            }, 987);
+            }, 610);
 
 
         });
