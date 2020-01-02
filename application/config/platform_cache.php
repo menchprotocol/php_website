@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-01 23:37:53 PST
+//Generated 2020-01-02 00:13:16 PST
 
 //PLAYER TIMEZONE:
 $config['en_ids_3289'] = array(3486,3487,3485,3488,3484,3483,3489,3482,3490,3481,3491,3480,3492,3479,3493,3478,3494,3495,3477,3496,3476,3475,3497,3498,3474,3499,3473,3500,3501);
@@ -309,8 +309,14 @@ $config['en_all_12138'] = array(
 );
 
 //BLOG TEXT INPUTS:
-$config['en_ids_12112'] = array(4358,4362,4739,4735);
+$config['en_ids_12112'] = array(4736,4358,4362,4739,4735);
 $config['en_all_12112'] = array(
+    4736 => array(
+        'm_icon' => '<i class="fas fa-h1 yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOG TITLE',
+        'm_desc' => '',
+        'm_parents' => array(12112,11071,10644,6232,6201),
+    ),
     4358 => array(
         'm_icon' => '<i class="far fa-coin" aria-hidden="true"></i>',
         'm_name' => 'READ MARKS',
@@ -379,7 +385,7 @@ $config['en_all_12079'] = array(
         'm_icon' => '<i class="fas fa-link yellow" aria-hidden="true"></i>',
         'm_name' => 'LINKS',
         'm_desc' => 'Set how blogs relate to each other',
-        'm_parents' => array(12079,11054,10984,11025,10662,4527),
+        'm_parents' => array(6232,12079,11054,10984,11025,10662,4527),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h yellow" aria-hidden="true"></i>',
@@ -1591,13 +1597,19 @@ $config['en_all_11081'] = array(
 );
 
 //PLATFORM VARIABLES:
-$config['en_ids_6232'] = array(6202,6159,4356,4737,4736,7585,6207,6203,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,6197,6198,6160,6172,6177,4369,4429,7694,4367,4358,4372,6103,4368,4366,4371,4364,4370,6186,4362,4593,4739,4735);
+$config['en_ids_6232'] = array(6202,4486,6159,4356,4737,4736,7585,6207,6203,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,6197,6198,6160,6172,6177,4369,4429,7694,4367,4358,4372,6103,4368,4366,4371,4364,4370,6186,4362,4593,4739,4735);
 $config['en_all_6232'] = array(
     6202 => array(
         'm_icon' => '<i class="fas fa-plus-circle yellow"></i>',
         'm_name' => 'BLOG ID',
         'm_desc' => 'in_id',
         'm_parents' => array(6232,6215,6201),
+    ),
+    4486 => array(
+        'm_icon' => '<i class="fas fa-link yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOG LINKS',
+        'm_desc' => 'ln_type_play_id',
+        'm_parents' => array(6232,12079,11054,10984,11025,10662,4527),
     ),
     6159 => array(
         'm_icon' => '<i class="fas fa-lambda yellow" aria-hidden="true"></i>',
@@ -1621,7 +1633,7 @@ $config['en_all_6232'] = array(
         'm_icon' => '<i class="fas fa-h1 yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG TITLE',
         'm_desc' => 'in_title',
-        'm_parents' => array(11071,10644,6232,6201),
+        'm_parents' => array(12112,11071,10644,6232,6201),
     ),
     7585 => array(
         'm_icon' => '<i class="fas fa-random yellow" aria-hidden="true"></i>',
@@ -2090,7 +2102,7 @@ $config['en_all_11054'] = array(
         'm_icon' => '<i class="fas fa-link yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG LINKS',
         'm_desc' => '',
-        'm_parents' => array(12079,11054,10984,11025,10662,4527),
+        'm_parents' => array(6232,12079,11054,10984,11025,10662,4527),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h yellow" aria-hidden="true"></i>',
@@ -2563,7 +2575,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(7758,10809,10956,12145,10990,11018,11047,4983,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11021,6201,12112,7585,10602,7309,7712,7751,6150,10712,10719,10869,10627,3290,10746,7364,12066,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,10716,6225,10718,6404,4527,11054,6232,11039,6194,6827,4592,4426,4997,4454,4986,7551,11028,4537,6123,6177,11007,6206,3289,11089,11033,3000,7303,11088,4755,6287,10571,7357,6192,11081,6193,6146,6345,5967,4280,10570,4277,6102,7704,7494,10590,7347,6103,10692,6255,7304,6186,7360,7359,4341,4593,10593,10591,12141,10658,10711,11031,11084,6204,10710,10957,10725,6805,7358);
+$config['en_ids_4527'] = array(7758,10809,10956,12145,10990,11018,11047,4983,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11021,6201,12112,7585,10602,7309,7712,7751,6150,10712,10719,10869,10627,3290,10746,7364,12066,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,10716,6225,10718,6404,4527,11054,6232,11039,6194,6827,4426,4997,4454,4986,7551,11028,4537,6123,6177,11007,6206,3289,4592,11089,11033,3000,7303,11088,4755,6287,10571,7357,6192,11081,6193,6146,6345,5967,4280,10570,4277,6102,7704,7494,10590,7347,6103,10692,6255,7304,6186,7360,7359,4341,4593,10593,10591,12141,10658,10711,11031,11084,6204,10710,10957,10725,6805,7358);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -2641,7 +2653,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-link yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG LINKS',
         'm_desc' => '',
-        'm_parents' => array(12079,11054,10984,11025,10662,4527),
+        'm_parents' => array(6232,12079,11054,10984,11025,10662,4527),
     ),
     4485 => array(
         'm_icon' => '<i class="fas fa-comment-plus yellow" aria-hidden="true"></i>',
@@ -2913,12 +2925,6 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(3303,3314,7303,4527),
     ),
-    4592 => array(
-        'm_icon' => '<i class="fas fa-link blue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER LINKS',
-        'm_desc' => '',
-        'm_parents' => array(11026,5982,5981,4527),
-    ),
     4426 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'PLAYER LOCK',
@@ -2990,6 +2996,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'PLAYER TIMEZONE',
         'm_desc' => '',
         'm_parents' => array(6225,4527,6204),
+    ),
+    4592 => array(
+        'm_icon' => '<i class="fas fa-link blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAY LINKS',
+        'm_desc' => '',
+        'm_parents' => array(11026,5982,5981,4527),
     ),
     11089 => array(
         'm_icon' => '<i class="fas fa-eye blue" aria-hidden="true"></i>',
@@ -4837,7 +4849,7 @@ $config['en_all_6201'] = array(
         'm_icon' => '<i class="fas fa-h1 yellow" aria-hidden="true"></i>',
         'm_name' => 'TITLE',
         'm_desc' => '',
-        'm_parents' => array(11071,10644,6232,6201),
+        'm_parents' => array(12112,11071,10644,6232,6201),
     ),
     7585 => array(
         'm_icon' => '<i class="fas fa-random yellow" aria-hidden="true"></i>',
@@ -7265,7 +7277,7 @@ $config['en_all_4593'] = array(
     ),
 );
 
-//PLAYER LINKS:
+//PLAY LINKS:
 $config['en_ids_4592'] = array(4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257);
 $config['en_all_4592'] = array(
     4259 => array(

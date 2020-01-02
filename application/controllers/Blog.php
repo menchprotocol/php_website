@@ -199,6 +199,40 @@ class Blog extends CI_Controller {
                 'original_val' => '',
             ));
 
+        } elseif($_POST['cache_en_id']==4736 /* BLOG TITLE */){
+
+            $ins = $this->BLOG_model->in_fetch(array(
+                'in_id' => $_POST['in_ln__id'],
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            ));
+            if(!count($ins)){
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Blog ID.',
+                    'original_val' => '',
+                ));
+            }
+
+            //Validate Blog Outcome:
+            $in_title_validation = $this->BLOG_model->in_title_validate($_POST['field_value']);
+            if(!$in_title_validation['status']){
+                //We had an error, return it:
+                return echo_json(array_merge($in_title_validation, array(
+                    'original_val' => $ins[0]['in_title'],
+                )));
+            } else {
+
+                //All good, go ahead and update:
+                $this->BLOG_model->in_update($_POST['in_ln__id'], array(
+                    'in_title' => trim($_POST['field_value']),
+                ), true, $session_en['en_id']);
+
+                return echo_json(array(
+                    'status' => 1,
+                ));
+
+            }
+
         } elseif($_POST['cache_en_id']==4362 /* READ TIME */){
 
             $ins = $this->BLOG_model->in_fetch(array(
@@ -340,16 +374,7 @@ class Blog extends CI_Controller {
     function in_update_dropdown(){
 
         //Maintain a manual index as a hack for the Blog/Player tables for now:
-        $manual_converter = array(
-            7585 => 'in_type_play_id',
-            4737 => 'in_status_play_id',
-            4486 => 'ln_type_play_id',
-        );
-
-        //Define link update types:
-        $link_update_types = array(
-            4486 => 10662,
-        );
+        $en_all_6232 = $this->config->item('en_all_6232'); //PLATFORM VARIABLES
 
         //Authenticate Trainer:
         $session_en = superpower_assigned();
@@ -368,12 +393,17 @@ class Blog extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Link ID',
             ));
-        } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $manual_converter) || !count($this->config->item('en_ids_'.$_POST['element_id']))) {
+        } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $en_all_6232) || strlen($en_all_6232[$_POST['element_id']]['m_desc'])<5 || !count($this->config->item('en_ids_'.$_POST['element_id']))) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Element ID',
+                'message' => 'Invalid Element ID / Missing from @6232',
             ));
         } elseif (!isset($_POST['new_en_id']) || intval($_POST['new_en_id']) < 1 || !in_array($_POST['new_en_id'], $this->config->item('en_ids_'.$_POST['element_id']))) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Value ID',
+            ));
+        } elseif (!isset()) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Value ID',
@@ -382,16 +412,34 @@ class Blog extends CI_Controller {
 
         if($_POST['ln_id'] > 0){
 
-            //Update Link:
+            //Validate the link update Type ID:
+            $en_all_4527 = $this->config->item('en_all_4527');
+            if(!is_array($en_all_4527[$_POST['element_id']]['m_parents']) || !count($en_all_4527[$_POST['element_id']]['m_parents'])){
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Missing @'.$_POST['element_id'].' in @4527',
+                ));
+            }
+
+            //Find the single read type in parent links:
+            $link_update_types = array_intersect($this->config->item('en_ids_4593'), $en_all_4527[$_POST['element_id']]['m_parents']);
+            if(count($link_update_types)!=1){
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => '@'.$_POST['element_id'].' has '.count($link_update_types).' parents that belog to @4593 [Should be exactly 1]',
+                ));
+            }
+
+            //All good, Update Link:
             $this->READ_model->ln_update($_POST['ln_id'], array(
-                $manual_converter[$_POST['element_id']] => $_POST['new_en_id'],
-            ), $session_en['en_id'], $link_update_types[$_POST['element_id']]);
+                $en_all_6232[$_POST['element_id']]['m_desc'] => $_POST['new_en_id'],
+            ), $session_en['en_id'], $link_update_types[0]);
 
         } else {
 
             //Update Blog:
             $this->BLOG_model->in_update($_POST['in_id'], array(
-                $manual_converter[$_POST['element_id']] => $_POST['new_en_id'],
+                $en_all_6232[$_POST['element_id']]['m_desc'] => $_POST['new_en_id'],
             ), true, $session_en['en_id']);
 
             //See if Blog is being removed:
