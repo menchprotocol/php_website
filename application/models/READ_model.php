@@ -3519,7 +3519,7 @@ class READ_model extends CI_Model
             //All good, something happened:
             return array(
                 'status' => 1,
-                'message' => ($answers_newly_added>0 ? $answers_newly_added.' answer'.echo__s($answers_newly_added).' saved' : '').($answers_newly_removed>0 ? ($answers_newly_added>0 ? ' & ' : '').$answers_newly_removed.' answer'.echo__s($answers_newly_removed).' removed' : ''),
+                'message' => ($answers_newly_added>0 ? $answers_newly_added.' saved' : '').($answers_newly_removed>0 ? ($answers_newly_added>0 ? ' & ' : '').$answers_newly_removed.' removed' : ''),
                 'next_in_id' => ( $answers_newly_added==1 && !$answers_newly_removed ? $child_ins[0]['in_id'] : $ins[0]['in_id'] ),
             );
         } else {
