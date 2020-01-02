@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 14:57:25 PST
+//Generated 2020-01-02 15:10:11 PST
 
 //FEATURED BY:
 $config['en_ids_12201'] = array(10939,12198,10869,5008);
@@ -1935,7 +1935,7 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12176,10939,12156,11071,11077,11074,12124,11076,11075,11064,11985,11986,11065,11063,12130,11060,11079,11073,11066,11072,11057,11056,12113,12088,11061,11162,11163);
+$config['en_ids_6404'] = array(12176,10939,12156,11071,12210,12130,11077,11074,12124,11076,11075,11064,11985,11986,11065,11063,11060,11079,11073,11066,11072,11057,11056,12113,12088,11061,11162,11163,12209,12208);
 $config['en_all_6404'] = array(
     12176 => array(
         'm_icon' => '',
@@ -1959,6 +1959,18 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'BLOG TITLE MAX LENGTH',
         'm_desc' => '89',
+        'm_parents' => array(6404),
+    ),
+    12210 => array(
+        'm_icon' => '',
+        'm_name' => 'COINS REFRESH MILLISECONDS BLOGGER',
+        'm_desc' => '2584',
+        'm_parents' => array(6404),
+    ),
+    12130 => array(
+        'm_icon' => '',
+        'm_name' => 'COINS REFRESH MILLISECONDS READER',
+        'm_desc' => '121393',
         'm_parents' => array(6404),
     ),
     11077 => array(
@@ -2019,12 +2031,6 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'MAX FILE SIZE [MB]',
         'm_desc' => '25',
-        'm_parents' => array(6404),
-    ),
-    12130 => array(
-        'm_icon' => '',
-        'm_name' => 'MENCH COINS REFRESH MILLISECONDS',
-        'm_desc' => '121393',
         'm_parents' => array(6404),
     ),
     11060 => array(
@@ -2097,6 +2103,18 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'SUBSCRIPTION USD RATE YEARLY',
         'm_desc' => '50',
+        'm_parents' => array(6404),
+    ),
+    12209 => array(
+        'm_icon' => '',
+        'm_name' => 'WEEKS PER MONTH',
+        'm_desc' => '4.34524',
+        'm_parents' => array(6404),
+    ),
+    12208 => array(
+        'm_icon' => '',
+        'm_name' => 'WEEKS PER YEAR',
+        'm_desc' => '52.1775',
         'm_parents' => array(6404),
     ),
 );

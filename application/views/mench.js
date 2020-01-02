@@ -393,7 +393,7 @@ $(document).ready(function () {
         //Update stats on load:
         update_coin_counter();
 
-        setInterval(update_coin_counter, js_en_all_6404[12130]['m_desc']);
+        setInterval(update_coin_counter, js_en_all_6404[( js_assigned_superpowers_en_ids.includes(10939) ? 12210 : 12130 )]['m_desc']);
 
     }
 
