@@ -96,7 +96,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } else {
 
         echo '<div class="center-right">';
-            echo '<div class="inline-block" style="margin-bottom:5px;">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active).'</div>';
+            echo '<div class="inline-block" style="margin:0 0 5px 1px;">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active).'</div>';
             echo '<div class="inline-block '.superpower_active(10984).'" style="width:89px; margin:0 0 5px 5px;">'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
         echo '</div>';
 
@@ -237,7 +237,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
 
-            $this_tab .= '<table class="table table-condensed hidden" id="notes_control_'.$en_id2.'"><tr>';
+            $this_tab .= '<table class="table table-condensed hidden" style="margin-left:-7px;" id="notes_control_'.$en_id2.'"><tr>';
 
             //Save button:
             $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" class="btn btn-blog save_note_'.$en_id2.'">ADD</a></td>';
