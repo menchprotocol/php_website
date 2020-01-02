@@ -2283,7 +2283,7 @@ function echo_caret($en_id, $m, $url_append){
     $ui .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
     $ui .= '<div class="dropdown-menu">';
     foreach ($CI->config->item('en_all_'.$en_id) as $en_id2 => $m2){
-        $ui .= '<a class="dropdown-item" target="_blank" href="' . $m2['m_desc'] . $url_append . '"><span class="icon-block en-icon">'.$m2['m_icon'].'</span> '.$m2['m_name'].'</a>';
+        $ui .= '<a class="dropdown-item" target="_blank" href="' . $m2['m_desc'] . $url_append . '"><span class="icon-block icon_photo">'.$m2['m_icon'].'</span> '.$m2['m_name'].'</a>';
     }
     $ui .= '</div>';
     $ui .= '</li>';
@@ -2501,7 +2501,7 @@ function echo_en($en, $is_parent = false)
 
 
     //PLAYER ICON
-    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' en-icon en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
+    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' icon_photo en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
 
 
     //PLAYER STATUS
@@ -2539,7 +2539,7 @@ function echo_en($en, $is_parent = false)
     //PARENT ICONS
     $ui .= '<div class="inline-block '. superpower_active(10983) .'">';
     foreach ($en__parents as $en_parent) {
-        $ui .= ' <span class="en-icon en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span>';
+        $ui .= ' <span class="icon_photo en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span>';
     }
     $ui .= ' </div>';
 

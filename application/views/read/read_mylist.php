@@ -64,9 +64,14 @@ foreach ($user_blogs as $priority => $ln) {
 echo '</div>';
 
 //Give option to add
-echo ' <a class="btn btn-read inline-block" href="/"  style="margin: 20px 0;"><i class="fas fa-plus"></i> READ</a>';
+echo ' <a class="btn btn-read inline-block" href="/"  style="margin: 20px 0;"><i class="fas fa-plus"></i> NEW READ</a>';
+
 echo '<span class="'.superpower_active(10964).'"> <a class="btn btn-read inline-block" href="/read/history"  style="margin: 20px 0;"><i class="fas fa-atlas"></i> HISTORY</a></span>';
-echo ' <a class="btn btn-read inline-block" href="/read/next"  style="margin: 20px 0;">NEXT <i class="fas fa-angle-right"></i></a>';
+
+$next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false, false);
+if ($next_in_id > 0) {
+    echo ' <a class="btn btn-read inline-block" href="/read/'.$next_in_id.'"  style="margin: 20px 0;">NEXT READ <i class="fas fa-angle-right"></i></a>';
+}
 
 
 if($has_multiple_blogs){

@@ -2,6 +2,8 @@
 
     <?php
 
+    $session_en = superpower_assigned();
+
     /*
      *
     <script>
@@ -147,6 +149,21 @@
             }
         }
     }
+
+
+
+    //Player Navigation
+    if(isset($session_en['en_id']) && $session_en['en_id'] > 0){
+
+        echo '<a class="btn btn-read inline-block" href="/read"  style="margin: 20px 0;"><i class="fas fa-atlas"></i> MY READS <i class="fas fa-angle-right"></i></a>';
+
+        $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false, false);
+        if ($next_in_id > 0) {
+            echo ' <a class="btn btn-read inline-block" href="/read/'.$next_in_id.'"  style="margin: 20px 0;">NEXT READ <i class="fas fa-angle-right"></i></a>';
+        }
+    }
+
+
 
     ?>
 

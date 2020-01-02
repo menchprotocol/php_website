@@ -199,7 +199,7 @@ li a {
 .icon-block-xlg{ min-width:57px; display: inline-block; text-align: center; margin-left: 1px; }
 .icon-block-sm img,
 .icon-block img,
-.en-icon img,
+.icon_photo img,
 .icon-demo img{
     width: 24px !important;
     margin: -13px 0 -8px -2px !important;

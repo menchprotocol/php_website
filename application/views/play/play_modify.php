@@ -25,7 +25,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <?php
 
     //NAME
-    echo '<h1 class="'.extract_icon_color($player['en_icon']).'"><span class="icon-block-xlg en-icon en_ui_icon_'.$player['en_id'].'">'.echo_en_icon($player['en_icon']).'</span><span class="en_name_'.$player['en_id'].'">'.$player['en_name'].'</span></h1>';
+    echo '<h1 class="'.extract_icon_color($player['en_icon']).'"><span class="icon-block-xlg icon_photo en_ui_icon_'.$player['en_id'].'">'.echo_en_icon($player['en_icon']).'</span><span class="en_name_'.$player['en_id'].'">'.$player['en_name'].'</span></h1>';
 
 
     echo '<div class="inline-block" style="padding-bottom:10px; padding-left:10px;">';

@@ -1508,7 +1508,9 @@ class READ_model extends CI_Model
          *
          */
         if(!$push_message){
-            echo '<h1>' . echo_in_title($ins[0]['in_title']) . '</h1>';
+
+            //BLOG TYPE + TITLE
+            echo '<h1><span class="icon-block-xlg icon_photo">'.echo_en_cache('en_all_7585', $ins[0]['in_type_play_id'], true, 'bottom').'</span>' . echo_in_title($ins[0]['in_title']) . '</h1>';
         } else {
             $this->READ_model->dispatch_message(
                 'You\'re reading: '.$ins[0]['in_title'],
