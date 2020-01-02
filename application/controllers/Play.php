@@ -2079,6 +2079,13 @@ fragment PostListingItemSidebar_post on Post {
 
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 4230, //Raw link
+            'ln_parent_play_id' => 11010, //FREE ACCOUNT
+            'ln_creator_play_id' => $user_en['en']['en_id'],
+            'ln_child_play_id' => $user_en['en']['en_id'],
+        ));
+
+        $this->READ_model->ln_create(array(
+            'ln_type_play_id' => 4230, //Raw link
             'ln_parent_play_id' => 1278, //People
             'ln_creator_play_id' => $user_en['en']['en_id'],
             'ln_child_play_id' => $user_en['en']['en_id'],
@@ -2879,165 +2886,6 @@ fragment PostListingItemSidebar_post on Post {
 
         //Return results:
         return echo_json($return);
-
-    }
-
-
-    function account_save_social_profiles()
-    {
-
-
-        if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing player ID',
-            ));
-        } elseif (!isset($_POST['social_profiles']) || !is_array($_POST['social_profiles']) || count($_POST['social_profiles']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing social profiles',
-            ));
-        }
-
-        $en_all_6123 = $this->config->item('en_all_6123');
-
-        //Loop through and validate social profiles:
-        $success_messages = '';
-        foreach ($_POST['social_profiles'] as $social_profile) {
-
-
-            //Validate to make sure either nothing OR URL:
-            $social_en_id = intval($social_profile[0]);
-            $social_url = trim($social_profile[1]);
-            $profile_set = ( strlen($social_url) > 0 ? true : false );
-
-
-            //This profile already added for this user, are we updating or removing?
-            if ($profile_set) {
-
-                //Valiodate URL and make sure it matches:
-                $is_valid_url = false;
-                if (filter_var($social_url, FILTER_VALIDATE_URL)) {
-                    //Check to see if it's from the same domain and not in use:
-                    $domain_player = $this->PLAY_model->en_sync_domain($social_url);
-                    if ($domain_player['domain_already_existed'] && isset($domain_player['en_domain']['en_id']) && $domain_player['en_domain']['en_id'] == $social_en_id) {
-                        //Seems to be a valid domain for this social profile:
-                        $is_valid_url = true;
-                    }
-                }
-
-                if (!$is_valid_url) {
-                    return echo_json(array(
-                        'status' => 0,
-                        'message' => 'Invalid input for ' . $en_all_6123[$social_en_id]['m_name'],
-                    ));
-                }
-            }
-
-
-            //Does this user have a social URL already?
-            $social_url_exists = $this->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_play_id' => 4256, //Generic URL
-                'ln_parent_play_id' => $social_en_id,
-                'ln_child_play_id' => $_POST['en_id'],
-            ));
-
-            if (count($social_url_exists) > 0) {
-
-                //Make sure not for another player:
-                if ($social_url_exists[0]['ln_child_play_id'] != $_POST['en_id']) {
-                    return echo_json(array(
-                        'status' => 0,
-                        'message' => $en_all_6123[$social_en_id]['m_name'] . ' URL already taken by another player.',
-                    ));
-                }
-
-                //This profile already added for this user, are we updating or removing?
-                if ($profile_set && $social_url_exists[0]['ln_content'] != $social_url) {
-
-                    //Check to make sure not duplicate
-                    $duplicates = $this->READ_model->ln_fetch(array(
-                        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_play_id' => 4256, //Generic URL
-                        'ln_parent_play_id' => $social_en_id,
-                        'ln_child_play_id !=' => $_POST['en_id'],
-                        'ln_content' => $social_url,
-                    ));
-                    if(count($duplicates) > 0){
-                        return echo_json(array(
-                            'status' => 0,
-                            'message' => 'Duplicates',
-                        ));
-                    }
-
-                    //Update profile since different:
-                    $this->READ_model->ln_update($social_url_exists[0]['ln_id'], array(
-                        'ln_content' => $social_url,
-                    ), $_POST['en_id'], 6224 /* User Account Updated */);
-
-                    $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' Updated. ';
-
-                } elseif(!$profile_set) {
-
-                    //Remove profile:
-                    $this->READ_model->ln_update($social_url_exists[0]['ln_id'], array(
-                        'ln_status_play_id' => 6173, //Link Removed
-                    ), $_POST['en_id'], 6224 /* User Account Updated */);
-
-                    $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' Removed. ';
-
-                } else {
-
-
-
-                }
-
-            } elseif ($profile_set) {
-
-                //Create new link:
-                $this->READ_model->ln_create(array(
-                    'ln_creator_play_id' => $_POST['en_id'],
-                    'ln_child_play_id' => $_POST['en_id'],
-                    'ln_type_play_id' => 4256, //Generic URL
-                    'ln_parent_play_id' => $social_en_id,
-                    'ln_content' => $social_url,
-                ), true);
-
-                $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' Added. ';
-
-            }
-        }
-
-        if(strlen($success_messages) > 0){
-
-            //Log Account iteration link type:
-            $_POST['account_update_function'] = 'account_save_social_profiles'; //Add this variable to indicate which My Account function created this link
-            $this->READ_model->ln_create(array(
-                'ln_creator_play_id' => $_POST['en_id'],
-                'ln_type_play_id' => 6224, //My Account Iterated
-                'ln_content' => 'My Account '.$success_messages,
-                'ln_metadata' => $_POST,
-                'ln_child_play_id' => $_POST['en_id'],
-            ));
-
-            //All good, return combined success messages:
-            return echo_json(array(
-                'status' => 1,
-                'message' => $success_messages,
-            ));
-
-        } else {
-
-            //All good, return combined success messages:
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Social Profiles Unchanged',
-            ));
-
-        }
-
-
 
     }
 

@@ -817,8 +817,7 @@ label {
     text-decoration: none;
 }
 .player-settings:hover{
-    background-color: #DDDDDD;
-    border: 1px solid #DDDDDD;
+    background-color: #b2defd;
 }
 
 .dropdown-item:focus, .dropdown-item:hover {
@@ -846,15 +845,14 @@ label {
 }
 
 .player-settings.active{
-    background-color: #FFFFFF !important;
-    border: 1px solid #000000 !important;
+    background-color: #b2defd !important;
     cursor: default !important;
     color: #000000 !important;
 }
 
 .panel-collapse {
     padding-bottom:10px;
-    padding-left:9px;
+    padding-left:7px;
 }
 
 .no-cursor{
