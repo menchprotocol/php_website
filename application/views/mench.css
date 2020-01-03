@@ -253,11 +253,11 @@ img.no-radius {
 .table-striped tbody tr:nth-of-type(even) {
     background-color:transparent;
 }
-.table-striped tbody tr:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .panel-group .panel-default:nth-of-type(odd) {
+.table-striped tbody tr:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .accordion .card:nth-of-type(odd) {
     background-color:#FFFFFF;
 }
 
-.panel-group .panel-default {
+.accordion .card {
     padding:3px 10px;
 }
 
