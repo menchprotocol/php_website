@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-03 11:53:19 PST
+//Generated 2020-01-03 11:59:15 PST
 
 //PLAYER NOTIFICATION CHANNEL:
 $config['en_ids_12220'] = array(12221,12222);
@@ -2298,7 +2298,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035),
     ),
     6225 => array(
-        'm_icon' => '<i class="fas fa-circle blue"></i>',
+        'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
         'm_name' => 'MY PLAYER',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(11035,4758,4527),
@@ -2984,7 +2984,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(7254,6196,4527),
     ),
     6225 => array(
-        'm_icon' => '<i class="fas fa-circle blue"></i>',
+        'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
         'm_name' => 'MY PLAYER',
         'm_desc' => '',
         'm_parents' => array(11035,4758,4527),
@@ -5757,7 +5757,7 @@ $config['en_all_6225'] = array(
     11007 => array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
         'm_name' => 'SUBSCRIPTION LEVEL',
-        'm_desc' => '',
+        'm_desc' => 'All subscriptions include a weekly cancellation policy that offer a prorated refund for the unused weeks.',
         'm_parents' => array(4527,6204,6225),
     ),
     4454 => array(
