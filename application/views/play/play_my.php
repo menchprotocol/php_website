@@ -6,7 +6,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 <div class="container">
 
-    <h1 class="blue pull-left inline-block"><span class="icon-block-xlg icon_photo"><?= $en_all_11035[6225]['m_icon'] ?></span><?= $en_all_11035[6225]['m_name'] ?></h1>
+    <h1 class="play pull-left inline-block"><span class="icon-block-xlg icon_photo"><?= $en_all_11035[6225]['m_icon'] ?></span><?= $en_all_11035[6225]['m_name'] ?></h1>
     <div class="pull-right inline-block">
         <?php
 
@@ -64,7 +64,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             } elseif($acc_en_id==6197 /* Full Name */){
 
-                echo '<span class="white-wrapper"><input type="text" id="en_name" class="form-control border blue montserrat" value="'.$session_en['en_name'].'" /></span>
+                echo '<span class="white-wrapper"><input type="text" id="en_name" class="form-control border play montserrat" value="'.$session_en['en_name'].'" /></span>
                         <a href="javascript:void(0)" onclick="save_full_name()" class="btn btn-play">Save</a>
                         <span class="saving-account save_full_name"></span>';
 

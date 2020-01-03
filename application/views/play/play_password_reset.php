@@ -62,7 +62,7 @@
     <div id="step1" class="signup-steps">
 
         <!-- New Password-->
-        <span class="medium-header" style="padding-top: 20px;"><i class="far fa-envelope-open blue"></i> <span style="text-transform: lowercase !important;"><?= $validate_link['ln_content'] ?></span></span>
+        <span class="medium-header" style="padding-top: 20px;"><i class="far fa-envelope-open play"></i> <span style="text-transform: lowercase !important;"><?= $validate_link['ln_content'] ?></span></span>
         <input type="password" autocomplete="false" id="input_password" class="form-control border" style="margin-bottom: 30px;">
 
         <!-- Apply Buttons -->

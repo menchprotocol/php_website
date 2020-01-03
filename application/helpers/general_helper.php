@@ -486,7 +486,7 @@ function random_user_icon(){
     $icon_styles = array('fas', 'far', 'fal');
     $animal_icons = array('alicorn', 'badger-honey', 'bat', 'cat', 'cow', 'crow', 'deer', 'deer-rudolph', 'dog', 'dog-leashed', 'dove', 'dragon', 'duck', 'elephant', 'fish', 'frog', 'hippo', 'horse', 'horse-head', 'kiwi-bird', 'monkey', 'narwhal', 'otter', 'pegasus', 'pig', 'rabbit', 'rabbit-fast', 'ram', 'sheep', 'snake', 'spider-black-widow', 'squirrel', 'turtle', 'unicorn', 'whale');
 
-    return '<i class="'.$icon_styles[array_rand($icon_styles)].' fa-'.$animal_icons[array_rand($animal_icons)].' blue"></i>';
+    return '<i class="'.$icon_styles[array_rand($icon_styles)].' fa-'.$animal_icons[array_rand($animal_icons)].' play"></i>';
 
 }
 
@@ -587,12 +587,12 @@ function superpower_active($superpower_en_id, $boolean_only = false){
 }
 
 function extract_icon_color($en_icon){
-    if(!strlen($en_icon) || substr_count($en_icon, 'blue')>0){
-        return ' blue ';
-    } elseif(substr_count($en_icon, 'yellow')>0){
-        return ' yellow ';
-    } elseif(substr_count($en_icon, 'ispink')>0){
-        return ' ispink ';
+    if(!strlen($en_icon) || substr_count($en_icon, 'play')>0){
+        return ' play ';
+    } elseif(substr_count($en_icon, 'blog')>0){
+        return ' blog ';
+    } elseif(substr_count($en_icon, 'read')>0){
+        return ' read ';
     } else {
         return '';
     }

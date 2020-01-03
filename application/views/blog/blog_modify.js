@@ -295,7 +295,7 @@ function in_save_title(){
 
         } else {
             //Show error:
-            $('.title_update_status').html('<b class="montserrat ispink">ERROR: '+data.message+'</b>').hide().fadeIn();
+            $('.title_update_status').html('<b class="montserrat read">ERROR: '+data.message+'</b>').hide().fadeIn();
 
         }
     });
@@ -681,7 +681,7 @@ function in_message_form_unlock(result, focus_ln_type_play_id) {
 
     } else {
 
-        $(".note_error_"+focus_ln_type_play_id).html('<span class="ispink">ERROR: '+result.message+'</span>');
+        $(".note_error_"+focus_ln_type_play_id).html('<span class="read">ERROR: '+result.message+'</span>');
 
     }
 }
@@ -866,14 +866,14 @@ function in_load_search(element_focus, is_in_parent, shortcut) {
             },
             header: function (data) {
                 if (!($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('blog-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle yellow add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('blog-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle blog add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
                 if($(element_focus).val().charAt(0)=='#'){
                     return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('blog-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
                 } else {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('blog-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle yellow add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('blog-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle blog add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
             },
         }

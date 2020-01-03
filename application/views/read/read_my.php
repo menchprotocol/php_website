@@ -6,7 +6,7 @@
 
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
-echo '<h1 class="ispink inline-block pull-left"><span class="icon-block-xlg">'.$en_all_11035[12212]['m_icon'].'</span>'.$en_all_11035[12212]['m_name'].'</h1>';
+echo '<h1 class="read inline-block pull-left"><span class="icon-block-xlg">'.$en_all_11035[12212]['m_icon'].'</span>'.$en_all_11035[12212]['m_name'].'</h1>';
 
 echo '<div class="pull-right inline-block">';
 
@@ -94,7 +94,7 @@ if($has_multiple_blogs){
 
     echo '<div class="clear-reading-list hidden">';
 
-        echo '<p><span class="icon-block"><i class="fas fa-exclamation-triangle ispink"></i></span><b class="ispink montserrat">WARNING:</b> You are about to clear you entire reading list. You will lose all your <span class="icon-block"><i class="fas fa-circle ispink"></i></span><b class="montserrat ispink">READ COINS</b> but can earn them back by reading again.</p>';
+        echo '<p><span class="icon-block"><i class="fas fa-exclamation-triangle read"></i></span><b class="read montserrat">WARNING:</b> You are about to clear you entire reading list. You will lose all your <span class="icon-block"><i class="fas fa-circle read"></i></span><b class="montserrat read">READ COINS</b> but can earn them back by reading again.</p>';
         echo '<p style="margin-top:20px;"><a href="/read/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('cred_password_salt') . $timestamp).'" class="btn btn-read"><i class="far fa-trash-alt"></i> CLEAR READS & COINS</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
 
     echo '</div>';

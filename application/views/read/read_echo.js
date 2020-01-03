@@ -138,7 +138,7 @@ function read_answer(){
                 window.location = '/' + data.next_in_id;
             }, 1597);
         } else {
-            $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-triangle ispink"></i></span><span class="montserrat ispink">ERROR: '+data.message+'</span>');
+            $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-triangle read"></i></span><span class="montserrat read">ERROR: '+data.message+'</span>');
         }
     });
 }

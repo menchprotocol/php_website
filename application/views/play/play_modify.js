@@ -204,11 +204,11 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus blue"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus play"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus blue"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
+                return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus play"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
             },
         }
     }]).keypress(function (e) {
@@ -385,7 +385,7 @@ function en_ln_type_preview() {
 
 function update_demo_icon(){
     //Update demo icon based on icon input value:
-    $('.icon-demo').html(($('#en_icon').val().length > 0 ? $('#en_icon').val() : '<i class="fas fa-circle blue"></i>' ));
+    $('.icon-demo').html(($('#en_icon').val().length > 0 ? $('#en_icon').val() : '<i class="fas fa-circle play"></i>' ));
 }
 
 function en_modify_load(en_id, ln_id) {
@@ -650,7 +650,7 @@ function en_modify_save() {
                 var icon_is_set = ( modify_data['en_icon'].length > 0 ? 1 : 0 );
                 if(!icon_is_set){
                     //Set player default icon:
-                    modify_data['en_icon'] = '<i class="fas fa-circle blue"></i>';
+                    modify_data['en_icon'] = '<i class="fas fa-circle play"></i>';
                 }
                 $('.en__icon_' + modify_data['en_id']).attr('en-is-set' , icon_is_set );
                 $('.en_ui_icon_' + modify_data['en_id']).html(modify_data['en_icon']);

@@ -390,7 +390,7 @@ if(!$action) {
             }
 
             if($replaced > 0){
-                echo '<div class="alert alert-success"><i class="fas fa-exclamation"></i> Updated icons for '.$replaced.' players.</div>';
+                echo '<div class="alert alert-success"><i class="fas fa-check-circle"></i> Updated icons for '.$replaced.' players.</div>';
             }
         }
 

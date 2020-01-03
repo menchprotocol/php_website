@@ -300,7 +300,7 @@ function echo_en_icon($en_icon = null)
         return $en_icon;
     } else {
         //Return default icon for players:
-        return '<i class="fas fa-circle blue"></i>';
+        return '<i class="fas fa-circle play"></i>';
     }
 }
 
@@ -1677,7 +1677,7 @@ function echo_in_thumbnail($in_id, $show_icon = false, $extra_css = null){
     }
 
     //Not found:
-    return ( $show_icon ? '<div class="inline-block pull-right '.$extra_css.'"><i class="fas fa-chevron-circle-right ispink large-icon"></i></div>' : null );
+    return ( $show_icon ? '<div class="inline-block pull-right '.$extra_css.'"><i class="fas fa-chevron-circle-right read large-icon"></i></div>' : null );
 
 }
 
