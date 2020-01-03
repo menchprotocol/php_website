@@ -162,7 +162,7 @@ class Read extends CI_Controller
 
         //Email Body
         $html_message = '<br />';
-        $html_message .= '<div>Growth rates for the <span title="'.$last_week_start.' to '.$last_week_end.'" style="border-bottom:1px dotted #CCC;">week of '.date("M jS", $last_week_start_timestamp).'</span>:</div>';
+        $html_message .= '<div>Growth rates for the <span title="'.$last_week_start.' to '.$last_week_end.' '.config_var(11079).'" style="border-bottom:1px dotted #CCC;">week of '.date("M jS", $last_week_start_timestamp).'</span>:</div>';
         $html_message .= '<br />';
 
         $html_message .= '<div style="padding-bottom:10px;"><span style="min-width:70px; display: inline-block;">🔵PLAY</span><b style="min-width:55px; display: inline-block;">'.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($play_coins_last_week[0]['total_coins'], 0).'" style="border-bottom:1px dotted #CCC;">'.echo_number($play_coins_last_week[0]['total_coins']).'</span></span><a href="https://mench.com/play" target="_blank">Leaderboard &raquo;</a></div>';
