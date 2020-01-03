@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 17:13:23 PST
+//Generated 2020-01-02 17:24:13 PST
 
 //PLAYER NOTIFICATIONS CHANNEL:
 $config['en_ids_12220'] = array(6196,3288);
@@ -1513,7 +1513,7 @@ $config['en_ids_11007'] = array(11010,11011,11012);
 $config['en_all_11007'] = array(
     11010 => array(
         'm_icon' => '<i class="fas fa-check-circle blue" aria-hidden="true"></i>',
-        'm_name' => '100 READS/MONTH FREE PREVIEW',
+        'm_name' => '100 READS/MONTH ALWAYS FREE',
         'm_desc' => '',
         'm_parents' => array(11061,11007),
     ),
@@ -2076,7 +2076,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.2074',
+        'm_desc' => '1.2020',
         'm_parents' => array(6404),
     ),
     11079 => array(

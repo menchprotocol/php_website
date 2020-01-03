@@ -823,6 +823,7 @@ label {
 .player-settings{
     color: #000000;
     text-decoration: none;
+    padding: 12px 0 !important;
 }
 .player-settings:hover{
     background-color: #b2defd;

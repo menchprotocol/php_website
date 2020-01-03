@@ -1766,50 +1766,30 @@ function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_leve
     return ($ui ? '<div class="inline-box">' . $ui . '</div>' : false);
 }
 
-function echo_radio_players($parent_en_id, $child_en_id, $enable_mulitiselect){
+function echo_radio_players($parent_en_id, $child_en_id, $enable_mulitiselect, $show_max = 25){
+
     /*
      * Print UI for
      * */
 
-    $show_max = 10; //This is visible and the rest need to be loaded
     $CI =& get_instance();
     $count = 0;
 
     $ui = '<div class="list-group radio-'.$parent_en_id.'">';
 
-
     if(count($CI->config->item('en_ids_'.$parent_en_id))){
-
-        foreach($CI->config->item('en_all_'.$parent_en_id) as $en_id => $m) {
-            $ui .= '<a href="javascript:void(0);" onclick="radio_update('.$parent_en_id.','.$en_id.','.$enable_mulitiselect.')" class="list-group-item itemplay montserrat player-settings item-'.$en_id.' '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->READ_model->ln_fetch(array(
-                    'ln_parent_play_id' => $en_id,
-                    'ln_child_play_id' => $child_en_id,
-                    'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                )))>0 ? ' active ' : '' ). '"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'<span class="change-results"></span></a>';
-            $count++;
-        }
-
-    } else {
-
-        //NOT IN CACHE, FETCH FORM DB:
-        foreach($CI->READ_model->ln_fetch(array(
-            'ln_parent_play_id' => $parent_en_id,
-            'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'en_status_play_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
-        ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_name' => 'ASC')) as $count => $item){
-            $ui .= '<a href="javascript:void(0);" onclick="radio_update('.$parent_en_id.','.$item['en_id'].','.$enable_mulitiselect.')" class="list-group-item montserrat player-settings item-'.$item['en_id'].' '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->READ_model->ln_fetch(array(
-                    'ln_parent_play_id' => $item['en_id'],
-                    'ln_child_play_id' => $child_en_id,
-                    'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                )))>0 ? ' active ' : '' ). '">'.( strlen($item['en_icon'])>0 ? '<span class="icon-block">'.$item['en_icon'].'</span>' : '' ).$item['en_name'].'<span class="change-results"></span></a>';
-
-        }
-
+        return false;
     }
 
+    foreach($CI->config->item('en_all_'.$parent_en_id) as $en_id => $m) {
+        $ui .= '<a href="javascript:void(0);" onclick="radio_update('.$parent_en_id.','.$en_id.','.$enable_mulitiselect.')" class="'.extract_icon_color($m['m_icon']).' list-group-item itemplay montserrat player-settings item-'.$en_id.' '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->READ_model->ln_fetch(array(
+                'ln_parent_play_id' => $en_id,
+                'ln_child_play_id' => $child_en_id,
+                'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            )))>0 ? ' active ' : '' ). '"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'<span class="change-results"></span></a>';
+        $count++;
+    }
 
 
     //Did we have too many items?
