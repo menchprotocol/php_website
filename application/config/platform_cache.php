@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 18:18:55 PST
+//Generated 2020-01-02 18:37:01 PST
 
 //PLAYER NOTIFICATION CHANNEL:
 $config['en_ids_12220'] = array(12221,12222);
@@ -1519,19 +1519,19 @@ $config['en_all_11007'] = array(
     ),
     11011 => array(
         'm_icon' => '<i class="fas fa-usd-circle blue" aria-hidden="true"></i>',
-        'm_name' => 'UNLIMITED FOR $5/MONTH = $1.15/WEEK',
+        'm_name' => 'UNLIMITED USD $5/MONTH = $1.15/WEEK',
         'm_desc' => '',
         'm_parents' => array(11162,11007),
     ),
     11012 => array(
         'm_icon' => '<i class="fas fa-usd-circle yellow" aria-hidden="true"></i>',
-        'm_name' => 'UNLIMITED FOR $50/YEAR = $0.96/WEEK [SAVE 20%]',
+        'm_name' => 'UNLIMITED USD $50/YEAR = $0.96/WEEK [SAVE 20%]',
         'm_desc' => '',
         'm_parents' => array(11163,11007),
     ),
     12223 => array(
         'm_icon' => '<i class="fas fa-heart-circle ispink" aria-hidden="true"></i>',
-        'm_name' => 'UNLIMITED FOR FREE IF LOW-INCOME/NON-PROFIT',
+        'm_name' => 'UNLIMITED FREE IF LOW-INCOME/NON-PROFIT',
         'm_desc' => '',
         'm_parents' => array(11007),
     ),
