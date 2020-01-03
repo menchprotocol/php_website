@@ -134,7 +134,7 @@ if(!isset($hide_header) || !$hide_header){
                         </div>
                     </td>
 
-                    <td class="block-link search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="javascript:void(0);" onclick="load_searchbar();"><?= $en_all_11035[7256]['m_icon'] ?></a></td>
+                    <td class="block-link search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>" style="padding-right: 1px;"><a href="javascript:void(0);" onclick="load_searchbar();"><?= $en_all_11035[7256]['m_icon'] ?></a></td>
 
                     <?php
 
@@ -142,7 +142,7 @@ if(!isset($hide_header) || !$hide_header){
 
                         $en_all_11035 = $this->config->item('en_all_11035');
 
-                        echo '<td class="block-link '.superpower_active(10984).'"><a href="/play/play_admin" title="'.$en_all_11035[6287]['m_name'].'">'.$en_all_11035[6287]['m_icon'].'</a></td>';
+                        echo '<td class="block-link '.superpower_active(10984).'" style="padding-right: 1px;"><a href="/play/play_admin" title="'.$en_all_11035[6287]['m_name'].'">'.$en_all_11035[6287]['m_icon'].'</a></td>';
 
                         //TODO Create feedback input
                         //echo '<td class="block-link '.superpower_active(10939).'"><a href="https://github.com/menchblogs/platform/issues/new" target="_blank" title="'.$en_all_11035[12200]['m_name'].': '.$en_all_11035[12200]['m_desc'].'">'.$en_all_11035[12200]['m_icon'].'</a></td>';
@@ -153,7 +153,7 @@ if(!isset($hide_header) || !$hide_header){
                         //echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/8263" title="'.$en_all_11035[7540]['m_name'].'">'.$en_all_11035[7540]['m_icon'].'</a></td>';
 
                         //Give option to signin
-                        echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/signin" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
+                        echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'" style="padding-right: 1px;"><a href="/signin" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
 
                     }
                     ?>
