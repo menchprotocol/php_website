@@ -254,17 +254,18 @@ img.no-radius {
     background-color:transparent;
 }
 .table-striped tbody tr:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .accordion .card:nth-of-type(odd) {
-    background-color:#FFFFFF !important;
+    background-color:#FFFFFF;
 }
 .table-striped tbody tr:nth-of-type(even), .list-group .list-group-item:nth-of-type(even), .accordion .card:nth-of-type(even) {
-    background-color:#f4f5f7 !important;
+    background-color:#f4f5f7;
 }
 
 .accordion .card {
     border: 0;
+    border-radius: 0;
 }
 .accordion .card-header {
-    padding: 10px 0;
+    padding: 10px 3px;
     border: 0;
     background-color: transparent;
 }
