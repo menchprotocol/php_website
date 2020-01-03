@@ -856,17 +856,8 @@ label {
 }
 
 .itemsetting.active, .itemsetting:hover {
-    background-color: #AAAAAA !important;
-    cursor: pointer !important;
-}
-.itemblue.active, .itemblue:hover {
     background-color: #b2defd !important;
-}
-.itemispink.itemsetting.active, .itemispink:hover {
-    background-color: #fbc4ce !important;
-}
-.itemyellow.itemsetting.active, .itemyellow:hover {
-    background-color: #fff4b5 !important;
+    cursor: pointer !important;
 }
 
 .panel-collapse {
