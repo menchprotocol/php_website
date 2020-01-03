@@ -230,8 +230,8 @@ img.no-radius {
 
 .alert-warning {
     color: #000000;
-    background-color: #ffee8e;
-    border-color: #ffee8e;
+    background-color: #fff4b5;
+    border-color: #fff4b5;
 }
 .alert-danger {
     color: #000000;
@@ -864,7 +864,7 @@ label {
     color: #FC1B44 !important;
 }
 .yellow.player-settings.active, .yellow.player-settings:hover {
-    background-color: #ffee8e !important;
+    background-color: #fff4b5 !important;
     color: #f4d52d !important;
 }
 
@@ -1081,7 +1081,7 @@ label {
 
 @media (min-width:767px) {
     .itemblog:hover {
-        background-color:#ffee8e !important;
+        background-color:#fff4b5 !important;
     }
     .itemplay:hover {
         background-color:#b2defd !important;
