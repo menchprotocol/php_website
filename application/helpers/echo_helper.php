@@ -1787,7 +1787,7 @@ function echo_radio_players($parent_en_id, $child_en_id, $enable_mulitiselect, $
                 'ln_child_play_id' => $child_en_id,
                 'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            )))>0 ? ' active ' : '' ). '"><span class="icon-block">'.$m['m_icon'].'</span><span class="display:inline-flex;">'.$m['m_name'].'</span><span class="change-results"></span></a>';
+            )))>0 ? ' active ' : '' ). '"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'<span class="change-results"></span></a>';
         $count++;
     }
 

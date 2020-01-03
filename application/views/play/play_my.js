@@ -68,13 +68,8 @@ function radio_update(parent_en_id, selected_en_id, enable_mulitiselect){
 
         } else {
 
-            //Show success:
-            $(notify_el).html('<i class="fas fa-check-circle"></i></span>');
-
-            //Disappear in a while:
-            setTimeout(function () {
-                $(notify_el).html('');
-            }, 1597);
+            //Remove message:
+            $(notify_el).html('');
 
         }
     });

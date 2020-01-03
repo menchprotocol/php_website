@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-03 11:45:41 PST
+//Generated 2020-01-03 11:53:19 PST
 
 //PLAYER NOTIFICATION CHANNEL:
 $config['en_ids_12220'] = array(12221,12222);
@@ -1509,7 +1509,7 @@ $config['en_all_10869'] = array(
 );
 
 //PLAYER SUBSCRIPTION LEVEL:
-$config['en_ids_11007'] = array(11010,11011,11012,12223);
+$config['en_ids_11007'] = array(11010,11011,11012);
 $config['en_all_11007'] = array(
     11010 => array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
@@ -1518,22 +1518,16 @@ $config['en_all_11007'] = array(
         'm_parents' => array(11061,11007),
     ),
     11011 => array(
-        'm_icon' => '<i class="fas fa-usd-circle blue" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-usd-circle" aria-hidden="true"></i>',
         'm_name' => 'UNLIMITED USD $5/MONTH = $1.15/WEEK',
         'm_desc' => '',
         'm_parents' => array(11162,11007),
     ),
     11012 => array(
-        'm_icon' => '<i class="fas fa-usd-circle yellow" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-usd-circle" aria-hidden="true"></i>',
         'm_name' => 'UNLIMITED USD $50/YEAR = $0.96/WEEK [SAVE 20%]',
         'm_desc' => '',
         'm_parents' => array(11163,11007),
-    ),
-    12223 => array(
-        'm_icon' => '<i class="fas fa-heart-circle ispink" aria-hidden="true"></i>',
-        'm_name' => 'UNLIMITED FREE FOR LOW-INCOME & NON-PROFIT',
-        'm_desc' => '',
-        'm_parents' => array(11007),
     ),
 );
 
@@ -2082,7 +2076,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.2022',
+        'm_desc' => '1.2023',
         'm_parents' => array(6404),
     ),
     11079 => array(
