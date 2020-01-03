@@ -7,8 +7,7 @@ $(document).ready(function () {
     //Setup auto focus:
     $('#openEn6197').on('show.bs.collapse', function () {
         //call a service here
-        alert('nice');
-        $('#en_name').focus();
+        $('#en_name').focus().val('aaaaaa');
     });
 
     $('#openEn3288').on('show.bs.collapse', function () {
