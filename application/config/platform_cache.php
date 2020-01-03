@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 18:37:01 PST
+//Generated 2020-01-02 18:38:37 PST
 
 //PLAYER NOTIFICATION CHANNEL:
 $config['en_ids_12220'] = array(12221,12222);
@@ -1531,7 +1531,7 @@ $config['en_all_11007'] = array(
     ),
     12223 => array(
         'm_icon' => '<i class="fas fa-heart-circle ispink" aria-hidden="true"></i>',
-        'm_name' => 'UNLIMITED FREE IF LOW-INCOME/NON-PROFIT',
+        'm_name' => 'UNLIMITED FREE FOR LOW-INCOME & NON-PROFIT',
         'm_desc' => '',
         'm_parents' => array(11007),
     ),
