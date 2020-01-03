@@ -7,17 +7,17 @@ $(document).ready(function () {
     //Setup auto focus:
     $('#openEn6197').on('show.bs.collapse', function () {
         //call a service here
-        $('#en_name').focus().val('aaaaaa');
+        setTimeout(function() { $('#en_name').focus(); }, 144);
     });
 
     $('#openEn3288').on('show.bs.collapse', function () {
         //call a service here
-        $('#en_email').focus();
+        setTimeout(function() { $('#en_email').focus(); }, 144);
     });
 
     $('#openEn3286').on('show.bs.collapse', function () {
         //call a service here
-        $('#input_password').focus();
+        setTimeout(function() { $('#input_password').focus(); }, 144);
     });
 
 });
