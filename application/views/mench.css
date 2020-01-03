@@ -277,6 +277,8 @@ img.no-radius {
     background-color: transparent;
     padding-left: 0;
     padding-right: 0;
+    font-size: 1em;
+    margin-bottom: 10px;
 }
 
 .list-group, h1, h2, ul, .table{
@@ -749,7 +751,6 @@ textarea.note-textarea{
 
 .list-group-item {
     border: 0;
-    background-color:#f4f5f7;
     border-radius: 0 !important;
     padding:3px 7px;
     margin: 0;
