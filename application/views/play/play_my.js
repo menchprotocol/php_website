@@ -7,17 +7,20 @@ $(document).ready(function () {
     //Setup auto focus:
     $('#openEn6197').on('show.bs.collapse', function () {
         //call a service here
-        setTimeout(function() { $('#en_name').focus(); }, 144);
+        var original_val = $('#en_name').val();
+        setTimeout(function() { $('#en_name').focus().val('').val(original_val); }, 144);
     });
 
     $('#openEn3288').on('show.bs.collapse', function () {
         //call a service here
-        setTimeout(function() { $('#en_email').focus(); }, 144);
+        var original_val = $('#en_email').val();
+        setTimeout(function() { $('#en_email').focus().val('').val(original_val); }, 144);
     });
 
     $('#openEn3286').on('show.bs.collapse', function () {
         //call a service here
-        setTimeout(function() { $('#input_password').focus(); }, 144);
+        var original_val = $('#input_password').val();
+        setTimeout(function() { $('#input_password').focus().val('').val(original_val); }, 144);
     });
 
 });
