@@ -263,6 +263,7 @@ img.no-radius {
 .accordion .card-header {
     padding: 10px 0;
     border: 0;
+    background-color: transparent;
 }
 .accordion .card-header .btn {
     padding: 0;
