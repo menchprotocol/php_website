@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 17:46:05 PST
+//Generated 2020-01-02 17:46:37 PST
 
 //PLAYER NOTIFICATIONS CHANNEL:
 $config['en_ids_12220'] = array(12221,12222);
@@ -5749,7 +5749,7 @@ $config['en_all_6225'] = array(
         'm_parents' => array(12221,12103,6225,4426,4755),
     ),
     3286 => array(
-        'm_icon' => '<i class="fas fa-key isblue" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-key" aria-hidden="true"></i>',
         'm_name' => 'PASSWORD',
         'm_desc' => '',
         'm_parents' => array(4426,7578,6225,4755),
@@ -6131,7 +6131,7 @@ $config['en_all_4426'] = array(
         'm_parents' => array(12222,4426,7555,3320),
     ),
     3286 => array(
-        'm_icon' => '<i class="fas fa-key isblue" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-key" aria-hidden="true"></i>',
         'm_name' => 'PLAYER PASSWORD',
         'm_desc' => '',
         'm_parents' => array(4426,7578,6225,4755),
@@ -6190,7 +6190,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(12221,12103,6225,4426,4755),
     ),
     3286 => array(
-        'm_icon' => '<i class="fas fa-key isblue" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-key" aria-hidden="true"></i>',
         'm_name' => 'PLAYER PASSWORD',
         'm_desc' => '',
         'm_parents' => array(4426,7578,6225,4755),
