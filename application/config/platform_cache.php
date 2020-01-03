@@ -11,22 +11,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 17:32:00 PST
+//Generated 2020-01-02 17:38:32 PST
 
 //PLAYER NOTIFICATIONS CHANNEL:
-$config['en_ids_12220'] = array(3288,6196);
+$config['en_ids_12220'] = array(12221,12222);
 $config['en_all_12220'] = array(
-    3288 => array(
-        'm_icon' => '<i class="fas fa-envelope-open blue" aria-hidden="true"></i>',
-        'm_name' => 'EMAIL',
+    12221 => array(
+        'm_icon' => '<i class="fas fa-envelope-open ispink" aria-hidden="true"></i>',
+        'm_name' => 'EMAIL FIRST',
         'm_desc' => '',
-        'm_parents' => array(12220,12103,6225,4426,4755),
+        'm_parents' => array(12220),
     ),
-    6196 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger blue" aria-hidden="true"></i>',
-        'm_name' => 'MESSENGER',
+    12222 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger blue"></i>',
+        'm_name' => 'MESSENGER FIRST',
         'm_desc' => '',
-        'm_parents' => array(12220,4426,7555,3320),
+        'm_parents' => array(12220),
     ),
 );
 
@@ -5235,7 +5235,7 @@ $config['en_all_7555'] = array(
         'm_icon' => '<i class="fab fa-facebook-messenger blue" aria-hidden="true"></i>',
         'm_name' => 'MESSENGER',
         'm_desc' => 'Read & receive notifications using Messenger. (Recommended)',
-        'm_parents' => array(12220,4426,7555,3320),
+        'm_parents' => array(12222,4426,7555,3320),
     ),
     12103 => array(
         'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
@@ -5746,7 +5746,7 @@ $config['en_all_6225'] = array(
         'm_icon' => '<i class="fas fa-envelope-open blue" aria-hidden="true"></i>',
         'm_name' => 'EMAIL',
         'm_desc' => '',
-        'm_parents' => array(12220,12103,6225,4426,4755),
+        'm_parents' => array(12221,12103,6225,4426,4755),
     ),
     3286 => array(
         'm_icon' => '<i class="fas fa-key isblue" aria-hidden="true"></i>',
@@ -6110,7 +6110,7 @@ $config['en_all_4426'] = array(
         'm_icon' => '<i class="fas fa-envelope-open blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER EMAIL',
         'm_desc' => '',
-        'm_parents' => array(12220,12103,6225,4426,4755),
+        'm_parents' => array(12221,12103,6225,4426,4755),
     ),
     4426 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
@@ -6128,7 +6128,7 @@ $config['en_all_4426'] = array(
         'm_icon' => '<i class="fab fa-facebook-messenger blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER MESSENGER',
         'm_desc' => '',
-        'm_parents' => array(12220,4426,7555,3320),
+        'm_parents' => array(12222,4426,7555,3320),
     ),
     3286 => array(
         'm_icon' => '<i class="fas fa-key isblue" aria-hidden="true"></i>',
@@ -6187,7 +6187,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-envelope-open blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER EMAIL',
         'm_desc' => '',
-        'm_parents' => array(12220,12103,6225,4426,4755),
+        'm_parents' => array(12221,12103,6225,4426,4755),
     ),
     3286 => array(
         'm_icon' => '<i class="fas fa-key isblue" aria-hidden="true"></i>',
