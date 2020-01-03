@@ -857,6 +857,7 @@ label {
 
 .itemsetting.active, .itemsetting:hover {
     background-color: #b2defd !important;
+    color: #000000 !important;
     cursor: pointer !important;
 }
 
