@@ -6,9 +6,20 @@
 
 $(document).ready(function () {
 
+    //Setup auto focus:
     $('#openEn6197').on('show.bs.collapse', function () {
         //call a service here
-        alert('opened');
+        $('#en_name').focus();
+    });
+
+    $('#openEn3288').on('show.bs.collapse', function () {
+        //call a service here
+        $('#en_email').focus();
+    });
+
+    $('#openEn3286').on('show.bs.collapse', function () {
+        //call a service here
+        $('#input_password').focus();
     });
 
 });
