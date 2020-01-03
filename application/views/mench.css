@@ -853,19 +853,16 @@ label {
 .itemsetting.active, .itemsetting:hover {
     background-color: #929394 !important;
     cursor: default !important;
-    color: #FFFFFF !important;
+    color: #000000 !important;
 }
 .blue.itemsetting.active, .blue.itemsetting:hover {
     background-color: #b2defd !important;
-    color: #008DF2 !important;
 }
 .ispink.itemsetting.active, .ispink.itemsetting:hover {
     background-color: #fbc4ce !important;
-    color: #FC1B44 !important;
 }
 .yellow.itemsetting.active, .yellow.itemsetting:hover {
     background-color: #fff4b5 !important;
-    color: #f4d52d !important;
 }
 
 .panel-collapse {
