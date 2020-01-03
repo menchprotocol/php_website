@@ -825,9 +825,6 @@ label {
     text-decoration: none;
     padding: 12px 0 !important;
 }
-.player-settings:hover{
-    background-color: #b2defd;
-}
 
 .dropdown-item:focus, .dropdown-item:hover {
     text-decoration: none;
@@ -852,15 +849,13 @@ label {
 .list-group-item .montserrat, .list-group-item{
     text-decoration: none;
 }
-
-
-.blue.player-settings.active{
+.blue.player-settings.active, .blue.player-settings:hover {
     background-color: #b2defd !important;
 }
-.ispink.player-settings.active{
+.ispink.player-settings.active, .ispink.player-settings:hover {
     background-color: #fbc4ce !important;
 }
-.yellow.player-settings.active{
+.yellow.player-settings.active, .yellow.player-settings:hover {
     background-color: #ffee8e !important;
 }
 
