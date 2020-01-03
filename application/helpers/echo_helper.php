@@ -1782,12 +1782,12 @@ function echo_radio_players($parent_en_id, $child_en_id, $enable_mulitiselect, $
     }
 
     foreach($CI->config->item('en_all_'.$parent_en_id) as $en_id => $m) {
-        $ui .= '<a href="javascript:void(0);" onclick="radio_update('.$parent_en_id.','.$en_id.','.$enable_mulitiselect.')" class="list-group-item itemplay montserrat player-settings item-'.$en_id.' '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->READ_model->ln_fetch(array(
+        $ui .= '<a href="javascript:void(0);" onclick="radio_update('.$parent_en_id.','.$en_id.','.$enable_mulitiselect.')" class="'.extract_icon_color($m['m_icon']).' list-group-item itemplay montserrat player-settings item-'.$en_id.' '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->READ_model->ln_fetch(array(
                 'ln_parent_play_id' => $en_id,
                 'ln_child_play_id' => $child_en_id,
                 'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            )))>0 ? ' active ' : '' ). '"><span class="icon-block">'.$m['m_icon'].'</span><span class="'.extract_icon_color($m['m_icon']).'">'.$m['m_name'].'</span><span class="change-results"></span></a>';
+            )))>0 ? ' active ' : '' ). '"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'<span class="change-results"></span></a>';
         $count++;
     }
 
