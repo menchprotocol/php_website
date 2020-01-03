@@ -11,22 +11,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 17:24:13 PST
+//Generated 2020-01-02 17:32:00 PST
 
 //PLAYER NOTIFICATIONS CHANNEL:
-$config['en_ids_12220'] = array(6196,3288);
+$config['en_ids_12220'] = array(3288,6196);
 $config['en_all_12220'] = array(
-    6196 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger" aria-hidden="true"></i>',
-        'm_name' => 'MENCH MESSENGER',
-        'm_desc' => '',
-        'm_parents' => array(12220,4426,7555,3320),
-    ),
     3288 => array(
         'm_icon' => '<i class="fas fa-envelope-open blue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER EMAIL',
+        'm_name' => 'EMAIL',
         'm_desc' => '',
         'm_parents' => array(12220,12103,6225,4426,4755),
+    ),
+    6196 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger blue" aria-hidden="true"></i>',
+        'm_name' => 'MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(12220,4426,7555,3320),
     ),
 );
 
@@ -1508,7 +1508,7 @@ $config['en_all_10869'] = array(
     ),
 );
 
-//PLAYER SUBSCRIPTION:
+//PLAYER SUBSCRIPTION LEVEL:
 $config['en_ids_11007'] = array(11010,11011,11012);
 $config['en_all_11007'] = array(
     11010 => array(
@@ -3059,11 +3059,11 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-flag blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER NOTIFICATIONS CHANNEL',
         'm_desc' => '',
-        'm_parents' => array(6225,4527,7305),
+        'm_parents' => array(6204,6225,4527,7305),
     ),
     4454 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger blue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER NOTIFICATIONS VOLUME',
+        'm_icon' => '<i class="fas fa-volume blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER NOTIFICATION VOLUME',
         'm_desc' => '',
         'm_parents' => array(6225,6204,4527),
     ),
@@ -3099,7 +3099,7 @@ $config['en_all_4527'] = array(
     ),
     11007 => array(
         'm_icon' => '<i class="fas fa-check-circle isblue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER SUBSCRIPTION',
+        'm_name' => 'PLAYER SUBSCRIPTION LEVEL',
         'm_desc' => '',
         'm_parents' => array(4527,6204,6225),
     ),
@@ -4984,7 +4984,7 @@ $config['en_all_6201'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['en_ids_6204'] = array(4737,7585,10602,3290,10956,4454,6177,11007,3289,6186,4593,10591);
+$config['en_ids_6204'] = array(4737,7585,10602,3290,10956,12220,4454,6177,11007,3289,6186,4593,10591);
 $config['en_all_6204'] = array(
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h yellow" aria-hidden="true"></i>',
@@ -5016,9 +5016,15 @@ $config['en_all_6204'] = array(
         'm_desc' => '',
         'm_parents' => array(6225,6204,11008,4527),
     ),
+    12220 => array(
+        'm_icon' => '<i class="fas fa-flag blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER NOTIFICATIONS CHANNEL',
+        'm_desc' => '',
+        'm_parents' => array(6204,6225,4527,7305),
+    ),
     4454 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger blue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER NOTIFICATIONS VOLUME',
+        'm_icon' => '<i class="fas fa-volume blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER NOTIFICATION VOLUME',
         'm_desc' => '',
         'm_parents' => array(6225,6204,4527),
     ),
@@ -5030,7 +5036,7 @@ $config['en_all_6204'] = array(
     ),
     11007 => array(
         'm_icon' => '<i class="fas fa-check-circle isblue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER SUBSCRIPTION',
+        'm_name' => 'PLAYER SUBSCRIPTION LEVEL',
         'm_desc' => '',
         'm_parents' => array(4527,6204,6225),
     ),
@@ -5226,7 +5232,7 @@ $config['en_all_5967'] = array(
 $config['en_ids_7555'] = array(6196,12103);
 $config['en_all_7555'] = array(
     6196 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fab fa-facebook-messenger blue" aria-hidden="true"></i>',
         'm_name' => 'MESSENGER',
         'm_desc' => 'Read & receive notifications using Messenger. (Recommended)',
         'm_parents' => array(12220,4426,7555,3320),
@@ -5722,19 +5728,13 @@ $config['en_all_4986'] = array(
 );
 
 //MY PLAYER:
-$config['en_ids_6225'] = array(10956,12220,6197,3288,3286,11007,4454);
+$config['en_ids_6225'] = array(10956,6197,3288,3286,11007,4454,12220);
 $config['en_all_6225'] = array(
     10956 => array(
         'm_icon' => '<i class="fas fa-paw blue" aria-hidden="true"></i>',
         'm_name' => 'AVATAR',
         'm_desc' => '',
         'm_parents' => array(6225,6204,11008,4527),
-    ),
-    12220 => array(
-        'm_icon' => '<i class="fas fa-flag blue" aria-hidden="true"></i>',
-        'm_name' => 'NOTIFICATIONS CHANNEL',
-        'm_desc' => '',
-        'm_parents' => array(6225,4527,7305),
     ),
     6197 => array(
         'm_icon' => '<i class="fas fa-fingerprint isblue" aria-hidden="true"></i>',
@@ -5756,15 +5756,21 @@ $config['en_all_6225'] = array(
     ),
     11007 => array(
         'm_icon' => '<i class="fas fa-check-circle isblue" aria-hidden="true"></i>',
-        'm_name' => 'SUBSCRIPTION',
+        'm_name' => 'SUBSCRIPTION LEVEL',
         'm_desc' => '',
         'm_parents' => array(4527,6204,6225),
     ),
     4454 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger blue" aria-hidden="true"></i>',
-        'm_name' => 'NOTIFICATIONS VOLUME',
+        'm_icon' => '<i class="fas fa-volume blue" aria-hidden="true"></i>',
+        'm_name' => 'NOTIFICATION VOLUME',
         'm_desc' => '',
         'm_parents' => array(6225,6204,4527),
+    ),
+    12220 => array(
+        'm_icon' => '<i class="fas fa-flag blue" aria-hidden="true"></i>',
+        'm_name' => 'NOTIFICATIONS CHANNEL',
+        'm_desc' => '',
+        'm_parents' => array(6204,6225,4527,7305),
     ),
 );
 
@@ -6098,14 +6104,8 @@ $config['en_all_4997'] = array(
 );
 
 //PLAYER LOCK:
-$config['en_ids_4426'] = array(6196,3288,4426,4997,3286,4430,4755);
+$config['en_ids_4426'] = array(3288,4426,4997,6196,3286,4430,4755);
 $config['en_all_4426'] = array(
-    6196 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger" aria-hidden="true"></i>',
-        'm_name' => 'MENCH MESSENGER',
-        'm_desc' => '',
-        'm_parents' => array(12220,4426,7555,3320),
-    ),
     3288 => array(
         'm_icon' => '<i class="fas fa-envelope-open blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER EMAIL',
@@ -6123,6 +6123,12 @@ $config['en_all_4426'] = array(
         'm_name' => 'PLAYER MASS UPDATE',
         'm_desc' => '',
         'm_parents' => array(10967,11089,4758,4506,4426,4527),
+    ),
+    6196 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(12220,4426,7555,3320),
     ),
     3286 => array(
         'm_icon' => '<i class="fas fa-key isblue" aria-hidden="true"></i>',
@@ -7437,7 +7443,7 @@ $config['en_all_4592'] = array(
     ),
 );
 
-//PLAYER NOTIFICATIONS VOLUME:
+//PLAYER NOTIFICATION VOLUME:
 $config['en_ids_4454'] = array(4456,4457,4458);
 $config['en_all_4454'] = array(
     4456 => array(
