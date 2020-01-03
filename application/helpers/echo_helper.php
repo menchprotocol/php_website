@@ -1777,7 +1777,7 @@ function echo_radio_players($parent_en_id, $child_en_id, $enable_mulitiselect, $
 
     $ui = '<div class="list-group radio-'.$parent_en_id.'">';
 
-    if(count($CI->config->item('en_ids_'.$parent_en_id))){
+    if(!count($CI->config->item('en_ids_'.$parent_en_id))){
         return false;
     }
 
