@@ -20,8 +20,7 @@
 
     echo '</div>';
 
-
-
+    echo '<div class="doclear">&nbsp;</div>';
 
     if(!$session_en){
 
