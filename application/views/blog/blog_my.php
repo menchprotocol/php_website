@@ -2,13 +2,30 @@
 
     <?php
 
-    echo '<h1 class="yellow"><span class="icon-block-xlg"><i class="fas fa-circle yellow"></i></span>MY BLOGS</h1>';
-
     $session_en = superpower_assigned();
+    $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+
+
+    echo '<h1 class="yellow inline-block pull-left"><span class="icon-block-xlg">'.$en_all_11035[12213]['m_icon'].'</span>'.$en_all_11035[12213]['m_name'].'</h1>';
+
+    echo '<div class="pull-right inline-block">';
+
+
+    //Blog History
+    echo '<a href="/read/history" class="btn btn-blog btn-five icon-block-lg '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12215]['m_name'].'">'.$en_all_11035[12215]['m_icon'].'</a>';
+
+    //Create Blog:
+    echo '<a href="/blog/create" class="btn btn-blog btn-five icon-block-lg '.superpower_active(10939).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12214]['m_name'].'">'.$en_all_11035[12214]['m_icon'].'</a>';
+
+
+    echo '</div>';
+
+
+
 
     if(!$session_en){
 
-        echo '<div style="padding:10px 0;"><a href="/signin" class="btn btn-play montserrat">SIGN IN/UP</a> to start blogging.</div>';
+        echo '<div style="padding:10px 0;"><a href="/signin" class="btn btn-play montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start blogging.</div>';
 
     } else {
 
@@ -34,15 +51,12 @@
 
         }
 
-        if(superpower_assigned(10939)) {
-
-            echo '<div style="padding:10px 0;" class="'.superpower_active(10939).'"><a href="/blog/create" class="btn btn-blog"><i class="fas fa-plus"></i> NEW BLOG</a></div>';
-
-        } else {
+        if(!superpower_assigned(10939)) {
 
             echo '<div style="padding:10px 0;"><a href="/'.config_var(10939).'" class="btn btn-blog montserrat">START BLOGGING <i class="fas fa-angle-right"></i></a></div>';
 
         }
+
     }
     ?>
 </div>

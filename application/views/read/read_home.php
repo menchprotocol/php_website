@@ -161,7 +161,7 @@
 
         $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false, false);
         if ($next_in_id > 0) {
-            echo ' <a class="btn btn-read inline-block" href="/read/'.$next_in_id.'"  style="margin: 20px 0;">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a>';
+            echo ' <a class="btn btn-read inline-block" href="/'.$next_in_id.'"  style="margin: 20px 0;">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a>';
         }
     }
 

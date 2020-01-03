@@ -4,21 +4,22 @@
 <div class="container">
 <?php
 
-echo '<h1 class="ispink inline-block pull-left"><span class="icon-block-xlg"><i class="fas fa-circle ispink"></i></span>MY READS</h1>';
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+
+echo '<h1 class="ispink inline-block pull-left"><span class="icon-block-xlg">'.$en_all_11035[12212]['m_icon'].'</span>'.$en_all_11035[12212]['m_name'].'</h1>';
 
 echo '<div class="pull-right inline-block">';
 
-    $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
-
-    echo '<a href="/" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12201]['m_name'].'">'.$en_all_11035[12201]['m_icon'].'</a>';
-
     echo '<a href="/read/history" class="btn btn-read btn-five icon-block-lg '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11046]['m_name'].'">'.$en_all_11035[11046]['m_icon'].'</a>';
-
 
     $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false, false);
     if ($next_in_id > 0) {
-        echo '<a href="/read/'.$next_in_id.'" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12211]['m_name'].'">'.$en_all_11035[12211]['m_icon'].'</a>';
+        echo '<a href="/'.$next_in_id.'" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12211]['m_name'].'">'.$en_all_11035[12211]['m_icon'].'</a>';
     }
+
+    //Browse New Reads on Home:
+    echo '<a href="/" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12201]['m_name'].'">'.$en_all_11035[12201]['m_icon'].'</a>';
+
 
 echo '</div>';
 
