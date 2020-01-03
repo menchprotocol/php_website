@@ -1369,6 +1369,8 @@ class Read extends CI_Controller
         sleep(2);
 
         //Now let's update the menu:
+        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+
         array_push($res, $this->READ_model->facebook_graph('POST', '/me/messenger_profile', array(
             'persistent_menu' => array(
                 array(
@@ -1377,7 +1379,7 @@ class Read extends CI_Controller
                     'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
                     'call_to_actions' => array(
                         array(
-                            'title' => '🔵 PLAY',
+                            'title' => '🔵 '.$en_all_11035[6225]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/play/account',
                             'webview_height_ratio' => 'tall',
@@ -1385,7 +1387,7 @@ class Read extends CI_Controller
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => '🔴 READ',
+                            'title' => '🔴 '.$en_all_11035[12212]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/read',
                             'webview_height_ratio' => 'tall',
@@ -1393,7 +1395,7 @@ class Read extends CI_Controller
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => '🟡 BLOG',
+                            'title' => '🟡 '.$en_all_11035[12213]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/blog',
                             'webview_height_ratio' => 'tall',
