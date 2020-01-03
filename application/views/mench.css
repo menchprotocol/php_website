@@ -853,17 +853,17 @@ label {
     text-decoration: none;
 }
 
-.play.player-settings.active{
+.blue.player-settings.active{
     background-color: #b2defd !important;
     cursor: default !important;
     color: #000000 !important;
 }
-.read.player-settings.active{
+.ispink.player-settings.active{
     background-color: #fbc4ce !important;
     cursor: default !important;
     color: #000000 !important;
 }
-.blog.player-settings.active{
+.yellow.player-settings.active{
     background-color: #ffee8e !important;
     cursor: default !important;
     color: #000000 !important;
