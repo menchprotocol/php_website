@@ -855,13 +855,13 @@ label {
     cursor: default !important;
     color: #000000 !important;
 }
-.blue.itemsetting.active, .blue.itemsetting:hover {
+.itemblue.active, .itemblue:hover {
     background-color: #b2defd !important;
 }
-.ispink.itemsetting.active, .ispink.itemsetting:hover {
+.itemispink.itemsetting.active, .itemispink:hover {
     background-color: #fbc4ce !important;
 }
-.yellow.itemsetting.active, .yellow.itemsetting:hover {
+.itemyellow.itemsetting.active, .itemyellow:hover {
     background-color: #fff4b5 !important;
 }
 
