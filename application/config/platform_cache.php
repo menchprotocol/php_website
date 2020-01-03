@@ -11,20 +11,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-03 10:27:23 PST
+//Generated 2020-01-03 11:45:41 PST
 
 //PLAYER NOTIFICATION CHANNEL:
 $config['en_ids_12220'] = array(12221,12222);
 $config['en_all_12220'] = array(
     12221 => array(
         'm_icon' => '<i class="fas fa-envelope-open ispink" aria-hidden="true"></i>',
-        'm_name' => 'EMAIL FIRST',
+        'm_name' => 'EMAIL',
         'm_desc' => '',
         'm_parents' => array(12220),
     ),
     12222 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger blue"></i>',
-        'm_name' => 'MESSENGER FIRST',
+        'm_icon' => '<i class="fab fa-facebook-messenger blue" aria-hidden="true"></i>',
+        'm_name' => 'MESSENGER',
         'm_desc' => '',
         'm_parents' => array(12220),
     ),
@@ -2082,7 +2082,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.2021',
+        'm_desc' => '1.2022',
         'm_parents' => array(6404),
     ),
     11079 => array(
