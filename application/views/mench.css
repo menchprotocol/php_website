@@ -820,7 +820,7 @@ label {
     height: 0px;
 }
 
-.player-settings{
+.itemsetting{
     color: #000000;
     text-decoration: none;
     padding: 12px 0 !important;
@@ -850,20 +850,20 @@ label {
     text-decoration: none;
 }
 
-.player-settings.active, .player-settings:hover {
+.itemsetting.active, .itemsetting:hover {
     background-color: #929394 !important;
     cursor: default !important;
     color: #FFFFFF !important;
 }
-.blue.player-settings.active, .blue.player-settings:hover {
+.blue.itemsetting.active, .blue.itemsetting:hover {
     background-color: #b2defd !important;
     color: #008DF2 !important;
 }
-.ispink.player-settings.active, .ispink.player-settings:hover {
+.ispink.itemsetting.active, .ispink.itemsetting:hover {
     background-color: #fbc4ce !important;
     color: #FC1B44 !important;
 }
-.yellow.player-settings.active, .yellow.player-settings:hover {
+.yellow.itemsetting.active, .yellow.itemsetting:hover {
     background-color: #fff4b5 !important;
     color: #f4d52d !important;
 }
