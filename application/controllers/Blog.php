@@ -35,11 +35,11 @@ class Blog extends CI_Controller {
 
     }
 
-    function blog_mylist(){
+    function blog_my(){
         $this->load->view('header', array(
             'title' => 'BLOG',
         ));
-        $this->load->view('blog/blog_mylist');
+        $this->load->view('blog/blog_my');
         $this->load->view('footer');
     }
 

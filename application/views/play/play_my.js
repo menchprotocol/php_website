@@ -1,5 +1,19 @@
 
 
+
+
+
+
+$(document).ready(function () {
+
+    $('#openEn6197').on('show.bs.collapse', function () {
+        //call a service here
+        alert('opened');
+    });
+
+});
+
+
 function radio_update(parent_en_id, selected_en_id, enable_mulitiselect){
 
     var was_already_selected = ( $('.radio-'+parent_en_id+' .item-'+selected_en_id).hasClass('active') ? 1 : 0 );

@@ -203,7 +203,7 @@ class Read extends CI_Controller
         echo 'Sent '.$email_recipients.' Stat Emails';
     }
 
-    function read_mylist(){
+    function read_my(){
 
         $session_en = superpower_assigned(null, true);
 
@@ -231,7 +231,7 @@ class Read extends CI_Controller
             'title' => 'MY READING LIST',
         ));
 
-        $this->load->view('read/read_mylist', array(
+        $this->load->view('read/read_my', array(
             'session_en' => $session_en,
             'user_blogs' => $user_blogs,
         ));

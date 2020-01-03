@@ -2482,7 +2482,7 @@ fragment PostListingItemSidebar_post on Post {
         $this->load->view('header', array(
             'title' => 'MY ACCOUNT',
         ));
-        $this->load->view('play/play_account', array(
+        $this->load->view('play/play_my', array(
             'session_en' => $session_en,
         ));
         $this->load->view('footer');

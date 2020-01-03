@@ -158,20 +158,6 @@ li a {
     padding: 2px 4px 0 0;
 }
 
-.decimal-list{
-    list-style: decimal;
-    margin-left:-12px;
-}
-
-.none-list{
-    list-style:none;
-    margin-left: -33px;
-}
-.none-list li{
-    margin-bottom: 10px;
-    line-height: 130%;
-}
-
 .nav-tabs-sm .nav-link {
     display: block;
     padding: .5rem .5rem;
@@ -267,8 +253,12 @@ img.no-radius {
 .table-striped tbody tr:nth-of-type(even) {
     background-color:transparent;
 }
-.table-striped tbody tr:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .none-list li:nth-of-type(odd), .decimal-list li:nth-of-type(odd) {
+.table-striped tbody tr:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .panel-group .panel-default:nth-of-type(odd) {
     background-color:#FFFFFF;
+}
+
+.panel-group .panel-default {
+    padding:3px 10px;
 }
 
 .list-group, h1, h2, ul, .table{

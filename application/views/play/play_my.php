@@ -2,7 +2,7 @@
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 ?>
 
-<script src="/application/views/play/play_account.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/play/play_my.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
 
@@ -23,19 +23,17 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
     <div class="doclear">&nbsp;</div>
 
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel-group" id="MyPlayerAccordion" role="tablist" aria-multiselectable="false">
 
         <?php
-        echo '<div class="list-group">';
         //Display account fields ordered with their player links:
         foreach($this->config->item('en_all_6225') as $acc_en_id => $acc_detail){
 
             //Print header:
-            echo '<div class="list-group-item">
-                    <div class="panel panel-default">
+            echo '<div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="openEn'.$acc_en_id.'">
                         <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'.$acc_en_id.'" aria-expanded="true" aria-controls="collapse'.$acc_en_id.'">
+                            <a role="button" data-toggle="collapse" data-parent="#MyPlayerAccordion" href="#collapse'.$acc_en_id.'" aria-expanded="true" aria-controls="collapse'.$acc_en_id.'">
                                 <span class="icon-block" style="width:38px;">'.$acc_detail['m_icon'].'</span><b class="montserrat doupper '.extract_icon_color($acc_detail['m_icon']).'">'.$acc_detail['m_name'].'</b>
                             </a>
                         </h4>
@@ -100,9 +98,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             }
 
             //Print footer:
-            echo '</div></div></div></div>';
+            echo '</div></div></div>';
         }
-        echo '</div>';
         ?>
 
     </div>

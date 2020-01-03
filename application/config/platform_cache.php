@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 18:38:37 PST
+//Generated 2020-01-03 10:27:23 PST
 
 //PLAYER NOTIFICATION CHANNEL:
 $config['en_ids_12220'] = array(12221,12222);
@@ -5769,13 +5769,13 @@ $config['en_all_6225'] = array(
     4454 => array(
         'm_icon' => '<i class="fas fa-volume" aria-hidden="true"></i>',
         'm_name' => 'NOTIFICATION VOLUME',
-        'm_desc' => '',
+        'm_desc' => 'Set the volume for notifications received on Messenger:',
         'm_parents' => array(6225,6204,4527),
     ),
     12220 => array(
         'm_icon' => '<i class="fas fa-flag" aria-hidden="true"></i>',
         'm_name' => 'NOTIFICATION CHANNEL',
-        'm_desc' => '',
+        'm_desc' => 'Set your preferred channel to receive notifications:',
         'm_parents' => array(6204,6225,4527,7305),
     ),
 );
