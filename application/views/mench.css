@@ -254,11 +254,15 @@ img.no-radius {
     background-color:transparent;
 }
 .table-striped tbody tr:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .accordion .card:nth-of-type(odd) {
-    background-color:#FFFFFF;
+    background-color:#FFFFFF !important;
 }
 
+.accordion .card {
+    border: 0;
+}
 .accordion .card-header {
-    padding:3px 10px;
+    padding: 10px 0;
+    border: 0;
 }
 .accordion .card-header .btn {
     padding: 0;
