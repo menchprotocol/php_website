@@ -11,9 +11,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-02 17:46:37 PST
+//Generated 2020-01-02 17:56:55 PST
 
-//PLAYER NOTIFICATIONS CHANNEL:
+//PLAYER NOTIFICATION CHANNEL:
 $config['en_ids_12220'] = array(12221,12222);
 $config['en_all_12220'] = array(
     12221 => array(
@@ -3057,7 +3057,7 @@ $config['en_all_4527'] = array(
     ),
     12220 => array(
         'm_icon' => '<i class="fas fa-flag" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER NOTIFICATIONS CHANNEL',
+        'm_name' => 'PLAYER NOTIFICATION CHANNEL',
         'm_desc' => '',
         'm_parents' => array(6204,6225,4527,7305),
     ),
@@ -5018,7 +5018,7 @@ $config['en_all_6204'] = array(
     ),
     12220 => array(
         'm_icon' => '<i class="fas fa-flag" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER NOTIFICATIONS CHANNEL',
+        'm_name' => 'PLAYER NOTIFICATION CHANNEL',
         'm_desc' => '',
         'm_parents' => array(6204,6225,4527,7305),
     ),
@@ -5768,7 +5768,7 @@ $config['en_all_6225'] = array(
     ),
     12220 => array(
         'm_icon' => '<i class="fas fa-flag" aria-hidden="true"></i>',
-        'm_name' => 'NOTIFICATIONS CHANNEL',
+        'm_name' => 'NOTIFICATION CHANNEL',
         'm_desc' => '',
         'm_parents' => array(6204,6225,4527,7305),
     ),
