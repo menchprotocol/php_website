@@ -257,9 +257,15 @@ img.no-radius {
     background-color:#FFFFFF;
 }
 
-.accordion .card {
+.accordion .card-header {
     padding:3px 10px;
 }
+.accordion .card-header .btn {
+    padding: 0;
+    margin: 0;
+    display: block;
+}
+
 
 .list-group, h1, h2, ul, .table{
     margin-right: 1px;

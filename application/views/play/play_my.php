@@ -23,7 +23,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
     <div class="doclear">&nbsp;</div>
 
-
         <div class="accordion" id="MyPlayerAccordion">
 
         <?php
@@ -36,11 +35,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             //Print header:
             echo '<div class="card">
     <div class="card-header" id="heading'.$acc_en_id.'">
-      <h4>
-        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#openEn'.$acc_en_id.'" aria-expanded="'.( $expand_by_default ? 'true' : 'false' ).'" aria-controls="openEn'.$acc_en_id.'">
+        <button class="btn" type="button" data-toggle="collapse" data-target="#openEn'.$acc_en_id.'" aria-expanded="'.( $expand_by_default ? 'true' : 'false' ).'" aria-controls="openEn'.$acc_en_id.'">
           <span class="icon-block-lg">'.$acc_detail['m_icon'].'</span><b class="montserrat doupper '.extract_icon_color($acc_detail['m_icon']).'">'.$acc_detail['m_name'].'</b>
         </button>
-      </h4>
     </div>
 
     <div id="openEn'.$acc_en_id.'" class="collapse '.( $expand_by_default ? ' show ' : '' ).'" aria-labelledby="heading'.$acc_en_id.'" data-parent="#MyPlayerAccordion">
@@ -107,6 +104,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             //Print footer:
             echo '</div></div></div>';
+
         }
         ?>
 

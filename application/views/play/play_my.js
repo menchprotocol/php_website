@@ -2,8 +2,6 @@
 
 
 
-
-
 $(document).ready(function () {
 
     //Setup auto focus:
