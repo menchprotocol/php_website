@@ -46,7 +46,7 @@ $developer_tools = array(
 if(!$action) {
 
     $en_all_11035 = $this->config->item('en_all_11035');
-    echo '<h1>'.$en_all_11035[6287]['m_icon'].' '.$en_all_11035[6287]['m_name'].' <a href="/play/6287" style="font-size: 0.5em; color: #929394;" title="'.$en_all_11035[6287]['m_name'].' player controlling this tool" data-toggle="tooltip" data-placement="right">@6287</a></h1>';
+    echo '<h1>'.$en_all_11035[6287]['m_icon'].' '.$en_all_11035[6287]['m_name'].' <a href="/play/6287" style="font-size: 0.5em; color: #BBBBBB;" title="'.$en_all_11035[6287]['m_name'].' player controlling this tool" data-toggle="tooltip" data-placement="right">@6287</a></h1>';
 
     echo '<div class="list-group maxout">';
     foreach ($moderation_tools as $tool_key => $tool_name) {
