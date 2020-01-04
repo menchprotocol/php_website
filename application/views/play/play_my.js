@@ -88,7 +88,7 @@ function save_full_name(){
     //Save the rest of the content:
     $.post("/play/account_save_full_name", {
         en_id: js_pl_id,
-        en_name: $('#en_name').val(),
+        en_name: $('#en_name').val().toUpperCase(),
     }, function (data) {
 
         if (!data.status) {
