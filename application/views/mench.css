@@ -31,10 +31,13 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 }
 .container-white{
     background-color: #FFFFFF;
-    padding: 0 10px 30px;
+    padding: 0 0 30px;
     max-width:767px;
 }
-.content-image{
+.container-white .i_content{
+    margin: 0 10px 20px;
+}
+.container-white .content-image{
     margin: 0 -20px 0 -10px;
     max-width:100%;
     max-height:500px;
@@ -579,9 +582,7 @@ textarea.note-textarea{
     color: #000000;
 }
 
-.i_content {
-    padding:0 0 15px 0;
-}
+
 .toblog .i_content {
     padding:0 22px 0 0;
 }
