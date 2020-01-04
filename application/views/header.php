@@ -60,7 +60,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 if (!isset($flash_message)) {
     $flash_message = $this->session->flashdata('flash_message');
 }
-if(strlen($flash_message) > 0){
+if(strlen($flash_message) > 0) {
     echo '<div class="container" id="custom_message">'.$flash_message.'</div>';
 }
 
@@ -75,7 +75,7 @@ if(!isset($hide_header) || !$hide_header){
     if(isset($session_en['en_id']) && !isset($basic_header)){
         ?>
         <!-- 3X NAVIGATION -->
-        <div class="container show-while-searching fixed-bottom">
+        <div class="container show-while-searching fixed-bottom" style="padding-bottom: 0 !important;">
             <div class="row">
                 <table class="three-menus">
                     <tr>
@@ -100,7 +100,7 @@ if(!isset($hide_header) || !$hide_header){
 
 
     <!-- MENCH LINE -->
-    <div class="container show-while-searching fixed-top">
+    <div class="container show-while-searching fixed-top" style="padding-bottom: 0 !important;">
         <div class="row">
             <table class="mench-navigation">
                 <tr>
