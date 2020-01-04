@@ -43,7 +43,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     max-height:500px;
 }
 .ln_content { overflow: hidden; width: 100%; }
-.table-sm td, .table-sm th { padding: 5px 0 !important; }
+.table-sm td, .table-sm th { padding: 5px 0; }
 .table {
     width: 100%;
     margin-bottom: 0;
@@ -668,6 +668,10 @@ textarea.note-textarea{
     border: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
+}
+
+#top_players td{
+    padding: 5px 0 !important;
 }
 
 .three-menus a{
