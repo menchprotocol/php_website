@@ -422,9 +422,8 @@ img.no-radius {
 .btn-play i, .btn-read i, .btn-blog i { color: #000000 !important; }
 
 /* Bottom Navigation */
-.three-menus a { border-bottom: 10px solid #f4f5f7; }
-.border-play, .border-blog, .border-read { padding-bottom: 10px; }
-.border-play:hover, .border-blog:hover, .border-read:hover, .border-play.focustab, .border-blog.focustab, .border-read.focustab { background-color: #FFFFFF; }
+.three-menus a { padding-bottom: 15px; }
+.three-menus a:hover, .three-menus a.focustab { background-color: #FFFFFF; }
 
 /* Color Palette @10604 */
 .isgreen, .isgreen a                { color:#228B22 !important; }
