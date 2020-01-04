@@ -7,13 +7,14 @@
 $has_multiple_blogs = ( count($user_blogs) >= 2 );
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
-echo '<h1 class="read inline-block pull-left"><span class="icon-block-xlg">'.$en_all_11035[6205]['m_icon'].'</span>'.$en_all_11035[6205]['m_name'].'</h1>';
 
 if(!$session_en){
 
-    echo '<div style="padding:10px 0 20px;"><a href="/signin" class="btn btn-play montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start reading.</div>';
+    echo '<div style="padding:10px 0 20px;"><a href="/signin" class="btn btn-read montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start reading.</div>';
 
 } else {
+
+    echo '<h1 class="read inline-block pull-left"><span class="icon-block-xlg">'.$en_all_11035[6205]['m_icon'].'</span>'.$en_all_11035[6205]['m_name'].'</h1>';
 
     echo '<div class="pull-right inline-block">';
 
