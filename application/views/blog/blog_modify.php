@@ -67,7 +67,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
             //Preview option:
-            echo '<div class="inline-block pull-right"><a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fas fa-angle-right"></i></a></div>';
+            echo '<div class="inline-block pull-right side-margin"><a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fas fa-angle-right"></i></a></div>';
 
         echo '</div>';
 
@@ -76,11 +76,11 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             echo '<div class="itemblog">';
 
-            echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'" style="margin-bottom: 5px;">'.$in['in_title'].'</textarea>';
+            echo '<textarea onkeyup="show_save_button()" class="form-control side-margin" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'" style="margin-bottom: 5px;">'.$in['in_title'].'</textarea>';
 
             echo '<input type="hidden" id="current_blog_title" value="'.$in['in_title'].'" />';
 
-            echo '<div id="blog_title_save" class="hidden">';
+            echo '<div id="blog_title_save" class="hidden side-margin">';
             echo '<a href="javascript:in_save_title();" class="btn btn-blog">SAVE</a>';
             echo '&nbsp;<span class="title_counter hidden">[<span id="charTitleNum">0</span>/'.config_var(11071).']</span>';
             echo '&nbsp;<span class="title_update_status"></span>';
