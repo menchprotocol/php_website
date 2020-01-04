@@ -35,7 +35,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     max-width:767px;
 }
 .content-image{
-    margin: 0 -10px;
+    margin: 0 -20px 0 -10px;
     max-width:100%;
     max-height:500px;
 }
