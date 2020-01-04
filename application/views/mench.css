@@ -209,9 +209,9 @@ img.no-radius {
 }
 
 .alert{
-    padding: .5rem;
-    border-radius:0;
-    margin-top: 0;
+    padding: 1rem .5rem;
+    border-radius: 0;
+    margin: 0;
 }
 
 .alert-warning {
