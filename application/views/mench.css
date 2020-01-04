@@ -32,12 +32,19 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     max-width:767px;
 }
 .container-wide .i_content, .container-wide h1 {
-    margin: 0 20px 20px;
+    margin: 0 15px 15px;
 }
 .container-wide .content-image{
-    margin: 10px -40px 0 -20px;
-    max-width: calc(100% + 40px);
+    margin: 10px -30px 0 -15px;
+    max-width: calc(100% + 30px);
     max-height:500px;
+}
+.list-group-item {
+    border: 0;
+    border-radius: 0 !important;
+    padding:3px 15px;
+    margin: 0;
+    width: 100%;
 }
 .ln_content { overflow: hidden; width: 100%; }
 .table-sm td, .table-sm th { padding: 5px 0; }
@@ -752,14 +759,6 @@ textarea.note-textarea{
 
 .link_marks .form-control:hover{
     background-color:#FFFFFF !important;
-}
-
-.list-group-item {
-    border: 0;
-    border-radius: 0 !important;
-    padding:3px 20px;
-    margin: 0;
-    width: 100%;
 }
 
 .itemplay{
