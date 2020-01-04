@@ -295,10 +295,6 @@ img.no-radius {
     margin-bottom: 10px;
 }
 
-.list-group, h1, h2, ul, .one-pix{
-    margin-right: 1px;
-    margin-left: 1px;
-}
 .algolia_search_pad{
     height: 295px;
 }
