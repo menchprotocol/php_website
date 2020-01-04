@@ -113,17 +113,15 @@ if($session_en) {
 
 } else {
 
-    //Login reminder:
-    echo '<div class="pull-right inline-block">';
-    echo '<a href="/signin" class="btn btn-play btn-five icon-block-lg" style="padding-top:10px;">'.$en_all_11035[4269]['m_name'].' '.$en_all_11035[4269]['m_icon'].'</a>';
-    echo '</div>';
+    echo '<div style="padding:10px 0;"><a href="/signin" class="btn btn-blog montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start playing.</div>';
+
 
 }
 ?>
 
 <!-- Top Players -->
-<h1 class="montserrat play pull-left"><span class="icon-block-xlg icon_photo"><?= $en_all_11035[11087]['m_icon'] ?></span><?= $en_all_11035[11087]['m_name'] ?></h1>
-<div class="doclear">&nbsp;</div>
-<div id="load_top_players"></div>
+<h1 class="montserrat play"><span class="icon-block-xlg icon_photo"><?= $en_all_11035[11087]['m_icon'] ?></span><?= $en_all_11035[11087]['m_name'] ?></h1>
+
+    <div id="load_top_players"></div>
 
 </div>
