@@ -151,21 +151,14 @@
     }
 
 
-
     //Player Navigation
     if(isset($session_en['en_id']) && $session_en['en_id'] > 0){
-
-        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
-
-        echo '<a class="btn btn-read inline-block" href="/read"  style="margin: 20px 0;">'.$en_all_11035[6205]['m_name'].' '.$en_all_11035[6205]['m_icon'].'</a>';
-
         $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false, false);
         if ($next_in_id > 0) {
+            $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             echo ' <a class="btn btn-read inline-block" href="/'.$next_in_id.'"  style="margin: 20px 0;">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a>';
         }
     }
-
-
 
     ?>
 
