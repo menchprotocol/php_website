@@ -35,11 +35,11 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     max-width:767px;
 }
 .container-white .i_content{
-    margin: 0 10px 20px;
+    margin: 0 15px 30px;
 }
 .container-white .content-image{
-    margin: 0 -20px 0 -10px;
-    max-width: calc(100% + 20px);
+    margin: 0 -30px 0 -15px;
+    max-width: calc(100% + 30px);
     max-height:500px;
 }
 .ln_content { overflow: hidden; width: 100%; }
