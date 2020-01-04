@@ -36,9 +36,11 @@ class Blog extends CI_Controller {
     }
 
     function blog_my(){
+        $session_en = superpower_assigned();
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         $this->load->view('header', array(
             'title' => $en_all_11035[4535]['m_name'],
+            'session_en' => $session_en,
         ));
         $this->load->view('blog/blog_my');
         $this->load->view('footer');

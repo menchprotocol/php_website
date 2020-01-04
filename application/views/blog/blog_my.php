@@ -2,31 +2,29 @@
 
     <?php
 
-    $session_en = superpower_assigned();
     $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
-
-
-    echo '<h1 class="blog inline-block pull-left"><span class="icon-block-xlg">'.$en_all_11035[4535]['m_icon'].'</span>'.$en_all_11035[4535]['m_name'].'</h1>';
-
-    echo '<div class="pull-right inline-block">';
-
-
-    //Blog History
-    echo '<a href="/read/history" class="btn btn-blog btn-five icon-block-lg '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12215]['m_name'].'">'.$en_all_11035[12215]['m_icon'].'</a>';
-
-    //Create Blog:
-    echo '<a href="/blog/create" class="btn btn-blog btn-five icon-block-lg '.superpower_active(10939).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12214]['m_name'].'">'.$en_all_11035[12214]['m_icon'].'</a>';
-
-
-    echo '</div>';
-
-    echo '<div class="doclear">&nbsp;</div>';
 
     if(!$session_en){
 
         echo '<div style="padding:10px 0;"><a href="/signin" class="btn btn-blog montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start blogging.</div>';
 
     } else {
+
+        echo '<h1 class="blog inline-block pull-left"><span class="icon-block-xlg">'.$en_all_11035[4535]['m_icon'].'</span>'.$en_all_11035[4535]['m_name'].'</h1>';
+
+        echo '<div class="pull-right inline-block">';
+
+
+        //Blog History
+        echo '<a href="/read/history" class="btn btn-blog btn-five icon-block-lg '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12215]['m_name'].'">'.$en_all_11035[12215]['m_icon'].'</a>';
+
+        //Create Blog:
+        echo '<a href="/blog/create" class="btn btn-blog btn-five icon-block-lg '.superpower_active(10939).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12214]['m_name'].'">'.$en_all_11035[12214]['m_icon'].'</a>';
+
+
+        echo '</div>';
+
+        echo '<div class="doclear">&nbsp;</div>';
 
         //List current blogs:
         $bookmark_ins = $this->READ_model->ln_fetch(array(
