@@ -1,7 +1,7 @@
 
 <script src="/application/views/read/read_my.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
-<div class="container container-white">
+<div class="container">
 <?php
 
 $has_multiple_blogs = ( count($user_blogs) >= 2 );
