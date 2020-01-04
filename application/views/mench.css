@@ -38,7 +38,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     margin: 0 5px 15px;
 }
 .container-white .content-image{
-    margin: 0 -10px 0 -5px;
+    margin: 10px -10px 0 -5px;
     max-width: calc(100% + 10px);
     max-height:500px;
 }
