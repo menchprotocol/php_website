@@ -95,7 +95,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } else {
 
         echo '<div class="center-right">';
-            echo '<div class="inline-block" style="margin:0 0 5px 1px;">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active).'</div>';
+            echo '<div class="inline-block" style="margin:0 0 5px 0;">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active).'</div>';
             echo '<div class="inline-block '.superpower_active(10984).'" style="width:89px; margin:0 0 5px 5px;">'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
         echo '</div>';
 
@@ -232,7 +232,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
 
-            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder=" + '.rtrim(strtoupper($en_all_4485[$en_id2]['m_name']), 'S').'" style="margin-top:6px; margin-left: -1px;"></textarea>';
+            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder=" + '.rtrim(strtoupper($en_all_4485[$en_id2]['m_name']), 'S').'" style="margin-top:6px;"></textarea>';
 
 
 
