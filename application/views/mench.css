@@ -419,6 +419,9 @@ img.no-radius {
 .blog, .blog a, .blog .fas, .blog .far, .blog .fal, .blog .fad, .color4535  { color:#f4d52d !important; } /* f1d104 */
 .read, .read a, .read .fas, .read .far, .read .fal, .read .fad, .color6205  { color:#FC1B44 !important; }
 
+.btn-play .fas, .btn-play .far, .btn-play .fal, .btn-play .fad { color: #000000 !important; }
+.btn-read .fas, .btn-read .far, .btn-read .fal, .btn-read .fad { color: #000000 !important; }
+.btn-blog .fas, .btn-blog .far, .btn-blog .fal, .btn-blog .fad { color: #000000 !important; }
 
 /* Bottom Navigation */
 .three-menus a { border-bottom: 10px solid #f4f5f7; }
