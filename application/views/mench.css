@@ -31,15 +31,15 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 }
 .container-white{
     background-color: #FFFFFF;
-    padding: 0 0 30px;
+    padding: 0 0 15px;
     max-width:767px;
 }
-.container-white .i_content{
-    margin: 0 15px 30px;
+.container-white .i_content, .container-white h1 {
+    margin: 0 5px 15px;
 }
 .container-white .content-image{
-    margin: 0 -30px 0 -15px;
-    max-width: calc(100% + 30px);
+    margin: 0 -10px 0 -5px;
+    max-width: calc(100% + 10px);
     max-height:500px;
 }
 .ln_content { overflow: hidden; width: 100%; }
