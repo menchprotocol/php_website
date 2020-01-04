@@ -708,7 +708,7 @@ textarea.note-textarea{
     font-size: 1.2em;
 }
 .mench-navigation .block-link a:hover, .block-link a:hover .fas, .block-link a:hover .fal, .block-link a:hover .far, .block-link a:hover .fad {
-    background-color:#000000;
+    background-color:#FFFFFF;
     color:#FFFFFF !important;
 }
 .mench-navigation .block-logo {
