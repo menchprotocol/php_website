@@ -2226,8 +2226,8 @@ fragment PostListingItemSidebar_post on Post {
 
         $magic_link_expiry_hours = (config_var(11065)/3600);
         $html_message .= '<div>Signin within '.$magic_link_expiry_hours.'-hour'.echo__s($magic_link_expiry_hours).':</div>';
-        $magiclogin_url = 'https://mench.com/play/magiclogin/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
-        $html_message .= '<div><a href="'.$magiclogin_url.'" target="_blank">' . $magiclogin_url . '</a></div>';
+        $magic_url = 'https://mench.com/play/magic/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
+        $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
         $html_message .= '<br /><br /><div>You may also set a new password here:</div>';
         $setpassword_url = 'https://mench.com/play/resetpassword/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
@@ -2245,7 +2245,7 @@ fragment PostListingItemSidebar_post on Post {
         ));
     }
 
-    function magiclogin($ln_id){
+    function magic($ln_id){
 
         //Validate email:
         if(superpower_assigned()){
