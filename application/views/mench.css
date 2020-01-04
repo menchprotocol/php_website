@@ -669,6 +669,9 @@ textarea.note-textarea{
     padding: 0 !important;
     margin: 0 !important;
 }
+.three-menus .icon-block{
+    margin-left:1px;
+}
 
 #top_players td{
     padding: 5px 0 !important;
