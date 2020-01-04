@@ -659,15 +659,19 @@ textarea.note-textarea{
 }
 
 .three-menus td, #top_players td{
-    width: 33.33%;
+    width: 33.4%;
     vertical-align: bottom;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    border-spacing: 0 !important;
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 .three-menus a{
-    padding:8px 0 6px;
+    padding:12px 0 10px;
     display: block;
     text-decoration: none;
     border-top:0px solid;
