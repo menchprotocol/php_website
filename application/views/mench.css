@@ -28,6 +28,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     padding-left:0px;
     padding-right:0px;
     max-width:767px;
+    padding-bottom: 60px;
 }
 .container-white{
     background-color: #FFFFFF;
