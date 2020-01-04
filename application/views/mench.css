@@ -25,14 +25,11 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 [class*="col-"] {padding-left:0px;padding-right:0px;}
 .row {margin-left:0px;margin-right:0px;}
 .container {
-    padding-left:0px;
-    padding-right:0px;
     max-width:767px;
-    padding-bottom: 60px;
+    padding:0 0 60px;
 }
 .container-white{
     background-color: #FFFFFF;
-    padding: 0 0 15px;
     max-width:767px;
 }
 .container-white .i_content, .container-white h1 {
