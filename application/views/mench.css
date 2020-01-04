@@ -31,10 +31,13 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 }
 .container-white{
     background-color: #FFFFFF;
-    padding-left:5px;
-    padding-right:5px;
+    padding: 0 10px 30px;
     max-width:767px;
-    padding-bottom: 30px;
+}
+.content-image{
+    margin: 0 -10px;
+    max-width:100%;
+    max-height:500px;
 }
 .ln_content { overflow: hidden; width: 100%; }
 .table-sm td, .table-sm th { padding: 5px 0; }
@@ -331,10 +334,7 @@ img.no-radius {
     width: 100% !important;
 }
 
-.content-image{
-    max-width:100%;
-    max-height:500px;
-}
+
 
 .panel-body .form-control {
     padding:7px 0;
