@@ -19,7 +19,7 @@ class Blog extends CI_Controller {
         $en_all_6201 = $this->config->item('en_all_6201'); //blog Table
 
         //Create blog:
-        $in = $this->BLOG_model->in_link_or_create($en_all_6201[4736]['m_name'], $session_en['en_id'], 0, false, 6183, 6677, $_POST['in_link_child_id']);
+        $in = $this->BLOG_model->in_link_or_create($en_all_6201[4736]['m_name'] /* Default blog name */, $session_en['en_id'], 0, false, 6183, 6677, $_POST['in_link_child_id']);
 
         //Also add to bookmarks:
         $this->READ_model->ln_create(array(
@@ -36,8 +36,9 @@ class Blog extends CI_Controller {
     }
 
     function blog_my(){
+        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         $this->load->view('header', array(
-            'title' => 'BLOG',
+            'title' => $en_all_11035[4535]['m_name'],
         ));
         $this->load->view('blog/blog_my');
         $this->load->view('footer');

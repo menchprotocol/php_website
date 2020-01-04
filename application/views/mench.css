@@ -646,12 +646,12 @@ textarea.note-textarea{
 }
 
 /* HEADER */
-.three-menus, #leaderboard{
+.three-menus, #top_players{
     width: 100%;
     background-color: #f4f5f7;
 }
 
-.three-menus td, #leaderboard td{
+.three-menus td, #top_players td{
     width: 33.33%;
     vertical-align: bottom;
     white-space: nowrap;
@@ -659,7 +659,7 @@ textarea.note-textarea{
     text-overflow: ellipsis;
 }
 
-#leaderboard .icon-block{
+#top_players .icon-block{
     margin-left:2px;
 }
 

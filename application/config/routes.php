@@ -6,7 +6,7 @@ $route['translate_uri_dashes']      = FALSE;
 $route['404_override']              = 'play/play_404';
 $route['signin/(:num)']             = "play/signin/$1";
 $route['signin']                    = "play/signin";
-$route['play']                      = "play/play_leaderboard";
+$route['play']                      = "play/play_my";
 $route['play/(:num)']               = "play/play_modify/$1";
 
 //READ

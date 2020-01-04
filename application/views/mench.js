@@ -65,12 +65,12 @@ function js_ln_create(new_ln_data){
 }
 
 
-function load_leaderboard(){
+function load_top_players(){
     //Show loading icon:
     $('#load_top_players').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">LOADING...</b></div>');
     $('.top-players').addClass('hidden');
 
-    $.post("/play/load_leaderboard/", { }, function (data) {
+    $.post("/play/load_top_players/", { }, function (data) {
         $('#load_top_players').html(data);
         $('[data-toggle="tooltip"]').tooltip();
     });

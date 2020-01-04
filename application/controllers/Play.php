@@ -687,17 +687,7 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function play_leaderboard(){
-        $this->load->view('header', array(
-            'title' => 'PLAYER LEADERBOARD',
-        ));
-        $this->load->view('play/play_leaderboard');
-        $this->load->view('footer');
-    }
-
-
-
-    function load_leaderboard(){
+    function load_top_players(){
 
         //Fetch top users per each direction
         $session_en = superpower_assigned();
@@ -733,11 +723,11 @@ fragment PostListingItemSidebar_post on Post {
         }
         */
 
-        //Fetch leaderboard:
+        //Fetch top_players:
         $blog_coins = $this->READ_model->ln_fetch($filters_blog, array('en_creator', 'in_child'), $load_max, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
 
-        echo '<table id="leaderboard" class="table table-sm table-striped">';
+        echo '<table id="top_players" class="table table-sm table-striped">';
 
         //Table header:
         echo '<tr>';
@@ -2466,21 +2456,23 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function account()
+    function play_my()
     {
 
         //Authenticate user:
-        $session_en = superpower_assigned(null, true);
+        $session_en = superpower_assigned(null);
 
         //Log My Account View:
-        $this->READ_model->ln_create(array(
-            'ln_type_play_id' => 4282, //Opened My Account
-            'ln_creator_play_id' => $session_en['en_id'],
-        ));
+        if($session_en){
+            $this->READ_model->ln_create(array(
+                'ln_type_play_id' => 4282, //Opened My Account
+                'ln_creator_play_id' => $session_en['en_id'],
+            ));
+        }
 
-
+        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         $this->load->view('header', array(
-            'title' => 'MY ACCOUNT',
+            'title' => $en_all_11035[4536]['m_name'],
         ));
         $this->load->view('play/play_my', array(
             'session_en' => $session_en,

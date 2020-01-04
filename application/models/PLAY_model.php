@@ -1271,7 +1271,7 @@ class PLAY_model extends CI_Model
         if(!$fetch_result){
             //Let them know to complete their profile:
             $this->READ_model->dispatch_message(
-                'Hi! I just added you as a new player. You can update your account at any time. 🤗 /link:Update My Account:https://mench.com/play/account',
+                'Hi! I just added you as a new player. You can update your account at any time. 🤗 /link:Update My Account:https://mench.com/play',
                 $added_en['en'],
                 true
             );

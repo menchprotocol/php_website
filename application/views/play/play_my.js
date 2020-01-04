@@ -4,6 +4,9 @@
 
 $(document).ready(function () {
 
+    //Load top_players:
+    load_top_players();
+
     //Setup auto focus:
     $('#openEn6197').on('show.bs.collapse', function () {
         //call a service here

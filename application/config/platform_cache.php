@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-03 12:57:46 PST
+//Generated 2020-01-03 18:44:43 PST
 
 //PLAYER NOTIFICATION CHANNEL:
 $config['en_ids_12220'] = array(12221,12222);
@@ -453,8 +453,14 @@ $config['en_all_12066'] = array(
 );
 
 //MENCH GLOSSARY:
-$config['en_ids_4463'] = array(4485,3084,4535,4536,6205,4430,3000,4755);
+$config['en_ids_4463'] = array(4535,4485,3084,4536,4430,3000,4755,6205);
 $config['en_all_4463'] = array(
+    4535 => array(
+        'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOG',
+        'm_desc' => 'Intents define the intention of an entity as defined similar to a SMART goal.',
+        'm_parents' => array(11035,12155,2738,4463),
+    ),
     4485 => array(
         'm_icon' => '<i class="fas fa-comment-plus blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG NOTES',
@@ -467,23 +473,11 @@ $config['en_all_4463'] = array(
         'm_desc' => 'People with experience in their respective industry that have shown a consistent commitment to advancing their industry.',
         'm_parents' => array(10571,4983,6827,4463),
     ),
-    4535 => array(
-        'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
-        'm_name' => 'MENCH BLOG',
-        'm_desc' => 'Intents define the intention of an entity as defined similar to a SMART goal.',
-        'm_parents' => array(12155,2738,4463),
-    ),
     4536 => array(
         'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
-        'm_name' => 'MENCH PLAY',
+        'm_name' => 'PLAY',
         'm_desc' => 'Entities represent people, objects and things.',
-        'm_parents' => array(12155,2738,4463),
-    ),
-    6205 => array(
-        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'MENCH READ',
-        'm_desc' => 'An electronic log book containing a list of transactions and balances typically involving financial accounts.',
-        'm_parents' => array(12155,2738,4463),
+        'm_parents' => array(11035,12155,2738,4463),
     ),
     4430 => array(
         'm_icon' => '<i class="fas fa-user play" aria-hidden="true"></i>',
@@ -502,6 +496,12 @@ $config['en_all_4463'] = array(
         'm_name' => 'PRIVATE READ',
         'm_desc' => 'Mench is open-source but most of our student generated content is private and accessible either by the student or Mench\'s core contributors.',
         'm_parents' => array(4755,6771,4463,4426,4527),
+    ),
+    6205 => array(
+        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ',
+        'm_desc' => 'An electronic log book containing a list of transactions and balances typically involving financial accounts.',
+        'm_parents' => array(11035,12155,2738,4463),
     ),
 );
 
@@ -1513,19 +1513,19 @@ $config['en_ids_11007'] = array(11010,11011,11012);
 $config['en_all_11007'] = array(
     11010 => array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
-        'm_name' => '100 READS/WEEK ALWAYS FREE',
+        'm_name' => '33 READS PER WEEK ALWAYS FREE',
         'm_desc' => '',
         'm_parents' => array(11061,11007),
     ),
     11011 => array(
         'm_icon' => '<i class="fas fa-usd-circle" aria-hidden="true"></i>',
-        'm_name' => 'READ UNLIMITED USD $5/MONTH = $1.15/WEEK',
+        'm_name' => 'READ UNLIMITED FOR $5/MONTH = $1.15/WEEK',
         'm_desc' => '',
         'm_parents' => array(11162,11007),
     ),
     11012 => array(
         'm_icon' => '<i class="fas fa-usd-circle" aria-hidden="true"></i>',
-        'm_name' => 'READ UNLIMITED USD $50/YEAR = $0.96/WEEK',
+        'm_name' => 'READ UNLIMITED FOR $50/YEAR = $0.96/WEEK',
         'm_desc' => '',
         'm_parents' => array(11163,11007),
     ),
@@ -2271,8 +2271,14 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(12215,12201,7291,12213,6225,12205,12212,12214,12211,6287,11046,7256,4269,7540,11087);
+$config['en_ids_11035'] = array(4535,12215,12201,7291,6225,12205,12214,12211,4536,6287,6205,11046,7256,4269,7540,11087);
 $config['en_all_11035'] = array(
+    4535 => array(
+        'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOG',
+        'm_desc' => '',
+        'm_parents' => array(11035,12155,2738,4463),
+    ),
     12215 => array(
         'm_icon' => '<i class="fad fa-atlas blog"></i>',
         'm_name' => 'BLOG HISTORY',
@@ -2283,17 +2289,11 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fad fa-plus read" aria-hidden="true"></i>',
         'm_name' => 'BROWSE READS',
         'm_desc' => '',
-        'm_parents' => array(11035,4527,4536),
+        'm_parents' => array(6205,11035,4527),
     ),
     7291 => array(
         'm_icon' => '<i class="fad fa-power-off" aria-hidden="true"></i>',
         'm_name' => 'LOGOUT',
-        'm_desc' => '',
-        'm_parents' => array(11035),
-    ),
-    12213 => array(
-        'm_icon' => '<i class="fas fa-circle blog"></i>',
-        'm_name' => 'MY BLOGS',
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
@@ -2309,12 +2309,6 @@ $config['en_all_11035'] = array(
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
-    12212 => array(
-        'm_icon' => '<i class="fas fa-circle read"></i>',
-        'm_name' => 'MY READS',
-        'm_desc' => '',
-        'm_parents' => array(11035),
-    ),
     12214 => array(
         'm_icon' => '<i class="fad fa-plus blog" aria-hidden="true"></i>',
         'm_name' => 'NEW BLOG',
@@ -2327,11 +2321,23 @@ $config['en_all_11035'] = array(
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
+    4536 => array(
+        'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
+        'm_name' => 'PLAY',
+        'm_desc' => '',
+        'm_parents' => array(11035,12155,2738,4463),
+    ),
     6287 => array(
         'm_icon' => '<i class="fad fa-tools" aria-hidden="true"></i>',
         'm_name' => 'PRO TOOLS',
         'm_desc' => '',
         'm_parents' => array(11035,4527,7284),
+    ),
+    6205 => array(
+        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ',
+        'm_desc' => '',
+        'm_parents' => array(11035,12155,2738,4463),
     ),
     11046 => array(
         'm_icon' => '<i class="fad fa-atlas read" aria-hidden="true"></i>',
@@ -2641,19 +2647,19 @@ $config['en_all_2738'] = array(
         'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
         'm_desc' => 'a publishing game by earning crypto-coins as you read or blog. Customize your avatar, unlock superpowers and collaborate with other players.',
-        'm_parents' => array(12155,2738,4463),
+        'm_parents' => array(11035,12155,2738,4463),
     ),
     6205 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ',
         'm_desc' => 'microblogs interactively by choosing your unique reading path. Earn 1x READ COIN for each word you read over the web or Facebook Messenger.',
-        'm_parents' => array(12155,2738,4463),
+        'm_parents' => array(11035,12155,2738,4463),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG',
         'm_desc' => 'ideas collaboratively by saving, organizing and publishing microblogs. Earn 1x BLOG COIN for each word you blog and generate monthly revenues.',
-        'm_parents' => array(12155,2738,4463),
+        'm_parents' => array(11035,12155,2738,4463),
     ),
 );
 
@@ -2879,7 +2885,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fad fa-plus read" aria-hidden="true"></i>',
         'm_name' => 'BROWSE READS',
         'm_desc' => '',
-        'm_parents' => array(11035,4527,4536),
+        'm_parents' => array(6205,11035,4527),
     ),
     10712 => array(
         'm_icon' => '<i class="fas fa-chart-line" aria-hidden="true"></i>',
@@ -5757,7 +5763,7 @@ $config['en_all_6225'] = array(
     11007 => array(
         'm_icon' => '<i class="fas fa-hands-heart" aria-hidden="true"></i>',
         'm_name' => 'RECURRING DONATION',
-        'm_desc' => 'As a non-profit platform we collect recurring donations to support our growing community of publishers.',
+        'm_desc' => 'Your recurring donations helps to compensate players who publish blogs, encouraging more players to blog & publish content that inspires 🙏',
         'm_parents' => array(4527,6204,6225),
     ),
     4454 => array(

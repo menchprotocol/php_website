@@ -6,7 +6,7 @@
 
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
-echo '<h1 class="read inline-block pull-left"><span class="icon-block-xlg">'.$en_all_11035[12212]['m_icon'].'</span>'.$en_all_11035[12212]['m_name'].'</h1>';
+echo '<h1 class="read inline-block pull-left"><span class="icon-block-xlg">'.$en_all_11035[6205]['m_icon'].'</span>'.$en_all_11035[6205]['m_name'].'</h1>';
 
 echo '<div class="pull-right inline-block">';
 

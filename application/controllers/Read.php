@@ -227,8 +227,9 @@ class Read extends CI_Controller
         ));
 
 
+        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         $this->load->view('header', array(
-            'title' => 'MY READING LIST',
+            'title' => $en_all_11035[6205]['m_name'],
         ));
 
         $this->load->view('read/read_my', array(
@@ -1379,15 +1380,15 @@ class Read extends CI_Controller
                     'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
                     'call_to_actions' => array(
                         array(
-                            'title' => '🔵 '.$en_all_11035[6225]['m_name'],
+                            'title' => '🔵 '.$en_all_11035[4536]['m_name'],
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/play/account',
+                            'url' => 'https://mench.com/play',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => '🔴 '.$en_all_11035[12212]['m_name'],
+                            'title' => '🔴 '.$en_all_11035[6205]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/read',
                             'webview_height_ratio' => 'tall',
@@ -1395,7 +1396,7 @@ class Read extends CI_Controller
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => '🟡 '.$en_all_11035[12213]['m_name'],
+                            'title' => '🟡 '.$en_all_11035[4535]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/blog',
                             'webview_height_ratio' => 'tall',
