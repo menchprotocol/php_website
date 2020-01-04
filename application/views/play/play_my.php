@@ -113,6 +113,7 @@ if(!$session_en) {
     }
 
     echo '</div>';
+    echo '<div class="doclear">&nbsp;</div>';
 
 }
 ?>
