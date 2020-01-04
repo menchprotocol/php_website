@@ -237,7 +237,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
 
-            $this_tab .= '<table class="table table-condensed hidden fit-table" id="notes_control_'.$en_id2.'"><tr>';
+            $this_tab .= '<table class="table table-condensed hidden" id="notes_control_'.$en_id2.'"><tr>';
 
             //Save button:
             $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" class="btn btn-blog save_note_'.$en_id2.'">ADD</a></td>';
