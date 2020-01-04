@@ -5,7 +5,7 @@
         type="text/javascript"></script>
 
 
-<div class="container container-white">
+<div class="container container-wide">
     <?php
 
     $this->READ_model->read_echo($in['in_id'], superpower_assigned());
