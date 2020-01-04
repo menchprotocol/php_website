@@ -261,7 +261,7 @@ img.no-radius {
     color: #AAAAAA;
     text-transform: uppercase;
 }
-.btn-five{ margin-left:5px; margin-right:1px; }
+.btn-five{ margin-left:5px; }
 .center-right{ padding-top:43px; }
 
 .table-striped tbody tr:nth-of-type(even) {
@@ -665,9 +665,6 @@ textarea.note-textarea{
     border: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
-}
-.three-menus .icon-block{
-    margin-left:1px;
 }
 
 #top_players td{
