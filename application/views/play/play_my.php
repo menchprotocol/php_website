@@ -113,7 +113,7 @@ if($session_en) {
 
 } else {
 
-    echo '<div style="padding:10px 0;"><a href="/signin" class="btn btn-blog montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start playing.</div>';
+    echo '<div style="padding:10px 0 20px;"><a href="/signin" class="btn btn-play montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start playing.</div>';
 
 
 }
