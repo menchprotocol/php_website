@@ -205,26 +205,29 @@ class Read extends CI_Controller
 
     function read_my(){
 
-        $session_en = superpower_assigned(null, true);
+        $session_en = superpower_assigned(null);
+        $user_blogs = array();
 
 
-        //Fetch reading list:
-        $user_blogs = $this->READ_model->ln_fetch(array(
-            'ln_creator_play_id' => $session_en['en_id'],
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
-        if(!count($user_blogs)){
-            //Nothing in their reading list:
-            return redirect_message('/');
+        if($session_en){
+            //Fetch reading list:
+            $user_blogs = $this->READ_model->ln_fetch(array(
+                'ln_creator_play_id' => $session_en['en_id'],
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
+            if(!count($user_blogs)){
+                //Nothing in their reading list:
+                return redirect_message('/');
+            }
+
+            //Log 🔴 READING LIST View:
+            $this->READ_model->ln_create(array(
+                'ln_type_play_id' => 4283, //Opened 🔴 READING LIST
+                'ln_creator_play_id' => $session_en['en_id'],
+            ));
         }
-
-        //Log 🔴 READING LIST View:
-        $this->READ_model->ln_create(array(
-            'ln_type_play_id' => 4283, //Opened 🔴 READING LIST
-            'ln_creator_play_id' => $session_en['en_id'],
-        ));
 
 
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
