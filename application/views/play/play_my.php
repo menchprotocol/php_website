@@ -11,7 +11,7 @@ if($session_en) {
 
     echo '<h1 class="play pull-left inline-block"><span class="icon-block-xlg icon_photo">' . $en_all_11035[4536]['m_icon'] . '</span>' . $en_all_11035[4536]['m_name'] . '</h1>';
 
-    echo '<div class="pull-right inline-block">';
+    echo '<div class="pull-right inline-block side-margin">';
 
         echo '<a href="/play/' . $session_en['en_id'] . '" class="btn btn-play btn-five icon-block-lg ' . superpower_active(10983) . '" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="' . $en_all_11035[12205]['m_name'] . '">' . $en_all_11035[12205]['m_icon'] . '</a>';
 

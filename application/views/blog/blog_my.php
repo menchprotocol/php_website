@@ -12,7 +12,7 @@
 
         echo '<h1 class="blog inline-block pull-left"><span class="icon-block-xlg">'.$en_all_11035[4535]['m_icon'].'</span>'.$en_all_11035[4535]['m_name'].'</h1>';
 
-        echo '<div class="pull-right inline-block">';
+        echo '<div class="pull-right inline-block side-margin">';
 
 
         //Blog History

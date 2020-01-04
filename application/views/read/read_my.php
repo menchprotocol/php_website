@@ -16,7 +16,7 @@ if(!$session_en){
 
     echo '<h1 class="read inline-block pull-left"><span class="icon-block-xlg">'.$en_all_11035[6205]['m_icon'].'</span>'.$en_all_11035[6205]['m_name'].'</h1>';
 
-    echo '<div class="pull-right inline-block">';
+    echo '<div class="pull-right inline-block side-margin">';
 
     $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false, false);
     if ($next_in_id > 0) {
