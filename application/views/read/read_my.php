@@ -20,7 +20,6 @@ echo '<div class="pull-right inline-block">';
     //Browse New Reads on Home:
     echo '<a href="/" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12201]['m_name'].'">'.$en_all_11035[12201]['m_icon'].'</a>';
 
-
 echo '</div>';
 
 

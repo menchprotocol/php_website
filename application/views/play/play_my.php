@@ -7,26 +7,23 @@
 
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
-if(!$session_en) {
-
-    echo '<div style="padding:10px 0;"><a href="/signin" class="btn btn-play montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start playing.</div>';
-
-} else {
+if($session_en) {
 
     echo '<h1 class="play pull-left inline-block"><span class="icon-block-xlg icon_photo">' . $en_all_11035[4536]['m_icon'] . '</span>' . $en_all_11035[4536]['m_name'] . '</h1>';
+
     echo '<div class="pull-right inline-block" style="margin-bottom:34px;">';
 
-    echo '<div class="pull-right inline-block">';
-    echo '<a href="/play/' . $session_en['en_id'] . '" class="btn btn-play btn-five icon-block-lg ' . superpower_active(10983) . '" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="' . $en_all_11035[12205]['m_name'] . '">' . $en_all_11035[12205]['m_icon'] . '</a>';
+        echo '<a href="/play/' . $session_en['en_id'] . '" class="btn btn-play btn-five icon-block-lg ' . superpower_active(10983) . '" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="' . $en_all_11035[12205]['m_name'] . '">' . $en_all_11035[12205]['m_icon'] . '</a>';
 
-    echo '<a href="/play" class="btn btn-play btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="' . $en_all_11035[11087]['m_name'] . '">' . $en_all_11035[11087]['m_icon'] . '</a>';
+        echo '<a href="/play" class="btn btn-play btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="' . $en_all_11035[11087]['m_name'] . '">' . $en_all_11035[11087]['m_icon'] . '</a>';
 
-    if (!intval($this->session->userdata('messenger_signin'))) {
-        //Only give signout option if NOT logged-in from Messenger
-        echo '<a href="/play/signout" class="btn btn-play btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="' . $en_all_11035[7291]['m_name'] . '">' . $en_all_11035[7291]['m_icon'] . '</a>';
+        if (!intval($this->session->userdata('messenger_signin'))) {
+            //Only give signout option if NOT logged-in from Messenger
+            echo '<a href="/play/signout" class="btn btn-play btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="' . $en_all_11035[7291]['m_name'] . '">' . $en_all_11035[7291]['m_icon'] . '</a>';
     }
 
     echo '</div>';
+
     echo '<div class="doclear">&nbsp;</div>';
 
     echo '<div class="accordion" id="MyPlayerAccordion">';
@@ -113,14 +110,20 @@ if(!$session_en) {
     }
 
     echo '</div>';
-    echo '<div class="doclear">&nbsp;</div>';
+
+} else {
+
+    //Login reminder:
+    echo '<div class="pull-right inline-block">';
+    echo '<a href="/signin" class="btn btn-play btn-five icon-block-lg" style="padding-top:10px;">'.$en_all_11035[4269]['m_name'].' '.$en_all_11035[4269]['m_icon'].'</a>';
+    echo '</div>';
 
 }
 ?>
 
 <!-- Top Players -->
-<h1 class="montserrat play"><span class="icon-block-xlg icon_photo"><?= $en_all_11035[11087]['m_icon'] ?></span><?= $en_all_11035[11087]['m_name'] ?></h1>
+<h1 class="montserrat play pull-left"><span class="icon-block-xlg icon_photo"><?= $en_all_11035[11087]['m_icon'] ?></span><?= $en_all_11035[11087]['m_name'] ?></h1>
+<div class="doclear">&nbsp;</div>
 <div id="load_top_players"></div>
-
 
 </div>
