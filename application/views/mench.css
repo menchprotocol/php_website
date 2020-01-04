@@ -709,7 +709,7 @@ textarea.note-textarea{
 }
 .mench-navigation .block-link a:hover, .block-link a:hover .fas, .block-link a:hover .fal, .block-link a:hover .far, .block-link a:hover .fad {
     background-color:#FFFFFF;
-    color:#FFFFFF !important;
+    color:#000000 !important;
 }
 .mench-navigation .block-logo {
     width: 44px !important;
