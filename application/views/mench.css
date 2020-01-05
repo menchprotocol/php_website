@@ -28,7 +28,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     max-width:767px;
     padding:0 0 60px;
 }
-.container-wide{
+.container-wide {
     max-width:767px;
 }
 .container-wide .i_content, .container-wide h1 {
@@ -42,8 +42,13 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .padding-top-down{
     padding:20px 10px;
 }
-.container-wide .content-image, .player-appendix{
+.container-wide .content-image {
     margin: 10px 0 0 -10px;
+    max-width: calc(100% + 20px);
+    max-height:500px;
+}
+.player-appendix{
+    margin: 10px -10px 0 -10px;
     max-width: calc(100% + 20px);
     max-height:500px;
 }
