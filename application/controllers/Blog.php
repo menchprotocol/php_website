@@ -46,7 +46,7 @@ class Blog extends CI_Controller {
         $this->load->view('footer');
     }
 
-    function blog_modify($in_id){
+    function blog_coin($in_id){
 
         //Make sure user is logged in
         $session_en = superpower_assigned(10939);
@@ -83,7 +83,7 @@ class Blog extends CI_Controller {
         $this->load->view('header', array(
             'title' => $ins[0]['in_title'].' | BLOG'
         ));
-        $this->load->view('blog/blog_modify', array(
+        $this->load->view('blog/blog_coin', array(
             'in' => $ins[0],
             'session_en' => $session_en,
         ));
@@ -718,7 +718,7 @@ class Blog extends CI_Controller {
             $item_ui .= '<a href="/blog/'.$_POST['in_loaded_id'].'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
             $item_ui .= '&nbsp;<a href="/play/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="User Player"><i class="fas fa-at"></i></a>';
 
-            $item_ui .= '&nbsp;<a href="/read/history?ln_creator_play_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
+            $item_ui .= '&nbsp;<a href="/read/ledger?ln_creator_play_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
 
             $item_ui .= '</td>';
             $item_ui .= '</tr>';

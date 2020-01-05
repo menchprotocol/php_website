@@ -14,10 +14,12 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     var en_focus_id = <?= $player['en_id'] ?>;
     var en_all_4592 = <?= json_encode($this->config->item('en_all_4592')) ?>;
 </script>
+
 <style>
     .en_child_icon_<?= $player['en_id'] ?>{ display:none; }
 </style>
-<script src="/application/views/play/play_modify.js?v=v<?= config_var(11060) ?>"
+
+<script src="/application/views/play/play_coin.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <div class="container">

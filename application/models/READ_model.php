@@ -548,7 +548,7 @@ class READ_model extends CI_Model
 
         /*
          *
-         * TODO: DEPRECATE and replace with read_echo()
+         * TODO: DEPRECATE and replace with read_coin()
          *
          * A function that marks a BLOG as complete IF
          * the blog has nothing of substance to be
@@ -762,7 +762,7 @@ class READ_model extends CI_Model
                 }
 
                 //Yes, communicate it:
-                $this->READ_model->read_echo($next_in_id, array('en_id' => $en_id), true);
+                $this->READ_model->read_coin($next_in_id, array('en_id' => $en_id), true);
 
             } else {
 
@@ -1434,7 +1434,7 @@ class READ_model extends CI_Model
     }
 
 
-    function read_echo($in_id, $recipient_en, $push_message = false){
+    function read_coin($in_id, $recipient_en, $push_message = false){
 
         /*
          * Function to read a Blog, it's messages,
@@ -1467,7 +1467,7 @@ class READ_model extends CI_Model
                 //We cannot have a guest user on Messenger:
                 $this->READ_model->ln_create(array(
                     'ln_type_play_id' => 4246, //Platform Bug Reports
-                    'ln_content' => 'read_echo() found guest user on Messenger',
+                    'ln_content' => 'read_coin() found guest user on Messenger',
                     'ln_parent_blog_id' => $in_id,
                 ));
                 return false;
@@ -1492,7 +1492,7 @@ class READ_model extends CI_Model
             } else {
                 $this->READ_model->ln_create(array(
                     'ln_type_play_id' => 4246, //Platform Bug Reports
-                    'ln_content' => 'read_echo() could not locate player',
+                    'ln_content' => 'read_coin() could not locate player',
                     'ln_parent_blog_id' => $in_id,
                 ));
                 return false;
@@ -3843,7 +3843,7 @@ class READ_model extends CI_Model
 
             if($next_in_id > 0){
                 //Yes, communicate it:
-                $this->READ_model->read_echo($next_in_id, $en, true);
+                $this->READ_model->read_coin($next_in_id, $en, true);
             } else {
                 //Fetch and communicate next blog:
                 $this->READ_model->read_next_go($en['en_id'], true, true);

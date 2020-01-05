@@ -245,7 +245,7 @@ class Read extends CI_Controller
     }
 
 
-    function read_echo($in_id = 0)
+    function read_coin($in_id = 0)
     {
 
         /*
@@ -281,7 +281,7 @@ class Read extends CI_Controller
         ));
 
         //Load specific view based on Blog Level:
-        $this->load->view('read/read_echo', array(
+        $this->load->view('read/read_coin', array(
             'in' => $ins[0],
             'session_en' => $session_en,
             'autoexpand' => (isset($_GET['autoexpand']) && intval($_GET['autoexpand'])),
@@ -322,7 +322,7 @@ class Read extends CI_Controller
 
 
 
-    function read_history()
+    function read_ledger()
     {
         /*
          *
@@ -333,10 +333,12 @@ class Read extends CI_Controller
          * */
 
         //Load header:
+        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+
         $this->load->view('header', array(
-            'title' => 'READ HISTORY',
+            'title' => $en_all_11035[6287]['m_name'],
         ));
-        $this->load->view('read/read_history');
+        $this->load->view('read/read_ledger');
         $this->load->view('footer');
     }
 
@@ -366,7 +368,7 @@ class Read extends CI_Controller
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
 
-            echo '<td style="text-align: right;">' . '<a href="/read/history?in_status_play_id=' . $en_id . '&ln_type_play_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
+            echo '<td style="text-align: right;">' . '<a href="/read/ledger?in_status_play_id=' . $en_id . '&ln_type_play_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
 
             echo '</tr>';
 
@@ -415,7 +417,7 @@ class Read extends CI_Controller
             //Display this status count:
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
-            echo '<td style="text-align: right;">' . '<a href="/read/history?en_status_play_id=' . $en_id . '&ln_type_play_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
+            echo '<td style="text-align: right;">' . '<a href="/read/ledger?en_status_play_id=' . $en_id . '&ln_type_play_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
             echo '</tr>';
 
         }
@@ -538,7 +540,7 @@ class Read extends CI_Controller
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
             echo '<td style="text-align: right;">';
-            echo '<a href="/read/history?ln_status_play_id=' . $en_id . '">' . number_format($objects_count[0]['totals'],0) . '</a>';
+            echo '<a href="/read/ledger?ln_status_play_id=' . $en_id . '">' . number_format($objects_count[0]['totals'],0) . '</a>';
             echo '</td>';
             echo '</tr>';
 

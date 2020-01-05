@@ -587,12 +587,12 @@ function superpower_active($superpower_en_id, $boolean_only = false){
 }
 
 function extract_icon_color($en_icon){
-    if(!strlen($en_icon) || substr_count($en_icon, 'play')>0){
-        return ' play ';
+    if(substr_count($en_icon, 'read')>0){
+        return ' read ';
     } elseif(substr_count($en_icon, 'blog')>0){
         return ' blog ';
-    } elseif(substr_count($en_icon, 'read')>0){
-        return ' read ';
+    } elseif(!strlen($en_icon) || substr_count($en_icon, 'play')>0){
+        return ' play ';
     } else {
         return '';
     }

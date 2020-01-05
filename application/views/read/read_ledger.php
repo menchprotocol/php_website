@@ -217,7 +217,7 @@ $en_all_2738 = $this->config->item('en_all_2738');
     var link_filters = '<?= serialize(count($filters) > 0 ? $filters : array()) ?>';
     var link_join_by = '<?= serialize(count($join_by) > 0 ? $join_by : array()) ?>';
 </script>
-<script src="/application/views/read/read_history.js?v=v<?= config_var(11060) ?>"
+<script src="/application/views/read/read_ledger.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <?php
@@ -398,7 +398,7 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
     echo '<input type="submit" class="btn btn-read" value="Apply" />';
 
     if($has_filters){
-        echo ' &nbsp;<a href="/read/history" style="font-size: 0.8em;">Remove Filters</a>';
+        echo ' &nbsp;<a href="/read/ledger" style="font-size: 0.8em;">Remove Filters</a>';
     }
 
     echo '</form>';

@@ -2224,7 +2224,7 @@ $config['en_all_11047'] = array(
     11051 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'FULL READ HISTORY',
-        'm_desc' => '/read/history?any_in_id=',
+        'm_desc' => '/read/ledger?any_in_id=',
         'm_parents' => array(11047),
     ),
     11049 => array(
@@ -2265,7 +2265,7 @@ $config['en_all_11039'] = array(
     11046 => array(
         'm_icon' => '<i class="fad fa-atlas read" aria-hidden="true"></i>',
         'm_name' => 'READ HISTORY',
-        'm_desc' => '/read/history?any_en_id=',
+        'm_desc' => '/read/ledger?any_en_id=',
         'm_parents' => array(11035,11039),
     ),
 );
