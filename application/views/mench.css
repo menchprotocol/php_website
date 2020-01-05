@@ -35,7 +35,9 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     margin: 0 10px 20px;
 }
 .side-margin {
-    margin:10px;
+    margin-left:10px;
+    margin-right:10px;
+    margin-bottom:10px;
 }
 .padding-top-down{
     padding:20px 10px;
