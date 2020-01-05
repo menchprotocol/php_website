@@ -43,8 +43,8 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     padding:20px 10px;
 }
 .container-wide .content-image, .player-appendix{
-    margin: 10px -10px 0;
-    max-width: calc(100% + 10px);
+    margin: 10px 0 0 -10px;
+    max-width: calc(100% + 15px);
     max-height:500px;
 }
 .list-group-item {
