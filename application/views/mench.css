@@ -42,7 +42,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .padding-top-down{
     padding:20px 10px;
 }
-.container-wide .content-image{
+.container-wide .content-image, .player-appendix{
     margin: 10px -20px 0 -10px;
     max-width: calc(100% + 20px);
     max-height:500px;
@@ -172,6 +172,9 @@ li a {
 }
 .player-appendix a, .player-appendix a .url_truncate {
     text-decoration: underline;
+}
+.player-appendix iframe {
+    width: 100%;
 }
 .doupper, .new-player-input, .player-name{
     text-transform: uppercase;
