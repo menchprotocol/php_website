@@ -210,6 +210,7 @@ $has_filters = ( count($_GET) > 0 );
 
 
 $en_all_2738 = $this->config->item('en_all_2738');
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 ?>
 
@@ -224,7 +225,7 @@ $en_all_2738 = $this->config->item('en_all_2738');
 
 echo '<div class="container">';
 
-    echo '<h1 class="inline-block read"><span class="icon-block-lg icon_photo"><i class="fas fa-atlas read"></i></span> READ HISTORY</h1>';
+    echo '<h1 class="inline-block read"><span class="icon-block-lg icon_photo">'.$en_all_11035[11999]['m_icon'].'</span>'.$en_all_11035[11999]['m_name'].'</h1>';
 
     echo '<div class="inline-block '.superpower_active(10964).'" style="padding-left:7px;"><i class="far fa-filter"></i><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');">FILTER</a></div>';
 
