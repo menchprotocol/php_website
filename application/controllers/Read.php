@@ -1113,6 +1113,7 @@ class Read extends CI_Controller
                 'ln_child_play_id' => $session_en['en_id'],
             ))),
         ));
+
     }
 
 
@@ -1125,16 +1126,10 @@ class Read extends CI_Controller
             die('Invalid Secret Key');
         }
 
-        //Define what needs to be cleared:
-        $clear_links = array_merge(
-            $this->config->item('en_ids_6146'), //User Reads Completed
-            $this->config->item('en_ids_4229') //Blog Link Locked Read
-        );
-
         //Fetch their current progress links:
         $progress_links = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'ln_type_play_id IN (' . join(',', $clear_links) . ')' => null,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12227')) . ')' => null,
             'ln_creator_play_id' => $en_id,
         ), array(), 0);
 

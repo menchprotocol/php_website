@@ -189,7 +189,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '</div>';
 
 
-        } elseif(in_array($en_id2, array(7347,6146))){
+        } elseif(in_array($en_id2, $this->config->item('en_ids_12228'))){ //READ GROUPS
 
             //READER READS & BOOKMARKS
             $item_counters = $this->READ_model->ln_fetch(array(

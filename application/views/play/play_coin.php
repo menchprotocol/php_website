@@ -367,7 +367,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 }
 
-            } elseif(in_array($en_id2, array(7347,6146))){
+            } elseif(in_array($en_id2, $this->config->item('en_ids_12228'))){
 
                 //READER READS & BOOKMARKS
                 $item_counters = $this->READ_model->ln_fetch(array(

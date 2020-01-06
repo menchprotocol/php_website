@@ -627,7 +627,7 @@ class READ_model extends CI_Model
 
             //Is this completed?
             $completed_steps = $this->READ_model->ln_fetch(array(
-                'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_6146')) . ')' => null, //🔴 READING LIST Progression Reads
+                'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null,
                 'ln_creator_play_id' => $en_id, //Belongs to this User
                 'ln_parent_blog_id' => $common_step_in_id,
                 'ln_status_play_id' => 6176, //Link Published
@@ -881,7 +881,7 @@ class READ_model extends CI_Model
 
             //Fetch current progression links, if any:
             $read_progress = $this->READ_model->ln_fetch(array(
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null,
                 'ln_creator_play_id' => $en_id,
                 'ln_parent_blog_id' => $common_in_id,
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -1900,7 +1900,7 @@ class READ_model extends CI_Model
                     foreach ($unlock_paths as $key => $child_in) {
 
                         $child_progression_steps = $this->READ_model->ln_fetch(array(
-                            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
+                            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null,
                             'ln_creator_play_id' => $recipient_en['en_id'],
                             'ln_parent_blog_id' => $child_in['in_id'],
                             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -2171,7 +2171,7 @@ class READ_model extends CI_Model
             //Now let's check user answers to see what they have done:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_creator_play_id' => $en_id, //Belongs to this User
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null,
                 'ln_parent_blog_id IN (' . join(',', $question_in_ids ) . ')' => null,
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )) as $expansion_in) {
@@ -2238,7 +2238,7 @@ class READ_model extends CI_Model
 
         //Count completed for user:
         $common_completed = $this->READ_model->ln_fetch(array(
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Reads Completed
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null,
             'ln_creator_play_id' => $en_id, //Belongs to this User
             'ln_parent_blog_id IN (' . join(',', $flat_common_steps ) . ')' => null,
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
