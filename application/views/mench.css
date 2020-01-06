@@ -1106,9 +1106,9 @@ label {
     .blog-left, .texttype_4736 { width:75%; }
     .avatar-item { width:110px !important; padding:10px 0 !important; }
     .avatar-item .avatar-icon { font-size: 2.4em; }
-    .three-menus td.play, #top_players td.play{ width: 53%; }
-    .three-menus td.read, #top_players td.read{ width: 22%; }
-    .three-menus td.blog, #top_players td.blog{ width: 25%; }
+    .three-menus td.play, #top_players td.play{ width: 52%; }
+    .three-menus td.read, #top_players td.read{ width: 24%; }
+    .three-menus td.blog, #top_players td.blog{ width: 24%; }
 }
 
 @media (min-width:767px) {
