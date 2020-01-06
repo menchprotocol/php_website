@@ -730,11 +730,13 @@ fragment PostListingItemSidebar_post on Post {
         echo '<table id="top_players" class="table table-sm table-striped">';
 
         //Table header:
+        /*
         echo '<tr>';
         echo '<td><span class="parent-icon icon-block">' . $en_all_2738[4536]['m_icon'] . '</span><b class="montserrat play">' . $en_all_2738[4536]['m_name'] . '</b></td>';
         echo '<td><span class="parent-icon icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><b class="montserrat read">' . $en_all_2738[6205]['m_name'] . '</b></td>';
         echo '<td><span class="parent-icon icon-block">' . $en_all_2738[4535]['m_icon'] . '</span><b class="montserrat blog">' . $en_all_2738[4535]['m_name'] . '</b></td>';
         echo '</tr>';
+        */
 
         //Start with top bloggers:
         foreach ($blog_coins as $count=>$ln) {

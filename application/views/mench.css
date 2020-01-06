@@ -688,9 +688,6 @@ textarea.note-textarea{
     padding: 5px 0 !important;
 }
 
-/* Bottom Navigation */
- { border-color: #; }
-
 
 .three-menus a.play:hover, .three-menus a.play.focustab  { border-color:#008DF2; }
 .three-menus a.read:hover, .three-menus a.read.focustab  { border-color:#FC1B44; }
