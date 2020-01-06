@@ -85,7 +85,21 @@ if(!isset($hide_header) || !$hide_header){
                             $identifier = strtolower($m['m_name']);
                             $handle = ( $en_id==6205 ? '' : $identifier );
 
-                            echo '<td class="'.$identifier.'"><a class="'.$identifier.' border-'.$identifier.( $this->uri->segment(1)==$handle || $this->uri->segment(1)==$identifier || ( $en_id==6205 && !$handle && is_numeric($this->uri->segment(1)) ) ? ' focustab ': '' ).'" href="/'.$identifier.'">' . ( $en_id==4536 ? '<span class="parent-icon icon-block">'.$session_en['en_icon'].'</span><span class="mn_name montserrat">'.one_two_explode('',' ',$session_en['en_name']).'</span> <span class="current_count montserrat show-max '.superpower_active(10967).'"><i class="far fa-yin-yang fa-spin"></i></span>' : '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat '.$identifier.'_name show-max">&nbsp;' . $m['m_name'] . '</span>' ) .'</a></td>';
+                            echo '<td class="'.$identifier.'">';
+                            echo '<a class="'.$identifier.' border-'.$identifier.( $this->uri->segment(1)==$handle || $this->uri->segment(1)==$identifier || ( $en_id==6205 && !$handle && is_numeric($this->uri->segment(1)) ) ? ' focustab ': '' ).'" href="/'.$identifier.'">';
+
+                            if($identifier=='play'){
+                                echo '<span class="parent-icon icon-block">'.$session_en['en_icon'].'</span><span class="mn_name montserrat">'.one_two_explode('',' ',$session_en['en_name']).'</span> <span class="current_count montserrat show-max '.superpower_active(10967).'"><i class="far fa-yin-yang fa-spin"></i></span>';
+                            } elseif($identifier=='read'){
+                                echo '<span class="current_count montserrat"><span class="montserrat '.$identifier.'_name show-max">' . $m['m_name'] . '&nbsp;</span><i class="far fa-yin-yang fa-spin"></i></span><span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
+
+                            } elseif($identifier=='blog'){
+                                echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat '.$identifier.'_name show-max">&nbsp;' . $m['m_name'] . '</span>';
+
+                            }
+
+                            echo '</a>';
+                            echo '</td>';
 
                         }
                         ?>
