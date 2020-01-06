@@ -26,40 +26,30 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
     <?php
 
-    //NAME
-    echo '<h1 class="'.extract_icon_color($player['en_icon']).'"><span class="icon-block-xlg icon_photo en_ui_icon_'.$player['en_id'].'">'.echo_en_icon($player['en_icon']).'</span><span class="en_name_'.$player['en_id'].'">'.$player['en_name'].'</span></h1>';
-
-
-    echo '<div class="inline-block" style="padding-bottom:10px; padding-left:10px;">';
-
-    //STATUS
+    //NAME & STATUS
     $is_published = in_array($player['en_status_play_id'], $this->config->item('en_ids_7357'));
-    echo '<span class="icon-block en_status_play_id_' . $player['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$player['en_status_play_id']]['m_name'].': '.$en_all_6177[$player['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$player['en_status_play_id']]['m_icon'] . '</span></span>';
+    echo '<h1 class="'.extract_icon_color($player['en_icon']).' pull-left icon-block"><span class="icon-block-xlg icon_photo en_ui_icon_'.$player['en_id'].'">'.echo_en_icon($player['en_icon']).'</span><span class="icon-block-xlg en_status_play_id_' . $player['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$player['en_status_play_id']]['m_name'].': '.$en_all_6177[$player['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$player['en_status_play_id']]['m_icon'] . '</span></span><span class="en_name_'.$player['en_id'].'">'.$player['en_name'].'</span></h1>';
 
+    echo '<div class="pull-right inline-block side-margin '.superpower_active(10983).'">';
 
-    //MODIFY
-    echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $player['en_id'] . ',0)" class="btn btn-play btn-five inline-block '. superpower_active(10983) .'"><i class="fas fa-cog"></i></a>';
-
-
-    //REFERENCES
-    echo '<div class="inline-block '.superpower_active(10964).'">';
-    $en_count_references = en_count_references($player['en_id']);
-    if(count($en_count_references) > 0){
-        $en_all_6194 = $this->config->item('en_all_6194');
-        //Show this players connections:
-        $ref_count = 0;
-        foreach($en_count_references as $en_id=>$en_count){
-            echo '&nbsp;&nbsp;<span data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$en_all_6194[$en_id]['m_name'].' '.number_format($en_count, 0).' times">'.$en_all_6194[$en_id]['m_icon'] . ' '. echo_number($en_count).'</span>';
-            $ref_count++;
+        //REFERENCES
+        $en_count_references = en_count_references($player['en_id']);
+        if(count($en_count_references) > 0){
+            $en_all_6194 = $this->config->item('en_all_6194');
+            //Show this players connections:
+            $ref_count = 0;
+            foreach($en_count_references as $en_id=>$en_count){
+                echo '<span data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$en_all_6194[$en_id]['m_name'].' '.number_format($en_count, 0).' times">'.$en_all_6194[$en_id]['m_icon'] . ' '. echo_number($en_count).'</span>&nbsp;';
+                $ref_count++;
+            }
         }
-    }
+
+        //Modify
+        echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $player['en_id'] . ',0)" class="btn btn-play btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12214]['m_name'].'">'.$en_all_11035[12214]['m_icon'].'</a>';
+
     echo '</div>';
-
-
-    echo '</div>';
-
+    echo '<div class="doclear">&nbsp;</div>';
     ?>
-
 
 
 
