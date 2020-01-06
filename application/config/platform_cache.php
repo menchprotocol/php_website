@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-06 15:20:00 PST
+//Generated 2020-01-06 15:24:51 PST
 
 //PLAY COIN:
 $config['en_ids_12274'] = array(4251);
@@ -3243,7 +3243,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,10869),
     ),
     12145 => array(
-        'm_icon' => '<i class="fas fa-dot-circle play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
         'm_name' => 'BEING',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
@@ -3279,7 +3279,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(6768,4527),
     ),
     10589 => array(
-        'm_icon' => '<i class="fas fa-plus-circle blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
         'm_name' => 'BLOGGING',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
@@ -3801,7 +3801,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(12228,11018,11033,10964,4527),
     ),
     10590 => array(
-        'm_icon' => '<i class="fas fa-info-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'READING',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
@@ -5148,19 +5148,19 @@ $config['en_all_10602'] = array(
 $config['en_ids_10591'] = array(10589,12145,10590);
 $config['en_all_10591'] = array(
     10589 => array(
-        'm_icon' => '<i class="fas fa-plus-circle blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
         'm_name' => 'BLOGGING',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
     ),
     12145 => array(
-        'm_icon' => '<i class="fas fa-dot-circle play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
         'm_name' => 'BEING',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
     ),
     10590 => array(
-        'm_icon' => '<i class="fas fa-info-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'READING',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
