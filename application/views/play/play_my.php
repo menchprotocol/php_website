@@ -62,8 +62,22 @@ if($session_en) {
         $is_single_selectable = in_array(6204, $acc_detail['m_parents']);
         if ($acc_en_id == 10956 /* AVATARS */) {
 
+            $player_icon_parts = explode(' ',one_two_explode('class="', '"', $session_en['en_icon']));
+
+            echo '<div class="btn-group pull-right" role="group" aria-label="Basic example">
+                      <a href="javascript:void(0)" onclick="avatar_switch(\'far\')" class="btn btn-play"><i class="far fa-paw play"></i></a>
+                      <a href="javascript:void(0)" onclick="avatar_switch(\'fad\')" class="btn btn-play active"><i class="fad fa-paw play"></i></a>
+                      <a href="javascript:void(0)" onclick="avatar_switch(\'fas\')" class="btn btn-play"><i class="fas fa-paw play"></i></a>
+                    </div>';
+            echo '<div class="doclear">&nbsp;</div>';
+
+
             foreach ($this->config->item('en_all_10956') as $en_id => $m) {
-                echo '<a href="javascript:void(0);" onclick="update_avatar(' . $en_id . ')" class="list-group-item itemplay avatar-item item-square ' . (one_two_explode('class="', '"', $m['m_icon']) == one_two_explode('class="', '"', $session_en['en_icon']) ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a>';
+
+                $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m['m_icon']));
+                $avatar_type_match = ($player_icon_parts[0] == $avatar_icon_parts[0]);
+
+                echo '<a href="javascript:void(0);" onclick="update_avatar(' . $en_id . ')" class="list-group-item itemplay avatar-item item-square type_'.$avatar_icon_parts[0].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $player_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a>';
             }
             echo '<div class="doclear">&nbsp;</div>';
 
