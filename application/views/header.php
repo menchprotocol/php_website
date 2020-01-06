@@ -94,10 +94,9 @@ if(!isset($hide_header) || !$hide_header){
                                 echo '<span class="mn_name montserrat">'.one_two_explode('',' ',$session_en['en_name']).'</span>';
 
                                 //Player Coins:
-                                echo '<span class="'.superpower_active(10967).' pull-right inline-block show-max">';
-                                    echo '<span class="montserrat '.$identifier.'_name show-max">' . $m['m_name'] . '</span>';
-                                    echo '<span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span>';
+                                echo '<span class="'.superpower_active(10967).' inline-block show-max">';
                                     echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
+                                    echo '<span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span>';
                                 echo '</span>';
 
                             } elseif($identifier=='read'){

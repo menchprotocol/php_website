@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-06 12:24:33 PST
+//Generated 2020-01-06 13:37:54 PST
 
 //READ COMPLETION:
 $config['en_ids_12229'] = array(12129,12119,6157,7489,7487,7488,4559,6144,6143,7492,7485,7486,6997,12117);
@@ -1234,67 +1234,67 @@ $config['en_all_10717'] = array(
 $config['en_ids_10716'] = array(11640,11172,11643,11296,11638,11249,11167,11641,11525,11642,11639);
 $config['en_all_10716'] = array(
     11640 => array(
-        'm_icon' => '<i class="fal fa-pegasus ismatt"></i>',
+        'm_icon' => '<i class="fad fa-kiwi-bird play"></i>',
         'm_name' => 'BENLEFORT1988',
         'm_desc' => '',
         'm_parents' => array(10716,3311,11158,1278),
     ),
     11172 => array(
-        'm_icon' => '<i class="far fa-squirrel ismatt"></i>',
+        'm_icon' => '<i class="fad fa-snake play"></i>',
         'm_name' => 'DANNYMAIORCA',
         'm_desc' => '',
         'm_parents' => array(10716,10753,3311,11158,1278),
     ),
     11643 => array(
-        'm_icon' => '<i class="far fa-fish blog"></i>',
+        'm_icon' => '<i class="fad fa-hippo play"></i>',
         'm_name' => 'GK_',
         'm_desc' => '',
         'm_parents' => array(10716,3311,11158,1278),
     ),
     11296 => array(
-        'm_icon' => '<i class="fas fa-pig read"></i>',
+        'm_icon' => '<i class="fad fa-squirrel play"></i>',
         'm_name' => 'KIMDUKE_68108',
         'm_desc' => '',
         'm_parents' => array(10716,10810,3311,11158,1278),
     ),
     11638 => array(
-        'm_icon' => '<i class="far fa-bat blog"></i>',
+        'm_icon' => '<i class="fad fa-sheep play"></i>',
         'm_name' => 'KRISTINWONG5',
         'm_desc' => '',
         'm_parents' => array(10716,3311,11158,1278),
     ),
     11249 => array(
-        'm_icon' => '<i class="fas fa-badger-honey play"></i>',
+        'm_icon' => '<i class="fad fa-duck play"></i>',
         'm_name' => 'MINUTESMAG',
         'm_desc' => '',
         'm_parents' => array(11965,11105,10716,3311,11158,1278),
     ),
     11167 => array(
-        'm_icon' => '<i class="far fa-elephant read"></i>',
+        'm_icon' => '<i class="fad fa-monkey play"></i>',
         'm_name' => 'NAUTILUSMAG',
         'm_desc' => '',
         'm_parents' => array(10845,10846,10114,10716,11123,11131,11150,10753,3311,11158,1278),
     ),
     11641 => array(
-        'm_icon' => '<i class="fal fa-hippo play"></i>',
+        'm_icon' => '<i class="fad fa-hippo play"></i>',
         'm_name' => 'PAULJALVAREZ',
         'm_desc' => '',
         'm_parents' => array(10716,3311,11158,1278),
     ),
     11525 => array(
-        'm_icon' => '<i class="fas fa-narwhal blog"></i>',
+        'm_icon' => '<i class="fad fa-dog play"></i>',
         'm_name' => 'THEATLANTIC',
         'm_desc' => '',
         'm_parents' => array(10846,10716,11130,3311,11158,1278),
     ),
     11642 => array(
-        'm_icon' => '<i class="fal fa-frog blog"></i>',
+        'm_icon' => '<i class="fad fa-cow play"></i>',
         'm_name' => 'THEMOTLEYFOOL',
         'm_desc' => '',
         'm_parents' => array(10716,3311,11158,1278),
     ),
     11639 => array(
-        'm_icon' => '<i class="far fa-deer ismatt"></i>',
+        'm_icon' => '<i class="fad fa-cat play"></i>',
         'm_name' => 'TIMDENNING',
         'm_desc' => '',
         'm_parents' => array(11962,11959,10797,10913,11098,11118,10777,10716,3311,11158,1278),
@@ -2295,7 +2295,7 @@ $config['en_all_6404'] = array(
     11986 => array(
         'm_icon' => '',
         'm_name' => 'LEADERBOARD VISIBLE',
-        'm_desc' => '10',
+        'm_desc' => '5',
         'm_parents' => array(6404),
     ),
     11065 => array(
@@ -2313,7 +2313,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.21',
+        'm_desc' => '1.211',
         'm_parents' => array(6404),
     ),
     11079 => array(
