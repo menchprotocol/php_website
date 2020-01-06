@@ -439,9 +439,6 @@ img.no-radius {
 
 .btn-play i, .btn-read i, .btn-blog i { color: #000000 !important; }
 
-/* Bottom Navigation */
-.three-menus a { padding-bottom: 15px; }
-.three-menus a:hover, .three-menus a.focustab { background-color: #FFFFFF; }
 
 /* Color Palette @10604 */
 .isgreen, .isgreen a                { color:#228B22 !important; }
@@ -691,12 +688,21 @@ textarea.note-textarea{
     padding: 5px 0 !important;
 }
 
+/* Bottom Navigation */
+ { border-color: #; }
+
+
+.three-menus a.play:hover, .three-menus a.play.focustab  { border-color:#008DF2; }
+.three-menus a.read:hover, .three-menus a.read.focustab  { border-color:#FC1B44; }
+.three-menus a.blog:hover, .three-menus a.blog.focustab  { border-color:#f4d52d; }
+
 .three-menus a{
-    padding:6px 0 14px;
+    padding:5px 0 3px;
     display: block;
     text-decoration: none;
     border-top:0px solid;
     line-height: 110%;
+    border-bottom: 10px solid transparent;
 }
 
 
