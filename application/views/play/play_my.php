@@ -64,7 +64,7 @@ if($session_en) {
 
             $player_icon_parts = explode(' ',one_two_explode('class="', '"', $session_en['en_icon']));
 
-            echo '<div class="doclear">&nbsp;</div><div class="btn-group pull-right" role="group" style="margin:-48px 8px 0 0;">
+            echo '<div class="doclear">&nbsp;</div><div class="btn-group pull-right" role="group" style="margin:-45px 0 0 0;">
                       <a href="javascript:void(0)" onclick="avatar_switch(\'far\')" class="btn"><i class="far fa-paw play"></i></a>
                       <a href="javascript:void(0)" onclick="avatar_switch(\'fad\')" class="btn active"><i class="fad fa-paw play"></i></a>
                       <a href="javascript:void(0)" onclick="avatar_switch(\'fas\')" class="btn"><i class="fas fa-paw play"></i></a>
