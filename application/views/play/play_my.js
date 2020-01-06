@@ -28,6 +28,20 @@ $(document).ready(function () {
 
 });
 
+function avatar_switch(icon_type){
+
+    //Find active avatar:
+    var selected_avatar = $('.avatar-item.active i').attr('class').split(' ');
+    console.log(selected_avatar);
+
+    //Show correct avatars:
+    $('.avatar-item').addClass('hidden').removeClass('active');
+    $('.avatar-type-'+icon_type).removeClass('hidden');
+
+    //Update Selection:
+    $('.avatar-type-'+icon_type+'.avatar-name-'+selected_avatar[1]).addClass('active');
+}
+
 
 function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect){
 

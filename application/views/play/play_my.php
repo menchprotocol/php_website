@@ -64,10 +64,10 @@ if($session_en) {
 
             $player_icon_parts = explode(' ',one_two_explode('class="', '"', $session_en['en_icon']));
 
-            echo '<div class="btn-group pull-right" role="group" aria-label="Basic example">
-                      <a href="javascript:void(0)" onclick="avatar_switch(\'far\')" class="btn btn-play"><i class="far fa-paw play"></i></a>
-                      <a href="javascript:void(0)" onclick="avatar_switch(\'fad\')" class="btn btn-play active"><i class="fad fa-paw play"></i></a>
-                      <a href="javascript:void(0)" onclick="avatar_switch(\'fas\')" class="btn btn-play"><i class="fas fa-paw play"></i></a>
+            echo '<div class="btn-group pull-right" role="group">
+                      <a href="javascript:void(0)" onclick="avatar_switch(\'far\')" class="btn"><i class="far fa-paw play"></i></a>
+                      <a href="javascript:void(0)" onclick="avatar_switch(\'fad\')" class="btn active"><i class="fad fa-paw play"></i></a>
+                      <a href="javascript:void(0)" onclick="avatar_switch(\'fas\')" class="btn"><i class="fas fa-paw play"></i></a>
                     </div>';
             echo '<div class="doclear">&nbsp;</div>';
 
@@ -77,7 +77,7 @@ if($session_en) {
                 $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m['m_icon']));
                 $avatar_type_match = ($player_icon_parts[0] == $avatar_icon_parts[0]);
 
-                echo '<a href="javascript:void(0);" onclick="update_avatar(' . $en_id . ')" class="list-group-item itemplay avatar-item item-square type_'.$avatar_icon_parts[0].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $player_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a>';
+                echo '<a href="javascript:void(0);" onclick="update_avatar(' . $en_id . ')" class="list-group-item itemplay avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $player_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a>';
             }
             echo '<div class="doclear">&nbsp;</div>';
 
