@@ -32,7 +32,11 @@ function avatar_switch(icon_type){
 
     //Find active avatar:
     var selected_avatar = $('.avatar-item.active i').attr('class').split(' ');
-    console.log(selected_avatar);
+
+    //Adjust menu:
+    $('.avatar-type-group a').removeClass('active');
+    $('.avatar-type-group .btn-'+selected_avatar[0]).addClass('active');
+
 
     //Show correct avatars:
     $('.avatar-item').addClass('hidden').removeClass('active');
