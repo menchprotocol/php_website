@@ -168,9 +168,6 @@ if(!$action) {
     }
 
     for($i=0;$i<750;$i++){
-        if(fmod($i, 30)==0 && $i>1){
-            echo '<br />';
-        }
         echo '<span class="icon-block">'.random_player_avatar().'</span>';
     }
 
