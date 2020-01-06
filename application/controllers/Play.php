@@ -839,9 +839,9 @@ fragment PostListingItemSidebar_post on Post {
         ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
         echo '<tr>';
-        echo '<td><span class="play"><span class="parent-icon icon-block">' . $en_all_2738[4536]['m_icon'] . '</span><span class="montserrat">ALL '.echo_number($play_coins[0]['total_coins']).'</span></span></td>';
-        echo '<td><span class="read"><span class="parent-icon icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="montserrat">'.echo_number($read_coins[0]['total_coins']).'</span></span></td>';
-        echo '<td><span class="blog"><span class="parent-icon icon-block">' . $en_all_2738[4535]['m_icon'] . '</span><span class="montserrat">'.echo_number($blog_coins[0]['total_coins']).'</span></span></td>';
+        echo '<td class="play"><span class="play"><span class="parent-icon icon-block">' . $en_all_2738[4536]['m_icon'] . '</span><span class="montserrat">ALL '.echo_number($play_coins[0]['total_coins']).'</span></span></td>';
+        echo '<td class="read"><span class="read"><span class="montserrat">'.echo_number($read_coins[0]['total_coins']).'</span><span class="parent-icon icon-block">' . $en_all_2738[6205]['m_icon'] . '</span></span></td>';
+        echo '<td class="blog"><span class="blog"><span class="parent-icon icon-block">' . $en_all_2738[4535]['m_icon'] . '</span><span class="montserrat">'.echo_number($blog_coins[0]['total_coins']).'</span></span></td>';
         echo '</tr>';
 
 
@@ -2919,9 +2919,9 @@ fragment PostListingItemSidebar_post on Post {
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
         return echo_json(array(
-            'play_count' => number_format($play_coin_count, 0),
-            'blog_count' => number_format($blog_coins[0]['total_coins'], 0),
-            'read_count' => number_format($read_coins[0]['total_coins'], 0)
+            'play_count' => echo_number($play_coin_count),
+            'blog_count' => echo_number($blog_coins[0]['total_coins']),
+            'read_count' => echo_number($read_coins[0]['total_coins'])
         ));
 
     }
