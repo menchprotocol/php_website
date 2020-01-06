@@ -33,7 +33,7 @@ if($session_en) {
     //Display account fields ordered with their player links:
     foreach ($this->config->item('en_all_6225') as $acc_en_id => $acc_detail) {
 
-        if(in_array(6196, $acc_detail['m_icon']) && !$messenger_activated){
+        if(in_array(6196, $acc_detail['m_parents']) && !$messenger_activated){
             //Messenger Setting but player is not connected via Messenger
             continue;
         }
