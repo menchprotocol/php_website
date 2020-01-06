@@ -105,20 +105,19 @@ class Read extends CI_Controller
         $last_week_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-7, date("Y"));
         $last_week_start = date("Y-m-d H:i:s", $last_week_start_timestamp);
         $last_week_end = date("Y-m-d H:i:s", mktime(23, 59, 59, date("n"), date("j")-1, date("Y")));
-        $coin_types = coin_types();
 
         //BLOG
         $blog_coins_new_last_week = $this->READ_model->ln_fetch(array(
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $coin_types['blog']) . ')' => null,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null,
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         $blog_coins_last_week = $this->READ_model->ln_fetch(array(
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $coin_types['blog']) . ')' => null,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null,
             'ln_timestamp <=' => $last_week_end,
         ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         $blog_coins_growth_rate = number_format(( $blog_coins_last_week[0]['total_coins'] / ( $blog_coins_last_week[0]['total_coins'] - $blog_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100, 1);
@@ -127,13 +126,13 @@ class Read extends CI_Controller
         //READ
         $read_coins_new_last_week = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $coin_types['read']) . ')' => null,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         $read_coins_last_week = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $coin_types['read']) . ')' => null,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         $read_coins_growth_rate = number_format(( $read_coins_last_week[0]['total_coins'] / ( $read_coins_last_week[0]['total_coins'] - $read_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100, 1);
@@ -143,14 +142,14 @@ class Read extends CI_Controller
         $play_coins_new_last_week = $this->READ_model->ln_fetch(array(
             'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $coin_types['play']) . ')' => null,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null,
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array('en_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         $play_coins_last_week = $this->READ_model->ln_fetch(array(
             'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $coin_types['play']) . ')' => null,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null,
             'ln_timestamp <=' => $last_week_end,
         ), array('en_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         $play_coins_growth_rate = number_format(( $play_coins_last_week[0]['total_coins'] / ( $play_coins_last_week[0]['total_coins'] - $play_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100, 1);

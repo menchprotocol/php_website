@@ -20,7 +20,7 @@ if(!$session_en){
 
     echo '<a href="/read/next" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12211]['m_name'].'">'.$en_all_11035[12211]['m_icon'].'</a>';
 
-    echo '<a href="/read/ledger?ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_creator_play_id='.$session_en['en_id'].'" class="btn btn-read btn-five icon-block-lg '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11046]['m_name'].'">'.$en_all_11035[11046]['m_icon'].'</a>';
+    echo '<a href="/read/ledger?ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_creator_play_id='.$session_en['en_id'].'" class="btn btn-read btn-five icon-block-lg '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11046]['m_name'].'">'.$en_all_11035[11046]['m_icon'].'</a>';
 
     //Browse New Reads on Home:
     echo '<a href="/" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12201]['m_name'].'">'.$en_all_11035[12201]['m_icon'].'</a>';

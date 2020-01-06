@@ -525,16 +525,6 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
     }
 }
 
-function coin_types(){
-    //Returns the transaction types that issue coins grouped by object type
-    $CI =& get_instance();
-    return array(
-        'play' => array_intersect($CI->config->item('en_ids_12145'), $CI->config->item('en_ids_12141')),
-        'read' => array_intersect($CI->config->item('en_ids_10590'), $CI->config->item('en_ids_12141')),
-        'blog' => array_intersect($CI->config->item('en_ids_10589'), $CI->config->item('en_ids_12141')),
-    );
-}
-
 function in_is_unlockable($in){
     $CI =& get_instance();
     return in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355') /* Blog Statuses Public */);
