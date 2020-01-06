@@ -476,30 +476,30 @@ var update_coin_counter = function( ) {
     $.post("/play/update_coin_counter", { }, function (data) {
 
         //PLAY
-        if(data.play_count <= 1) {
-            $('.three-menus .play .current_count').html('');
+        if(data.play_raw_count <= 1) {
+            $('.three-menus td.play .current_count').html('');
         } else {
-            if(data.play_count != $('.three-menus .play .current_count').text().trim()){
-                $('.three-menus .play .current_count').html(' ' + data.play_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+            if(data.play_count != $('.three-menus td.play .current_count').text().trim()){
+                $('.three-menus td.play .current_count').html(' ' + data.play_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
             }
         }
 
         //READ
-        if(data.read_count < 1){
-            $('.three-menus .read .read_name').removeClass('show-max');
-            $('.three-menus .read .current_count').html('');
-        } else if(data.read_count != $('.three-menus .read .current_count').text().trim()){
-            $('.three-menus .read .read_name').addClass('show-max');
-            $('.three-menus .read .current_count').html(' ' + data.read_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        if(data.read_raw_count < 1){
+            $('.three-menus td.read .read_name').removeClass('show-max');
+            $('.three-menus td.read .current_count').html('');
+        } else if(data.read_count != $('.three-menus td.read .current_count').text().trim()){
+            $('.three-menus td.read .read_name').addClass('show-max');
+            $('.three-menus td.read .current_count').html(' ' + data.read_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
         //BLOG
-        if(data.blog_count < 1){
-            $('.three-menus .blog .blog_name').removeClass('show-max');
-            $('.three-menus .blog .current_count').html('');
-        } else if(data.blog_count != $('.three-menus .blog .current_count').text().trim()){
-            $('.three-menus .blog .blog_name').addClass('show-max');
-            $('.three-menus .blog .current_count').html(data.blog_count + ' ').fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        if(data.blog_raw_count < 1){
+            $('.three-menus td.blog .blog_name').removeClass('show-max');
+            $('.three-menus td.blog .current_count').html('');
+        } else if(data.blog_count != $('.three-menus td.blog .current_count').text().trim()){
+            $('.three-menus td.blog .blog_name').addClass('show-max');
+            $('.three-menus td.blog .current_count').html(data.blog_count + ' ').fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
 

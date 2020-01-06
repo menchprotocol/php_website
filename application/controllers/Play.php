@@ -2801,8 +2801,11 @@ fragment PostListingItemSidebar_post on Post {
 
         return echo_json(array(
             'play_count' => echo_number($play_coin_count),
+            'play_raw_count' => $play_coin_count,
             'blog_count' => echo_number($blog_coins[0]['total_coins']),
-            'read_count' => echo_number($read_coins[0]['total_coins'])
+            'blog_raw_count' => $blog_coins[0]['total_coins'],
+            'read_count' => echo_number($read_coins[0]['total_coins']),
+            'read_raw_count' => $read_coins[0]['total_coins']
         ));
 
     }
