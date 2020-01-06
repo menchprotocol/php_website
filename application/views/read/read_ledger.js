@@ -3,11 +3,11 @@
 
 $(document).ready(function () {
 
-    check_in_en_status_play_id();
+    check_in_en_status_entity_id();
 
-    //Watch for blog status change:
-    $("#ln_type_play_id").change(function () {
-        check_in_en_status_play_id();
+    //Watch for intent status change:
+    $("#ln_type_entity_id").change(function () {
+        check_in_en_status_entity_id();
     });
 
     //Load first page of links:
@@ -16,17 +16,17 @@ $(document).ready(function () {
 });
 
 
-function check_in_en_status_play_id(){
-    //Checks to see if the Blog/Player status filter should be visible
-    //Would only make visible if Link type is Created Blog/Player
+function check_in_en_status_entity_id(){
+    //Checks to see if the Intent/Entity status filter should be visible
+    //Would only make visible if Link type is Created Intent/Entity
 
     //Hide both in/en status:
     $(".filter-statuses").addClass('hidden');
 
     //Show only if creating new in/en Link type:
-    if($("#ln_type_play_id").val()==4250){
+    if($("#ln_type_entity_id").val()==4250){
         $(".filter-in-status").removeClass('hidden');
-    } else if($("#ln_type_play_id").val()==4251){
+    } else if($("#ln_type_entity_id").val()==4251){
         $(".filter-en-status").removeClass('hidden');
     }
 }
@@ -34,6 +34,7 @@ function check_in_en_status_play_id(){
 
 
 function load_ledger(link_filters, link_join_by, page_num){
+
     //Show spinner:
     $('#link_page_'+page_num).html('<div style="margin:20px 0 100px 0;"><i class="far fa-yin-yang fa-spin"></i> ' + echo_loading_notify() +  '</div>').hide().fadeIn();
 
