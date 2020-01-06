@@ -483,7 +483,7 @@ function random_player_avatar(){
     $CI =& get_instance();
     $en_all_10956 = $CI->config->item('en_all_10956');
     $rand_keys = array_rand($en_all_10956);
-    return $rand_keys[0]['m_icon'];
+    return $en_all_10956[$rand_keys[0]]['m_icon'];
 }
 
 
