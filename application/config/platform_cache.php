@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-06 15:24:51 PST
+//Generated 2020-01-06 15:47:09 PST
 
 //PLAY COIN:
 $config['en_ids_12274'] = array(4251);
@@ -2536,7 +2536,7 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(4535,12215,12201,7291,11999,12205,12214,12211,4536,6225,6287,6205,11046,7256,4269,7540,11087);
+$config['en_ids_11035'] = array(4535,12215,12201,7291,11999,12205,12214,12211,4536,6225,12275,6287,6205,11046,7256,4269,7540,11087);
 $config['en_all_11035'] = array(
     4535 => array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
@@ -2597,6 +2597,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'PLAY ACCOUNT',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(4536,11035,4527),
+    ),
+    12275 => array(
+        'm_icon' => '<i class="fas fa-cog play" aria-hidden="true"></i>',
+        'm_name' => 'PLAY MODIFY',
+        'm_desc' => '',
+        'm_parents' => array(11035),
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-tools" aria-hidden="true"></i>',
