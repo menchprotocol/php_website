@@ -410,7 +410,7 @@ function echo_number($number, $micro = true, $push_message = false)
             return $rounded . $append . ' (' . $original_format . ')';
         } else {
             //HTML, so we can show Tooltip:
-            return '<span>' . $rounded . $append . '</span>';
+            return $rounded . $append;
         }
 
     } else {

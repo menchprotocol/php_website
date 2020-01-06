@@ -479,11 +479,11 @@ var update_coin_counter = function( ) {
         if(data.play_raw_count <= 1) {
             $('.three-menus td.play .current_count').html('');
         } else {
-            if(data.play_count != $('.three-menus td.play .current_count').html().trim()){
-                console.log(data.play_count + ' != ' + $('.three-menus td.play .current_count').html().trim());
+            if(data.play_count != $('.three-menus td.play .current_count').text().trim()){
+                console.log(data.play_count + ' != ' + $('.three-menus td.play .current_count').text().trim());
                 $('.three-menus td.play .current_count').html(' ' + data.play_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
             } else {
-                console.log(data.play_count + ' == ' + $('.three-menus td.play .current_count').html().trim());
+                console.log(data.play_count + ' == ' + $('.three-menus td.play .current_count').text().trim());
             }
         }
 
