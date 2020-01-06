@@ -685,12 +685,15 @@ textarea.note-textarea{
 
 .three-menus td.play, #top_players td.play{
     width: 44%;
+    text-align: left;
 }
 .three-menus td.read, #top_players td.read{
     width: 28%;
+    text-align: right;
 }
 .three-menus td.blog, #top_players td.blog{
     width: 28%;
+    text-align: left;
 }
 
 #top_players td{
