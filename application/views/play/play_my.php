@@ -64,7 +64,7 @@ if($session_en) {
 
             $player_icon_parts = explode(' ',one_two_explode('class="', '"', $session_en['en_icon']));
 
-            echo '<div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:-45px 0 0 0;">
+            echo '<div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:-45px -10px 0 0;">
                       <a href="javascript:void(0)" onclick="avatar_switch(\'far\')" class="btn btn-far '.( $player_icon_parts[0]=='far' ? ' active ' : '' ).'"><i class="far fa-paw play"></i></a>
                       <a href="javascript:void(0)" onclick="avatar_switch(\'fad\')" class="btn btn-fad '.( $player_icon_parts[0]=='fad' ? ' active ' : '' ).'"><i class="fad fa-paw play"></i></a>
                       <a href="javascript:void(0)" onclick="avatar_switch(\'fas\')" class="btn btn-fas '.( $player_icon_parts[0]=='fas' ? ' active ' : '' ).'"><i class="fas fa-paw play"></i></a>
