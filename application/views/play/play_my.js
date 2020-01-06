@@ -34,8 +34,8 @@ function avatar_switch(icon_type){
     var selected_avatar = $('.avatar-item.active i').attr('class').split(' ');
 
     //Adjust menu:
-    $('.avatar-type-group a').removeClass('active');
-    $('.avatar-type-group .btn-'+selected_avatar[0]).addClass('active');
+    $('.avatar-type-group .btn').removeClass('active');
+    $('.avatar-type-group .btn-'+icon_type).addClass('active');
 
 
     //Show correct avatars:
