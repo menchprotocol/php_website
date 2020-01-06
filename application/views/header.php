@@ -95,16 +95,22 @@ if(!isset($hide_header) || !$hide_header){
 
                                 //Player Coins:
                                 echo '<span class="'.superpower_active(10967).' pull-right inline-block show-max">';
+                                    echo '<span class="montserrat '.$identifier.'_name show-max">' . $m['m_name'] . '&nbsp;</span>';
                                     echo '<span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span>';
                                     echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
                                 echo '</span>';
 
                             } elseif($identifier=='read'){
 
-                                echo '<span class="current_count montserrat"><span class="montserrat '.$identifier.'_name show-max">' . $m['m_name'] . '&nbsp;</span><i class="far fa-yin-yang fa-spin"></i></span><span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
+                                echo '<span class="montserrat '.$identifier.'_name show-max">' . $m['m_name'] . '&nbsp;</span>';
+                                echo '<span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span>';
+                                echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
 
                             } elseif($identifier=='blog'){
-                                echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat '.$identifier.'_name show-max">&nbsp;' . $m['m_name'] . '</span>';
+
+                                echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
+                                echo '<span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span>';
+                                echo '<span class="montserrat '.$identifier.'_name show-max">&nbsp;' . $m['m_name'] . '</span>';
 
                             }
 
