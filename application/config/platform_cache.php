@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-05 19:23:52 PST
+//Generated 2020-01-05 20:12:22 PST
 
 //PLAY NOTIFICATION CHANNEL:
 $config['en_ids_12220'] = array(12221,12222);
@@ -1512,20 +1512,20 @@ $config['en_all_10869'] = array(
 $config['en_ids_11007'] = array(11010,11011,11012);
 $config['en_all_11007'] = array(
     11010 => array(
-        'm_icon' => '<i class="fas fa-info-circle"></i>',
-        'm_name' => '33 READS/WEEK ALWAYS FREE',
+        'm_icon' => '<i class="fas fa-info-circle" aria-hidden="true"></i>',
+        'm_name' => '33 READS/WEEK FOR FREE',
         'm_desc' => '',
         'm_parents' => array(11061,11007),
     ),
     11011 => array(
         'm_icon' => '<i class="fas fa-play-circle" aria-hidden="true"></i>',
-        'm_name' => 'UNLIMITED DONATE $5/MONTH',
+        'm_name' => 'UNLIMITED FOR $5/MONTH',
         'm_desc' => '',
         'm_parents' => array(11162,11007),
     ),
     11012 => array(
         'm_icon' => '<i class="fas fa-heart-circle" aria-hidden="true"></i>',
-        'm_name' => 'UNLIMITED DONATE $50/YEAR',
+        'm_name' => 'UNLIMITED FOR $50/YEAR',
         'm_desc' => '',
         'm_parents' => array(11163,11007),
     ),
@@ -1559,19 +1559,19 @@ $config['en_all_11033'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ COINS',
+        'm_name' => 'READ COMPLETE',
         'm_desc' => '',
         'm_parents' => array(11018,10964,11033,7493,4527),
     ),
     6146 => array(
         'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ VOIDS',
+        'm_name' => 'READ INCOMPLETE',
         'm_desc' => '',
         'm_parents' => array(11018,11033,10964,6771,4527),
     ),
     7347 => array(
         'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
-        'm_name' => 'READ STARTS',
+        'm_name' => 'READ START',
         'm_desc' => '',
         'm_parents' => array(11018,11033,10964,6771,4527),
     ),
@@ -2411,21 +2411,9 @@ $config['en_all_11028'] = array(
     ),
 );
 
-//BLOG 2ND GROUP:
-$config['en_ids_11018'] = array(6255,7347,11019,11020,4601,4983,10573,11161,6146,7545,11047);
+//BLOG TAB GROUP:
+$config['en_ids_11018'] = array(11019,11020,4601,4983,10573,11161,7545,7347,6255,6146,11047);
 $config['en_all_11018'] = array(
-    6255 => array(
-        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ COINS',
-        'm_desc' => '',
-        'm_parents' => array(11018,10964,11033,7493,4527),
-    ),
-    7347 => array(
-        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
-        'm_name' => 'READ STARTS',
-        'm_desc' => '',
-        'm_parents' => array(11018,11033,10964,6771,4527),
-    ),
     11019 => array(
         'm_icon' => '<i class="fas fa-fast-backward blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG PREVIOUS',
@@ -2462,17 +2450,29 @@ $config['en_all_11018'] = array(
         'm_desc' => '',
         'm_parents' => array(10984,11018,11160),
     ),
-    6146 => array(
-        'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ VOIDS',
-        'm_desc' => '',
-        'm_parents' => array(11018,11033,10964,6771,4527),
-    ),
     7545 => array(
         'm_icon' => '<i class="fas fa-user-tag blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG PLAY TAGS',
         'm_desc' => '',
         'm_parents' => array(11033,11018,11089,10967,10589,7551,4593,4485),
+    ),
+    7347 => array(
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
+        'm_name' => 'READ START',
+        'm_desc' => '',
+        'm_parents' => array(11018,11033,10964,6771,4527),
+    ),
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ COMPLETE',
+        'm_desc' => '',
+        'm_parents' => array(11018,10964,11033,7493,4527),
+    ),
+    6146 => array(
+        'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ INCOMPLETE',
+        'm_desc' => '',
+        'm_parents' => array(11018,11033,10964,6771,4527),
     ),
     11047 => array(
         'm_icon' => '<i class="fas fa-caret-down"></i>',
@@ -2482,24 +2482,24 @@ $config['en_all_11018'] = array(
     ),
 );
 
-//BLOG TAB GROUPS:
+//BLOG TABS:
 $config['en_ids_11021'] = array(10990,11018);
 $config['en_all_11021'] = array(
     10990 => array(
         'm_icon' => '<i class="fas fa-toolbox blog" aria-hidden="true"></i>',
-        'm_name' => '1ST GROUP',
+        'm_name' => 'BELOW TITLE',
         'm_desc' => '',
         'm_parents' => array(11021,4527),
     ),
     11018 => array(
         'm_icon' => '<i class="fas fa-exchange rotate90 blog" aria-hidden="true"></i>',
-        'm_name' => '2ND GROUP',
+        'm_name' => 'TAB GROUP',
         'm_desc' => '',
         'm_parents' => array(4527,11025,11021),
     ),
 );
 
-//BLOG 1ST GROUP:
+//BLOG BELOW TITLE:
 $config['en_ids_10990'] = array(4231);
 $config['en_all_10990'] = array(
     4231 => array(
@@ -2729,7 +2729,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(12066,10725,7758,10809,12145,10990,11018,11047,4983,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11021,6201,12112,7585,10602,7309,7712,7751,6150,12201,10712,10719,10627,10716,10746,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,6404,4527,11054,6232,6225,11039,10956,6194,6827,4426,4997,4986,7551,11028,4537,10957,6206,3290,4592,12220,4454,11089,11033,3000,7303,6177,11007,11088,3289,4755,10718,6287,10571,7357,6192,11081,6193,6255,6345,4280,10570,4277,6102,7704,7494,10590,6103,10692,5967,7347,7304,6186,7360,7364,7359,4341,4593,10593,10591,12141,10658,6146,10711,11031,11084,6204,10710,6805,7358,10869);
+$config['en_ids_4527'] = array(12066,10725,7758,10809,12145,11047,4983,10990,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11018,6201,11021,12112,7585,10602,7309,7712,7751,6150,12201,10712,10719,10627,10716,10746,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,6404,4527,11054,6232,6225,11039,10956,6194,6827,4426,4997,4986,7551,11028,4537,10957,6206,3290,4592,12220,4454,11089,11033,3000,7303,6177,11007,11088,3289,4755,10718,6287,10571,7357,6192,11081,6193,6255,6345,4280,10570,4277,6102,7704,7494,6146,10590,6103,10692,5967,7347,7304,6186,7360,7364,7359,4341,4593,10593,10591,12141,10658,10711,11031,11084,6204,10710,6805,7358,10869);
 $config['en_all_4527'] = array(
     12066 => array(
         'm_icon' => '<i class="far fa-info-circle" aria-hidden="true"></i>',
@@ -2761,18 +2761,6 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,10591),
     ),
-    10990 => array(
-        'm_icon' => '<i class="fas fa-toolbox blog" aria-hidden="true"></i>',
-        'm_name' => 'BLOG 1ST GROUP',
-        'm_desc' => '',
-        'm_parents' => array(11021,4527),
-    ),
-    11018 => array(
-        'm_icon' => '<i class="fas fa-exchange rotate90 blog" aria-hidden="true"></i>',
-        'm_name' => 'BLOG 2ND GROUP',
-        'm_desc' => '',
-        'm_parents' => array(4527,11025,11021),
-    ),
     11047 => array(
         'm_icon' => '<i class="fas fa-caret-down"></i>',
         'm_name' => 'BLOG ADMIN MENU',
@@ -2784,6 +2772,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'BLOG AUTHORS',
         'm_desc' => '',
         'm_parents' => array(11018,11033,10593,10589,4527,7551,4985,4593,4485),
+    ),
+    10990 => array(
+        'm_icon' => '<i class="fas fa-toolbox blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOG BELOW TITLE',
+        'm_desc' => '',
+        'm_parents' => array(11021,4527),
     ),
     12079 => array(
         'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
@@ -2857,17 +2851,23 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(11054,10891,4527),
     ),
-    11021 => array(
-        'm_icon' => '<i class="fas fa-list-alt blog" aria-hidden="true"></i>',
-        'm_name' => 'BLOG TAB GROUPS',
+    11018 => array(
+        'm_icon' => '<i class="fas fa-exchange rotate90 blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOG TAB GROUP',
         'm_desc' => '',
-        'm_parents' => array(4527,4535),
+        'm_parents' => array(4527,11025,11021),
     ),
     6201 => array(
         'm_icon' => '<i class="far fa-table blog"></i>',
         'm_name' => 'BLOG TABLE',
         'm_desc' => '',
         'm_parents' => array(11054,4527,7735,4535),
+    ),
+    11021 => array(
+        'm_icon' => '<i class="fas fa-list-alt blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOG TABS',
+        'm_desc' => '',
+        'm_parents' => array(4527,4535),
     ),
     12112 => array(
         'm_icon' => '<i class="fas fa-text" aria-hidden="true"></i>',
@@ -3237,7 +3237,7 @@ $config['en_all_4527'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ COINS',
+        'm_name' => 'READ COMPLETE',
         'm_desc' => '',
         'm_parents' => array(11018,10964,11033,7493,4527),
     ),
@@ -3283,6 +3283,12 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4506,4527,7493),
     ),
+    6146 => array(
+        'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ INCOMPLETE',
+        'm_desc' => '',
+        'm_parents' => array(11018,11033,10964,6771,4527),
+    ),
     10590 => array(
         'm_icon' => '<i class="fas fa-info-circle read" aria-hidden="true"></i>',
         'm_name' => 'READING',
@@ -3309,7 +3315,7 @@ $config['en_all_4527'] = array(
     ),
     7347 => array(
         'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
-        'm_name' => 'READ STARTS',
+        'm_name' => 'READ START',
         'm_desc' => '',
         'm_parents' => array(11018,11033,10964,6771,4527),
     ),
@@ -3378,12 +3384,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'READ UPDATES',
         'm_desc' => '',
         'm_parents' => array(4527,6205),
-    ),
-    6146 => array(
-        'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ VOIDS',
-        'm_desc' => '',
-        'm_parents' => array(11018,11033,10964,6771,4527),
     ),
     10711 => array(
         'm_icon' => '<i class="fas fa-yin-yang mench-spin" aria-hidden="true"></i>',
@@ -4564,7 +4564,7 @@ $config['en_all_10589'] = array(
     ),
 );
 
-//READ STARTS:
+//READ START:
 $config['en_ids_7347'] = array(7495,4235);
 $config['en_all_7347'] = array(
     7495 => array(
@@ -5670,7 +5670,7 @@ $config['en_all_6345'] = array(
     ),
 );
 
-//READ COINS:
+//READ COMPLETE:
 $config['en_ids_6255'] = array(6157,7489,7487,4559,6144,7485,7486,6997,12117);
 $config['en_all_6255'] = array(
     6157 => array(
@@ -5793,7 +5793,7 @@ $config['en_all_6225'] = array(
     11007 => array(
         'm_icon' => '<i class="fas fa-hands-heart" aria-hidden="true"></i>',
         'm_name' => 'SUBSCRIPTION LEVEL',
-        'm_desc' => 'MENCH is a non-profit and open-source project. Your donations help build the platform & compensate players who blog.',
+        'm_desc' => 'MENCH is a non-profit and open-source project. Your donations help build the platform & compensate players who blog. You can downgrade your subscription at any time.',
         'm_parents' => array(4527,6204,6225),
     ),
     4454 => array(
@@ -5862,7 +5862,7 @@ $config['en_all_6177'] = array(
     ),
 );
 
-//READ VOIDS:
+//READ INCOMPLETE:
 $config['en_ids_6146'] = array(12129,12119,7488,6143,7492);
 $config['en_all_6146'] = array(
     12129 => array(
