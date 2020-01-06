@@ -673,7 +673,6 @@ textarea.note-textarea{
 }
 
 .three-menus td, #top_players td{
-    width: 33.4%;
     vertical-align: bottom;
     white-space: nowrap;
     overflow: hidden;
@@ -682,6 +681,16 @@ textarea.note-textarea{
     border: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
+}
+
+.three-menus td.play, #top_players td.play{
+    width: 44%;
+}
+.three-menus td.read, #top_players td.read{
+    width: 28%;
+}
+.three-menus td.blog, #top_players td.blog{
+    width: 28%;
 }
 
 #top_players td{

@@ -763,13 +763,13 @@ fragment PostListingItemSidebar_post on Post {
 
 
             //PLAY
-            echo '<td><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="play montserrat">'.$first_name.'</a>' : '<b class="play montserrat">'.$first_name.'</b>' ).'</td>';
+            echo '<td class="play"><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="play montserrat">'.$first_name.'</a>' : '<b class="play montserrat">'.$first_name.'</b>' ).'</td>';
 
             //READ
-            echo '<td>'.( $session_en ? '<a href="/read/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $coin_types['read']).'&ln_creator_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' ).'</td>';
+            echo '<td class="read">'.( $session_en ? '<a href="/read/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $coin_types['read']).'&ln_creator_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' ).'</td>';
 
             //BLOG
-            echo '<td>'.
+            echo '<td class="blog">'.
 
                 ( $session_en
 
