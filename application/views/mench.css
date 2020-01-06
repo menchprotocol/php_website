@@ -1074,6 +1074,10 @@ label {
     background-color:#c1dffb !important;
 }
 
+.card-body{
+    padding-top: 10px;
+}
+
 
 /* RESPONSIVE */
 @media (max-width:767px) {

@@ -64,12 +64,11 @@ if($session_en) {
 
             $player_icon_parts = explode(' ',one_two_explode('class="', '"', $session_en['en_icon']));
 
-            echo '<div class="btn-group pull-right" role="group">
+            echo '<div class="doclear">&nbsp;</div><div class="btn-group pull-right" role="group" style="margin-top: -30px;">
                       <a href="javascript:void(0)" onclick="avatar_switch(\'far\')" class="btn"><i class="far fa-paw play"></i></a>
                       <a href="javascript:void(0)" onclick="avatar_switch(\'fad\')" class="btn active"><i class="fad fa-paw play"></i></a>
                       <a href="javascript:void(0)" onclick="avatar_switch(\'fas\')" class="btn"><i class="fas fa-paw play"></i></a>
-                    </div>';
-            echo '<div class="doclear">&nbsp;</div>';
+                    </div><div class="doclear">&nbsp;</div>';
 
 
             foreach ($this->config->item('en_all_10956') as $en_id => $m) {
