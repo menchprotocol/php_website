@@ -9,13 +9,17 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 if($session_en) {
 
+    //See how this user is connected to Mench
+    $messenger_activated = in_array(6196, $this->session->userdata('session_parent_ids'));
+    $web_email_activated = in_array(12103, $this->session->userdata('session_parent_ids'));
+
     echo '<h1 class="play pull-left inline-block"><span class="icon-block-xlg icon_photo">' . echo_en_icon($session_en['en_icon']) . '</span>' . one_two_explode('',' ',$session_en['en_name']) . '</h1>';
 
     echo '<div class="pull-right inline-block side-margin">';
 
         echo '<a href="/play/' . $session_en['en_id'] . '" class="btn btn-play btn-five icon-block-lg ' . superpower_active(10983) . '" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="' . $en_all_11035[12205]['m_name'] . '">' . $en_all_11035[12205]['m_icon'] . '</a>';
 
-        if (!intval($this->session->userdata('messenger_signin'))) {
+        if (!intval($this->session->userdata('session_6196_signin'))) {
             //Only give signout option if NOT logged-in from Messenger
             echo '<a href="/play/signout" class="btn btn-play btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="' . $en_all_11035[7291]['m_name'] . '">' . $en_all_11035[7291]['m_icon'] . '</a>';
     }
@@ -28,6 +32,11 @@ if($session_en) {
 
     //Display account fields ordered with their player links:
     foreach ($this->config->item('en_all_6225') as $acc_en_id => $acc_detail) {
+
+        if(in_array(6196, $acc_detail['m_icon']) && !$messenger_activated){
+            //Messenger Setting but player is not connected via Messenger
+            continue;
+        }
 
         //Keep all closed for now:
         $expand_by_default = false;
@@ -62,13 +71,13 @@ if($session_en) {
 
             echo echo_radio_players($acc_en_id, $session_en['en_id'], ($is_multi_selectable ? 1 : 0));
 
-        } elseif ($acc_en_id == 6197 /* Full Name */) {
+        } elseif ($acc_en_id == 6197 /* Name */) {
 
             echo '<span class="white-wrapper"><input type="text" id="en_name" class="form-control border play doupper montserrat" value="' . $session_en['en_name'] . '" /></span>
-                    <a href="javascript:void(0)" onclick="save_full_name()" class="btn btn-play">Save</a>
+                    <a href="javascript:void(0)" onclick="account_update_name()" class="btn btn-play">Save</a>
                     <span class="saving-account save_full_name"></span>';
 
-        } elseif ($acc_en_id == 3288 /* Mench Email */) {
+        } elseif ($acc_en_id == 3288 /* Email */) {
 
             $user_emails = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -78,7 +87,7 @@ if($session_en) {
             ));
 
             echo '<span class="white-wrapper"><input type="email" id="en_email" class="form-control border" value="' . (count($user_emails) > 0 ? $user_emails[0]['ln_content'] : '') . '" placeholder="you@gmail.com" /></span>
-                    <a href="javascript:void(0)" onclick="save_email()" class="btn btn-play">Save</a>
+                    <a href="javascript:void(0)" onclick="account_update_email()" class="btn btn-play">Save</a>
                     <span class="saving-account save_email"></span>';
 
         } elseif ($acc_en_id == 3286 /* Password */) {
@@ -86,19 +95,6 @@ if($session_en) {
             echo '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
                     <a href="javascript:void(0)" onclick="account_update_password()" class="btn btn-play">Save</a>
                     <span class="saving-account save_password"></span>';
-
-        } elseif ($acc_en_id == 4783 /* Phone */) {
-
-            $user_phones = $this->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_child_play_id' => $session_en['en_id'],
-                'ln_type_play_id' => 4319, //Phone are of type number
-                'ln_parent_play_id' => 4783, //Phone Number
-            ));
-
-            echo '<span class="white-wrapper"><input type="number" id="en_phone" class="form-control border" value="' . (count($user_phones) > 0 ? $user_phones[0]['ln_content'] : '') . '" placeholder="Set phone number..." /></span>
-                    <a href="javascript:void(0)" onclick="save_phone()" class="btn btn-play">Save</a>
-                    <span class="saving-account save_phone"></span>';
 
         }
 

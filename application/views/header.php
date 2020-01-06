@@ -13,7 +13,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <?php
     echo '<script type="text/javascript">';
 
-    echo ' var js_assigned_superpowers_en_ids = ' . json_encode( count($this->session->userdata('assigned_superpowers_en_ids')) ? $this->session->userdata('assigned_superpowers_en_ids') : array() ) . '; ';
+    echo ' var js_session_superpowers_assigned = ' . json_encode( count($this->session->userdata('session_superpowers_assigned')) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
     echo ' var js_pl_id = ' . ( isset($session_en['en_id']) ? $session_en['en_id'] : 0 ) . '; ';
 
     //LOAD JS CACHE:
@@ -95,14 +95,14 @@ if(!isset($hide_header) || !$hide_header){
 
                                 //Player Coins:
                                 echo '<span class="'.superpower_active(10967).' pull-right inline-block show-max">';
-                                    echo '<span class="montserrat '.$identifier.'_name show-max">' . $m['m_name'] . '&nbsp;</span>';
+                                    echo '<span class="montserrat '.$identifier.'_name show-max">' . $m['m_name'] . '</span>';
                                     echo '<span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span>';
                                     echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
                                 echo '</span>';
 
                             } elseif($identifier=='read'){
 
-                                echo '<span class="montserrat '.$identifier.'_name show-max">' . $m['m_name'] . '&nbsp;</span>';
+                                echo '<span class="montserrat '.$identifier.'_name show-max">' . $m['m_name'] . '</span>';
                                 echo '<span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span>';
                                 echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
 
@@ -110,7 +110,7 @@ if(!isset($hide_header) || !$hide_header){
 
                                 echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
                                 echo '<span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span>';
-                                echo '<span class="montserrat '.$identifier.'_name show-max">&nbsp;' . $m['m_name'] . '</span>';
+                                echo '<span class="montserrat '.$identifier.'_name show-max">' . $m['m_name'] . '</span>';
 
                             }
 
@@ -140,17 +140,17 @@ if(!isset($hide_header) || !$hide_header){
                     <td>
                         <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
-                        <div class="supwerpower_view"><span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="/" style="text-decoration: none;">MENCH</a><?= ( count($this->session->userdata('assigned_superpowers_en_ids')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');" class="gateway">|</a>' : '' ) ?></span></div>
+                        <div class="supwerpower_view"><span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="/" style="text-decoration: none;">MENCH</a><?= ( count($this->session->userdata('session_superpowers_assigned')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');" class="gateway">|</a>' : '' ) ?></span></div>
 
                         <div class="supwerpower_view hidden">
                             <div class="full-width">
                             <?php
-                            if(count($this->session->userdata('assigned_superpowers_en_ids'))){
+                            if(count($this->session->userdata('session_superpowers_assigned'))){
                                 foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
                                     if(superpower_assigned($superpower_en_id)){
 
                                         //Superpower already unlocked:
-                                        echo '&nbsp;<a class="btn btn-sm btn-superpower icon-block superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('activate_superpowers_en_ids')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].' @'.$superpower_en_id.'">'.$m['m_icon'].'</a>';
+                                        echo '&nbsp;<a class="btn btn-sm btn-superpower icon-block superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].' @'.$superpower_en_id.'">'.$m['m_icon'].'</a>';
 
                                     }
                                 }

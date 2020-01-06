@@ -479,15 +479,10 @@ function ISO8601ToSeconds($ISO8601){
 }
 
 
-function random_user_icon(){
-
-    //Generates a random icon for new users by randomly combining the following:
-
-    $icon_styles = array('fas', 'far', 'fal');
-    $animal_icons = array('alicorn', 'badger-honey', 'bat', 'cat', 'cow', 'crow', 'deer', 'deer-rudolph', 'dog', 'dog-leashed', 'dove', 'dragon', 'duck', 'elephant', 'fish', 'frog', 'hippo', 'horse', 'horse-head', 'kiwi-bird', 'monkey', 'narwhal', 'otter', 'pegasus', 'pig', 'rabbit', 'rabbit-fast', 'ram', 'sheep', 'snake', 'spider-black-widow', 'squirrel', 'turtle', 'unicorn', 'whale');
-
-    return '<i class="'.$icon_styles[array_rand($icon_styles)].' fa-'.$animal_icons[array_rand($animal_icons)].' play"></i>';
-
+function random_player_avatar(){
+    $CI =& get_instance();
+    $en_all_10956 = $CI->config->item('en_all_10956');
+    return $en_all_10956[rand(0, (count($en_all_10956)-1))]['m_icon'];
 }
 
 
@@ -570,7 +565,7 @@ function superpower_active($superpower_en_id, $boolean_only = false){
     if( intval($superpower_en_id)>0 ){
 
         $CI =& get_instance();
-        $is_match = (superpower_assigned() ? in_array(intval($superpower_en_id), $CI->session->userdata('activate_superpowers_en_ids')) : false);
+        $is_match = (superpower_assigned() ? in_array(intval($superpower_en_id), $CI->session->userdata('session_superpowers_activated')) : false);
 
         if($boolean_only){
             return $is_match;
@@ -613,7 +608,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
 
     //Authenticates logged-in users with their session information
     $CI =& get_instance();
-    $session_en = $CI->session->userdata('user');
+    $session_en = $CI->session->userdata('session_profile');
     $has_session = ( is_array($session_en) && count($session_en) > 0 );
 
     //Let's start checking various ways we can give user access:
@@ -622,7 +617,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
         //No minimum level required, grant access IF user is logged in:
         return $session_en;
 
-    } elseif ($has_session && in_array($superpower_en_id, $CI->session->userdata('assigned_superpowers_en_ids'))) {
+    } elseif ($has_session && in_array($superpower_en_id, $CI->session->userdata('session_superpowers_assigned'))) {
 
         //They are part of one of the levels assigned to them:
         return $session_en;

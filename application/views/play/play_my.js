@@ -29,7 +29,7 @@ $(document).ready(function () {
 });
 
 
-function radio_update(parent_en_id, selected_en_id, enable_mulitiselect){
+function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect){
 
     var was_already_selected = ( $('.radio-'+parent_en_id+' .item-'+selected_en_id).hasClass('active') ? 1 : 0 );
 
@@ -56,8 +56,7 @@ function radio_update(parent_en_id, selected_en_id, enable_mulitiselect){
         $('.radio-'+parent_en_id+' .item-'+selected_en_id).addClass('active');
     }
 
-    $.post("/play/account_radio_update", {
-        js_pl_id: js_pl_id,
+    $.post("/play/account_update_radio", {
         parent_en_id: parent_en_id,
         selected_en_id: selected_en_id,
         enable_mulitiselect: enable_mulitiselect,
@@ -80,14 +79,13 @@ function radio_update(parent_en_id, selected_en_id, enable_mulitiselect){
 
 }
 
-function save_full_name(){
+function account_update_name(){
 
     //Show spinner:
     $('.save_full_name').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/play/account_save_full_name", {
-        en_id: js_pl_id,
+    $.post("/play/account_update_name", {
         en_name: $('#en_name').val().toUpperCase(),
     }, function (data) {
 
@@ -111,45 +109,13 @@ function save_full_name(){
 
 }
 
-function save_phone(){
-
-    //Show spinner:
-    $('.save_phone').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
-
-    //Save the rest of the content:
-    $.post("/play/account_save_phone", {
-        en_id: js_pl_id,
-        en_phone: $('#en_phone').val(),
-    }, function (data) {
-
-        if (!data.status) {
-
-            //Ooops there was an error!
-            $('.save_phone').html('<span style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
-
-        } else {
-
-            //Show success:
-            $('.save_phone').html('<i class="fas fa-check-circle"></i> ' + data.message + '</span>').hide().fadeIn();
-
-            //Disappear in a while:
-            setTimeout(function () {
-                $('.save_phone').html('');
-            }, 1597);
-
-        }
-    });
-
-}
-
-function save_email(){
+function account_update_email(){
 
     //Show spinner:
     $('.save_email').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/play/account_save_email", {
-        en_id: js_pl_id,
+    $.post("/play/account_update_email", {
         en_email: $('#en_email').val(),
     }, function (data) {
 
@@ -181,7 +147,6 @@ function account_update_password(){
 
     //Save the rest of the content:
     $.post("/play/account_update_password", {
-        en_id: js_pl_id,
         input_password: $('#input_password').val(),
     }, function (data) {
 

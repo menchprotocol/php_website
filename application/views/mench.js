@@ -230,7 +230,7 @@ $(document).ready(function () {
         $('#mench_search').prop("disabled", true).val('Loading...').css('background-color','#f4f5f7').css('font-size','0.8em');
 
         if (parseInt(suggestion.alg_obj_is_in)==1) {
-            window.location = "/" + ( js_assigned_superpowers_en_ids.includes(10939) ? 'blog/' : '' ) + suggestion.alg_obj_id;
+            window.location = "/" + ( js_session_superpowers_assigned.includes(10939) ? 'blog/' : '' ) + suggestion.alg_obj_id;
         } else {
             window.location = "/play/" + suggestion.alg_obj_id;
         }
@@ -259,7 +259,7 @@ $(document).ready(function () {
                         //For Players:
                         if(search_only_play || search_only_blog){
 
-                            if(search_only_play && js_assigned_superpowers_en_ids.includes(10983)){
+                            if(search_only_play && js_session_superpowers_assigned.includes(10983)){
 
                                 //Can view ALL Players:
                                 search_filters += ' ( alg_obj_is_in = 0 ) ';
@@ -272,7 +272,7 @@ $(document).ready(function () {
 
                         } else {
 
-                            if(js_assigned_superpowers_en_ids.includes(10983)){
+                            if(js_session_superpowers_assigned.includes(10983)){
 
                                 //no filter
 
@@ -393,7 +393,7 @@ $(document).ready(function () {
         //Update stats on load:
         update_coin_counter();
 
-        setInterval(update_coin_counter, js_en_all_6404[( js_assigned_superpowers_en_ids.includes(10939) ? 12210 : 12130 )]['m_desc']);
+        setInterval(update_coin_counter, js_en_all_6404[( js_session_superpowers_assigned.includes(10939) ? 12210 : 12130 )]['m_desc']);
 
     }
 
@@ -475,29 +475,33 @@ var update_coin_counter = function( ) {
     //Fetch latest stats:
     $.post("/play/update_coin_counter", { }, function (data) {
 
+        //PLAY
         if(data.play_count <= 1) {
             $('.three-menus .play .current_count').html('');
         } else {
-            if(data.play_count != $('.three-menus .play .current_count').html()){
-                $('.three-menus .play .current_count').html(data.play_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+            if(data.play_count != $('.three-menus .play .current_count').text().trim()){
+                $('.three-menus .play .current_count').html(' ' + data.play_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
             }
         }
 
-        if(data.blog_count < 1){
-            $('.three-menus .blog .blog_name').removeClass('show-max');
-            $('.three-menus .blog .current_count').html('');
-        } else if(data.blog_count != $('.three-menus .blog .current_count').html()){
-            $('.three-menus .blog .blog_name').addClass('show-max');
-            $('.three-menus .blog .current_count').html(data.blog_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
-        }
-
+        //READ
         if(data.read_count < 1){
             $('.three-menus .read .read_name').removeClass('show-max');
             $('.three-menus .read .current_count').html('');
-        } else if(data.read_count != $('.three-menus .read .current_count').html()){
+        } else if(data.read_count != $('.three-menus .read .current_count').text().trim()){
             $('.three-menus .read .read_name').addClass('show-max');
-            $('.three-menus .read .current_count').html(data.read_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+            $('.three-menus .read .current_count').html(' ' + data.read_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
+
+        //BLOG
+        if(data.blog_count < 1){
+            $('.three-menus .blog .blog_name').removeClass('show-max');
+            $('.three-menus .blog .current_count').html('');
+        } else if(data.blog_count != $('.three-menus .blog .current_count').text().trim()){
+            $('.three-menus .blog .blog_name').addClass('show-max');
+            $('.three-menus .blog .current_count').html(data.blog_count + ' ').fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        }
+
 
         updating_basic_stats = false;
     });
@@ -630,13 +634,13 @@ function toggle_superpower(superpower_id){
             $('.superpower-frame-'+superpower_id).toggleClass('active');
 
             //TOGGLE:
-            var index = js_assigned_superpowers_en_ids.indexOf(superpower_id);
+            var index = js_session_superpowers_assigned.indexOf(superpower_id);
             if (index > -1) {
                 //Remove it:
-                js_assigned_superpowers_en_ids.splice(index, 1);
+                js_session_superpowers_assigned.splice(index, 1);
             } else {
                 //Not there, add it:
-                js_assigned_superpowers_en_ids.push(superpower_id);
+                js_session_superpowers_assigned.push(superpower_id);
             }
         }
     });

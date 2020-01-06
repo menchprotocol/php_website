@@ -98,7 +98,7 @@ class Play extends CI_Controller
                         $newly_added++;
 
                         //Create new Player:
-                        $added_en = $this->PLAY_model->en_verify_create($author_handler, $ln_creator_play_id, 6181, random_user_icon());
+                        $added_en = $this->PLAY_model->en_verify_create($author_handler, $ln_creator_play_id, 6181, random_player_avatar());
 
                         //Create relevant READS:
 
@@ -644,8 +644,8 @@ fragment PostListingItemSidebar_post on Post {
             //Update session count and log link:
             $message = null; //No mass-action message to be appended...
 
-            $new_order = ( $this->session->userdata('player_page_count') + 1 );
-            $this->session->set_userdata('player_page_count', $new_order);
+            $new_order = ( $this->session->userdata('session_page_count') + 1 );
+            $this->session->set_userdata('session_page_count', $new_order);
             $this->READ_model->ln_create(array(
                 'ln_creator_play_id' => $session_en['en_id'],
                 'ln_type_play_id' => 4994, //Trainer Opened Player
@@ -1048,7 +1048,7 @@ fragment PostListingItemSidebar_post on Post {
                 'status' => 0,
                 'message' => 'Expired Session or Missing Superpower',
             ));
-        } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
+        } elseif (intval($_POST['en_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Parent Player',
@@ -1273,13 +1273,13 @@ fragment PostListingItemSidebar_post on Post {
         //Figure out new toggle state:
         $session_data = $this->session->all_userdata();
 
-        if(in_array($superpower_en_id, $session_data['activate_superpowers_en_ids'])){
+        if(in_array($superpower_en_id, $session_data['session_superpowers_activated'])){
             //Already there, turn it off:
-            $session_data['activate_superpowers_en_ids'] = array_diff($session_data['activate_superpowers_en_ids'], array($superpower_en_id));
+            $session_data['session_superpowers_activated'] = array_diff($session_data['session_superpowers_activated'], array($superpower_en_id));
             $toggled_setting = 'DEACTIVATED';
         } else {
             //Not there, turn it on:
-            array_push($session_data['activate_superpowers_en_ids'], $superpower_en_id);
+            array_push($session_data['session_superpowers_activated'], $superpower_en_id);
             $toggled_setting = 'ACTIVATED';
         }
 
@@ -1351,7 +1351,12 @@ fragment PostListingItemSidebar_post on Post {
         } elseif (strlen($_POST['en_name']) > config_var(11072)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Name is longer than the allowed ' . config_var(11072) . ' characters. Shorten and try again.',
+                'message' => 'Name is longer than the allowed ' . config_var(11072) . ' characters.',
+            ));
+        } elseif (strlen($_POST['en_name']) < config_var(12232)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Name is shorter than the minimum ' . config_var(12232) . ' characters.',
             ));
         } elseif(!isset($_POST['en_icon']) || !is_valid_icon($_POST['en_icon'])){
             //Check if valid icon:
@@ -1619,12 +1624,8 @@ fragment PostListingItemSidebar_post on Post {
 
         //Reset user session data if this data belongs to the logged-in user:
         if ($_POST['en_id'] == $session_en['en_id']) {
-            $ens = $this->PLAY_model->en_fetch(array(
-                'en_id' => intval($_POST['en_id']),
-            ));
-            if (isset($ens[0])) {
-                $this->session->set_userdata(array('user' => $ens[0]));
-            }
+            //Re-activate Session with new data:
+            $this->PLAY_model->en_activate_session($session_en, true);
         }
 
 
@@ -1727,7 +1728,7 @@ fragment PostListingItemSidebar_post on Post {
         if ($session_en) {
 
             //Activate Session:
-            $this->PLAY_model->en_activate_session($session_en, 1);
+            $this->PLAY_model->en_activate_session($session_en, false, 1);
 
             //Set message before refreshing:
             $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">Signed-in from Messenger</div>');
@@ -2007,22 +2008,24 @@ fragment PostListingItemSidebar_post on Post {
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
         $_POST['input_name'] = trim($_POST['input_name']);
         $name_parts = explode(' ', trim($_POST['input_name']));
-        if (strlen($_POST['input_name'])<5) {
+        if (strlen($_POST['input_name']) < config_var(12232)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Full name must longer than 5 characters',
+                'message' => 'Name must longer than '.config_var(12232).' characters',
                 'focus_input_field' => 'input_name',
             ));
+        } elseif (strlen($_POST['input_name']) > config_var(11072)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Name must be less than '.config_var(11072).' characters',
+                'focus_input_field' => 'input_name',
+            ));
+
+        /*
         } elseif (!isset($name_parts[1])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'There must be a space between your your first and last name',
-                'focus_input_field' => 'input_name',
-            ));
-        } elseif (strlen($name_parts[0])<2) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'First name must be 2 characters or longer',
                 'focus_input_field' => 'input_name',
             ));
         } elseif (strlen($name_parts[1])<2) {
@@ -2031,12 +2034,14 @@ fragment PostListingItemSidebar_post on Post {
                 'message' => 'Last name must be 2 characters or longer',
                 'focus_input_field' => 'input_name',
             ));
-        } elseif (strlen($_POST['input_name']) > config_var(11072)) {
+        } elseif (strlen($name_parts[0])<2) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Full name must be less than '.config_var(11072).' characters',
+                'message' => 'First name must be 2 characters or longer',
                 'focus_input_field' => 'input_name',
             ));
+        */
+
         } elseif (!isset($_POST['new_password']) || strlen($_POST['new_password'])<1) {
             return echo_json(array(
                 'status' => 0,
@@ -2054,7 +2059,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
         //All good, create new player:
-        $user_en = $this->PLAY_model->en_verify_create(trim($_POST['input_name']), 0, 6181, random_user_icon());
+        $user_en = $this->PLAY_model->en_verify_create(trim($_POST['input_name']), 0, 6181, random_player_avatar());
         if(!$user_en['status']){
             //We had an error, return it:
             return echo_json($user_en);
@@ -2079,6 +2084,13 @@ fragment PostListingItemSidebar_post on Post {
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 4230, //Raw link
             'ln_parent_play_id' => 1278, //People
+            'ln_creator_play_id' => $user_en['en']['en_id'],
+            'ln_child_play_id' => $user_en['en']['en_id'],
+        ));
+
+        $this->READ_model->ln_create(array(
+            'ln_type_play_id' => 4230, //Raw link
+            'ln_parent_play_id' => 12221, //Notify on EMAIL
             'ln_creator_play_id' => $user_en['en']['en_id'],
             'ln_child_play_id' => $user_en['en']['en_id'],
         ));
@@ -2359,7 +2371,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-    function account_radio_update()
+    function account_update_radio()
     {
         /*
          *
@@ -2368,10 +2380,12 @@ fragment PostListingItemSidebar_post on Post {
          *
          * */
 
-        if (!isset($_POST['js_pl_id']) || intval($_POST['js_pl_id']) < 1) {
+        $session_en = superpower_assigned();
+
+        if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid trainer ID',
+                'message' => 'Session expired',
             ));
         } elseif (!isset($_POST['parent_en_id']) || intval($_POST['parent_en_id']) < 1) {
             return echo_json(array(
@@ -2416,14 +2430,14 @@ fragment PostListingItemSidebar_post on Post {
             //Remove selected options for this trainer:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_parent_play_id IN (' . join(',', $possible_answers) . ')' => null,
-                'ln_child_play_id' => $_POST['js_pl_id'],
+                'ln_child_play_id' => $session_en['en_id'],
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )) as $remove_en){
                 //Should usually remove a single option:
                 $this->READ_model->ln_update($remove_en['ln_id'], array(
                     'ln_status_play_id' => 6173, //Link Removed
-                ), $_POST['js_pl_id'], 6224 /* User Account Updated */);
+                ), $session_en['en_id'], 6224 /* User Account Updated */);
             }
 
         }
@@ -2432,17 +2446,17 @@ fragment PostListingItemSidebar_post on Post {
         if(!$_POST['enable_mulitiselect'] || !$_POST['was_already_selected']){
             $this->READ_model->ln_create(array(
                 'ln_parent_play_id' => $_POST['selected_en_id'],
-                'ln_child_play_id' => $_POST['js_pl_id'],
-                'ln_creator_play_id' => $_POST['js_pl_id'],
+                'ln_child_play_id' => $session_en['en_id'],
+                'ln_creator_play_id' => $session_en['en_id'],
                 'ln_type_play_id' => 4230, //Raw
             ));
         }
 
 
         //Log Account iteration link type:
-        $_POST['account_update_function'] = 'account_radio_update'; //Add this variable to indicate which My Account function created this link
+        $_POST['account_update_function'] = 'account_update_radio'; //Add this variable to indicate which My Account function created this link
         $this->READ_model->ln_create(array(
-            'ln_creator_play_id' => $_POST['js_pl_id'],
+            'ln_creator_play_id' => $session_en['en_id'],
             'ln_type_play_id' => 6224, //My Account Iterated
             'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_already_selected'] ? 'Removed' : 'Added' ),
             'ln_metadata' => $_POST,
@@ -2492,190 +2506,58 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function account_save_full_name()
+    function account_update_name()
     {
 
+        $session_en = superpower_assigned();
 
-        if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
+        if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing player ID',
+                'message' => 'Session expired',
             ));
-        } elseif (!isset($_POST['en_name']) || strlen($_POST['en_name']) < 2) {
+        } elseif (!isset($_POST['en_name']) || strlen($_POST['en_name']) < config_var(12232)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Name must be at-least 2 characters long',
+                'message' => 'Name must be at-least '.config_var(12232).' characters long',
+            ));
+        } elseif (strlen($_POST['en_name']) > config_var(11072)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Name is longer than the allowed ' . config_var(11072) . ' characters.',
             ));
         }
 
         //Cleanup:
         $_POST['en_name'] = trim($_POST['en_name']);
 
-
-        //Update name and notify
-        $this->PLAY_model->en_update($_POST['en_id'], array(
+        //Update name:
+        $this->PLAY_model->en_update($session_en['en_id'], array(
             'en_name' => $_POST['en_name'],
-        ), true, $_POST['en_id']);
+        ), true, $session_en['en_id']);
 
 
-        //Log Account iteration link type:
-        $_POST['account_update_function'] = 'account_save_full_name'; //Add this variable to indicate which My Account function created this link
-        $this->READ_model->ln_create(array(
-            'ln_creator_play_id' => $_POST['en_id'],
-            'ln_type_play_id' => 6224, //My Account Iterated
-            'ln_content' => 'My Account Name Updated:'.$_POST['en_name'],
-            'ln_metadata' => $_POST,
-            'ln_child_play_id' => $_POST['en_id'],
-        ));
+        //Update Session:
+        $this->PLAY_model->en_activate_session($session_en, true);
+
 
         return echo_json(array(
             'status' => 1,
             'message' => 'Name updated',
+            'first__name' => one_two_explode('',' ', $_POST['en_name']),
         ));
     }
 
 
-    function account_save_phone(){
-
-        if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing player ID',
-            ));
-        } elseif (!isset($_POST['en_phone'])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing phone number',
-            ));
-        } elseif (strlen($_POST['en_phone'])>0 && !is_numeric($_POST['en_phone'])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid phone number: numbers only',
-            ));
-        } elseif (strlen($_POST['en_phone'])>0 && (strlen($_POST['en_phone'])<7 || strlen($_POST['en_phone'])>12)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Phone number must be between 7-12 characters long',
-            ));
-        }
-
-        if (strlen($_POST['en_phone']) > 0) {
-
-            //Cleanup starting 1:
-            if (strlen($_POST['en_phone']) == 11) {
-                $_POST['en_phone'] = preg_replace("/^1/", '',$_POST['en_phone']);
-            }
-
-            //Check to make sure not duplicate:
-            $duplicates = $this->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_play_id' => 4319, //Phone are of type number
-                'ln_parent_play_id' => 4783, //Phone Number
-                'ln_child_play_id !=' => $_POST['en_id'],
-                'ln_content' => $_POST['en_phone'],
-            ));
-            if (count($duplicates) > 0) {
-                //This is a duplicate, disallow:
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => 'Phone already in-use. Use another number or contact support for assistance.',
-                ));
-            }
-        }
-
-
-        //Fetch existing phone:
-        $user_phones = $this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_child_play_id' => $_POST['en_id'],
-            'ln_type_play_id' => 4319, //Phone are of type number
-            'ln_parent_play_id' => 4783, //Phone Number
-        ));
-        if (count($user_phones) > 0) {
-
-            if (strlen($_POST['en_phone']) == 0) {
-
-                //Remove:
-                $this->READ_model->ln_update($user_phones[0]['ln_id'], array(
-                    'ln_status_play_id' => 6173, //Link Removed
-                ), $_POST['en_id'], 6224 /* User Account Updated */);
-
-                $return = array(
-                    'status' => 1,
-                    'message' => 'Phone Removed',
-                );
-
-            } elseif ($user_phones[0]['ln_content'] != $_POST['en_phone']) {
-
-                //Update if not duplicate:
-                $this->READ_model->ln_update($user_phones[0]['ln_id'], array(
-                    'ln_content' => $_POST['en_phone'],
-                ), $_POST['en_id'], 6224 /* User Account Updated */);
-
-                $return = array(
-                    'status' => 1,
-                    'message' => 'Phone Updated',
-                );
-
-            } else {
-
-                $return = array(
-                    'status' => 0,
-                    'message' => 'Phone Unchanged',
-                );
-
-            }
-
-        } elseif (strlen($_POST['en_phone']) > 0) {
-
-            //Create new link:
-            $this->READ_model->ln_create(array(
-                'ln_creator_play_id' => $_POST['en_id'],
-                'ln_child_play_id' => $_POST['en_id'],
-                'ln_type_play_id' => 4319, //Phone are of type number
-                'ln_parent_play_id' => 4783, //Phone Number
-                'ln_content' => $_POST['en_phone'],
-            ), true);
-
-            $return = array(
-                'status' => 1,
-                'message' => 'Phone Added',
-            );
-
-        } else {
-
-            $return = array(
-                'status' => 0,
-                'message' => 'Phone Unchanged',
-            );
-
-        }
-
-
-        //Log Account iteration link type:
-        if($return['status']){
-            $_POST['account_update_function'] = 'account_save_phone'; //Add this variable to indicate which My Account function created this link
-            $this->READ_model->ln_create(array(
-                'ln_creator_play_id' => $_POST['en_id'],
-                'ln_type_play_id' => 6224, //My Account Iterated
-                'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_phone']) > 0 ? ': '.$_POST['en_phone'] : ''),
-                'ln_metadata' => $_POST,
-                'ln_child_play_id' => $_POST['en_id'],
-            ));
-        }
-
-        return echo_json($return);
-
-    }
-
-    function account_save_email()
+    function account_update_email()
     {
 
+        $session_en = superpower_assigned();
 
-        if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
+        if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing player ID',
+                'message' => 'Session expired',
             ));
         } elseif (!isset($_POST['en_email']) || (strlen($_POST['en_email']) > 0 && !filter_var($_POST['en_email'], FILTER_VALIDATE_EMAIL))) {
             return echo_json(array(
@@ -2686,6 +2568,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
         if (strlen($_POST['en_email']) > 0) {
+
             //Cleanup:
             $_POST['en_email'] = trim(strtolower($_POST['en_email']));
 
@@ -2694,7 +2577,7 @@ fragment PostListingItemSidebar_post on Post {
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'ln_type_play_id' => 4255, //Emails are of type Text
                 'ln_parent_play_id' => 3288, //Mench Email
-                'ln_child_play_id !=' => $_POST['en_id'],
+                'ln_child_play_id !=' => $session_en['en_id'],
                 'LOWER(ln_content)' => $_POST['en_email'],
             ));
             if (count($duplicates) > 0) {
@@ -2710,7 +2593,7 @@ fragment PostListingItemSidebar_post on Post {
         //Fetch existing email:
         $user_emails = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_child_play_id' => $_POST['en_id'],
+            'ln_child_play_id' => $session_en['en_id'],
             'ln_type_play_id' => 4255, //Emails are of type Text
             'ln_parent_play_id' => 3288, //Mench Email
         ));
@@ -2721,7 +2604,7 @@ fragment PostListingItemSidebar_post on Post {
                 //Remove email:
                 $this->READ_model->ln_update($user_emails[0]['ln_id'], array(
                     'ln_status_play_id' => 6173, //Link Removed
-                ), $_POST['en_id'], 6224 /* User Account Updated */);
+                ), $session_en['en_id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
@@ -2733,7 +2616,7 @@ fragment PostListingItemSidebar_post on Post {
                 //Update if not duplicate:
                 $this->READ_model->ln_update($user_emails[0]['ln_id'], array(
                     'ln_content' => $_POST['en_email'],
-                ), $_POST['en_id'], 6224 /* User Account Updated */);
+                ), $session_en['en_id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
@@ -2753,8 +2636,8 @@ fragment PostListingItemSidebar_post on Post {
 
             //Create new link:
             $this->READ_model->ln_create(array(
-                'ln_creator_play_id' => $_POST['en_id'],
-                'ln_child_play_id' => $_POST['en_id'],
+                'ln_creator_play_id' => $session_en['en_id'],
+                'ln_child_play_id' => $session_en['en_id'],
                 'ln_type_play_id' => 4255, //Emails are of type Text
                 'ln_parent_play_id' => 3288, //Mench Email
                 'ln_content' => $_POST['en_email'],
@@ -2777,13 +2660,12 @@ fragment PostListingItemSidebar_post on Post {
 
         if($return['status']){
             //Log Account iteration link type:
-            $_POST['account_update_function'] = 'account_save_email'; //Add this variable to indicate which My Account function created this link
+            $_POST['account_update_function'] = 'account_update_email'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->ln_create(array(
-                'ln_creator_play_id' => $_POST['en_id'],
+                'ln_creator_play_id' => $session_en['en_id'],
                 'ln_type_play_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_email']) > 0 ? ': '.$_POST['en_email'] : ''),
                 'ln_metadata' => $_POST,
-                'ln_child_play_id' => $_POST['en_id'],
             ));
         }
 
@@ -2798,11 +2680,12 @@ fragment PostListingItemSidebar_post on Post {
     function account_update_password()
     {
 
+        $session_en = superpower_assigned();
 
-        if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
+        if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing player ID',
+                'message' => 'Session Expired',
             ));
         } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < config_var(11066)) {
             return echo_json(array(
@@ -2811,16 +2694,15 @@ fragment PostListingItemSidebar_post on Post {
             ));
         }
 
-
         //Fetch existing password:
         $user_passwords = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => 4255, //Passwords are of type Text
             'ln_parent_play_id' => 3286, //Password
-            'ln_child_play_id' => $_POST['en_id'],
+            'ln_child_play_id' => $session_en['en_id'],
         ));
 
-        $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $_POST['en_id']));
+        $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $session_en['en_id']));
 
 
         if (count($user_passwords) > 0) {
@@ -2837,7 +2719,7 @@ fragment PostListingItemSidebar_post on Post {
                 //Update password:
                 $this->READ_model->ln_update($user_passwords[0]['ln_id'], array(
                     'ln_content' => $hashed_password,
-                ), $_POST['en_id'], 7578 /* User Iterated Password  */);
+                ), $session_en['en_id'], 7578 /* User Iterated Password  */);
 
                 $return = array(
                     'status' => 1,
@@ -2852,8 +2734,8 @@ fragment PostListingItemSidebar_post on Post {
             $this->READ_model->ln_create(array(
                 'ln_type_play_id' => 4255, //Passwords are of type Text
                 'ln_parent_play_id' => 3286, //Password
-                'ln_creator_play_id' => $_POST['en_id'],
-                'ln_child_play_id' => $_POST['en_id'],
+                'ln_creator_play_id' => $session_en['en_id'],
+                'ln_child_play_id' => $session_en['en_id'],
                 'ln_content' => $hashed_password,
             ), true);
 
@@ -2869,11 +2751,10 @@ fragment PostListingItemSidebar_post on Post {
         if($return['status']){
             $_POST['account_update_function'] = 'account_update_password'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->ln_create(array(
-                'ln_creator_play_id' => $_POST['en_id'],
+                'ln_creator_play_id' => $session_en['en_id'],
                 'ln_type_play_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$return['message'],
                 'ln_metadata' => $_POST,
-                'ln_child_play_id' => $_POST['en_id'],
             ));
         }
 

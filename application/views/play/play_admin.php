@@ -23,7 +23,7 @@ $moderation_tools = array(
     '/play/play_admin/assessment_marks_list_all' => 'Completion Marks List All',
     '/play/play_admin/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
     '/play/play_admin/compose_test_message' => 'Compose Test Message',
-    '/play/play_admin/random_user_icon' => 'Random User Icons',
+    '/play/play_admin/random_player_avatar' => 'Random User Icons',
 );
 
 $cron_jobs = array(
@@ -140,7 +140,7 @@ if(!$action) {
 
     echo '</table>';
 
-} elseif($action=='random_user_icon'){
+} elseif($action=='random_player_avatar'){
 
     //Show breadcrumb:
     echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
@@ -161,7 +161,7 @@ if(!$action) {
         $updated = 0;
         foreach($this->READ_model->ln_fetch($base_filters, array('en_child'), 0) as $mench_user){
             $updated += $this->PLAY_model->en_update($mench_user['en_id'], array(
-                'en_icon' => random_user_icon(),
+                'en_icon' => random_player_avatar(),
             ));
         }
         echo '<div class="alert alert-success"><i class="fas fa-check-circle"></i> '.$updated.' User profiles updated with new random animal icons</div>';
@@ -171,7 +171,7 @@ if(!$action) {
         if(fmod($i, 30)==0 && $i>1){
             echo '<br />';
         }
-        echo '<span class="icon-block">'.random_user_icon().'</span>';
+        echo '<span class="icon-block">'.random_player_avatar().'</span>';
     }
 
 } elseif($action=='moderate_blog_notes'){

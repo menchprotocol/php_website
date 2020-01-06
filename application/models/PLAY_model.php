@@ -18,27 +18,42 @@ class PLAY_model extends CI_Model
 
 
 
-    function en_activate_session($en, $messenger_signin = 0){
+    function en_activate_session($en, $update_session = false, $session_6196_signin = 0){
 
         //PROFILE
-        $session_data['user'] = $en;
-        $session_data['messenger_signin'] = $messenger_signin;
+        $session_data = array(
+            'session_profile' => $en,
+            'session_parent_ids' => array(),
+            'session_superpowers_assigned' => array(),
+            'session_superpowers_activated' => array(),
+        );
 
+        if(!$update_session){
+            //Append stats variables:
+            $session_data['session_page_count'] = 0;
+            $session_data['session_6196_signin'] = $session_6196_signin;
 
-        //SUPERPOWERS
-        $session_data['assigned_superpowers_en_ids'] = array(); //All superpowers assigned to player
-        $session_data['activate_superpowers_en_ids'] = array(); //Only superpowers activated by player
-
+            //LOG
+            $this->READ_model->ln_create(array(
+                'ln_creator_play_id' => $en['en_id'],
+                'ln_type_play_id' => 7564, //PLAYER Signin on Website Success
+            ));
+        }
 
         foreach($this->READ_model->ln_fetch(array(
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
             'ln_child_play_id' => $en['en_id'], //This child player
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
         ), array('en_parent')) as $en_parent){
-            if(in_array($en_parent['en_id'], $this->config->item('en_ids_10957')) && in_array($en_parent['en_status_play_id'], $this->config->item('en_ids_7357')) && in_array($en_parent['ln_status_play_id'], $this->config->item('en_ids_7359'))){
+
+            //Push to parent IDs:
+            array_push($session_data['session_parent_ids'], intval($en_parent['en_id']));
+
+            if(in_array($en_parent['en_id'], $this->config->item('en_ids_10957'))){
 
                 //It's assigned!
-                array_push($session_data['assigned_superpowers_en_ids'], intval($en_parent['en_id']));
+                array_push($session_data['session_superpowers_assigned'], intval($en_parent['en_id']));
 
                 //Was the latest toggle to de-activate? If not, assume active:
                 $last_advance_settings = $this->READ_model->ln_fetch(array(
@@ -48,25 +63,14 @@ class PLAY_model extends CI_Model
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 ), array(), 1); //Fetch the single most recent supoerpower toggle only
                 if(!count($last_advance_settings) || !substr_count($last_advance_settings[0]['ln_content'] , ' DEACTIVATED')){
-                    array_push($session_data['activate_superpowers_en_ids'], intval($en_parent['en_id']));
+                    array_push($session_data['session_superpowers_activated'], intval($en_parent['en_id']));
                 }
+
             }
         }
 
-        //ANALYTICS
-        $session_data['player_page_count'] = 0;
-
-
         //SESSION
         $this->session->set_userdata($session_data);
-
-
-        //READ
-        $this->READ_model->ln_create(array(
-            'ln_creator_play_id' => $en['en_id'],
-            'ln_type_play_id' => 7564, //PLAYER Signin on Website Success
-        ));
-
 
         return $en;
 
@@ -1183,7 +1187,7 @@ class PLAY_model extends CI_Model
              * */
 
             //Create user player:
-            $added_en = $this->PLAY_model->en_verify_create('User '.rand(100000000, 999999999), 0, 6181, random_user_icon());
+            $added_en = $this->PLAY_model->en_verify_create('User '.rand(100000000, 999999999), 0, 6181, random_player_avatar());
 
         } else {
 
@@ -1191,7 +1195,7 @@ class PLAY_model extends CI_Model
             $fb_profile = $graph_fetch['ln_metadata']['result'];
 
             //Create user player with their Facebook Graph name:
-            $added_en = $this->PLAY_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, 6181, random_user_icon());
+            $added_en = $this->PLAY_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, 6181, random_player_avatar());
 
 
             //See if we could fetch FULL profile data:
@@ -1255,6 +1259,13 @@ class PLAY_model extends CI_Model
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 4230, //Raw link
             'ln_parent_play_id' => 1278, //People
+            'ln_creator_play_id' => $added_en['en']['en_id'],
+            'ln_child_play_id' => $added_en['en']['en_id'],
+        ));
+
+        $this->READ_model->ln_create(array(
+            'ln_type_play_id' => 4230, //Raw link
+            'ln_parent_play_id' => 12222, //Notify on MESSENGER
             'ln_creator_play_id' => $added_en['en']['en_id'],
             'ln_child_play_id' => $added_en['en']['en_id'],
         ));
