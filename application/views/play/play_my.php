@@ -9,7 +9,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 if($session_en) {
 
-    echo '<h1 class="play pull-left inline-block"><span class="icon-block-xlg icon_photo">' . echo_en_icon($session_en['en_icon']) . '</span>' . $session_en['en_name'] . '</h1>';
+    echo '<h1 class="play pull-left inline-block"><span class="icon-block-xlg icon_photo">' . echo_en_icon($session_en['en_icon']) . '</span>' . one_two_explode('',' ',$session_en['en_name']) . '</h1>';
 
     echo '<div class="pull-right inline-block side-margin">';
 
