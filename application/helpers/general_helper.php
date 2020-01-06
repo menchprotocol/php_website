@@ -481,9 +481,9 @@ function ISO8601ToSeconds($ISO8601){
 
 function random_player_avatar(){
     $CI =& get_instance();
-    $en_ids_10956 = $CI->config->item('en_ids_10956');
     $en_all_10956 = $CI->config->item('en_all_10956');
-    return $en_all_10956[$en_ids_10956[rand(0, (count($en_ids_10956)-1))]]['m_icon'];
+    $rand_keys = array_rand($en_all_10956);
+    return $rand_keys[0]['m_icon'];
 }
 
 
