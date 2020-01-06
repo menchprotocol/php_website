@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-05 18:59:43 PST
+//Generated 2020-01-05 19:18:39 PST
 
 //PLAY NOTIFICATION CHANNEL:
 $config['en_ids_12220'] = array(12221,12222);
@@ -1508,24 +1508,24 @@ $config['en_all_10869'] = array(
     ),
 );
 
-//PLAY RECURRING DONATION:
+//PLAY SUBSCRIPTION LEVEL:
 $config['en_ids_11007'] = array(11010,11011,11012);
 $config['en_all_11007'] = array(
     11010 => array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
-        'm_name' => '33 READS/WEEK FOR FREE',
+        'm_name' => '33 READS/WEEK ALWAYS FREE',
         'm_desc' => '',
         'm_parents' => array(11061,11007),
     ),
     11011 => array(
         'm_icon' => '<i class="fas fa-usd-circle" aria-hidden="true"></i>',
-        'm_name' => 'UNLIMITED FOR $5/MONTH',
+        'm_name' => 'UNLIMITED DONATE $5/MONTH',
         'm_desc' => '',
         'm_parents' => array(11162,11007),
     ),
     11012 => array(
         'm_icon' => '<i class="fas fa-usd-circle" aria-hidden="true"></i>',
-        'm_name' => 'UNLIMITED FOR $50/YEAR',
+        'm_name' => 'UNLIMITED DONATE $50/YEAR',
         'm_desc' => '',
         'm_parents' => array(11163,11007),
     ),
@@ -2729,7 +2729,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(12066,10725,7758,10809,12145,10990,11018,11047,4983,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11021,6201,12112,7585,10602,7309,7712,7751,6150,12201,10712,10719,10627,10716,10746,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,6404,4527,11054,6232,6225,11039,10956,6194,6827,4426,4997,4986,7551,11028,4537,10957,6206,3290,4592,12220,4454,11089,11033,11007,3000,7303,6177,11088,3289,4755,10718,6287,10571,7357,6192,11081,6193,6255,6345,4280,10570,4277,6102,7704,7494,10590,6103,10692,5967,7347,7304,6186,7360,7364,7359,4341,4593,10593,10591,12141,10658,6146,10711,11031,11084,6204,10710,6805,7358,10869);
+$config['en_ids_4527'] = array(12066,10725,7758,10809,12145,10990,11018,11047,4983,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11021,6201,12112,7585,10602,7309,7712,7751,6150,12201,10712,10719,10627,10716,10746,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,6404,4527,11054,6232,6225,11039,10956,6194,6827,4426,4997,4986,7551,11028,4537,10957,6206,3290,4592,12220,4454,11089,11033,3000,7303,6177,11007,11088,3289,4755,10718,6287,10571,7357,6192,11081,6193,6255,6345,4280,10570,4277,6102,7704,7494,10590,6103,10692,5967,7347,7304,6186,7360,7364,7359,4341,4593,10593,10591,12141,10658,6146,10711,11031,11084,6204,10710,6805,7358,10869);
 $config['en_all_4527'] = array(
     12066 => array(
         'm_icon' => '<i class="far fa-info-circle" aria-hidden="true"></i>',
@@ -3151,12 +3151,6 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(11088,4527),
     ),
-    11007 => array(
-        'm_icon' => '<i class="fas fa-hands-heart" aria-hidden="true"></i>',
-        'm_name' => 'PLAY RECURRING DONATION',
-        'm_desc' => '',
-        'm_parents' => array(4527,6204,6225),
-    ),
     3000 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
         'm_name' => 'PLAY SOURCES',
@@ -3174,6 +3168,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'PLAY STATUS',
         'm_desc' => '',
         'm_parents' => array(11054,7303,6204,5003,10654,6160,6232,6194,6206,4527),
+    ),
+    11007 => array(
+        'm_icon' => '<i class="fas fa-hands-heart" aria-hidden="true"></i>',
+        'm_name' => 'PLAY SUBSCRIPTION LEVEL',
+        'm_desc' => '',
+        'm_parents' => array(4527,6204,6225),
     ),
     11088 => array(
         'm_icon' => '<i class="fas fa-list-alt play"></i>',
@@ -5020,7 +5020,7 @@ $config['en_all_6201'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['en_ids_6204'] = array(4737,7585,10602,10956,3290,12220,4454,11007,6177,3289,6186,4593,10591);
+$config['en_ids_6204'] = array(4737,7585,10602,10956,3290,12220,4454,6177,11007,3289,6186,4593,10591);
 $config['en_all_6204'] = array(
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h blog" aria-hidden="true"></i>',
@@ -5064,17 +5064,17 @@ $config['en_all_6204'] = array(
         'm_desc' => '',
         'm_parents' => array(6225,6204,4527),
     ),
-    11007 => array(
-        'm_icon' => '<i class="fas fa-hands-heart" aria-hidden="true"></i>',
-        'm_name' => 'PLAY RECURRING DONATION',
-        'm_desc' => '',
-        'm_parents' => array(4527,6204,6225),
-    ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h play" aria-hidden="true"></i>',
         'm_name' => 'PLAY STATUS',
         'm_desc' => '',
         'm_parents' => array(11054,7303,6204,5003,10654,6160,6232,6194,6206,4527),
+    ),
+    11007 => array(
+        'm_icon' => '<i class="fas fa-hands-heart" aria-hidden="true"></i>',
+        'm_name' => 'PLAY SUBSCRIPTION LEVEL',
+        'm_desc' => '',
+        'm_parents' => array(4527,6204,6225),
     ),
     3289 => array(
         'm_icon' => '<i class="fas fa-map-marked play" aria-hidden="true"></i>',
@@ -5792,8 +5792,8 @@ $config['en_all_6225'] = array(
     ),
     11007 => array(
         'm_icon' => '<i class="fas fa-hands-heart" aria-hidden="true"></i>',
-        'm_name' => 'RECURRING DONATION',
-        'm_desc' => 'Your donations help build the platform & compensate players who blog.',
+        'm_name' => 'SUBSCRIPTION LEVEL',
+        'm_desc' => 'MENCH is a non-profit and open-source project. Your donations help build the platform & compensate players who blog.',
         'm_parents' => array(4527,6204,6225),
     ),
     4454 => array(
