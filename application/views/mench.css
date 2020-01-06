@@ -146,7 +146,7 @@ li a {
     width: 136px !important;
     padding: 20px 0  !important;
 }
-.avatar-item.active{
+.avatar-item.active, .btn-group a.active{
     background-color: #b2defd !important;
     margin-top: 0 !important;
     border-top-width: 0 !important;
