@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-06 18:38:22 PST
+//Generated 2020-01-06 18:43:35 PST
 
 //PLAY AVATAR SUPER:
 $config['en_ids_12279'] = array(12280,12281,12282,12308,12309,12310,12296,12297,12298,12302,12303,12304,12306,12307,12305,12312,12313,12311,12277,12276,12278,12290,12291,12292,12285,12284,12283);
@@ -35,19 +35,19 @@ $config['en_all_12279'] = array(
         'm_parents' => array(12279),
     ),
     12308 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fas fa-spider-black-widow play"></i>',
         'm_name' => 'BLACK WIDOW BOLD',
         'm_desc' => '',
         'm_parents' => array(12279),
     ),
     12309 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="far fa-spider-black-widow play"></i>',
         'm_name' => 'BLACK WIDOW LIGHT',
         'm_desc' => '',
         'm_parents' => array(12279),
     ),
     12310 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fad fa-spider-black-widow play"></i>',
         'm_name' => 'BLACK WIDOW MIX',
         'm_desc' => '',
         'm_parents' => array(12279),

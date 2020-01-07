@@ -85,10 +85,9 @@ if($session_en) {
             foreach ($merged_array as $en_id => $m) {
 
                 $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m['m_icon']));
-                $avatar_icon_parts[1] = ( isset($avatar_icon_parts[1]) ? $avatar_icon_parts[1] : '' );
                 $avatar_type_match = ($player_icon_parts[0] == $avatar_icon_parts[0]);
 
-                echo '<a href="javascript:void(0);" onclick="update_avatar(' . $en_id . ')" class="list-group-item itemplay avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && isset($player_icon_parts[1]) && $player_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a>';
+                echo '<a href="javascript:void(0);" onclick="update_avatar(' . $en_id . ')" class="list-group-item itemplay avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $player_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a>';
             }
 
             echo '<div class="doclear">&nbsp;</div>';
