@@ -691,7 +691,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //Fetch top users per each direction
         $session_en = superpower_assigned();
-        $load_max = config_var(11985);
+        $load_max = config_var(11064);
         $show_max = config_var(11986);
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 

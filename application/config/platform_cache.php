@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-06 19:07:26 PST
+//Generated 2020-01-07 00:06:22 PST
 
 //PLAY AVATAR SUPER:
 $config['en_ids_12279'] = array(12280,12281,12282,12308,12309,12310,12296,12297,12298,12302,12303,12304,12306,12307,12305,12312,12313,12311,12277,12276,12278,12290,12291,12292,12285,12284,12283);
@@ -2401,16 +2401,16 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12176,12156,10939,11071,12210,12130,11077,11074,12124,11076,11075,11064,11985,11986,11065,11063,11060,11079,11073,11066,11072,12232,11057,11056,12113,12088,11061,11162,11163,12209,12208);
+$config['en_ids_6404'] = array(12176,12156,10939,11071,12210,12130,11077,11074,12124,11076,11075,11064,11986,11065,11063,11060,11079,11073,11066,11072,12232,11057,11056,12113,12088,11061,11162,11163,12209,12208);
 $config['en_all_6404'] = array(
     12176 => array(
-        'm_icon' => '',
-        'm_name' => 'BLOG DEFAULT TIME',
+        'm_icon' => '<i class="fad fa-clock blog"></i>',
+        'm_name' => 'BLOG DEFAULT TIME SECONDS',
         'm_desc' => '29',
         'm_parents' => array(6404),
     ),
     12156 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fad fa-star blog"></i>',
         'm_name' => 'BLOG NORTH STAR',
         'm_desc' => '7766',
         'm_parents' => array(6404),
@@ -2422,7 +2422,7 @@ $config['en_all_6404'] = array(
         'm_parents' => array(12201,6404,10957),
     ),
     11071 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fad fa-ruler-horizontal blog"></i>',
         'm_name' => 'BLOG TITLE MAX LENGTH',
         'm_desc' => '89',
         'm_parents' => array(6404),
@@ -2430,7 +2430,7 @@ $config['en_all_6404'] = array(
     12210 => array(
         'm_icon' => '',
         'm_name' => 'COINS REFRESH MILLISECONDS BLOGGER',
-        'm_desc' => '2584',
+        'm_desc' => '4181',
         'm_parents' => array(6404),
     ),
     12130 => array(
@@ -2472,12 +2472,6 @@ $config['en_all_6404'] = array(
     11064 => array(
         'm_icon' => '',
         'm_name' => 'ITEMS PER PAGE',
-        'm_desc' => '100',
-        'm_parents' => array(6404),
-    ),
-    11985 => array(
-        'm_icon' => '',
-        'm_name' => 'LEADERBOARD TOTAL',
         'm_desc' => '100',
         'm_parents' => array(6404),
     ),
@@ -4072,7 +4066,7 @@ $config['en_all_4527'] = array(
     ),
     5967 => array(
         'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'READ READ CC EMAIL',
+        'm_name' => 'READ READ CC',
         'm_desc' => '',
         'm_parents' => array(10590,4506,4527,7569,4755,4593),
     ),
@@ -4383,7 +4377,7 @@ $config['en_all_10627'] = array(
 );
 
 //READ TYPE ADD CONTENT:
-$config['en_ids_10593'] = array(4983,4250,4601,4231,10679,10644,4251,4259,10657,4261,4260,4255,4258,10646,4554,4556,4555,6563,7702,4570,4549,4551,4550,4548,4552,4553);
+$config['en_ids_10593'] = array(4983,4250,4601,4231,10679,10644,4251,4259,10657,4261,4260,4255,4258,10646,4554,4556,4555,6563,4570,7702,4549,4551,4550,4548,4552,4553);
 $config['en_all_10593'] = array(
     4983 => array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
@@ -4493,17 +4487,17 @@ $config['en_all_10593'] = array(
         'm_desc' => '',
         'm_parents' => array(10593,10590,4593,4755,4280),
     ),
-    7702 => array(
-        'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'READ RECEIVED BLOG EMAIL',
-        'm_desc' => '',
-        'm_parents' => array(10593,10590,4593,4755,7569),
-    ),
     4570 => array(
         'm_icon' => '<i class="read fad fa-envelope-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ RECEIVED EMAIL',
+        'm_name' => 'READ RECEIVED',
         'm_desc' => '',
         'm_parents' => array(10683,10593,10590,7569,4755,4593),
+    ),
+    7702 => array(
+        'm_icon' => '<i class="read fad fa-envelope-open"></i>',
+        'm_name' => 'READ RECEIVED BLOG',
+        'm_desc' => '',
+        'm_parents' => array(10593,10590,4593,4755,7569),
     ),
     4549 => array(
         'm_icon' => '<i class="read fad fa-volume-up"></i>',
@@ -4544,7 +4538,7 @@ $config['en_all_10593'] = array(
 );
 
 //READING:
-$config['en_ids_10590'] = array(12129,12119,6157,7489,7487,7488,4554,6149,6969,4275,4283,7610,7757,6155,12106,6559,6560,6556,6578,6415,7611,4556,4235,4555,7563,10690,4559,4266,4267,4282,6563,5967,10683,6132,7702,4570,7495,6144,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,6140,12197,7492,4552,7485,7486,6997,7578,6224,12117,4553,7562);
+$config['en_ids_10590'] = array(12129,12119,6157,7489,7487,7488,4554,6149,6969,4275,4283,7610,7757,6155,12106,6559,6560,6556,6578,6415,7611,4556,4235,4555,7563,10690,4559,4266,4267,4282,6563,5967,10683,6132,4570,7702,7495,6144,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,6140,12197,7492,4552,7485,7486,6997,7578,6224,12117,4553,7562);
 $config['en_all_10590'] = array(
     12129 => array(
         'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
@@ -4692,7 +4686,7 @@ $config['en_all_10590'] = array(
     ),
     7563 => array(
         'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'MAGIC-READ EMAIL',
+        'm_name' => 'MAGIC-READ',
         'm_desc' => '',
         'm_parents' => array(10590,4755,7569,4593),
     ),
@@ -4734,7 +4728,7 @@ $config['en_all_10590'] = array(
     ),
     5967 => array(
         'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'READ CC EMAIL',
+        'm_name' => 'READ CC',
         'm_desc' => '',
         'm_parents' => array(10590,4506,4527,7569,4755,4593),
     ),
@@ -4750,17 +4744,17 @@ $config['en_all_10590'] = array(
         'm_desc' => '',
         'm_parents' => array(10590,10639,6153,4506,4755,4593),
     ),
-    7702 => array(
-        'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'RECEIVED BLOG EMAIL',
-        'm_desc' => '',
-        'm_parents' => array(10593,10590,4593,4755,7569),
-    ),
     4570 => array(
         'm_icon' => '<i class="read fad fa-envelope-open read" aria-hidden="true"></i>',
-        'm_name' => 'RECEIVED EMAIL',
+        'm_name' => 'RECEIVED',
         'm_desc' => '',
         'm_parents' => array(10683,10593,10590,7569,4755,4593),
+    ),
+    7702 => array(
+        'm_icon' => '<i class="read fad fa-envelope-open"></i>',
+        'm_name' => 'RECEIVED BLOG',
+        'm_desc' => '',
+        'm_parents' => array(10593,10590,4593,4755,7569),
     ),
     7495 => array(
         'm_icon' => '<i class="read fad fa-bookmark read" aria-hidden="true"></i>',
@@ -4950,7 +4944,7 @@ $config['en_all_10590'] = array(
     ),
     7562 => array(
         'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'WELCOME EMAIL',
+        'm_name' => 'WELCOME',
         'm_desc' => '',
         'm_parents' => array(10590,4755,7569,4593),
     ),
@@ -5986,7 +5980,7 @@ $config['en_all_7585'] = array(
     ),
 );
 
-//READ READ CC EMAIL:
+//READ READ CC:
 $config['en_ids_5967'] = array(4246,7504,6415,4235);
 $config['en_all_5967'] = array(
     4246 => array(
@@ -6884,7 +6878,7 @@ $config['en_all_4426'] = array(
 );
 
 //PRIVATE READ:
-$config['en_ids_4755'] = array(10681,4783,6232,4246,6194,3288,3286,7504,4755,12119,6157,7489,7487,7488,4554,6149,6969,4275,4283,7610,7757,6155,6559,6560,6556,6578,6415,7611,4556,4235,4555,7563,4559,4266,4267,4282,6563,5967,6132,7702,4570,7495,6144,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,6140,12197,7492,4552,7485,7486,6997,7578,6224,12117,4553,7562);
+$config['en_ids_4755'] = array(10681,4783,6232,4246,6194,3288,3286,7504,4755,12119,6157,7489,7487,7488,4554,6149,6969,4275,4283,7610,7757,6155,6559,6560,6556,6578,6415,7611,4556,4235,4555,7563,4559,4266,4267,4282,6563,5967,6132,4570,7702,7495,6144,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,6140,12197,7492,4552,7485,7486,6997,7578,6224,12117,4553,7562);
 $config['en_all_4755'] = array(
     10681 => array(
         'm_icon' => '<i class="fad fa-sort blog" aria-hidden="true"></i>',
@@ -7074,7 +7068,7 @@ $config['en_all_4755'] = array(
     ),
     7563 => array(
         'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'READ MAGIC-READ EMAIL',
+        'm_name' => 'READ MAGIC-READ',
         'm_desc' => '',
         'm_parents' => array(10590,4755,7569,4593),
     ),
@@ -7110,7 +7104,7 @@ $config['en_all_4755'] = array(
     ),
     5967 => array(
         'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'READ READ CC EMAIL',
+        'm_name' => 'READ READ CC',
         'm_desc' => '',
         'm_parents' => array(10590,4506,4527,7569,4755,4593),
     ),
@@ -7120,17 +7114,17 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(10590,10639,6153,4506,4755,4593),
     ),
-    7702 => array(
-        'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'READ RECEIVED BLOG EMAIL',
-        'm_desc' => '',
-        'm_parents' => array(10593,10590,4593,4755,7569),
-    ),
     4570 => array(
         'm_icon' => '<i class="read fad fa-envelope-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ RECEIVED EMAIL',
+        'm_name' => 'READ RECEIVED',
         'm_desc' => '',
         'm_parents' => array(10683,10593,10590,7569,4755,4593),
+    ),
+    7702 => array(
+        'm_icon' => '<i class="read fad fa-envelope-open"></i>',
+        'm_name' => 'READ RECEIVED BLOG',
+        'm_desc' => '',
+        'm_parents' => array(10593,10590,4593,4755,7569),
     ),
     7495 => array(
         'm_icon' => '<i class="read fad fa-bookmark read" aria-hidden="true"></i>',
@@ -7320,14 +7314,14 @@ $config['en_all_4755'] = array(
     ),
     7562 => array(
         'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'READ WELCOME EMAIL',
+        'm_name' => 'READ WELCOME',
         'm_desc' => '',
         'm_parents' => array(10590,4755,7569,4593),
     ),
 );
 
 //READ TYPE:
-$config['en_ids_4593'] = array(10671,4983,10573,4250,4601,4229,4228,10686,10663,10664,6226,4231,10676,10678,10679,10677,7545,10681,10675,10662,10648,10650,10644,10651,4993,10672,4246,4251,10653,4259,10657,4261,10669,4260,4319,4230,10656,4255,4318,10659,10673,4256,4258,4257,5001,10625,5943,5865,4999,4998,5000,5981,11956,5982,5003,10689,10646,7504,10654,5007,4994,12129,12119,6157,7489,7487,7488,4554,6149,6969,4275,4283,7610,7757,6155,12106,6559,6560,6556,6578,6415,7611,4556,4235,4555,7563,10690,4559,4266,4267,4282,6563,5967,10683,6132,7702,4570,7495,6144,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,6140,12197,7492,4552,7485,7486,6997,7578,6224,12117,4553,7562);
+$config['en_ids_4593'] = array(10671,4983,10573,4250,4601,4229,4228,10686,10663,10664,6226,4231,10676,10678,10679,10677,7545,10681,10675,10662,10648,10650,10644,10651,4993,10672,4246,4251,10653,4259,10657,4261,10669,4260,4319,4230,10656,4255,4318,10659,10673,4256,4258,4257,5001,10625,5943,5865,4999,4998,5000,5981,11956,5982,5003,10689,10646,7504,10654,5007,4994,12129,12119,6157,7489,7487,7488,4554,6149,6969,4275,4283,7610,7757,6155,12106,6559,6560,6556,6578,6415,7611,4556,4235,4555,7563,10690,4559,4266,4267,4282,6563,5967,10683,6132,4570,7702,7495,6144,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,6140,12197,7492,4552,7485,7486,6997,7578,6224,12117,4553,7562);
 $config['en_all_4593'] = array(
     10671 => array(
         'm_icon' => '<i class="fad fa-trash-alt blog" aria-hidden="true"></i>',
@@ -7841,7 +7835,7 @@ $config['en_all_4593'] = array(
     ),
     7563 => array(
         'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'READ MAGIC-READ EMAIL',
+        'm_name' => 'READ MAGIC-READ',
         'm_desc' => '',
         'm_parents' => array(10590,4755,7569,4593),
     ),
@@ -7883,7 +7877,7 @@ $config['en_all_4593'] = array(
     ),
     5967 => array(
         'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'READ READ CC EMAIL',
+        'm_name' => 'READ READ CC',
         'm_desc' => '',
         'm_parents' => array(10590,4506,4527,7569,4755,4593),
     ),
@@ -7899,17 +7893,17 @@ $config['en_all_4593'] = array(
         'm_desc' => 'Student re-prioritized their top-level intentions to focus on intentions that currently matter the most.',
         'm_parents' => array(10590,10639,6153,4506,4755,4593),
     ),
-    7702 => array(
-        'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'READ RECEIVED BLOG EMAIL',
-        'm_desc' => 'Emails sent to intent subscribers who are looking for updates on an intent.',
-        'm_parents' => array(10593,10590,4593,4755,7569),
-    ),
     4570 => array(
         'm_icon' => '<i class="read fad fa-envelope-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ RECEIVED EMAIL',
+        'm_name' => 'READ RECEIVED',
         'm_desc' => '',
         'm_parents' => array(10683,10593,10590,7569,4755,4593),
+    ),
+    7702 => array(
+        'm_icon' => '<i class="read fad fa-envelope-open"></i>',
+        'm_name' => 'READ RECEIVED BLOG',
+        'm_desc' => 'Emails sent to intent subscribers who are looking for updates on an intent.',
+        'm_parents' => array(10593,10590,4593,4755,7569),
     ),
     7495 => array(
         'm_icon' => '<i class="read fad fa-bookmark read" aria-hidden="true"></i>',
@@ -8099,7 +8093,7 @@ $config['en_all_4593'] = array(
     ),
     7562 => array(
         'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'READ WELCOME EMAIL',
+        'm_name' => 'READ WELCOME',
         'm_desc' => '',
         'm_parents' => array(10590,4755,7569,4593),
     ),
