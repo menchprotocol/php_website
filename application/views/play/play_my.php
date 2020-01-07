@@ -60,29 +60,37 @@ if($session_en) {
         //Print account fields that are either Single Selectable or Multi Selectable:
         $is_multi_selectable = in_array(6122, $acc_detail['m_parents']);
         $is_single_selectable = in_array(6204, $acc_detail['m_parents']);
-        if ($acc_en_id == 10956 /* AVATARS */) {
+
+        if ($acc_en_id == 12289) {
 
             $player_icon_parts = explode(' ',one_two_explode('class="', '"', $session_en['en_icon']));
 
-            echo '<div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:-48px -10px 0 0;">
+            echo '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:-48px -10px 0 0;">
                       <a href="javascript:void(0)" onclick="avatar_switch(\'far\')" class="btn btn-far '.( $player_icon_parts[0]=='far' ? ' active ' : '' ).'"><i class="far fa-paw play"></i></a>
                       <a href="javascript:void(0)" onclick="avatar_switch(\'fad\')" class="btn btn-fad '.( $player_icon_parts[0]=='fad' ? ' active ' : '' ).'"><i class="fad fa-paw play"></i></a>
                       <a href="javascript:void(0)" onclick="avatar_switch(\'fas\')" class="btn btn-fas '.( $player_icon_parts[0]=='fas' ? ' active ' : '' ).'"><i class="fas fa-paw play"></i></a>
-                    </div><div class="doclear">&nbsp;</div>';
+                    </div><div class="doclear">&nbsp;</div></div>';
 
 
-            foreach ($this->config->item('en_all_10956') as $en_id => $m) {
+            //Merge two avatar types:
+            $merged_array = array();
+            foreach($this->config->item('en_all_10956') as $en_id => $m) {
+                $merged_array[$en_id] = $m;
+            }
+            foreach($this->config->item('en_all_12279') as $en_id => $m) {
+                $merged_array[$en_id] = $m;
+            }
+
+            //List avatars:
+            foreach ($merged_array as $en_id => $m) {
 
                 $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m['m_icon']));
                 $avatar_type_match = ($player_icon_parts[0] == $avatar_icon_parts[0]);
 
                 echo '<a href="javascript:void(0);" onclick="update_avatar(' . $en_id . ')" class="list-group-item itemplay avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $player_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a>';
             }
+
             echo '<div class="doclear">&nbsp;</div>';
-
-        } elseif ($is_multi_selectable || $is_single_selectable) {
-
-            echo echo_radio_players($acc_en_id, $session_en['en_id'], ($is_multi_selectable ? 1 : 0));
 
         } elseif ($acc_en_id == 6197 /* Name */) {
 
@@ -108,6 +116,10 @@ if($session_en) {
             echo '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
                     <a href="javascript:void(0)" onclick="account_update_password()" class="btn btn-play">Save</a>
                     <span class="saving-account save_password"></span>';
+
+        } elseif ($is_multi_selectable || $is_single_selectable) {
+
+            echo echo_radio_players($acc_en_id, $session_en['en_id'], ($is_multi_selectable ? 1 : 0));
 
         }
 

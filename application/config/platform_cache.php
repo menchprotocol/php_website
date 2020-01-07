@@ -11,7 +11,174 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-06 16:38:34 PST
+//Generated 2020-01-06 18:38:22 PST
+
+//PLAY AVATAR SUPER:
+$config['en_ids_12279'] = array(12280,12281,12282,12308,12309,12310,12296,12297,12298,12302,12303,12304,12306,12307,12305,12312,12313,12311,12277,12276,12278,12290,12291,12292,12285,12284,12283);
+$config['en_all_12279'] = array(
+    12280 => array(
+        'm_icon' => '<i class="fas fa-alicorn play"></i>',
+        'm_name' => 'ALICORN BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12281 => array(
+        'm_icon' => '<i class="far fa-alicorn play"></i>',
+        'm_name' => 'ALICORN LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12282 => array(
+        'm_icon' => '<i class="fad fa-alicorn play"></i>',
+        'm_name' => 'ALICORN MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12308 => array(
+        'm_icon' => '',
+        'm_name' => 'BLACK WIDOW BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12309 => array(
+        'm_icon' => '',
+        'm_name' => 'BLACK WIDOW LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12310 => array(
+        'm_icon' => '',
+        'm_name' => 'BLACK WIDOW MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12296 => array(
+        'm_icon' => '<i class="fas fa-dragon play"></i>',
+        'm_name' => 'DRAGON BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12297 => array(
+        'm_icon' => '<i class="far fa-dragon play"></i>',
+        'm_name' => 'DRAGON LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12298 => array(
+        'm_icon' => '<i class="fad fa-dragon play"></i>',
+        'm_name' => 'DRAGON MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12302 => array(
+        'm_icon' => '<i class="fas fa-narwhal play"></i>',
+        'm_name' => 'NARWHAL BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12303 => array(
+        'm_icon' => '<i class="far fa-narwhal play"></i>',
+        'm_name' => 'NARWHAL LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12304 => array(
+        'm_icon' => '<i class="fad fa-narwhal play"></i>',
+        'm_name' => 'NARWHAL MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12306 => array(
+        'm_icon' => '<i class="fas fa-pegasus play"></i>',
+        'm_name' => 'PEGASUS BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12307 => array(
+        'm_icon' => '<i class="far fa-pegasus play"></i>',
+        'm_name' => 'PEGASUS LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12305 => array(
+        'm_icon' => '<i class="fad fa-pegasus play" aria-hidden="true"></i>',
+        'm_name' => 'PEGASUS MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12312 => array(
+        'm_icon' => '<i class="fas fa-ram play"></i>',
+        'm_name' => 'RAM BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12313 => array(
+        'm_icon' => '<i class="far fa-ram play"></i>',
+        'm_name' => 'RAM LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12311 => array(
+        'm_icon' => '<i class="fad fa-ram play"></i>',
+        'm_name' => 'RAM MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12277 => array(
+        'm_icon' => '<i class="fas fa-deer-rudolph play" aria-hidden="true"></i>',
+        'm_name' => 'RUDOLPH BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12276 => array(
+        'm_icon' => '<i class="far fa-deer-rudolph play" aria-hidden="true"></i>',
+        'm_name' => 'RUDOLPH LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12278 => array(
+        'm_icon' => '<i class="fad fa-deer-rudolph play" aria-hidden="true"></i>',
+        'm_name' => 'RUDOLPH MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12290 => array(
+        'm_icon' => '<i class="fas fa-cat-space play"></i>',
+        'm_name' => 'SPACE CAT BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12291 => array(
+        'm_icon' => '<i class="far fa-cat-space play"></i>',
+        'm_name' => 'SPACE CAT LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12292 => array(
+        'm_icon' => '<i class="fad fa-cat-space play"></i>',
+        'm_name' => 'SPACE CAT MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12285 => array(
+        'm_icon' => '<i class="fas fa-unicorn play"></i>',
+        'm_name' => 'UNICORN BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12284 => array(
+        'm_icon' => '<i class="far fa-unicorn play"></i>',
+        'm_name' => 'UNICORN LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12283 => array(
+        'm_icon' => '<i class="fad fa-unicorn play"></i>',
+        'm_name' => 'UNICORN MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+);
 
 //PLAY COIN:
 $config['en_ids_12274'] = array(4251);
@@ -281,8 +448,8 @@ $config['en_all_12220'] = array(
 $config['en_ids_12201'] = array(10939,12198,10869,5008);
 $config['en_all_12201'] = array(
     10939 => array(
-        'm_icon' => '<i class="fad fa-pencil blog" aria-hidden="true"></i>',
-        'm_name' => 'BLOG PENCIL',
+        'm_icon' => '<i class="fad fa-pen blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOG PEN',
         'm_desc' => '',
         'm_parents' => array(12201,6404,10957),
     ),
@@ -2249,8 +2416,8 @@ $config['en_all_6404'] = array(
         'm_parents' => array(6404),
     ),
     10939 => array(
-        'm_icon' => '<i class="fad fa-pencil blog" aria-hidden="true"></i>',
-        'm_name' => 'BLOG PENCIL',
+        'm_icon' => '<i class="fad fa-pen blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOG PEN',
         'm_desc' => '13008',
         'm_parents' => array(12201,6404,10957),
     ),
@@ -2762,8 +2929,8 @@ $config['en_all_10990'] = array(
 $config['en_ids_10957'] = array(10939,10984,10964,10983,10967);
 $config['en_all_10957'] = array(
     10939 => array(
-        'm_icon' => '<i class="fad fa-pencil blog" aria-hidden="true"></i>',
-        'm_name' => 'BLOG PENCIL',
+        'm_icon' => '<i class="fad fa-pen blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOG PEN',
         'm_desc' => '',
         'm_parents' => array(12201,6404,10957),
     ),
@@ -2793,9 +2960,27 @@ $config['en_all_10957'] = array(
     ),
 );
 
-//PLAY AVATAR:
-$config['en_ids_10956'] = array(12234,12233,10965,12236,12235,10979,12237,12238,10978,12240,12239,10963,12241,12242,12207,12244,12243,10966,12245,12246,10976,12248,12247,10962,12249,12250,10975,12252,12251,10982,12253,12254,10970,12256,12255,10972,12257,12258,10969,12260,12259,10960,12276,12261,12262,10981,12264,12263,10968,12265,12266,10974,12268,12267,12206,12269,12270,10958,12272,12271,12231);
+//PLAY AVATAR BASIC:
+$config['en_ids_10956'] = array(12286,12287,12288,12234,12233,10965,12236,12235,10979,12295,12294,12293,12300,12301,12299,12237,12238,10978,12314,12315,12316,12240,12239,10963,12241,12242,12207,12244,12243,10966,12245,12246,10976,12248,12247,10962,12249,12250,10975,12252,12251,10982,12253,12254,10970,12256,12255,10972,12257,12258,10969,12260,12259,10960,12261,12262,10981,12264,12263,10968,12265,12266,10974,12268,12267,12206,12269,12270,10958,12272,12271,12231);
 $config['en_all_10956'] = array(
+    12286 => array(
+        'm_icon' => '<i class="fas fa-bat play" aria-hidden="true"></i>',
+        'm_name' => 'BAT BOLD',
+        'm_desc' => '',
+        'm_parents' => array(10956),
+    ),
+    12287 => array(
+        'm_icon' => '<i class="far fa-bat play" aria-hidden="true"></i>',
+        'm_name' => 'BAT LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(10956),
+    ),
+    12288 => array(
+        'm_icon' => '<i class="fad fa-bat play" aria-hidden="true"></i>',
+        'm_name' => 'BAT MIX',
+        'm_desc' => '',
+        'm_parents' => array(10956),
+    ),
     12234 => array(
         'm_icon' => '<i class="fas fa-dog play"></i>',
         'm_name' => 'DOGY BOLD',
@@ -2832,6 +3017,42 @@ $config['en_all_10956'] = array(
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
+    12295 => array(
+        'm_icon' => '<i class="fas fa-dove play" aria-hidden="true"></i>',
+        'm_name' => 'DOVE BOLD',
+        'm_desc' => '',
+        'm_parents' => array(10956),
+    ),
+    12294 => array(
+        'm_icon' => '<i class="far fa-dove play" aria-hidden="true"></i>',
+        'm_name' => 'DOVE LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(10956),
+    ),
+    12293 => array(
+        'm_icon' => '<i class="fad fa-dove play" aria-hidden="true"></i>',
+        'm_name' => 'DOVE MIX',
+        'm_desc' => '',
+        'm_parents' => array(10956),
+    ),
+    12300 => array(
+        'm_icon' => '<i class="fas fa-elephant play" aria-hidden="true"></i>',
+        'm_name' => 'ELEPHANT BOLD',
+        'm_desc' => '',
+        'm_parents' => array(10956),
+    ),
+    12301 => array(
+        'm_icon' => '<i class="far fa-elephant play" aria-hidden="true"></i>',
+        'm_name' => 'ELEPHANT LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(10956),
+    ),
+    12299 => array(
+        'm_icon' => '<i class="fad fa-elephant play" aria-hidden="true"></i>',
+        'm_name' => 'ELEPHANT MIX',
+        'm_desc' => '',
+        'm_parents' => array(10956),
+    ),
     12237 => array(
         'm_icon' => '<i class="fas fa-fish play" aria-hidden="true"></i>',
         'm_name' => 'FISHY BOLD',
@@ -2847,6 +3068,24 @@ $config['en_all_10956'] = array(
     10978 => array(
         'm_icon' => '<i class="fad fa-fish play"></i>',
         'm_name' => 'FISHY MIX',
+        'm_desc' => '',
+        'm_parents' => array(10956),
+    ),
+    12314 => array(
+        'm_icon' => '<i class="fas fa-frog play" aria-hidden="true"></i>',
+        'm_name' => 'FROG BOLD',
+        'm_desc' => '',
+        'm_parents' => array(10956),
+    ),
+    12315 => array(
+        'm_icon' => '<i class="far fa-frog play" aria-hidden="true"></i>',
+        'm_name' => 'FROG LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(10956),
+    ),
+    12316 => array(
+        'm_icon' => '<i class="fad fa-frog play" aria-hidden="true"></i>',
+        'm_name' => 'FROG MIX',
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
@@ -3048,12 +3287,6 @@ $config['en_all_10956'] = array(
         'm_desc' => '',
         'm_parents' => array(10956),
     ),
-    12276 => array(
-        'm_icon' => '<i class="far fa-deer-rudolph play" aria-hidden="true"></i>',
-        'm_name' => 'RUDOLPH LIGHT',
-        'm_desc' => '',
-        'm_parents' => array(10956),
-    ),
     12261 => array(
         'm_icon' => '<i class="fas fa-crow play" aria-hidden="true"></i>',
         'm_name' => 'RUSSEL BOLD',
@@ -3223,7 +3456,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(12066,10725,7758,10809,12145,11047,4983,10990,12273,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11018,6201,11021,12112,7585,10602,7309,7712,7751,6150,12201,10712,10719,10627,10716,10746,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,6404,4527,11054,6232,6225,11039,10956,12274,6194,6827,4426,4997,4986,7551,11028,4537,6206,3290,4592,12220,4454,11089,11033,3000,7303,6177,11007,10957,11088,3289,4755,10718,6287,10571,7357,6192,11081,6193,6255,12229,10591,6345,4280,10570,4277,6102,7704,7494,12228,6146,10590,6103,10692,5967,7347,7304,6186,7360,7364,7359,12227,4341,4593,10593,12141,10658,10711,11084,6204,10710,6805,7358,10869);
+$config['en_ids_4527'] = array(12066,10725,7758,10809,12145,11047,4983,10990,12273,12079,10589,11968,4229,4486,4485,12012,7302,4737,7356,12138,7355,11018,6201,11021,12112,7585,10602,7309,7712,7751,6150,12201,10712,10719,10627,10716,10746,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,6404,4527,11054,6232,6225,11039,10956,12279,12274,6194,6827,4426,4997,4986,7551,11028,4537,6206,3290,4592,12220,4454,11089,11033,3000,7303,6177,11007,10957,11088,3289,4755,10718,6287,10571,7357,6192,11081,6193,6255,12229,10591,6345,4280,10570,4277,6102,7704,7494,12228,6146,10590,6103,10692,5967,7347,7304,6186,7360,7364,7359,12227,4341,4593,10593,12141,10658,10711,11084,6204,10710,6805,7358,10869);
 $config['en_all_4527'] = array(
     12066 => array(
         'm_icon' => '<i class="far fa-info-circle" aria-hidden="true"></i>',
@@ -3551,9 +3784,15 @@ $config['en_all_4527'] = array(
     ),
     10956 => array(
         'm_icon' => '<i class="fad fa-paw play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY AVATAR',
+        'm_name' => 'PLAY AVATAR BASIC',
         'm_desc' => '',
-        'm_parents' => array(4536,6225,6204,4527),
+        'm_parents' => array(12289,4527),
+    ),
+    12279 => array(
+        'm_icon' => '<i class="fad fa-alicorn play" aria-hidden="true"></i>',
+        'm_name' => 'PLAY AVATAR SUPER',
+        'm_desc' => '',
+        'm_parents' => array(12289,4527),
     ),
     12274 => array(
         'm_icon' => '',
@@ -3922,7 +4161,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4758,4527),
     ),
     6204 => array(
-        'm_icon' => '<i class="fas fa-check"></i>',
+        'm_icon' => '<i class="fas fa-check" aria-hidden="true"></i>',
         'm_name' => 'SINGLE SELECTABLE',
         'm_desc' => '',
         'm_parents' => array(4527,4758),
@@ -5538,7 +5777,7 @@ $config['en_all_6201'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['en_ids_6204'] = array(4737,7585,10602,10956,3290,12220,4454,6177,11007,3289,10591,6186,4593);
+$config['en_ids_6204'] = array(4737,7585,10602,3290,12220,4454,6177,11007,3289,10591,6186,4593);
 $config['en_all_6204'] = array(
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h blog" aria-hidden="true"></i>',
@@ -5557,12 +5796,6 @@ $config['en_all_6204'] = array(
         'm_name' => 'BLOG TYPE AND/OR',
         'm_desc' => '',
         'm_parents' => array(10893,6204,7302,4527),
-    ),
-    10956 => array(
-        'm_icon' => '<i class="fad fa-paw play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY AVATAR',
-        'm_desc' => '',
-        'm_parents' => array(4536,6225,6204,4527),
     ),
     3290 => array(
         'm_icon' => '<i class="far fa-transgender play" aria-hidden="true"></i>',
@@ -6282,13 +6515,13 @@ $config['en_all_4986'] = array(
 );
 
 //PLAY ACCOUNT:
-$config['en_ids_6225'] = array(10956,6197,3288,3286,11007,4454,12220);
+$config['en_ids_6225'] = array(12289,6197,3288,3286,11007,4454,12220);
 $config['en_all_6225'] = array(
-    10956 => array(
+    12289 => array(
         'm_icon' => '<i class="fad fa-paw play" aria-hidden="true"></i>',
         'm_name' => 'AVATAR',
         'm_desc' => '',
-        'm_parents' => array(4536,6225,6204,4527),
+        'm_parents' => array(4536,6225),
     ),
     6197 => array(
         'm_icon' => '<i class="fad fa-fingerprint play" aria-hidden="true"></i>',

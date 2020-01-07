@@ -143,7 +143,7 @@ li a {
 .avatar-item {
     display: block;
     float: left;
-    width: 136px !important;
+    width: 180px !important;
     padding: 20px 0  !important;
 }
 .avatar-item.active, .btn-group a.active{
@@ -156,7 +156,7 @@ li a {
     display: block;
     text-align: center;
     width: 100% !important;
-    font-size: 3.3em;
+    font-size:4.3em;
 }
 
 #new_blog_title{
