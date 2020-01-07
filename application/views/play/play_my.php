@@ -90,9 +90,9 @@ if($session_en) {
 
                 $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m['m_icon']));
                 $avatar_type_match = ($player_icon_parts[0] == $avatar_icon_parts[0]);
-                $superpower_needed = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
+                $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
 
-                echo '<span class="'.( count($superpower_needed) ? superpower_active($superpower_needed[0]) : '' ).'"><a href="javascript:void(0);" onclick="update_avatar(' . $en_id . ')" class="list-group-item itemplay avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $player_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a></span>';
+                echo '<span class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a href="javascript:void(0);" onclick="update_avatar(' . $en_id . ')" class="list-group-item itemplay avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $player_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a></span>';
 
             }
 
