@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-06 18:56:29 PST
+//Generated 2020-01-06 19:07:26 PST
 
 //PLAY AVATAR SUPER:
 $config['en_ids_12279'] = array(12280,12281,12282,12308,12309,12310,12296,12297,12298,12302,12303,12304,12306,12307,12305,12312,12313,12311,12277,12276,12278,12290,12291,12292,12285,12284,12283);
@@ -128,19 +128,19 @@ $config['en_all_12279'] = array(
         'm_icon' => '<i class="fas fa-deer-rudolph play" aria-hidden="true"></i>',
         'm_name' => 'RUDOLPH BOLD',
         'm_desc' => '',
-        'm_parents' => array(10939,12279),
+        'm_parents' => array(12279),
     ),
     12276 => array(
         'm_icon' => '<i class="far fa-deer-rudolph play" aria-hidden="true"></i>',
         'm_name' => 'RUDOLPH LIGHT',
         'm_desc' => '',
-        'm_parents' => array(10939,12279),
+        'm_parents' => array(12279),
     ),
     12278 => array(
         'm_icon' => '<i class="fad fa-deer-rudolph play" aria-hidden="true"></i>',
         'm_name' => 'RUDOLPH MIX',
         'm_desc' => '',
-        'm_parents' => array(10939,12279),
+        'm_parents' => array(12279),
     ),
     12290 => array(
         'm_icon' => '<i class="fas fa-cat-space play"></i>',
@@ -1423,67 +1423,67 @@ $config['en_all_10717'] = array(
 $config['en_ids_10716'] = array(11640,11172,11643,11296,11638,11249,11167,11641,11525,11642,11639);
 $config['en_all_10716'] = array(
     11640 => array(
-        'm_icon' => '<i class="fad fa-sheep play"></i>',
+        'm_icon' => '<i class="far fa-snake play" aria-hidden="true"></i>',
         'm_name' => 'BENLEFORT1988',
         'm_desc' => '',
         'm_parents' => array(10716,3311,11158,1278),
     ),
     11172 => array(
-        'm_icon' => '<i class="fad fa-rabbit play"></i>',
+        'm_icon' => '<i class="far fa-squirrel play" aria-hidden="true"></i>',
         'm_name' => 'DANNYMAIORCA',
         'm_desc' => '',
         'm_parents' => array(10716,10753,3311,11158,1278),
     ),
     11643 => array(
-        'm_icon' => '<i class="fad fa-kiwi-bird play"></i>',
+        'm_icon' => '<i class="far fa-snake play" aria-hidden="true"></i>',
         'm_name' => 'GK_',
         'm_desc' => '',
         'm_parents' => array(10716,3311,11158,1278),
     ),
     11296 => array(
-        'm_icon' => '<i class="far fa-cat play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-fish play" aria-hidden="true"></i>',
         'm_name' => 'KIMDUKE_68108',
         'm_desc' => '',
         'm_parents' => array(10716,10810,3311,11158,1278),
     ),
     11638 => array(
-        'm_icon' => '<i class="fad fa-hippo play"></i>',
+        'm_icon' => '<i class="far fa-rabbit play" aria-hidden="true"></i>',
         'm_name' => 'KRISTINWONG5',
         'm_desc' => '',
         'm_parents' => array(10716,3311,11158,1278),
     ),
     11249 => array(
-        'm_icon' => '<i class="far fa-crow play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-dove play" aria-hidden="true"></i>',
         'm_name' => 'MINUTESMAG',
         'm_desc' => '',
         'm_parents' => array(11965,11105,10716,3311,11158,1278),
     ),
     11167 => array(
-        'm_icon' => '<i class="far fa-squirrel play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-fish play" aria-hidden="true"></i>',
         'm_name' => 'NAUTILUSMAG',
         'm_desc' => '',
         'm_parents' => array(10845,10846,10114,10716,11123,11131,11150,10753,3311,11158,1278),
     ),
     11641 => array(
-        'm_icon' => '<i class="fas fa-cow play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-kiwi-bird play"></i>',
         'm_name' => 'PAULJALVAREZ',
         'm_desc' => '',
         'm_parents' => array(10716,3311,11158,1278),
     ),
     11525 => array(
-        'm_icon' => '<i class="fas fa-cow play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-spider play" aria-hidden="true"></i>',
         'm_name' => 'THEATLANTIC',
         'm_desc' => '',
         'm_parents' => array(10846,10716,11130,3311,11158,1278),
     ),
     11642 => array(
-        'm_icon' => '<i class="fas fa-horse play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-spider play" aria-hidden="true"></i>',
         'm_name' => 'THEMOTLEYFOOL',
         'm_desc' => '',
         'm_parents' => array(10716,3311,11158,1278),
     ),
     11639 => array(
-        'm_icon' => '<i class="fas fa-pig play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-sheep play"></i>',
         'm_name' => 'TIMDENNING',
         'm_desc' => '',
         'm_parents' => array(11962,11959,10797,10913,11098,11118,10777,10716,3311,11158,1278),
