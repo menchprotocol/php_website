@@ -74,20 +74,26 @@ if($session_en) {
 
             //Merge two avatar types:
             $merged_array = array();
+            foreach($this->config->item('en_all_12279') as $en_id => $m) {
+                //Make sure assigned to a superpower:
+                if(count(array_intersect($this->config->item('en_ids_10957'), $m['m_parents']))){
+                    $merged_array[$en_id] = $m;
+                }
+            }
             foreach($this->config->item('en_all_10956') as $en_id => $m) {
                 $merged_array[$en_id] = $m;
             }
-            foreach($this->config->item('en_all_12279') as $en_id => $m) {
-                $merged_array[$en_id] = $m;
-            }
+
 
             //List avatars:
             foreach ($merged_array as $en_id => $m) {
 
                 $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m['m_icon']));
                 $avatar_type_match = ($player_icon_parts[0] == $avatar_icon_parts[0]);
+                $superpower_needed = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
 
-                echo '<a href="javascript:void(0);" onclick="update_avatar(' . $en_id . ')" class="list-group-item itemplay avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $player_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a>';
+                echo '<span class="'.( count($superpower_needed) ? superpower_active($superpower_needed[0]) : '' ).'"><a href="javascript:void(0);" onclick="update_avatar(' . $en_id . ')" class="list-group-item itemplay avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $player_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a></span>';
+
             }
 
             echo '<div class="doclear">&nbsp;</div>';
