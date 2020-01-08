@@ -830,7 +830,7 @@ textarea.note-textarea{
     display: inline-block;
 }
 
-.form-group {
+.form-group input {
     background-color: #FFFFFF;
 }
 
