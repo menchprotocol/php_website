@@ -2402,7 +2402,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
         );
     } else {
         //HTML:
-        echo '<div style="padding-bottom:40px;" class="inline-block"><a class="btn btn-read" href="/'.$in_id.'/next">NEXT <i class="fas fa-angle-right"></i></a></div>';
+        echo '<div style="margin:30px 0;" class="inline-block"><a class="btn btn-read" href="/'.$in_id.'/next">NEXT <i class="fas fa-angle-right"></i></a></div>';
     }
 
 }
