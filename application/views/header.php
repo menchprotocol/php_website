@@ -101,9 +101,9 @@ if(!isset($hide_header) || !$hide_header){
 
                             } elseif($identifier=='read'){
 
-                                echo '<span class="montserrat '.$identifier.'_name show-max">' . $m['m_name'] . '</span>';
-                                echo '<span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span>';
                                 echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
+                                echo '<span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span>';
+                                echo '<span class="montserrat '.$identifier.'_name show-max">' . $m['m_name'] . '</span>';
 
                             } elseif($identifier=='blog'){
 
