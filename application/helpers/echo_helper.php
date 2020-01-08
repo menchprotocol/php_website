@@ -2298,6 +2298,18 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $pref
         $completion_rate = array();
         $next_key = -1;
 
+        if(strlen($common_prefix)){
+            if($push_message){
+
+                $message_content .= $common_prefix . "\n\n";
+
+            } else {
+
+                echo '<div class="read-topic">'.$common_prefix.'</div>';
+
+            }
+        }
+
 
         //First analyze overall list to see how things are:
         foreach($in__children as $key => $child_in) {
