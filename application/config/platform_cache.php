@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-08 13:17:59 PST
+//Generated 2020-01-08 13:27:29 PST
 
 //VIEW PLAY MESSAGES:
 $config['en_ids_12322'] = array(4601,4231);
@@ -2103,7 +2103,7 @@ $config['en_all_11081'] = array(
 );
 
 //PLATFORM VARIABLES:
-$config['en_ids_6232'] = array(6202,4486,6159,4356,4737,4736,7585,5008,6207,6203,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,6197,6198,6160,6172,6177,4369,4429,7694,4367,4358,4372,6103,4368,4366,4371,4364,4370,6186,4362,4593,4739,4735);
+$config['en_ids_6232'] = array(6202,4486,6159,4356,4737,4736,7585,5008,6207,6203,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,6198,6160,6172,6197,6177,4369,4429,7694,4367,4358,4372,6103,4368,4366,4371,4364,4370,6186,4362,4593,4739,4735);
 $config['en_all_6232'] = array(
     6202 => array(
         'm_icon' => '<i class="fas fa-plus-circle blog"></i>',
@@ -2225,12 +2225,6 @@ $config['en_all_6232'] = array(
         'm_desc' => 'in__metadata_sources',
         'm_parents' => array(6232,6214,6159),
     ),
-    6197 => array(
-        'm_icon' => '<i class="fad fa-fingerprint play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY FULL NAME',
-        'm_desc' => 'en_name',
-        'm_parents' => array(12232,6225,11072,10646,5000,4998,4999,6232,6206),
-    ),
     6198 => array(
         'm_icon' => '<i class="fas fa-user-circle play"></i>',
         'm_name' => 'PLAY ICON',
@@ -2248,6 +2242,12 @@ $config['en_all_6232'] = array(
         'm_name' => 'PLAY METADATA',
         'm_desc' => 'en_metadata',
         'm_parents' => array(11044,6232,3323,6206,6195),
+    ),
+    6197 => array(
+        'm_icon' => '<i class="fad fa-fingerprint play" aria-hidden="true"></i>',
+        'm_name' => 'PLAY NICKNAME',
+        'm_desc' => 'en_name',
+        'm_parents' => array(12232,6225,11072,10646,5000,4998,4999,6232,6206),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h play" aria-hidden="true"></i>',
@@ -5753,14 +5753,8 @@ $config['en_all_4341'] = array(
 );
 
 //PLAYER TABLE:
-$config['en_ids_6206'] = array(6197,6198,6160,6172,6177);
+$config['en_ids_6206'] = array(6198,6160,6172,6197,6177);
 $config['en_all_6206'] = array(
-    6197 => array(
-        'm_icon' => '<i class="fad fa-fingerprint play" aria-hidden="true"></i>',
-        'm_name' => 'FULL NAME',
-        'm_desc' => '',
-        'm_parents' => array(12232,6225,11072,10646,5000,4998,4999,6232,6206),
-    ),
     6198 => array(
         'm_icon' => '<i class="fas fa-user-circle play"></i>',
         'm_name' => 'ICON',
@@ -5778,6 +5772,12 @@ $config['en_all_6206'] = array(
         'm_name' => 'METADATA',
         'm_desc' => '',
         'm_parents' => array(11044,6232,3323,6206,6195),
+    ),
+    6197 => array(
+        'm_icon' => '<i class="fad fa-fingerprint play" aria-hidden="true"></i>',
+        'm_name' => 'NICKNAME',
+        'm_desc' => '',
+        'm_parents' => array(12232,6225,11072,10646,5000,4998,4999,6232,6206),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h play" aria-hidden="true"></i>',
@@ -6583,8 +6583,8 @@ $config['en_all_6225'] = array(
     ),
     6197 => array(
         'm_icon' => '<i class="fad fa-fingerprint play" aria-hidden="true"></i>',
-        'm_name' => 'FULL NAME',
-        'm_desc' => '',
+        'm_name' => 'NICKNAME',
+        'm_desc' => 'Your player name...',
         'm_parents' => array(12232,6225,11072,10646,5000,4998,4999,6232,6206),
     ),
     3288 => array(
