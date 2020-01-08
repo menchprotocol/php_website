@@ -1601,7 +1601,7 @@ class READ_model extends CI_Model
                     )
                 );
             } elseif(!isset($_GET['autoexpand'])) {
-                echo '<div class="inline-block padding-top-down"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
+                echo '<div class="inline-block margin-top-down"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fas fa-angle-right"></i></a></div>';
             }
 
             return true;
@@ -1772,11 +1772,11 @@ class READ_model extends CI_Model
                     //HTML:
                     if ($ins[0]['in_type_play_id'] == 6684) {
 
-                        echo '<div class="montserrat padding-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE:</div>';
+                        echo '<div class="montserrat margin-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE:</div>';
 
                     } elseif ($ins[0]['in_type_play_id'] == 7231) {
 
-                        echo '<div class="montserrat padding-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE OR MORE:</div>';
+                        echo '<div class="montserrat margin-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE OR MORE:</div>';
 
                     }
 
@@ -1871,7 +1871,7 @@ class READ_model extends CI_Model
                 } else {
 
                     //Button to submit selection:
-                    echo '<div class="padding-top-down"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($previously_answered)>0 ? 'UPDATE' : 'SAVE' ).' & CONTINUE <i class="fas fa-angle-right"></i></a> <span class="result-update"></span></div>';
+                    echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($previously_answered)>0 ? 'UPDATE' : 'SAVE' ).' & CONTINUE <i class="fas fa-angle-right"></i></a> <span class="result-update"></span></div>';
 
                     //Close list:
                     echo '</div>';
@@ -2030,7 +2030,7 @@ class READ_model extends CI_Model
                 } else {
                     echo '<textarea class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
                     echo '<span class="saving_result"></span>';
-                    echo '<div class="padding-top-down"><a class="btn btn-blog" href="javascript:void(0);" onsubmit="">Save & Continue</a></div>';
+                    echo '<div class="margin-top-down"><a class="btn btn-blog" href="javascript:void(0);" onsubmit="">Save & Continue</a></div>';
                 }
 
             } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7751'))) {
