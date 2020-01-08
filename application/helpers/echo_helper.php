@@ -2301,11 +2301,11 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $pref
         if(strlen($common_prefix)){
             if($push_message){
 
-                $message_content .= $common_prefix . "\n\n";
+                $message_content .= $common_prefix . ":\n\n";
 
             } else {
 
-                echo '<div class="read-topic">'.$common_prefix.'</div>';
+                echo '<div class="read-topic">'.$common_prefix.':</div>';
 
             }
         }
