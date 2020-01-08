@@ -155,6 +155,17 @@ class Read extends CI_Controller
         $play_coins_growth_rate = number_format(( $play_coins_last_week[0]['total_coins'] / ( $play_coins_last_week[0]['total_coins'] - $play_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100, 1);
 
 
+        //LEDGER
+        $ledger_transactions_new_last_week = $this->READ_model->ln_fetch(array(
+            'ln_timestamp >=' => $last_week_start,
+            'ln_timestamp <=' => $last_week_end,
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+        $ledger_transactions_last_week = $this->READ_model->ln_fetch(array(
+            'ln_timestamp <=' => $last_week_end,
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+        $ledger_transactions_growth_rate = number_format(( $ledger_transactions_last_week[0]['total_coins'] / ( $ledger_transactions_last_week[0]['total_coins'] - $ledger_transactions_new_last_week[0]['total_coins'] ) * 100 ) - 100, 1);
+
+
 
         //Email Subject
         $subject = 'MENCH Weekly Growth Report';
@@ -164,11 +175,13 @@ class Read extends CI_Controller
         $html_message .= '<div>Growth rates for the <span title="'.$last_week_start.' to '.$last_week_end.' '.config_var(11079).' Timezone" style="border-bottom:1px dotted #CCC;">week of '.date("M jS", $last_week_start_timestamp).'</span>:</div>';
         $html_message .= '<br />';
 
-        $html_message .= '<div style="padding-bottom:10px;">🔵<b style="min-width:55px; display: inline-block;">'.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($play_coins_last_week[0]['total_coins'], 0).'" style="border-bottom:1px dotted #CCC;">'.echo_number($play_coins_last_week[0]['total_coins']).'</span></span><a href="https://mench.com/play" target="_blank" style="color: #008DF2; font-weight:bold; text-decoration:none;">PLAY &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;">🔵<b style="min-width:55px; display: inline-block;">'.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($play_coins_last_week[0]['total_coins'], 0).' Coins" style="border-bottom:1px dotted #CCC;">'.echo_number($play_coins_last_week[0]['total_coins']).'</span></span><a href="https://mench.com/play" target="_blank" style="color: #008DF2; font-weight:bold; text-decoration:none;">PLAY &raquo;</a></div>';
 
-        $html_message .= '<div style="padding-bottom:10px;">🔴<b style="min-width:55px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($read_coins_last_week[0]['total_coins'], 0).'" style="border-bottom:1px dotted #CCC;">'.echo_number($read_coins_last_week[0]['total_coins']).'</span></span><a href="https://mench.com" target="_blank" style="color: #FC1B44; font-weight:bold; text-decoration:none;">READ &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;">🔴<b style="min-width:55px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($read_coins_last_week[0]['total_coins'], 0).' Coins" style="border-bottom:1px dotted #CCC;">'.echo_number($read_coins_last_week[0]['total_coins']).'</span></span><a href="https://mench.com" target="_blank" style="color: #FC1B44; font-weight:bold; text-decoration:none;">READ &raquo;</a></div>';
 
-        $html_message .= '<div style="padding-bottom:10px;">🟡<b style="min-width:55px; display: inline-block;">'.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($blog_coins_last_week[0]['total_coins'], 0).'" style="border-bottom:1px dotted #CCC;">'.echo_number($blog_coins_last_week[0]['total_coins']).'</span></span><a href="https://mench.com/blog" target="_blank" style="color: #f4d52d; font-weight:bold; text-decoration:none;">BLOG &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;">🟡<b style="min-width:55px; display: inline-block;">'.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($blog_coins_last_week[0]['total_coins'], 0).' Coins" style="border-bottom:1px dotted #CCC;">'.echo_number($blog_coins_last_week[0]['total_coins']).'</span></span><a href="https://mench.com/blog" target="_blank" style="color: #f4d52d; font-weight:bold; text-decoration:none;">BLOG &raquo;</a></div>';
+
+        $html_message .= '<div style="padding-bottom:10px;">📖<b style="min-width:55px; display: inline-block;">'.( $ledger_transactions_growth_rate >= 0 ? '+' : '-' ).$ledger_transactions_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($ledger_transactions_last_week[0]['total_coins'], 0).' Transactions" style="border-bottom:1px dotted #CCC;">'.echo_number($ledger_transactions_last_week[0]['total_coins']).'</span></span><a href="https://mench.com/read/ledger" target="_blank" style="color: #f4d52d; font-weight:bold; text-decoration:none;">LEDGER &raquo;</a></div>';
 
         $html_message .= '<br />';
         $html_message .= '<div>Cheers,</div>';
