@@ -377,7 +377,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 );
 
                 //COUNT ONLY
-                $item_counters = $this->READ_model->ln_fetch($blog_note_filters, array(), 1, 0, array(), 'COUNT(ln_id) as totals');
+                $item_counters = $this->READ_model->ln_fetch($blog_note_filters, array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
                 $counter = $item_counters[0]['totals'];
                 $default_active = ( $en_id2==4983 && $counter>0 );
 
