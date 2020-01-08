@@ -2118,8 +2118,7 @@ fragment PostListingItemSidebar_post on Post {
         $html_message .= '<div><a href="'.$messenger_url.'" target="_blank">' . $messenger_url . '</a></div>';
         $html_message .= '<br /><br />';
         $html_message .= '<div>Cheers,</div><br />';
-        $html_message .= '<div>Mench</div>';
-        $html_message .= '<div><a href="https://mench.com" target="_blank">mench.com</a></div>';
+        $html_message .= '<div>MENCH</div>';
 
         //Send Welcome Email:
         $email_log = $this->READ_model->dispatch_emails(array($_POST['input_email']), $subject, $html_message);
@@ -2203,12 +2202,13 @@ fragment PostListingItemSidebar_post on Post {
         $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['en_name']).' 👋</div><br /><br />';
 
         $magic_link_expiry_hours = (config_var(11065)/3600);
-        $html_message .= '<div>Signin within '.$magic_link_expiry_hours.'-hour'.echo__s($magic_link_expiry_hours).':</div>';
+        $html_message .= '<div>Signin within the next '.$magic_link_expiry_hours.' hour'.echo__s($magic_link_expiry_hours).':</div>';
         $magic_url = 'https://mench.com/play/magic/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
         $html_message .= '<br /><br />';
-        $html_message .= '<div>- <a href="https://mench.com" target="_blank">MENCH</a></div>';
+        $html_message .= '<div>Cheers,</div>';
+        $html_message .= '<div>MENCH</div>';
 
         //Send email:
         $this->READ_model->dispatch_emails(array($_POST['input_email']), $subject, $html_message);

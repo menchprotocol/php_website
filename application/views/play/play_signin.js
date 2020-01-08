@@ -248,7 +248,7 @@ function magicemail(){
 
         //Update UI:
         goto_step(5); //To check their email and create new account
-        $('.magic_result').html('<i class="far fa-yin-yang fa-spin"></i> Emailing you a magic link...');
+        $('.magic_result').html('<div><i class="far fa-yin-yang fa-spin"></i> Sending email...</div>');
 
         //Check email and validate:
         $.post("/play/magicemail", {
@@ -257,7 +257,7 @@ function magicemail(){
         }, function (data) {
             if (data.status) {
                 //All good, they can close window:
-                $('.magic_result').html('<i class="fas fa-eye"></i> Check Your Email').hide().fadeIn();
+                $('.magic_result').html('<div><i class="fas fa-eye"></i> Check your email now</div>').hide().fadeIn();
             } else {
                 //Show errors:
                 $('.magic_result').html('<b style="color: #FF0000;"><i class="fas fa-exclamation-triangle"></i> Error: ' + data.message + '</b>').hide().fadeIn();
