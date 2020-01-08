@@ -221,7 +221,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
         $col_num++;
         $tab_content = '';
-        $default_active = false;
+        $default_active_found = false;
         $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
 
 
@@ -239,13 +239,11 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             }
 
 
-
             //Determine counter:
             $default_active = false;
             $show_tab_names = (in_array($en_id2, $this->config->item('en_ids_11084')));
             $counter = null; //Assume no counters
             $this_tab = '';
-
 
 
 
@@ -280,7 +278,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             } elseif($en_id2==11029){
 
                 //PLAY PROJETCS
-                $default_active = true; //RIGHT
+                $default_active = !$default_active_found;
 
 
                 //COUNT TOTAL
@@ -380,6 +378,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 //COUNT ONLY
                 $item_counters = $this->READ_model->ln_fetch($blog_note_filters, array(), 1, 0, array(), 'COUNT(ln_id) as totals');
                 $counter = $item_counters[0]['totals'];
+                $default_active = ( $en_id2==4983 && $counter>0 );
 
 
                 //SHOW LASTEST 100
@@ -532,8 +531,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             $tab_content .= $this_tab;
             $tab_content .= '</div>';
 
-            $default_active = false;
-
+            if($default_active){
+                $default_active_found = true;
+            }
         }
 
         echo '</ul>';

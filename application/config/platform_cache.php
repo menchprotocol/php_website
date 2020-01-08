@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-07 22:01:32 PST
+//Generated 2020-01-07 23:54:22 PST
 
 //PLAY AVATAR SUPER:
 $config['en_ids_12279'] = array(12280,12281,12282,12308,12309,12310,12296,12297,12298,12302,12303,12304,12306,12307,12305,12312,12313,12311,12277,12276,12278,12290,12291,12292,12285,12284,12283);
@@ -995,19 +995,19 @@ $config['en_all_11088'] = array(
 );
 
 //PLAY PORTFOLIO TABS:
-$config['en_ids_11089'] = array(11029,7545,4997,11039);
+$config['en_ids_11089'] = array(4983,11029,4997,11039);
 $config['en_all_11089'] = array(
+    4983 => array(
+        'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOG AUTHORS',
+        'm_desc' => '',
+        'm_parents' => array(11089,11018,10593,10589,4527,7551,4985,4593,4485),
+    ),
     11029 => array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling play" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
         'm_parents' => array(11084,11089,11028),
-    ),
-    7545 => array(
-        'm_icon' => '<i class="fad fa-user-tag blog" aria-hidden="true"></i>',
-        'm_name' => 'BLOG PLAY TAGS',
-        'm_desc' => '',
-        'm_parents' => array(11033,11018,11089,10967,10589,7551,4593,4485),
     ),
     4997 => array(
         'm_icon' => '<i class="fas fa-tools play" aria-hidden="true"></i>',
@@ -1767,7 +1767,7 @@ $config['en_all_10809'] = array(
         'm_parents' => array(3311,11097,10809),
     ),
     8866 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fas fa-tools"></i>',
         'm_name' => 'FILM TOPIC',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809,5008),
@@ -1821,7 +1821,7 @@ $config['en_all_10809'] = array(
         'm_parents' => array(10809),
     ),
     10227 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fas fa-tools"></i>',
         'm_name' => 'STYLE TOPIC',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809,5008),
@@ -1963,7 +1963,7 @@ $config['en_all_11084'] = array(
 );
 
 //PLAY PROFILE TABS:
-$config['en_ids_11033'] = array(11030,6255,6146,7347,10573,4983,4231,4601,7545);
+$config['en_ids_11033'] = array(11030,6255,6146,7347,10573,4231,4601,7545);
 $config['en_all_11033'] = array(
     11030 => array(
         'm_icon' => '<i class="fas fa-id-card play" aria-hidden="true"></i>',
@@ -1995,12 +1995,6 @@ $config['en_all_11033'] = array(
         'm_desc' => '',
         'm_parents' => array(11018,10984,11033,10589,4593,7551,4485),
     ),
-    4983 => array(
-        'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
-        'm_name' => 'BLOG AUTHORS',
-        'm_desc' => '',
-        'm_parents' => array(11018,11033,10593,10589,4527,7551,4985,4593,4485),
-    ),
     4231 => array(
         'm_icon' => '<i class="fad fa-comment blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG MESSAGES',
@@ -2017,7 +2011,7 @@ $config['en_all_11033'] = array(
         'm_icon' => '<i class="fad fa-user-tag blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG PLAY TAGS',
         'm_desc' => '',
-        'm_parents' => array(11033,11018,11089,10967,10589,7551,4593,4485),
+        'm_parents' => array(11033,11018,10967,10589,7551,4593,4485),
     ),
 );
 
@@ -2116,7 +2110,7 @@ $config['en_all_6232'] = array(
     5008 => array(
         'm_icon' => '<i class="fad fa-tools blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG VERB',
-        'm_desc' => '',
+        'm_desc' => 'in_verb_play_id',
         'm_parents' => array(6232,6201,12201,6768,4736,7777,6160),
     ),
     6207 => array(
@@ -2857,7 +2851,7 @@ $config['en_all_11018'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG AUTHORS',
         'm_desc' => 'BLOGGERS who are managing this blog and also referenced authors of the original content.',
-        'm_parents' => array(11018,11033,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     10573 => array(
         'm_icon' => '<i class="fad fa-bookmark blog" aria-hidden="true"></i>',
@@ -2869,7 +2863,7 @@ $config['en_all_11018'] = array(
         'm_icon' => '<i class="fad fa-user-tag blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG PLAY TAGS',
         'm_desc' => '',
-        'm_parents' => array(11033,11018,11089,10967,10589,7551,4593,4485),
+        'm_parents' => array(11033,11018,10967,10589,7551,4593,4485),
     ),
     7347 => array(
         'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
@@ -3504,7 +3498,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(11018,11033,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     10990 => array(
         'm_icon' => '<i class="fas fa-toolbox blog" aria-hidden="true"></i>',
@@ -4389,7 +4383,7 @@ $config['en_all_10593'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(11018,11033,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
@@ -4969,7 +4963,7 @@ $config['en_all_10589'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(11018,11033,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     10573 => array(
         'm_icon' => '<i class="fad fa-bookmark blog" aria-hidden="true"></i>',
@@ -5059,7 +5053,7 @@ $config['en_all_10589'] = array(
         'm_icon' => '<i class="fad fa-user-tag blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG PLAY TAGS',
         'm_desc' => '',
-        'm_parents' => array(11033,11018,11089,10967,10589,7551,4593,4485),
+        'm_parents' => array(11033,11018,10967,10589,7551,4593,4485),
     ),
     10681 => array(
         'm_icon' => '<i class="fad fa-sort blog" aria-hidden="true"></i>',
@@ -6051,7 +6045,7 @@ $config['en_all_7551'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(11018,11033,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     10573 => array(
         'm_icon' => '<i class="fad fa-bookmark blog" aria-hidden="true"></i>',
@@ -6063,7 +6057,7 @@ $config['en_all_7551'] = array(
         'm_icon' => '<i class="fad fa-user-tag blog" aria-hidden="true"></i>',
         'm_name' => 'PLAY TAGS',
         'm_desc' => '',
-        'm_parents' => array(11033,11018,11089,10967,10589,7551,4593,4485),
+        'm_parents' => array(11033,11018,10967,10589,7551,4593,4485),
     ),
 );
 
@@ -7357,7 +7351,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG AUTHORS',
         'm_desc' => 'References track intent correlations referenced within expert sources, and represent a core building block of intelligence. References are among the most precious transaction types because they indicate that IF you do A, you will likely accomplish B. As trainers add more sources from more experts, certain intent correlations will receive more references than others, thus gaining more credibility.',
-        'm_parents' => array(11018,11033,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     10573 => array(
         'm_icon' => '<i class="fad fa-bookmark blog" aria-hidden="true"></i>',
@@ -7447,7 +7441,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fad fa-user-tag blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG PLAY TAGS',
         'm_desc' => '',
-        'm_parents' => array(11033,11018,11089,10967,10589,7551,4593,4485),
+        'm_parents' => array(11033,11018,10967,10589,7551,4593,4485),
     ),
     10681 => array(
         'm_icon' => '<i class="fad fa-sort blog" aria-hidden="true"></i>',
@@ -8236,7 +8230,7 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(11018,11033,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     4601 => array(
         'm_icon' => '<i class="fad fa-tag blog" aria-hidden="true"></i>',
@@ -8254,7 +8248,7 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="fad fa-user-tag blog" aria-hidden="true"></i>',
         'm_name' => 'PLAY TAGS',
         'm_desc' => '',
-        'm_parents' => array(11033,11018,11089,10967,10589,7551,4593,4485),
+        'm_parents' => array(11033,11018,10967,10589,7551,4593,4485),
     ),
 );
 
