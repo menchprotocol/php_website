@@ -2196,13 +2196,13 @@ fragment PostListingItemSidebar_post on Post {
         //This is a new email, send invitation to join:
 
         ##Email Subject
-        $subject = 'Mench Login Magic Link';
+        $subject = 'MENCH Sign-in Magic Link';
 
         ##Email Body
         $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['en_name']).' 👋</div><br /><br />';
 
         $magic_link_expiry_hours = (config_var(11065)/3600);
-        $html_message .= '<div>Signin within the next '.$magic_link_expiry_hours.' hour'.echo__s($magic_link_expiry_hours).':</div>';
+        $html_message .= '<div>Sign-in within the next '.$magic_link_expiry_hours.' hour'.echo__s($magic_link_expiry_hours).':</div>';
         $magic_url = 'https://mench.com/play/magic/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
@@ -2257,7 +2257,7 @@ fragment PostListingItemSidebar_post on Post {
         $ens[0] = $this->PLAY_model->en_activate_session($ens[0]);
 
         //Take them to their account:
-        return redirect_message( '/play' , '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Successfully signed in. You can set a new password below.</div>');
+        return redirect_message( '/play?open_en_id=3286' , '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Successfully signed in. You can set a new password below.</div>');
     }
 
     function singin_check_email(){

@@ -7,6 +7,11 @@ $(document).ready(function () {
     //Load top_players:
     load_top_players();
 
+    //Do we need to auto open?
+    if(open_en_id > 0){
+        setTimeout(function() { $('#openEn'+open_en_id).collapse('show'); }, 987);
+    }
+
     //Setup auto focus:
     $('#openEn6197').on('show.bs.collapse', function () {
         //call a service here
