@@ -66,7 +66,7 @@ class Read extends CI_Controller
                 if($next_in_id > 0){
                     return redirect_message('/' . $next_in_id);
                 } else {
-                    return redirect_message('/read', '<div class="alert alert-danger" role="alert">No next read found in your reading list.</div>');
+                    return redirect_message('/', '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i> Successfully read your entire reading list. Continue with a new read below.</div>');
                 }
             }
 
@@ -77,7 +77,7 @@ class Read extends CI_Controller
             if($next_in_id > 0){
                 return redirect_message('/' . $next_in_id);
             } else {
-                return redirect_message('/read', '<div class="alert alert-danger" role="alert">No next read found in your reading list.</div>');
+                return redirect_message('/', '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i> Successfully read your entire reading list. Continue with a new read below.</div>');
             }
         }
     }
