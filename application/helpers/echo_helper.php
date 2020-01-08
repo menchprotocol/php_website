@@ -2575,9 +2575,9 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
         if($cache_en_id==7585){
             $en_all_10602 = $CI->config->item('en_all_10602');
             if($en_id==6677){
-                $ui .= '<h6 class="dropdown-header" data-toggle="tooltip" data-placement="right" title="'.$en_all_10602[6192]['m_name'].'">'.$en_all_10602[6192]['m_name'].' <i class="fal fa-info-circle"></i></h6>';
+                $ui .= '<h6 class="dropdown-header inline-block" data-toggle="tooltip" data-placement="right" title="'.$en_all_10602[6192]['m_name'].'">'.$en_all_10602[6192]['m_desc'].' <i class="fal fa-info-circle"></i></h6>';
             } elseif($en_id==6684){
-                $ui .= '<h6 class="dropdown-header" data-toggle="tooltip" data-placement="right" title="'.$en_all_10602[6193]['m_name'].'">'.$en_all_10602[6193]['m_name'].' <i class="fal fa-info-circle"></i></h6>';
+                $ui .= '<h6 class="dropdown-header inline-block" data-toggle="tooltip" data-placement="right" title="'.$en_all_10602[6193]['m_name'].'">'.$en_all_10602[6193]['m_desc'].' <i class="fal fa-info-circle"></i></h6>';
             }
         }
 
