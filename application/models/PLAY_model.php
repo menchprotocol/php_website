@@ -821,14 +821,14 @@ class PLAY_model extends CI_Model
                 'message' => 'Unknown mass action',
             );
 
-        } elseif($action_en_id != 5943 && strlen(trim($action_command1)) < 1){
+        } elseif($action_en_id != 5943 && $action_en_id != 12318 && strlen(trim($action_command1)) < 1){
 
             return array(
                 'status' => 0,
                 'message' => 'Missing primary command',
             );
 
-        } elseif($action_en_id == 5943 && !is_valid_icon($action_command1)){
+        } elseif(in_array($action_en_id, array(5943,12318)) && !is_valid_icon($action_command1)){
 
             return array(
                 'status' => 0,
@@ -950,6 +950,14 @@ class PLAY_model extends CI_Model
                 }
 
             } elseif ($action_en_id == 5943) { //Player Mass Update Player Icon
+
+                $this->PLAY_model->en_update($en['en_id'], array(
+                    'en_icon' => $action_command1,
+                ), true, $ln_creator_play_id);
+
+                $applied_success++;
+
+            } elseif ($action_en_id == 12318 && !strlen($en['en_icon'])) { //Player Mass Update Player Icon
 
                 $this->PLAY_model->en_update($en['en_id'], array(
                     'en_icon' => $action_command1,

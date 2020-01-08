@@ -1702,17 +1702,25 @@ class READ_model extends CI_Model
                 ), array('in_child'));
 
 
-                if(count($previously_answered) > 0 && !$push_message){
+                if(count($previously_answered) > 0){
 
-                    echo '<div class="selected_before">';
+                    if($push_message){
+
+                        echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, 'You had previously answered:');
+
+                    } else {
+
+                        echo '<div class="selected_before">';
 
                         //List answers:
-                        echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-history"></i></span>YOUR ANSWER');
+                        echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-history"></i></span>YOUR ANSWER:');
 
                         //Allow to edit:
                         echo '<div style="padding: 15px 0;"><a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="far fa-pen-square"></i></span><b class="montserrat">EDIT ANSWER</b></a></div>';
 
-                    echo '</div>';
+                        echo '</div>';
+
+                    }
 
                 }
 
