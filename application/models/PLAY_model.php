@@ -814,6 +814,8 @@ class PLAY_model extends CI_Model
         //Fetch statuses:
         $en_all_4997 = $this->config->item('en_all_4997');
 
+        boost_power();
+
         if(!in_array($action_en_id, $this->config->item('en_ids_4997'))) {
 
             return array(
