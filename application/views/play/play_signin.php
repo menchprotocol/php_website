@@ -140,20 +140,20 @@ if(count($current_sign_in_attempt) == 0){
             <div class="read-topic"><span class="icon-block-sm"><i class="fas fa-user-plus"></i></span>NEW ACCOUNT</div>
 
             <!-- pre-set Email -->
-            <div class="margin-top-downn">
+            <div class="margin-top-down">
                 <span class="medium-header"><?= $en_all_6225[3288]['m_icon'].' '.$en_all_6225[3288]['m_name'] ?>:</span>
                 <div><b><span class="focus_email"></span></b></div>
             </div>
 
 
             <!-- Full Name -->
-            <div class="margin-top-downn">
+            <div class="margin-top-down">
                 <span class="medium-header"><?= $en_all_6225[6197]['m_icon'].' '.$en_all_6225[6197]['m_name'] ?>:</span>
                 <div class="form-group is-empty"><input type="text" placeholder="<?= $en_all_6225[6197]['m_desc'] ?>" id="input_name" maxlength="<?= config_var(11072) ?>" class="form-control border"></div>
             </div>
 
             <!-- New Password -->
-            <div class="margin-top-downn">
+            <div class="margin-top-down">
                 <span class="medium-header"><?= $en_all_6225[3286]['m_icon'] ?> NEW PASSWORD:</span>
                 <div class="form-group is-empty"><input type="password" id="new_password" class="form-control border"></div>
             </div>
