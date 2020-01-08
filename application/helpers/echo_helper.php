@@ -2590,9 +2590,9 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
             $en_all_10602 = $CI->config->item('en_all_10602');
 
             if($en_id==6677){
-                $ui .= '<h6 class="dropdown-header"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_10602[6192]['m_desc'].'" style="border-bottom:1px dotted #AAAAAA;">'.$en_all_10602[6192]['m_name'].'</span></h6>';
+                $ui .= '<h6 class="dropdown-header"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_10602[6192]['m_desc'].'" style="border-bottom:1px dotted #AAAAAA;">'.$en_all_10602[6192]['m_name'].'</span>:</h6>';
             } elseif($en_id==6684){
-                $ui .= '<h6 class="dropdown-header"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_10602[6193]['m_desc'].'" style="border-bottom:1px dotted #AAAAAA;">'.$en_all_10602[6193]['m_name'].'</span></h6>';
+                $ui .= '<h6 class="dropdown-header"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_10602[6193]['m_desc'].'" style="border-bottom:1px dotted #AAAAAA;">'.$en_all_10602[6193]['m_name'].'</span>:</h6>';
             }
         }
 
