@@ -282,6 +282,9 @@ img.no-radius {
     color: #AAAAAA;
     text-transform: uppercase;
 }
+.list-group .read-topic{
+    margin:5px;
+}
 .btn-five{ margin-left:5px; }
 .center-right{ padding-top:43px; }
 
