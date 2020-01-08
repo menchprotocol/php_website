@@ -1716,7 +1716,7 @@ class READ_model extends CI_Model
                         echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-history"></i></span>YOUR ANSWER:');
 
                         //Allow to edit:
-                        echo '<div class="inline-block" style="padding: 15px 0 15px 15px;">or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>CHANGE ANSWER</u></a></div>';
+                        echo '<div class="inline-block margin-top-down">or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>CHANGE ANSWER</u></a></div>';
 
                         echo '</div>';
 
@@ -1871,7 +1871,7 @@ class READ_model extends CI_Model
                 } else {
 
                     //Button to submit selection:
-                    echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($previously_answered)>0 ? 'CHANGE' : 'SAVE' ).' & CONTINUE <i class="fas fa-angle-right"></i></a>'.( count($previously_answered)>0 ? '<span class="inline-block"> or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL CHANGE</u></a></span>' : '' ).' <span class="result-update"></span></div>';
+                    echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($previously_answered)>0 ? 'CHANGE' : 'SAVE' ).' & CONTINUE <i class="fas fa-angle-right"></i></a>'.( count($previously_answered)>0 ? '<span class="inline-block margin-top-down"> or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL CHANGE</u></a></span>' : '' ).' <span class="result-update"></span></div>';
 
                     //Close list:
                     echo '</div>';
