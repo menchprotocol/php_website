@@ -192,7 +192,6 @@ class Read extends CI_Controller
         //Send email to all subscribers:
         foreach($this->READ_model->ln_fetch(array(
             'ln_parent_play_id' => 12114,
-            'ln_child_play_id' => 1, //Limit to Shervin only for now
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
@@ -212,7 +211,7 @@ class Read extends CI_Controller
             }
         }
 
-        echo 'Sent '.$email_recipients.' Stat Emails';
+        echo 'Sent '.$email_recipients.' Messages';
     }
 
     function read_my(){
