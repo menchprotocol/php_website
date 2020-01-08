@@ -2230,9 +2230,8 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as in__child_count');
     $tree_count_range = $child_links[0]['in__child_count'];
 
-
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding:0 27px 0 3px;"><a class="btn btn-blog" href="/blog/' . $in['in_id'] . '">'.($tree_count_range > 0 ? '<span class="btn-counter">' . $tree_count_range . '</span> ' : '').'<i class="fad fa-step-forward"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding:0 27px 0 3px;"><a class="btn btn-blog" href="/blog/' . $in['in_id'] . '">'.( $is_parent ? '<i class="fad fa-step-backward"></i> <span class="btn-counter">' . $tree_count_range . '</span>' : '<span class="btn-counter">' . $tree_count_range . '</span> <i class="fad fa-step-forward"></i>' ).'</a></div>';
 
 
     $ui .= '</div>';
