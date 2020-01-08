@@ -62,7 +62,12 @@ class Read extends CI_Controller
             if($next_in_id > 0){
                 return redirect_message('/' . $next_in_id);
             } else {
-                return redirect_message('/read', '<div class="alert alert-danger" role="alert">No next read found in your reading list.</div>');
+                $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false);
+                if($next_in_id > 0){
+                    return redirect_message('/' . $next_in_id);
+                } else {
+                    return redirect_message('/read', '<div class="alert alert-danger" role="alert">No next read found in your reading list.</div>');
+                }
             }
 
         } else {
