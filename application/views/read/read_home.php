@@ -137,8 +137,11 @@
                     continue;
                 }
                 array_push($listed_in_ids, $published_in['in_id']);
-                $featured_ui .= echo_in_read($published_in);
-                $topic_in_count++;
+                $this_read = echo_in_read($published_in);
+                if($this_read){
+                    $featured_ui .= $this_read;
+                    $topic_in_count++;
+                }
             }
 
             if($topic_in_count > 0){
