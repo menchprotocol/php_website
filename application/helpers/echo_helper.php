@@ -1579,6 +1579,19 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
 
     //See if user is logged-in:
     $CI =& get_instance();
+    $session_en = superpower_assigned();
+    $completion_rate['completion_percentage'] = 0; //Default value
+    if($session_en){
+        //Make sure in reading list:
+        $player_read_ids = $CI->READ_model->read_ids($session_en['en_id']);
+        if(in_array($in['in_id'], $player_read_ids)){
+            $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
+        }
+    }
+
+    if($completion_rate['completion_percentage']==100 && !strlen($CI->uri->segment(1))){
+        return null;
+    }
 
     $ui = '<a href="/'.$in['in_id'] . '" class="list-group-item itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
@@ -1605,15 +1618,10 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
 
     }
 
-    $session_en = superpower_assigned();
-    if(isset($session_en['en_id'])){
-        //Make sure in reading list:
-        $player_read_ids = $CI->READ_model->read_ids($session_en['en_id']);
-        if(in_array($in['in_id'], $player_read_ids)){
-            $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
-            if($completion_rate['completion_percentage'] > 0){
-                $ui .= ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read">'.$completion_rate['completion_percentage'].'% DONE</span>';
-            }
+    if($session_en && in_array($in['in_id'], $player_read_ids)){
+        $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
+        if($completion_rate['completion_percentage'] > 0){
+            $ui .= ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read">'.$completion_rate['completion_percentage'].'% DONE</span>';
         }
     }
 
