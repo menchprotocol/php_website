@@ -690,7 +690,7 @@ textarea.note-textarea{
 }
 .three-menus td.read, #top_players td.read{
     width: 33%;
-    text-align: right;
+    text-align: left;
 }
 .three-menus td.blog, #top_players td.blog{
     width: 33%;
