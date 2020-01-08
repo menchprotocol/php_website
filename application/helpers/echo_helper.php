@@ -2572,6 +2572,12 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
 
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
 
+        if($en_id==6677){
+            $ui .= '<h6 class="dropdown-header">AND BLOGS</h6>';
+        } elseif($en_id==6684){
+            $ui .= '<h6 class="dropdown-header">OR BLOGS</h6>';
+        }
+
         $ui .= '<a class="dropdown-item dropi_'.$cache_en_id.'_'.$ln_id.' montserrat optiond_'.$en_id.'_'.$ln_id.' doupper '.( $en_id==$selected_en_id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.','.$en_id.','.$ln_id.')"><span title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</span></a>';
 
     }

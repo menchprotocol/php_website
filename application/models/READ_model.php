@@ -1764,11 +1764,11 @@ class READ_model extends CI_Model
                     //HTML:
                     if ($ins[0]['in_type_play_id'] == 6684) {
 
-                        echo '<div class="montserrat padding-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE ANSWER:</div>';
+                        echo '<div class="montserrat padding-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE:</div>';
 
                     } elseif ($ins[0]['in_type_play_id'] == 7231) {
 
-                        echo '<div class="montserrat padding-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE OR MORE ANSWERS:</div>';
+                        echo '<div class="montserrat padding-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE OR MORE:</div>';
 
                     }
 
