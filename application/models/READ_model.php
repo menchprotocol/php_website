@@ -1716,7 +1716,7 @@ class READ_model extends CI_Model
                         echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-history"></i></span>YOUR ANSWER:');
 
                         //Allow to edit:
-                        echo '<div class="inline-block" style="padding: 15px 0 15px 15px;">or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>EDIT ANSWER</u></a></div>';
+                        echo '<div class="inline-block" style="padding: 15px 0 15px 15px;">or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>CHANGE ANSWER</u></a></div>';
 
                         echo '</div>';
 
