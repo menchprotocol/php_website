@@ -2284,9 +2284,9 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $pref
         } else {
             //HTML:
             if($prefix_statement){
-                echo '<div class="montserrat" style="padding:15px 0;">'.$prefix_statement.'</div>';
+                echo '<div class="montserrat" style="padding:15px 0; margin-top: 30px;">'.$prefix_statement.'</div>';
             }
-            echo '<div class="list-group">';
+            echo '<div class="list-group" style=" margin-top: 30px;">';
         }
 
         //List children so they know what's ahead:
