@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-07 21:01:24 PST
+//Generated 2020-01-07 21:05:56 PST
 
 //PLAY AVATAR SUPER:
 $config['en_ids_12279'] = array(12280,12281,12282,12308,12309,12310,12296,12297,12298,12302,12303,12304,12306,12307,12305,12312,12313,12311,12277,12276,12278,12290,12291,12292,12285,12284,12283);
@@ -5367,13 +5367,13 @@ $config['en_all_10602'] = array(
     6192 => array(
         'm_icon' => '<i class="fas fa-sitemap" aria-hidden="true"></i>',
         'm_name' => 'AND BLOGS',
-        'm_desc' => 'Readers must complete all child blogs to complete this blog.',
+        'm_desc' => 'Readers must complete all child blogs',
         'm_parents' => array(4527,10602),
     ),
     6193 => array(
         'm_icon' => '<i class="fas fa-code-branch rotate180" aria-hidden="true"></i>',
         'm_name' => 'OR BLOGS',
-        'm_desc' => 'Readers choose child blogs relevant to them to complete this blog.',
+        'm_desc' => 'Readers choose child blogs relevant to them',
         'm_parents' => array(10602,4527),
     ),
 );
