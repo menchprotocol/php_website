@@ -136,15 +136,28 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 4: Create New Account -->
         <div id="step4" class="signup-steps hidden">
-            <span class="medium-header" style="padding-top: 20px;"><i class="fas fa-user-plus"></i> New Account <b><span class="focus_email"></span></b></span>
+
+            <div class="read-topic"><span class="icon-block-sm"><i class="fas fa-user-plus"></i></span>NEW ACCOUNT</div>
+
+            <!-- pre-set Email -->
+            <div class="margin-top-downn">
+                <span class="medium-header"><?= $en_all_6225[3288]['m_icon'].' '.$en_all_6225[3288]['m_name'] ?>:</span>
+                <div class="form-group is-empty"><b><span class="focus_email"></span></b></div>
+            </div>
+
 
             <!-- Full Name -->
-            <span class="medium-header" style="padding-top: 20px; display: block;"><?= $en_all_6225[6197]['m_icon'].' '.$en_all_6225[6197]['m_name'] ?>:</span>
-            <div class="form-group is-empty"><input type="text" placeholder="First & Last Name" id="input_name" maxlength="<?= config_var(11072) ?>" class="form-control border"></div>
+            <div class="margin-top-downn">
+                <span class="medium-header"><?= $en_all_6225[6197]['m_icon'].' '.$en_all_6225[6197]['m_name'] ?>:</span>
+                <div class="form-group is-empty"><input type="text" placeholder="First & Last Name" id="input_name" maxlength="<?= config_var(11072) ?>" class="form-control border"></div>
+            </div>
 
             <!-- New Password -->
-            <span class="medium-header" style="padding-top: 20px;"><?= $en_all_6225[3286]['m_icon'] ?> Create a new password:</span>
-            <div class="form-group is-empty"><input type="password" id="new_password" class="form-control border"></div>
+            <div class="margin-top-downn">
+                <span class="medium-header"><?= $en_all_6225[3286]['m_icon'] ?> NEW PASSWORD:</span>
+                <div class="form-group is-empty"><input type="password" id="new_password" class="form-control border"></div>
+            </div>
+
 
             <!-- Signup Buttons -->
             <div id="new_account_errors" class="isred"></div>
