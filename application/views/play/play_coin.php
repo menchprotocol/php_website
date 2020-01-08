@@ -253,17 +253,17 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 //PLAY TREE UP/INPUT
                 $default_active = true; //LEFT
 
-                $fetch_11030 = $this->READ_model->ln_fetch(array(
+                $play__parents = $this->READ_model->ln_fetch(array(
                     'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
                     'ln_child_play_id' => $player['en_id'],
                 ), array('en_parent'), 0);
 
-                $counter = count($fetch_11030);
+                $counter = count($play__parents);
 
                 $this_tab .= '<div id="list-parent" class="list-group ">';
-                foreach ($fetch_11030 as $en) {
+                foreach ($play__parents as $en) {
                     $this_tab .= echo_en($en,true);
                 }
 
@@ -291,7 +291,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 $counter = $child_links[0]['totals'];
 
 
-                $fetch_11029 = $this->READ_model->ln_fetch(array(
+                $play__children = $this->READ_model->ln_fetch(array(
                     'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
@@ -300,10 +300,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 $this_tab .= '<div id="list-children" class="list-group">';
 
-                foreach ($fetch_11029 as $en) {
+                foreach ($play__children as $en) {
                     $this_tab .= echo_en($en,false);
                 }
-                if ($counter > count($fetch_11029)) {
+                if ($counter > count($play__children)) {
                     $this_tab .= echo_en_load_more(1, config_var(11064), $counter);
                 }
 
@@ -512,10 +512,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 $this_tab .= '</div></form>';
 
-                if(isset($fetch_11029)){
+                if(isset($play__children)){
                     //Also add invisible child IDs for quick copy/pasting:
                     $this_tab .= '<div style="color:transparent;">';
-                    foreach ($fetch_11029 as $en) {
+                    foreach ($play__children as $en) {
                         $this_tab .= $en['en_id'].',';
                     }
                     $this_tab .= '</div>';

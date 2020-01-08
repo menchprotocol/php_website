@@ -125,18 +125,18 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         if($en_id2==11019){
 
             //BLOG TREE PREVIOUS
-            $fetch_11019 = $this->READ_model->ln_fetch(array(
+            $blog__parents = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                 'ln_child_blog_id' => $in['in_id'],
             ), array('in_parent'), 0);
 
-            $counter = count($fetch_11019);
+            $counter = count($blog__parents);
 
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-1" class="list-group">';
 
-            foreach ($fetch_11019 as $parent_in) {
+            foreach ($blog__parents as $parent_in) {
                 $this_tab .= echo_in($parent_in, 0, true, $is_author && $is_active);
             }
 
@@ -157,19 +157,19 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         } elseif($en_id2==11020){
 
             //BLOG TREE NEXT
-            $fetch_11020 = $this->READ_model->ln_fetch(array(
+            $blog__children = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                 'ln_parent_blog_id' => $in['in_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
-            $counter = count($fetch_11020);
+            $counter = count($blog__children);
             $default_active = true;
 
             //List child blogs:
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children">';
-            foreach ($fetch_11020 as $child_in) {
+            foreach ($blog__children as $child_in) {
                 $this_tab .= echo_in($child_in, $in['in_id'], false, $is_author && $is_active);
             }
 

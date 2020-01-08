@@ -544,11 +544,10 @@ class READ_model extends CI_Model
 
 
 
-    function read__completion_auto_complete($en_id, $in, $unlock_link_type_en_id){
+    function read__completion_auto_complete($en_id, $in){
 
         /*
          *
-         * TODO: DEPRECATE and replace with read_coin()
          *
          * A function that marks a BLOG as complete IF
          * the blog has nothing of substance to be
@@ -559,25 +558,49 @@ class READ_model extends CI_Model
          * */
 
         //Send messages, if any:
-        foreach ($this->READ_model->ln_fetch(array(
+        $require_player_input = in_array($in['in_type_play_id'], $this->config->item('en_ids_12324'));
+
+        $blog__messages = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => 4231, //Blog Note Messages
             'ln_child_blog_id' => $in['in_id'],
-        ), array(), 0, 0, array('ln_order' => 'ASC')) as $message_ln) {
-            $this->READ_model->dispatch_message(
-                $message_ln['ln_content'],
-                array('en_id' => $en_id),
-                true
-            );
+        ), array(), 0, 0, array('ln_order' => 'ASC'));
+
+        $blog__children = $this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+            'ln_parent_blog_id' => $in['in_id'],
+        ), array('in_child'), 1);
+
+        if($require_player_input || count($blog__messages) || count($blog__children)){
+            //It has something of value so it cannot be auto closed:
+            return false;
         }
 
-        //Ok, now we can mark it as complete:
+
+
+        //Qualifies to be auto closed:
+        //Detect coin type based on blog type:
+        $en_all_7585 = $this->config->item('en_all_7585'); //Blog Types
+        $coin_type_ids = array_intersect($en_all_7585[$in['in_type_play_id']]['m_parents'], $this->config->item('en_ids_6255'));
+        if(!count($coin_type_ids)){
+            //Log Admin Error:
+            $this->READ_model->ln_create(array(
+                'ln_creator_play_id' => $en_id,
+                'ln_parent_blog_id' => $in['in_id'],
+                'ln_content' => 'read__completion_auto_complete() failed to detect COIN TYPE @6255 for blog type @7585 with value of @'.$in['in_type_play_id'],
+                'ln_type_play_id' => 4246, //Platform Bug Reports
+            ));
+            return false;
+        }
+
+        //Ok, now we can issue READ COIN:
         $this->READ_model->ln_create(array(
-            'ln_type_play_id' => ( in_is_unlockable($in) ? $unlock_link_type_en_id : 4559 /* User Read Read Messages */ ),
+            'ln_type_play_id' => end($coin_type_ids),
             'ln_creator_play_id' => $en_id,
             'ln_parent_blog_id' => $in['in_id'],
         ));
-
 
         //Process on-complete automations:
         $this->READ_model->read__completion_checks($en_id, $in, true);
@@ -1187,7 +1210,7 @@ class READ_model extends CI_Model
                     ));
 
                     //See if we also need to mark the child as complete:
-                    $this->READ_model->read__completion_auto_complete($en_id, $locked_link, 6997 /* User Read Score Unlock */);
+                    $this->READ_model->read__completion_auto_complete($en_id, $locked_link);
 
                 }
             }
@@ -3522,7 +3545,7 @@ class READ_model extends CI_Model
                 ));
 
                 //See if we also need to mark the child as complete:
-                //$this->READ_model->read__completion_auto_complete($ens[0], $child_ins[0], 7485 /* User Read Answer Unlock */);
+                $this->READ_model->read__completion_auto_complete($ens[0]['en_id'], $child_ins[0]);
 
                 $answers_newly_added++;
             }
@@ -4001,7 +4024,7 @@ class READ_model extends CI_Model
                 if($published_answer){
 
                     //See if we also need to mark the answer as complete:
-                    $this->READ_model->read__completion_auto_complete($en['en_id'], $answer_ins[0], 7485 /* User Read Answer Unlock */);
+                    $this->READ_model->read__completion_auto_complete($en['en_id'], $answer_ins[0]);
 
 
                     //Find/Advance to the next step:
