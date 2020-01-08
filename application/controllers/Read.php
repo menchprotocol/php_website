@@ -66,7 +66,7 @@ class Read extends CI_Controller
                 if($next_in_id > 0){
                     return redirect_message('/' . $next_in_id);
                 } else {
-                    return redirect_message('/', '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i> Successfully read your entire reading list. Continue with a new read below.</div>');
+                    return redirect_message('/', '<div class="alert alert-success" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully read your entire reading list.</div><div><span class="icon-block"><i class="fas fa-step-forward"></i></span>Continue with a new read below.</div></div>');
                 }
             }
 
@@ -77,7 +77,7 @@ class Read extends CI_Controller
             if($next_in_id > 0){
                 return redirect_message('/' . $next_in_id);
             } else {
-                return redirect_message('/', '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i> Successfully read your entire reading list. Continue with a new read below.</div>');
+                return redirect_message('/', '<div class="alert alert-success" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully read your entire reading list.</div><div><span class="icon-block"><i class="fas fa-step-forward"></i></span>Continue with a new read below.</div></div>');
             }
         }
     }
