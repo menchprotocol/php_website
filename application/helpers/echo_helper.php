@@ -2410,7 +2410,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
         );
     } else {
         //HTML:
-        echo '<div class="inline-block margin-top-down"><a class="btn btn-read" href="/'.$in_id.'/next">NEXT <i class="fas fa-step-forward"></i></a></div>';
+        echo '<div class="inline-block margin-top-down"><a class="btn btn-read" href="/'.$in_id.'/next">NEXT <i class="fad fa-step-forward"></i></a></div>';
     }
 
 }

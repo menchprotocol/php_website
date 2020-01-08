@@ -2020,7 +2020,7 @@ class READ_model extends CI_Model
                 }
 
                 //Always show the next list:
-                echo_in_list($ins[0]['in_id'], $in__children, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-step-forward"></i></span>UP NEXT:');
+                echo_in_list($ins[0]['in_id'], $in__children, $recipient_en, $push_message, '<span class="icon-block"><i class="fad fa-step-forward"></i></span>UP NEXT:');
 
             } elseif ($ins[0]['in_type_play_id'] == 6683) {
 
