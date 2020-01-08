@@ -327,7 +327,7 @@ class Read extends CI_Controller
         } elseif (!isset($_POST['answered_ins']) || !is_array($_POST['answered_ins']) || !count($_POST['answered_ins'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'No answer selected.',
+                'message' => 'Select an answer before saving...',
             ));
         }
 
