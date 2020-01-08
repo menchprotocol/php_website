@@ -2584,11 +2584,15 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
 
         if($cache_en_id==7585){
+
+            //TODO further integrate as this is kind of a hack. Its logic dependency on the play tree can grow...
+
             $en_all_10602 = $CI->config->item('en_all_10602');
+
             if($en_id==6677){
-                $ui .= '<h6 class="dropdown-header"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_10602[6192]['m_desc'].'"><i class="fal fa-info-circle"></i> '.$en_all_10602[6192]['m_name'].':</span></h6>';
+                $ui .= '<h6 class="dropdown-header"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_10602[6192]['m_desc'].'" style="border-bottom:1px dotted #AAAAAA;">'.$en_all_10602[6192]['m_name'].'</span></h6>';
             } elseif($en_id==6684){
-                $ui .= '<h6 class="dropdown-header"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_10602[6193]['m_desc'].'"><i class="fal fa-info-circle"></i> '.$en_all_10602[6193]['m_name'].':</span></h6>';
+                $ui .= '<h6 class="dropdown-header"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_10602[6193]['m_desc'].'" style="border-bottom:1px dotted #AAAAAA;">'.$en_all_10602[6193]['m_name'].'</span></h6>';
             }
         }
 

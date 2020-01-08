@@ -456,7 +456,7 @@ function en_modify_load(en_id, ln_id) {
 }
 
 function player_link_form_lock(){
-    $('#ln_content').prop("disabled", true).css('background-color','#CCC');
+    $('#ln_content').prop("disabled", true).css('background-color','#AAAAAA');
 
     $('.btn-save').addClass('grey').attr('href', '#').html('<i class="far fa-yin-yang fa-spin"></i> Uploading');
 
