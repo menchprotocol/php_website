@@ -2257,7 +2257,7 @@ fragment PostListingItemSidebar_post on Post {
         $ens[0] = $this->PLAY_model->en_activate_session($ens[0]);
 
         //Take them to their account:
-        return redirect_message( '/play' );
+        return redirect_message( '/play' , '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Successfully signed in. You can set a new password below.</div>');
     }
 
     function singin_check_email(){
