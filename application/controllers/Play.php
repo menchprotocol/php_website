@@ -1843,41 +1843,6 @@ fragment PostListingItemSidebar_post on Post {
 
     }
 
-    function resetpassword($ln_id){
-
-        //Log all sessions out:
-        $this->session->sess_destroy();
-
-        //Make sure email input is provided:
-        if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
-            //Missing email input:
-            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Missing Email</div>');
-        }
-
-        //Validate READ ID and matching email:
-        $validate_links = $this->READ_model->ln_fetch(array(
-            'ln_id' => $ln_id,
-            'ln_content' => $_GET['email'],
-            'ln_type_play_id' => 7563, //User Signin Magic Link Email
-        ), array('en_creator')); //The user making the request
-
-        if(count($validate_links) < 1){
-            //Probably already completed the reset password:
-            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Reset password link not found</div>');
-        }
-
-        $this->load->view('header', array(
-            'hide_header' => 1,
-            'title' => 'Reset Password',
-        ));
-        $this->load->view('play/play_password_reset', array(
-            'validate_link' => $validate_links[0],
-        ));
-        $this->load->view('footer');
-
-    }
-
-
 
 
     function sign_reset_password_apply()
@@ -2242,12 +2207,8 @@ fragment PostListingItemSidebar_post on Post {
         $magic_url = 'https://mench.com/play/magic/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
-        $html_message .= '<br /><br /><div>You may also set a new password here:</div>';
-        $setpassword_url = 'https://mench.com/play/resetpassword/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
-        $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
-
         $html_message .= '<br /><br />';
-        $html_message .= '<div>- <a href="https://mench.com" target="_blank">Mench</a></div>';
+        $html_message .= '<div>- <a href="https://mench.com" target="_blank">MENCH</a></div>';
 
         //Send email:
         $this->READ_model->dispatch_emails(array($_POST['input_email']), $subject, $html_message);
@@ -2261,7 +2222,7 @@ fragment PostListingItemSidebar_post on Post {
     function magic($ln_id){
 
         //Validate email:
-        if(superpower_assigned()){
+        if(superpower_assigned(10939)){
             return redirect_message('/blog');
         } elseif(superpower_assigned()){
             return redirect_message('/read/next');
@@ -2295,8 +2256,8 @@ fragment PostListingItemSidebar_post on Post {
         //Log them in:
         $ens[0] = $this->PLAY_model->en_activate_session($ens[0]);
 
-        //Take them to next read:
-        return redirect_message( '/read/next' );
+        //Take them to their account:
+        return redirect_message( '/play' );
     }
 
     function singin_check_email(){
