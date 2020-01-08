@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-07 20:52:00 PST
+//Generated 2020-01-07 20:54:30 PST
 
 //PLAY AVATAR SUPER:
 $config['en_ids_12279'] = array(12280,12281,12282,12308,12309,12310,12296,12297,12298,12302,12303,12304,12306,12307,12305,12312,12313,12311,12277,12276,12278,12290,12291,12292,12285,12284,12283);
@@ -5333,29 +5333,29 @@ $config['en_all_7347'] = array(
 );
 
 //READ ALL:
-$config['en_ids_6192'] = array(6914,7637,6677,6683);
+$config['en_ids_6192'] = array(7637,6914,6677,6683);
 $config['en_all_6192'] = array(
-    6914 => array(
-        'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
-        'm_name' => 'MEET ALL REQUIREMENTS',
-        'm_desc' => '',
-        'm_parents' => array(10984,6192,7585,7486,7485,7309,6997),
-    ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
-        'm_name' => 'UPLOAD',
+        'm_name' => 'BLOG UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12117,7751,7585,6192),
     ),
+    6914 => array(
+        'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ALL',
+        'm_desc' => '',
+        'm_parents' => array(10984,6192,7585,7486,7485,7309,6997),
+    ),
     6677 => array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
-        'm_name' => 'READ',
+        'm_name' => 'BLOG READ',
         'm_desc' => '',
         'm_parents' => array(7585,4559,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard " aria-hidden="true"></i>',
-        'm_name' => 'REPLY',
+        'm_name' => 'BLOG REPLY',
         'm_desc' => '',
         'm_parents' => array(6144,7585,6192),
     ),
@@ -5915,19 +5915,19 @@ $config['en_ids_6193'] = array(6684,7231,6907);
 $config['en_all_6193'] = array(
     6684 => array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
-        'm_name' => 'SELECT ONE',
+        'm_name' => 'BLOG SELECT ONE',
         'm_desc' => '',
         'm_parents' => array(12129,12119,7712,7585,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
-        'm_name' => 'SELECT SOME',
+        'm_name' => 'BLOG SELECT SOME',
         'm_desc' => '',
         'm_parents' => array(12129,12119,7712,7489,7585,6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube " aria-hidden="true"></i>',
-        'm_name' => 'MEET ONE REQUIREMENT',
+        'm_name' => 'REQUIRE ANY',
         'm_desc' => '',
         'm_parents' => array(10984,7585,7486,7485,7309,6997,6193),
     ),
@@ -5938,44 +5938,44 @@ $config['en_ids_7585'] = array(6677,6683,7637,6914,6684,7231,6907);
 $config['en_all_7585'] = array(
     6677 => array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
-        'm_name' => 'READ',
-        'm_desc' => 'Read messages & move to the next blog [AND Node]',
+        'm_name' => 'BLOG READ',
+        'm_desc' => 'Read messages & move to the next blog',
         'm_parents' => array(7585,4559,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard " aria-hidden="true"></i>',
-        'm_name' => 'REPLY',
-        'm_desc' => 'Give a text response & move to the next blog [AND Node]',
+        'm_name' => 'BLOG REPLY',
+        'm_desc' => 'Give a text response & move to the next blog',
         'm_parents' => array(6144,7585,6192),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
-        'm_name' => 'UPLOAD',
-        'm_desc' => 'Upload a file & move to the next blog [AND Node]',
+        'm_name' => 'BLOG UPLOAD',
+        'm_desc' => 'Upload a file & move to the next blog',
         'm_parents' => array(12117,7751,7585,6192),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
-        'm_name' => 'MEET ALL REQUIREMENTS',
-        'm_desc' => 'Complete by (a) choosing intent as their answer or by (b) completing all child intents [AND Node]',
+        'm_name' => 'REQUIRE ALL',
+        'm_desc' => 'Complete by (a) choosing intent as their answer or by (b) completing all child intents',
         'm_parents' => array(10984,6192,7585,7486,7485,7309,6997),
     ),
     6684 => array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
-        'm_name' => 'SELECT ONE',
-        'm_desc' => 'Select 1 blog from the list of blogs [OR Node]',
+        'm_name' => 'BLOG SELECT ONE',
+        'm_desc' => 'Select 1 blog from the list of blogs',
         'm_parents' => array(12129,12119,7712,7585,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
-        'm_name' => 'SELECT SOME',
-        'm_desc' => 'Select 1 or more blogs from the list of blogs [OR Node]',
+        'm_name' => 'BLOG SELECT SOME',
+        'm_desc' => 'Select 1 or more blogs from the list of blogs',
         'm_parents' => array(12129,12119,7712,7489,7585,6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube " aria-hidden="true"></i>',
-        'm_name' => 'MEET ONE REQUIREMENT',
-        'm_desc' => 'Complete by (a) choosing intent as their answer or by (b) completing any child intent [OR Node]',
+        'm_name' => 'REQUIRE ANY',
+        'm_desc' => 'Complete by (a) choosing intent as their answer or by (b) completing any child intent',
         'm_parents' => array(10984,7585,7486,7485,7309,6997,6193),
     ),
 );
@@ -6083,13 +6083,13 @@ $config['en_ids_7309'] = array(6914,6907);
 $config['en_all_7309'] = array(
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
-        'm_name' => 'ALL REQUIREMENTS',
+        'm_name' => 'ALL',
         'm_desc' => '',
         'm_parents' => array(10984,6192,7585,7486,7485,7309,6997),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube " aria-hidden="true"></i>',
-        'm_name' => 'ONE REQUIREMENT',
+        'm_name' => 'ANY',
         'm_desc' => '',
         'm_parents' => array(10984,7585,7486,7485,7309,6997,6193),
     ),
