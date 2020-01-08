@@ -67,7 +67,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
             //Preview option:
-            echo '<div class="inline-block pull-right side-margin"><a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fas fa-angle-right"></i></a></div>';
+            echo '<div class="inline-block pull-right side-margin"><a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fad fa-step-forward"></i></a></div>';
 
         echo '</div>';
 

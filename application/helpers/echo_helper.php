@@ -691,7 +691,7 @@ function echo_actionplan_step_parent($in)
     $ui = '<a href="/' . $in['in_id'] . '" class="list-group-item itemread">';
 
     $ui .= '<span class="pull-left">';
-    $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
+    $ui .= '<span class="badge badge-primary fr-bgd"><i class="fad fa-step-backward"></i></span>';
     $ui .= '</span>';
 
     $ui .= ' <span>' . echo_in_title($in['in_title']).'</span>';
@@ -1697,7 +1697,7 @@ function echo_in_dashboard($in)
     $ui = '<div class="list-group-item itemblog">';
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="/blog/' . $in['in_id']. '"><i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="/blog/' . $in['in_id']. '"><i class="fad fa-step-forward"></i></a></div>';
     $ui .= '<span class="icon-block">'.$en_all_7585[$in['in_type_play_id']]['m_icon'].'</span>';
     $ui .= '<b class="montserrat">'.echo_in_title($in['in_title'], false).'</b>';
     $ui .= '</div>';
@@ -2232,7 +2232,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding:0 27px 0 3px;"><a class="btn btn-blog" href="/blog/' . $in['in_id'] . '">'.($tree_count_range > 0 ? '<span class="btn-counter">' . $tree_count_range . '</span> ' : '').'<i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding:0 27px 0 3px;"><a class="btn btn-blog" href="/blog/' . $in['in_id'] . '">'.($tree_count_range > 0 ? '<span class="btn-counter">' . $tree_count_range . '</span> ' : '').'<i class="fad fa-step-forward"></i></a></div>';
 
 
     $ui .= '</div>';

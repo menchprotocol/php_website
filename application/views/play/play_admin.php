@@ -52,7 +52,7 @@ if(!$action) {
     foreach ($moderation_tools as $tool_key => $tool_name) {
         echo '<a href="' . $tool_key . '" class="list-group-item">';
         echo '<span class="pull-right">';
-        echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
+        echo '<span class="badge badge-primary fr-bgd"><i class="fad fa-step-forward"></i></span>';
         echo '</span>';
         echo '<b class="montserrat">'.$tool_name.'</b>';
         echo '</a>';

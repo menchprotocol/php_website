@@ -50,7 +50,7 @@
 
         if(!superpower_assigned(10939)) {
 
-            echo '<div style="padding:10px 0;"><a href="/'.config_var(10939).'" class="btn btn-blog montserrat">START BLOGGING <i class="fas fa-angle-right"></i></a></div>';
+            echo '<div style="padding:10px 0;"><a href="/'.config_var(10939).'" class="btn btn-blog montserrat">START BLOGGING <i class="fad fa-step-forward"></i></a></div>';
 
         }
 

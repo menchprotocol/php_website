@@ -93,7 +93,7 @@ if(count($current_sign_in_attempt) == 0){
             foreach ($this->config->item('en_all_7555') as $en_id => $m) {
                 echo '<div class="row" style="padding:5px 0;">';
 
-                echo '<a class="btn btn-play" href="javascript:void(0);" onclick="select_channel('.$en_id.', '.$referrer_in_id.')"><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . ' <i class="fas fa-angle-right"></i></a>';
+                echo '<a class="btn btn-play" href="javascript:void(0);" onclick="select_channel('.$en_id.', '.$referrer_in_id.')"><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . ' <i class="fad fa-step-forward"></i></a>';
 
                 echo '<div class="help_me_choose hidden"><i class="fal fa-info-circle"></i> '.$m['m_desc'].'<br /></div>';
 
@@ -126,8 +126,8 @@ if(count($current_sign_in_attempt) == 0){
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="isred"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-play transparent pass btn-raised btn-round <?= ( $referrer_in_id > 0 ? '' : ' hidden ' ) ?>"><i class="fas fa-angle-left"></i></a>
-                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-play pass btn-raised btn-round"><i class="fas fa-angle-right"></i></a>
+                <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-play transparent pass btn-raised btn-round <?= ( $referrer_in_id > 0 ? '' : ' hidden ' ) ?>"><i class="fad fa-step-backward"></i></a>
+                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-play pass btn-raised btn-round"><i class="fad fa-step-forward"></i></a>
             </span>
             <span id="messenger_sign" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 ? ' hidden ' : '' ) ?>">OR <a href="javascript:void(0)" onclick="confirm_sign_on_messenger(<?= $referrer_in_id ?>)" class="dounderline">USE MESSENGER</a> <i class="fab fa-facebook-messenger play"></i></span>
         </div>
@@ -162,8 +162,8 @@ if(count($current_sign_in_attempt) == 0){
             <!-- Signup Buttons -->
             <div id="new_account_errors" class="isred"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-play transparent pass btn-raised btn-round"><i class="fas fa-angle-left"></i></a>
-                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-play pass btn-raised btn-round"><i class="fas fa-angle-right"></i></a>
+                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-play transparent pass btn-raised btn-round"><i class="fad fa-step-backward"></i></a>
+                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-play pass btn-raised btn-round"><i class="fad fa-step-forward"></i></a>
             </span>
 
         </div>
@@ -179,8 +179,8 @@ if(count($current_sign_in_attempt) == 0){
             <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
             <div id="password_errors" class="isred"></div>
             <span id="step3buttons">
-                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-play transparent pass btn-raised btn-round"><i class="fas fa-angle-left"></i></a>
-                <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-play pass btn-raised btn-round"><i class="fas fa-angle-right"></i></a>
+                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-play transparent pass btn-raised btn-round"><i class="fad fa-step-backward"></i></a>
+                <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-play pass btn-raised btn-round"><i class="fad fa-step-forward"></i></a>
             </span>
 
             <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="magicemail()" class="dounderline">MAGIC LINK</a> <i class="fas fa-envelope-open play"></i></span>
