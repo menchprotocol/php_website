@@ -2322,7 +2322,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $pref
         foreach($in__children as $key => $child_in){
 
             //Has this been completed before by this user?
-            $footnotes = ( $next_key==$key && !$all_done ? 'UP NEXT' : ( $completion_rate[$key]['completion_percentage'] > 0 ? $completion_rate[$key]['completion_percentage'].'% DONE' : '' ));
+            $footnotes = ( $next_key==$key && !$all_done ? 'IS UP NEXT' : ( $completion_rate[$key]['completion_percentage'] > 0 ? $completion_rate[$key]['completion_percentage'].'% DONE' : '' ));
 
             if($push_message){
 
@@ -2364,12 +2364,11 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $pref
                 echo '<div class="is_upcoming montserrat" style="padding:5px 0 5px 7px;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><span class="icon-block"><i class="far fa-plus-circle"></i></span>'.$found_upcoming.' MORE</a></div>';
             }
         }
-
-    } else {
-
-        echo_in_next($in_id, $recipient_en, $push_message);
-
     }
+
+    //Always show next:
+    echo_in_next($in_id, $recipient_en, $push_message);
+
 }
 
 function echo_in_next($in_id, $recipient_en, $push_message){

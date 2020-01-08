@@ -1715,10 +1715,8 @@ class READ_model extends CI_Model
                         //List answers:
                         echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-history"></i></span>YOUR ANSWER:');
 
-                        echo_in_next($ins[0]['in_id'], $recipient_en, $push_message);
-
                         //Allow to edit:
-                        echo '<div class="inline-block" style="padding: 15px 0 15px 10px;">or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>EDIT ANSWER</u></a></div>';
+                        echo '<div class="inline-block" style="padding: 15px 0 15px 15px;">or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>EDIT ANSWER</u></a></div>';
 
                         echo '</div>';
 
@@ -1884,6 +1882,7 @@ class READ_model extends CI_Model
 
         } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7309'))) {
 
+            //Requirement lock
 
             if(count($read_progress)){
 
