@@ -142,7 +142,7 @@ if(count($current_sign_in_attempt) == 0){
             <!-- pre-set Email -->
             <div class="margin-top-downn">
                 <span class="medium-header"><?= $en_all_6225[3288]['m_icon'].' '.$en_all_6225[3288]['m_name'] ?>:</span>
-                <div class="form-group is-empty"><b><span class="focus_email"></span></b></div>
+                <div><b><span class="focus_email"></span></b></div>
             </div>
 
 
