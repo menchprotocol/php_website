@@ -1184,7 +1184,7 @@ function echo_tree_actionplan($in, $autoexpand){
     }
 
 
-    $common_prefix = common_prefix($in__children, 'in_title');
+    $common_prefix = common_prefix($in__children, 'in_title', $in);
     $return_html = '';
     $return_html .= '<div class="list-group maxout public_ap">';
 
@@ -1257,7 +1257,7 @@ function echo_tree_actionplan($in, $autoexpand){
             if (count($in_level2_children) > 0) {
 
                 //See if they have a common base:
-                $common_prefix_granchild = common_prefix($in_level2_children, 'in_title');
+                $common_prefix_granchild = common_prefix($in_level2_children, 'in_title', $in_level2);
 
                 //List level 3:
                 $return_html .= '<ul class="action-plan-sub-list">';
@@ -2288,7 +2288,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         $found_done = 0;
         $found_upcoming = 0;
         $max_and_list = ( $push_message ? 5 : 0 );
-        $common_prefix = ( in_array($in['in_type_play_id'], $CI->config->item('en_ids_7712') /* Selectable */) ? null : common_prefix($in__children, 'in_title', $max_and_list) );
+        $common_prefix = common_prefix($in__children, 'in_title', $in, $max_and_list);
         $completion_rate = array();
         $next_key = -1;
         $has_content = ($prefix_statement || strlen($common_prefix));
