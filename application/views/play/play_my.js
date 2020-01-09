@@ -162,7 +162,6 @@ function account_update_name(){
             $('.save_full_name').html('<i class="fas fa-check-circle"></i> ' + data.message + '</span>').hide().fadeIn();
 
             //Update name on page:
-            $('.en_name_full_'+js_pl_id).text(en_name_new);
             $('.en_name_first_'+js_pl_id).text(data.first__name);
 
             //Disappear in a while:
