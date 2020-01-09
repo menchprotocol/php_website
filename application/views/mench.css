@@ -711,7 +711,7 @@ textarea.note-textarea{
 .three-menus a.blog:hover, .three-menus a.blog.focustab  { border-color:#f4d52d; }
 
 .three-menus a{
-    padding:7px 0 3px;
+    padding:7px 0 5px;
     display: block;
     text-decoration: none;
     border-top:0px solid;
