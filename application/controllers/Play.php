@@ -2466,7 +2466,7 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function account_update_avatar()
+    function account_update_avatar_icon()
     {
 
         $session_en = superpower_assigned();

@@ -1538,7 +1538,7 @@ class READ_model extends CI_Model
 
         } else {
             $this->READ_model->dispatch_message(
-                'You\'re reading: '.$ins[0]['in_title'],
+                'You are reading: '.$ins[0]['in_title'],
                 $recipient_en,
                 $push_message
             );
@@ -1657,8 +1657,12 @@ class READ_model extends CI_Model
 
             //Did we have any steps unlocked?
             if(count($unlocked_steps) > 0){
+
                 //Yes! Show them:
-                echo '<div class="list-group" style="margin:0 0 0 0;">';
+                echo_in_list($ins[0], $unlocked_steps, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-lock-open"></i></span>UNLOCKED:');
+
+
+                echo '<div class="list-group">';
                 foreach($unlocked_steps as $unlocked_step){
                     //Add HTML step to UI:
                     echo echo_actionplan_step_child($recipient_en['en_id'], $unlocked_step, true);
@@ -1906,10 +1910,20 @@ class READ_model extends CI_Model
         } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7309'))) {
 
             //Requirement lock
-
             if(count($read_progress)){
 
+                //This is already complete:
+
                 $progression_type_play_id = $read_progress[0]['ln_status_play_id'];
+
+            } elseif(count($this->READ_model->ln_fetch(array(
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
+                'ln_child_blog_id' => $ins[0]['in_id'],
+                'ln_creator_play_id' => $recipient_en['en_id'],
+            )))){
+
+                $new_ln_type_play_id = 7485; //User Read Answer Unlock
 
             } else {
 
@@ -1922,53 +1936,8 @@ class READ_model extends CI_Model
                     //Yes we have a path:
                     $progression_type_play_id = 7486; //User Read Children Unlock
 
-                    if($push_message){
-                        echo 'Here are the blogs I recommend adding to your 🔴 READING LIST to move forward:';
-                    } else {
-                        echo '<div class="list-group" style="margin-top:10px;">';
-                    }
-
                     //List Unlock paths:
-                    foreach ($unlock_paths as $key => $child_in) {
-
-                        $child_progression_steps = $this->READ_model->ln_fetch(array(
-                            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null,
-                            'ln_creator_play_id' => $recipient_en['en_id'],
-                            'ln_parent_blog_id' => $child_in['in_id'],
-                            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        ));
-
-                        $is_completed = ( count($child_progression_steps) > 0 && in_array($child_progression_steps[0]['ln_status_play_id'], $this->config->item('en_ids_7359')));
-                        $is_next = ( count($next_step_quick_replies)==0 && !$is_completed );
-
-                        if(!$push_message){
-
-                            //Add HTML step to UI:
-                            echo echo_actionplan_step_child($recipient_en['en_id'], $child_in);
-
-                        } else {
-
-                            //Add simple message:
-                            echo "\n\n" . ($key + 1) . '. ' . echo_in_title($child_in['in_title'], $push_message);
-                            echo ( $is_completed ? ' [COMPLETED]' : '' );
-
-                        }
-
-                        //Add Call to Action:
-                        if($is_next){
-                            //This is the next step:
-                            array_push($next_step_quick_replies, array(
-                                'content_type' => 'text',
-                                'title' => 'Next',
-                                'payload' => 'ADD_RECOMMENDED_' . $ins[0]['in_id']. '_' . $child_in['in_id'],
-                            ));
-                        }
-
-                    }
-
-                    if(!$push_message){
-                        echo '</div>';
-                    }
+                    echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-lock"></i></span>REQUIRED READS:', false);
 
                 } else {
 
@@ -1976,6 +1945,7 @@ class READ_model extends CI_Model
                     $progression_type_play_id = 7492; //User Read Dead End
 
                 }
+
             }
 
 

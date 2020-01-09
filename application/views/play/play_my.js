@@ -34,7 +34,7 @@ $(document).ready(function () {
 });
 
 
-function avatar_type_switch(type_css){
+function account_update_avatar_type(type_css){
 
     //Find active avatar:
     var selected_avatar = $('.avatar-item.active i').attr('class').split(' ');
@@ -52,11 +52,11 @@ function avatar_type_switch(type_css){
     $('.avatar-type-'+type_css+'.avatar-name-'+selected_avatar[1]).addClass('active');
 
     //Update Icon:
-    avatar_icon_switch(type_css, null);
+    account_update_avatar_icon(type_css, null);
 
 }
 
-function avatar_icon_switch(type_css, icon_css){
+function account_update_avatar_icon(type_css, icon_css){
 
     //Detect current icon type:
     if(!icon_css){
@@ -69,7 +69,7 @@ function avatar_icon_switch(type_css, icon_css){
 
 
     //Update via call:
-    $.post("/play/account_update_avatar", {
+    $.post("/play/account_update_avatar_icon", {
         type_css: type_css,
         icon_css: icon_css,
     }, function (data) {

@@ -675,7 +675,6 @@ if(!$action) {
     $all_steps = 0;
     $all_children = 0;
     $updated = 0;
-    $new_ln_type_play_id = 7485; //User Read Answer Unlock
 
     foreach ($this->BLOG_model->in_fetch(array(
         'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active

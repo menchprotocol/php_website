@@ -1574,14 +1574,14 @@ function echo_in_blog($in)
 }
 
 
-function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_class = null, $show_icon = false)
+function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_class = null, $show_icon = false, $in_reads = true)
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = superpower_assigned();
     $completion_rate['completion_percentage'] = 0; //Default value
-    if($session_en){
+    if($session_en && $in_reads){
         //Make sure in reading list:
         $player_read_ids = $CI->READ_model->read_ids($session_en['en_id']);
         if(in_array($in['in_id'], $player_read_ids)){
@@ -1593,7 +1593,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
         return null;
     }
 
-    $ui = '<a href="/'.$in['in_id'] . '" class="list-group-item itemread '.$extra_class.'">';
+    $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'] : '/read/'.$in['in_id'] ) . '" class="list-group-item itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
@@ -2277,7 +2277,7 @@ function echo_caret($en_id, $m, $url_append){
     return $ui;
 }
 
-function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null){
+function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null, $in_reads = true){
 
     $CI =& get_instance();
 
@@ -2340,7 +2340,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
                     array_push($msg_quick_reply, array(
                         'content_type' => 'text',
                         'title' => 'NEXT',
-                        'payload' => 'GONEXT_'.$child_in['in_id'],
+                        'payload' => ( $in_reads ? 'GONEXT_'.$child_in['in_id'] : 'ADD_RECOMMENDED_' . $in['in_id']. '_' . $child_in['in_id'] ),
                     ));
                 }
 
@@ -2354,7 +2354,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
             } else {
 
-                echo echo_in_read($child_in, $footnotes, $common_prefix, ( $next_key>=0 && $next_key!=$key && !$all_done ? 'hidden is_upcoming' : '' ), true);
+                echo echo_in_read($child_in, $footnotes, $common_prefix, ( $next_key>=0 && $next_key!=$key && !$all_done ? 'hidden is_upcoming' : '' ), true, $in_reads);
 
             }
         }
