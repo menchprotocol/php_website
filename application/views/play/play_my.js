@@ -33,22 +33,38 @@ $(document).ready(function () {
 
 });
 
-function avatar_switch(icon_type){
+
+function avatar_type_switch(type_css){
 
     //Find active avatar:
     var selected_avatar = $('.avatar-item.active i').attr('class').split(' ');
 
     //Adjust menu:
     $('.avatar-type-group .btn').removeClass('active');
-    $('.avatar-type-group .btn-'+icon_type).addClass('active');
+    $('.avatar-type-group .btn-'+type_css).addClass('active');
 
 
     //Show correct avatars:
     $('.avatar-item').addClass('hidden').removeClass('active');
-    $('.avatar-type-'+icon_type).removeClass('hidden');
+    $('.avatar-type-'+type_css).removeClass('hidden');
 
     //Update Selection:
-    $('.avatar-type-'+icon_type+'.avatar-name-'+selected_avatar[1]).addClass('active');
+    $('.avatar-type-'+type_css+'.avatar-name-'+selected_avatar[1]).addClass('active');
+
+    //Update Icon:
+    avatar_icon_switch(type_css, null);
+
+}
+
+function avatar_icon_switch(type_css, icon_css){
+
+    //Detect current icon type:
+    if(!icon_css){
+        icon_css = $('.avatar-item.active').attr('icon-css');
+    }
+
+    console.log(type_css+'/'+icon_css);
+
 }
 
 

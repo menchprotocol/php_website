@@ -69,9 +69,9 @@ if($session_en) {
             $player_icon_parts = explode(' ',one_two_explode('class="', '"', $session_en['en_icon']));
 
             echo '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:-36px -10px 0 0;">
-                      <a href="javascript:void(0)" onclick="avatar_switch(\'far\')" class="btn btn-far '.( $player_icon_parts[0]=='far' ? ' active ' : '' ).'"><i class="far fa-paw play"></i></a>
-                      <a href="javascript:void(0)" onclick="avatar_switch(\'fad\')" class="btn btn-fad '.( $player_icon_parts[0]=='fad' ? ' active ' : '' ).'"><i class="fad fa-paw play"></i></a>
-                      <a href="javascript:void(0)" onclick="avatar_switch(\'fas\')" class="btn btn-fas '.( $player_icon_parts[0]=='fas' ? ' active ' : '' ).'"><i class="fas fa-paw play"></i></a>
+                      <a href="javascript:void(0)" onclick="avatar_type_switch(\'far\')" class="btn btn-far '.( $player_icon_parts[0]=='far' ? ' active ' : '' ).'"><i class="far fa-paw play"></i></a>
+                      <a href="javascript:void(0)" onclick="avatar_type_switch(\'fad\')" class="btn btn-fad '.( $player_icon_parts[0]=='fad' ? ' active ' : '' ).'"><i class="fad fa-paw play"></i></a>
+                      <a href="javascript:void(0)" onclick="avatar_type_switch(\'fas\')" class="btn btn-fas '.( $player_icon_parts[0]=='fas' ? ' active ' : '' ).'"><i class="fas fa-paw play"></i></a>
                     </div><div class="doclear">&nbsp;</div></div>';
 
 
@@ -95,7 +95,7 @@ if($session_en) {
                 $avatar_type_match = ($player_icon_parts[0] == $avatar_icon_parts[0]);
                 $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
 
-                echo '<span class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a href="javascript:void(0);" onclick="update_avatar(' . $en_id . ')" class="list-group-item itemplay avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $player_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a></span>';
+                echo '<span class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a href="javascript:void(0);" onclick="avatar_icon_switch(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemplay avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $player_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a></span>';
 
             }
 
