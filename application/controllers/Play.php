@@ -762,7 +762,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
             //PLAY
-            echo '<td class="play"><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="play montserrat">'.$first_name.'</a>' : '<b class="play montserrat">'.$first_name.'</b>' ).echo_rank(($count+1)).'</td>';
+            echo '<td class="play"><span class="parent-icon icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="play montserrat en_name_first_'.$ln['en_id'].'">'.$first_name.'</a>' : '<b class="play montserrat en_name_first_'.$ln['en_id'].'">'.$first_name.'</b>' ).echo_rank(($count+1)).'</td>';
 
             //READ
             echo '<td class="read">'.( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_creator_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' ).'</td>';
@@ -2466,6 +2466,65 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
+    function account_update_avatar()
+    {
+
+        $session_en = superpower_assigned();
+
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Session expired',
+            ));
+        } elseif (!isset($_POST['type_css'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing type_css',
+            ));
+        } elseif (!isset($_POST['icon_css'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing icon_css',
+            ));
+        }
+
+        //Validate:
+        $icon_new_css = $_POST['type_css'].' '.$_POST['icon_css'].' play';
+        $validated = false;
+        foreach ($this->config->item('en_all_12279') as $en_id => $m) {
+            if(substr_count($m['m_icon'], $icon_new_css) == 1){
+                $validated = true;
+                break;
+            }
+        }
+        if(!$validated){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid icon',
+            ));
+        }
+
+
+        //Update icon:
+        $new_avatar = '<i class="'.$icon_new_css.'"></i>';
+        $this->PLAY_model->en_update($session_en['en_id'], array(
+            'en_icon' => $new_avatar,
+        ), true, $session_en['en_id']);
+
+
+        //Update Session:
+        $session_en['en_icon'] = $new_avatar;
+        $this->PLAY_model->en_activate_session($session_en, true);
+
+
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Name updated',
+            'new_avatar' => $new_avatar,
+        ));
+    }
+
+
     function account_update_name()
     {
 
@@ -2498,6 +2557,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
         //Update Session:
+        $session_en['en_name'] = $_POST['en_name'];
         $this->PLAY_model->en_activate_session($session_en, true);
 
 

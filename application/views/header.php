@@ -91,8 +91,8 @@ if(!isset($hide_header) || !$hide_header){
                             if($identifier=='play'){
 
                                 //Player Coins:
-                                echo '<span class="parent-icon icon-block">'.$session_en['en_icon'].'</span>';
-                                echo '<span class="montserrat">'.one_two_explode('',' ',$session_en['en_name']).'</span>';
+                                echo '<span class="parent-icon icon-block icon_en_'.$session_en['en_id'].'">'.$session_en['en_icon'].'</span>';
+                                echo '<span class="montserrat en_name_first_'.$session_en['en_id'].'">'.one_two_explode('',' ',$session_en['en_name']).'</span>';
 
                                 echo '<span class="'.superpower_active(10967).' inline-block show-max">';
                                 echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';

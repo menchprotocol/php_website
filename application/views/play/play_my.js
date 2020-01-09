@@ -61,9 +61,31 @@ function avatar_icon_switch(type_css, icon_css){
     //Detect current icon type:
     if(!icon_css){
         icon_css = $('.avatar-item.active').attr('icon-css');
+    } else {
+        //Set Proper Focus:
+        $('.avatar-item').removeClass('active');
+        $('.avatar-item.avatar-name-'+icon_css).addClass('active');
     }
 
-    console.log(type_css+'/'+icon_css);
+
+    //Update via call:
+    $.post("/play/account_update_avatar", {
+        type_css: type_css,
+        icon_css: icon_css,
+    }, function (data) {
+
+        if (!data.status) {
+
+            //Ooops there was an error!
+            alert('ERROR: ' + data.message);
+
+        } else {
+
+            //Remove message:
+            $('.icon_en_'+js_pl_id).html(data.new_avatar);
+
+        }
+    });
 
 }
 
@@ -124,8 +146,9 @@ function account_update_name(){
     $('.save_full_name').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
 
     //Save the rest of the content:
+    var en_name_new = $('#en_name').val().toUpperCase();
     $.post("/play/account_update_name", {
-        en_name: $('#en_name').val().toUpperCase(),
+        en_name: en_name_new,
     }, function (data) {
 
         if (!data.status) {
@@ -138,9 +161,15 @@ function account_update_name(){
             //Show success:
             $('.save_full_name').html('<i class="fas fa-check-circle"></i> ' + data.message + '</span>').hide().fadeIn();
 
+            //Update name on page:
+            $('.en_name_full_'+js_pl_id).text(en_name_new);
+            $('.en_name_first_'+js_pl_id).text(data.first__name);
+
             //Disappear in a while:
             setTimeout(function () {
+
                 $('.save_full_name').html('');
+
             }, 1597);
 
         }
