@@ -2291,7 +2291,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $pref
         } else {
             //HTML:
             if($prefix_statement){
-                echo '<div class="montserrat margin-top-down">'.$prefix_statement.'</div>';
+                echo '<div class="read-topic">'.$prefix_statement.'</div>';
             }
             echo '<div class="list-group">';
         }
