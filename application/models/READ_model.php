@@ -1729,14 +1729,14 @@ class READ_model extends CI_Model
 
                     if($push_message){
 
-                        echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:');
+                        echo_in_list($ins[0], $previously_answered, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:');
 
                     } else {
 
                         echo '<div class="selected_before">';
 
                         //List answers:
-                        echo_in_list($ins[0]['in_id'], $previously_answered, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:');
+                        echo_in_list($ins[0], $previously_answered, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:');
 
                         //Allow to edit:
                         echo '<div class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>CHANGE ANSWER</u></a></div>';
@@ -2043,7 +2043,7 @@ class READ_model extends CI_Model
                 }
 
                 //Always show the next list:
-                echo_in_list($ins[0]['in_id'], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>UP NEXT:');
+                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>UP NEXT:');
 
             } elseif ($ins[0]['in_type_play_id'] == 6683) {
 

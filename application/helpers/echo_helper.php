@@ -2277,20 +2277,18 @@ function echo_caret($en_id, $m, $url_append){
     return $ui;
 }
 
-function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $prefix_statement = null){
+function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null){
 
     $CI =& get_instance();
 
     if(count($in__children)){
-
-
 
         //List children so they know what's ahead:
         $found_incomplete = false;
         $found_done = 0;
         $found_upcoming = 0;
         $max_and_list = ( $push_message ? 5 : 0 );
-        $common_prefix = common_prefix($in__children, 'in_title', $max_and_list);
+        $common_prefix = ( in_array($in['in_type_play_id'], $CI->config->item('en_ids_7712') /* Selectable */) ? null : common_prefix($in__children, 'in_title', $max_and_list) );
         $completion_rate = array();
         $next_key = -1;
         $has_content = ($prefix_statement || strlen($common_prefix));
@@ -2377,7 +2375,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $pref
     }
 
     //Always show next:
-    echo_in_next($in_id, $recipient_en, $push_message);
+    echo_in_next($in['in_id'], $recipient_en, $push_message);
 
 }
 
