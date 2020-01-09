@@ -2283,18 +2283,7 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $pref
 
     if(count($in__children)){
 
-        if($push_message){
 
-            $message_content = ( $prefix_statement ? $prefix_statement."\n\n" : '' );
-            $msg_quick_reply = array();
-
-        } else {
-            //HTML:
-            if($prefix_statement){
-                echo '<div class="read-topic">'.$prefix_statement.'</div>';
-            }
-            echo '<div class="list-group">';
-        }
 
         //List children so they know what's ahead:
         $found_incomplete = false;
@@ -2304,17 +2293,19 @@ function echo_in_list($in_id, $in__children, $recipient_en, $push_message, $pref
         $common_prefix = common_prefix($in__children, 'in_title', $max_and_list);
         $completion_rate = array();
         $next_key = -1;
+        $has_content = ($prefix_statement || strlen($common_prefix));
 
-        if(strlen($common_prefix)){
-            if($push_message){
+        if($push_message){
 
-                $message_content .= $common_prefix . ":\n\n";
+            $message_content = ( $has_content ? $prefix_statement.( strlen($common_prefix) ? ' '.$common_prefix.':' : '' )."\n\n" : '' );
+            $msg_quick_reply = array();
 
-            } else {
-
-                echo '<div class="read-topic">'.$common_prefix.':</div>';
-
+        } else {
+            //HTML:
+            if($has_content){
+                echo '<div class="read-topic">'.$prefix_statement. ( strlen($common_prefix) ? ' '.$common_prefix.':' : '' ).'</div>';
             }
+            echo '<div class="list-group">';
         }
 
 
