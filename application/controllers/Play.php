@@ -2143,7 +2143,7 @@ fragment PostListingItemSidebar_post on Post {
             $login_url = '/'.$_POST['referrer_in_id'];
         } else {
             //Go to home page and let them continue from there:
-            $login_url = '/';
+            $login_url = '/play?open_en_id=12289'; //Open avatars
         }
 
         return echo_json(array(
@@ -2258,6 +2258,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //Take them to their account:
         return redirect_message( '/play?open_en_id=3286' , '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Successfully signed in. You can set a new password below.</div>');
+
     }
 
     function singin_check_email(){
