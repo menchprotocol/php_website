@@ -4,7 +4,7 @@
 <div class="container">
 <?php
 
-$has_multiple_blogs = ( count($user_blogs) >= 2 );
+$has_multiple_blogs = ( count($player_reads) >= 2 );
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
@@ -51,7 +51,7 @@ if(!$session_en){
 
     //User has multiple 🔴 READING LISTs, so list all 🔴 READING LISTs to enable User to choose:
     echo '<div id="actionplan_steps" class="list-group actionplan-list">';
-    foreach ($user_blogs as $priority => $ln) {
+    foreach ($player_reads as $priority => $ln) {
 
         //Display row:
         echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread '.( $has_multiple_blogs ? 'actionplan_sort' : '').'">';

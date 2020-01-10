@@ -43,6 +43,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
     if($col_num==1){
 
+        echo echo_breadcrumb($in['in_id'], true);
+
         echo '<div style="margin-bottom: 5px;">';
 
             //Blog Status:

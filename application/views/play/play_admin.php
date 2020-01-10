@@ -409,14 +409,14 @@ if(!$action) {
     //List this users 🔴 READING LIST blogs so they can choose:
     echo '<div>Choose one of your 🔴 READING LIST blogs to debug:</div><br />';
 
-    $user_blogs = $this->READ_model->ln_fetch(array(
+    $player_reads = $this->READ_model->ln_fetch(array(
         'ln_creator_play_id' => $session_en['en_id'],
         'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
     ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
-    foreach ($user_blogs as $priority => $ln) {
+    foreach ($player_reads as $priority => $ln) {
         echo '<div>'.($priority+1).') <a href="/read/debug/' . $ln['in_id'] . '">' . echo_in_title($ln['in_title']) . '</a></div>';
     }
 

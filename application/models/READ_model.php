@@ -644,14 +644,14 @@ class READ_model extends CI_Model
          *
          * */
 
-        $user_blogs = $this->READ_model->ln_fetch(array(
+        $player_reads = $this->READ_model->ln_fetch(array(
             'ln_creator_play_id' => $en_id,
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
-        if(count($user_blogs) == 0){
+        if(count($player_reads) == 0){
 
             if($advance_step){
 
@@ -677,7 +677,7 @@ class READ_model extends CI_Model
 
 
         //Loop through 🔴 READING LIST blogs and see what's next:
-        foreach($user_blogs as $user_blog){
+        foreach($player_reads as $user_blog){
 
             //Find first incomplete step for this 🔴 READING LIST blog:
             $next_in_id = $this->READ_model->read_next_find($en_id, $user_blog);
@@ -933,13 +933,13 @@ class READ_model extends CI_Model
         }
 
         //Go ahead and remove from 🔴 READING LIST:
-        $user_blogs = $this->READ_model->ln_fetch(array(
+        $player_reads = $this->READ_model->ln_fetch(array(
             'ln_creator_play_id' => $en_id,
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_parent_blog_id' => $in_id,
         ));
-        if(count($user_blogs) < 1){
+        if(count($player_reads) < 1){
             return array(
                 'status' => 0,
                 'message' => 'Could not locate 🔴 READING LIST',
@@ -947,7 +947,7 @@ class READ_model extends CI_Model
         }
 
         //Remove Bookmark:
-        foreach($user_blogs as $ln){
+        foreach($player_reads as $ln){
             $this->READ_model->ln_update($ln['ln_id'], array(
                 'ln_content' => $stop_feedback,
                 'ln_status_play_id' => 6173, //ARCHIVED
@@ -3453,7 +3453,7 @@ class READ_model extends CI_Model
             } elseif (is_numeric($action_unsubscribe)) {
 
                 //User wants to Remove a specific 🔴 READING LIST, validate it:
-                $user_blogs = $this->READ_model->ln_fetch(array(
+                $player_reads = $this->READ_model->ln_fetch(array(
                     'ln_creator_play_id' => $en['en_id'],
                     'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -3461,7 +3461,7 @@ class READ_model extends CI_Model
                 ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
                 //All good?
-                if (count($user_blogs) < 1) {
+                if (count($player_reads) < 1) {
                     return array(
                         'status' => 0,
                         'message' => 'UNSUBSCRIBE_ Failed to skip a BLOG from the master 🔴 READING LIST',
@@ -3469,7 +3469,7 @@ class READ_model extends CI_Model
                 }
 
                 //Update status for this single 🔴 READING LIST:
-                $this->READ_model->ln_update($user_blogs[0]['ln_id'], array(
+                $this->READ_model->ln_update($player_reads[0]['ln_id'], array(
                     'ln_status_play_id' => 6173, //Link Removed
                 ), $en['en_id'], 6155 /* User Blog Cancelled */);
 
@@ -3486,7 +3486,7 @@ class READ_model extends CI_Model
 
                 //Show success message to user:
                 $this->READ_model->dispatch_message(
-                    'I have successfully removed [' . $user_blogs[0]['in_title'] . '] from your 🔴 READING LIST.',
+                    'I have successfully removed [' . $player_reads[0]['in_title'] . '] from your 🔴 READING LIST.',
                     $en,
                     true,
                     array(
@@ -3838,14 +3838,14 @@ class READ_model extends CI_Model
 
         if (in_array($fb_received_message, array('stats', 'stat', 'statistics'))) {
 
-            $user_blogs = $this->READ_model->ln_fetch(array(
+            $player_reads = $this->READ_model->ln_fetch(array(
                 'ln_creator_play_id' => $en['en_id'],
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
-            if(count($user_blogs)==0){
+            if(count($player_reads)==0){
 
                 //Set message:
                 $message = 'I can\'t show you any stats because you don\'t have any blogs added to your 🔴 READING LIST yet.';
@@ -3871,7 +3871,7 @@ class READ_model extends CI_Model
                 $message = '🔴 READING LIST STATS:';
 
                 //Show them a list of their 🔴 READING LIST and completion stats:
-                foreach($user_blogs as $user_blog){
+                foreach($player_reads as $user_blog){
                     //Completion Percentage so far:
                     $completion_rate = $this->READ_model->read__completion_progress($en['en_id'], $user_blog);
                     $message .= "\n\n" . $completion_rate['completion_percentage'].'% ['.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' step'.echo__s($completion_rate['steps_total']).'] '.echo_in_title($user_blog['in_title']);
@@ -3949,7 +3949,7 @@ class READ_model extends CI_Model
         } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop', 'quit', 'resign', 'exit', 'cancel', 'abort'))) {
 
             //List their 🔴 READING LIST blogs and let user choose which one to unsubscribe:
-            $user_blogs = $this->READ_model->ln_fetch(array(
+            $player_reads = $this->READ_model->ln_fetch(array(
                 'ln_creator_play_id' => $en['en_id'],
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -3958,14 +3958,14 @@ class READ_model extends CI_Model
 
 
             //Do they have anything in their 🔴 READING LIST?
-            if (count($user_blogs) > 0) {
+            if (count($player_reads) > 0) {
 
                 //Give them options to remove specific 🔴 READING LISTs:
                 $quick_replies = array();
                 $message = 'Choose one of the following options:';
                 $increment = 1;
 
-                foreach ($user_blogs as $counter => $in) {
+                foreach ($player_reads as $counter => $in) {
                     //Construct unsubscribe confirmation body:
                     $message .= "\n\n" . ($counter + $increment) . '. Stop ' . $in['in_title'];
                     array_push($quick_replies, array(
@@ -3975,7 +3975,7 @@ class READ_model extends CI_Model
                     ));
                 }
 
-                if (count($user_blogs) >= 2) {
+                if (count($player_reads) >= 2) {
                     //Give option to skip all and unsubscribe:
                     $increment++;
                     $message .= "\n\n" . ($counter + $increment) . '. Remove all blogs and unsubscribe';

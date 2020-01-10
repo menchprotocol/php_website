@@ -27,16 +27,16 @@
         echo '<div class="doclear">&nbsp;</div>';
 
         //List current blogs:
-        $bookmark_ins = $this->READ_model->ln_fetch(array(
+        $player_blogs = $this->READ_model->ln_fetch(array(
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => 10573, //Blog Note Bookmarks
             'ln_parent_play_id' => $session_en['en_id'], //For this trainer
         ), array('in_child'), 0, 0, array('in_title' => 'ASC'));
-        if(count($bookmark_ins)){
+        if(count($player_blogs)){
 
             echo '<div class="list-group">';
-            foreach($bookmark_ins as $bookmark_in){
+            foreach($player_blogs as $bookmark_in){
                 echo echo_in_blog($bookmark_in);
             }
             echo '</div>';

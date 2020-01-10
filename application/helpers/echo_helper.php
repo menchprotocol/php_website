@@ -2277,6 +2277,82 @@ function echo_caret($en_id, $m, $url_append){
     return $ui;
 }
 
+
+function echo_breadcrumb($in_id, $link_to_blog = false){
+
+    $session_en = superpower_assigned();
+    if(!$session_en){
+        return false;
+    }
+
+    $CI =& get_instance();
+    if($link_to_blog){
+
+        //BLOG LIST
+        $player_list = $CI->READ_model->ln_fetch(array(
+            'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id' => 10573, //Blog Note Bookmarks
+            'ln_parent_play_id' => $session_en['en_id'], //For this trainer
+        ), array('in_child'), 0);
+
+    } else {
+
+        //READ LIST
+        $player_list = $CI->READ_model->ln_fetch(array(
+            'ln_creator_play_id' => $session_en['en_id'],
+            'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+            'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        ), array('in_parent'), 0);
+
+    }
+
+    //Cleanup the list:
+    $ui = '';
+    $list_ids = array();
+    foreach($player_list as $in_list){
+        array_push($list_ids, $in_list['in_id']);
+    }
+
+    //Now fetch the parent of the current
+    $recursive_parents = $CI->BLOG_model->in_fetch_recursive_public_parents($in_id);
+    $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
+    foreach ($recursive_parents as $grand_parent_ids) {
+
+        $intersects = array_intersect($grand_parent_ids, $list_ids);
+
+        //Does it have an intersect?
+        if(count($intersects)){
+            $ui .= '<nav aria-label="breadcrumb">';
+            $ui .= '<ol class="breadcrumb">';
+
+            foreach($grand_parent_ids as $parent_in_id){
+
+                //Fetch this blog name:
+                $this_ins = $CI->BLOG_model->in_fetch(array(
+                    'in_id' => $parent_in_id,
+                ));
+                if(count($this_ins) > 0){
+                    $ui .= '<li class="breadcrumb-item"><a href="'.( $link_to_blog ? '/blog/'.$parent_in_id : '/'.$parent_in_id ).'"><span class="icon-block' . ( in_array($this_ins[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$this_ins[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$this_ins[0]['in_outcome'].'</a></li>';
+                }
+
+                if($parent_in_id == end($intersects)){
+                    break;
+                }
+            }
+
+
+            $ui .= '</ol>';
+            $ui .= '</nav>';
+        }
+    }
+
+
+
+    return $ui;
+}
+
 function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null, $in_reads = true){
 
     //If no list just return the next step:
