@@ -1618,7 +1618,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
 
     }
 
-    if($session_en && in_array($in['in_id'], $player_read_ids)){
+    if($session_en && $in_reads && in_array($in['in_id'], $player_read_ids)){
         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
         if($completion_rate['completion_percentage'] > 0){
             $ui .= ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read">'.$completion_rate['completion_percentage'].'% DONE</span>';
