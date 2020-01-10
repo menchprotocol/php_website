@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-09 19:52:35 PST
+//Generated 2020-01-09 21:53:49 PST
 
 //READ UNLOCKS:
 $config['en_ids_12327'] = array(7485,7486,6997);
@@ -3274,7 +3274,7 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(4535,12215,12201,7291,11999,12205,12214,12211,4536,6225,12275,6287,6205,11046,7256,4269,7540,11087);
+$config['en_ids_11035'] = array(4535,12215,12201,7291,11999,12205,12214,12211,4536,6225,12275,6287,6205,6415,11046,7256,4269,7540,11087);
 $config['en_all_11035'] = array(
     4535 => array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
@@ -3353,6 +3353,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'READ',
         'm_desc' => '',
         'm_parents' => array(11035,12155,2738,4463),
+    ),
+    6415 => array(
+        'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
+        'm_name' => 'READ CLEAR ALL',
+        'm_desc' => '',
+        'm_parents' => array(11035,10590,5967,4755,6418,4593,6414),
     ),
     11046 => array(
         'm_icon' => '<i class="fad fa-atlas read" aria-hidden="true"></i>',
@@ -5227,9 +5233,9 @@ $config['en_all_10590'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
-        'm_name' => 'CLEAR READS',
+        'm_name' => 'CLEAR ALL',
         'm_desc' => '',
-        'm_parents' => array(10590,5967,4755,6418,4593,6414),
+        'm_parents' => array(11035,10590,5967,4755,6418,4593,6414),
     ),
     6559 => array(
         'm_icon' => '<i class="read fad fa-wand-magic"></i>',
@@ -6594,9 +6600,9 @@ $config['en_all_5967'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
-        'm_name' => 'READ CLEAR READS',
+        'm_name' => 'READ CLEAR ALL',
         'm_desc' => '&var_en_subscriber_ids=1',
-        'm_parents' => array(10590,5967,4755,6418,4593,6414),
+        'm_parents' => array(11035,10590,5967,4755,6418,4593,6414),
     ),
     4235 => array(
         'm_icon' => '<i class="fad fa-bookmark read" aria-hidden="true"></i>',
@@ -7588,9 +7594,9 @@ $config['en_all_4755'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
-        'm_name' => 'READ CLEAR READS',
+        'm_name' => 'READ CLEAR ALL',
         'm_desc' => '',
-        'm_parents' => array(10590,5967,4755,6418,4593,6414),
+        'm_parents' => array(11035,10590,5967,4755,6418,4593,6414),
     ),
     6559 => array(
         'm_icon' => '<i class="read fad fa-wand-magic"></i>',
@@ -8367,9 +8373,9 @@ $config['en_all_4593'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
-        'm_name' => 'READ CLEAR READS',
+        'm_name' => 'READ CLEAR ALL',
         'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for trainers.',
-        'm_parents' => array(10590,5967,4755,6418,4593,6414),
+        'm_parents' => array(11035,10590,5967,4755,6418,4593,6414),
     ),
     6559 => array(
         'm_icon' => '<i class="read fad fa-wand-magic"></i>',
