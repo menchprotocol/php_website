@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-09 22:21:12 PST
+//Generated 2020-01-10 00:36:50 PST
 
 //READ UNLOCKS:
 $config['en_ids_12327'] = array(7485,7486,6997);
@@ -118,7 +118,7 @@ $config['en_all_12321'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11084,12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-bookmark blog" aria-hidden="true"></i>',
@@ -1450,7 +1450,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG',
         'm_desc' => 'Intents define the intention of an entity as defined similar to a SMART goal.',
-        'm_parents' => array(11035,12155,2738,4463),
+        'm_parents' => array(5008,11035,12155,2738,4463),
     ),
     4485 => array(
         'm_icon' => '<i class="fas fa-comment-plus blog" aria-hidden="true"></i>',
@@ -1468,7 +1468,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
         'm_desc' => 'Entities represent people, objects and things.',
-        'm_parents' => array(11035,12155,2738,4463),
+        'm_parents' => array(5008,11035,12155,2738,4463),
     ),
     4430 => array(
         'm_icon' => '<i class="fas fa-user play" aria-hidden="true"></i>',
@@ -1492,7 +1492,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ',
         'm_desc' => 'An electronic log book containing a list of transactions and balances typically involving financial accounts.',
-        'm_parents' => array(11035,12155,2738,4463),
+        'm_parents' => array(5008,11035,12155,2738,4463),
     ),
 );
 
@@ -1561,7 +1561,7 @@ $config['en_all_11088'] = array(
         'm_icon' => '<i class="fas fa-eye play" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO TABS',
         'm_desc' => '',
-        'm_parents' => array(10967,4527,11088),
+        'm_parents' => array(4527,11088),
     ),
     11033 => array(
         'm_icon' => '<i class="fas fa-toolbox play" aria-hidden="true"></i>',
@@ -1578,7 +1578,7 @@ $config['en_all_11089'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11084,12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     11029 => array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling play" aria-hidden="true"></i>',
@@ -2523,8 +2523,14 @@ $config['en_all_11007'] = array(
 );
 
 //SHOW PLAY TAB NAMES:
-$config['en_ids_11084'] = array(11030,11029);
+$config['en_ids_11084'] = array(4983,11030,11029);
 $config['en_all_11084'] = array(
+    4983 => array(
+        'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOG AUTHORS',
+        'm_desc' => '',
+        'm_parents' => array(11084,12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
+    ),
     11030 => array(
         'm_icon' => '<i class="fas fa-id-card play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PROFILE',
@@ -3280,7 +3286,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG',
         'm_desc' => '',
-        'm_parents' => array(11035,12155,2738,4463),
+        'm_parents' => array(5008,11035,12155,2738,4463),
     ),
     12215 => array(
         'm_icon' => '<i class="fad fa-atlas blog"></i>',
@@ -3328,7 +3334,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
         'm_desc' => '',
-        'm_parents' => array(11035,12155,2738,4463),
+        'm_parents' => array(5008,11035,12155,2738,4463),
     ),
     6225 => array(
         'm_icon' => '<i class="fas fa-cog play" aria-hidden="true"></i>',
@@ -3352,7 +3358,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ',
         'm_desc' => '',
-        'm_parents' => array(11035,12155,2738,4463),
+        'm_parents' => array(5008,11035,12155,2738,4463),
     ),
     6415 => array(
         'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
@@ -3434,7 +3440,7 @@ $config['en_all_11018'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG AUTHORS',
         'm_desc' => 'BLOGGERS who are managing this blog and also referenced authors of the original content.',
-        'm_parents' => array(12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11084,12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-bookmark blog" aria-hidden="true"></i>',
@@ -3981,19 +3987,19 @@ $config['en_all_2738'] = array(
         'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
         'm_desc' => 'a publishing game by earning crypto-coins as you read or blog. Customize your avatar, unlock superpowers and collaborate with other players.',
-        'm_parents' => array(11035,12155,2738,4463),
+        'm_parents' => array(5008,11035,12155,2738,4463),
     ),
     6205 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ',
         'm_desc' => 'microblogs interactively by choosing your unique reading path. Earn 1x READ COIN for each word you read over the web or Facebook Messenger.',
-        'm_parents' => array(11035,12155,2738,4463),
+        'm_parents' => array(5008,11035,12155,2738,4463),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG',
         'm_desc' => 'ideas collaboratively by saving, organizing and publishing microblogs. Earn 1x BLOG COIN for each word you blog and generate monthly revenues.',
-        'm_parents' => array(11035,12155,2738,4463),
+        'm_parents' => array(5008,11035,12155,2738,4463),
     ),
 );
 
@@ -4069,7 +4075,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11084,12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     10990 => array(
         'm_icon' => '<i class="fas fa-toolbox blog" aria-hidden="true"></i>',
@@ -4471,7 +4477,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-eye play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PORTFOLIO TABS',
         'm_desc' => '',
-        'm_parents' => array(10967,4527,11088),
+        'm_parents' => array(4527,11088),
     ),
     11033 => array(
         'm_icon' => '<i class="fas fa-toolbox play" aria-hidden="true"></i>',
@@ -4984,7 +4990,7 @@ $config['en_all_10593'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11084,12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
@@ -5570,7 +5576,7 @@ $config['en_all_10589'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11084,12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-bookmark blog" aria-hidden="true"></i>',
@@ -6630,7 +6636,7 @@ $config['en_all_7551'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11084,12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-bookmark blog" aria-hidden="true"></i>',
@@ -7088,7 +7094,7 @@ $config['en_all_6225'] = array(
     6197 => array(
         'm_icon' => '<i class="fad fa-fingerprint play" aria-hidden="true"></i>',
         'm_name' => 'NICKNAME',
-        'm_desc' => 'Your player name...',
+        'm_desc' => '',
         'm_parents' => array(12232,6225,11072,10646,5000,4998,4999,6232,6206),
     ),
     3288 => array(
@@ -7913,7 +7919,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG AUTHORS',
         'm_desc' => 'References track intent correlations referenced within expert sources, and represent a core building block of intelligence. References are among the most precious transaction types because they indicate that IF you do A, you will likely accomplish B. As trainers add more sources from more experts, certain intent correlations will receive more references than others, thus gaining more credibility.',
-        'm_parents' => array(12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11084,12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-bookmark blog" aria-hidden="true"></i>',
@@ -8798,7 +8804,7 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="fad fa-user-edit blog" aria-hidden="true"></i>',
         'm_name' => 'AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
+        'm_parents' => array(11084,12321,11089,11018,10593,10589,4527,7551,4985,4593,4485),
     ),
     4601 => array(
         'm_icon' => '<i class="fas fa-tag blog" aria-hidden="true"></i>',
