@@ -1299,24 +1299,13 @@ class READ_model extends CI_Model
         //Try to unlock steps:
         $unlock_steps_messages = $this->READ_model->read__completion_recursive_up($en_id, $in);
 
-
-        //Return all the messages:
-        if($push_message){
-
-            //Send message to user:
-            foreach($unlock_steps_messages as $message){
-                $this->READ_model->dispatch_message(
-                    $message['ln_content'],
-                    array('en_id' => $en_id),
-                    true
-                );
-            }
-
-        } else {
-
-            //Return messages array:
-            echo $unlock_steps_messages;
-
+        //Send message to user:
+        foreach($unlock_steps_messages as $message){
+            echo $this->READ_model->dispatch_message(
+                $message['ln_content'],
+                array('en_id' => $en_id),
+                $push_message
+            );
         }
 
     }
