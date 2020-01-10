@@ -67,7 +67,7 @@ function js_ln_create(new_ln_data){
 
 function load_top_players(){
     //Show loading icon:
-    $('#load_top_players').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin play"></i></span><b class="montserrat play doupper">'+ echo_loading_notify() +'</b></div>');
+    $('#load_top_players').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin play"></i></span></div>');
     $('.top-players').addClass('hidden');
 
     $.post("/play/load_top_players/", { }, function (data) {
