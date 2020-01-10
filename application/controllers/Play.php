@@ -704,7 +704,7 @@ fragment PostListingItemSidebar_post on Post {
         );
         $filters_read = array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
         );
 
         $start_date = null;
@@ -753,7 +753,7 @@ fragment PostListingItemSidebar_post on Post {
             //COUNT this PLAYERS total READ COINS:
             $read_coins = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READERS X FULL COINS
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
                 'ln_creator_play_id' => $ln['en_id'],
             ), array(), 1, 0, array(), 'COUNT(ln_id) as total_coins');
 
@@ -829,7 +829,7 @@ fragment PostListingItemSidebar_post on Post {
         ), array('en_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         $read_coins = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         $blog_coins = $this->READ_model->ln_fetch(array(
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
@@ -2814,7 +2814,7 @@ fragment PostListingItemSidebar_post on Post {
 
         $read_coins = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READERS
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_creator_play_id' => $session_en['en_id'],
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 

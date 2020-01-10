@@ -1389,7 +1389,7 @@ class READ_model extends CI_Model
                 //Always add all the first users to the full list:
                 $qualified_completed_users = $this->READ_model->ln_fetch(array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
                     'ln_parent_blog_id' => $child_in['in_id'],
                 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -1406,7 +1406,7 @@ class READ_model extends CI_Model
                     //Update list of qualified users:
                     $qualified_completed_users = $this->READ_model->ln_fetch(array(
                         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
                         'ln_parent_blog_id' => $child_in['in_id'],
                     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -1657,7 +1657,7 @@ class READ_model extends CI_Model
         //Fetch progress history:
         $read_progress = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_creator_play_id' => $recipient_en['en_id'],
             'ln_parent_blog_id' => $ins[0]['in_id'],
         ));

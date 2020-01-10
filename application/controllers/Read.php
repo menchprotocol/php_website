@@ -131,13 +131,13 @@ class Read extends CI_Controller
         //READ
         $read_coins_new_last_week = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         $read_coins_last_week = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         $read_coins_growth_rate = number_format(( $read_coins_last_week[0]['total_coins'] / ( $read_coins_last_week[0]['total_coins'] - $read_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100, 1);

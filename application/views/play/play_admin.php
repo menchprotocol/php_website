@@ -693,7 +693,7 @@ if(!$action) {
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
             $user_steps = $this->READ_model->ln_fetch(array(
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
                 'ln_parent_blog_id' => $child_or['in_id'],
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ), array(), 0);
@@ -773,7 +773,7 @@ if(!$action) {
 
                 //Update user progression link type:
                 $user_steps = $this->READ_model->ln_fetch(array(
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
                     'ln_parent_blog_id' => $in_ln['in_id'],
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 ), array(), 0);

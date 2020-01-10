@@ -899,7 +899,7 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
 
     //Count users who have completed this blog:
     $enrolled_users_count = $CI->READ_model->ln_fetch(array(
-        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
         'ln_parent_blog_id' => $in['in_id'],
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -913,7 +913,7 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
     $in_metadata = unserialize($in['in_metadata']);
     $array_flatten = array_flatten($in_metadata['in__metadata_common_steps']);
     $completed_users_count = $CI->READ_model->ln_fetch(array(
-        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
         'ln_parent_blog_id' => end($array_flatten),
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');

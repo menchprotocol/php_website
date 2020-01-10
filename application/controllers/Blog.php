@@ -670,7 +670,7 @@ class Blog extends CI_Controller {
 
         //Fetch READING LIST users:
         $actionplan_users = $this->READ_model->ln_fetch(array(
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_parent_blog_id' => $ins[0]['in_id'],
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
@@ -694,7 +694,7 @@ class Blog extends CI_Controller {
             //Count user READING LIST Progression Completed:
             $count_progression = $this->READ_model->ln_fetch(array(
                 'ln_creator_play_id' => $apu['en_id'],
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ PROGRESS
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
 
