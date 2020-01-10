@@ -22,6 +22,11 @@ if(!$session_en){
 
     echo '<a href="/ledger?ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_creator_play_id='.$session_en['en_id'].'" class="btn btn-read btn-five icon-block-lg '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11046]['m_name'].'">'.$en_all_11035[11046]['m_icon'].'</a>';
 
+    if($has_multiple_blogs){
+        //Give option to delete all:
+        echo '<a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[6415]['m_name'].'">'.$en_all_11035[6415]['m_icon'].'</a>';
+    }
+
     //Browse New Reads on Home:
     echo '<a href="/" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12201]['m_name'].'">'.$en_all_11035[12201]['m_icon'].'</a>';
 
@@ -29,6 +34,19 @@ if(!$session_en){
 
 
     echo '<div class="doclear">&nbsp;</div>';
+
+    if($has_multiple_blogs){
+
+        $timestamp = time();
+
+        echo '<div class="clear-reading-list hidden">';
+
+        echo '<p><span class="icon-block"><i class="fas fa-exclamation-triangle read"></i></span><b class="read montserrat">WARNING:</b> You are about to clear you entire reading list. You will lose all your <span class="icon-block"><i class="fas fa-circle read"></i></span><b class="montserrat read">READ COINS</b> but can earn them back by reading again.</p>';
+        echo '<p style="margin-top:20px;"><a href="/read/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('cred_password_salt') . $timestamp).'" class="btn btn-read"><i class="far fa-trash-alt"></i> CLEAR READS & COINS</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
+
+        echo '</div>';
+
+    }
 
 
     //User has multiple 🔴 READING LISTs, so list all 🔴 READING LISTs to enable User to choose:
@@ -85,22 +103,6 @@ if(!$session_en){
 
     echo '</div>';
 
-
-    if($has_multiple_blogs){
-
-        //Give option to delete all:
-        echo '<div class="pull-right clear-reading-list" style="padding:25px 0 0;"><a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="montserrat doupper dolight"><span class="icon-block"><i class="fas fa-trash-alt"></i></span></a></div>';
-
-        $timestamp = time();
-
-        echo '<div class="clear-reading-list hidden">';
-
-        echo '<p><span class="icon-block"><i class="fas fa-exclamation-triangle read"></i></span><b class="read montserrat">WARNING:</b> You are about to clear you entire reading list. You will lose all your <span class="icon-block"><i class="fas fa-circle read"></i></span><b class="montserrat read">READ COINS</b> but can earn them back by reading again.</p>';
-        echo '<p style="margin-top:20px;"><a href="/read/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('cred_password_salt') . $timestamp).'" class="btn btn-read"><i class="far fa-trash-alt"></i> CLEAR READS & COINS</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
-
-        echo '</div>';
-
-    }
 }
 ?>
 </div>

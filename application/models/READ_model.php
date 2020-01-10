@@ -544,7 +544,7 @@ class READ_model extends CI_Model
 
 
 
-    function read__completion_auto_complete($en_id, $in){
+    function read__completion_auto_complete($en_id, $in, $ln_completion_type_id){
 
         /*
          *
@@ -580,30 +580,15 @@ class READ_model extends CI_Model
 
 
 
-        //Qualifies to be auto closed:
-        //Detect coin type based on blog type:
-        $en_all_7585 = $this->config->item('en_all_7585'); //Blog Types
-        $coin_type_ids = array_intersect($en_all_7585[$in['in_type_play_id']]['m_parents'], $this->config->item('en_ids_6255'));
-        if(!count($coin_type_ids)){
-            //Log Admin Error:
-            $this->READ_model->ln_create(array(
-                'ln_creator_play_id' => $en_id,
-                'ln_parent_blog_id' => $in['in_id'],
-                'ln_content' => 'read__completion_auto_complete() failed to detect COIN TYPE @6255 for blog type @7585 with value of @'.$in['in_type_play_id'],
-                'ln_type_play_id' => 4246, //Platform Bug Reports
-            ));
-            return false;
-        }
-
         //Ok, now we can issue READ COIN:
         $this->READ_model->ln_create(array(
-            'ln_type_play_id' => end($coin_type_ids),
+            'ln_type_play_id' => $ln_completion_type_id,
             'ln_creator_play_id' => $en_id,
             'ln_parent_blog_id' => $in['in_id'],
         ));
 
         //Process on-complete automations:
-        $this->READ_model->read__completion_checks($en_id, $in, true);
+        $this->READ_model->read_completion_checks($en_id, $in, true);
 
 
         //All good:
@@ -865,7 +850,7 @@ class READ_model extends CI_Model
         }
     }
 
-    function read_skip_apply($en_id, $in_id)
+    function read_skip_apply($en_id, $in_id, $push_message)
     {
 
         //Fetch blog common steps:
@@ -902,8 +887,8 @@ class READ_model extends CI_Model
         //Add 🔴 READING LIST Skipped Read Progression Links:
         foreach($flat_common_steps as $common_in_id){
 
-            //Fetch current progression links, if any:
-            $read_progress = $this->READ_model->ln_fetch(array(
+            //Archive current progression links:
+            $current_progress = $this->READ_model->ln_fetch(array(
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null,
                 'ln_creator_play_id' => $en_id,
                 'ln_parent_blog_id' => $common_in_id,
@@ -917,18 +902,18 @@ class READ_model extends CI_Model
                 'ln_parent_blog_id' => $common_in_id,
             ));
 
-            //Archive current progression links:
-            foreach($read_progress as $ln){
+
+            foreach($current_progress as $ln){
                 $this->READ_model->ln_update($ln['ln_id'], array(
                     'ln_parent_read_id' => $new_progression_link['ln_id'],
                     'ln_status_play_id' => 6173, //Link Removed
-                ));
+                ), $en_id, 12328);
             }
 
         }
 
         //Process on-complete automations:
-        $this->READ_model->read__completion_checks($en_id, $ins[0], true);
+        $this->READ_model->read_completion_checks($en_id, $ins[0], $push_message);
 
         //Return number of skipped steps:
         return count($flat_common_steps);
@@ -1210,7 +1195,7 @@ class READ_model extends CI_Model
                     ));
 
                     //See if we also need to mark the child as complete:
-                    $this->READ_model->read__completion_auto_complete($en_id, $locked_link);
+                    $this->READ_model->read__completion_auto_complete($en_id, $locked_link, 6997);
 
                 }
             }
@@ -1294,7 +1279,7 @@ class READ_model extends CI_Model
         return $unlock_steps_messages;
     }
 
-    function read__completion_checks($en_id, $in, $send_message){
+    function read_completion_checks($en_id, $in, $push_message){
 
 
         /*
@@ -1306,7 +1291,7 @@ class READ_model extends CI_Model
          *
          * - $in_id The blog that was marked as complete
          * - $en_id The player who marked it as complete
-         * - $send_message IF TRUE would send messages to $en_id and IF FASLE would return raw messages
+         * - $push_message IF TRUE would send messages to $en_id and IF FASLE would return raw messages
          *
          * */
 
@@ -1316,7 +1301,7 @@ class READ_model extends CI_Model
 
 
         //Return all the messages:
-        if($send_message){
+        if($push_message){
 
             //Send message to user:
             foreach($unlock_steps_messages as $message){
@@ -1327,15 +1312,13 @@ class READ_model extends CI_Model
                 );
             }
 
-            //Return the number of messages sent:
-            return count($unlock_steps_messages);
-
         } else {
 
             //Return messages array:
-            return $unlock_steps_messages;
+            echo $unlock_steps_messages;
 
         }
+
     }
 
 
@@ -1835,7 +1818,7 @@ class READ_model extends CI_Model
                             array_push($msg_quick_reply, array(
                                 'content_type' => 'text',
                                 'title' => 'NEXT',
-                                'payload' => 'ANSWERQUESTION_' . $ins[0]['in_type_play_id'] . '_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
+                                'payload' => 'ANSWERQUESTION_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
                             ));
                         }
 
@@ -2008,7 +1991,7 @@ class READ_model extends CI_Model
                     ));
 
                     //Process on-complete automations:
-                    $this->READ_model->read__completion_checks($recipient_en['en_id'], $ins[0], false);
+                    $this->READ_model->read_completion_checks($recipient_en['en_id'], $ins[0], false);
 
                 }
 
@@ -3515,7 +3498,7 @@ class READ_model extends CI_Model
                 ));
 
                 //See if we also need to mark the child as complete:
-                $this->READ_model->read__completion_auto_complete($ens[0]['en_id'], $child_ins[0]);
+                $this->READ_model->read__completion_auto_complete($ens[0]['en_id'], $child_ins[0], 7485);
 
                 $answers_newly_added++;
             }
@@ -3901,7 +3884,7 @@ class READ_model extends CI_Model
                 } elseif ($skip_action == 'skip-confirm') {
 
                     //Actually skip and see if we've finished this 🔴 READING LIST:
-                    $this->READ_model->read_skip_apply($en['en_id'], $in_id);
+                    $this->READ_model->read_skip_apply($en['en_id'], $in_id, true);
 
                     //Confirm the skip:
                     $message = 'Got it! I successfully skipped selected steps';
@@ -3937,79 +3920,9 @@ class READ_model extends CI_Model
 
             //Extract variables:
             $quickreply_parts = explode('_', one_two_explode('ANSWERQUESTION_', '', $quick_reply_payload));
-            $progression_type_play_id = intval($quickreply_parts[0]);
-            $question_in_id = intval($quickreply_parts[1]);
-            $answer_in_id = intval($quickreply_parts[2]);
 
-            if($question_in_id < 1 || $answer_in_id < 1 || $progression_type_play_id < 1){
-                return array(
-                    'status' => 0,
-                    'message' => 'ANSWERQUESTION_ missing core variables ['.$question_in_id.'] & ['.$answer_in_id.'] & ['.$progression_type_play_id.']',
-                );
-            }
-
-
-            //Validate Answer Blog:
-            $answer_ins = $this->BLOG_model->in_fetch(array(
-                'in_id' => $answer_in_id,
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            ));
-            $question_ins = $this->BLOG_model->in_fetch(array(
-                'in_id' => $question_in_id,
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            ));
-            if(count($answer_ins) < 1 || count($question_ins) < 1){
-                return array(
-                    'status' => 0,
-                    'message' => 'ANSWERQUESTION_ was unable to locate published question/answer',
-                );
-            }
-
-
-            //We should already have a link for question, so let's find and update it:
-            $pending_answer_links = $this->READ_model->ln_fetch(array(
-                'ln_creator_play_id' => $en['en_id'],
-                'ln_type_play_id' => $progression_type_play_id,
-                'ln_parent_blog_id' => $question_in_id,
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-            ));
-            if(count($pending_answer_links) > 0){
-
-                //All good, let's save the answer:
-                $published_answer = false;
-                foreach($pending_answer_links as $ln){
-                    //We just found a pending answer, so mark it as published while saving the answer:
-                    $this->READ_model->ln_update($ln['ln_id'], array(
-                        'ln_child_blog_id' => $answer_in_id, //Save answer
-                        'ln_status_play_id' => 6176, //Link Published
-                    ));
-
-                    //Update status:
-                    $published_answer = true;
-
-                    break;
-                }
-
-                //Did we publish anything?
-                if($published_answer){
-
-                    //See if we also need to mark the answer as complete:
-                    $this->READ_model->read__completion_auto_complete($en['en_id'], $answer_ins[0]);
-
-
-                    //Find/Advance to the next step:
-                    $this->READ_model->read_next_go($en['en_id'], true, true);
-
-                }
-
-            } else {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'ANSWERQUESTION_ was unable to locate the pending answer link',
-                );
-
-            }
+            //Save the answer:
+            return $this->READ_model->read_answer($en['en_id'], $quickreply_parts[1], array($quickreply_parts[2]));
 
         } else {
 

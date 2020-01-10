@@ -1233,7 +1233,7 @@ class Read extends CI_Controller
     {
 
         //Actually go ahead and skip
-        $this->READ_model->read_skip_apply($en_id, $in_id);
+        $this->READ_model->read_skip_apply($en_id, $in_id, false);
         //Assume its all good!
 
         //We actually skipped, draft message:
@@ -1829,6 +1829,9 @@ class Read extends CI_Controller
                             if(isset($pending_req_submission[0])){
 
                                 //Make changes:
+
+                                //TODO RREMOVE THIS LOGIC AND CREATE A NEW LINK WHEN ADDED
+
                                 $this->READ_model->ln_update($pending_req_submission[0]['ln_id'], array(
                                     'ln_content' => $new_message['ln_content'],
                                     'ln_status_play_id' => 6176, //Link Published
@@ -1836,7 +1839,7 @@ class Read extends CI_Controller
                                 ));
 
                                 //Process on-complete automations:
-                                $this->READ_model->read__completion_checks($en['en_id'], $pending_req_submission[0], true);
+                                $this->READ_model->read_completion_checks($en['en_id'], $pending_req_submission[0], true);
 
                             } else {
 
