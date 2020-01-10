@@ -2143,7 +2143,7 @@ fragment PostListingItemSidebar_post on Post {
             $login_url = '/'.$_POST['referrer_in_id'];
         } else {
             //Go to home page and let them continue from there:
-            $login_url = '/play?open_en_id=12289'; //Open avatars
+            $login_url = '/play';
         }
 
         return echo_json(array(

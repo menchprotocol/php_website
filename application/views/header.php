@@ -86,7 +86,7 @@ if(!isset($hide_header) || !$hide_header){
                             $handle = ( $en_id==6205 ? '' : $identifier );
 
                             echo '<td class="'.$identifier.'">';
-                            echo '<a class="'.$identifier.' border-'.$identifier.( $this->uri->segment(1)==$identifier || ( $en_id==6205 && is_numeric($this->uri->segment(1)) ) ? ' focustab ': '' ).'" href="/'.$identifier.'">';
+                            echo '<a class="'.$identifier.' border-'.$identifier.( $this->uri->segment(1)==$identifier || ( $en_id==6205 && ( !strlen($this->uri->segment(1)) || is_numeric($this->uri->segment(1)) ) ) ? ' focustab ': '' ).'" href="/'.$identifier.'">';
 
                             if($identifier=='play'){
 
