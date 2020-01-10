@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-09 22:05:59 PST
+//Generated 2020-01-09 22:21:12 PST
 
 //READ UNLOCKS:
 $config['en_ids_12327'] = array(7485,7486,6997);
@@ -3073,7 +3073,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.2167',
+        'm_desc' => '1.2168',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -6613,17 +6613,11 @@ $config['en_all_5967'] = array(
 );
 
 //MENCH READING CHANNELS:
-$config['en_ids_7555'] = array(6196,12103);
+$config['en_ids_7555'] = array(12103);
 $config['en_all_7555'] = array(
-    6196 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger play" aria-hidden="true"></i>',
-        'm_name' => 'MESSENGER',
-        'm_desc' => 'Read & receive notifications using Messenger. (Recommended)',
-        'm_parents' => array(12222,4426,7555,3320),
-    ),
     12103 => array(
         'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
-        'm_name' => 'WEBSITE',
+        'm_name' => 'PLAY WEBSITE',
         'm_desc' => 'Read using modern web browsers & receive notifications using email.',
         'm_parents' => array(7555),
     ),
@@ -7441,7 +7435,7 @@ $config['en_all_4426'] = array(
         'm_icon' => '<i class="fab fa-facebook-messenger play" aria-hidden="true"></i>',
         'm_name' => 'PLAY MESSENGER',
         'm_desc' => '',
-        'm_parents' => array(12222,4426,7555,3320),
+        'm_parents' => array(12222,4426,3320),
     ),
     3286 => array(
         'm_icon' => '<i class="fad fa-key play" aria-hidden="true"></i>',

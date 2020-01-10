@@ -1,5 +1,6 @@
 <?php
 $en_all_6225 = $this->config->item('en_all_6225');
+$en_all_7555 = $this->config->item('en_all_7555');
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 $this_attempt = array(
@@ -48,6 +49,7 @@ if(count($current_sign_in_attempt) == 0){
 <script>
     var referrer_in_id = <?= intval($referrer_in_id) ?>;
     var referrer_url = '<?= @$_GET['url'] ?>';
+    var channel_choice_count = <?= count($en_all_7555) ?>;
     var channel_choice_messenger = {
         ln_type_play_id: 7558, //User Signin with Messenger Choice
         ln_parent_blog_id: <?= intval($referrer_in_id) ?>,
@@ -90,7 +92,7 @@ if(count($current_sign_in_attempt) == 0){
 
             <?php
             echo '<p>Choose a reading platform:</p>';
-            foreach ($this->config->item('en_all_7555') as $en_id => $m) {
+            foreach ($en_all_7555 as $en_id => $m) {
                 echo '<div class="row" style="padding:5px 0;">';
 
                 echo '<a class="btn btn-play" href="javascript:void(0);" onclick="select_channel('.$en_id.', '.$referrer_in_id.')"><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . ' <i class="fad fa-step-forward"></i></a>';
@@ -109,12 +111,14 @@ if(count($current_sign_in_attempt) == 0){
 
 
             <?php
+
             echo '<div class="vote-platforms vote-results hidden">';
             echo '<p style="padding-top: 30px;">Cast your vote for one of these upcoming platforms:</p>';
             foreach ($this->config->item('en_all_12105') as $en_id => $m) {
                 echo '<div style="padding:5px 0; width: 100%;"><a href="javascript:void(0);" onclick="vote_channel('.$en_id.')"><span class="icon-block"><i class="fas fa-vote-yea"></i></span><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . '</a></div>';
             }
             echo '</div>';
+
             ?>
 
         </div>

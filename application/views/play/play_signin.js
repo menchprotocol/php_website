@@ -7,7 +7,8 @@ var step_count = 0;
 
 
 $(document).ready(function () {
-    goto_step(( referrer_in_id > 0 ? 1 : 2 ));
+
+    goto_step(( referrer_in_id > 0 ? ( channel_choice_count >= 2 ? 1 : 2 ) : 2 ));
 
     $(document).keyup(function (e) {
         //Watch for action keys:
