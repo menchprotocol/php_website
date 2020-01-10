@@ -544,57 +544,6 @@ class READ_model extends CI_Model
 
 
 
-    function read__completion_auto_complete($en_id, $in, $ln_completion_type_id){
-
-        /*
-         *
-         *
-         * A function that marks a BLOG as complete IF
-         * the blog has nothing of substance to be
-         * further communicated/done by the user.
-         *
-         * $unlock_link_type_en_id Indicates the type of Unlocking that is about to happen
-         *
-         * */
-
-        //Send messages, if any:
-        $require_player_input = in_array($in['in_type_play_id'], $this->config->item('en_ids_12324'));
-
-        $blog__messages = $this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id' => 4231, //Blog Note Messages
-            'ln_child_blog_id' => $in['in_id'],
-        ), array(), 0, 0, array('ln_order' => 'ASC'));
-
-        $blog__children = $this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-            'ln_parent_blog_id' => $in['in_id'],
-        ), array('in_child'), 1);
-
-        if($require_player_input || count($blog__messages) || count($blog__children)){
-            //It has something of value so it cannot be auto closed:
-            return false;
-        }
-
-
-
-        //Ok, now we can issue READ COIN:
-        $this->READ_model->ln_create(array(
-            'ln_type_play_id' => $ln_completion_type_id,
-            'ln_creator_play_id' => $en_id,
-            'ln_parent_blog_id' => $in['in_id'],
-        ));
-
-        //Process on-complete automations:
-        $this->READ_model->read_completion_checks($en_id, $in, true);
-
-
-        //All good:
-        return true;
-    }
-
 
     function read_next_find($en_id, $in){
 
@@ -895,6 +844,7 @@ class READ_model extends CI_Model
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ));
 
+
             //Add skip link:
             $new_progression_link = $this->READ_model->ln_create(array(
                 'ln_type_play_id' => 6143, //🔴 READING LIST Skipped Read
@@ -913,7 +863,7 @@ class READ_model extends CI_Model
         }
 
         //Process on-complete automations:
-        $this->READ_model->read_completion_checks($en_id, $ins[0], $push_message);
+        $this->READ_model->read__completion_recursive_up($en_id, $ins[0]);
 
         //Return number of skipped steps:
         return count($flat_common_steps);
@@ -1072,15 +1022,11 @@ class READ_model extends CI_Model
 
         /*
          *
-         * Function Player:
+         * Let's see how many steps get unlocked:
          *
          * https://mench.com/play/6410
          *
          * */
-
-
-        //Let's see how many steps get unlocked:
-        $unlock_steps_messages = array();
 
 
         //First let's make sure this entire blog tree completed by the user:
@@ -1166,36 +1112,18 @@ class READ_model extends CI_Model
                     //Found a match:
                     $found_match++;
 
-                    //It did match here! Log and notify user!
-                    $message = 'You completed the step to '.echo_in_title($in['in_title'], true).'. ';
-                    $message .= 'The result:';
-                    $message .= "\n";
-                    $message .= "\n==================";
-                    $message .= "\n" . echo_in_title($locked_link['in_title'], true);
-                    $message .= "\n==================";
-
-
-                    //Communicate message to user:
-                    array_push($unlock_steps_messages, array(
-                        'ln_content' => $message,
-                    ));
-
                     //Unlock 🔴 READING LIST:
                     $this->READ_model->ln_create(array(
                         'ln_type_play_id' => 6140, //READ UNLOCK LINK
                         'ln_creator_play_id' => $en_id,
                         'ln_parent_blog_id' => $in['in_id'],
                         'ln_child_blog_id' => $locked_link['in_id'],
-                        'ln_content' => $message,
                         'ln_metadata' => array(
                             'completion_rate' => $completion_rate,
                             'user_marks' => $user_marks,
                             'condition_ranges' => $locked_links,
                         ),
                     ));
-
-                    //See if we also need to mark the child as complete:
-                    $this->READ_model->read__completion_auto_complete($en_id, $locked_link, 6997);
 
                 }
             }
@@ -1259,12 +1187,8 @@ class READ_model extends CI_Model
                     if(count($parent_ins) > 0){
 
                         //Fetch parent completion:
-                        $unlock_steps_messages_recursive = $this->READ_model->read__completion_recursive_up($en_id, $parent_ins[0], false);
+                        $this->READ_model->read__completion_recursive_up($en_id, $parent_ins[0], false);
 
-                        //What did we find?
-                        if(count($unlock_steps_messages_recursive) > 0){
-                            $unlock_steps_messages = array_merge($unlock_steps_messages, $unlock_steps_messages_recursive);
-                        }
                     }
 
                     //Terminate if we reached the 🔴 READING LIST blog level:
@@ -1276,60 +1200,9 @@ class READ_model extends CI_Model
         }
 
 
-        return $unlock_steps_messages;
+        return true;
     }
 
-    function read_completion_checks($en_id, $in, $push_message){
-
-
-        /*
-         *
-         * There are certain processes we need to run and messages
-         * we need to compile every time an 🔴 READING LIST step/blog
-         * is marked as complete. This function handles that workflow
-         * with the following inputs:
-         *
-         * - $in_id The blog that was marked as complete
-         * - $en_id The player who marked it as complete
-         * - $push_message IF TRUE would send messages to $en_id and IF FASLE would return raw messages
-         *
-         * */
-
-
-        //Try to unlock steps:
-        $unlock_steps_messages = $this->READ_model->read__completion_recursive_up($en_id, $in);
-
-        //Send message to user:
-        foreach($unlock_steps_messages as $message){
-            echo $this->READ_model->dispatch_message(
-                $message['ln_content'],
-                array('en_id' => $en_id),
-                $push_message
-            );
-        }
-
-    }
-
-
-    function read__unlock_recursive_up($in_id, $is_bottom_level = true)
-    {
-        /*
-         *
-         * Checks the completed users at each step that's recursively up
-         *
-         * */
-
-        foreach($this->READ_model->ln_fetch(array(
-            'in_type_play_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //🔴 READING LIST Read Locked
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id' => 4228, //Blog Link Regular Read
-            'ln_child_blog_id' => $in_id,
-        ), array('in_parent')) as $in_locked_parent){
-
-        }
-    }
 
     function read__unlock_locked_step($en_id, $in){
 
@@ -1422,12 +1295,25 @@ class READ_model extends CI_Model
             );
         }
 
-
-
-
-
     }
 
+
+
+    function read_is_complete($in, $insert_columns){
+
+        if(!isset($insert_columns['ln_creator_play_id'])){
+            return false;
+        }
+
+        //Log completion link:
+        $this->READ_model->ln_create($insert_columns);
+
+        //Process completion automations:
+        $this->READ_model->read__completion_recursive_up($insert_columns['ln_creator_play_id'], $in);
+
+        return true;
+
+    }
 
     function read_coin($in_id, $recipient_en, $push_message = false){
 
@@ -1629,17 +1515,8 @@ class READ_model extends CI_Model
 
             //Did we have any steps unlocked?
             if(count($unlocked_steps) > 0){
-
-                //Yes! Show them:
+                //Yes! Show them only if exists. OLD: echo echo_actionplan_step_child($recipient_en['en_id'], $unlocked_step, true);
                 echo_in_list($ins[0], $unlocked_steps, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-lock-open"></i></span>UNLOCKED:');
-
-
-                echo '<div class="list-group">';
-                foreach($unlocked_steps as $unlocked_step){
-                    //Add HTML step to UI:
-                    echo echo_actionplan_step_child($recipient_en['en_id'], $unlocked_step, true);
-                }
-                echo '</div>';
             }
 
         }
@@ -1708,6 +1585,8 @@ class READ_model extends CI_Model
                         echo_in_list($ins[0], $previously_answered, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:');
 
                     } else {
+
+                        //In HTML Give extra option to change answer:
 
                         echo '<div class="selected_before">';
 
@@ -1881,87 +1760,87 @@ class READ_model extends CI_Model
 
         } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7309'))) {
 
+
             //Requirement lock
             if(count($read_progress)){
 
-                //This is already complete:
+                //See what type of progress to give more info to reader:
+                //It did match here! Log and notify user!
+                $message = 'You completed the step to '.echo_in_title($in['in_title'], true).'. ';
+                $message .= 'The result:';
+                $message .= "\n";
+                $message .= "\n==================";
+                $message .= "\n" . echo_in_title($locked_link['in_title'], true);
+                $message .= "\n==================";
 
-                $progression_type_play_id = $read_progress[0]['ln_status_play_id'];
 
-            } elseif(count($this->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
-                'ln_child_blog_id' => $ins[0]['in_id'],
-                'ln_creator_play_id' => $recipient_en['en_id'],
-            )))){
-
-                $new_ln_type_play_id = 7485; //User Read Answer Unlock
+                //Already complete:
+                $read_completion_type_id = $read_progress[0]['ln_status_play_id'];
 
             } else {
 
-                //Find the paths to unlock:
-                $unlock_paths = $this->BLOG_model->in_unlock_paths($ins[0]);
+                $unlocked_connections = $this->READ_model->ln_fetch(array(
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ BLOG CONNECTORS
+                    'ln_child_blog_id' => $ins[0]['in_id'],
+                    'ln_creator_play_id' => $recipient_en['en_id'],
+                ), array('in_parent'), 1);
 
-                //Set completion method:
-                if(count($unlock_paths) > 0){
+                if(count($unlocked_connections) > 0){
 
-                    //Yes we have a path:
-                    $progression_type_play_id = 7486; //User Read Children Unlock
+                    //They already have unlocked a path here!
 
-                    //List Unlock paths:
-                    echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-lock"></i></span>REQUIRED READS:', false);
+                    //Determine READ COIN type based on it's connection type's parents that will hold the appropriate read coin.
+                    $read_completion_type_id = 0;
+                    foreach($this->config->item('en_all_12327') /* READ UNLOCKS */ as $en_id => $m){
+                        if(in_array($unlocked_connections[0]['ln_type_play_id'], $m['m_parents'])){
+                            $read_completion_type_id = $en_id;
+                            break;
+                        }
+                    }
+
+                    //Could we determine the coin type?
+                    if($read_completion_type_id > 0){
+
+                        //Yes, Issue coin:
+
+                    } else {
+
+                        //Oooops, we could not find it, report bug:
+                        $this->READ_model->ln_create(array(
+                            'ln_type_play_id' => 4246, //Platform Bug Reports
+                            'ln_creator_play_id' => $recipient_en['en_id'],
+                            'ln_content' => 'read_coin() found blog connector ['.$unlocked_connections[0]['ln_type_play_id'].'] without a valid unlock method @12327',
+                            'ln_parent_blog_id' => $ins[0]['in_id'],
+                            'ln_parent_read_id' => $unlocked_connections[0]['ln_id'],
+                        ));
+
+                    }
 
                 } else {
 
-                    //No path found:
-                    $progression_type_play_id = 7492; //User Read Dead End
+                    //Try to find paths to unlock:
+                    $unlock_paths = $this->BLOG_model->in_unlock_paths($ins[0]);
 
+                    //Set completion method:
+                    if(count($unlock_paths) > 0){
+
+                        //List Unlock paths:
+                        echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>NEXT READS:', false);
+
+                    } else {
+
+                        //No path found:
+                        $read_completion_type_id = 7492; //User Read Dead End
+
+                    }
                 }
-
-            }
-
-
-            //MEET REQUIREMENTS
-            if($ins[0]['in_type_play_id']==6907){
-
-                //MEET ONE REQUIREMENT
-
-            } elseif($ins[0]['in_type_play_id']==6914) {
-
-                //MEET ALL REQUIREMENTS
-
             }
 
 
             //List Requirements:
-            if(count($in__children) > 0){
-
-                if ($push_message) {
-
-                } else {
-
-                    //List children to choose from:
-                    echo '<div class="list-group" style="margin-top:30px;">';
-                    foreach ($in__children as $child_in) {
-                        echo echo_in_read($child_in);
-                    }
-                    echo '</div>';
-
-                }
-
-            } else {
-
-                //No children, show the next button:
-                echo_in_next($ins[0]['in_id'], $recipient_en, $push_message);
-
-            }
-
-
-            //List ways to unlock requirements. if not completed already:
-            if(!count($read_progress)){
-
-            }
-
+            echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>UP NEXT:');
 
         } else {
 
@@ -1973,14 +1852,11 @@ class READ_model extends CI_Model
                 if(!count($read_progress)){
 
                     //Log progress link:
-                    $this->READ_model->ln_create(array(
+                    $this->READ_model->read_is_complete($ins[0], array(
                         'ln_type_play_id' => 4559, //READ MESSAGES
                         'ln_creator_play_id' => $recipient_en['en_id'],
                         'ln_parent_blog_id' => $ins[0]['in_id'],
                     ));
-
-                    //Process on-complete automations:
-                    $this->READ_model->read_completion_checks($recipient_en['en_id'], $ins[0], false);
 
                 }
 
@@ -2014,12 +1890,6 @@ class READ_model extends CI_Model
             } else {
 
                 //UNKNOWN BLOG TYPE
-                echo $this->READ_model->dispatch_message(
-                    'Error: Unknown Blog Type',
-                    $recipient_en,
-                    $push_message
-                );
-
                 $this->READ_model->ln_create(array(
                     'ln_type_play_id' => 4246, //Platform Bug Reports
                     'ln_creator_play_id' => $recipient_en['en_id'],
@@ -3479,15 +3349,12 @@ class READ_model extends CI_Model
             //Make sure not saved before:
             if(!in_array($child_ins[0]['in_id'], $already_answered)){
 
-                $this->READ_model->ln_create(array(
+                $this->READ_model->read_is_complete($ins[0], array(
                     'ln_type_play_id' => $answer_index[$ins[0]['in_type_play_id']],
                     'ln_creator_play_id' => $en_id,
                     'ln_parent_blog_id' => $ins[0]['in_id'],
                     'ln_child_blog_id' => $child_ins[0]['in_id'],
                 ));
-
-                //See if we also need to mark the child as complete:
-                $this->READ_model->read__completion_auto_complete($ens[0]['en_id'], $child_ins[0], 7485);
 
                 $answers_newly_added++;
             }

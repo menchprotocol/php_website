@@ -2231,7 +2231,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $tree_count_range = $child_links[0]['in__child_count'];
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding:0 27px 0 3px;"><a class="btn btn-blog" href="/blog/' . $in['in_id'] . '">'.( $is_parent ? '<i class="fad fa-step-backward"></i> <span class="btn-counter">' . $tree_count_range . '</span>' : '<span class="btn-counter">' . $tree_count_range . '</span> <i class="fad fa-step-forward"></i>' ).'</a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding:0 17px 0 3px;"><a class="btn btn-blog" href="/blog/' . $in['in_id'] . '">'.( $is_parent ? '<i class="fad fa-step-backward"></i> <span class="btn-counter">' . $tree_count_range . '</span>' : '<span class="btn-counter">' . $tree_count_range . '</span> <i class="fad fa-step-forward"></i>' ).'</a></div>';
 
 
     $ui .= '</div>';
@@ -2278,6 +2278,11 @@ function echo_caret($en_id, $m, $url_append){
 }
 
 function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null, $in_reads = true){
+
+    //If no list just return the next step:
+    if(!count($in__children)){
+        return echo_in_next($in['in_id'], $recipient_en, $push_message);
+    }
 
     $CI =& get_instance();
 
