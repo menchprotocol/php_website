@@ -155,7 +155,11 @@
 
 
     //Player Navigation
-    if(isset($session_en['en_id']) && $session_en['en_id'] > 0){
+    if(isset($session_en['en_id']) && $session_en['en_id'] > 0 && count($this->READ_model->ln_fetch(array(
+            'ln_creator_play_id' => $session_en['en_id'],
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        ), array(), 1))){
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         echo ' <a class="btn btn-read inline-block" href="/read/next"  style="margin: 20px 0;">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a>';
     }
