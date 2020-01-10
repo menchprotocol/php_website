@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-09 21:53:49 PST
+//Generated 2020-01-09 22:05:59 PST
 
 //READ UNLOCKS:
 $config['en_ids_12327'] = array(7485,7486,6997);
@@ -3308,7 +3308,7 @@ $config['en_all_11035'] = array(
     ),
     12205 => array(
         'm_icon' => '<i class="fad fa-user-circle play" aria-hidden="true"></i>',
-        'm_name' => 'MY PUBLIC PROFILE',
+        'm_name' => 'MY PLAYER PROFILE',
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
