@@ -660,7 +660,7 @@ class READ_model extends CI_Model
 
                 //See which path they got unlocked, if any:
                 $unlocked_conditions = $this->READ_model->ln_fetch(array(
-                    'ln_type_play_id' => 6140, //🔴 READING LIST Conditional Read Unlocked
+                    'ln_type_play_id' => 6140, //READ UNLOCK LINK
                     'ln_creator_play_id' => $en_id, //Belongs to this User
                     'ln_parent_blog_id' => $common_step_in_id,
                     'ln_child_blog_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]) . ')' => null,
@@ -1100,7 +1100,7 @@ class READ_model extends CI_Model
             //Make sure previous link unlocks have NOT happened before:
             $existing_expansions = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_play_id' => 6140, //🔴 READING LIST Conditional Read Unlocked
+                'ln_type_play_id' => 6140, //READ UNLOCK LINK
                 'ln_creator_play_id' => $en_id,
                 'ln_parent_blog_id' => $in['in_id'],
                 'ln_child_blog_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
@@ -1182,7 +1182,7 @@ class READ_model extends CI_Model
 
                     //Unlock 🔴 READING LIST:
                     $this->READ_model->ln_create(array(
-                        'ln_type_play_id' => 6140, //🔴 READING LIST Conditional Read Unlocked
+                        'ln_type_play_id' => 6140, //READ UNLOCK LINK
                         'ln_creator_play_id' => $en_id,
                         'ln_parent_blog_id' => $in['in_id'],
                         'ln_child_blog_id' => $locked_link['in_id'],
@@ -1622,7 +1622,7 @@ class READ_model extends CI_Model
             $unlocked_steps = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                'ln_type_play_id' => 6140, //User Read Link Unlocked
+                'ln_type_play_id' => 6140, //READ UNLOCK LINK
                 'ln_creator_play_id' => $recipient_en['en_id'],
                 'ln_parent_blog_id' => $ins[0]['in_id'],
             ), array('in_child'), 0);
@@ -2258,7 +2258,7 @@ class READ_model extends CI_Model
 
             //Now let's check if user has unlocked any Miletones:
             foreach($this->READ_model->ln_fetch(array(
-                'ln_type_play_id' => 6140, //🔴 READING LIST Conditional Read Unlocked
+                'ln_type_play_id' => 6140, //READ UNLOCK LINK
                 'ln_creator_play_id' => $en_id, //Belongs to this User
                 'ln_parent_blog_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_blog_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_conditional'])) . ')' => null,
