@@ -2315,6 +2315,8 @@ function echo_breadcrumb($in_id, $link_to_blog = false){
         array_push($list_ids, $in_list['in_id']);
     }
 
+    print_r($list_ids);
+
     //Now fetch the parent of the current
     $recursive_parents = $CI->BLOG_model->in_fetch_recursive_public_parents($in_id);
     $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
@@ -2347,8 +2349,6 @@ function echo_breadcrumb($in_id, $link_to_blog = false){
             $ui .= '</nav>';
         }
     }
-
-
 
     return $ui;
 }
