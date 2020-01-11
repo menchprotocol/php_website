@@ -244,15 +244,21 @@ img.no-radius {
 }
 
 .breadcrumb {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     background-color: #FFFFFF;
     border-radius:0;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .alert{
     padding: 1rem .5rem;
     border-radius: 0;
-    margin: 0 0 15px 0;
+    margin: 0 0 10px 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.alert a{
+    text-decoration: underline;
 }
 
 .alert-warning {
@@ -275,6 +281,8 @@ img.no-radius {
     background-color: transparent;
     border-color: transparent;
 }
+
+
 .dounderline{
     text-decoration: underline !important;
 }
