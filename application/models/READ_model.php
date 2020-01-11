@@ -1629,7 +1629,7 @@ class READ_model extends CI_Model
 
 
         //Show More Information:
-        echo '<div class="read-topic read-info-topic">';
+        echo '<div class="read-topic read-info-topic"><span class="info-item">';
         $metadata = unserialize($ins[0]['in_metadata']);
         if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
 
@@ -1640,19 +1640,19 @@ class READ_model extends CI_Model
                 'ln_child_blog_id' => $ins[0]['in_id'],
             ), array('en_creator'), 1);
 
-            echo '<span class="info-item">BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a></span>';
+            echo 'BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a>';
 
 
             //TIME IF CONSIDERABLE
             if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
-                echo '<span class="info-item"><span class="icon-block"><i class="fad fa-clock" aria-hidden="true"></i></span>'.echo_time_range($ins[0], true).'</span>';
+                echo ' '.echo_time_range($ins[0], true).' READ';
             }
 
 
             // % DONE
             $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
             if($completion_rate['completion_percentage'] > 0){
-                echo '<span class="info-item" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read"><span class="icon-block"><i class="fad fa-hourglass-half" aria-hidden="true"></i></span>'.$completion_rate['completion_percentage'].'%</span>';
+                echo ' <span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">'.$completion_rate['completion_percentage'].'% DONE</span>';
             }
 
         }
@@ -1660,10 +1660,10 @@ class READ_model extends CI_Model
         //Show all completions:
         $en_all_12229 = $this->config->item('en_all_12229');
         foreach($read_completes as $read_history){
-            echo '<span class="info-item" style="margin-right:0;" data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ON ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
+            echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ON ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
         }
 
-        echo '</div>';
+        echo '</span></div>';
 
 
 
