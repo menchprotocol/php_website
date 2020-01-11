@@ -1153,7 +1153,7 @@ class READ_model extends CI_Model
             $player_read_ids = $this->READ_model->read_ids($en_id);
 
             //Fetch all parents trees for this blog
-            $recursive_parents = $this->BLOG_model->in_fetch_recursive_public_parents($in['in_id']);
+            $recursive_parents = $this->BLOG_model->in_fetch_recursive_parents($in['in_id']);
 
             //Prevent duplicate processes even if on multiple parent trees:
             $parents_checked = array();
@@ -1436,7 +1436,7 @@ class READ_model extends CI_Model
                 $in_reading_list = true;
             } else {
                 //Fetch all parents trees for this blog
-                $recursive_parents = $this->BLOG_model->in_fetch_recursive_public_parents($ins[0]['in_id']);
+                $recursive_parents = $this->BLOG_model->in_fetch_recursive_parents($ins[0]['in_id']);
 
                 //Go through parents trees and detect intersects with user blogs. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
                 foreach ($recursive_parents as $grand_parent_ids) {

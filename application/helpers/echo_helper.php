@@ -2278,7 +2278,7 @@ function echo_caret($en_id, $m, $url_append){
 }
 
 
-function echo_breadcrumb($in_id, $link_to_blog = false){
+function echo_breadcrumbs($in_id, $link_to_blog = false){
 
     $session_en = superpower_assigned();
     if(!$session_en){
@@ -2289,6 +2289,7 @@ function echo_breadcrumb($in_id, $link_to_blog = false){
     if($link_to_blog){
 
         //BLOG LIST
+        $public_only = false;
         $player_list = $CI->READ_model->ln_fetch(array(
             'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -2299,6 +2300,7 @@ function echo_breadcrumb($in_id, $link_to_blog = false){
     } else {
 
         //READ LIST
+        $public_only = true;
         $player_list = $CI->READ_model->ln_fetch(array(
             'ln_creator_play_id' => $session_en['en_id'],
             'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
@@ -2317,7 +2319,7 @@ function echo_breadcrumb($in_id, $link_to_blog = false){
 
 
     //Now fetch the parent of the current
-    $recursive_parents = $CI->BLOG_model->in_fetch_recursive_public_parents($in_id);
+    $recursive_parents = $CI->BLOG_model->in_fetch_recursive_parents($in_id, true, $public_only);
     $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
     $en_all_7585 = $CI->config->item('en_all_7585'); // Blog Types
     foreach ($recursive_parents as $grand_parent_ids) {

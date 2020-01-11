@@ -319,7 +319,7 @@ class BLOG_model extends CI_Model
                 $child_in = $ins[0];
 
                 //Prevent parent duplicate:
-                $recursive_parents = $this->BLOG_model->in_fetch_recursive_public_parents($parent_in['in_id']);
+                $recursive_parents = $this->BLOG_model->in_fetch_recursive_parents($parent_in['in_id']);
                 foreach ($recursive_parents as $grand_parent_ids) {
                     if (in_array($child_in['in_id'], $grand_parent_ids)) {
                         return array(
@@ -489,14 +489,14 @@ class BLOG_model extends CI_Model
     }
 
 
-    function in_fetch_recursive_public_parents($in_id, $first_level = true){
+    function in_fetch_recursive_parents($in_id, $first_level = true, $public_only = true){
 
         $grand_parents = array();
 
         //Fetch parents:
         foreach($this->READ_model->ln_fetch(array(
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7355' : 'en_ids_7356' ))) . ')' => null,
+            'ln_status_play_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7359' : 'en_ids_7360' ))) . ')' => null,
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
             'ln_child_blog_id' => $in_id,
         ), array('in_parent')) as $in_parent){
@@ -511,7 +511,7 @@ class BLOG_model extends CI_Model
 
 
             //Fetch parents of parents:
-            $recursive_parents = $this->BLOG_model->in_fetch_recursive_public_parents($p_id, false);
+            $recursive_parents = $this->BLOG_model->in_fetch_recursive_parents($p_id, false);
             if(count($recursive_parents) > 0){
                 if($first_level){
                     array_push($grand_parents, array_merge(array($p_id), $recursive_parents));

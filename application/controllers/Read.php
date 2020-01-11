@@ -1320,7 +1320,7 @@ class Read extends CI_Controller
                 'marks' => $this->READ_model->read__completion_marks($session_en['en_id'], $ins[0]),
             ),
             'in_general' => array(
-                'recursive_parents' => $this->BLOG_model->in_fetch_recursive_public_parents($ins[0]['in_id']),
+                'recursive_parents' => $this->BLOG_model->in_fetch_recursive_parents($ins[0]['in_id']),
                 'common_base' => $this->BLOG_model->in_metadata_common_base($ins[0]),
             ),
         ));
