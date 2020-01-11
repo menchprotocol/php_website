@@ -79,7 +79,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             echo '<div class="itemblog">';
 
-            echo '<textarea onkeyup="show_save_button()" class="form-control side-margin" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'" style="margin-bottom: 5px;">'.htmlentities($in['in_title']).'</textarea>';
+            echo '<textarea onkeyup="show_save_button()" class="form-control side-margin" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'" style="margin-bottom: 5px;">'.$in['in_title'].'</textarea>';
 
             echo '<input type="hidden" id="current_blog_title" value="'.$in['in_title'].'" />';
 
@@ -92,7 +92,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             echo '</div>';
 
         } else {
-            echo '<h1>'.$in['in_title'].'</h1>';
+            echo '<h1>'.echo_in_title($in['in_title']).'</h1>';
         }
 
     } else {
