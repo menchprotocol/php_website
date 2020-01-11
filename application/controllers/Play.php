@@ -2791,9 +2791,17 @@ fragment PostListingItemSidebar_post on Post {
 
         $session_en = superpower_assigned();
         if (!$session_en) {
-            return false;
+            return echo_json(array(
+                'play_count' => 0,
+                'play_raw_count' => 0,
+                'blog_count' => 0,
+                'blog_raw_count' => 0,
+                'read_count' => 0,
+                'read_raw_count' => 0
+            ));
         }
 
+        
         $play_coin_count = 1;
         if(superpower_assigned(10967)){
             $play_coins = $this->READ_model->ln_fetch(array(

@@ -584,7 +584,7 @@ class READ_model extends CI_Model
 
             //Is this completed?
             $completed_steps = $this->READ_model->ln_fetch(array(
-                'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null,
+                'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                 'ln_creator_play_id' => $en_id, //Belongs to this User
                 'ln_parent_blog_id' => $common_step_in_id,
                 'ln_status_play_id' => 6176, //Link Published
@@ -838,7 +838,7 @@ class READ_model extends CI_Model
 
             //Archive current progression links:
             $current_progress = $this->READ_model->ln_fetch(array(
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null,
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                 'ln_creator_play_id' => $en_id,
                 'ln_parent_blog_id' => $common_in_id,
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -1301,10 +1301,6 @@ class READ_model extends CI_Model
 
     function read_is_complete($in, $insert_columns){
 
-        if(!isset($insert_columns['ln_creator_play_id'])){
-            return false;
-        }
-
         //Log completion link:
         $new_link = $this->READ_model->ln_create($insert_columns);
 
@@ -1559,7 +1555,7 @@ class READ_model extends CI_Model
                 $unlocked_connections = $this->READ_model->ln_fetch(array(
                     'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ BLOG CONNECTORS
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ BLOG LINKS
                     'ln_child_blog_id' => $ins[0]['in_id'],
                     'ln_creator_play_id' => $recipient_en['en_id'],
                 ), array('in_parent'), 1);
@@ -1706,19 +1702,19 @@ class READ_model extends CI_Model
             } else {
 
                 //Have they already selected answers? If so, show them their selection and focus on navigation:
-                $previously_answered = $this->READ_model->ln_fetch(array(
+                $read_completes = $this->READ_model->ln_fetch(array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                     'ln_parent_blog_id' => $ins[0]['in_id'],
                     'ln_creator_play_id' => $recipient_en['en_id'],
                 ), array('in_child'));
 
 
-                if(count($previously_answered) > 0){
+                if(count($read_completes) > 0){
 
                     if($push_message){
 
-                        echo_in_list($ins[0], $previously_answered, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:');
+                        echo_in_list($ins[0], $read_completes, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:');
 
                     } else {
 
@@ -1727,7 +1723,7 @@ class READ_model extends CI_Model
                         echo '<div class="selected_before">';
 
                         //List answers:
-                        echo_in_list($ins[0], $previously_answered, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:');
+                        echo_in_list($ins[0], $read_completes, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:');
 
                         //Allow to edit:
                         echo '<div class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>UPDATE ANSWER</u></a></div>';
@@ -1781,7 +1777,7 @@ class READ_model extends CI_Model
 
                 } else {
 
-                    echo '<div class="selected_before '.( count($previously_answered)>0 ? 'hidden' : '' ).'">';
+                    echo '<div class="selected_before '.( count($read_completes)>0 ? 'hidden' : '' ).'">';
 
                     //HTML:
                     if ($ins[0]['in_type_play_id'] == 6684) {
@@ -1885,7 +1881,7 @@ class READ_model extends CI_Model
                 } else {
 
                     //Button to submit selection:
-                    echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($previously_answered)>0 ? 'UPDATE' : 'SAVE' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($previously_answered)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL</u></a></span>' : '' ).' <span class="result-update"></span></div>';
+                    echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($read_completes)>0 ? 'UPDATE' : 'SAVE' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($read_completes)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL</u></a></span>' : '' ).' <span class="result-update"></span></div>';
 
                     //Close list:
                     echo '</div>';
@@ -2098,7 +2094,7 @@ class READ_model extends CI_Model
             //Now let's check user answers to see what they have done:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_creator_play_id' => $en_id, //Belongs to this User
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null,
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                 'ln_parent_blog_id IN (' . join(',', $question_in_ids ) . ')' => null,
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )) as $expansion_in) {
@@ -2165,7 +2161,7 @@ class READ_model extends CI_Model
 
         //Count completed for user:
         $common_completed = $this->READ_model->ln_fetch(array(
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
             'ln_creator_play_id' => $en_id, //Belongs to this User
             'ln_parent_blog_id IN (' . join(',', $flat_common_steps ) . ')' => null,
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -3383,34 +3379,31 @@ class READ_model extends CI_Model
         }
 
         //See if we had previously answered:
-        $previously_answered = $this->READ_model->ln_fetch(array(
+        $read_completes = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
-            'ln_parent_blog_id' => $ins[0]['in_id'],
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
             'ln_creator_play_id' => $en_id,
-        ), array('in_child'));
+            'ln_parent_blog_id' => $ins[0]['in_id'],
+        ));
+
 
         //See if any of previous answers need to be removed;
         $already_answered = array();
         $answers_newly_removed = 0;
-        if(count($previously_answered) > 0){
-            foreach ($previously_answered as $previously_answer){
-                if(!in_array($previously_answer['in_id'], $answer_in_ids)){
-                    $answers_newly_removed += $this->READ_model->ln_update($previously_answer['ln_id'], array(
+        if(count($read_completes) > 0){
+            foreach ($read_completes as $read_complete){
+                if( !intval($read_complete['ln_child_blog_id']) || !in_array($read_complete['ln_child_blog_id'], $answer_in_ids) ){
+                    $answers_newly_removed += $this->READ_model->ln_update($read_complete['ln_id'], array(
                         'ln_status_play_id' => 6173, //Link Removed
                     ), $en_id, 12129 /* READ ANSWER ARCHIVED */);
                 } else {
-                    array_push($already_answered, $previously_answer['in_id']);
+                    array_push($already_answered, $read_complete['in_id']);
                 }
             }
         }
 
         //See if new answers need to be added:
         $answers_newly_added = 0;
-        $answer_index = array(
-            6684 => 6157, //One
-            7231 => 7489, //Some
-        );
         foreach($answer_in_ids as $answer_in_id){
 
             //Validate child blog:
@@ -3432,12 +3425,51 @@ class READ_model extends CI_Model
             //Make sure not saved before:
             if(!in_array($child_ins[0]['in_id'], $already_answered)){
 
-                $this->READ_model->read_is_complete($ins[0], array(
-                    'ln_type_play_id' => $answer_index[$ins[0]['in_type_play_id']],
+                //Define the link type used to save the answers:
+                $blog_link_type_id = 0;
+
+                if($ins[0]['in_type_play_id'] == 6684){
+
+                    //READ ANSWER ONE LINK
+                    $blog_link_type_id = 12336;
+
+                    //Award read coin only once:
+                    if(!$answers_newly_added){
+                        //ANSWER ONE
+                        $this->READ_model->read_is_complete($ins[0], array(
+                            'ln_type_play_id' => 6157,
+                            'ln_creator_play_id' => $en_id,
+                            'ln_parent_blog_id' => $ins[0]['in_id'],
+                        ));
+                    }
+
+
+                } elseif($ins[0]['in_type_play_id'] == 7231){
+
+                    //READ ANSWER SOME LINK
+                    $blog_link_type_id = 12334;
+
+                    //Award read coin only once:
+                    if(!$answers_newly_added){
+                        //ANSWER SOME
+                        $this->READ_model->read_is_complete($ins[0], array(
+                            'ln_type_play_id' => 7489,
+                            'ln_creator_play_id' => $en_id,
+                            'ln_parent_blog_id' => $ins[0]['in_id'],
+                        ));
+                    }
+
+                }
+
+                //Log every answer:
+                $this->READ_model->ln_create(array(
+                    'ln_type_play_id' => $blog_link_type_id,
                     'ln_creator_play_id' => $en_id,
                     'ln_parent_blog_id' => $ins[0]['in_id'],
                     'ln_child_blog_id' => $child_ins[0]['in_id'],
+                    'ln_read_parent_id' => $child_ins[0]['in_id'],
                 ));
+
 
                 $answers_newly_added++;
             }

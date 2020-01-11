@@ -10,7 +10,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 if(!$session_en){
 
-    echo '<div style="padding:10px 0 20px;"><a href="/signin" class="btn btn-read montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start reading.</div>';
+    echo '<div style="padding:10px 0 20px;"><a href="/signin?url=/read" class="btn btn-read montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start reading.</div>';
 
 } else {
 

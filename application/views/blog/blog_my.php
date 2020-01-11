@@ -6,7 +6,7 @@
 
     if(!$session_en){
 
-        echo '<div style="padding:10px 0;"><a href="/signin" class="btn btn-blog montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start blogging.</div>';
+        echo '<div style="padding:10px 0;"><a href="/signin?url=/blog" class="btn btn-blog montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start blogging.</div>';
 
     } else {
 
