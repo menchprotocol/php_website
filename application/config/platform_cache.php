@@ -11,25 +11,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-10 17:40:54 PST
+//Generated 2020-01-11 00:05:13 PST
 
 //READ UNLOCKS:
 $config['en_ids_12327'] = array(7485,7486,6997);
 $config['en_all_12327'] = array(
     7485 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'ANSWER',
         'm_desc' => '',
         'm_parents' => array(7487,7489,6157,12327,12229,12227,10590,12141,4593,4755,6255),
     ),
     7486 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'CHILDREN',
         'm_desc' => '',
         'm_parents' => array(12327,12229,12227,10590,12141,4755,4593,6255),
     ),
     6997 => array(
-        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'CONDITION',
         'm_desc' => '',
         'm_parents' => array(6140,12327,12229,12227,10590,12141,4229,6255,4593,4755),
@@ -40,19 +40,19 @@ $config['en_all_12327'] = array(
 $config['en_ids_12326'] = array(6157,7489,7487,6140);
 $config['en_all_12326'] = array(
     6157 => array(
-        'm_icon' => '<i class="fad fa-check-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER ONE',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,6255,4755,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="fad fa-check-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER SOME',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-calendar-check read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER TIMELY',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
@@ -759,85 +759,85 @@ $config['en_all_12273'] = array(
 $config['en_ids_12229'] = array(12129,12119,6157,7489,7487,7488,4559,6144,6143,7492,7485,7486,6997,12117);
 $config['en_all_12229'] = array(
     12129 => array(
-        'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times-square read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER ARCHIVED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,6146,4593),
     ),
     12119 => array(
-        'm_icon' => '<i class="read fad fa-comment-times"></i>',
+        'm_icon' => '<i class="fas fa-folder-times read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER MISSING',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="fad fa-check-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER ONE',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,6255,4755,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="fad fa-check-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER SOME',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-calendar-check read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER TIMELY',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     7488 => array(
-        'm_icon' => '<i class="read fad fa-calendar-times read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="read fas fa-calendar-times read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER TIMEOUT',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
     ),
     4559 => array(
-        'm_icon' => '<i class="read fad fa-comments read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-check read" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,6255,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="read fad fa-keyboard read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-alt-check read" aria-hidden="true"></i>',
         'm_name' => 'REPLIED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,6255,4755,4593),
     ),
     6143 => array(
-        'm_icon' => '<i class="fad fa-fast-forward read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-times read" aria-hidden="true"></i>',
         'm_name' => 'SKIPPED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,6146,4755,4593),
     ),
     7492 => array(
-        'm_icon' => '<i class="read fad fa-times-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
         'm_name' => 'TERMINATE',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
     ),
     7485 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'UNLOCK ANSWER',
         'm_desc' => '',
         'm_parents' => array(7487,7489,6157,12327,12229,12227,10590,12141,4593,4755,6255),
     ),
     7486 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'UNLOCK CHILDREN',
         'm_desc' => '',
         'm_parents' => array(12327,12229,12227,10590,12141,4755,4593,6255),
     ),
     6997 => array(
-        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'UNLOCK CONDITION',
         'm_desc' => '',
         'm_parents' => array(6140,12327,12229,12227,10590,12141,4229,6255,4593,4755),
     ),
     12117 => array(
-        'm_icon' => '<i class="read fad fa-cloud-upload-alt read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-file-check read" aria-hidden="true"></i>',
         'm_name' => 'UPLOADED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,4593,4755,6255),
@@ -901,37 +901,37 @@ $config['en_all_12228'] = array(
 $config['en_ids_12227'] = array(12129,12119,6157,7489,7487,7488,4235,4559,7495,6144,6143,7492,7485,7486,6997,6140,12117);
 $config['en_all_12227'] = array(
     12129 => array(
-        'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times-square read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER ARCHIVED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,6146,4593),
     ),
     12119 => array(
-        'm_icon' => '<i class="read fad fa-comment-times"></i>',
+        'm_icon' => '<i class="fas fa-folder-times read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER MISSING',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="fad fa-check-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER ONE',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,6255,4755,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="fad fa-check-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER SOME',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-calendar-check read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER TIMELY',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     7488 => array(
-        'm_icon' => '<i class="read fad fa-calendar-times read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="read fas fa-calendar-times read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER TIMEOUT',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
@@ -943,7 +943,7 @@ $config['en_all_12227'] = array(
         'm_parents' => array(12227,10590,7347,5967,4755,4593),
     ),
     4559 => array(
-        'm_icon' => '<i class="read fad fa-comments read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-check read" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,6255,4755,4593),
@@ -955,37 +955,37 @@ $config['en_all_12227'] = array(
         'm_parents' => array(12227,7347,10590,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="read fad fa-keyboard read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-alt-check read" aria-hidden="true"></i>',
         'm_name' => 'REPLIED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,6255,4755,4593),
     ),
     6143 => array(
-        'm_icon' => '<i class="fad fa-fast-forward read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-times read" aria-hidden="true"></i>',
         'm_name' => 'SKIPPED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,6146,4755,4593),
     ),
     7492 => array(
-        'm_icon' => '<i class="read fad fa-times-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
         'm_name' => 'TERMINATE',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
     ),
     7485 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'UNLOCK ANSWER',
         'm_desc' => '',
         'm_parents' => array(7487,7489,6157,12327,12229,12227,10590,12141,4593,4755,6255),
     ),
     7486 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'UNLOCK CHILDREN',
         'm_desc' => '',
         'm_parents' => array(12327,12229,12227,10590,12141,4755,4593,6255),
     ),
     6997 => array(
-        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'UNLOCK CONDITION',
         'm_desc' => '',
         'm_parents' => array(6140,12327,12229,12227,10590,12141,4229,6255,4593,4755),
@@ -997,7 +997,7 @@ $config['en_all_12227'] = array(
         'm_parents' => array(12326,12227,10590,6410,4229,4755,4593),
     ),
     12117 => array(
-        'm_icon' => '<i class="read fad fa-cloud-upload-alt read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-file-check read" aria-hidden="true"></i>',
         'm_name' => 'UPLOADED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,4593,4755,6255),
@@ -1268,55 +1268,55 @@ $config['en_all_12141'] = array(
         'm_parents' => array(12274,12149,12145,12141,10645,10593,4593),
     ),
     6157 => array(
-        'm_icon' => '<i class="fad fa-check-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER ONE',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,6255,4755,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="fad fa-check-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER SOME',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-calendar-check read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER TIMELY',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     4559 => array(
-        'm_icon' => '<i class="read fad fa-comments read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-check read" aria-hidden="true"></i>',
         'm_name' => 'READ MESSAGES',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,6255,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="read fad fa-keyboard read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-alt-check read" aria-hidden="true"></i>',
         'm_name' => 'READ REPLIED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,6255,4755,4593),
     ),
     7485 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'READ UNLOCK ANSWER',
         'm_desc' => '',
         'm_parents' => array(7487,7489,6157,12327,12229,12227,10590,12141,4593,4755,6255),
     ),
     7486 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'READ UNLOCK CHILDREN',
         'm_desc' => '',
         'm_parents' => array(12327,12229,12227,10590,12141,4755,4593,6255),
     ),
     6997 => array(
-        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'READ UNLOCK CONDITION',
         'm_desc' => '',
         'm_parents' => array(6140,12327,12229,12227,10590,12141,4229,6255,4593,4755),
     ),
     12117 => array(
-        'm_icon' => '<i class="read fad fa-cloud-upload-alt read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-file-check read" aria-hidden="true"></i>',
         'm_name' => 'READ UPLOADED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,4593,4755,6255),
@@ -3079,7 +3079,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.21693',
+        'm_desc' => '1.2169',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -5148,37 +5148,37 @@ $config['en_all_10593'] = array(
 $config['en_ids_10590'] = array(12129,12119,6157,7489,7487,7488,4554,6149,6969,4275,4283,7610,7757,6155,12106,6415,6559,6560,6556,6578,7611,4556,4235,4555,7563,10690,4559,4266,4267,4282,6563,5967,10683,6132,4570,7702,7495,6144,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,12197,7492,4552,7485,7486,6997,6140,12328,7578,6224,12117,4553,7562);
 $config['en_all_10590'] = array(
     12129 => array(
-        'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times-square read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER ARCHIVED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,6146,4593),
     ),
     12119 => array(
-        'm_icon' => '<i class="read fad fa-comment-times"></i>',
+        'm_icon' => '<i class="fas fa-folder-times read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER MISSING',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="fad fa-check-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER ONE',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,6255,4755,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="fad fa-check-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER SOME',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-calendar-check read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER TIMELY',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     7488 => array(
-        'm_icon' => '<i class="read fad fa-calendar-times read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="read fas fa-calendar-times read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER TIMEOUT',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
@@ -5304,7 +5304,7 @@ $config['en_all_10590'] = array(
         'm_parents' => array(10590,6153,4593,10658),
     ),
     4559 => array(
-        'm_icon' => '<i class="read fad fa-comments read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-check read" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,6255,4755,4593),
@@ -5370,7 +5370,7 @@ $config['en_all_10590'] = array(
         'm_parents' => array(12227,7347,10590,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="read fad fa-keyboard read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-alt-check read" aria-hidden="true"></i>',
         'm_name' => 'REPLIED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,6255,4755,4593),
@@ -5478,7 +5478,7 @@ $config['en_all_10590'] = array(
         'm_parents' => array(10590,4755,4593),
     ),
     6143 => array(
-        'm_icon' => '<i class="fad fa-fast-forward read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-times read" aria-hidden="true"></i>',
         'm_name' => 'SKIPPED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,6146,4755,4593),
@@ -5490,7 +5490,7 @@ $config['en_all_10590'] = array(
         'm_parents' => array(7545,4755,4593,10590),
     ),
     7492 => array(
-        'm_icon' => '<i class="read fad fa-times-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
         'm_name' => 'TERMINATE',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
@@ -5502,19 +5502,19 @@ $config['en_all_10590'] = array(
         'm_parents' => array(10593,10590,4755,4593,4280),
     ),
     7485 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'UNLOCK ANSWER',
         'm_desc' => '',
         'm_parents' => array(7487,7489,6157,12327,12229,12227,10590,12141,4593,4755,6255),
     ),
     7486 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'UNLOCK CHILDREN',
         'm_desc' => '',
         'm_parents' => array(12327,12229,12227,10590,12141,4755,4593,6255),
     ),
     6997 => array(
-        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'UNLOCK CONDITION',
         'm_desc' => '',
         'm_parents' => array(6140,12327,12229,12227,10590,12141,4229,6255,4593,4755),
@@ -5544,7 +5544,7 @@ $config['en_all_10590'] = array(
         'm_parents' => array(10590,4755,6222,4593),
     ),
     12117 => array(
-        'm_icon' => '<i class="read fad fa-cloud-upload-alt read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-file-check read" aria-hidden="true"></i>',
         'm_name' => 'UPLOADED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,4593,4755,6255),
@@ -6477,19 +6477,19 @@ $config['en_all_7712'] = array(
 $config['en_ids_7704'] = array(6157,7489,7487);
 $config['en_all_7704'] = array(
     6157 => array(
-        'm_icon' => '<i class="fad fa-check-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'ONE',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,6255,4755,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="fad fa-check-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'SOME',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-calendar-check read" aria-hidden="true"></i>',
         'm_name' => 'TIMELY',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
@@ -6506,7 +6506,7 @@ $config['en_all_4229'] = array(
         'm_parents' => array(10638,10589,4593,4229,10658),
     ),
     6997 => array(
-        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'READ UNLOCK CONDITION',
         'm_desc' => '',
         'm_parents' => array(6140,12327,12229,12227,10590,12141,4229,6255,4593,4755),
@@ -6993,55 +6993,55 @@ $config['en_all_6345'] = array(
 $config['en_ids_6255'] = array(6157,7489,7487,4559,6144,7485,7486,6997,12117);
 $config['en_all_6255'] = array(
     6157 => array(
-        'm_icon' => '<i class="fad fa-check-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER ONE',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,6255,4755,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="fad fa-check-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER SOME',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-calendar-check read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER TIMELY',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     4559 => array(
-        'm_icon' => '<i class="read fad fa-comments read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-check read" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,6255,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="read fad fa-keyboard read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-alt-check read" aria-hidden="true"></i>',
         'm_name' => 'REPLIED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,6255,4755,4593),
     ),
     7485 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'UNLOCK ANSWER',
         'm_desc' => '',
         'm_parents' => array(7487,7489,6157,12327,12229,12227,10590,12141,4593,4755,6255),
     ),
     7486 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'UNLOCK CHILDREN',
         'm_desc' => '',
         'm_parents' => array(12327,12229,12227,10590,12141,4755,4593,6255),
     ),
     6997 => array(
-        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'UNLOCK CONDITION',
         'm_desc' => '',
         'm_parents' => array(6140,12327,12229,12227,10590,12141,4229,6255,4593,4755),
     ),
     12117 => array(
-        'm_icon' => '<i class="read fad fa-cloud-upload-alt read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-file-check read" aria-hidden="true"></i>',
         'm_name' => 'UPLOADED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,4593,4755,6255),
@@ -7185,31 +7185,31 @@ $config['en_all_6177'] = array(
 $config['en_ids_6146'] = array(12129,12119,7488,6143,7492);
 $config['en_all_6146'] = array(
     12129 => array(
-        'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times-square read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER ARCHIVED',
         'm_desc' => 'When player chooses to remove an answer already saved',
         'm_parents' => array(12229,12227,10590,6146,4593),
     ),
     12119 => array(
-        'm_icon' => '<i class="read fad fa-comment-times"></i>',
+        'm_icon' => '<i class="fas fa-folder-times read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER MISSING',
         'm_desc' => 'Player was unable to answer a question as there was no published child blogs to select from.',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
     ),
     7488 => array(
-        'm_icon' => '<i class="read fad fa-calendar-times read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="read fas fa-calendar-times read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER TIMEOUT',
         'm_desc' => 'User failed to answer the question within the allocated time',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
     ),
     6143 => array(
-        'm_icon' => '<i class="fad fa-fast-forward read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-times read" aria-hidden="true"></i>',
         'm_name' => 'SKIPPED',
         'm_desc' => 'Completed when students skip an intention and all its child intentions from their Action Plan',
         'm_parents' => array(12229,12227,10590,6146,4755,4593),
     ),
     7492 => array(
-        'm_icon' => '<i class="read fad fa-times-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
         'm_name' => 'TERMINATE',
         'm_desc' => 'Logged when users arrive at a locked intent that has no public OR parents or no children, which means there is no way to unlock it.',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
@@ -7515,31 +7515,31 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4755,6771,4463,4426,4527),
     ),
     12119 => array(
-        'm_icon' => '<i class="read fad fa-comment-times"></i>',
+        'm_icon' => '<i class="fas fa-folder-times read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER MISSING',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="fad fa-check-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER ONE',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,6255,4755,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="fad fa-check-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER SOME',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-calendar-check read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER TIMELY',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     7488 => array(
-        'm_icon' => '<i class="read fad fa-calendar-times read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="read fas fa-calendar-times read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER TIMEOUT',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
@@ -7653,7 +7653,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(10590,4755,7569,4593),
     ),
     4559 => array(
-        'm_icon' => '<i class="read fad fa-comments read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-check read" aria-hidden="true"></i>',
         'm_name' => 'READ MESSAGES',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,6255,4755,4593),
@@ -7713,7 +7713,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(12227,7347,10590,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="read fad fa-keyboard read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-alt-check read" aria-hidden="true"></i>',
         'm_name' => 'READ REPLIED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,6255,4755,4593),
@@ -7821,7 +7821,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(10590,4755,4593),
     ),
     6143 => array(
-        'm_icon' => '<i class="fad fa-fast-forward read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-times read" aria-hidden="true"></i>',
         'm_name' => 'READ SKIPPED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,6146,4755,4593),
@@ -7833,7 +7833,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(7545,4755,4593,10590),
     ),
     7492 => array(
-        'm_icon' => '<i class="read fad fa-times-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
         'm_name' => 'READ TERMINATE',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
@@ -7845,19 +7845,19 @@ $config['en_all_4755'] = array(
         'm_parents' => array(10593,10590,4755,4593,4280),
     ),
     7485 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'READ UNLOCK ANSWER',
         'm_desc' => '',
         'm_parents' => array(7487,7489,6157,12327,12229,12227,10590,12141,4593,4755,6255),
     ),
     7486 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'READ UNLOCK CHILDREN',
         'm_desc' => '',
         'm_parents' => array(12327,12229,12227,10590,12141,4755,4593,6255),
     ),
     6997 => array(
-        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'READ UNLOCK CONDITION',
         'm_desc' => '',
         'm_parents' => array(6140,12327,12229,12227,10590,12141,4229,6255,4593,4755),
@@ -7887,7 +7887,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(10590,4755,6222,4593),
     ),
     12117 => array(
-        'm_icon' => '<i class="read fad fa-cloud-upload-alt read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-file-check read" aria-hidden="true"></i>',
         'm_name' => 'READ UPLOADED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,4593,4755,6255),
@@ -8282,37 +8282,37 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10589,4593),
     ),
     12129 => array(
-        'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times-square read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER ARCHIVED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,6146,4593),
     ),
     12119 => array(
-        'm_icon' => '<i class="read fad fa-comment-times"></i>',
+        'm_icon' => '<i class="fas fa-folder-times read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER MISSING',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="fad fa-check-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER ONE',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,6255,4755,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="fad fa-check-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER SOME',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-calendar-check read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER TIMELY',
         'm_desc' => '',
         'm_parents' => array(12326,12229,12227,10590,12141,7704,4755,6255,4593),
     ),
     7488 => array(
-        'm_icon' => '<i class="read fad fa-calendar-times read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="read fas fa-calendar-times read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER TIMEOUT',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
@@ -8438,7 +8438,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10590,6153,4593,10658),
     ),
     4559 => array(
-        'm_icon' => '<i class="read fad fa-comments read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-check read" aria-hidden="true"></i>',
         'm_name' => 'READ MESSAGES',
         'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
         'm_parents' => array(12229,12227,10590,12141,6255,4755,4593),
@@ -8504,7 +8504,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(12227,7347,10590,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="read fad fa-keyboard read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-alt-check read" aria-hidden="true"></i>',
         'm_name' => 'READ REPLIED',
         'm_desc' => 'Logged when a student submits the requirements (text, video, etc...) of an AND intent which could not be completed by simply receiving messages.',
         'm_parents' => array(12229,12227,10590,12141,6255,4755,4593),
@@ -8612,7 +8612,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10590,4755,4593),
     ),
     6143 => array(
-        'm_icon' => '<i class="fad fa-fast-forward read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-times read" aria-hidden="true"></i>',
         'm_name' => 'READ SKIPPED',
         'm_desc' => 'Logged every time a student consciously skips an intent and it\'s recursive children.',
         'm_parents' => array(12229,12227,10590,6146,4755,4593),
@@ -8624,7 +8624,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(7545,4755,4593,10590),
     ),
     7492 => array(
-        'm_icon' => '<i class="read fad fa-times-square read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
         'm_name' => 'READ TERMINATE',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,4755,4593,6146),
@@ -8636,19 +8636,19 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10593,10590,4755,4593,4280),
     ),
     7485 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'READ UNLOCK ANSWER',
         'm_desc' => '',
         'm_parents' => array(7487,7489,6157,12327,12229,12227,10590,12141,4593,4755,6255),
     ),
     7486 => array(
-        'm_icon' => '<i class="read fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'READ UNLOCK CHILDREN',
         'm_desc' => '',
         'm_parents' => array(12327,12229,12227,10590,12141,4755,4593,6255),
     ),
     6997 => array(
-        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check read"></i>',
         'm_name' => 'READ UNLOCK CONDITION',
         'm_desc' => '',
         'm_parents' => array(6140,12327,12229,12227,10590,12141,4229,6255,4593,4755),
@@ -8678,7 +8678,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10590,4755,6222,4593),
     ),
     12117 => array(
-        'm_icon' => '<i class="read fad fa-cloud-upload-alt read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-file-check read" aria-hidden="true"></i>',
         'm_name' => 'READ UPLOADED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,4593,4755,6255),

@@ -1510,12 +1510,20 @@ class READ_model extends CI_Model
 
 
         //Fetch progress history:
-        $read_progress = $this->READ_model->ln_fetch(array(
+        $read_coins = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_creator_play_id' => $recipient_en['en_id'],
             'ln_parent_blog_id' => $ins[0]['in_id'],
         ));
+        $read_incompletes = $this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //READ INCOMPLETE
+            'ln_creator_play_id' => $recipient_en['en_id'],
+            'ln_parent_blog_id' => $ins[0]['in_id'],
+        ));
+
+
 
         //Define communication variables:
         $next_step_quick_replies = array();
@@ -1527,7 +1535,7 @@ class READ_model extends CI_Model
 
 
         //Show More Information:
-        echo '<div class="read-topic">';
+        echo '<div class="read-topic read-info-topic">';
         $metadata = unserialize($ins[0]['in_metadata']);
         if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
 
@@ -1550,17 +1558,22 @@ class READ_model extends CI_Model
             // % DONE
             $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
             if($completion_rate['completion_percentage'] > 0){
-                echo '<span class="info-item" data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read"><span class="icon-block"><i class="fad fa-hourglass-half" aria-hidden="true"></i></span>'.$completion_rate['completion_percentage'].'% DONE</span>';
+                echo '<span class="info-item" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read"><span class="icon-block"><i class="fad fa-hourglass-half" aria-hidden="true"></i></span>'.$completion_rate['completion_percentage'].'% DONE</span>';
             }
 
         }
 
         //Show all completions:
         $en_all_6255 = $this->config->item('en_all_6255');
-        foreach($read_progress as $read_prog){
-            echo '<span class="info-item" data-toggle="tooltip" data-placement="top" title="'.$en_all_6255[$read_prog['ln_type_play_id']]['m_name'].' ON '.$read_prog['ln_timestamp'].'"><span class="icon-block">'.$en_all_6255[$read_prog['ln_type_play_id']]['m_icon'].'</span>'.$read_prog['ln_content'].'</span>';
+        foreach($read_coins as $read_history){
+            echo '<span class="info-item" data-toggle="tooltip" data-placement="top" title="READ COIN Transaction '.$read_history['ln_id'].' ['.$en_all_6255[$read_history['ln_type_play_id']]['m_name'].'] ON ['.$read_history['ln_timestamp'].']"><span class="icon-block">'.$en_all_6255[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
         }
 
+        //Show all incomplete:
+        $en_all_6146 = $this->config->item('en_all_6146');
+        foreach($read_incompletes as $read_history){
+            echo '<span class="info-item" data-toggle="tooltip" data-placement="top" title="INCOMPLETE Transaction '.$read_history['ln_id'].' ['.$en_all_6146[$read_history['ln_type_play_id']]['m_name'].'] ON ['.$read_history['ln_timestamp'].']"><span class="icon-block">'.$en_all_6146[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
+        }
 
         echo '</div>';
 
@@ -1797,7 +1810,7 @@ class READ_model extends CI_Model
 
 
             //Requirement lock
-            if(count($read_progress)){
+            if(count($read_coins)){
 
                 //See what type of progress to give more info to reader:
                 //It did match here! Log and notify user!
@@ -1885,7 +1898,7 @@ class READ_model extends CI_Model
                 //READ ONLY
 
                 //Log progress since there is nothing to do here:
-                if(!count($read_progress)){
+                if(!count($read_coins)){
 
                     //Log progress link:
                     $this->READ_model->read_is_complete($ins[0], array(

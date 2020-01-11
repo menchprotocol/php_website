@@ -297,6 +297,9 @@ img.no-radius {
     color: #AAAAAA;
     text-transform: uppercase;
 }
+.read-info-topic{
+    margin: -15px 5px 30px;
+}
 .list-group .read-topic{
     margin:5px;
     color: #000000;
