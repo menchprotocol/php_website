@@ -100,6 +100,13 @@
     <div class="animate-trigger hidden"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-read montserrat inline-block" style="margin-top: 20px;"><i class="fas fa-play-circle"></i> WATCH 1 MIN INTRO</a></div>
      */
 
+
+
+    echo '<div>';
+    echo echo_read_menu();
+    echo '</div>';
+
+
     //Fetch all home page blogs:
     $home_page_ins = array();
     foreach($this->READ_model->ln_fetch(array(
