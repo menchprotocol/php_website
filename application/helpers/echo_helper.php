@@ -2319,6 +2319,7 @@ function echo_breadcrumb($in_id, $link_to_blog = false){
     //Now fetch the parent of the current
     $recursive_parents = $CI->BLOG_model->in_fetch_recursive_public_parents($in_id);
     $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Blog Types
     foreach ($recursive_parents as $grand_parent_ids) {
 
         $intersects = array_intersect($grand_parent_ids, $list_ids);
@@ -2341,7 +2342,7 @@ function echo_breadcrumb($in_id, $link_to_blog = false){
                 'in_id' => $parent_in_id,
             ));
             if(count($this_ins) > 0){
-                array_push($breadcrumb_items, '<li class="breadcrumb-item"><a href="'.( $link_to_blog ? '/blog/'.$parent_in_id : '/'.$parent_in_id ).'"><span class="icon-block' . ( in_array($this_ins[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$this_ins[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$this_ins[0]['in_title'].'</a></li>');
+                array_push($breadcrumb_items, '<li class="breadcrumb-item"><a href="'.( $link_to_blog ? '/blog/'.$parent_in_id : '/'.$parent_in_id ).'"><span class="icon-block in_parent_type_' . $this_ins[0]['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$this_ins[0]['in_type_play_id']]['m_name'].': '.$en_all_7585[$this_ins[0]['in_type_play_id']]['m_desc'].'">' . $en_all_7585[$this_ins[0]['in_type_play_id']]['m_icon'] . '</span></span><span class="icon-block' . ( in_array($this_ins[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$this_ins[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$this_ins[0]['in_title'].'</a></li>');
             }
 
             if(in_array($parent_in_id, $intersects)){
