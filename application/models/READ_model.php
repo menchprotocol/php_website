@@ -1453,6 +1453,29 @@ class READ_model extends CI_Model
          */
         if(!$in_reading_list){
 
+            //Show More Information:
+            echo '<div class="read-topic read-info-topic">';
+            $metadata = unserialize($ins[0]['in_metadata']);
+            if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
+
+                //OWNER
+                $authors = $this->READ_model->ln_fetch(array(
+                    'ln_type_play_id' => 4250,
+                    'ln_child_blog_id' => $ins[0]['in_id'],
+                ), array('en_creator'), 1);
+
+                echo '<span class="info-item"><span class="icon-block">'.$authors[0]['en_icon'].'</span><a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a></span>';
+
+
+                //TIME IF CONSIDERABLE
+                if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
+                    echo '<span class="info-item"><span class="icon-block"><i class="fad fa-clock" aria-hidden="true"></i></span>'.echo_time_range($ins[0], true).'</span>';
+                }
+
+            }
+
+            echo '</div>';
+
             foreach ($in__messages as $message_ln) {
                 echo $this->READ_model->dispatch_message(
                     $message_ln['ln_content'],
@@ -1512,14 +1535,16 @@ class READ_model extends CI_Model
         //Fetch progress history:
         $read_completes = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
             'ln_creator_play_id' => $recipient_en['en_id'],
             'ln_parent_blog_id' => $ins[0]['in_id'],
         ));
 
 
-        //Could this be completerd now?
+        //Is it incomplete & can it be instantly marked as complete?
         if (!count($read_completes) && in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_12330'))) {
+
+            //It can, let's process it accordingly for each type within @12330
 
             if ($ins[0]['in_type_play_id'] == 6677) {
 
@@ -1530,7 +1555,7 @@ class READ_model extends CI_Model
                     'ln_parent_blog_id' => $ins[0]['in_id'],
                 )));
 
-            } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7309'))) {
+            } elseif (in_array($ins[0]['in_type_play_id'], array(6914,6907))) {
 
                 $unlocked_connections = $this->READ_model->ln_fetch(array(
                     'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
@@ -1597,11 +1622,9 @@ class READ_model extends CI_Model
             }
         }
 
+
         //Define communication variables:
         $next_step_quick_replies = array();
-
-
-
 
 
 
@@ -1621,8 +1644,8 @@ class READ_model extends CI_Model
             echo '<span class="info-item"><span class="icon-block">'.$authors[0]['en_icon'].'</span><a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a></span>';
 
 
-            //TIME
-            if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
+            //TIME IF CONSIDERABLE
+            if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
                 echo '<span class="info-item"><span class="icon-block"><i class="fad fa-clock" aria-hidden="true"></i></span>'.echo_time_range($ins[0], true).'</span>';
             }
 
@@ -1636,9 +1659,9 @@ class READ_model extends CI_Model
         }
 
         //Show all completions:
-        $en_all_6255 = $this->config->item('en_all_6255');
+        $en_all_12229 = $this->config->item('en_all_12229');
         foreach($read_completes as $read_history){
-            echo '<span class="info-item" style="margin-right:0;" data-toggle="tooltip" data-placement="bottom" title="READ COIN ID '.$read_history['ln_id'].' ['.$en_all_6255[$read_history['ln_type_play_id']]['m_name'].'] ON ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_6255[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
+            echo '<span class="info-item" style="margin-right:0;" data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ON ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
         }
 
         echo '</div>';

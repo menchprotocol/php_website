@@ -2337,7 +2337,17 @@ function echo_breadcrumbs($in_id, $link_to_blog = false){
                     'in_id' => $parent_in_id,
                 ));
                 if(count($this_ins) > 0){
-                    array_push($breadcrumb_items, '<li class="breadcrumb-item"><a href="'.( $link_to_blog ? '/blog/'.$parent_in_id : '/'.$parent_in_id ).'"><span class="icon-block in_parent_type_' . $this_ins[0]['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$this_ins[0]['in_type_play_id']]['m_name'].': '.$en_all_7585[$this_ins[0]['in_type_play_id']]['m_desc'].'">' . $en_all_7585[$this_ins[0]['in_type_play_id']]['m_icon'] . '</span></span><span class="icon-block' . ( in_array($this_ins[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$this_ins[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$this_ins[0]['in_title'].'</a></li>');
+
+                    $completion_ui_rate = '';
+                    if(!$link_to_blog){
+                        //Calcullate completion time:
+                        $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $this_ins[0]);
+                        if($completion_rate['completion_percentage'] > 0){
+                            $completion_ui_rate = ' <span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'%]</span>';
+                        }
+                    }
+
+                    array_push($breadcrumb_items, '<li class="breadcrumb-item"><a href="'.( $link_to_blog ? '/blog/'.$parent_in_id : '/'.$parent_in_id ).'"><span class="icon-block in_parent_type_' . $this_ins[0]['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$this_ins[0]['in_type_play_id']]['m_name'].': '.$en_all_7585[$this_ins[0]['in_type_play_id']]['m_desc'].'">' . $en_all_7585[$this_ins[0]['in_type_play_id']]['m_icon'] . '</span></span><span class="icon-block' . ( in_array($this_ins[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$this_ins[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$this_ins[0]['in_title'].$completion_ui_rate.'</a></li>');
                 }
 
                 if($parent_in_id==$intersect){

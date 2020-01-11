@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-11 02:21:27 PST
+//Generated 2020-01-11 02:27:20 PST
 
 //BLOG TYPE INSTANTLY DONE:
 $config['en_ids_12330'] = array(6677,6914,6907);
@@ -2995,7 +2995,7 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12176,12156,10939,11071,12210,12130,11077,11074,12124,11076,11075,11064,11986,11065,11063,11060,11079,11073,11066,11072,12232,11057,11056,12113,12088,11061,11162,11163,12209,12208);
+$config['en_ids_6404'] = array(12176,12156,10939,11071,12210,12130,11077,11074,12124,11076,11075,11064,11986,11065,11063,11060,11079,11073,11066,11072,12232,11057,11056,12331,12113,12088,11061,11162,11163,12209,12208);
 $config['en_all_6404'] = array(
     12176 => array(
         'm_icon' => '<i class="fad fa-clock blog"></i>',
@@ -3134,6 +3134,12 @@ $config['en_all_6404'] = array(
         'm_name' => 'READ MARKS MIN',
         'm_desc' => '-89',
         'm_parents' => array(6404,4358),
+    ),
+    12331 => array(
+        'm_icon' => '',
+        'm_name' => 'READ MIN TIME SHOW',
+        'm_desc' => '120',
+        'm_parents' => array(6404),
     ),
     12113 => array(
         'm_icon' => '',
