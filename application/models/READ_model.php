@@ -1306,12 +1306,12 @@ class READ_model extends CI_Model
         }
 
         //Log completion link:
-        $this->READ_model->ln_create($insert_columns);
+        $new_link = $this->READ_model->ln_create($insert_columns);
 
         //Process completion automations:
         $this->READ_model->read__completion_recursive_up($insert_columns['ln_creator_play_id'], $in);
 
-        return true;
+        return $new_link;
 
     }
 
@@ -1510,20 +1510,92 @@ class READ_model extends CI_Model
 
 
         //Fetch progress history:
-        $read_coins = $this->READ_model->ln_fetch(array(
+        $read_completes = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_creator_play_id' => $recipient_en['en_id'],
             'ln_parent_blog_id' => $ins[0]['in_id'],
         ));
-        $read_incompletes = $this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //READ INCOMPLETE
-            'ln_creator_play_id' => $recipient_en['en_id'],
-            'ln_parent_blog_id' => $ins[0]['in_id'],
-        ));
 
 
+        //Could this be completerd now?
+        if (!count($read_completes) && in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_12330'))) {
+
+            if ($ins[0]['in_type_play_id'] == 6677) {
+
+                //Log progress link:
+                array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
+                    'ln_type_play_id' => 4559, //READ MESSAGES
+                    'ln_creator_play_id' => $recipient_en['en_id'],
+                    'ln_parent_blog_id' => $ins[0]['in_id'],
+                )));
+
+            } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7309'))) {
+
+                $unlocked_connections = $this->READ_model->ln_fetch(array(
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ BLOG CONNECTORS
+                    'ln_child_blog_id' => $ins[0]['in_id'],
+                    'ln_creator_play_id' => $recipient_en['en_id'],
+                ), array('in_parent'), 1);
+
+                if(count($unlocked_connections) > 0){
+
+                    //They already have unlocked a path here!
+
+                    //Determine READ COIN type based on it's connection type's parents that will hold the appropriate read coin.
+                    $read_completion_type_id = 0;
+                    foreach($this->config->item('en_all_12327') /* READ UNLOCKS */ as $en_id => $m){
+                        if(in_array($unlocked_connections[0]['ln_type_play_id'], $m['m_parents'])){
+                            $read_completion_type_id = $en_id;
+                            break;
+                        }
+                    }
+
+                    //Could we determine the coin type?
+                    if($read_completion_type_id > 0){
+
+                        //Yes, Issue coin:
+                        array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
+                            'ln_type_play_id' => $read_completion_type_id,
+                            'ln_creator_play_id' => $recipient_en['en_id'],
+                            'ln_parent_blog_id' => $ins[0]['in_id'],
+                        )));
+
+                    } else {
+
+                        //Oooops, we could not find it, report bug:
+                        $this->READ_model->ln_create(array(
+                            'ln_type_play_id' => 4246, //Platform Bug Reports
+                            'ln_creator_play_id' => $recipient_en['en_id'],
+                            'ln_content' => 'read_coin() found blog connector ['.$unlocked_connections[0]['ln_type_play_id'].'] without a valid unlock method @12327',
+                            'ln_parent_blog_id' => $ins[0]['in_id'],
+                            'ln_parent_read_id' => $unlocked_connections[0]['ln_id'],
+                        ));
+
+                    }
+
+                } else {
+
+                    //Try to find paths to unlock:
+                    $unlock_paths = $this->BLOG_model->in_unlock_paths($ins[0]);
+
+                    //Set completion method:
+                    if(!count($unlock_paths)){
+
+                        //No path found:
+                        array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
+                            'ln_type_play_id' => 7492, //TERMINATE
+                            'ln_creator_play_id' => $recipient_en['en_id'],
+                            'ln_parent_blog_id' => $ins[0]['in_id'],
+                        )));
+
+
+                    }
+                }
+            }
+        }
 
         //Define communication variables:
         $next_step_quick_replies = array();
@@ -1565,14 +1637,8 @@ class READ_model extends CI_Model
 
         //Show all completions:
         $en_all_6255 = $this->config->item('en_all_6255');
-        foreach($read_coins as $read_history){
+        foreach($read_completes as $read_history){
             echo '<span class="info-item" style="margin-right:0;" data-toggle="tooltip" data-placement="bottom" title="READ COIN ID '.$read_history['ln_id'].' ['.$en_all_6255[$read_history['ln_type_play_id']]['m_name'].'] ON ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_6255[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
-        }
-
-        //Show all incomplete:
-        $en_all_6146 = $this->config->item('en_all_6146');
-        foreach($read_incompletes as $read_history){
-            echo '<span class="info-item" style="margin-right:0;" data-toggle="tooltip" data-placement="bottom" title="INCOMPLETE ID '.$read_history['ln_id'].' ['.$en_all_6146[$read_history['ln_type_play_id']]['m_name'].'] ON ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_6146[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
         }
 
         echo '</div>';
@@ -1605,11 +1671,13 @@ class READ_model extends CI_Model
                     'ln_creator_play_id' => $recipient_en['en_id'],
                     'ln_parent_blog_id' => $ins[0]['in_id'],
                 )))){
-                    $this->READ_model->ln_create(array(
+
+                    array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
                         'ln_type_play_id' => 12119, //READ ANSWER MISSING
                         'ln_creator_play_id' => $recipient_en['en_id'],
                         'ln_parent_blog_id' => $ins[0]['in_id'],
-                    ));
+                    )));
+
                 }
 
                 echo_in_next($ins[0]['in_id'], $recipient_en, $push_message);
@@ -1810,82 +1878,11 @@ class READ_model extends CI_Model
 
 
             //Requirement lock
-            if(count($read_coins)){
+            if(!count($read_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
-                //See what type of progress to give more info to reader:
-                //It did match here! Log and notify user!
-                $message = 'The result:';
-                //$message .= "\n" . 'You completed the step to '.echo_in_title($in['in_title'], true).'. ';
-                //$message .= "\n" . echo_in_title($locked_link['in_title'], true);
+                //List Unlock paths:
+                echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>SUGGESTED READS:', false);
 
-            } else {
-
-                $unlocked_connections = $this->READ_model->ln_fetch(array(
-                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ BLOG CONNECTORS
-                    'ln_child_blog_id' => $ins[0]['in_id'],
-                    'ln_creator_play_id' => $recipient_en['en_id'],
-                ), array('in_parent'), 1);
-
-                if(count($unlocked_connections) > 0){
-
-                    //They already have unlocked a path here!
-
-                    //Determine READ COIN type based on it's connection type's parents that will hold the appropriate read coin.
-                    $read_completion_type_id = 0;
-                    foreach($this->config->item('en_all_12327') /* READ UNLOCKS */ as $en_id => $m){
-                        if(in_array($unlocked_connections[0]['ln_type_play_id'], $m['m_parents'])){
-                            $read_completion_type_id = $en_id;
-                            break;
-                        }
-                    }
-
-                    //Could we determine the coin type?
-                    if($read_completion_type_id > 0){
-
-                        //Yes, Issue coin:
-                        $this->READ_model->read_is_complete($ins[0], array(
-                            'ln_type_play_id' => $read_completion_type_id,
-                            'ln_creator_play_id' => $recipient_en['en_id'],
-                            'ln_parent_blog_id' => $ins[0]['in_id'],
-                        ));
-
-                    } else {
-
-                        //Oooops, we could not find it, report bug:
-                        $this->READ_model->ln_create(array(
-                            'ln_type_play_id' => 4246, //Platform Bug Reports
-                            'ln_creator_play_id' => $recipient_en['en_id'],
-                            'ln_content' => 'read_coin() found blog connector ['.$unlocked_connections[0]['ln_type_play_id'].'] without a valid unlock method @12327',
-                            'ln_parent_blog_id' => $ins[0]['in_id'],
-                            'ln_parent_read_id' => $unlocked_connections[0]['ln_id'],
-                        ));
-
-                    }
-
-                } else {
-
-                    //Try to find paths to unlock:
-                    $unlock_paths = $this->BLOG_model->in_unlock_paths($ins[0]);
-
-                    //Set completion method:
-                    if(count($unlock_paths) > 0){
-
-                        //List Unlock paths:
-                        echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>SUGGESTED READS:', false);
-
-                    } else {
-
-                        //No path found:
-                        $this->READ_model->read_is_complete($ins[0], array(
-                            'ln_type_play_id' => 7492, //TERMINATE
-                            'ln_creator_play_id' => $recipient_en['en_id'],
-                            'ln_parent_blog_id' => $ins[0]['in_id'],
-                        ));
-
-                    }
-                }
             }
 
             //List Children if any:
@@ -1896,18 +1893,6 @@ class READ_model extends CI_Model
             if ($ins[0]['in_type_play_id'] == 6677) {
 
                 //READ ONLY
-
-                //Log progress since there is nothing to do here:
-                if(!count($read_coins)){
-
-                    //Log progress link:
-                    $this->READ_model->read_is_complete($ins[0], array(
-                        'ln_type_play_id' => 4559, //READ MESSAGES
-                        'ln_creator_play_id' => $recipient_en['en_id'],
-                        'ln_parent_blog_id' => $ins[0]['in_id'],
-                    ));
-
-                }
 
                 //Always show the next list:
                 echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>NEXT READS:');
