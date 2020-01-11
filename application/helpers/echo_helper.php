@@ -2315,7 +2315,6 @@ function echo_breadcrumb($in_id, $link_to_blog = false){
         array_push($list_ids, $in_list['in_id']);
     }
 
-    print_r($list_ids);
 
     //Now fetch the parent of the current
     $recursive_parents = $CI->BLOG_model->in_fetch_recursive_public_parents($in_id);
@@ -2325,29 +2324,31 @@ function echo_breadcrumb($in_id, $link_to_blog = false){
         $intersects = array_intersect($grand_parent_ids, $list_ids);
 
         //Does it have an intersect?
-        if(count($intersects)){
-            $ui .= '<nav aria-label="breadcrumb">';
-            $ui .= '<ol class="breadcrumb">';
+        if(!count($intersects)){
+           continue;
+        }
 
-            foreach($grand_parent_ids as $parent_in_id){
+        //Show the breadcrumb since it's connected:
+        $ui .= '<nav aria-label="breadcrumb">';
+        $ui .= '<ol class="breadcrumb">';
 
-                //Fetch this blog name:
-                $this_ins = $CI->BLOG_model->in_fetch(array(
-                    'in_id' => $parent_in_id,
-                ));
-                if(count($this_ins) > 0){
-                    $ui .= '<li class="breadcrumb-item"><a href="'.( $link_to_blog ? '/blog/'.$parent_in_id : '/'.$parent_in_id ).'"><span class="icon-block' . ( in_array($this_ins[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$this_ins[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$this_ins[0]['in_outcome'].'</a></li>';
-                }
+        foreach($grand_parent_ids as $parent_in_id){
 
-                if($parent_in_id == end($intersects)){
-                    break;
-                }
+            //Fetch this blog name:
+            $this_ins = $CI->BLOG_model->in_fetch(array(
+                'in_id' => $parent_in_id,
+            ));
+            if(count($this_ins) > 0){
+                $ui .= '<li class="breadcrumb-item"><a href="'.( $link_to_blog ? '/blog/'.$parent_in_id : '/'.$parent_in_id ).'"><span class="icon-block' . ( in_array($this_ins[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$this_ins[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$this_ins[0]['in_outcome'].'</a></li>';
             }
 
-
-            $ui .= '</ol>';
-            $ui .= '</nav>';
+            if(in_array($parent_in_id, $intersects)){
+                break;
+            }
         }
+
+        $ui .= '</ol>';
+        $ui .= '</nav>';
     }
 
     return $ui;
