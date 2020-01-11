@@ -1408,13 +1408,6 @@ class READ_model extends CI_Model
             'ln_type_play_id' => 4231, //Blog Note Messages
             'ln_child_blog_id' => $ins[0]['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
-        foreach ($in__messages as $message_ln) {
-            echo $this->READ_model->dispatch_message(
-                $message_ln['ln_content'],
-                $recipient_en,
-                $push_message
-            );
-        }
 
 
 
@@ -1460,6 +1453,14 @@ class READ_model extends CI_Model
          */
         if(!$in_reading_list){
 
+            foreach ($in__messages as $message_ln) {
+                echo $this->READ_model->dispatch_message(
+                    $message_ln['ln_content'],
+                    $recipient_en,
+                    $push_message
+                );
+            }
+
             //Give option to add to reading list:
             if($push_message){
                 $this->READ_model->dispatch_message(
@@ -1498,30 +1499,6 @@ class READ_model extends CI_Model
 
 
 
-        /*
-         *
-         * List Conditional Links that are
-         * already unlocked (HTML ONLY)
-         *
-         * */
-        if(!$push_message){
-
-            $unlocked_steps = $this->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                'ln_type_play_id' => 6140, //READ UNLOCK LINK
-                'ln_creator_play_id' => $recipient_en['en_id'],
-                'ln_parent_blog_id' => $ins[0]['in_id'],
-            ), array('in_child'), 0);
-
-            //Did we have any steps unlocked?
-            if(count($unlocked_steps) > 0){
-                //Yes! Show them only if exists. OLD: echo echo_actionplan_step_child($recipient_en['en_id'], $unlocked_step, true);
-                echo_in_list($ins[0], $unlocked_steps, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-lock-open"></i></span>UNLOCKED:');
-            }
-
-        }
-
 
         //Fetch Children:
         $in__children = $this->READ_model->ln_fetch(array(
@@ -1554,11 +1531,8 @@ class READ_model extends CI_Model
         $metadata = unserialize($ins[0]['in_metadata']);
         if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
 
-            if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-                echo '<span style="margin-right: 10px; display: inline-block;"><span class="icon-block"><i class="fad fa-clock" aria-hidden="true"></i></span>'.echo_time_range($ins[0], true).'</span>';
-            }
 
-            //Fetch primary author:
+            //OWNER
             $authors = $this->READ_model->ln_fetch(array(
                 'ln_type_play_id' => 4250,
                 'ln_child_blog_id' => $ins[0]['in_id'],
@@ -1566,6 +1540,14 @@ class READ_model extends CI_Model
 
             echo '<span style="margin-right: 10px; display: inline-block;" data-toggle="tooltip" data-placement="top" title="Blog Owner"><a href="/play/'.$authors[0]['en_id'].'"><span class="icon-block">'.$authors[0]['en_icon'].'</span>'.one_two_explode('',' ',$authors[0]['en_name']).'</a></span>';
 
+
+            //TIME
+            if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
+                echo '<span style="margin-right: 10px; display: inline-block;"><span class="icon-block"><i class="fad fa-clock" aria-hidden="true"></i></span>'.echo_time_range($ins[0], true).'</span>';
+            }
+
+
+            // % DONE
             $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
             if($completion_rate['completion_percentage'] > 0){
                 echo '<span style="margin-right: 10px; display: inline-block;" data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read"><span class="icon-block"><i class="fad fa-hourglass-half" aria-hidden="true"></i></span>'.$completion_rate['completion_percentage'].'% DONE</span>';
@@ -1582,6 +1564,15 @@ class READ_model extends CI_Model
 
         echo '</div>';
 
+
+
+        foreach ($in__messages as $message_ln) {
+            echo $this->READ_model->dispatch_message(
+                $message_ln['ln_content'],
+                $recipient_en,
+                $push_message
+            );
+        }
 
 
 
@@ -1944,6 +1935,35 @@ class READ_model extends CI_Model
 
             }
         }
+
+
+
+
+        /*
+         *
+         * List Conditional Links that are
+         * already unlocked (HTML ONLY)
+         *
+         * */
+        if(!$push_message){
+
+            $unlocked_steps = $this->READ_model->ln_fetch(array(
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'ln_type_play_id' => 6140, //READ UNLOCK LINK
+                'ln_creator_play_id' => $recipient_en['en_id'],
+                'ln_parent_blog_id' => $ins[0]['in_id'],
+            ), array('in_child'), 0);
+
+            //Did we have any steps unlocked?
+            if(count($unlocked_steps) > 0){
+                //Yes! Show them only if exists. OLD: echo echo_actionplan_step_child($recipient_en['en_id'], $unlocked_step, true);
+                echo_in_list($ins[0], $unlocked_steps, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-lock-open"></i></span>UNLOCKED:');
+            }
+
+        }
+
+
 
 
 
