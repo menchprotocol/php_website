@@ -1614,7 +1614,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
             'ln_child_blog_id' => $in['in_id'],
         ), array('en_creator'), 1);
 
-        $ui .= ( $has_time_estimate ? echo_time_range($in, true).' ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']);
+        $ui .= ( $has_time_estimate ? echo_time_range($in, true).' ' : '' ).'BY <span class="icon-block-sm grey">'.$authors[0]['en_icon'].'</span>'.one_two_explode('',' ',$authors[0]['en_name']);
 
     }
 

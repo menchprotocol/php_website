@@ -290,7 +290,6 @@ img.no-radius {
 .margin-right-18{
     margin-right: 18px;
 }
-
 .read-topic{
     margin: 30px 5px 5px;
     font-size: 0.8em;
@@ -468,7 +467,7 @@ img.no-radius {
 .play, .play a, .play .fas, .play .far, .play .fal, .play .fad, .color4536, .info-item:hover i.play, .info-item:hover a.play  { color:#008DF2 !important; }
 .blog, .blog a, .blog .fas, .blog .far, .blog .fal, .blog .fad, .color4535, .info-item:hover i.blog, .info-item:hover a.blog  { color:#f4d52d !important; } /* f1d104 */
 .read, .read a, .read .fas, .read .far, .read .fal, .read .fad, .color6205, .info-item:hover i.read, .info-item:hover a.read  { color:#FC1B44 !important; }
-.grey  { color:#AAAAAA !important; }
+.grey, .grey i { color:#AAAAAA !important; }
 
 .btn-play i, .btn-read i, .btn-blog i { color: #000000 !important; }
 
