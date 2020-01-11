@@ -1464,7 +1464,7 @@ class READ_model extends CI_Model
                     'ln_child_blog_id' => $ins[0]['in_id'],
                 ), array('en_creator'), 1);
 
-                echo '<span class="info-item"><a href="/play/'.$authors[0]['en_id'].'" class="play"><span class="icon-block">'.$authors[0]['en_icon'].'</span>'.one_two_explode('',' ',$authors[0]['en_name']).'</a></span>';
+                echo '<span class="info-item">BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a></span>';
 
 
                 //TIME IF CONSIDERABLE
@@ -1641,7 +1641,7 @@ class READ_model extends CI_Model
                 'ln_child_blog_id' => $ins[0]['in_id'],
             ), array('en_creator'), 1);
 
-            echo '<span class="info-item"><a href="/play/'.$authors[0]['en_id'].'" class="play"><span class="icon-block">'.$authors[0]['en_icon'].'</span>'.one_two_explode('',' ',$authors[0]['en_name']).'</a></span>';
+            echo '<span class="info-item">BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a></span>';
 
 
             //TIME IF CONSIDERABLE
