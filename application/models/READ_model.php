@@ -1458,6 +1458,11 @@ class READ_model extends CI_Model
             $metadata = unserialize($ins[0]['in_metadata']);
             if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
 
+                //TIME IF CONSIDERABLE
+                if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
+                    echo echo_time_range($ins[0], true).' READ ';
+                }
+
                 //OWNER
                 $authors = $this->READ_model->ln_fetch(array(
                     'ln_type_play_id' => 4250,
@@ -1466,11 +1471,6 @@ class READ_model extends CI_Model
 
                 echo 'BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a>';
 
-
-                //TIME IF CONSIDERABLE
-                if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
-                    echo ' '.echo_time_range($ins[0], true).' READ';
-                }
             }
 
             echo '</span></div>';
@@ -1633,6 +1633,10 @@ class READ_model extends CI_Model
         $metadata = unserialize($ins[0]['in_metadata']);
         if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
 
+            //TIME IF CONSIDERABLE
+            if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
+                echo echo_time_range($ins[0], true).' READ ';
+            }
 
             //OWNER
             $authors = $this->READ_model->ln_fetch(array(
@@ -1641,12 +1645,6 @@ class READ_model extends CI_Model
             ), array('en_creator'), 1);
 
             echo 'BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a>';
-
-
-            //TIME IF CONSIDERABLE
-            if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
-                echo ' '.echo_time_range($ins[0], true).' READ';
-            }
 
 
             // % DONE
