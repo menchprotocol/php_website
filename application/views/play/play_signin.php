@@ -78,10 +78,10 @@ if(count($current_sign_in_attempt) == 0){
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ));
         if(count($ins) > 0){
-            echo '<p class="text-center">To read <a href="/'.$referrer_in_id.'"><b>'.echo_in_title($ins[0]['in_title']).'</b></a> for FREE!</p>';
+            echo '<p class="text-center montserrat doupper">TO READ <a href="/'.$referrer_in_id.'"><b>'.echo_in_title($ins[0]['in_title']).'</b></a> FOR FREE!</p>';
         }
     } elseif(isset($_GET['url']) && strlen($_GET['url']) > 0){
-        echo '<p class="text-center">To access <u>'.urldecode($_GET['url']).'</u></p>';
+        echo '<p class="text-center montserrat doupper">TO <u>'.trim(urldecode($_GET['url']), '/').'</u></p>';
     }
     ?>
 
