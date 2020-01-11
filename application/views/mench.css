@@ -35,8 +35,8 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     margin: 0 10px 20px;
 }
 .side-margin {
-    margin-left:10px;
-    margin-right:10px;
+    margin-left:0;
+    margin-right:0;
     margin-bottom:10px;
 }
 .margin-top-down{
@@ -1133,6 +1133,10 @@ label {
     .three-menus td.play, #top_players td.play{ width: 52%; }
     .three-menus td.read, #top_players td.read{ width: 24%; }
     .three-menus td.blog, #top_players td.blog{ width: 24%; }
+    .side-margin {
+        margin-left:10px;
+        margin-right:10px;
+    }
 }
 
 @media (min-width:767px) {
