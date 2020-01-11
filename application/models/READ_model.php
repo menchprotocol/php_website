@@ -1566,13 +1566,13 @@ class READ_model extends CI_Model
         //Show all completions:
         $en_all_6255 = $this->config->item('en_all_6255');
         foreach($read_coins as $read_history){
-            echo '<span class="info-item" data-toggle="tooltip" data-placement="top" title="READ COIN Transaction '.$read_history['ln_id'].' ['.$en_all_6255[$read_history['ln_type_play_id']]['m_name'].'] ON ['.$read_history['ln_timestamp'].']"><span class="icon-block">'.$en_all_6255[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
+            echo '<span class="info-item" style="margin-right:0;" data-toggle="tooltip" data-placement="top" title="READ COIN Transaction '.$read_history['ln_id'].' ['.$en_all_6255[$read_history['ln_type_play_id']]['m_name'].'] ON ['.$read_history['ln_timestamp'].']"><span class="icon-block">'.$en_all_6255[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
         }
 
         //Show all incomplete:
         $en_all_6146 = $this->config->item('en_all_6146');
         foreach($read_incompletes as $read_history){
-            echo '<span class="info-item" data-toggle="tooltip" data-placement="top" title="INCOMPLETE Transaction '.$read_history['ln_id'].' ['.$en_all_6146[$read_history['ln_type_play_id']]['m_name'].'] ON ['.$read_history['ln_timestamp'].']"><span class="icon-block">'.$en_all_6146[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
+            echo '<span class="info-item" style="margin-right:0;" data-toggle="tooltip" data-placement="top" title="INCOMPLETE Transaction '.$read_history['ln_id'].' ['.$en_all_6146[$read_history['ln_type_play_id']]['m_name'].'] ON ['.$read_history['ln_timestamp'].']"><span class="icon-block">'.$en_all_6146[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
         }
 
         echo '</div>';
