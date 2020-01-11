@@ -1390,16 +1390,17 @@ class READ_model extends CI_Model
          */
         if(!$push_message){
 
-            //<span class="icon-block-xlg icon_photo '.superpower_active(10939).'">'.echo_en_cache('en_all_7585', $ins[0]['in_type_play_id'], true, 'bottom').'</span>
             //BLOG TITLE
             echo '<h1>' . echo_in_title($ins[0]['in_title']) . '</h1>';
 
         } else {
+
             $this->READ_model->dispatch_message(
                 'You are reading: '.$ins[0]['in_title'],
                 $recipient_en,
                 $push_message
             );
+
         }
 
         $in__messages = $this->READ_model->ln_fetch(array(
@@ -1541,6 +1542,49 @@ class READ_model extends CI_Model
 
         //Define communication variables:
         $next_step_quick_replies = array();
+
+
+
+
+
+
+
+        //Show More Information:
+        echo '<div class="read-topic">';
+        $metadata = unserialize($ins[0]['in_metadata']);
+        if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
+
+            if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
+                echo '<span style="margin-right: 10px; display: inline-block;"><span class="icon-block"><i class="fad fa-clock" aria-hidden="true"></i></span>'.echo_time_range($ins[0], true).'</span>';
+            }
+
+            //Fetch primary author:
+            $authors = $this->READ_model->ln_fetch(array(
+                'ln_type_play_id' => 4250,
+                'ln_child_blog_id' => $ins[0]['in_id'],
+            ), array('en_creator'), 1);
+
+            echo '<span style="margin-right: 10px; display: inline-block;" data-toggle="tooltip" data-placement="top" title="Blog Owner"><a href="/play/'.$authors[0]['en_id'].'"><span class="icon-block">'.$authors[0]['en_icon'].'</span>'.one_two_explode('',' ',$authors[0]['en_name']).'</a></span>';
+
+            $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
+            if($completion_rate['completion_percentage'] > 0){
+                echo '<span style="margin-right: 10px; display: inline-block;" data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read"><span class="icon-block"><i class="fad fa-hourglass-half" aria-hidden="true"></i></span>'.$completion_rate['completion_percentage'].'% DONE</span>';
+            }
+
+        }
+
+        //Show all completions:
+        $en_all_6255 = $this->config->item('en_all_6255');
+        foreach($read_progress as $read_prog){
+            echo '<span style="margin-right: 10px; display: inline-block;" data-toggle="tooltip" data-placement="top" title="'.$en_all_6255[$read_prog['ln_type_play_id']]['m_name'].' ON '.$read_prog['ln_timestamp'].'"><span class="icon-block">'.$en_all_6255[$read_prog['ln_type_play_id']]['m_icon'].'</span>'.$read_prog['ln_content'].'</span>';
+        }
+
+
+        echo '</div>';
+
+
+
+
 
 
         if (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7712'))){
@@ -1766,16 +1810,9 @@ class READ_model extends CI_Model
 
                 //See what type of progress to give more info to reader:
                 //It did match here! Log and notify user!
-                $message = 'You completed the step to '.echo_in_title($in['in_title'], true).'. ';
-                $message .= 'The result:';
-                $message .= "\n";
-                $message .= "\n==================";
-                $message .= "\n" . echo_in_title($locked_link['in_title'], true);
-                $message .= "\n==================";
-
-
-                //Already complete:
-                $read_completion_type_id = $read_progress[0]['ln_status_play_id'];
+                $message = 'The result:';
+                //$message .= "\n" . 'You completed the step to '.echo_in_title($in['in_title'], true).'. ';
+                //$message .= "\n" . echo_in_title($locked_link['in_title'], true);
 
             } else {
 
@@ -1804,6 +1841,11 @@ class READ_model extends CI_Model
                     if($read_completion_type_id > 0){
 
                         //Yes, Issue coin:
+                        $this->READ_model->read_is_complete($ins[0], array(
+                            'ln_type_play_id' => $read_completion_type_id,
+                            'ln_creator_play_id' => $recipient_en['en_id'],
+                            'ln_parent_blog_id' => $ins[0]['in_id'],
+                        ));
 
                     } else {
 
@@ -1827,20 +1869,23 @@ class READ_model extends CI_Model
                     if(count($unlock_paths) > 0){
 
                         //List Unlock paths:
-                        echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>NEXT READS:', false);
+                        echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>SUGGESTED READS:', false);
 
                     } else {
 
                         //No path found:
-                        $read_completion_type_id = 7492; //User Read Dead End
+                        $this->READ_model->read_is_complete($ins[0], array(
+                            'ln_type_play_id' => 7492, //TERMINATE
+                            'ln_creator_play_id' => $recipient_en['en_id'],
+                            'ln_parent_blog_id' => $ins[0]['in_id'],
+                        ));
 
                     }
                 }
             }
 
-
-            //List Requirements:
-            echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>UP NEXT:');
+            //List Children if any:
+            echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>NEXT READS:');
 
         } else {
 
@@ -1861,7 +1906,7 @@ class READ_model extends CI_Model
                 }
 
                 //Always show the next list:
-                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>UP NEXT:');
+                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>NEXT READS:');
 
             } elseif ($ins[0]['in_type_play_id'] == 6683) {
 
