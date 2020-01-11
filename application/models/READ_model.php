@@ -1558,7 +1558,7 @@ class READ_model extends CI_Model
             // % DONE
             $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
             if($completion_rate['completion_percentage'] > 0){
-                echo '<span class="info-item" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read"><span class="icon-block"><i class="fad fa-hourglass-half" aria-hidden="true"></i></span>'.$completion_rate['completion_percentage'].'% DONE</span>';
+                echo '<span class="info-item" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read"><span class="icon-block"><i class="fad fa-hourglass-half" aria-hidden="true"></i></span>'.$completion_rate['completion_percentage'].'%</span>';
             }
 
         }
