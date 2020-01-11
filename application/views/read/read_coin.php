@@ -11,7 +11,9 @@
     //Show breadcrumbs
     echo echo_breadcrumbs($in['in_id'], false);
 
-    echo '<div class="inline-block pull-right '.superpower_active(10939).'"><a class="btn btn-blog" href="/blog/'.$in['in_id'].'">EDIT <i class="fas fa-pen-square"></i></a></div>';
+    echo '<div class="doclear">&nbsp;</div>';
+
+    echo '<div class="inline-block pull-right '.superpower_active(10984).'"><a class="btn btn-blog" href="/blog/'.$in['in_id'].'">EDIT <i class="fas fa-pen-square"></i></a></div>';
 
     echo '<div class="doclear">&nbsp;</div>';
 
