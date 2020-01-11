@@ -1454,7 +1454,7 @@ class READ_model extends CI_Model
         if(!$in_reading_list){
 
             //Show More Information:
-            echo '<div class="read-topic read-info-topic">';
+            echo '<div class="read-topic read-info-topic"><span class="info-item">';
             $metadata = unserialize($ins[0]['in_metadata']);
             if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
 
@@ -1464,17 +1464,16 @@ class READ_model extends CI_Model
                     'ln_child_blog_id' => $ins[0]['in_id'],
                 ), array('en_creator'), 1);
 
-                echo '<span class="info-item">BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a></span>';
+                echo 'BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a>';
 
 
                 //TIME IF CONSIDERABLE
                 if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
-                    echo '<span class="info-item"><span class="icon-block"><i class="fad fa-clock" aria-hidden="true"></i></span>'.echo_time_range($ins[0], true).'</span>';
+                    echo ' '.echo_time_range($ins[0], true).' READ';
                 }
-
             }
 
-            echo '</div>';
+            echo '</span></div>';
 
             foreach ($in__messages as $message_ln) {
                 echo $this->READ_model->dispatch_message(
