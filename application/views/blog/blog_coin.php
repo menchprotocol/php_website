@@ -92,7 +92,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             echo '</div>';
 
         } else {
-            echo '<h1>'.echo_in_title($in['in_title']).'</h1>';
+            echo '<h1 class="padded">'.echo_in_title($in['in_title']).'</h1>';
         }
 
     } else {
