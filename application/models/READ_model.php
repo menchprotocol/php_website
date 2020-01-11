@@ -1538,19 +1538,19 @@ class READ_model extends CI_Model
                 'ln_child_blog_id' => $ins[0]['in_id'],
             ), array('en_creator'), 1);
 
-            echo '<span style="margin-right: 10px; display: inline-block;" data-toggle="tooltip" data-placement="top" title="Blog Owner"><a href="/play/'.$authors[0]['en_id'].'"><span class="icon-block">'.$authors[0]['en_icon'].'</span>'.one_two_explode('',' ',$authors[0]['en_name']).'</a></span>';
+            echo '<span class="info-item"><a href="/play/'.$authors[0]['en_id'].'" class="play"><span class="icon-block">'.$authors[0]['en_icon'].'</span>'.one_two_explode('',' ',$authors[0]['en_name']).'</a></span>';
 
 
             //TIME
             if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-                echo '<span style="margin-right: 10px; display: inline-block;"><span class="icon-block"><i class="fad fa-clock" aria-hidden="true"></i></span>'.echo_time_range($ins[0], true).'</span>';
+                echo '<span class="info-item"><span class="icon-block"><i class="fad fa-clock" aria-hidden="true"></i></span>'.echo_time_range($ins[0], true).'</span>';
             }
 
 
             // % DONE
             $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
             if($completion_rate['completion_percentage'] > 0){
-                echo '<span style="margin-right: 10px; display: inline-block;" data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read"><span class="icon-block"><i class="fad fa-hourglass-half" aria-hidden="true"></i></span>'.$completion_rate['completion_percentage'].'% DONE</span>';
+                echo '<span class="info-item" data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read"><span class="icon-block"><i class="fad fa-hourglass-half" aria-hidden="true"></i></span>'.$completion_rate['completion_percentage'].'% DONE</span>';
             }
 
         }
@@ -1558,7 +1558,7 @@ class READ_model extends CI_Model
         //Show all completions:
         $en_all_6255 = $this->config->item('en_all_6255');
         foreach($read_progress as $read_prog){
-            echo '<span style="margin-right: 10px; display: inline-block;" data-toggle="tooltip" data-placement="top" title="'.$en_all_6255[$read_prog['ln_type_play_id']]['m_name'].' ON '.$read_prog['ln_timestamp'].'"><span class="icon-block">'.$en_all_6255[$read_prog['ln_type_play_id']]['m_icon'].'</span>'.$read_prog['ln_content'].'</span>';
+            echo '<span class="info-item" data-toggle="tooltip" data-placement="top" title="'.$en_all_6255[$read_prog['ln_type_play_id']]['m_name'].' ON '.$read_prog['ln_timestamp'].'"><span class="icon-block">'.$en_all_6255[$read_prog['ln_type_play_id']]['m_icon'].'</span>'.$read_prog['ln_content'].'</span>';
         }
 
 

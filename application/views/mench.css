@@ -452,9 +452,9 @@ img.no-radius {
 
 
 /* MENCH Colors */
-.play, .play a, .play .fas, .play .far, .play .fal, .play .fad, .color4536  { color:#008DF2 !important; }
-.blog, .blog a, .blog .fas, .blog .far, .blog .fal, .blog .fad, .color4535  { color:#f4d52d !important; } /* f1d104 */
-.read, .read a, .read .fas, .read .far, .read .fal, .read .fad, .color6205  { color:#FC1B44 !important; }
+.play, .play a, .play .fas, .play .far, .play .fal, .play .fad, .color4536, .info-item i.play:hover, .info-item a.play:hover  { color:#008DF2 !important; }
+.blog, .blog a, .blog .fas, .blog .far, .blog .fal, .blog .fad, .color4535, .info-item i.blog:hover, .info-item a.blog:hover  { color:#f4d52d !important; } /* f1d104 */
+.read, .read a, .read .fas, .read .far, .read .fal, .read .fad, .color6205, .info-item i.read:hover, .info-item a.read:hover  { color:#FC1B44 !important; }
 .grey  { color:#AAAAAA !important; }
 
 .btn-play i, .btn-read i, .btn-blog i { color: #000000 !important; }
@@ -1096,6 +1096,17 @@ label {
 
 .card-body{
     padding-top: 10px;
+}
+
+.info-item{
+    margin-right: 10px;
+    display: inline-block;
+}
+.info-item a, .info-item i {
+    color:#AAAAAA;
+}
+.info-item a {
+    text-decoration: underline;
 }
 
 
