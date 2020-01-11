@@ -1730,7 +1730,7 @@ class READ_model extends CI_Model
                         echo_in_list($ins[0], $previously_answered, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:');
 
                         //Allow to edit:
-                        echo '<div class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>CHANGE ANSWER</u></a></div>';
+                        echo '<div class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>UPDATE ANSWER</u></a></div>';
 
                         echo '</div>';
 
@@ -1885,7 +1885,7 @@ class READ_model extends CI_Model
                 } else {
 
                     //Button to submit selection:
-                    echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($previously_answered)>0 ? 'CHANGE' : 'SAVE' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($previously_answered)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL CHANGE</u></a></span>' : '' ).' <span class="result-update"></span></div>';
+                    echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($previously_answered)>0 ? 'UPDATE' : 'SAVE' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($previously_answered)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL</u></a></span>' : '' ).' <span class="result-update"></span></div>';
 
                     //Close list:
                     echo '</div>';
