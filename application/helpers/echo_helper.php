@@ -2341,7 +2341,7 @@ function echo_breadcrumbs($in_id, $link_to_blog = false){
                     $completion_ui_rate = '';
                     if(!$link_to_blog){
                         //Calcullate completion time:
-                        $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $this_ins[0]);
+                        $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $this_ins[0]);
                         if($completion_rate['completion_percentage'] > 0){
                             $completion_ui_rate = ' <span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'%]</span>';
                         }
