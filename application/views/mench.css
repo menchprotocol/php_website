@@ -243,6 +243,12 @@ img.no-radius {
     border-radius:0 !important;
 }
 
+.breadcrumb {
+    margin-bottom: 20px;
+    background-color: #FFFFFF;
+    border-radius:0;
+}
+
 .alert{
     padding: 1rem .5rem;
     border-radius: 0;
