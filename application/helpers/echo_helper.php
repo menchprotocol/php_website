@@ -2700,8 +2700,9 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author 
             }
         }
 
+        $is_url_desc = ( substr($m['m_desc'], 0, 1)=='/' );
 
-        $ui .= '<a class="dropdown-item dropi_'.$cache_en_id.'_'.$ln_id.' montserrat optiond_'.$en_id.'_'.$ln_id.' doupper '.( $en_id==$selected_en_id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.','.$en_id.','.$ln_id.')"><span '.( strlen($m['m_desc']) && substr($m['m_desc'], 0, 1)!='/' ? 'title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right"' : '' ).'><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</span></a>';
+        $ui .= '<a class="dropdown-item dropi_'.$cache_en_id.'_'.$ln_id.' montserrat optiond_'.$en_id.'_'.$ln_id.' doupper '.( $en_id==$selected_en_id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" '.( $is_url_desc ? 'href="'.$is_url_desc.'"' : 'href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.','.$en_id.','.$ln_id.')"' ).'><span '.( strlen($m['m_desc']) && !$is_url_desc ? 'title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right"' : '' ).'><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</span></a>';
 
     }
 
