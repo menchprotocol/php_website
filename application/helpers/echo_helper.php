@@ -2332,7 +2332,7 @@ function echo_breadcrumb($in_id, $link_to_blog = false){
         $ui .= '<nav aria-label="breadcrumb">';
         $ui .= '<ol class="breadcrumb">';
 
-        foreach(array_reverse($grand_parent_ids) as $parent_in_id){
+        foreach($grand_parent_ids as $parent_in_id){
 
             //Fetch this blog name:
             $this_ins = $CI->BLOG_model->in_fetch(array(
