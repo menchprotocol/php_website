@@ -163,6 +163,7 @@ function account_update_name(){
 
             //Update name on page:
             $('.en_name_first_'+js_pl_id).text(data.first__name);
+            $('.en_name_full_'+js_pl_id).text(en_name_new);
 
             //Disappear in a while:
             setTimeout(function () {
