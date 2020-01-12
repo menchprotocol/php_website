@@ -15,11 +15,7 @@ if(!$session_en){
 } else {
 
     echo '<div class="pull-left">';
-
-    echo '<h1 class="read inline-block"><span class="icon-block-xlg">'.$en_all_11035[6205]['m_icon'].'</span>'.$en_all_11035[6205]['m_name'].'</h1>';
-
     echo echo_read_menu();
-
     echo '</div>';
 
 
