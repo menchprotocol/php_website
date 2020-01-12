@@ -16,7 +16,7 @@ if(!$session_en){
 
     //echo '<div class="pull-left">' . echo_menu(12201, 'btn-read') . '</div>';
 
-    echo '<h1 class="pull-left inline-block read"><span class="icon-block-xlg">' . $en_all_11035[12339]['m_icon'] . '</span>'.$en_all_11035[12339]['m_name'].'</h1>';
+    echo '<h1 class="pull-left inline-block read"><span class="icon-block-xlg">' . $en_all_11035[6205]['m_icon'] . '</span>'.$en_all_11035[6205]['m_name'].'</h1>';
 
 
     echo '<div class="pull-right inline-block side-margin">';

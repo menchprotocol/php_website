@@ -13,7 +13,7 @@
         //LEFT
         //echo '<div class="pull-left">'.echo_menu(12343, 'btn-blog').'</div>';
 
-        echo '<h1 class="pull-left inline-block blog"><span class="icon-block-xlg">' . $en_all_11035[12344]['m_icon'] . '</span>'.$en_all_11035[12344]['m_name'].'</h1>';
+        echo '<h1 class="pull-left inline-block blog"><span class="icon-block-xlg">' . $en_all_11035[4535]['m_icon'] . '</span>'.$en_all_11035[4535]['m_name'].'</h1>';
 
 
         //RIGHT
