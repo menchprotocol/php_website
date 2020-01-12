@@ -15,7 +15,7 @@ if(!$session_en){
 } else {
 
     echo '<div class="pull-left">';
-    echo echo_read_menu();
+    echo echo_menu(12201, 'btn-read');
     echo '</div>';
 
 

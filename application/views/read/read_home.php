@@ -112,7 +112,7 @@
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
         echo '<div class="pull-left">';
-        echo echo_read_menu();
+        echo echo_menu(12201, 'btn-read');
         echo '</div>';
 
 

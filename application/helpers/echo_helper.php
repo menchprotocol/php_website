@@ -2651,19 +2651,20 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tab
     return '<input '.( $is_author ? '' : 'disabled' ).' type="text" tabindex="'.$tabindex.'" class="form-control in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' texttype_'.$cache_en_id.'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" value="'.$current_value.'" title="EDIT '.$en_all_12112[$cache_en_id]['m_name'].( strlen($en_all_12112[$cache_en_id]['m_desc']) > 0 ? ': '.$en_all_12112[$cache_en_id]['m_desc'] : '' ).'">';
 }
 
-function echo_read_menu(){
+
+function echo_menu($menu_id, $btn_class){
 
     $CI =& get_instance();
 
     $active_id = 0;
-    foreach($CI->config->item('en_all_12201') as $en_id => $m){
+    foreach($CI->config->item('en_all_'.$menu_id) as $en_id => $m){
         if($CI->uri->segment(1) == ltrim($m['m_desc'], '/')){
             $active_id = $en_id;
             break;
         }
     }
 
-    return '<div class="inline-block">'.echo_in_dropdown(12201, $active_id, 'btn-read').'</div>';
+    return '<div class="inline-block">'.echo_in_dropdown($menu_id, $active_id, $btn_class).'</div>';
 
 }
 
