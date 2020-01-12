@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-11 19:05:11 PST
+//Generated 2020-01-11 19:22:31 PST
 
 //SIGN IN/UP:
 $config['en_ids_4269'] = array(12343,12339,12347);
@@ -1077,7 +1077,7 @@ $config['en_all_12201'] = array(
     ),
     12198 => array(
         'm_icon' => '<i class="fad fa-home read" aria-hidden="true"></i>',
-        'm_name' => 'HOME',
+        'm_name' => 'HOME PAGE',
         'm_desc' => '/',
         'm_parents' => array(12201,6771),
     ),
