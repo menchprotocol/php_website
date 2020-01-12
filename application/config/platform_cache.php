@@ -11,7 +11,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-11 18:47:12 PST
+//Generated 2020-01-11 19:05:11 PST
+
+//SIGN IN/UP:
+$config['en_ids_4269'] = array(12343,12339,12347);
+$config['en_all_4269'] = array(
+    12343 => array(
+        'm_icon' => '<i class="fad fa-plus blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOGS BY',
+        'm_desc' => '',
+        'm_parents' => array(4269,4527,4535,11035,12079),
+    ),
+    12339 => array(
+        'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
+        'm_name' => 'READ BOOKMARKS',
+        'm_desc' => '',
+        'm_parents' => array(4269,12201),
+    ),
+    12347 => array(
+        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ COINS',
+        'm_desc' => '',
+        'm_parents' => array(4269,12201),
+    ),
+);
 
 //BROWSE BLOGS BY:
 $config['en_ids_12343'] = array(12344,12346,12345);
@@ -1042,38 +1065,38 @@ $config['en_ids_12201'] = array(12339,12347,12198,10869,12341,12342);
 $config['en_all_12201'] = array(
     12339 => array(
         'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
-        'm_name' => 'MY BOOKMARKS',
+        'm_name' => 'BOOKMARKS',
         'm_desc' => '/read',
-        'm_parents' => array(12201),
+        'm_parents' => array(4269,12201),
     ),
     12347 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'MY COINS',
+        'm_name' => 'COINS',
         'm_desc' => '/read/coins',
-        'm_parents' => array(12201),
+        'm_parents' => array(4269,12201),
     ),
     12198 => array(
         'm_icon' => '<i class="fad fa-home read" aria-hidden="true"></i>',
-        'm_name' => 'HOME PAGE',
+        'm_name' => 'HOME',
         'm_desc' => '/',
         'm_parents' => array(12201,6771),
     ),
     10869 => array(
         'm_icon' => '<i class="fad fa-industry read" aria-hidden="true"></i>',
-        'm_name' => 'BY TOPIC',
-        'm_desc' => '/read/topic',
+        'm_name' => 'TOPICS',
+        'm_desc' => '/read/topics',
         'm_parents' => array(12201,6771,4527),
     ),
     12341 => array(
         'm_icon' => '<i class="fad fa-tools read" aria-hidden="true"></i>',
-        'm_name' => 'BY VERB',
-        'm_desc' => '/read/verb',
+        'm_name' => 'VERBS',
+        'm_desc' => '/read/verbs',
         'm_parents' => array(12201),
     ),
     12342 => array(
         'm_icon' => '<i class="fad fa-user-edit read" aria-hidden="true"></i>',
-        'm_name' => 'BY BLOGGER',
-        'm_desc' => '/read/blogger',
+        'm_name' => 'BLOGGERS',
+        'm_desc' => '/read/bloggers',
         'm_parents' => array(12201),
     ),
 );
@@ -1462,7 +1485,7 @@ $config['en_all_12079'] = array(
         'm_icon' => '<i class="fad fa-plus blog" aria-hidden="true"></i>',
         'm_name' => 'BROWSE BLOGS BY',
         'm_desc' => '',
-        'm_parents' => array(4527,4535,11035,12079),
+        'm_parents' => array(4269,4527,4535,11035,12079),
     ),
     12201 => array(
         'm_icon' => '<i class="fad fa-plus read" aria-hidden="true"></i>',
@@ -2456,7 +2479,7 @@ $config['en_ids_10746'] = array();
 $config['en_all_10746'] = array(
 );
 
-//BROWSE READ BY TOPIC:
+//BROWSE READ TOPICS:
 $config['en_ids_10869'] = array(12066,10809,10746,10725,10721,10720,10719,10718,10716,10712,10711,10710);
 $config['en_all_10869'] = array(
     12066 => array(
@@ -3320,7 +3343,7 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(4535,12215,12343,12201,7291,11999,12205,12214,12211,4536,6225,12275,6287,6205,6415,11046,7256,4269,7540,11087);
+$config['en_ids_11035'] = array(4535,12215,12343,12201,7291,11068,11999,12205,12214,12211,4536,6225,12275,6287,6205,6415,11046,7256,4269,7540,11087);
 $config['en_all_11035'] = array(
     4535 => array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
@@ -3338,7 +3361,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fad fa-plus blog" aria-hidden="true"></i>',
         'm_name' => 'BROWSE BLOGS BY',
         'm_desc' => '',
-        'm_parents' => array(4527,4535,11035,12079),
+        'm_parents' => array(4269,4527,4535,11035,12079),
     ),
     12201 => array(
         'm_icon' => '<i class="fad fa-plus read" aria-hidden="true"></i>',
@@ -3351,6 +3374,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'LOGOUT',
         'm_desc' => '',
         'm_parents' => array(11035),
+    ),
+    11068 => array(
+        'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
+        'm_name' => 'MAGIC LINK',
+        'm_desc' => '',
+        'm_parents' => array(11035,11065),
     ),
     11999 => array(
         'm_icon' => '<i class="fas fa-atlas read" aria-hidden="true"></i>',
@@ -3428,7 +3457,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fad fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
         'm_desc' => '',
-        'm_parents' => array(11035),
+        'm_parents' => array(4527,11035),
     ),
     7540 => array(
         'm_icon' => '<i class="fad fa-university" aria-hidden="true"></i>',
@@ -4085,7 +4114,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(12066,10725,10809,12145,11047,4983,10990,12273,10589,11968,4229,4486,4485,12012,6192,6193,7302,4737,7356,12138,7355,11018,6201,11021,12112,7585,10602,12330,12324,7309,7712,7751,6150,12343,10869,12201,10712,10719,12079,10627,10716,10746,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,6404,4527,11054,6232,6225,11039,10956,12279,12274,6194,6827,4426,4997,4986,7551,11028,4537,6206,3290,4592,12220,4454,11089,11033,3000,7303,6177,11007,10957,11088,3289,4755,10718,6287,10571,7357,11081,7704,12326,6255,12229,10591,6345,4280,4277,6102,12228,6146,10590,6103,10692,5967,7347,7304,6186,7360,7364,7359,12227,4341,4593,10593,12141,12327,10658,10711,11084,6204,10710,6805,7358,12321,12322);
+$config['en_ids_4527'] = array(12066,10725,10809,12145,11047,4983,10990,12273,10589,11968,4229,4486,4485,12012,6192,6193,7302,4737,7356,12138,7355,11018,6201,11021,12112,7585,10602,12330,12324,7309,7712,7751,6150,12343,12201,10869,10712,10719,12079,10627,10716,10746,10717,10721,10720,11080,2738,12105,4463,11035,7555,11059,11058,6404,4527,11054,6232,6225,11039,10956,12279,12274,6194,6827,4426,4997,4986,7551,11028,4537,6206,3290,4592,12220,4454,11089,11033,3000,7303,6177,11007,10957,11088,3289,4755,10718,6287,10571,7357,11081,7704,12326,6255,12229,10591,6345,4280,4277,6102,12228,6146,10590,6103,10692,5967,7347,7304,6186,7360,7364,7359,12227,4341,4593,10593,12141,12327,10658,10711,11084,4269,6204,10710,6805,7358,12321,12322);
 $config['en_all_4527'] = array(
     12066 => array(
         'm_icon' => '<i class="far fa-info-circle" aria-hidden="true"></i>',
@@ -4289,19 +4318,19 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fad fa-plus blog" aria-hidden="true"></i>',
         'm_name' => 'BROWSE BLOGS BY',
         'm_desc' => '',
-        'm_parents' => array(4527,4535,11035,12079),
-    ),
-    10869 => array(
-        'm_icon' => '<i class="fad fa-industry read" aria-hidden="true"></i>',
-        'm_name' => 'BROWSE READ BY TOPIC',
-        'm_desc' => '',
-        'm_parents' => array(12201,6771,4527),
+        'm_parents' => array(4269,4527,4535,11035,12079),
     ),
     12201 => array(
         'm_icon' => '<i class="fad fa-plus read" aria-hidden="true"></i>',
         'm_name' => 'BROWSE READS BY',
         'm_desc' => '',
         'm_parents' => array(12079,6205,11035,4527),
+    ),
+    10869 => array(
+        'm_icon' => '<i class="fad fa-industry read" aria-hidden="true"></i>',
+        'm_name' => 'BROWSE READ TOPICS',
+        'm_desc' => '',
+        'm_parents' => array(12201,6771,4527),
     ),
     10712 => array(
         'm_icon' => '<i class="fas fa-chart-line" aria-hidden="true"></i>',
@@ -4806,6 +4835,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'SHOW PLAY TAB NAMES',
         'm_desc' => '',
         'm_parents' => array(4758,4527),
+    ),
+    4269 => array(
+        'm_icon' => '<i class="fad fa-sign-in-alt" aria-hidden="true"></i>',
+        'm_name' => 'SIGN IN/UP',
+        'm_desc' => '',
+        'm_parents' => array(4527,11035),
     ),
     6204 => array(
         'm_icon' => '<i class="fas fa-check" aria-hidden="true"></i>',

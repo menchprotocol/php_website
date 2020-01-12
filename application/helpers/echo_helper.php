@@ -2664,7 +2664,7 @@ function echo_menu($menu_id, $btn_class){
         }
     }
 
-    return '<div class="inline-block">'.echo_in_dropdown($menu_id, $active_id, $btn_class).'</div>';
+    return '<div class="inline-block">'.echo_in_dropdown($menu_id, $active_id, $btn_class ).'</div>';
 
 }
 
@@ -2687,6 +2687,7 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author 
     foreach ($en_all_this as $en_id => $m) {
 
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
+        $requires_signin = in_array($en_id, $CI->config->item('en_ids_4269'));
 
         if($cache_en_id==7585){
 
@@ -2703,7 +2704,7 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author 
 
         $is_url_desc = ( substr($m['m_desc'], 0, 1)=='/' );
 
-        $ui .= '<a class="dropdown-item dropi_'.$cache_en_id.'_'.$ln_id.' montserrat optiond_'.$en_id.'_'.$ln_id.' doupper '.( $en_id==$selected_en_id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" '.( $is_url_desc ? ( $en_id==$selected_en_id ? 'href="javascript:void();"' : 'href="'.$m['m_desc'].'"' ) : 'href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.','.$en_id.','.$ln_id.')"' ).'><span '.( strlen($m['m_desc']) && !$is_url_desc ? 'title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right"' : '' ).'><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</span></a>';
+        $ui .= '<a class="dropdown-item dropi_'.$cache_en_id.'_'.$ln_id.' montserrat optiond_'.$en_id.'_'.$ln_id.' doupper '.( $en_id==$selected_en_id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).( $requires_signin && !superpower_assigned() ? ' hidden ' : '' ).'" '.( $is_url_desc ? ( $en_id==$selected_en_id ? 'href="javascript:void();"' : 'href="'.$m['m_desc'].'"' ) : 'href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.','.$en_id.','.$ln_id.')"' ).'><span '.( strlen($m['m_desc']) && !$is_url_desc ? 'title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right"' : '' ).'><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</span></a>';
 
     }
 
