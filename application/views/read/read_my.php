@@ -27,7 +27,7 @@ if(!$session_en){
 
     if($has_multiple_blogs){
         //Give option to delete all:
-        echo '<a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[6415]['m_name'].'">'.$en_all_11035[6415]['m_icon'].'</a>';
+        echo '<a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="btn btn-read btn-five icon-block-lg '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[6415]['m_name'].'">'.$en_all_11035[6415]['m_icon'].'</a>';
     }
 
     //Browse New Reads on Home:
