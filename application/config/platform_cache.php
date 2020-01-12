@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-11 15:56:38 PST
+//Generated 2020-01-11 16:10:26 PST
 
 //BLOG TYPE INSTANTLY DONE:
 $config['en_ids_12330'] = array(6677,6914,6907);
@@ -1432,7 +1432,7 @@ $config['en_all_12079'] = array(
     12201 => array(
         'm_icon' => '<i class="fad fa-plus read" aria-hidden="true"></i>',
         'm_name' => 'BROWSE READS BY',
-        'm_desc' => 'Browse reads, your way',
+        'm_desc' => '',
         'm_parents' => array(12079,6205,11035,4527),
     ),
 );
