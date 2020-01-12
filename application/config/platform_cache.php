@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-11 17:05:37 PST
+//Generated 2020-01-11 17:07:36 PST
 
 //BROWSE BLOGS BY:
 $config['en_ids_12343'] = array(12344,12346,12345);
@@ -19,19 +19,19 @@ $config['en_all_12343'] = array(
     12344 => array(
         'm_icon' => '<i class="fas fa-bookmark blog" aria-hidden="true"></i>',
         'm_name' => 'BOOKMARKS',
-        'm_desc' => '',
+        'm_desc' => '/blog',
         'm_parents' => array(12343),
     ),
     12346 => array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
         'm_name' => 'COINS',
-        'm_desc' => '',
+        'm_desc' => '/blog/coins',
         'm_parents' => array(12343),
     ),
     12345 => array(
         'm_icon' => '<i class="fad fa-trash-alt blog" aria-hidden="true"></i>',
         'm_name' => 'ARCHIVED',
-        'm_desc' => '',
+        'm_desc' => 'blog/archived',
         'm_parents' => array(12343),
     ),
 );
