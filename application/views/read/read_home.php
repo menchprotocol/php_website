@@ -100,10 +100,6 @@
     <div class="animate-trigger hidden"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-read montserrat inline-block" style="margin-top: 20px;"><i class="fas fa-play-circle"></i> WATCH 1 MIN INTRO</a></div>
      */
 
-    echo '<div class="pull-left">';
-    echo echo_menu(12201, 'btn-read');
-    echo '</div>';
-
 
     //Player Navigation
     if($session_en && count($this->READ_model->ln_fetch(array(
@@ -111,6 +107,8 @@
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ), array(), 1))){
+
+        //echo '<div class="pull-left">' . echo_menu(12201, 'btn-read') . '</div>';
 
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
@@ -121,9 +119,11 @@
 
         echo '</div>';
 
+        echo '<div class="doclear">&nbsp;</div>';
+
+
     }
 
-    echo '<div class="doclear">&nbsp;</div>';
 
 
     //Fetch all home page blogs:
