@@ -480,7 +480,7 @@ var update_coin_counter = function( ) {
             $('.three-menus td.play .current_count').html('');
         } else {
             if(data.play_count != $('.three-menus td.play .current_count').text().trim()){
-                $('.three-menus td.play .current_count').html(data.play_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+                $('.three-menus td.play .current_count').html(data.play_count+ ' ').fadeOut(fadeout_speed).fadeIn(fadeout_speed);
             }
         }
 
