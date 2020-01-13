@@ -8,6 +8,13 @@
 function in_update_text(this_handler){
 
     var handler = '.text__'+$(this_handler).attr('cache_en_id')+'_'+$(this_handler).attr('in_ln__id');
+    var new_value = $(this_handler).val().trim();
+
+    //See if anything changes:
+    if( $(this_handler).attr('old-value') == new_value ){
+        //Nothing changed:
+        return false;
+    }
 
     //Grey background to indicate saving...
     $(handler).addClass('dynamic_saving');
@@ -16,7 +23,7 @@ function in_update_text(this_handler){
 
         in_ln__id: $(this_handler).attr('in_ln__id'),
         cache_en_id: $(this_handler).attr('cache_en_id'),
-        field_value: $(this_handler).val()
+        field_value: new_value
 
     }, function (data) {
 
@@ -28,13 +35,15 @@ function in_update_text(this_handler){
             //Show error:
             alert('ERROR: ' + data.message);
 
+        } else {
+            //Update value:
+            $(this_handler).attr('old-value', new_value)
         }
 
         setTimeout(function () {
             //Restore background:
             $(handler).removeClass('dynamic_saving');
-        }, 610);
-
+        }, 233);
 
     });
 }
@@ -47,10 +56,11 @@ $(document).ready(function () {
     $('.in_update_text').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
+            in_update_text(this);
             e.preventDefault();
         }
     }).change(function() {
-        in_update_text();
+        in_update_text(this);
     });
 
     if($('.text__4736_'+in_loaded_id).val()==js_en_all_6201[4736]['m_name']){
