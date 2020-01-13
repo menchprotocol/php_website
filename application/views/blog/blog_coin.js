@@ -5,44 +5,54 @@
 *
 * */
 
+function in_update_text(this_handler){
+
+    var handler = '.text__'+$(this_handler).attr('cache_en_id')+'_'+$(this_handler).attr('in_ln__id');
+
+    //Grey background to indicate saving...
+    $(handler).addClass('dynamic_saving');
+
+    $.post("/blog/in_update_text", {
+
+        in_ln__id: $(this_handler).attr('in_ln__id'),
+        cache_en_id: $(this_handler).attr('cache_en_id'),
+        field_value: $(this_handler).val()
+
+    }, function (data) {
+
+        if (!data.status) {
+
+            //Reset to original value:
+            $(handler).val(data.original_val);
+
+            //Show error:
+            alert('ERROR: ' + data.message);
+
+        }
+
+        setTimeout(function () {
+            //Restore background:
+            $(handler).removeClass('dynamic_saving');
+        }, 610);
+
+
+    });
+}
+
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
 $(document).ready(function () {
 
-
     //Lookout for completion mark changes:
-    $('.in_update_text').change(function() {
-
-        var handler = '.text__'+$(this).attr('cache_en_id')+'_'+$(this).attr('in_ln__id');
-
-        //Grey background to indicate saving...
-        $(handler).addClass('dynamic_saving');
-
-        $.post("/blog/in_update_text", {
-
-            in_ln__id: $(this).attr('in_ln__id'),
-            cache_en_id: $(this).attr('cache_en_id'),
-            field_value: $(this).val()
-
-        }, function (data) {
-
-            if (!data.status) {
-
-                //Reset to original value:
-                $(handler).val(data.original_val);
-
-                //Show error:
-                alert('ERROR: ' + data.message);
-
-            }
-
-            setTimeout(function () {
-                //Restore background:
-                $(handler).removeClass('dynamic_saving');
-            }, 610);
-
-
-        });
+    $('.in_update_text').keypress(function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (e.ctrlKey && code == 13) {
+            in_update_text(this);
+        } else if (code == 13) {
+            e.preventDefault();
+        }
+    }).change(function() {
+        in_update_text(this);
     });
 
     if($('.text__4736_'+in_loaded_id).val()==js_en_all_6201[4736]['m_name']){
