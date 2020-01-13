@@ -46,9 +46,8 @@ $(document).ready(function () {
     //Lookout for completion mark changes:
     $('.in_update_text').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
-        if (e.ctrlKey && code == 13) {
+        if (code == 13) {
             in_update_text(this);
-        } else if (code == 13) {
             e.preventDefault();
         }
     }).change(function() {
