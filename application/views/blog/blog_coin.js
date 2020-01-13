@@ -47,11 +47,10 @@ $(document).ready(function () {
     $('.in_update_text').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
-            in_update_text(this);
             e.preventDefault();
         }
     }).change(function() {
-        in_update_text(this);
+        in_update_text();
     });
 
     if($('.text__4736_'+in_loaded_id).val()==js_en_all_6201[4736]['m_name']){
