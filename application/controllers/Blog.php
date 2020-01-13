@@ -473,47 +473,6 @@ class Blog extends CI_Controller {
 
     }
 
-    function in_save_title(){
-        //Authenticate Trainer:
-        $session_en = superpower_assigned();
-        if (!$session_en) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
-            ));
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Blog ID',
-            ));
-        } elseif (!isset($_POST['in_title']) || strlen($_POST['in_title']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Blog Title',
-            ));
-        }
-
-        //Validate Blog Outcome:
-        $in_title_validation = $this->BLOG_model->in_title_validate($_POST['in_title']);
-        if(!$in_title_validation['status']){
-            //We had an error, return it:
-            return echo_json($in_title_validation);
-        }
-
-
-        //This field has been updated, update one field at a time:
-        $this->BLOG_model->in_update($_POST['in_id'], array(
-            'in_title' => $_POST['in_title'],
-        ), true, $session_en['en_id']);
-
-
-        return echo_json(array(
-            'status' => 1,
-            'message' => 'Updated successfully.',
-            'in_cleaned_outcome' => $in_title_validation['in_cleaned_outcome'],
-        ));
-    }
-
     function in_unlink(){
 
         //Authenticate Trainer:

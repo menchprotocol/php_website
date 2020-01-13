@@ -2650,11 +2650,11 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tab
     $en_all_12112 = $CI->config->item('en_all_12112');
 
     //Define element attributes:
-    $attributes = ( $is_author ? '' : 'disabled' ).' tabindex="'.$tabindex.'" class="form-control in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' texttype_'.$cache_en_id.'" cache_en_id="'.$cache_en_id.'" placeholder="'.$en_all_12112[$cache_en_id]['m_name'].'" in_ln__id="'.$in_ln__id.'" title="EDIT '.$en_all_12112[$cache_en_id]['m_name'].( strlen($en_all_12112[$cache_en_id]['m_desc']) > 0 ? ': '.$en_all_12112[$cache_en_id]['m_desc'] : '' ).'"';
+    $attributes = ( $is_author ? '' : 'disabled' ).' tabindex="'.$tabindex.'" class="form-control in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' texttype_'.$cache_en_id.($is_blog_title_lg?'_sm':'_lg').'" cache_en_id="'.$cache_en_id.'" placeholder="'.$en_all_12112[$cache_en_id]['m_name'].'" in_ln__id="'.$in_ln__id.'" title="EDIT '.$en_all_12112[$cache_en_id]['m_name'].( strlen($en_all_12112[$cache_en_id]['m_desc']) > 0 ? ': '.$en_all_12112[$cache_en_id]['m_desc'] : '' ).'"';
 
     if($is_blog_title_lg){
 
-        return '<textarea onkeyup="show_save_button()" '.$attributes.'>'.$current_value.'</textarea>';
+        return '<textarea onkeyup="in_title_count()" '.$attributes.'>'.$current_value.'</textarea>';
 
     } else {
 

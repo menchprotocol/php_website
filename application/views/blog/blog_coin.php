@@ -68,12 +68,10 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 }
             }
 
-
             //Preview option:
             echo '<div class="inline-block pull-right side-margin"><a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fad fa-step-forward"></i></a></div>';
 
         echo '</div>';
-
 
 
         echo '<div class="itemblog">';
@@ -81,26 +79,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && $is_active), 0, true);
         echo '</div>';
 
-
-        if($is_author && $is_active){
-
-            echo '<div class="itemblog">';
-
-            echo '<textarea onkeyup="show_save_button()" class="form-control side-margin" id="new_blog_title" placeholder="'.$en_all_6201[4736]['m_name'].'" style="margin-bottom: 5px;">'.$in['in_title'].'</textarea>';
-
-            echo '<input type="hidden" id="current_blog_title" value="'.$in['in_title'].'" />';
-
-            echo '<div id="blog_title_save" class="hidden side-margin">';
-            echo '<a href="javascript:in_save_title();" class="btn btn-blog">SAVE</a>';
-            echo '&nbsp;<span class="title_counter hidden">[<span id="charTitleNum">0</span>/'.config_var(11071).']</span>';
-            echo '&nbsp;<span class="title_update_status"></span>';
-            echo '</div>';
-
-            echo '</div>';
-
-        }
-
-    } else {
+    } elseif($col_num==2){
 
         echo '<div class="center-right">';
             echo '<div class="inline-block side-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active).'</div>';

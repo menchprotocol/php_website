@@ -159,7 +159,7 @@ li a {
     font-size:4.3em;
 }
 
-#new_blog_title{
+.texttype_4736_lg{
     background-color: transparent;
     font-size: 1.7em;
     font-family: 'Montserrat', sans-serif;
@@ -169,7 +169,7 @@ li a {
     padding:5px 0 0;
 }
 
-#new_blog_title::placeholder{
+.texttype_4736_lg::placeholder{
       font-family: 'Montserrat', sans-serif;
     font-weight: bold;
 }
@@ -833,7 +833,7 @@ textarea.note-textarea{
 }
 
 
-.blog-left, .texttype_4736{
+.blog-left, .texttype_4736_sm{
     width: 85%;
 }
 .blog-left {
@@ -841,7 +841,7 @@ textarea.note-textarea{
     display: block;
     float: left;
 }
-.texttype_4736{
+.texttype_4736_sm{
     display: inline-block;
     color: #000;
     font-size: 1em;
@@ -1142,7 +1142,7 @@ label {
     .show-on-hover { display:inline-block !important; }
     .show-max{display: none !important;}
     .form-control-thick { padding-left: 26px; }
-    .blog-left, .texttype_4736 { width:75%; }
+    .blog-left, .texttype_4736_sm { width:75%; }
     .avatar-item { width:110px !important; padding:10px 0 !important; }
     .avatar-item .avatar-icon { font-size: 2.4em; }
     .three-menus td.play, #top_players td.play{ width: 52%; }

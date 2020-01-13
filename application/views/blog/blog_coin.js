@@ -45,25 +45,16 @@ $(document).ready(function () {
         });
     });
 
-    if($('#new_blog_title').val()==js_en_all_6201[4736]['m_name']){
-        $('#new_blog_title').val('').focus();
+    autosize($('.text__4736_'+in_loaded_id));
+
+    if($('.text__4736_'+in_loaded_id).val().toUpperCase()==js_en_all_6201[4736]['m_name']){
+        $(this).val('').focus();
     }
 
-    autosize($('#new_blog_title'));
-
-
-    $('#new_blog_title').keypress(function(e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if (e.ctrlKey && code == 13) {
-            in_save_title();
-        } else if (code == 13) {
-            e.preventDefault();
-        }
-    }).focus(function() {
+    $('.text__4736_'+in_loaded_id).focus(function() {
         //Clear default title
-        if ($('#new_blog_title').val().toUpperCase() == js_en_all_6201[4736]['m_name']) {
-            $('#new_blog_title').val('');
-            $('#blog_title_save').addClass('hidden');
+        if ($(this).val().toUpperCase() == js_en_all_6201[4736]['m_name']) {
+            $(this).val('');
         }
     });
 
@@ -172,22 +163,6 @@ $(document).ready(function () {
 
 });
 
-function show_save_button(){
-
-    //Counter:
-    in_title_count();
-
-    //Detect changes in blog title to show the save button:
-    if($('#new_blog_title').val() == $('#current_blog_title').val() || $('#new_blog_title').val().length < 1 || $('#new_blog_title').val().toUpperCase() == js_en_all_6201[4736]['m_name']){
-        //Nothing changed, so nothing to save:
-        $('#blog_title_save').addClass('hidden');
-    } else {
-        //Something changed, show save button:
-        $('#blog_title_save').removeClass('hidden');
-
-    }
-}
-
 function read_preview(){
     if(parseInt($('.dropi_4737_0.active').attr('new-en-id')) in js_en_all_7355){
         //Blog is public, go to preview:
@@ -271,35 +246,6 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
     });
 }
 
-
-
-function in_save_title(){
-    //Fetch Blog Data to load modify widget:
-    $('.title_update_status').html('<b class="montserrat"><i class="far fa-yin-yang fa-spin"></i> SAVING...</b>').hide().fadeIn();
-
-
-    $.post("/blog/in_save_title", {
-        in_id: in_loaded_id,
-        in_title: $('#new_blog_title').val(),
-    }, function (data) {
-        if (data.status) {
-
-            //Update on page:
-            $('.title_update_status').html(data.message);
-
-            setTimeout(function () {
-                $('#current_blog_title, #new_blog_title').val(data.in_cleaned_outcome);
-                $('#blog_title_save').addClass('hidden');
-                $('.title_update_status').html('');
-            }, 1597);
-
-        } else {
-            //Show error:
-            $('.title_update_status').html('<b class="montserrat read">ERROR: '+data.message+'</b>').hide().fadeIn();
-
-        }
-    });
-}
 
 
 function in_unlink(in_id, ln_id){
@@ -388,7 +334,7 @@ function in_new_note_count(focus_ln_type_play_id) {
 function in_title_count() {
 
     //Update count:
-    var len = $('#new_blog_title').val().length;
+    var len = $('.text__4736_'+in_loaded_id).val().length;
     if (len > js_en_all_6404[11071]['m_desc']) {
         $('#charTitleNum').addClass('overload').text(len);
     } else {
