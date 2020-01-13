@@ -45,9 +45,8 @@ $(document).ready(function () {
         });
     });
 
-    console.log($('.text__4736_'+in_loaded_id).val()+' != '+js_en_all_6201[4736]['m_name']);
     if($('.text__4736_'+in_loaded_id).val()==js_en_all_6201[4736]['m_name']){
-        $(this).val('').focus();
+        $('.text__4736_'+in_loaded_id).val('').focus();
     }
 
     $('.text__4736_'+in_loaded_id).focus(function() {
