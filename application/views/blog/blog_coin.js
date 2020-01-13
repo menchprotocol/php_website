@@ -45,9 +45,7 @@ $(document).ready(function () {
         });
     });
 
-    autosize($('.text__4736_'+in_loaded_id));
-
-    if($('.text__4736_'+in_loaded_id).val().toUpperCase()==js_en_all_6201[4736]['m_name']){
+    if($('.text__4736_'+in_loaded_id).val()==js_en_all_6201[4736]['m_name']){
         $(this).val('').focus();
     }
 
@@ -58,6 +56,7 @@ $(document).ready(function () {
         }
     });
 
+    autosize($('.text__4736_'+in_loaded_id));
 
     $('#expand_blogs .expand_all').click(function (e) {
         $(".list-is-children .blogs_sortable").each(function () {
