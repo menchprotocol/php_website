@@ -75,7 +75,7 @@
 
         echo '<textarea id="newBlogTitle" class="form-control" placeholder="'.$en_all_6201[4736]['m_name'].'"></textarea>';
 
-        echo '<div class="blogCreateStatusUpdate montserrat"></div>';
+        echo '<div class="blogCreateStatusUpdate montserrat" style="padding-bottom: 20px;"></div>';
 
         echo '<div class="blogCreationController"><a href="javascript:void(0);" onclick="blog_create()" class="btn btn-blog btn-five icon-block-lg">'.$en_all_11035[12214]['m_name'].'</a> or <a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');"><u>Cancel</u></a></div>';
 
