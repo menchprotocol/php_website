@@ -14,31 +14,41 @@ class Read extends CI_Controller
     }
 
 
-    function read_add($in_id){
+    function read_add($in_id, $is_ajax = 0){
 
         $session_en = superpower_assigned();
 
         //Check to see if added to READING LIST for logged-in users:
         if(!isset($session_en['en_id'])){
-            return redirect_message('/signin/'.$in_id);
+            $error = '<div class="alert alert-danger" role="alert">Session Expired</div>';
+            if($is_ajax){
+                echo $error;
+            } else {
+                return redirect_message('/signin/'.$in_id, $error);
+            }
         }
 
         //Add this blog to their READING LIST:
         if(!$this->READ_model->read_add($session_en['en_id'], $in_id)){
             //Failed to add to reading list:
-            return redirect_message('/read', '<div class="alert alert-danger" role="alert">Failed to add blog to your reading list.</div>');
+            $error = '<div class="alert alert-danger" role="alert">Failed to add blog to your reading list.</div>';
+            if($is_ajax){
+                echo $error;
+            } else {
+                return redirect_message('/read', $error);
+            }
         }
 
 
-        //Find next blog based on player's reading list:
-        $ins = $this->BLOG_model->in_fetch(array(
-            'in_id' => $in_id,
-        ));
-        $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
-        if($next_in_id > 0){
-            return redirect_message('/' . $next_in_id.'/next', '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i> Successfully added to your reading list.</div>');
+        if($is_ajax){
+
+            //Load remainder of read into view:
+            $this->READ_model->read_coin($in_id, $session_en, false, true);
+
         } else {
-            return redirect_message('/read/next');
+
+            return redirect_message('/' . $in_id, '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i> Successfully added to your reading list.</div>');
+
         }
 
     }
@@ -108,8 +118,8 @@ class Read extends CI_Controller
 
         //Calculates the weekly coins issued:
         $last_week_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-7, date("Y"));
-        $last_week_start = date("Y-m-d H:i:s", $last_week_start_timestamp);
-        $last_week_end = date("Y-m-d H:i:s", mktime(23, 59, 59, date("n"), date("j")-1, date("Y")));
+        $last_week_start = date(config_var(12355), $last_week_start_timestamp);
+        $last_week_end = date(config_var(12355), mktime(23, 59, 59, date("n"), date("j")-1, date("Y")));
 
         //BLOG
         $blog_coins_new_last_week = $this->READ_model->ln_fetch(array(

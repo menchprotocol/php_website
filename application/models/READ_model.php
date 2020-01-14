@@ -1320,7 +1320,7 @@ class READ_model extends CI_Model
 
     }
 
-    function read_coin($in_id, $recipient_en, $push_message = false){
+    function read_coin($in_id, $recipient_en, $push_message = false, $next_step_only = false){
 
         /*
          * Function to read a Blog, it's messages,
@@ -1388,26 +1388,7 @@ class READ_model extends CI_Model
 
 
 
-        /*
-         *
-         * Display Title & Messages
-         *
-         */
-        if(!$push_message){
-
-            //BLOG TITLE
-            echo '<h1>' . echo_in_title($ins[0]['in_title']) . '</h1>';
-
-        } else {
-
-            $this->READ_model->dispatch_message(
-                'You are reading: '.$ins[0]['in_title'],
-                $recipient_en,
-                $push_message
-            );
-
-        }
-
+        //Fetch Messages
         $in__messages = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => 4231, //Blog Note Messages
@@ -1416,7 +1397,7 @@ class READ_model extends CI_Model
 
 
 
-        //Log Blog Viewed by User:
+        //Log View:
         $this->READ_model->ln_create(array(
             'ln_creator_play_id' => ( isset($recipient_en['en_id']) ? intval($recipient_en['en_id']) : 0 ),
             'ln_type_play_id' => 7610, //Blog Viewed by User
@@ -1456,7 +1437,10 @@ class READ_model extends CI_Model
          * Determine next Read
          *
          */
-        if(!$in_reading_list){
+        if(!$in_reading_list && !$push_message){
+
+            //BLOG TITLE
+            echo '<h1>' . echo_in_title($ins[0]['in_title']) . '</h1>';
 
             //Show More Information:
             echo '<div class="read-topic read-info-topic"><span class="info-item">';
@@ -1511,7 +1495,7 @@ class READ_model extends CI_Model
                     )
                 );
             } elseif(!isset($_GET['autoexpand'])) {
-                echo '<div class="inline-block margin-top-down"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fad fa-step-forward"></i></a></div>';
+                echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="javascript:void(0)" onclick="read_add()">START READING <i class="fad fa-step-forward"></i></a></div>';
             }
 
             return true;
@@ -1630,53 +1614,71 @@ class READ_model extends CI_Model
         //Define communication variables:
         $next_step_quick_replies = array();
 
+        if(!$next_step_only){
 
 
+            if(!$push_message){
 
-        //Show More Information:
-        echo '<div class="read-topic read-info-topic"><span class="info-item">';
-        $metadata = unserialize($ins[0]['in_metadata']);
-        if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
+                //BLOG TITLE
+                echo '<h1>' . echo_in_title($ins[0]['in_title']) . '</h1>';
 
-            //TIME IF CONSIDERABLE
-            if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
-                echo echo_time_range($ins[0], true).' READ ';
+                //Show More Information:
+                echo '<div class="read-topic read-info-topic"><span class="info-item">';
+                $metadata = unserialize($ins[0]['in_metadata']);
+                if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
+
+                    //TIME IF CONSIDERABLE
+                    if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
+                        echo echo_time_range($ins[0], true).' READ ';
+                    }
+
+                    //OWNER
+                    $authors = $this->READ_model->ln_fetch(array(
+                        'ln_type_play_id' => 4250,
+                        'ln_child_blog_id' => $ins[0]['in_id'],
+                    ), array('en_creator'), 1);
+
+                    echo 'BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a>';
+
+
+                    // % DONE
+                    $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
+                    if($completion_rate['completion_percentage'] > 0){
+                        echo ' <span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">'.$completion_rate['completion_percentage'].'% DONE</span>';
+                    }
+
+                }
+
+                //Show all completions:
+                $en_all_12229 = $this->config->item('en_all_12229');
+                foreach($read_completes as $read_history){
+                    echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ON ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
+                }
+
+                echo '</span></div>';
+
+            } else {
+
+                $this->READ_model->dispatch_message(
+                    'You are reading: '.$ins[0]['in_title'],
+                    $recipient_en,
+                    $push_message
+                );
+
             }
 
-            //OWNER
-            $authors = $this->READ_model->ln_fetch(array(
-                'ln_type_play_id' => 4250,
-                'ln_child_blog_id' => $ins[0]['in_id'],
-            ), array('en_creator'), 1);
 
-            echo 'BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a>';
-
-
-            // % DONE
-            $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
-            if($completion_rate['completion_percentage'] > 0){
-                echo ' <span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">'.$completion_rate['completion_percentage'].'% DONE</span>';
+            foreach ($in__messages as $message_ln) {
+                echo $this->READ_model->dispatch_message(
+                    $message_ln['ln_content'],
+                    $recipient_en,
+                    $push_message
+                );
             }
-
         }
 
-        //Show all completions:
-        $en_all_12229 = $this->config->item('en_all_12229');
-        foreach($read_completes as $read_history){
-            echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ON ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
-        }
-
-        echo '</span></div>';
 
 
-
-        foreach ($in__messages as $message_ln) {
-            echo $this->READ_model->dispatch_message(
-                $message_ln['ln_content'],
-                $recipient_en,
-                $push_message
-            );
-        }
 
 
 

@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-13 21:42:05 PST
+//Generated 2020-01-14 14:35:00 PST
 
 //SIGN IN/UP:
 $config['en_ids_4269'] = array(12343,12339,12347);
@@ -3041,7 +3041,7 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12176,12352,12156,10939,11071,12210,12130,11077,11074,12124,11076,11075,11064,11986,11065,11063,11060,11079,11073,11066,11072,12232,11057,11056,12331,12113,12088,11061,11162,11163,12209,12208);
+$config['en_ids_6404'] = array(12176,12352,12156,10939,11071,12210,12130,12355,11077,11074,12124,11076,11075,11064,11986,11065,11063,11060,11079,11073,11066,11072,12232,11057,11056,12331,12113,12088,11061,11162,11163,12209,12208);
 $config['en_all_6404'] = array(
     12176 => array(
         'm_icon' => '<i class="fad fa-clock blog"></i>',
@@ -3083,6 +3083,12 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'COINS REFRESH MILLISECONDS READER',
         'm_desc' => '121393',
+        'm_parents' => array(6404),
+    ),
+    12355 => array(
+        'm_icon' => '',
+        'm_name' => 'DATE FORMAT FULL & WEEKDAY',
+        'm_desc' => 'D M j G:i:s T Y',
         'm_parents' => array(6404),
     ),
     11077 => array(
