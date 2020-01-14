@@ -159,7 +159,7 @@ li a {
     font-size:4.3em;
 }
 
-.texttype_4736_lg{
+.texttype_4736_lg, #newBlogTitle {
     background-color: transparent;
     font-size: 1.7em;
     font-family: 'Montserrat', sans-serif;

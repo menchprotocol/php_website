@@ -1,3 +1,6 @@
+
+<script src="/application/views/blog/blog_my.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+
 <div class="container">
 
     <?php
@@ -70,9 +73,9 @@
 
         echo '<h1 class="blog"><span class="icon-block-xlg">' . $en_all_11035[12214]['m_icon'] . '</span>'.$en_all_11035[12214]['m_name'].'</h1>';
 
-        echo '<h2><span class="icon-block">' . $en_all_6201[4736]['m_icon'] . '</span>'.$en_all_6201[4736]['m_name'].'</h2>';
+        echo '<h2>'.$en_all_6201[4736]['m_name'].'</h2>';
 
-        echo '<input type="text" id="newBlogTitle" class="form-control" placeholder="'.config_var(12352).'" />';
+        echo '<textarea id="newBlogTitle" class="form-control"></textarea>';
 
         echo '<div><a href="javascript:void(0);" onclick="create_blog()" class="btn btn-blog btn-five icon-block-lg">'.$en_all_11035[12214]['m_name'].'</a> or <a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');">Cancel</a></div>';
 
