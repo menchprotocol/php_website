@@ -61,7 +61,7 @@ if (!isset($flash_message)) {
     $flash_message = $this->session->flashdata('flash_message');
 }
 if(strlen($flash_message) > 0) {
-    echo '<div class="container" id="custom_message">'.$flash_message.'</div>';
+    echo '<div class="container" id="custom_message" style="padding-bottom: 0;">'.$flash_message.'</div>';
 }
 
 
