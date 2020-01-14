@@ -1495,7 +1495,7 @@ class READ_model extends CI_Model
                     )
                 );
             } elseif(!isset($_GET['autoexpand'])) {
-                echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="javascript:void(0)" onclick="read_add()">START READING <i class="fad fa-step-forward"></i></a></div>';
+                echo '<a name="startreading"></a><div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="javascript:void(0)" onclick="read_add()">START READING <i class="fad fa-step-forward"></i></a></div>';
             }
 
             return true;

@@ -119,6 +119,9 @@ function read_add(){
     $('.read-add').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
     $.post("/read/read_add/"+in_loaded_id+"/1", {}, function (data) {
         $('.read-add').html(data);
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $(".read-add").offset().top
+        }, 377);
     });
 }
 
