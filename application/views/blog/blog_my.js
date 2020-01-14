@@ -35,9 +35,9 @@ function blog_create(){
         } else {
 
             //Unlock:
-            $('#newBlogTitle').prop('disabled', false);
             $('.blogCreationController').removeClass('hidden');
             $('.blogCreateStatusUpdate').html('<span class="read"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</span>');
+            $('#newBlogTitle').prop('disabled', false).focus();
 
         }
     });
