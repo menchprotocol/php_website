@@ -81,8 +81,12 @@
 
         } else {
 
-            echo '<div style="padding:10px 0;"><p>Before creating your first blog, we invite you to read our blog on how to blog on MENCH which will help you understand how MENCH works.</p></div>';
-            echo '<div style="padding:10px 0;"><a href="/'.config_var(10939).'" class="btn btn-blog montserrat">GET STARTED <i class="fad fa-step-forward"></i></a>'.$cancel_option.'</div>';
+            $start_ins = $this->BLOG_model->in_fetch(array(
+                'in_id' => config_var(10939),
+            ));
+
+            echo '<div style="padding:10px 0;"><p>Before creating your first blog, we invite you to read "'.$start_ins[0]['in_title'].'".</p></div>';
+            echo '<div style="padding:10px 0;"><a href="/'.$start_ins[0]['in_id'].'" class="btn btn-blog montserrat">GET STARTED <i class="fad fa-step-forward"></i></a>'.$cancel_option.'</div>';
 
         }
 
