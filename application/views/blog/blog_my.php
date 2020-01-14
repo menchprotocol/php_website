@@ -28,7 +28,7 @@
             echo '<a href="/ledger?ln_type_play_id='.join(',', $this->config->item('en_ids_12273')).'&ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_creator_play_id='.$session_en['en_id'].'" class="btn btn-blog btn-five icon-block-lg '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12215]['m_name'].'">'.$en_all_11035[12215]['m_icon'].'</a>';
 
             //Create Blog:
-            echo '<a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');$(\'#newBlogTitle\').focus();" class="btn btn-blog btn-five icon-block-lg '.superpower_active(10939).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12214]['m_name'].'">'.$en_all_11035[12214]['m_icon'].'</a>';
+            echo '<a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');$(\'#newBlogTitle\').focus();" class="btn btn-blog btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12214]['m_name'].'">'.$en_all_11035[12214]['m_icon'].'</a>';
 
 
         echo '</div>';
@@ -58,12 +58,6 @@
 
         }
 
-        if(!superpower_assigned(10939)) {
-
-            echo '<div style="padding:10px 0;"><a href="/'.config_var(10939).'" class="btn btn-blog montserrat">START BLOGGING <i class="fad fa-step-forward"></i></a></div>';
-
-        }
-
         echo '</div>';
 
 
@@ -73,11 +67,20 @@
 
         echo '<h1 class="blog"><span class="icon-block-xlg">' . $en_all_11035[12214]['m_icon'] . '</span>'.$en_all_11035[12214]['m_name'].'</h1>';
 
-        echo '<textarea id="newBlogTitle" class="form-control" placeholder="'.$en_all_6201[4736]['m_name'].'"></textarea>';
+        if(superpower_assigned(10939)) {
 
-        echo '<div class="blogCreateStatusUpdate montserrat" style="padding-bottom: 20px;"></div>';
+            echo '<textarea id="newBlogTitle" class="form-control" placeholder="'.$en_all_6201[4736]['m_name'].'"></textarea>';
 
-        echo '<div class="blogCreationController"><a href="javascript:void(0);" onclick="blog_create()" class="btn btn-blog btn-five icon-block-lg">'.$en_all_11035[12214]['m_name'].'</a> or <a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');"><u>Cancel</u></a></div>';
+            echo '<div class="blogCreateStatusUpdate montserrat" style="padding-bottom: 20px;"></div>';
+
+            echo '<div class="blogCreationController"><a href="javascript:void(0);" onclick="blog_create()" class="btn btn-blog btn-five icon-block-lg">'.$en_all_11035[12214]['m_name'].'</a> or <a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');"><u>Cancel</u></a></div>';
+
+        } else {
+
+            echo '<div style="padding:10px 0;"><p>Before creating your first blog, we invite you to read our blog on how to blog on MENCH which will help you understand how MENCH works.</p></div>';
+            echo '<div style="padding:10px 0;"><a href="/'.config_var(10939).'" class="btn btn-blog montserrat">GET STARTED <i class="fad fa-step-forward"></i></a></div>';
+
+        }
 
         echo '</div>';
 
