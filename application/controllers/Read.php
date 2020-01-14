@@ -369,7 +369,7 @@ class Read extends CI_Controller
 
 
         //Blog Statuses:
-        echo '<table class="table table-sm table-striped stats-table mini-stats-table blog_statuses '.superpower_active(10939).'">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table blog_statuses">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</td>';
         echo '</tr>';

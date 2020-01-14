@@ -292,6 +292,7 @@ class READ_model extends CI_Model
             $detected_ln_type = ln_detect_type($insert_columns['ln_content']);
 
             if ($detected_ln_type['status']) {
+
                 //See if completed intent has any entity tags to be assigned:
                 foreach($this->READ_model->ln_fetch(array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -383,6 +384,14 @@ class READ_model extends CI_Model
                         'ln_content' => $links_added.' added, '.$links_edited.' edited & '.$links_removed.' removed with new content ['.$insert_columns['ln_content'].']',
                     ));
 
+                    if($links_added>0 || $links_edited>0 || $links_removed>0){
+                        //See if Session needs to be updated:
+                        $session_en = superpower_assigned();
+                        if($session_en && $session_en['en_id']==$insert_columns['ln_creator_play_id']){
+                            //Yes, update session:
+                            $this->PLAY_model->en_activate_session($session_en, true);
+                        }
+                    }
                 }
             }
         }
