@@ -14,12 +14,35 @@ class Blog extends CI_Controller {
 
     function blog_create(){
 
-        $session_en = superpower_assigned(10939, true);
-
         $en_all_6201 = $this->config->item('en_all_6201'); //blog Table
+        $session_en = superpower_assigned(10939);
+        if (!$session_en) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Expired Session or Missing Superpower',
+            ));
+
+        } elseif (!isset($_POST['newBlogTitle'])) {
+
+            //Do not treat this case as error as it could happen in moving Messages between types:
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing '.$en_all_6201[4736]['m_name'],
+            ));
+
+        }
+
+        //Validate Title:
+        $in_title_validation = $this->BLOG_model->in_title_validate($_POST['newBlogTitle']);
+        if(!$in_title_validation['status']){
+            //We had an error, return it:
+            return echo_json($in_title_validation);
+        }
+
 
         //Create blog:
-        $in = $this->BLOG_model->in_link_or_create($en_all_6201[4736]['m_name'] /* Default blog name */, $session_en['en_id'], 0, false, 6183, 6677, $_POST['in_link_child_id']);
+        $in = $this->BLOG_model->in_link_or_create($in_title_validation['in_cleaned_outcome'], $session_en['en_id']);
 
         //Also add to bookmarks:
         $this->READ_model->ln_create(array(
@@ -30,8 +53,11 @@ class Blog extends CI_Controller {
             'ln_content' => '@'.$session_en['en_id'],
         ), true);
 
-        //Go this new blog:
-        return redirect_message('/blog/'.$in['new_in_id']);
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Success. Redirecting now...',
+            'in_id' => $in['new_in_id'],
+        ));
 
     }
 
@@ -974,6 +1000,8 @@ class Blog extends CI_Controller {
             ))),
         ));
     }
+
+
 
 
     function in_notes_sort()

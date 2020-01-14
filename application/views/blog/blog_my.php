@@ -73,11 +73,11 @@
 
         echo '<h1 class="blog"><span class="icon-block-xlg">' . $en_all_11035[12214]['m_icon'] . '</span>'.$en_all_11035[12214]['m_name'].'</h1>';
 
-        echo '<h2>'.$en_all_6201[4736]['m_name'].'</h2>';
+        echo '<textarea id="newBlogTitle" class="form-control" placeholder="'.$en_all_6201[4736]['m_name'].'"></textarea>';
 
-        echo '<textarea id="newBlogTitle" class="form-control"></textarea>';
+        echo '<div class="blogCreateStatusUpdate montserrat"></div>';
 
-        echo '<div><a href="javascript:void(0);" onclick="create_blog()" class="btn btn-blog btn-five icon-block-lg">'.$en_all_11035[12214]['m_name'].'</a> or <a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');">Cancel</a></div>';
+        echo '<div class="blogCreationController"><a href="javascript:void(0);" onclick="blog_create()" class="btn btn-blog btn-five icon-block-lg">'.$en_all_11035[12214]['m_name'].'</a> or <a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');"><u>Cancel</u></a></div>';
 
         echo '</div>';
 
