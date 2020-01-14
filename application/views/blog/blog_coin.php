@@ -133,7 +133,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                        class="form-control blogadder-level-2-parent form-control-thick algolia_search"
                                        blog-id="' . $in['in_id'] . '"
                                        id="addblog-c-' . $in['in_id'] . '-1"
-                                       placeholder="+ BLOG">
+                                       placeholder="ADD PREVIOUS BLOG">
                             </div>
                            <div class="algolia_search_pad in_pad_top hidden"><b class="montserrat"><span class="icon-block"><i class="far fa-search-plus"></i></span>Create or Search</b></div>
                     </div></div>';
@@ -167,7 +167,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                maxlength="' . config_var(11071) . '"
                                blog-id="' . $in['in_id'] . '"
                                id="addblog-c-' . $in['in_id'] . '-0"
-                               placeholder="+ BLOG">
+                               placeholder="ADD NEXT BLOG">
                     </div>
                    <div class="algolia_search_pad in_pad_bottom hidden"><b class="montserrat"><span class="icon-block"><i class="far fa-search-plus"></i></span>Create or Search</b></div>
             </div></div>';
@@ -218,7 +218,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
 
-            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder=" + '.rtrim(strtoupper($en_all_4485[$en_id2]['m_name']), 'S').'" style="margin-top:6px;"></textarea>';
+            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder=" ADD '.rtrim(strtoupper($en_all_4485[$en_id2]['m_name']), 'S').'" style="margin-top:6px;"></textarea>';
 
 
 

@@ -63,16 +63,10 @@ $(document).ready(function () {
         in_update_text(this);
     });
 
-    if($('.text__4736_'+in_loaded_id).val()==js_en_all_6201[4736]['m_name']){
-        $('.text__4736_'+in_loaded_id).val('').focus();
+    //Put focus on messages if no message:
+    if(!$('#in_notes_list_4231 .notes_sortable').length){
+        $('#ln_content4231').focus();
     }
-
-    $('.text__4736_'+in_loaded_id).focus(function() {
-        //Clear default title
-        if ($(this).val().toUpperCase() == js_en_all_6201[4736]['m_name']) {
-            $(this).val('');
-        }
-    });
 
     autosize($('.text__4736_'+in_loaded_id));
 

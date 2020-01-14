@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-13 14:18:57 PST
+//Generated 2020-01-13 17:26:46 PST
 
 //SIGN IN/UP:
 $config['en_ids_4269'] = array(12343,12339,12347);
@@ -3041,12 +3041,18 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12176,12156,10939,11071,12210,12130,11077,11074,12124,11076,11075,11064,11986,11065,11063,11060,11079,11073,11066,11072,12232,11057,11056,12331,12113,12088,11061,11162,11163,12209,12208);
+$config['en_ids_6404'] = array(12176,12352,12156,10939,11071,12210,12130,11077,11074,12124,11076,11075,11064,11986,11065,11063,11060,11079,11073,11066,11072,12232,11057,11056,12331,12113,12088,11061,11162,11163,12209,12208);
 $config['en_all_6404'] = array(
     12176 => array(
         'm_icon' => '<i class="fad fa-clock blog"></i>',
         'm_name' => 'BLOG DEFAULT TIME SECONDS',
         'm_desc' => '29',
+        'm_parents' => array(6404),
+    ),
+    12352 => array(
+        'm_icon' => '',
+        'm_name' => 'BLOG NEW EXAMPLE TITLE',
+        'm_desc' => 'Example: Get Hired as a Programmer',
         'm_parents' => array(6404),
     ),
     12156 => array(
@@ -3343,8 +3349,14 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(4535,12344,12215,12343,12201,7291,11068,11999,12205,12214,12211,4536,6225,12275,6287,6205,12339,6415,11046,7256,4269,7540,11087);
+$config['en_ids_11035'] = array(12214,4535,12344,12215,12343,12201,7291,11068,11999,12205,12211,4536,6225,12275,6287,6205,12339,6415,11046,7256,4269,7540,11087);
 $config['en_all_11035'] = array(
+    12214 => array(
+        'm_icon' => '<i class="fad fa-plus blog" aria-hidden="true"></i>',
+        'm_name' => 'ADD BLOG',
+        'm_desc' => '',
+        'm_parents' => array(11035),
+    ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG',
@@ -3396,12 +3408,6 @@ $config['en_all_11035'] = array(
     12205 => array(
         'm_icon' => '<i class="fad fa-user-circle play" aria-hidden="true"></i>',
         'm_name' => 'MY PLAYER PROFILE',
-        'm_desc' => '',
-        'm_parents' => array(11035),
-    ),
-    12214 => array(
-        'm_icon' => '<i class="fad fa-plus blog" aria-hidden="true"></i>',
-        'm_name' => 'NEW BLOG',
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
