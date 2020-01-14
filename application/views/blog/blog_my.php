@@ -54,7 +54,7 @@
         } else {
 
             //No bookmarks yet:
-            echo '<div class="alert alert-warning">No blogs created yet</div>';
+            echo '<div class="alert alert-warning">No blogs created yet. Tap on '.$en_all_11035[12214]['m_icon'].' to add your first blog.</div>';
 
         }
 
