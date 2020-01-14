@@ -17,6 +17,8 @@
         //LEFT
         //echo '<div class="pull-left">'.echo_menu(12343, 'btn-blog').'</div>';
 
+        $add_blog_btn = '<a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');$(\'#newBlogTitle\').focus();" class="btn btn-blog btn-five icon-block-lg" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12214]['m_name'].'">'.$en_all_11035[12214]['m_icon'].'</a>';
+
         echo '<div class="add-blog-toggle">';
         echo '<h1 class="pull-left inline-block blog"><span class="icon-block-xlg">' . $en_all_11035[4535]['m_icon'] . '</span>'.$en_all_11035[4535]['m_name'].'</h1>';
 
@@ -28,7 +30,7 @@
             echo '<a href="/ledger?ln_type_play_id='.join(',', $this->config->item('en_ids_12273')).'&ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_creator_play_id='.$session_en['en_id'].'" class="btn btn-blog btn-five icon-block-lg '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12215]['m_name'].'">'.$en_all_11035[12215]['m_icon'].'</a>';
 
             //Create Blog:
-            echo '<a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');$(\'#newBlogTitle\').focus();" class="btn btn-blog btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12214]['m_name'].'">'.$en_all_11035[12214]['m_icon'].'</a>';
+            echo $add_blog_btn;
 
 
         echo '</div>';
@@ -54,7 +56,7 @@
         } else {
 
             //No bookmarks yet:
-            echo '<div class="alert alert-warning">No blogs created yet. Tap on '.$en_all_11035[12214]['m_icon'].' to add your first blog.</div>';
+            echo '<div class="alert alert-warning">No blogs created yet. Tap '.$add_blog_btn.' to add your first blog.</div>';
 
         }
 
