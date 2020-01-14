@@ -56,7 +56,7 @@
         } else {
 
             //No bookmarks yet:
-            echo '<div class="alert alert-warning">No blogs created yet. Tap '.$add_blog_btn.' to add your first blog.</div>';
+            echo '<div class="alert alert-warning">No blogs created yet. Tap'.$add_blog_btn.' to add your first blog.</div>';
 
         }
 
