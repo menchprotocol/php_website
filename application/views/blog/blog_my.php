@@ -14,6 +14,7 @@
         //LEFT
         //echo '<div class="pull-left">'.echo_menu(12343, 'btn-blog').'</div>';
 
+        echo '<div class="add-blog-toggle">';
         echo '<h1 class="pull-left inline-block blog"><span class="icon-block-xlg">' . $en_all_11035[4535]['m_icon'] . '</span>'.$en_all_11035[4535]['m_name'].'</h1>';
 
 
@@ -24,7 +25,7 @@
             echo '<a href="/ledger?ln_type_play_id='.join(',', $this->config->item('en_ids_12273')).'&ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_creator_play_id='.$session_en['en_id'].'" class="btn btn-blog btn-five icon-block-lg '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12215]['m_name'].'">'.$en_all_11035[12215]['m_icon'].'</a>';
 
             //Create Blog:
-            echo '<a href="javascript:void(0);" onclick="$(\'#newBlogTitle\').focus()" data-toggle="modal" data-target="#addBlogModal" class="btn btn-blog btn-five icon-block-lg '.superpower_active(10939).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12214]['m_name'].'">'.$en_all_11035[12214]['m_icon'].'</a>';
+            echo '<a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');$(\'#newBlogTitle\').focus();" class="btn btn-blog btn-five icon-block-lg '.superpower_active(10939).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12214]['m_name'].'">'.$en_all_11035[12214]['m_icon'].'</a>';
 
 
         echo '</div>';
@@ -60,26 +61,24 @@
 
         }
 
+        echo '</div>';
+
+
+
+        //Add Blog Title:
+        echo '<div class="add-blog-toggle hidden">';
+
+        echo '<h1 class="blog"><span class="icon-block-xlg">' . $en_all_11035[12214]['m_icon'] . '</span>'.$en_all_11035[12214]['m_name'].'</h1>';
+
+        echo '<h2><span class="icon-block">' . $en_all_6201[4736]['m_icon'] . '</span>'.$en_all_6201[4736]['m_name'].'</h2>';
+
+        echo '<input type="text" id="newBlogTitle" class="form-control" placeholder="'.config_var(12352).'" />';
+
+        echo '<div><a href="javascript:void(0);" onclick="create_blog()" class="btn btn-blog btn-five icon-block-lg">'.$en_all_11035[12214]['m_name'].'</a> or <a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');">Cancel</a></div>';
+
+        echo '</div>';
+
+
     }
     ?>
-</div>
-
-<div class="modal fade" id="addBlogModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><?= $en_all_6201[4736]['m_icon'].' '.$en_all_6201[4736]['m_name'] ?></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <input type="text" id="newBlogTitle" class="form-control" placeholder="<?= config_var(12352) ?>" />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary"><?= $en_all_11035[12214]['m_icon'].' '.$en_all_11035[12214]['m_name'] ?></button>
-            </div>
-        </div>
-    </div>
 </div>
