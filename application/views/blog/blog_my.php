@@ -69,15 +69,13 @@
 
         echo '<h1 class="blog"><span class="icon-block-xlg">' . $en_all_11035[12214]['m_icon'] . '</span>'.$en_all_11035[12214]['m_name'].'</h1>';
 
-        $cancel_option = ' or <a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');"><u>Cancel</u></a>';
-
         if(superpower_assigned(10939)) {
 
             echo '<textarea id="newBlogTitle" class="form-control" placeholder="'.$en_all_6201[4736]['m_name'].'"></textarea>';
 
             echo '<div class="blogCreateStatusUpdate montserrat" style="padding-bottom: 20px;"></div>';
 
-            echo '<div class="blogCreationController"><a href="javascript:void(0);" onclick="blog_create()" class="btn btn-blog btn-five icon-block-lg">'.$en_all_11035[12214]['m_name'].'</a>'.$cancel_option.'</div>';
+            echo '<div class="blogCreationController"><a href="javascript:void(0);" onclick="blog_create()" class="btn btn-blog btn-five icon-block-lg">'.$en_all_11035[12214]['m_name'].'</a> or <a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');"><u>Cancel</u></a></div>';
 
         } else {
 
@@ -86,7 +84,7 @@
             ));
 
             echo '<div style="padding:10px 0;"><p>Before creating your first blog, we invite you to read "<a href="/'.$start_ins[0]['in_id'].'" class="montserrat">'.$start_ins[0]['in_title'].'</a>" to get started.</p></div>';
-            echo '<div style="padding:10px 0;"><a href="/'.$start_ins[0]['in_id'].'" class="btn btn-blog montserrat">GET STARTED <i class="fad fa-step-forward"></i></a>'.$cancel_option.'</div>';
+            echo '<div style="padding:10px 0;"><a href="/'.$start_ins[0]['in_id'].'" class="btn btn-blog montserrat">GET STARTED <i class="fad fa-step-forward"></i></a></div>';
 
         }
 
