@@ -44,7 +44,7 @@ function echo_time_minutes($sec_int)
     if ($sec_int >= 60) {
         $min = floor($sec_int / 60);
     }
-    return ($min ? $min . ' min.' : '') . ($sec ? ($min ? ' ' : '') . $sec . ' sec.' : '');
+    return ($min ? $min . '′' : '') . ($sec ? ($min ? ' ' : '') . $sec . '″' : '');
 }
 
 
