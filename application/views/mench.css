@@ -294,7 +294,7 @@ img.no-radius {
 .read-topic{
     margin: 15px 5px 5px;
     font-size: 0.8em;
-    color: #AAAAAA;
+    color: #AAAAAA !important;
     text-transform: uppercase;
 }
 .read-info-topic{
