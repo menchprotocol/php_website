@@ -668,6 +668,57 @@ if(!$action) {
         echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No duplicates found!</div>';
     }
 
+} elseif($action=='fix_read_coins') {
+
+    foreach ($this->READ_model->ln_fetch(array(
+        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+    ), array('in_parent'), 5, 0, array( 'ln_id' => 'ASC' )) as $count => $ln) {
+
+
+        echo print_r($ln).'<hr />';
+        continue;
+        //Update owner of this blog:
+
+
+        $blog_link_type_id = 0;
+        if($ln['ln_type_play_id'] == 6157){
+
+            //ONE ANSWER
+            $blog_link_type_id = 12336; //Save Answer
+
+        } elseif($ln['ln_type_play_id'] == 7489){
+
+            //SOME ANSWERS
+            $blog_link_type_id = 12334; //Save Answer
+
+        }
+
+
+        if($blog_link_type_id > 0){
+
+            $this->READ_model->ln_create(array(
+                'ln_type_play_id' => $blog_link_type_id,
+                'ln_owner_play_id' => $ln['ln_owner_play_id'],
+                'ln_parent_blog_id' => $ln['ln_parent_blog_id'],
+                'ln_child_blog_id' => $ln['ln_child_blog_id'],
+                'ln_read_parent_id' => $ln['ln_id'],
+            ));
+
+            if(!count($this->READ_model->ln_fetch(array(
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+                'ln_parent_blog_id' => $ln['ln_parent_blog_id'],
+            ), array(), 0))){
+                $this->READ_model->read_is_complete($ln, array(
+                    'ln_type_play_id' => $ln_type_play_id,
+                    'ln_owner_play_id' => $en_id,
+                    'ln_parent_blog_id' => $ins[0]['in_id'],
+                ));
+            }
+
+        }
+
+    }
+
 } elseif($action=='or__children') {
 
     echo '<br /><p>Active <a href="/play/6914">Blog Answer Types</a> are listed below.</p><br />';
