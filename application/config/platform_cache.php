@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-14 14:35:00 PST
+//Generated 2020-01-15 10:31:56 PST
 
 //SIGN IN/UP:
 $config['en_ids_4269'] = array(12343,12339,12347);
@@ -112,13 +112,13 @@ $config['en_all_12326'] = array(
         'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER ONE LINK',
         'm_desc' => '',
-        'm_parents' => array(4755,4593,10590,12326,12227),
+        'm_parents' => array(7704,4755,4593,10590,12326,12227),
     ),
     12334 => array(
         'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER SOME LINK',
         'm_desc' => '',
-        'm_parents' => array(4755,4593,10590,12326,12227),
+        'm_parents' => array(7704,4755,4593,10590,12326,12227),
     ),
     6140 => array(
         'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
@@ -893,7 +893,7 @@ $config['en_all_12229'] = array(
 $config['en_ids_12228'] = array(7704,12326,6255,12229,6146,7347,12227,12327);
 $config['en_all_12228'] = array(
     7704 => array(
-        'm_icon' => '<i class="far fa-check-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-hand-pointer read" aria-hidden="true"></i>',
         'm_name' => 'ANSWERED',
         'm_desc' => '',
         'm_parents' => array(12228,4527),
@@ -961,7 +961,7 @@ $config['en_all_12227'] = array(
         'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER ONE LINK',
         'm_desc' => '',
-        'm_parents' => array(4755,4593,10590,12326,12227),
+        'm_parents' => array(7704,4755,4593,10590,12326,12227),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
@@ -973,7 +973,7 @@ $config['en_all_12227'] = array(
         'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER SOME LINK',
         'm_desc' => '',
-        'm_parents' => array(4755,4593,10590,12326,12227),
+        'm_parents' => array(7704,4755,4593,10590,12326,12227),
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
@@ -4675,7 +4675,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,6771),
     ),
     7704 => array(
-        'm_icon' => '<i class="far fa-check-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-hand-pointer read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWERED',
         'm_desc' => '',
         'm_parents' => array(12228,4527),
@@ -5286,7 +5286,7 @@ $config['en_all_10590'] = array(
         'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER ONE LINK',
         'm_desc' => '',
-        'm_parents' => array(4755,4593,10590,12326,12227),
+        'm_parents' => array(7704,4755,4593,10590,12326,12227),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
@@ -5298,7 +5298,7 @@ $config['en_all_10590'] = array(
         'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'ANSWER SOME LINK',
         'm_desc' => '',
-        'm_parents' => array(4755,4593,10590,12326,12227),
+        'm_parents' => array(7704,4755,4593,10590,12326,12227),
     ),
     4554 => array(
         'm_icon' => '<i class="read fad fa-volume-up"></i>',
@@ -6591,7 +6591,7 @@ $config['en_all_7712'] = array(
 );
 
 //READ ANSWERED:
-$config['en_ids_7704'] = array(6157,7489);
+$config['en_ids_7704'] = array(6157,12336,7489,12334);
 $config['en_all_7704'] = array(
     6157 => array(
         'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
@@ -6599,11 +6599,23 @@ $config['en_all_7704'] = array(
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,7704,6255,4755,4593),
     ),
+    12336 => array(
+        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
+        'm_name' => 'ONE LINK',
+        'm_desc' => '',
+        'm_parents' => array(7704,4755,4593,10590,12326,12227),
+    ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'SOME',
         'm_desc' => '',
         'm_parents' => array(12229,12227,10590,12141,7704,4755,6255,4593),
+    ),
+    12334 => array(
+        'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
+        'm_name' => 'SOME LINK',
+        'm_desc' => '',
+        'm_parents' => array(7704,4755,4593,10590,12326,12227),
     ),
 );
 
@@ -7623,7 +7635,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER ONE LINK',
         'm_desc' => '',
-        'm_parents' => array(4755,4593,10590,12326,12227),
+        'm_parents' => array(7704,4755,4593,10590,12326,12227),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
@@ -7635,7 +7647,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER SOME LINK',
         'm_desc' => '',
-        'm_parents' => array(4755,4593,10590,12326,12227),
+        'm_parents' => array(7704,4755,4593,10590,12326,12227),
     ),
     4554 => array(
         'm_icon' => '<i class="read fad fa-volume-up"></i>',
@@ -8396,7 +8408,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER ONE LINK',
         'm_desc' => '',
-        'm_parents' => array(4755,4593,10590,12326,12227),
+        'm_parents' => array(7704,4755,4593,10590,12326,12227),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
@@ -8408,7 +8420,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER SOME LINK',
         'm_desc' => '',
-        'm_parents' => array(4755,4593,10590,12326,12227),
+        'm_parents' => array(7704,4755,4593,10590,12326,12227),
     ),
     4554 => array(
         'm_icon' => '<i class="read fad fa-volume-up"></i>',

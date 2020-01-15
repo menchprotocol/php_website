@@ -142,7 +142,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
 
             //Inform User that this is a sliced video
             if ($start_sec || $end_sec) {
-                $embed_html_code .= '<div class="video-prefix"><i class="fas fa-film"></i> Watch ' . (($start_sec && $end_sec) ? 'this <b>' . echo_time_minutes(($end_sec - $start_sec)) . '</b> video clip' : 'from <b>' . ($start_sec ? echo_time_minutes($start_sec) : 'start') . '</b> to <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'end') . '</b>') . ':</div>';
+                $embed_html_code .= '<div class="read-topic"><i class="fas fa-film"></i> Watch ' . (($start_sec && $end_sec) ? 'this <b>' . echo_time_minutes(($end_sec - $start_sec)) . '</b> video clip' : 'from <b>' . ($start_sec ? echo_time_minutes($start_sec) : 'start') . '</b> to <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'end') . '</b>') . ':</div>';
             }
 
             $embed_html_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
@@ -543,11 +543,11 @@ function echo_ln($ln, $is_inner = false)
         $ui .= '<span class="icon-main"><i class="fal fa-eye-slash"></i></span>';
         $ui .= '<b data-toggle="tooltip" data-placement="top" title="Details are kept private" class="montserrat">&nbsp;Private Player</b>';
 
-    } elseif($ln['ln_creator_play_id'] > 0){
+    } elseif($ln['ln_owner_play_id'] > 0){
 
         //Show Player:
         $trainer_ens = $CI->PLAY_model->en_fetch(array(
-            'en_id' => $ln['ln_creator_play_id'],
+            'en_id' => $ln['ln_owner_play_id'],
         ));
         $full_name = one_two_explode('',' ', $trainer_ens[0]['en_name']);
 
@@ -2302,7 +2302,7 @@ function echo_breadcrumbs($in_id, $link_to_blog = false){
         //READ LIST
         $public_only = true;
         $player_list = $CI->READ_model->ln_fetch(array(
-            'ln_creator_play_id' => $session_en['en_id'],
+            'ln_owner_play_id' => $session_en['en_id'],
             'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
             'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public

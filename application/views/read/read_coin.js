@@ -12,7 +12,7 @@ $(document).ready(function () {
 
             //Log this section:
             js_ln_create({
-                ln_creator_play_id: js_pl_id, //If we have a user we log here
+                ln_owner_play_id: js_pl_id, //If we have a user we log here
                 ln_type_play_id: 7611, //Blog User Engage
                 ln_parent_play_id: section_en_id, //The section this user engaged with
                 ln_parent_blog_id: in_loaded_id,
@@ -32,7 +32,7 @@ $(document).ready(function () {
 
             //Log this section:
             js_ln_create({
-                ln_creator_play_id: js_pl_id, //If we have a user we log here
+                ln_owner_play_id: js_pl_id, //If we have a user we log here
                 ln_type_play_id: 7611, //Blog User Engage
                 ln_parent_play_id: section_en_id, //The section this user engaged with
                 ln_parent_blog_id: in_loaded_id,
@@ -48,7 +48,7 @@ $(document).ready(function () {
 
         //Log this section:
         js_ln_create({
-            ln_creator_play_id: js_pl_id, //If we have a user we log here
+            ln_owner_play_id: js_pl_id, //If we have a user we log here
             ln_type_play_id: 7611, //Blog User Engage
             ln_parent_play_id: 7614, //Expert Overview
             ln_child_play_id: section_en_id, //The section this user engaged with
@@ -64,7 +64,7 @@ $(document).ready(function () {
 
         //Log this section:
         js_ln_create({
-            ln_creator_play_id: js_pl_id, //If we have a user we log here
+            ln_owner_play_id: js_pl_id, //If we have a user we log here
             ln_type_play_id: 7611, //Blog User Engage
             ln_parent_play_id: 7614, //Expert Overview
             ln_child_play_id: section_en_id, //The section this user engaged with

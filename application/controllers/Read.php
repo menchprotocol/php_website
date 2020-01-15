@@ -238,7 +238,7 @@ class Read extends CI_Controller
         if($session_en){
             //Fetch reading list:
             $player_reads = $this->READ_model->ln_fetch(array(
-                'ln_creator_play_id' => $session_en['en_id'],
+                'ln_owner_play_id' => $session_en['en_id'],
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
                 'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -251,7 +251,7 @@ class Read extends CI_Controller
             //Log 🔴 READING LIST View:
             $this->READ_model->ln_create(array(
                 'ln_type_play_id' => 4283, //Opened 🔴 READING LIST
-                'ln_creator_play_id' => $session_en['en_id'],
+                'ln_owner_play_id' => $session_en['en_id'],
             ));
         }
 
@@ -1115,7 +1115,7 @@ class Read extends CI_Controller
 
         //Create message:
         $ln = $this->READ_model->ln_create(array(
-            'ln_creator_play_id' => $session_en['en_id'],
+            'ln_owner_play_id' => $session_en['en_id'],
             'ln_type_play_id' => $_POST['focus_ln_type_play_id'],
             'ln_parent_play_id' => $cdn_status['cdn_en']['en_id'],
             'ln_child_blog_id' => intval($_POST['in_id']),
@@ -1156,7 +1156,7 @@ class Read extends CI_Controller
         $progress_links = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12227')) . ')' => null,
-            'ln_creator_play_id' => $en_id,
+            'ln_owner_play_id' => $en_id,
         ), array(), 0);
 
         if(count($progress_links) > 0){
@@ -1168,7 +1168,7 @@ class Read extends CI_Controller
             $clear_all_link = $this->READ_model->ln_create(array(
                 'ln_content' => $message,
                 'ln_type_play_id' => 6415, //🔴 READING LIST Reset Reads
-                'ln_creator_play_id' => $en_id,
+                'ln_owner_play_id' => $en_id,
             ));
 
             //Remove all progressions:
@@ -1510,7 +1510,7 @@ class Read extends CI_Controller
                     //Log Link Only IF last delivery link was 3+ minutes ago (Since Facebook sends many of these):
                     $last_links_logged = $this->READ_model->ln_fetch(array(
                         'ln_type_play_id' => $ln_type_play_id,
-                        'ln_creator_play_id' => $en['en_id'],
+                        'ln_owner_play_id' => $en['en_id'],
                         'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (60))), //READ logged less than 1 minutes ago
                     ), array(), 1);
 
@@ -1519,7 +1519,7 @@ class Read extends CI_Controller
                         $this->READ_model->ln_create(array(
                             'ln_metadata' => $ln_metadata,
                             'ln_type_play_id' => $ln_type_play_id,
-                            'ln_creator_play_id' => $en['en_id'],
+                            'ln_owner_play_id' => $en['en_id'],
                         ));
                     }
 
@@ -1551,7 +1551,7 @@ class Read extends CI_Controller
 
                     unset($ln_data); //Reset everything in case its set from the previous loop!
                     $ln_data = array(
-                        'ln_creator_play_id' => $en['en_id'],
+                        'ln_owner_play_id' => $en['en_id'],
                         'ln_metadata' => $ln_metadata, //Entire JSON object received by Facebook API
                         'ln_order' => ($sent_by_mench ? 1 : 0), //A HACK to identify messages sent from us via Facebook Page Inbox
                     );
@@ -1585,7 +1585,7 @@ class Read extends CI_Controller
                                 'ln_content' => 'digest_received_payload() for message returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
                                 'ln_type_play_id' => 4246, //Platform Bug Reports
-                                'ln_creator_play_id' => $en['en_id'],
+                                'ln_owner_play_id' => $en['en_id'],
                             ));
 
                         }
@@ -1727,7 +1727,7 @@ class Read extends CI_Controller
                                 $this->READ_model->ln_create(array(
                                     'ln_content' => 'api_webhook() received a message type that is not yet implemented: ['.$att['type'].']',
                                     'ln_type_play_id' => 4246, //Platform Bug Reports
-                                    'ln_creator_play_id' => $en['en_id'],
+                                    'ln_owner_play_id' => $en['en_id'],
                                     'ln_metadata' => array(
                                         'ln_data' => $ln_data,
                                         'ln_metadata' => $ln_metadata,
@@ -1750,7 +1750,7 @@ class Read extends CI_Controller
                                 $this->READ_model->ln_create(array(
                                     'ln_content' => 'api_webhook() received a message type that is not yet implemented: ['.$att['type'].']',
                                     'ln_type_play_id' => 4246, //Platform Bug Reports
-                                    'ln_creator_play_id' => $en['en_id'],
+                                    'ln_owner_play_id' => $en['en_id'],
                                     'ln_metadata' => array(
                                         'ln_data' => $ln_data,
                                         'ln_metadata' => $ln_metadata,
@@ -1763,12 +1763,12 @@ class Read extends CI_Controller
 
 
                     //So did we recognized the
-                    if (!isset($ln_data['ln_type_play_id']) || !isset($ln_data['ln_creator_play_id'])) {
+                    if (!isset($ln_data['ln_type_play_id']) || !isset($ln_data['ln_owner_play_id'])) {
 
                         //Ooooopsi, this seems to be an unknown message type:
                         $this->READ_model->ln_create(array(
                             'ln_type_play_id' => 4246, //Platform Bug Reports
-                            'ln_creator_play_id' => $en['en_id'],
+                            'ln_owner_play_id' => $en['en_id'],
                             'ln_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
                             'ln_metadata' => $ln_metadata,
                         ));
@@ -1791,7 +1791,7 @@ class Read extends CI_Controller
                         //Yes, see if we have a pending requirement submission:
                         foreach($this->READ_model->ln_fetch(array(
                             'ln_type_play_id' => 6144, //🔴 READING LIST Submit Requirements
-                            'ln_creator_play_id' => $ln_data['ln_creator_play_id'], //for this user
+                            'ln_owner_play_id' => $ln_data['ln_owner_play_id'], //for this user
                             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                         ), array('in_parent'), 0) as $req_sub){
@@ -1813,7 +1813,7 @@ class Read extends CI_Controller
                                 $this->READ_model->ln_create(array(
                                     'ln_content' => 'api_webhook() found multiple matching submission requirements for the same user! Time to program the view with more options.',
                                     'ln_type_play_id' => 4246, //Platform Bug Reports
-                                    'ln_creator_play_id' => $en['en_id'],
+                                    'ln_owner_play_id' => $en['en_id'],
                                     'ln_metadata' => array(
                                         'ln_data' => $ln_data,
                                         'pending_matches' => $pending_matches,
@@ -1830,7 +1830,7 @@ class Read extends CI_Controller
                                 'ln_id' => $first_chioce['ln_id'],
                                 //Also validate other requirements:
                                 'ln_type_play_id' => 6144, //🔴 READING LIST Submit Requirements
-                                'ln_creator_play_id' => $en['en_id'], //for this user
+                                'ln_owner_play_id' => $en['en_id'], //for this user
                                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                                 'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                             ), array('in_parent'));
@@ -1858,7 +1858,7 @@ class Read extends CI_Controller
                                     'ln_parent_read_id' => $first_chioce['ln_id'],
                                     'ln_content' => 'messenger_webhook() failed to validate user response original step',
                                     'ln_type_play_id' => 4246, //Platform Bug Reports
-                                    'ln_creator_play_id' => $en['en_id'], //for this user
+                                    'ln_owner_play_id' => $en['en_id'], //for this user
                                 ));
 
                                 //Confirm with user:
@@ -1966,7 +1966,7 @@ class Read extends CI_Controller
                         'ln_type_play_id' => $ln_type_play_id,
                         'ln_metadata' => $ln_metadata,
                         'ln_content' => $quick_reply_payload,
-                        'ln_creator_play_id' => $en['en_id'],
+                        'ln_owner_play_id' => $en['en_id'],
                     ));
 
                     //Digest quick reply Payload if any:
@@ -1978,7 +1978,7 @@ class Read extends CI_Controller
                                 'ln_content' => 'digest_received_payload() for postback/referral returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
                                 'ln_type_play_id' => 4246, //Platform Bug Reports
-                                'ln_creator_play_id' => $en['en_id'],
+                                'ln_owner_play_id' => $en['en_id'],
                             ));
 
                         }
@@ -2016,7 +2016,7 @@ class Read extends CI_Controller
                     $this->READ_model->ln_create(array(
                         'ln_metadata' => $ln_metadata,
                         'ln_type_play_id' => 4266, //Messenger Optin
-                        'ln_creator_play_id' => $en['en_id'],
+                        'ln_owner_play_id' => $en['en_id'],
                     ));
 
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
@@ -2028,7 +2028,7 @@ class Read extends CI_Controller
                     $this->READ_model->ln_create(array(
                         'ln_metadata' => $ln_metadata,
                         'ln_type_play_id' => 4577, //Message Request Accepted
-                        'ln_creator_play_id' => $en['en_id'],
+                        'ln_owner_play_id' => $en['en_id'],
                     ));
 
                 } else {
@@ -2075,7 +2075,7 @@ class Read extends CI_Controller
         foreach ($ln_pending as $ln) {
 
             //Store to CDN:
-            $cdn_status = upload_to_cdn($ln['ln_content'], $ln['ln_creator_play_id'], $ln);
+            $cdn_status = upload_to_cdn($ln['ln_content'], $ln['ln_owner_play_id'], $ln);
             if(!$cdn_status['status']){
                 continue;
             }
@@ -2085,7 +2085,7 @@ class Read extends CI_Controller
                 'ln_content' => $cdn_status['cdn_url'], //CDN URL
                 'ln_child_play_id' => $cdn_status['cdn_en']['en_id'], //New URL Player
                 'ln_status_play_id' => 6176, //Link Published
-            ), $ln['ln_creator_play_id'], 10690 /* User Media Uploaded */);
+            ), $ln['ln_owner_play_id'], 10690 /* User Media Uploaded */);
 
             //Increase counter:
             $counter++;

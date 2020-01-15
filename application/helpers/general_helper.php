@@ -27,7 +27,7 @@ function load_algolia($index_name)
     return $client->initIndex($index_name);
 }
 
-function detect_missing_columns($insert_columns, $required_columns, $ln_creator_play_id)
+function detect_missing_columns($insert_columns, $required_columns, $ln_owner_play_id)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach ($required_columns as $req_field) {
@@ -41,7 +41,7 @@ function detect_missing_columns($insert_columns, $required_columns, $ln_creator_
                     'required_columns' => $required_columns,
                 ),
                 'ln_type_play_id' => 4246, //Platform Bug Reports
-                'ln_creator_play_id' => $ln_creator_play_id,
+                'ln_owner_play_id' => $ln_owner_play_id,
             ));
 
             return true; //We have an issue
@@ -698,7 +698,7 @@ function common_prefix($child_list, $child_field, $in = null, $max_look = 0){
     return trim($common_prefix);
 }
 
-function upload_to_cdn($file_url, $ln_creator_play_id = 0, $ln_metadata = null, $is_local = false, $page_title = null)
+function upload_to_cdn($file_url, $ln_owner_play_id = 0, $ln_metadata = null, $is_local = false, $page_title = null)
 {
 
     /*
@@ -756,7 +756,7 @@ function upload_to_cdn($file_url, $ln_creator_play_id = 0, $ln_metadata = null, 
             //Define new URL:
             $cdn_new_url = trim($result['ObjectURL']);
 
-            if($ln_creator_play_id < 1){
+            if($ln_owner_play_id < 1){
                 //Just return URL:
                 return array(
                     'status' => 1,
@@ -765,7 +765,7 @@ function upload_to_cdn($file_url, $ln_creator_play_id = 0, $ln_metadata = null, 
             }
 
             //Create and link new player to CDN and uploader:
-            $url_player = $CI->PLAY_model->en_sync_url($cdn_new_url, $ln_creator_play_id, array(4396 /* Mench CDN Player */, $ln_creator_play_id), 0, $page_title);
+            $url_player = $CI->PLAY_model->en_sync_url($cdn_new_url, $ln_owner_play_id, array(4396 /* Mench CDN Player */, $ln_owner_play_id), 0, $page_title);
 
             if(isset($url_player['en_url']['en_id']) && $url_player['en_url']['en_id'] > 0){
 
@@ -780,7 +780,7 @@ function upload_to_cdn($file_url, $ln_creator_play_id = 0, $ln_metadata = null, 
 
                 $CI->READ_model->ln_create(array(
                     'ln_type_play_id' => 4246, //Platform Bug Reports
-                    'ln_creator_play_id' => $ln_creator_play_id,
+                    'ln_owner_play_id' => $ln_owner_play_id,
                     'ln_content' => 'upload_to_cdn() Failed to create new player from CDN file',
                     'ln_metadata' => array(
                         'file_url' => $file_url,
@@ -799,7 +799,7 @@ function upload_to_cdn($file_url, $ln_creator_play_id = 0, $ln_metadata = null, 
 
             $CI->READ_model->ln_create(array(
                 'ln_type_play_id' => 4246, //Platform Bug Reports
-                'ln_creator_play_id' => $ln_creator_play_id,
+                'ln_owner_play_id' => $ln_owner_play_id,
                 'ln_content' => 'upload_to_cdn() Failed to upload file to Mench CDN',
                 'ln_metadata' => array(
                     'file_url' => $file_url,
@@ -820,7 +820,7 @@ function upload_to_cdn($file_url, $ln_creator_play_id = 0, $ln_metadata = null, 
         //Log error:
         $CI->READ_model->ln_create(array(
             'ln_type_play_id' => 4246, //Platform Bug Reports
-            'ln_creator_play_id' => $ln_creator_play_id,
+            'ln_owner_play_id' => $ln_owner_play_id,
             'ln_content' => 'upload_to_cdn() Failed to load AWS S3 module',
             'ln_metadata' => array(
                 'file_url' => $file_url,
@@ -1281,7 +1281,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 }
 
-function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_play_id = 0)
+function update_metadata($obj_type, $obj_id, $new_fields, $ln_owner_play_id = 0)
 {
 
     $CI =& get_instance();
@@ -1358,13 +1358,13 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_play_id = 
 
         $affected_rows = $CI->BLOG_model->in_update($obj_id, array(
             'in_metadata' => $metadata,
-        ), false, $ln_creator_play_id);
+        ), false, $ln_owner_play_id);
 
     } elseif ($obj_type == 'en') {
 
         $affected_rows = $CI->PLAY_model->en_update($obj_id, array(
             'en_metadata' => $metadata,
-        ), false, $ln_creator_play_id);
+        ), false, $ln_owner_play_id);
 
     } elseif ($obj_type == 'ln') {
 

@@ -103,7 +103,7 @@
 
     //Player Navigation
     if($session_en && count($this->READ_model->ln_fetch(array(
-            'ln_creator_play_id' => $session_en['en_id'],
+            'ln_owner_play_id' => $session_en['en_id'],
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ), array(), 1))){

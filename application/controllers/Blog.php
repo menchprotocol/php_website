@@ -47,7 +47,7 @@ class Blog extends CI_Controller {
         //Also add to bookmarks:
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 10573, //Bookmarks
-            'ln_creator_play_id' => $session_en['en_id'],
+            'ln_owner_play_id' => $session_en['en_id'],
             'ln_child_blog_id' => $in['new_in_id'],
             'ln_parent_play_id' => $session_en['en_id'],
             'ln_content' => '@'.$session_en['en_id'],
@@ -90,7 +90,7 @@ class Blog extends CI_Controller {
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
             $this->READ_model->ln_create(array(
-                'ln_creator_play_id' => $session_en['en_id'],
+                'ln_owner_play_id' => $session_en['en_id'],
                 'ln_type_play_id' => 4993, //Trainer Opened Blog
                 'ln_child_blog_id' => $in_id,
                 'ln_order' => $new_order,
@@ -186,7 +186,7 @@ class Blog extends CI_Controller {
 
         //Log up-vote:
         $this->READ_model->ln_create(array(
-            'ln_creator_play_id' => $session_en['en_id'],
+            'ln_owner_play_id' => $session_en['en_id'],
             'ln_parent_play_id' => $session_en['en_id'],
             'ln_type_play_id' => 4983,
             'ln_content' => '@'.$session_en['en_id'],
@@ -478,7 +478,7 @@ class Blog extends CI_Controller {
                     $this->READ_model->ln_create(array(
                         'ln_content' => 'Blogger requesting feature review',
                         'ln_type_play_id' => 7504, //Trainer Review Required
-                        'ln_creator_play_id' => $session_en['en_id'],
+                        'ln_owner_play_id' => $session_en['en_id'],
                         'ln_child_blog_id' => $_POST['in_id'],
                     ));
                 }
@@ -671,7 +671,7 @@ class Blog extends CI_Controller {
 
             //Count user READING LIST Progression Completed:
             $count_progression = $this->READ_model->ln_fetch(array(
-                'ln_creator_play_id' => $apu['en_id'],
+                'ln_owner_play_id' => $apu['en_id'],
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -696,7 +696,7 @@ class Blog extends CI_Controller {
             $item_ui .= '<a href="/blog/'.$_POST['in_loaded_id'].'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
             $item_ui .= '&nbsp;<a href="/play/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="User Player"><i class="fas fa-at"></i></a>';
 
-            $item_ui .= '&nbsp;<a href="/ledger?ln_creator_play_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
+            $item_ui .= '&nbsp;<a href="/ledger?ln_owner_play_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
 
             $item_ui .= '</td>';
             $item_ui .= '</tr>';
@@ -859,7 +859,7 @@ class Blog extends CI_Controller {
 
         //Create Message:
         $ln = $this->READ_model->ln_create(array(
-            'ln_creator_play_id' => $session_en['en_id'],
+            'ln_owner_play_id' => $session_en['en_id'],
             'ln_order' => 1 + $this->READ_model->ln_max_order(array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'ln_type_play_id' => intval($_POST['focus_ln_type_play_id']),
@@ -968,7 +968,7 @@ class Blog extends CI_Controller {
 
         //Create message:
         $ln = $this->READ_model->ln_create(array(
-            'ln_creator_play_id' => $session_en['en_id'],
+            'ln_owner_play_id' => $session_en['en_id'],
             'ln_type_play_id' => $_POST['focus_ln_type_play_id'],
             'ln_parent_play_id' => $cdn_status['cdn_en']['en_id'],
             'ln_child_blog_id' => intval($_POST['in_id']),

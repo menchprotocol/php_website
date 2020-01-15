@@ -410,7 +410,7 @@ if(!$action) {
     echo '<div>Choose one of your 🔴 READING LIST blogs to debug:</div><br />';
 
     $player_reads = $this->READ_model->ln_fetch(array(
-        'ln_creator_play_id' => $session_en['en_id'],
+        'ln_owner_play_id' => $session_en['en_id'],
         'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
