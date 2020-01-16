@@ -656,6 +656,36 @@ class READ_model extends CI_Model
 
         }
 
+        //Nothing found, go one level up (if available before read list) and repeat:
+        $player_read_ids = $this->READ_model->read_ids($en_id);
+
+        //Make sure this is not in their reading list (no more up to go)
+        if(!in_array($in['in_id'], $player_read_ids)){
+
+            foreach ($this->BLOG_model->in_fetch_recursive_parents($in['in_id']) as $grand_parent_ids) {
+
+                if(!array_intersect($grand_parent_ids, $player_read_ids)){
+                    //Parent tree is NOT part of their 🔴 READING LIST:
+                    continue;
+                }
+
+                //Fetch first parent:
+                $first_parent_ins = $this->BLOG_model->in_fetch(array(
+                    'in_id' => $grand_parent_ids[0], //One level up
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                ));
+
+                if(count($first_parent_ins)){
+
+                    //Go one level up:
+                    $found_in_id = $this->READ_model->read_next_find($en_id, $first_parent_ins[0]);
+
+                    if($found_in_id != 0){
+                        return $found_in_id;
+                    }
+                }
+            }
+        }
 
         //Nothing found!
         return 0;
@@ -1180,14 +1210,11 @@ class READ_model extends CI_Model
             //Fetch user blogs:
             $player_read_ids = $this->READ_model->read_ids($en_id);
 
-            //Fetch all parents trees for this blog
-            $recursive_parents = $this->BLOG_model->in_fetch_recursive_parents($in['in_id']);
-
             //Prevent duplicate processes even if on multiple parent trees:
             $parents_checked = array();
 
             //Go through parents trees and detect intersects with user blogs. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-            foreach ($recursive_parents as $grand_parent_ids) {
+            foreach ($this->BLOG_model->in_fetch_recursive_parents($in['in_id']) as $grand_parent_ids) {
 
                 //Does this parent and its grandparents have an intersection with the user blogs?
                 if(!array_intersect($grand_parent_ids, $player_read_ids)){
@@ -1444,11 +1471,9 @@ class READ_model extends CI_Model
             if(in_array($ins[0]['in_id'], $player_read_ids)){
                 $in_reading_list = true;
             } else {
-                //Fetch all parents trees for this blog
-                $recursive_parents = $this->BLOG_model->in_fetch_recursive_parents($ins[0]['in_id']);
 
                 //Go through parents trees and detect intersects with user blogs. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-                foreach ($recursive_parents as $grand_parent_ids) {
+                foreach ($this->BLOG_model->in_fetch_recursive_parents($ins[0]['in_id']) as $grand_parent_ids) {
 
                     //Does this parent and its grandparents have an intersection with the user blogs?
                     if (array_intersect($grand_parent_ids, $player_read_ids)) {
