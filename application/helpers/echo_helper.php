@@ -2422,7 +2422,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         foreach($in__children as $key => $child_in){
 
             //Has this been completed before by this user?
-            $footnotes = ( $next_key==$key && !$all_done ? 'IS NEXT READ' : ( $completion_rate[$key]['completion_percentage'] > 0 ? $completion_rate[$key]['completion_percentage'].'% DONE' : '' ));
+            $footnotes = ( $completion_rate[$key]['completion_percentage'] > 0 ? $completion_rate[$key]['completion_percentage'].'% DONE ' : '' ).( $next_key==$key && !$all_done ? 'IS NEXT READ' : '');
 
             if($push_message){
 
