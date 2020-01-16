@@ -587,7 +587,7 @@ class Read extends CI_Controller
         $addup_count = addup_array($link_types_counts, 'total_count');
 
         //Link Direction
-        echo_2level_stats('Types', 10591, 4593, $link_types_counts, $addup_count, 'ln_type_play_id', 'total_count');
+        echo_2level_stats('Types', 2738, 4593, $link_types_counts, $addup_count, 'ln_type_play_id', 'total_count');
 
 
     }

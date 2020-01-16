@@ -617,7 +617,7 @@ function echo_ln($ln, $is_inner = false)
 
     //Link coins
     if(in_array($ln['ln_type_play_id'], $CI->config->item('en_ids_12141'))){
-        $direction = filter_cache_group($ln['ln_type_play_id'], 10591);
+        $direction = filter_cache_group($ln['ln_type_play_id'], 2738);
         $ui .= '<span class="read-micro-data"><span style="min-width:30px; display: inline-block;" class="montserrat '.extract_icon_color($direction['m_icon']).'">'.$direction['m_icon'].'</i> COIN</span></span> &nbsp;';
     }
 

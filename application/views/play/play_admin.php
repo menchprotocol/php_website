@@ -117,8 +117,6 @@ if(!$action) {
     echo '</tr>';
 
 
-    $en_all_10591 = $this->config->item('en_all_10591');
-
     //Add some empty space:
     echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="4">&nbsp;</td></tr>';
 
@@ -129,7 +127,7 @@ if(!$action) {
     ), array('en_type'), 0, 0, array('total_transactions' => 'DESC'), 'COUNT(ln_id) as total_transactions, en_name, en_icon, en_id, ln_type_play_id', 'en_id, en_name, en_icon, ln_type_play_id') as $ln) {
 
         //Determine which weight group this belongs to:
-        $direction = filter_cache_group($ln['en_id'], 10591);
+        $direction = filter_cache_group($ln['en_id'], 2738);
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span><a href="/play/'.$ln['en_id'].'" class="montserrat doupper">'.$ln['en_name'].'</a></td>';
