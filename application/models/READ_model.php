@@ -3439,7 +3439,6 @@ class READ_model extends CI_Model
                 'ln_owner_play_id' => $en_id,
                 'ln_parent_blog_id' => $ins[0]['in_id'],
                 'ln_child_blog_id' => $answer_in_id,
-                'ln_parent_read_id' => $answer_in_id,
             ));
         }
 
