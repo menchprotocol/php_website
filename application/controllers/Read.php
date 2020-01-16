@@ -64,7 +64,6 @@ class Read extends CI_Controller
 
             $ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => $in_id,
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
             ));
 
             //Find next blog based on player's reading list:

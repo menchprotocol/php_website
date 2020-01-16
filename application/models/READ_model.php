@@ -2170,8 +2170,15 @@ class READ_model extends CI_Model
 
         if($top_level && $metadata_this['steps_answered_count'] > 0){
 
-            //See assessment summary:
-            $metadata_this['steps_answered_score'] = floor( ($metadata_this['steps_answered_marks'] - $metadata_this['steps_marks_min']) / ( $metadata_this['steps_marks_max'] - $metadata_this['steps_marks_min'] ) * 100 );
+            $divider = ( $metadata_this['steps_marks_max'] - $metadata_this['steps_marks_min'] ) * 100;
+
+            if($divider > 0){
+                //See assessment summary:
+                $metadata_this['steps_answered_score'] = floor( ($metadata_this['steps_answered_marks'] - $metadata_this['steps_marks_min']) / $divider );
+            } else {
+                //See assessment summary:
+                $metadata_this['steps_answered_score'] = 0;
+            }
 
         }
 
