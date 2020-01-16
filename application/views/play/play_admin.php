@@ -670,54 +670,52 @@ if(!$action) {
 
 } elseif($action=='fix_read_coins') {
 
+    $total_updated = 0;
+    $total_added = 0;
+
     foreach ($this->READ_model->ln_fetch(array(
         'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
     ), array('in_parent'), 5, 0, array( 'ln_id' => 'ASC' )) as $count => $ln) {
 
+        //Anything set here would be updated:
+        $update_columns = array();
 
-        echo print_r($ln).'<hr />';
-        continue;
-        //Update owner of this blog:
+        if($ln['ln_child_blog_id'] > 0 && $ln['ln_type_play_id'] == 6157){ //ONE ANSWER
 
-
-        $blog_link_type_id = 0;
-        if($ln['ln_type_play_id'] == 6157){
-
-            //ONE ANSWER
-            $blog_link_type_id = 12336; //Save Answer
-
-        } elseif($ln['ln_type_play_id'] == 7489){
-
-            //SOME ANSWERS
-            $blog_link_type_id = 12334; //Save Answer
-
-        }
-
-
-        if($blog_link_type_id > 0){
-
+            //Create separate answer:
+            $total_added++;
             $this->READ_model->ln_create(array(
-                'ln_type_play_id' => $blog_link_type_id,
+                'ln_type_play_id' => 12336,
                 'ln_owner_play_id' => $ln['ln_owner_play_id'],
                 'ln_parent_blog_id' => $ln['ln_parent_blog_id'],
                 'ln_child_blog_id' => $ln['ln_child_blog_id'],
                 'ln_read_parent_id' => $ln['ln_id'],
             ));
 
-            if(!count($this->READ_model->ln_fetch(array(
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-                'ln_parent_blog_id' => $ln['ln_parent_blog_id'],
-            ), array(), 0))){
-                $this->READ_model->read_is_complete($ln, array(
-                    'ln_type_play_id' => $ln_type_play_id,
-                    'ln_owner_play_id' => $en_id,
-                    'ln_parent_blog_id' => $ins[0]['in_id'],
-                ));
-            }
+            //Move answer away:
+            $update_columns['ln_child_blog_id'] = 0;
 
         }
 
+        //Assign creditor if still a read coin:
+        if(!$ln['ln_child_play_id']){
+            //Fetch & append coin owner:
+            $authors = $this->READ_model->ln_fetch(array(
+                'ln_type_play_id' => 4250,
+                'ln_child_blog_id' => $ln['in_id'],
+            ));
+            $update_columns['ln_child_play_id'] = $authors[0]['ln_owner_play_id'];
+        }
+
+
+        if(count($update_columns)){
+            $total_updated += $this->READ_model->ln_update($ln['in_id'], $update_columns);
+        }
+
+
     }
+
+    echo $total_added.' Added & '.$total_updated.' Updated.';
 
 } elseif($action=='or__children') {
 
