@@ -713,7 +713,7 @@ if(!$action) {
 
 
         if(count($update_columns)){
-            $total_updated += $this->READ_model->ln_update($ln['in_id'], $update_columns);
+            $total_updated += $this->READ_model->ln_update($ln['ln_id'], $update_columns);
             echo ' UPDATED';
         }
 
