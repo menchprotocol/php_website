@@ -1710,13 +1710,8 @@ class READ_model extends CI_Model
 
             } else {
 
-                //JS Redirect:
-                echo '<div class="alert alert-success" role="alert" style="margin:0;"><i class="fas fa-check-circle"></i> Read Completed, Moving to Next Read...</div>';
-                echo "<script> $(document).ready(function () {
-    setTimeout(function () {
-        window.location = '/' + in_loaded_id + '/next';
-    }, 377);
-}); </script>";
+                //JS Redirect asap:
+                echo "<script> $(document).ready(function () { window.location = '/' + in_loaded_id + '/next'; }); </script>";
 
             }
         }
