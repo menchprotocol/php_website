@@ -127,8 +127,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= echo_in($parent_in, 0, true, $is_author && $is_active);
             }
 
-            $this_tab .= '<div class="'.( $is_author && $is_active ? '' : ' hidden ' ).'"><div class="list-group-item itemblog '.superpower_active(10939).'">
-                            <div class="form-group is-empty" style="margin: 0; padding: 0;">
+            $this_tab .= '<div class="list-group-item itemblog '.superpower_active(10939).'">
+                            <div class="form-group is-empty '.( $is_author && $is_active ? '' : ' hidden ' ).'" style="margin: 0; padding: 0;">
                                 <input type="text"
                                        class="form-control blogadder-level-2-parent form-control-thick algolia_search"
                                        blog-id="' . $in['in_id'] . '"
@@ -136,7 +136,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                        placeholder="ADD PREVIOUS BLOG">
                             </div>
                            <div class="algolia_search_pad in_pad_top hidden"><b class="montserrat"><span class="icon-block"><i class="far fa-search-plus"></i></span>Create or Search</b></div>
-                    </div></div>';
+                    </div>';
 
             $this_tab .= '</div>';
 
@@ -160,8 +160,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= echo_in($child_in, $in['in_id'], false, $is_author && $is_active);
             }
 
-            $this_tab .= '<div class="'.( $is_author && $is_active ? '' : ' hidden ' ).'"><div class="list-group-item itemblog '.superpower_active(10939).'">
-                    <div class="form-group is-empty" style="margin: 0; padding: 0;">
+            $this_tab .= '<div class="list-group-item itemblog '.superpower_active(10939).'">
+                    <div class="form-group is-empty '.( $is_author && $is_active ? '' : ' hidden ' ).'" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control blogadder-level-2-child form-control-thick algolia_search"
                                maxlength="' . config_var(11071) . '"
@@ -170,7 +170,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                placeholder="ADD NEXT BLOG">
                     </div>
                    <div class="algolia_search_pad in_pad_bottom hidden"><b class="montserrat"><span class="icon-block"><i class="far fa-search-plus"></i></span>Create or Search</b></div>
-            </div></div>';
+            </div>';
             $this_tab .= '</div>';
 
 
