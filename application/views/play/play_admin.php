@@ -670,6 +670,7 @@ if(!$action) {
 
 } elseif($action=='fix_read_coins') {
 
+    exit; //May need to be validated later...
     $total_updated = 0;
     $total_added = 0;
     $total_rows = $this->READ_model->ln_fetch(array(
