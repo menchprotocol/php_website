@@ -1555,6 +1555,7 @@ class READ_model extends CI_Model
 
             } elseif (in_array($ins[0]['in_type_play_id'], array(6914,6907))) {
 
+                //Reverse check answers to see if they have already unlocked a path:
                 $unlocked_connections = $this->READ_model->ln_fetch(array(
                     'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -1823,7 +1824,7 @@ class READ_model extends CI_Model
                     //Has this been previously selected?
                     $previously_selected = count($this->READ_model->ln_fetch(array(
                         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //SUCCESS ANSWER
+                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ BLOG LINKS
                         'ln_parent_blog_id' => $ins[0]['in_id'],
                         'ln_child_blog_id' => $child_in['in_id'],
                         'ln_owner_play_id' => $recipient_en['en_id'],
@@ -2113,42 +2114,40 @@ class READ_model extends CI_Model
 
 
             //Now let's check user answers to see what they have done:
-            foreach($this->READ_model->ln_fetch(array(
+            $total_completion = $this->READ_model->ln_fetch(array(
                 'ln_owner_play_id' => $en_id, //Belongs to this User
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                 'ln_parent_blog_id IN (' . join(',', $question_in_ids ) . ')' => null,
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            )) as $expansion_in) {
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_completions');
 
-                //Addup data for this blog:
-                $metadata_this['steps_answered_count'] += 1;
+            //Add to total answer count:
+            $metadata_this['steps_answered_count'] += $total_completion[0]['total_completions'];
 
-                //Calculate if answered:
-                if(in_array($expansion_in['ln_type_play_id'], $this->config->item('en_ids_7704') /* User Read Answered Successfully */)){
+            //Go through answers:
+            foreach($this->READ_model->ln_fetch(array(
+                'ln_owner_play_id' => $en_id, //Belongs to this User
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ BLOG LINKS
+                'ln_parent_blog_id IN (' . join(',', $question_in_ids ) . ')' => null,
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            ), array('in_child'), 500) as $answer_in) {
 
-                    //Fetch blog data:
-                    $ins = $this->BLOG_model->in_fetch(array(
-                        'in_id' => $expansion_in['ln_child_blog_id'],
-                        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                    ));
+                //Fetch recursively:
+                $recursive_stats = $this->READ_model->read__completion_marks($en_id, $answer_in, false);
 
-                    if(count($ins) > 0){
-                        //Fetch recursive:
-                        $recursive_stats = $this->READ_model->read__completion_marks($en_id, array_merge($expansion_in, $ins[0]), false);
-                        $metadata_this['steps_answered_count'] += $recursive_stats['steps_answered_count'];
+                $metadata_this['steps_answered_count'] += $recursive_stats['steps_answered_count'];
+                $metadata_this['steps_answered_marks'] += $answer_marks_index[$answer_in['in_id']] + $recursive_stats['steps_answered_marks'];
 
-                        $this_answer_marks = $answer_marks_index[$expansion_in['ln_child_blog_id']];
-                        $metadata_this['steps_answered_marks'] += $this_answer_marks + $recursive_stats['steps_answered_marks'];
-
-                    }
-                }
             }
         }
 
 
         if($top_level && $metadata_this['steps_answered_count'] > 0){
+
             //See assessment summary:
             $metadata_this['steps_answered_score'] = floor( ($metadata_this['steps_answered_marks'] - $metadata_this['steps_marks_min']) / ( $metadata_this['steps_marks_max'] - $metadata_this['steps_marks_min'] ) * 100 );
+
         }
 
 
@@ -2203,7 +2202,7 @@ class READ_model extends CI_Model
 
             //Now let's check user answers to see what they have done:
             foreach($this->READ_model->ln_fetch(array(
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7704') ) . ')' => null, //User Read Answered Successfully
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ BLOG LINKS
                 'ln_owner_play_id' => $en_id, //Belongs to this User
                 'ln_parent_blog_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_blog_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
@@ -3420,7 +3419,6 @@ class READ_model extends CI_Model
 
         }
 
-
         //Remove ALL previous answers:
         foreach ($this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -3432,7 +3430,6 @@ class READ_model extends CI_Model
                 'ln_status_play_id' => 6173, //Link Removed
             ), $en_id, 12129 /* READ ANSWER ARCHIVED */);
         }
-
 
         //Add New Answers
         $answers_newly_added = 0;
