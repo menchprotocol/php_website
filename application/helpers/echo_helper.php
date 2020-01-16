@@ -142,7 +142,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
 
             //Inform User that this is a sliced video
             if ($start_sec || $end_sec) {
-                $embed_html_code .= '<div class="read-topic"><span class="icon-block"><i class="fas fa-film"></i></span>Watch ' . (($start_sec && $end_sec) ? 'this <b>' . echo_time_minutes(($end_sec - $start_sec)) . '</b> video clip' : 'from <b>' . ($start_sec ? echo_time_minutes($start_sec) : 'start') . '</b> to <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'end') . '</b>') . ':</div>';
+                $embed_html_code .= '<div class="read-topic"><span class="icon-block"><i class="fas fa-film"></i></span>WATCH ' . (($start_sec && $end_sec) ? 'THIS <b>' . echo_time_minutes(($end_sec - $start_sec)) . '</b> VIDEO SLICE' : 'FROM <b>' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
             }
 
             $embed_html_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
