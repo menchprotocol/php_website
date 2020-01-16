@@ -578,7 +578,7 @@ class READ_model extends CI_Model
                 'ln_type_play_id' => 7492,
                 'ln_owner_play_id' => $en_id, //Belongs to this User
                 'ln_parent_blog_id IN (' . join(',' , $check_termination_answers) . ')' => null, //All possible answers that might terminate...
-                'ln_status_play_id' => 6176, //Link Published
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ))) > 0){
             return -1;
         }
@@ -591,13 +591,23 @@ class READ_model extends CI_Model
             $is_expansion = isset($in_metadata['in__metadata_expansion_steps'][$common_step_in_id]);
             $is_condition = isset($in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]);
 
-            //Is this completed?
-            $completed_steps = $this->READ_model->ln_fetch(array(
-                'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
-                'ln_owner_play_id' => $en_id, //Belongs to this User
-                'ln_parent_blog_id' => $common_step_in_id,
-                'ln_status_play_id' => 6176, //Link Published
-            ),  ( $is_expansion ? array('in_child') : array() ));
+            if($is_expansion){
+                //Expansion reads
+                $completed_steps = $this->READ_model->ln_fetch(array(
+                    'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12326')) . ')' => null, //READ BLOG LINKS
+                    'ln_owner_play_id' => $en_id, //Belongs to this User
+                    'ln_parent_blog_id' => $common_step_in_id,
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                ), array('in_child'));
+            } else {
+                //Completion reads:
+                $completed_steps = $this->READ_model->ln_fetch(array(
+                    'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+                    'ln_owner_play_id' => $en_id, //Belongs to this User
+                    'ln_parent_blog_id' => $common_step_in_id,
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                ));
+            }
 
             //Have they completed this?
             if(count($completed_steps) == 0){
@@ -608,31 +618,33 @@ class READ_model extends CI_Model
             } elseif($is_expansion){
 
                 //Completed step that has OR expansions, check recursively to see if next step within here:
-                $found_in_id = $this->READ_model->read_next_find($en_id, $completed_steps[0]);
+                foreach($completed_steps as $completed_step){
 
-                if($found_in_id != 0){
-                    return $found_in_id;
+                    $found_in_id = $this->READ_model->read_next_find($en_id, $completed_step);
+
+                    if($found_in_id != 0){
+                        return $found_in_id;
+                    }
                 }
 
             } elseif($is_condition){
 
                 //See which path they got unlocked, if any:
-                $unlocked_conditions = $this->READ_model->ln_fetch(array(
-                    'ln_type_play_id' => 6140, //READ UNLOCK LINK
+                foreach($this->READ_model->ln_fetch(array(
+                    'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12326')) . ')' => null, //READ BLOG LINKS
                     'ln_owner_play_id' => $en_id, //Belongs to this User
                     'ln_parent_blog_id' => $common_step_in_id,
                     'ln_child_blog_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]) . ')' => null,
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                ), array('in_child'));
-
-                if(count($unlocked_conditions) > 0){
+                ), array('in_child')) as $unlocked_condition){
 
                     //Completed step that has OR expansions, check recursively to see if next step within here:
-                    $found_in_id = $this->READ_model->read_next_find($en_id, $unlocked_conditions[0]);
+                    $found_in_id = $this->READ_model->read_next_find($en_id, $unlocked_condition);
 
                     if($found_in_id != 0){
                         return $found_in_id;
                     }
+
                 }
             }
         }
@@ -1724,19 +1736,19 @@ class READ_model extends CI_Model
             } else {
 
                 //Have they already selected answers? If so, show them their selection and focus on navigation:
-                $read_completes = $this->READ_model->ln_fetch(array(
+                $read_answers = $this->READ_model->ln_fetch(array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ BLOG LINK
                     'ln_parent_blog_id' => $ins[0]['in_id'],
                     'ln_owner_play_id' => $recipient_en['en_id'],
                 ), array('in_child'));
 
 
-                if(count($read_completes) > 0){
+                if(count($read_answers) > 0){
 
                     if($push_message){
 
-                        echo_in_list($ins[0], $read_completes, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:');
+                        echo_in_list($ins[0], $read_answers, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:');
 
                     } else {
 
@@ -1745,7 +1757,7 @@ class READ_model extends CI_Model
                         echo '<div class="selected_before">';
 
                         //List answers:
-                        echo_in_list($ins[0], $read_completes, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:');
+                        echo_in_list($ins[0], $read_answers, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:');
 
                         //Allow to edit:
                         echo '<div class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>UPDATE ANSWER</u></a></div>';
@@ -1799,7 +1811,7 @@ class READ_model extends CI_Model
 
                 } else {
 
-                    echo '<div class="selected_before '.( count($read_completes)>0 ? 'hidden' : '' ).'">';
+                    echo '<div class="selected_before '.( count($read_answers)>0 ? 'hidden' : '' ).'">';
 
                     //HTML:
                     if ($ins[0]['in_type_play_id'] == 6684) {
@@ -1903,7 +1915,7 @@ class READ_model extends CI_Model
                 } else {
 
                     //Button to submit selection:
-                    echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($read_completes)>0 ? 'UPDATE' : 'SELECT' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($read_completes)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL</u></a></span>' : '' ).' <span class="result-update"></span></div>';
+                    echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($read_answers)>0 ? 'UPDATE' : 'SELECT' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($read_answers)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL</u></a></span>' : '' ).' <span class="result-update"></span></div>';
 
                     //Close list:
                     echo '</div>';
