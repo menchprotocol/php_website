@@ -50,6 +50,8 @@ function in_update_text(this_handler){
 
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
+
+
 $(document).ready(function () {
 
     //Lookout for completion mark changes:

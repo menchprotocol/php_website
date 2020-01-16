@@ -1554,8 +1554,8 @@ class READ_model extends CI_Model
         //Is it incomplete & can it be instantly marked as complete?
         if (!count($read_completes) && in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_12330'))) {
 
+            //We might be able to complete it now:
             //It can, let's process it accordingly for each type within @12330
-
             if ($ins[0]['in_type_play_id'] == 6677) {
 
                 //Log progress link:
@@ -1576,8 +1576,6 @@ class READ_model extends CI_Model
                     'ln_owner_play_id' => $recipient_en['en_id'],
                 ), array('in_parent'), 1);
 
-                echo 'COUNT['.count($unlocked_connections).'] ['.$unlocked_connections[0]['ln_type_play_id'].']';
-
                 if(count($unlocked_connections) > 0){
 
                     //They already have unlocked a path here!
@@ -1593,8 +1591,6 @@ class READ_model extends CI_Model
 
                     //Could we determine the coin type?
                     if($read_completion_type_id > 0){
-
-                        echo 'Completed by ['.$read_completion_type_id.']';
 
                         //Yes, Issue coin:
                         array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
@@ -1642,7 +1638,6 @@ class READ_model extends CI_Model
         $next_step_quick_replies = array();
 
         if(!$next_step_only){
-
 
             if(!$push_message){
 
@@ -1706,6 +1701,25 @@ class READ_model extends CI_Model
 
 
 
+
+        if(count($read_completes) && !count($in__children) && !count($in__messages)){
+            //Move to the next one as there is nothing to do here:
+            if($push_message){
+
+                //Code later...
+
+            } else {
+
+                //JS Redirect:
+                echo '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i> Read Completed, Moving to Next Read...</div>';
+                echo "<script> $(document).ready(function () {
+    setTimeout(function () {
+        window.location = '/' + in_loaded_id + '/next';
+    }, 377);
+}); </script>";
+
+            }
+        }
 
 
 
