@@ -1576,7 +1576,7 @@ class READ_model extends CI_Model
                     'ln_owner_play_id' => $recipient_en['en_id'],
                 ), array('in_parent'), 1);
 
-                echo 'COUNT['.count($unlocked_connections).'] ';
+                echo 'COUNT['.count($unlocked_connections).'] ['.$unlocked_connections[0]['ln_type_play_id'].']';
 
                 if(count($unlocked_connections) > 0){
 
