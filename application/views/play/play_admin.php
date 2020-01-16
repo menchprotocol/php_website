@@ -674,13 +674,12 @@ if(!$action) {
     $total_added = 0;
     $total_rows = $this->READ_model->ln_fetch(array(
         'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-    ), array('in_parent'), 20, 0, array( 'ln_id' => 'ASC' ));
+    ), array('in_parent'), 0, 0, array( 'ln_id' => 'ASC' ));
 
     foreach ($total_rows as $ln) {
 
         //Anything set here would be updated:
         $update_columns = array();
-        echo $ln['ln_id'];
 
         if($ln['ln_child_blog_id'] > 0 && $ln['ln_type_play_id'] == 6157){ //ONE ANSWER
 
@@ -697,8 +696,6 @@ if(!$action) {
             //Move answer away:
             $update_columns['ln_child_blog_id'] = 0;
 
-            echo ' ADDED';
-
         }
 
         //Assign creditor if still a read coin:
@@ -714,11 +711,7 @@ if(!$action) {
 
         if(count($update_columns)){
             $total_updated += $this->READ_model->ln_update($ln['ln_id'], $update_columns);
-            echo ' UPDATED';
         }
-
-        echo '<br />';
-
 
     }
 
