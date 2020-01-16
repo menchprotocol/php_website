@@ -575,7 +575,7 @@ class READ_model extends CI_Model
             $check_termination_answers = array_merge($check_termination_answers , array_flatten($in_metadata['in__metadata_expansion_conditional']));
         }
         if(count($check_termination_answers) > 0 && count($this->READ_model->ln_fetch(array(
-                'ln_type_play_id' => 7492,
+                'ln_type_play_id' => 7492, //TERMINATE
                 'ln_owner_play_id' => $en_id, //Belongs to this User
                 'ln_parent_blog_id IN (' . join(',' , $check_termination_answers) . ')' => null, //All possible answers that might terminate...
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -592,6 +592,7 @@ class READ_model extends CI_Model
             $is_condition = isset($in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]);
 
             if($is_expansion){
+
                 //Expansion reads
                 $completed_steps = $this->READ_model->ln_fetch(array(
                     'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12326')) . ')' => null, //READ BLOG LINKS
@@ -599,7 +600,9 @@ class READ_model extends CI_Model
                     'ln_parent_blog_id' => $common_step_in_id,
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 ), array('in_child'));
+
             } else {
+
                 //Completion reads:
                 $completed_steps = $this->READ_model->ln_fetch(array(
                     'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
@@ -607,6 +610,7 @@ class READ_model extends CI_Model
                     'ln_parent_blog_id' => $common_step_in_id,
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 ));
+
             }
 
             //Have they completed this?
@@ -625,6 +629,7 @@ class READ_model extends CI_Model
                     if($found_in_id != 0){
                         return $found_in_id;
                     }
+
                 }
 
             } elseif($is_condition){
@@ -646,7 +651,9 @@ class READ_model extends CI_Model
                     }
 
                 }
+
             }
+
         }
 
 
