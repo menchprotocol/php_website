@@ -1702,7 +1702,7 @@ class READ_model extends CI_Model
 
 
 
-        if(count($read_completes) && !count($in__children) && !count($in__messages)){
+        if(count($read_completes) && !count($in__children) && !count($in__messages) && !isset($_GET['manual_nav'])){
             //Move to the next one as there is nothing to do here:
             if($push_message){
 

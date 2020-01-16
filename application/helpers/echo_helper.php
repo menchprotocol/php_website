@@ -1593,7 +1593,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
         return null;
     }
 
-    $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'] : '/read/'.$in['in_id'] ) . '" class="list-group-item itemread '.$extra_class.'">';
+    $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'].'?manual_nav=1' : '/read/'.$in['in_id'] ) . '" class="list-group-item itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
