@@ -674,7 +674,7 @@ if(!$action) {
     $total_added = 0;
     $total_rows = $this->READ_model->ln_fetch(array(
         'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-    ), array('in_parent'), 5, 0, array( 'ln_id' => 'ASC' ));
+    ), array('in_parent'), 20, 0, array( 'ln_id' => 'ASC' ));
 
     foreach ($total_rows as $ln) {
 
