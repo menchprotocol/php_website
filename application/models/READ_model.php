@@ -632,7 +632,7 @@ class READ_model extends CI_Model
                         continue;
                     }
 
-                    $found_in_id = $this->READ_model->read_next_find($en_id, $completed_step);
+                    $found_in_id = $this->READ_model->read_next_find($en_id, $completed_step, $exclude_in);
 
                     if($found_in_id != 0){
                         return $found_in_id;
@@ -656,7 +656,7 @@ class READ_model extends CI_Model
                     }
 
                     //Completed step that has OR expansions, check recursively to see if next step within here:
-                    $found_in_id = $this->READ_model->read_next_find($en_id, $unlocked_condition);
+                    $found_in_id = $this->READ_model->read_next_find($en_id, $unlocked_condition, $exclude_in);
 
                     if($found_in_id != 0){
                         return $found_in_id;
