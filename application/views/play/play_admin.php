@@ -689,7 +689,7 @@ if(!$action) {
                 'ln_owner_play_id' => $ln['ln_owner_play_id'],
                 'ln_parent_blog_id' => $ln['ln_parent_blog_id'],
                 'ln_child_blog_id' => $ln['ln_child_blog_id'],
-                'ln_read_parent_id' => $ln['ln_id'],
+                'ln_parent_read_id' => $ln['ln_id'],
             ));
 
             //Move answer away:
