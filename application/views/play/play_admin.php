@@ -680,7 +680,7 @@ if(!$action) {
 
         //Anything set here would be updated:
         $update_columns = array();
-        echo $ln['in_id'];
+        echo $ln['ln_id'];
 
         if($ln['ln_child_blog_id'] > 0 && $ln['ln_type_play_id'] == 6157){ //ONE ANSWER
 
@@ -706,7 +706,7 @@ if(!$action) {
             //Fetch & append coin owner:
             $authors = $this->READ_model->ln_fetch(array(
                 'ln_type_play_id' => 4250,
-                'ln_child_blog_id' => $ln['in_id'],
+                'ln_child_blog_id' => $ln['ln_parent_blog_id'],
             ));
             $update_columns['ln_child_play_id'] = $authors[0]['ln_owner_play_id'];
         }
