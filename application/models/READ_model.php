@@ -1576,6 +1576,8 @@ class READ_model extends CI_Model
                     'ln_owner_play_id' => $recipient_en['en_id'],
                 ), array('in_parent'), 1);
 
+                echo 'COUNT['.count($unlocked_connections).'] ';
+
                 if(count($unlocked_connections) > 0){
 
                     //They already have unlocked a path here!
@@ -1591,6 +1593,8 @@ class READ_model extends CI_Model
 
                     //Could we determine the coin type?
                     if($read_completion_type_id > 0){
+
+                        echo 'Completed by ['.$read_completion_type_id.']';
 
                         //Yes, Issue coin:
                         array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
