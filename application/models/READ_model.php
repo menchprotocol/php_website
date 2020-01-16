@@ -3434,7 +3434,8 @@ class READ_model extends CI_Model
         //Add New Answers
         $answers_newly_added = 0;
         foreach($answer_in_ids as $answer_in_id){
-            $answers_newly_added += $this->READ_model->ln_create(array(
+            $answers_newly_added++;
+            $this->READ_model->ln_create(array(
                 'ln_type_play_id' => $blog_link_type_id,
                 'ln_owner_play_id' => $en_id,
                 'ln_parent_blog_id' => $ins[0]['in_id'],
