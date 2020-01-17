@@ -1594,7 +1594,7 @@ function echo_in_featured($in_id){
     if(count($featured_topics) > 0){
 
         //qualifies for Search Plug:
-        $ui .= '<span class="icon-block" data-toggle="tooltip" title="FEATURED IN '.$en_all_11035[7256]['m_desc'].'" data-placement="bottom">'.$en_all_11035[7256]['m_desc'].'</a>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" title="FEATURED IN '.$en_all_11035[7256]['m_desc'].'" data-placement="bottom">'.$en_all_11035[7256]['m_desc'].'</span>';
 
         //Show all topics:
         foreach($featured_topics as $topic){
