@@ -430,12 +430,12 @@ img.no-radius {
 
 .featured-frame{
     text-align: center;
-    width: 100px;
+    width: 233px;
     margin-left:5px;
 }
 .featured-image {
-    width: 100px;
-    height: 100px;
+    width: 233px;
+    max-height: 233px;
     overflow: hidden;
     display: block;
 }
