@@ -701,9 +701,14 @@ textarea.note-textarea{
 }
 
 /* HEADER */
-.three-menus, #top_players{
+#top_players{
     width: 100%;
     background-color: #FFFFFF;
+}
+
+.three-menus {
+    width: 100%;
+    background-color: #f4f5f7;
 }
 
 .three-menus td, #top_players td{
