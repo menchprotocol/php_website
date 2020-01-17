@@ -554,7 +554,7 @@ class READ_model extends CI_Model
 
 
 
-    function read_next_find($en_id, $in, $exclude_in = array()){
+    function read_next_find($en_id, $in){
 
         /*
          *
@@ -586,10 +586,6 @@ class READ_model extends CI_Model
 
 
         foreach(array_flatten($in_metadata['in__metadata_common_steps']) as $common_step_in_id){
-
-            if(isset($exclude_in['in_id']) && $exclude_in['in_id']==$common_step_in_id){
-                continue;
-            }
 
             //Is this an expansion step?
             $is_expansion = isset($in_metadata['in__metadata_expansion_steps'][$common_step_in_id]);
@@ -628,11 +624,7 @@ class READ_model extends CI_Model
                 //Completed step that has OR expansions, check recursively to see if next step within here:
                 foreach($completed_steps as $completed_step){
 
-                    if(isset($exclude_in['in_id']) && $exclude_in['in_id']==$completed_step['in_id']){
-                        continue;
-                    }
-
-                    $found_in_id = $this->READ_model->read_next_find($en_id, $completed_step, $exclude_in);
+                    $found_in_id = $this->READ_model->read_next_find($en_id, $completed_step);
 
                     if($found_in_id != 0){
                         return $found_in_id;
@@ -651,12 +643,8 @@ class READ_model extends CI_Model
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 ), array('in_child')) as $unlocked_condition){
 
-                    if(isset($exclude_in['in_id']) && $exclude_in['in_id']==$unlocked_condition['in_id']){
-                        continue;
-                    }
-
                     //Completed step that has OR expansions, check recursively to see if next step within here:
-                    $found_in_id = $this->READ_model->read_next_find($en_id, $unlocked_condition, $exclude_in);
+                    $found_in_id = $this->READ_model->read_next_find($en_id, $unlocked_condition);
 
                     if($found_in_id != 0){
                         return $found_in_id;
@@ -672,41 +660,6 @@ class READ_model extends CI_Model
 
 
 
-
-
-
-
-        //Nothing found, go one level up (if available before read list) and repeat:
-        $player_read_ids = $this->READ_model->read_ids($en_id);
-
-        //Make sure this is not in their reading list (no more up to go)
-        if(!in_array($in['in_id'], $player_read_ids)){
-
-            foreach ($this->BLOG_model->in_fetch_recursive_parents($in['in_id']) as $grand_parent_ids) {
-
-                if(!array_intersect($grand_parent_ids, $player_read_ids)){
-                    //Parent tree is NOT part of their 🔴 READING LIST:
-                    continue;
-                }
-
-                echo $grand_parent_ids[0];
-
-
-                //Fetch first parent:
-                foreach($this->BLOG_model->in_fetch(array(
-                    'in_id' => $grand_parent_ids[0], //One level up only
-                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                )) as $parent_in){
-
-                    //Go one level up:
-                    $found_in_id = $this->READ_model->read_next_find($en_id, $parent_in, $in);
-
-                    if($found_in_id != 0){
-                        return $found_in_id;
-                    }
-                }
-            }
-        }
 
         //Nothing found!
         return 0;
