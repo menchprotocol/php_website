@@ -1093,10 +1093,13 @@ label {
     font-size: 1.3em;
     line-height: 110%;
 }
-.blog-info{
-    font-size: 0.7em;
-    color:#AAAAAA;
+.blog-info {
+    font-size: 0.89em;
     margin:5px 0 0;
+}
+
+.blog-info, .blog-info i{
+    color:#AAAAAA !important;
 }
 
 .in_highlight, .in_highlight:hover, .in_highlight:focus{
