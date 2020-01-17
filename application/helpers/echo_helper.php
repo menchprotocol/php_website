@@ -1542,23 +1542,7 @@ function echo_in_blog($in)
     }
 
     if(in_array($in['in_status_play_id'], $CI->config->item('en_ids_12138') /* Blog Statuses Featured */)){
-        //Featured, check verification status:
-        $featured_topics = $CI->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id' => 4601, //BLOG KEYWORDS
-            'ln_parent_play_id IN (' . join(',', featured_topic_ids()) . ')' => null,
-            'ln_child_blog_id' => $in['in_id'],
-        ), array('en_parent'), 0);
-        if(count($featured_topics) > 0){
-            //It has been featured, list topics:
-            $ui .= 'IN';
-            foreach($featured_topics as $topic){
-                $ui .= '<span class="icon-block-sm">'.$topic['en_icon'].'</span>'.$topic['en_name'];
-            }
-        } else {
-            //Inform that it's not yet featyred
-            $ui .= '<span data-toggle="tooltip" title="MENCH Editors have not yet reviewed this blog" data-placement="top">FEATURE REVIEW PENDING <i class="far fa-spinner fa-spin"></i></span>';
-        }
+        $ui .= echo_in_featured($in['in_id']);
     }
 
     $ui .= '</div>'; //End Footnote
@@ -1571,6 +1555,60 @@ function echo_in_blog($in)
     $ui .= '</a>';
 
     return $ui;
+}
+
+
+function echo_in_featured($in_id){
+
+    $CI =& get_instance();
+    $ui = '';
+    $en_all_12201 = $CI->config->item('en_all_12201'); //MENCH PLAYER NAVIGATION
+    $en_all_11035 = $CI->config->item('en_all_11035');
+
+
+    //Blog Author:
+    $authors = $CI->READ_model->ln_fetch(array(
+        'ln_type_play_id' => 4250,
+        'ln_child_blog_id' => $in_id,
+    ), array('en_creator'), 1);
+    $ui .= '<a href="'.$en_all_12201[12342]['m_desc'].'/'.$authors[0]['en_id'].'" data-toggle="tooltip" title="BY '.$authors[0]['en_name'].'" data-placement="top" class="icon-block">'.echo_en_icon($authors[0]['en_icon']).'</a>';
+
+
+    //Home Page
+    if(count($CI->READ_model->ln_fetch(array(
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'ln_type_play_id' => 4601, //BLOG KEYWORDS
+        'ln_parent_play_id' => 12198, //HOME FEATURED
+        'ln_child_blog_id' => $in_id,
+    )))){
+        $ui .= '<a href="'.$en_all_12201[12198]['m_desc'].'" data-toggle="tooltip" title="FEATURED IN '.$en_all_12201[12198]['m_name'].'" data-placement="top" class="icon-block">'.$en_all_12201[12198]['m_icon'].'</a>';
+    }
+
+    //Topic
+    $featured_topics = $CI->READ_model->ln_fetch(array(
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'ln_type_play_id' => 4601, //BLOG KEYWORDS
+        'ln_parent_play_id IN (' . join(',', featured_topic_ids()) . ')' => null,
+        'ln_child_blog_id' => $in_id,
+    ), array('en_parent'), 0);
+    if(count($featured_topics) > 0){
+
+        //qualifies for Search Plug:
+        $ui .= '<span class="icon-block" data-toggle="tooltip" title="FEATURED IN '.$en_all_11035[7256]['m_desc'].'" data-placement="bottom">'.$en_all_11035[7256]['m_desc'].'</a>';
+
+        //Show all topics:
+        foreach($featured_topics as $topic){
+            $ui .= '<a href="'.$en_all_12201[10869]['m_desc'].'/'.$topic['en_id'].'" class="icon-block" data-toggle="tooltip" title="FEATURED IN '.$topic['en_name'].'" data-placement="bottom">'.$topic['en_icon'].'</a>';
+        }
+
+    } else {
+        $ui .= '<span data-toggle="tooltip" title="FEATURE REVIEW PENDING: MENCH Editors have not yet reviewed this blog" data-placement="top" class="icon-block"><i class="far fa-spinner fa-spin"></i></span>';
+    }
+
+
+
+    return $ui;
+
 }
 
 

@@ -39,7 +39,6 @@
         echo '<div class="doclear">&nbsp;</div>';
 
 
-
         //List current blogs:
         $player_blogs = $this->READ_model->ln_fetch(array(
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active

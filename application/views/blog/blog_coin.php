@@ -51,21 +51,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //Blog Status:
             echo '<div class="inline-block side-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-blog', $is_author && $is_active).'</div>';
 
+            //Blog Featured:
             if(in_array($in['in_status_play_id'], $this->config->item('en_ids_12138') /* Blog Statuses Featured */)){
-                //Blog Featured Icons:
-                $featured_topics = $this->READ_model->ln_fetch(array(
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id' => 4601, //BLOG KEYWORDS
-                    'ln_parent_play_id IN (' . join(',', featured_topic_ids()) . ')' => null,
-                    'ln_child_blog_id' => $in['in_id'],
-                ), array('en_parent'), 0);
-                if(count($featured_topics) > 0){
-                    foreach($featured_topics as $topic){
-                        echo '<span class="icon-block" data-toggle="tooltip" title="FEATURED IN '.$topic['en_name'].'" data-placement="bottom">'.$topic['en_icon'].'</span>';
-                    }
-                } else {
-                    echo '<span data-toggle="tooltip" title="FEATURE REVIEW PENDING: MENCH Editors have not yet reviewed this blog" data-placement="top" class="icon-block"><i class="far fa-spinner fa-spin"></i></span>';
-                }
+                echo echo_in_featured($in['in_id']);
             }
 
             //Preview option:
@@ -219,7 +207,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
 
-            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder="WRITE '.rtrim(strtoupper($en_all_4485[$en_id2]['m_name']), 'S').' OR DROP FILE" style="margin-top:6px;"></textarea>';
+            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder="WRITE '.rtrim(strtoupper($en_all_4485[$en_id2]['m_name']), 'S').( in_array(12359, $en_all_4485[$en_id2]['m_parents']) ? ' OR DROP MEDIA' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
@@ -238,10 +226,13 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<td class="remove_loading '.superpower_active(10983).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Reference PLAYER" data-placement="top"><span class="icon-block icon_photo"><i class="far fa-at"></i></span></a></td>';
 
             //Upload File:
-            $this_tab .= '<td class="remove_loading" style="width:36px; padding: 10px 0 0 0;">';
-            $this_tab .= '<input class="inputfile hidden" type="file" name="file" id="fileBlogType'.$en_id2.'" />';
-            $this_tab .= '<label class="file_label_'.$en_id2.'" for="fileBlogType'.$en_id2.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block icon_photo"><i class="far fa-paperclip"></i></span></label>';
-            $this_tab .= '</td>';
+            if(in_array(12359, $en_all_4485[$en_id2]['m_parents'])){
+                $this_tab .= '<td class="remove_loading" style="width:36px; padding: 10px 0 0 0;">';
+                $this_tab .= '<input class="inputfile hidden" type="file" name="file" id="fileBlogType'.$en_id2.'" />';
+                $this_tab .= '<label class="file_label_'.$en_id2.'" for="fileBlogType'.$en_id2.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block icon_photo"><i class="far fa-paperclip"></i></span></label>';
+                $this_tab .= '</td>';
+            }
+
 
             //TODO ADD MORE OPTIONS HERE?
             //LIST PLAYERS
