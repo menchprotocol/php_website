@@ -1602,7 +1602,7 @@ function echo_in_featured($in_id){
         }
 
     } else {
-        $ui .= '<span data-toggle="tooltip" title="FEATURE TOPIC PENDING REVIEW: MENCH Editors have not yet reviewed this blog" data-placement="bottom" class="icon-block"><i class="far fa-spinner fa-spin"></i></span>';
+        $ui .= '<span data-toggle="tooltip" title="FEATURE TOPIC PENDING REVIEW: MENCH Editors have not yet reviewed this blog" data-placement="bottom" class="icon-block"><i class="far fa-compass fa-spin"></i></span>';
     }
 
 
