@@ -1571,7 +1571,7 @@ function echo_in_featured($in_id){
         'ln_type_play_id' => 4250,
         'ln_child_blog_id' => $in_id,
     ), array('en_creator'), 1);
-    $ui .= '<a href="'.$en_all_12201[12342]['m_desc'].'/'.$authors[0]['en_id'].'" data-toggle="tooltip" title="BY '.$authors[0]['en_name'].'" data-placement="top" class="icon-block">'.echo_en_icon($authors[0]['en_icon']).'</a>';
+    $ui .= '<a href="'.$en_all_12201[12342]['m_desc'].'/'.$authors[0]['en_id'].'" data-toggle="tooltip" title="BY '.$authors[0]['en_name'].'" data-placement="bottom" class="icon-block">'.echo_en_icon($authors[0]['en_icon']).'</a>';
 
 
     //Home Page
@@ -1581,7 +1581,7 @@ function echo_in_featured($in_id){
         'ln_parent_play_id' => 12198, //HOME FEATURED
         'ln_child_blog_id' => $in_id,
     )))){
-        $ui .= '<a href="'.$en_all_12201[12198]['m_desc'].'" data-toggle="tooltip" title="FEATURED IN '.$en_all_12201[12198]['m_name'].'" data-placement="top" class="icon-block">'.$en_all_12201[12198]['m_icon'].'</a>';
+        $ui .= '<a href="'.$en_all_12201[12198]['m_desc'].'" data-toggle="tooltip" title="FEATURED IN '.$en_all_12201[12198]['m_name'].'" data-placement="bottom" class="icon-block">'.$en_all_12201[12198]['m_icon'].'</a>';
     }
 
     //Topic
