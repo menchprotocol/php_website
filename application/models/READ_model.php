@@ -1348,7 +1348,7 @@ class READ_model extends CI_Model
 
     }
 
-    function read_coin($in_id, $recipient_en, $push_message = false, $next_step_only = false){
+        function read_coin($in_id, $recipient_en, $push_message = false, $next_step_only = false){
 
         /*
          * Function to read a Blog, it's messages,
@@ -1877,7 +1877,7 @@ class READ_model extends CI_Model
 
                         echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['in_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ins="'.$child_in['in_id'].'" class="ln_answer_'.$child_in['in_id'].' answer-item list-group-item itemread">';
 
-                        echo '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
+                        echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
                         if ($ins[0]['in_type_play_id'] == 6684) {
 

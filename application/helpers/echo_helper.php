@@ -1527,7 +1527,7 @@ function echo_in_blog($in)
     $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
 
     $ui = '<a href="/blog/'.$in['in_id'] . '" class="list-group-item itemblog">';
-    $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
+    $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false).'</b>';
 
@@ -1627,7 +1627,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     }
 
     $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'].'?manual_nav=1' : '/read/'.$in['in_id'] ) . '" class="list-group-item itemread '.$extra_class.'">';
-    $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
+    $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
 
