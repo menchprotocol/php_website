@@ -1602,8 +1602,6 @@ function echo_in_featured($in_id){
             $ui .= '<a href="'.$en_all_12201[10869]['m_desc'].'/'.$topic['en_id'].'" class="icon-block" data-toggle="tooltip" title="FEATURED IN '.$topic['en_name'].'" data-placement="bottom">'.$topic['en_icon'].'</a>';
         }
 
-    } else {
-        $ui .= '<span data-toggle="tooltip" title="FEATURE TOPIC PENDING REVIEW: MENCH Editors have not yet reviewed this blog" data-placement="bottom" class="icon-block"><i class="far fa-compass fa-spin"></i></span>';
     }
 
 
