@@ -430,12 +430,12 @@ img.no-radius {
 
 .featured-frame{
     text-align: center;
-    width: 233px;
+    width: 377px;
     margin-left:5px;
 }
 .featured-image {
-    width: 233px;
-    max-height: 233px;
+    max-width: 377px;
+    max-height: 377px;
     overflow: hidden;
     display: block;
 }
@@ -1145,9 +1145,9 @@ label {
     .container {
         max-width: none;
     }
-    .featured-frame{ width:75px; }
-    .featured-image { width:75px; height:75px; }
-    .content-image{ max-height:300px; }
+    .featured-frame{ width:233px; }
+    .featured-image { max-width:233px; max-height:233px; }
+    .content-image{ max-height:377px; }
     .show-on-hover { display:inline-block !important; }
     .show-max{display: none !important;}
     .form-control-thick { padding-left: 26px; }
