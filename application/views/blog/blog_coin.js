@@ -50,11 +50,7 @@ function in_update_text(this_handler){
 
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
-
-
-$(document).ready(function () {
-
-    //Lookout for completion mark changes:
+function in_update_text_start(){
     $('.in_update_text').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
@@ -64,6 +60,12 @@ $(document).ready(function () {
     }).change(function() {
         in_update_text(this);
     });
+}
+
+$(document).ready(function () {
+
+    //Lookout for textinput updates
+    in_update_text_start();
 
     //Put focus on messages if no message:
     if(!$('#in_notes_list_4231 .notes_sortable').length){
@@ -958,6 +960,9 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
             //Reload sorting to enable sorting for the newly added blog:
             in_sort_load(in_linked_id);
+
+            //Lookout for textinput updates
+            in_update_text_start();
 
             //Expand selections:
             prep_search_pad();
