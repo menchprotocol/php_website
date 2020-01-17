@@ -1358,6 +1358,7 @@ class READ_model extends CI_Model
 
 
         //Fetch/Validate blog:
+
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
@@ -1376,6 +1377,7 @@ class READ_model extends CI_Model
 
         //Validate Recipient, if specified:
         if(!isset($recipient_en['en_id'])){
+
             if($push_message){
 
                 //We cannot have a guest user on Messenger:
@@ -1393,6 +1395,7 @@ class READ_model extends CI_Model
                 $recipient_en['en_name'] = 'Stranger';
 
             }
+
         } elseif(!isset($recipient_en['en_name'])){
 
             //Fetch name:
@@ -1427,7 +1430,7 @@ class READ_model extends CI_Model
 
         //Log View:
         $this->READ_model->ln_create(array(
-            'ln_owner_play_id' => ( isset($recipient_en['en_id']) ? intval($recipient_en['en_id']) : 0 ),
+            'ln_owner_play_id' => $recipient_en['en_id'],
             'ln_type_play_id' => 7610, //Blog Viewed by User
             'ln_parent_blog_id' => $ins[0]['in_id'],
             'ln_order' => fetch_cookie_order('7610_'.$in_id),
@@ -1521,9 +1524,9 @@ class READ_model extends CI_Model
                     )
                 );
             } elseif(!isset($_GET['autoexpand'])) {
-                if(isset($recipient_en['en_id'])){
+                if($recipient_en['en_id'] > 0){
                     //Give AJAX Add
-                    echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="javascript:void(0)" onclick="read_add()">START READING '.$recipient_en['en_id'].' <i class="fad fa-step-forward"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="javascript:void(0)" onclick="read_add()">START READING <i class="fad fa-step-forward"></i></a></div>';
                 } else {
                     //Redirect to login page:
                     echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fad fa-step-forward"></i></a></div>';
