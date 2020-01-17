@@ -255,9 +255,9 @@ class Read extends CI_Controller
         }
 
 
-        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+        $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
         $this->load->view('header', array(
-            'title' => $en_all_11035[6205]['m_name'],
+            'title' => $en_all_2738[6205]['m_name'],
         ));
 
         $this->load->view('read/read_my', array(
@@ -1395,7 +1395,7 @@ class Read extends CI_Controller
         sleep(2);
 
         //Now let's update the menu:
-        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+        $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
         array_push($res, $this->READ_model->facebook_graph('POST', '/me/messenger_profile', array(
             'persistent_menu' => array(
@@ -1405,7 +1405,7 @@ class Read extends CI_Controller
                     'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
                     'call_to_actions' => array(
                         array(
-                            'title' => '🔵 '.$en_all_11035[4536]['m_name'],
+                            'title' => '🔵 '.$en_all_2738[4536]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/play',
                             'webview_height_ratio' => 'tall',
@@ -1413,7 +1413,7 @@ class Read extends CI_Controller
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => '🔴 '.$en_all_11035[6205]['m_name'],
+                            'title' => '🔴 '.$en_all_2738[6205]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/read',
                             'webview_height_ratio' => 'tall',
@@ -1421,7 +1421,7 @@ class Read extends CI_Controller
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => '🟡 '.$en_all_11035[4535]['m_name'],
+                            'title' => '🟡 '.$en_all_2738[4535]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/blog',
                             'webview_height_ratio' => 'tall',

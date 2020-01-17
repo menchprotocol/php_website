@@ -19,8 +19,10 @@
 
         $add_blog_btn = '<a href="javascript:void(0);" onclick="$(\'.add-blog-toggle\').toggleClass(\'hidden\');$(\'#newBlogTitle\').focus();" class="btn btn-blog btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12214]['m_name'].'">'.$en_all_11035[12214]['m_icon'].'</a>';
 
+        $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
+
         echo '<div class="add-blog-toggle">';
-        echo '<h1 class="pull-left inline-block blog"><span class="icon-block-xlg">' . $en_all_11035[4535]['m_icon'] . '</span>'.$en_all_11035[4535]['m_name'].'</h1>';
+        echo '<h1 class="pull-left inline-block blog"><span class="icon-block-xlg">' . $en_all_2738[4535]['m_icon'] . '</span>'.$en_all_2738[4535]['m_name'].'</h1>';
 
 
         //RIGHT

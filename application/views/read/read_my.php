@@ -15,8 +15,9 @@ if(!$session_en){
 } else {
 
     //echo '<div class="pull-left">' . echo_menu(12201, 'btn-read') . '</div>';
+    $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
-    echo '<h1 class="pull-left inline-block read"><span class="icon-block-xlg">' . $en_all_11035[6205]['m_icon'] . '</span>'.$en_all_11035[6205]['m_name'].'</h1>';
+    echo '<h1 class="pull-left inline-block read"><span class="icon-block-xlg">' . $en_all_2738[6205]['m_icon'] . '</span>'.$en_all_2738[6205]['m_name'].'</h1>';
 
 
     echo '<div class="pull-right inline-block side-margin">';
