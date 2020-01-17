@@ -1523,7 +1523,7 @@ class READ_model extends CI_Model
             } elseif(!isset($_GET['autoexpand'])) {
                 if(isset($recipient_en['en_id'])){
                     //Give AJAX Add
-                    echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="javascript:void(0)" onclick="read_add()">START READING <i class="fad fa-step-forward"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="javascript:void(0)" onclick="read_add()">START READING '.$recipient_en['en_id'].' <i class="fad fa-step-forward"></i></a></div>';
                 } else {
                     //Redirect to login page:
                     echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fad fa-step-forward"></i></a></div>';
