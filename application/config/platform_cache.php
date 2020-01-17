@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-17 01:01:35 PST
+//Generated 2020-01-17 01:05:53 PST
 
 //COIN PLAY:
 $config['en_ids_4536'] = array(11968,7305,6225,12289,6206,10645,4758,7303,10957,11088,11087);
@@ -4035,7 +4035,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.2191',
+        'm_desc' => '1.2192',
         'm_parents' => array(6404),
     ),
     11079 => array(
