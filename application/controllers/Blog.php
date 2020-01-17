@@ -134,7 +134,7 @@ class Blog extends CI_Controller {
     function in_report_conditional_steps(){
 
         //Authenticate Trainer:
-        $session_en = superpower_assigned(10984);
+        $session_en = superpower_assigned(10985);
 
         if (!$session_en) {
             return echo_json(array(

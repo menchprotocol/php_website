@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-16 20:23:02 PST
+//Generated 2020-01-17 00:42:09 PST
 
 //COIN PLAY:
 $config['en_ids_4536'] = array(11968,7305,6225,12289,6206,10645,4758,7303,10957,11088,11087);
@@ -1023,13 +1023,13 @@ $config['en_all_12330'] = array(
         'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ALL',
         'm_desc' => '',
-        'm_parents' => array(12330,7486,7485,6140,10984,6192,7585,7309,6997),
+        'm_parents' => array(10985,12330,7486,7485,6140,6192,7585,7309,6997),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube " aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ANY',
         'm_desc' => '',
-        'm_parents' => array(12330,7486,7485,6140,10984,7585,7309,6997,6193),
+        'm_parents' => array(10985,12330,7486,7485,6140,7585,7309,6997,6193),
     ),
 );
 
@@ -1515,19 +1515,19 @@ $config['en_all_12279'] = array(
         'm_icon' => '<i class="fas fa-pegasus play"></i>',
         'm_name' => 'PEGASUS BOLD',
         'm_desc' => '',
-        'm_parents' => array(12279),
+        'm_parents' => array(10985,12279),
     ),
     12307 => array(
         'm_icon' => '<i class="far fa-pegasus play"></i>',
         'm_name' => 'PEGASUS LIGHT',
         'm_desc' => '',
-        'm_parents' => array(12279),
+        'm_parents' => array(10985,12279),
     ),
     12305 => array(
         'm_icon' => '<i class="fad fa-pegasus play" aria-hidden="true"></i>',
         'm_name' => 'PEGASUS MIX',
         'm_desc' => '',
-        'm_parents' => array(12279),
+        'm_parents' => array(10985,12279),
     ),
     12257 => array(
         'm_icon' => '<i class="fas fa-pig play" aria-hidden="true"></i>',
@@ -2337,7 +2337,7 @@ $config['en_all_12112'] = array(
         'm_icon' => '<i class="far fa-coin" aria-hidden="true"></i>',
         'm_name' => 'READ MARKS',
         'm_desc' => 'awarded for blog completion to calculate the unlock score range',
-        'm_parents' => array(12112,10984,10663,6103,6410,6232),
+        'm_parents' => array(10985,12112,10663,6103,6410,6232),
     ),
     4362 => array(
         'm_icon' => '<i class="far fa-clock" aria-hidden="true"></i>',
@@ -3614,7 +3614,7 @@ $config['en_all_6232'] = array(
         'm_icon' => '<i class="far fa-coin" aria-hidden="true"></i>',
         'm_name' => 'BLOG READ MARKS',
         'm_desc' => 'tr__assessment_points',
-        'm_parents' => array(12112,10984,10663,6103,6410,6232),
+        'm_parents' => array(10985,12112,10663,6103,6410,6232),
     ),
     4362 => array(
         'm_icon' => '<i class="far fa-clock" aria-hidden="true"></i>',
@@ -4035,7 +4035,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.218',
+        'm_desc' => '1.219',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -4477,7 +4477,7 @@ $config['en_all_10990'] = array(
 );
 
 //PLAY SUPERPOWERS:
-$config['en_ids_10957'] = array(10939,10984,10964,10983,10967);
+$config['en_ids_10957'] = array(10939,10984,10985,10964,10983,10967);
 $config['en_all_10957'] = array(
     10939 => array(
         'm_icon' => '<i class="fad fa-pen blog" aria-hidden="true"></i>',
@@ -4488,6 +4488,12 @@ $config['en_all_10957'] = array(
     10984 => array(
         'm_icon' => '<i class="fad fa-paint-brush-alt blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG BRUSH',
+        'm_desc' => '',
+        'm_parents' => array(10957),
+    ),
+    10985 => array(
+        'm_icon' => '<i class="fad fa-magic blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOG WAND',
         'm_desc' => '',
         'm_parents' => array(10957),
     ),
@@ -6142,7 +6148,7 @@ $config['en_all_6192'] = array(
         'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ALL',
         'm_desc' => '',
-        'm_parents' => array(12330,7486,7485,6140,10984,6192,7585,7309,6997),
+        'm_parents' => array(10985,12330,7486,7485,6140,6192,7585,7309,6997),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
@@ -6353,13 +6359,13 @@ $config['en_all_6103'] = array(
         'm_icon' => '<i class="far fa-coin" aria-hidden="true"></i>',
         'm_name' => 'BLOG READ MARKS',
         'm_desc' => '',
-        'm_parents' => array(12112,10984,10663,6103,6410,6232),
+        'm_parents' => array(10985,12112,10663,6103,6410,6232),
     ),
     6402 => array(
-        'm_icon' => '<i class="fas fa-bolt"></i>',
+        'm_icon' => '<i class="fas fa-bolt" aria-hidden="true"></i>',
         'm_name' => 'CONDITION SCORE RANGE',
         'm_desc' => '',
-        'm_parents' => array(10984,10664,6103,6410),
+        'm_parents' => array(10985,10664,6103,6410),
     ),
     6203 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
@@ -6699,7 +6705,7 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="fas fa-cube " aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ANY',
         'm_desc' => '',
-        'm_parents' => array(12330,7486,7485,6140,10984,7585,7309,6997,6193),
+        'm_parents' => array(10985,12330,7486,7485,6140,7585,7309,6997,6193),
     ),
 );
 
@@ -6728,7 +6734,7 @@ $config['en_all_7585'] = array(
         'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ALL',
         'm_desc' => 'Complete by (a) choosing intent as their answer or by (b) completing all child intents',
-        'm_parents' => array(12330,7486,7485,6140,10984,6192,7585,7309,6997),
+        'm_parents' => array(10985,12330,7486,7485,6140,6192,7585,7309,6997),
     ),
     6684 => array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
@@ -6746,7 +6752,7 @@ $config['en_all_7585'] = array(
         'm_icon' => '<i class="fas fa-cube " aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ANY',
         'm_desc' => 'Complete by (a) choosing intent as their answer or by (b) completing any child intent',
-        'm_parents' => array(12330,7486,7485,6140,10984,7585,7309,6997,6193),
+        'm_parents' => array(10985,12330,7486,7485,6140,7585,7309,6997,6193),
     ),
 );
 
@@ -6820,13 +6826,13 @@ $config['en_all_7309'] = array(
         'm_icon' => '<i class="fas fa-cubes " aria-hidden="true"></i>',
         'm_name' => 'ALL',
         'm_desc' => '',
-        'm_parents' => array(12330,7486,7485,6140,10984,6192,7585,7309,6997),
+        'm_parents' => array(10985,12330,7486,7485,6140,6192,7585,7309,6997),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube " aria-hidden="true"></i>',
         'm_name' => 'ANY',
         'm_desc' => '',
-        'm_parents' => array(12330,7486,7485,6140,10984,7585,7309,6997,6193),
+        'm_parents' => array(10985,12330,7486,7485,6140,7585,7309,6997,6193),
     ),
 );
 

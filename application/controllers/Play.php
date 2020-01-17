@@ -2934,7 +2934,7 @@ fragment PostListingItemSidebar_post on Post {
         boost_power();
 
         //Validate trainer:
-        $session_en = superpower_assigned(10984, true);
+        $session_en = superpower_assigned(10985, true);
 
         //Load tools:
         $this->load->view('header', array(
