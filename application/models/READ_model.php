@@ -689,16 +689,17 @@ class READ_model extends CI_Model
                     continue;
                 }
 
-                //Fetch first parent:
-                $first_parent_ins = $this->BLOG_model->in_fetch(array(
-                    'in_id' => $grand_parent_ids[0], //One level up
-                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                ));
+                echo $grand_parent_ids[0];
 
-                if(count($first_parent_ins)){
+
+                //Fetch first parent:
+                foreach($this->BLOG_model->in_fetch(array(
+                    'in_id' => $grand_parent_ids[0], //One level up only
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                )) as $parent_in){
 
                     //Go one level up:
-                    $found_in_id = $this->READ_model->read_next_find($en_id, $first_parent_ins[0], $in);
+                    $found_in_id = $this->READ_model->read_next_find($en_id, $parent_in, $in);
 
                     if($found_in_id != 0){
                         return $found_in_id;
