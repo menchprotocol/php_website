@@ -1530,7 +1530,6 @@ function echo_in_blog($in)
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false).'</b>';
-    $ui .= '<span class="icon-block" data-toggle="tooltip" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'" data-placement="top">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].'</span>';
 
     //Footnote
     $ui .= '<div class="montserrat blog-info doupper">';
@@ -1540,6 +1539,8 @@ function echo_in_blog($in)
     if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0 && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
         $ui .= echo_time_range($in, true).' READ ';
     }
+
+    $ui .= '<span class="icon-block" data-toggle="tooltip" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'" data-placement="top">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].'</span>';
 
     if(in_array($in['in_status_play_id'], $CI->config->item('en_ids_12138') /* Blog Statuses Featured */)){
         $ui .= echo_in_featured($in['in_id']);
