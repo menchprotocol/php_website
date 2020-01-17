@@ -315,6 +315,25 @@ class Read extends CI_Controller
         $this->load->view('footer');
 
     }
+    function topics($en_id = 0)
+    {
+
+        /*
+         *
+         * Enables a PLAYer to READ a BLOG
+         * on the public web
+         *
+         * */
+
+        $en_all_12201 = $this->config->item('en_all_12201'); //MENCH PLAYER NAVIGATION
+
+        $this->load->view('header', array(
+            'title' => $en_all_12201[10869]['m_name'],
+        ));
+        $this->load->view('read/read_topics');
+        $this->load->view('footer');
+
+    }
 
 
 
