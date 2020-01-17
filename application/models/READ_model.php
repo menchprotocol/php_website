@@ -659,8 +659,6 @@ class READ_model extends CI_Model
 
 
 
-
-
         //Nothing found!
         return 0;
 
