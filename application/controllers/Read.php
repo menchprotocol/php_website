@@ -20,11 +20,10 @@ class Read extends CI_Controller
 
         //Check to see if added to READING LIST for logged-in users:
         if(!isset($session_en['en_id'])){
-            $error = '<div class="alert alert-danger" role="alert">Session Expired</div>';
             if($is_ajax){
-                echo $error;
+                echo '<div class="alert alert-danger" role="alert">Session Expired</div>';
             } else {
-                return redirect_message('/signin/'.$in_id, $error);
+                return redirect_message('/signin/'.$in_id);
             }
         }
 

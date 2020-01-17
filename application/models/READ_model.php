@@ -1348,7 +1348,7 @@ class READ_model extends CI_Model
 
     }
 
-        function read_coin($in_id, $recipient_en, $push_message = false, $next_step_only = false){
+    function read_coin($in_id, $recipient_en, $push_message = false, $next_step_only = false){
 
         /*
          * Function to read a Blog, it's messages,
@@ -1521,7 +1521,13 @@ class READ_model extends CI_Model
                     )
                 );
             } elseif(!isset($_GET['autoexpand'])) {
-                echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="javascript:void(0)" onclick="read_add()">START READING <i class="fad fa-step-forward"></i></a></div>';
+                if(isset($recipient_en['en_id'])){
+                    //Give AJAX Add
+                    echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="javascript:void(0)" onclick="read_add()">START READING <i class="fad fa-step-forward"></i></a></div>';
+                } else {
+                    //Redirect to login page:
+                    echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fad fa-step-forward"></i></a></div>';
+                }
             }
 
             return true;
