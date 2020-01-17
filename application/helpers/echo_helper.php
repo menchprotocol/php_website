@@ -1626,10 +1626,6 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
         }
     }
 
-    if($completion_rate['completion_percentage']==100 && !strlen($CI->uri->segment(1))){
-        return null;
-    }
-
     $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'].'?manual_nav=1' : '/read/'.$in['in_id'] ) . '" class="list-group-item itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important;"><tr>';
     $ui .= '<td>';
