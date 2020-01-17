@@ -1571,7 +1571,7 @@ function echo_in_featured($in_id){
         'ln_type_play_id' => 4250,
         'ln_child_blog_id' => $in_id,
     ), array('en_creator'), 1);
-    $ui .= '<a href="'.$en_all_12201[12342]['m_desc'].'/'.$authors[0]['en_id'].'" data-toggle="tooltip" title="BY '.$authors[0]['en_name'].'" data-placement="bottom" class="icon-block">'.echo_en_icon($authors[0]['en_icon']).'</a>';
+    $ui .= '<a href="'.$en_all_12201[12342]['m_desc'].'/'.$authors[0]['en_id'].'" data-toggle="tooltip" title="FEATURED IN '.$authors[0]['en_name'].'" data-placement="bottom" class="icon-block">'.echo_en_icon($authors[0]['en_icon']).'</a>';
 
 
     //Home Page
@@ -1602,7 +1602,7 @@ function echo_in_featured($in_id){
         }
 
     } else {
-        $ui .= '<span data-toggle="tooltip" title="FEATURE REVIEW PENDING: MENCH Editors have not yet reviewed this blog" data-placement="top" class="icon-block"><i class="far fa-spinner fa-spin"></i></span>';
+        $ui .= '<span data-toggle="tooltip" title="FEATURE TOPIC PENDING REVIEW: MENCH Editors have not yet reviewed this blog" data-placement="bottom" class="icon-block"><i class="far fa-spinner fa-spin"></i></span>';
     }
 
 
