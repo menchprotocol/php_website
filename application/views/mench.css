@@ -467,7 +467,7 @@ img.no-radius {
 
 /* MENCH Colors */
 .play, .play a, .play .fas, .play .far, .play .fal, .play .fad, .color4536, .info-item i.play:hover, .info-item a.play:hover  { color:#008DF2 !important; }
-.idea, .idea a, .idea .fas, .idea .far, .idea .fal, .idea .fad, .color4535, .info-item i.idea:hover, .info-item a.idea:hover  { color:#ffdf00 !important; } /* f1d104 */
+.idea, .idea a, .idea .fas, .idea .far, .idea .fal, .idea .fad, .color4535, .info-item i.idea:hover, .info-item a.idea:hover  { color:#ffd600 !important; } /* f1d104 */
 .read, .read a, .read .fas, .read .far, .read .fal, .read .fad, .color6205, .info-item i.read:hover, .info-item a.read:hover  { color:#FC1B44 !important; }
 .grey, .grey i { color:#AAAAAA !important; }
 
@@ -742,7 +742,7 @@ textarea.note-textarea{
 
 .three-menus a.play:hover, .three-menus a.play.focustab  { border-color:#008DF2; }
 .three-menus a.read:hover, .three-menus a.read.focustab  { border-color:#FC1B44; }
-.three-menus a.idea:hover, .three-menus a.idea.focustab  { border-color:#ffdf00; }
+.three-menus a.idea:hover, .three-menus a.idea.focustab  { border-color:#ffd600; }
 
 .three-menus a{
     padding:7px 0 5px;
@@ -984,7 +984,7 @@ label {
     color:#008DF2 !important;
 }
 .btn-superpower.active .fas.idea, .btn-superpower.active .far.idea, .btn-superpower.active .fal.idea, .btn-superpower.active .fad.idea {
-    color:#ffdf00 !important;
+    color:#ffd600 !important;
 }
 .btn-superpower.active .fas.read, .btn-superpower.active .far.read, .btn-superpower.active .fal.read, .btn-superpower.active .fad.read {
     color:#FC1B44 !important;
@@ -1013,7 +1013,7 @@ label {
 .btn-read .fas,.btn-read .far,.btn-read .fal ,.btn-read .fad { color: #000000 !important; }
 
 .btn.btn-idea, .btn.btn-idea:hover, .btn.btn-idea:focus, .btn.btn-idea:active, .btn.btn-idea.active, .btn.btn-idea:active:focus, .btn.btn-idea:active:hover, .btn.btn-idea.active:focus, .btn.btn-idea.active:hover, .open > .btn.btn-idea.dropdown-toggle, .open > .btn.btn-idea.dropdown-toggle:focus, .open > .btn.btn-idea.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-idea, .navbar .navbar-nav > li > a.btn.btn-idea:hover, .navbar .navbar-nav > li > a.btn.btn-idea:focus, .navbar .navbar-nav > li > a.btn.btn-idea:active, .navbar .navbar-nav > li > a.btn.btn-idea.active, .navbar .navbar-nav > li > a.btn.btn-idea:active:focus, .navbar .navbar-nav > li > a.btn.btn-idea:active:hover, .navbar .navbar-nav > li > a.btn.btn-idea.active:focus, .navbar .navbar-nav > li > a.btn.btn-idea.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle:hover {
-    background-color: #ffdf00;
+    background-color: #ffd600;
     color: #000000;
 }
 

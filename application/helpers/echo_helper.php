@@ -1334,14 +1334,14 @@ function echo_en_messages($ln){
 
 
     //Referenced Idea:
-    $ui .= '<li><a class="btn btn-idea button-max" style="border:2px solid #ffdf00 !important;" href="/idea/' . $ln['ln_child_idea_id'] . '" target="_parent" title="Message Idea: '.$ln['in_title'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_play_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_type_play_id']]['m_icon'].' '.$ln['in_title'].'</a></li>';
+    $ui .= '<li><a class="btn btn-idea button-max" style="border:2px solid #ffd600 !important;" href="/idea/' . $ln['ln_child_idea_id'] . '" target="_parent" title="Message Idea: '.$ln['in_title'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_play_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_type_play_id']]['m_icon'].' '.$ln['in_title'].'</a></li>';
 
     //READ HISTORY:
     /*
     $count_msg_trs = $CI->READ_model->ln_fetch(array(
         '( ln_id = ' . $ln['ln_id'] . ' OR ln_parent_read_id = ' . $ln['ln_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-    $ui .= '<li><a class="btn btn-idea" style="border:2px solid #ffdf00 !important;" href="/read/view_json/' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    $ui .= '<li><a class="btn btn-idea" style="border:2px solid #ffd600 !important;" href="/read/view_json/' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
     */
 
 
