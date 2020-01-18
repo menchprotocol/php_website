@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-17 20:18:02 PST
+//Generated 2020-01-17 20:44:22 PST
 
 //COIN PLAY:
 $config['en_ids_4536'] = array(11968,7305,6225,12289,6206,10645,4758,7303,10957,11088,11087);
@@ -4946,19 +4946,19 @@ $config['en_all_10956'] = array(
 $config['en_ids_2738'] = array(4536,6205,4535);
 $config['en_all_2738'] = array(
     4536 => array(
-        'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
+        'm_icon' => '🔵',
         'm_name' => 'PLAY',
         'm_desc' => 'Awarded for each new player',
         'm_parents' => array(4527,5008,12155,2738,4463),
     ),
     6205 => array(
-        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
+        'm_icon' => '🔴',
         'm_name' => 'READ',
         'm_desc' => 'Awarded for successful reads',
         'm_parents' => array(4527,5008,12155,2738,4463),
     ),
     4535 => array(
-        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_icon' => '🟡',
         'm_name' => 'IDEA',
         'm_desc' => 'Awarded for published ideas',
         'm_parents' => array(4527,5008,12155,2738,4463),
@@ -5046,19 +5046,19 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,10869),
     ),
     4535 => array(
-        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_icon' => '🟡',
         'm_name' => 'COIN IDEA',
         'm_desc' => '',
         'm_parents' => array(4527,5008,12155,2738,4463),
     ),
     4536 => array(
-        'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
+        'm_icon' => '🔵',
         'm_name' => 'COIN PLAY',
         'm_desc' => '',
         'm_parents' => array(4527,5008,12155,2738,4463),
     ),
     6205 => array(
-        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
+        'm_icon' => '🔴',
         'm_name' => 'COIN READ',
         'm_desc' => '',
         'm_parents' => array(4527,5008,12155,2738,4463),
