@@ -1155,9 +1155,9 @@ label {
     .container {
         max-width: none;
     }
-    .featured-frame{ width:144px; }
-    .featured-image { max-width:144px; max-height:144px; }
-    .content-image{ max-height:377px; }
+    .featured-frame{ width:89px; }
+    .featured-image { max-width:89px; max-height:89px; }
+    .content-image{ max-height:233px; }
     .show-on-hover { display:inline-block !important; }
     .show-max{display: none !important;}
     .form-control-thick { padding-left: 26px; }
