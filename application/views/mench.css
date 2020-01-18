@@ -1114,6 +1114,10 @@ label {
     line-height: 120%;
 }
 
+.idea-desc .icon-block{
+    display: none;
+}
+
 .in_highlight, .in_highlight:hover, .in_highlight:focus{
     background-color:#fff3a9 !important;
 }

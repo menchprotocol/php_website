@@ -1706,7 +1706,7 @@ function echo_in_description($in_id){
 
         if(strlen($ln_content) > 0){
             //This is the first text message:
-            if(strlen($ln['ln_content']) < config_var(12363)){
+            if(strlen($ln_content) < config_var(12363)){
                 //Qualifies as feature message:
                 return $CI->READ_model->dispatch_message($ln['ln_content']);
             }
