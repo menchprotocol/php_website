@@ -300,7 +300,7 @@ function echo_en_icon($en_icon = null)
         return $en_icon;
     } else {
         //Return default icon for players:
-        return '<i class="fas fa-circle play"></i>';
+        return '🔵';
     }
 }
 
