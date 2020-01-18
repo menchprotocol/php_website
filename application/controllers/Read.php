@@ -104,7 +104,7 @@ class Read extends CI_Controller
         }
 
         $this->load->view('header', array(
-            'title' => 'PLAY. READ. IDEA.',
+            'title' => 'PLAY READ IDEA',
         ));
         $this->load->view('read/read_home');
         $this->load->view('footer');
