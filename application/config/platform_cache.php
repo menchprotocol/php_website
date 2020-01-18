@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-17 19:21:45 PST
+//Generated 2020-01-17 19:38:11 PST
 
 //COIN PLAY:
 $config['en_ids_4536'] = array(11968,7305,6225,12289,6206,10645,4758,7303,10957,11088,11087);
@@ -4219,8 +4219,14 @@ $config['en_all_11047'] = array(
 );
 
 //PLAY ADMIN MENU:
-$config['en_ids_11039'] = array(11044,11045,11046);
+$config['en_ids_11039'] = array(11999,11044,11045);
 $config['en_all_11039'] = array(
+    11999 => array(
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
+        'm_name' => 'OPEN IDEA LEDGER',
+        'm_desc' => '/oil?any_en_id=',
+        'm_parents' => array(11039,6771,11035),
+    ),
     11044 => array(
         'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
         'm_name' => 'PLAYER METADATA',
@@ -4233,16 +4239,10 @@ $config['en_all_11039'] = array(
         'm_desc' => '/read/cron__sync_algolia/en/',
         'm_parents' => array(7279,11039),
     ),
-    11046 => array(
-        'm_icon' => '<i class="fad fa-atlas read" aria-hidden="true"></i>',
-        'm_name' => 'READ HISTORY',
-        'm_desc' => '/read/history?any_en_id=',
-        'm_parents' => array(11035,11039),
-    ),
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(12214,12343,12201,12344,12215,7291,11068,12205,12211,11999,6225,12275,6287,12339,6415,11046,7256,4269,7540,11087);
+$config['en_ids_11035'] = array(12214,12343,12201,12344,7291,11068,12205,12211,11999,6225,12275,6287,12339,6415,7256,4269,7540,11087);
 $config['en_all_11035'] = array(
     12214 => array(
         'm_icon' => '<i class="fad fa-plus idea" aria-hidden="true"></i>',
@@ -4267,12 +4267,6 @@ $config['en_all_11035'] = array(
         'm_name' => 'IDEA BOOKMARKS',
         'm_desc' => '',
         'm_parents' => array(11035,12343),
-    ),
-    12215 => array(
-        'm_icon' => '<i class="fad fa-atlas idea"></i>',
-        'm_name' => 'IDEA HISTORY',
-        'm_desc' => '',
-        'm_parents' => array(11035),
     ),
     7291 => array(
         'm_icon' => '<i class="fad fa-power-off" aria-hidden="true"></i>',
@@ -4302,7 +4296,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'OPEN IDEA LEDGER',
         'm_desc' => '',
-        'm_parents' => array(6771,11035),
+        'm_parents' => array(11039,6771,11035),
     ),
     6225 => array(
         'm_icon' => '<i class="fas fa-cog play" aria-hidden="true"></i>',
@@ -4333,12 +4327,6 @@ $config['en_all_11035'] = array(
         'm_name' => 'READ CLEAR ALL',
         'm_desc' => '',
         'm_parents' => array(6205,11035,5967,4755,6418,4593,6414),
-    ),
-    11046 => array(
-        'm_icon' => '<i class="fad fa-atlas read" aria-hidden="true"></i>',
-        'm_name' => 'READ HISTORY',
-        'm_desc' => '',
-        'm_parents' => array(11035,11039),
     ),
     7256 => array(
         'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
