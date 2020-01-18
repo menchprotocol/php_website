@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-17 21:02:29 PST
+//Generated 2020-01-17 21:25:40 PST
 
 //COIN PLAY:
 $config['en_ids_4536'] = array(11968,7305,6225,12289,6206,10645,4758,7303,10957,11088,11087);
@@ -4101,7 +4101,7 @@ $config['en_all_6404'] = array(
     11061 => array(
         'm_icon' => '',
         'm_name' => 'SUBSCRIPTION FREE WEEKLY READS',
-        'm_desc' => '20',
+        'm_desc' => '10',
         'm_parents' => array(6404),
     ),
     11162 => array(
