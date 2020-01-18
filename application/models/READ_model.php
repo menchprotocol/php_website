@@ -4261,7 +4261,7 @@ class READ_model extends CI_Model
 
                 //Respond to user:
                 $this->READ_model->dispatch_message(
-                    'I did not find any ideas to "' . $master_command . '", but I have made a note of this and will let you know as soon as I am trained on this.',
+                    'I did not find any blogs to "' . $master_command . '", but I have made a note of this and will let you know as soon as I am trained on this.',
                     $en,
                     true
                 );

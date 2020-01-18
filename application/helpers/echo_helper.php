@@ -1631,7 +1631,13 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'].'?manual_nav=1' : '/read/'.$in['in_id'] ) . '" class="list-group-item itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
+
+    //Title
     $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
+
+
+    //Description:
+    $ui .= '<div class="idea-desc">'.echo_in_description($in['in_id']).'</div>';
 
 
     //Now do measurements:
@@ -1677,6 +1683,37 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     $ui .= '</a>';
 
     return $ui;
+}
+
+function echo_in_description($in_id){
+
+    $CI =& get_instance();
+
+    foreach ($CI->READ_model->ln_fetch(array(
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'ln_type_play_id' => 4231, //Idea Note Messages
+        'ln_child_idea_id' => $in_id,
+    ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
+
+        //See if Text Message:
+        if($ln['ln_parent_play_id'] > 0){
+            $ln['ln_content'] = trim(str_replace('@'.$ln['ln_parent_play_id'],'',$ln['ln_content']));
+        }
+
+        if(strlen($ln['ln_content']) > 0){
+            //This is the first text message:
+            if(strlen($ln['ln_content']) < config_var(12363)){
+                //Qualifies as feature message:
+                return $CI->READ_model->dispatch_message($ln['ln_content']);
+            }
+
+            //Break either way:
+            break;
+        }
+    }
+
+    return null;
+
 }
 
 function echo_in_thumbnail($in_id, $show_icon = false, $extra_css = null){
