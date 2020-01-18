@@ -103,8 +103,9 @@ class Read extends CI_Controller
             }
         }
 
+        $en_all_12201 = $this->config->item('en_all_12201'); //MENCH PLAYER NAVIGATION
         $this->load->view('header', array(
-            'title' => '🔵PLAY 🔴READ 🟡IDEA',
+            'title' => $en_all_12201[12198]['m_name'],
         ));
         $this->load->view('read/read_home');
         $this->load->view('footer');
