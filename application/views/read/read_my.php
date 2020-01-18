@@ -17,8 +17,6 @@ if(!$session_en){
     //echo '<div class="pull-left">' . echo_menu(12201, 'btn-read') . '</div>';
     $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
-    echo '<h1 class="pull-left inline-block read"><span class="icon-block-xlg">' . $en_all_2738[6205]['m_icon'] . '</span>'.$en_all_2738[6205]['m_name'].'</h1>';
-
 
     echo '<div class="pull-right inline-block side-margin">';
 
@@ -35,6 +33,10 @@ if(!$session_en){
     echo '<a href="/" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12201]['m_name'].'">'.$en_all_11035[12201]['m_icon'].'</a>';
 
     echo '</div>';
+
+
+    //LEFT
+    echo '<h1 class="pull-left inline-block read"><span class="icon-block-xlg">' . $en_all_2738[6205]['m_icon'] . '</span>'.$en_all_2738[6205]['m_name'].'</h1>';
 
 
     echo '<div class="doclear">&nbsp;</div>';

@@ -16,7 +16,6 @@ if($session_en) {
     $messenger_activated = in_array(6196, $this->session->userdata('session_parent_ids'));
     $web_email_activated = in_array(12103, $this->session->userdata('session_parent_ids'));
 
-    echo '<h1 class="play pull-left inline-block"><span class="icon-block-xlg icon_photo icon_en_'.$session_en['en_id'].'">' . echo_en_icon($session_en['en_icon']) . '</span><span class="en_name_full_'.$session_en['en_id'].'">' . $session_en['en_name'] . '</span></h1>';
 
     echo '<div class="pull-right inline-block side-margin">';
 
@@ -28,6 +27,8 @@ if($session_en) {
     }
 
     echo '</div>';
+
+    echo '<h1 class="play pull-left inline-block"><span class="icon-block-xlg icon_photo icon_en_'.$session_en['en_id'].'">' . echo_en_icon($session_en['en_icon']) . '</span><span class="en_name_full_'.$session_en['en_id'].'">' . $session_en['en_name'] . '</span></h1>';
 
     echo '<div class="doclear">&nbsp;</div>';
 

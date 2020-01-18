@@ -22,8 +22,6 @@
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
         echo '<div class="add-idea-toggle">';
-        echo '<h1 class="pull-left inline-block idea"><span class="icon-block-xlg">' . $en_all_2738[4535]['m_icon'] . '</span>'.$en_all_2738[4535]['m_name'].'</h1>';
-
 
         //RIGHT
         echo '<div class="pull-right inline-block side-margin">';
@@ -36,6 +34,10 @@
 
 
         echo '</div>';
+
+        //LEFT
+        echo '<h1 class="pull-left inline-block idea"><span class="icon-block-xlg">' . $en_all_2738[4535]['m_icon'] . '</span>'.$en_all_2738[4535]['m_name'].'</h1>';
+
         echo '<div class="doclear">&nbsp;</div>';
 
 
