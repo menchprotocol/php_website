@@ -256,7 +256,7 @@ class Read extends CI_Controller
 
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
         $this->load->view('header', array(
-            'title' => $en_all_2738[6205]['m_name'],
+            'title' => $en_all_2738[6205]['m_icon'].$en_all_2738[6205]['m_name'],
         ));
 
         $this->load->view('read/read_my', array(

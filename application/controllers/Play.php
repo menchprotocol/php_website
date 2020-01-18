@@ -2449,7 +2449,7 @@ fragment PostListingItemSidebar_post on Post {
 
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
         $this->load->view('header', array(
-            'title' => $en_all_2738[4536]['m_name'],
+            'title' => $en_all_2738[4536]['m_icon'].$en_all_2738[4536]['m_name'],
         ));
         $this->load->view('play/play_my', array(
             'session_en' => $session_en,
