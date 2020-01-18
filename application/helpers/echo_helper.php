@@ -68,7 +68,7 @@ function echo_url_type($url, $en_type_link_id)
 
     } elseif ($en_type_link_id == 4260 /* Image URL */) {
 
-        return '<img src="' . $url . '" class="content-image" />';
+        return '<a href="' . $url . '" target="_blank"><img src="' . $url . '" class="content-image" /></a>';
 
     } elseif ($en_type_link_id == 4259 /* Audio URL */) {
 
