@@ -1699,10 +1699,12 @@ function echo_in_description($in_id){
 
         //See if Text Message:
         if($ln['ln_parent_play_id'] > 0){
-            $ln['ln_content'] = trim(str_replace('@'.$ln['ln_parent_play_id'],'',$ln['ln_content']));
+            $ln_content = trim(str_replace('@'.$ln['ln_parent_play_id'],'',$ln['ln_content']));
+        } else {
+            $ln_content = $ln['ln_content'];
         }
 
-        if(strlen($ln['ln_content']) > 0){
+        if(strlen($ln_content) > 0){
             //This is the first text message:
             if(strlen($ln['ln_content']) < config_var(12363)){
                 //Qualifies as feature message:
