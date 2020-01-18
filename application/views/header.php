@@ -1,12 +1,14 @@
 <?php
 $session_en = superpower_assigned();
+$current_mench = current_mench();
+$first_segment = $this->uri->segment(1);
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 ?><!doctype html>
 <html lang="en">
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/mench.png">
+    <link rel="icon" type="image/png" href="/<?= ( strlen($first_segment) ? $current_mench  : 'mench') ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= (isset($title) ? $title . ' | ' : '') ?>MENCH</title>
 
@@ -53,7 +55,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     </script>
 </head>
 
-<body class="<?= current_mench() ?>">
+<body class="<?= 'to'.$current_mench ?>">
 
 <?php
 //Any message we need to show here?
@@ -86,7 +88,7 @@ if(!isset($hide_header) || !$hide_header){
                             $handle = ( $en_id==6205 ? '' : $identifier );
 
                             echo '<td class="'.$identifier.'">';
-                            echo '<a class="'.$identifier.' border-'.$identifier.( $this->uri->segment(1)==$identifier || ( $en_id==6205 && ( !strlen($this->uri->segment(1)) || is_numeric($this->uri->segment(1)) ) ) ? ' focustab ': '' ).'" href="/'.$identifier.'">';
+                            echo '<a class="'.$identifier.' border-'.$identifier.( $first_segment==$identifier || ( $en_id==6205 && ( !strlen($first_segment) || is_numeric($first_segment) ) ) ? ' focustab ': '' ).'" href="/'.$identifier.'">';
 
                             if($identifier=='play'){
 

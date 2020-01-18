@@ -385,7 +385,7 @@ function en_ln_type_preview() {
 
 function update_demo_icon(){
     //Update demo icon based on icon input value:
-    $('.icon-demo').html(($('#en_icon').val().length > 0 ? $('#en_icon').val() : '🔵' ));
+    $('.icon-demo').html(($('#en_icon').val().length > 0 ? $('#en_icon').val() : js_en_all_2738[4536]['m_icon'] ));
 }
 
 function en_modify_load(en_id, ln_id) {
@@ -650,7 +650,7 @@ function en_modify_save() {
                 var icon_is_set = ( modify_data['en_icon'].length > 0 ? 1 : 0 );
                 if(!icon_is_set){
                     //Set player default icon:
-                    modify_data['en_icon'] = '🔵';
+                    modify_data['en_icon'] = js_en_all_2738[4536]['m_icon'];
                 }
                 $('.en__icon_' + modify_data['en_id']).attr('en-is-set' , icon_is_set );
                 $('.en_ui_icon_' + modify_data['en_id']).html(modify_data['en_icon']);

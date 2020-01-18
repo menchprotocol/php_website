@@ -300,7 +300,9 @@ function echo_en_icon($en_icon = null)
         return $en_icon;
     } else {
         //Return default icon for players:
-        return '🔵';
+        $CI =& get_instance();
+        $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
+        return $en_all_2738[4536]['m_icon'];
     }
 }
 

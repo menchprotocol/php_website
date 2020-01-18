@@ -587,9 +587,9 @@ function current_mench(){
     $CI =& get_instance();
     $part1 = $CI->uri->segment(1);
     if($part1=='play' || $part1=='idea'){
-        return 'to'.$part1;
+        return $part1;
     } else {
-        return 'toread';
+        return 'read';
     }
 }
 

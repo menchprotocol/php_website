@@ -53,7 +53,7 @@ if(!$session_en){
     }
 
 
-    //User has multiple 🔴 READING LISTs, so list all 🔴 READING LISTs to enable User to choose:
+    //User has multiple READING LISTs, so list all READING LISTs to enable User to choose:
     echo '<div id="actionplan_steps" class="list-group actionplan-list">';
     foreach ($player_reads as $priority => $ln) {
 

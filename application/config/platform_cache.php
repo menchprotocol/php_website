@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-17 21:25:40 PST
+//Generated 2020-01-18 01:48:48 PST
 
 //COIN PLAY:
 $config['en_ids_4536'] = array(11968,7305,6225,12289,6206,10645,4758,7303,10957,11088,11087);
@@ -4131,7 +4131,7 @@ $config['en_all_6404'] = array(
 );
 
 //PLATFORM MEMORY JAVASCRIPT:
-$config['en_ids_11054'] = array(4486,4737,7356,7355,6201,7585,6404,6177,6186);
+$config['en_ids_11054'] = array(4486,4737,7356,7355,6201,7585,2738,6404,6177,6186);
 $config['en_all_11054'] = array(
     4486 => array(
         'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
@@ -4168,6 +4168,12 @@ $config['en_all_11054'] = array(
         'm_name' => 'IDEA TYPE',
         'm_desc' => '',
         'm_parents' => array(12079,11054,6204,10651,6160,6194,6232,4527,6201),
+    ),
+    2738 => array(
+        'm_icon' => '<img src="/mench.png" class="mench-spin no-radius">',
+        'm_name' => 'MENCH',
+        'm_desc' => '',
+        'm_parents' => array(11054,12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
     ),
     6404 => array(
         'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
@@ -4946,19 +4952,19 @@ $config['en_all_10956'] = array(
 $config['en_ids_2738'] = array(4536,6205,4535);
 $config['en_all_2738'] = array(
     4536 => array(
-        'm_icon' => '🔵',
+        'm_icon' => '<i class="fas fa-circle play"></i>',
         'm_name' => 'PLAY',
         'm_desc' => 'Awarded for each new player',
         'm_parents' => array(4527,5008,12155,2738,4463),
     ),
     6205 => array(
-        'm_icon' => '🔴',
+        'm_icon' => '<i class="fas fa-circle read"></i>',
         'm_name' => 'READ',
         'm_desc' => 'Awarded for successful reads',
         'm_parents' => array(4527,5008,12155,2738,4463),
     ),
     4535 => array(
-        'm_icon' => '🟡',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'IDEA',
         'm_desc' => 'Awarded for published ideas',
         'm_parents' => array(4527,5008,12155,2738,4463),
@@ -5046,19 +5052,19 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,10869),
     ),
     4535 => array(
-        'm_icon' => '🟡',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'COIN IDEA',
         'm_desc' => '',
         'm_parents' => array(4527,5008,12155,2738,4463),
     ),
     4536 => array(
-        'm_icon' => '🔵',
+        'm_icon' => '<i class="fas fa-circle play"></i>',
         'm_name' => 'COIN PLAY',
         'm_desc' => '',
         'm_parents' => array(4527,5008,12155,2738,4463),
     ),
     6205 => array(
-        'm_icon' => '🔴',
+        'm_icon' => '<i class="fas fa-circle read"></i>',
         'm_name' => 'COIN READ',
         'm_desc' => '',
         'm_parents' => array(4527,5008,12155,2738,4463),
@@ -5283,7 +5289,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<img src="/mench.png" class="mench-spin no-radius">',
         'm_name' => 'MENCH',
         'm_desc' => '',
-        'm_parents' => array(12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
+        'm_parents' => array(11054,12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
     ),
     12105 => array(
         'm_icon' => '<i class="fas fa-vote-yea"></i>',
