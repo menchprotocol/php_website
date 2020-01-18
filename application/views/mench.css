@@ -1100,7 +1100,7 @@ label {
     line-height: 110%;
 }
 .idea-info {
-    font-size: 0.89em;
+    font-size: 0.8em;
     margin:5px 0 0;
 }
 
@@ -1109,7 +1109,8 @@ label {
 }
 
 .idea-desc{
-    font-size: 0.89em;
+    color:#AAAAAA;
+    font-size: 0.8em;
     padding: 10px 0 5px;
     line-height: 120%;
 }
