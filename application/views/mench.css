@@ -1109,7 +1109,7 @@ label {
 }
 
 .idea-desc{
-    color:#AAAAAA;
+    color:#AAAAAA !important;
     font-size: 0.8em;
     padding: 10px 0 5px;
     line-height: 120%;
