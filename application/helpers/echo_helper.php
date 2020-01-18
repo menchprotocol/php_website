@@ -1619,6 +1619,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = superpower_assigned();
+    $in_description = echo_in_description($in['in_id']);
     $completion_rate['completion_percentage'] = 0; //Default value
     if($session_en && $in_reads){
         //Make sure in reading list:
@@ -1637,8 +1638,9 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
 
 
     //Description:
-    $ui .= '<div class="idea-desc">'.echo_in_description($in['in_id']).'</div>';
-
+    if($in_description){
+        $ui .= '<div class="idea-desc">'.$in_description.'</div>';
+    }
 
     //Now do measurements:
     $ui .= '<div class="montserrat idea-info doupper">';
