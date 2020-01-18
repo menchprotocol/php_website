@@ -67,7 +67,7 @@ if(count($current_sign_in_attempt) == 0){
 
 <div class="container center-info">
 
-    <div class="sign-logo text-center"><img src="/mench.png" class="mench-spin" /></div>
+    <div class="sign-logo text-center"><img src="/img/mench.png" class="mench-spin" /></div>
 
     <h1 class="text-center"><?= $en_all_11035[4269]['m_name'] ?></h1>
 

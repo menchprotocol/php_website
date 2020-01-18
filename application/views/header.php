@@ -8,7 +8,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/<?= ( strlen($first_segment) ? $current_mench  : 'mench') ?>.png">
+    <link rel="icon" type="image/png" href="/img/<?= ( strlen($first_segment) ? $current_mench  : 'mench') ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= (isset($title) ? $title . ' | ' : '') ?>MENCH</title>
 
@@ -131,7 +131,7 @@ if(!isset($hide_header) || !$hide_header){
             <table class="mench-navigation">
                 <tr>
 
-                    <td class="block-link block-logo"><a href="/"><img src="/mench.png" class="mench-logo mench-spin" /></a></td>
+                    <td class="block-link block-logo"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /></a></td>
 
                     <td>
                         <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
