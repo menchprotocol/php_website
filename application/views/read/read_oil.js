@@ -41,7 +41,7 @@ function load_oil(link_filters, link_join_by, page_num){
     $.post("/read/load_oil", {
         link_filters: link_filters,
         link_join_by: link_join_by,
-        ln_content_search:ln_content_replace,
+        ln_content_search:ln_content_search,
         ln_content_replace:ln_content_replace,
         page_num: page_num,
     }, function (data) {
