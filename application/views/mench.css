@@ -1104,12 +1104,11 @@ label {
     margin:5px 0 0;
 }
 
-.idea-info, .idea-info i{
+.idea-info, .idea-info i, .idea-desc, .idea-desc a, .idea-desc b{
     color:#AAAAAA !important;
 }
 
 .idea-desc{
-    color:#AAAAAA !important;
     font-size: 0.8em;
     padding: 10px 0 5px;
     line-height: 120%;
