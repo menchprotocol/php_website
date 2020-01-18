@@ -120,7 +120,7 @@ function extract_references($ln_content)
     $string_references = array(
         'ref_urls' => array(),
         'ref_players' => array(),
-        'ref_blogs' => array(),
+        'ref_ideas' => array(),
         'ref_commands' => array(),
         'ref_custom' => array(),
     );
@@ -153,7 +153,7 @@ function extract_references($ln_content)
 
         } elseif (substr($word, 0, 1) == '#' && is_numeric(substr($word, 1)) && intval(substr($word, 1)) > 0) {
 
-            array_push($string_references['ref_blogs'], intval(substr($word, 1)));
+            array_push($string_references['ref_ideas'], intval(substr($word, 1)));
 
         }
     }
@@ -527,7 +527,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
 
 function in_is_unlockable($in){
     $CI =& get_instance();
-    return in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355') /* Blog Statuses Public */);
+    return in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355') /* Idea Statuses Public */);
 }
 
 function redirect_message($url, $message = null)
@@ -574,8 +574,8 @@ function superpower_active($superpower_en_id, $boolean_only = false){
 function extract_icon_color($en_icon){
     if(substr_count($en_icon, 'read')>0){
         return ' read ';
-    } elseif(substr_count($en_icon, 'blog')>0){
-        return ' blog ';
+    } elseif(substr_count($en_icon, 'idea')>0){
+        return ' idea ';
     } elseif(!strlen($en_icon) || substr_count($en_icon, 'play')>0 && (!substr_count($en_icon, 'fa-play') || substr_count($en_icon, 'play')>1)){
         return ' play ';
     } else {
@@ -586,7 +586,7 @@ function extract_icon_color($en_icon){
 function current_mench(){
     $CI =& get_instance();
     $part1 = $CI->uri->segment(1);
-    if($part1=='play' || $part1=='blog'){
+    if($part1=='play' || $part1=='idea'){
         return 'to'.$part1;
     } else {
         return 'toread';
@@ -665,7 +665,7 @@ function common_prefix($child_list, $child_field, $in = null, $max_look = 0){
     }
 
     if(count($child_list) < 2){
-        return null; //Cannot do this for less than 2 blogs
+        return null; //Cannot do this for less than 2 ideas
     }
 
     //Go through each child one by one and see if each word exists in all:
@@ -676,7 +676,7 @@ function common_prefix($child_list, $child_field, $in = null, $max_look = 0){
             break; //Look no more...
         }
 
-        //Make sure this is the same word across all blogs:
+        //Make sure this is the same word across all ideas:
         $all_the_same = true;
         foreach($child_list as $child_item){
             $child_words = explode(' ', $child_item[$child_field]);
@@ -953,7 +953,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         );
     }
 
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Blog Subtypes
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Idea Subtypes
 
     //Define the support objects indexed on algolia:
     $input_obj_id = intval($input_obj_id);
@@ -980,7 +980,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
     } else {
 
-        //Do both blogs and players:
+        //Do both ideas and players:
         $fetch_objects = $valid_objects;
 
         if (!$return_row_only) {
@@ -1008,10 +1008,10 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             if($input_obj_id){
                 $limits['in_id'] = $input_obj_id;
             } else {
-                $limits['in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //Blog Statuses Active
+                $limits['in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //Idea Statuses Active
             }
 
-            $db_rows['in'] = $CI->BLOG_model->in_fetch($limits);
+            $db_rows['in'] = $CI->IDEA_model->in_fetch($limits);
 
         } elseif ($loop_obj == 'en') {
 
@@ -1118,7 +1118,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $time_range = echo_time_range($db_row, true, true);
                 $metadata = unserialize($db_row['in_metadata']);
 
-                $export_row['alg_obj_is_in'] = 1; //This is a BLOG
+                $export_row['alg_obj_is_in'] = 1; //This is an IDEA
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
                 $export_row['alg_obj_status'] = intval($db_row['in_status_play_id']);
                 $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_play_id']]['m_icon']; //Player type icon
@@ -1129,19 +1129,19 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_keywords'] = '';
                 foreach ($CI->READ_model->ln_fetch(array(
                     'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
-                    'ln_child_blog_id' => $db_row['in_id'],
+                    'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
+                    'ln_child_idea_id' => $db_row['in_id'],
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
                     $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
                 }
                 $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
 
 
-                //If trainer has up-voted then give them access to manage blog
+                //If trainer has up-voted then give them access to manage idea
                 foreach($CI->READ_model->ln_fetch(array(
                     'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_play_id' => 4983,
-                    'ln_child_blog_id' => $db_row['in_id'],
+                    'ln_child_idea_id' => $db_row['in_id'],
                     'ln_parent_play_id >' => 0, //Where the author player is stored
                 ), array(), 0) as $author){
                     array_push($export_row['_tags'], 'alg_author_' . $author['ln_parent_play_id']);
@@ -1150,10 +1150,10 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Set published status if featured:
                 if(count($CI->READ_model->ln_fetch(array(
-                        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
+                        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_12138')) . ')' => null, //Idea Statuses Featured
                         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_play_id' => 4601, //BLOG KEYWORDS
-                        'ln_child_blog_id' => $db_row['in_id'],
+                        'ln_type_play_id' => 4601, //IDEA KEYWORDS
+                        'ln_child_idea_id' => $db_row['in_id'],
                         'ln_parent_play_id IN (' . join(',', $featured_topic_ids) . ')' => null,
                     ), array('in_child')))){
                     array_push($export_row['_tags'], 'alg_is_published_featured');
@@ -1190,7 +1190,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be removed?
-        if (in_array($all_db_rows[0][$input_obj_type . '_status_play_id'], array(6178 /* Player Removed */, 6182 /* Blog Removed */))) {
+        if (in_array($all_db_rows[0][$input_obj_type . '_status_play_id'], array(6178 /* Player Removed */, 6182 /* Idea Removed */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
@@ -1292,7 +1292,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_owner_play_id = 0)
      *
      * $obj_type:               Either in, en or tr
      *
-     * $obj:                    The Player, Blog or Link itself.
+     * $obj:                    The Player, Idea or Link itself.
      *                          We're looking for the $obj ID and METADATA
      *
      * $new_fields:             The new array of metadata fields to be Set,
@@ -1307,7 +1307,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_owner_play_id = 0)
     //Fetch metadata for this object:
     if ($obj_type == 'in') {
 
-        $db_objects = $CI->BLOG_model->in_fetch(array(
+        $db_objects = $CI->IDEA_model->in_fetch(array(
             $obj_type . '_id' => $obj_id,
         ));
 
@@ -1356,7 +1356,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_owner_play_id = 0)
     //Now update DB without logging any links as this is considered a back-end update:
     if ($obj_type == 'in') {
 
-        $affected_rows = $CI->BLOG_model->in_update($obj_id, array(
+        $affected_rows = $CI->IDEA_model->in_update($obj_id, array(
             'in_metadata' => $metadata,
         ), false, $ln_owner_play_id);
 

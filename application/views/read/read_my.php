@@ -4,7 +4,7 @@
 <div class="container">
 <?php
 
-$has_multiple_blogs = ( count($player_reads) >= 2 );
+$has_multiple_ideas = ( count($player_reads) >= 2 );
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
@@ -24,9 +24,9 @@ if(!$session_en){
 
     echo '<a href="/read/next" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12211]['m_name'].'">'.$en_all_11035[12211]['m_icon'].'</a>';
 
-    echo '<a href="/ledger?ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_owner_play_id='.$session_en['en_id'].'" class="btn btn-read btn-five icon-block-lg '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11046]['m_name'].'">'.$en_all_11035[11046]['m_icon'].'</a>';
+    echo '<a href="/oil?ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_owner_play_id='.$session_en['en_id'].'" class="btn btn-read btn-five icon-block-lg '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11046]['m_name'].'">'.$en_all_11035[11046]['m_icon'].'</a>';
 
-    if($has_multiple_blogs){
+    if($has_multiple_ideas){
         //Give option to delete all:
         echo '<a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="btn btn-read btn-five icon-block-lg '.superpower_active(10964).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[6415]['m_name'].'">'.$en_all_11035[6415]['m_icon'].'</a>';
     }
@@ -39,7 +39,7 @@ if(!$session_en){
 
     echo '<div class="doclear">&nbsp;</div>';
 
-    if($has_multiple_blogs){
+    if($has_multiple_ideas){
 
         $timestamp = time();
 
@@ -58,13 +58,13 @@ if(!$session_en){
     foreach ($player_reads as $priority => $ln) {
 
         //Display row:
-        echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread '.( $has_multiple_blogs ? 'actionplan_sort' : '').'">';
+        echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread '.( $has_multiple_ideas ? 'actionplan_sort' : '').'">';
 
         echo echo_in_thumbnail($ln['in_id'], true, 'margin-right-18');
 
-        echo '<b class="actionplan-title montserrat montserrat blog-url in-title-'.$ln['in_id'].'">' . $ln['in_title'] . '</b>';
+        echo '<b class="actionplan-title montserrat montserrat idea-url in-title-'.$ln['in_id'].'">' . $ln['in_title'] . '</b>';
 
-        echo '<div class="montserrat blog-info doupper">';
+        echo '<div class="montserrat idea-info doupper">';
 
         $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $ln);
         $metadata = unserialize($ln['in_metadata']);
@@ -76,14 +76,14 @@ if(!$session_en){
             //Fetch primary author:
             $authors = $this->READ_model->ln_fetch(array(
                 'ln_type_play_id' => 4250,
-                'ln_child_blog_id' => $ln['in_id'],
+                'ln_child_idea_id' => $ln['in_id'],
             ), array('en_creator'), 1);
 
             echo ( $has_time_estimate ? echo_time_range($ln, true).' READ ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']);
 
         }
 
-        echo ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read">'.$completion_rate['completion_percentage'].'% DONE</span>';
+        echo ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">'.$completion_rate['completion_percentage'].'% DONE</span>';
 
         echo '</div>';
 
@@ -92,7 +92,7 @@ if(!$session_en){
         echo '<div class="note-edit edit-off"><span class="show-on-hover">';
 
         //Sort:
-        if($has_multiple_blogs){
+        if($has_multiple_ideas){
             echo '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort" style="margin-bottom:7px;"></i></span>';
         }
 

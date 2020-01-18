@@ -5,20 +5,20 @@ $(document).ready(function () {
 
     check_in_en_status_play_id();
 
-    //Watch for blog status change:
+    //Watch for idea status change:
     $("#ln_type_play_id").change(function () {
         check_in_en_status_play_id();
     });
 
     //Load first page of links:
-    load_ledger(link_filters, link_join_by, 1);
+    load_oil(link_filters, link_join_by, 1);
 
 });
 
 
 function check_in_en_status_play_id(){
-    //Checks to see if the Blog/Player status filter should be visible
-    //Would only make visible if Link type is Created Blog/Player
+    //Checks to see if the Idea/Player status filter should be visible
+    //Would only make visible if Link type is Created Idea/Player
 
     //Hide both in/en status:
     $(".filter-statuses").addClass('hidden');
@@ -33,14 +33,16 @@ function check_in_en_status_play_id(){
 
 
 
-function load_ledger(link_filters, link_join_by, page_num){
+function load_oil(link_filters, link_join_by, page_num){
     //Show spinner:
     $('#link_page_'+page_num).html('<div style="margin:20px 0 100px 0;"><i class="far fa-yin-yang fa-spin"></i> ' + echo_loading_notify() +  '</div>').hide().fadeIn();
 
     //Load report based on input fields:
-    $.post("/read/load_ledger", {
+    $.post("/read/load_oil", {
         link_filters: link_filters,
         link_join_by: link_join_by,
+        ln_content_search:ln_content_replace,
+        ln_content_replace:ln_content_replace,
         page_num: page_num,
     }, function (data) {
         if (!data.status) {

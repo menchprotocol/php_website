@@ -43,39 +43,39 @@
 
             new TypeIt('.read_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).type('READ').go();
 
-            new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).type('BLOG').go();
+            new TypeIt('.idea_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).type('IDEA').go();
 
 
             new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).type('a learning game').go();
             new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('a social game').go();
 
-            new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).type('microblogs').go();
+            new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).type('microideas').go();
             new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('key ideas').go();
             new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('interactively').go();
 
-            new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('your stories').go();
-            new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('your ideas').go();
+            new TypeIt('.idea_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('your stories').go();
+            new TypeIt('.idea_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('your ideas').go();
 
-            new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('SAVE').go();
-            new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SORT').go();
-            new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LINK').go();
-            new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SHARE').go();
-            new TypeIt('.blog_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('BLOG').go();
+            new TypeIt('.idea_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('SAVE').go();
+            new TypeIt('.idea_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SORT').go();
+            new TypeIt('.idea_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('LINK').go();
+            new TypeIt('.idea_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('SHARE').go();
+            new TypeIt('.idea_title', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('IDEA').go();
 
             new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('on the go').go();
             new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on the web').go();
 
-            new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on the web').go();
-            new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for chat apps').go();
-            new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for Messenger').go();
+            new TypeIt('.idea_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on the web').go();
+            new TypeIt('.idea_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for chat apps').go();
+            new TypeIt('.idea_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('for Messenger').go();
 
             new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('on Messenger').go();
 
-            new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('a conversation').go();
+            new TypeIt('.idea_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('a conversation').go();
 
             new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).delete().type('a conversation').go();
 
-            new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('collaboratively').go();
+            new TypeIt('.idea_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('collaboratively').go();
 
             new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().type('interactively').go();
 
@@ -83,7 +83,7 @@
             new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).type('joyfully').go();
             new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(1) }).type('.').go();
 
-            new TypeIt('.blog_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().go();
+            new TypeIt('.idea_content', { cursor:show_cursor, speed:speed(), startDelay:tl+=tempo(2) }).delete().go();
             new TypeIt('.read_content', { cursor:show_cursor, speed:speed(), startDelay:tl }).delete().go();
             new TypeIt('.play_content', { cursor:show_cursor, speed:speed(), startDelay:tl }).delete().go();
 
@@ -94,7 +94,7 @@
     <div class="animate-box hidden">
         <h1 class="no-margin play"><span class="play_title"></span> <span class="play_content"></span></h1>
         <h1 class="no-margin read"><span class="read_title"></span> <span class="read_content"></span></h1>
-        <h1 class="no-margin blog"><span class="blog_title"></span> <span class="blog_content"></span></h1>
+        <h1 class="no-margin idea"><span class="idea_title"></span> <span class="idea_content"></span></h1>
     </div>
 
     <div class="animate-trigger hidden"><a href="javascript:void(0);" onclick="stream();" class="btn btn-lg btn-read montserrat inline-block" style="margin-top: 20px;"><i class="fas fa-play-circle"></i> WATCH 1 MIN INTRO</a></div>
@@ -104,7 +104,7 @@
     //Player Navigation
     if($session_en && count($this->READ_model->ln_fetch(array(
             'ln_owner_play_id' => $session_en['en_id'],
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ), array(), 1))){
 
@@ -126,12 +126,12 @@
 
 
 
-    //Fetch all home page blogs:
+    //Fetch all home page ideas:
     $home_page_ins = array();
     foreach($this->READ_model->ln_fetch(array(
         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
-        'ln_type_play_id' => 4601, //BLOG KEYWORDS
+        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Idea Statuses Featured
+        'ln_type_play_id' => 4601, //IDEA KEYWORDS
         'ln_parent_play_id' => 12198, //HOME FEATURED
     ), array('in_child'), 0) as $home_in){
         array_push($home_page_ins, $home_in['in_id']);
@@ -145,9 +145,9 @@
             //Count total published courses here:
             $published_ins = $this->READ_model->ln_fetch(array(
                 'in_id IN (' . join(',', $home_page_ins) . ')' => null,
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Idea Statuses Featured
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_play_id' => 4601, //BLOG KEYWORDS
+                'ln_type_play_id' => 4601, //IDEA KEYWORDS
                 'ln_parent_play_id' => $en_id,
             ), array('in_child'), 0, 0, array('in_title' => 'ASC'));
 
@@ -155,7 +155,7 @@
                 continue;
             }
 
-            //Show featured blogs in this category:
+            //Show featured ideas in this category:
             $topic_in_count = 0;
             $featured_ui = '';
             foreach($published_ins as $published_in){

@@ -6,17 +6,17 @@ $total_enrolled = 0;
 $total_completed = 0;
 
 
-//FEATUREF BLOGD
+//FEATURED IDEA
 foreach($this->READ_model->ln_fetch(array(
-    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
+    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Idea Statuses Featured
     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    'ln_type_play_id' => 4601, //BLOG KEYWORDS
+    'ln_type_play_id' => 4601, //IDEA KEYWORDS
     'ln_parent_play_id IN (' . join(',', featured_topic_ids()) . ')' => null,
 ), array('in_child'), 0) as $in_published_tree){
 
     //Count Enrolled Users:
     $enrolled_users = $this->READ_model->ln_fetch(array(
-        'ln_parent_blog_id' => $in_published_tree['in_id'],
+        'ln_parent_idea_id' => $in_published_tree['in_id'],
         'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -29,7 +29,7 @@ foreach($this->READ_model->ln_fetch(array(
     $in_metadata = unserialize($in_published_tree['in_metadata']);
     $common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
     $completed_users = $this->READ_model->ln_fetch(array(
-        'ln_parent_blog_id' => end($common_steps),
+        'ln_parent_idea_id' => end($common_steps),
         'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -53,14 +53,14 @@ echo '<h1 style="margin-bottom:30px;">READ RATES</h1>';
 echo '<table class="table table-sm table-striped stats-table mini-stats-table" style="font-size: 0.8em;">';
 
 echo '<tr class="panel-title down-border copy-btn-done">';
-echo '<td style="text-align: left;">ALL BLOGS</td>';
+echo '<td style="text-align: left;">ALL IDEAS</td>';
 echo '<td style="text-align: left;">'.number_format($total_enrolled, 0).'</td>';
 echo '<td style="text-align: left;">'.( $total_enrolled>0 ? number_format(($total_completed/$total_enrolled*100), 1) : 0 ).'%</td>';
 echo '</tr>';
 
 
 echo '<tr class="panel-title down-border">';
-echo '<td style="text-align: left;">BLOGS</td>';
+echo '<td style="text-align: left;">IDEAS</td>';
 echo '<td style="text-align: left;">READERS</td>';
 echo '<td style="text-align: left;">COMPLETED</td>';
 echo '</tr>';

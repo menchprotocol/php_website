@@ -13,7 +13,7 @@
 
     echo '<div class="doclear">&nbsp;</div>';
 
-    echo '<div class="inline-block pull-right '.superpower_active(10984).'"><a class="btn btn-blog" href="/blog/'.$in['in_id'].'">EDIT <i class="fas fa-pen-square"></i></a></div>';
+    echo '<div class="inline-block pull-right '.superpower_active(10984).'"><a class="btn btn-idea" href="/idea/'.$in['in_id'].'">EDIT <i class="fas fa-pen-square"></i></a></div>';
 
     echo '<div class="doclear">&nbsp;</div>';
 

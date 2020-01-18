@@ -14,12 +14,12 @@ $route['default_controller']        = "read/read_home";
 $route['read']                      = "read/read_my";
 $route['read/next']                 = "read/read_next";
 $route['read/(:num)']               = "read/read_add/$1";
-$route['ledger']                    = "read/read_ledger";
+$route['oil']                       = "read/read_oil";
 $route['(:num)']                    = "read/read_coin/$1";
 $route['(:num)/next']               = "read/read_next/$1";
 
-//BLOG
-$route['blog']                      = "blog/blog_my";
-$route['blog/create']               = "blog/blog_create";
-$route['blog/stats']                = "blog/blog_stats";
-$route['blog/(:num)']               = "blog/blog_coin/$1";
+//IDEA
+$route['idea']                      = "idea/idea_my";
+$route['idea/create']               = "idea/idea_create";
+$route['idea/stats']                = "idea/idea_stats";
+$route['idea/(:num)']               = "idea/idea_coin/$1";

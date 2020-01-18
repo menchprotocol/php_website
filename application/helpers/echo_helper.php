@@ -23,8 +23,8 @@ function echo_clean_db_name($field_name){
         //Link field:
         return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('ln_', 'Link ', $field_name))));
     } elseif(substr($field_name, 0, 3) == 'in_'){
-        //Blog field:
-        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('in_', 'Blog ', $field_name))));
+        //Idea field:
+        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('in_', 'Idea ', $field_name))));
     } elseif(substr($field_name, 0, 3) == 'en_'){
         //Player field:
         return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('en_', 'Player ', $field_name))));
@@ -80,7 +80,7 @@ function echo_url_type($url, $en_type_link_id)
 
     } elseif ($en_type_link_id == 4261 /* File URL */) {
 
-        return '<a href="' . $url . '" class="btn btn-blog" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+        return '<a href="' . $url . '" class="btn btn-idea" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
 
     } else {
 
@@ -223,7 +223,7 @@ function echo_in_note($ln)
 
     $CI =& get_instance();
     $session_en = superpower_assigned();
-    $en_all_4485 = $CI->config->item('en_all_4485'); //Blog Notes
+    $en_all_4485 = $CI->config->item('en_all_4485'); //Idea Notes
 
 
     //Link Statuses
@@ -232,12 +232,12 @@ function echo_in_note($ln)
 
     //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item itemblog is-msg notes_sortable msg_en_type_' . $ln['ln_type_play_id'] . '" id="ul-nav-' . $ln['ln_id'] . '" tr-id="' . $ln['ln_id'] . '">';
+    $ui .= '<div class="list-group-item itemidea is-msg notes_sortable msg_en_type_' . $ln['ln_type_play_id'] . '" id="ul-nav-' . $ln['ln_id'] . '" tr-id="' . $ln['ln_id'] . '">';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
     $ui .= '<div class="edit-off text_message" id="msgbody_' . $ln['ln_id'] . '">';
-    $ui .= $CI->READ_model->dispatch_message($ln['ln_content'], $session_en, false, array(), $ln['ln_child_blog_id']);
+    $ui .= $CI->READ_model->dispatch_message($ln['ln_content'], $session_en, false, array(), $ln['ln_child_idea_id']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -245,7 +245,7 @@ function echo_in_note($ln)
 
         //Sort:
         if(in_array(4603, $en_all_4485[$ln['ln_type_play_id']]['m_parents'])){
-            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_play_id']]['m_parents']) ? 'blog_note_sorting' : '' ).'"></i></span>';
+            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_play_id']]['m_parents']) ? 'idea_note_sorting' : '' ).'"></i></span>';
         }
 
         //Modify:
@@ -255,20 +255,20 @@ function echo_in_note($ln)
 
 
     //Text editing:
-    $ui .= '<textarea onkeyup="in_edit_note_count(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="Blog...">' . $ln['ln_content'] . '</textarea>';
+    $ui .= '<textarea onkeyup="in_edit_note_count(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="Idea...">' . $ln['ln_content'] . '</textarea>';
 
 
     //Editing menu:
     $ui .= '<ul class="msg-nav '.superpower_active(10939).'">';
 
     //Counter:
-    $ui .= '<li class="edit-on hidden"><span id="blogNoteCount' . $ln['ln_id'] . '"><span id="charEditingNum' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</span></li>';
+    $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $ln['ln_id'] . '"><span id="charEditingNum' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</span></li>';
 
     //Save Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-blog white-third" href="javascript:in_note_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_play_id'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:in_note_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_play_id'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
 
     //Cancel Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-blog white-third" href="javascript:in_note_modify_cancel(' . $ln['ln_id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:in_note_modify_cancel(' . $ln['ln_id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
 
     //Show drop down for message link status:
     $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 0 0 0; display: block;">';
@@ -466,8 +466,8 @@ function echo_ln_connections($ln){
                 $ln_connections_ui .= echo_en($ens[0]);
             }
         } elseif(in_array(6202 , $m['m_parents'])){
-            //BLOG
-            $ins = $CI->BLOG_model->in_fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
+            //IDEA
+            $ins = $CI->IDEA_model->in_fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
             if(count($ins) > 0){
                 $ln_connections_ui .= echo_in_read($ins[0]);
             }
@@ -574,7 +574,7 @@ function echo_ln($ln, $is_inner = false)
 
     //Link Connections
     $link_connections_clean_name = ''; //All link connections including child links
-    $link_connections_count = 0; //Core link connections excluding child links (2x Blogs, 2x Players & 1x Parent Link)
+    $link_connections_count = 0; //Core link connections excluding child links (2x Ideas, 2x Players & 1x Parent Link)
     $auto_load_max_connections = 3; //If a link has this many of LESS connections, it would auto load them
     if(!$is_inner){
 
@@ -714,12 +714,12 @@ function echo_random_message($message_key, $return_all = false){
      * */
 
     $rotation_index = array(
-        'next_blog_is' => array(
+        'next_idea_is' => array(
             'Next: ',
-            'Next blog is: ',
-            'The next blog is: ',
-            'Ok moving on to the next blog: ',
-            'Moving to the next blog: ',
+            'Next idea is: ',
+            'The next idea is: ',
+            'Ok moving on to the next idea: ',
+            'Moving to the next idea: ',
         ),
         'one_way_only' => array(
             'I am not designed to respond to custom messages. I can understand you only when you choose one of the options that I recommend to you.',
@@ -795,7 +795,7 @@ function echo_random_message($message_key, $return_all = false){
             "Getting smarter ^~^",
         ),
         'command_me' => array(
-            'You can search for new blogs by sending me a message starting with "Search for", for example: "Search for assess my back-end skills" or "Search for recruit top talent"',
+            'You can search for new ideas by sending me a message starting with "Search for", for example: "Search for assess my back-end skills" or "Search for recruit top talent"',
         ),
         'goto_next' => array(
             'Say next to continue',
@@ -888,7 +888,7 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
 
     /*
      *
-     * a BLOG function to display current users for this blog
+     * a IDEA function to display current users for this idea
      * and the percentage of them that have completed it...
      *
      * */
@@ -897,15 +897,15 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
     $CI =& get_instance();
     $min_user_show = 101; //Needs this much or more users to display
 
-    //Count users who have completed this blog:
+    //Count users who have completed this idea:
     $enrolled_users_count = $CI->READ_model->ln_fetch(array(
         'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
-        'ln_parent_blog_id' => $in['in_id'],
+        'ln_parent_idea_id' => $in['in_id'],
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     if($enrolled_users_count[0]['totals'] < $min_user_show){
-        //No one has added this blog to their 🔴 READING LIST yet:
+        //No one has added this idea to their 🔴 READING LIST yet:
         return false;
     }
 
@@ -914,7 +914,7 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
     $array_flatten = array_flatten($in_metadata['in__metadata_common_steps']);
     $completed_users_count = $CI->READ_model->ln_fetch(array(
         'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
-        'ln_parent_blog_id' => end($array_flatten),
+        'ln_parent_idea_id' => end($array_flatten),
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
     if($completed_users_count[0]['totals'] > $enrolled_users_count[0]['totals']){
@@ -924,7 +924,7 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
     $completion_percentage_fancy = ( $completion_percentage_raw == 0 ? 'none' : ( $completion_percentage_raw==100 ? 'all' : $completion_percentage_raw.'%' ) );
 
     //As messenger default format and HTML extra notes:
-    $pitch_body  = $completion_percentage_fancy .' of all '.echo_number($enrolled_users_count[0]['totals']).' users completed this blog.';
+    $pitch_body  = $completion_percentage_fancy .' of all '.echo_number($enrolled_users_count[0]['totals']).' users completed this idea.';
 
     if ($push_message) {
         return '👤 ' . $pitch_body. "\n\n";
@@ -940,8 +940,8 @@ function echo_tree_experts($in, $push_message = false, $autoexpand = false)
 
     /*
      *
-     * a BLOG function to display experts sources for
-     * the entire blog tree stored in the metadata field.
+     * a IDEA function to display experts sources for
+     * the entire Idea tree stored in the metadata field.
      *
      * */
 
@@ -952,7 +952,7 @@ function echo_tree_experts($in, $push_message = false, $autoexpand = false)
     }
 
 
-    //Let's count to see how many content pieces we have references for this blog tree:
+    //Let's count to see how many content pieces we have references for this Idea tree:
     $source_info = '';
     $source_count = 0;
 
@@ -1127,7 +1127,7 @@ function echo_tree_steps($in, $push_message = 0, $autoexpand = false)
 
     /*
      *
-     * a BLOG function to display the total tree blogs
+     * a IDEA function to display the total tree Ideas
      * stored in the metadata field.
      *
      * */
@@ -1137,7 +1137,7 @@ function echo_tree_steps($in, $push_message = 0, $autoexpand = false)
         return false;
     }
 
-    //Fetch on-start blogs:
+    //Fetch on-start Ideas:
     $CI =& get_instance();
 
     $metadata = unserialize($in['in_metadata']);
@@ -1174,9 +1174,9 @@ function echo_tree_actionplan($in, $autoexpand){
     //Fetch actual children:
     $in__children = $CI->READ_model->ln_fetch(array(
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-        'ln_type_play_id' => 4228, //Blog Link Regular Read
-        'ln_parent_blog_id' => $in['in_id'],
+        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+        'ln_type_play_id' => 4228, //Idea Link Regular Read
+        'ln_parent_idea_id' => $in['in_id'],
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
     if(count($in__children) < 1){
@@ -1191,22 +1191,22 @@ function echo_tree_actionplan($in, $autoexpand){
     foreach ($in__children as $in_level2_counter => $in_level2) {
 
 
-        //Level 3 blogs:
+        //Level 3 Ideas:
         $in_level2_children = $CI->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_play_id' => 4228, //Blog Link Regular Read
-            'ln_parent_blog_id' => $in_level2['in_id'],
+            'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+            'ln_type_play_id' => 4228, //Idea Link Regular Read
+            'ln_parent_idea_id' => $in_level2['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
         //Fetch messages:
         $in_level2_messages = $CI->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id' => 4231, //Blog Note Messages
-            'ln_child_blog_id' => $in_level2['in_id'],
+            'ln_type_play_id' => 4231, //Idea Note Messages
+            'ln_child_idea_id' => $in_level2['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
-        //Determine blog type/settings:
+        //Determine Idea type/settings:
         $has_level2_content = (count($in_level2_children)>0 || count($in_level2_messages)>0);
 
 
@@ -1220,7 +1220,7 @@ function echo_tree_actionplan($in, $autoexpand){
         $return_html .= '<h5 class="panel-title montserrat">';
 
         if($has_level2_content){
-            $return_html .= '<a class="js-ln-create-steps-review" blog-id="'.$in_level2['in_id'].'" role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
+            $return_html .= '<a class="js-ln-create-steps-review" idea-id="'.$in_level2['in_id'].'" role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
             $return_html .= '<span class="icon-block"><i class="fas fa-plus-circle"></i></span>';
         } else {
             $return_html .= '<span class="empty-block">';
@@ -1266,8 +1266,8 @@ function echo_tree_actionplan($in, $autoexpand){
                     //Fetch messages:
                     $in_level3_messages = $CI->READ_model->ln_fetch(array(
                         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_play_id' => 4231, //Blog Note Messages
-                        'ln_child_blog_id' => $in_level3['in_id'],
+                        'ln_type_play_id' => 4231, //Idea Note Messages
+                        'ln_child_idea_id' => $in_level3['in_id'],
                     ), array(), 0, 0, array('ln_order' => 'ASC'));
 
 
@@ -1275,7 +1275,7 @@ function echo_tree_actionplan($in, $autoexpand){
 
 
                     if(count($in_level3_messages) > 0){
-                        $return_html .= '<a role="button" data-toggle="collapse" class="second-level-link js-ln-create-steps-review" blog-id="'.$in_level3['in_id'].'" data-parent="#open' . $in_level2_counter . '-'.$in_level3_counter.'" href="#collapse' . $in_level2_counter . '-'.$in_level3_counter.'" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
+                        $return_html .= '<a role="button" data-toggle="collapse" class="second-level-link js-ln-create-steps-review" idea-id="'.$in_level3['in_id'].'" data-parent="#open' . $in_level2_counter . '-'.$in_level3_counter.'" href="#collapse' . $in_level2_counter . '-'.$in_level3_counter.'" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
                         $return_html .= '<span class="icon-block"><i class="fas fa-plus-circle"></i></span>';
                     } else {
                         $return_html .= '<span class="icon-block"><i class="fal fa-check-circle"></i></span>';
@@ -1321,8 +1321,8 @@ function echo_en_messages($ln){
 
     $CI =& get_instance();
     $session_en = superpower_assigned();
-    $en_all_7585 = $CI->config->item('en_all_7585'); //Blog Subtypes
-    $en_all_4737 = $CI->config->item('en_all_4737'); //Blog Statuses
+    $en_all_7585 = $CI->config->item('en_all_7585'); //Idea Subtypes
+    $en_all_4737 = $CI->config->item('en_all_4737'); //Idea Statuses
     $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
 
     $ui = '<div class="players-msg">';
@@ -1333,15 +1333,15 @@ function echo_en_messages($ln){
     $ui .= '<ul class="msg-nav">';
 
 
-    //Referenced Blog:
-    $ui .= '<li><a class="btn btn-blog button-max" style="border:2px solid #f4d52d !important;" href="/blog/' . $ln['ln_child_blog_id'] . '" target="_parent" title="Message Blog: '.$ln['in_title'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_play_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_type_play_id']]['m_icon'].' '.$ln['in_title'].'</a></li>';
+    //Referenced Idea:
+    $ui .= '<li><a class="btn btn-idea button-max" style="border:2px solid #f4d52d !important;" href="/idea/' . $ln['ln_child_idea_id'] . '" target="_parent" title="Message Idea: '.$ln['in_title'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_play_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_type_play_id']]['m_icon'].' '.$ln['in_title'].'</a></li>';
 
     //READ HISTORY:
     /*
     $count_msg_trs = $CI->READ_model->ln_fetch(array(
         '( ln_id = ' . $ln['ln_id'] . ' OR ln_parent_read_id = ' . $ln['ln_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-    $ui .= '<li><a class="btn btn-blog" style="border:2px solid #f4d52d !important;" href="/read/view_json/' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    $ui .= '<li><a class="btn btn-idea" style="border:2px solid #f4d52d !important;" href="/read/view_json/' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
     */
 
 
@@ -1375,8 +1375,8 @@ function echo_time_range($in, $micro = false, $hide_zero = false)
     if (!isset($in['in_metadata'])) {
         //We don't have it, so fetch it:
         $CI =& get_instance();
-        $ins = $CI->BLOG_model->in_fetch(array(
-            'in_id' => $in['in_id'], //We should always have Blog ID
+        $ins = $CI->IDEA_model->in_fetch(array(
+            'in_id' => $in['in_id'], //We should always have Idea ID
         ));
         if (count($ins) > 0) {
             $in = $ins[0];
@@ -1519,20 +1519,20 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 
 
 
-function echo_in_blog($in)
+function echo_in_idea($in)
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
-    $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
+    $en_all_4737 = $CI->config->item('en_all_4737'); // Idea Statuses
 
-    $ui = '<a href="/blog/'.$in['in_id'] . '" class="list-group-item itemblog">';
+    $ui = '<a href="/idea/'.$in['in_id'] . '" class="list-group-item itemidea">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
-    $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false).'</b>';
+    $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false).'</b>';
 
     //Footnote
-    $ui .= '<div class="montserrat blog-info doupper">';
+    $ui .= '<div class="montserrat idea-info doupper">';
 
     //Now do measurements:
     $metadata = unserialize($in['in_metadata']);
@@ -1542,7 +1542,7 @@ function echo_in_blog($in)
 
     $ui .= '<span class="icon-block" data-toggle="tooltip" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'" data-placement="top">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].'</span>';
 
-    if(in_array($in['in_status_play_id'], $CI->config->item('en_ids_12138') /* Blog Statuses Featured */)){
+    if(in_array($in['in_status_play_id'], $CI->config->item('en_ids_12138') /* Idea Statuses Featured */)){
         $ui .= echo_in_featured($in['in_id']);
     }
 
@@ -1550,7 +1550,7 @@ function echo_in_blog($in)
 
     $ui .= '</td>';
 
-    //Search for Blog Image:
+    //Search for Idea Image:
     $ui .= '<td class="featured-frame">'.echo_in_thumbnail($in['in_id']).'</td>';
     $ui .= '</tr></table>';
     $ui .= '</a>';
@@ -1567,10 +1567,10 @@ function echo_in_featured($in_id){
     $en_all_11035 = $CI->config->item('en_all_11035');
 
 
-    //Blog Author:
+    //Idea Author:
     $authors = $CI->READ_model->ln_fetch(array(
         'ln_type_play_id' => 4250,
-        'ln_child_blog_id' => $in_id,
+        'ln_child_idea_id' => $in_id,
     ), array('en_creator'), 1);
     $ui .= '<a href="'.$en_all_12201[12342]['m_desc'].'/'.$authors[0]['en_id'].'" data-toggle="tooltip" title="FEATURED IN '.$authors[0]['en_name'].'" data-placement="bottom" class="icon-block">'.echo_en_icon($authors[0]['en_icon']).'</a>';
 
@@ -1578,9 +1578,9 @@ function echo_in_featured($in_id){
     //Home Page
     if(count($CI->READ_model->ln_fetch(array(
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_play_id' => 4601, //BLOG KEYWORDS
+        'ln_type_play_id' => 4601, //IDEA KEYWORDS
         'ln_parent_play_id' => 12198, //HOME FEATURED
-        'ln_child_blog_id' => $in_id,
+        'ln_child_idea_id' => $in_id,
     )))){
         $ui .= '<a href="'.$en_all_12201[12198]['m_desc'].'" data-toggle="tooltip" title="FEATURED IN '.$en_all_12201[12198]['m_name'].'" data-placement="bottom" class="icon-block">'.$en_all_12201[12198]['m_icon'].'</a>';
     }
@@ -1588,9 +1588,9 @@ function echo_in_featured($in_id){
     //Topic
     $featured_topics = $CI->READ_model->ln_fetch(array(
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_play_id' => 4601, //BLOG KEYWORDS
+        'ln_type_play_id' => 4601, //IDEA KEYWORDS
         'ln_parent_play_id IN (' . join(',', featured_topic_ids()) . ')' => null,
-        'ln_child_blog_id' => $in_id,
+        'ln_child_idea_id' => $in_id,
     ), array('en_parent'), 0);
     if(count($featured_topics) > 0){
 
@@ -1629,11 +1629,11 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'].'?manual_nav=1' : '/read/'.$in['in_id'] ) . '" class="list-group-item itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
-    $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
+    $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
 
 
     //Now do measurements:
-    $ui .= '<div class="montserrat blog-info doupper">';
+    $ui .= '<div class="montserrat idea-info doupper">';
 
     $metadata = unserialize($in['in_metadata']);
     if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
@@ -1644,7 +1644,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
         //Fetch primary author:
         $authors = $CI->READ_model->ln_fetch(array(
             'ln_type_play_id' => 4250,
-            'ln_child_blog_id' => $in['in_id'],
+            'ln_child_idea_id' => $in['in_id'],
         ), array('en_creator'), 1);
 
         $ui .= ( $has_time_estimate ? echo_time_range($in, true).' ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']);
@@ -1654,7 +1654,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
     if($session_en && $in_reads && in_array($in['in_id'], $player_read_ids)){
         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
         if($completion_rate['completion_percentage'] > 0){
-            $ui .= ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read">'.$completion_rate['completion_percentage'].'% DONE</span>';
+            $ui .= ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">'.$completion_rate['completion_percentage'].'% DONE</span>';
         }
     }
 
@@ -1669,7 +1669,7 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
 
     $ui .= '</td>';
 
-    //Search for Blog Image:
+    //Search for Idea Image:
     $ui .= '<td class="featured-frame">'.echo_in_thumbnail($in['in_id'], $show_icon).'</td>';
     $ui .= '</tr></table>';
     $ui .= '</a>';
@@ -1683,8 +1683,8 @@ function echo_in_thumbnail($in_id, $show_icon = false, $extra_css = null){
 
     foreach ($CI->READ_model->ln_fetch(array(
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_play_id' => 4231, //Blog Note Messages
-        'ln_child_blog_id' => $in_id,
+        'ln_type_play_id' => 4231, //Idea Note Messages
+        'ln_child_idea_id' => $in_id,
         'ln_parent_play_id >' => 0, //Reference a player
     ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
 
@@ -1726,11 +1726,11 @@ function echo_in_thumbnail($in_id, $show_icon = false, $extra_css = null){
 function echo_in_dashboard($in)
 {
     $CI =& get_instance();
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Blog Subtypes
-    $ui = '<div class="list-group-item itemblog">';
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Idea Subtypes
+    $ui = '<div class="list-group-item itemidea">';
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="/blog/' . $in['in_id']. '"><i class="fad fa-step-forward"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-idea" href="/idea/' . $in['in_id']. '"><i class="fad fa-step-forward"></i></a></div>';
     $ui .= '<span class="icon-block">'.$en_all_7585[$in['in_type_play_id']]['m_icon'].'</span>';
     $ui .= '<b class="montserrat">'.echo_in_title($in['in_title'], false).'</b>';
     $ui .= '</div>';
@@ -1752,16 +1752,16 @@ function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_leve
     $CI =& get_instance();
     $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
     $en_all_4486 = $CI->config->item('en_all_4486');
-    $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Blog Subtypes
+    $en_all_4737 = $CI->config->item('en_all_4737'); // Idea Statuses
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Idea Subtypes
 
 
     $ui = null;
     foreach($CI->READ_model->ln_fetch(array(
-        'ln_parent_blog_id' => $starting_in,
-        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+        'ln_parent_idea_id' => $starting_in,
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $in_ln){
 
         //Prep Metadata:
@@ -1769,20 +1769,20 @@ function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_leve
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         $messages = $CI->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'ln_type_play_id' => 4231, //Blog Note Messages
-            'ln_child_blog_id' => $in_ln['in_id'],
+            'ln_type_play_id' => 4231, //Idea Note Messages
+            'ln_child_idea_id' => $in_ln['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         //Display block:
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Link Type: '.$en_all_4486[$in_ln['ln_type_play_id']]['m_name'].'">'. $en_all_4486[$in_ln['ln_type_play_id']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Link Status: '.$en_all_6186[$in_ln['ln_status_play_id']]['m_name'].'">'. $en_all_6186[$in_ln['ln_status_play_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Link Type: '.$en_all_4486[$in_ln['ln_type_play_id']]['m_name'].'">'. $en_all_4486[$in_ln['ln_type_play_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Link Status: '.$en_all_6186[$in_ln['ln_status_play_id']]['m_name'].'">'. $en_all_6186[$in_ln['ln_status_play_id']]['m_icon'] . '</span>';
 
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Type: '.$en_all_7585[$in_ln['in_type_play_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_play_id']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Status: '.$en_all_4737[$in_ln['in_status_play_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_play_id']]['m_icon']. '</span>';
-        $ui .= '<a href="/play/play_admin/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this blog"><u>' .   echo_in_title($in_ln['in_title'], false) . '</u></a>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$en_all_7585[$in_ln['in_type_play_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_play_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$en_all_4737[$in_ln['in_status_play_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_play_id']]['m_icon']. '</span>';
+        $ui .= '<a href="/play/play_admin/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   echo_in_title($in_ln['in_title'], false) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_play_id'] == 4228 && in_array($parent_in_type_play_id , $CI->config->item('en_ids_6193') /* OR Blogs */ )) || ($in_ln['ln_type_play_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_play_id'] == 4228 && in_array($parent_in_type_play_id , $CI->config->item('en_ids_6193') /* OR Ideas */ )) || ($in_ln['ln_type_play_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
 
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$in_ln['in_id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
@@ -1876,7 +1876,7 @@ function echo_en_stats_overview($cached_list, $report_name){
 
             $inner_ui .= '<tr>';
             $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/play/'.$group_en_id.'">'.$people_group['m_name'].'</a></td>';
-            $inner_ui .= '<td style="text-align: right;"><a href="/ledger?ln_status_play_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_play_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_play_id=' . join(',', $CI->config->item('en_ids_'.$group_en_id)) . '">' . number_format($subset_total, 0) . '</a></td>';
+            $inner_ui .= '<td style="text-align: right;"><a href="/oil?ln_status_play_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_play_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_play_id=' . join(',', $CI->config->item('en_ids_'.$group_en_id)) . '">' . number_format($subset_total, 0) . '</a></td>';
             $inner_ui .= '</tr>';
 
         } else {
@@ -1893,7 +1893,7 @@ function echo_en_stats_overview($cached_list, $report_name){
 
             $inner_ui .= '<tr>';
             $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/play/'.$group_en_id.'">' . $people_group['m_name'] . '</a></td>';
-            $inner_ui .= '<td style="text-align: right;"><a href="/ledger?ln_status_play_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_play_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_play_id=' . $group_en_id . '">' . number_format($child_links[0]['totals'], 0) . '</a></td>';
+            $inner_ui .= '<td style="text-align: right;"><a href="/oil?ln_status_play_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_play_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_play_id=' . $group_en_id . '">' . number_format($child_links[0]['totals'], 0) . '</a></td>';
             $inner_ui .= '</tr>';
 
         }
@@ -1943,11 +1943,11 @@ function in_is_author($in_id, $session_en = array()){
         return false;
     }
 
-    //Check if player is a blog author:
+    //Check if player is a idea author:
     return count($CI->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => 4983,
-            'ln_child_blog_id' => $in_id,
+            'ln_child_idea_id' => $in_id,
             'ln_parent_play_id' => $session_en['en_id'],
         )));
 }
@@ -1955,7 +1955,7 @@ function in_is_author($in_id, $session_en = array()){
 function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
 
     $CI =& get_instance();
-    $en_all_7302 = $CI->config->item('en_all_7302'); //Blog Stats
+    $en_all_7302 = $CI->config->item('en_all_7302'); //Idea Stats
 
     $ui =  '<table class="table table-sm table-striped stats-table mini-stats-table ">';
 
@@ -1966,15 +1966,15 @@ function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
     foreach ($CI->config->item('en_all_'.$in_setting_en_id) as $type_en_id => $in_type) {
 
         //Count this sub-type from the database:
-        $in_count = $CI->BLOG_model->in_fetch(array(
+        $in_count = $CI->IDEA_model->in_fetch(array(
             $in_field_name => $type_en_id,
-            'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-        ), 0, 0, array(), 'COUNT(in_id) as total_public_blogs');
+            'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+        ), 0, 0, array(), 'COUNT(in_id) as total_public_ideas');
 
         //$ui .= this as the main title:
         $ui .= '<tr>';
         $ui .= '<td style="text-align: left;"><span class="icon-block">'.$in_type['m_icon'].'</span><a href="/play/'.$type_en_id.'">'.$in_type['m_name'].'</a></td>';
-        $ui .= '<td style="text-align: right;"><a href="/ledger?ln_type_play_id=4250&in_status_play_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($in_count[0]['total_public_blogs'], 0).' Blog'.echo__s($in_count[0]['total_public_blogs']).'">'.number_format($in_count[0]['total_public_blogs']/$addup_total_count*100, 1).'%</a></td>';
+        $ui .= '<td style="text-align: right;"><a href="/oil?ln_type_play_id=4250&in_status_play_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($in_count[0]['total_public_ideas'], 0).' Idea'.echo__s($in_count[0]['total_public_ideas']).'">'.number_format($in_count[0]['total_public_ideas']/$addup_total_count*100, 1).'%</a></td>';
         $ui .= '</tr>';
 
     }
@@ -2082,11 +2082,11 @@ function echo_2level_players($main_obj, $all_link_types, $link_types_counts, $al
             $rows .= '<td style="text-align: right;" class="'.( $show_in_advance_only ? superpower_active(10983) : '' ).'">';
             if($display_field=='total_count'){
 
-                $rows .= '<a href="/ledger?ln_status_play_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Blog'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
+                $rows .= '<a href="/oil?ln_status_play_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Idea'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
 
             } elseif($display_field=='total_coins'){
 
-                $rows .= '<a href="/ledger?ln_status_play_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_coins'], 0).' Coin'.echo__s($ln['total_coins']).'">'.number_format($ln['total_coins'], 0) . '</a>';
+                $rows .= '<a href="/oil?ln_status_play_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_coins'], 0).' Coin'.echo__s($ln['total_coins']).'">'.number_format($ln['total_coins'], 0) . '</a>';
 
             }
             $rows .= '</td>';
@@ -2120,11 +2120,11 @@ function echo_2level_players($main_obj, $all_link_types, $link_types_counts, $al
 
     if($display_field=='total_count'){
 
-        echo '<a href="/ledger?ln_status_play_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Blog'.echo__s($total_sum).'">'.number_format($total_sum/$addup_total_count*100, 1).'%</a>';
+        echo '<a href="/oil?ln_status_play_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Idea'.echo__s($total_sum).'">'.number_format($total_sum/$addup_total_count*100, 1).'%</a>';
 
     } elseif($display_field=='total_coins'){
 
-        echo '<a href="/ledger?ln_status_play_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Coin'.echo__s($total_sum).'">'.number_format($total_sum, 0).'</a>';
+        echo '<a href="/oil?ln_status_play_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Coin'.echo__s($total_sum).'">'.number_format($total_sum, 0).'</a>';
 
     }
 
@@ -2173,11 +2173,11 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $is_link_published = in_array($in['ln_status_play_id'], $CI->config->item('en_ids_7359'));
 
 
-    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_play_id'] . '" blog-id="' . $in['in_id'] . '" parent-blog-id="' . $in_linked_id . '" class="list-group-item itemblog blogs_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' blog_line_' . $in['in_id'] . ( $is_parent ? ' parent-blog ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:1px;">';
+    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_play_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item itemidea ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' idea_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:1px;">';
 
 
     //Left content wrapper:
-    $ui .= '<span class="blog-left">';
+    $ui .= '<span class="idea-left">';
 
     //LINK TYPE
     $ui .= '<span class="icon-block' . superpower_active(10985) . '">'.echo_in_dropdown(4486, $in['ln_type_play_id'], null, $is_author, $in['ln_id']).'</span>';
@@ -2196,11 +2196,11 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-    //BLOG TYPE
+    //IDEA TYPE
     $ui .= '<span class="icon-block in_parent_type_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$in['in_type_play_id']]['m_name'].': '.$en_all_7585[$in['in_type_play_id']]['m_desc'].'">' . $en_all_7585[$in['in_type_play_id']]['m_icon'] . '</span></span>';
 
 
-    //BLOG STATUS
+    //IDEA STATUS
     $ui .= '<span class="icon-block in_status_play_id_' . $in['in_id'] . ( $is_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_play_id']]['m_icon'] . '</span></span>';
 
 
@@ -2224,13 +2224,13 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     //Loop through parents:
     $ui .= '<span class="'.superpower_active(10984).'">';
     foreach ($CI->READ_model->ln_fetch(array(
-        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-        'ln_child_blog_id' => $in['in_id'],
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+        'ln_child_idea_id' => $in['in_id'],
     ), array('in_parent')) as $in_parent){
         if($in_linked_id!=$in_parent['in_id']){
-            $ui .= ' &nbsp;<a href="/blog/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_play_id']]['m_icon'] . '</a>';
+            $ui .= ' &nbsp;<a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_play_id']]['m_icon'] . '</a>';
         }
     }
     $ui .= '</span>';
@@ -2247,7 +2247,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         }
 
         //Unlink:
-        $ui .= '<span title="Unlink blog" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink" style="font-size: 0.8em;"></i></a></span>';
+        $ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink" style="font-size: 0.8em;"></i></a></span>';
 
         $ui .= '</span></div>';
 
@@ -2256,15 +2256,15 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     //Count children:
     $child_links = $CI->READ_model->ln_fetch(array(
-        'ln_parent_blog_id' => $in['in_id'],
-        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+        'ln_parent_idea_id' => $in['in_id'],
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as in__child_count');
     $tree_count_range = $child_links[0]['in__child_count'];
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding:0 17px 0 3px;"><a class="btn btn-blog" href="/blog/' . $in['in_id'] . '">'.( $is_parent ? '<i class="fad fa-step-backward"></i> <span class="btn-counter">' . $tree_count_range . '</span>' : '<span class="btn-counter">' . $tree_count_range . '</span> <i class="fad fa-step-forward"></i>' ).'</a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding:0 17px 0 3px;"><a class="btn btn-idea" href="/idea/' . $in['in_id'] . '">'.( $is_parent ? '<i class="fad fa-step-backward"></i> <span class="btn-counter">' . $tree_count_range . '</span>' : '<span class="btn-counter">' . $tree_count_range . '</span> <i class="fad fa-step-forward"></i>' ).'</a></div>';
 
 
     $ui .= '</div>';
@@ -2311,7 +2311,7 @@ function echo_caret($en_id, $m, $url_append){
 }
 
 
-function echo_breadcrumbs($in_id, $link_to_blog = false){
+function echo_breadcrumbs($in_id, $link_to_idea = false){
 
     $session_en = superpower_assigned();
     if(!$session_en){
@@ -2319,14 +2319,14 @@ function echo_breadcrumbs($in_id, $link_to_blog = false){
     }
 
     $CI =& get_instance();
-    if($link_to_blog){
+    if($link_to_idea){
 
-        //BLOG LIST
+        //IDEA LIST
         $public_only = false;
         $player_list = $CI->READ_model->ln_fetch(array(
-            'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id' => 10573, //Blog Note Bookmarks
+            'ln_type_play_id' => 10573, //Idea Note Bookmarks
             'ln_parent_play_id' => $session_en['en_id'], //For this trainer
         ), array('in_child'), 0);
 
@@ -2336,8 +2336,8 @@ function echo_breadcrumbs($in_id, $link_to_blog = false){
         $public_only = true;
         $player_list = $CI->READ_model->ln_fetch(array(
             'ln_owner_play_id' => $session_en['en_id'],
-            'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-            'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+            'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array('in_parent'), 0);
 
@@ -2352,9 +2352,9 @@ function echo_breadcrumbs($in_id, $link_to_blog = false){
 
 
     //Now fetch the parent of the current
-    $recursive_parents = $CI->BLOG_model->in_fetch_recursive_parents($in_id, true, $public_only);
-    $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Blog Types
+    $recursive_parents = $CI->IDEA_model->in_fetch_recursive_parents($in_id, true, $public_only);
+    $en_all_4737 = $CI->config->item('en_all_4737'); // Idea Statuses
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Idea Types
     foreach ($recursive_parents as $grand_parent_ids) {
         foreach(array_intersect($grand_parent_ids, $list_ids) as $intersect){
             //Show the breadcrumb since it's connected:
@@ -2365,14 +2365,14 @@ function echo_breadcrumbs($in_id, $link_to_blog = false){
 
             foreach($grand_parent_ids as $parent_in_id){
 
-                //Fetch this blog name:
-                $this_ins = $CI->BLOG_model->in_fetch(array(
+                //Fetch this idea name:
+                $this_ins = $CI->IDEA_model->in_fetch(array(
                     'in_id' => $parent_in_id,
                 ));
                 if(count($this_ins) > 0){
 
                     $completion_ui_rate = '';
-                    if(!$link_to_blog){
+                    if(!$link_to_idea){
                         //Calcullate completion time:
                         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $this_ins[0]);
                         if($completion_rate['completion_percentage'] > 0){
@@ -2380,7 +2380,7 @@ function echo_breadcrumbs($in_id, $link_to_blog = false){
                         }
                     }
 
-                    array_push($breadcrumb_items, '<li class="breadcrumb-item"><a href="'.( $link_to_blog ? '/blog/'.$parent_in_id : '/'.$parent_in_id ).'"><span class="icon-block in_parent_type_' . $this_ins[0]['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$this_ins[0]['in_type_play_id']]['m_name'].': '.$en_all_7585[$this_ins[0]['in_type_play_id']]['m_desc'].'">' . $en_all_7585[$this_ins[0]['in_type_play_id']]['m_icon'] . '</span></span><span class="icon-block' . ( in_array($this_ins[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$this_ins[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$this_ins[0]['in_title'].$completion_ui_rate.'</a></li>');
+                    array_push($breadcrumb_items, '<li class="breadcrumb-item"><a href="'.( $link_to_idea ? '/idea/'.$parent_in_id : '/'.$parent_in_id ).'"><span class="icon-block in_parent_type_' . $this_ins[0]['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$this_ins[0]['in_type_play_id']]['m_name'].': '.$en_all_7585[$this_ins[0]['in_type_play_id']]['m_desc'].'">' . $en_all_7585[$this_ins[0]['in_type_play_id']]['m_icon'] . '</span></span><span class="icon-block' . ( in_array($this_ins[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$this_ins[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$this_ins[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$this_ins[0]['in_title'].$completion_ui_rate.'</a></li>');
                 }
 
                 if($parent_in_id==$intersect){
@@ -2678,14 +2678,14 @@ function echo_en($en, $is_parent = false)
 }
 
 
-function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tabindex = 0, $is_blog_title_lg = false){
+function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tabindex = 0, $is_idea_title_lg = false){
     $CI =& get_instance();
     $en_all_12112 = $CI->config->item('en_all_12112');
 
     //Define element attributes:
-    $attributes = ( $is_author ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' texttype_'.$cache_en_id.($is_blog_title_lg?'_lg':'_sm').'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" data-toggle="tooltip" data-placement="top" title="'.$en_all_12112[$cache_en_id]['m_name'].( strlen($en_all_12112[$cache_en_id]['m_desc']) > 0 ? ': '.$en_all_12112[$cache_en_id]['m_desc'] : '' ).'"';
+    $attributes = ( $is_author ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' texttype_'.$cache_en_id.($is_idea_title_lg?'_lg':'_sm').'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" data-toggle="tooltip" data-placement="top" title="'.$en_all_12112[$cache_en_id]['m_name'].( strlen($en_all_12112[$cache_en_id]['m_desc']) > 0 ? ': '.$en_all_12112[$cache_en_id]['m_desc'] : '' ).'"';
 
-    if($is_blog_title_lg){
+    if($is_idea_title_lg){
 
         return '<textarea onkeyup="in_title_count()" placeholder="'.$en_all_12112[$cache_en_id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>';
 

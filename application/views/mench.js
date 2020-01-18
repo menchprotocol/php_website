@@ -230,7 +230,7 @@ $(document).ready(function () {
         $('#mench_search').prop("disabled", true).val('Loading...').css('background-color','#f4f5f7').css('font-size','0.8em');
 
         if (parseInt(suggestion.alg_obj_is_in)==1) {
-            window.location = "/" + ( js_session_superpowers_assigned.includes(10939) ? 'blog/' : '' ) + suggestion.alg_obj_id;
+            window.location = "/" + ( js_session_superpowers_assigned.includes(10939) ? 'idea/' : '' ) + suggestion.alg_obj_id;
         } else {
             window.location = "/play/" + suggestion.alg_obj_id;
         }
@@ -241,10 +241,10 @@ $(document).ready(function () {
 
                 //Players can filter search with first word:
                 var search_only_play = $("#mench_search").val().charAt(0) == '@';
-                var search_only_blog = $("#mench_search").val().charAt(0) == '#';
+                var search_only_idea = $("#mench_search").val().charAt(0) == '#';
 
                 //Do not search if specific command ONLY:
-                if (( search_only_blog || search_only_play ) && !isNaN($("#mench_search").val().substr(1)) ) {
+                if (( search_only_idea || search_only_play ) && !isNaN($("#mench_search").val().substr(1)) ) {
 
                     cb([]);
                     return;
@@ -257,7 +257,7 @@ $(document).ready(function () {
                     if(js_pl_id > 0){
 
                         //For Players:
-                        if(search_only_play || search_only_blog){
+                        if(search_only_play || search_only_idea){
 
                             if(search_only_play && js_session_superpowers_assigned.includes(10983)){
 
@@ -267,7 +267,7 @@ $(document).ready(function () {
                             } else {
 
                                 //Can view limited players:
-                                search_filters += ' ( alg_obj_is_in = '+( search_only_blog ? '1' : '0' )+' AND ( _tags:alg_is_published_featured OR _tags:alg_author_' + js_pl_id + ' )) ';
+                                search_filters += ' ( alg_obj_is_in = '+( search_only_idea ? '1' : '0' )+' AND ( _tags:alg_is_published_featured OR _tags:alg_author_' + js_pl_id + ' )) ';
                             }
 
                         } else {
@@ -288,14 +288,14 @@ $(document).ready(function () {
                     } else {
 
                         //For Guests:
-                        if(search_only_play || search_only_blog){
+                        if(search_only_play || search_only_idea){
 
                             //Guest can search players only with a starting @ sign
-                            search_filters += ' ( alg_obj_is_in = '+( search_only_blog ? '1' : '0' )+' AND _tags:alg_is_published_featured ) ';
+                            search_filters += ' ( alg_obj_is_in = '+( search_only_idea ? '1' : '0' )+' AND _tags:alg_is_published_featured ) ';
 
                         } else {
 
-                            //Guest can search blogs only by default as they start typing;
+                            //Guest can search ideas only by default as they start typing;
                             search_filters += ' ( alg_obj_is_in = 1 AND _tags:alg_is_published_featured ) ';
 
                         }
@@ -343,7 +343,7 @@ $(document).ready(function () {
                         return en_fetch_canonical_url(data.query, true);
                     } else if($("#mench_search").val().charAt(0)=='#'){
                         if(isNaN($("#mench_search").val().substr(1))){
-                            return '<div class="not-found"><span class="icon-block"><i class="fas fa-exclamation-triangle"></i></span>No BLOG found</div>';
+                            return '<div class="not-found"><span class="icon-block"><i class="fas fa-exclamation-triangle"></i></span>No IDEA found</div>';
                         }
                     } else if($("#mench_search").val().charAt(0)=='@'){
                         if(isNaN($("#mench_search").val().substr(1))) {
@@ -433,7 +433,7 @@ $(document).ready(function () {
                 return echo_js_suggestion(suggestion);
             },
             empty: function (data) {
-                return 'No blogs found';
+                return 'No ideas found';
             },
         }
 
@@ -493,13 +493,13 @@ var update_coin_counter = function( ) {
             $('.three-menus td.read .current_count').html(data.read_count + ' ').fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
-        //BLOG
-        if(data.blog_raw_count < 1){
-            $('.three-menus td.blog .blog_name').removeClass('show-max');
-            $('.three-menus td.blog .current_count').html('');
-        } else if(data.blog_count != $('.three-menus td.blog .current_count').text().trim()){
-            $('.three-menus td.blog .blog_name').addClass('show-max');
-            $('.three-menus td.blog .current_count').html(data.blog_count + ' ').fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        //IDEA
+        if(data.idea_raw_count < 1){
+            $('.three-menus td.idea .idea_name').removeClass('show-max');
+            $('.three-menus td.idea .current_count').html('');
+        } else if(data.idea_count != $('.three-menus td.idea .current_count').text().trim()){
+            $('.three-menus td.idea .idea_name').addClass('show-max');
+            $('.three-menus td.idea .current_count').html(data.idea_count + ' ').fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
 

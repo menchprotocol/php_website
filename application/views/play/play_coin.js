@@ -48,7 +48,7 @@ $(document).ready(function () {
         update_demo_icon();
     });
 
-    //Lookout for blog link related changes:
+    //Lookout for idea link related changes:
     $('#ln_status_play_id').change(function () {
         if (parseInt($('#ln_status_play_id').find(":selected").val()) == 6173 /* Link Removed */ ) {
             //About to delete? Notify them:
@@ -363,7 +363,7 @@ function en_ln_type_preview() {
     $('#en_type_link_id').html('<i class="far fa-yin-yang fa-spin"></i>');
 
 
-    //Fetch Blog Data to load modify widget:
+    //Fetch Idea Data to load modify widget:
     $.post("/play/en_ln_type_preview", {
         ln_content: $('#ln_content').val(),
         ln_id: parseInt($('#modifybox').attr('player-link-id')),
@@ -582,7 +582,7 @@ function en_modify_save() {
         }
     }
 
-    //Prepare data to be modified for this blog:
+    //Prepare data to be modified for this idea:
     var modify_data = {
         en_focus_id: en_focus_id, //Determines if we need to change location upon removing...
         en_id: parseInt($('#modifybox').attr('player-id')),
@@ -607,10 +607,10 @@ function en_modify_save() {
             if(data.remove_from_ui){
 
                 //need to remove this player:
-                //Blog has been either removed OR unlinked:
+                //Idea has been either removed OR unlinked:
                 if (data.remove_redirect_url) {
 
-                    //move up 1 level as this was the focus blog:
+                    //move up 1 level as this was the focus idea:
                     window.location = data.remove_redirect_url;
 
                 } else {

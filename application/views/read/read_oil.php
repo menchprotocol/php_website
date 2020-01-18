@@ -12,8 +12,8 @@ $parent_tr_filter = ( isset($_GET['ln_parent_read_id']) && $_GET['ln_parent_read
 
 //Apply filters:
 if(isset($_GET['in_status_play_id']) && strlen($_GET['in_status_play_id']) > 0){
-    if(isset($_GET['ln_type_play_id']) && $_GET['ln_type_play_id']==4250){ //BLOG created
-        //Filter blog status based on
+    if(isset($_GET['ln_type_play_id']) && $_GET['ln_type_play_id']==4250){ //IDEA created
+        //Filter idea status based on
         $join_by = array('in_child');
 
         if (substr_count($_GET['in_status_play_id'], ',') > 0) {
@@ -30,8 +30,8 @@ if(isset($_GET['in_status_play_id']) && strlen($_GET['in_status_play_id']) > 0){
 
 
 if(isset($_GET['in_type_play_id']) && strlen($_GET['in_type_play_id']) > 0){
-    if(isset($_GET['ln_type_play_id']) && $_GET['ln_type_play_id']==4250){ //BLOG created
-        //Filter blog status based on
+    if(isset($_GET['ln_type_play_id']) && $_GET['ln_type_play_id']==4250){ //IDEA created
+        //Filter idea status based on
         $join_by = array('in_child');
         if (substr_count($_GET['in_type_play_id'], ',') > 0) {
             //This is multiple:
@@ -47,7 +47,7 @@ if(isset($_GET['in_type_play_id']) && strlen($_GET['in_type_play_id']) > 0){
 if(isset($_GET['en_status_play_id']) && strlen($_GET['en_status_play_id']) > 0){
     if(isset($_GET['ln_type_play_id']) && $_GET['ln_type_play_id']==4251){ //PLAYER Created
 
-        //Filter blog status based on
+        //Filter idea status based on
         $join_by = array('en_child');
 
         if (substr_count($_GET['en_status_play_id'], ',') > 0) {
@@ -98,21 +98,21 @@ if(isset($_GET['ln_child_play_id']) && strlen($_GET['ln_child_play_id']) > 0){
     }
 }
 
-if(isset($_GET['ln_parent_blog_id']) && strlen($_GET['ln_parent_blog_id']) > 0){
-    if (substr_count($_GET['ln_parent_blog_id'], ',') > 0) {
+if(isset($_GET['ln_parent_idea_id']) && strlen($_GET['ln_parent_idea_id']) > 0){
+    if (substr_count($_GET['ln_parent_idea_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_parent_blog_id IN (' . $_GET['ln_parent_blog_id'] . '))'] = null;
-    } elseif (intval($_GET['ln_parent_blog_id']) > 0) {
-        $filters['ln_parent_blog_id'] = $_GET['ln_parent_blog_id'];
+        $filters['( ln_parent_idea_id IN (' . $_GET['ln_parent_idea_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_parent_idea_id']) > 0) {
+        $filters['ln_parent_idea_id'] = $_GET['ln_parent_idea_id'];
     }
 }
 
-if(isset($_GET['ln_child_blog_id']) && strlen($_GET['ln_child_blog_id']) > 0){
-    if (substr_count($_GET['ln_child_blog_id'], ',') > 0) {
+if(isset($_GET['ln_child_idea_id']) && strlen($_GET['ln_child_idea_id']) > 0){
+    if (substr_count($_GET['ln_child_idea_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_child_blog_id IN (' . $_GET['ln_child_blog_id'] . '))'] = null;
-    } elseif (intval($_GET['ln_child_blog_id']) > 0) {
-        $filters['ln_child_blog_id'] = $_GET['ln_child_blog_id'];
+        $filters['( ln_child_idea_id IN (' . $_GET['ln_child_idea_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_child_idea_id']) > 0) {
+        $filters['ln_child_idea_id'] = $_GET['ln_child_idea_id'];
     }
 }
 
@@ -148,9 +148,9 @@ if(isset($_GET['any_in_id']) && strlen($_GET['any_in_id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_in_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_child_blog_id IN (' . $_GET['any_in_id'] . ') OR ln_parent_blog_id IN (' . $_GET['any_in_id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $filters['( ln_child_idea_id IN (' . $_GET['any_in_id'] . ') OR ln_parent_idea_id IN (' . $_GET['any_in_id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_in_id']) > 0) {
-        $filters['( ln_child_blog_id = ' . $_GET['any_in_id'] . ' OR ln_parent_blog_id = ' . $_GET['any_in_id'] . $parent_tr_filter . ')'] = null;
+        $filters['( ln_child_idea_id = ' . $_GET['any_in_id'] . ' OR ln_parent_idea_id = ' . $_GET['any_in_id'] . $parent_tr_filter . ')'] = null;
     }
 }
 
@@ -217,8 +217,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 <script>
     var link_filters = '<?= serialize(count($filters) > 0 ? $filters : array()) ?>';
     var link_join_by = '<?= serialize(count($join_by) > 0 ? $join_by : array()) ?>';
+    var ln_content_search = '<?= ( isset($_GET['ln_content_search']) && strlen($_GET['ln_content_search']) > 0 ? $_GET['ln_content_search'] : '' ) ?>';
+    var ln_content_replace = '<?= ( isset($_GET['ln_content_replace']) && strlen($_GET['ln_content_replace']) > 0 ? $_GET['ln_content_replace'] : '' ) ?>';
 </script>
-<script src="/application/views/read/read_ledger.js?v=v<?= config_var(11060) ?>"
+<script src="/application/views/read/read_oil.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <?php
@@ -241,15 +243,15 @@ echo '<div class="container">';
 
     echo '<table class="table table-sm maxout"><tr>';
 
-    //ANY BLOG
+    //ANY IDEA
     echo '<td><div style="padding-right:5px;">';
-    echo '<span class="mini-header">ANY BLOG:</span>';
+    echo '<span class="mini-header">ANY IDEA:</span>';
     echo '<input type="text" name="any_in_id" value="' . ((isset($_GET['any_in_id'])) ? $_GET['any_in_id'] : '') . '" class="form-control border">';
     echo '</div></td>';
 
-    echo '<td><span class="mini-header">BLOG PREVIOUS:</span><input type="text" name="ln_parent_blog_id" value="' . ((isset($_GET['ln_parent_blog_id'])) ? $_GET['ln_parent_blog_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">IDEA PREVIOUS:</span><input type="text" name="ln_parent_idea_id" value="' . ((isset($_GET['ln_parent_idea_id'])) ? $_GET['ln_parent_idea_id'] : '') . '" class="form-control border"></td>';
 
-    echo '<td><span class="mini-header">BLOG NEXT:</span><input type="text" name="ln_child_blog_id" value="' . ((isset($_GET['ln_child_blog_id'])) ? $_GET['ln_child_blog_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">IDEA NEXT:</span><input type="text" name="ln_child_idea_id" value="' . ((isset($_GET['ln_child_idea_id'])) ? $_GET['ln_child_idea_id'] : '') . '" class="form-control border"></td>';
 
     echo '</tr></table>';
 
@@ -302,11 +304,21 @@ echo '<div class="container">';
 
     echo '<table class="table table-sm maxout"><tr>';
 
+
     //Search
     echo '<td><div style="padding-right:5px;">';
     echo '<span class="mini-header">READ CONTENT SEARCH:</span>';
     echo '<input type="text" name="ln_content_search" value="' . ((isset($_GET['ln_content_search'])) ? $_GET['ln_content_search'] : '') . '" class="form-control border">';
     echo '</div></td>';
+
+    if(isset($_GET['ln_content_search']) && strlen($_GET['ln_content_search']) > 0){
+        //Give Option to Replace:
+        echo '<td class="' . superpower_active(10985) . '"><div style="padding-right:5px;">';
+        echo '<span class="mini-header">READ CONTENT REPLACE:</span>';
+        echo '<input type="text" name="ln_content_replace" value="' . ((isset($_GET['ln_content_replace'])) ? $_GET['ln_content_replace'] : '') . '" class="form-control border">';
+        echo '</div></td>';
+    }
+
 
 
     //READ Type Filter Groups
@@ -376,11 +388,11 @@ echo '</div></td>';
 
     echo '</div>';
 
-    //Optional BLOG/PLAYER status filter ONLY IF READ Type = Create New BLOG/PLAYER
+    //Optional IDEA/PLAYER status filter ONLY IF READ Type = Create New IDEA/PLAYER
 
-echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">BLOG Status(es)</span><input type="text" name="in_status_play_id" value="' . ((isset($_GET['in_status_play_id'])) ? $_GET['in_status_play_id'] : '') . '" class="form-control border"></div>';
+echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Status(es)</span><input type="text" name="in_status_play_id" value="' . ((isset($_GET['in_status_play_id'])) ? $_GET['in_status_play_id'] : '') . '" class="form-control border"></div>';
 
-    echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">BLOG Type(s)</span><input type="text" name="in_type_play_id" value="' . ((isset($_GET['in_type_play_id'])) ? $_GET['in_type_play_id'] : '') . '" class="form-control border"></div>';
+    echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Type(s)</span><input type="text" name="in_type_play_id" value="' . ((isset($_GET['in_type_play_id'])) ? $_GET['in_type_play_id'] : '') . '" class="form-control border"></div>';
 
     echo '<div class="filter-statuses filter-en-status hidden"><span class="mini-header">PLAYER Status(es)</span><input type="text" name="en_status_play_id" value="' . ((isset($_GET['en_status_play_id'])) ? $_GET['en_status_play_id'] : '') . '" class="form-control border"></div>';
 
@@ -399,7 +411,7 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
     echo '<input type="submit" class="btn btn-read" value="Apply" />';
 
     if($has_filters){
-        echo ' &nbsp;<a href="/ledger" style="font-size: 0.8em;">Remove Filters</a>';
+        echo ' &nbsp;<a href="/oil" style="font-size: 0.8em;">Remove Filters</a>';
     }
 
     echo '</form>';

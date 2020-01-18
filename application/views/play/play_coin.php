@@ -198,8 +198,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <div id="message-frame" class="fixed-box hidden" player-id="">
 
         <h5 class="badge badge-h" data-toggle="tooltip"
-            title="Message management can only be done using Blogs. Player messages are listed below for view-only"
-            data-placement="bottom"><i class="fas fa-comment-plus"></i> Player References within Blog Notes
+            title="Message management can only be done using Ideas. Player messages are listed below for view-only"
+            data-placement="bottom"><i class="fas fa-comment-plus"></i> Player References within Idea Notes
         </h5>
         <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
             <a href="#" onclick="modify_cancel()"><i class="fas fa-times-circle"></i></a>
@@ -368,27 +368,27 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
 
-                //BLOG NOTES
-                $blog_note_filters = array(
-                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Blog Statuses Featured
+                //IDEA NOTES
+                $idea_note_filters = array(
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Idea Statuses Featured
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_play_id' => $en_id2,
                     '(ln_owner_play_id='.$player['en_id'].' OR ln_child_play_id='.$player['en_id'].' OR ln_parent_play_id='.$player['en_id'].')' => null,
                 );
 
                 //COUNT ONLY
-                $item_counters = $this->READ_model->ln_fetch($blog_note_filters, array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
+                $item_counters = $this->READ_model->ln_fetch($idea_note_filters, array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
                 $counter = $item_counters[0]['totals'];
                 $default_active = ( $en_id2==4983 && $counter>0 );
 
 
                 //SHOW LASTEST 100
                 $this_tab .= '<div class="list-group">';
-                foreach ($this->READ_model->ln_fetch($blog_note_filters, array('in_child'), config_var(11064), 0, array('in_title' => 'ASC')) as $blog_note) {
+                foreach ($this->READ_model->ln_fetch($idea_note_filters, array('in_child'), config_var(11064), 0, array('in_title' => 'ASC')) as $idea_note) {
                     if(in_array($en_id2, $this->config->item('en_ids_12321'))){
-                        $this_tab .= echo_in_read($blog_note);
+                        $this_tab .= echo_in_read($idea_note);
                     } elseif(in_array($en_id2, $this->config->item('en_ids_12322'))){
-                        $this_tab .= echo_en_messages($blog_note);
+                        $this_tab .= echo_en_messages($idea_note);
                     }
                 }
                 $this_tab .= '</div>';

@@ -1,6 +1,6 @@
 
 <?php
-$en_all_6201 = $this->config->item('en_all_6201'); //Blog Table
+$en_all_6201 = $this->config->item('en_all_6201'); //Idea Table
 
 $is_author = in_is_author($in['in_id']);
 $is_active = in_array($in['in_status_play_id'], $this->config->item('en_ids_7356'));
@@ -16,11 +16,11 @@ $is_active = in_array($in['in_status_play_id'], $this->config->item('en_ids_7356
     //Include some cached players:
     var in_loaded_id = <?= $in['in_id'] ?>;
 </script>
-<script src="/application/views/blog/blog_coin.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/idea/idea_coin.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <?php
 
-$en_all_4485 = $this->config->item('en_all_4485'); //Blog Notes
+$en_all_4485 = $this->config->item('en_all_4485'); //Idea Notes
 $play_focus_found = false; //Used to determine the first tab to be opened
 
 
@@ -31,7 +31,7 @@ echo '<div class="container" style="padding-bottom:54px;">';
 echo echo_breadcrumbs($in['in_id'], true);
 
 if(!$is_author){
-    echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle read"></i> You are not a blog author. <a href="/blog/in_become_author/'.$in['in_id'].'" class="inline-block montserrat '.superpower_active(10984).'">BECOME AUTHOR</a></div>';
+    echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle read"></i> You are not a idea author. <a href="/idea/in_become_author/'.$in['in_id'].'" class="inline-block montserrat '.superpower_active(10984).'">BECOME AUTHOR</a></div>';
 }
 
 echo '<div class="row">';
@@ -48,11 +48,11 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         echo '<div style="margin-bottom: 5px;">';
 
-            //Blog Status:
-            echo '<div class="inline-block side-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-blog', $is_author && $is_active).'</div>';
+            //Idea Status:
+            echo '<div class="inline-block side-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author && $is_active).'</div>';
 
-            //Blog Featured:
-            if(in_array($in['in_status_play_id'], $this->config->item('en_ids_12138') /* Blog Statuses Featured */)){
+            //Idea Featured:
+            if(in_array($in['in_status_play_id'], $this->config->item('en_ids_12138') /* Idea Statuses Featured */)){
                 echo echo_in_featured($in['in_id']);
             }
 
@@ -62,7 +62,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '</div>';
 
 
-        echo '<div class="itemblog">';
+        echo '<div class="itemidea">';
             echo '<div class="title_counter hidden grey montserrat doupper" style="text-align: right;"><span id="charTitleNum">0</span>/'.config_var(11071).' CHARACTERS</div>';
             echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && $is_active), 0, true);
         echo '</div>';
@@ -70,7 +70,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } elseif($col_num==2){
 
         echo '<div class="center-right">';
-            echo '<div class="inline-block side-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active).'</div>';
+            echo '<div class="inline-block side-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active).'</div>';
             echo '<div class="inline-block '.superpower_active(10984).'" style="width:89px; margin:0 0 5px 5px;">'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
         echo '</div>';
 
@@ -96,33 +96,33 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         $this_tab = '';
 
 
-        //BLOG
+        //IDEA
         if($en_id2==11019){
 
-            //BLOG TREE PREVIOUS
-            $blog__parents = $this->READ_model->ln_fetch(array(
+            //IDEA TREE PREVIOUS
+            $idea__parents = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                'ln_child_blog_id' => $in['in_id'],
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                'ln_child_idea_id' => $in['in_id'],
             ), array('in_parent'), 0);
 
-            $counter = count($blog__parents);
+            $counter = count($idea__parents);
 
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-1" class="list-group">';
 
-            foreach ($blog__parents as $parent_in) {
+            foreach ($idea__parents as $parent_in) {
                 $this_tab .= echo_in($parent_in, 0, true, $is_author && $is_active);
             }
 
-            $this_tab .= '<div class="list-group-item itemblog '.superpower_active(10939).'">
+            $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10939).'">
                             <div class="form-group is-empty '.( $is_author && $is_active ? '' : ' hidden ' ).'" style="margin: 0; padding: 0;">
                                 <input type="text"
-                                       class="form-control blogadder-level-2-parent form-control-thick algolia_search"
-                                       blog-id="' . $in['in_id'] . '"
-                                       id="addblog-c-' . $in['in_id'] . '-1"
+                                       class="form-control ideaadder-level-2-parent form-control-thick algolia_search"
+                                       idea-id="' . $in['in_id'] . '"
+                                       id="addidea-c-' . $in['in_id'] . '-1"
                                        style="margin-bottom: 0; padding: 5px 0;"
-                                       placeholder="ADD PREVIOUS BLOG">
+                                       placeholder="ADD PREVIOUS IDEA">
                             </div>
                            <div class="algolia_search_pad in_pad_top hidden"><b class="montserrat"><span class="icon-block"><i class="far fa-search-plus"></i></span>Create or Search</b></div>
                     </div>';
@@ -132,32 +132,32 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         } elseif($en_id2==11020){
 
-            //BLOG TREE NEXT
-            $blog__children = $this->READ_model->ln_fetch(array(
+            //IDEA TREE NEXT
+            $idea__children = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                'ln_parent_blog_id' => $in['in_id'],
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                'ln_parent_idea_id' => $in['in_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
-            $counter = count($blog__children);
+            $counter = count($idea__children);
             $default_active = true;
 
-            //List child blogs:
+            //List child ideas:
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children">';
-            foreach ($blog__children as $child_in) {
+            foreach ($idea__children as $child_in) {
                 $this_tab .= echo_in($child_in, $in['in_id'], false, $is_author && $is_active);
             }
 
-            $this_tab .= '<div class="list-group-item itemblog '.superpower_active(10939).'">
+            $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10939).'">
                     <div class="form-group is-empty '.( $is_author && $is_active ? '' : ' hidden ' ).'" style="margin: 0; padding: 0;">
                         <input type="text"
-                               class="form-control blogadder-level-2-child form-control-thick algolia_search"
+                               class="form-control ideaadder-level-2-child form-control-thick algolia_search"
                                maxlength="' . config_var(11071) . '"
-                               blog-id="' . $in['in_id'] . '"
-                               id="addblog-c-' . $in['in_id'] . '-0"
+                               idea-id="' . $in['in_id'] . '"
+                               id="addidea-c-' . $in['in_id'] . '-0"
                                style="margin-bottom: 0; padding: 5px 0;"
-                               placeholder="ADD NEXT BLOG">
+                               placeholder="ADD NEXT IDEA">
                     </div>
                    <div class="algolia_search_pad in_pad_bottom hidden"><b class="montserrat"><span class="icon-block"><i class="far fa-search-plus"></i></span>Create or Search</b></div>
             </div>';
@@ -170,7 +170,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $item_counters = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
-                'ln_parent_blog_id' => $in['in_id'],
+                'ln_parent_idea_id' => $in['in_id'],
             ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 
             $counter = $item_counters[0]['totals'];
@@ -179,17 +179,17 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
 
-            //BLOG NOTE
-            $blog_notes = $this->READ_model->ln_fetch(array(
+            //IDEA NOTE
+            $idea_notes = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'ln_type_play_id' => $en_id2,
-                'ln_child_blog_id' => $in['in_id'],
+                'ln_child_idea_id' => $in['in_id'],
             ), array(), 0, 0, array('ln_order' => 'ASC'));
 
-            $counter = count($blog_notes);
+            $counter = count($idea_notes);
 
             if($en_id2==4231){
-                $default_active = true; //BLOG MESSAGES
+                $default_active = true; //IDEA MESSAGES
             }
 
 
@@ -197,12 +197,12 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //Show no-Message notifications for each message type:
             $this_tab .= '<div id="in_notes_list_'.$en_id2.'" class="list-group">';
 
-            foreach ($blog_notes as $in_note) {
+            foreach ($idea_notes as $in_note) {
                 $this_tab .= echo_in_note($in_note);
             }
 
             //ADD NEW NOTE:
-            $this_tab .= '<div class="list-group-item itemblog add_note_' . $en_id2 . ( $is_author && $is_active ? '' : ' hidden ' ).'">';
+            $this_tab .= '<div class="list-group-item itemidea add_note_' . $en_id2 . ( $is_author && $is_active ? '' : ' hidden ' ).'">';
             $this_tab .= '<form class="box box' . $en_id2 . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
 
 
@@ -214,10 +214,10 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<table class="table table-condensed hidden" id="notes_control_'.$en_id2.'"><tr>';
 
             //Save button:
-            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" class="btn btn-blog save_note_'.$en_id2.'">ADD</a></td>';
+            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" class="btn btn-idea save_note_'.$en_id2.'">ADD</a></td>';
 
             //File counter:
-            $this_tab .= '<td class="remove_loading" class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="blogNoteNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
+            $this_tab .= '<td class="remove_loading" class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaNoteNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
 
             //First Name:
             $this_tab .= '<td class="remove_loading '.superpower_active(10983).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'/firstname \');" data-toggle="tooltip" title="Mention readers first name" data-placement="top"><span class="icon-block icon_photo"><i class="far fa-fingerprint"></i></span></a></td>';
@@ -228,8 +228,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //Upload File:
             if(in_array(12359, $en_all_4485[$en_id2]['m_parents'])){
                 $this_tab .= '<td class="remove_loading" style="width:36px; padding: 10px 0 0 0;">';
-                $this_tab .= '<input class="inputfile hidden" type="file" name="file" id="fileBlogType'.$en_id2.'" />';
-                $this_tab .= '<label class="file_label_'.$en_id2.'" for="fileBlogType'.$en_id2.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block icon_photo"><i class="far fa-paperclip"></i></span></label>';
+                $this_tab .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$en_id2.'" />';
+                $this_tab .= '<label class="file_label_'.$en_id2.'" for="fileIdeaType'.$en_id2.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block icon_photo"><i class="far fa-paperclip"></i></span></label>';
                 $this_tab .= '</td>';
             }
 
