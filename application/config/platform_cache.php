@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-18 11:58:36 PST
+//Generated 2020-01-18 12:04:02 PST
 
 //COIN PLAY:
 $config['en_ids_4536'] = array(11968,7305,6225,12289,6206,10645,4758,7303,10957,11088,11087);
@@ -2028,7 +2028,7 @@ $config['en_all_12201'] = array(
     ),
     12198 => array(
         'm_icon' => '<i class="fad fa-home read" aria-hidden="true"></i>',
-        'm_name' => 'HOME PAGE',
+        'm_name' => 'HOME',
         'm_desc' => '/',
         'm_parents' => array(12201,6771),
     ),
