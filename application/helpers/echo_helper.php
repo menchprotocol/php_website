@@ -2226,21 +2226,8 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     //Left content wrapper:
     $ui .= '<span class="idea-left">';
 
-    //LINK TYPE
-    $ui .= '<span class="icon-block' . superpower_active(10985) . '">'.echo_in_dropdown(4486, $in['ln_type_play_id'], null, $is_author, $in['ln_id']).'</span>';
-
-
-    //LINK MARKS
-    $ui .= '<span class="' . superpower_active(10985) . '"><span class="link_marks settings_4228 '.( $in['ln_type_play_id']==4228 ? : 'hidden' ).'">'.echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+1 ).' Marks</span></span>';
-
-    //LINK CONDIITONAL RANGE
-    $ui .= '<span class="' . superpower_active(10985) . '"><span class="link_marks settings_4229 '.( $in['ln_type_play_id']==4229 ? : 'hidden' ).'">'.echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+2).'-'.echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+3).'%</span></span>';
-
-
-
     //LINK STATUS
     $ui .= '<span class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . '</span></span>';
-
 
 
     //IDEA TYPE
@@ -2254,9 +2241,25 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '<b class="in_title_' . $in['in_id'] . ' montserrat">' . echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && !$is_parent), (($in['ln_order']*100)+1)) . '</b>';
 
 
-
     $ui .= '</span>';
 
+
+
+
+
+    $ui .= '<span class="idea-left ' . superpower_active(10985) . '">';
+
+    //LINK TYPE
+    $ui .= '<span class="icon-block">'.echo_in_dropdown(4486, $in['ln_type_play_id'], null, $is_author, $in['ln_id']).'</span>';
+
+
+    //LINK MARKS
+    $ui .= '<span><span class="link_marks settings_4228 '.( $in['ln_type_play_id']==4228 ? : 'hidden' ).'">'.echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+1 ).' Marks</span></span>';
+
+    //LINK CONDIITONAL RANGE
+    $ui .= '<span><span class="link_marks settings_4229 '.( $in['ln_type_play_id']==4229 ? : 'hidden' ).'">'.echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+2).'-'.echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+3).'%</span></span>';
+
+    $ui .= '</span>';
 
 
 
