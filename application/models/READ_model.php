@@ -627,16 +627,6 @@ class READ_model extends CI_Model
                     return $common_step_in_id;
                 }
 
-            } elseif(!$is_expansion && !$is_condition && !count($this->READ_model->ln_fetch(array(
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
-                    'ln_owner_play_id' => $en_id, //Belongs to this User
-                    'ln_parent_idea_id' => $common_step_in_id,
-                )))){
-
-                //Not completed yet, this is the next step:
-                return $common_step_in_id;
-
             } elseif($is_condition){
 
                 //See which path they got unlocked, if any:
@@ -656,6 +646,16 @@ class READ_model extends CI_Model
                     }
 
                 }
+
+            } elseif(!count($this->READ_model->ln_fetch(array(
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+                    'ln_owner_play_id' => $en_id, //Belongs to this User
+                    'ln_parent_idea_id' => $common_step_in_id,
+                )))){
+
+                //Not completed yet, this is the next step:
+                return $common_step_in_id;
 
             }
 
