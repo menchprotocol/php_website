@@ -1667,6 +1667,12 @@ class READ_model extends CI_Model
                         echo echo_time_range($ins[0], true).' READ ';
                     }
 
+                    // % DONE
+                    $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
+                    if($completion_rate['completion_percentage'] > 0){
+                        echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'%]</span> ';
+                    }
+
                     //OWNER
                     $authors = $this->READ_model->ln_fetch(array(
                         'ln_type_play_id' => 4250,
@@ -1675,12 +1681,6 @@ class READ_model extends CI_Model
 
                     echo 'BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a>';
 
-
-                    // % DONE
-                    $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
-                    if($completion_rate['completion_percentage'] > 0){
-                        echo ' <span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">'.$completion_rate['completion_percentage'].'% DONE</span>';
-                    }
 
                 }
 

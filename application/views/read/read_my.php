@@ -81,11 +81,11 @@ if(!$session_en){
                 'ln_child_idea_id' => $ln['in_id'],
             ), array('en_creator'), 1);
 
-            echo ( $has_time_estimate ? echo_time_range($ln, true).' READ ' : '' ).'BY '.one_two_explode('',' ',$authors[0]['en_name']);
+            echo ( $has_time_estimate ? echo_time_range($ln, true).' READ ' : '' );
+            echo '<span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'%]</span> ';
+            echo 'BY '.one_two_explode('',' ',$authors[0]['en_name']);
 
         }
-
-        echo ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">'.$completion_rate['completion_percentage'].'% DONE</span>';
 
         echo '</div>';
 
