@@ -68,7 +68,11 @@ function echo_url_type($url, $en_type_link_id)
 
     } elseif ($en_type_link_id == 4260 /* Image URL */) {
 
-        return '<a href="' . $url . '" target="_blank"><img src="' . $url . '" class="content-image" /></a>';
+        if(current_mench()=='play'){
+            return '<a href="' . $url . '" target="_blank"><img src="' . $url . '" class="content-image" /></a>';
+        } else {
+            return '<img src="' . $url . '" class="content-image" />';
+        }
 
     } elseif ($en_type_link_id == 4259 /* Audio URL */) {
 
