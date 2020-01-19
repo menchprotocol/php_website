@@ -11,16 +11,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-19 13:55:38 PST
+//Generated 2020-01-19 13:58:35 PST
 
 //IDEA TAB GROUP:
-$config['en_ids_12365'] = array(11047,4983,10573,4601,7545,11019,6255,6146,7347);
+$config['en_ids_12365'] = array(11019,4983,10573,4601,7545,7347,6255,6146,11047);
 $config['en_all_12365'] = array(
-    11047 => array(
-        'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
-        'm_name' => 'IDEA ADMIN MENU',
+    11019 => array(
+        'm_icon' => '<i class="fad fa-step-backward idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA PREVIOUS',
         'm_desc' => '',
-        'm_parents' => array(12365,10984,4527,11040),
+        'm_parents' => array(11025,12365),
     ),
     4983 => array(
         'm_icon' => '<i class="fas fa-user-plus idea" aria-hidden="true"></i>',
@@ -46,11 +46,11 @@ $config['en_all_12365'] = array(
         'm_desc' => '',
         'm_parents' => array(12365,4535,12321,11033,10967,7551,4593,4485),
     ),
-    11019 => array(
-        'm_icon' => '<i class="fad fa-step-backward idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA PREVIOUS',
+    7347 => array(
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
+        'm_name' => 'READ START',
         'm_desc' => '',
-        'm_parents' => array(11025,12365),
+        'm_parents' => array(12365,6205,12228,11033,10964,4527),
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-plus-circle read" aria-hidden="true"></i>',
@@ -64,11 +64,11 @@ $config['en_all_12365'] = array(
         'm_desc' => '',
         'm_parents' => array(12365,12228,11033,10964,4527),
     ),
-    7347 => array(
-        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
-        'm_name' => 'READ START',
+    11047 => array(
+        'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
+        'm_name' => 'IDEA ADMIN MENU',
         'm_desc' => '',
-        'm_parents' => array(12365,6205,12228,11033,10964,4527),
+        'm_parents' => array(12365,10984,4527,11040),
     ),
 );
 
