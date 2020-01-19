@@ -44,7 +44,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
     if($col_num==2){
 
-        echo '<div style="margin-bottom: 5px;">';
+        echo '<div style="margin:30px 0 5px 0;">';
 
         //Idea Status:
         echo '<div class="inline-block side-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author && $is_active).'</div>';
