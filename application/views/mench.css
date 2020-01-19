@@ -864,6 +864,12 @@ textarea.note-textarea{
     display: inline-block;
 }
 
+.in_update_text {
+    text-align: center;
+    padding-right: 3px;
+    padding-left: 3px;
+}
+
 .form-group {
     background-color: #FFFFFF;
 }
