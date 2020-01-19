@@ -1800,14 +1800,25 @@ class READ_model extends CI_Model
 
             } else {
 
-                //Have they already selected answers? If so, show them their selection and focus on navigation:
-                $read_answers = $this->READ_model->ln_fetch(array(
+                //First fetch answers based on correct order:
+                $read_answers = array();
+                foreach ($this->READ_model->ln_fetch(array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINK
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+                    'ln_type_play_id' => 4228, //Idea Link Regular Read
                     'ln_parent_idea_id' => $ins[0]['in_id'],
-                    'ln_owner_play_id' => $recipient_en['en_id'],
-                ), array('in_child'));
-
+                ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $ln){
+                    //See if this answer was seleted:
+                    if(count($this->READ_model->ln_fetch(array(
+                        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINK
+                        'ln_parent_idea_id' => $ins[0]['in_id'],
+                        'ln_child_idea_id' => $ln['in_id'],
+                        'ln_owner_play_id' => $recipient_en['en_id'],
+                    )))){
+                        array_push($read_answers, $ln);
+                    }
+                }
 
                 if(count($read_answers) > 0){
 

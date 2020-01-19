@@ -1194,7 +1194,7 @@ class Read extends CI_Controller
         if(count($progress_links) > 0){
 
             //Yes they did have some:
-            $message = 'Removed '.count($progress_links).' idea'.echo__s(count($progress_links)).' from your list.';
+            $message = 'Removed '.count($progress_links).' read'.echo__s(count($progress_links)).' from your list.';
 
             //Log link:
             $clear_all_link = $this->READ_model->ln_create(array(
