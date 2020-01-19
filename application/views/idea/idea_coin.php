@@ -46,32 +46,36 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
     if($col_num==1){
 
+        //Just the menu
+
+    } elseif($col_num==2){
+
         echo '<div style="margin-bottom: 5px;">';
 
-            //Idea Status:
-            echo '<div class="inline-block side-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author && $is_active).'</div>';
+        //Idea Status:
+        echo '<div class="inline-block side-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author && $is_active).'</div>';
 
-            //Idea Featured:
-            if(in_array($in['in_status_play_id'], $this->config->item('en_ids_12138') /* Idea Statuses Featured */)){
-                echo echo_in_featured($in['in_id']);
-            }
+        //Idea Featured:
+        if(in_array($in['in_status_play_id'], $this->config->item('en_ids_12138') /* Idea Statuses Featured */)){
+            echo echo_in_featured($in['in_id']);
+        }
 
-            //Preview option:
-            echo '<div class="inline-block pull-right side-margin"><a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fad fa-step-forward"></i></a></div>';
+        //Preview option:
+        echo '<div class="inline-block pull-right side-margin"><a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fad fa-step-forward"></i></a></div>';
 
         echo '</div>';
 
 
         echo '<div class="itemidea">';
-            echo '<div class="title_counter hidden grey montserrat doupper" style="text-align: right;"><span id="charTitleNum">0</span>/'.config_var(11071).' CHARACTERS</div>';
-            echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && $is_active), 0, true);
+        echo '<div class="title_counter hidden grey montserrat doupper" style="text-align: right;"><span id="charTitleNum">0</span>/'.config_var(11071).' CHARACTERS</div>';
+        echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && $is_active), 0, true);
         echo '</div>';
 
-    } elseif($col_num==2){
+    } elseif($col_num==3){
 
         echo '<div class="center-right">';
-            echo '<div class="inline-block side-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active).'</div>';
-            echo '<div class="inline-block '.superpower_active(10984).'" style="width:89px; margin:0 0 5px 5px;">'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
+        echo '<div class="inline-block side-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active).'</div>';
+        echo '<div class="inline-block '.superpower_active(10984).'" style="width:89px; margin:0 0 5px 5px;">'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
         echo '</div>';
 
     }
