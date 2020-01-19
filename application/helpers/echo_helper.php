@@ -1645,7 +1645,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
 
 
     //Now do measurements:
-    $ui .= '<div class="idea-desc">';
+    $ui .= '<div class="idea-info montserrat doupper">';
 
     $metadata = unserialize($in['in_metadata']);
     if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
@@ -1672,7 +1672,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
             $ui .= ' '.$footnotes;
         }
 
-        $ui .= ' by <b class="montserrat doupper">'.one_two_explode('',' ',$authors[0]['en_name']).'</b>.';
+        $ui .= ' BY '.one_two_explode('',' ',$authors[0]['en_name']).'.';
 
     }
 
