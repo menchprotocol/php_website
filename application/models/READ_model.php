@@ -554,7 +554,7 @@ class READ_model extends CI_Model
 
 
 
-    function read_next_find($en_id, $in){
+    function read_next_find($en_id, $in, $first_step = true){
 
         /*
          *
@@ -624,7 +624,7 @@ class READ_model extends CI_Model
                 //Completed step that has OR expansions, check recursively to see if next step within here:
                 foreach($completed_steps as $completed_step){
 
-                    $found_in_id = $this->READ_model->read_next_find($en_id, $completed_step);
+                    $found_in_id = $this->READ_model->read_next_find($en_id, $completed_step, false);
 
                     if($found_in_id != 0){
                         return $found_in_id;
@@ -644,7 +644,7 @@ class READ_model extends CI_Model
                 ), array('in_child')) as $unlocked_condition){
 
                     //Completed step that has OR expansions, check recursively to see if next step within here:
-                    $found_in_id = $this->READ_model->read_next_find($en_id, $unlocked_condition);
+                    $found_in_id = $this->READ_model->read_next_find($en_id, $unlocked_condition, false);
 
                     if($found_in_id != 0){
                         return $found_in_id;
@@ -657,26 +657,26 @@ class READ_model extends CI_Model
         }
 
 
-
         //If not part of the reading list, go to reading blog
-        $player_read_ids = $this->READ_model->read_ids($en_id);
-        if(!in_array($in['in_id'], $player_read_ids)){
-            foreach ($this->IDEA_model->in_fetch_recursive_parents($in['in_id']) as $grand_parent_ids) {
-                $crossovers = array_intersect($grand_parent_ids, $player_read_ids);
-                if (count($crossovers)) {
-
-                    $ins = $this->IDEA_model->in_fetch(array(
-                        'in_id' => end($crossovers),
-                        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
-                    ));
-
-                    if(count($ins)){
-                        //Completed step that has OR expansions, check recursively to see if next step within here:
-                        return $this->READ_model->read_next_find($en_id, $ins[0]);
+        if($first_step){
+            $player_read_ids = $this->READ_model->read_ids($en_id);
+            if(!in_array($in['in_id'], $player_read_ids)){
+                foreach ($this->IDEA_model->in_fetch_recursive_parents($in['in_id']) as $grand_parent_ids) {
+                    $crossovers = array_intersect($grand_parent_ids, $player_read_ids);
+                    if (count($crossovers)) {
+                        $ins = $this->IDEA_model->in_fetch(array(
+                            'in_id' => end($crossovers),
+                            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+                        ));
+                        if(count($ins)){
+                            //Completed step that has OR expansions, check recursively to see if next step within here:
+                            return $this->READ_model->read_next_find($en_id, $ins[0], false);
+                        }
                     }
                 }
             }
         }
+
 
 
         //Really not found:
