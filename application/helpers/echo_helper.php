@@ -1660,7 +1660,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
             'ln_child_idea_id' => $in['in_id'],
         ), array('en_creator'), 1);
 
-        $ui .= ( $has_time_estimate ? echo_time_range($in, true) : '' );
+        $ui .= ( $has_time_estimate ? echo_time_range($in, true).' READ' : '' );
 
         if($session_en && $in_reads && in_array($in['in_id'], $player_read_ids)){
             $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
