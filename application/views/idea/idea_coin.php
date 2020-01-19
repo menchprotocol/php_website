@@ -55,6 +55,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         //Idea Status:
         echo '<div class="inline-block side-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author && $is_active).'</div>';
 
+        echo '<div class="inline-block '.superpower_active(10984).'" style="width:89px; margin:0 0 5px 5px;">'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
+
+
         //Idea Featured:
         if(in_array($in['in_status_play_id'], $this->config->item('en_ids_12138') /* Idea Statuses Featured */)){
             echo echo_in_featured($in['in_id']);
@@ -75,7 +78,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         echo '<div class="center-right">';
         echo '<div class="inline-block side-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active).'</div>';
-        echo '<div class="inline-block '.superpower_active(10984).'" style="width:89px; margin:0 0 5px 5px;">'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
         echo '</div>';
 
     }
