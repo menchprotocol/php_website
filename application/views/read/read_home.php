@@ -163,7 +163,7 @@
                     continue;
                 }
                 array_push($listed_in_ids, $published_in['in_id']);
-                $this_read = echo_in_read($published_in);
+                $this_read = echo_in_read($published_in, true);
                 if($this_read){
                     $featured_ui .= $this_read;
                     $topic_in_count++;

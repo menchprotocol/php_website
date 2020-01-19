@@ -471,7 +471,7 @@ function echo_ln_connections($ln){
             //IDEA
             $ins = $CI->IDEA_model->in_fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
             if(count($ins) > 0){
-                $ln_connections_ui .= echo_in_read($ins[0]);
+                $ln_connections_ui .= echo_in_read($ins[0], );
             }
         } elseif(in_array(4367 , $m['m_parents'])){
             //READ
@@ -1613,13 +1613,12 @@ function echo_in_featured($in_id){
 }
 
 
-function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_class = null, $show_icon = false, $in_reads = true)
+function echo_in_read($in, $show_description = false, $footnotes = null, $common_prefix = null, $extra_class = null, $show_icon = false, $in_reads = true)
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = superpower_assigned();
-    $in_description = echo_in_description($in['in_id']);
     $completion_rate['completion_percentage'] = 0; //Default value
     if($session_en && $in_reads){
         //Make sure in reading list:
@@ -1638,9 +1637,13 @@ function echo_in_read($in, $footnotes = null, $common_prefix = null, $extra_clas
 
 
     //Description:
-    if($in_description){
-        $ui .= '<div class="idea-desc">'.$in_description.'</div>';
+    if($show_description){
+        $in_description = echo_in_description($in['in_id']);
+        if($in_description){
+            $ui .= '<div class="idea-desc">'.$in_description.'</div>';
+        }
     }
+
 
     //Now do measurements:
     $ui .= '<div class="montserrat idea-info doupper">';
@@ -2522,7 +2525,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
             } else {
 
-                echo echo_in_read($child_in, $footnotes, $common_prefix, ( $next_key>=0 && $next_key!=$key && !$all_done ? 'hidden is_upcoming' : '' ), true, $in_reads);
+                echo echo_in_read($child_in, false, $footnotes, $common_prefix, ( $next_key>=0 && $next_key!=$key && !$all_done ? 'hidden is_upcoming' : '' ), true, $in_reads);
 
             }
         }
