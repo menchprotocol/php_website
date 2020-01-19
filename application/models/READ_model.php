@@ -595,6 +595,7 @@ class READ_model extends CI_Model
             if($is_expansion){
 
                 //First fetch answers based on correct order:
+                $found_expansion = 0;
                 foreach ($this->READ_model->ln_fetch(array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
@@ -611,6 +612,8 @@ class READ_model extends CI_Model
                         'ln_owner_play_id' => $en_id, //Belongs to this User
                     )))){
 
+                        $found_expansion++;
+
                         //Yes was answered:
                         $found_in_id = $this->READ_model->read_next_find($en_id, $ln, false);
 
@@ -620,7 +623,11 @@ class READ_model extends CI_Model
                     }
                 }
 
-            } elseif(!count($this->READ_model->ln_fetch(array(
+                if(!$found_expansion){
+                    return $common_step_in_id;
+                }
+
+            } elseif(!$is_expansion && !$is_condition && !count($this->READ_model->ln_fetch(array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                     'ln_owner_play_id' => $en_id, //Belongs to this User
@@ -634,7 +641,7 @@ class READ_model extends CI_Model
 
                 //See which path they got unlocked, if any:
                 foreach($this->READ_model->ln_fetch(array(
-                    'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
                     'ln_owner_play_id' => $en_id, //Belongs to this User
                     'ln_parent_idea_id' => $common_step_in_id,
                     'ln_child_idea_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]) . ')' => null,
