@@ -591,46 +591,44 @@ class READ_model extends CI_Model
             $is_expansion = isset($in_metadata['in__metadata_expansion_steps'][$common_step_in_id]);
             $is_condition = isset($in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]);
 
+            //Have they completed this?
             if($is_expansion){
 
-                //Expansion reads
-                $completed_steps = $this->READ_model->ln_fetch(array(
-                    'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
-                    'ln_owner_play_id' => $en_id, //Belongs to this User
-                    'ln_parent_idea_id' => $common_step_in_id,
+                //First fetch answers based on correct order:
+                foreach ($this->READ_model->ln_fetch(array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                ), array('in_child'));
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+                    'ln_type_play_id' => 4228, //Idea Link Regular Read
+                    'ln_parent_idea_id' => $common_step_in_id,
+                ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $ln){
 
-            } else {
+                    //See if this answer was seleted:
+                    if(count($this->READ_model->ln_fetch(array(
+                        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINK
+                        'ln_parent_idea_id' => $common_step_in_id,
+                        'ln_child_idea_id' => $ln['in_id'],
+                        'ln_owner_play_id' => $en_id, //Belongs to this User
+                    )))){
 
-                //Completion reads:
-                $completed_steps = $this->READ_model->ln_fetch(array(
+                        //Yes was answered:
+                        $found_in_id = $this->READ_model->read_next_find($en_id, $ln, false);
+
+                        if($found_in_id != 0){
+                            return $found_in_id;
+                        }
+                    }
+                }
+
+            } elseif(!count($this->READ_model->ln_fetch(array(
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                     'ln_owner_play_id' => $en_id, //Belongs to this User
                     'ln_parent_idea_id' => $common_step_in_id,
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                ));
-
-            }
-
-            //Have they completed this?
-            if(count($completed_steps) == 0){
+                )))){
 
                 //Not completed yet, this is the next step:
                 return $common_step_in_id;
-
-            } elseif($is_expansion){
-
-                //Completed step that has OR expansions, check recursively to see if next step within here:
-                foreach($completed_steps as $completed_step){
-
-                    $found_in_id = $this->READ_model->read_next_find($en_id, $completed_step, false);
-
-                    if($found_in_id != 0){
-                        return $found_in_id;
-                    }
-
-                }
 
             } elseif($is_condition){
 
