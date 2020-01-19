@@ -471,7 +471,7 @@ function echo_ln_connections($ln){
             //IDEA
             $ins = $CI->IDEA_model->in_fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
             if(count($ins) > 0){
-                $ln_connections_ui .= echo_in_read($ins[0], );
+                $ln_connections_ui .= echo_in_read($ins[0]);
             }
         } elseif(in_array(4367 , $m['m_parents'])){
             //READ
