@@ -44,7 +44,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     
     echo '<div class="col-lg-12">';
 
-    if($col_num==1){
+    if($col_num==2){
 
         echo '<div style="margin-bottom: 5px;">';
 
@@ -61,6 +61,12 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         //Preview option:
         echo '<div class="inline-block pull-right side-margin"><a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fad fa-step-forward"></i></a></div>';
 
+        echo '</div>';
+
+
+        echo '<div class="itemidea">';
+        echo '<div class="title_counter hidden grey montserrat doupper" style="text-align: right;"><span id="charTitleNum">0</span>/'.config_var(11071).' CHARACTERS</div>';
+        echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && $is_active), 0, true);
         echo '</div>';
 
     } elseif($col_num==3){
@@ -251,7 +257,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m2['m_parents']);
 
         if($show_tab_menu){
-            echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="top" title="'.$m2['m_name'].'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.'">'.echo_number($counter).'</span>' ).'</a></li>';
+            echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="right" title="'.$m2['m_name'].'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.'">'.echo_number($counter).'</span>' ).'</a></li>';
         }
 
         $tab_content .= '<div class="tab-content tab-group-'.$en_id.' tab-data-'.$en_id2.( $default_active ? '' : ' hidden ' ).'">';
@@ -265,15 +271,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     if($show_tab_menu){
         echo '</ul>';
     }
-
-
-    if($col_num==1){
-        echo '<div class="itemidea">';
-        echo '<div class="title_counter hidden grey montserrat doupper" style="text-align: right;"><span id="charTitleNum">0</span>/'.config_var(11071).' CHARACTERS</div>';
-        echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && $is_active), 0, true);
-        echo '</div>';
-    }
-
 
     echo $tab_content;
 
