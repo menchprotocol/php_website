@@ -27,8 +27,6 @@ $play_focus_found = false; //Used to determine the first tab to be opened
 
 echo '<div class="container" style="padding-bottom:54px;">';
 
-//Show breadcrumbs
-echo echo_breadcrumbs($in['in_id'], true);
 
 if(!$is_author){
     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle read"></i> You are not a idea author. <a href="/idea/in_become_author/'.$in['in_id'].'" class="inline-block montserrat '.superpower_active(10984).'">BECOME AUTHOR</a></div>';

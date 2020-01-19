@@ -9,7 +9,7 @@
     <?php
 
     //Show breadcrumbs
-    echo echo_breadcrumbs($in['in_id'], false);
+    echo echo_read_breadcrumbs($in['in_id']);
 
     echo '<div class="doclear">&nbsp;</div>';
 
