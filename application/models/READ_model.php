@@ -662,15 +662,18 @@ class READ_model extends CI_Model
             $player_read_ids = $this->READ_model->read_ids($en_id);
             if(!in_array($in['in_id'], $player_read_ids)){
                 foreach ($this->IDEA_model->in_fetch_recursive_parents($in['in_id']) as $grand_parent_ids) {
-                    $crossovers = array_intersect($grand_parent_ids, $player_read_ids);
-                    if (count($crossovers)) {
-                        $ins = $this->IDEA_model->in_fetch(array(
-                            'in_id' => end($crossovers),
-                            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
-                        ));
-                        if(count($ins)){
-                            //Completed step that has OR expansions, check recursively to see if next step within here:
-                            return $this->READ_model->read_next_find($en_id, $ins[0], false);
+                    if (array_intersect($grand_parent_ids, $player_read_ids)) {
+                        foreach($grand_parent_ids as $parent_in_id){
+                            $ins = $this->IDEA_model->in_fetch(array(
+                                'in_id' => $parent_in_id,
+                                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+                            ));
+                            if(count($ins)){
+                                $found_in_id = $this->READ_model->read_next_find($en_id, $ins[0], false);
+                                if($found_in_id != 0){
+                                    return $found_in_id;
+                                }
+                            }
                         }
                     }
                 }
