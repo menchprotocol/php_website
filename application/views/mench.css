@@ -864,10 +864,11 @@ textarea.note-textarea{
     display: inline-block;
 }
 
-.in_update_text {
+.texttype_4362_sm {
     text-align: center;
-    padding-right: 3px;
-    padding-left: 3px;
+    padding-right: 2px;
+    padding-left: 2px;
+    width: 55px;
 }
 
 .form-group {
