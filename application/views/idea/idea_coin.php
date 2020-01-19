@@ -117,7 +117,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= echo_in($parent_in, 0, true, $is_author && $is_active);
             }
 
-            $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10939).'">
+            $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10984).'">
                             <div class="form-group is-empty '.( $is_author && $is_active ? '' : ' hidden ' ).'" style="margin: 0; padding: 0;">
                                 <input type="text"
                                        class="form-control ideaadder-level-2-parent form-control-thick algolia_search"
