@@ -1672,7 +1672,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
             $ui .= ' '.$footnotes;
         }
 
-        $ui .= ' BY '.one_two_explode('',' ',$authors[0]['en_name']).'.';
+        $ui .= ' BY '.one_two_explode('',' ',$authors[0]['en_name']);
 
     }
 
