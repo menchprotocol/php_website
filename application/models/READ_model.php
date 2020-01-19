@@ -1687,7 +1687,7 @@ class READ_model extends CI_Model
                 //Show all completions:
                 $en_all_12229 = $this->config->item('en_all_12229');
                 foreach($read_completes as $read_history){
-                    echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
+                    echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$this->READ_model->dispatch_message($read_history['ln_content']).'</span>';
                 }
 
 
@@ -1977,43 +1977,20 @@ class READ_model extends CI_Model
 
             } elseif ($ins[0]['in_type_play_id'] == 6683) {
 
-
-
-                //TEXT REPLY
-                if(count($read_completes)){
-                    //ALready completed, show them their submission:
-
-                    $en_all_12229 = $this->config->item('en_all_12229');
-                    foreach($read_completes as $read_history){
-                        echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
-                    }
-
-                } else {
-
-                    //Give them instructions on what to do:
-
-
-                }
-
-                //Update text input:
-                echo '<textarea class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
+                //TEXT RESPONSE
+                echo '<div class="edit-text '.(count($read_completes) ? '' : ' hidden ').'"><a href="javascript:void(0);" onclick="$(\'.edit-text\').toggleClass(\'hidden\')">UPDATE ANSWER</a></div>';
+                echo '<div class="edit-text '.(count($read_completes) ? ' hidden ' : '').'">';
+                echo '<textarea class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;">'.( count($read_completes) ? $read_completes[0]['ln_content'] : '' ).'</textarea>';
                 echo '<span class="saving_result"></span>';
-                echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onsubmit="">Save & Continue</a></div>';
+                echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onclick="">Save & Next</a></div>';
+                echo '</div>';
 
             } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7751'))) {
 
                 //FILE UPLOAD
-
-                if(count($read_completes)){
-
-                } else {
-                    echo '<p>Upload a file to continue.</p>';
-                }
-
-                //Update File:
+                echo '<p>Upload a file to continue.</p>';
                 echo '<span class="saving_result"></span>';
                 echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_play_id'].'" /><label class=" btn btn-read" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">Upload File</label>';
-
 
             } else {
 
@@ -2021,7 +1998,7 @@ class READ_model extends CI_Model
                 $this->READ_model->ln_create(array(
                     'ln_type_play_id' => 4246, //Platform Bug Reports
                     'ln_owner_play_id' => $recipient_en['en_id'],
-                    'ln_content' => 'step_echo() unknown idea type',
+                    'ln_content' => 'step_echo() unknown idea type play ID ['.$ins[0]['in_type_play_id'].'] that could not be rendered',
                     'ln_parent_idea_id' => $in_id,
                 ));
 
