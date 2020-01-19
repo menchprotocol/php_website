@@ -60,7 +60,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '<div class="inline-block pull-right side-margin">';
 
         //TIME ESTIMATE
-        echo '<div class="inline-block '.superpower_active(10939).'" style="margin:0 5px;"><span class="icon-block-sm inline-block"><i class="far fa-clock read"></i></span>'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
+        echo '<div class="inline-block '.superpower_active(10939).'" style="margin:0 5px;"><span class="icon-block-sm inline-block"><i class="fad fa-stopwatch read"></i></span>'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
 
         //READ PREVIEW
         echo '<a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fad fa-step-forward"></i></a>';
