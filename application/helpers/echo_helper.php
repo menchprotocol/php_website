@@ -1669,14 +1669,14 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
             }
         }
 
+        if($footnotes){
+            $ui .= ' '.$footnotes;
+        }
+
         $ui .= ' BY '.one_two_explode('',' ',$authors[0]['en_name']);
 
     }
 
-
-    if($footnotes){
-        $ui .= ' '.$footnotes;
-    }
 
     $ui .= '</div>';
 
@@ -2503,7 +2503,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         foreach($in__children as $key => $child_in){
 
             //Has this been completed before by this user?
-            $footnotes = ( $completion_rate[$key]['completion_percentage'] > 0 ? $completion_rate[$key]['completion_percentage'].'% DONE ' : '' ).( $next_key==$key && !$all_done ? 'IS NEXT READ' : '');
+            $footnotes = ( $completion_rate[$key]['completion_percentage'] > 0 ? '['.$completion_rate[$key]['completion_percentage'].'%] ' : '' ).( $next_key==$key && !$all_done ? 'IS NEXT READ' : '');
 
             if($push_message){
 
