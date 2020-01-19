@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-18 12:04:02 PST
+//Generated 2020-01-18 16:39:01 PST
 
 //COIN PLAY:
 $config['en_ids_4536'] = array(11968,7305,6225,12289,6206,10645,4758,7303,10957,11088,11087);
@@ -3448,7 +3448,7 @@ $config['en_ids_11007'] = array(11010,11011,11012);
 $config['en_all_11007'] = array(
     11010 => array(
         'm_icon' => '🔵',
-        'm_name' => '10 IDEAS/WEEK FOR FREE',
+        'm_name' => '55 IDEAS/WEEK FOR FREE',
         'm_desc' => '',
         'm_parents' => array(11061,11007),
     ),
@@ -3928,11 +3928,11 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12210,12130,12355,11077,11074,12124,11076,11075,12176,12352,12156,10939,11071,11064,11986,11065,11063,11060,11079,12363,11073,11066,11072,12232,11057,11056,12331,12113,12088,11061,11162,11163,12209,12208);
+$config['en_ids_6404'] = array(12210,12130,12355,11077,11074,12124,11076,11075,12176,12156,10939,11071,11064,11986,11065,11063,11079,11060,12363,11073,11066,11072,12232,11057,11056,12331,12113,12088,11061,11162,11163,12209,12208);
 $config['en_all_6404'] = array(
     12210 => array(
         'm_icon' => '',
-        'm_name' => 'COINS REFRESH MILLISECONDS IDEAGER',
+        'm_name' => 'COINS REFRESH MILLISECONDS IDEATOR',
         'm_desc' => '4181',
         'm_parents' => array(6404),
     ),
@@ -3984,14 +3984,8 @@ $config['en_all_6404'] = array(
         'm_desc' => '29',
         'm_parents' => array(6404),
     ),
-    12352 => array(
-        'm_icon' => '',
-        'm_name' => 'IDEA NEW EXAMPLE TITLE',
-        'm_desc' => 'Example: Get Hired as a Programmer',
-        'm_parents' => array(6404),
-    ),
     12156 => array(
-        'm_icon' => '<i class="fad fa-star idea"></i>',
+        'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA NORTH STAR',
         'm_desc' => '7766',
         'm_parents' => array(6404),
@@ -4032,16 +4026,16 @@ $config['en_all_6404'] = array(
         'm_desc' => '25',
         'm_parents' => array(6404),
     ),
+    11079 => array(
+        'm_icon' => '',
+        'm_name' => 'MENCH PLATFORM TIMEZONE',
+        'm_desc' => 'America/Los_Angeles',
+        'm_parents' => array(6404),
+    ),
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.21952',
-        'm_parents' => array(6404),
-    ),
-    11079 => array(
-        'm_icon' => '',
-        'm_name' => 'MENCH TIMEZONE',
-        'm_desc' => 'America/Los_Angeles',
+        'm_desc' => '1.2195',
         'm_parents' => array(6404),
     ),
     12363 => array(
@@ -4107,7 +4101,7 @@ $config['en_all_6404'] = array(
     11061 => array(
         'm_icon' => '',
         'm_name' => 'SUBSCRIPTION FREE WEEKLY READS',
-        'm_desc' => '10',
+        'm_desc' => '55',
         'm_parents' => array(6404),
     ),
     11162 => array(
