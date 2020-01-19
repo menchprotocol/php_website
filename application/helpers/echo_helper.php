@@ -850,9 +850,9 @@ function echo_time_hours($seconds, $micro = false)
         //Under 30 seconds would not round up to even 1 minute, so don't show:
         return 0;
     } elseif ($seconds < 60) {
-        return 1 . ($micro ? ' MIN' : ' Minutes');
+        return 1 . ($micro ? ' Min.' : ' Minutes');
     } elseif ($seconds < 3600) {
-        return round($seconds / 60) . ($micro ? ' MIN' : ' Minutes');
+        return round($seconds / 60) . ($micro ? ' Min.' : ' Minutes');
     } else {
         //Roundup the hours:
         $hours = round($seconds / 3600);
@@ -1672,7 +1672,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
             $ui .= ' '.$footnotes;
         }
 
-        $ui .= ' by '.one_two_explode('',' ',$authors[0]['en_name']).'.';
+        $ui .= ' by <b class="montserrat doupper">'.one_two_explode('',' ',$authors[0]['en_name']).'</b>.';
 
     }
 
