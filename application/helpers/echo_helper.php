@@ -44,7 +44,7 @@ function echo_time_minutes($sec_int)
     if ($sec_int >= 60) {
         $min = floor($sec_int / 60);
     }
-    return ($min ? $min . '′' : '') . ($sec ? ($min ? ' ' : '') . $sec . '″' : '');
+    return ($min ? $min . ' MIN.' : '') . ($sec ? ($min ? ' ' : '') . $sec . ' SEC.' : '');
 }
 
 
@@ -1433,7 +1433,7 @@ function echo_time_range($in, $micro = false, $hide_zero = false)
         $ui_time .= ( $micro ? '-' : ' - ' );
         $ui_time .= $the_max;
     }
-    $ui_time .= strtoupper($is_minutes ? ($micro ? ' MIN' : ' MINUTE'.echo__s($max_minutes)) : ' HOUR'.echo__s($max_hours));
+    $ui_time .= strtoupper($is_minutes ? ($micro ? ' MIN.' : ' MINUTE'.echo__s($max_minutes)) : ' HOUR'.echo__s($max_hours));
 
     //Generate UI to return:
     return $ui_time;
