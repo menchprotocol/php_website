@@ -1670,7 +1670,7 @@ class READ_model extends CI_Model
                     // % DONE
                     $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
                     if($completion_rate['completion_percentage'] > 0){
-                        echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'%]</span> ';
+                        echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'% DONE]</span> ';
                     }
 
                     //OWNER
@@ -1689,6 +1689,7 @@ class READ_model extends CI_Model
                 foreach($read_completes as $read_history){
                     echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
                 }
+
 
                 echo '</span></div>';
 
@@ -1732,8 +1733,23 @@ class READ_model extends CI_Model
 
 
 
+        //LOCKED
+        if (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7309'))) {
 
-        if (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7712'))){
+
+            //Requirement lock
+            if(!count($read_completes) && !count($unlocked_connections) && count($unlock_paths)){
+
+                //List Unlock paths:
+                echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>SUGGESTED READS:', false);
+
+            }
+
+            //List Children if any:
+            echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>NEXT READS:');
+
+
+        } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7712'))){
 
             //SELECT ANSWER
 
@@ -1950,52 +1966,54 @@ class READ_model extends CI_Model
                 }
             }
 
-        } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7309'))) {
-
-
-            //Requirement lock
-            if(!count($read_completes) && !count($unlocked_connections) && count($unlock_paths)){
-
-                //List Unlock paths:
-                echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>SUGGESTED READS:', false);
-
-            }
-
-            //List Children if any:
-            echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>NEXT READS:');
-
         } else {
+
+
+            //OTHER ANDs
 
             if ($ins[0]['in_type_play_id'] == 6677) {
 
-                //READ ONLY
-
-                //Always show the next list:
-                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>NEXT READS:');
+                //READ ONLY, nothing to do here...
 
             } elseif ($ins[0]['in_type_play_id'] == 6683) {
 
+
+
                 //TEXT REPLY
-                if($push_message){
+                if(count($read_completes)){
+                    //ALready completed, show them their submission:
+
+                    $en_all_12229 = $this->config->item('en_all_12229');
+                    foreach($read_completes as $read_history){
+                        echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$read_history['ln_content'].'</span>';
+                    }
 
                 } else {
-                    echo '<textarea class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
-                    echo '<span class="saving_result"></span>';
-                    echo '<div class="margin-top-down"><a class="btn btn-idea" href="javascript:void(0);" onsubmit="">Save & Continue</a></div>';
+
+                    //Give them instructions on what to do:
+
+
                 }
+
+                //Update text input:
+                echo '<textarea class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
+                echo '<span class="saving_result"></span>';
+                echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onsubmit="">Save & Continue</a></div>';
 
             } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7751'))) {
 
                 //FILE UPLOAD
-                if($push_message){
+
+                if(count($read_completes)){
 
                 } else {
-
                     echo '<p>Upload a file to continue.</p>';
-                    echo '<span class="saving_result"></span>';
-                    echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_play_id'].'" /><label class=" btn btn-idea" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">Upload File</label>';
-
                 }
+
+                //Update File:
+                echo '<span class="saving_result"></span>';
+                echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_play_id'].'" /><label class=" btn btn-read" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">Upload File</label>';
+
 
             } else {
 
@@ -2008,6 +2026,12 @@ class READ_model extends CI_Model
                 ));
 
             }
+
+            if(count($read_completes)){
+                //Always show the next list:
+                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>NEXT READS:');
+            }
+
         }
 
 

@@ -1612,7 +1612,6 @@ function echo_in_featured($in_id){
 
 }
 
-
 function echo_in_read($in, $show_description = false, $footnotes = null, $common_prefix = null, $extra_class = null, $show_icon = false, $in_reads = true)
 {
 
@@ -1665,7 +1664,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
         if($session_en && $in_reads && in_array($in['in_id'], $player_read_ids)){
             $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
             if($completion_rate['completion_percentage'] > 0){
-                $ui .= ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'%]</span>';
+                $ui .= ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% DONE]</span>';
             }
         }
 
@@ -2424,7 +2423,7 @@ function echo_breadcrumbs($in_id, $link_to_idea = false){
                         //Calcullate completion time:
                         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $this_ins[0]);
                         if($completion_rate['completion_percentage'] > 0){
-                            $completion_ui_rate = ' <span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'%]</span>';
+                            $completion_ui_rate = ' <span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'% DONE]</span>';
                         }
                     }
 
@@ -2503,7 +2502,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         foreach($in__children as $key => $child_in){
 
             //Has this been completed before by this user?
-            $footnotes = ( $completion_rate[$key]['completion_percentage'] > 0 ? '['.$completion_rate[$key]['completion_percentage'].'%] ' : '' ).( $next_key==$key && !$all_done ? 'IS NEXT READ' : '');
+            $footnotes = ( $completion_rate[$key]['completion_percentage'] > 0 ? '['.$completion_rate[$key]['completion_percentage'].'% DONE] ' : '' ).( $next_key==$key && !$all_done ? 'IS NEXT READ' : '');
 
             if($push_message){
 
