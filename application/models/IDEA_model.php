@@ -430,14 +430,13 @@ class IDEA_model extends CI_Model
             }
 
             //Add author:
-            if($ln_owner_play_id > 0){
+            if(!$linking_to_existing && !$is_parent && $ln_owner_play_id > 0){
 
                 if(!count($this->READ_model->ln_fetch(array(
-                    ( $is_parent ? 'ln_child_idea_id' : 'ln_parent_idea_id' ) => $in_linked_id,
-                    ( $is_parent ? 'ln_parent_idea_id' : 'ln_child_idea_id' ) => $idea_new['in_id'],
-                    'ln_parent_play_id' => $ln_owner_play_id,
                     'ln_type_play_id' => 4983,
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_parent_play_id' => $ln_owner_play_id,
+                    'ln_child_idea_id' => $idea_new['in_id'],
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 )))){
 
                     //Add new up-vote:
@@ -446,9 +445,10 @@ class IDEA_model extends CI_Model
                         'ln_parent_play_id' => $ln_owner_play_id,
                         'ln_type_play_id' => 4983,
                         'ln_content' => '@'.$ln_owner_play_id.' #'.( $is_parent ? $idea_new['in_id'] : $in_linked_id ), //Message content
-                        ( $is_parent ? 'ln_child_idea_id' : 'ln_parent_idea_id' ) => $in_linked_id,
-                        ( $is_parent ? 'ln_parent_idea_id' : 'ln_child_idea_id' ) => $idea_new['in_id'],
+                        'ln_parent_idea_id' => $in_linked_id,
+                        'ln_child_idea_id' => $idea_new['in_id'],
                     ));
+
                 }
             }
 
@@ -463,7 +463,7 @@ class IDEA_model extends CI_Model
                     'ln_child_idea_id' => $idea_new['in_id'],
                     'ln_parent_play_id' => $ln_owner_play_id,
                     'ln_type_play_id' => 4983,
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 )))){
 
                     //Add new up-vote:

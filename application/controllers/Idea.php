@@ -185,11 +185,11 @@ class Idea extends CI_Controller {
         //Make sure it's a logged in trainer:
         $session_en = superpower_assigned(10984, true);
 
-        //Log up-vote:
+        //Blog Author:
         $this->READ_model->ln_create(array(
+            'ln_type_play_id' => 4983,
             'ln_owner_play_id' => $session_en['en_id'],
             'ln_parent_play_id' => $session_en['en_id'],
-            'ln_type_play_id' => 4983,
             'ln_content' => '@'.$session_en['en_id'],
             'ln_child_idea_id' => $in_id,
         ));
