@@ -2098,7 +2098,7 @@ class READ_model extends CI_Model
                 echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>NEXT READS:');
             } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7751'))) {
                 //Show next here:
-                echo '<div class="go_next_upload hidden">';
+                echo '<div class="go_next_upload hidden inline-block">';
                 echo_in_next($ins[0]['in_id'], $recipient_en, $push_message);
                 echo '</div>';
             }
