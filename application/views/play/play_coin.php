@@ -389,16 +389,20 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
                 //SHOW LASTEST 100
-                $this_tab .= '<div class="list-group">';
-                foreach ($this->READ_model->ln_fetch($idea_note_filters, array('in_child'), config_var(11064), 0, array('in_title' => 'ASC')) as $idea_note) {
-                    if(in_array($en_id2, $this->config->item('en_ids_12321'))){
-                        $this_tab .= echo_in_read($idea_note);
-                    } elseif(in_array($en_id2, $this->config->item('en_ids_12322'))){
-                        $this_tab .= echo_en_messages($idea_note);
+                $idea_notes = $this->READ_model->ln_fetch($idea_note_filters, array('in_child'), config_var(11064), 0, array('in_title' => 'ASC'));
+                if(count($idea_notes)){
+                    $this_tab .= '<div class="list-group">';
+                    foreach ($idea_notes as $idea_note) {
+                        if(in_array($en_id2, $this->config->item('en_ids_12321'))){
+                            $this_tab .= echo_in_read($idea_note);
+                        } elseif(in_array($en_id2, $this->config->item('en_ids_12322'))){
+                            $this_tab .= echo_en_messages($idea_note);
+                        }
                     }
+                    $this_tab .= '</div>';
+                } elseif($default_active){
+                    $this_tab .= '<div class="alert alert-warning">No '.$m2['m_name'].' added yet.</div>';
                 }
-                $this_tab .= '</div>';
-
 
             } elseif($en_id2==4997){
 
