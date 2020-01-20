@@ -376,10 +376,10 @@ class Read extends CI_Controller
         ));
 
         //All good:
-        return array(
+        return echo_json(array(
             'status' => 1,
             'message' => 'Answer Saved',
-        );
+        ));
 
     }
 
