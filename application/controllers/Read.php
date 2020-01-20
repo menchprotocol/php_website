@@ -413,18 +413,19 @@ class Read extends CI_Controller
         }
 
         //Save new answer:
+        $new_message = '@'.$cdn_status['cdn_en']['en_id'];
         $this->READ_model->read_is_complete($ins[0], array(
             'ln_type_play_id' => 12117,
             'ln_parent_idea_id' => $ins[0]['in_id'],
             'ln_owner_play_id' => $session_en['en_id'],
-            'ln_content' => '@'.$cdn_status['cdn_en']['en_id'],
+            'ln_content' => $new_message,
             'ln_parent_play_id' => $cdn_status['cdn_en']['en_id'],
         ));
 
         //All good:
         return echo_json(array(
             'status' => 1,
-            'message' => $this->READ_model->dispatch_message($cdn_status['cdn_url']),
+            'message' => $this->READ_model->dispatch_message($new_message),
         ));
 
     }
