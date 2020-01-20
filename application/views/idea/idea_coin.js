@@ -238,10 +238,11 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
             $('.dropd_'+element_id+'_'+ln_id+' .dropi_' + element_id + '_' + ln_id).removeClass('active');
             $('.dropd_'+element_id+'_'+ln_id+' .optiond_' + new_en_id+ '_' + ln_id).addClass('active');
 
-            if( typeof data.url_redirect !== 'undefined' && data.url_redirect.length > 0 ){
+            if( data.url_redirect && data.url_redirect.length > 0 ){
                 //Go to main idea page:
                 window.location = data.url_redirect;
-            } else if(element_id==4486){
+            }
+            if(element_id==4486){
                 $('.in__tr_'+ln_id+' .link_marks').addClass('hidden');
                 $('.in__tr_'+ln_id+' .settings_' + new_en_id).removeClass('hidden');
             }
