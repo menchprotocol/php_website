@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-19 14:06:17 PST
+//Generated 2020-01-19 18:26:33 PST
 
 //IDEA TAB GROUP:
 $config['en_ids_12365'] = array(11019,4983,10573,4601,7545,7347,6255,6146,11047);
@@ -2564,7 +2564,7 @@ $config['en_all_11088'] = array(
         'm_icon' => '<i class="fas fa-toolbox play" aria-hidden="true"></i>',
         'm_name' => 'PROFILE TABS',
         'm_desc' => '',
-        'm_parents' => array(11088,4527),
+        'm_parents' => array(10939,11088,4527),
     ),
 );
 
@@ -2581,7 +2581,7 @@ $config['en_all_11089'] = array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling play" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(11084,11089,11028),
+        'm_parents' => array(10939,11084,11089,11028),
     ),
     4997 => array(
         'm_icon' => '<i class="fas fa-tools play" aria-hidden="true"></i>',
@@ -3532,13 +3532,13 @@ $config['en_all_11084'] = array(
         'm_icon' => '<i class="fas fa-id-card play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PROFILE',
         'm_desc' => '',
-        'm_parents' => array(11084,11033,11028),
+        'm_parents' => array(10939,11084,11033,11028),
     ),
     11029 => array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling play" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(11084,11089,11028),
+        'm_parents' => array(10939,11084,11089,11028),
     ),
 );
 
@@ -3549,7 +3549,7 @@ $config['en_all_11033'] = array(
         'm_icon' => '<i class="fas fa-id-card play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PROFILE',
         'm_desc' => '',
-        'm_parents' => array(11084,11033,11028),
+        'm_parents' => array(10939,11084,11033,11028),
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-plus-circle read" aria-hidden="true"></i>',
@@ -3682,7 +3682,7 @@ $config['en_all_6232'] = array(
         'm_parents' => array(10985,12112,10663,6103,6410,6232),
     ),
     4356 => array(
-        'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME',
         'm_desc' => 'in_read_time',
         'm_parents' => array(10888,10650,6232,6201),
@@ -4420,13 +4420,13 @@ $config['en_all_11028'] = array(
         'm_icon' => '<i class="fas fa-id-card play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PROFILE',
         'm_desc' => 'Describe PLAYER. Where it comes from. It\'s origin.',
-        'm_parents' => array(11084,11033,11028),
+        'm_parents' => array(10939,11084,11033,11028),
     ),
     11029 => array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling play" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => 'What the PLAYER chooses to focus on. It\'s work. It\'s responsibility.',
-        'm_parents' => array(11084,11089,11028),
+        'm_parents' => array(10939,11084,11089,11028),
     ),
 );
 
@@ -5474,7 +5474,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-toolbox play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PROFILE TABS',
         'm_desc' => '',
-        'm_parents' => array(11088,4527),
+        'm_parents' => array(10939,11088,4527),
     ),
     3000 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -6520,7 +6520,7 @@ $config['en_all_6201'] = array(
         'm_parents' => array(11049,6232,6201,6195),
     ),
     4356 => array(
-        'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
         'm_name' => 'READ TIME',
         'm_desc' => '',
         'm_parents' => array(10888,10650,6232,6201),

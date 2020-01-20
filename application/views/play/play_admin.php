@@ -666,37 +666,6 @@ if(!$action) {
         echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No duplicates found!</div>';
     }
 
-} elseif($action=='fix_idea_authors') {
-
-    $scanned = 0;
-    $added = 0;
-
-    foreach ($this->READ_model->ln_fetch(array(
-        'ln_type_play_id' => 4250,
-    ), array('in_child'), 0) as $idea_author){
-
-        $scanned++;
-
-        if(!count($this->READ_model->ln_fetch(array(
-            'ln_type_play_id' => 4983,
-            'ln_parent_play_id' => $idea_author['ln_owner_play_id'],
-            'ln_child_idea_id' => $idea_author['in_id'],
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        )))){
-            //Add new up-vote:
-            $added++;
-            $this->READ_model->ln_create(array(
-                'ln_type_play_id' => 4983,
-                'ln_owner_play_id' => $idea_author['ln_owner_play_id'],
-                'ln_parent_play_id' => $idea_author['ln_owner_play_id'],
-                'ln_content' => '@'.$idea_author['ln_owner_play_id'], //Message content
-                'ln_child_idea_id' => $idea_author['in_id'],
-            ));
-        }
-    }
-
-    echo $added.' Added in '.$scanned.' Scanned';
-
 } elseif($action=='fix_read_coins') {
 
     exit; //May need to be validated later...]
