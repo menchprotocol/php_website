@@ -29,7 +29,12 @@ class Read extends CI_Controller
             return redirect_message('/read', '<div class="alert alert-danger" role="alert">Failed to add idea to your reading list.</div>');
         }
 
-        return redirect_message('/' . $in_id.'/next', '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i> Successfully added to your reading list.</div>');
+        //Find Next & go:
+        $ins = $this->IDEA_model->in_fetch(array(
+            'in_id' => $in_id,
+        ));
+        $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
+        return redirect_message('/'.($next_in_id > 0 ? $next_in_id : $in_id ), '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i> Successfully added to your reading list.</div>');
 
     }
 
