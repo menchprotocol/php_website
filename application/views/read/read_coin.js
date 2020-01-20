@@ -157,6 +157,7 @@ function read_file_upload(droppedFiles, uploadType) {
             success: function (data) {
                 //Render new file:
                 $('.file_saving_result').html(data.message);
+                $('.go_next_upload').removeClass('hidden');
             },
             error: function (data) {
                 //Show Error:
