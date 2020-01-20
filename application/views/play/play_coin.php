@@ -385,12 +385,15 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 //COUNT ONLY
                 $item_counters = $this->READ_model->ln_fetch($idea_note_filters, array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
                 $counter = $item_counters[0]['totals'];
-                $default_active = ( $en_id2==4983 && $counter>0 );
+                $is_focus = ($en_id2==4983);
+                $default_active = ( $is_focus && $counter>0 );
 
 
                 //SHOW LASTEST 100
                 $idea_notes = $this->READ_model->ln_fetch($idea_note_filters, array('in_child'), config_var(11064), 0, array('in_title' => 'ASC'));
+
                 if(count($idea_notes)){
+
                     $this_tab .= '<div class="list-group">';
                     foreach ($idea_notes as $idea_note) {
                         if(in_array($en_id2, $this->config->item('en_ids_12321'))){
@@ -400,8 +403,11 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                         }
                     }
                     $this_tab .= '</div>';
-                } elseif($default_active){
+
+                } elseif($is_focus){
+
                     $this_tab .= '<div class="alert alert-warning">No '.$m2['m_name'].' added yet.</div>';
+
                 }
 
             } elseif($en_id2==4997){
