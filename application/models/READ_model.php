@@ -1743,7 +1743,7 @@ class READ_model extends CI_Model
 
 
 
-        if(count($read_completes) && !count($in__children) && !count($in__messages) && !isset($_GET['manual_nav'])){
+        if(count($read_completes) && !count($in__children) && !count($in__messages) && !isset($_GET['manual_nav']) && !in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_12324'))){
             //Move to the next one as there is nothing to do here:
             if($push_message){
 

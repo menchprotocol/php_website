@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-19 18:26:33 PST
+//Generated 2020-01-20 09:31:03 PST
 
 //IDEA TAB GROUP:
 $config['en_ids_12365'] = array(11019,4983,10573,4601,7545,7347,6255,6146,11047);
@@ -1132,26 +1132,14 @@ $config['en_all_12326'] = array(
     ),
 );
 
-//IDEA TYPE PLAYER INPUT:
-$config['en_ids_12324'] = array(6683,6684,7231,7637);
+//IDEA TYPE MANUAL INPUT:
+$config['en_ids_12324'] = array(6683,7637);
 $config['en_all_12324'] = array(
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard " aria-hidden="true"></i>',
         'm_name' => 'REPLY',
         'm_desc' => '',
         'm_parents' => array(12324,6144,7585,6192),
-    ),
-    6684 => array(
-        'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
-        'm_name' => 'SELECT ONE',
-        'm_desc' => '',
-        'm_parents' => array(12336,12324,12129,12119,7712,7585,6157,6193),
-    ),
-    7231 => array(
-        'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
-        'm_name' => 'SELECT SOME',
-        'm_desc' => '',
-        'm_parents' => array(12334,12324,12129,12119,7712,7489,7585,6193),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip" aria-hidden="true"></i>',
@@ -2556,19 +2544,19 @@ $config['en_ids_11088'] = array(11089,11033);
 $config['en_all_11088'] = array(
     11089 => array(
         'm_icon' => '<i class="fas fa-eye play" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIO TABS',
+        'm_name' => 'FIRST ROW TABS',
         'm_desc' => '',
         'm_parents' => array(4527,11088),
     ),
     11033 => array(
         'm_icon' => '<i class="fas fa-toolbox play" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE TABS',
+        'm_name' => 'SECOND ROW TABS',
         'm_desc' => '',
         'm_parents' => array(10939,11088,4527),
     ),
 );
 
-//PLAY PORTFOLIO TABS:
+//PLAY FIRST ROW TABS:
 $config['en_ids_11089'] = array(4983,11029,4997,11039);
 $config['en_all_11089'] = array(
     4983 => array(
@@ -3542,7 +3530,7 @@ $config['en_all_11084'] = array(
     ),
 );
 
-//PLAY PROFILE TABS:
+//PLAY SECOND ROW TABS:
 $config['en_ids_11033'] = array(11030,6255,6146,7347,10573,4231,4601,7545);
 $config['en_all_11033'] = array(
     11030 => array(
@@ -5012,7 +5000,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(12066,10725,10809,6150,12343,12201,10712,4535,4536,6205,10719,12079,10627,10716,11047,6192,4983,12273,4229,4486,4485,12012,6193,7302,4737,7356,12138,7355,12365,6201,11021,12112,11968,10990,7585,10602,12330,11018,12324,7309,7712,7751,10746,10717,10721,10720,11080,2738,12105,11035,7555,11059,11058,6404,4527,11054,6232,6225,11039,10956,12279,12274,6194,6827,4426,4997,4986,7551,11028,4537,6206,3290,4592,12220,4454,11089,11033,3000,7303,6177,11007,10957,11088,3289,4755,10718,6287,10571,7357,11081,7704,6255,12229,6345,4280,4277,6102,12228,12326,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,10869,4593,10593,12141,12327,10658,10711,11084,4269,6204,10710,6805,7358,12321,12322);
+$config['en_ids_4527'] = array(12066,10725,10809,6150,12343,12201,10712,4535,4536,6205,10719,12079,10627,10716,11047,6192,4983,12273,4229,4486,4485,12012,6193,7302,4737,7356,12138,7355,12365,6201,11021,12112,11968,10990,7585,10602,12330,12324,11018,7309,7712,7751,10746,10717,10721,10720,11080,2738,12105,11035,7555,11059,11058,6404,4527,11054,6232,6225,11039,10956,12279,12274,6194,6827,4426,4997,4986,7551,11028,4537,6206,11089,3290,4592,12220,4454,11033,3000,7303,6177,11007,10957,11088,3289,4755,10718,6287,10571,7357,11081,7704,6255,12229,6345,4280,4277,6102,12228,12326,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,10869,4593,10593,12141,12327,10658,10711,11084,4269,6204,10710,6805,7358,12321,12322);
 $config['en_all_4527'] = array(
     12066 => array(
         'm_icon' => '<i class="far fa-info-circle" aria-hidden="true"></i>',
@@ -5236,17 +5224,17 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,10893),
     ),
+    12324 => array(
+        'm_icon' => '<i class="fad fa-check-circle" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TYPE MANUAL INPUT',
+        'm_desc' => '',
+        'm_parents' => array(4527,10893),
+    ),
     11018 => array(
         'm_icon' => '<i class="fas fa-shapes idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA TYPE & NEXT',
         'm_desc' => '',
         'm_parents' => array(4527,11021),
-    ),
-    12324 => array(
-        'm_icon' => '<i class="fad fa-check-circle"></i>',
-        'm_name' => 'IDEA TYPE PLAYER INPUT',
-        'm_desc' => '',
-        'm_parents' => array(4527,10893),
     ),
     7309 => array(
         'm_icon' => '<i class="far fa-cubes"></i>',
@@ -5440,6 +5428,12 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,7735,4536),
     ),
+    11089 => array(
+        'm_icon' => '<i class="fas fa-eye play" aria-hidden="true"></i>',
+        'm_name' => 'PLAY FIRST ROW TABS',
+        'm_desc' => '',
+        'm_parents' => array(4527,11088),
+    ),
     3290 => array(
         'm_icon' => '<i class="far fa-transgender play" aria-hidden="true"></i>',
         'm_name' => 'PLAY GENDER',
@@ -5464,15 +5458,9 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(6196,6225,6204,4527),
     ),
-    11089 => array(
-        'm_icon' => '<i class="fas fa-eye play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY PORTFOLIO TABS',
-        'm_desc' => '',
-        'm_parents' => array(4527,11088),
-    ),
     11033 => array(
         'm_icon' => '<i class="fas fa-toolbox play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY PROFILE TABS',
+        'm_name' => 'PLAY SECOND ROW TABS',
         'm_desc' => '',
         'm_parents' => array(10939,11088,4527),
     ),
@@ -6629,13 +6617,13 @@ $config['en_all_7712'] = array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
         'm_name' => 'ONE',
         'm_desc' => '',
-        'm_parents' => array(12336,12324,12129,12119,7712,7585,6157,6193),
+        'm_parents' => array(12336,12129,12119,7712,7585,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
         'm_name' => 'SOME',
         'm_desc' => '',
-        'm_parents' => array(12334,12324,12129,12119,7712,7489,7585,6193),
+        'm_parents' => array(12334,12129,12119,7712,7489,7585,6193),
     ),
 );
 
@@ -6698,13 +6686,13 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
         'm_name' => 'SELECT ONE',
         'm_desc' => '',
-        'm_parents' => array(12336,12324,12129,12119,7712,7585,6157,6193),
+        'm_parents' => array(12336,12129,12119,7712,7585,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
         'm_name' => 'SELECT SOME',
         'm_desc' => '',
-        'm_parents' => array(12334,12324,12129,12119,7712,7489,7585,6193),
+        'm_parents' => array(12334,12129,12119,7712,7489,7585,6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube " aria-hidden="true"></i>',
@@ -6745,13 +6733,13 @@ $config['en_all_7585'] = array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
         'm_name' => 'SELECT ONE',
         'm_desc' => 'Select 1 idea from child ideas',
-        'm_parents' => array(12336,12324,12129,12119,7712,7585,6157,6193),
+        'm_parents' => array(12336,12129,12119,7712,7585,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
         'm_name' => 'SELECT SOME',
         'm_desc' => 'Select 1 or more ideas from child ideas',
-        'm_parents' => array(12334,12324,12129,12119,7712,7489,7585,6193),
+        'm_parents' => array(12334,12129,12119,7712,7489,7585,6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube " aria-hidden="true"></i>',
