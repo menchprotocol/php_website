@@ -540,7 +540,7 @@ img.no-radius {
     border-color:#000000 !important;
 }
 
-.nav-link.active:last-child, .nav-pills .show>.nav-link {
+.nav-link.active, .nav-pills .show>.nav-link {
     color: #fff;
     background-color: #000000;
     border-radius:0;
@@ -599,7 +599,7 @@ img.no-radius {
     border-radius: .2rem;
 }
 
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active:last-child, .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover{
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active, .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover{
     border-color:#000000 !important;
     border-bottom: 1px solid #f4f5f7 !important;
     background-color: #f4f5f7 !important;

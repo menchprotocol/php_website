@@ -387,9 +387,14 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 //COUNT ONLY
                 $item_counters = $this->READ_model->ln_fetch($idea_note_filters, array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
                 $counter = $item_counters[0]['totals'];
-                $default_active = ($en_id2==4983);
+                $default_active = ($en_id2==4983 && ($counter>0 || !count($this->READ_model->ln_fetch(array(
+                            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                            'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+                            'ln_parent_play_id' => $player['en_id'],
+                        ), array('en_child'), 1))));
 
-                if($default_active && $counter>0){
+                if($default_active){
                     array_push($activated_tabs, $en_id2);
                 }
 
@@ -541,7 +546,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             }
 
             //Don't show empty tabs:
-            if(!is_null($counter) && $counter < 1 && (!$show_tab_names || ($en_id2!=4983 && in_array($en_id2, $this->config->item('en_ids_4485'))))){
+            if(!is_null($counter) && $counter < 1 && (!$show_tab_names || (($en_id2!=4983 || !$default_active) && in_array($en_id2, $this->config->item('en_ids_4485'))))){
                 continue;
             }
 
