@@ -456,19 +456,12 @@ class Idea extends CI_Controller {
 
         } else {
 
-            //Update Idea:
-            $this->IDEA_model->in_update($_POST['in_id'], array(
-                $en_all_6232[$_POST['element_id']]['m_desc'] => $_POST['new_en_id'],
-            ), true, $session_en['en_id']);
 
             //See if Idea is being removed:
             if($_POST['element_id']==4737){
 
                 //Remove all idea links?
                 if(!in_array($_POST['new_en_id'], $this->config->item('en_ids_7356'))){
-
-                    //Remove all links:
-                    $this->IDEA_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
 
                     //Fetch parent URL:
                     foreach ($this->IDEA_model->in_fetch_recursive_parents($_POST['in_id']) as $grand_parent_ids) {
@@ -477,6 +470,9 @@ class Idea extends CI_Controller {
                             break;
                         }
                     }
+
+                    //Remove all links:
+                    $this->IDEA_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
 
                 //Notify moderators of Feature request?
                 } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !count($this->READ_model->ln_fetch(array(
@@ -495,6 +491,12 @@ class Idea extends CI_Controller {
                 }
 
             }
+
+            //Update Idea:
+            $this->IDEA_model->in_update($_POST['in_id'], array(
+                $en_all_6232[$_POST['element_id']]['m_desc'] => $_POST['new_en_id'],
+            ), true, $session_en['en_id']);
+
         }
 
 
