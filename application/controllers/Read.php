@@ -14,41 +14,22 @@ class Read extends CI_Controller
     }
 
 
-    function read_add($in_id, $is_ajax = 0){
+    function read_add($in_id){
 
         $session_en = superpower_assigned();
 
         //Check to see if added to READING LIST for logged-in users:
         if(!isset($session_en['en_id'])){
-            if($is_ajax){
-                echo '<div class="alert alert-danger" role="alert">Session Expired</div>';
-            } else {
-                return redirect_message('/signin/'.$in_id);
-            }
+            return redirect_message('/signin/'.$in_id);
         }
 
         //Add this idea to their READING LIST:
         if(!$this->READ_model->read_add($session_en['en_id'], $in_id)){
             //Failed to add to reading list:
-            $error = '<div class="alert alert-danger" role="alert">Failed to add idea to your reading list.</div>';
-            if($is_ajax){
-                echo $error;
-            } else {
-                return redirect_message('/read', $error);
-            }
+            return redirect_message('/read', '<div class="alert alert-danger" role="alert">Failed to add idea to your reading list.</div>');
         }
 
-
-        if($is_ajax){
-
-            //Load remainder of read into view:
-            $this->READ_model->read_coin($in_id, $session_en, false, true);
-
-        } else {
-
-            return redirect_message('/' . $in_id, '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i> Successfully added to your reading list.</div>');
-
-        }
+        return redirect_message('/' . $in_id.'/next', '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i> Successfully added to your reading list.</div>');
 
     }
 
