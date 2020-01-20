@@ -2055,8 +2055,6 @@ class READ_model extends CI_Model
 
                 echo '<label class="btn btn-read" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">UPLOAD</label>';
 
-                echo '<a class="btn btn-read" href="/'.$ins[0]['in_id'].'/next" onclick="">NEXT <i class="fad fa-step-forward"></i></a>';
-
                 ?>
 
                 <script>

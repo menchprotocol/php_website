@@ -417,8 +417,8 @@ class Read extends CI_Controller
             'ln_type_play_id' => 12117,
             'ln_parent_idea_id' => $ins[0]['in_id'],
             'ln_owner_play_id' => $session_en['en_id'],
-            'ln_content' => $cdn_status['cdn_url'],
-            'ln_child_play_id' => $cdn_status['cdn_en']['en_id'],
+            'ln_content' => '@'.$cdn_status['cdn_en']['en_id'],
+            'ln_parent_play_id' => $cdn_status['cdn_en']['en_id'],
         ));
 
         //All good:
