@@ -2053,7 +2053,7 @@ class READ_model extends CI_Model
                 echo '</form>';
                 echo '</div>';
 
-                echo '<label class="btn btn-read" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">UPLOAD</label>';
+                echo '<label class="btn btn-read" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD</label>';
 
                 ?>
 
