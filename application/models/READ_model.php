@@ -2015,8 +2015,9 @@ class READ_model extends CI_Model
 
                 //TEXT RESPONSE
                 echo '<div class="edit-text '.($previous_answers ? '' : ' hidden ').'">';
+                echo '<div class="read-topic"><span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:</div>';
                 echo $previous_answers;
-                echo '<div class="margin-top-down inline-block"> or <a href="javascript:void(0)" onclick="$(\'.edit-text\').toggleClass(\'hidden\')">UPDATE ANSWER</a></div>';
+                echo '<div><a href="javascript:void(0)" onclick="$(\'.edit-text\').toggleClass(\'hidden\')"><span class="icon-block-sm"><i class="fas fa-pen-square"></i></span>UPDATE ANSWER</a></div>';
                 echo '</div>';
 
                 echo '<div class="edit-text '.($previous_answers ? ' hidden ' : '').'">';
