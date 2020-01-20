@@ -2096,6 +2096,9 @@ class READ_model extends CI_Model
             if(count($read_completes)){
                 //Always show the next list:
                 echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>NEXT READS:');
+            } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7751'))) {
+                //Show next here:
+                echo_in_next($ins[0], $recipient_en, $push_message);
             }
 
         }
