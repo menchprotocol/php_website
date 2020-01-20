@@ -340,11 +340,7 @@ img.no-radius {
 }
 
 .algolia_search_pad{
-    height:420px;
-}
-
-.algolia_search_pad b{
-    display: block;
+    height:377px;
 }
 .gateway{
     color:transparent !important;
