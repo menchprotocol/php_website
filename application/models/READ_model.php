@@ -2031,12 +2031,58 @@ class READ_model extends CI_Model
             } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7751'))) {
 
                 //FILE UPLOAD
-                echo '<p>Upload a file to continue.</p>';
-                echo '<span class="file_saving_result"></span>';
-                echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_play_id'].'" /><label class=" btn btn-read" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">UPLOAD</label>';
+                echo '<div class="readerUploader">';
+                echo '<form class="box boxUpload" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-                //Separate Next Button:
+
+                echo '<p>Drop a file here to continue.</p>';
+                echo '<span class="file_saving_result"></span>';
+
+                echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_play_id'].'" />';
+
+                echo '</form>';
+                echo '</div>';
+
+                echo '<label class="btn btn-read" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">UPLOAD</label>';
+
                 echo '<a class="btn btn-read" href="/'.$ins[0]['in_id'].'/next" onclick="">NEXT <i class="fad fa-step-forward"></i></a>';
+
+                ?>
+
+                <script>
+                    $(document).ready(function () {
+
+                        //Watchout for file uplods:
+                        $('.boxUpload').find('input[type="file"]').change(function () {
+                            read_file_upload(droppedFiles, 'file');
+                        });
+
+                        //Should we auto start?
+                        if (isAdvancedUpload) {
+
+                            $('.boxUpload').addClass('has-advanced-upload');
+                            var droppedFiles = false;
+
+                            $('.boxboxUpload').on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            })
+                                .on('dragover dragenter', function () {
+                                    $('.readerUploader').addClass('is-working');
+                                })
+                                .on('dragleave dragend drop', function () {
+                                    $('.readerUploader').removeClass('is-working');
+                                })
+                                .on('drop', function (e) {
+                                    droppedFiles = e.originalEvent.dataTransfer.files;
+                                    e.preventDefault();
+                                    read_file_upload(droppedFiles, 'drop');
+                                });
+                        }
+                    });
+                </script>
+
+                <?php
 
             } else {
 

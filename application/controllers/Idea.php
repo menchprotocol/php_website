@@ -887,6 +887,8 @@ class Idea extends CI_Controller {
     function in_note_create_upload()
     {
 
+        //TODO: MERGE WITH FUNCTION read_file_upload()
+
         //Authenticate Trainer:
         $session_en = superpower_assigned();
         if (!$session_en) {

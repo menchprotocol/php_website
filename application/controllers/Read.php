@@ -323,6 +323,115 @@ class Read extends CI_Controller
 
 
 
+    function read_file_upload()
+    {
+
+        //TODO: MERGE WITH FUNCTION in_note_create_upload()
+
+        //Authenticate Trainer:
+        $session_en = superpower_assigned();
+        if (!$session_en) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Expired Session or Missing Superpower',
+            ));
+
+        } elseif (!isset($_POST['in_id'])) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing IDEA',
+            ));
+
+        } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Unknown upload type.',
+            ));
+
+        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Unknown error while trying to save file.',
+            ));
+
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(11063) * 1024 * 1024)) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'File is larger than ' . config_var(11063) . ' MB.',
+            ));
+
+        }
+
+        //Validate Idea:
+        $ins = $this->IDEA_model->in_fetch(array(
+            'in_id' => $_POST['in_id'],
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+        ));
+        if(count($ins)<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Idea ID',
+            ));
+        }
+
+
+        //Attempt to save file locally:
+        $file_parts = explode('.', $_FILES[$_POST['upload_type']]["name"]);
+        $temp_local = "application/cache/temp_files/" . md5($file_parts[0] . $_FILES[$_POST['upload_type']]["type"] . $_FILES[$_POST['upload_type']]["size"]) . '.' . $file_parts[(count($file_parts) - 1)];
+        move_uploaded_file($_FILES[$_POST['upload_type']]['tmp_name'], $temp_local);
+
+
+        //Attempt to store in Mench Cloud on Amazon S3:
+        if (isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type']) > 0) {
+            $mime = $_FILES[$_POST['upload_type']]['type'];
+        } else {
+            $mime = mime_content_type($temp_local);
+        }
+
+        $cdn_status = upload_to_cdn($temp_local, $session_en['en_id'], $_FILES[$_POST['upload_type']], true);
+        if (!$cdn_status['status']) {
+            //Oops something went wrong:
+            return echo_json($cdn_status);
+        }
+
+
+        //Delete previous answer(s):
+        foreach($this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+            'ln_parent_idea_id' => $ins[0]['in_id'],
+            'ln_owner_play_id' => $session_en['en_id'],
+        )) as $read_progress){
+            $this->READ_model->ln_update($read_progress['ln_id'], array(
+                'ln_status_play_id' => 6173, //Link Removed
+            ), $session_en['en_id'], 12129 /* READ ANSWER ARCHIVED */);
+        }
+
+        //Save new answer:
+        $this->READ_model->read_is_complete($ins[0], array(
+            'ln_type_play_id' => 12117,
+            'ln_parent_idea_id' => $ins[0]['in_id'],
+            'ln_owner_play_id' => $session_en['en_id'],
+            'ln_content' => $cdn_status['cdn_url'],
+            'ln_child_play_id' => $cdn_status['cdn_en']['en_id'],
+        ));
+
+        //All good:
+        return echo_json(array(
+            'status' => 1,
+            'message' => $this->READ_model->dispatch_message($cdn_status['cdn_url']),
+        ));
+
+    }
+
+
+
+
     function read_text_answer(){
 
         $session_en = superpower_assigned();
@@ -1110,114 +1219,6 @@ class Read extends CI_Controller
 
     }
 
-
-
-
-
-    function actionplan_file_upload()
-    {
-
-        //Authenticate User:
-        $session_en = superpower_assigned();
-        if (!$session_en) {
-
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
-            ));
-
-        } elseif (!isset($_POST['in_id']) || !isset($_POST['focus_ln_type_play_id'])) {
-
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing idea data.',
-            ));
-
-        } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
-
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Unknown upload type.',
-            ));
-
-        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
-
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Unknown error while trying to save file.',
-            ));
-
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(11063) * 1024 * 1024)) {
-
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'File is larger than ' . config_var(11063) . ' MB.',
-            ));
-
-        }
-
-        //Validate Idea:
-        $ins = $this->IDEA_model->in_fetch(array(
-            'in_id' => $_POST['in_id'],
-        ));
-        if(count($ins)<1){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Idea ID',
-            ));
-        }
-
-        //See if this message type has specific input requirements:
-        $valid_file_types = array(4258, 4259, 4260, 4261); //This must be a valid file type:  Video, Image, Audio or File
-
-        //Attempt to save file locally:
-        $file_parts = explode('.', $_FILES[$_POST['upload_type']]["name"]);
-        $temp_local = "application/cache/temp_files/" . md5($file_parts[0] . $_FILES[$_POST['upload_type']]["type"] . $_FILES[$_POST['upload_type']]["size"]) . '.' . $file_parts[(count($file_parts) - 1)];
-        move_uploaded_file($_FILES[$_POST['upload_type']]['tmp_name'], $temp_local);
-
-
-        //Attempt to store in Mench Cloud on Amazon S3:
-        if (isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type']) > 0) {
-            $mime = $_FILES[$_POST['upload_type']]['type'];
-        } else {
-            $mime = mime_content_type($temp_local);
-        }
-
-        $cdn_status = upload_to_cdn($temp_local, $session_en['en_id'], $_FILES[$_POST['upload_type']], true);
-        if (!$cdn_status['status']) {
-            //Oops something went wrong:
-            return echo_json($cdn_status);
-        }
-
-
-        //Create message:
-        $ln = $this->READ_model->ln_create(array(
-            'ln_owner_play_id' => $session_en['en_id'],
-            'ln_type_play_id' => $_POST['focus_ln_type_play_id'],
-            'ln_parent_play_id' => $cdn_status['cdn_en']['en_id'],
-            'ln_child_idea_id' => intval($_POST['in_id']),
-            'ln_content' => '@' . $cdn_status['cdn_en']['en_id'], //Just place the player reference as the entire message
-            'ln_order' => 1 + $this->READ_model->ln_max_order(array(
-                    'ln_type_play_id' => $_POST['focus_ln_type_play_id'],
-                    'ln_child_idea_id' => $_POST['in_id'],
-                )),
-        ));
-
-
-        //Fetch full message for proper UI display:
-        $new_messages = $this->READ_model->ln_fetch(array(
-            'ln_id' => $ln['ln_id'],
-        ));
-
-        //Echo message:
-        echo_json(array(
-            'status' => 1,
-            'message' => echo_in_note(array_merge($new_messages[0], array(
-                'ln_child_play_id' => $session_en['en_id'],
-            ))),
-        ));
-
-    }
 
 
 

@@ -117,6 +117,56 @@ function select_answer(in_id){
 
 }
 
+
+function read_file_upload(droppedFiles, uploadType) {
+
+    //Prevent multiple concurrent uploads:
+    if ($('.boxUpload').hasClass('is-uploading')) {
+        return false;
+    }
+
+    if (isAdvancedUpload) {
+
+        var ajaxData = new FormData($('.boxUpload').get(0));
+        if (droppedFiles) {
+            $.each(droppedFiles, function (i, file) {
+                var thename = $('.boxUpload').find('input[type="file"]').attr('name');
+                if (typeof thename == typeof undefined || thename == false) {
+                    var thename = 'drop';
+                }
+                ajaxData.append(uploadType, file);
+            });
+        }
+
+        ajaxData.append('upload_type', uploadType);
+        ajaxData.append('in_id', in_loaded_id);
+
+        $.ajax({
+            url: '/read/read_file_upload',
+            type: $('.boxUpload').attr('method'),
+            data: ajaxData,
+            dataType: 'json',
+            cache: false,
+            contentType: false,
+            processData: false,
+            complete: function () {
+                $('.boxUpload').removeClass('is-uploading');
+            },
+            success: function (data) {
+                //Render new file:
+                $('.file_saving_result').html(data.message);
+            },
+            error: function (data) {
+                //Show Error:
+                $('.file_saving_result').html(data.responseText);
+            }
+        });
+    } else {
+        // ajax for legacy browsers
+    }
+}
+
+
 function read_text_answer(){
     //Show Loading:
     $('.text_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
