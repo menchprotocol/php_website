@@ -576,7 +576,7 @@ function extract_icon_color($en_icon){
         return ' read ';
     } elseif(substr_count($en_icon, 'idea')>0){
         return ' idea ';
-    } elseif(!strlen($en_icon) || substr_count($en_icon, 'play')>0 && (!substr_count($en_icon, 'fa-play') || substr_count($en_icon, 'play')>1)){
+    } elseif(substr_count($en_icon, 'play')>0 && (!substr_count($en_icon, 'fa-play') || substr_count($en_icon, 'play')>1)){
         return ' play ';
     } else {
         return '';
