@@ -398,6 +398,7 @@ class Idea extends CI_Controller {
 
         //Maintain a manual index as a hack for the Idea/Player tables for now:
         $en_all_6232 = $this->config->item('en_all_6232'); //PLATFORM VARIABLES
+        $url_redirect = null;
 
         //Authenticate Trainer:
         $session_en = superpower_assigned();
@@ -466,7 +467,12 @@ class Idea extends CI_Controller {
                 //Remove all idea links?
                 if(!in_array($_POST['new_en_id'], $this->config->item('en_ids_7356'))){
 
+                    //Remove all links:
                     $this->IDEA_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
+
+                    //Fetch parent URL:
+                    $recursive_parents = $this->IDEA_model->in_fetch_recursive_parents($_POST['in_id']);
+                    $url_redirect = '/'.$recursive_parents[0][0]; //First parent in first branch of parents
 
                 //Notify moderators of Feature request?
                 } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !count($this->READ_model->ln_fetch(array(
@@ -477,18 +483,20 @@ class Idea extends CI_Controller {
                     )))){
                     //Inform moderators:
                     $this->READ_model->ln_create(array(
-                        'ln_content' => 'Ideager requesting feature review',
+                        'ln_content' => 'Ideator requesting feature review',
                         'ln_type_play_id' => 7504, //Trainer Review Required
                         'ln_owner_play_id' => $session_en['en_id'],
                         'ln_child_idea_id' => $_POST['in_id'],
                     ));
                 }
+
             }
         }
 
 
         return echo_json(array(
             'status' => 1,
+            'url_redirect' => $url_redirect,
         ));
 
     }

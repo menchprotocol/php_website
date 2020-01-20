@@ -210,8 +210,8 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
     }
 
     //Are we deleting a status?
-    var is_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
-    if(is_delete){
+    var is_idea_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
+    if(is_idea_delete){
         //Seems to be deleting, confirm:
         var r = confirm("Are you sure you want to archive this idea?");
         if (r == false) {
@@ -233,20 +233,17 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
     }, function (data) {
         if (data.status) {
 
-            //Toggle Settings View based on link type:
-            if(element_id==4486){
-                $('.in__tr_'+ln_id+' .link_marks').addClass('hidden');
-                $('.in__tr_'+ln_id+' .settings_' + new_en_id).removeClass('hidden');
-            }
-
             //Update on page:
             $('.dropd_'+element_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + ( ln_id>0 ? '' : data_object[new_en_id]['m_name'] ));
             $('.dropd_'+element_id+'_'+ln_id+' .dropi_' + element_id + '_' + ln_id).removeClass('active');
             $('.dropd_'+element_id+'_'+ln_id+' .optiond_' + new_en_id+ '_' + ln_id).addClass('active');
 
-            if(is_delete){
+            if( typeof data.url_redirect !== 'undefined' && data.url_redirect.length > 0 ){
                 //Go to main idea page:
-                window.location = '/idea';
+                window.location = data.url_redirect;
+            } else if(element_id==4486){
+                $('.in__tr_'+ln_id+' .link_marks').addClass('hidden');
+                $('.in__tr_'+ln_id+' .settings_' + new_en_id).removeClass('hidden');
             }
 
         } else {

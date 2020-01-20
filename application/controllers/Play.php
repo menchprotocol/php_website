@@ -737,7 +737,7 @@ fragment PostListingItemSidebar_post on Post {
         echo '</tr>';
         */
 
-        //Start with top ideagers:
+        //Start with top Ideators:
         foreach ($idea_coins as $count=>$ln) {
 
             if($count==$show_max){
@@ -784,7 +784,7 @@ fragment PostListingItemSidebar_post on Post {
         }
 
         //Then show top readers to hit the target $load_max
-        //TODO retire this once we hit 100+ ideagers, which means no more need for readers
+        //TODO retire this once we hit 100+ Ideators, which means no more need for readers
         $ideators_found = count($idea_coins);
         $show_readers = $load_max - $ideators_found;
         if($show_readers > 0){
