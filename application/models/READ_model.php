@@ -1671,6 +1671,7 @@ class READ_model extends CI_Model
 
 
         //Define communication variables:
+        $previous_answers = '';
         $next_step_quick_replies = array();
 
         if(!$next_step_only){
@@ -1709,7 +1710,6 @@ class READ_model extends CI_Model
 
                 //Show all completions:
                 $en_all_12229 = $this->config->item('en_all_12229');
-                $previous_answers = '';
                 foreach($read_completes as $read_history){
 
                     echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span></span>';
@@ -1718,9 +1718,7 @@ class READ_model extends CI_Model
                 }
 
 
-                echo '</span></div>'.$previous_answers;
-
-
+                echo '</span></div>';
 
             } else {
 
@@ -2009,8 +2007,6 @@ class READ_model extends CI_Model
         } else {
 
 
-            //OTHER ANDs
-
             if ($ins[0]['in_type_play_id'] == 6677) {
 
                 //READ ONLY, nothing to do here...
@@ -2018,14 +2014,15 @@ class READ_model extends CI_Model
             } elseif ($ins[0]['in_type_play_id'] == 6683) {
 
                 //TEXT RESPONSE
-                echo '<div class="edit-text '.(count($read_completes) ? '' : ' hidden ').'">';
+                echo '<div class="edit-text '.($previous_answers ? '' : ' hidden ').'">';
+                echo $previous_answers;
                 echo '<div class="margin-top-down inline-block"> or <a href="javascript:void(0)" onclick="$(\'.edit-text\').toggleClass(\'hidden\')">UPDATE ANSWER</a></div>';
                 echo '</div>';
 
-                echo '<div class="edit-text '.(count($read_completes) ? ' hidden ' : '').'">';
-                echo '<textarea class="border" placeholder="Your Answer Here..." id="read_text_answer">'.( count($read_completes) ? $read_completes[0]['ln_content'] : '' ).'</textarea>';
+                echo '<div class="edit-text '.($previous_answers ? ' hidden ' : '').'">';
+                echo '<textarea class="border" placeholder="Your Answer Here..." id="read_text_answer">'.( $previous_answers ? $read_completes[0]['ln_content'] : '' ).'</textarea>';
                 echo '<span class="text_saving_result"></span>';
-                echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">'.( count($read_completes) ? 'UPDATE' : 'ANSWER' ).' & NEXT <i class="fad fa-step-forward"></i></a></div>';
+                echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">'.( $previous_answers ? 'UPDATE' : 'ANSWER' ).' & NEXT <i class="fad fa-step-forward"></i></a></div>';
                 echo '</div>';
 
                 echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); }); </script>';
