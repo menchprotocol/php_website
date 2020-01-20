@@ -2017,7 +2017,7 @@ class READ_model extends CI_Model
                 echo '<div class="edit-text '.($previous_answers ? '' : ' hidden ').'">';
                 echo '<div class="read-topic"><span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR ANSWER:</div>';
                 echo $previous_answers;
-                echo '<div><a href="javascript:void(0)" onclick="$(\'.edit-text\').toggleClass(\'hidden\')"><span class="icon-block-sm"><i class="fas fa-pen-square"></i></span>UPDATE</a></div>';
+                echo '<div><a href="javascript:void(0)" onclick="$(\'.edit-text\').toggleClass(\'hidden\');$(\'#read_text_answer\').focus();"><span class="icon-block-sm"><i class="fas fa-pen-square"></i></span>UPDATE</a></div>';
                 echo '</div>';
 
                 echo '<div class="edit-text '.($previous_answers ? ' hidden ' : '').'">';
@@ -2026,7 +2026,7 @@ class READ_model extends CI_Model
                 echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">'.( $previous_answers ? 'UPDATE' : 'ANSWER' ).' & NEXT <i class="fad fa-step-forward"></i></a></div>';
                 echo '</div>';
 
-                echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); }); </script>';
+                echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); $(\'#read_text_answer\').focus(); }); </script>';
 
             } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7751'))) {
 
