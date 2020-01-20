@@ -125,6 +125,8 @@ function read_file_upload(droppedFiles, uploadType) {
         return false;
     }
 
+    $('.file_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">UPLOADING...</span>');
+
     if (isAdvancedUpload) {
 
         var ajaxData = new FormData($('.boxUpload').get(0));
