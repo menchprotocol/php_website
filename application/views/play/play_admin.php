@@ -673,7 +673,7 @@ if(!$action) {
 
     foreach ($this->READ_model->ln_fetch(array(
         'ln_type_play_id' => 4250,
-    ), array('in_child')) as $idea_author){
+    ), array('in_child'), 0) as $idea_author){
 
         $scanned++;
 
