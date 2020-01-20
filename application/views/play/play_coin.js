@@ -175,11 +175,15 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 
     load_js_algolia();
 
-    $(element_focus + ' .new-player-input').focus(function() {
+    $(element_focus + ' .new-player-input')
+        /*
+        .focus(function() {
         $(element_focus + ' .algolia_search_pad' ).removeClass('hidden');
     }).focusout(function() {
         $(element_focus + ' .algolia_search_pad' ).addClass('hidden');
-    }).on('autocomplete:selected', function (event, suggestion, dataset) {
+    })
+        */
+        .on('autocomplete:selected', function (event, suggestion, dataset) {
 
         en_add_or_link(suggestion.alg_obj_id, is_en_parent);
 

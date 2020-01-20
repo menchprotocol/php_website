@@ -132,7 +132,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                        style="margin-bottom: 0; padding: 5px 0;"
                                        placeholder="ADD PREVIOUS IDEA">
                             </div>
-                           <div class="algolia_search_pad in_pad_top hidden"><b class="montserrat"><span class="icon-block"><i class="far fa-search-plus"></i></span>Create or Search</b></div>
+                           <div class="algolia_search_pad in_pad_top"><b class="montserrat"><span class="icon-block"><i class="far fa-search-plus"></i></span>Create or Search</b></div>
                     </div>';
 
             $this_tab .= '</div>';
@@ -167,7 +167,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                style="margin-bottom: 0; padding: 5px 0;"
                                placeholder="ADD NEXT IDEA">
                     </div>
-                   <div class="algolia_search_pad in_pad_bottom hidden"><b class="montserrat"><span class="icon-block"><i class="far fa-search-plus"></i></span>Create or Search</b></div>
+                   <div class="algolia_search_pad in_pad_bottom"><b class="montserrat"><span class="icon-block"><i class="far fa-search-plus"></i></span>Create or Search</b></div>
             </div>';
             $this_tab .= '</div>';
 
