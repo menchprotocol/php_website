@@ -545,6 +545,13 @@ img.no-radius {
     padding: 5px;
     border: 1px solid #AAAAAA !important;
 }
+.previous_answer{
+    display: block;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    background-color: #FFFFFF;
+    border: 1px solid #AAAAAA;
+}
 
 .nav-link.active, .nav-pills .show>.nav-link {
     color: #fff;

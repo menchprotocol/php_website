@@ -1710,7 +1710,7 @@ class READ_model extends CI_Model
                 //Show all completions:
                 $en_all_12229 = $this->config->item('en_all_12229');
                 foreach($read_completes as $read_history){
-                    echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span>'.$this->READ_model->dispatch_message($read_history['ln_content']).'</span>';
+                    echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span>'.( strlen($read_history['ln_content']) ? '<span class="previous_answer">'.$this->READ_model->dispatch_message($read_history['ln_content']).'</span>' : '' ).'</span>';
                 }
 
 
@@ -2012,11 +2012,17 @@ class READ_model extends CI_Model
             } elseif ($ins[0]['in_type_play_id'] == 6683) {
 
                 //TEXT RESPONSE
-                echo '<div class="edit-text">';
+                echo '<div class="edit-text '.(count($read_completes) ? '' : ' hidden ').'">';
+                echo echo_in_next($ins[0]['in_id'], $recipient_en, false);
+                echo '<div class="margin-top-down inline-block"> or <a href="javascript:void(0)" onclick="$(\'.edit-text\').toggleClass(\'hidden\')">UPDATE ANSWER</a></div>';
+                echo '</div>';
+
+                echo '<div class="edit-text '.(count($read_completes) ? ' hidden ' : '').'">';
                 echo '<textarea class="border" placeholder="Your Answer Here..." id="read_text_answer">'.( count($read_completes) ? $read_completes[0]['ln_content'] : '' ).'</textarea>';
                 echo '<span class="text_saving_result"></span>';
                 echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">'.( count($read_completes) ? 'UPDATE' : 'ANSWER' ).' & NEXT <i class="fad fa-step-forward"></i></a></div>';
                 echo '</div>';
+
                 echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); }); </script>';
 
             } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7751'))) {
