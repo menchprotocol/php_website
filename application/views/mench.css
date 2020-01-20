@@ -540,6 +540,12 @@ img.no-radius {
     border-color:#000000 !important;
 }
 
+#read_text_answer{
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #AAAAAA !important;
+}
+
 .nav-link.active, .nav-pills .show>.nav-link {
     color: #fff;
     background-color: #000000;
