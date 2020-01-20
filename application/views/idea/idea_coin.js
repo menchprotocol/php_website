@@ -238,9 +238,9 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
             $('.dropd_'+element_id+'_'+ln_id+' .dropi_' + element_id + '_' + ln_id).removeClass('active');
             $('.dropd_'+element_id+'_'+ln_id+' .optiond_' + new_en_id+ '_' + ln_id).addClass('active');
 
-            if( data.url_redirect && data.url_redirect.length > 0 ){
+            if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
                 //Go to main idea page:
-                window.location = data.url_redirect;
+                window.location = data.deletion_redirect;
             }
             if(element_id==4486){
                 $('.in__tr_'+ln_id+' .link_marks').addClass('hidden');
