@@ -324,6 +324,7 @@ class Read extends CI_Controller
 
 
     function read_text_answer(){
+
         $session_en = superpower_assigned();
         if (!$session_en) {
             return echo_json(array(
@@ -342,14 +343,43 @@ class Read extends CI_Controller
             ));
         }
 
-        //Delete previous answers:
+        //Validate/Fetch idea:
+        $ins = $this->IDEA_model->in_fetch(array(
+            'in_id' => $_POST['in_id'],
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+        ));
+        if(count($ins) < 1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Idea not published.',
+            ));
+        }
 
+        //Delete previous answer(s):
+        foreach($this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+            'ln_parent_idea_id' => $ins[0]['in_id'],
+            'ln_owner_play_id' => $session_en['en_id'],
+        )) as $read_progress){
+            $this->READ_model->ln_update($read_progress['ln_id'], array(
+                'ln_status_play_id' => 6173, //Link Removed
+            ), $session_en['en_id'], 12129 /* READ ANSWER ARCHIVED */);
+        }
 
         //Save new answer:
+        $this->READ_model->read_is_complete($ins[0], array(
+            'ln_type_play_id' => 6144,
+            'ln_parent_idea_id' => $ins[0]['in_id'],
+            'ln_owner_play_id' => $session_en['en_id'],
+            'ln_content' => $_POST['read_text_answer'],
+        ));
 
-
-        //Save answer:
-        return echo_json($this->READ_model->read_answer($session_en['en_id'], $_POST['in_loaded_id'], $_POST['answered_ins']));
+        //All good:
+        return array(
+            'status' => 1,
+            'message' => 'Answer Saved',
+        );
 
     }
 
@@ -1835,40 +1865,13 @@ class Read extends CI_Controller
                         $pending_matches = array();
                         $pending_mismatches = array();
 
-                        //Yes, see if we have a pending requirement submission:
-                        foreach($this->READ_model->ln_fetch(array(
-                            'ln_type_play_id' => 6144, //🔴 READING LIST Submit Requirements
-                            'ln_owner_play_id' => $ln_data['ln_owner_play_id'], //for this user
-                            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-                            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
-                        ), array('in_parent'), 0) as $req_sub){
-                            if(in_array($req_sub['in_type_play_id'], $matching_types)){
-                                array_push($pending_matches, $req_sub);
-                            } else {
-                                array_push($pending_mismatches, $req_sub);
-                            }
-                        }
+                        //TODO Yes, see if we have a pending idea that requires answer 6144:
 
                         //Did we find any matching or mismatching requirement submissions?
-                        if(count($pending_matches) > 0){
+                        if(count($pending_matches) > 0 && 0){
 
                             //We have some matches, focus on this:
                             $first_chioce = $pending_matches[0];
-
-                            //We only look at first matching case which covers most cases, but here is an error in case not:
-                            if(count($pending_matches) >= 2){
-                                $this->READ_model->ln_create(array(
-                                    'ln_content' => 'api_webhook() found multiple matching submission requirements for the same user! Time to program the view with more options.',
-                                    'ln_type_play_id' => 4246, //Platform Bug Reports
-                                    'ln_owner_play_id' => $en['en_id'],
-                                    'ln_metadata' => array(
-                                        'ln_data' => $ln_data,
-                                        'pending_matches' => $pending_matches,
-                                        'first_chioce' => $first_chioce,
-                                    ),
-                                ));
-                            }
-
 
                             //Accept their answer:
 
