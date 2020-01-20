@@ -122,7 +122,7 @@ function read_text_answer(){
     $('.text_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
     $.post("/read/read_text_answer", {
         in_id:in_loaded_id,
-        read_text_answer:$('#read_text_answer').val()
+        read_text_answer:$('#read_text_answer').val(),
     }, function (data) {
         if (data.status) {
             $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
