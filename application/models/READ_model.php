@@ -1709,12 +1709,18 @@ class READ_model extends CI_Model
 
                 //Show all completions:
                 $en_all_12229 = $this->config->item('en_all_12229');
+                $previous_answers = '';
                 foreach($read_completes as $read_history){
-                    echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span>'.( strlen($read_history['ln_content']) ? '<span class="previous_answer">'.$this->READ_model->dispatch_message($read_history['ln_content']).'</span>' : '' ).'</span>';
+
+                    echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span></span>';
+
+                    $previous_answers .= ( strlen($read_history['ln_content']) ? '<div class="previous_answer">'.$this->READ_model->dispatch_message($read_history['ln_content']).'</div>' : '' );
                 }
 
 
-                echo '</span></div>';
+                echo '</span></div>'.$previous_answers;
+
+
 
             } else {
 
@@ -2013,7 +2019,6 @@ class READ_model extends CI_Model
 
                 //TEXT RESPONSE
                 echo '<div class="edit-text '.(count($read_completes) ? '' : ' hidden ').'">';
-                echo echo_in_next($ins[0]['in_id'], $recipient_en, false);
                 echo '<div class="margin-top-down inline-block"> or <a href="javascript:void(0)" onclick="$(\'.edit-text\').toggleClass(\'hidden\')">UPDATE ANSWER</a></div>';
                 echo '</div>';
 
