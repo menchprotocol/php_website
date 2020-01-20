@@ -2035,7 +2035,7 @@ class READ_model extends CI_Model
                 echo '<div class="readerUploader">';
                 echo '<form class="box boxUpload" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-                echo '<span class="file_saving_result" style="padding: 10px 20px 0;">'.($previous_answers ? '<div class="read-topic"><span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR UPLOAD:</div>'.$previous_answers : '' ).'</span>';
+                echo '<div class="file_saving_result">'.($previous_answers ? '<div class="read-topic"><span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR UPLOAD:</div>'.$previous_answers : '' ).'</div>';
 
                 echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_play_id'].'" />';
 
