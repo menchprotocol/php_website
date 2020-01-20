@@ -232,9 +232,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
 
 
-        echo '<div class="col-lg-12">';
+        echo '<div class="col-lg-12 '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
         echo '<ul class="nav nav-tabs nav-tabs-sm">';
 
         foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
@@ -549,7 +548,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         }
 
         echo '</ul>';
-        echo '</div>';
 
         echo $tab_content;
         echo '</div>';
