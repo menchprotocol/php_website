@@ -2291,12 +2291,14 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-    if($is_author && !$is_parent){
+    if($is_author && (!$is_parent || superpower_assigned(10984))){
 
         $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
 
         //Sort:
-        $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort"></i></span>';
+        if(!$is_parent){
+            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort"></i></span>';
+        }
 
         //Unlink:
         $ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink" style="font-size: 0.8em;"></i></a></span>';
