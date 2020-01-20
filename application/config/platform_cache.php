@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-20 10:04:47 PST
+//Generated 2020-01-20 12:13:29 PST
 
 //IDEA TAB GROUP:
 $config['en_ids_12365'] = array(11019,4983,10573,4601,7545,7347,6255,6146,11047);
@@ -32,7 +32,7 @@ $config['en_all_12365'] = array(
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA BOOKMARK',
         'm_desc' => '',
-        'm_parents' => array(12365,4535,12321,10984,11033,4593,7551,4485),
+        'm_parents' => array(10985,12365,4535,12321,11033,4593,7551,4485),
     ),
     4601 => array(
         'm_icon' => '<i class="fas fa-tag idea" aria-hidden="true"></i>',
@@ -168,7 +168,7 @@ $config['en_all_4535'] = array(
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA BOOKMARK',
         'm_desc' => '',
-        'm_parents' => array(12365,4535,12321,10984,11033,4593,7551,4485),
+        'm_parents' => array(10985,12365,4535,12321,11033,4593,7551,4485),
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -1179,7 +1179,7 @@ $config['en_all_12321'] = array(
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
         'm_name' => 'BOOKMARK',
         'm_desc' => '',
-        'm_parents' => array(12365,4535,12321,10984,11033,4593,7551,4485),
+        'm_parents' => array(10985,12365,4535,12321,11033,4593,7551,4485),
     ),
     7545 => array(
         'm_icon' => '<i class="fad fa-user-tag idea" aria-hidden="true"></i>',
@@ -3561,7 +3561,7 @@ $config['en_all_11033'] = array(
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA BOOKMARK',
         'm_desc' => '',
-        'm_parents' => array(12365,4535,12321,10984,11033,4593,7551,4485),
+        'm_parents' => array(10985,12365,4535,12321,11033,4593,7551,4485),
     ),
     4231 => array(
         'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
@@ -4020,9 +4020,9 @@ $config['en_all_6404'] = array(
         'm_parents' => array(6404),
     ),
     12176 => array(
-        'm_icon' => '<i class="fad fa-clock idea"></i>',
+        'm_icon' => '<i class="fad fa-clock idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DEFAULT TIME SECONDS',
-        'm_desc' => '29',
+        'm_desc' => '30',
         'm_parents' => array(6404),
     ),
     12156 => array(
@@ -6802,7 +6802,7 @@ $config['en_all_7551'] = array(
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
         'm_name' => 'BOOKMARK',
         'm_desc' => '',
-        'm_parents' => array(12365,4535,12321,10984,11033,4593,7551,4485),
+        'm_parents' => array(10985,12365,4535,12321,11033,4593,7551,4485),
     ),
     7545 => array(
         'm_icon' => '<i class="fad fa-user-tag idea" aria-hidden="true"></i>',
@@ -8067,7 +8067,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA BOOKMARK',
         'm_desc' => 'Keeps track of the users who can manage/edit the intent',
-        'm_parents' => array(12365,4535,12321,10984,11033,4593,7551,4485),
+        'm_parents' => array(10985,12365,4535,12321,11033,4593,7551,4485),
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -8964,7 +8964,7 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
         'm_name' => 'BOOKMARK',
         'm_desc' => '',
-        'm_parents' => array(12365,4535,12321,10984,11033,4593,7551,4485),
+        'm_parents' => array(10985,12365,4535,12321,11033,4593,7551,4485),
     ),
     7545 => array(
         'm_icon' => '<i class="fad fa-user-tag idea" aria-hidden="true"></i>',
