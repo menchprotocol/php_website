@@ -3079,7 +3079,7 @@ class READ_model extends CI_Model
 
                 if($is_user_message){
 
-                    $player_name_replacement = ( $has_text ? '<span class="icon-block-sm icon_photo">'.echo_en_icon($ens[0]['en_icon']).'</span><span class="player-name '.extract_icon_color($ens[0]['en_icon']).'">'.$ens[0]['en_name'].'</span>' : '' );
+                    $player_name_replacement = ( $has_text ? '<span class="icon-block-sm icon_photo">'.$ens[0]['en_icon'].'</span><span class="player-name '.extract_icon_color($ens[0]['en_icon']).'">'.$ens[0]['en_name'].'</span>' : '' );
                     $output_body_message = str_replace('@' . $string_references['ref_players'][0], $player_name_replacement, $output_body_message);
 
                 } else {
