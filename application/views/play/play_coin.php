@@ -398,7 +398,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 } elseif($default_active){
 
-                    $this_tab .= '<div class="alert alert-warning">No '.$m2['m_name'].' added yet.</div>';
+                    $this_tab .= '<div class="alert alert-warning">No ideas added yet.</div>';
 
                 }
 
