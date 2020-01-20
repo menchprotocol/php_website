@@ -2031,12 +2031,22 @@ class READ_model extends CI_Model
             } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7751'))) {
 
                 //FILE UPLOAD
+
                 echo '<div class="readerUploader">';
                 echo '<form class="box boxUpload" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
 
-                echo '<p>Drop a file here to continue.</p>';
-                echo '<span class="file_saving_result"></span>';
+                if($previous_answers){
+
+                    echo '<span class="file_saving_result"><div class="read-topic"><span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR UPLOAD:</div>'.$previous_answers.'</span>';
+                    echo '<p>Drop a file here to update.</p>';
+
+                } else {
+
+                    echo '<p>Drop a file here to continue.</p>';
+                    echo '<span class="file_saving_result"></span>';
+
+                }
 
                 echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_play_id'].'" />';
 
