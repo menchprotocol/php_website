@@ -2014,17 +2014,21 @@ class READ_model extends CI_Model
                 //TEXT RESPONSE
                 echo '<div class="edit-text '.(count($read_completes) ? '' : ' hidden ').'"><a href="javascript:void(0);" onclick="$(\'.edit-text\').toggleClass(\'hidden\')">UPDATE ANSWER</a></div>';
                 echo '<div class="edit-text '.(count($read_completes) ? ' hidden ' : '').'">';
-                echo '<textarea class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;">'.( count($read_completes) ? $read_completes[0]['ln_content'] : '' ).'</textarea>';
-                echo '<span class="saving_result"></span>';
-                echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onclick="">Save & Next</a></div>';
+                echo '<textarea class="border" placeholder="Your Answer Here..." id="read_text_answer">'.( count($read_completes) ? $read_completes[0]['ln_content'] : '' ).'</textarea>';
+                echo '<span class="text_saving_result"></span>';
+                echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">'.( count($read_completes) ? 'UPDATE' : 'ANSWER' ).' & NEXT <i class="fad fa-step-forward"></i></a></div>';
                 echo '</div>';
+                echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); }); </script>';
 
             } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7751'))) {
 
                 //FILE UPLOAD
                 echo '<p>Upload a file to continue.</p>';
-                echo '<span class="saving_result"></span>';
-                echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_play_id'].'" /><label class=" btn btn-read" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">Upload File</label>';
+                echo '<span class="file_saving_result"></span>';
+                echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_play_id'].'" /><label class=" btn btn-read" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">UPLOAD</label>';
+
+                //Separate Next Button:
+                echo '<a class="btn btn-read" href="/'.$ins[0]['in_id'].'/next" onclick="">NEXT <i class="fad fa-step-forward"></i></a>';
 
             } else {
 

@@ -1,7 +1,9 @@
 
 
-
 $(document).ready(function () {
+
+    autosize($('#read_text_answer'));
+
 
     //Lookout for idea link type changes:
     $('.js-ln-create-overview-link').click(function () {
@@ -115,7 +117,24 @@ function select_answer(in_id){
 
 }
 
-
+function read_text_answer(){
+    //Show Loading:
+    $('.text_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
+    $.post("/read/read_text_answer", {
+        in_id:in_loaded_id,
+        read_text_answer:$('.read_text_answer').val()
+    }, function (data) {
+        if (data.status) {
+            $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
+            setTimeout(function () {
+                //Go to redirect message:
+                window.location = '/'+in_loaded_id+'/next';
+            }, 1597);
+        } else {
+            $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-exclamation-triangle read"></i></span><span class="montserrat read">ERROR: '+data.message+'</span>');
+        }
+    });
+}
 
 function read_answer(){
 

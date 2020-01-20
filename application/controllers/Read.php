@@ -323,6 +323,35 @@ class Read extends CI_Controller
 
 
 
+    function read_text_answer(){
+        $session_en = superpower_assigned();
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Expired Session, login and try again',
+            ));
+        } elseif (!isset($_POST['in_id']) || !intval($_POST['in_id'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing idea ID.',
+            ));
+        } elseif (!isset($_POST['read_text_answer']) || !strlen($_POST['read_text_answer'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing text answer.',
+            ));
+        }
+
+        //Delete previous answers:
+
+
+        //Save new answer:
+
+
+        //Save answer:
+        return echo_json($this->READ_model->read_answer($session_en['en_id'], $_POST['in_loaded_id'], $_POST['answered_ins']));
+
+    }
 
 
     function read_answer(){

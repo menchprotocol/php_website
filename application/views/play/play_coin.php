@@ -246,6 +246,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
             //Determine counter:
+            $activated_tabs = array();
             $default_active = false;
             $show_tab_names = (in_array($en_id2, $this->config->item('en_ids_11084')));
             $counter = null; //Assume no counters
@@ -256,7 +257,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             //PLAY
             if($en_id2==11030){
 
-                //PLAY TREE UP/INPUT
+                //PLAY PARENT
+
                 $default_active = true; //LEFT
 
                 $play__parents = $this->READ_model->ln_fetch(array(
@@ -283,6 +285,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             } elseif($en_id2==11029){
 
+                //PLAY CHILD
+
                 //COUNT TOTAL
                 $child_links = $this->READ_model->ln_fetch(array(
                     'ln_parent_play_id' => $player['en_id'],
@@ -291,6 +295,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
                 ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
                 $counter = $child_links[0]['totals'];
+
+                $default_active = ( !in_array(4983, $activated_tabs) && $counter>0 );
 
 
                 $play__children = $this->READ_model->ln_fetch(array(
@@ -382,6 +388,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 $item_counters = $this->READ_model->ln_fetch($idea_note_filters, array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
                 $counter = $item_counters[0]['totals'];
                 $default_active = ($en_id2==4983);
+
+                if($default_active && $counter>0){
+                    array_push($activated_tabs, $en_id2);
+                }
 
                 //SHOW LASTEST 100
                 if($counter>0){
