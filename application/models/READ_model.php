@@ -2012,8 +2012,7 @@ class READ_model extends CI_Model
             } elseif ($ins[0]['in_type_play_id'] == 6683) {
 
                 //TEXT RESPONSE
-                echo '<div class="edit-text '.(count($read_completes) ? '' : ' hidden ').'"><a href="javascript:void(0);" onclick="$(\'.edit-text\').toggleClass(\'hidden\')">UPDATE ANSWER</a></div>';
-                echo '<div class="edit-text '.(count($read_completes) ? ' hidden ' : '').'">';
+                echo '<div class="edit-text">';
                 echo '<textarea class="border" placeholder="Your Answer Here..." id="read_text_answer">'.( count($read_completes) ? $read_completes[0]['ln_content'] : '' ).'</textarea>';
                 echo '<span class="text_saving_result"></span>';
                 echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">'.( count($read_completes) ? 'UPDATE' : 'ANSWER' ).' & NEXT <i class="fad fa-step-forward"></i></a></div>';
