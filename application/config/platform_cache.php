@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-21 13:21:57 PST
+//Generated 2020-01-21 13:39:57 PST
 
 //PLAY TAB SHOW IF ZERO:
 $config['en_ids_12391'] = array(4983,4997,11029,11030);
@@ -26,7 +26,7 @@ $config['en_all_12391'] = array(
         'm_icon' => '<i class="fas fa-tools play" aria-hidden="true"></i>',
         'm_name' => 'PLAYER MASS UPDATE',
         'm_desc' => '',
-        'm_parents' => array(12391,10967,11089,4758,4506,4527),
+        'm_parents' => array(10983,12391,11089,4758,4506,4527),
     ),
     11029 => array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling play" aria-hidden="true"></i>',
@@ -2604,13 +2604,13 @@ $config['en_all_11089'] = array(
         'm_icon' => '<i class="fas fa-tools play" aria-hidden="true"></i>',
         'm_name' => 'PLAYER MASS UPDATE',
         'm_desc' => '',
-        'm_parents' => array(12391,10967,11089,4758,4506,4527),
+        'm_parents' => array(10983,12391,11089,4758,4506,4527),
     ),
     11039 => array(
         'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
         'm_name' => 'PLAY ADMIN MENU',
         'm_desc' => '',
-        'm_parents' => array(10967,11089,4527,11040),
+        'm_parents' => array(10983,11089,4527,11040),
     ),
 );
 
@@ -2935,7 +2935,7 @@ $config['en_all_10719'] = array(
 );
 
 //PRODUCTIVITY:
-$config['en_ids_10718'] = array(4626,4796,2792,10766,10767,10768);
+$config['en_ids_10718'] = array(4626,4796,10766,10767,10768);
 $config['en_all_10718'] = array(
     4626 => array(
         'm_icon' => '<i class="fab fa-microsoft"></i>',
@@ -2948,12 +2948,6 @@ $config['en_all_10718'] = array(
         'm_name' => 'APPLE',
         'm_desc' => '',
         'm_parents' => array(3084,10718,2750,1326),
-    ),
-    2792 => array(
-        'm_icon' => '<i class="fab fa-google" aria-hidden="true"></i>',
-        'm_name' => 'GOOGLE',
-        'm_desc' => '',
-        'm_parents' => array(3088,10718,3084,1326,2750),
     ),
     10766 => array(
         'm_icon' => '<i class="far fa-building"></i>',
@@ -4243,7 +4237,7 @@ $config['en_all_11054'] = array(
         'm_icon' => '<img src="/img/mench.png" class="mench-spin no-radius">',
         'm_name' => 'MENCH',
         'm_desc' => '',
-        'm_parents' => array(11054,12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
+        'm_parents' => array(11054,12041,3303,7524,3325,3326,3324,4527,1,7312,2750),
     ),
     6404 => array(
         'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
@@ -5323,7 +5317,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<img src="/img/mench.png" class="mench-spin no-radius">',
         'm_name' => 'MENCH',
         'm_desc' => '',
-        'm_parents' => array(11054,12041,2792,3303,7524,3325,3326,3324,4527,1,7312,2750),
+        'm_parents' => array(11054,12041,3303,7524,3325,3326,3324,4527,1,7312,2750),
     ),
     12105 => array(
         'm_icon' => '<i class="fas fa-vote-yea"></i>',
@@ -5389,7 +5383,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
         'm_name' => 'PLAY ADMIN MENU',
         'm_desc' => '',
-        'm_parents' => array(10967,11089,4527,11040),
+        'm_parents' => array(10983,11089,4527,11040),
     ),
     10956 => array(
         'm_icon' => '<i class="fad fa-paw-alt play" aria-hidden="true"></i>',
@@ -5431,7 +5425,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-tools play" aria-hidden="true"></i>',
         'm_name' => 'PLAYER MASS UPDATE',
         'm_desc' => '',
-        'm_parents' => array(12391,10967,11089,4758,4506,4527),
+        'm_parents' => array(10983,12391,11089,4758,4506,4527),
     ),
     4986 => array(
         'm_icon' => '<i class="fal fa-at" aria-hidden="true"></i>',
