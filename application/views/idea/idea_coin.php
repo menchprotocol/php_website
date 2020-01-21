@@ -47,7 +47,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '<div style="margin:15px 0 5px 0;">';
 
         //Idea Status:
-        echo '<div class="inline-block side-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author && $is_active).'</div>';
+        echo '<div class="inline-block side-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author).'</div>';
 
         //Idea Featured:
         if(in_array($in['in_status_play_id'], $this->config->item('en_ids_12138') /* Idea Statuses Featured */)){
@@ -77,6 +77,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
     } elseif($col_num==3){
 
+        //IDEA TYPE:
         echo '<div class="center-right">';
         echo '<div class="inline-block side-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active).'</div>';
         echo '</div>';
@@ -120,7 +121,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-1" class="list-group">';
 
             foreach ($idea__parents as $parent_in) {
-                $this_tab .= echo_in($parent_in, 0, true, $is_author && $is_active);
+                $this_tab .= echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
             }
 
             $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10984).'">
@@ -154,7 +155,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //List child ideas:
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children">';
             foreach ($idea__children as $child_in) {
-                $this_tab .= echo_in($child_in, $in['in_id'], false, $is_author && $is_active);
+                $this_tab .= echo_in($child_in, $in['in_id'], false, in_is_author($child_in['in_id']));
             }
 
             $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10939).'">

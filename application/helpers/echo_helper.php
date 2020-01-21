@@ -2242,7 +2242,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '<span class="icon-block in_status_play_id_' . $in['in_id'] . ( $is_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_play_id']]['m_icon'] . '</span></span>';
 
 
-    $ui .= '<b class="in_title_' . $in['in_id'] . ' montserrat">' . echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && !$is_parent), (($in['ln_order']*100)+1)) . '</b>';
+    $ui .= '<b class="in_title_' . $in['in_id'] . ' montserrat">' . echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author), (($in['ln_order']*100)+1)) . '</b>';
 
 
     $ui .= '</span>';
@@ -2287,11 +2287,15 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
             $ui .= ' &nbsp;<a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_play_id']]['m_icon'] . '</a>';
         }
     }
+    //Indicate if NOT an author:
+    if(!$is_author){
+        $ui .= ' &nbsp;<i class="fas fa-user-minus read" data-toggle="tooltip" title="You are Not an Author (Yet)" data-placement="bottom"></i>';
+    }
     $ui .= '</span>';
 
 
 
-    if($is_author && (!$is_parent || superpower_assigned(10984))){
+    if($is_author){
 
         $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
 
