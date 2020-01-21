@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-21 12:40:11 PST
+//Generated 2020-01-21 13:06:06 PST
 
 //IDEA TAB GROUP:
 $config['en_ids_12365'] = array(11019,4983,10573,4601,7545,7347,6255,6146,11047);
@@ -2575,7 +2575,7 @@ $config['en_all_11089'] = array(
         'm_icon' => '<i class="fas fa-tools play" aria-hidden="true"></i>',
         'm_name' => 'PLAYER MASS UPDATE',
         'm_desc' => '',
-        'm_parents' => array(10967,11089,4758,4506,4426,4527),
+        'm_parents' => array(10967,11089,4758,4506,4527),
     ),
     11039 => array(
         'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
@@ -5393,7 +5393,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(3303,3314,7303,4527),
     ),
     4426 => array(
-        'm_icon' => '<i class="fas fa-lock"></i>',
+        'm_icon' => '<i class="fas fa-lock" aria-hidden="true"></i>',
         'm_name' => 'PLAYER LOCK',
         'm_desc' => '',
         'm_parents' => array(4758,3303,4426,4527),
@@ -5402,7 +5402,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-tools play" aria-hidden="true"></i>',
         'm_name' => 'PLAYER MASS UPDATE',
         'm_desc' => '',
-        'm_parents' => array(10967,11089,4758,4506,4426,4527),
+        'm_parents' => array(10967,11089,4758,4506,4527),
     ),
     4986 => array(
         'm_icon' => '<i class="fal fa-at" aria-hidden="true"></i>',
@@ -7547,7 +7547,7 @@ $config['en_all_4997'] = array(
 );
 
 //PLAYER LOCK:
-$config['en_ids_4426'] = array(3288,4426,4997,4430,6196,3286,4755);
+$config['en_ids_4426'] = array(3288,4426,4430,6196,3286,4755);
 $config['en_all_4426'] = array(
     3288 => array(
         'm_icon' => '<i class="fad fa-envelope-open play" aria-hidden="true"></i>',
@@ -7556,16 +7556,10 @@ $config['en_all_4426'] = array(
         'm_parents' => array(12221,12103,6225,4426,4755),
     ),
     4426 => array(
-        'm_icon' => '<i class="fas fa-lock"></i>',
+        'm_icon' => '<i class="fas fa-lock" aria-hidden="true"></i>',
         'm_name' => 'PLAYER LOCK',
         'm_desc' => '',
         'm_parents' => array(4758,3303,4426,4527),
-    ),
-    4997 => array(
-        'm_icon' => '<i class="fas fa-tools play" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER MASS UPDATE',
-        'm_desc' => '',
-        'm_parents' => array(10967,11089,4758,4506,4426,4527),
     ),
     4430 => array(
         'm_icon' => '<i class="fas fa-user play" aria-hidden="true"></i>',
