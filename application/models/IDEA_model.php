@@ -262,7 +262,7 @@ class IDEA_model extends CI_Model
         return $links_removed;
     }
 
-    function in_link_or_create($in_title, $ln_owner_play_id, $in_linked_id = 0, $is_parent = false, $new_in_status = 6183, $in_type_play_id = 6677 /* Idea Read-Only */, $link_in_id = 0)
+    function in_link_or_create($in_title, $ln_owner_play_id, $link_to_idea_id = 0, $is_parent = false, $new_in_status = 6183, $in_type_play_id = 6677 /* Idea Read-Only */, $link_in_id = 0)
     {
 
         /*
@@ -270,19 +270,18 @@ class IDEA_model extends CI_Model
          * The main idea creation function that would create
          * appropriate links and return the idea view.
          *
-         * Either creates an IDEA link between $in_linked_id & $link_in_id
+         * Either creates an IDEA link between $link_to_idea_id & $link_in_id
          * (IF $link_in_id>0) OR will create a new idea with outcome $in_title
-         * and link it to $in_linked_id (In this case $link_in_id will be 0)
+         * and link it to $link_to_idea_id (In this case $link_in_id will be 0)
          *
          * p.s. Inputs have already been validated via ideas/in_link_or_create() function
          *
          * */
 
         //Validate Original idea:
-        if ($link_in_id > 0) {
-
+        if($link_to_idea_id > 0){
             $linked_ins = $this->IDEA_model->in_fetch(array(
-                'in_id' => intval($in_linked_id),
+                'in_id' => intval($link_to_idea_id),
             ));
 
             if (count($linked_ins) < 1) {
@@ -296,6 +295,10 @@ class IDEA_model extends CI_Model
                     'message' => 'You can only link to active ideas. This idea is not active.',
                 );
             }
+        }
+
+
+        if ($link_in_id > 0) {
 
             //We are linking to $link_in_id, We are NOT creating any new ideas...
 
@@ -306,7 +309,6 @@ class IDEA_model extends CI_Model
 
             //Determine which is parent Idea, and which is child
             if($is_parent){
-
                 $parent_in = $ins[0];
                 $child_in = $linked_ins[0];
 
@@ -320,7 +322,6 @@ class IDEA_model extends CI_Model
                 }
 
             } else {
-
                 $parent_in = $linked_ins[0];
                 $child_in = $ins[0];
 
@@ -369,7 +370,7 @@ class IDEA_model extends CI_Model
                     'message' => '[' . $idea_new['in_title'] . '] is already linked here.',
                 );
 
-            } elseif ($in_linked_id > 0 && $link_in_id == $in_linked_id) {
+            } elseif ($link_to_idea_id > 0 && $link_in_id == $link_to_idea_id) {
 
                 //Make sure none of the parents are the same:
                 return array(
@@ -379,33 +380,9 @@ class IDEA_model extends CI_Model
 
             }
 
-            $relation = $this->READ_model->ln_create(array(
-                'ln_owner_play_id' => $ln_owner_play_id,
-                'ln_type_play_id' => 4228, //Idea Link Regular Read
-                ( $is_parent ? 'ln_child_idea_id' : 'ln_parent_idea_id' ) => $in_linked_id,
-                ( $is_parent ? 'ln_parent_idea_id' : 'ln_child_idea_id' ) => $idea_new['in_id'],
-                'ln_order' => 1 + $this->READ_model->ln_max_order(array(
-                        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-                        'ln_parent_idea_id' => ( $is_parent ? $idea_new['in_id'] : $in_linked_id ),
-                    )),
-            ), true);
-
-            //Fetch and return full data to be properly shown on the UI
-            $new_ins = $this->READ_model->ln_fetch(array(
-                ( $is_parent ? 'ln_child_idea_id' : 'ln_parent_idea_id' ) => $in_linked_id,
-                ( $is_parent ? 'ln_parent_idea_id' : 'ln_child_idea_id' ) => $idea_new['in_id'],
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
-            ), array(($is_parent ? 'in_parent' : 'in_child')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
-
-            $child_in_html = echo_in($new_ins[0], $in_linked_id, $is_parent, in_is_author($in_linked_id));
-
         } else {
 
             //We are NOT linking to an existing Idea, but instead, we're creating a new Idea
-            $child_in_html = null;
 
             //Validate Idea Outcome:
             $in_title_validation = $this->IDEA_model->in_title_validate($in_title);
@@ -424,6 +401,39 @@ class IDEA_model extends CI_Model
 
         }
 
+
+        //Create Idea Link:
+        if($link_to_idea_id > 0){
+
+            $relation = $this->READ_model->ln_create(array(
+                'ln_owner_play_id' => $ln_owner_play_id,
+                'ln_type_play_id' => 4228, //Idea Link Regular Read
+                ( $is_parent ? 'ln_child_idea_id' : 'ln_parent_idea_id' ) => $link_to_idea_id,
+                ( $is_parent ? 'ln_parent_idea_id' : 'ln_child_idea_id' ) => $idea_new['in_id'],
+                'ln_order' => 1 + $this->READ_model->ln_max_order(array(
+                        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                        'ln_parent_idea_id' => ( $is_parent ? $idea_new['in_id'] : $link_to_idea_id ),
+                    )),
+            ), true);
+
+            //Fetch and return full data to be properly shown on the UI using the echo_in() function
+            $new_ins = $this->READ_model->ln_fetch(array(
+                ( $is_parent ? 'ln_child_idea_id' : 'ln_parent_idea_id' ) => $link_to_idea_id,
+                ( $is_parent ? 'ln_parent_idea_id' : 'ln_child_idea_id' ) => $idea_new['in_id'],
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+            ), array(($is_parent ? 'in_parent' : 'in_child')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
+
+
+            $child_in_html = echo_in($new_ins[0], $link_to_idea_id, $is_parent, true /* Since they added it! */);
+
+        } else {
+
+            $child_in_html = null;
+
+        }
 
         //Return result:
         return array(
