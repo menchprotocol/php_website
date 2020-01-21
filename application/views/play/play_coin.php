@@ -278,7 +278,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 //Input to add new parents:
                 $this_tab .= '<div id="new-parent" class="list-group-item '.superpower_active(10983).'">
                     <div class="form-group is-empty"><input type="text" class="form-control new-player-input algolia_search form-control-thick" data-lpignore="true" placeholder="ADD PLAY OR PASTE URL"></div>
-                    <div class="algolia_search_pad"></div>
+                    <div class="algolia_search_pad hidden"></div>
             </div>';
 
                 $this_tab .= '</div>';
@@ -320,7 +320,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
             <div class="form-group is-empty"><input type="text" class="form-control new-player-input form-control-thick algolia_search" data-lpignore="true" placeholder="+ PLAYER"></div>
-            <div class="algolia_search_pad"></div>
+            <div class="algolia_search_pad hidden"></div>
             
             
     </div>';

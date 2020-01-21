@@ -764,8 +764,6 @@ function in_note_add(focus_ln_type_play_id) {
 
 function prep_search_pad(){
 
-    return false; //retire for now...
-
     //All level 2s:
     $('.ideaadder-level-2-parent').focus(function() {
         $('.in_pad_top' ).removeClass('hidden');
