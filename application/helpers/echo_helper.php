@@ -2289,7 +2289,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     }
     //Indicate if NOT an author:
     if(!$is_author){
-        $ui .= ' &nbsp;<i class="fas fa-user-minus read" data-toggle="tooltip" title="You are Not an Author (Yet)" data-placement="bottom"></i>';
+        $ui .= ' &nbsp;<i class="far fa-user-minus read" data-toggle="tooltip" title="You are not yet an author of this idea" data-placement="bottom"></i>';
     }
     $ui .= '</span>';
 
