@@ -383,8 +383,13 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     '(ln_owner_play_id='.$player['en_id'].' OR ln_child_play_id='.$player['en_id'].' OR ln_parent_play_id='.$player['en_id'].')' => null,
                 );
 
+                if($en_id2==4983){
+                    //Idea Statuses Featured
+                    $idea_note_filters['in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')'] = null;
+                }
+
                 //COUNT ONLY
-                $item_counters = $this->READ_model->ln_fetch($idea_note_filters, array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+                $item_counters = $this->READ_model->ln_fetch($idea_note_filters, array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
                 $counter = $item_counters[0]['totals'];
                 $default_active = ($en_id2==4983 && ($counter>0 || !count($this->READ_model->ln_fetch(array(
                             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
