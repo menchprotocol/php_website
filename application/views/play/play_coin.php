@@ -230,6 +230,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         $tab_content = '';
         $default_active_found = false;
         $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
+        $activated_tabs = array();
 
 
         echo '<div class="col-lg-12 '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
@@ -246,7 +247,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
             //Determine counter:
-            $activated_tabs = array();
             $default_active = false;
             $show_tab_names = (in_array($en_id2, $this->config->item('en_ids_11084')));
             $counter = null; //Assume no counters
