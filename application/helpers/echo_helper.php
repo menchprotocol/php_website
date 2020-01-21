@@ -2284,7 +2284,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         'ln_child_idea_id' => $in['in_id'],
     ), array('in_parent')) as $in_parent){
         if($in_linked_id!=$in_parent['in_id']){
-            $ui .= ' &nbsp;<a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_play_id']]['m_icon'] . '</a>';
+            $ui .= '<a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_play_id']]['m_icon'] . '</a> &nbsp;';
         }
     }
     $ui .= '</span>';
