@@ -248,7 +248,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             //Determine counter:
             $default_active = false;
-            $show_tab_names = (in_array($en_id2, $this->config->item('en_ids_11084')));
             $counter = null; //Assume no counters
             $this_tab = '';
 
@@ -550,10 +549,11 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             }
 
             //Don't show empty tabs:
-            if(intval($counter) < 1 && !$show_tab_names){
+            if(!in_array($en_id2, $this->config->item('en_ids_12391')) && intval($counter) < 1){
                 continue;
             }
 
+            $show_tab_names = in_array($en_id2, $this->config->item('en_ids_11084')); //Should we show tab names?
             $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m2['m_parents']);
 
             echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="left" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.superpower_active(10983).'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
