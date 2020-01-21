@@ -546,7 +546,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             }
 
             //Don't show empty tabs:
-            if(!is_null($counter) && $counter < 1 && !$show_tab_names){
+            if(intval($counter) < 1 && !$show_tab_names){
                 continue;
             }
 
