@@ -471,6 +471,11 @@ class Idea extends CI_Controller {
                         }
                     }
 
+                    //Go to main page if no parent found:
+                    if(!$deletion_redirect){
+                        $deletion_redirect = '/idea';
+                    }
+
                     //Remove all links:
                     $this->IDEA_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
 

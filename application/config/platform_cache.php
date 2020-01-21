@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-21 07:44:09 PST
+//Generated 2020-01-21 12:40:11 PST
 
 //IDEA TAB GROUP:
 $config['en_ids_12365'] = array(11019,4983,10573,4601,7545,7347,6255,6146,11047);
@@ -3488,19 +3488,19 @@ $config['en_all_10869'] = array(
 $config['en_ids_11007'] = array(11010,11011,11012);
 $config['en_all_11007'] = array(
     11010 => array(
-        'm_icon' => '🔵',
+        'm_icon' => '<i class="far fa-check-circle"></i>',
         'm_name' => '55 IDEAS/WEEK FOR FREE',
         'm_desc' => '',
         'm_parents' => array(11061,11007),
     ),
     11011 => array(
-        'm_icon' => '🔴',
+        'm_icon' => '<i class="far fa-usd-circle"></i>',
         'm_name' => 'UNLIMITED FOR $5/MONTH',
         'm_desc' => '',
         'm_parents' => array(11162,11007),
     ),
     11012 => array(
-        'm_icon' => '🟡',
+        'm_icon' => '<i class="far fa-usd-circle" aria-hidden="true"></i>',
         'm_name' => 'UNLIMITED FOR $50/YEAR',
         'm_desc' => '',
         'm_parents' => array(11163,11007),
