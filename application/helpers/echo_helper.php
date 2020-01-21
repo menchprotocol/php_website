@@ -2287,17 +2287,12 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
             $ui .= ' &nbsp;<a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_play_id']]['m_icon'] . '</a>';
         }
     }
-    //Indicate if NOT an author:
-    if(!$is_author){
-        $ui .= ' &nbsp;<i class="far fa-user-minus read" data-toggle="tooltip" title="You are not yet an author of this idea" data-placement="bottom"></i>';
-    }
     $ui .= '</span>';
 
 
 
+    $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
     if($is_author){
-
-        $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
 
         //Sort:
         if(!$is_parent){
@@ -2307,9 +2302,13 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         //Unlink:
         $ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink" style="font-size: 0.8em;"></i></a></span>';
 
-        $ui .= '</span></div>';
+    } else {
+
+        //Indicate if NOT an author:
+        $ui .= '<span data-toggle="tooltip" title="You are not yet an author of this idea" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
 
     }
+    $ui .= '</span></div>';
 
 
     //Count children:
