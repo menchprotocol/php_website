@@ -2717,17 +2717,19 @@ function echo_en($en, $is_parent = false)
 
 
     //FOLLOW
-    $child_links = $CI->READ_model->ln_fetch(array(
-        'ln_parent_play_id' => $en['en_id'],
-        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'en_status_play_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
-    ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
-    $ui .= '<div class="inline-block" style="padding-left:5px"><a class="btn btn-play" href="/play/' . $en['en_id']. '"><span class="'. superpower_active(10983) .'">' . ( $child_links[0]['totals'] > 0 ? echo_number($child_links[0]['totals']).' ' : '') . '</span><i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="inline-block">';
+        $child_links = $CI->READ_model->ln_fetch(array(
+            'ln_parent_play_id' => $en['en_id'],
+            'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'en_status_play_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+        ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
+        $ui .= '<div class="inline-block" style="padding-left:5px"><a class="btn btn-play" href="/play/' . $en['en_id']. '"><span class="'. superpower_active(10983) .'">' . ( $child_links[0]['totals'] > 0 ? echo_number($child_links[0]['totals']).' ' : '') . '</span><i class="fas fa-angle-right"></i></a></div>';
 
-    //MODIFY
-    $ui .= '<div class="inline-block '. superpower_active(10983) .'" style="padding-left:5px;"><a class="btn btn-play" href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog"></i></a></div>';
+        //MODIFY
+        $ui .= '<div class="inline-block '. superpower_active(10983) .'" style="padding-left:5px;"><a class="btn btn-play" href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog"></i></a></div>';
 
+    $ui .= ' </div>';
 
     $ui .= ' </div>';
 
