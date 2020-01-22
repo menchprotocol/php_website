@@ -2674,7 +2674,12 @@ function echo_en($en, $is_parent = false)
             '(ln_owner_play_id='.$en['en_id'].' OR ln_child_play_id='.$en['en_id'].' OR ln_parent_play_id='.$en['en_id'].')' => null,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         if($item_counters[0]['totals']>0){
-            $stats_ui .= '<span style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block-sm icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
+
+            //Need Superpowers for this?
+            $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
+
+            //Show stats:
+            $stats_ui .= '<span class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block-sm icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
         }
     }
     if(strlen($stats_ui)){
