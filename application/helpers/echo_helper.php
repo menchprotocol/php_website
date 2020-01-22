@@ -2691,7 +2691,7 @@ function echo_en($en, $is_parent = false)
         //Only if shown in player tab:
         if(in_array($read_group_play_id, $CI->config->item('en_ids_11033'))){
             $item_counters = $CI->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_'.$read_group_play_id)) . ')' => null,
                 'ln_owner_play_id' => $en['en_id'], //Only owner matters in read groups
             ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
