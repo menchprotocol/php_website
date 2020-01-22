@@ -39,9 +39,12 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     $col_num++;
     $tab_content = '';
     $default_active = false;
+    $show_tab_menu_count = 0;
     
     echo '<div class="col-lg-12">';
 
+
+    //Display Header:
     if($col_num==2){
 
         echo '<div style="margin:15px 0 5px 0;">';
@@ -84,12 +87,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
     }
 
-    $show_tab_menu = count($this->config->item('en_ids_'.$en_id)) > 1;
 
-    if($show_tab_menu){
-        echo '<ul class="nav nav-tabs nav-tabs-sm">';
-    }
-
+    //Display the content:
     foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
 
 
@@ -173,7 +172,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '</div>';
 
 
-        } elseif(in_array($en_id2, $this->config->item('en_ids_12228'))){ //READ GROUPS
+        } elseif(in_array($en_id2, $this->config->item('en_ids_12409'))){
 
             //READER READS & BOOKMARKS
             $item_counters = $this->READ_model->ln_fetch(array(
@@ -262,10 +261,14 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
         $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m2['m_parents']);
-
-        if($show_tab_menu){
-            echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="left" title="'.$m2['m_name'].'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.'">'.echo_number($counter).'</span>' ).'</a></li>';
+        if((count($superpower_actives) && !superpower_assigned(end($superpower_actives))) || (in_array($en_id2, $this->config->item('en_ids_12409')) && intval($counter) < 1)){
+            continue;
         }
+
+        //Populate tab content:
+        $show_tab_menu_count++;
+        $show_tab_ui .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="left" title="'.$m2['m_name'].'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.'">'.echo_number($counter).'</span>' ).'</a></li>';
+
 
         $tab_content .= '<div class="tab-content tab-group-'.$en_id.' tab-data-'.$en_id2.( $default_active ? '' : ' hidden ' ).'">';
         $tab_content .= $this_tab;
@@ -275,7 +278,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
     }
 
-    if($show_tab_menu){
+    if($show_tab_menu_count >= 2){
+        echo '<ul class="nav nav-tabs nav-tabs-sm">';
+        echo $show_tab_ui;
         echo '</ul>';
     }
 
