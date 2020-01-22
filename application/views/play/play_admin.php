@@ -12,6 +12,7 @@ $moderation_tools = array(
     '/play/play_admin/in_invalid_outcomes' => 'Idea Invalid Titles',
     '/play/play_admin/in_crossovers' => 'Idea Crossover Parent/Children',
     '/play/play_admin/actionplan_debugger' => 'My READING LIST Debugger',
+    '/play/play_admin/sync_play_idea_statuses' => 'Sync Play/Idea Statuses',
     '/play/play_admin/en_icon_search' => 'Player Icon Search',
     '/play/play_admin/sync_player_links' => 'Player Sync Link Types',
     '/play/play_admin/moderate_idea_notes' => 'Moderate Idea Notes',
@@ -665,6 +666,12 @@ if(!$action) {
     } else {
         echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No duplicates found!</div>';
     }
+
+} elseif($action=='sync_play_idea_statuses') {
+
+    //Sync ALL and echo results:
+    echo 'IDAE: '.nl2br(print_r($this->IDEA_model->in_sync_creation($session_en['en_id']), true)).'<hr />';
+    //echo 'PLAY: '.nl2br(print_r($this->PLAY_model->en_sync_creation($session_en['en_id']), true)).'<hr />';
 
 } elseif($action=='fix_read_coins') {
 

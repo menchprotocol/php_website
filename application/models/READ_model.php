@@ -285,6 +285,25 @@ class READ_model extends CI_Model
         }
 
 
+        //PLAY SYNC STATUSES
+        if(in_array($insert_columns['ln_type_play_id'] , $this->config->item('en_ids_12401'))){
+
+        }
+
+        //IDEA SYNC STATUSES
+        if(in_array($insert_columns['ln_type_play_id'] , $this->config->item('en_ids_12400'))){
+
+            if($insert_columns['ln_child_idea_id'] > 0){
+                $in_id = $insert_columns['ln_child_idea_id'];
+            } elseif($insert_columns['ln_parent_idea_id'] > 0){
+                $in_id = $insert_columns['ln_parent_idea_id'];
+            }
+            $this->IDEA_model->in_sync_creation($insert_columns['ln_owner_play_id'], array(
+                'in_id' => $in_id,
+            ));
+
+        }
+
         //Do we need to check for entity tagging after read success?
         if(in_array($insert_columns['ln_type_play_id'] , $this->config->item('en_ids_6255')) && in_array($insert_columns['ln_status_play_id'] , $this->config->item('en_ids_7359')) && $insert_columns['ln_parent_idea_id'] > 0 && $insert_columns['ln_owner_play_id'] > 0){
 
@@ -2295,6 +2314,8 @@ class READ_model extends CI_Model
         return $metadata_this;
 
     }
+
+
 
     function read__completion_progress($en_id, $in, $top_level = true)
     {

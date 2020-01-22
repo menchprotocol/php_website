@@ -50,6 +50,7 @@ class IDEA_model extends CI_Model
                     'ln_child_idea_id' => $insert_columns['in_id'],
                     'ln_content' => $insert_columns['in_title'],
                     'ln_type_play_id' => 4250, //New Idea Created
+                    'ln_status_play_id' => 6175, //Drafting
                 ));
 
                 //Also add as author:
@@ -260,6 +261,64 @@ class IDEA_model extends CI_Model
 
         //Return links removed:
         return $links_removed;
+    }
+
+    function in_sync_creation($ln_owner_play_id, $query= array()){
+
+        //STATS
+        $stats = array(
+            'ln_type_play_id' => 4250, //Idea Created
+            'scanned' => 0,
+            'missing_creation_fix' => 0,
+            'double_creation_bug' => array(),
+            'status_sync' => 0,
+        );
+
+        //IDEAS
+        $status_converter = array(
+            12137 => 12399, //IDEA FEATURE => READ FEATURE
+            6184 => 6176, //IDEA PUBLISH => READ PUBLISH
+            6183 => 6175, //IDEA DRAFT => READ DRAFT
+            6182 => 6173, //IDEA ARCHIVE => READ ARCHIVE
+        );
+        foreach($this->IDEA_model->in_fetch($query) as $in){
+
+            $stats['scanned']++;
+
+            //Find creation read:
+            $reads = $this->READ_model->ln_fetch(array(
+                'ln_type_play_id' => $stats['ln_type_play_id'],
+                'ln_child_idea_id' => $in['in_id'],
+            ));
+
+            if(!count($reads)){
+
+                $stats['missing_creation_fix']++;
+
+                $this->READ_model->ln_create(array(
+                    'ln_owner_play_id' => $ln_owner_play_id,
+                    'ln_child_idea_id' => $in['in_id'],
+                    'ln_content' => $in['in_title'],
+                    'ln_type_play_id' => $stats['ln_type_play_id'],
+                    'ln_status_play_id' => $status_converter[$in['in_status_play_id']],
+                ));
+
+            } elseif(count($reads)>=2){
+
+                array_push($stats['double_creation_bug'], $in['in_id']);
+
+            } elseif($reads[0]['ln_status_play_id'] != $status_converter[$in['in_status_play_id']]){
+
+                $stats['status_sync']++;
+                $this->READ_model->ln_update($reads[0]['ln_id'], array(
+                    'ln_status_play_id' => $status_converter[$in['in_status_play_id']],
+                ));
+
+            }
+
+        }
+
+        return $stats;
     }
 
     function in_link_or_create($in_title, $ln_owner_play_id, $link_to_idea_id = 0, $is_parent = false, $new_in_status = 6183, $in_type_play_id = 6677 /* Idea Read-Only */, $link_in_id = 0)
