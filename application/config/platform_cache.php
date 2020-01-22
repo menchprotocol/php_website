@@ -11,22 +11,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-21 23:00:39 PST
+//Generated 2020-01-21 23:06:18 PST
 
 //PLAY READ STATS:
-$config['en_ids_12410'] = array(12273,12274,6255,6146,7347);
+$config['en_ids_12410'] = array(12274,7347,6255,6146,12273);
 $config['en_all_12410'] = array(
-    12273 => array(
-        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA COIN',
-        'm_desc' => '',
-        'm_parents' => array(12410,11033,12228,12358,11087,4527,6768),
-    ),
     12274 => array(
         'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
         'm_name' => 'PLAY COIN',
         'm_desc' => '',
         'm_parents' => array(12410,11033,12228,12358,11087,4527,4758),
+    ),
+    7347 => array(
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
+        'm_name' => 'READ START',
+        'm_desc' => '',
+        'm_parents' => array(12410,12409,12365,6205,12228,11033,4527),
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
@@ -40,17 +40,23 @@ $config['en_all_12410'] = array(
         'm_desc' => '',
         'm_parents' => array(12410,12409,12365,12228,11033,4527),
     ),
-    7347 => array(
-        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
-        'm_name' => 'READ START',
+    12273 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COIN',
         'm_desc' => '',
-        'm_parents' => array(12410,12409,12365,6205,12228,11033,4527),
+        'm_parents' => array(12410,11033,12228,12358,11087,4527,6768),
     ),
 );
 
 //IDEA READ STATS:
-$config['en_ids_12409'] = array(6255,6146,7347);
+$config['en_ids_12409'] = array(7347,6255,6146);
 $config['en_all_12409'] = array(
+    7347 => array(
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
+        'm_name' => 'START',
+        'm_desc' => '',
+        'm_parents' => array(12410,12409,12365,6205,12228,11033,4527),
+    ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'COIN',
@@ -62,12 +68,6 @@ $config['en_all_12409'] = array(
         'm_name' => 'INCOMPLETE',
         'm_desc' => '',
         'm_parents' => array(12410,12409,12365,12228,11033,4527),
-    ),
-    7347 => array(
-        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
-        'm_name' => 'START',
-        'm_desc' => '',
-        'm_parents' => array(12410,12409,12365,6205,12228,11033,4527),
     ),
 );
 
