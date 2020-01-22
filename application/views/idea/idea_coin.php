@@ -40,6 +40,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     $tab_content = '';
     $default_active = false;
     $show_tab_menu_count = 0;
+    $show_tab_ui = '';
     
     echo '<div class="col-lg-12">';
 
