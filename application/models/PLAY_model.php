@@ -455,6 +455,63 @@ class PLAY_model extends CI_Model
 
     }
 
+    function en_sync_creation($ln_owner_play_id, $query= array()){
+
+        //STATS
+        $stats = array(
+            'ln_type_play_id' => 4251, //Play Created
+            'scanned' => 0,
+            'missing_creation_fix' => 0,
+            'double_creation_bug' => array(),
+            'status_sync' => 0,
+        );
+
+        //PLAY STATUS
+        $status_converter = array(
+            6181 => 6176, //PLAY PUBLISH => READ PUBLISH
+            6180 => 6175, //PLAY DRAFT => READ DRAFT
+            6178 => 6173, //PLAY ARCHIVE => READ ARCHIVE
+        );
+        foreach($this->PLAY_model->en_fetch($query) as $en){
+
+            $stats['scanned']++;
+
+            //Find creation read:
+            $reads = $this->READ_model->ln_fetch(array(
+                'ln_type_play_id' => $stats['ln_type_play_id'],
+                'ln_child_idea_id' => $en['en_id'],
+            ));
+
+            if(!count($reads)){
+
+                $stats['missing_creation_fix']++;
+
+                $this->READ_model->ln_create(array(
+                    'ln_owner_play_id' => $ln_owner_play_id,
+                    'ln_child_play_id' => $en['en_id'],
+                    'ln_content' => $en['en_name'],
+                    'ln_type_play_id' => $stats['ln_type_play_id'],
+                    'ln_status_play_id' => $status_converter[$en['en_status_play_id']],
+                ));
+
+            } elseif(count($reads)>=2){
+
+                array_push($stats['double_creation_bug'], $en['en_id']);
+
+            } elseif($reads[0]['ln_status_play_id'] != $status_converter[$en['en_status_play_id']]){
+
+                $stats['status_sync']++;
+                $this->READ_model->ln_update($reads[0]['ln_id'], array(
+                    'ln_status_play_id' => $status_converter[$en['en_status_play_id']],
+                ));
+
+            }
+
+        }
+
+        return $stats;
+    }
+
     function en_sync_url($url, $ln_owner_play_id = 0, $link_parent_en_ids = array(), $add_to_child_en_id = 0, $page_title = null)
     {
 

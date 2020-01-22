@@ -671,7 +671,7 @@ if(!$action) {
 
     //Sync ALL and echo results:
     echo 'IDAE: '.nl2br(print_r($this->IDEA_model->in_sync_creation($session_en['en_id']), true)).'<hr />';
-    //echo 'PLAY: '.nl2br(print_r($this->PLAY_model->en_sync_creation($session_en['en_id']), true)).'<hr />';
+    echo 'PLAY: '.nl2br(print_r($this->PLAY_model->en_sync_creation($session_en['en_id']), true)).'<hr />';
 
 } elseif($action=='fix_read_coins') {
 
