@@ -2717,7 +2717,7 @@ function echo_en($en, $is_parent = false)
 
 
     //FOLLOW
-    $ui .= '<div class="inline-block">';
+    $ui .= '<div class="inline-block pull-right">';
         $child_links = $CI->READ_model->ln_fetch(array(
             'ln_parent_play_id' => $en['en_id'],
             'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
