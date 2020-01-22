@@ -2666,12 +2666,15 @@ function echo_en($en, $is_parent = false)
 
 
 
+    //Fetch Stats:
     $stats_ui = '';
+
+    //Idea Notes:
     foreach($CI->config->item('en_all_4485') as $idea_note_play_id => $m){
         $item_counters = $CI->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => $idea_note_play_id,
-            '(ln_owner_play_id='.$en['en_id'].' OR ln_child_play_id='.$en['en_id'].' OR ln_parent_play_id='.$en['en_id'].')' => null,
+            '(ln_owner_play_id='.$en['en_id'].' OR ln_child_play_id='.$en['en_id'].' OR ln_parent_play_id='.$en['en_id'].')' => null, //Idea Notes cover a broader reference set
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         if($item_counters[0]['totals']>0){
 
@@ -2682,12 +2685,33 @@ function echo_en($en, $is_parent = false)
             $stats_ui .= '<span class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block-sm icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
         }
     }
+
+    //Reader Progress:
+    foreach($CI->config->item('en_all_12228') as $read_group_play_id => $m){
+        //Only if shown in player tab:
+        if(in_array($read_group_play_id, $CI->config->item('en_ids_11033'))){
+            $item_counters = $CI->READ_model->ln_fetch(array(
+                'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_'.$read_group_play_id)) . ')' => null,
+                'ln_owner_play_id' => $en['en_id'], //Only owner matters in read groups
+            ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
+            if($item_counters[0]['totals']>0){
+
+                //Need Superpowers for this?
+                $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
+
+                //Show stats:
+                $stats_ui .= '<span class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block-sm icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
+            }
+        }
+    }
+
+    //Show if any stats found:
     if(strlen($stats_ui)){
         $ui .= ' <span class="inline-block">';
         $ui .= $stats_ui;
         $ui .= '</span>';
     }
-
 
 
     //Does this player also include a link?
