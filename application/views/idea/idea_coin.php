@@ -258,6 +258,12 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '</div>';
 
             $this_tab .= '</div>';
+
+        } else {
+
+            //Not supported via here:
+            continue;
+
         }
 
 
