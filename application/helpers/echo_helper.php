@@ -2373,9 +2373,9 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '<div class="pull-right inline-block" style="padding:0 17px 0 3px;"><a class="btn btn-idea" href="/idea/' . $in['in_id'] . '">'.( $is_parent ? '<i class="fad fa-step-backward"></i> <span class="btn-counter">' . $tree_count_range . '</span>' : '<span class="btn-counter">' . $tree_count_range . '</span> <i class="fad fa-step-forward"></i>' ).'</a></div>';
 
 
+    $ui .= '<div class="doclear">&nbsp;</div>';
+
     $ui .= '</div>';
-
-
     $ui .= '</div>';
 
     return $ui;
@@ -2805,6 +2805,8 @@ function echo_en($en, $is_parent = false)
     $ui .= ' </div>';
 
     $ui .= ' </div>';
+
+    $ui .= '<div class="doclear">&nbsp;</div>';
 
     $ui .= '</div>';
     $ui .= '</div>';
