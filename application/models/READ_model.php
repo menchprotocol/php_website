@@ -3048,6 +3048,7 @@ class READ_model extends CI_Model
             //Determine what type of Media this reference has:
             if(!($this->uri->segment(1)=='play' && $this->uri->segment(2)==$string_references['ref_players'][0])){
 
+                //Parents
                 foreach ($this->READ_model->ln_fetch(array(
                     'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Player-to-Player URL
                     'ln_child_play_id' => $string_references['ref_players'][0], //This child player
@@ -3055,82 +3056,51 @@ class READ_model extends CI_Model
                     'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
                 ), array('en_parent'), 0) as $parent_en) {
 
-                    $is_media = array_key_exists($parent_en['ln_type_play_id'], $en_all_11059);
-
                     //Any Type of URL: Generic, Embed, Video, Audio, Image & File
+                    $parents_media_shown++;
 
-                    if ($parent_en['ln_type_play_id'] == 4257) {
+                    if($push_message){
 
-                        $parents_media_shown++;
+                        //Messenger templates:
+                        if (in_array($parent_en['ln_type_play_id'], $this->config->item('en_ids_11059'))) {
 
-                        //Embed URL
-                        if ($push_message) {
-                            //Show simple URL:
-                            $ln_content = $parent_en['ln_content'];
-                        } else {
-                            //Show HTML Embed Code:
-                            $ln_content = '<div class="player-appendix">' . echo_url_embed($parent_en['ln_content']) . '</div>';
-                        }
+                            //Raw media file: Audio, Video, Image OR File...
+                            $parents_media_shown++;
 
-                        if ($push_message) {
+                            //Search for Facebook Attachment ID IF $push_message = TRUE
+                            $fb_att_id = 0;
+                            if (strlen($parent_en['ln_metadata']) > 0) {
+                                //We might have a Facebook Attachment ID saved in Metadata, check to see:
+                                $metadata = unserialize($parent_en['ln_metadata']);
+                                if (isset($metadata['fb_att_id']) && intval($metadata['fb_att_id']) > 0) {
+                                    //Yes we do, use this for faster media attachments:
+                                    $fb_att_id = intval($metadata['fb_att_id']);
+                                }
+                            }
 
-                            //Generic URL:
+                            //Push raw file to Media Array:
                             array_push($fb_media_attachments, array(
-                                'ln_type_play_id' => 4552, //Text Message Sent
-                                'ln_content' => $ln_content,
-                                'fb_att_id' => 0,
-                                'fb_att_type' => null,
+                                'ln_type_play_id' => $master_media_sent_conv[$parent_en['ln_type_play_id']],
+                                'ln_content' => ($fb_att_id > 0 ? null : $parent_en['ln_content']),
+                                'fb_att_id' => $fb_att_id,
+                                'fb_att_type' => $en_all_11059[$parent_en['ln_type_play_id']]['m_desc'],
                             ));
 
                         } else {
 
-                            //HTML Format, append content to current output message:
-                            $player_appendix .= $ln_content;
+                            //Generic URL:
+                            array_push($fb_media_attachments, array(
+                                'ln_type_play_id' => 4552, //Text Message Sent
+                                'ln_content' => $parent_en['ln_content'],
+                                'fb_att_id' => 0,
+                                'fb_att_type' => null,
+                            ));
 
                         }
 
-                    } elseif ($push_message && $is_media) {
+                    } else {
 
-                        //Raw media file: Audio, Video, Image OR File...
-                        $parents_media_shown++;
-
-                        //Search for Facebook Attachment ID IF $push_message = TRUE
-                        $fb_att_id = 0;
-                        if ($push_message && strlen($parent_en['ln_metadata']) > 0) {
-                            //We might have a Facebook Attachment ID saved in Metadata, check to see:
-                            $metadata = unserialize($parent_en['ln_metadata']);
-                            if (isset($metadata['fb_att_id']) && intval($metadata['fb_att_id']) > 0) {
-                                //Yes we do, use this for faster media attachments:
-                                $fb_att_id = intval($metadata['fb_att_id']);
-                            }
-                        }
-
-                        //Push raw file to Media Array:
-                        array_push($fb_media_attachments, array(
-                            'ln_type_play_id' => $master_media_sent_conv[$parent_en['ln_type_play_id']],
-                            'ln_content' => ($fb_att_id > 0 ? null : $parent_en['ln_content']),
-                            'fb_att_id' => $fb_att_id,
-                            'fb_att_type' => $en_all_11059[$parent_en['ln_type_play_id']]['m_desc'],
-                        ));
-
-                    } elseif($push_message && $parent_en['ln_type_play_id'] == 4256){
-
-                        //Generic URL:
-                        array_push($fb_media_attachments, array(
-                            'ln_type_play_id' => 4552, //Text Message Sent
-                            'ln_content' => $parent_en['ln_content'],
-                            'fb_att_id' => 0,
-                            'fb_att_type' => null,
-                        ));
-
-                    } elseif(!$push_message){
-
-                        if($is_media){
-                            $parents_media_shown++;
-                        }
-
-                        //HTML Format, append content to current output message:
-                        $player_appendix .= '<div class="player-appendix">' . echo_url_type($parent_en['ln_content'], $parent_en['ln_type_play_id']) . '</div>';
+                        $player_appendix .= '<div class="player-appendix">' . echo_url_type_4537($parent_en['ln_content'], $parent_en['ln_type_play_id']) . '</div>';
 
                     }
                 }
@@ -3208,7 +3178,7 @@ class READ_model extends CI_Model
                     );
                 }
 
-                //Check up-voting restrictions:
+                //Check up-voting/author restrictions:
                 if($is_being_modified){
 
                     //Player reference must be either the trainer themselves or an expert source:

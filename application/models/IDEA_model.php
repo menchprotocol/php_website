@@ -270,7 +270,6 @@ class IDEA_model extends CI_Model
             'ln_type_play_id' => 4250, //Idea Created
             'scanned' => 0,
             'missing_creation_fix' => 0,
-            'double_creation_bug' => array(),
             'status_sync' => 0,
         );
 
@@ -302,10 +301,6 @@ class IDEA_model extends CI_Model
                     'ln_type_play_id' => $stats['ln_type_play_id'],
                     'ln_status_play_id' => $status_converter[$in['in_status_play_id']],
                 ));
-
-            } elseif(count($reads)>=2){
-
-                array_push($stats['double_creation_bug'], $in['in_id']);
 
             } elseif($reads[0]['ln_status_play_id'] != $status_converter[$in['in_status_play_id']]){
 

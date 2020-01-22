@@ -11,7 +11,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-21 19:27:12 PST
+//Generated 2020-01-21 21:42:21 PST
+
+//PLAY LINK TYPE CUSTOM UI:
+$config['en_ids_12403'] = array(4257);
+$config['en_all_12403'] = array(
+    4257 => array(
+        'm_icon' => '<i class="fad fa-play-circle play"></i>',
+        'm_name' => 'PLAY LINK WIDGET',
+        'm_desc' => '',
+        'm_parents' => array(12403,4535,4593,4592,4537,4506),
+    ),
+);
 
 //PLAY SYNC STATUS:
 $config['en_ids_12401'] = array(10672,4251,10654);
@@ -519,7 +530,7 @@ $config['en_all_4535'] = array(
         'm_icon' => '<i class="fad fa-play-circle play"></i>',
         'm_name' => 'PLAY LINK WIDGET',
         'm_desc' => '',
-        'm_parents' => array(4535,4593,4592,4537,4506),
+        'm_parents' => array(12403,4535,4593,4592,4537,4506),
     ),
     5001 => array(
         'm_icon' => '<i class="play fad fa-sticky-note"></i>',
@@ -4363,7 +4374,7 @@ $config['en_ids_11039'] = array(11999,11044,11045);
 $config['en_all_11039'] = array(
     11999 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
-        'm_name' => 'OPEN IDEA LEDGER',
+        'm_name' => 'OPEN IDEA INDEX',
         'm_desc' => '/oil?any_en_id=',
         'm_parents' => array(11039,6771,11035),
     ),
@@ -4434,7 +4445,7 @@ $config['en_all_11035'] = array(
     ),
     11999 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
-        'm_name' => 'OPEN IDEA LEDGER',
+        'm_name' => 'OPEN IDEA INDEX',
         'm_desc' => '',
         'm_parents' => array(11039,6771,11035),
     ),
@@ -5093,7 +5104,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(12066,10725,10809,6150,12343,12201,10712,10719,12079,3000,10627,10716,4535,11047,6192,4983,12273,4229,4486,4485,12012,6193,7302,4737,7356,12138,7355,12400,12365,6201,11021,12112,11968,10990,7585,10602,12330,12324,11018,7309,7712,7751,10746,10717,10721,10720,11080,2738,12105,11035,7555,11059,11058,6404,4527,11054,6232,4536,6225,11039,10956,12279,12274,6194,6827,4426,4997,4986,7551,11028,4537,6206,11089,3290,4592,12220,4454,11033,7303,6177,11007,10957,12401,11088,11084,12391,3289,4755,10718,6287,10571,7357,6205,11081,7704,6255,12229,6345,4280,4277,6102,12326,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,10869,4593,10593,12228,12141,12327,10658,10711,4269,6204,10710,6805,7358,12321,12322);
+$config['en_ids_4527'] = array(12066,10725,10809,6150,12343,12201,10712,10719,12079,3000,10627,10716,4535,11047,6192,4983,12273,4229,4486,4485,12012,6193,7302,4737,7356,12138,7355,12400,12365,6201,11021,12112,11968,10990,7585,10602,12330,12324,11018,7309,7712,7751,10746,10717,10721,10720,11080,2738,12105,11035,7555,11059,11058,6404,4527,11054,6232,4536,6225,11039,10956,12279,12274,6194,6827,4426,4997,4986,7551,11028,4537,6206,11089,3290,4592,12403,12220,4454,11033,7303,6177,11007,10957,12401,11088,11084,12391,3289,4755,10718,6287,10571,7357,6205,11081,7704,6255,12229,6345,4280,4277,6102,12326,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,10869,4593,10593,12228,12141,12327,10658,10711,4269,6204,10710,6805,7358,12321,12322);
 $config['en_all_4527'] = array(
     12066 => array(
         'm_icon' => '<i class="far fa-info-circle" aria-hidden="true"></i>',
@@ -5544,6 +5555,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'PLAY LINKS',
         'm_desc' => '',
         'm_parents' => array(11026,5982,5981,4527),
+    ),
+    12403 => array(
+        'm_icon' => '<i class="far fa-object-ungroup" aria-hidden="true"></i>',
+        'm_name' => 'PLAY LINK TYPE CUSTOM UI',
+        'm_desc' => '',
+        'm_parents' => array(4527,4758),
     ),
     12220 => array(
         'm_icon' => '<i class="fad fa-flag play" aria-hidden="true"></i>',
@@ -8436,7 +8453,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fad fa-play-circle play"></i>',
         'm_name' => 'PLAY LINK WIDGET',
         'm_desc' => '',
-        'm_parents' => array(4535,4593,4592,4537,4506),
+        'm_parents' => array(12403,4535,4593,4592,4537,4506),
     ),
     5001 => array(
         'm_icon' => '<i class="play fad fa-sticky-note"></i>',
@@ -9035,7 +9052,7 @@ $config['en_all_4592'] = array(
         'm_icon' => '<i class="fad fa-play-circle play"></i>',
         'm_name' => 'WIDGET',
         'm_desc' => '',
-        'm_parents' => array(4535,4593,4592,4537,4506),
+        'm_parents' => array(12403,4535,4593,4592,4537,4506),
     ),
 );
 
@@ -9151,7 +9168,7 @@ $config['en_all_4537'] = array(
         'm_icon' => '<i class="fad fa-play-circle play"></i>',
         'm_name' => 'WIDGET',
         'm_desc' => 'Link note contain a recognizable URL that offers an embed widget for a more engaging play-back experience.',
-        'm_parents' => array(4535,4593,4592,4537,4506),
+        'm_parents' => array(12403,4535,4593,4592,4537,4506),
     ),
 );
 
