@@ -479,7 +479,7 @@ class PLAY_model extends CI_Model
             //Find creation read:
             $reads = $this->READ_model->ln_fetch(array(
                 'ln_type_play_id' => $stats['ln_type_play_id'],
-                'ln_child_idea_id' => $en['en_id'],
+                'ln_child_play_id' => $en['en_id'],
             ));
 
             if(!count($reads)){
