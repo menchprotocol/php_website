@@ -1418,10 +1418,9 @@ class Read extends CI_Controller
     {
 
         if (!superpower_active(10967, true)) {
-            $en_all_10957 = $this->config->item('en_all_10957');
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing the '.$en_all_10957[10967]['m_name'].' superpower',
+                'message' => 'Missing superpower',
             ));
         }
 
