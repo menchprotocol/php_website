@@ -431,15 +431,16 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 $dropdown_options = '';
                 $input_options = '';
-                $tab_counter = 0;
+                $counter = 0;
+
                 foreach ($this->config->item('en_all_4997') as $action_en_id => $mass_action_en) {
 
-                    $tab_counter++;
+                    $counter++;
                     $dropdown_options .= '<option value="' . $action_en_id . '">' .$mass_action_en['m_name'] . '</option>';
 
 
                     //Start with the input wrapper:
-                    $input_options .= '<span id="mass_id_'.$action_en_id.'" class="inline-block '. ( $tab_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+                    $input_options .= '<span id="mass_id_'.$action_en_id.'" class="inline-block '. ( $counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
                     $input_options .= '<i class="fal fa-info-circle" data-toggle="tooltip" data-placement="right" title="'.$mass_action_en['m_desc'].'"></i> ';
 
