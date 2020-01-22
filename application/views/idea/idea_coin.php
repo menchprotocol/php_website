@@ -87,7 +87,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     $show_tab_menu = count($this->config->item('en_ids_'.$en_id)) > 1;
 
     if($show_tab_menu){
-        echo '<ul class="nav nav-tabs nav-tabs-sm '.superpower_active(10984).'">';
+        echo '<ul class="nav nav-tabs nav-tabs-sm">';
     }
 
     foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
