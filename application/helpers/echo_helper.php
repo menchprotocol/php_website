@@ -2664,6 +2664,27 @@ function echo_en($en, $is_parent = false)
 
     $ui .= '</span>';
 
+
+
+    $stats_ui = '';
+    foreach($this->config->item('en_all_4485') as $idea_note_play_id => $m){
+        $item_counters = $this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id' => $idea_note_play_id,
+            '(ln_owner_play_id='.$en['en_id'].' OR ln_child_play_id='.$en['en_id'].' OR ln_parent_play_id='.$en['en_id'].')' => null,
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+        if($item_counters[0]['totals']>0){
+            $stats_ui .= '<span style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block-sm">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
+        }
+    }
+    if(strlen($stats_ui)){
+        $ui .= ' <span class="inline-block">';
+        $ui .= $stats_ui;
+        $ui .= '</span>';
+    }
+
+
+
     //Does this player also include a link?
     if ($ln_id > 0) {
 
