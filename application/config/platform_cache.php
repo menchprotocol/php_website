@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-21 23:15:02 PST
+//Generated 2020-01-21 23:38:02 PST
 
 //PLAY READ STATS:
 $config['en_ids_12410'] = array(12274,7347,6255,6146,12273);
@@ -132,7 +132,7 @@ $config['en_all_12400'] = array(
 $config['en_ids_12391'] = array(4983,4997,11029,11030);
 $config['en_all_12391'] = array(
     4983 => array(
-        'm_icon' => '<i class="fas fa-user-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA AUTHOR',
         'm_desc' => '',
         'm_parents' => array(12391,12365,4535,11084,12321,11089,10593,4527,7551,4985,4593,4485),
@@ -167,7 +167,7 @@ $config['en_all_12365'] = array(
         'm_parents' => array(11025,12365),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-user-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA AUTHOR',
         'm_desc' => '',
         'm_parents' => array(12391,12365,4535,11084,12321,11089,10593,4527,7551,4985,4593,4485),
@@ -185,7 +185,7 @@ $config['en_all_12365'] = array(
         'm_parents' => array(12365,4535,10984,12322,11033,4986,10593,4593,4485),
     ),
     7545 => array(
-        'm_icon' => '<i class="fad fa-user-tag idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-tag idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA PLAY TAG',
         'm_desc' => '',
         'm_parents' => array(10985,12365,4535,12321,11033,7551,4593,4485),
@@ -303,7 +303,7 @@ $config['en_all_4535'] = array(
         'm_parents' => array(12400,4535,4593,10638),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-user-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA AUTHOR',
         'm_desc' => '',
         'm_parents' => array(12391,12365,4535,11084,12321,11089,10593,4527,7551,4985,4593,4485),
@@ -399,7 +399,7 @@ $config['en_all_4535'] = array(
         'm_parents' => array(4535,4593,10658,10638),
     ),
     7545 => array(
-        'm_icon' => '<i class="fad fa-user-tag idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-tag idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA PLAY TAG',
         'm_desc' => '',
         'm_parents' => array(10985,12365,4535,12321,11033,7551,4593,4485),
@@ -1314,7 +1314,7 @@ $config['en_all_12322'] = array(
 $config['en_ids_12321'] = array(4983,10573,7545);
 $config['en_all_12321'] = array(
     4983 => array(
-        'm_icon' => '<i class="fas fa-user-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'AUTHOR',
         'm_desc' => '',
         'm_parents' => array(12391,12365,4535,11084,12321,11089,10593,4527,7551,4985,4593,4485),
@@ -1326,7 +1326,7 @@ $config['en_all_12321'] = array(
         'm_parents' => array(10985,12365,4535,12321,11033,4593,7551,4485),
     ),
     7545 => array(
-        'm_icon' => '<i class="fad fa-user-tag idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-tag idea" aria-hidden="true"></i>',
         'm_name' => 'PLAY TAG',
         'm_desc' => '',
         'm_parents' => array(10985,12365,4535,12321,11033,7551,4593,4485),
@@ -2716,7 +2716,7 @@ $config['en_all_11088'] = array(
 $config['en_ids_11089'] = array(4983,11029,4997,11039);
 $config['en_all_11089'] = array(
     4983 => array(
-        'm_icon' => '<i class="fas fa-user-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA AUTHOR',
         'm_desc' => '',
         'm_parents' => array(12391,12365,4535,11084,12321,11089,10593,4527,7551,4985,4593,4485),
@@ -3661,7 +3661,7 @@ $config['en_all_11007'] = array(
 $config['en_ids_11084'] = array(4983,11029,11030);
 $config['en_all_11084'] = array(
     4983 => array(
-        'm_icon' => '<i class="fas fa-user-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA AUTHOR',
         'm_desc' => '',
         'm_parents' => array(12391,12365,4535,11084,12321,11089,10593,4527,7551,4985,4593,4485),
@@ -3738,7 +3738,7 @@ $config['en_all_11033'] = array(
         'm_parents' => array(12365,4535,10984,12322,11033,4986,10593,4593,4485),
     ),
     7545 => array(
-        'm_icon' => '<i class="fad fa-user-tag idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-tag idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA PLAY TAG',
         'm_desc' => '',
         'm_parents' => array(10985,12365,4535,12321,11033,7551,4593,4485),
@@ -5249,7 +5249,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,10602),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-user-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA AUTHOR',
         'm_desc' => '',
         'm_parents' => array(12391,12365,4535,11084,12321,11089,10593,4527,7551,4985,4593,4485),
@@ -6152,7 +6152,7 @@ $config['en_all_10627'] = array(
 $config['en_ids_10593'] = array(4983,4250,4601,4231,10679,10644,4251,4259,10657,4261,4260,4255,4258,10646,4554,4556,4555,6563,4570,7702,4549,4551,4550,4548,4552,4553);
 $config['en_all_10593'] = array(
     4983 => array(
-        'm_icon' => '<i class="fas fa-user-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA AUTHOR',
         'm_desc' => '',
         'm_parents' => array(12391,12365,4535,11084,12321,11089,10593,4527,7551,4985,4593,4485),
@@ -6985,7 +6985,7 @@ $config['en_all_7555'] = array(
 $config['en_ids_7551'] = array(4983,10573,7545);
 $config['en_all_7551'] = array(
     4983 => array(
-        'm_icon' => '<i class="fas fa-user-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'AUTHOR',
         'm_desc' => '',
         'm_parents' => array(12391,12365,4535,11084,12321,11089,10593,4527,7551,4985,4593,4485),
@@ -6997,7 +6997,7 @@ $config['en_all_7551'] = array(
         'm_parents' => array(10985,12365,4535,12321,11033,4593,7551,4485),
     ),
     7545 => array(
-        'm_icon' => '<i class="fad fa-user-tag idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-tag idea" aria-hidden="true"></i>',
         'm_name' => 'PLAY TAG',
         'm_desc' => '',
         'm_parents' => array(10985,12365,4535,12321,11033,7551,4593,4485),
@@ -8262,7 +8262,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(12400,4535,4593,10638),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-user-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA AUTHOR',
         'm_desc' => 'References track intent correlations referenced within expert sources, and represent a core building block of intelligence. References are among the most precious transaction types because they indicate that IF you do A, you will likely accomplish B. As trainers add more sources from more experts, certain intent correlations will receive more references than others, thus gaining more credibility.',
         'm_parents' => array(12391,12365,4535,11084,12321,11089,10593,4527,7551,4985,4593,4485),
@@ -8352,7 +8352,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4535,4593,10658,10638),
     ),
     7545 => array(
-        'm_icon' => '<i class="fad fa-user-tag idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-tag idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA PLAY TAG',
         'm_desc' => '',
         'm_parents' => array(10985,12365,4535,12321,11033,7551,4593,4485),
@@ -9153,7 +9153,7 @@ $config['en_all_4485'] = array(
         'm_parents' => array(12359,4535,10984,12322,11033,10990,10593,6345,4986,4603,4593,4485),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-user-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'AUTHOR',
         'm_desc' => '',
         'm_parents' => array(12391,12365,4535,11084,12321,11089,10593,4527,7551,4985,4593,4485),
@@ -9171,7 +9171,7 @@ $config['en_all_4485'] = array(
         'm_parents' => array(10985,12365,4535,12321,11033,4593,7551,4485),
     ),
     7545 => array(
-        'm_icon' => '<i class="fad fa-user-tag idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-tag idea" aria-hidden="true"></i>',
         'm_name' => 'PLAY TAG',
         'm_desc' => '',
         'm_parents' => array(10985,12365,4535,12321,11033,7551,4593,4485),
