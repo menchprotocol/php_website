@@ -2668,7 +2668,7 @@ function echo_en($en, $is_parent = false)
 
     $stats_ui = '';
     foreach($CI->config->item('en_all_4485') as $idea_note_play_id => $m){
-        $item_counters = $this->READ_model->ln_fetch(array(
+        $item_counters = $CI->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => $idea_note_play_id,
             '(ln_owner_play_id='.$en['en_id'].' OR ln_child_play_id='.$en['en_id'].' OR ln_parent_play_id='.$en['en_id'].')' => null,
