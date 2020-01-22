@@ -95,7 +95,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         //Is this a caret menu?
         if(in_array(11040 , $m2['m_parents'])){
-            echo echo_caret($en_id2, $m2, $in['in_id']);
+            $show_tab_ui .= echo_caret($en_id2, $m2, $in['in_id']);
             continue;
         }
 
