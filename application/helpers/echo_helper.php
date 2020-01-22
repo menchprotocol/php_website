@@ -2281,7 +2281,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
                 'ln_parent_idea_id' => $in['in_id'],
             ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
             if($item_counters[0]['totals']>0){
-                $stats_ui .= '<span class="montserrat '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block-sm icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
+                $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block-sm icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
             }
         }
     }
@@ -2297,7 +2297,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
                 'ln_child_idea_id' => $in['in_id'],
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             if($item_counters[0]['totals']>0){
-                $stats_ui .= '<span class="montserrat '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block-sm icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
+                $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block-sm icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
             }
         }
     }
@@ -2729,7 +2729,7 @@ function echo_en($en, $is_parent = false)
                 'ln_owner_play_id' => $en['en_id'], //Only owner matters in read groups
             ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
             if($item_counters[0]['totals']>0){
-                $stats_ui .= '<span class="montserrat '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block-sm icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
+                $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block-sm icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
             }
         }
     }
@@ -2745,7 +2745,7 @@ function echo_en($en, $is_parent = false)
                 '(ln_owner_play_id='.$en['en_id'].' OR ln_child_play_id='.$en['en_id'].' OR ln_parent_play_id='.$en['en_id'].')' => null, //Idea Notes cover a broader reference set
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             if($item_counters[0]['totals']>0){
-                $stats_ui .= '<span class="montserrat '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block-sm icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
+                $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block-sm icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
             }
         }
     }
