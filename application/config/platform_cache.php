@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-23 14:09:36 PST
+//Generated 2020-01-23 14:14:42 PST
 
 //IDEA TREE NODES:
 $config['en_ids_12413'] = array(11020,11019);
@@ -4497,8 +4497,14 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(12214,12343,12201,12344,7291,11068,12205,12211,11999,6225,12275,6287,12339,6415,7256,4269,7540,11087);
+$config['en_ids_11035'] = array(11068,12214,12343,12201,12344,7291,12205,12211,11999,6225,12275,6287,12339,6415,7256,4269,7540,11087);
 $config['en_all_11035'] = array(
+    11068 => array(
+        'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
+        'm_name' => '1-CLICK LOGIN',
+        'm_desc' => '',
+        'm_parents' => array(11035,11065),
+    ),
     12214 => array(
         'm_icon' => '<i class="fad fa-plus idea" aria-hidden="true"></i>',
         'm_name' => 'ADD IDEA',
@@ -4528,12 +4534,6 @@ $config['en_all_11035'] = array(
         'm_name' => 'LOGOUT',
         'm_desc' => '',
         'm_parents' => array(11035),
-    ),
-    11068 => array(
-        'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
-        'm_name' => 'MAGIC LINK',
-        'm_desc' => '',
-        'm_parents' => array(11035,11065),
     ),
     12205 => array(
         'm_icon' => '<i class="fad fa-user-circle play" aria-hidden="true"></i>',
