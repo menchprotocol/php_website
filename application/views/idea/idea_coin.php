@@ -187,7 +187,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             if($counter > 0){
 
                 //Dynamic Loading when clicked:
-                $this_tab .= '<div id="read_in_history_'.$en_id2.'" en-id="'.$en_id2.'" class="list-group dynamic-reads"></div>';
+                $this_tab .= '<div class="list-group dynamic-reads"></div>';
 
             } else {
 
