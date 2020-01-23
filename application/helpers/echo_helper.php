@@ -2199,7 +2199,7 @@ function echo_in_stats($in_id){
     //Show if any stats found:
     $ui = null;
     if(strlen($stats_ui)){
-        $ui .= '<span class="inline-block">';
+        $ui .= '<span class="inline-block read-stat-box">';
         $ui .= $stats_ui;
         $ui .= '</span>';
     }
@@ -2728,7 +2728,7 @@ function echo_en($en, $is_parent = false)
 
     //Show if any stats found:
     if (strlen($stats_ui)) {
-        $ui .= '<span class="inline-block">';
+        $ui .= '<span class="inline-block read-stat-box">';
         $ui .= $stats_ui;
         $ui .= '</span>';
     }

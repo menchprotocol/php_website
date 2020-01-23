@@ -1137,6 +1137,10 @@ label {
     display: none;
 }
 
+.read-stat-box{
+    font-size: 0.8em;
+}
+
 .in_highlight, .in_highlight:hover, .in_highlight:focus{
     background-color:#fff3a9 !important;
 }
