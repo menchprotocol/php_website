@@ -1194,10 +1194,6 @@ label {
         margin-left:10px;
         margin-right:10px;
     }
-
-    .nav-tabs-sm .nav-link, .read-stat-box{
-        font-size: 0.8em;
-    }
 }
 
 @media (min-width:767px) {
