@@ -174,7 +174,46 @@ function load_js_algolia() {
     });
 }
 
-function loadtab(tab_group_id, tab_data_id){
+function read_in_history(tab_data_id, note_in_id, owner_en_id, last_loaded_ln_id){
+
+    //Yes, we need to load dynamically:
+    $.post("/read/read_in_history/"+tab_data_id+"/"+note_in_id+"/"+owner_en_id+"/"+last_loaded_ln_id, { }, function (data) {
+
+        //PLAY
+        if(data.play_raw_count <= 1) {
+            $('.three-menus td.play .current_count').html('');
+        } else {
+            if(data.play_count != $('.three-menus td.play .current_count').text().trim()){
+                $('.three-menus td.play .current_count').html(data.play_count+ ' ').fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+            }
+        }
+
+        //READ
+        if(data.read_raw_count < 1){
+            $('.three-menus td.read .read_name').removeClass('show-max');
+            $('.three-menus td.read .current_count').html('');
+        } else if(data.read_count != $('.three-menus td.read .current_count').text().trim()){
+            $('.three-menus td.read .read_name').addClass('show-max');
+            $('.three-menus td.read .current_count').html(data.read_count + ' ').fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        }
+
+        //IDEA
+        if(data.idea_raw_count < 1){
+            $('.three-menus td.idea .idea_name').removeClass('show-max');
+            $('.three-menus td.idea .current_count').html('');
+        } else if(data.idea_count != $('.three-menus td.idea .current_count').text().trim()){
+            $('.three-menus td.idea .idea_name').addClass('show-max');
+            $('.three-menus td.idea .current_count').html(data.idea_count + ' ').fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        }
+
+
+        updating_basic_stats = false;
+    });
+
+    $('.tab-data-'+tab_group_id+' .dynamic-reads').html('<i class="far fa-yin-yang fa-spin"></i>');
+}
+
+function loadtab(tab_group_id, tab_data_id, note_in_id, owner_en_id){
 
     //Hide all tabs:
     $('.tab-group-'+tab_group_id).addClass('hidden');
@@ -186,8 +225,8 @@ function loadtab(tab_group_id, tab_data_id){
 
     //Need to dynamically load data?
     if($('.tab-data-'+tab_data_id).find('div.dynamic-reads').length > 0){
-        //Yes, we need to load dynamically:
-        $('.tab-data-'+tab_data_id+' .dynamic-reads').html('<i class="far fa-yin-yang fa-spin"></i>');
+        //Load First Page:
+        read_in_history(tab_data_id, note_in_id, owner_en_id, 0);
     }
 
 }

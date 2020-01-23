@@ -76,7 +76,7 @@ class Read extends CI_Controller
         }
     }
 
-    function read_in_history($type_group_id, $in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
+    function read_in_history($type_group_id, $note_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
 
         $session_en = superpower_assigned(10939);
         if (!$session_en) {
@@ -86,7 +86,7 @@ class Read extends CI_Controller
                 'message' => 'Expired Session or Missing Superpower',
             ));
 
-        } elseif (!$in_id && !$owner_en_id) {
+        } elseif (!$note_in_id && !$owner_en_id) {
 
             return echo_json(array(
                 'status' => 0,
@@ -108,9 +108,9 @@ class Read extends CI_Controller
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$type_group_id)) . ')' => null,
         );
 
-        if($in_id > 0){
-            $list_filters['ln_parent_idea_id'] = $in_id;
-            $list_url = '/idea/'.$in_id;
+        if($note_in_id > 0){
+            $list_filters['ln_parent_idea_id'] = $note_in_id;
+            $list_url = '/idea/'.$note_in_id;
             $list_class = 'itemidea';
             $join_objects = array('en_owner');
         } elseif($owner_en_id > 0){
@@ -122,9 +122,9 @@ class Read extends CI_Controller
 
 
         //List Read History:
-        $ui = '';
+        $ui = '<div class="list-group dynamic-reads">';
         foreach($this->READ_model->ln_fetch($list_filters, $join_objects, config_var(11064), 0, array('ln_id' => 'DESC')) as $in_read){
-            if($in_id > 0){
+            if($note_in_id > 0){
 
                 $ui .= echo_en($in_read);
 
@@ -141,6 +141,8 @@ class Read extends CI_Controller
 
             }
         }
+        $ui .= '</div>';
+
 
 
         //Return success:
