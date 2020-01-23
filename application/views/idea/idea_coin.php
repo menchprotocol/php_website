@@ -28,6 +28,9 @@ $play_focus_found = false; //Used to determine the first tab to be opened
 echo '<div class="container" style="padding-bottom:54px;">';
 
 
+echo '<div class="header-content">'; //OPEN header-content
+
+
 if(!$is_author){
     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle read"></i> You are not a idea author. <a href="/idea/in_become_author/'.$in['in_id'].'" class="inline-block montserrat '.superpower_active(10984).'">BECOME AUTHOR</a></div>';
 }
@@ -40,14 +43,11 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     $default_active = false;
     $show_tab_menu_count = 0;
     $show_tab_ui = '';
-    
-    echo '<div>';
-
 
     //Display Header:
     if($col_num==2){
 
-        echo '<div style="margin:15px 0 5px 0;">';
+        echo '<div style="padding:15px 0 5px 0;">';
 
         //Idea Status:
         echo '<div class="inline-block side-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author).'</div>';
@@ -77,6 +77,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '<div class="title_counter hidden grey montserrat doupper" style="text-align: right;"><span id="charTitleNum">0</span>/'.config_var(11071).' CHARACTERS</div>';
         echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && $is_active), 0, true);
         echo '</div>';
+
+
+        echo '</div>'; //CLOSE header-content
 
     } elseif($col_num==3){
 
@@ -302,8 +305,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     }
 
     echo $tab_content;
-
-    echo '</div>';
 
 }
 
