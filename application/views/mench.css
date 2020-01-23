@@ -1140,6 +1140,7 @@ label {
     display: none;
 }
 
+
 .in_highlight, .in_highlight:hover, .in_highlight:focus{
     background-color:#fff3a9 !important;
 }
@@ -1194,7 +1195,7 @@ label {
         margin-right:10px;
     }
 
-    .nav-tabs-sm .nav-link {
+    .nav-tabs-sm .nav-link, .read-stat-box{
         font-size: 0.8em;
     }
 }
