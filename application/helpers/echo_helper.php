@@ -2196,7 +2196,7 @@ function echo_in_stats($in_id){
     //Show if any stats found:
     $ui = null;
     if(strlen($stats_ui)){
-        $ui .= '<span class="inline-block" style="padding: 5px 0;">';
+        $ui .= '<span class="inline-block">';
         $ui .= $stats_ui;
         $ui .= '</span>';
     }
@@ -2267,7 +2267,10 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-    $ui .= echo_in_stats($in['in_id']);
+    $echo_in_stats = echo_in_stats($in['in_id']);
+    if($echo_in_stats){
+        $ui .= '<div style="padding:5px 0;">'.$echo_in_stats.'</div>';
+    }
 
 
     $ui .= '</span>';
@@ -2725,7 +2728,7 @@ function echo_en($en, $is_parent = false)
 
     //Show if any stats found:
     if (strlen($stats_ui)) {
-        $ui .= ' <span class="inline-block">';
+        $ui .= '<span class="inline-block">';
         $ui .= $stats_ui;
         $ui .= '</span>';
     }
