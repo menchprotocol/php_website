@@ -2586,10 +2586,17 @@ function echo_message($message, $is_error, $recipient_en, $push_message){
 function echo_en($en, $is_parent = false)
 {
 
+    $CI =& get_instance();
+
+
     if(!isset($en['en_id'])){
+        $CI->READ_model->ln_create(array(
+            'ln_content' => 'echo_en() variable missing PLAY',
+            'ln_metadata' => $en,
+            'ln_type_play_id' => 4246, //Platform Bug Reports
+        ));
         return false;
     }
-    $CI =& get_instance();
     $session_en = superpower_assigned();
     $en_all_6177 = $CI->config->item('en_all_6177'); //Player Statuses
     $en_all_4527 = $CI->config->item('en_all_4527');
