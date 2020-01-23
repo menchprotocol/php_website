@@ -186,6 +186,7 @@ function loadtab(tab_group_id, tab_data_id){
 
     //Need to dynamically load data?
     if($('.tab-data-'+tab_data_id).find('.dynamic-reads').length > 0){
+        alert('find');
         //Yes, we need to load dynamically:
         $('.tab-nav-'+tab_group_id+' .dynamic-reads').html('<i class="far fa-yin-yang fa-spin"></i>');
     }
