@@ -17,7 +17,7 @@ if($session_en) {
     $web_email_activated = in_array(12103, $this->session->userdata('session_parent_ids'));
 
 
-    echo '<div class="pull-right inline-block side-margin">';
+    echo '<div class="pull-right inline-block">';
 
         echo '<a href="/play/' . $session_en['en_id'] . '" class="btn btn-play btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="' . $en_all_11035[12205]['m_name'] . '">' . $en_all_11035[12205]['m_icon'] . '</a>';
 

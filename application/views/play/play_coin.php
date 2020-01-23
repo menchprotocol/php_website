@@ -31,7 +31,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     //RIGHT
-    echo '<div class="pull-right inline-block side-margin '.superpower_active(10983).'">';
+    echo '<div class="pull-right inline-block '.superpower_active(10983).'">';
 
         //REFERENCES
         $en_count_references = en_count_references($player['en_id']);

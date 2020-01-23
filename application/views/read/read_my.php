@@ -18,7 +18,7 @@ if(!$session_en){
     $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
 
-    echo '<div class="pull-right inline-block side-margin">';
+    echo '<div class="pull-right inline-block">';
 
     echo '<a href="/read/next" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12211]['m_name'].'">'.$en_all_11035[12211]['m_icon'].'</a>';
 

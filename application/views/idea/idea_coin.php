@@ -48,7 +48,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     if($col_num==2){
 
         //Idea Status:
-        echo '<div class="inline-block side-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author).'</div>';
+        echo '<div class="inline-block">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author).'</div>';
 
         //Idea Featured:
         if(in_array($in['in_status_play_id'], $this->config->item('en_ids_12138') /* Idea Statuses Featured */)){
@@ -58,7 +58,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
         //RIGHT
-        echo '<div class="inline-block pull-right side-margin">';
+        echo '<div class="inline-block pull-right">';
 
         //TIME ESTIMATE
         echo '<div class="inline-block '.superpower_active(10939).'" style="margin:0 5px 0 0;"><span class="icon-block-sm inline-block"><i class="fad fa-stopwatch read"></i></span>'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
@@ -83,7 +83,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         //IDEA TYPE:
         echo '<div class="left-border-idea" style="margin-top: 30px;">'; //OPEN left-border-idea
 
-        echo '<div class="inline-block side-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active).'</div>';
+        echo '<div class="inline-block">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active).'</div>';
 
     }
 
