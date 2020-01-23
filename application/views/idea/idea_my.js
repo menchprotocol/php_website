@@ -4,6 +4,7 @@ function idea_create_initiate(){
 
     //Load Idea Adder:
     autosize($('#newIdeaTitle'));
+    load_js_algolia();
     in_load_search("#newIdeaTitle",0, 'a', false /* Search Only */);
     $('#newIdeaTitle').focus();
 
