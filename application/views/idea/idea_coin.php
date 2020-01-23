@@ -81,7 +81,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } elseif($col_num==3){
 
         //IDEA TYPE:
-        echo '<div class="left-border-idea">'; //OPEN left-border-idea
+        echo '<div class="left-border-idea" style="margin-top: 30px;">'; //OPEN left-border-idea
 
         echo '<div class="inline-block side-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active).'</div>';
 
