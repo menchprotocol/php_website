@@ -2728,7 +2728,7 @@ function echo_en($en, $is_parent = false)
 
     //Show if any stats found:
     if (strlen($stats_ui)) {
-        $ui .= '<span class="inline-block read-stat-box">';
+        $ui .= '<span class="inline-block">';
         $ui .= $stats_ui;
         $ui .= '</span>';
     }
