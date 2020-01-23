@@ -514,7 +514,7 @@ function echo_ln($ln, $is_inner = false)
 
 
 
-    $hide_sensitive_details = ( in_array($ln['ln_type_play_id'] , $CI->config->item('en_ids_4755')) && !superpower_active(10964, true) );
+    $hide_sensitive_details = ( in_array($ln['ln_type_play_id'] , $CI->config->item('en_ids_4755')) && !superpower_active(10985, true) );
 
 
 

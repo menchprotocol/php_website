@@ -806,7 +806,7 @@ class Read extends CI_Controller
 
 
         //READ Status:
-        echo '<table class="table table-sm table-striped stats-table mini-stats-table link_statuses '.superpower_active(10964).'">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table link_statuses">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7304[6186]['m_name'].echo__s(count($this->config->item('en_all_6186')), true).'</td>';
         echo '</tr>';
@@ -955,12 +955,11 @@ class Read extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid READ ID',
             ));
-        } elseif(!superpower_assigned(10964)) {
+        } elseif(!superpower_assigned(10985)) {
 
-            $en_all_10957 = $this->config->item('en_all_10957');
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing the '.$en_all_10957[10964]['m_name'].' superpower',
+                'message' => 'Missing superpower or session expired',
             ));
 
         } else {
