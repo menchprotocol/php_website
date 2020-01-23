@@ -1488,7 +1488,10 @@ function echo_in_idea($in)
     $ui .= '<td>';
     $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false).'</b>';
 
-    $ui .= echo_in_stats($in['in_id']);
+    $echo_in_stats = echo_in_stats($in['in_id']);
+    if($echo_in_stats){
+        $ui .= '<div style="padding:5px 0;">'.$echo_in_stats.'</div>';
+    }
 
     //Footnote
     $ui .= '<div class="montserrat idea-info doupper">';
@@ -2267,10 +2270,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-    $echo_in_stats = echo_in_stats($in['in_id']);
-    if($echo_in_stats){
-        $ui .= '<div style="padding:5px 0;">'.$echo_in_stats.'</div>';
-    }
+    $ui .= echo_in_stats($in['in_id']);
 
 
     $ui .= '</span>';
