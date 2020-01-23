@@ -1115,7 +1115,7 @@ label {
     font-size: 1.3em;
     line-height: 110%;
 }
-.idea-info {
+.idea-info, .idea-footnote {
     font-size: 0.8em;
     margin:5px 0 0;
 }
