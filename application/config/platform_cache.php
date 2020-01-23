@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-22 22:31:29 PST
+//Generated 2020-01-23 03:01:56 PST
 
 //MENCH WEBSITE:
 $config['en_ids_10876'] = array(4535,10939,11999,4536,6205);
@@ -847,7 +847,7 @@ $config['en_all_6205'] = array(
         'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
     ),
     4235 => array(
-        'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
         'm_name' => 'READ GET STARTED',
         'm_desc' => '',
         'm_parents' => array(6205,12227,7347,5967,4755,4593),
@@ -901,7 +901,7 @@ $config['en_all_6205'] = array(
         'm_parents' => array(6205,6153,4593,10658),
     ),
     4559 => array(
-        'm_icon' => '<i class="fas fa-comment-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment read" aria-hidden="true"></i>',
         'm_name' => 'READ MESSAGES',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
@@ -961,13 +961,13 @@ $config['en_all_6205'] = array(
         'm_parents' => array(6205,10593,4593,4755,7569),
     ),
     7495 => array(
-        'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-play read" aria-hidden="true"></i>',
         'm_name' => 'READ RECOMMEND',
         'm_desc' => '',
         'm_parents' => array(6205,12227,7347,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-comment-alt-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-keyboard read" aria-hidden="true"></i>',
         'm_name' => 'READ REPLIED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
@@ -1081,7 +1081,7 @@ $config['en_all_6205'] = array(
         'm_parents' => array(6205,12351,4755,4593),
     ),
     6143 => array(
-        'm_icon' => '<i class="fas fa-comment-times read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-times read" aria-hidden="true"></i>',
         'm_name' => 'READ SKIPPED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,6146,4755,4593),
@@ -1171,7 +1171,7 @@ $config['en_all_6205'] = array(
         'm_parents' => array(4527,6205),
     ),
     12117 => array(
-        'm_icon' => '<i class="fas fa-file-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-paperclip read" aria-hidden="true"></i>',
         'm_name' => 'READ UPLOADED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
@@ -2005,19 +2005,19 @@ $config['en_all_12229'] = array(
         'm_parents' => array(6205,12229,12227,12141,7704,4755,6255,4593),
     ),
     4559 => array(
-        'm_icon' => '<i class="fas fa-comment-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment read" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-comment-alt-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-keyboard read" aria-hidden="true"></i>',
         'm_name' => 'REPLIED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
     ),
     6143 => array(
-        'm_icon' => '<i class="fas fa-comment-times read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-times read" aria-hidden="true"></i>',
         'm_name' => 'SKIPPED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,6146,4755,4593),
@@ -2047,7 +2047,7 @@ $config['en_all_12229'] = array(
         'm_parents' => array(6205,6140,12327,12229,12227,12141,4229,6255,4593,4755),
     ),
     12117 => array(
-        'm_icon' => '<i class="fas fa-file-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-paperclip read" aria-hidden="true"></i>',
         'm_name' => 'UPLOADED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
@@ -2153,31 +2153,31 @@ $config['en_all_12227'] = array(
         'm_parents' => array(6205,7704,4755,4593,12326,12227),
     ),
     4235 => array(
-        'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
         'm_name' => 'GET STARTED',
         'm_desc' => '',
         'm_parents' => array(6205,12227,7347,5967,4755,4593),
     ),
     4559 => array(
-        'm_icon' => '<i class="fas fa-comment-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment read" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
     ),
     7495 => array(
-        'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-play read" aria-hidden="true"></i>',
         'm_name' => 'RECOMMEND',
         'm_desc' => '',
         'm_parents' => array(6205,12227,7347,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-comment-alt-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-keyboard read" aria-hidden="true"></i>',
         'm_name' => 'REPLIED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
     ),
     6143 => array(
-        'm_icon' => '<i class="fas fa-comment-times read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-times read" aria-hidden="true"></i>',
         'm_name' => 'SKIPPED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,6146,4755,4593),
@@ -2213,7 +2213,7 @@ $config['en_all_12227'] = array(
         'm_parents' => array(6205,12326,12227,6410,4229,4755,4593),
     ),
     12117 => array(
-        'm_icon' => '<i class="fas fa-file-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-paperclip read" aria-hidden="true"></i>',
         'm_name' => 'UPLOADED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
@@ -2508,13 +2508,13 @@ $config['en_all_12141'] = array(
         'm_parents' => array(6205,12229,12227,12141,7704,4755,6255,4593),
     ),
     4559 => array(
-        'm_icon' => '<i class="fas fa-comment-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment read" aria-hidden="true"></i>',
         'm_name' => 'READ MESSAGES',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-comment-alt-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-keyboard read" aria-hidden="true"></i>',
         'm_name' => 'READ REPLIED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
@@ -2538,7 +2538,7 @@ $config['en_all_12141'] = array(
         'm_parents' => array(6205,6140,12327,12229,12227,12141,4229,6255,4593,4755),
     ),
     12117 => array(
-        'm_icon' => '<i class="fas fa-file-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-paperclip read" aria-hidden="true"></i>',
         'm_name' => 'READ UPLOADED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
@@ -6384,13 +6384,13 @@ $config['en_all_10593'] = array(
 $config['en_ids_7347'] = array(4235,7495);
 $config['en_all_7347'] = array(
     4235 => array(
-        'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
         'm_name' => 'GET STARTED',
         'm_desc' => '',
         'm_parents' => array(6205,12227,7347,5967,4755,4593),
     ),
     7495 => array(
-        'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-play read" aria-hidden="true"></i>',
         'm_name' => 'RECOMMEND',
         'm_desc' => '',
         'm_parents' => array(6205,12227,7347,4755,4593),
@@ -7034,7 +7034,7 @@ $config['en_all_5967'] = array(
         'm_parents' => array(6205,11035,5967,4755,6418,4593,6414),
     ),
     4235 => array(
-        'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
         'm_name' => 'READ GET STARTED',
         'm_desc' => '&var_en_subscriber_ids=1',
         'm_parents' => array(6205,12227,7347,5967,4755,4593),
@@ -7440,13 +7440,13 @@ $config['en_all_6255'] = array(
         'm_parents' => array(6205,12229,12227,12141,7704,4755,6255,4593),
     ),
     4559 => array(
-        'm_icon' => '<i class="fas fa-comment-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment read" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-comment-alt-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-keyboard read" aria-hidden="true"></i>',
         'm_name' => 'REPLIED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
@@ -7470,7 +7470,7 @@ $config['en_all_6255'] = array(
         'm_parents' => array(6205,6140,12327,12229,12227,12141,4229,6255,4593,4755),
     ),
     12117 => array(
-        'm_icon' => '<i class="fas fa-file-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-paperclip read" aria-hidden="true"></i>',
         'm_name' => 'UPLOADED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
@@ -7620,7 +7620,7 @@ $config['en_all_6146'] = array(
         'm_parents' => array(6205,12229,12227,4755,4593,6146),
     ),
     6143 => array(
-        'm_icon' => '<i class="fas fa-comment-times read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-times read" aria-hidden="true"></i>',
         'm_name' => 'SKIPPED',
         'm_desc' => 'Completed when students skip an intention and all its child intentions from their Action Plan',
         'm_parents' => array(6205,12229,12227,6146,4755,4593),
@@ -8010,7 +8010,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
     ),
     4235 => array(
-        'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
         'm_name' => 'READ GET STARTED',
         'm_desc' => '',
         'm_parents' => array(6205,12227,7347,5967,4755,4593),
@@ -8064,7 +8064,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(6771,4593,4755),
     ),
     4559 => array(
-        'm_icon' => '<i class="fas fa-comment-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment read" aria-hidden="true"></i>',
         'm_name' => 'READ MESSAGES',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
@@ -8118,13 +8118,13 @@ $config['en_all_4755'] = array(
         'm_parents' => array(6205,10593,4593,4755,7569),
     ),
     7495 => array(
-        'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-play read" aria-hidden="true"></i>',
         'm_name' => 'READ RECOMMEND',
         'm_desc' => '',
         'm_parents' => array(6205,12227,7347,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-comment-alt-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-keyboard read" aria-hidden="true"></i>',
         'm_name' => 'READ REPLIED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
@@ -8232,7 +8232,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(6205,12351,4755,4593),
     ),
     6143 => array(
-        'm_icon' => '<i class="fas fa-comment-times read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-times read" aria-hidden="true"></i>',
         'm_name' => 'READ SKIPPED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,6146,4755,4593),
@@ -8298,7 +8298,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(6205,4755,6222,4593),
     ),
     12117 => array(
-        'm_icon' => '<i class="fas fa-file-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-paperclip read" aria-hidden="true"></i>',
         'm_name' => 'READ UPLOADED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
@@ -8795,7 +8795,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
     ),
     4235 => array(
-        'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
         'm_name' => 'READ GET STARTED',
         'm_desc' => '',
         'm_parents' => array(6205,12227,7347,5967,4755,4593),
@@ -8855,7 +8855,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(6205,6153,4593,10658),
     ),
     4559 => array(
-        'm_icon' => '<i class="fas fa-comment-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment read" aria-hidden="true"></i>',
         'm_name' => 'READ MESSAGES',
         'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
         'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
@@ -8915,13 +8915,13 @@ $config['en_all_4593'] = array(
         'm_parents' => array(6205,10593,4593,4755,7569),
     ),
     7495 => array(
-        'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-play read" aria-hidden="true"></i>',
         'm_name' => 'READ RECOMMEND',
         'm_desc' => 'Intention recommended by Mench and added to Action Plan to enable the user to complete their intention',
         'm_parents' => array(6205,12227,7347,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-comment-alt-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-keyboard read" aria-hidden="true"></i>',
         'm_name' => 'READ REPLIED',
         'm_desc' => 'Logged when a student submits the requirements (text, video, etc...) of an AND intent which could not be completed by simply receiving messages.',
         'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
@@ -9029,7 +9029,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(6205,12351,4755,4593),
     ),
     6143 => array(
-        'm_icon' => '<i class="fas fa-comment-times read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-times read" aria-hidden="true"></i>',
         'm_name' => 'READ SKIPPED',
         'm_desc' => 'Logged every time a student consciously skips an intent and it\'s recursive children.',
         'm_parents' => array(6205,12229,12227,6146,4755,4593),
@@ -9095,7 +9095,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(6205,4755,6222,4593),
     ),
     12117 => array(
-        'm_icon' => '<i class="fas fa-file-check read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-paperclip read" aria-hidden="true"></i>',
         'm_name' => 'READ UPLOADED',
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
