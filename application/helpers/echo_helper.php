@@ -1488,9 +1488,9 @@ function echo_in_idea($in)
     $ui .= '<td>';
     $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false).'</b>';
 
-    $echo_in_stats = echo_in_stats($in['in_id']);
+    $echo_in_stats = echo_in_stats($in['in_id'], true);
     if($echo_in_stats){
-        $ui .= '<div style="padding: 10px 0 2px; margin-left: -7px;">'.$echo_in_stats.'</div>';
+        $ui .= '<div style="padding: 10px 0 2px; margin-left: -8px;">'.$echo_in_stats.'</div>';
     }
 
     //Footnote
@@ -2156,7 +2156,7 @@ function echo_2level_players($main_obj, $all_link_types, $link_types_counts, $al
 
 
 
-function echo_in_stats($in_id){
+function echo_in_stats($in_id, $show_tree_stats = false){
 
     $CI =& get_instance();
 
@@ -2177,6 +2177,34 @@ function echo_in_stats($in_id){
                 $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
             }
         }
+    }
+
+    if($show_tree_stats){
+
+        $en_all_12413 = $CI->config->item('en_all_12413');
+
+        //PREVIOUS
+        $count_11019 = $this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            'ln_child_idea_id' => $in_id,
+        ), array('in_parent'), 1, 0, array(), 'COUNT(ln_id) as totals');
+        if($count_11019[0]['totals'] > 0){
+            $stats_ui .= '<span class="montserrat '.extract_icon_color($en_all_12413[11019]['m_icon']).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($count_11019[0]['totals'], 0).' '.$en_all_12413[11019]['m_name'].'"><span class="icon-block icon_photo">'.$en_all_12413[11019]['m_icon'].'</span>'.echo_number($count_11019[0]['totals']).'</span>';
+        }
+
+        //NEXT
+        $count_11020 = $this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            'ln_parent_idea_id' => $in_id,
+        ), array('in_child'), 1, 0, array(), 'COUNT(ln_id) as totals');
+        if($count_11020[0]['totals'] > 0){
+            $stats_ui .= '<span class="montserrat '.extract_icon_color($en_all_12413[11020]['m_icon']).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($count_11020[0]['totals'], 0).' '.$en_all_12413[11020]['m_name'].'"><span class="icon-block icon_photo">'.$en_all_12413[11020]['m_icon'].'</span>'.echo_number($count_11020[0]['totals']).'</span>';
+        }
+
     }
 
     //IDEA NOTES
