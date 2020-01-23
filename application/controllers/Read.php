@@ -47,18 +47,27 @@ class Read extends CI_Controller
 
         if($in_id > 0){
 
+            //Fetch Idea:
             $ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => $in_id,
             ));
 
+
+            //Should we check for auto next redirect if empty? Only if this is a selection:
+            $append_url = null;
+            if(in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7712'))){
+                $append_url = '?next_if_empty=1';
+            }
+
+
             //Find next idea based on player's reading list:
             $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
             if($next_in_id > 0){
-                return redirect_message('/' . $next_in_id);
+                return redirect_message('/' . $next_in_id.$append_url);
             } else {
                 $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false);
                 if($next_in_id > 0){
-                    return redirect_message('/' . $next_in_id);
+                    return redirect_message('/' . $next_in_id.$append_url);
                 } else {
                     return redirect_message('/', '<div class="alert alert-success" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully read your entire reading list.</div><div><span class="icon-block"><i class="fad fa-step-forward"></i></span>Continue with a new read below.</div></div>');
                 }
@@ -73,6 +82,7 @@ class Read extends CI_Controller
             } else {
                 return redirect_message('/', '<div class="alert alert-success" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully read your entire reading list.</div><div><span class="icon-block"><i class="fad fa-step-forward"></i></span>Continue with a new read below.</div></div>');
             }
+
         }
     }
 

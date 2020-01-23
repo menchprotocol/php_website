@@ -1632,7 +1632,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
         }
     }
 
-    $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'].'?manual_nav=1' : '/read/'.$in['in_id'] ) . '" class="list-group-item itemread '.$extra_class.'">';
+    $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'] : '/read/'.$in['in_id'] ) . '" class="list-group-item itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
 
@@ -2469,7 +2469,7 @@ function echo_read_breadcrumbs($in_id){
                         $completion_ui_rate = ' <span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'% DONE]</span>';
                     }
 
-                    array_push($breadcrumb_items, '<li class="breadcrumb-item"><a href="/'.$parent_in_id.'?manual_nav=1"><span class="icon-block in_parent_type_' . $ins_this[0]['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$ins_this[0]['in_type_play_id']]['m_name'].': '.$en_all_7585[$ins_this[0]['in_type_play_id']]['m_desc'].'">' . $en_all_7585[$ins_this[0]['in_type_play_id']]['m_icon'] . '</span></span><span class="icon-block' . ( in_array($ins_this[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$ins_this[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$ins_this[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$ins_this[0]['in_title'].$completion_ui_rate.'</a></li>');
+                    array_push($breadcrumb_items, '<li class="breadcrumb-item"><a href="/'.$parent_in_id.'"><span class="icon-block in_parent_type_' . $ins_this[0]['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$ins_this[0]['in_type_play_id']]['m_name'].': '.$en_all_7585[$ins_this[0]['in_type_play_id']]['m_desc'].'">' . $en_all_7585[$ins_this[0]['in_type_play_id']]['m_icon'] . '</span></span><span class="icon-block' . ( in_array($ins_this[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$ins_this[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$ins_this[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$ins_this[0]['in_title'].$completion_ui_rate.'</a></li>');
                 }
 
                 if($parent_in_id==$intersect){
@@ -2643,6 +2643,8 @@ function echo_en($en, $is_parent = false)
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_2738 = $CI->config->item('en_all_2738');
     $ln_id = (isset($en['ln_id']) ? $en['ln_id'] : 0);
+    $is_play_link = in_array($en['ln_type_play_id'], $CI->config->item('en_ids_4592'));
+    $is_read_progress = in_array($en['ln_type_play_id'], $CI->config->item('en_ids_12227'));
     $ui = null;
 
     $en__parents = $CI->READ_model->ln_fetch(array(
@@ -2682,13 +2684,13 @@ function echo_en($en, $is_parent = false)
         $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
 
         //LINK TYPE
-        $ui .= '<span class="icon-block ln_type_' . $ln_id . superpower_active(10967).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span></span>';
+        $ui .= '<span class="icon-block ln_type_' . $ln_id . ( $is_read_progress ? '' : superpower_active(10967) ).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span></span>';
 
         //LINK STATUS
         $ui .= '<span class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_play_id']]['m_name'].' @'.$en['ln_status_play_id'].': '.$en_all_6186[$en['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_play_id']]['m_icon'] . '</span></span>';
 
         //Show link index
-        if($en['ln_external_id'] > 0){
+        if($is_play_link && $en['ln_external_id'] > 0){
             if($en['ln_parent_play_id']==6196){
                 //Give trainers the ability to ping Messenger profiles:
                 $ui .= '<span class="icon-block '.superpower_active(10967).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/read/messenger_fetch_profile/'.$en['ln_external_id'].'" target="_blank"><i class="fas fa-project-diagram"></i></a></span>';
@@ -2762,7 +2764,7 @@ function echo_en($en, $is_parent = false)
     //Does this player also include a link?
     $can_modify = false;
     if ($ln_id > 0) {
-        if(in_array($en['ln_type_play_id'], $CI->config->item('en_ids_4592'))){
+        if($is_play_link){
 
             //PLAY LINKS:
             $can_modify = true;
@@ -2777,7 +2779,7 @@ function echo_en($en, $is_parent = false)
             //For JS editing only (HACK):
             $ui .= '<span class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</span>';
 
-        } elseif(in_array($en['ln_type_play_id'], $CI->config->item('en_ids_12227')) && strlen($en['ln_content'])){
+        } elseif($is_read_progress && strlen($en['ln_content'])){
 
             //READ PROGRESS
             $ui .= ' <span class="message_content">';
