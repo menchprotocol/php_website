@@ -60,7 +60,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
         //RIGHT
-        echo '<div class="inline-block pull-right side-margin readbb">';
+        echo '<div class="inline-block pull-right side-margin">';
 
         //TIME ESTIMATE
         echo '<div class="inline-block '.superpower_active(10939).'" style="margin:0 5px 0 0;"><span class="icon-block-sm inline-block"><i class="fad fa-stopwatch read"></i></span>'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
