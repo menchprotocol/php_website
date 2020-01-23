@@ -1505,6 +1505,8 @@ function echo_in_idea($in)
 
     $ui .= '</div>'; //End Footnote
 
+    $ui .= echo_in_stats($in['in_id']);
+
     $ui .= '</td>';
 
     //Search for Idea Image:
@@ -2150,6 +2152,56 @@ function echo_2level_players($main_obj, $all_link_types, $link_types_counts, $al
 
 
 
+function echo_in_stats($in_id){
+
+    $CI =& get_instance();
+
+    //Fetch Stats:
+    $stats_ui = '';
+
+    //IDEA READ STATS
+    foreach($CI->config->item('en_all_12409') as $read_group_play_id => $m){
+        //Need Superpowers for this?
+        $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
+        if(!count($superpower_actives) || superpower_assigned(end($superpower_actives))){
+            $item_counters = $CI->READ_model->ln_fetch(array(
+                'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_'.$read_group_play_id)) . ')' => null,
+                'ln_parent_idea_id' => $in_id,
+            ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
+            if($item_counters[0]['totals']>0){
+                $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
+            }
+        }
+    }
+
+    //IDEA NOTES
+    foreach($CI->config->item('en_all_4485') as $idea_note_play_id => $m){
+        //Need Superpowers for this?
+        $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
+        if(!count($superpower_actives) || superpower_assigned(end($superpower_actives))){
+            $item_counters = $CI->READ_model->ln_fetch(array(
+                'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_play_id' => $idea_note_play_id,
+                'ln_child_idea_id' => $in_id,
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+            if($item_counters[0]['totals']>0){
+                $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
+            }
+        }
+    }
+
+
+    //Show if any stats found:
+    $ui = null;
+    if(strlen($stats_ui)){
+        $ui .= ' <span class="inline-block">';
+        $ui .= $stats_ui;
+        $ui .= '</span>';
+    }
+
+    return $ui;
+}
 
 
 function echo_in($in, $in_linked_id, $is_parent, $is_author)
@@ -2214,49 +2266,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-
-    //Fetch Stats:
-    $stats_ui = '';
-
-    //IDEA READ STATS
-    foreach($CI->config->item('en_all_12409') as $read_group_play_id => $m){
-        //Need Superpowers for this?
-        $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-        if(!count($superpower_actives) || superpower_assigned(end($superpower_actives))){
-            $item_counters = $CI->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_'.$read_group_play_id)) . ')' => null,
-                'ln_parent_idea_id' => $in['in_id'],
-            ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
-            if($item_counters[0]['totals']>0){
-                $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
-            }
-        }
-    }
-
-    //IDEA NOTES
-    foreach($CI->config->item('en_all_4485') as $idea_note_play_id => $m){
-        //Need Superpowers for this?
-        $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-        if(!count($superpower_actives) || superpower_assigned(end($superpower_actives))){
-            $item_counters = $CI->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_play_id' => $idea_note_play_id,
-                'ln_child_idea_id' => $in['in_id'],
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            if($item_counters[0]['totals']>0){
-                $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
-            }
-        }
-    }
-
-
-    //Show if any stats found:
-    if(strlen($stats_ui)){
-        $ui .= ' <span class="inline-block">';
-        $ui .= $stats_ui;
-        $ui .= '</span>';
-    }
+    $ui .= echo_in_stats($in['in_id']);
 
 
     $ui .= '</span>';
