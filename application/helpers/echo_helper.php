@@ -2586,6 +2586,9 @@ function echo_message($message, $is_error, $recipient_en, $push_message){
 function echo_en($en, $is_parent = false)
 {
 
+    if(!isset($en['en_id'])){
+        return false;
+    }
     $CI =& get_instance();
     $session_en = superpower_assigned();
     $en_all_6177 = $CI->config->item('en_all_6177'); //Player Statuses
@@ -2656,7 +2659,7 @@ function echo_en($en, $is_parent = false)
 
 
     //PLAYER STATUS
-    //$ui .= '<span class="icon-block en_status_play_id_' . $en['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_play_id']]['m_name'].' @'.$en['en_status_play_id'].': '.$en_all_6177[$en['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_play_id']]['m_icon'] . '</span></span>';
+    $ui .= '<span class="icon-block en_status_play_id_' . $en['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_play_id']]['m_name'].' @'.$en['en_status_play_id'].': '.$en_all_6177[$en['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_play_id']]['m_icon'] . '</span></span>';
 
     //PLAYER NAME
     $ui .= '<b class="montserrat '.extract_icon_color($en['en_icon']).' en_name_' . $en['en_id'] . '">' . $en['en_name'] . '</b>';
