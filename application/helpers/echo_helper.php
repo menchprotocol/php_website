@@ -470,7 +470,7 @@ function echo_ln_connections($ln){
             //PLAY
             $ens = $CI->PLAY_model->en_fetch(array('en_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
             if(count($ens) > 0){
-                $ln_connections_ui .= echo_en($ens[0]);
+                $ln_connections_ui .= echo_en($ens[0], false, true);
             }
         } elseif(in_array(6202 , $m['m_parents'])){
             //IDEA
@@ -1578,7 +1578,7 @@ function echo_in_featured($in_id){
     $authors = $CI->READ_model->ln_fetch(array(
         'ln_type_play_id' => 4250,
         'ln_child_idea_id' => $in_id,
-    ), array('en_creator'), 1);
+    ), array('en_owner'), 1);
     $ui .= '<a href="'.$en_all_12201[12342]['m_desc'].'/'.$authors[0]['en_id'].'" data-toggle="tooltip" title="FEATURED IN '.$authors[0]['en_name'].'" data-placement="bottom" class="icon-block">'.echo_en_icon($authors[0]['en_icon']).'</a>';
 
 
@@ -1617,7 +1617,7 @@ function echo_in_featured($in_id){
 
 }
 
-function echo_in_read($in, $show_description = false, $footnotes = null, $common_prefix = null, $extra_class = null, $show_icon = false, $in_reads = true)
+function echo_in_read($in, $show_description = false, $footnotes = null, $common_prefix = null, $extra_class = null, $force_icon = false, $in_reads = true)
 {
 
     //See if user is logged-in:
@@ -1662,7 +1662,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
         $authors = $CI->READ_model->ln_fetch(array(
             'ln_type_play_id' => 4250,
             'ln_child_idea_id' => $in['in_id'],
-        ), array('en_creator'), 1);
+        ), array('en_owner'), 1);
 
         $ui .= ( $has_time_estimate ? echo_time_range($in, true).' read' : '' );
 
@@ -1689,7 +1689,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $ui .= '</td>';
 
     //Search for Idea Image:
-    $ui .= '<td class="featured-frame">'.echo_in_thumbnail($in['in_id'], $show_icon).'</td>';
+    $ui .= '<td class="featured-frame">'.echo_in_thumbnail($in['in_id'], $force_icon).'</td>';
     $ui .= '</tr></table>';
     $ui .= '</a>';
 
@@ -1729,7 +1729,7 @@ function echo_in_description($in_id){
 
 }
 
-function echo_in_thumbnail($in_id, $show_icon = false, $extra_css = null){
+function echo_in_thumbnail($in_id, $force_icon = false, $extra_css = null){
 
     $CI =& get_instance();
 
@@ -1770,7 +1770,7 @@ function echo_in_thumbnail($in_id, $show_icon = false, $extra_css = null){
     }
 
     //Not found:
-    return ( $show_icon ? '<div class="inline-block pull-right '.$extra_css.'"><i class="fas fa-chevron-circle-right read large-icon"></i></div>' : null );
+    return ( $force_icon ? '<div class="inline-block pull-right '.$extra_css.'"><i class="fas fa-chevron-circle-right read large-icon"></i></div>' : null );
 
 }
 
@@ -2251,7 +2251,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-
     $ui .= '<span class="idea-left">';
 
     //LINK TYPE
@@ -2316,6 +2315,8 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
+
+
     /*
      *
      * Start Right Side
@@ -2324,6 +2325,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     $ui .= '<div style="padding-left:5px;" class="pull-right inline-block">';
 
+
     //Loop through parents:
     $ui .= '<span class="'.superpower_active(10984).'">';
     foreach ($CI->READ_model->ln_fetch(array(
@@ -2331,13 +2333,11 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
         'ln_child_idea_id' => $in['in_id'],
+        'ln_parent_idea_id !=' => $in_linked_id,
     ), array('in_parent')) as $in_parent){
-        if($in_linked_id!=$in_parent['in_id']){
-            $ui .= '<a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_play_id']]['m_icon'] . '</a> &nbsp;';
-        }
+        $ui .= '<a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_play_id']]['m_icon'] . '</a> &nbsp;';
     }
     $ui .= '</span>';
-
 
 
     $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
@@ -2682,7 +2682,7 @@ function echo_en($en, $is_parent = false)
         $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
 
         //LINK TYPE
-        //$ui .= '<span class="icon-block ln_type_' . $ln_id . superpower_active(10967).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span></span>';
+        $ui .= '<span class="icon-block ln_type_' . $ln_id . superpower_active(10967).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span></span>';
 
         //LINK STATUS
         $ui .= '<span class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_play_id']]['m_name'].' @'.$en['ln_status_play_id'].': '.$en_all_6186[$en['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_play_id']]['m_icon'] . '</span></span>';
@@ -2715,43 +2715,44 @@ function echo_en($en, $is_parent = false)
 
 
 
+
     //Fetch Stats:
     $stats_ui = '';
 
     //PLAY READ STATS
-    foreach($CI->config->item('en_all_12410') as $read_group_play_id => $m){
+    foreach ($CI->config->item('en_all_12410') as $read_group_play_id => $m) {
         //Need Superpowers for this?
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-        if(!count($superpower_actives) || superpower_assigned(end($superpower_actives))){
+        if (!count($superpower_actives) || superpower_assigned(end($superpower_actives))) {
             $item_counters = $CI->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_'.$read_group_play_id)) . ')' => null,
+                'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_' . $read_group_play_id)) . ')' => null,
                 'ln_owner_play_id' => $en['en_id'], //Only owner matters in read groups
             ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
-            if($item_counters[0]['totals']>0){
-                $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
+            if ($item_counters[0]['totals'] > 0) {
+                $stats_ui .= '<span class="montserrat ' . extract_icon_color($m['m_icon']) . (count($superpower_actives) ? superpower_active(end($superpower_actives)) : '') . '" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="' . number_format($item_counters[0]['totals'], 0) . ' ' . $m['m_name'] . '"><span class="icon-block icon_photo">' . $m['m_icon'] . '</span>' . echo_number($item_counters[0]['totals']) . '</span>';
             }
         }
     }
 
     //IDEA NOTES
-    foreach($CI->config->item('en_all_4485') as $idea_note_play_id => $m){
+    foreach ($CI->config->item('en_all_4485') as $idea_note_play_id => $m) {
         //Need Superpowers for this?
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-        if(!count($superpower_actives) || superpower_assigned(end($superpower_actives))){
+        if (!count($superpower_actives) || superpower_assigned(end($superpower_actives))) {
             $item_counters = $CI->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id' => $idea_note_play_id,
-                '(ln_owner_play_id='.$en['en_id'].' OR ln_child_play_id='.$en['en_id'].' OR ln_parent_play_id='.$en['en_id'].')' => null, //Idea Notes cover a broader reference set
+                '(ln_owner_play_id=' . $en['en_id'] . ' OR ln_child_play_id=' . $en['en_id'] . ' OR ln_parent_play_id=' . $en['en_id'] . ')' => null, //Idea Notes cover a broader reference set
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            if($item_counters[0]['totals']>0){
-                $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
+            if ($item_counters[0]['totals'] > 0) {
+                $stats_ui .= '<span class="montserrat ' . extract_icon_color($m['m_icon']) . (count($superpower_actives) ? superpower_active(end($superpower_actives)) : '') . '" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="' . number_format($item_counters[0]['totals'], 0) . ' ' . $m['m_name'] . '"><span class="icon-block icon_photo">' . $m['m_icon'] . '</span>' . echo_number($item_counters[0]['totals']) . '</span>';
             }
         }
     }
 
     //Show if any stats found:
-    if(strlen($stats_ui)){
+    if (strlen($stats_ui)) {
         $ui .= ' <span class="inline-block">';
         $ui .= $stats_ui;
         $ui .= '</span>';
@@ -2759,18 +2760,31 @@ function echo_en($en, $is_parent = false)
 
 
     //Does this player also include a link?
+    $can_modify = false;
     if ($ln_id > 0) {
+        if(in_array($en['ln_type_play_id'], $CI->config->item('en_ids_4592'))){
 
-        //Show link content:
-        $ln_content = echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']);
+            //PLAY LINKS:
+            $can_modify = true;
 
-        $ui .= ' <span class="ln_content ln_content_' . $ln_id . '">';
-        $ui .= $ln_content;
-        $ui .= '</span>';
+            //Show link content:
+            $ln_content = echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']);
 
-        //For JS editing only (HACK):
-        $ui .= '<span class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</span>';
+            $ui .= ' <span class="ln_content ln_content_' . $ln_id . '">';
+            $ui .= $ln_content;
+            $ui .= '</span>';
 
+            //For JS editing only (HACK):
+            $ui .= '<span class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</span>';
+
+        } elseif(in_array($en['ln_type_play_id'], $CI->config->item('en_ids_12227')) && strlen($en['ln_content'])){
+
+            //READ PROGRESS
+            $ui .= ' <span class="message_content">';
+            $ui .= $CI->READ_model->dispatch_message($en['ln_content']);
+            $ui .= '</span>';
+
+        }
     }
 
 
@@ -2791,6 +2805,8 @@ function echo_en($en, $is_parent = false)
 
     //FOLLOW
     $ui .= '<div class="inline-block pull-right">';
+
+
         $child_links = $CI->READ_model->ln_fetch(array(
             'ln_parent_play_id' => $en['en_id'],
             'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
@@ -2799,8 +2815,10 @@ function echo_en($en, $is_parent = false)
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
         $ui .= '<div class="inline-block" style="padding-left:5px"><a class="btn btn-play" href="/play/' . $en['en_id']. '"><span class="'. superpower_active(10983) .'">' . ( $child_links[0]['totals'] > 0 ? echo_number($child_links[0]['totals']).' ' : '') . '</span><i class="fas fa-angle-right"></i></a></div>';
 
-        //MODIFY
-        $ui .= '<div class="inline-block '. superpower_active(10983) .'" style="padding-left:5px;"><a class="btn btn-play" href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog"></i></a></div>';
+        if($can_modify){
+            //MODIFY
+            $ui .= '<div class="inline-block '. superpower_active(10983) .'" style="padding-left:5px;"><a class="btn btn-play" href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog"></i></a></div>';
+        }
 
     $ui .= ' </div>';
 

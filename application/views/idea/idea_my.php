@@ -82,12 +82,14 @@
 
         } else {
 
-            $start_ins = $this->IDEA_model->in_fetch(array(
-                'in_id' => config_var(10939),
-            ));
+            //Introduce Super Power:
+            $superpower = 10939; //IDEA PEN TO START
+            $en_all_10957 = $this->config->item('en_all_10957'); //PLAY SUPERPOWERS
+            echo '<div style="padding:10px 0;"><p>Unlock the superpowers of '.$en_all_10957[$superpower]['m_icon'].' '.$en_all_10957[$superpower]['m_name'].' to '.$en_all_10957[$superpower]['m_desc'].'</p></div>';
 
-            echo '<div style="padding:10px 0;"><p>Before creating your first idea, we invite you to read "<a href="/'.$start_ins[0]['in_id'].'" class="montserrat">'.$start_ins[0]['in_title'].'</a>" to get started.</p></div>';
-            echo '<div style="padding:10px 0;"><a href="/'.$start_ins[0]['in_id'].'" class="btn btn-idea montserrat">GET STARTED <i class="fad fa-step-forward"></i></a></div>';
+            //Link to it on the website:
+            $en_all_10876 = $this->config->item('en_all_10876'); //MENCH WEBSITE
+            echo '<div style="padding:10px 0;"><a href="'.$en_all_10876[$superpower]['m_desc'].'" class="btn btn-idea montserrat">GET STARTED <i class="fad fa-step-forward"></i></a></div>';
 
         }
 

@@ -366,7 +366,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 }
 
-            } elseif(in_array($en_id2, $this->config->item('en_ids_12228'))){
+            } elseif(in_array($en_id2, $this->config->item('en_ids_12409'))){
 
                 //READER READS & BOOKMARKS
                 $item_counters = $this->READ_model->ln_fetch(array(
@@ -376,6 +376,19 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 
                 $counter = $item_counters[0]['totals'];
+
+                if($counter > 0){
+
+                    //Dynamic Loading when clicked:
+                    $this_tab .= '<div id="read_in_history_'.$en_id2.'" en-id="'.$en_id2.'" class="list-group dynamic-reads"></div>';
+
+                } else {
+
+                    //Inform that nothing was found:
+                    $en_all_12409 = $this->config->item('en_all_12409');
+                    $this_tab .= '<div class="alert alert-warning">No <span class="montserrat '.extract_icon_color($en_all_12409[$en_id2]['m_icon']).'">'.$en_all_12409[$en_id2]['m_icon'].' '.$en_all_12409[$en_id2]['m_name'].'</span> added yet.</div>';
+
+                }
 
             } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
 

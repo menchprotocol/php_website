@@ -76,6 +76,80 @@ class Read extends CI_Controller
         }
     }
 
+    function read_in_history($type_group_id, $in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
+
+        $session_en = superpower_assigned(10939);
+        if (!$session_en) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Expired Session or Missing Superpower',
+            ));
+
+        } elseif (!$in_id && !$owner_en_id) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Require either Idea or Play ID',
+            ));
+
+        } elseif (!in_array($type_group_id, $this->config->item('en_ids_12409')) || !count($this->config->item('en_ids_'.$type_group_id))) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Read Type Group ID',
+            ));
+
+        }
+
+        $list_filters = array(
+            'ln_id >' => $last_loaded_ln_id,
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$type_group_id)) . ')' => null,
+        );
+
+        if($in_id > 0){
+            $list_filters['ln_parent_idea_id'] = $in_id;
+            $list_url = '/idea/'.$in_id;
+            $list_class = 'itemidea';
+            $join_objects = array('en_owner');
+        } elseif($owner_en_id > 0){
+            $list_filters['ln_owner_play_id'] = $owner_en_id;
+            $list_url = '/play/'.$owner_en_id;
+            $list_class = 'itemplay';
+            $join_objects = array('in_parent');
+        }
+
+
+        //List Read History:
+        $ui = '';
+        foreach($this->READ_model->ln_fetch($list_filters, $join_objects, config_var(11064), 0, array('ln_id' => 'DESC')) as $in_read){
+            if($in_id > 0){
+
+                $ui .= echo_en($in_read);
+
+            } elseif($owner_en_id > 0){
+
+                $footnotes = null;
+                if(strlen($in_read['ln_content'])){
+                    $footnotes .= ' <span class="message_content">';
+                    $footnotes .= $this->READ_model->dispatch_message($in_read['ln_content']);
+                    $footnotes .= '</span>';
+                }
+
+                $ui .= echo_in_read($in_read,false, $footnotes);
+
+            }
+        }
+
+
+        //Return success:
+        return echo_json(array(
+            'status' => 1,
+            'message' => $ui,
+        ));
+
+    }
 
     function read_home(){
 

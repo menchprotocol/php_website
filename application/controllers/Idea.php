@@ -672,7 +672,7 @@ class Idea extends CI_Controller {
             'ln_parent_idea_id' => $ins[0]['in_id'],
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
-        ), array('en_creator'), 500);
+        ), array('en_owner'), 500);
         if(count($actionplan_users) < 1){
             return echo_json(array(
                 'status' => 0,

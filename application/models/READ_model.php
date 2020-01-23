@@ -168,7 +168,7 @@ class READ_model extends CI_Model
             $this->db->join('table_play', 'ln_child_play_id=en_id','left');
         } elseif (in_array('en_type', $join_objects)) {
             $this->db->join('table_play', 'ln_type_play_id=en_id','left');
-        } elseif (in_array('en_creator', $join_objects)) {
+        } elseif (in_array('en_owner', $join_objects)) {
             $this->db->join('table_play', 'ln_owner_play_id=en_id','left');
         }
 
@@ -1537,7 +1537,7 @@ class READ_model extends CI_Model
                 $authors = $this->READ_model->ln_fetch(array(
                     'ln_type_play_id' => 4250,
                     'ln_child_idea_id' => $ins[0]['in_id'],
-                ), array('en_creator'), 1);
+                ), array('en_owner'), 1);
 
                 echo 'BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a>';
 
@@ -1725,7 +1725,7 @@ class READ_model extends CI_Model
                     $authors = $this->READ_model->ln_fetch(array(
                         'ln_type_play_id' => 4250,
                         'ln_child_idea_id' => $ins[0]['in_id'],
-                    ), array('en_creator'), 1);
+                    ), array('en_owner'), 1);
 
                     echo 'BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a>';
 

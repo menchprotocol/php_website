@@ -722,7 +722,7 @@ fragment PostListingItemSidebar_post on Post {
         */
 
         //Fetch top_players:
-        $idea_coins = $this->READ_model->ln_fetch($filters_idea, array('en_creator'), $load_max, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        $idea_coins = $this->READ_model->ln_fetch($filters_idea, array('en_owner'), $load_max, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
 
         echo '<table id="top_players" class="table table-sm table-striped">';
@@ -788,7 +788,7 @@ fragment PostListingItemSidebar_post on Post {
         $show_readers = $load_max - $ideators_found;
         if($show_readers > 0){
 
-            $read_coins = $this->READ_model->ln_fetch($filters_read, array('en_creator'), $show_readers, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+            $read_coins = $this->READ_model->ln_fetch($filters_read, array('en_owner'), $show_readers, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
             foreach ($read_coins as $count=>$ln) {
 
@@ -1644,7 +1644,7 @@ fragment PostListingItemSidebar_post on Post {
             //Fetch player link:
             $lns = $this->READ_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
-            ), array('en_creator'));
+            ), array('en_owner'));
 
             //Prep last updated:
             $return_array['ln_content'] = echo_ln_urls($ln_content, $js_ln_type_play_id);

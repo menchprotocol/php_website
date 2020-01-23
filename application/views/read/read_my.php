@@ -73,7 +73,7 @@ if(!$session_en){
             $authors = $this->READ_model->ln_fetch(array(
                 'ln_type_play_id' => 4250,
                 'ln_child_idea_id' => $ln['in_id'],
-            ), array('en_creator'), 1);
+            ), array('en_owner'), 1);
 
             echo ( $has_time_estimate ? echo_time_range($ln, true).' READ ' : '' );
             echo '<span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% DONE]</span> ';
