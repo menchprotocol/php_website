@@ -471,7 +471,7 @@ img.no-radius {
 
 .btn-play i, .btn-read i, .btn-idea i { color: #000000 !important; }
 
-.header-content-idea{
+.left-border-idea{
     border-left: 8px solid #ffd600;
     padding-left: 5px;
     margin-left: -13px;
