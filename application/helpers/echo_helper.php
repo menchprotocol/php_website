@@ -2755,9 +2755,9 @@ function echo_en($en, $is_parent = false)
         } elseif($is_read_progress && strlen($en['ln_content'])){
 
             //READ PROGRESS
-            $ui .= ' <span class="message_content">';
+            $ui .= '<div class="message_content message_slim">';
             $ui .= $CI->READ_model->dispatch_message($en['ln_content']);
-            $ui .= '</span>';
+            $ui .= '</div>';
 
         }
     }

@@ -142,9 +142,9 @@ class Read extends CI_Controller
 
                 $footnotes = null;
                 if(strlen($in_read['ln_content'])){
-                    $footnotes .= ' <span class="message_content">';
+                    $footnotes .= '<div class="message_content">';
                     $footnotes .= $this->READ_model->dispatch_message($in_read['ln_content']);
-                    $footnotes .= '</span>';
+                    $footnotes .= '</div>';
                 }
 
                 $ui .= echo_in_read($in_read,false, $footnotes);

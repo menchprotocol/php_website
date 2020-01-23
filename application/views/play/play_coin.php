@@ -430,9 +430,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                             //Include the message:
                             $footnotes = null;
                             if($idea_note['ln_content']){
-                                $footnotes .= ' <span class="message_content">';
+                                $footnotes .= '<div class="message_content">';
                                 $footnotes .= $this->READ_model->dispatch_message($idea_note['ln_content']);
-                                $footnotes .= '</span>';
+                                $footnotes .= '</div>';
                             }
 
                             $this_tab .= echo_in_read($idea_note, false, $footnotes);

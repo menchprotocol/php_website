@@ -74,6 +74,11 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .table {
     width: 100%;
 }
+.message_slim{
+    padding: 10px;
+    font-size: 0.8em;
+    line-height: 120%;
+}
 
 table td { border: none !important; }
 
