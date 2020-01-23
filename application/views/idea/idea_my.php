@@ -17,7 +17,7 @@
         //LEFT
         //echo '<div class="pull-left">'.echo_menu(12343, 'btn-idea').'</div>';
 
-        $add_idea_btn = '<a href="javascript:void(0);" onclick="$(\'.add-idea-toggle\').toggleClass(\'hidden\');$(\'#newIdeaTitle\').focus();" class="btn btn-idea btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12214]['m_name'].'">'.$en_all_11035[12214]['m_icon'].'</a>';
+        $add_idea_btn = '<a href="javascript:void(0);" onclick="idea_create_initiate()" class="btn btn-idea btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12214]['m_name'].'">'.$en_all_11035[12214]['m_icon'].'</a>';
 
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
@@ -78,7 +78,7 @@
 
             echo '<div class="ideaCreateStatusUpdate montserrat" style="padding-bottom: 20px;"></div>';
 
-            echo '<div class="ideaCreationController"><a href="javascript:void(0);" onclick="idea_create()" class="btn btn-idea btn-five icon-block-lg">'.$en_all_11035[12214]['m_name'].'</a> or <a href="javascript:void(0);" onclick="$(\'.add-idea-toggle\').toggleClass(\'hidden\');"><u>Cancel</u></a></div>';
+            echo '<div class="ideaCreationController"><a href="javascript:void(0);" onclick="idea_create()" class="btn btn-idea btn-five icon-block-lg">SAVE</a> or <a href="javascript:void(0);" onclick="$(\'.add-idea-toggle\').toggleClass(\'hidden\');"><u>Cancel</u></a></div>';
 
         } else {
 

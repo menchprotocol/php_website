@@ -1,19 +1,16 @@
 
 
-$(document).ready(function () {
+function idea_create_initiate(){
 
+    //Load Idea Adder:
     autosize($('#newIdeaTitle'));
+    in_load_search("#newIdeaTitle",0, 'a', false /* Search Only */);
+    $('#newIdeaTitle').focus();
 
-    $('#newIdeaTitle').keypress(function(e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if (code == 13) {
-            idea_create();
-            e.preventDefault();
-        }
-    });
+    //Show UI:
+    $('.add-idea-toggle').toggleClass('hidden');
 
-});
-
+}
 
 function idea_create(){
 

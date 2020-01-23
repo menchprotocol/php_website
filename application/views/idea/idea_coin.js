@@ -81,8 +81,8 @@ $(document).ready(function () {
     });
 
     //Load top/bottom idea searches:
-    in_load_search(".ideaadder-level-2-parent",1, 'q');
-    in_load_search(".ideaadder-level-2-child",0, 'w');
+    in_load_search(".ideaadder-level-2-parent",1, 'q', true);
+    in_load_search(".ideaadder-level-2-child",0, 'w', true);
 
     //Expand selections:
     prep_search_pad();
@@ -779,73 +779,6 @@ function prep_search_pad(){
 
 }
 
-function in_load_search(element_focus, is_in_parent, shortcut) {
-
-    //Loads the idea search bar only once for the add idea inputs
-    if($(element_focus).hasClass('search-bar-loaded')){
-        //Already loaded:
-        return false;
-    }
-
-
-    //Not yet loaded, continue with loading it:
-    $(element_focus).addClass('search-bar-loaded').on('autocomplete:selected', function (event, suggestion, dataset) {
-
-        in_link_or_create($(this).attr('idea-id'), is_in_parent, suggestion.alg_obj_id);
-
-    }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [shortcut]}, [{
-
-        source: function (q, cb) {
-
-            if($(element_focus).val().charAt(0)=='#'){
-                cb([]);
-                return;
-            } else {
-                algolia_index.search(q, {
-
-                    filters: ' alg_obj_is_in=1 AND ( _tags:alg_is_published_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_author_' + js_pl_id : '' ) + ' ) ',
-                    hitsPerPage: 7,
-
-                }, function (error, content) {
-                    if (error) {
-                        cb([]);
-                        return;
-                    }
-                    cb(content.hits, content);
-                });
-            }
-
-        },
-        displayKey: function (suggestion) {
-            return ""
-        },
-        templates: {
-            suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion);
-            },
-            header: function (data) {
-                if (!($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
-                }
-            },
-            empty: function (data) {
-                if($(element_focus).val().charAt(0)=='#'){
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
-                } else {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
-                }
-            },
-        }
-    }]).keypress(function (e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return in_link_or_create($(this).attr('idea-id'), is_in_parent, 0);
-        }
-    });
-
-}
-
-
 function in_sort_save(in_id) {
 
     var new_ln_orders = [];
@@ -861,7 +794,6 @@ function in_sort_save(in_id) {
         //Store in DB:
         new_ln_orders[sort_rank] = ln_id;
     });
-
 
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0 && in_id) {
