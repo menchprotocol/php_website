@@ -1490,7 +1490,7 @@ function echo_in_idea($in)
 
     $echo_in_stats = echo_in_stats($in['in_id']);
     if($echo_in_stats){
-        $ui .= '<div style="padding: 10px 0 2px; margin-left: -6px;">'.$echo_in_stats.'</div>';
+        $ui .= '<div style="padding: 10px 0 2px; margin-left: -8px;">'.$echo_in_stats.'</div>';
     }
 
     //Footnote
