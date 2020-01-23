@@ -77,7 +77,6 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .message_slim{
     padding: 10px;
     font-size: 0.8em;
-    line-height: 120%;
 }
 
 table td { border: none !important; }
@@ -1132,7 +1131,6 @@ label {
 .idea-desc{
     font-size: 0.8em;
     padding: 10px 0 5px;
-    line-height: 120%;
 }
 
 .idea-desc .icon-block{
