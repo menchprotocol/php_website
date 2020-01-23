@@ -32,7 +32,6 @@ if(!$is_author){
     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle read"></i> You are not a idea author. <a href="/idea/in_become_author/'.$in['in_id'].'" class="inline-block montserrat '.superpower_active(10984).'">BECOME AUTHOR</a></div>';
 }
 
-echo '<div class="row">';
 $col_num = 0;
 foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
@@ -42,7 +41,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     $show_tab_menu_count = 0;
     $show_tab_ui = '';
     
-    echo '<div class="col-lg-12">';
+    echo '<div>';
 
 
     //Display Header:
@@ -61,10 +60,10 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
         //RIGHT
-        echo '<div class="inline-block pull-right side-margin">';
+        echo '<div class="inline-block pull-right side-margin readbb">';
 
         //TIME ESTIMATE
-        echo '<div class="inline-block '.superpower_active(10939).'" style="margin:0 5px;"><span class="icon-block-sm inline-block"><i class="fad fa-stopwatch read"></i></span>'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
+        echo '<div class="inline-block '.superpower_active(10939).'" style="margin:0 5px 0 0;"><span class="icon-block-sm inline-block"><i class="fad fa-stopwatch read"></i></span>'.echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
 
         //READ PREVIEW
         echo '<a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fad fa-step-forward"></i></a>';
@@ -308,7 +307,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 }
 
-echo '</div>';
 echo '</div>';
 
 ?>
