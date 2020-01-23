@@ -426,7 +426,17 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                         if(in_array($en_id2, $this->config->item('en_ids_12321'))){
                             $this_tab .= echo_in_read($idea_note);
                         } elseif(in_array($en_id2, $this->config->item('en_ids_12322'))){
-                            $this_tab .= echo_en_messages($idea_note);
+
+                            //Include the message:
+                            $footnotes = null;
+                            if($idea_note['ln_content']){
+                                $footnotes .= ' <span class="message_content">';
+                                $footnotes .= $this->READ_model->dispatch_message($idea_note['ln_content']);
+                                $footnotes .= '</span>';
+                            }
+
+                            $this_tab .= echo_in_read($idea_note, false, $footnotes);
+
                         }
                     }
                     $this_tab .= '</div>';

@@ -1324,56 +1324,6 @@ function echo_tree_actionplan($in, $autoexpand){
 }
 
 
-function echo_en_messages($ln){
-
-    $CI =& get_instance();
-    $session_en = superpower_assigned();
-    $en_all_7585 = $CI->config->item('en_all_7585'); //Idea Subtypes
-    $en_all_4737 = $CI->config->item('en_all_4737'); //Idea Statuses
-    $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
-
-    $ui = '<div class="players-msg">';
-
-    $ui .= '<div>';
-
-    //Editing menu:
-    $ui .= '<ul class="msg-nav">';
-
-
-    //Referenced Idea:
-    $ui .= '<li><a class="btn btn-idea button-max" style="border:2px solid #ffd600 !important;" href="/idea/' . $ln['ln_child_idea_id'] . '" target="_parent" title="Message Idea: '.$ln['in_title'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_play_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_type_play_id']]['m_icon'].' '.$ln['in_title'].'</a></li>';
-
-    //READ HISTORY:
-    /*
-    $count_msg_trs = $CI->READ_model->ln_fetch(array(
-        '( ln_id = ' . $ln['ln_id'] . ' OR ln_parent_read_id = ' . $ln['ln_id'] . ')' => null,
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-    $ui .= '<li><a class="btn btn-idea" style="border:2px solid #ffd600 !important;" href="/read/view_json/' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
-    */
-
-
-    //Link Status:
-    $ui .= '<li style="margin: 0 3px 0 0;"><span title="'.$en_all_6186[$ln['ln_status_play_id']]['m_name'].': '.$en_all_6186[$ln['ln_status_play_id']]['m_desc'].'" data-toggle="tooltip" data-placement="top">'.$en_all_6186[$ln['ln_status_play_id']]['m_icon'].'</span></li>';
-
-
-    $ui .= '<li class="doclear">&nbsp;</li>';
-
-    $ui .= '</ul>';
-
-    //Show message only if its not a plain reference and includes additional text/info:
-    if($ln['ln_content'] != '@'.$ln['ln_parent_play_id']){
-        $ui .= '<div style="margin-top: 15px;">';
-        $ui .= $CI->READ_model->dispatch_message($ln['ln_content'], $session_en, false);
-        $ui .= '</div>';
-    }
-
-
-    $ui .= '</div>';
-
-    $ui .= '</div>';
-
-    return $ui;
-}
 
 function echo_time_range($in, $micro = false, $hide_zero = false)
 {
