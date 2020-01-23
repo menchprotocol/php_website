@@ -2184,10 +2184,10 @@ function echo_in_stats($in_id, $show_tree_stats = false){
         $en_all_12413 = $CI->config->item('en_all_12413');
 
         //PREVIOUS
-        $count_11019 = $this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+        $count_11019 = $CI->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+            'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             'ln_child_idea_id' => $in_id,
         ), array('in_parent'), 1, 0, array(), 'COUNT(ln_id) as totals');
         if($count_11019[0]['totals'] > 0){
@@ -2195,10 +2195,10 @@ function echo_in_stats($in_id, $show_tree_stats = false){
         }
 
         //NEXT
-        $count_11020 = $this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+        $count_11020 = $CI->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+            'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             'ln_parent_idea_id' => $in_id,
         ), array('in_child'), 1, 0, array(), 'COUNT(ln_id) as totals');
         if($count_11020[0]['totals'] > 0){
