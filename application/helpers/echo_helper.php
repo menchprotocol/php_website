@@ -1488,6 +1488,8 @@ function echo_in_idea($in)
     $ui .= '<td>';
     $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false).'</b>';
 
+    $ui .= echo_in_stats($in['in_id']);
+
     //Footnote
     $ui .= '<div class="montserrat idea-info doupper">';
 
@@ -1505,7 +1507,6 @@ function echo_in_idea($in)
 
     $ui .= '</div>'; //End Footnote
 
-    $ui .= echo_in_stats($in['in_id']);
 
     $ui .= '</td>';
 
@@ -2195,7 +2196,7 @@ function echo_in_stats($in_id){
     //Show if any stats found:
     $ui = null;
     if(strlen($stats_ui)){
-        $ui .= ' <span class="inline-block">';
+        $ui .= '<span class="inline-block" style="padding: 5px 0;">';
         $ui .= $stats_ui;
         $ui .= '</span>';
     }
