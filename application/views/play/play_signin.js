@@ -258,7 +258,7 @@ function magicemail(){
         }, function (data) {
             if (data.status) {
                 //All good, they can close window:
-                $('.magic_result').html('<div><i class="fas fa-eye"></i> Check your email now</div>').hide().fadeIn();
+                $('.magic_result').html('<div><i class="fas fa-eye"></i> Check your email & your SPAM FOLDER</div>').hide().fadeIn();
             } else {
                 //Show errors:
                 $('.magic_result').html('<b style="color: #FF0000;"><i class="fas fa-exclamation-triangle"></i> Error: ' + data.message + '</b>').hide().fadeIn();
