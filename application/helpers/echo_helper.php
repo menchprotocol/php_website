@@ -2643,8 +2643,8 @@ function echo_en($en, $is_parent = false)
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_2738 = $CI->config->item('en_all_2738');
     $ln_id = (isset($en['ln_id']) ? $en['ln_id'] : 0);
-    $is_play_link = in_array($en['ln_type_play_id'], $CI->config->item('en_ids_4592'));
-    $is_read_progress = in_array($en['ln_type_play_id'], $CI->config->item('en_ids_12227'));
+    $is_play_link = ( $ln_id > 0 && in_array($en['ln_type_play_id'], $CI->config->item('en_ids_4592')));
+    $is_read_progress = ( $ln_id > 0 && in_array($en['ln_type_play_id'], $CI->config->item('en_ids_12227')));
     $ui = null;
 
     $en__parents = $CI->READ_model->ln_fetch(array(
