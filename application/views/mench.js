@@ -174,13 +174,13 @@ function load_js_algolia() {
     });
 }
 
-function read_in_history(tab_data_id, note_in_id, owner_en_id, last_loaded_ln_id){
+function read_in_history(tab_group_id, note_in_id, owner_en_id, last_loaded_ln_id){
 
     var load_class = '.tab-data-'+tab_group_id+' .dynamic-reads';
     $(load_class).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">LOADING...</b>');
 
     //Yes, we need to load dynamically:
-    $.post("/read/read_in_history/"+tab_data_id+"/"+note_in_id+"/"+owner_en_id+"/"+last_loaded_ln_id, { }, function (data) {
+    $.post("/read/read_in_history/"+tab_group_id+"/"+note_in_id+"/"+owner_en_id+"/"+last_loaded_ln_id, { }, function (data) {
         if (data.status) {
             $(load_class).html(data.message);
         } else {

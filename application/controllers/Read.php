@@ -76,7 +76,7 @@ class Read extends CI_Controller
         }
     }
 
-    function read_in_history($type_group_id, $note_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
+    function read_in_history($tab_group_id, $note_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
 
         $session_en = superpower_assigned(10939);
         if (!$session_en) {
@@ -93,7 +93,7 @@ class Read extends CI_Controller
                 'message' => 'Require either Idea or Play ID',
             ));
 
-        } elseif (!in_array($type_group_id, $this->config->item('en_ids_12409')) || !count($this->config->item('en_ids_'.$type_group_id))) {
+        } elseif (!in_array($tab_group_id, $this->config->item('en_ids_12409')) || !count($this->config->item('en_ids_'.$tab_group_id))) {
 
             return echo_json(array(
                 'status' => 0,
@@ -105,7 +105,7 @@ class Read extends CI_Controller
         $list_filters = array(
             'ln_id >' => $last_loaded_ln_id,
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$type_group_id)) . ')' => null,
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$tab_group_id)) . ')' => null,
         );
 
         if($note_in_id > 0){
