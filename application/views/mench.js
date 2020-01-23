@@ -186,6 +186,9 @@ function read_in_history(tab_group_id, note_in_id, owner_en_id, last_loaded_ln_i
         } else {
             $(load_class).html('<b style="color:#FF0000 !important; line-height: 110% !important;"><i class="fas fa-exclamation-triangle"></i> ERROR: ' + data.message + '</b>');
         }
+
+        //Tooltips:
+        $('[data-toggle="tooltip"]').tooltip();
     });
 
 }
