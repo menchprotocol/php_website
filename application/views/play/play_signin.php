@@ -193,7 +193,6 @@ if(count($current_sign_in_attempt) == 0){
 
         </div>
 
-
         <!-- Step 5: Check your email -->
         <div id="step5" class="signup-steps hidden">
             <span class="medium-header"><i class="fas fa-envelope-open"></i> <span class="focus_email"></span></span>

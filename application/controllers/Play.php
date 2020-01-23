@@ -2193,13 +2193,14 @@ fragment PostListingItemSidebar_post on Post {
         //This is a new email, send invitation to join:
 
         ##Email Subject
-        $subject = 'MENCH Sign-in Magic Link';
+        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+        $subject = 'MENCH '.$en_all_11035[11068]['m_name'];
 
         ##Email Body
         $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['en_name']).' 👋</div><br /><br />';
 
         $magic_link_expiry_hours = (config_var(11065)/3600);
-        $html_message .= '<div>Sign-in within the next '.$magic_link_expiry_hours.' hour'.echo__s($magic_link_expiry_hours).':</div>';
+        $html_message .= '<div>Login within the next '.$magic_link_expiry_hours.' hour'.echo__s($magic_link_expiry_hours).':</div>';
         $magic_url = 'https://mench.com/play/magic/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
