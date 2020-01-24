@@ -883,6 +883,10 @@ textarea.note-textarea{
     margin-bottom: 2px;
 }
 
+[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled){
+    padding: 0;
+}
+
 .overflowhide, .url_truncate{
     max-width: 100%;
     overflow: hidden;
