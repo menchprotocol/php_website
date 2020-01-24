@@ -2269,12 +2269,12 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
     //IDEA TYPE
-    $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], 'no-padding', $is_author, false, $in['ln_id']);
+    $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['ln_id']);
     //$ui .= '<span class="icon-block in_parent_type_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$in['in_type_play_id']]['m_name'].': '.$en_all_7585[$in['in_type_play_id']]['m_desc'].'">' . $en_all_7585[$in['in_type_play_id']]['m_icon'] . '</span></span>';
 
 
     //IDEA STATUS
-    $ui .= echo_in_dropdown(4737, $in['in_status_play_id'], 'no-padding', $is_author, false, $in['ln_id']);
+    $ui .= echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['ln_id']);
     //$ui .= '<span class="icon-block in_status_play_id_' . $in['in_id'] . ( $is_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_play_id']]['m_icon'] . '</span></span>';
 
 
@@ -2891,7 +2891,7 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
 
     //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
     $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'_'.$ln_id.'">';
-    $ui .= '<button type="button" '.( $is_author ? 'class="btn '.$btn_class.'" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.$btn_class.'"' ).' >';
+    $ui .= '<button type="button" '.( $is_author ? 'class="btn no-left-padding '.$btn_class.'" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.$btn_class.'"' ).' >';
     $ui .= '<span title="'.$en_all_12079[$cache_en_id]['m_name'].'" data-toggle="tooltip" data-placement="right">';
     $ui .= '<span class="icon-block">' .$en_all_this[$selected_en_id]['m_icon'].'</span>'.( $show_full_name ?  $en_all_this[$selected_en_id]['m_name'] : '' );
     $ui .= '</span>';

@@ -855,8 +855,8 @@ textarea.note-textarea{
     padding-left: 0;
     padding-right: 0;
 }
-.no-padding{
-    padding: 0 !important;
+.no-left-padding{
+    padding-left: 0 !important;
 }
 
 
