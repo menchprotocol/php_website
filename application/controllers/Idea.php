@@ -34,15 +34,15 @@ class Idea extends CI_Controller {
         }
 
         //Validate Title:
-        $in_title_validation = $this->IDEA_model->in_title_validate($_POST['newIdeaTitle']);
-        if(!$in_title_validation['status']){
+        $in_titlevalidation = $this->IDEA_model->in_titlevalidate($_POST['newIdeaTitle']);
+        if(!$in_titlevalidation['status']){
             //We had an error, return it:
-            return echo_json($in_title_validation);
+            return echo_json($in_titlevalidation);
         }
 
 
         //Create idea:
-        $in = $this->IDEA_model->in_link_or_create($in_title_validation['in_cleaned_outcome'], $session_en['en_id']);
+        $in = $this->IDEA_model->in_link_or_create($in_titlevalidation['in_cleaned_outcome'], $session_en['en_id']);
 
         //Also add to bookmarks:
         $this->READ_model->ln_create(array(
@@ -237,10 +237,10 @@ class Idea extends CI_Controller {
             }
 
             //Validate Idea Outcome:
-            $in_title_validation = $this->IDEA_model->in_title_validate($_POST['field_value']);
-            if(!$in_title_validation['status']){
+            $in_titlevalidation = $this->IDEA_model->in_titlevalidate($_POST['field_value']);
+            if(!$in_titlevalidation['status']){
                 //We had an error, return it:
-                return echo_json(array_merge($in_title_validation, array(
+                return echo_json(array_merge($in_titlevalidation, array(
                     'original_val' => $ins[0]['in_title'],
                 )));
             } else {

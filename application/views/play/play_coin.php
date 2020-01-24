@@ -322,7 +322,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 $this_tab .= '<div id="new-children" class="list-group-item '.superpower_active(10983).'">
 
 
-            <div class="form-group is-empty"><input type="text" class="form-control new-player-input form-control-thick algolia_search" data-lpignore="true" placeholder="+ PLAYER"></div>
+            <div class="form-group is-empty"><input type="text" class="form-control new-player-input form-control-thick algolia_search" data-lpignore="true" placeholder="Add PLAYER"></div>
             <div class="algolia_pad_search hidden"></div>
             
             

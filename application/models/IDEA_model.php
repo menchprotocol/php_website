@@ -443,16 +443,16 @@ class IDEA_model extends CI_Model
             //We are NOT linking to an existing Idea, but instead, we're creating a new Idea
 
             //Validate Idea Outcome:
-            $in_title_validation = $this->IDEA_model->in_title_validate($in_title);
-            if(!$in_title_validation['status']){
+            $in_titlevalidation = $this->IDEA_model->in_titlevalidate($in_title);
+            if(!$in_titlevalidation['status']){
                 //We had an error, return it:
-                return $in_title_validation;
+                return $in_titlevalidation;
             }
 
 
             //Create new Idea:
             $idea_new = $this->IDEA_model->in_create(array(
-                'in_title' => $in_title_validation['in_cleaned_outcome'],
+                'in_title' => $in_titlevalidation['in_cleaned_outcome'],
                 'in_type_play_id' => $in_type_play_id,
                 'in_status_play_id' => $new_in_status,
             ), true, $ln_owner_play_id);
@@ -979,7 +979,7 @@ class IDEA_model extends CI_Model
 
     }
 
-    function in_title_validate($in_title){
+    function in_titlevalidate($in_title){
 
         //Validate:
         if(!strlen(trim($in_title))){

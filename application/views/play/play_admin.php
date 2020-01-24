@@ -452,7 +452,7 @@ if(!$action) {
     ));
 
     //Give an overview:
-    echo '<p>When the validation criteria change within the in_title_validate() function, this page lists all the ideas that no longer have a valid outcome.</p>';
+    echo '<p>When the validation criteria change within the in_titlevalidate() function, this page lists all the ideas that no longer have a valid outcome.</p>';
 
 
     //List the matching search:
@@ -467,9 +467,9 @@ if(!$action) {
     $invalid_outcomes = 0;
     foreach($active_ins as $count=>$in){
 
-        $in_title_validation = $this->IDEA_model->in_title_validate($in['in_title']);
+        $in_titlevalidation = $this->IDEA_model->in_titlevalidate($in['in_title']);
 
-        if(!$in_title_validation['status']){
+        if(!$in_titlevalidation['status']){
 
             $invalid_outcomes++;
 
@@ -542,17 +542,17 @@ if(!$action) {
                     //Do replacement:
                     $append_text = @$_GET['append_text'];
                     $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_title']).$append_text;
-                    $in_title_validation = $this->IDEA_model->in_title_validate($new_outcome);
+                    $in_titlevalidation = $this->IDEA_model->in_titlevalidate($new_outcome);
 
-                    if($in_title_validation['status']){
+                    if($in_titlevalidation['status']){
                         $qualifying_replacements++;
                     }
                 }
 
-                if($replace_with_is_confirmed && $in_title_validation['status']){
+                if($replace_with_is_confirmed && $in_titlevalidation['status']){
                     //Update idea:
                     $this->IDEA_model->in_update($in['in_id'], array(
-                        'in_title' => $in_title_validation['in_cleaned_outcome'],
+                        'in_title' => $in_titlevalidation['in_cleaned_outcome'],
                     ), true, $session_en['en_id']);
                 }
 
@@ -563,7 +563,7 @@ if(!$action) {
                 if($replace_with_is_set){
 
                     echo '<td style="text-align: left;">'.$new_outcome.'</td>';
-                    echo '<td style="text-align: left;">'.( !$in_title_validation['status'] ? ' <i class="fas fa-exclamation-triangle"></i> Error: '.$in_title_validation['message'] : ( $replace_with_is_confirmed && $in_title_validation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
+                    echo '<td style="text-align: left;">'.( !$in_titlevalidation['status'] ? ' <i class="fas fa-exclamation-triangle"></i> Error: '.$in_titlevalidation['message'] : ( $replace_with_is_confirmed && $in_titlevalidation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
                 } else {
                     //Show parents now:
                     echo '<td style="text-align: left;">';

@@ -199,14 +199,16 @@ function loadtab(tab_group_id, tab_data_id, note_in_id, owner_en_id){
 
 }
 
-
+var algolia_index = false;
 $(document).ready(function () {
 
     //Load Algolia on Focus:
     $(".algolia_search").focus(function () {
-        //Loadup Algolia once:
-        client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-        algolia_index = client.initIndex('alg_index');
+        if(!algolia_index){
+            //Loadup Algolia once:
+            client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
+            algolia_index = client.initIndex('alg_index');
+        }
     });
 
     //General ESC cancel
