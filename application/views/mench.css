@@ -842,7 +842,7 @@ textarea.note-textarea{
     text-align: center;
 }
 
-.form-control.locked, .btn.locked{
+.edit-locked{
     cursor: not-allowed;
 }
 
