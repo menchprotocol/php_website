@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-24 15:12:07 PST
+//Generated 2020-01-24 15:47:48 PST
 
 //PLAY ICON DROPDOWN:
 $config['en_ids_12421'] = array(12426,12422,12424,12423);
@@ -59,13 +59,13 @@ $config['en_all_12420'] = array(
     ),
     4739 => array(
         'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
-        'm_name' => 'UNLOCK MAX SCORE',
+        'm_name' => 'UNLOCK MAX PERCENTAGE',
         'm_desc' => '',
         'm_parents' => array(12420,12112,6402,6232),
     ),
     4735 => array(
         'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
-        'm_name' => 'UNLOCK MIN SCORE',
+        'm_name' => 'UNLOCK MIN PERCENTAGE',
         'm_desc' => '',
         'm_parents' => array(12420,12112,6402,6232),
     ),
@@ -2649,19 +2649,19 @@ $config['en_all_12112'] = array(
     4358 => array(
         'm_icon' => '<i class="fad fa-thermometer-half" aria-hidden="true"></i>',
         'm_name' => 'READ MARKS',
-        'm_desc' => 'awarded for reads completion to calculate the unlock score range',
+        'm_desc' => '-89->89',
         'm_parents' => array(12420,10985,12112,10663,6103,6410,6232),
     ),
     4739 => array(
         'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
-        'm_name' => 'UNLOCK MAX SCORE',
-        'm_desc' => '',
+        'm_name' => 'UNLOCK MAX PERCENTAGE',
+        'm_desc' => '0->100',
         'm_parents' => array(12420,12112,6402,6232),
     ),
     4735 => array(
         'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
-        'm_name' => 'UNLOCK MIN SCORE',
-        'm_desc' => '',
+        'm_name' => 'UNLOCK MIN PERCENTAGE',
+        'm_desc' => '0->100',
         'm_parents' => array(12420,12112,6402,6232),
     ),
 );
@@ -4147,13 +4147,13 @@ $config['en_all_6232'] = array(
     ),
     4739 => array(
         'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
-        'm_name' => 'UNLOCK MAX SCORE',
+        'm_name' => 'UNLOCK MAX PERCENTAGE',
         'm_desc' => 'tr__conditional_score_max',
         'm_parents' => array(12420,12112,6402,6232),
     ),
     4735 => array(
         'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
-        'm_name' => 'UNLOCK MIN SCORE',
+        'm_name' => 'UNLOCK MIN PERCENTAGE',
         'm_desc' => 'tr__conditional_score_min',
         'm_parents' => array(12420,12112,6402,6232),
     ),
@@ -4241,7 +4241,7 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12210,12130,12355,11077,11074,12124,11076,11075,12176,12156,11071,11064,11986,11065,11063,11079,11060,12363,11073,11066,11072,12232,11057,11056,12331,12113,12088,11061,11162,11163,12209,12208);
+$config['en_ids_6404'] = array(12210,12130,12355,11077,11074,12124,11076,11075,12176,12156,11071,11064,11986,11065,11063,11079,11060,12363,11073,11066,11072,12232,11057,11056,12331,12113,12427,12088,11061,11162,11163,12209,12208);
 $config['en_all_6404'] = array(
     12210 => array(
         'm_icon' => '',
@@ -4398,6 +4398,12 @@ $config['en_all_6404'] = array(
         'm_name' => 'READ TIME MAX',
         'm_desc' => '5400',
         'm_parents' => array(4356,6404),
+    ),
+    12427 => array(
+        'm_icon' => '',
+        'm_name' => 'READ TIME MIN',
+        'm_desc' => '3',
+        'm_parents' => array(6404,4356),
     ),
     12088 => array(
         'm_icon' => '',
