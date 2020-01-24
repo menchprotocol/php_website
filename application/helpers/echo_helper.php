@@ -2276,7 +2276,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '<span class="idea-left">';
 
     if($is_parent){
-        $ui .= '<span class="inline-block" style="padding:0 17px 0 3px;">'.$follow_url.'</span>';
+        $ui .= $follow_url;
     }
 
     //LINK STATUS
@@ -2374,7 +2374,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     //FOLLOW CHILD
     if(!$is_parent){
-        $ui .= '<div class="pull-right inline-block">'.$follow_url.'</div>';
+        $ui .= '<div class="pull-right inline-block" style="padding:0 17px 0 3px;">'.$follow_url.'</div>';
     }
 
 
