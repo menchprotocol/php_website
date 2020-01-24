@@ -2,13 +2,13 @@
 
 $(document).ready(function () {
 
-    load_js_algolia();
 
 });
 
 function idea_create_initiate(){
 
     //Load Idea Adder:
+    load_js_algolia();
     autosize($('#newIdeaTitle'));
     in_load_search("#newIdeaTitle",0, 'a', false /* Search Only */);
     $('#newIdeaTitle').focus();
