@@ -1,10 +1,6 @@
 
 
 
-$(document).ready(function () {
-    load_js_algolia();
-});
-
 function idea_create_initiate(){
 
     //Load Idea Adder:

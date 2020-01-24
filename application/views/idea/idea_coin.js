@@ -386,9 +386,6 @@ function in_edit_note_count(ln_id) {
 
 function in_message_inline_en_search(obj) {
 
-    //Loadup algolia if not already:
-    load_js_algolia();
-
     obj.textcomplete([
         {
             match: /(^|\s)@(\w*(?:\s*\w*))$/,
