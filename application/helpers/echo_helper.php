@@ -2258,7 +2258,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $is_link_published = in_array($in['ln_status_play_id'], $CI->config->item('en_ids_7359'));
 
 
-    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_play_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item itemidea ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' idea_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.'">';
+    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_play_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item itemidea ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' idea_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
 
 
     //Left content wrapper:
@@ -2891,7 +2891,7 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
 
     //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
     $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'_'.$ln_id.'">';
-    $ui .= '<button type="button" '.( $is_author ? 'class="btn no-left-padding '.( $show_full_name ? '' : 'no-right-padding' ).' '.$btn_class.'" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.$btn_class.'"' ).' >';
+    $ui .= '<button type="button" '.( $is_author ? 'class="btn no-left-padding'.( $show_full_name ? '' : ' no-right-padding ' ).$btn_class.'" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.$btn_class.'"' ).' >';
     $ui .= '<span title="'.$en_all_12079[$cache_en_id]['m_name'].'" data-toggle="tooltip" data-placement="right">';
     $ui .= '<span class="icon-block">' .$en_all_this[$selected_en_id]['m_icon'].'</span>'.( $show_full_name ?  $en_all_this[$selected_en_id]['m_name'] : '' );
     $ui .= '</span>';
