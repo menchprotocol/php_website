@@ -179,7 +179,7 @@ $(document).ready(function () {
 });
 
 function read_preview(){
-    if(parseInt($('.dropi_4737_0.active').attr('new-en-id')) in js_en_all_7355){
+    if(parseInt($('.dropi_4737_'+in_loaded_id+'_0.active').attr('new-en-id')) in js_en_all_7355){
         //Idea is public, go to preview:
         window.location = '/' + in_loaded_id;
     } else {
@@ -188,7 +188,7 @@ function read_preview(){
     }
 }
 
-function in_update_dropdown(element_id, new_en_id, ln_id){
+function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name){
 
     /*
     *
@@ -202,7 +202,7 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
     *
     * */
 
-    var current_selected = parseInt($('.dropi_'+element_id+'_'+ln_id+'.active').attr('new-en-id'));
+    var current_selected = parseInt($('.dropi_'+element_id+'_'+in_id+'_'+ln_id+'.active').attr('new-en-id'));
     new_en_id = parseInt(new_en_id);
     if(current_selected == new_en_id){
         //Nothing changed:
@@ -221,11 +221,11 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
 
     //Show Loading...
     var data_object = eval('js_en_all_'+element_id);
-    $('.dropd_'+element_id+'_'+ln_id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">'+( ln_id>0 ? '' : 'SAVING...' )+'</b>');
+    $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
 
     $.post("/idea/in_update_dropdown", {
 
-        in_id: in_loaded_id,
+        in_id: in_id,
         ln_id: ln_id,
         element_id: element_id,
         new_en_id: new_en_id
@@ -234,23 +234,23 @@ function in_update_dropdown(element_id, new_en_id, ln_id){
         if (data.status) {
 
             //Update on page:
-            $('.dropd_'+element_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + ( ln_id>0 ? '' : data_object[new_en_id]['m_name'] ));
-            $('.dropd_'+element_id+'_'+ln_id+' .dropi_' + element_id + '_' + ln_id).removeClass('active');
-            $('.dropd_'+element_id+'_'+ln_id+' .optiond_' + new_en_id+ '_' + ln_id).addClass('active');
+            $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + ( show_full_name ? data_object[new_en_id]['m_name'] : '' ));
+            $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .dropi_' + element_id +'_'+in_id+ '_' + ln_id).removeClass('active');
+            $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .optiond_' + new_en_id+'_'+in_id+ '_' + ln_id).addClass('active');
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
                 //Go to main idea page:
                 window.location = data.deletion_redirect;
             }
             if(element_id==4486){
-                $('.in__tr_'+ln_id+' .link_marks').addClass('hidden');
-                $('.in__tr_'+ln_id+' .settings_' + new_en_id).removeClass('hidden');
+                $('.in__tr_'+in_id+'_'+ln_id+' .link_marks').addClass('hidden');
+                $('.in__tr_'+in_id+'_'+ln_id+' .settings_' + new_en_id).removeClass('hidden');
             }
 
         } else {
 
             //Reset to default:
-            $('.dropd_'+element_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m_icon']+'</span>' + ( ln_id>0 ? '' : data_object[current_selected]['m_name'] ));
+            $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m_icon']+'</span>' + ( show_full_name ? data_object[current_selected]['m_name'] : '' ));
 
             //Show error:
             alert('ERROR: ' + data.message);
