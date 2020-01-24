@@ -83,6 +83,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         echo '</div>';
 
+        echo '<div class="doclear">&nbsp;</div>';
+
+
     }
 
 
