@@ -2258,11 +2258,26 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $is_link_published = in_array($in['ln_status_play_id'], $CI->config->item('en_ids_7359'));
 
 
+    //FOLLOW LINK
+    $child_links = $CI->READ_model->ln_fetch(array(
+        'ln_parent_idea_id' => $in['in_id'],
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as in__child_count');
+    $tree_count_range = $child_links[0]['in__child_count'];
+    $follow_url = '<div class="pull-right inline-block"><a class="btn btn-idea" href="/idea/' . $in['in_id'] . '">'.( $is_parent ? '<i class="fad fa-step-backward"></i> <span class="btn-counter">' . $tree_count_range . '</span>' : '<span class="btn-counter">' . $tree_count_range . '</span> <i class="fad fa-step-forward"></i>' ).'</a></div>';
+
+
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_play_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item itemidea ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' idea_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
 
 
     //Left content wrapper:
     $ui .= '<span class="idea-left">';
+
+    if($is_parent){
+        $ui .= $follow_url;
+    }
 
     //LINK STATUS
     $ui .= '<span class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . '</span></span>';
@@ -2357,17 +2372,11 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '</span></div>';
 
 
-    //Count children:
-    $child_links = $CI->READ_model->ln_fetch(array(
-        'ln_parent_idea_id' => $in['in_id'],
-        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
-        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as in__child_count');
-    $tree_count_range = $child_links[0]['in__child_count'];
+    //FOLLOW CHILD
+    if(!$is_parent){
+        $ui .=$follow_url;
+    }
 
-    //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding:0 17px 0 3px;"><a class="btn btn-idea" href="/idea/' . $in['in_id'] . '">'.( $is_parent ? '<i class="fad fa-step-backward"></i> <span class="btn-counter">' . $tree_count_range . '</span>' : '<span class="btn-counter">' . $tree_count_range . '</span> <i class="fad fa-step-forward"></i>' ).'</a></div>';
 
 
     $ui .= '<div class="doclear">&nbsp;</div>';
