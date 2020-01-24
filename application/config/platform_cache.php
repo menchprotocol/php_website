@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-24 15:07:45 PST
+//Generated 2020-01-24 15:12:07 PST
 
 //PLAY ICON DROPDOWN:
 $config['en_ids_12421'] = array(12426,12422,12424,12423);
@@ -43,7 +43,7 @@ $config['en_all_12421'] = array(
 );
 
 //IDEA TEXT INPUT SHOW ICON:
-$config['en_ids_12420'] = array(4356,4358);
+$config['en_ids_12420'] = array(4356,4358,4739,4735);
 $config['en_all_12420'] = array(
     4356 => array(
         'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
@@ -56,6 +56,18 @@ $config['en_all_12420'] = array(
         'm_name' => 'READ MARKS',
         'm_desc' => '',
         'm_parents' => array(12420,10985,12112,10663,6103,6410,6232),
+    ),
+    4739 => array(
+        'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
+        'm_name' => 'UNLOCK MAX SCORE',
+        'm_desc' => '',
+        'm_parents' => array(12420,12112,6402,6232),
+    ),
+    4735 => array(
+        'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
+        'm_name' => 'UNLOCK MIN SCORE',
+        'm_desc' => '',
+        'm_parents' => array(12420,12112,6402,6232),
     ),
 );
 
@@ -2644,13 +2656,13 @@ $config['en_all_12112'] = array(
         'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MAX SCORE',
         'm_desc' => '',
-        'm_parents' => array(12112,6402,6232),
+        'm_parents' => array(12420,12112,6402,6232),
     ),
     4735 => array(
         'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MIN SCORE',
         'm_desc' => '',
-        'm_parents' => array(12112,6402,6232),
+        'm_parents' => array(12420,12112,6402,6232),
     ),
 );
 
@@ -3984,10 +3996,10 @@ $config['en_all_6232'] = array(
         'm_parents' => array(6232,6214,6159),
     ),
     6162 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
         'm_name' => 'INTENT METADATA MAXIMUM SECONDS',
         'm_desc' => 'in__metadata_max_seconds',
-        'm_parents' => array(6232,6214,4356,6159),
+        'm_parents' => array(4739,6232,6214,4356,6159),
     ),
     6170 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
@@ -3999,7 +4011,7 @@ $config['en_all_6232'] = array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'INTENT METADATA MINIMUM SECONDS',
         'm_desc' => 'in__metadata_min_seconds',
-        'm_parents' => array(6232,6214,4356,6159),
+        'm_parents' => array(4735,6232,6214,4356,6159),
     ),
     6169 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
@@ -4137,13 +4149,13 @@ $config['en_all_6232'] = array(
         'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MAX SCORE',
         'm_desc' => 'tr__conditional_score_max',
-        'm_parents' => array(12112,6402,6232),
+        'm_parents' => array(12420,12112,6402,6232),
     ),
     4735 => array(
         'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MIN SCORE',
         'm_desc' => 'tr__conditional_score_min',
-        'm_parents' => array(12112,6402,6232),
+        'm_parents' => array(12420,12112,6402,6232),
     ),
 );
 
