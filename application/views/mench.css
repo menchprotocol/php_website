@@ -831,7 +831,6 @@ textarea.note-textarea{
 }
 
 .link_marks{
-    width: 110px;
     display: inline-block;
     font-size: 0.8em;
 }
@@ -841,6 +840,11 @@ textarea.note-textarea{
     display: inline-block;
     padding: 2px;
     text-align: center;
+}
+
+.link_marks .form-control.locked{
+    background-color: #f4f5f7 !important;
+    cursor: not-allowed;
 }
 
 .dynamic_saving{
