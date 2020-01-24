@@ -167,9 +167,12 @@ function load_js_algolia() {
     $(".algolia_search").focus(function () {
         //Loadup Algolia once:
         if (!algolia_loaded) {
+            alert('algolia JUST loaded');
             algolia_loaded = true;
             client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
             algolia_index = client.initIndex('alg_index');
+        } else {
+            alert('algolia ALREADY loaded');
         }
     });
 }
