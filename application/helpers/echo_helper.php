@@ -2272,10 +2272,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '<span>'.echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']).'</span>';
 
 
-    //IDEA TYPE
-    $ui .= '<span class="' . superpower_active(10984) . '">'.echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['in_id']).'</span>';
-
-
     $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author), (($in['ln_order']*100)+1));
 
     $ui .= '</span>';
@@ -2283,7 +2279,11 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
+    //Should we give more publishing tools here?
     $ui .= '<span class="idea-left ' . superpower_active(10984) . '">';
+
+    //IDEA TYPE
+    $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['in_id']);
 
     //IDEA READ TIME
     $ui .= echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
