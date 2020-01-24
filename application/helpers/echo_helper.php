@@ -2269,7 +2269,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
     //IDEA TYPE
-    $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['in_id']);
+    $ui .= '<span class="' . superpower_active(10984) . '">'.echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['in_id']).'</span>';
     //$ui .= '<span class="icon-block in_parent_type_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$in['in_type_play_id']]['m_name'].': '.$en_all_7585[$in['in_type_play_id']]['m_desc'].'">' . $en_all_7585[$in['in_type_play_id']]['m_icon'] . '</span></span>';
 
 
