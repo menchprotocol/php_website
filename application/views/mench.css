@@ -843,16 +843,11 @@ textarea.note-textarea{
 }
 
 .link_marks .form-control.locked{
-    background-color: #f4f5f7 !important;
     cursor: not-allowed;
 }
 
 .dynamic_saving{
     background-color: #AAAAAA !important;
-}
-
-.link_marks .form-control:hover{
-    background-color:#FFFFFF !important;
 }
 
 .itemplay{

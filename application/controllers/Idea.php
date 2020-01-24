@@ -279,11 +279,11 @@ class Idea extends CI_Controller {
                     'original_val' => $ins[0]['in_read_time'],
                 ));
 
-            } elseif($_POST['field_value'] > config_var(12113)){
+            } elseif($_POST['field_value'] > config_var(12113) || $_POST['field_value'] < config_var(12427)){
 
                 return echo_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' cannot be greater than '.config_var(12113).' Seconds. If so, break down the idea into smaller ideas.',
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be between '.config_var(12113).' -> '.config_var(12427).' Seconds. If larger, break ideas down into into smaller ideas.',
                     'original_val' => $ins[0]['in_read_time'],
                 ));
 
