@@ -464,7 +464,7 @@ class Idea extends CI_Controller {
                 if(!in_array($_POST['new_en_id'], $this->config->item('en_ids_7356'))){
 
                     //Fetch parent URL:
-                    foreach ($this->IDEA_model->in_fetch_recursive_parents($_POST['in_id']) as $grand_parent_ids) {
+                    foreach ($this->IDEA_model->in_fetch_recursive_parents($_POST['in_id'], true, false) as $grand_parent_ids) {
                         foreach ($grand_parent_ids as $parent_in_id) {
                             $deletion_redirect = '/idea/'.$parent_in_id; //First parent in first branch of parents
                             break;

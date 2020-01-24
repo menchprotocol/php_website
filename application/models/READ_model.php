@@ -801,7 +801,7 @@ class READ_model extends CI_Model
                 }
 
                 //Yes, communicate it:
-                $this->READ_model->read_coin($next_in_id, array('en_id' => $en_id), true);
+                $this->READ_model->read_echo($next_in_id, array('en_id' => $en_id), true);
 
             } else {
 
@@ -1400,7 +1400,7 @@ class READ_model extends CI_Model
 
     }
 
-    function read_coin($in_id, $recipient_en, $push_message = false, $next_step_only = false){
+    function read_echo($in_id, $recipient_en, $push_message = false, $next_step_only = false){
 
         /*
          * Function to read a Idea, it's messages,
@@ -3910,7 +3910,7 @@ class READ_model extends CI_Model
 
             if($next_in_id > 0){
                 //Yes, communicate it:
-                $this->READ_model->read_coin($next_in_id, $en, true);
+                $this->READ_model->read_echo($next_in_id, $en, true);
             } else {
                 //Fetch and communicate next idea:
                 $this->READ_model->read_next_go($en['en_id'], true, true);

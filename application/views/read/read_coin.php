@@ -17,7 +17,7 @@
 
     echo '<div class="doclear">&nbsp;</div>';
 
-    $this->READ_model->read_coin($in['in_id'], superpower_assigned());
+    $this->READ_model->read_echo($in['in_id'], superpower_assigned());
 
     if($autoexpand){
         echo echo_tree_actionplan($in, $autoexpand);
