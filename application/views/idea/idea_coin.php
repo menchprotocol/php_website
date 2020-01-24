@@ -49,7 +49,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     if($col_num==2){
 
         //Idea Status:
-        echo '<div class="inline-block">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author, true).'</div>';
+        echo '<div class="inline-block">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author, true, $in['in_id']).'</div>';
 
         //Idea Featured:
         if(in_array($in['in_status_play_id'], $this->config->item('en_ids_12138') /* Idea Statuses Featured */)){
@@ -84,7 +84,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         //IDEA TYPE:
         echo '<div class="left-border-idea" style="margin-top: 30px;">'; //OPEN left-border-idea
 
-        echo '<div class="inline-block">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active, true).'</div>';
+        echo '<div class="inline-block">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active, true, $in['in_id']).'</div>';
 
     }
 

@@ -2292,7 +2292,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '<div class="icon-block ' . superpower_active(10985) . '">';
 
         //LINK TYPE
-        $ui .= echo_in_dropdown(4486, $in['ln_type_play_id'], null, $is_author, false, $in['ln_id']);
+        $ui .= echo_in_dropdown(4486, $in['ln_type_play_id'], null, $is_author, false, $in['in_id'], $in['ln_id']);
 
 
         //LINK MARKS
