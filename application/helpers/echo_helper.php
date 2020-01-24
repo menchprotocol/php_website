@@ -2269,11 +2269,13 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
     //IDEA TYPE
-    $ui .= '<span class="icon-block in_parent_type_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$in['in_type_play_id']]['m_name'].': '.$en_all_7585[$in['in_type_play_id']]['m_desc'].'">' . $en_all_7585[$in['in_type_play_id']]['m_icon'] . '</span></span>';
+    $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, $in['ln_id']);
+    //$ui .= '<span class="icon-block in_parent_type_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$in['in_type_play_id']]['m_name'].': '.$en_all_7585[$in['in_type_play_id']]['m_desc'].'">' . $en_all_7585[$in['in_type_play_id']]['m_icon'] . '</span></span>';
 
 
     //IDEA STATUS
-    $ui .= '<span class="icon-block in_status_play_id_' . $in['in_id'] . ( $is_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_play_id']]['m_icon'] . '</span></span>';
+    $ui .= echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, $in['ln_id']);
+    //$ui .= '<span class="icon-block in_status_play_id_' . $in['in_id'] . ( $is_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_play_id']]['m_icon'] . '</span></span>';
 
 
     $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author), (($in['ln_order']*100)+1));

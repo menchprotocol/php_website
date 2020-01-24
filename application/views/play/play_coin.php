@@ -424,7 +424,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     $this_tab .= '<div class="list-group">';
                     foreach ($this->READ_model->ln_fetch($idea_note_filters, array('in_child'), config_var(11064), 0, array('in_title' => 'ASC')) as $idea_note) {
                         if(in_array($en_id2, $this->config->item('en_ids_12321'))){
+
                             $this_tab .= echo_in_read($idea_note);
+
                         } elseif(in_array($en_id2, $this->config->item('en_ids_12322'))){
 
                             //Include the message:
