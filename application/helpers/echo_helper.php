@@ -2266,7 +2266,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as in__child_count');
     $tree_count_range = $child_links[0]['in__child_count'];
-    $follow_url = '<div class="pull-right inline-block"><a class="btn btn-idea" href="/idea/' . $in['in_id'] . '">'.( $is_parent ? '<i class="fad fa-step-backward"></i> <span class="btn-counter">' . $tree_count_range . '</span>' : '<span class="btn-counter">' . $tree_count_range . '</span> <i class="fad fa-step-forward"></i>' ).'</a></div>';
+    $follow_url = '<a class="btn btn-idea" href="/idea/' . $in['in_id'] . '">'.( $is_parent ? '<i class="fad fa-step-backward"></i> <span class="btn-counter">' . $tree_count_range . '</span>' : '<span class="btn-counter">' . $tree_count_range . '</span> <i class="fad fa-step-forward"></i>' ).'</a>';
 
 
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_play_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item itemidea ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' idea_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
@@ -2374,7 +2374,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     //FOLLOW CHILD
     if(!$is_parent){
-        $ui .=$follow_url;
+        $ui .= '<div class="pull-right inline-block">'.$follow_url.'</div>';
     }
 
 
