@@ -2285,6 +2285,8 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     $ui .= '<span class="idea-left ' . superpower_active(10984) . '">';
 
+    //IDEA READ TIME
+    $ui .= echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
 
     //LINK TYPE & SETTING
     $ui .= '<div class="icon-block ' . superpower_active(10985) . '">';
@@ -2292,12 +2294,11 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         //LINK TYPE
         $ui .= echo_in_dropdown(4486, $in['ln_type_play_id'], null, $is_author, false, $in['in_id'], $in['ln_id']);
 
-
         //LINK MARKS
-        $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_play_id']==4228 ? : 'hidden' ).'">'.echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+1 ).' Marks</span>';
+        $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_play_id']==4228 ? : 'hidden' ).'">'.echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+2 ).' Marks</span>';
 
         //LINK CONDIITONAL RANGE
-        $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_play_id']==4229 ? : 'hidden' ).'">'.echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+2).'-'.echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+3).'%</span>';
+        $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_play_id']==4229 ? : 'hidden' ).'">'.echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+3).'-'.echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+4).'%</span>';
 
     $ui .= '</div>';
 
@@ -2849,18 +2850,17 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tab
     //Define element attributes:
     $attributes = ( $is_author ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control montserrat inline-block in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' in_ln__id_'.$in_ln__id.' texttype_'.$cache_en_id.($is_idea_title_lg?'_lg':'_sm').'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12112[$cache_en_id]['m_name'].( strlen($en_all_12112[$cache_en_id]['m_desc']) > 0 ? ': '.$en_all_12112[$cache_en_id]['m_desc'] : '' ).'"';
 
+    $icon = ( $is_idea_title_lg ? null : '<span class="icon-block-sm inline-block">'.$en_all_12112[$cache_en_id]['m_icon'].'</span>' );
+
     if($is_idea_title_lg){
 
-        return '<textarea onkeyup="in_title_count()" placeholder="'.$en_all_12112[$cache_en_id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>';
+        return $icon.'<textarea onkeyup="in_title_count()" placeholder="'.$en_all_12112[$cache_en_id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>';
 
     } else {
 
-        return '<input type="text" value="'.$current_value.'" '.$attributes.' />';
+        return $icon.'<input type="text" value="'.$current_value.'" '.$attributes.' />';
 
     }
-
-
-
 }
 
 
