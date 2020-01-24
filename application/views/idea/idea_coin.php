@@ -57,20 +57,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         }
 
 
-
-        //RIGHT
-        echo '<div class="inline-block pull-right">';
-
-        //TIME ESTIMATE
-        echo '<div class="inline-block '.superpower_active(10939).'" style="margin:0 5px 0 0;">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
-
-        //READ PREVIEW
-        echo '<a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fad fa-step-forward"></i></a>';
-
-        echo '</div>';
-
-
-
         echo '<div class="itemidea">';
         echo '<div class="title_counter hidden grey montserrat doupper" style="text-align: right;"><span id="charTitleNum">0</span>/'.config_var(11071).' CHARACTERS</div>';
         echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && $is_active), 0, true);
@@ -85,6 +71,17 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '<div class="left-border-idea" style="margin-top: 30px;">'; //OPEN left-border-idea
 
         echo '<div class="inline-block">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active, true, $in['in_id']).'</div>';
+
+        //RIGHT
+        echo '<div class="inline-block pull-right">';
+
+        //TIME ESTIMATE
+        echo '<div class="inline-block '.superpower_active(10939).'" style="margin:0 5px 0 0;">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
+
+        //READ PREVIEW
+        echo '<a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fad fa-step-forward"></i></a>';
+
+        echo '</div>';
 
     }
 
