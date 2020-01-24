@@ -256,7 +256,7 @@ class Idea extends CI_Controller {
 
             }
 
-        } elseif($_POST['cache_en_id']==4362 /* READ TIME */){
+        } elseif($_POST['cache_en_id']==4356 /* READ TIME */){
 
             $ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => $_POST['in_ln__id'],

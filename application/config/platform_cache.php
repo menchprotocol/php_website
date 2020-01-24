@@ -11,7 +11,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-23 14:14:42 PST
+//Generated 2020-01-24 15:07:45 PST
+
+//PLAY ICON DROPDOWN:
+$config['en_ids_12421'] = array(12426,12422,12424,12423);
+$config['en_all_12421'] = array(
+    12426 => array(
+        'm_icon' => '<i class="far fa-link" aria-hidden="true"></i>',
+        'm_name' => 'IMAGE URL',
+        'm_desc' => 'Paste image URL',
+        'm_parents' => array(12421),
+    ),
+    12422 => array(
+        'm_icon' => '<i class="far fa-trash-alt read" aria-hidden="true"></i>',
+        'm_name' => 'REMOVE',
+        'm_desc' => 'Remove current icon',
+        'm_parents' => array(12421),
+    ),
+    12424 => array(
+        'm_icon' => '<i class="far fa-search" aria-hidden="true"></i>',
+        'm_name' => 'SEARCH',
+        'm_desc' => 'Search emojis & icon library',
+        'm_parents' => array(12421),
+    ),
+    12423 => array(
+        'm_icon' => '<i class="far fa-upload" aria-hidden="true"></i>',
+        'm_name' => 'UPLOAD',
+        'm_desc' => 'Upload image',
+        'm_parents' => array(12421),
+    ),
+);
+
+//IDEA TEXT INPUT SHOW ICON:
+$config['en_ids_12420'] = array(4356,4358);
+$config['en_all_12420'] = array(
+    4356 => array(
+        'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
+        'm_name' => 'IDEA READ TIME',
+        'm_desc' => '',
+        'm_parents' => array(12112,12420,10990,10888,10650,6232,6201),
+    ),
+    4358 => array(
+        'm_icon' => '<i class="fad fa-thermometer-half" aria-hidden="true"></i>',
+        'm_name' => 'READ MARKS',
+        'm_desc' => '',
+        'm_parents' => array(12420,10985,12112,10663,6103,6410,6232),
+    ),
+);
 
 //IDEA TREE NODES:
 $config['en_ids_12413'] = array(11020,11019);
@@ -1339,7 +1385,7 @@ $config['en_all_12324'] = array(
     ),
 );
 
-//VIEW PLAY MESSAGES:
+//TEMPLATE IDEA MESSAGES:
 $config['en_ids_12322'] = array(4601,4231);
 $config['en_all_12322'] = array(
     4601 => array(
@@ -1356,7 +1402,7 @@ $config['en_all_12322'] = array(
     ),
 );
 
-//VIEW IDEA READ:
+//TEMPLATE IDEA READ:
 $config['en_ids_12321'] = array(4983,10573,7545);
 $config['en_all_12321'] = array(
     4983 => array(
@@ -2574,34 +2620,34 @@ $config['en_all_12138'] = array(
 );
 
 //IDEA TEXT INPUTS:
-$config['en_ids_12112'] = array(4358,4362,4736,4739,4735);
+$config['en_ids_12112'] = array(4356,4736,4358,4739,4735);
 $config['en_all_12112'] = array(
-    4358 => array(
-        'm_icon' => '<i class="far fa-coin" aria-hidden="true"></i>',
-        'm_name' => 'READ MARKS',
-        'm_desc' => 'awarded for reads completion to calculate the unlock score range',
-        'm_parents' => array(10985,12112,10663,6103,6410,6232),
-    ),
-    4362 => array(
-        'm_icon' => '<i class="far fa-clock" aria-hidden="true"></i>',
-        'm_name' => 'READ TIME',
-        'm_desc' => 'Estimated number of seconds to read this idea',
-        'm_parents' => array(12112,6232,4341),
+    4356 => array(
+        'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
+        'm_name' => 'IDEA READ TIME',
+        'm_desc' => '',
+        'm_parents' => array(12112,12420,10990,10888,10650,6232,6201),
     ),
     4736 => array(
         'm_icon' => '<i class="fas fa-h1 idea" aria-hidden="true"></i>',
-        'm_name' => 'TITLE',
+        'm_name' => 'IDEA TITLE',
         'm_desc' => '',
         'm_parents' => array(10990,12112,11071,10644,6232,6201),
     ),
+    4358 => array(
+        'm_icon' => '<i class="fad fa-thermometer-half" aria-hidden="true"></i>',
+        'm_name' => 'READ MARKS',
+        'm_desc' => 'awarded for reads completion to calculate the unlock score range',
+        'm_parents' => array(12420,10985,12112,10663,6103,6410,6232),
+    ),
     4739 => array(
-        'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MAX SCORE',
         'm_desc' => '',
         'm_parents' => array(12112,6402,6232),
     ),
     4735 => array(
-        'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MIN SCORE',
         'm_desc' => '',
         'm_parents' => array(12112,6402,6232),
@@ -3845,7 +3891,7 @@ $config['en_all_11081'] = array(
 );
 
 //PLATFORM VARIABLES:
-$config['en_ids_6232'] = array(6207,6203,6202,6159,4358,4362,4356,4737,4736,4486,7585,4739,4735,5008,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,6198,6160,6172,6197,6177,4369,4429,7694,4367,4372,6103,4368,4366,4371,4364,4370,6186,4593);
+$config['en_ids_6232'] = array(6207,6203,6202,6159,4356,4737,4736,4486,7585,5008,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,6198,6160,6172,6197,6177,4369,4429,7694,4367,4358,4372,6103,4368,4366,4371,4364,4370,6186,4362,4593,4739,4735);
 $config['en_all_6232'] = array(
     6207 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
@@ -3871,23 +3917,11 @@ $config['en_all_6232'] = array(
         'm_desc' => 'in_metadata',
         'm_parents' => array(11049,6232,6201,6195),
     ),
-    4358 => array(
-        'm_icon' => '<i class="far fa-coin" aria-hidden="true"></i>',
-        'm_name' => 'IDEA READ MARKS',
-        'm_desc' => 'tr__assessment_points',
-        'm_parents' => array(10985,12112,10663,6103,6410,6232),
-    ),
-    4362 => array(
-        'm_icon' => '<i class="far fa-clock" aria-hidden="true"></i>',
-        'm_name' => 'IDEA READ TIME',
-        'm_desc' => 'ln_timestamp',
-        'm_parents' => array(12112,6232,4341),
-    ),
     4356 => array(
         'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME',
         'm_desc' => 'in_read_time',
-        'm_parents' => array(10990,10888,10650,6232,6201),
+        'm_parents' => array(12112,12420,10990,10888,10650,6232,6201),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
@@ -3912,18 +3946,6 @@ $config['en_all_6232'] = array(
         'm_name' => 'IDEA TYPE',
         'm_desc' => 'in_type_play_id',
         'm_parents' => array(11018,12079,11054,6204,10651,6160,6194,6232,4527,6201),
-    ),
-    4739 => array(
-        'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
-        'm_name' => 'IDEA UNLOCK MAX SCORE',
-        'm_desc' => 'tr__conditional_score_max',
-        'm_parents' => array(12112,6402,6232),
-    ),
-    4735 => array(
-        'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
-        'm_name' => 'IDEA UNLOCK MIN SCORE',
-        'm_desc' => 'tr__conditional_score_min',
-        'm_parents' => array(12112,6402,6232),
     ),
     5008 => array(
         'm_icon' => '<i class="fad fa-tools idea" aria-hidden="true"></i>',
@@ -4045,6 +4067,12 @@ $config['en_all_6232'] = array(
         'm_desc' => 'ln_id',
         'm_parents' => array(6232,6215,4341),
     ),
+    4358 => array(
+        'm_icon' => '<i class="fad fa-thermometer-half" aria-hidden="true"></i>',
+        'm_name' => 'READ MARKS',
+        'm_desc' => 'tr__assessment_points',
+        'm_parents' => array(12420,10985,12112,10663,6103,6410,6232),
+    ),
     4372 => array(
         'm_icon' => '<i class="fas fa-sticky-note"></i>',
         'm_name' => 'READ MESSAGE',
@@ -4093,11 +4121,29 @@ $config['en_all_6232'] = array(
         'm_desc' => 'ln_status_play_id',
         'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
     ),
+    4362 => array(
+        'm_icon' => '<i class="far fa-clock" aria-hidden="true"></i>',
+        'm_name' => 'READ TIMESTAMP',
+        'm_desc' => 'ln_timestamp',
+        'm_parents' => array(6232,4341),
+    ),
     4593 => array(
         'm_icon' => '<i class="fas fa-plug" aria-hidden="true"></i>',
         'm_name' => 'READ TYPE',
         'm_desc' => 'ln_type_play_id',
         'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
+    ),
+    4739 => array(
+        'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
+        'm_name' => 'UNLOCK MAX SCORE',
+        'm_desc' => 'tr__conditional_score_max',
+        'm_parents' => array(12112,6402,6232),
+    ),
+    4735 => array(
+        'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
+        'm_name' => 'UNLOCK MIN SCORE',
+        'm_desc' => 'tr__conditional_score_min',
+        'm_parents' => array(12112,6402,6232),
     ),
 );
 
@@ -4339,7 +4385,7 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'READ TIME MAX',
         'm_desc' => '5400',
-        'm_parents' => array(4362,6404),
+        'm_parents' => array(4356,6404),
     ),
     12088 => array(
         'm_icon' => '',
@@ -4679,7 +4725,7 @@ $config['en_all_10990'] = array(
         'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME',
         'm_desc' => '',
-        'm_parents' => array(10990,10888,10650,6232,6201),
+        'm_parents' => array(12112,12420,10990,10888,10650,6232,6201),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
@@ -4713,31 +4759,31 @@ $config['en_all_10957'] = array(
     10939 => array(
         'm_icon' => '<i class="fad fa-pen idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA PEN',
-        'm_desc' => 'Save, Synthesize & Publish Ideas, Collaboratively.',
+        'm_desc' => 'Organize Your Ideas',
         'm_parents' => array(10876,10957),
     ),
     10984 => array(
         'm_icon' => '<i class="fad fa-paint-brush-alt idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA BRUSH',
-        'm_desc' => '',
+        'm_desc' => 'Reference Expert Ideas',
         'm_parents' => array(10957),
     ),
     10985 => array(
         'm_icon' => '<i class="fad fa-magic idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA WAND',
-        'm_desc' => '',
+        'm_desc' => 'Advance Idea Tools',
         'm_parents' => array(10957),
     ),
     10983 => array(
         'm_icon' => '<i class="fad fa-gamepad play" aria-hidden="true"></i>',
         'm_name' => 'PLAY JOYSTICK',
-        'm_desc' => '',
+        'm_desc' => 'Organize Players',
         'm_parents' => array(10957),
     ),
     10967 => array(
         'm_icon' => '<i class="fad fa-turntable play" aria-hidden="true"></i>',
         'm_name' => 'PLAY TURNTABLE',
-        'm_desc' => '',
+        'm_desc' => 'Advance Play Tools',
         'm_parents' => array(10957),
     ),
 );
@@ -5238,7 +5284,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(12066,10725,10809,6150,12343,12201,10712,10719,12079,3000,10627,10716,4535,11047,6192,4983,12365,12273,11018,10990,11021,4229,4485,12012,6193,12409,7302,4737,7356,12138,7355,12400,6201,12112,11968,4486,12413,7585,10602,12330,12324,7309,7712,7751,10746,10717,10721,10720,11080,2738,12105,11035,7555,10876,11059,11058,6404,4527,11054,6232,4536,6225,11039,10956,12279,11089,12274,6194,6827,4426,4986,7551,11028,4537,6206,11033,3290,11088,4592,12403,4997,12220,4454,12410,7303,6177,11007,10957,12401,12391,11084,3289,4755,10718,6287,10571,7357,6205,11081,7704,6255,12229,6345,4280,4277,6102,12326,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,10869,4593,10593,12228,12141,12327,10658,10711,4269,6204,10710,6805,7358,12321,12322);
+$config['en_ids_4527'] = array(12066,10725,10809,6150,12343,12201,10712,10719,12079,3000,10627,10716,4535,11047,6192,4983,12365,12273,11018,10990,11021,4229,4485,12012,6193,12409,7302,4737,7356,12138,7355,12400,6201,12112,12420,11968,4486,12413,7585,10602,12330,12324,7309,7712,7751,10746,10717,10721,10720,11080,2738,12105,11035,7555,10876,11059,11058,6404,4527,11054,6232,4536,6225,11039,10956,12279,11089,12274,6194,6827,4426,4986,7551,11028,4537,6206,11033,3290,12421,11088,4592,12403,4997,12220,4454,12410,7303,6177,11007,10957,12401,12391,11084,3289,4755,10718,6287,10571,7357,6205,11081,7704,6255,12229,6345,4280,4277,6102,12326,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,10869,4593,10593,12228,12141,12327,10658,10711,4269,6204,10710,12322,12321,6805,7358);
 $config['en_all_4527'] = array(
     12066 => array(
         'm_icon' => '<i class="far fa-info-circle" aria-hidden="true"></i>',
@@ -5441,6 +5487,12 @@ $config['en_all_4527'] = array(
     12112 => array(
         'm_icon' => '<i class="fas fa-text" aria-hidden="true"></i>',
         'm_name' => 'IDEA TEXT INPUTS',
+        'm_desc' => '',
+        'm_parents' => array(4527,6768),
+    ),
+    12420 => array(
+        'm_icon' => '<i class="far fa-user-circle" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TEXT INPUT SHOW ICON',
         'm_desc' => '',
         'm_parents' => array(4527,6768),
     ),
@@ -5701,6 +5753,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'PLAY GENDER',
         'm_desc' => '',
         'm_parents' => array(4527,6204),
+    ),
+    12421 => array(
+        'm_icon' => '<i class="fas fa-icons"></i>',
+        'm_name' => 'PLAY ICON DROPDOWN',
+        'm_desc' => '',
+        'm_parents' => array(3303,4428,4527,4758),
     ),
     11088 => array(
         'm_icon' => '<i class="fad fa-crop-alt play"></i>',
@@ -6020,6 +6078,18 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,10869),
     ),
+    12322 => array(
+        'm_icon' => '<i class="fas fa-comment read" aria-hidden="true"></i>',
+        'm_name' => 'TEMPLATE IDEA MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(4527,12320),
+    ),
+    12321 => array(
+        'm_icon' => '<i class="fad fa-object-group read"></i>',
+        'm_name' => 'TEMPLATE IDEA READ',
+        'm_desc' => '',
+        'm_parents' => array(4527,12320),
+    ),
     6805 => array(
         'm_icon' => '<i class="far fa-align-left"></i>',
         'm_name' => 'THING INTERACTION CONTENT REQUIRES TEXT',
@@ -6031,18 +6101,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'THING STATUSES ACTIVE',
         'm_desc' => '',
         'm_parents' => array(4527,4758),
-    ),
-    12321 => array(
-        'm_icon' => '',
-        'm_name' => 'VIEW IDEA READ',
-        'm_desc' => '',
-        'm_parents' => array(4527,12320),
-    ),
-    12322 => array(
-        'm_icon' => '',
-        'm_name' => 'VIEW PLAY MESSAGES',
-        'm_desc' => '',
-        'm_parents' => array(4527,12320),
     ),
 );
 
@@ -6647,97 +6705,97 @@ $config['en_all_6103'] = array(
         'm_parents' => array(6232,6215,2793,6103),
     ),
     4358 => array(
-        'm_icon' => '<i class="far fa-coin" aria-hidden="true"></i>',
-        'm_name' => 'IDEA READ MARKS',
+        'm_icon' => '<i class="fad fa-thermometer-half" aria-hidden="true"></i>',
+        'm_name' => 'READ MARKS',
         'm_desc' => '',
-        'm_parents' => array(10985,12112,10663,6103,6410,6232),
+        'm_parents' => array(12420,10985,12112,10663,6103,6410,6232),
     ),
 );
 
 //READ TABLE:
-$config['en_ids_4341'] = array(4362,4369,4429,7694,4367,4372,6103,4368,4366,4371,4364,4370,6186,4593);
+$config['en_ids_4341'] = array(4369,4429,7694,4367,4372,6103,4368,4366,4371,4364,4370,6186,4362,4593);
 $config['en_all_4341'] = array(
-    4362 => array(
-        'm_icon' => '<i class="far fa-clock" aria-hidden="true"></i>',
-        'm_name' => 'IDEA READ TIME',
-        'm_desc' => '',
-        'm_parents' => array(12112,6232,4341),
-    ),
     4369 => array(
         'm_icon' => '<i class="fas fa-hashtag" aria-hidden="true"></i>',
-        'm_name' => 'READ CHILD IDEA',
+        'm_name' => 'CHILD IDEA',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6202,6232,4341),
     ),
     4429 => array(
         'm_icon' => '<i class="fas fa-at" aria-hidden="true"></i>',
-        'm_name' => 'READ CHILD PLAYER',
+        'm_name' => 'CHILD PLAYER',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6160,6232,4341),
     ),
     7694 => array(
         'm_icon' => '<i class="fas fa-project-diagram"></i>',
-        'm_name' => 'READ EXTERNAL ID',
+        'm_name' => 'EXTERNAL ID',
         'm_desc' => '',
         'm_parents' => array(6215,6232,4341),
     ),
     4367 => array(
         'm_icon' => '<i class="fas fa-info-circle"></i>',
-        'm_name' => 'READ ID',
+        'm_name' => 'ID',
         'm_desc' => '',
         'm_parents' => array(6232,6215,4341),
     ),
     4372 => array(
         'm_icon' => '<i class="fas fa-sticky-note"></i>',
-        'm_name' => 'READ MESSAGE',
+        'm_name' => 'MESSAGE',
         'm_desc' => '',
         'm_parents' => array(7578,10679,10657,5001,6232,4341),
     ),
     6103 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
-        'm_name' => 'READ METADATA',
+        'm_name' => 'METADATA',
         'm_desc' => '',
         'm_parents' => array(4527,6232,6195,4341),
     ),
     4368 => array(
         'm_icon' => '<i class="fas fa-hashtag" aria-hidden="true"></i>',
-        'm_name' => 'READ PARENT IDEA',
+        'm_name' => 'PARENT IDEA',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6202,6232,4341),
     ),
     4366 => array(
         'm_icon' => '<i class="fas fa-at" aria-hidden="true"></i>',
-        'm_name' => 'READ PARENT PLAYER',
+        'm_name' => 'PARENT PLAYER',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6160,6232,4341),
     ),
     4371 => array(
         'm_icon' => '<i class="fas fa-link" aria-hidden="true"></i>',
-        'm_name' => 'READ PARENT READ',
+        'm_name' => 'PARENT READ',
         'm_desc' => '',
         'm_parents' => array(11081,10692,4367,6232,4341),
     ),
     4364 => array(
         'm_icon' => '<i class="far fa-user-edit" aria-hidden="true"></i>',
-        'm_name' => 'READ PLAYER',
+        'm_name' => 'PLAYER',
         'm_desc' => '',
         'm_parents' => array(11081,6160,6232,6194,4341),
     ),
     4370 => array(
         'm_icon' => '<i class="fas fa-sort"></i>',
-        'm_name' => 'READ RANK',
+        'm_name' => 'RANK',
         'm_desc' => 'tr_order empowers the arrangement or disposition of intents, entities or transactions in relation to each other according to a particular sequence, pattern, or method defined by Miners or Masters.',
         'm_parents' => array(10676,10675,6232,4341),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
-        'm_name' => 'READ STATUS',
+        'm_name' => 'STATUS',
         'm_desc' => '',
         'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
     ),
+    4362 => array(
+        'm_icon' => '<i class="far fa-clock" aria-hidden="true"></i>',
+        'm_name' => 'TIMESTAMP',
+        'm_desc' => '',
+        'm_parents' => array(6232,4341),
+    ),
     4593 => array(
         'm_icon' => '<i class="fas fa-plug" aria-hidden="true"></i>',
-        'm_name' => 'READ TYPE',
+        'm_name' => 'TYPE',
         'm_desc' => '',
         'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
     ),
@@ -6797,7 +6855,7 @@ $config['en_all_6201'] = array(
         'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
         'm_name' => 'READ TIME',
         'm_desc' => '',
-        'm_parents' => array(10990,10888,10650,6232,6201),
+        'm_parents' => array(12112,12420,10990,10888,10650,6232,6201),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
@@ -7523,7 +7581,7 @@ $config['en_all_4986'] = array(
     4601 => array(
         'm_icon' => '<i class="fas fa-search idea" aria-hidden="true"></i>',
         'm_name' => 'KEYWORD',
-        'm_desc' => 'In case it happens it should be referencing verbs',
+        'm_desc' => '',
         'm_parents' => array(11089,12365,4535,10984,12322,4986,10593,4593,4485),
     ),
     4231 => array(

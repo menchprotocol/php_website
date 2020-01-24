@@ -534,7 +534,7 @@ function echo_ln($ln, $is_inner = false)
 
     $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is '.$en_all_6186[$ln['ln_status_play_id']]['m_desc'].'" class="montserrat">'.$en_all_6186[$ln['ln_status_play_id']]['m_icon'].' '.$en_all_6186[$ln['ln_status_play_id']]['m_name'].'</span>';
 
-    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" class="montserrat" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST">'.$en_all_4341[4362]['m_icon']. ' ' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
+    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" class="montserrat" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST">'.$en_all_4341[4356]['m_icon']. ' ' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
 
     $ui .= '</div>';
 
@@ -2286,7 +2286,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '<span class="idea-left ' . superpower_active(10984) . '">';
 
     //IDEA READ TIME
-    $ui .= echo_in_text(4362, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
+    $ui .= echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
 
     //LINK TYPE & SETTING
     $ui .= '<div class="icon-block ' . superpower_active(10985) . '">';
