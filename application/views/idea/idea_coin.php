@@ -17,6 +17,7 @@ $is_active = in_array($in['in_status_play_id'], $this->config->item('en_ids_7356
     var in_loaded_id = <?= $in['in_id'] ?>;
 </script>
 <script src="/application/views/idea/idea_coin.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/idea/idea_shared.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <?php
 

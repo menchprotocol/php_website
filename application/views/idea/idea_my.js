@@ -1,10 +1,5 @@
 
 
-$(document).ready(function () {
-
-
-});
-
 function idea_create_initiate(){
 
     //Load Idea Adder:
