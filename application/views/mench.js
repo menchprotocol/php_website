@@ -162,21 +162,6 @@ function echo_saving_notify(){
     return random_saving_message[Math.floor(Math.random()*random_saving_message.length)];
 }
 
-var algolia_loaded = false;
-function load_js_algolia() {
-    $(".algolia_search").focus(function () {
-        //Loadup Algolia once:
-        if (!algolia_loaded) {
-            alert('algolia JUST loaded');
-            algolia_loaded = true;
-            client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-            algolia_index = client.initIndex('alg_index');
-        } else {
-            alert('algolia ALREADY loaded');
-        }
-    });
-}
-
 function read_in_history(tab_group_id, note_in_id, owner_en_id, last_loaded_ln_id){
 
     var load_class = '.tab-data-'+tab_group_id+' .dynamic-reads';
@@ -217,10 +202,14 @@ function loadtab(tab_group_id, tab_data_id, note_in_id, owner_en_id){
 
 $(document).ready(function () {
 
+    //Load Algolia on Focus:
+    $(".algolia_search").focus(function () {
+        //Loadup Algolia once:
+        client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
+        algolia_index = client.initIndex('alg_index');
+    });
 
-    load_js_algolia();
-
-
+    //General ESC cancel
     $(document).keyup(function (e) {
         //Watch for action keys:
         if (e.keyCode === 27) { //ESC

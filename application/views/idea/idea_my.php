@@ -75,7 +75,7 @@
 
         if(superpower_assigned(10939)) {
 
-            echo '<textarea id="newIdeaTitle" class="form-control" placeholder="'.$en_all_6201[4736]['m_name'].'"></textarea>';
+            echo '<textarea id="newIdeaTitle" class="form-control algolia_search" placeholder="'.$en_all_6201[4736]['m_name'].'"></textarea>';
 
             echo '<div class="ideaCreateStatusUpdate montserrat" style="padding-bottom: 20px;"></div>';
 

@@ -1,9 +1,5 @@
 
 
-$(document).ready(function () {
-    load_js_algolia();
-});
-
 function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
 
 
