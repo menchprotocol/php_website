@@ -2867,8 +2867,10 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tab
     //Define element attributes:
     $attributes = ( $is_author ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control '.( !$is_author ? 'locked' : '' ).' montserrat inline-block in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' in_ln__id_'.$in_ln__id.' texttype_'.$cache_en_id.($is_idea_title_lg?'_lg':'_sm').'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" ';
 
-    $tooltip_span_start = '<span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12112[$cache_en_id]['m_name'].( strlen($en_all_12112[$cache_en_id]['m_desc']) > 0 ? ': '.$en_all_12112[$cache_en_id]['m_desc'] : '' ).'">';
+
+    $tooltip_span_start = '<span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12112[$cache_en_id]['m_name'].'">';
     $tooltip_span_end = '</span>';
+
 
     $icon = ( in_array($cache_en_id, $CI->config->item('en_ids_12420')) ? '<span class="icon-block">'.$en_all_12112[$cache_en_id]['m_icon'].'</span>' : null );
 
@@ -2878,7 +2880,7 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tab
 
     } else {
 
-        return $tooltip_span_start.$icon.'<input type="text" value="'.$current_value.'" '.$attributes.' />'.$tooltip_span_end;
+        return $tooltip_span_start.$icon.'<input type="text" placeholder="'.$en_all_12112[$cache_en_id]['m_desc'].'" value="'.$current_value.'" '.$attributes.' />'.$tooltip_span_end;
 
     }
 }

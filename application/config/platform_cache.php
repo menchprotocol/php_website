@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-24 15:47:48 PST
+//Generated 2020-01-24 15:56:32 PST
 
 //PLAY ICON DROPDOWN:
 $config['en_ids_12421'] = array(12426,12422,12424,12423);
@@ -2637,7 +2637,7 @@ $config['en_all_12112'] = array(
     4356 => array(
         'm_icon' => '<i class="fad fa-stopwatch read" aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME',
-        'm_desc' => '',
+        'm_desc' => '3->1500',
         'm_parents' => array(12112,12420,10990,10888,10650,6232,6201),
     ),
     4736 => array(
@@ -4396,7 +4396,7 @@ $config['en_all_6404'] = array(
     12113 => array(
         'm_icon' => '',
         'm_name' => 'READ TIME MAX',
-        'm_desc' => '5400',
+        'm_desc' => '1500',
         'm_parents' => array(4356,6404),
     ),
     12427 => array(
