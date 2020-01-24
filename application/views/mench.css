@@ -855,9 +855,13 @@ textarea.note-textarea{
     padding-left: 0;
     padding-right: 0;
 }
+.no-padding{
+    padding: 0 !important;
+}
 
 
 .idea-left, .texttype_4736_sm{
+    width: 77%;
     width: 77%;
 }
 .idea-left {
