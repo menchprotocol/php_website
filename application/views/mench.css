@@ -858,6 +858,9 @@ textarea.note-textarea{
 .no-left-padding{
     padding-left: 0 !important;
 }
+.no-right-padding{
+    padding-right: 0 !important;
+}
 
 
 .idea-left, .texttype_4736_sm{

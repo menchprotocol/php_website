@@ -2891,7 +2891,7 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
 
     //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
     $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'_'.$ln_id.'">';
-    $ui .= '<button type="button" '.( $is_author ? 'class="btn no-left-padding '.$btn_class.'" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.$btn_class.'"' ).' >';
+    $ui .= '<button type="button" '.( $is_author ? 'class="btn no-left-padding '.( $show_full_name ? '' : 'no-right-padding' ).' '.$btn_class.'" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.$btn_class.'"' ).' >';
     $ui .= '<span title="'.$en_all_12079[$cache_en_id]['m_name'].'" data-toggle="tooltip" data-placement="right">';
     $ui .= '<span class="icon-block">' .$en_all_this[$selected_en_id]['m_icon'].'</span>'.( $show_full_name ?  $en_all_this[$selected_en_id]['m_name'] : '' );
     $ui .= '</span>';
