@@ -701,18 +701,10 @@ textarea.note-textarea{
     margin: 0 !important;
 }
 
-.three-menus td.play, #top_players td.play{
-    width: 34%;
-    text-align: left;
-}
-.three-menus td.read, #top_players td.read{
-    width: 33%;
-    text-align: left;
-}
-.three-menus td.idea, #top_players td.idea{
-    width: 33%;
-    text-align: left;
-}
+.three-menus td.navcol1, #top_players td.navcol1{ width: 54%; }
+.three-menus td.navcol2, #top_players td.navcol2{ width: 23%; }
+.three-menus td.navcol3, #top_players td.navcol3{ width: 23%; }
+
 
 #top_players td{
     padding: 5px 0 !important;
@@ -1219,9 +1211,7 @@ label {
     .avatar-item .avatar-icon { font-size: 2.4em; }
 }
 
-.three-menus td.play, #top_players td.play{ width: 56%; }
-.three-menus td.read, #top_players td.read{ width: 22%; }
-.three-menus td.idea, #top_players td.idea{ width: 22%; }
+
 
 @media (min-width:767px) {
     .itemidea:hover {

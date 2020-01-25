@@ -118,33 +118,20 @@ if(!isset($hide_header) || !$hide_header){
                 <table class="three-menus">
                     <tr>
                         <?php
+                        $navcol1 = 0;
                         foreach($en_all_2738_mench as $en_id => $m){
 
+                            $navcol1++;
                             $identifier = strtolower($m['m_name']);
                             $handle = ( $en_id==6205 ? '' : $identifier );
+                            $is_current = ($current_mench['x_id']==$en_id);
 
-                            echo '<td class="'.$identifier.'">';
-                            echo '<a class="'.$identifier.' border-'.$identifier.( $first_segment==$identifier || ( $en_id==6205 && ( !strlen($first_segment) || is_numeric($first_segment) ) ) ? ' focustab ': '' ).'" href="/'.$identifier.'">';
+                            echo '<td class="navcol'.$navcol1.'">';
+                            echo '<a class="'.$identifier.' border-'.$identifier.( $is_current ? ' focustab ': '' ).'" href="/'.$identifier.'">';
 
-                            if($identifier=='play'){
-
-                                echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
-                                echo '<span class="current_count montserrat '.superpower_active(10967).'"><i class="far fa-yin-yang fa-spin"></i></span>';
-                                echo '<span class="montserrat '.$identifier.'_name">' . $m['m_name'] . '</span>';
-
-                            } elseif($identifier=='read'){
-
-                                echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
-                                echo '<span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span>';
-                                echo '<span class="montserrat '.$identifier.'_name show-max">' . $m['m_name'] . '</span>';
-
-                            } elseif($identifier=='idea'){
-
-                                echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
-                                echo '<span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span>';
-                                echo '<span class="montserrat '.$identifier.'_name show-max">' . $m['m_name'] . '</span>';
-
-                            }
+                            echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
+                            echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
+                            echo '<span class="montserrat '.$identifier.'_name '.( !$is_current ? 'show-max' : '' ).'">' . $m['m_name'] . '</span>';
 
                             echo '</a>';
                             echo '</td>';
