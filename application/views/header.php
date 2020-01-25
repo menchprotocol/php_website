@@ -129,11 +129,13 @@ if(!isset($hide_header) || !$hide_header){
                             echo '<td class="navcol'.$navcol1.' '.$identifier.'">';
                             echo '<a class="'.$identifier.' border-'.$identifier.( $is_current ? ' focustab ': '' ).'" href="/'.$identifier.'">';
 
-                            if($current_mench['x_id']==$en_id && $current_mench['x_id']==4536){
+                            if($en_id==4536){
 
                                 echo '<span class="parent-icon icon-block">'.$session_en['en_icon'].'</span>';
                                 echo '<span class="montserrat play en_name_first_'.$session_en['en_id'].'">'.one_two_explode('', ' ', $session_en['en_name']).'</span>';
-                                echo echo_en_coins();
+                                if($current_mench['x_id']==$en_id){
+                                    echo echo_en_coins();
+                                }
 
                             } else {
 
