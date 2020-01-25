@@ -33,7 +33,7 @@ echo '<div class="left-border-idea">'; //OPEN left-border-idea
 
 
 if(!$is_author){
-    echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle read"></i> You are not a idea author. <a href="/idea/in_become_author/'.$in['in_id'].'" class="inline-block montserrat '.superpower_active(10984).'">BECOME AUTHOR</a></div>';
+    echo '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle read"></i> You are not an author of this idea, yet. <a href="/idea/in_become_author/'.$in['in_id'].'" class="inline-block montserrat '.superpower_active(10984).'">BECOME AUTHOR</a></div>';
 }
 
 $col_num = 0;
