@@ -822,11 +822,11 @@ fragment PostListingItemSidebar_post on Post {
 
             $read_coins = $this->READ_model->ln_fetch($filters_read, array('en_owner'), $show_readers, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
-            foreach ($read_coins as $count=>$ln) {
+            foreach ($read_coins as $ln) {
 
-                $count += $ideators_found;
+                $ideators_found++;
 
-                if($count==$show_max){
+                if($ideators_found==$show_max){
 
                     echo '<tr class="see_more_who"><td colspan="3"><span class="parent-icon icon-block"><i class="far fa-search-plus play"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat play" style="text-decoration: none !important;">TOP '.$load_max.'</b></a></td></tr>';
 
@@ -842,10 +842,10 @@ fragment PostListingItemSidebar_post on Post {
                     'ln_owner_play_id' => $ln['en_id'],
                 ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
-                echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
+                echo '<tr class="'.( $ideators_found<$show_max ? '' : 'see_more_who hidden').'">';
 
                 //PLAY
-                echo '<td class="play navcol1"><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="play montserrat">'.$first_name.'</a>' : '<b class="play montserrat">'.$first_name.'</b>' ).echo_rank($count+1).echo_en_coins($play_coins[0]['total_coins']).'</td>';
+                echo '<td class="play navcol1"><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="play montserrat">'.$first_name.'</a>' : '<b class="play montserrat">'.$first_name.'</b>' ).echo_rank($ideators_found).echo_en_coins($play_coins[0]['total_coins']).'</td>';
 
                 //IDEA
                 echo '<td class="idea navcol2"></td>';
