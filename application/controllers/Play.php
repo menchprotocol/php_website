@@ -823,7 +823,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
         //COUNT TOTALS:
-        $weekly_active_players = $this->db->query( 'SELECT COUNT(ln_id) FROM (SELECT DISTINCT ln_owner_play_id FROM table_read) AS wap_count;' );
+        $weekly_active_players = $this->db->query( 'SELECT COUNT(*) FROM (SELECT DISTINCT ln_owner_play_id FROM table_read) AS wap_count;' );
         $result = $weekly_active_players->result();
 
         $play_coins = $this->READ_model->ln_fetch(array(
