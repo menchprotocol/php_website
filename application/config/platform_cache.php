@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-25 00:17:26 PST
+//Generated 2020-01-25 03:03:45 PST
 
 //MENCH GLOSSARY:
 $config['en_ids_4463'] = array(3084,3000,4535,4485,4536,4430,4755,6205);
@@ -4294,7 +4294,7 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12210,12130,12355,11077,11074,12124,11076,11075,12176,12156,11071,11064,11986,11065,11063,11079,11060,12363,11073,11066,11072,12232,11057,11056,12331,12113,12427,12088,11061,11162,11163,12209,12208);
+$config['en_ids_6404'] = array(12210,12130,12355,11077,11074,12124,11076,11075,12176,12156,11071,11064,11065,11063,11079,11060,12363,11073,11066,11072,12232,11057,11056,12331,12113,12427,12088,11061,11162,11163,11986,12209,12208);
 $config['en_all_6404'] = array(
     12210 => array(
         'm_icon' => '',
@@ -4368,12 +4368,6 @@ $config['en_all_6404'] = array(
         'm_desc' => '100',
         'm_parents' => array(6404),
     ),
-    11986 => array(
-        'm_icon' => '',
-        'm_name' => 'LEADERBOARD VISIBLE',
-        'm_desc' => '5',
-        'm_parents' => array(6404),
-    ),
     11065 => array(
         'm_icon' => '',
         'm_name' => 'MAGIC LINK VALID SECONDS',
@@ -4395,7 +4389,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.2213',
+        'm_desc' => '1.221',
         'm_parents' => array(6404),
     ),
     12363 => array(
@@ -4480,6 +4474,12 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'SUBSCRIPTION USD RATE YEARLY',
         'm_desc' => '50',
+        'm_parents' => array(6404),
+    ),
+    11986 => array(
+        'm_icon' => '',
+        'm_name' => 'TOP PLAYERS VISIBLE',
+        'm_desc' => '10',
         'm_parents' => array(6404),
     ),
     12209 => array(
