@@ -863,9 +863,13 @@ textarea.note-textarea{
 }
 
 
-.idea-left, .texttype_4736_sm{
-    width: 86%;
+.idea-left {
+    width: 86%; /* Accomodate Right Follow Links */
 }
+.texttype_4736_sm{
+    width: 87%; /* Accomodate Left Status */
+}
+
 .idea-left {
     padding:5px 0 0 0;
     display: block;
