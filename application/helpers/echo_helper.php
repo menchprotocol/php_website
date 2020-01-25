@@ -70,7 +70,8 @@ function echo_url_type_4537($url, $en_type_link_id)
 
     } elseif ($en_type_link_id == 4260 /* Image URL */) {
 
-        if(current_mench()=='play'){
+        $current_mench = current_mench();
+        if($current_mench['x_name']=='play'){
             return '<a href="' . $url . '" target="_blank"><img src="' . $url . '" class="content-image" /></a>';
         } else {
             return '<img src="' . $url . '" class="content-image" />';

@@ -586,10 +586,21 @@ function extract_icon_color($en_icon){
 function current_mench(){
     $CI =& get_instance();
     $part1 = $CI->uri->segment(1);
-    if($part1=='play' || $part1=='idea'){
-        return $part1;
+    if($part1=='play'){
+        return array(
+            'x_id' => 4536,
+            'x_name' => 'play',
+        );
+    } elseif($part1=='idea'){
+        return array(
+            'x_id' => 4535,
+            'x_name' => 'idea',
+        );
     } else {
-        return 'read';
+        return array(
+            'x_id' => 6205,
+            'x_name' => 'read',
+        );
     }
 }
 

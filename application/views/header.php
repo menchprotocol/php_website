@@ -3,12 +3,45 @@ $session_en = superpower_assigned();
 $current_mench = current_mench();
 $first_segment = $this->uri->segment(1);
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+$en_all_2738 = $this->config->item('en_all_2738');
+
+//Arrange based on current mench:
+$en_all_2738_mench = array();
+$did_find = false;
+$found_at = 1; //1 or 2 or 3
+foreach($en_all_2738 /* Player Statuses */ as $en_id => $m){
+    if(!$did_find){
+        if($current_mench['x_id']==$en_id){
+            $did_find = true;
+        } else {
+            $found_at++;
+        }
+    } else {
+        $en_all_2738_mench[$en_id] = $m;
+    }
+}
+if($found_at > 1){
+
+    $append_end = 1;
+
+    foreach($en_all_2738 /* Player Statuses */ as $en_id => $m){
+        //Append this:
+        $en_all_2738_mench[$en_id] = $m;
+        $append_end++;
+
+        //We did it all?
+        if($append_end==$found_at){
+            break;
+        }
+    }
+}
+
 ?><!doctype html>
 <html lang="en">
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/img/<?= $current_mench ?>.png">
+    <link rel="icon" type="image/png" href="/img/<?= $current_mench['x_name'] ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= (isset($title) ? $title . ' | ' : '') ?>MENCH</title>
 
@@ -55,7 +88,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     </script>
 </head>
 
-<body class="<?= 'to'.$current_mench ?>">
+<body class="<?= 'to'.$current_mench['x_name'] ?>">
 
 <?php
 //Any message we need to show here?
@@ -82,7 +115,7 @@ if(!isset($hide_header) || !$hide_header){
                 <table class="three-menus">
                     <tr>
                         <?php
-                        foreach($this->config->item('en_all_2738') as $en_id => $m){
+                        foreach($en_all_2738_mench as $en_id => $m){
 
                             $identifier = strtolower($m['m_name']);
                             $handle = ( $en_id==6205 ? '' : $identifier );
