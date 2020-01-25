@@ -2273,7 +2273,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
     if($is_parent){
-        $ui .= '<div class="idea-left">';
+        $ui .= '<div class="float-left">';
         $ui .= $follow_url;
         $ui .= '</div>';
     }
