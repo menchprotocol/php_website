@@ -854,7 +854,7 @@ fragment PostListingItemSidebar_post on Post {
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
         echo '<tr>';
-        echo '<td class="play navcol1"><span class="play"><span class="parent-icon icon-block">' . $en_all_4463[4430]['m_icon'] . '</span><span class="montserrat" title="'.number_format($result[0]['count'], 0).'">'.echo_number($result[0]['count']).'<span class="show-max"> ' . $en_all_4463[4430]['m_name'] . '</span></span>'.echo_en_coins($play_coins[0]['total_coins']).'</span></td>';
+        echo '<td class="play navcol1"><span class="play"><span class="parent-icon icon-block">' . $en_all_4463[4430]['m_icon'] . '</span><span class="montserrat" title="'.number_format($result[0]['count'], 0).'">'.echo_number($result[0]['count']).' ' . $en_all_4463[4430]['m_name'] . '</span>'.echo_en_coins($play_coins[0]['total_coins']).'</span></td>';
         echo '<td class="idea navcol2"><span class="idea"><span class="parent-icon icon-block">' . $en_all_2738[4535]['m_icon'] . '</span><span class="montserrat" title="'.number_format($idea_coins[0]['total_coins'], 0).'">'.echo_number($idea_coins[0]['total_coins']).'</span></span></td>';
         echo '<td class="read navcol3"><span class="read"><span class="parent-icon icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="montserrat" title="'.number_format($read_coins[0]['total_coins'], 0).'">'.echo_number($read_coins[0]['total_coins']).'</span></span></td>';
         echo '</tr>';
