@@ -132,15 +132,16 @@ if(!isset($hide_header) || !$hide_header){
                             if($current_mench['x_id']==$en_id && $current_mench['x_id']==4536){
 
                                 echo '<span class="parent-icon icon-block">'.$session_en['en_icon'].'</span>';
-                                echo '<span class="montserrat play en_name_first_'.$session_en['en_id'].'">'.one_two_explode('', ' ', $session_en['en_name']).'</span> ';
+                                echo '<span class="montserrat play en_name_first_'.$session_en['en_id'].'">'.one_two_explode('', ' ', $session_en['en_name']).'</span>';
                                 echo echo_en_coins();
 
                             } else {
+
                                 echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
                                 echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span> ';
                                 echo '<span class="montserrat '.$identifier.'_name '.( !$is_current ? 'show-max' : '' ).'">' . $m['m_name'] . '</span>';
-                            }
 
+                            }
 
                             echo '</a>';
                             echo '</td>';
