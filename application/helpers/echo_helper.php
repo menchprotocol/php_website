@@ -2300,7 +2300,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
     //Should we give more publishing tools here?
-    $ui .= '<span class="idea-left ' . superpower_active(10984) . '">';
+    $ui .= '<div class="' . superpower_active(10984) . '">';
 
     //IDEA TYPE
     $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['in_id']);
@@ -2347,7 +2347,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     }
 
 
-    $ui .= '</span>';
+    $ui .= '</div>';
 
 
 
