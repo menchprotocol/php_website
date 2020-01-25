@@ -477,50 +477,28 @@ $(document).ready(function () {
 
 
 //Update page count stats & refresh them visually once they change:
-var updating_basic_stats = false;
 var update_coin_counter = function( ) {
-    //your jQuery ajax code
 
-    if(updating_basic_stats){
-        return false;
-    }
-
-    //Now we're updating:
-    updating_basic_stats = true;
     var fadeout_speed = 21;
 
-    //Fetch latest stats:
+    //COUNT COINS:
     $.post("/play/update_coin_counter", { }, function (data) {
 
         //PLAY
-        if(data.play_raw_count <= 1) {
-            $('.three-menus td.play .current_count').html('');
-        } else {
-            if(data.play_count != $('.three-menus td.play .current_count').text().trim()){
-                $('.three-menus td.play .current_count').html(data.play_count+ ' ').fadeOut(fadeout_speed).fadeIn(fadeout_speed);
-            }
+        if(data.play_count != $('.three-menus td.play .current_count').text().trim()){
+            $('.three-menus td.play .current_count').html(data.play_count+ ' ').fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
         //READ
-        if(data.read_raw_count < 1){
-            $('.three-menus td.read .read_name').removeClass('show-max');
-            $('.three-menus td.read .current_count').html('');
-        } else if(data.read_count != $('.three-menus td.read .current_count').text().trim()){
-            $('.three-menus td.read .read_name').addClass('show-max');
+        if(data.read_count != $('.three-menus td.read .current_count').text().trim()){
             $('.three-menus td.read .current_count').html(data.read_count + ' ').fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
         //IDEA
-        if(data.idea_raw_count < 1){
-            $('.three-menus td.idea .idea_name').removeClass('show-max');
-            $('.three-menus td.idea .current_count').html('');
-        } else if(data.idea_count != $('.three-menus td.idea .current_count').text().trim()){
-            $('.three-menus td.idea .idea_name').addClass('show-max');
+        if(data.idea_count != $('.three-menus td.idea .current_count').text().trim()){
             $('.three-menus td.idea .current_count').html(data.idea_count + ' ').fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
-
-        updating_basic_stats = false;
     });
 
 };
