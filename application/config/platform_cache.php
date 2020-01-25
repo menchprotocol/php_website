@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-24 16:22:36 PST
+//Generated 2020-01-24 16:25:49 PST
 
 //PLAY ICON DROPDOWN:
 $config['en_ids_12421'] = array(12426,12422,12424,12423);
@@ -46,7 +46,7 @@ $config['en_all_12421'] = array(
 $config['en_ids_12420'] = array(4356,4358,4739,4735);
 $config['en_all_12420'] = array(
     4356 => array(
-        'm_icon' => '<i class="fad fa-stopwatch " aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch " aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME',
         'm_desc' => '',
         'm_parents' => array(12112,12420,10990,10888,10650,6232,6201),
@@ -2635,7 +2635,7 @@ $config['en_all_12138'] = array(
 $config['en_ids_12112'] = array(4356,4736,4358,4739,4735);
 $config['en_all_12112'] = array(
     4356 => array(
-        'm_icon' => '<i class="fad fa-stopwatch " aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch " aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME',
         'm_desc' => '#',
         'm_parents' => array(12112,12420,10990,10888,10650,6232,6201),
@@ -3930,7 +3930,7 @@ $config['en_all_6232'] = array(
         'm_parents' => array(11049,6232,6201,6195),
     ),
     4356 => array(
-        'm_icon' => '<i class="fad fa-stopwatch " aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch " aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME',
         'm_desc' => 'in_read_time',
         'm_parents' => array(12112,12420,10990,10888,10650,6232,6201),
@@ -4740,7 +4740,7 @@ $config['en_all_10990'] = array(
         'm_parents' => array(12413,10990,11025),
     ),
     4356 => array(
-        'm_icon' => '<i class="fad fa-stopwatch " aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch " aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME',
         'm_desc' => '',
         'm_parents' => array(12112,12420,10990,10888,10650,6232,6201),
@@ -6870,7 +6870,7 @@ $config['en_all_6201'] = array(
         'm_parents' => array(11049,6232,6201,6195),
     ),
     4356 => array(
-        'm_icon' => '<i class="fad fa-stopwatch " aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch " aria-hidden="true"></i>',
         'm_name' => 'READ TIME',
         'm_desc' => '',
         'm_parents' => array(12112,12420,10990,10888,10650,6232,6201),
