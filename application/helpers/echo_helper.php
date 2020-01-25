@@ -2330,6 +2330,18 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= echo_in_stats($in['in_id']);
 
 
+    //IDEA PARENTS
+    foreach ($CI->READ_model->ln_fetch(array(
+        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+        'ln_child_idea_id' => $in['in_id'],
+        'ln_parent_idea_id !=' => $in_linked_id,
+    ), array('in_parent')) as $in_parent){
+        $ui .= '<a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="icon-block in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_play_id']]['m_icon'] . '</a> &nbsp;';
+    }
+
+
     $ui .= '</span>';
 
 
@@ -2343,21 +2355,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
      *
      * */
 
-    $ui .= '<div style="padding-left:5px;" class="pull-right inline-block">';
-
-
-    //Loop through parents:
-    $ui .= '<span class="'.superpower_active(10984).'">';
-    foreach ($CI->READ_model->ln_fetch(array(
-        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
-        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-        'ln_child_idea_id' => $in['in_id'],
-        'ln_parent_idea_id !=' => $in_linked_id,
-    ), array('in_parent')) as $in_parent){
-        $ui .= '<a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_play_id']]['m_icon'] . '</a> &nbsp;';
-    }
-    $ui .= '</span>';
+    $ui .= '<div class="pull-right inline-block">';
 
 
     $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
@@ -2380,16 +2378,17 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '</span></div>';
 
 
+
     //FOLLOW CHILD
     if(!$is_parent){
-        $ui .= '<div class="pull-right inline-block" style="padding:0 17px 0 3px;">'.$follow_url.'</div>';
+        $ui .= '<div style="padding:0 17px 0 3px;">'.$follow_url.'</div>';
     }
-
-
 
     $ui .= '<div class="doclear">&nbsp;</div>';
 
     $ui .= '</div>';
+
+
     $ui .= '</div>';
 
     return $ui;
