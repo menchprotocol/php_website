@@ -2272,24 +2272,29 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_play_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item itemidea ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' idea_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
 
 
-    //Left content wrapper:
-    $ui .= '<span class="idea-left">';
-
     if($is_parent){
+        $ui .= '<div class="idea-left">';
         $ui .= $follow_url;
+        $ui .= '</div>';
     }
 
+
+    //Left content wrapper:
+    $ui .= '<div class="idea-left">';
+
+
     //LINK STATUS
-    $ui .= '<span class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . '</span></span>';
+    $ui .= '<div class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . '</span></div>';
 
 
     //IDEA STATUS
-    $ui .= '<span>'.echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']).'</span>';
+    $ui .= echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']);
 
 
+    //IDEA TITLE
     $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author), (($in['ln_order']*100)+1));
 
-    $ui .= '</span>';
+    $ui .= '</div>';
 
 
 
