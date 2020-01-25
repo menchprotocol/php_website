@@ -219,9 +219,9 @@ li a {
 
 .texttype_4736_sm{
     /* Accomodate .icon-block */
-    width: -webkit-calc(100% - 36px);
-    width:    -moz-calc(100% - 36px);
-    width:         calc(100% - 36px);
+    width: -webkit-calc(100% - 35px);
+    width:    -moz-calc(100% - 35px);
+    width:         calc(100% - 35px);
 }
 .icon-block-lg{ min-width:50px; display: inline-block; text-align: center; }
 .icon-block-xlg{ min-width:58px; display: inline-block; text-align: center; }
@@ -880,9 +880,9 @@ textarea.note-textarea{
     display: block;
     float: left;
     /* Accomodate Right Follow Links */
-    width: -webkit-calc(100% - 110px);
-    width:    -moz-calc(100% - 110px);
-    width:         calc(100% - 110px);
+    width: -webkit-calc(100% - 90px);
+    width:    -moz-calc(100% - 90px);
+    width:         calc(100% - 90px);
 }
 .texttype_4736_sm{
     display: inline-block;
