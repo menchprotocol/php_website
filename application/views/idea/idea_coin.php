@@ -45,10 +45,12 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     $show_tab_menu_count = 0;
     $show_tab_ui = '';
 
-    //Display Header:
+
     if($col_num==2){
 
-        //Idea Status:
+        //IDEA BODY
+
+        //IDEA STATUS
         echo '<div class="inline-block">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author, true, $in['in_id']).'</div>';
 
         //Idea Featured:
@@ -67,21 +69,17 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
     } elseif($col_num==3){
 
-        //IDEA TYPE:
+        //FOOTER
         echo '<div class="left-border-idea" style="margin-top: 30px;">'; //OPEN left-border-idea
 
+        //IDEA TYPE
         echo '<div class="inline-block">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active, true, $in['in_id']).'</div>';
 
-        //RIGHT
-        echo '<div class="inline-block pull-right">';
-
         //TIME ESTIMATE
-        echo '<div class="inline-block '.superpower_active(10939).'" style="margin:0 5px 0 0;">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
+        echo '<div class="inline-block '.superpower_active(10939).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
 
-        //READ PREVIEW
-        echo '<a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fad fa-step-forward"></i></a>';
-
-        echo '</div>';
+        //RIGHT READ PREVIEW
+        echo '<div class="inline-block pull-right"><a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fad fa-step-forward"></i></a></div>';
 
         echo '<div class="doclear">&nbsp;</div>';
 
