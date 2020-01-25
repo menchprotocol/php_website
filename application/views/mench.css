@@ -882,7 +882,7 @@ textarea.note-textarea{
     margin-bottom: 2px;
 }
 
-[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled){
+.dropdown-lock{
     padding: 0;
 }
 
