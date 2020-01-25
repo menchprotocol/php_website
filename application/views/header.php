@@ -129,9 +129,14 @@ if(!isset($hide_header) || !$hide_header){
                             echo '<td class="navcol'.$navcol1.' '.$identifier.'">';
                             echo '<a class="'.$identifier.' border-'.$identifier.( $is_current ? ' focustab ': '' ).'" href="/'.$identifier.'">';
 
-                            echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
-                            echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span> ';
-                            echo '<span class="montserrat '.$identifier.'_name '.( !$is_current ? 'show-max' : '' ).'">' . $m['m_name'] . '</span>';
+                            if($current_mench['x_id']==$en_id && $current_mench['x_name']==4535){
+                                
+                            } else {
+                                echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
+                                echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span> ';
+                                echo '<span class="montserrat '.$identifier.'_name '.( !$is_current ? 'show-max' : '' ).'">' . $m['m_name'] . '</span>';
+                            }
+
 
                             echo '</a>';
                             echo '</td>';

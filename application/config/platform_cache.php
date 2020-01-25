@@ -11,7 +11,60 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-24 23:10:18 PST
+//Generated 2020-01-25 00:17:26 PST
+
+//MENCH GLOSSARY:
+$config['en_ids_4463'] = array(3084,3000,4535,4485,4536,4430,4755,6205);
+$config['en_all_4463'] = array(
+    3084 => array(
+        'm_icon' => '<i class="fas fa-user-astronaut" aria-hidden="true"></i>',
+        'm_name' => 'EXPERTS',
+        'm_desc' => 'People with experience in their respective industry that have shown a consistent commitment to advancing their industry.',
+        'm_parents' => array(10571,4983,6827,4463),
+    ),
+    3000 => array(
+        'm_icon' => '<i class="far fa-thumbs-up" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT SOURCES',
+        'm_desc' => 'We train the Mench personal assistant with sources produced by industry experts. Sources include videos, articles, books, online courses and other channels used by experts to share their knowledge.',
+        'm_parents' => array(7303,10571,4506,4527,4463),
+    ),
+    4535 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA',
+        'm_desc' => 'Intents define the intention of an entity as defined similar to a SMART goal.',
+        'm_parents' => array(10876,4527,5008,12155,2738,4463),
+    ),
+    4485 => array(
+        'm_icon' => '<i class="fas fa-comment-plus idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES',
+        'm_desc' => 'Intent notes are various information collected around intentions that enable Mench to operate as a Personal Assistant for students looking to accomplish an intent.',
+        'm_parents' => array(12408,12407,4535,4527,4463),
+    ),
+    4536 => array(
+        'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
+        'm_name' => 'PLAY',
+        'm_desc' => 'Entities represent people, objects and things.',
+        'm_parents' => array(10876,4527,5008,12155,2738,4463),
+    ),
+    4430 => array(
+        'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
+        'm_name' => 'PLAYERS',
+        'm_desc' => 'PLAY coins representing humans who have played MENCH.',
+        'm_parents' => array(4463,11087,10573,4983,6827,4426),
+    ),
+    4755 => array(
+        'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
+        'm_name' => 'PRIVATE READ',
+        'm_desc' => 'Mench is open-source but most of our student generated content is private and accessible either by the student or Mench\'s core contributors.',
+        'm_parents' => array(4755,6771,4463,4426,4527),
+    ),
+    6205 => array(
+        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ',
+        'm_desc' => 'An electronic log book containing a list of transactions and balances typically involving financial accounts.',
+        'm_parents' => array(10876,10990,4527,5008,12155,2738,4463),
+    ),
+);
 
 //PLAY ICON DROPDOWN:
 $config['en_ids_12421'] = array(12426,12422,12424,12423);
@@ -5302,7 +5355,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(12066,10725,10809,6150,12343,12201,10712,10719,12079,3000,10627,10716,4535,11047,6192,4983,12365,12273,11018,10990,11021,4229,4485,12012,6193,12409,7302,4737,7356,12138,7355,12400,6201,12112,12420,11968,4486,12413,7585,10602,12330,12324,7309,7712,7751,10746,10717,10721,10720,11080,2738,12105,11035,7555,10876,11059,11058,6404,4527,11054,6232,4536,6225,11039,10956,12279,11089,12274,6194,6827,4426,4986,7551,11028,4537,6206,11033,3290,12421,11088,4592,12403,4997,12220,4454,12410,7303,6177,11007,10957,12401,12391,11084,3289,4755,10718,6287,10571,7357,6205,11081,7704,6255,12229,6345,4280,4277,6102,12326,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,10869,4593,10593,12228,12141,12327,10658,10711,4269,6204,10710,12322,12321,6805,7358);
+$config['en_ids_4527'] = array(12066,10725,10809,6150,12343,12201,10712,10719,12079,3000,10627,10716,4535,11047,6192,4983,12365,12273,11018,10990,11021,4229,4485,12012,6193,12409,7302,4737,7356,12138,7355,12400,6201,12112,12420,11968,4486,12413,7585,10602,12330,12324,7309,7712,7751,10746,10717,10721,10720,11080,2738,12105,4463,11035,7555,10876,11059,11058,6404,4527,11054,6232,4536,6225,11039,10956,12279,11089,12274,6194,6827,4426,4986,7551,11028,4537,6206,11033,3290,12421,11088,4592,12403,4997,12220,4454,12410,7303,6177,11007,10957,12401,12391,11084,3289,4755,10718,6287,10571,7357,6205,11081,7704,6255,12229,6345,4280,4277,6102,12326,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,10869,4593,10593,12228,12141,12327,10658,10711,4269,6204,10710,12322,12321,6805,7358);
 $config['en_all_4527'] = array(
     12066 => array(
         'm_icon' => '<i class="far fa-info-circle" aria-hidden="true"></i>',
@@ -5615,6 +5668,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'MENCH CHANNELS UPCOMING',
         'm_desc' => '',
         'm_parents' => array(4527,4758,6771),
+    ),
+    4463 => array(
+        'm_icon' => '<i class="far fa-lightbulb-on" aria-hidden="true"></i>',
+        'm_name' => 'MENCH GLOSSARY',
+        'm_desc' => '',
+        'm_parents' => array(4527,7254),
     ),
     11035 => array(
         'm_icon' => '<i class="fas fa-list"></i>',
@@ -6689,10 +6748,10 @@ $config['en_all_4983'] = array(
         'm_parents' => array(10571,4983,7614,3000),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
         'm_name' => 'PLAYERS',
         'm_desc' => '',
-        'm_parents' => array(11087,10573,4983,6827,4426,4463),
+        'm_parents' => array(4463,11087,10573,4983,6827,4426),
     ),
 );
 
@@ -7464,10 +7523,10 @@ $config['en_all_6827'] = array(
         'm_parents' => array(10571,4983,6827,4463),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
         'm_name' => 'PLAYERS',
         'm_desc' => 'Users who are pursuing their intentions using Mench, mainly to get hired at their dream job',
-        'm_parents' => array(11087,10573,4983,6827,4426,4463),
+        'm_parents' => array(4463,11087,10573,4983,6827,4426),
     ),
 );
 
@@ -7942,10 +8001,10 @@ $config['en_all_4426'] = array(
         'm_parents' => array(4758,3303,4426,4527),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
         'm_name' => 'PLAYERS',
         'm_desc' => '',
-        'm_parents' => array(11087,10573,4983,6827,4426,4463),
+        'm_parents' => array(4463,11087,10573,4983,6827,4426),
     ),
     6196 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger play" aria-hidden="true"></i>',
