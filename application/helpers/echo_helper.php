@@ -2297,6 +2297,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '</div>';
 
 
+    $ui .= '<div class="doclear">&nbsp;</div>';
 
 
     //Should we give more publishing tools here?
