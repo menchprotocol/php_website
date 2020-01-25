@@ -842,8 +842,8 @@ textarea.note-textarea{
     text-align: center;
 }
 
-.edit-locked{
-    cursor: not-allowed;
+.edit-locked, .edit-locked *{
+    cursor: not-allowed !important;
 }
 
 .dynamic_saving{
