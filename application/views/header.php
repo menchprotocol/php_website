@@ -16,7 +16,10 @@ foreach($en_all_2738 /* Player Statuses */ as $en_id => $m){
         } else {
             $found_at++;
         }
-    } else {
+    }
+
+    //Did we find?
+    if($did_find){
         $en_all_2738_mench[$en_id] = $m;
     }
 }
