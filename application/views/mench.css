@@ -701,9 +701,9 @@ textarea.note-textarea{
     margin: 0 !important;
 }
 
-.three-menus td.navcol1, #top_players td.navcol1{ width: 54%; }
-.three-menus td.navcol2, #top_players td.navcol2{ width: 23%; }
-.three-menus td.navcol3, #top_players td.navcol3{ width: 23%; }
+.three-menus td.navcol1, #top_players td.navcol1{ width: 58%; }
+.three-menus td.navcol2, #top_players td.navcol2{ width: 21%; }
+.three-menus td.navcol3, #top_players td.navcol3{ width: 21%; }
 
 
 #top_players td{
