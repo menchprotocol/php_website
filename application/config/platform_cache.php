@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-24 16:25:49 PST
+//Generated 2020-01-24 23:10:18 PST
 
 //PLAY ICON DROPDOWN:
 $config['en_ids_12421'] = array(12426,12422,12424,12423);
@@ -5244,7 +5244,7 @@ $config['en_all_10956'] = array(
 );
 
 //MENCH:
-$config['en_ids_2738'] = array(4536,6205,4535);
+$config['en_ids_2738'] = array(4536,4535,6205);
 $config['en_all_2738'] = array(
     4536 => array(
         'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
@@ -5252,17 +5252,17 @@ $config['en_all_2738'] = array(
         'm_desc' => 'Awarded for each new player',
         'm_parents' => array(10876,4527,5008,12155,2738,4463),
     ),
-    6205 => array(
-        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ',
-        'm_desc' => 'Awarded for successful reads',
-        'm_parents' => array(10876,10990,4527,5008,12155,2738,4463),
-    ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA',
         'm_desc' => 'Awarded for published ideas',
         'm_parents' => array(10876,4527,5008,12155,2738,4463),
+    ),
+    6205 => array(
+        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ',
+        'm_desc' => 'Awarded for successful reads',
+        'm_parents' => array(10876,10990,4527,5008,12155,2738,4463),
     ),
 );
 
