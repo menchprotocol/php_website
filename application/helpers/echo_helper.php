@@ -47,6 +47,19 @@ function echo_time_minutes($sec_int)
     return ($min ? $min . ' Min.' : '') . ($sec ? ($min ? ' ' : '') . $sec . ' Sec.' : '');
 }
 
+function echo_rank($integer){
+    if($integer==1){
+        return ' 🏅';
+    } elseif($integer==2){
+        return ' 🥈';
+    } elseif($integer==3){
+        return ' 🥉';
+    } else {
+        //return echo_ordinal_number($integer);
+        return null;
+    }
+}
+
 function echo_en_coins($coin_count = 0){
     $CI =& get_instance();
     $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
