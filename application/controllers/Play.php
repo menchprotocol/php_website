@@ -766,7 +766,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
             //PLAY
-            echo '<td class="play navcol1"><span class="parent-icon icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="play montserrat en_name_first_'.$ln['en_id'].'">'.$first_name.'</a>' : '<b class="play montserrat en_name_first_'.$ln['en_id'].'">'.$first_name.'</b>' ).echo_rank(($count+1)).echo_en_coins($play_coins[0]['total_coins']).'</td>';
+            echo '<td class="play navcol1"><span class="parent-icon icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="play montserrat en_name_first_'.$ln['en_id'].'">'.$first_name.'</a>' : '<b class="play montserrat en_name_first_'.$ln['en_id'].'">'.$first_name.'</b>' ).echo_en_coins($play_coins[0]['total_coins']).'</td>';
 
 
             //IDEA
@@ -822,7 +822,7 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
 
                 //PLAY
-                echo '<td class="play navcol1"><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="play montserrat">'.$first_name.'</a>' : '<b class="play montserrat">'.$first_name.'</b>' ).echo_rank(($count+1)).echo_en_coins($play_coins[0]['total_coins']).'</td>';
+                echo '<td class="play navcol1"><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="play montserrat">'.$first_name.'</a>' : '<b class="play montserrat">'.$first_name.'</b>' ).echo_en_coins($play_coins[0]['total_coins']).'</td>';
 
                 //IDEA
                 echo '<td class="idea navcol2"></td>';

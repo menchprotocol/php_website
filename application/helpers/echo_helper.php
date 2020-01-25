@@ -2407,19 +2407,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-function echo_rank($integer){
-    if($integer==1){
-        return ' 🏅';
-    } elseif($integer==2){
-        return ' 🥈';
-    } elseif($integer==3){
-        return ' 🥉';
-    } else {
-        //return echo_ordinal_number($integer);
-        return null;
-    }
-}
-
 
 function echo_caret($en_id, $m, $url_append){
     //Display drop down menu:
