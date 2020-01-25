@@ -1149,9 +1149,9 @@ label {
     display: block;
     float: left;
     /* Accomodate Right Follow Links */
-    width: -webkit-calc(100% - 90px);
-    width:    -moz-calc(100% - 90px);
-    width:         calc(100% - 90px);
+    width: -webkit-calc(100% - 96px);
+    width:    -moz-calc(100% - 96px);
+    width:         calc(100% - 96px);
 }
 .texttype_4736_sm{
     display: inline-block;
@@ -1159,10 +1159,11 @@ label {
     font-size: 1em;
     padding: 0;
     background-color: #0000FF !important;
+
     /* Accomodate .icon-block */
-    width: -webkit-calc(100% - 36px);
-    width:    -moz-calc(100% - 36px);
-    width:         calc(100% - 36px);
+    width: -webkit-calc(100% - 37px);
+    width:    -moz-calc(100% - 37px);
+    width:         calc(100% - 37px);
 }
 .texttype_4356_sm {
     text-align: center;
