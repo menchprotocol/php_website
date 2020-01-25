@@ -126,7 +126,7 @@ if(!isset($hide_header) || !$hide_header){
                             $handle = ( $en_id==6205 ? '' : $identifier );
                             $is_current = ($current_mench['x_id']==$en_id);
 
-                            echo '<td class="navcol'.$navcol1.'">';
+                            echo '<td class="navcol'.$navcol1.' '.$identifier.'">';
                             echo '<a class="'.$identifier.' border-'.$identifier.( $is_current ? ' focustab ': '' ).'" href="/'.$identifier.'">';
 
                             echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
