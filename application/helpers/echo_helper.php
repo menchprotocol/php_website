@@ -2298,11 +2298,11 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '</div>';
 
 
-    $ui .= '<div class="doclear">&nbsp;</div>';
-
 
     //Should we give more publishing tools here?
-    $ui .= '<div class="inline-block ' . superpower_active(10984) . '">';
+    $ui .= '<div class="inline-block' . superpower_active(10984) . '">';
+
+    $ui .= '<div class="doclear">&nbsp;</div>';
 
     //IDEA TYPE
     $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['in_id']);
