@@ -2970,6 +2970,6 @@ function echo_ordinal_number($number)
 function echo__s($count, $is_es = 0)
 {
     //A cute little function to either display the plural "s" or not based on $count
-    return ($count == 1 ? '' : ($is_es ? 'es' : 's'));
+    return ( intval($count) == 1 ? '' : ($is_es ? 'es' : 's'));
 }
 
