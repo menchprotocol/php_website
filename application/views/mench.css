@@ -1149,17 +1149,15 @@ label {
     display: block;
     float: left;
     /* Accomodate Right Follow Links */
-    width: -webkit-calc(100% - 96px);
-    width:    -moz-calc(100% - 96px);
-    width:         calc(100% - 96px);
+    width: -webkit-calc(100% - 102px);
+    width:    -moz-calc(100% - 102px);
+    width:         calc(100% - 102px);
 }
 .texttype_4736_sm{
     display: inline-block;
     color: #000;
     font-size: 1em;
     padding: 0;
-    background-color: #0000FF !important;
-
     /* Accomodate .icon-block */
     width: -webkit-calc(100% - 37px);
     width:    -moz-calc(100% - 37px);
