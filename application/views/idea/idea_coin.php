@@ -63,11 +63,13 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && $is_active), 0, true);
         echo '</div>';
 
-
-        echo '</div>'; //CLOSE left-border-idea
-
         //RIGHT READ PREVIEW
         echo '<div class="inline-block pull-right"><a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fad fa-step-forward"></i></a></div>';
+
+
+        echo '</div>'; //CLOSE left-border-idea
+        echo '<div class="doclear">&nbsp;</div>';
+
 
     } elseif($col_num==3){
 
