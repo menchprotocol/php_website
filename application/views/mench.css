@@ -869,6 +869,9 @@ textarea.note-textarea{
 .texttype_4736_sm{
     width: 88%; /* Accomodate Left Status */
 }
+.no-padding{
+    padding: 0 !important;
+}
 
 .idea-left {
     padding:5px 0 0 0;
