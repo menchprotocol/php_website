@@ -824,7 +824,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //COUNT TOTALS:
         $weekly_active_players = $this->db->query( 'SELECT COUNT(*) FROM (SELECT DISTINCT ln_owner_play_id FROM table_read) AS wap_count;' );
-        $result = $weekly_active_players->result();
+        $result = $weekly_active_players->result_array();
 
         $play_coins = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
