@@ -284,7 +284,7 @@ class Idea extends CI_Controller {
                 $hours = rtrim(number_format((config_var(12113)/3600), 1), '.0');
                 return echo_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be between '.config_var(12427).' - '.config_var(12113).' Seconds ('.$hours.' Hour'.echo__s($hours).').'.( $_POST['field_value']>config_var(12113) ).' You can break down your '.$_POST['field_value'].' into smaller ideas which also makes it easier to read/learn.',
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be between '.config_var(12427).' - '.config_var(12113).' Seconds ('.$hours.' Hour'.echo__s($hours).') long.'.( $_POST['field_value']>config_var(12113) ? ' You can break down your '.$_POST['field_value'].' second into smaller ideas.' : '' ),
                     'original_val' => $ins[0]['in_read_time'],
                 ));
 
