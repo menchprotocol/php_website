@@ -722,7 +722,7 @@ fragment PostListingItemSidebar_post on Post {
         */
 
         //Fetch top_players:
-        $idea_coins = $this->READ_model->ln_fetch($filters_idea, array('en_owner'), $load_max, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        $idea_player_coins = $this->READ_model->ln_fetch($filters_idea, array('en_owner'), $load_max, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
 
         echo '<table id="top_players" class="table table-sm table-striped">';
@@ -760,7 +760,7 @@ fragment PostListingItemSidebar_post on Post {
         echo '</tr>';
 
         //Start with top Ideators:
-        foreach ($idea_coins as $count=>$ln) {
+        foreach ($idea_player_coins as $count=>$ln) {
 
             if($count==$show_max){
 
