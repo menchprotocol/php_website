@@ -844,6 +844,7 @@ textarea.note-textarea{
 
 .edit-locked, .edit-locked *{
     cursor: not-allowed !important;
+    background-color: #f4f5f7 !important;
 }
 
 .dynamic_saving{
