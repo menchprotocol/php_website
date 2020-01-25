@@ -279,12 +279,20 @@ class Idea extends CI_Controller {
                     'original_val' => $ins[0]['in_read_time'],
                 ));
 
-            } elseif($_POST['field_value'] > config_var(12113) || $_POST['field_value'] < config_var(12427)){
+            } elseif($_POST['field_value'] > config_var(12113)){
 
                 $hours = rtrim(number_format((config_var(12113)/3600), 1), '.0');
                 return echo_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be between '.config_var(12427).' - '.config_var(12113).' Seconds ('.$hours.' Hour'.echo__s($hours).') long.'.( $_POST['field_value']>config_var(12113) ? ' You can break down your '.$_POST['field_value'].' second into smaller ideas.' : '' ),
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be less than '.$hours.' Hour'.echo__s($hours).', or '.config_var(12113).' Seconds long. You can break down your idea into smaller ideas.',
+                    'original_val' => $ins[0]['in_read_time'],
+                ));
+
+            } elseif($_POST['field_value'] < config_var(12427)){
+
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to read ideas ;)',
                     'original_val' => $ins[0]['in_read_time'],
                 ));
 
