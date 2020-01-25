@@ -2369,7 +2369,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
     $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
-    if($is_author){
+    if($is_author || !$is_parent){
 
         //Sort:
         if(!$is_parent){

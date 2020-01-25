@@ -485,17 +485,17 @@ var update_coin_counter = function( ) {
     $.post("/play/update_coin_counter", { }, function (data) {
 
         //PLAY
-        if(data.play_count != $('.three-menus td.play .current_count').text().trim()){
+        if(data.play_count != $('.three-menus td.play .current_count').html()){
             $('.three-menus td.play .current_count').html(data.play_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
         //READ
-        if(data.read_count != $('.three-menus td.read .current_count').text().trim()){
+        if(data.read_count != $('.three-menus td.read .current_count').html()){
             $('.three-menus td.read .current_count').html(data.read_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
         //IDEA
-        if(data.idea_count != $('.three-menus td.idea .current_count').text().trim()){
+        if(data.idea_count != $('.three-menus td.idea .current_count').html()){
             $('.three-menus td.idea .current_count').html(data.idea_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
