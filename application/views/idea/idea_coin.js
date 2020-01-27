@@ -246,7 +246,7 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
                 //Go to main idea page:
                 setTimeout(function () {
                     //Restore background:
-                    $(remove_element).fadeOut();
+                    $( data.remove_element ).fadeOut();
                 }, 377);
             }
 
