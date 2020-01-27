@@ -519,7 +519,7 @@ class Idea extends CI_Controller {
                     )))){
                     //Inform moderators:
                     $this->READ_model->ln_create(array(
-                        'ln_content' => 'Ideator requesting feature review',
+                        'ln_content' => 'Player requesting feature review',
                         'ln_type_play_id' => 7504, //Trainer Review Required
                         'ln_owner_play_id' => $session_en['en_id'],
                         'ln_child_idea_id' => $_POST['in_id'],

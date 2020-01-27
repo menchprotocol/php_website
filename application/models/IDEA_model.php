@@ -238,21 +238,12 @@ class IDEA_model extends CI_Model
     function in_unlink($in_id, $ln_owner_play_id = 0){
 
         //Remove idea relations:
-        $idea_remove_links = array_merge(
-            $this->READ_model->ln_fetch(array( //Idea Links
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-                '(ln_child_idea_id = '.$in_id.' OR ln_parent_idea_id = '.$in_id.')' => null,
-            ), array(), 0),
-            $this->READ_model->ln_fetch(array( //Idea Notes
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
-                '(ln_child_idea_id = '.$in_id.' OR ln_parent_idea_id = '.$in_id.')' => null,
-            ), array(), 0)
-        );
-
         $links_removed = 0;
-        foreach($idea_remove_links as $ln){
+        foreach($this->READ_model->ln_fetch(array( //Idea Links
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            '(ln_child_idea_id = '.$in_id.' OR ln_parent_idea_id = '.$in_id.')' => null,
+        ), array(), 0) as $ln){
             //Remove this link:
             $links_removed += $this->READ_model->ln_update($ln['ln_id'], array(
                 'ln_status_play_id' => 6173, //Link Removed

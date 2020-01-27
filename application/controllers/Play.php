@@ -759,7 +759,7 @@ fragment PostListingItemSidebar_post on Post {
         echo '<td class="read MENCHcolumn3"><span class="read"><span class="parent-icon icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="montserrat" title="'.number_format($read_coins[0]['total_coins'], 0).'">'.echo_number($read_coins[0]['total_coins']).'</span></span></td>';
         echo '</tr>';
 
-        //Start with top Ideators:
+        //Start with top Players:
         foreach ($idea_player_coins as $count=>$ln) {
 
             if($count==$show_max){
@@ -815,16 +815,16 @@ fragment PostListingItemSidebar_post on Post {
         }
 
         //Then show top readers to hit the target $load_max
-        //TODO retire this once we hit 100+ Ideators, which means no more need for readers
-        $ideators_found = count($idea_player_coins);
-        $show_readers = $load_max - $ideators_found;
+        //TODO retire this once we hit 100+ Players, which means no more need for readers
+        $players_found = count($idea_player_coins);
+        $show_readers = $load_max - $players_found;
         if($show_readers > 0){
 
             $read_coins = $this->READ_model->ln_fetch($filters_read, array('en_owner'), $show_readers, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
             foreach ($read_coins as $count=>$ln) {
 
-                $count += $ideators_found;
+                $count += $players_found;
 
                 if($count==$show_max){
 

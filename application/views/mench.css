@@ -426,11 +426,6 @@ img.no-radius {
 
 .btn-play i, .btn-read i, .btn-idea i { color: #000000 !important; }
 
-.left-border-idea{
-    border-left: 8px solid #ffd600;
-    margin-left: -8px;
-}
-
 /* Color Palette @10604 */
 .isgreen, .isgreen a                { color:#228B22 !important; }
 .isred, .isred a, .fas.redalert     { color:#FF0000 !important; }

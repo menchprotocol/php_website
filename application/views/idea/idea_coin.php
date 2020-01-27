@@ -29,8 +29,6 @@ $play_focus_found = false; //Used to determine the first tab to be opened
 echo '<div class="container" style="padding-bottom:42px;">';
 
 
-echo '<div class="left-border-idea">'; //OPEN left-border-idea
-
 
 if(!$is_author){
     echo '<div class="alert alert-warning no-margin"><i class="fas fa-exclamation-triangle read"></i> You are not an author of this idea. <a href="/idea/in_become_author/'.$in['in_id'].'" class="inline-block montserrat '.superpower_active(10984).'">BECOME AUTHOR</a></div>';
@@ -67,13 +65,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && $is_active), 0, true);
         echo '</div>';
 
-        echo '</div>'; //CLOSE left-border-idea
-
-
     } elseif($col_num==3){
 
         //FOOTER
-        echo '<div class="left-border-idea" style="margin-top: 30px;">'; //OPEN left-border-idea
 
         //IDEA TYPE
         echo '<div class="inline-block">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active, true, $in['in_id']).'</div>';
@@ -304,8 +298,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     echo $tab_content;
 
 }
-
-echo '</div>'; //CLOSE left-border-idea
 
 echo '</div>';
 
