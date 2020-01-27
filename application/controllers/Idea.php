@@ -478,7 +478,9 @@ class Idea extends CI_Controller {
                 //Remove all idea links?
                 if(!in_array($_POST['new_en_id'], $this->config->item('en_ids_7356'))){
 
+                    //Determine what to do after removed:
                     if($_POST['in_id'] == $_POST['in_loaded_id']){
+
                         //Since we're removing the FOCUS IDEA we need to move to the first parent idea:
                         foreach ($this->IDEA_model->in_fetch_recursive_parents($_POST['in_id'], true, false) as $grand_parent_ids) {
                             foreach ($grand_parent_ids as $parent_in_id) {
@@ -489,13 +491,17 @@ class Idea extends CI_Controller {
 
                         //Go to main page if no parent found:
                         if(!$deletion_redirect){
-                            $deletion_redirect = '/idea';
-                        }
-                    } else {
-                        //Just remove from UI using JS:
-                        $remove_element = '';
-                    }
 
+                            $deletion_redirect = '/idea';
+
+                        }
+
+                    } else {
+
+                        //Just remove from UI using JS:
+                        $remove_element = '.idea_line_' . $_POST['in_id'];
+
+                    }
 
                     //Remove all links:
                     $this->IDEA_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
