@@ -5,6 +5,7 @@ echo '<div class="container">';
 //Define all moderation functions:
 $en_all_4737 = $this->config->item('en_all_4737'); // Idea Statuses
 $en_all_6177 = $this->config->item('en_all_6177'); //Player Statuses
+$en_all_4463 = $this->config->item('en_all_4463'); //GLOSSARY
 
 $moderation_tools = array(
     '/play/play_admin/link_coins_words_stats' => 'Coin Stats',
@@ -37,6 +38,7 @@ $cron_jobs = array(
 
 
 $developer_tools = array(
+    '/play/platform_cache' => $en_all_4463[4430]['m_name'],
     '/play/platform_cache' => 'Platform PHP Cache',
     '/play/my_session' => 'My Session Variables',
     '/play/php_info' => 'Server PHP Info',

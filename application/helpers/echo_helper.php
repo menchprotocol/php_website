@@ -1502,38 +1502,58 @@ function echo_in_idea($in)
     $CI =& get_instance();
     $en_all_4737 = $CI->config->item('en_all_4737'); // Idea Statuses
 
-    $ui = '<a href="/idea/'.$in['in_id'] . '" class="list-group-item itemidea">';
+    $ui = '<a href="/idea/'.$in['in_id'] . '" class="list-group-item itemidea no-side-padding">';
+
+
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-    $ui .= '<td>';
-    $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false).'</b>';
 
-    $echo_in_stats = echo_in_stats($in['in_id'], true);
-    if($echo_in_stats){
-        $ui .= '<div style="padding: 10px 0 2px; margin-left: -8px;">'.$echo_in_stats.'</div>';
-    }
 
-    //Footnote
-    $ui .= '<div class="montserrat idea-info doupper">';
+    $ui .= '<td class="MENCHcolumn1 idea">';
+        //Image on RIGHT:
+        $ui .= '<div class="inline-block pull-right">'.echo_in_thumbnail($in['in_id']).'</div>';
+        $ui .= '<div class="inline-block pull-left">';
+            $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false).'</b>';
 
-    //Now do measurements:
-    $metadata = unserialize($in['in_metadata']);
-    if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0 && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-        $ui .= echo_time_range($in, true).' READ ';
-    }
+            /*
+            $echo_in_stats = echo_in_stats($in['in_id'], true);
+            if($echo_in_stats){
+                $ui .= '<div style="padding: 10px 0 2px; margin-left: -8px;">'.$echo_in_stats.'</div>';
+            }
+            */
 
-    $ui .= '<span class="icon-block" data-toggle="tooltip" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'" data-placement="top">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].'</span>';
+            //Footnote
+            $ui .= '<div class="montserrat idea-info doupper">';
 
-    if(in_array($in['in_status_play_id'], $CI->config->item('en_ids_12138') /* Idea Statuses Featured */)){
-        $ui .= echo_in_featured($in['in_id']);
-    }
+            //Now do measurements:
+            $metadata = unserialize($in['in_metadata']);
+            if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0 && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
+                $ui .= echo_time_range($in, true).' READ ';
+            }
 
-    $ui .= '</div>'; //End Footnote
+            $ui .= '<span class="icon-block" data-toggle="tooltip" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'" data-placement="top">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].'</span>';
+
+            if(in_array($in['in_status_play_id'], $CI->config->item('en_ids_12138') /* Idea Statuses Featured */)){
+                //$ui .= echo_in_featured($in['in_id']);
+            }
+
+            $ui .= '</div>'; //End Footnote
+        $ui .= '</div>';
+    $ui .= '</td>';
+
+
+    //READ
+    $ui .= '<td class="MENCHcolumn2 read">';
+
+    $ui .= '</td>';
+
+
+    //PLAY
+    $ui .= '<td class="MENCHcolumn3 play">';
 
 
     $ui .= '</td>';
 
-    //Search for Idea Image:
-    $ui .= '<td class="featured-frame">'.echo_in_thumbnail($in['in_id']).'</td>';
+
     $ui .= '</tr></table>';
     $ui .= '</a>';
 

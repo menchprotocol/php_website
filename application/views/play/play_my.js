@@ -4,8 +4,8 @@
 
 $(document).ready(function () {
 
-    //Load top_players:
-    load_top_players();
+    //Load players:
+    load_MENCHplayers();
 
     //Do we need to auto open?
     if(open_en_id > 0){

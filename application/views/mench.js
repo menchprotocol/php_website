@@ -65,13 +65,13 @@ function js_ln_create(new_ln_data){
 }
 
 
-function load_top_players(){
+function load_MENCHplayers(){
     //Show loading icon:
-    $('#load_top_players').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin play"></i></span></div>');
+    $('#load_MENCHplayers').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin play"></i></span></div>');
     $('.top-players').addClass('hidden');
 
-    $.post("/play/load_top_players/", { }, function (data) {
-        $('#load_top_players').html(data);
+    $.post("/play/load_MENCHplayers/", { }, function (data) {
+        $('#load_MENCHplayers').html(data);
         $('[data-toggle="tooltip"]').tooltip();
     });
 }
@@ -201,6 +201,9 @@ function loadtab(tab_group_id, tab_data_id, note_in_id, owner_en_id){
 
 var algolia_index = false;
 $(document).ready(function () {
+
+    //Sync all PLAY column widths:
+    $('td.play').css('width', $('#MENCHmenu td.play').width() + 'px !important');
 
     //Load Algolia on Focus:
     $(".algolia_search").focus(function () {
@@ -485,18 +488,18 @@ var update_coin_counter = function( ) {
     $.post("/play/update_coin_counter", { }, function (data) {
 
         //PLAY
-        if(data.play_count != $('.three-menus td.play .current_count').html()){
-            $('.three-menus td.play .current_count').html(data.play_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        if(data.play_count != $('#MENCHmenu td.play .current_count').html()){
+            $('#MENCHmenu td.play .current_count').html(data.play_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
         //READ
-        if(data.read_count != $('.three-menus td.read .current_count').html()){
-            $('.three-menus td.read .current_count').html(data.read_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        if(data.read_count != $('#MENCHmenu td.read .current_count').html()){
+            $('#MENCHmenu td.read .current_count').html(data.read_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
         //IDEA
-        if(data.idea_count != $('.three-menus td.idea .current_count').html()){
-            $('.three-menus td.idea .current_count').html(data.idea_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        if(data.idea_count != $('#MENCHmenu td.idea .current_count').html()){
+            $('#MENCHmenu td.idea .current_count').html(data.idea_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
     });

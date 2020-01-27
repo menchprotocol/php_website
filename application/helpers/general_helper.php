@@ -485,6 +485,9 @@ function random_player_avatar(){
     return $en_all_10956[array_rand($en_all_10956)]['m_icon'];
 }
 
+function format_percentage($percent){
+    return number_format($percent, ( $percent < 10 ? 1 : 0 ));
+}
 
 function addup_array($array, $match_key)
 {

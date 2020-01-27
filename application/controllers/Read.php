@@ -204,7 +204,7 @@ class Read extends CI_Controller
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $idea_coins_growth_rate = number_format(( $idea_coins_last_week[0]['total_coins'] / ( $idea_coins_last_week[0]['total_coins'] - $idea_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100, 1);
+        $idea_coins_growth_rate = format_percentage( $idea_coins_last_week[0]['total_coins'] / ( $idea_coins_last_week[0]['total_coins'] - $idea_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100;
 
 
         //READ
@@ -219,7 +219,8 @@ class Read extends CI_Controller
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $read_coins_growth_rate = number_format(( $read_coins_last_week[0]['total_coins'] / ( $read_coins_last_week[0]['total_coins'] - $read_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100, 1);
+        $read_coins_growth_rate = format_percentage( $read_coins_last_week[0]['total_coins'] / ( $read_coins_last_week[0]['total_coins'] - $read_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100;
+
 
 
         //PLAY
@@ -234,7 +235,7 @@ class Read extends CI_Controller
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $play_coins_growth_rate = number_format(( $play_coins_last_week[0]['total_coins'] / ( $play_coins_last_week[0]['total_coins'] - $play_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100, 1);
+        $play_coins_growth_rate = format_percentage( $play_coins_last_week[0]['total_coins'] / ( $play_coins_last_week[0]['total_coins'] - $play_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100;
 
 
         //oii
@@ -245,7 +246,7 @@ class Read extends CI_Controller
         $oii_transactions_last_week = $this->READ_model->ln_fetch(array(
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $oii_transactions_growth_rate = number_format(( $oii_transactions_last_week[0]['total_coins'] / ( $oii_transactions_last_week[0]['total_coins'] - $oii_transactions_new_last_week[0]['total_coins'] ) * 100 ) - 100, 1);
+        $oii_transactions_growth_rate = format_percentage( $oii_transactions_last_week[0]['total_coins'] / ( $oii_transactions_last_week[0]['total_coins'] - $oii_transactions_new_last_week[0]['total_coins'] ) * 100 ) - 100;
 
 
 
@@ -269,15 +270,27 @@ class Read extends CI_Controller
         $html_message .= '<div>Cheers,</div>';
         $html_message .= '<div>MENCH</div>';
 
-
-        $email_recipients = 0;
-        //Send email to all subscribers:
-        foreach($this->READ_model->ln_fetch(array(
+        $subscriber_filters = array(
             'ln_parent_play_id' => 12114,
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
-        ), array('en_child')) as $subscribed_player){
+        );
+
+        //Should we limit the scope?
+        if(isset($_GET['notify_play_id']) && intval($_GET['notify_play_id']) > 0){
+            $subscriber_filters['ln_child_play_id'] = $_GET['notify_play_id'];
+        } else {
+            $session_en = superpower_assigned();
+            if($session_en){
+                $subscriber_filters['ln_child_play_id'] = $session_en['en_id'];
+            }
+        }
+
+
+        $email_recipients = 0;
+        //Send email to all subscribers:
+        foreach($this->READ_model->ln_fetch($subscriber_filters, array('en_child')) as $subscribed_player){
             //Try fetching subscribers email:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -293,7 +306,7 @@ class Read extends CI_Controller
             }
         }
 
-        echo 'Sent '.$email_recipients.' Messages';
+        echo 'Sent '.$email_recipients.' Emails';
     }
 
     function read_my(){

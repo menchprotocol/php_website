@@ -136,10 +136,10 @@ if($session_en) {
 ?>
 
 <!-- Top Players -->
-<h1 class="montserrat play"><span class="icon-block-xlg icon_photo"><?= $en_all_11035[11087]['m_icon'] ?></span><?= $en_all_11035[11087]['m_name'] ?></h1>
+<h1 class="montserrat play"><span class="icon-block-xlg icon_photo"><?= $en_all_11035[4430]['m_icon'] ?></span><?= $en_all_11035[4430]['m_name'] ?></h1>
 
     <div class="one-pix">
-        <div id="load_top_players"></div>
+        <div id="load_MENCHplayers"></div>
     </div>
 
 </div>

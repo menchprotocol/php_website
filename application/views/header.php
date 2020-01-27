@@ -115,18 +115,18 @@ if(!isset($hide_header) || !$hide_header){
         <!-- 3X NAVIGATION -->
         <div class="container show-while-searching fixed-bottom" style="padding-bottom: 0 !important;">
             <div class="row">
-                <table class="three-menus">
+                <table id="MENCHmenu">
                     <tr>
                         <?php
-                        $navcol1 = 0;
+                        $MENCHcolumn1 = 0;
                         foreach($en_all_2738_mench as $en_id => $m){
 
-                            $navcol1++;
+                            $MENCHcolumn1++;
                             $identifier = strtolower($m['m_name']);
                             $handle = ( $en_id==6205 ? '' : $identifier );
                             $is_current = ($current_mench['x_id']==$en_id);
 
-                            echo '<td class="navcol'.$navcol1.' '.$identifier.'">';
+                            echo '<td class="MENCHcolumn'.$MENCHcolumn1.' '.$identifier.'">';
                             echo '<a class="'.$identifier.' border-'.$identifier.( $is_current ? ' focustab ': '' ).'" href="/'.$identifier.'">';
 
                             if($en_id==4536){
