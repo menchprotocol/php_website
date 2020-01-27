@@ -498,8 +498,12 @@ class Idea extends CI_Controller {
 
                     } else {
 
-                        //Just remove from UI using JS:
-                        $remove_element = '.idea_line_' . $_POST['in_id'];
+                        if(!$remove_element){
+
+                            //Just remove from UI using JS:
+                            $remove_element = '.idea_line_' . $_POST['in_id'];
+
+                        }
 
                     }
 

@@ -213,7 +213,7 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
     var is_idea_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
     if(is_idea_delete){
         //Seems to be deleting, confirm:
-        var r = confirm("Are you sure you want to archive this idea?");
+        var r = confirm("Are you sure you want to archive this idea & remove all its links to other ideas/players?");
         if (r == false) {
             return false;
         }
@@ -244,7 +244,10 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
                 window.location = data.deletion_redirect;
             } else if( data.remove_element && data.remove_element.length > 0 ){
                 //Go to main idea page:
-                $(remove_element).fadeOut();
+                setTimeout(function () {
+                    //Restore background:
+                    $(remove_element).fadeOut();
+                }, 377);
             }
 
             if(element_id==4486){
