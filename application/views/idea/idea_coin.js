@@ -247,6 +247,12 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
                 setTimeout(function () {
                     //Restore background:
                     $( data.remove_element ).fadeOut();
+
+                    setTimeout(function () {
+                        //Restore background:
+                        $( data.remove_element ).remove();
+                    }, 55);
+
                 }, 377);
             }
 
