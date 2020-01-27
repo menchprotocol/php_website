@@ -408,6 +408,7 @@ class Idea extends CI_Controller {
         //Maintain a manual index as a hack for the Idea/Player tables for now:
         $en_all_6232 = $this->config->item('en_all_6232'); //PLATFORM VARIABLES
         $deletion_redirect = null;
+        $remove_element = null;
 
         //Authenticate Trainer:
         $session_en = superpower_assigned();
@@ -419,7 +420,12 @@ class Idea extends CI_Controller {
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Idea ID',
+                'message' => 'Missing Target Idea ID',
+            ));
+        } elseif (!isset($_POST['in_loaded_id']) || intval($_POST['in_loaded_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Loaded Idea ID',
             ));
         } elseif (!isset($_POST['ln_id'])) {
             return echo_json(array(
@@ -472,18 +478,24 @@ class Idea extends CI_Controller {
                 //Remove all idea links?
                 if(!in_array($_POST['new_en_id'], $this->config->item('en_ids_7356'))){
 
-                    //Fetch parent URL:
-                    foreach ($this->IDEA_model->in_fetch_recursive_parents($_POST['in_id'], true, false) as $grand_parent_ids) {
-                        foreach ($grand_parent_ids as $parent_in_id) {
-                            $deletion_redirect = '/idea/'.$parent_in_id; //First parent in first branch of parents
-                            break;
+                    if($_POST['in_id'] == $_POST['in_loaded_id']){
+                        //Since we're removing the FOCUS IDEA we need to move to the first parent idea:
+                        foreach ($this->IDEA_model->in_fetch_recursive_parents($_POST['in_id'], true, false) as $grand_parent_ids) {
+                            foreach ($grand_parent_ids as $parent_in_id) {
+                                $deletion_redirect = '/idea/'.$parent_in_id; //First parent in first branch of parents
+                                break;
+                            }
                         }
+
+                        //Go to main page if no parent found:
+                        if(!$deletion_redirect){
+                            $deletion_redirect = '/idea';
+                        }
+                    } else {
+                        //Just remove from UI using JS:
+                        $remove_element = '';
                     }
 
-                    //Go to main page if no parent found:
-                    if(!$deletion_redirect){
-                        $deletion_redirect = '/idea';
-                    }
 
                     //Remove all links:
                     $this->IDEA_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
@@ -517,6 +529,7 @@ class Idea extends CI_Controller {
         return echo_json(array(
             'status' => 1,
             'deletion_redirect' => $deletion_redirect,
+            'remove_element' => $remove_element,
         ));
 
     }

@@ -227,6 +227,7 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
 
         in_id: in_id,
         ln_id: ln_id,
+        in_loaded_id:in_loaded_id,
         element_id: element_id,
         new_en_id: new_en_id
 
@@ -241,7 +242,11 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
                 //Go to main idea page:
                 window.location = data.deletion_redirect;
+            } else if( data.remove_element && data.remove_element.length > 0 ){
+                //Go to main idea page:
+                $(remove_element).fadeOut();
             }
+
             if(element_id==4486){
                 $('.in__tr_'+in_id+'_'+ln_id+' .link_marks').addClass('hidden');
                 $('.in__tr_'+in_id+'_'+ln_id+' .settings_' + new_en_id).removeClass('hidden');

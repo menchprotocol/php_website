@@ -1514,12 +1514,12 @@ function echo_in_idea($in)
         $ui .= '<div class="inline-block pull-left">';
             $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false).'</b>';
 
-            /*
+
             $echo_in_stats = echo_in_stats($in['in_id'], true);
             if($echo_in_stats){
                 $ui .= '<div style="padding: 10px 0 2px; margin-left: -8px;">'.$echo_in_stats.'</div>';
             }
-            */
+
 
             //Footnote
             $ui .= '<div class="montserrat idea-info doupper">';
@@ -1533,7 +1533,7 @@ function echo_in_idea($in)
             $ui .= '<span class="icon-block" data-toggle="tooltip" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'" data-placement="top">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].'</span>';
 
             if(in_array($in['in_status_play_id'], $CI->config->item('en_ids_12138') /* Idea Statuses Featured */)){
-                //$ui .= echo_in_featured($in['in_id']);
+                $ui .= echo_in_featured($in['in_id']);
             }
 
             $ui .= '</div>'; //End Footnote
