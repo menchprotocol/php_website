@@ -211,7 +211,6 @@ if(!$action) {
         'ledger' => 0,
         'ledger_not_player_count' => 0,
         'player_not_ledger_count' => 0,
-        'ledger_not_player_list' => array(),
         'player_not_ledger_list' => array(),
     );
 
@@ -241,7 +240,12 @@ if(!$action) {
         }
         if($is_ledger && !$is_player){
             $stats['ledger_not_player_count']++;
-            array_push($stats['ledger_not_player_list'], $en);
+            $this->READ_model->ln_create(array(
+                'ln_type_play_id' => 4230, //Raw link
+                'ln_parent_play_id' => 4430, //Mench User
+                'ln_owner_play_id' => $en['en_id'],
+                'ln_child_play_id' => $en['en_id'],
+            ));
         }
 
     }
