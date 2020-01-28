@@ -1515,7 +1515,7 @@ class Read extends CI_Controller
     function messenger_fetch_profile($psid)
     {
 
-        if (!superpower_active(10967, true)) {
+        if (!superpower_assigned(10967)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing superpower',

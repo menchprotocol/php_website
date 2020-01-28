@@ -2206,7 +2206,7 @@ function echo_in_stats($in_id, $show_tree_stats = false){
     foreach($CI->config->item('en_all_12409') as $read_group_play_id => $m){
         //Need Superpowers for this?
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-        if(!count($superpower_actives) || superpower_assigned(end($superpower_actives))){
+        if(!count($superpower_actives) || superpower_active(end($superpower_actives), true)){
             $item_counters = $CI->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_'.$read_group_play_id)) . ')' => null,
@@ -2250,7 +2250,7 @@ function echo_in_stats($in_id, $show_tree_stats = false){
     foreach($CI->config->item('en_all_4485') as $idea_note_play_id => $m){
         //Need Superpowers for this?
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-        if(!count($superpower_actives) || superpower_assigned(end($superpower_actives))){
+        if(!count($superpower_actives) || superpower_active(end($superpower_actives), true)){
             $item_counters = $CI->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'ln_type_play_id' => $idea_note_play_id,
@@ -2729,6 +2729,16 @@ function echo_en($en, $is_parent = false)
     $ui .= '<span class="inline-block" style="padding-top: 5px;">';
 
 
+
+    //PLAYER ICON
+    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' icon_photo en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
+
+
+    //PLAYER STATUS
+    $ui .= '<span class="icon-block en_status_play_id_' . $en['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_play_id']]['m_name'].' @'.$en['en_status_play_id'].': '.$en_all_6177[$en['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_play_id']]['m_icon'] . '</span></span>';
+
+
+
     //LINK
     if ($ln_id > 0) {
 
@@ -2736,8 +2746,10 @@ function echo_en($en, $is_parent = false)
         $en_all_4593 = $CI->config->item('en_all_4593');
         $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
 
-        //LINK TYPE
-        $ui .= '<span class="icon-block ln_type_' . $ln_id . ( $is_read_progress ? '' : superpower_active(10967) ).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span></span>';
+        if($is_read_progress){
+            //LINK TYPE
+            $ui .= '<span class="icon-block ln_type_' . $ln_id . ( $is_read_progress ? '' : superpower_active(10967) ).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span></span>';
+        }
 
         //LINK STATUS
         $ui .= '<span class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_play_id']]['m_name'].' @'.$en['ln_status_play_id'].': '.$en_all_6186[$en['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_play_id']]['m_icon'] . '</span></span>';
@@ -2753,14 +2765,6 @@ function echo_en($en, $is_parent = false)
         }
 
     }
-
-
-    //PLAYER ICON
-    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' icon_photo en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
-
-
-    //PLAYER STATUS
-    $ui .= '<span class="icon-block en_status_play_id_' . $en['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_play_id']]['m_name'].' @'.$en['en_status_play_id'].': '.$en_all_6177[$en['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_play_id']]['m_icon'] . '</span></span>';
 
     //PLAYER NAME
     $ui .= '<b class="montserrat '.extract_icon_color($en['en_icon']).' en_name_' . $en['en_id'] . '">' . $en['en_name'] . '</b>';
@@ -2778,7 +2782,7 @@ function echo_en($en, $is_parent = false)
     foreach ($CI->config->item('en_all_12410') as $read_group_play_id => $m) {
         //Need Superpowers for this?
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-        if (!count($superpower_actives) || superpower_assigned(end($superpower_actives))) {
+        if (!count($superpower_actives) || superpower_active(end($superpower_actives), true)) {
             $item_counters = $CI->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_' . $read_group_play_id)) . ')' => null,
@@ -2794,7 +2798,7 @@ function echo_en($en, $is_parent = false)
     foreach ($CI->config->item('en_all_4485') as $idea_note_play_id => $m) {
         //Need Superpowers for this?
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-        if (!count($superpower_actives) || superpower_assigned(end($superpower_actives))) {
+        if (!count($superpower_actives) || superpower_active(end($superpower_actives), true)) {
             $item_counters = $CI->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id' => $idea_note_play_id,
