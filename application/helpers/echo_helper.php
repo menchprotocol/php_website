@@ -553,7 +553,7 @@ function echo_ln($ln, $is_inner = false)
 
     $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is '.$en_all_6186[$ln['ln_status_play_id']]['m_desc'].'" class="montserrat">'.$en_all_6186[$ln['ln_status_play_id']]['m_icon'].' '.$en_all_6186[$ln['ln_status_play_id']]['m_name'].'</span>';
 
-    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" class="montserrat" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST">'.$en_all_4341[4356]['m_icon']. ' ' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
+    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" class="montserrat" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST">'.$en_all_4341[4362]['m_icon']. ' ' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
 
     $ui .= '</div>';
 
