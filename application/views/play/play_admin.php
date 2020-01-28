@@ -8,24 +8,28 @@ $en_all_6177 = $this->config->item('en_all_6177'); //Player Statuses
 $en_all_4463 = $this->config->item('en_all_4463'); //GLOSSARY
 
 $moderation_tools = array(
+
+    //Moderator Tools
     '/play/play_admin/link_coins_words_stats' => 'Coin Stats',
-    '/play/play_admin/in_replace_outcomes' => 'Idea Search/Replace Titles',
-    '/play/play_admin/in_invalid_outcomes' => 'Idea Invalid Titles',
-    '/play/play_admin/in_crossovers' => 'Idea Crossover Parent/Children',
-    '/play/play_admin/actionplan_debugger' => 'My READING LIST Debugger',
-    '/play/play_admin/sync_play_idea_statuses' => 'Sync Play/Idea Statuses',
-    '/play/play_admin/en_icon_search' => 'Player Icon Search',
-    '/play/play_admin/sync_player_links' => 'Player Sync Link Types',
-    '/play/play_admin/moderate_idea_notes' => 'Moderate Idea Notes',
-    '/play/play_admin/identical_idea_outcomes' => 'Identical Idea Titles',
-    '/play/play_admin/identical_player_names' => 'Identical Player Names',
-    '/play/play_admin/or__children' => 'List OR Ideas + Answers',
     '/play/play_admin/orphan_ideas' => 'Orphan Ideas',
     '/play/play_admin/orphan_players' => 'Orphan Players',
+    '/play/play_admin/in_replace_outcomes' => 'Idea Search/Replace Titles',
+    '/play/play_admin/in_invalid_outcomes' => 'Idea Invalid Titles',
+    '/play/play_admin/identical_idea_outcomes' => 'Identical Idea Titles',
+    '/play/play_admin/identical_player_names' => 'Identical Player Names',
+    '/play/play_admin/actionplan_debugger' => 'My READING LIST Debugger',
+    '/play/play_admin/en_icon_search' => 'Player Icon Search',
+    '/play/play_admin/sync_player_links' => 'Player Sync Link Types',
+    '/play/play_admin/or__children' => 'List OR Ideas + Answers',
     '/play/play_admin/assessment_marks_list_all' => 'Completion Marks List All',
     '/play/play_admin/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
     '/play/play_admin/compose_test_message' => 'Compose Test Message',
     '/play/play_admin/random_player_avatar' => 'Random User Icons',
+
+    //Hope to get zero:
+    '/play/play_admin/sync_play_idea_statuses' => 'Analyze & Fix Play & Idea Statuses',
+    '/play/play_admin/analyze_play' => 'Analyze & Fix Player Links',
+    '/play/play_admin/in_crossovers' => 'Analyze & Fix Idea Crossover Parent/Children',
 );
 
 $cron_jobs = array(
@@ -38,7 +42,6 @@ $cron_jobs = array(
 
 
 $developer_tools = array(
-    '/play/platform_cache' => $en_all_4463[4430]['m_name'],
     '/play/platform_cache' => 'Platform PHP Cache',
     '/play/my_session' => 'My Session Variables',
     '/play/php_info' => 'Server PHP Info',
@@ -171,37 +174,6 @@ if(!$action) {
     for($i=0;$i<750;$i++){
         echo '<span class="icon-block">'.random_player_avatar().'</span>';
     }
-
-} elseif($action=='moderate_idea_notes'){
-
-
-
-    //Fetch pending notes:
-    $pendin_in_notes = $this->READ_model->ln_fetch(array(
-        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
-    ), array('in_child'), config_var(11064), 0, array('ln_id' => 'ASC'));
-
-    echo '<div class="row">';
-    echo '<div class="col-sm-6">';
-    echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
-    //List ideas and allow to modify and manage idea notes:
-    if(count($pendin_in_notes) > 0){
-        foreach($pendin_in_notes as $pendin_in_note){
-            echo echo_in_read($pendin_in_note);
-        }
-    } else {
-        echo '<div class="alert alert-success"><i class="fas fa-check-circle"></i> No Pending Idea Notes at this time</div>';
-    }
-
-    echo '</div>';
-    echo '<div class="col-sm-6">';
-
-    //Maybe give option to edit idea here?
-
-    echo '</div>';
-    echo '</div>';
-
 
 } elseif($action=='analyze_play') {
 

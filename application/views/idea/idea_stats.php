@@ -50,7 +50,7 @@ echo '<div class="container">';
 
 echo '<h1 style="margin-bottom:30px;">READ RATES</h1>';
 
-echo '<table class="table table-sm table-striped stats-table mini-stats-table" style="font-size: 0.8em;">';
+echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
 echo '<tr class="panel-title down-border copy-btn-done">';
 echo '<td style="text-align: left;">ALL IDEAS</td>';

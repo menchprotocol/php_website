@@ -701,7 +701,7 @@ function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $com
 
     if($is_unlocked_step){
         $en_all_4229 = $CI->config->item('en_all_4229'); //Link Metadata
-        $ui .= '<span class="badge badge-primary" style="font-size: 0.8em; margin:-7px 0 -7px 5px;" data-toggle="tooltip" data-placement="right" title="'.$en_all_4229[6140]['m_name'].'">'.$en_all_4229[6140]['m_icon'].'</span>';
+        $ui .= '<span class="badge badge-primary" style="margin:-7px 0 -7px 5px;" data-toggle="tooltip" data-placement="right" title="'.$en_all_4229[6140]['m_name'].'">'.$en_all_4229[6140]['m_icon'].'</span>';
     }
 
     $ui .= '</a>';
@@ -1838,7 +1838,7 @@ function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_leve
         //Display Messages:
         $ui .= '<div class="messages-'.$in_ln['in_id'].' hidden">';
         foreach ($messages as $msg) {
-            $ui .= '<div class="tip_bubble" style="font-size:1em !important;">';
+            $ui .= '<div class="tip_bubble">';
             $ui .= $CI->READ_model->dispatch_message($msg['ln_content']);
             $ui .= '</div>';
         }

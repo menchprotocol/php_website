@@ -182,7 +182,7 @@ class Play extends CI_Controller
             ?>
             <form action="" method="post">
                 <input type="submit" name="GO">
-                <textarea style="width: 800px; height: 500px; font-size: 8px;" name="custom_head"><?= $_POST['custom_head'] ?></textarea>
+                <textarea style="width: 800px; height: 500px;" name="custom_head"><?= $_POST['custom_head'] ?></textarea>
             </form>
             <?php
         }
