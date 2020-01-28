@@ -366,7 +366,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 }
 
-            } elseif(in_array($en_id2, $this->config->item('en_ids_12409'))){
+            } elseif(in_array($en_id2, $this->config->item('en_ids_12410'))){
 
                 //READER READS & BOOKMARKS
                 $item_counters = $this->READ_model->ln_fetch(array(
@@ -385,8 +385,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 } else {
 
                     //Inform that nothing was found:
-                    $en_all_12409 = $this->config->item('en_all_12409');
-                    $this_tab .= '<div class="alert alert-warning">No <span class="montserrat '.extract_icon_color($en_all_12409[$en_id2]['m_icon']).'">'.$en_all_12409[$en_id2]['m_icon'].' '.$en_all_12409[$en_id2]['m_name'].'</span> added yet.</div>';
+                    $en_all_12410 = $this->config->item('en_all_12410');
+                    $this_tab .= '<div class="alert alert-warning">No <span class="montserrat '.extract_icon_color($en_all_12410[$en_id2]['m_icon']).'">'.$en_all_12410[$en_id2]['m_icon'].' '.$en_all_12410[$en_id2]['m_name'].'</span> added yet.</div>';
 
                 }
 

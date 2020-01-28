@@ -166,7 +166,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '</div>';
 
 
-        } elseif(in_array($en_id2, $this->config->item('en_ids_12409'))){
+        } elseif(in_array($en_id2, $this->config->item('en_ids_12410'))){
 
             //READER READS & BOOKMARKS
             $item_counters = $this->READ_model->ln_fetch(array(
@@ -185,8 +185,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             } else {
 
                 //Inform that nothing was found:
-                $en_all_12409 = $this->config->item('en_all_12409');
-                $this_tab .= '<div class="alert alert-warning">No <span class="montserrat '.extract_icon_color($en_all_12409[$en_id2]['m_icon']).'">'.$en_all_12409[$en_id2]['m_icon'].' '.$en_all_12409[$en_id2]['m_name'].'</span> added yet.</div>';
+                $en_all_12410 = $this->config->item('en_all_12410');
+                $this_tab .= '<div class="alert alert-warning">No <span class="montserrat '.extract_icon_color($en_all_12410[$en_id2]['m_icon']).'">'.$en_all_12410[$en_id2]['m_icon'].' '.$en_all_12410[$en_id2]['m_name'].'</span> added yet.</div>';
 
             }
 
@@ -272,7 +272,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
         $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m2['m_parents']);
-        if((count($superpower_actives) && !superpower_assigned(end($superpower_actives))) || (in_array($en_id2, $this->config->item('en_ids_12409')) && intval($counter) < 1)){
+        if((count($superpower_actives) && !superpower_assigned(end($superpower_actives))) || (in_array($en_id2, $this->config->item('en_ids_12410')) && intval($counter) < 1)){
             continue;
         }
 

@@ -103,7 +103,7 @@ class Read extends CI_Controller
                 'message' => 'Require either Idea or Play ID',
             ));
 
-        } elseif (!in_array($tab_group_id, $this->config->item('en_ids_12409')) || !count($this->config->item('en_ids_'.$tab_group_id))) {
+        } elseif (!in_array($tab_group_id, $this->config->item('en_ids_12410')) || !count($this->config->item('en_ids_'.$tab_group_id))) {
 
             return echo_json(array(
                 'status' => 0,

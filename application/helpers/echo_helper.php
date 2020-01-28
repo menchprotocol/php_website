@@ -1515,7 +1515,7 @@ function echo_in_idea($in)
             $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false).'</b>';
 
 
-            $echo_in_stats = echo_in_stats($in['in_id'], true);
+            $echo_in_stats = echo_in_stats($in['in_id']);
             if($echo_in_stats){
                 $ui .= '<div style="padding: 10px 0 2px; margin-left: -8px;">'.$echo_in_stats.'</div>';
             }
@@ -2195,7 +2195,7 @@ function echo_2level_players($main_obj, $all_link_types, $link_types_counts, $al
 
 
 
-function echo_in_stats($in_id, $show_tree_stats = false){
+function echo_in_stats($in_id){
 
     $CI =& get_instance();
 
@@ -2203,59 +2203,31 @@ function echo_in_stats($in_id, $show_tree_stats = false){
     $stats_ui = '';
 
     //IDEA READ STATS
-    foreach($CI->config->item('en_all_12409') as $read_group_play_id => $m){
+    foreach($CI->config->item('en_all_12410') as $read_group_play_id => $m){
         //Need Superpowers for this?
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
         if(!count($superpower_actives) || superpower_active(end($superpower_actives), true)){
-            $item_counters = $CI->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_'.$read_group_play_id)) . ')' => null,
-                'ln_parent_idea_id' => $in_id,
-            ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
-            if($item_counters[0]['totals']>0){
-                $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
+
+            //Determine filters:
+            if(in_array($read_group_play_id, $CI->config->item('en_ids_4485'))){
+
+                $filters = array(
+                    'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_type_play_id' => $read_group_play_id,
+                    'ln_child_idea_id' => $in_id,
+                );
+
+            } else {
+
+                $filters = array(
+                    'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_'.$read_group_play_id)) . ')' => null,
+                    'ln_parent_idea_id' => $in_id,
+                );
+
             }
-        }
-    }
 
-    if($show_tree_stats){
-
-        $en_all_12413 = $CI->config->item('en_all_12413');
-
-        //PREVIOUS
-        $count_11019 = $CI->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
-            'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-            'ln_child_idea_id' => $in_id,
-        ), array('in_parent'), 1, 0, array(), 'COUNT(ln_id) as totals');
-        if($count_11019[0]['totals'] > 0){
-            $stats_ui .= '<span class="montserrat '.extract_icon_color($en_all_12413[11019]['m_icon']).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($count_11019[0]['totals'], 0).' '.$en_all_12413[11019]['m_name'].'"><span class="icon-block icon_photo">'.$en_all_12413[11019]['m_icon'].'</span>'.echo_number($count_11019[0]['totals']).'</span>';
-        }
-
-        //NEXT
-        $count_11020 = $CI->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
-            'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-            'ln_parent_idea_id' => $in_id,
-        ), array('in_child'), 1, 0, array(), 'COUNT(ln_id) as totals');
-        if($count_11020[0]['totals'] > 0){
-            $stats_ui .= '<span class="montserrat '.extract_icon_color($en_all_12413[11020]['m_icon']).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($count_11020[0]['totals'], 0).' '.$en_all_12413[11020]['m_name'].'"><span class="icon-block icon_photo">'.$en_all_12413[11020]['m_icon'].'</span>'.echo_number($count_11020[0]['totals']).'</span>';
-        }
-
-    }
-
-    //IDEA NOTES
-    foreach($CI->config->item('en_all_4485') as $idea_note_play_id => $m){
-        //Need Superpowers for this?
-        $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-        if(!count($superpower_actives) || superpower_active(end($superpower_actives), true)){
-            $item_counters = $CI->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_play_id' => $idea_note_play_id,
-                'ln_child_idea_id' => $in_id,
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+            $item_counters = $CI->READ_model->ln_fetch($filters, array(), 1, 0, array(), 'COUNT(ln_id) as totals');
             if($item_counters[0]['totals']>0){
                 $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
             }
