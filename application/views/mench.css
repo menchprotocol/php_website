@@ -7,7 +7,7 @@
 body {
     background-color: #f4f5f7 !important;
     color: #000000;
-    font-size: 1.1em;
+    font-size: 1em;
     margin: 50px 0 0;
     font-family: 'Inter', sans-serif;
     font-weight: 400;
@@ -71,14 +71,13 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 }
 .message_slim{
     padding: 10px;
-    font-size: 0.8em;
 }
 
 table td { border: none !important; }
 
 h1 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.3em;
+    font-size: 1.4em;
     margin-top:0;
     margin-bottom:12px;
     margin-left: 0;
@@ -87,7 +86,7 @@ h1 {
 
 h2 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.4em;
+    font-size: 1.2em;
     color:#000000 !important;
     margin-top:0;
     margin-bottom: 21px;
@@ -107,7 +106,6 @@ h4 a{
 h4.thin{
     font-family: 'Montserrat', sans-serif;
     padding:15px 0 0;
-    font-size: 0.7em;
     color:#000000;
 }
 
@@ -248,7 +246,6 @@ img.no-radius {
 }
 .read-topic{
     margin: 15px 5px 5px;
-    font-size: 0.8em;
     color: #AAAAAA !important;
     text-transform: uppercase;
 }
@@ -292,7 +289,6 @@ img.no-radius {
     background-color: transparent;
     padding-left: 0;
     padding-right: 0;
-    font-size: 1em;
     margin-bottom: 10px;
 }
 
@@ -312,7 +308,6 @@ img.no-radius {
 .algolia-autocomplete .aa-dropdown-menu {
     width: 100%;
     border-top: none;
-    font-size: 1em;
     font-weight: normal;
     background-color: #FFFFFF;
     z-index: 9999 !important;
@@ -335,7 +330,6 @@ img.no-radius {
 
 .panel-body .form-control {
     padding:7px 0;
-    font-size: 1.2em;
     width: 100%;
     color:#000;
 }
@@ -350,7 +344,6 @@ img.no-radius {
     cursor: pointer;
     padding: 7px 5px;
     color: #000000;
-    font-size: 1em;
     font-weight: 500;
     line-height: 120%;
     margin: 0;
@@ -553,7 +546,6 @@ img.no-radius {
 .nav-pill-sm .nav-link {
     display: block;
     padding: .4rem 0.7rem;
-    font-size: 0.8em;
     font-family: 'Montserrat', sans-serif;
     margin-right: 6px;
 }
@@ -569,7 +561,6 @@ img.no-radius {
 
 .btn-group-sm>.btn, .btn-sm {
     padding: .25rem .6rem;
-    font-size: .875rem;
     border-radius: .2rem;
 }
 
@@ -599,7 +590,6 @@ textarea.note-textarea{
     margin: 0;
     background-color: transparent !important;
     box-shadow: none;
-    font-size: 1em;
     color: #000000;
 }
 
@@ -779,7 +769,6 @@ td.MENCHcolumn3{ width: 21%; }
 
 .link_marks{
     display: inline-block;
-    font-size: 0.8em;
 }
 
 .link_marks .form-control{
@@ -845,7 +834,6 @@ td.MENCHcolumn3{ width: 21%; }
 
 .show-on-hover {
     display:none !important;
-    font-size: 0.9em;
 }
 .list-group-item:hover .show-on-hover {
     display:inline-block !important;
@@ -855,7 +843,6 @@ td.MENCHcolumn3{ width: 21%; }
     width: 89px;
     display: inline-block;
     text-align: center;
-    font-size: 0.8em;
 }
 
 label {
@@ -894,7 +881,6 @@ label {
 .form-control-thick{
     padding:7px 10px 7px 34px;
     font-weight: bold;
-    font-size: 1em;
     color: #000000 !important;
 }
 
@@ -996,14 +982,12 @@ label {
     margin: 0 0 0 30px;
 }
 .read-micro-data {
-    font-size: 0.9em;
     text-transform: uppercase;
 }
 
 .read-history-msg{
     padding: 5px;
     margin-bottom: 10px;
-    font-size: 0.8em;
 }
 .read-history-msg .msg{
     margin-bottom:0;
@@ -1011,10 +995,6 @@ label {
 
 .white-icon .fas, .white-icon .fal, .white-icon .far, .white-icon .fad{
     color:#FFFFFF !important;
-}
-
-.dropdown-menu{
-    font-size: 1em;
 }
 
 .is-msg .on-hover {
@@ -1070,7 +1050,6 @@ label {
     line-height: 110%;
 }
 .idea-info, .idea-footnote {
-    font-size: 0.8em;
     margin:5px 0 0;
 }
 
@@ -1079,7 +1058,6 @@ label {
 }
 
 .idea-desc{
-    font-size: 0.8em;
     padding: 10px 0 5px;
 }
 
@@ -1142,7 +1120,6 @@ label {
 .texttype_4736_sm{
     display: inline-block;
     color: #000;
-    font-size: 1em;
     padding: 0;
     /* Accomodate .icon-block */
     width: -webkit-calc(100% - 37px);
@@ -1175,12 +1152,6 @@ label {
 
 /* RESPONSIVE */
 @media (max-width:767px) {
-    body {
-        font-size:1em;
-    }
-    h1{
-        font-size: 1.2em;
-    }
     h2{ margin-left: 2px; }
     .icon-block{ min-width:30px; }
     .mini-hidden{
