@@ -1380,16 +1380,6 @@ class READ_model extends CI_Model
 
     function read_is_complete($in, $insert_columns){
 
-        //Is this completion about to award READ coins?
-        if(in_array($insert_columns['ln_type_play_id'], $this->config->item('en_ids_6255'))){
-            //YES, so fetch & append coin owner:
-            $authors = $this->READ_model->ln_fetch(array(
-                'ln_type_play_id' => 4250,
-                'ln_child_idea_id' => $in['in_id'],
-            ));
-            $insert_columns['ln_child_play_id'] = $authors[0]['ln_owner_play_id'];
-        }
-
         //Log completion link:
         $new_link = $this->READ_model->ln_create($insert_columns);
 

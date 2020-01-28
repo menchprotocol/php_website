@@ -1569,14 +1569,6 @@ function echo_in_featured($in_id){
     $en_all_11035 = $CI->config->item('en_all_11035');
 
 
-    //Idea Author:
-    $authors = $CI->READ_model->ln_fetch(array(
-        'ln_type_play_id' => 4250,
-        'ln_child_idea_id' => $in_id,
-    ), array('en_owner'), 1);
-    $ui .= '<a href="'.$en_all_12201[12342]['m_desc'].'/'.$authors[0]['en_id'].'" data-toggle="tooltip" title="FEATURED IN '.$authors[0]['en_name'].'" data-placement="bottom" class="icon-block">'.echo_en_icon($authors[0]['en_icon']).'</a>';
-
-
     //Home Page
     if(count($CI->READ_model->ln_fetch(array(
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -1653,12 +1645,6 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
         //It does have some children, let's show more details about it:
         $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
-        //Fetch primary author:
-        $authors = $CI->READ_model->ln_fetch(array(
-            'ln_type_play_id' => 4250,
-            'ln_child_idea_id' => $in['in_id'],
-        ), array('en_owner'), 1);
-
         $ui .= ( $has_time_estimate ? echo_time_range($in, true).' read' : '' );
 
         if($session_en && $in_reads && in_array($in['in_id'], $player_read_ids)){
@@ -1667,8 +1653,6 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
                 $ui .= ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% done]</span>';
             }
         }
-
-        $ui .= ' BY '.one_two_explode('',' ',$authors[0]['en_name']);
 
     }
 
