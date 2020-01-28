@@ -1088,7 +1088,7 @@ label {
 .hidden { display: none !important; }
 .icon-block-xs{ min-width:24px; display: inline-block; text-align: center; }
 .icon-block-sm{ min-width:28px; display: inline-block; text-align: center; }
-.icon-block, .dropdown { width:32px !important; display: inline-block; text-align: center; }
+.icon-block { width:32px !important; display: inline-block; text-align: center; }
 .icon-block-lg{ min-width:50px; display: inline-block; text-align: center; }
 .icon-block-xlg{ min-width:58px; display: inline-block; text-align: center; }
 .icon-block-sm img,

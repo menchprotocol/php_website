@@ -142,7 +142,7 @@ if(!isset($hide_header) || !$hide_header){
 
                                 //READ IDEA
                                 echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
-                                echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
+                                echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span> ';
                                 if($current_mench['x_id']==$en_id){
                                     echo '<span class="montserrat '.$identifier.'_name '.( !$is_current ? 'show-max' : '' ).'">' . $m['m_name'] . 'S</span>';
                                 }
