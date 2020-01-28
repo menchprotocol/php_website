@@ -2766,22 +2766,6 @@ function echo_en($en, $is_parent = false)
         }
     }
 
-    //IDEA NOTES
-    foreach ($CI->config->item('en_all_4485') as $idea_note_play_id => $m) {
-        //Need Superpowers for this?
-        $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-        if (!count($superpower_actives) || superpower_active(end($superpower_actives), true)) {
-            $item_counters = $CI->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_play_id' => $idea_note_play_id,
-                '(ln_owner_play_id=' . $en['en_id'] . ' OR ln_child_play_id=' . $en['en_id'] . ' OR ln_parent_play_id=' . $en['en_id'] . ')' => null, //Idea Notes cover a broader reference set
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            if ($item_counters[0]['totals'] > 0) {
-                $stats_ui .= '<span class="montserrat ' . extract_icon_color($m['m_icon']) . (count($superpower_actives) ? superpower_active(end($superpower_actives)) : '') . '" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="' . number_format($item_counters[0]['totals'], 0) . ' ' . $m['m_name'] . '"><span class="icon-block icon_photo">' . $m['m_icon'] . '</span>' . echo_number($item_counters[0]['totals']) . '</span>';
-            }
-        }
-    }
-
     //Show if any stats found:
     if (strlen($stats_ui)) {
         $ui .= '<span class="inline-block">';

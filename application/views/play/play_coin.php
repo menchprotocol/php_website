@@ -366,30 +366,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 }
 
-            } elseif(in_array($en_id2, $this->config->item('en_ids_12410'))){
-
-                //READER READS & BOOKMARKS
-                $item_counters = $this->READ_model->ln_fetch(array(
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
-                    'ln_owner_play_id' => $player['en_id'],
-                ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
-
-                $counter = $item_counters[0]['totals'];
-
-                if($counter > 0){
-
-                    //Dynamic Loading when clicked:
-                    $this_tab .= '<div class="dynamic-reads"></div>';
-
-                } else {
-
-                    //Inform that nothing was found:
-                    $en_all_12410 = $this->config->item('en_all_12410');
-                    $this_tab .= '<div class="alert alert-warning">No <span class="montserrat '.extract_icon_color($en_all_12410[$en_id2]['m_icon']).'">'.$en_all_12410[$en_id2]['m_icon'].' '.$en_all_12410[$en_id2]['m_name'].'</span> added yet.</div>';
-
-                }
-
             } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
 
                 //IDEA NOTES
@@ -446,6 +422,30 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 } elseif($default_active){
 
                     $this_tab .= '<div class="alert alert-warning">No ideas featured yet.</div>';
+
+                }
+
+            } elseif(in_array($en_id2, $this->config->item('en_ids_12410'))){
+
+                //READER READS & BOOKMARKS
+                $item_counters = $this->READ_model->ln_fetch(array(
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
+                    'ln_owner_play_id' => $player['en_id'],
+                ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
+
+                $counter = $item_counters[0]['totals'];
+
+                if($counter > 0){
+
+                    //Dynamic Loading when clicked:
+                    $this_tab .= '<div class="dynamic-reads"></div>';
+
+                } else {
+
+                    //Inform that nothing was found:
+                    $en_all_12410 = $this->config->item('en_all_12410');
+                    $this_tab .= '<div class="alert alert-warning">No <span class="montserrat '.extract_icon_color($en_all_12410[$en_id2]['m_icon']).'">'.$en_all_12410[$en_id2]['m_icon'].' '.$en_all_12410[$en_id2]['m_name'].'</span> added yet.</div>';
 
                 }
 
