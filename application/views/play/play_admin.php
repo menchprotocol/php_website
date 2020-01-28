@@ -223,6 +223,7 @@ if(!$action) {
             'ln_parent_play_id' => 4430, //Mench User
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
             'ln_child_play_id' => $en['en_id'],
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array(), 1));
         $is_ledger = count($this->READ_model->ln_fetch(array(
             'ln_owner_play_id' => $en['en_id'],
