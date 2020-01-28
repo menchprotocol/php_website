@@ -203,6 +203,54 @@ if(!$action) {
     echo '</div>';
 
 
+} elseif($action=='analyze_play') {
+
+    $stats = array(
+        'play' => 0,
+        'player' => 0,
+        'ledger' => 0,
+        'ledger_not_player_count' => 0,
+        'player_not_ledger_count' => 0,
+        'ledger_not_player_list' => array(),
+        'player_not_ledger_list' => array(),
+    );
+
+    foreach($this->PLAY_model->en_fetch() as $en) {
+
+        $stats['play']++;
+
+        $is_player = count($this->READ_model->ln_fetch(array(
+            'ln_parent_play_id' => 4430, //Mench User
+            'ln_type_play_id' => 4230, //Raw link
+            'ln_owner_play_id' => $added_en['en']['en_id'],
+            'ln_child_play_id' => $added_en['en']['en_id'],
+        )));
+        $is_ledger = count($this->READ_model->ln_fetch(array(
+            'ln_parent_play_id' => 4430, //Mench User
+            'ln_type_play_id' => 4230, //Raw link
+            'ln_owner_play_id' => $added_en['en']['en_id'],
+            'ln_child_play_id' => $added_en['en']['en_id'],
+        )));
+
+        if($is_player){
+            $stats['player']++;
+        }
+        if($is_ledger){
+            $stats['ledger']++;
+        }
+        if($is_player && !$is_ledger){
+            $stats['player_not_ledger_count']++;
+            array_push($stats['player_not_ledger_list'], $en);
+        }
+        if($is_ledger && !$is_player){
+            $stats['ledger_not_player_count']++;
+            array_push($stats['ledger_not_player_list'], $en);
+        }
+
+    }
+
+    echo nl2br(print_r($stats, true));
+
 } elseif($action=='orphan_ideas') {
 
     echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
