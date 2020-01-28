@@ -221,16 +221,12 @@ if(!$action) {
 
         $is_player = count($this->READ_model->ln_fetch(array(
             'ln_parent_play_id' => 4430, //Mench User
-            'ln_type_play_id' => 4230, //Raw link
-            'ln_owner_play_id' => $added_en['en']['en_id'],
-            'ln_child_play_id' => $added_en['en']['en_id'],
-        )));
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+            'ln_child_play_id' => $en['en_id'],
+        ), array(), 1));
         $is_ledger = count($this->READ_model->ln_fetch(array(
-            'ln_parent_play_id' => 4430, //Mench User
-            'ln_type_play_id' => 4230, //Raw link
-            'ln_owner_play_id' => $added_en['en']['en_id'],
-            'ln_child_play_id' => $added_en['en']['en_id'],
-        )));
+            'ln_owner_play_id' => $en['en_id'],
+        ), array(), 1));
 
         if($is_player){
             $stats['player']++;
