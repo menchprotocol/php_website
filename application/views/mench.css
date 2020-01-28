@@ -7,7 +7,7 @@
 body {
     background-color: #f4f5f7 !important;
     color: #000000;
-    font-size: 1.3em;
+    font-size: 1.1em;
     margin: 50px 0 0;
     font-family: 'Inter', sans-serif;
     font-weight: 400;
@@ -78,7 +78,7 @@ table td { border: none !important; }
 
 h1 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 2em;
+    font-size: 1.3em;
     margin-top:0;
     margin-bottom:12px;
     margin-left: 0;
@@ -1067,7 +1067,6 @@ label {
 }
 .idea-url{
     margin:0;
-    font-size: 1.3em;
     line-height: 110%;
 }
 .idea-info, .idea-footnote {
@@ -1177,10 +1176,10 @@ label {
 /* RESPONSIVE */
 @media (max-width:767px) {
     body {
-        font-size:1.25em;
+        font-size:1em;
     }
     h1{
-        font-size: 1.6em;
+        font-size: 1.2em;
     }
     h2{ margin-left: 2px; }
     .icon-block{ min-width:30px; }
