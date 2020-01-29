@@ -100,7 +100,8 @@ class Idea extends CI_Controller {
 
         //Load views:
         $this->load->view('header', array(
-            'title' => $ins[0]['in_title'].' | IDEA'
+            'title' => $ins[0]['in_title'].' | IDEA',
+            'in' => $ins[0],
         ));
         $this->load->view('idea/idea_coin', array(
             'in' => $ins[0],

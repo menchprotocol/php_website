@@ -368,6 +368,7 @@ class Read extends CI_Controller
 
         $this->load->view('header', array(
             'title' => echo_in_title($ins[0]['in_title'], true).' | READ',
+            'in' => $ins[0],
         ));
 
         //Load specific view based on Idea Level:

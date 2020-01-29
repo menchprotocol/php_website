@@ -122,14 +122,22 @@ if(!isset($hide_header) || !$hide_header){
                         foreach($en_all_2738_mench as $en_id => $m){
 
                             $MENCHcolumn1++;
+                            $url_extension = '';
                             $identifier = strtolower($m['m_name']);
-                            $handle = ( $en_id==6205 ? '' : $identifier );
                             $is_current = ($current_mench['x_id']==$en_id);
 
-                            echo '<td class="MENCHcolumn'.$MENCHcolumn1.' '.$identifier.'">';
-                            echo '<a class="'.$identifier.' border-'.$identifier.( $is_current ? ' focustab ': '' ).'" href="/'.$identifier.'">';
+                            if(!$is_current && isset($in)){
+                                if($current_mench['x_name']=='read' && $identifier=='idea'){
+                                    $url_extension = '/'.$in['in_id'];
+                                } elseif($current_mench['x_name']=='idea' && $identifier=='read'){
+                                    $url_extension = '/'.$in['in_id'];
+                                }
+                            }
 
-                            if($en_id==4536){
+                            echo '<td class="MENCHcolumn'.$MENCHcolumn1.' '.$identifier.'">';
+                            echo '<a class="'.$identifier.' border-'.$identifier.( $is_current ? ' focustab ': '' ).'" href="/'.$identifier.$url_extension.'">';
+
+                            if($current_mench['x_name']=='play'){
 
                                 //PLAY
                                 echo '<span class="parent-icon icon-block">'.$session_en['en_icon'].'</span>';
@@ -143,8 +151,8 @@ if(!isset($hide_header) || !$hide_header){
                                 //READ IDEA
                                 echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
                                 echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span> ';
-                                if($current_mench['x_id']==$en_id){
-                                    echo '<span class="montserrat '.$identifier.'_name '.( !$is_current ? 'show-max' : '' ).'">' . $m['m_name'] . 'S</span>';
+                                if($is_current){
+                                    echo '<span class="montserrat '.$identifier.'_name">' . $m['m_name'] . 'S</span>';
                                 }
 
                             }
