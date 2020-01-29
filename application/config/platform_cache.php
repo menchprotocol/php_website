@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-29 10:54:34 PST
+//Generated 2020-01-29 10:59:14 PST
 
 //MENCH GLOSSARY:
 $config['en_ids_4463'] = array(3084,3000,4535,4485,4536,4430,4755,6205);
@@ -187,7 +187,7 @@ $config['en_all_12410'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER READS',
+        'm_name' => 'READ COIN',
         'm_desc' => '',
         'm_parents' => array(11089,10939,12410,12365,6771,12358,12228,4527),
     ),
@@ -240,7 +240,7 @@ $config['en_all_12400'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'CREATED',
         'm_desc' => '',
-        'm_parents' => array(12400,4535,12273,12149,12141,10638,10593,4593),
+        'm_parents' => array(12400,4535,12149,12141,10638,10593,4593),
     ),
     10648 => array(
         'm_icon' => '<i class="fad fa-sliders-h idea" aria-hidden="true"></i>',
@@ -314,7 +314,7 @@ $config['en_all_12365'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER READS',
+        'm_name' => 'READ COIN',
         'm_desc' => '',
         'm_parents' => array(11089,10939,12410,12365,6771,12358,12228,4527),
     ),
@@ -440,7 +440,7 @@ $config['en_all_4535'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA CREATED',
         'm_desc' => '',
-        'm_parents' => array(12400,4535,12273,12149,12141,10638,10593,4593),
+        'm_parents' => array(12400,4535,12149,12141,10638,10593,4593),
     ),
     4601 => array(
         'm_icon' => '<i class="fas fa-search idea" aria-hidden="true"></i>',
@@ -2072,19 +2072,13 @@ $config['en_all_12274'] = array(
 );
 
 //IDEA COIN:
-$config['en_ids_12273'] = array(4983,4250);
+$config['en_ids_12273'] = array(4983);
 $config['en_all_12273'] = array(
     4983 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_name' => 'AUTHORS',
+        'm_name' => 'IDEA AUTHORS',
         'm_desc' => '',
         'm_parents' => array(10939,12273,12228,12410,4535,12391,12365,12321,11089,10593,4527,7551,4985,4593,4485),
-    ),
-    4250 => array(
-        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_name' => 'CREATED',
-        'm_desc' => '',
-        'm_parents' => array(12400,4535,12273,12149,12141,10638,10593,4593),
     ),
 );
 
@@ -2160,7 +2154,7 @@ $config['en_all_12229'] = array(
 );
 
 //READ TYPE GROUPS:
-$config['en_ids_12228'] = array(4983,12273,12274,6255,7704,12229,12326,6146,12227,7347,12327);
+$config['en_ids_12228'] = array(4983,12273,12274,7704,6255,12229,12326,6146,12227,7347,12327);
 $config['en_all_12228'] = array(
     4983 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -2180,17 +2174,17 @@ $config['en_all_12228'] = array(
         'm_desc' => '',
         'm_parents' => array(11089,12228,12358,4527,4758),
     ),
-    6255 => array(
-        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER READS',
-        'm_desc' => 'Read coin generated for a successful read',
-        'm_parents' => array(11089,10939,12410,12365,6771,12358,12228,4527),
-    ),
     7704 => array(
         'm_icon' => '<i class="far fa-hand-pointer read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWERED',
         'm_desc' => '',
         'm_parents' => array(12228,4527),
+    ),
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ COIN',
+        'm_desc' => 'Read coin generated for a successful read',
+        'm_parents' => array(11089,10939,12410,12365,6771,12358,12228,4527),
     ),
     12229 => array(
         'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
@@ -2598,7 +2592,7 @@ $config['en_all_12141'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA CREATED',
         'm_desc' => '',
-        'm_parents' => array(12400,4535,12273,12149,12141,10638,10593,4593),
+        'm_parents' => array(12400,4535,12149,12141,10638,10593,4593),
     ),
     4251 => array(
         'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
@@ -2911,7 +2905,7 @@ $config['en_all_11089'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER READS',
+        'm_name' => 'READ COIN',
         'm_desc' => '',
         'm_parents' => array(11089,10939,12410,12365,6771,12358,12228,4527),
     ),
@@ -4591,7 +4585,7 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(12214,12343,12201,12344,11068,7291,12358,12205,12211,11999,6225,4430,12275,10957,6287,12339,6415,7256,4269,7540);
+$config['en_ids_11035'] = array(12214,12343,12201,12358,12344,11068,7291,12205,12211,11999,6225,4430,12275,10957,6287,12339,6415,7256,4269,7540);
 $config['en_all_11035'] = array(
     12214 => array(
         'm_icon' => '<i class="fad fa-plus idea" aria-hidden="true"></i>',
@@ -4611,6 +4605,12 @@ $config['en_all_11035'] = array(
         'm_desc' => '',
         'm_parents' => array(12079,6205,11035,4527),
     ),
+    12358 => array(
+        'm_icon' => '<i class="fas fa-chart-bar" aria-hidden="true"></i>',
+        'm_name' => 'COIN STATS',
+        'm_desc' => '',
+        'm_parents' => array(11035,12144),
+    ),
     12344 => array(
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA BOOKMARKS',
@@ -4628,12 +4628,6 @@ $config['en_all_11035'] = array(
         'm_name' => 'LOGOUT',
         'm_desc' => '',
         'm_parents' => array(11035),
-    ),
-    12358 => array(
-        'm_icon' => '<i class="fas fa-circle" aria-hidden="true"></i>',
-        'm_name' => 'MENCH COINS',
-        'm_desc' => '',
-        'm_parents' => array(11035,12144),
     ),
     12205 => array(
         'm_icon' => '<i class="fad fa-user-circle play" aria-hidden="true"></i>',
@@ -5344,7 +5338,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(12066,10725,10809,6150,12343,12201,10712,10719,12079,3000,10627,10716,4535,11047,6192,4983,12365,12273,11018,10990,11021,4229,4485,12012,6193,7302,4737,7356,12138,7355,12400,6201,12112,12420,11968,4486,12413,7585,10602,12330,12324,7309,7712,7751,10746,10717,10721,10720,11080,2738,12105,4463,11035,7555,10876,11059,11058,6404,4527,11054,6232,4536,6225,11039,10956,12279,11089,12274,6194,12410,6827,4426,6255,4986,7551,11028,4537,6206,11033,3290,12421,11088,4592,12403,4997,12220,4454,7303,6177,11007,10957,12401,12391,11084,3289,4755,10718,6287,10571,7357,6205,11081,7704,12229,6345,4280,4277,6102,12326,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,10869,4593,10593,12228,12141,12327,10658,10711,4269,6204,10710,12322,12321,6805,7358);
+$config['en_ids_4527'] = array(12066,10725,10809,6150,12343,12201,10712,10719,12079,3000,10627,10716,4535,11047,6192,4983,12365,12273,11018,10990,11021,4229,4485,12012,6193,7302,4737,7356,12138,7355,12400,6201,12112,12420,11968,4486,12413,7585,10602,12330,12324,7309,7712,7751,10746,10717,10721,10720,11080,2738,12105,4463,11035,7555,10876,11059,11058,6404,4527,11054,6232,4536,6225,11039,10956,12279,11089,12274,6194,12410,6827,4426,4986,7551,11028,4537,6206,11033,3290,12421,11088,4592,12403,4997,12220,4454,7303,6177,11007,10957,12401,12391,11084,3289,4755,10718,6287,10571,7357,6205,11081,7704,6255,12229,6345,4280,4277,6102,12326,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,10869,4593,10593,12228,12141,12327,10658,10711,4269,6204,10710,12322,12321,6805,7358);
 $config['en_all_4527'] = array(
     12066 => array(
         'm_icon' => '<i class="far fa-info-circle" aria-hidden="true"></i>',
@@ -5778,12 +5772,6 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4758,3303,4426,4527),
     ),
-    6255 => array(
-        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER READS',
-        'm_desc' => '',
-        'm_parents' => array(11089,10939,12410,12365,6771,12358,12228,4527),
-    ),
     4986 => array(
         'm_icon' => '<i class="fal fa-at" aria-hidden="true"></i>',
         'm_name' => 'PLAYER REFERENCE ALLOWED',
@@ -5963,6 +5951,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'READ ANSWERED',
         'm_desc' => '',
         'm_parents' => array(12228,4527),
+    ),
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ COIN',
+        'm_desc' => '',
+        'm_parents' => array(11089,10939,12410,12365,6771,12358,12228,4527),
     ),
     12229 => array(
         'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
@@ -6379,7 +6373,7 @@ $config['en_all_10593'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA CREATED',
         'm_desc' => '',
-        'm_parents' => array(12400,4535,12273,12149,12141,10638,10593,4593),
+        'm_parents' => array(12400,4535,12149,12141,10638,10593,4593),
     ),
     4601 => array(
         'm_icon' => '<i class="fas fa-search idea" aria-hidden="true"></i>',
@@ -7577,7 +7571,7 @@ $config['en_all_6345'] = array(
     ),
 );
 
-//PLAYER READS:
+//READ COIN:
 $config['en_ids_6255'] = array(6157,7489,12117,4559,6144,7485,7486,6997);
 $config['en_all_6255'] = array(
     6157 => array(
@@ -8507,7 +8501,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA CREATED',
         'm_desc' => '',
-        'm_parents' => array(12400,4535,12273,12149,12141,10638,10593,4593),
+        'm_parents' => array(12400,4535,12149,12141,10638,10593,4593),
     ),
     4601 => array(
         'm_icon' => '<i class="fas fa-search idea" aria-hidden="true"></i>',
