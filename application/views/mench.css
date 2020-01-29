@@ -413,7 +413,6 @@ img.no-radius {
     text-decoration: underline;
 }
 
-.fad, .fas, .far, .fal { font-size: 1.2em; }
 
 /* MENCH Colors */
 .play, .play a, .play .fas, .play .far, .play .fal, .play .fad, .color4536, .info-item i.play:hover, .info-item a.play:hover  { color:#008DF2 !important; }
