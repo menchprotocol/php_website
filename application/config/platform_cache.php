@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-28 16:20:31 PST
+//Generated 2020-01-29 10:54:34 PST
 
 //MENCH GLOSSARY:
 $config['en_ids_4463'] = array(3084,3000,4535,4485,4536,4430,4755,6205);
@@ -4591,7 +4591,7 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(12214,12343,12201,12344,11068,7291,12205,12211,11999,6225,4430,12275,10957,6287,12339,6415,7256,4269,7540);
+$config['en_ids_11035'] = array(12214,12343,12201,12344,11068,7291,12358,12205,12211,11999,6225,4430,12275,10957,6287,12339,6415,7256,4269,7540);
 $config['en_all_11035'] = array(
     12214 => array(
         'm_icon' => '<i class="fad fa-plus idea" aria-hidden="true"></i>',
@@ -4628,6 +4628,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'LOGOUT',
         'm_desc' => '',
         'm_parents' => array(11035),
+    ),
+    12358 => array(
+        'm_icon' => '<i class="fas fa-circle" aria-hidden="true"></i>',
+        'm_name' => 'MENCH COINS',
+        'm_desc' => '',
+        'm_parents' => array(11035,12144),
     ),
     12205 => array(
         'm_icon' => '<i class="fad fa-user-circle play" aria-hidden="true"></i>',
