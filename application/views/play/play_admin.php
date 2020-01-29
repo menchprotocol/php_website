@@ -764,17 +764,6 @@ if(!$action) {
 
         }
 
-        //Assign creditor if still a read coin:
-        if(!$ln['ln_child_play_id']){
-            //Fetch & append coin owner:
-            $authors = $this->READ_model->ln_fetch(array(
-                'ln_type_play_id' => 4250,
-                'ln_child_idea_id' => $ln['ln_parent_idea_id'],
-            ));
-            $update_columns['ln_child_play_id'] = $authors[0]['ln_owner_play_id'];
-        }
-
-
         if(count($update_columns)){
             $total_updated += $this->READ_model->ln_update($ln['ln_id'], $update_columns);
         }

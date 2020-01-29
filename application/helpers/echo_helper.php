@@ -1148,50 +1148,6 @@ function echo_step_range($in, $educational_mode = false){
     }
 }
 
-function echo_tree_steps($in, $push_message = 0, $autoexpand = false)
-{
-
-    /*
-     *
-     * a IDEA function to display the total tree Ideas
-     * stored in the metadata field.
-     *
-     * */
-
-    if (!echo_step_range($in)) {
-        //No reads, return null:
-        return false;
-    }
-
-    //Fetch on-start Ideas:
-    $CI =& get_instance();
-
-    $metadata = unserialize($in['in_metadata']);
-
-    //Now do measurements:
-    $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-    $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : '' ).' to '.echo_in_title($in['in_title'], false).'.';
-
-
-    if ($push_message) {
-
-        return '🔴 ' . $pitch_body. "\n\n";
-
-    } else {
-
-        //HTML format
-        $pitch_title = ( $has_time_estimate ? strtolower(echo_time_range($in)).' READ' : '' );
-
-
-        //$pitch_body .= '<div class="inner_actionplan">';
-        //$pitch_body .= echo_tree_actionplan($in, false);
-        //$pitch_body .= '</div>';
-
-        return echo_tree_html_body(7613, $pitch_title, $pitch_body, $autoexpand);
-
-    }
-}
-
 function echo_tree_actionplan($in, $autoexpand){
 
 
@@ -1532,10 +1488,6 @@ function echo_in_idea($in)
 
             $ui .= '<span class="icon-block" data-toggle="tooltip" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'" data-placement="top">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].'</span>';
 
-            if(in_array($in['in_status_play_id'], $CI->config->item('en_ids_12138') /* Idea Statuses Featured */)){
-                $ui .= echo_in_featured($in['in_id']);
-            }
-
             $ui .= '</div>'; //End Footnote
         $ui .= '</div>';
     $ui .= '</td>';
@@ -1561,38 +1513,6 @@ function echo_in_idea($in)
 }
 
 
-function echo_in_featured($in_id){
-
-    $CI =& get_instance();
-    $ui = '';
-    $en_all_12201 = $CI->config->item('en_all_12201'); //MENCH PLAYER NAVIGATION
-    $en_all_11035 = $CI->config->item('en_all_11035');
-
-
-    //Topic
-    $featured_topics = $CI->READ_model->ln_fetch(array(
-        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_play_id' => 4601, //IDEA KEYWORDS
-        'ln_parent_play_id IN (' . join(',', featured_topic_ids()) . ')' => null,
-        'ln_child_idea_id' => $in_id,
-    ), array('en_parent'), 0);
-    if(count($featured_topics) > 0){
-
-        //qualifies for Search Plug:
-        $ui .= '<span class="icon-block" data-toggle="tooltip" title="FEATURED IN '.$en_all_11035[7256]['m_name'].'" data-placement="bottom">'.$en_all_11035[7256]['m_icon'].'</span>';
-
-        //Show all topics:
-        foreach($featured_topics as $topic){
-            $ui .= '<a href="'.$en_all_12201[10869]['m_desc'].'/'.$topic['en_id'].'" class="icon-block" data-toggle="tooltip" title="FEATURED IN '.$topic['en_name'].'" data-placement="bottom">'.$topic['en_icon'].'</a>';
-        }
-
-    }
-
-
-
-    return $ui;
-
-}
 
 function echo_in_read($in, $show_description = false, $footnotes = null, $common_prefix = null, $extra_class = null, $force_icon = false, $in_reads = true)
 {
@@ -1632,10 +1552,6 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $metadata = unserialize($in['in_metadata']);
     if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
 
-        //It does have some children, let's show more details about it:
-        $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-
-        $ui .= ( $has_time_estimate ? echo_time_range($in, true).' read' : '' );
 
         if($session_en && $in_reads && in_array($in['in_id'], $player_read_ids)){
             $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);

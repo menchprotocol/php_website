@@ -1513,28 +1513,6 @@ class READ_model extends CI_Model
             //IDEA TITLE
             echo '<h1>' . echo_in_title($ins[0]['in_title']) . '</h1>';
 
-            //Show More Information:
-            echo '<div class="read-topic read-info-topic"><span class="info-item">';
-            $metadata = unserialize($ins[0]['in_metadata']);
-            if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
-
-                //TIME IF CONSIDERABLE
-                if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
-                    echo echo_time_range($ins[0], true).' READ ';
-                }
-
-                //OWNER
-                $authors = $this->READ_model->ln_fetch(array(
-                    'ln_type_play_id' => 4250,
-                    'ln_child_idea_id' => $ins[0]['in_id'],
-                ), array('en_owner'), 1);
-
-                echo 'BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a>';
-
-            }
-
-            echo '</span></div>';
-
             foreach ($in__messages as $message_ln) {
                 echo $this->READ_model->dispatch_message(
                     $message_ln['ln_content'],
@@ -1552,7 +1530,7 @@ class READ_model extends CI_Model
                     array(
                         array(
                             'content_type' => 'text',
-                            'title' => 'Start Reading',
+                            'title' => 'Get Started',
                             'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
                         ),
                         array(
@@ -1567,7 +1545,7 @@ class READ_model extends CI_Model
                 );
             } elseif(!isset($_GET['autoexpand'])) {
                 //Redirect to login page:
-                echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START READING <i class="fad fa-step-forward"></i></a></div>';
+                echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">GET STARTED <i class="fad fa-step-forward"></i></a></div>';
             }
 
             return true;
@@ -1700,7 +1678,7 @@ class READ_model extends CI_Model
                 $metadata = unserialize($ins[0]['in_metadata']);
                 if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
 
-                    //TIME IF CONSIDERABLE
+                    //TIME
                     if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
                         echo echo_time_range($ins[0], true).' READ ';
                     }
@@ -1710,15 +1688,6 @@ class READ_model extends CI_Model
                     if($completion_rate['completion_percentage'] > 0){
                         echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'% DONE]</span> ';
                     }
-
-                    //OWNER
-                    $authors = $this->READ_model->ln_fetch(array(
-                        'ln_type_play_id' => 4250,
-                        'ln_child_idea_id' => $ins[0]['in_id'],
-                    ), array('en_owner'), 1);
-
-                    echo 'BY <a href="/play/'.$authors[0]['en_id'].'" class="play">'.one_two_explode('',' ',$authors[0]['en_name']).'</a>';
-
 
                 }
 
@@ -3848,15 +3817,7 @@ class READ_model extends CI_Model
                 //Do final confirmation by giving User more context on this idea before adding to their 🔴 READING LIST...
 
                 //See if we have an overview:
-                $overview_message = '';
-                $step_info = echo_tree_steps($ins[0], true);
-                $source_info = echo_tree_experts($ins[0], true);
-
-                if($source_info || $step_info){
-                    $overview_message .= 'Here is an overview:' . "\n\n" . $step_info . $source_info;
-                }
-
-                $overview_message .= 'Should I add this idea to your 🔴 READING LIST?';
+                $overview_message = 'Should I add this idea to your 🔴 READING LIST?';
 
                 //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this idea:
                 $this->READ_model->dispatch_message(
@@ -3866,7 +3827,7 @@ class READ_model extends CI_Model
                     array(
                         array(
                             'content_type' => 'text',
-                            'title' => 'Start Reading',
+                            'title' => 'Get Started',
                             'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
                         ),
                         array(

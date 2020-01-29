@@ -1129,7 +1129,6 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             } elseif ($loop_obj == 'in') {
 
                 //See if this tree has a time-range:
-                $time_range = echo_time_range($db_row, true, true);
                 $metadata = unserialize($db_row['in_metadata']);
 
                 $export_row['alg_obj_is_in'] = 1; //This is an IDEA

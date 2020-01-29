@@ -10,7 +10,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 if(!$session_en){
 
-    echo '<div style="padding:10px 0 20px;"><a href="/signin?url=/read" class="btn btn-read montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start reading.</div>';
+    echo '<div style="padding:10px 0 20px;"><a href="/signin?url=/read" class="btn btn-read montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to get started.</div>';
 
 } else {
 
@@ -70,15 +70,8 @@ if(!$session_en){
             //It does have some children, let's show more details about it:
             $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
-            //Fetch primary author:
-            $authors = $this->READ_model->ln_fetch(array(
-                'ln_type_play_id' => 4250,
-                'ln_child_idea_id' => $ln['in_id'],
-            ), array('en_owner'), 1);
-
             echo ( $has_time_estimate ? echo_time_range($ln, true).' READ ' : '' );
             echo '<span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% DONE]</span> ';
-            echo 'BY '.one_two_explode('',' ',$authors[0]['en_name']);
 
         }
 

@@ -31,7 +31,7 @@ echo '<div class="container" style="padding-bottom:42px;">';
 
 
 if(!$is_author){
-    echo '<div class="alert alert-warning no-margin"><i class="fas fa-exclamation-triangle read"></i> You are not an author of this idea. <a href="/idea/in_become_author/'.$in['in_id'].'" class="inline-block montserrat '.superpower_active(10984).'">BECOME AUTHOR</a></div>';
+    echo '<div class="alert alert-warning no-margin"><i class="fas fa-exclamation-triangle read"></i> You are not an author of this idea, yet. <a href="/idea/in_become_author/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'"> or <a href="/idea/in_become_author/'.$in['in_id'].'" class="montserrat">BECOME AUTHOR</a></span></div>';
 }
 
 $col_num = 0;
@@ -48,35 +48,29 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         //IDEA BODY
 
+
         //IDEA STATUS
         echo '<div class="inline-block">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author, true, $in['in_id']).'</div>';
 
-        //Idea Featured:
-        if(in_array($in['in_status_play_id'], $this->config->item('en_ids_12138') /* Idea Statuses Featured */)){
-            echo echo_in_featured($in['in_id']);
-        }
 
-        //RIGHT READ PREVIEW
-        echo '<div class="inline-block pull-right"><a href="javascript:void(0);" onclick="read_preview()" class="btn btn-read" data-toggle="tooltip" title="Preview reading experience" data-placement="left">READ <i class="fad fa-step-forward"></i></a></div>';
-
-
+        //IDEA TITLE
         echo '<div class="itemidea">';
         echo '<div class="title_counter hidden grey montserrat doupper" style="text-align: right;"><span id="charTitleNum">0</span>/'.config_var(11071).' CHARACTERS</div>';
         echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && $is_active), 0, true);
         echo '</div>';
 
+
     } elseif($col_num==3){
 
-        //FOOTER
+        //IDEA FOOTER
+
 
         //IDEA TYPE
         echo '<div class="inline-block">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active, true, $in['in_id']).'</div>';
 
-        //TIME ESTIMATE
+
+        //IDEA TIME
         echo '<div class="inline-block '.superpower_active(10939).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
-
-
-        echo '<div class="doclear">&nbsp;</div>';
 
 
     }
@@ -132,7 +126,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             }
 
             $this_tab .= '</div>';
-
 
         } elseif($en_id2==11020){
 
