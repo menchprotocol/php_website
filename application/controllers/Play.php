@@ -2784,10 +2784,11 @@ fragment PostListingItemSidebar_post on Post {
         }
 
         $idea_coins = $this->READ_model->ln_fetch(array(
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_owner_play_id' => $session_en['en_id'],
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+        ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
         $read_coins = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
