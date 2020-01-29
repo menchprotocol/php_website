@@ -181,6 +181,7 @@ if(!$action) {
     $stats = array(
         'ideas' => 0,
         'author_missing' => 0,
+        'author_missing_fixed' => 0,
         'author_duplicate' => 0,
     );
 
@@ -216,6 +217,7 @@ if(!$action) {
                     'ln_content' => '@'.$idea_creators[0]['ln_owner_play_id'],
                     'ln_child_idea_id' => $in['in_id'],
                 ));
+                $stats['author_missing_fixed']++;
             }
 
         } elseif(count($idea_players) >= 2){
