@@ -9,6 +9,7 @@
 <?php
 
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+$en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
 if($session_en) {
 
