@@ -5,7 +5,7 @@
 $(document).ready(function () {
 
     //Load players:
-    load_MENCHplayers();
+    load_top_players();
 
     //Do we need to auto open?
     if(open_en_id > 0){

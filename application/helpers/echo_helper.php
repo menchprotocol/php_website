@@ -60,12 +60,6 @@ function echo_rank($integer){
     }
 }
 
-function echo_en_coins($coin_count = 0){
-    $CI =& get_instance();
-    $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
-    return '<span class="inline-block pull-right '.superpower_active(10983).'">'.( $coin_count > 0 ? '<span class="montserrat" title="'.number_format($coin_count, 0).'">'.echo_number($coin_count).'</span>' : '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>' ).'<span class="parent-icon icon-block">' . $en_all_2738[4536]['m_icon'] . '</span></span>';
-}
-
 function echo_url_type_4537($url, $en_type_link_id)
 {
 

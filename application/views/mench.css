@@ -667,7 +667,7 @@ textarea.note-textarea{
 }
 
 /* HEADER */
-#MENCHplayers{
+#top_players{
     width: 100%;
     background-color: #FFFFFF;
 }
@@ -677,7 +677,7 @@ textarea.note-textarea{
     background-color: #f4f5f7;
 }
 
-#MENCHmenu td, #MENCHplayers td{
+#MENCHmenu td, #top_players td{
     vertical-align: bottom;
     white-space: nowrap;
     overflow: hidden;
@@ -693,7 +693,7 @@ td.MENCHcolumn2{ width: 21%; }
 td.MENCHcolumn3{ width: 21%; }
 
 
-#MENCHplayers td{
+#top_players td{
     padding: 5px 0 !important;
 }
 

@@ -687,7 +687,7 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function load_MENCHplayers(){
+    function load_top_players(){
 
         //Fetch top users per each direction
         $session_en = superpower_assigned();
@@ -721,43 +721,11 @@ fragment PostListingItemSidebar_post on Post {
         }
         */
 
-        //Fetch MENCHplayers:
+        //Fetch top_players:
         $idea_player_coins = $this->READ_model->ln_fetch($filters_idea, array('en_owner'), $load_max, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
 
-        echo '<table id="MENCHplayers" class="table table-sm table-striped">';
-
-        //Table header:
-        /*
-        echo '<tr>';
-        echo '<td><span class="parent-icon icon-block">' . $en_all_2738[4536]['m_icon'] . '</span><b class="montserrat play">' . $en_all_2738[4536]['m_name'] . '</b></td>';
-        echo '<td><span class="parent-icon icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><b class="montserrat read">' . $en_all_2738[6205]['m_name'] . '</b></td>';
-        echo '<td><span class="parent-icon icon-block">' . $en_all_2738[4535]['m_icon'] . '</span><b class="montserrat idea">' . $en_all_2738[4535]['m_name'] . '</b></td>';
-        echo '</tr>';
-        */
-
-        //COUNT TOTALS:
-        $weekly_active_players = $this->db->query( 'SELECT COUNT(*) FROM (SELECT DISTINCT ln_owner_play_id FROM table_read) AS temp;' );
-        $result = $weekly_active_players->result_array();
-
-        $play_coins = $this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $read_coins = $this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $idea_coins = $this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-
-        echo '<tr>';
-        echo '<td class="play MENCHcolumn1"><span class="play"><span class="parent-icon icon-block">' . $en_all_4463[4430]['m_icon'] . '</span><span class="montserrat" title="'.number_format($result[0]['count'], 0).'">'.echo_number($result[0]['count']).' ' . $en_all_4463[4430]['m_name'] . '</span>'.echo_en_coins($play_coins[0]['total_coins']).'</span></td>';
-        echo '<td class="idea MENCHcolumn2"><span class="idea"><span class="parent-icon icon-block">' . $en_all_2738[4535]['m_icon'] . '</span><span class="montserrat" title="'.number_format($idea_coins[0]['total_coins'], 0).'">'.echo_number($idea_coins[0]['total_coins']).'</span></span></td>';
-        echo '<td class="read MENCHcolumn3"><span class="read"><span class="parent-icon icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="montserrat" title="'.number_format($read_coins[0]['total_coins'], 0).'">'.echo_number($read_coins[0]['total_coins']).'</span></span></td>';
-        echo '</tr>';
+        echo '<table id="top_players" class="table table-sm table-striped">';
 
         //Start with top Players:
         foreach ($idea_player_coins as $count=>$ln) {
@@ -778,18 +746,12 @@ fragment PostListingItemSidebar_post on Post {
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
                 'ln_owner_play_id' => $ln['en_id'],
             ), array(), 1, 0, array(), 'COUNT(ln_id) as total_coins');
-            $play_coins = $this->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
-                'ln_owner_play_id' => $ln['en_id'],
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-
 
             echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
 
 
             //PLAY
-            echo '<td class="play MENCHcolumn1"><span class="parent-icon icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="play montserrat en_name_first_'.$ln['en_id'].'">'.$first_name.'</a>' : '<b class="play montserrat en_name_first_'.$ln['en_id'].'">'.$first_name.'</b>' ).echo_rank($count+1).echo_en_coins($play_coins[0]['total_coins']).'</td>';
+            echo '<td class="play MENCHcolumn1"><span class="parent-icon icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="play montserrat en_name_first_'.$ln['en_id'].'">'.$first_name.'</a>' : '<b class="play montserrat en_name_first_'.$ln['en_id'].'">'.$first_name.'</b>' ).echo_rank($count+1).'</td>';
 
 
             //IDEA
@@ -836,16 +798,10 @@ fragment PostListingItemSidebar_post on Post {
 
                 $first_name = one_two_explode('',' ',$ln['en_name']);
 
-                $play_coins = $this->READ_model->ln_fetch(array(
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
-                    'ln_owner_play_id' => $ln['en_id'],
-                ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-
                 echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
 
                 //PLAY
-                echo '<td class="play MENCHcolumn1"><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="play montserrat">'.$first_name.'</a>' : '<b class="play montserrat">'.$first_name.'</b>' ).echo_rank($count+1).echo_en_coins($play_coins[0]['total_coins']).'</td>';
+                echo '<td class="play MENCHcolumn1"><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="play montserrat">'.$first_name.'</a>' : '<b class="play montserrat">'.$first_name.'</b>' ).echo_rank($count+1).'</td>';
 
                 //IDEA
                 echo '<td class="idea MENCHcolumn2"></td>';

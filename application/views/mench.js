@@ -65,13 +65,13 @@ function js_ln_create(new_ln_data){
 }
 
 
-function load_MENCHplayers(){
+function load_top_players(){
     //Show loading icon:
-    $('#load_MENCHplayers').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin play"></i></span></div>');
+    $('#load_top_players').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin play"></i></span></div>');
     $('.top-players').addClass('hidden');
 
-    $.post("/play/load_MENCHplayers/", { }, function (data) {
-        $('#load_MENCHplayers').html(data);
+    $.post("/play/load_top_players/", { }, function (data) {
+        $('#load_top_players').html(data);
         $('[data-toggle="tooltip"]').tooltip();
     });
 }

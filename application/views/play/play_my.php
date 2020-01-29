@@ -133,13 +133,39 @@ if($session_en) {
 
 
 }
+
+
+
+//Coin Stats:
+$read_coins = $this->READ_model->ln_fetch(array(
+    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+$idea_coins = $this->READ_model->ln_fetch(array(
+    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+$play_coins = $this->READ_model->ln_fetch(array(
+    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
+), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+
+echo '<table class="table table-sm table-striped" style="margin-bottom: 30px;">';
+echo '<tr>';
+echo '<td class="play MENCHcolumn1"><span class="play"><span class="parent-icon icon-block">' . $en_all_2738[4536]['m_icon'] . '</span><span class="montserrat" title="'.number_format($play_coins[0]['total_coins'], 0).'">'.echo_number($play_coins[0]['total_coins']).' ' . $en_all_2738[4536]['m_name'] . '</span>'.'</span></td>';
+echo '<td class="idea MENCHcolumn2"><span class="idea"><span class="parent-icon icon-block">' . $en_all_2738[4535]['m_icon'] . '</span><span class="montserrat" title="'.number_format($idea_coins[0]['total_coins'], 0).'">'.echo_number($idea_coins[0]['total_coins']).'</span></span></td>';
+echo '<td class="read MENCHcolumn3"><span class="read"><span class="parent-icon icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="montserrat" title="'.number_format($read_coins[0]['total_coins'], 0).'">'.echo_number($read_coins[0]['total_coins']).'</span></span></td>';
+echo '</tr>';
+echo '</table>';
+
+
+
+
 ?>
 
 <!-- Top Players -->
 <h1 class="montserrat play"><span class="icon-block-xlg icon_photo"><?= $en_all_11035[4430]['m_icon'] ?></span><?= $en_all_11035[4430]['m_name'] ?></h1>
-
     <div class="one-pix">
-        <div id="load_MENCHplayers"></div>
+        <div id="load_top_players"></div>
     </div>
-
 </div>
