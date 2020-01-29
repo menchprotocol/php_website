@@ -201,7 +201,6 @@ if(!$action) {
             'ln_child_idea_id' => $in['in_id'],
         ));
         $idea_creators = $this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => 4250, //New Idea Created
             'ln_child_idea_id' => $in['in_id'],
         ));
