@@ -178,22 +178,29 @@ if(!$action) {
 
 } elseif($action=='analyze_idea_authors') {
 
+    $stats = array(
+        'ideas' => 0,
+        'author_missing' => 0,
+        'author_duplicate' => 0,
+    );
+
     //FInd and remove duplicate authors:
     foreach($this->IDEA_model->in_fetch() as $in) {
+
+        $stats['ideas']++;
 
         //Scan authors:
         $idea_players = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => 4983,
             'ln_child_idea_id' => $in['in_id'],
-            'ln_parent_play_id' => $session_en['en_id'],
         ));
 
         if(!count($idea_players)){
 
+            $stats['author_missing']++;
+            /*
             //Fetch Idea Creator:
-
-
             $this->READ_model->ln_create(array(
                 'ln_owner_play_id' => $ln_owner_play_id,
                 'ln_parent_play_id' => $ln_owner_play_id,
@@ -201,16 +208,29 @@ if(!$action) {
                 'ln_content' => '@'.$ln_owner_play_id,
                 'ln_child_idea_id' => $insert_columns['in_id'],
             ));
+            */
 
         } elseif(count($idea_players) >= 2){
 
             //See if duplicates:
+            $found_duplicate = false;
+            $authors = array();
             foreach($idea_players as $idea_player){
-
+                if(!in_array($idea_player['ln_parent_play_id'], $authors)){
+                    array_push($authors, $idea_player['ln_parent_play_id']);
+                } else {
+                    $found_duplicate = true;
+                    break;
+                }
             }
 
+            if($found_duplicate){
+                $stats['author_duplicate']++;
+            }
         }
     }
+
+    echo nl2br(print_r($stats, true));
 
 } elseif($action=='analyze_play') {
 
