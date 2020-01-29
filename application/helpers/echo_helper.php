@@ -1569,16 +1569,6 @@ function echo_in_featured($in_id){
     $en_all_11035 = $CI->config->item('en_all_11035');
 
 
-    //Home Page
-    if(count($CI->READ_model->ln_fetch(array(
-        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_play_id' => 4601, //IDEA KEYWORDS
-        'ln_parent_play_id' => 12198, //HOME FEATURED
-        'ln_child_idea_id' => $in_id,
-    )))){
-        $ui .= '<a href="'.$en_all_12201[12198]['m_desc'].'" data-toggle="tooltip" title="FEATURED IN '.$en_all_12201[12198]['m_name'].'" data-placement="bottom" class="icon-block">'.$en_all_12201[12198]['m_icon'].'</a>';
-    }
-
     //Topic
     $featured_topics = $CI->READ_model->ln_fetch(array(
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public

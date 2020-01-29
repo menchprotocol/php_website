@@ -117,7 +117,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
             }
 
-            $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10984).'">
+            if( $in['in_id'] != config_var(12156)){
+                $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10984).'">
                             <div class="form-group is-empty '.( $is_author && $is_active ? '' : ' hidden ' ).'" style="margin: 0; padding: 0;">
                                 <input type="text"
                                        class="form-control ideaadder-level-2-parent form-control-thick algolia_search"
@@ -128,6 +129,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                             </div>
                            <div class="algolia_pad_search hidden in_pad_top"></div>
                     </div>';
+            }
 
             $this_tab .= '</div>';
 

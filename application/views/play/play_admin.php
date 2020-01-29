@@ -268,7 +268,7 @@ if(!$action) {
     $orphan_ins = $this->IDEA_model->in_fetch(array(
         ' NOT EXISTS (SELECT 1 FROM table_read WHERE in_id=ln_child_idea_id AND ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_play_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
         'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
-        'in_id !=' => config_var(12156), //Not the North Star
+        'in_id !=' => config_var(12156), //Not the Starting Idea
     ));
 
     if(count($orphan_ins) > 0){

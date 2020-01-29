@@ -10,7 +10,7 @@ $route['play']                      = "play/play_my";
 $route['play/(:num)']               = "play/play_coin/$1";
 
 //READ
-$route['default_controller']        = "read/read_home";
+$route['default_controller']        = "read/read_coin";
 $route['read']                      = "read/read_my";
 $route['read/next']                 = "read/read_next";
 $route['read/(:num)']               = "read/read_add/$1";

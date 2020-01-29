@@ -163,27 +163,6 @@ class Read extends CI_Controller
 
     }
 
-    function read_home(){
-
-        //Simplify URL structure if needed:
-        if($this->uri->segment(1) == 'read'){
-            $read_id = $this->uri->segment(2);
-            if($read_id > 0){
-                return redirect_message('/'.$read_id);
-            } else {
-                return redirect_message('/');
-            }
-        }
-
-        $en_all_12201 = $this->config->item('en_all_12201'); //MENCH PLAYER NAVIGATION
-        $this->load->view('header', array(
-            'title' => $en_all_12201[12198]['m_name'],
-        ));
-        $this->load->view('read/read_home');
-        $this->load->view('footer');
-
-    }
-
 
     function cron__weekly_coins(){
 
@@ -363,6 +342,11 @@ class Read extends CI_Controller
 
         //Fetch user session:
         $session_en = superpower_assigned();
+
+        if(!$in_id){
+            //Load the Starting Idea:
+            $in_id = config_var(12156);
+        }
 
         //Fetch data:
         $ins = $this->IDEA_model->in_fetch(array(
