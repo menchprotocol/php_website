@@ -144,7 +144,7 @@ $read_coins = $this->READ_model->ln_fetch(array(
 ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 $idea_coins = $this->READ_model->ln_fetch(array(
     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+    'ln_type_play_id' => 4250, //UNIQUE IDEAS
 ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 $play_coins = $this->READ_model->ln_fetch(array(
     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
