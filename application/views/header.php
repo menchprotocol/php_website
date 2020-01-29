@@ -122,11 +122,11 @@ if(!isset($hide_header) || !$hide_header){
                         foreach($en_all_2738_mench as $en_id => $m){
 
                             $MENCHcolumn1++;
-                            $url_extension = '';
+                            $url_extension = null;
                             $identifier = strtolower($m['m_name']);
                             $is_current = ($current_mench['x_id']==$en_id);
 
-                            if(!$is_current && isset($in)){
+                            if(!$is_current && isset($in) && in_array($current_mench['x_name'], array('read','idea'))){
                                 if($current_mench['x_name']=='read' && $identifier=='idea'){
                                     $url_extension = '/'.$in['in_id'];
                                 } elseif($current_mench['x_name']=='idea' && $identifier=='read'){
