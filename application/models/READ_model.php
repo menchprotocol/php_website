@@ -1675,13 +1675,9 @@ class READ_model extends CI_Model
 
                 //Show More Information:
                 echo '<div class="read-topic read-info-topic"><span class="info-item">';
+
                 $metadata = unserialize($ins[0]['in_metadata']);
                 if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
-
-                    //TIME
-                    if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
-                        echo echo_time_range($ins[0], true).' READ ';
-                    }
 
                     // % DONE
                     $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
@@ -1699,7 +1695,6 @@ class READ_model extends CI_Model
 
                     $previous_answers .= ( strlen($read_history['ln_content']) ? '<div class="previous_answer">'.$this->READ_model->dispatch_message($read_history['ln_content']).'</div>' : '' );
                 }
-
 
                 echo '</span></div>';
 
@@ -4260,8 +4255,7 @@ class READ_model extends CI_Model
                 }
 
                 //List Idea:
-                $time_range = echo_time_range($ins[0]);
-                $message .= "\n\n" . $new_idea_count . '. ' . $ins[0]['in_title'] . ( $time_range ? ' in ' . strip_tags($time_range) : '' );
+                $message .= "\n\n" . $new_idea_count . '. ' . $ins[0]['in_title'];
                 array_push($quick_replies, array(
                     'content_type' => 'text',
                     'title' => $new_idea_count,
