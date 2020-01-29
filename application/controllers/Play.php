@@ -698,6 +698,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //Create FILTERS:
         $filters_idea = array(
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
         );
@@ -722,7 +723,7 @@ fragment PostListingItemSidebar_post on Post {
         */
 
         //Fetch top_players:
-        $idea_player_coins = $this->READ_model->ln_fetch($filters_idea, array('en_owner'), $load_max, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        $idea_player_coins = $this->READ_model->ln_fetch($filters_idea, array('en_owner','in_child'), $load_max, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
 
         echo '<table id="top_players" class="table table-sm table-striped">';
