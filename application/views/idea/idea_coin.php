@@ -1,6 +1,7 @@
 
 <?php
 $en_all_6201 = $this->config->item('en_all_6201'); //Idea Table
+$en_all_4485 = $this->config->item('en_all_4485'); //Idea Notes
 
 $is_author = in_is_author($in['in_id']);
 $is_active = in_array($in['in_status_play_id'], $this->config->item('en_ids_7356'));
@@ -21,7 +22,6 @@ $is_active = in_array($in['in_status_play_id'], $this->config->item('en_ids_7356
 
 <?php
 
-$en_all_4485 = $this->config->item('en_all_4485'); //Idea Notes
 $play_focus_found = false; //Used to determine the first tab to be opened
 
 
@@ -29,9 +29,8 @@ $play_focus_found = false; //Used to determine the first tab to be opened
 echo '<div class="container" style="padding-bottom:42px;">';
 
 
-
 if(!$is_author){
-    echo '<div class="alert alert-warning no-margin"><i class="fas fa-exclamation-triangle read"></i> You are not an author of this idea, yet. <a href="/idea/in_become_author/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'"> or <a href="/idea/in_become_author/'.$in['in_id'].'" class="montserrat">BECOME AUTHOR</a></span></div>';
+    echo '<div class="alert alert-warning no-margin"><i class="fas fa-exclamation-triangle read"></i> You are not an author of this idea, yet. <a href="/idea/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'"> or <a href="/idea/in_become_author/'.$in['in_id'].'" class="montserrat">BECOME AUTHOR</a></span></div>';
 }
 
 $col_num = 0;
