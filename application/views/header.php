@@ -123,19 +123,20 @@ if(!isset($hide_header) || !$hide_header){
 
                             $MENCHcolumn1++;
                             $url_extension = null;
-                            $identifier = strtolower($m['m_name']);
+                            $mench_coin = strtolower($m['m_name']);
                             $is_current = ($current_mench['x_id']==$en_id);
+                            $url = '/'.$mench_coin;
 
                             if(!$is_current && isset($in) && in_array($current_mench['x_name'], array('read','idea'))){
-                                if($current_mench['x_name']=='read' && $identifier=='idea'){
-                                    $url_extension = '/'.$in['in_id'];
-                                } elseif($current_mench['x_name']=='idea' && $identifier=='read'){
-                                    $url_extension = '/'.$in['in_id'];
+                                if($current_mench['x_name']=='read' && $mench_coin=='idea'){
+                                    $url = '/idea/'.$in['in_id'];
+                                } elseif($current_mench['x_name']=='idea' && $mench_coin=='read'){
+                                    $url = '/'.$in['in_id'];
                                 }
                             }
 
-                            echo '<td class="MENCHcolumn'.$MENCHcolumn1.' '.$identifier.'">';
-                            echo '<a class="'.$identifier.' border-'.$identifier.( $is_current ? ' focustab ': '' ).'" href="/'.$identifier.$url_extension.'">';
+                            echo '<td class="MENCHcolumn'.$MENCHcolumn1.' '.$mench_coin.'">';
+                            echo '<a class="'.$mench_coin.' border-'.$mench_coin.( $is_current ? ' focustab ': '' ).'" href="'.$url.'">';
 
                             if($en_id==4536){
 
@@ -149,7 +150,7 @@ if(!isset($hide_header) || !$hide_header){
                                 echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
                                 echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span> ';
                                 if($is_current){
-                                    echo '<span class="montserrat '.$identifier.'_name">' . $m['m_name'] . 'S</span>';
+                                    echo '<span class="montserrat '.$mench_coin.'_name">' . $m['m_name'] . 'S</span>';
                                 }
 
                             }
