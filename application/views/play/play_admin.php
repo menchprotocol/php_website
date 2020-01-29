@@ -189,6 +189,8 @@ if(!$action) {
 
         $stats['ideas']++;
 
+        $is_archived = !in_array($in['in_status_play_id'], $this->config->item('en_ids_7356'));
+
         //Scan authors:
         $idea_players = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -199,16 +201,22 @@ if(!$action) {
         if(!count($idea_players)){
 
             $stats['author_missing']++;
-            /*
-            //Fetch Idea Creator:
-            $this->READ_model->ln_create(array(
-                'ln_owner_play_id' => $ln_owner_play_id,
-                'ln_parent_play_id' => $ln_owner_play_id,
-                'ln_type_play_id' => 4983,
-                'ln_content' => '@'.$ln_owner_play_id,
-                'ln_child_idea_id' => $insert_columns['in_id'],
+
+            $idea_creators = $this->READ_model->ln_fetch(array(
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_play_id' => 4250, //New Idea Created
+                'ln_child_idea_id' => $in['in_id'],
             ));
-            */
+
+            if(count($idea_creators)){
+                $this->READ_model->ln_create(array(
+                    'ln_type_play_id' => 4983,
+                    'ln_owner_play_id' => $idea_creators[0]['ln_owner_play_id'],
+                    'ln_parent_play_id' => $idea_creators[0]['ln_owner_play_id'],
+                    'ln_content' => '@'.$idea_creators[0]['ln_owner_play_id'],
+                    'ln_child_idea_id' => $in['in_id'],
+                ));
+            }
 
         } elseif(count($idea_players) >= 2){
 
