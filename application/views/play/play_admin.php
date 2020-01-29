@@ -181,8 +181,9 @@ if(!$action) {
     $stats = array(
         'ideas' => 0,
         'author_missing' => 0,
-        'author_missing_fixed' => 0,
+        'is_archived' => 0,
         'creator_missing' => 0,
+        'creator_fixed' => 0,
         'author_duplicate' => 0,
     );
 
@@ -205,9 +206,16 @@ if(!$action) {
             'ln_child_idea_id' => $in['in_id'],
         ));
 
-        if(!count($idea_creators)){
+        if(!count($idea_creators)) {
             $stats['creator_missing']++;
+            $this->READ_model->ln_create(array(
+                'ln_owner_play_id' => 1,
+                'ln_child_idea_id' => $in['in_id'],
+                'ln_content' => $in['in_title'],
+                'ln_type_play_id' => 4250, //New Idea Created
+            ));
         }
+
 
         if(!count($idea_players)){
 
@@ -221,7 +229,6 @@ if(!$action) {
                     'ln_content' => '@'.$idea_creators[0]['ln_owner_play_id'],
                     'ln_child_idea_id' => $in['in_id'],
                 ));
-                $stats['author_missing_fixed']++;
             }
 
         } elseif(count($idea_players) >= 2){
