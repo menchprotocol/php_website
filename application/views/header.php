@@ -137,7 +137,7 @@ if(!isset($hide_header) || !$hide_header){
                             echo '<td class="MENCHcolumn'.$MENCHcolumn1.' '.$identifier.'">';
                             echo '<a class="'.$identifier.' border-'.$identifier.( $is_current ? ' focustab ': '' ).'" href="/'.$identifier.$url_extension.'">';
 
-                            if($current_mench['x_name']=='play'){
+                            if($en_id==4536){
 
                                 //PLAY
                                 echo '<span class="parent-icon icon-block">'.$session_en['en_icon'].'</span>';
