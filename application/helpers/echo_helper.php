@@ -2506,10 +2506,10 @@ function echo_message($message, $is_error, $recipient_en, $push_message){
 }
 
 
-function echo_mench_stats(){
+function echo_mench_stats($show_header){
+
     $CI =& get_instance();
 
-    $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
 
     //MENCH COINS
@@ -2526,7 +2526,10 @@ function echo_mench_stats(){
         'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
     ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
-    $ui = '<h1 class="montserrat play"><span class="icon-block-xlg icon_photo">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</h1>';
+    if($show_header){
+        $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+        $ui = '<h2 class="montserrat play"><span class="icon-block-xlg icon_photo">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</h2>';
+    }
 
     $ui .= '<table class="table table-sm table-striped dotransparent tablepadded" style="margin-bottom:50px;">';
     $ui .= '<tr>';
@@ -2542,6 +2545,7 @@ function echo_mench_stats(){
     $ui .= '</table>';
 
     return $ui;
+
 }
 
 function echo_en($en, $is_parent = false)
