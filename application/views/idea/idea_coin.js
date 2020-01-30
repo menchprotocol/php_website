@@ -209,15 +209,19 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
         return false;
     }
 
-    //Are we deleting a status?
-    var is_idea_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
-    if(is_idea_delete){
-        //Seems to be deleting, confirm:
-        var r = confirm("Archive ["+ $('.text__4736_'+in_id).val() +"] AND remove all its links to other ideas?");
-        if (r == false) {
-            return false;
+    $(staticAncestors).on(eventName, dynamicChild, function() {
+        //Are we deleting a status?
+        var is_idea_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
+        if(is_idea_delete){
+            //Seems to be deleting, confirm:
+            var r = confirm("Archive ["+ $('.text__4736_'+in_id).val() +"] AND remove all its links to other ideas?");
+            if (r == false) {
+                return false;
+            }
         }
-    }
+    });
+
+
 
     //Show Loading...
     var data_object = eval('js_en_all_'+element_id);
