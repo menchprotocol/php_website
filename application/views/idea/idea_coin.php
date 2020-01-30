@@ -2,6 +2,7 @@
 <?php
 $en_all_6201 = $this->config->item('en_all_6201'); //Idea Table
 $en_all_4485 = $this->config->item('en_all_4485'); //Idea Notes
+$en_all_2738 = $this->config->item('en_all_2738');
 
 $is_author = in_is_author($in['in_id']);
 $is_active = in_array($in['in_status_play_id'], $this->config->item('en_ids_7356'));
@@ -146,7 +147,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             }
 
             $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10939).'">
-                    <div class="form-group is-empty '.( $is_author && $is_active ? '' : ' hidden ' ).'" style="margin: 0; padding: 0;">
+                    <div class="form-group is-empty '.( !$is_author || !$is_active ? ' hidden ' : '' ).'" style="margin: 0; padding: 0;">
+                        <span class="icon-block">'.$en_all_2738[4535]['m_name'].'</span>
                         <input type="text"
                                class="form-control ideaadder-level-2-child form-control-thick algolia_search"
                                maxlength="' . config_var(11071) . '"
