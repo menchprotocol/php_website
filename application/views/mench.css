@@ -64,6 +64,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     margin: 0;
     width: 100%;
 }
+
 .ln_content { overflow: hidden; width: 100%; }
 .ln_content img, .i_content img { max-width: 100%; }
 .table-sm td, .table-sm th { padding: 5px 0; }
@@ -271,26 +272,6 @@ img.no-radius {
 
 .form-control:disabled, .form-control[readonly] {
     background-color:transparent !important;
-}
-
-.accordion .card {
-    border: 0;
-    border-radius: 0;
-}
-.accordion .card-header {
-    padding: 5px 3px;
-    border: 0;
-    background-color: transparent;
-}
-.accordion .card-header .btn {
-    padding: 0;
-    margin: 0;
-}
-.accordion .card .form-control, .list-group-item .form-control {
-    background-color: transparent;
-    padding-left: 0;
-    padding-right: 0;
-    margin-bottom: 10px;
 }
 
 .algolia_pad_search{

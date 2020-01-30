@@ -148,9 +148,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10939).'">
                     <div class="form-group is-empty '.( !$is_author || !$is_active ? ' hidden ' : '' ).'" style="margin: 0; padding: 0;">
-                        <span class="icon-block">'.$en_all_2738[4535]['m_name'].'</span>
+                        <span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>
                         <input type="text"
-                               class="form-control ideaadder-level-2-child form-control-thick algolia_search"
+                               class="form-control ideaadder-level-2-child form-control-thick algolia_search inline-block"
                                maxlength="' . config_var(11071) . '"
                                idea-id="' . $in['in_id'] . '"
                                id="addidea-c-' . $in['in_id'] . '-0"
