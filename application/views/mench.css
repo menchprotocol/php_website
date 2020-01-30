@@ -921,6 +921,7 @@ label {
 .btn{
     text-decoration: none;
     line-height: 1.1;
+    text-align: left;
 }
 
 .btn.dropdown-toggle{
