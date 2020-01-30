@@ -23,6 +23,14 @@ function actionplan_sort_save() {
     }
 }
 
+function clear_all_reads(){
+
+    $('.clear-reading-list').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">REMOVING ALL READS...</b>');
+
+    //Redirect:
+    window.location = clear_read_url;
+
+}
 
 $(document).ready(function () {
 

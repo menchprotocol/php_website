@@ -1,13 +1,20 @@
+<?php
 
+$timestamp = time();
+$has_multiple_ideas = ( count($player_reads) >= 2 );
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+
+?>
+
+
+<script>
+    //Include some cached players:
+    var clear_read_url = <?= '/read/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('cred_password_salt') . $timestamp) ?>;
+</script>
 <script src="/application/views/read/read_home.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
 <?php
-
-$has_multiple_ideas = ( count($player_reads) >= 2 );
-$en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
-
-
 if(!$session_en){
 
     echo '<div style="padding:10px 0 20px;"><a href="/signin?url=/read" class="btn btn-read montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to get started.</div>';
@@ -37,12 +44,11 @@ if(!$session_en){
 
     echo '<div class="doclear">&nbsp;</div>';
 
-    $timestamp = time();
 
     echo '<div class="clear-reading-list hidden">';
 
     echo '<p><span class="icon-block"><i class="fas fa-exclamation-triangle read"></i></span><b class="read montserrat">WARNING:</b> You are about to clear you entire reading list. You will lose all your <span class="icon-block">🔴</span><b class="montserrat read">READ COINS</b> but can earn them back by reading again.</p>';
-    echo '<p style="margin-top:20px;"><a href="/read/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('cred_password_salt') . $timestamp).'" onclick="$(\'.clear-reading-list\').html(\'Removing all reads, please wait...\')" class="btn btn-read"><i class="far fa-trash-alt"></i> CLEAR READS & COINS</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
+    echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="clear_all_reads()" class="btn btn-read"><i class="far fa-trash-alt"></i> CLEAR ALL READS</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
 
     echo '</div>';
 
