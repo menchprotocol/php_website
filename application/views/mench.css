@@ -921,7 +921,6 @@ label {
 .btn{
     text-decoration: none;
     line-height: 1.1;
-    text-align: left;
 }
 
 .btn.dropdown-toggle{
@@ -1074,7 +1073,7 @@ label {
 .idea-desc .icon-block{
     display: none;
 }
-.block { display: block !important; width: 100%; }
+.block { display: block !important; width: 100%; text-align: left; }
 
 .in_highlight, .in_highlight:hover, .in_highlight:focus{
     background-color:#fff3a9 !important;
