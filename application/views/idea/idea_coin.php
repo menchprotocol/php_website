@@ -116,7 +116,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 <div class="input-group border '.( $is_author && $is_active ? '' : ' hidden ' ).'">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control ideaadder-level-2-parent form-control-thick algolia_search"
+                           class="form-control ideaadder-level-2-parent form-control-thick algolia_search dotransparent"
                            maxlength="' . config_var(11071) . '"
                            idea-id="' . $in['in_id'] . '"
                            id="addidea-c-' . $in['in_id'] . '-1"
@@ -150,7 +150,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control ideaadder-level-2-child form-control-thick algolia_search"
+                           class="form-control ideaadder-level-2-child form-control-thick algolia_search dotransparent"
                            maxlength="' . config_var(11071) . '"
                            idea-id="' . $in['in_id'] . '"
                            id="addidea-c-' . $in['in_id'] . '-0"
