@@ -2345,7 +2345,7 @@ function echo_read_breadcrumbs($in_id){
                         $completion_ui_rate = ' <span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'% DONE]</span>';
                     }
 
-                    array_push($breadcrumb_items, '<li class="breadcrumb-item"><a href="/'.$parent_in_id.'"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span><span class="icon-block' . ( in_array($ins_this[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$ins_this[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$ins_this[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$ins_this[0]['in_title'].$completion_ui_rate.'</a></li>');
+                    array_push($breadcrumb_items, '<li class="breadcrumb-item"><a href="/'.$parent_in_id.'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span><span class="icon-block' . ( in_array($ins_this[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$ins_this[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$ins_this[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$ins_this[0]['in_title'].$completion_ui_rate.'</a></li>');
                 }
 
                 if($parent_in_id==$intersect){
