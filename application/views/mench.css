@@ -1055,7 +1055,12 @@ label {
 .idea-desc .icon-block{
     display: none;
 }
-.block { display: block !important; width: 100%; text-align: left; }
+.btn-block {
+    display: block !important;
+    width: 100%;
+    text-align: left;
+    padding: 10px 10px 10px 0;
+}
 
 .in_highlight, .in_highlight:hover, .in_highlight:focus{
     background-color:#fff3a9 !important;
