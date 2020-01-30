@@ -681,8 +681,11 @@ textarea.note-textarea{
     text-overflow: ellipsis;
     border-spacing: 0 !important;
     border: 0 !important;
-    padding: 0 !important;
     margin: 0 !important;
+}
+
+#MENCHmenu td{
+    padding: 0 !important;
 }
 
 td.MENCHcolumn1{ width: 58%; }
