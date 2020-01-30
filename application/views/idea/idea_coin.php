@@ -63,6 +63,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } elseif($col_num==3){
 
         //IDEA FOOTER
+        echo '<div style="margin-top:30px;">';
 
 
         //IDEA TYPE
@@ -72,6 +73,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         //IDEA TIME
         echo '<div class="inline-block '.superpower_active(10939).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
 
+        echo '</div>';
 
     }
 
