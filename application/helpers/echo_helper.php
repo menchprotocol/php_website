@@ -1523,7 +1523,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
         }
     }
 
-    $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'] : '/read/'.$in['in_id'] ) . '" class="list-group-item no-left-padding itemread '.$extra_class.'">';
+    $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'] : '/read/'.$in['in_id'] ) . '" class="list-group-item itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
 
@@ -2222,6 +2222,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
     //IDEA PARENTS
+    $ui .= '<div class="inline-block '.superpower_active(10964).'">';
     foreach ($CI->READ_model->ln_fetch(array(
         'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -2231,6 +2232,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     ), array('in_parent')) as $in_parent){
         $ui .= '<a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="icon-block in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_2738[4535]['m_icon'] . '</a> &nbsp;';
     }
+    $ui .= '</div>';
 
     $ui .= '</div>';
 
@@ -2581,7 +2583,7 @@ function echo_en($en, $is_parent = false)
 
         if($is_read_progress){
             //LINK TYPE
-            $ui .= '<span class="icon-block ln_type_' . $ln_id . ( $is_read_progress ? '' : superpower_active(10967) ).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span></span>';
+            $ui .= '<span class="icon-block ln_type_' . $ln_id . superpower_active(10967).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span></span>';
         }
 
         //LINK STATUS
@@ -2672,7 +2674,7 @@ function echo_en($en, $is_parent = false)
 
 
     //PARENT ICONS
-    $ui .= '<div class="inline-block '. superpower_active(10983) .'">';
+    $ui .= '<div class="inline-block '. superpower_active(10964) .'">';
     foreach ($en__parents as $en_parent) {
         $ui .= ' <span class="icon_photo en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span>';
     }
