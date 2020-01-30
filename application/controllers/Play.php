@@ -802,7 +802,7 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
 
                 //PLAY
-                echo '<td class="play MENCHcolumn1"><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="montserrat play">'.$first_name.'</a>' : '<b class="montserrat play">'.$first_name.'</b>' ).echo_rank($count+1).'</td>';
+                echo '<td class="play MENCHcolumn1"><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span><a href="/play/'.$ln['en_id'].'" class="montserrat play">'.$first_name.'</a>'.echo_rank($count+1).'</td>';
 
                 //IDEA
                 echo '<td class="idea MENCHcolumn2"></td>';
