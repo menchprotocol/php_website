@@ -101,7 +101,7 @@ if (!isset($flash_message)) {
 
 
 if(strlen($flash_message) > 0) {
-    echo '<div class="container '.( $hide_header ? ' center-info ' : '' ).'" id="custom_message" style="padding-bottom: 0;">'.$flash_message.'</div>';
+    echo '<div class="container '.( isset($hide_header) ? ' center-info ' : '' ).'" id="custom_message" style="padding-bottom: 0;">'.$flash_message.'</div>';
 }
 
 
@@ -110,7 +110,7 @@ if(isset($custom_header)){
 }
 
 
-if(!isset($hide_header) || !$hide_header){
+if(!isset($hide_header)){
 
     if(isset($session_en['en_id']) && !isset($basic_header)){
         ?>

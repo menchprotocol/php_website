@@ -304,7 +304,7 @@ class Read extends CI_Controller
             ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
             if(!count($player_reads)){
                 //Nothing in their reading list:
-                return redirect_message('/', '<div class="alert alert-success" role="alert">Choose one of the following reads to get started:</div>');
+                return redirect_message('/');
             }
 
             //Log 🔴 READING LIST View:
