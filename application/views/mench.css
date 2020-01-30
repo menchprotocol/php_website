@@ -1115,10 +1115,10 @@ label {
     width:    -moz-calc(100% - 37px);
     width:         calc(100% - 37px);
 }
-.add-coin {
-    width: -webkit-calc(100% - 34px);
-    width:    -moz-calc(100% - 34px);
-    width:         calc(100% - 34px);
+.input-group .algolia-autocomplete {
+    width: -webkit-calc(100% - 34px) !important;
+    width:    -moz-calc(100% - 34px) !important;
+    width:         calc(100% - 34px) !important;
 }
 
 .texttype_4356_sm {
