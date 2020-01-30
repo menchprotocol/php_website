@@ -575,6 +575,7 @@ function superpower_active($superpower_en_id, $boolean_only = false){
 }
 
 function extract_icon_color($en_icon){
+    return ''; //Retired for now, TODO determine if back on later...
     if(substr_count($en_icon, 'read')>0){
         return ' read ';
     } elseif(substr_count($en_icon, 'idea')>0){
