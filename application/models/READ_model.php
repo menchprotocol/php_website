@@ -1555,7 +1555,7 @@ class READ_model extends CI_Model
                     $en_all_11035 = $this->config->item('en_all_11035');
 
                     //Give option to load stats:
-                    echo '<span class="mench-stats">&nbsp;&nbsp;or see <a href="javascript:void(0);" onclick="$(\'.mench-stats\').toggleClass(\'hidden\');"><span class="icon-block">'.$en_all_11035[12358]['m_icon'].'</span><u>'.$en_all_11035[12358]['m_name'].'</u></a></span>';
+                    echo '<span class="mench-stats">&nbsp;&nbsp;or see <a href="javascript:void(0);" onclick="$(\'.mench-stats\').toggleClass(\'hidden\');" class="montserrat '.extract_icon_color($en_all_11035[12358]['m_icon']).'"><span class="icon-block">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</a></span>';
 
                     echo '</div>'; //Close read-add
 
