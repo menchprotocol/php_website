@@ -31,7 +31,7 @@ echo '<div class="container" style="padding-bottom:42px;">';
 
 
 if(!$is_author){
-    echo '<div class="alert alert-warning no-margin"><i class="fas fa-exclamation-triangle read"></i> You are not an author of this idea, yet. <a href="/idea/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/idea/in_become_author/'.$in['in_id'].'" class="montserrat">BECOME AUTHOR</a></span></div>';
+    echo '<div class="alert alert-warning no-margin"><i class="fas fa-exclamation-triangle read"></i> You are not an author of this idea, yet. <a href="/idea/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10985).'">&nbsp;or <a href="/idea/in_become_author/'.$in['in_id'].'" class="montserrat">BECOME AUTHOR</a></span></div>';
 }
 
 $col_num = 0;
@@ -65,13 +65,11 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         //IDEA FOOTER
         echo '<div class="top-margin">';
 
+        //IDEA TIME
+        echo '<div class="'.superpower_active(10939).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
 
         //IDEA TYPE
-        echo '<div class="inline-block">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active, true, $in['in_id']).'</div>';
-
-
-        //IDEA TIME
-        echo '<div class="inline-block '.superpower_active(10939).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
+        echo echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-idea', $is_author && $is_active, true, $in['in_id']);
 
         echo '</div>';
 

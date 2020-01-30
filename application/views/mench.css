@@ -662,7 +662,7 @@ textarea.note-textarea{
 }
 
 /* HEADER */
-#top_players{
+#leaderboard{
     width: 100%;
     background-color: #FFFFFF;
 }
@@ -672,7 +672,7 @@ textarea.note-textarea{
     background-color: #f4f5f7;
 }
 
-#MENCHmenu td, #top_players td{
+#MENCHmenu td, #leaderboard td{
     vertical-align: bottom;
     white-space: nowrap;
     overflow: hidden;
@@ -789,6 +789,7 @@ td.MENCHcolumn3{ width: 21%; }
 .edit-locked, .edit-locked *{
     cursor: not-allowed !important;
     background-color: transparent !important;
+    padding-left: 0;
 }
 
 .dynamic_saving{

@@ -184,7 +184,7 @@ class Idea extends CI_Controller {
     function in_become_author($in_id){
 
         //Make sure it's a logged in trainer:
-        $session_en = superpower_assigned(10984, true);
+        $session_en = superpower_assigned(10985, true);
 
         //Blog Author:
         $this->READ_model->ln_create(array(

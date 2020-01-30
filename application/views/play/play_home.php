@@ -146,6 +146,6 @@ echo echo_mench_stats();
 <!-- Top Players -->
 <h2 class="montserrat play"><span class="icon-block"><?= $en_all_11035[12437]['m_icon'] ?></span><?= $en_all_11035[12437]['m_name'] ?></h2>
     <div class="one-pix">
-        <div id="load_top_players"></div>
+        <div id="load_leaderboard"></div>
     </div>
 </div>

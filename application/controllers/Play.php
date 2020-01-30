@@ -687,7 +687,7 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function load_top_players(){
+    function load_leaderboard(){
 
         //Fetch top users per each direction
         $session_en = superpower_assigned();
@@ -722,11 +722,11 @@ fragment PostListingItemSidebar_post on Post {
         }
         */
 
-        //Fetch top_players:
+        //Fetch leaderboard:
         $idea_player_coins = $this->READ_model->ln_fetch($filters_idea, array('en_owner','in_child'), $load_max, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
 
-        echo '<table id="top_players" class="table table-sm table-striped tablepadded">';
+        echo '<table id="leaderboard" class="table table-sm table-striped tablepadded">';
 
         //Start with top Players:
         foreach ($idea_player_coins as $count=>$ln) {
