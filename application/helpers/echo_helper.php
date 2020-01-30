@@ -2168,7 +2168,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
     //IDEA TITLE
-    if(superpower_active(10984)){
+    if(superpower_active(10984, true)){
         $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author), (($in['ln_order']*100)+1));
     } else {
         $ui .= '<a href="/idea/'.$in['in_id'].'">' . echo_in_title($in['in_title']) . '</a>';
