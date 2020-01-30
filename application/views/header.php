@@ -127,7 +127,7 @@ if(!isset($hide_header) || !$hide_header){
                             $is_current = ($current_mench['x_id']==$en_id);
                             $url = '/'.$mench_coin;
 
-                            if(!$is_current && isset($in) && in_array($current_mench['x_name'], array('read','idea'))){
+                            if(!$is_current && isset($in) && $in['in_id']!=config_var(12156) && in_array($current_mench['x_name'], array('read','idea'))){
                                 if($current_mench['x_name']=='read' && $mench_coin=='idea'){
                                     $url = '/idea/'.$in['in_id'];
                                 } elseif($current_mench['x_name']=='idea' && $mench_coin=='read'){
