@@ -690,8 +690,8 @@ td.MENCHcolumn2{ width: 21%; }
 td.MENCHcolumn3{ width: 21%; }
 
 
-#top_players td{
-    padding: 5px 0 !important;
+.tablepadded td{
+    padding:10px 0 !important;
 }
 
 #MENCHmenu a.play:hover, #MENCHmenu a.play.focustab  { border-color:#008DF2; }

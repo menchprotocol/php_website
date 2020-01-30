@@ -156,7 +156,7 @@ $play_coins = $this->READ_model->ln_fetch(array(
 
 echo '<h1 class="montserrat play"><span class="icon-block-xlg icon_photo">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</h1>';
 
-echo '<table class="table table-sm table-striped dotransparent" style="margin-bottom: 30px;">';
+echo '<table class="table table-sm table-striped dotransparent tablepadded" style="margin-bottom:50px;">';
 echo '<tr>';
 echo '<td class="play MENCHcolumn1"><span class="montserrat" style="padding-left: 8px;">PLAYERS</span></td>';
 echo '<td class="idea MENCHcolumn2"><span class="montserrat" style="padding-left: 8px;">IDEAS</span></td>';
