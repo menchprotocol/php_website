@@ -1508,23 +1508,10 @@ class READ_model extends CI_Model
          * Determine next Read
          *
          */
-        if(!$in_reading_list && !$push_message){
+        if(!$in_reading_list){
 
-            //IDEA TITLE
-            echo '<h1>' . echo_in_title($ins[0]['in_title']) . '</h1>';
-
-            foreach ($in__messages as $message_ln) {
-                echo $this->READ_model->dispatch_message(
-                    $message_ln['ln_content'],
-                    $recipient_en,
-                    $push_message
-                );
-            }
-
-
-
-            //Give option to add to reading list:
             if($push_message){
+
                 $this->READ_model->dispatch_message(
                     'Interested to read ' . $ins[0]['in_title'] . '?',
                     $recipient_en,
@@ -1545,7 +1532,19 @@ class READ_model extends CI_Model
                         'ln_child_idea_id' => $ins[0]['in_id'],
                     )
                 );
-            } elseif(!isset($_GET['autoexpand'])) {
+
+            } else {
+
+                //IDEA TITLE
+                echo '<h1>' . echo_in_title($ins[0]['in_title']) . '</h1>';
+
+                foreach ($in__messages as $message_ln) {
+                    echo $this->READ_model->dispatch_message(
+                        $message_ln['ln_content'],
+                        $recipient_en,
+                        $push_message
+                    );
+                }
 
                 //Redirect to login page:
                 echo '<div class="inline-block margin-top-down read-add">';
@@ -1556,7 +1555,7 @@ class READ_model extends CI_Model
                     $en_all_11035 = $this->config->item('en_all_11035');
 
                     //Give option to load stats:
-                    echo '<span class="mench-stats">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.mench-stats\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>UPDATE ANSWER</u></a></span>';
+                    echo '<span class="mench-stats">&nbsp;&nbsp;or see <a href="javascript:void(0);" onclick="$(\'.mench-stats\').toggleClass(\'hidden\');"><span class="icon-block">'.$en_all_11035[12358]['m_icon'].'</span><u>'.$en_all_11035[12358]['m_name'].'</u></a></span>';
 
                     //Show Stats:
                     echo '<div class="equal-columns mench-stats hidden">';
@@ -1569,6 +1568,8 @@ class READ_model extends CI_Model
                 echo '</div>';
 
             }
+
+
 
             return true;
         }

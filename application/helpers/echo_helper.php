@@ -878,7 +878,7 @@ function echo_time_hours($seconds, $micro = false)
     }
 }
 
-function echo_tree_html_body($section_en_id, $pitch_title, $pitch_body, $autoexpand){
+function echo_tree_html_body($section_en_id, $pitch_title, $pitch_body, $autoexpand = false){
 
     //The body of the tree expansion HTML panel:
     return '<div class="panel-group" id="open' . $section_en_id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">

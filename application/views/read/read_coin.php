@@ -15,9 +15,5 @@
 
     $this->READ_model->read_echo($in['in_id'], superpower_assigned());
 
-    if($autoexpand){
-        echo echo_tree_actionplan($in, $autoexpand);
-    }
-
     ?>
 </div>

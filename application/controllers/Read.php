@@ -375,7 +375,6 @@ class Read extends CI_Controller
         $this->load->view('read/read_coin', array(
             'in' => $ins[0],
             'session_en' => $session_en,
-            'autoexpand' => (isset($_GET['autoexpand']) && intval($_GET['autoexpand'])),
         ));
 
         $this->load->view('footer');
