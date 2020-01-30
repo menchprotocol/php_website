@@ -79,6 +79,7 @@ if($session_en) {
                     </div><div class="doclear">&nbsp;</div></div>';
 
 
+            echo '<div>Choose your avatar:</div>';
             //List avatars:
             foreach ($this->config->item('en_all_12279') as $en_id => $m) {
 
@@ -94,7 +95,7 @@ if($session_en) {
 
         } elseif ($acc_en_id == 6197 /* Name */) {
 
-            echo '<span class="white-wrapper"><input type="text" id="en_name" class="form-control border play doupper montserrat" value="' . $session_en['en_name'] . '" /></span>
+            echo '<span class="white-wrapper"><input type="text" id="en_name" class="form-control border play doupper montserrat dotransparent" value="' . $session_en['en_name'] . '" /></span>
                     <a href="javascript:void(0)" onclick="account_update_name()" class="btn btn-play">Save</a>
                     <span class="saving-account save_full_name"></span>';
 
@@ -107,13 +108,13 @@ if($session_en) {
                 'ln_parent_play_id' => 3288, //Mench Email
             ));
 
-            echo '<span class="white-wrapper"><input type="email" id="en_email" class="form-control border" value="' . (count($user_emails) > 0 ? $user_emails[0]['ln_content'] : '') . '" placeholder="you@gmail.com" /></span>
+            echo '<span class="white-wrapper"><input type="email" id="en_email" class="form-control border dotransparent" value="' . (count($user_emails) > 0 ? $user_emails[0]['ln_content'] : '') . '" placeholder="you@gmail.com" /></span>
                     <a href="javascript:void(0)" onclick="account_update_email()" class="btn btn-play">Save</a>
                     <span class="saving-account save_email"></span>';
 
         } elseif ($acc_en_id == 3286 /* Password */) {
 
-            echo '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
+            echo '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
                     <a href="javascript:void(0)" onclick="account_update_password()" class="btn btn-play">Save</a>
                     <span class="saving-account save_password"></span>';
 
