@@ -1540,23 +1540,13 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     }
 
 
-    //Now do measurements:
-    $ui .= '<div class="idea-info montserrat doupper">';
-
-    $metadata = unserialize($in['in_metadata']);
-    if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
-
-
-        if($session_en && $in_reads && in_array($in['in_id'], $player_read_ids)){
-            $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
-            if($completion_rate['completion_percentage'] > 0){
-                $ui .= ' <span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% done]</span>';
-            }
+    //Show completion if glasses are on:
+    if(superpower_active(10964, true) && $in_reads && in_array($in['in_id'], $player_read_ids)){
+        $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
+        if($completion_rate['completion_percentage'] > 0){
+            $ui .= '<div class="idea-info montserrat doupper"><span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% done]</span></div>';
         }
-
     }
-
-    $ui .= '</div>';
 
 
     if($footnotes){
@@ -2341,11 +2331,14 @@ function echo_read_breadcrumbs($in_id){
                 if(count($ins_this) > 0){
 
                     $completion_ui_rate = '';
-                    //Calcullate completion time:
-                    $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $ins_this[0]);
-                    if($completion_rate['completion_percentage'] > 0){
-                        $completion_ui_rate = ' <span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'% DONE]</span>';
+                    if(superpower_active(10964, true)){
+                        //Calcullate completion time:
+                        $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $ins_this[0]);
+                        if($completion_rate['completion_percentage'] > 0){
+                            $completion_ui_rate = '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'% DONE]</span>';
+                        }
                     }
+
 
                     array_push($breadcrumb_items, '<li class="breadcrumb-item"><a href="/'.$parent_in_id.'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span><span class="icon-block' . ( in_array($ins_this[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$ins_this[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$ins_this[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$ins_this[0]['in_title'].$completion_ui_rate.'</a></li>');
                 }
@@ -2510,6 +2503,45 @@ function echo_message($message, $is_error, $recipient_en, $push_message){
         echo '<div class="alert '.( $is_error ? 'alert-danger' : 'alert-info' ).'">'.( $is_error ? '<i class="fas fa-exclamation-triangle"></i> ' : '<i class="fas fa-info-circle"></i> ' ).$message.' </div>';
     }
 
+}
+
+
+function echo_mench_stats(){
+    $CI =& get_instance();
+
+    $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+    $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
+
+    //MENCH COINS
+    $read_coins = $CI->READ_model->ln_fetch(array(
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+    $idea_coins = $CI->READ_model->ln_fetch(array(
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'ln_type_play_id' => 4250, //UNIQUE IDEAS
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+    $play_coins = $CI->READ_model->ln_fetch(array(
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+
+    $ui = '<h1 class="montserrat play"><span class="icon-block-xlg icon_photo">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</h1>';
+
+    $ui .= '<table class="table table-sm table-striped dotransparent tablepadded" style="margin-bottom:50px;">';
+    $ui .= '<tr>';
+    $ui .= '<td class="play MENCHcolumn1"><span class="play"><span class="parent-icon icon-block">' . $en_all_2738[4536]['m_icon'] . '</span><span class="montserrat" title="'.number_format($play_coins[0]['total_coins'], 0).'">'.echo_number($play_coins[0]['total_coins']).'</span></span></td>';
+    $ui .= '<td class="idea MENCHcolumn2"><span class="idea"><span class="parent-icon icon-block">' . $en_all_2738[4535]['m_icon'] . '</span><span class="montserrat" title="'.number_format($idea_coins[0]['total_coins'], 0).'">'.echo_number($idea_coins[0]['total_coins']).'</span></span></td>';
+    $ui .= '<td class="read MENCHcolumn3"><span class="read"><span class="parent-icon icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="montserrat" title="'.number_format($read_coins[0]['total_coins'], 0).'">'.echo_number($read_coins[0]['total_coins']).'</span></span></td>';
+    $ui .= '</tr>';
+    $ui .= '<tr>';
+    $ui .= '<td class="play MENCHcolumn1"><span class="montserrat" style="padding-left: 8px;">PLAYERS</span></td>';
+    $ui .= '<td class="idea MENCHcolumn2"><span class="montserrat" style="padding-left: 8px;">IDEAS</span></td>';
+    $ui .= '<td class="read MENCHcolumn3"><span class="montserrat" style="padding-left: 8px;">READS</span></td>';
+    $ui .= '</tr>';
+    $ui .= '</table>';
+
+    return $ui;
 }
 
 function echo_en($en, $is_parent = false)
@@ -2773,7 +2805,7 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
     foreach ($en_all_this as $en_id => $m) {
 
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-        $requires_signin = in_array($en_id, $CI->config->item('en_ids_4269'));
+        $requires_sign = in_array($en_id, $CI->config->item('en_ids_4269'));
 
         if($cache_en_id==7585){
 
@@ -2790,7 +2822,7 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
 
         $is_url_desc = ( substr($m['m_desc'], 0, 1)=='/' );
 
-        $ui .= '<a class="dropdown-item dropi_'.$cache_en_id.'_'.$in_id.'_'.$ln_id.' montserrat optiond_'.$en_id.'_'.$in_id.'_'.$ln_id.' doupper '.( $en_id==$selected_en_id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).( $requires_signin && !superpower_assigned() ? ' hidden ' : '' ).'" '.( $is_url_desc ? ( $en_id==$selected_en_id ? 'href="javascript:void();"' : 'href="'.$m['m_desc'].'"' ) : 'href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.', '.$en_id.', '.$in_id.', '.$ln_id.', '.intval($show_full_name).')"' ).'><span '.( strlen($m['m_desc']) && !$is_url_desc ? 'title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right"' : '' ).'><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</span></a>';
+        $ui .= '<a class="dropdown-item dropi_'.$cache_en_id.'_'.$in_id.'_'.$ln_id.' montserrat optiond_'.$en_id.'_'.$in_id.'_'.$ln_id.' doupper '.( $en_id==$selected_en_id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).( $requires_sign && !superpower_assigned() ? ' hidden ' : '' ).'" '.( $is_url_desc ? ( $en_id==$selected_en_id ? 'href="javascript:void();"' : 'href="'.$m['m_desc'].'"' ) : 'href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.', '.$en_id.', '.$in_id.', '.$ln_id.', '.intval($show_full_name).')"' ).'><span '.( strlen($m['m_desc']) && !$is_url_desc ? 'title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right"' : '' ).'><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</span></a>';
 
     }
 

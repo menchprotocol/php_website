@@ -17,7 +17,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 <?php
 if(!$session_en){
 
-    echo '<div style="padding:10px 0 20px;"><a href="/signin?url=/read" class="btn btn-read montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to get started.</div>';
+    echo '<div style="padding:10px 0 20px;"><a href="/sign?url=/read" class="btn btn-read montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to get started.</div>';
 
 } else {
 
@@ -64,21 +64,24 @@ if(!$session_en){
 
         echo '<b class="actionplan-title montserrat montserrat idea-url in-title-'.$ln['in_id'].'">' . $ln['in_title'] . '</b>';
 
-        echo '<div class="montserrat idea-info doupper">';
+        if(superpower_active(10964, true)){
+            echo '<div class="montserrat idea-info doupper">';
 
-        $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $ln);
-        $metadata = unserialize($ln['in_metadata']);
-        if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
+            $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $ln);
+            $metadata = unserialize($ln['in_metadata']);
+            if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
 
-            //It does have some children, let's show more details about it:
-            $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+                //It does have some children, let's show more details about it:
+                $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
-            echo ( $has_time_estimate ? echo_time_range($ln, true).' READ ' : '' );
-            echo '<span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% DONE]</span> ';
+                echo ( $has_time_estimate ? echo_time_range($ln, true).' READ ' : '' );
+                echo '<span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% DONE]</span> ';
 
+            }
+
+            echo '</div>';
         }
 
-        echo '</div>';
 
 
 

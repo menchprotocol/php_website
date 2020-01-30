@@ -655,16 +655,6 @@ class Idea extends CI_Controller {
     }
 
 
-
-    function idea_stats(){
-        $this->load->view('header', array(
-            'title' => 'Idea Stats',
-        ));
-        $this->load->view('idea/idea_stats');
-        $this->load->view('footer');
-    }
-
-
     function in_READ_BOOKMARKS(){
 
         //Authenticate User:

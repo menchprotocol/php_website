@@ -11,7 +11,7 @@
 
     if(!$session_en){
 
-        echo '<div style="padding:10px 0;"><a href="/signin?url=/idea" class="btn btn-idea montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start ideating.</div>';
+        echo '<div style="padding:10px 0;"><a href="/sign?url=/idea" class="btn btn-idea montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start ideating.</div>';
 
     } else {
 

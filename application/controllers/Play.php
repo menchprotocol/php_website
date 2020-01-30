@@ -821,7 +821,15 @@ fragment PostListingItemSidebar_post on Post {
 
     }
 
-    function signin($in_id = 0){
+    function stats(){
+        $this->load->view('header', array(
+            'title' => 'Play Stats',
+        ));
+        $this->load->view('play/play_stats');
+        $this->load->view('footer');
+    }
+
+    function sign($in_id = 0){
 
         //Check to see if they are already logged in?
         $session_en = superpower_assigned();
@@ -839,7 +847,7 @@ fragment PostListingItemSidebar_post on Post {
             'hide_header' => 1,
             'title' => $en_all_11035[4269]['m_name'],
         ));
-        $this->load->view('play/play_signin', array(
+        $this->load->view('play/play_sign', array(
             'referrer_in_id' => intval($in_id),
             'contrainer_class_append' => intval($in_id),
         ));
@@ -2202,7 +2210,7 @@ fragment PostListingItemSidebar_post on Post {
             return redirect_message('/read/next');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Missing Email</div>');
+            return redirect_message('/sign', '<div class="alert alert-danger" role="alert">Missing Email</div>');
         }
 
         //Validate READ ID and matching email:
@@ -2213,10 +2221,10 @@ fragment PostListingItemSidebar_post on Post {
         )); //The user making the request
         if(count($validate_links) < 1){
             //Probably already completed the reset password:
-            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid data source</div>');
+            return redirect_message('/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid data source</div>');
         } elseif(strtotime($validate_links[0]['ln_timestamp']) + config_var(11065) < time()){
             //Probably already completed the reset password:
-            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
+            return redirect_message('/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
         }
 
         //Fetch player:
@@ -2224,7 +2232,7 @@ fragment PostListingItemSidebar_post on Post {
             'en_id' => $validate_links[0]['ln_owner_play_id'],
         ));
         if(count($ens) < 1){
-            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
+            return redirect_message('/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
         }
 
         //Log them in:

@@ -61,7 +61,7 @@ if(count($current_sign_in_attempt) == 0){
         ln_parent_read_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
 </script>
-<script src="/application/views/play/play_signin.js?v=v<?= config_var(11060) ?>"
+<script src="/application/views/play/play_sign.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 

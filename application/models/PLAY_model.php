@@ -18,7 +18,7 @@ class PLAY_model extends CI_Model
 
 
 
-    function en_activate_session($en, $update_session = false, $session_6196_signin = 0){
+    function en_activate_session($en, $update_session = false, $session_6196_sign = 0){
 
         //PROFILE
         $session_data = array(
@@ -31,7 +31,7 @@ class PLAY_model extends CI_Model
         if(!$update_session){
             //Append stats variables:
             $session_data['session_page_count'] = 0;
-            $session_data['session_6196_signin'] = $session_6196_signin;
+            $session_data['session_6196_sign'] = $session_6196_sign;
 
             //LOG
             $this->READ_model->ln_create(array(

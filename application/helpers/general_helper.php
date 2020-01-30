@@ -640,7 +640,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
         if(isset($session_en['en_id'])){
             $goto_url = '/play/'.$session_en['en_id'];
         } else {
-            $goto_url = '/signin?url=' . urlencode($_SERVER['REQUEST_URI']);
+            $goto_url = '/sign?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
 
         //Now redirect:

@@ -20,7 +20,7 @@ class Read extends CI_Controller
 
         //Check to see if added to READING LIST for logged-in users:
         if(!isset($session_en['en_id'])){
-            return redirect_message('/signin/'.$in_id);
+            return redirect_message('/sign/'.$in_id);
         }
 
         //Add this idea to their READING LIST:
@@ -42,7 +42,7 @@ class Read extends CI_Controller
 
         $session_en = superpower_assigned();
         if(!isset($session_en['en_id']) || !$session_en['en_id']){
-            return redirect_message('/signin');
+            return redirect_message('/sign');
         }
 
         if($in_id > 0){
@@ -582,7 +582,7 @@ class Read extends CI_Controller
 
 
 
-    function read_oii()
+    function read_history()
     {
         /*
          *
@@ -598,7 +598,7 @@ class Read extends CI_Controller
         $this->load->view('header', array(
             'title' => $en_all_11035[11999]['m_name'],
         ));
-        $this->load->view('read/read_oii');
+        $this->load->view('read/read_history');
         $this->load->view('footer');
     }
 

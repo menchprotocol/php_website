@@ -1673,30 +1673,32 @@ class READ_model extends CI_Model
                 //IDEA TITLE
                 echo '<h1>' . echo_in_title($ins[0]['in_title']) . '</h1>';
 
-                //Show More Information:
-                echo '<div class="read-topic read-info-topic"><span class="info-item">';
+                if(superpower_active(10964, true)){
+                    //Show More Information:
+                    echo '<div class="read-topic read-info-topic"><span class="info-item">';
 
-                $metadata = unserialize($ins[0]['in_metadata']);
-                if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
+                    $metadata = unserialize($ins[0]['in_metadata']);
+                    if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
 
-                    // % DONE
-                    $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
-                    if($completion_rate['completion_percentage'] > 0){
-                        echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'% DONE]</span> ';
+                        // % DONE
+                        $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
+                        if($completion_rate['completion_percentage'] > 0){
+                            echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'% DONE]</span> ';
+                        }
+
                     }
 
+                    //Show all completions:
+                    $en_all_12229 = $this->config->item('en_all_12229');
+                    foreach($read_completes as $read_history){
+
+                        echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span></span>';
+
+                        $previous_answers .= ( strlen($read_history['ln_content']) ? '<div class="previous_answer">'.$this->READ_model->dispatch_message($read_history['ln_content']).'</div>' : '' );
+                    }
+
+                    echo '</span></div>';
                 }
-
-                //Show all completions:
-                $en_all_12229 = $this->config->item('en_all_12229');
-                foreach($read_completes as $read_history){
-
-                    echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span></span>';
-
-                    $previous_answers .= ( strlen($read_history['ln_content']) ? '<div class="previous_answer">'.$this->READ_model->dispatch_message($read_history['ln_content']).'</div>' : '' );
-                }
-
-                echo '</span></div>';
 
             } else {
 
@@ -4000,71 +4002,7 @@ class READ_model extends CI_Model
 
         $fb_received_message = trim(strtolower($fb_received_message));
 
-        if (in_array($fb_received_message, array('stats', 'stat', 'statistics'))) {
-
-            $player_reads = $this->READ_model->ln_fetch(array(
-                'ln_owner_play_id' => $en['en_id'],
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
-            ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
-
-            if(count($player_reads)==0){
-
-                //Set message:
-                $message = 'I can\'t show you any stats because you don\'t have any ideas added to your 🔴 READING LIST yet.';
-
-                //No 🔴 READING LIST ideas!
-                $this->READ_model->dispatch_message(
-                    $message,
-                    $en,
-                    true
-                );
-
-                //READ RECOMMENDATIONS
-                $this->READ_model->dispatch_message(
-                    echo_random_message('read_recommendation'),
-                    $en,
-                    true
-                );
-
-
-            } else {
-
-                //Start composing a message for their stats:
-                $message = '🔴 READING LIST STATS:';
-
-                //Show them a list of their 🔴 READING LIST and completion stats:
-                foreach($player_reads as $user_idea){
-                    //Completion Percentage so far:
-                    $completion_rate = $this->READ_model->read__completion_progress($en['en_id'], $user_idea);
-                    $message .= "\n\n" . $completion_rate['completion_percentage'].'% ['.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' step'.echo__s($completion_rate['steps_total']).'] '.echo_in_title($user_idea['in_title']);
-                }
-
-                //Dispatch Message:
-                $this->READ_model->dispatch_message(
-                    $message,
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT_',
-                        )
-                    )
-                );
-
-            }
-
-            //Log command trigger:
-            $this->READ_model->ln_create(array(
-                'ln_owner_play_id' => $en['en_id'],
-                'ln_type_play_id' => 6556, //User Commanded Stats
-                'ln_content' => $message,
-            ));
-
-        } elseif (in_array($fb_received_message, array('next', 'continue', 'go'))) {
+        if (in_array($fb_received_message, array('next', 'continue', 'go'))) {
 
             //Give them the next step of their 🔴 READING LIST:
             $next_in_id = $this->READ_model->read_next_go($en['en_id'], true, true);
