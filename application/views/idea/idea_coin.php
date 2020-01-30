@@ -148,7 +148,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10939).'">
                 <div class="input-group border">
-                    <span class="icon-block input-group-addon addon-lean">'.$en_all_2738[4535]['m_icon'].'</span>
+                    <span class="input-group-addon addon-lean">'.$en_all_2738[4535]['m_icon'].'</span>
                     <input type="text"
                            class="form-control ideaadder-level-2-child form-control-thick algolia_search"
                            maxlength="' . config_var(11071) . '"
