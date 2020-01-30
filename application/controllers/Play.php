@@ -841,6 +841,7 @@ fragment PostListingItemSidebar_post on Post {
         ));
         $this->load->view('play/play_signin', array(
             'referrer_in_id' => intval($in_id),
+            'contrainer_class_append' => intval($in_id),
         ));
         $this->load->view('footer');
 
