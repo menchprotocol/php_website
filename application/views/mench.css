@@ -415,10 +415,12 @@ img.no-radius {
 
 
 /* MENCH Colors */
-.play, .play a, .play .fas, .play .far, .play .fal, .play .fad, .color4536, .info-item i.play:hover, .info-item a.play:hover  { color:#008DF2 !important; }
-.idea, .idea a, .idea .fas, .idea .far, .idea .fal, .idea .fad, .color4535, .info-item i.idea:hover, .info-item a.idea:hover  { color:#ffd600 !important; } /* f1d104 */
-.read, .read a, .read .fas, .read .far, .read .fal, .read .fad, .color6205, .info-item i.read:hover, .info-item a.read:hover  { color:#FC1B44 !important; }
+.play, .play .fas, .play .far, .play .fal, .play .fad, .color4536, .info-item i.play:hover, .info-item a.play:hover  { color:#008DF2 !important; }
+.idea, .idea .fas, .idea .far, .idea .fal, .idea .fad, .color4535, .info-item i.idea:hover, .info-item a.idea:hover  { color:#ffd600 !important; } /* f1d104 */
+.read, .read .fas, .read .far, .read .fal, .read .fad, .color6205, .info-item i.read:hover, .info-item a.read:hover  { color:#FC1B44 !important; }
 .grey, .grey i { color:#AAAAAA !important; }
+.black { color:#000000 !important; }
+
 
 .btn-play i, .btn-read i, .btn-idea i { color: #000000 !important; }
 
@@ -952,9 +954,7 @@ label {
 .btn-superpower.active .fas.read, .btn-superpower.active .far.read, .btn-superpower.active .fal.read, .btn-superpower.active .fad.read {
     color:#FC1B44 !important;
 }
-.black{
-    color:#000000 !important;
-}
+
 
 
 
