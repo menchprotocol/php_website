@@ -259,8 +259,8 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
             }
 
             if(element_id==4486){
-                $('.in__tr_'+in_id+'_'+ln_id+' .link_marks').addClass('hidden');
-                $('.in__tr_'+in_id+'_'+ln_id+' .settings_' + new_en_id).removeClass('hidden');
+                $('.in__tr_'+ln_id+' .link_marks').addClass('hidden');
+                $('.in__tr_'+ln_id+' .settings_' + new_en_id).removeClass('hidden');
             }
 
         } else {
