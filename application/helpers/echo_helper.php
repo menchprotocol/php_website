@@ -2141,6 +2141,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $en_all_7585 = $CI->config->item('en_all_7585');
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_4486 = $CI->config->item('en_all_4486');
+    $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
 
     //Prep link metadata to be analyzed later:
     $ln_id = $in['ln_id'];
@@ -2153,42 +2154,25 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $is_link_published = in_array($in['ln_status_play_id'], $CI->config->item('en_ids_7359'));
 
 
-    //FOLLOW LINK
-    $child_links = $CI->READ_model->ln_fetch(array(
-        'ln_parent_idea_id' => $in['in_id'],
-        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
-        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as in__child_count');
-    $tree_count_range = $child_links[0]['in__child_count'];
-    $follow_url = '<a class="btn btn-idea" href="/idea/' . $in['in_id'] . '">'.( $is_parent ? '<i class="fad fa-step-backward"></i> <span class="btn-counter">' . $tree_count_range . '</span>' : '<span class="btn-counter">' . $tree_count_range . '</span> <i class="fad fa-step-forward"></i>' ).'</a>';
-
-
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_play_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item itemidea ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' idea_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
-
-
-    if($is_parent){
-        $ui .= '<div class="float-left" style="margin-top:-5px;">';
-        $ui .= $follow_url;
-        $ui .= '</div>';
-    }
-
 
 
     //Left content wrapper:
     $ui .= '<div class="idea-left">';
 
+    //IDEA ICON:
+    $ui .= '<div class="icon-block '.superpower_active(10939).'" data-toggle="tooltip" data-placement="right" title="Hold & drag up/down to sort"><a href="/idea/'.$in['in_id'].'" class="'.( !$is_parent ? 'idea-sort-handle' : '' ).'">' . $en_all_2738[4535]['m_icon'] . '</a></div>';
 
-    //LINK STATUS
+    //LINK STATUS (IF NOT PUBLISHED)
     $ui .= '<div class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . '</span></div>';
 
 
-    //IDEA STATUS
-    $ui .= echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']);
-
-
     //IDEA TITLE
-    $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author), (($in['ln_order']*100)+1));
+    if(superpower_active(10984)){
+        $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author), (($in['ln_order']*100)+1));
+    } else {
+        $ui .= '<a href="/idea/'.$in['in_id'].'">' . echo_in_title($in['in_title']) . '</a>';
+    }
 
     $ui .= '</div>';
 
@@ -2199,6 +2183,9 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     $ui .= '<div class="doclear">&nbsp;</div>';
 
+    //IDEA STATUS
+    $ui .= echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']);
+
     //IDEA TYPE
     $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['in_id']);
 
@@ -2206,7 +2193,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
 
     //LINK TYPE & SETTING
-    $ui .= '<div class="icon-block ' . superpower_active(10985) . '">';
+    $ui .= '<div class="inline-block ' . superpower_active(10985) . '">';
 
         //LINK TYPE
         $ui .= echo_in_dropdown(4486, $in['ln_type_play_id'], null, $is_author, false, $in['in_id'], $in['ln_id']);
@@ -2240,9 +2227,8 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         'ln_child_idea_id' => $in['in_id'],
         'ln_parent_idea_id !=' => $in_linked_id,
     ), array('in_parent')) as $in_parent){
-        $ui .= '<a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="icon-block in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_play_id']]['m_icon'] . '</a> &nbsp;';
+        $ui .= '<a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="icon-block in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_2738[4535]['m_icon'] . '</a> &nbsp;';
     }
-
 
     $ui .= '</div>';
 
@@ -2260,15 +2246,10 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
     if($is_author || !$is_parent){
 
-        //Sort:
-        if(!$is_parent){
-            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort"></i></span>';
-        }
-
         //Unlink:
         $ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink" style="font-size: 0.8em;"></i></a></span>';
 
-    } else {
+    } elseif(!$is_author) {
 
         //Indicate if NOT an author:
         $ui .= '<span data-toggle="tooltip" title="You are not yet an author of this idea" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
@@ -2276,17 +2257,9 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     }
     $ui .= '</span></div>';
 
-
-
-    //FOLLOW CHILD
-    if(!$is_parent){
-        $ui .= '<div style="padding:0 17px 0 3px;">'.$follow_url.'</div>';
-    }
-
     $ui .= '<div class="doclear">&nbsp;</div>';
 
     $ui .= '</div>';
-
 
     $ui .= '</div>';
 

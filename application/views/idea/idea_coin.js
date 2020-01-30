@@ -833,7 +833,7 @@ function in_sort_load(in_id) {
     var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: ".ideas_sortable", // Specifies which items inside the element should be sortable
-        handle: ".fa-sort", // Restricts sort start click/touch to the specified element
+        handle: ".idea-sort-handle", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             in_sort_save(in_id);
         }
