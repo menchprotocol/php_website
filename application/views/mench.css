@@ -1073,7 +1073,7 @@ label {
 .idea-desc .icon-block{
     display: none;
 }
-
+.block { display: block !important; width: 100%; }
 
 .in_highlight, .in_highlight:hover, .in_highlight:focus{
     background-color:#fff3a9 !important;
