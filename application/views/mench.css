@@ -65,7 +65,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     margin: 0;
     width: 100%;
 }
-
+.card-header{ padding: 0; }
 .ln_content { overflow: hidden; width: 100%; }
 .ln_content img, .i_content img { max-width: 100%; }
 .table-sm td, .table-sm th { padding: 5px 0; }

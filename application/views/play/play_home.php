@@ -33,7 +33,7 @@ if($session_en) {
 
     echo '<div class="doclear">&nbsp;</div>';
 
-    echo '<div class="accordion no-side-padding" id="MyPlayerAccordion" style="margin-bottom:34px;">';
+    echo '<div class="accordion" id="MyPlayerAccordion" style="margin-bottom:34px;">';
 
     //Display account fields ordered with their player links:
     foreach ($this->config->item('en_all_6225') as $acc_en_id => $acc_detail) {
@@ -47,7 +47,7 @@ if($session_en) {
         $expand_by_default = false;
 
         //Print header:
-        echo '<div class="card no-side-padding">
+        echo '<div class="card">
     <div class="card-header" id="heading' . $acc_en_id . '">
     <button class="btn block" type="button" data-toggle="collapse" data-target="#openEn' . $acc_en_id . '" aria-expanded="' . ($expand_by_default ? 'true' : 'false') . '" aria-controls="openEn' . $acc_en_id . '">
       <span class="icon-block-lg">' . $acc_detail['m_icon'] . '</span><b class="montserrat doupper ' . extract_icon_color($acc_detail['m_icon']) . '" style="padding-left:5px;">' . $acc_detail['m_name'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
