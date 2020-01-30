@@ -2181,11 +2181,11 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     //IDEA TYPE
     $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['in_id']);
 
-    //IDEA READ TIME
-    $ui .= echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
-
     //LINK TYPE & SETTING
     $ui .= '<div class="inline-block ' . superpower_active(10985) . '">';
+
+        //IDEA READ TIME
+        $ui .= echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
 
         //LINK TYPE
         $ui .= echo_in_dropdown(4486, $in['ln_type_play_id'], null, $is_author, false, $in['in_id'], $in['ln_id']);
