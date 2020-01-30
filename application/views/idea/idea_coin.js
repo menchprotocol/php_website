@@ -885,7 +885,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
     }
 
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item itemidea"><i class="far fa-yin-yang fa-spin"></i> Adding... </div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item itemidea montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>Adding... </div>');
 
     //Update backend:
     $.post("/idea/in_link_or_create", {
