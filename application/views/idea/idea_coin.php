@@ -50,7 +50,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
         //IDEA STATUS
-        echo '<div class="inline-block">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author, true, $in['in_id']).'</div>';
+        echo '<div class="inline-block" style="margin-top:34px;">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-idea', $is_author, true, $in['in_id']).'</div>';
 
 
         //IDEA TITLE
@@ -63,7 +63,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } elseif($col_num==3){
 
         //IDEA FOOTER
-        echo '<div style="margin-top:50px;">';
+        echo '<div style="margin-top:34px;">';
 
 
         //IDEA TYPE
