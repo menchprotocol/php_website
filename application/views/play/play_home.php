@@ -139,7 +139,7 @@ if($session_en) {
 }
 
 
-echo echo_mench_stats(true);
+echo echo_mench_stats();
 
 ?>
 
