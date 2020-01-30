@@ -952,6 +952,9 @@ label {
 .btn-superpower.active .fas.read, .btn-superpower.active .far.read, .btn-superpower.active .fal.read, .btn-superpower.active .fad.read {
     color:#FC1B44 !important;
 }
+.black{
+    color:#000000 !important;
+}
 
 
 

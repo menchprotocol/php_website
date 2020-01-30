@@ -752,7 +752,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
             //PLAY
-            echo '<td class="play MENCHcolumn1"><span class="parent-icon icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="montserrat en_name_first_'.$ln['en_id'].'">'.$first_name.'</a>' : '<b class="montserrat en_name_first_'.$ln['en_id'].'">'.$first_name.'</b>' ).echo_rank($count+1).'</td>';
+            echo '<td class="play MENCHcolumn1"><span class="parent-icon icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="montserrat black en_name_first_'.$ln['en_id'].'">'.$first_name.'</a>' : '<b class="montserrat black en_name_first_'.$ln['en_id'].'">'.$first_name.'</b>' ).echo_rank($count+1).'</td>';
 
 
             //IDEA
@@ -791,7 +791,7 @@ fragment PostListingItemSidebar_post on Post {
 
                 if($count==$show_max){
 
-                    echo '<tr class="see_more_who"><td colspan="3"><span class="parent-icon icon-block"><i class="far fa-search-plus play"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat play" style="text-decoration: none !important;">TOP '.$load_max.'</b></a></td></tr>';
+                    echo '<tr class="see_more_who"><td colspan="3"><span class="parent-icon icon-block"><i class="far fa-search-plus play"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat" style="text-decoration: none !important;">TOP '.$load_max.'</b></a></td></tr>';
 
                     echo '<tr class="see_more_who"></tr>';
 
@@ -802,7 +802,7 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
 
                 //PLAY
-                echo '<td class="play MENCHcolumn1"><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="montserrat">'.$first_name.'</a>' : '<b class="montserrat">'.$first_name.'</b>' ).echo_rank($count+1).'</td>';
+                echo '<td class="play MENCHcolumn1"><span class="parent-icon icon-block">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="montserrat black">'.$first_name.'</a>' : '<b class="montserrat black">'.$first_name.'</b>' ).echo_rank($count+1).'</td>';
 
                 //IDEA
                 echo '<td class="idea MENCHcolumn2"></td>';
