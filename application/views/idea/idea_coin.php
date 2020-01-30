@@ -63,7 +63,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } elseif($col_num==3){
 
         //IDEA FOOTER
-        echo '<div style="margin-top:30px;">';
+        echo '<div style="margin-top:50px;">';
 
 
         //IDEA TYPE

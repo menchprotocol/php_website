@@ -89,7 +89,7 @@ function select_answer(in_id){
     if(in_type_play_id == 6684){
         //Single Selection, clear all:
         $('.answer-item').attr('is-selected', 0);
-        $('.check-icon i').removeClass('fas fa-check-circle').addClass('far fa-circle');
+        $('.check-icon i').removeClass('fas').addClass('far');
     }
 
     if(current_status==1){
@@ -98,20 +98,14 @@ function select_answer(in_id){
         if(in_type_play_id == 7231){
             //Multi Selection
             $('.ln_answer_'+in_id).attr('is-selected', 0);
-            $('.ln_answer_'+in_id+' .check-icon i').removeClass('fas fa-check-square').addClass('far fa-square');
+            $('.ln_answer_'+in_id+' .check-icon i').removeClass('fas').addClass('far');
         }
 
     } else if(current_status==0){
 
         //Already Selected, remove selection:
         $('.ln_answer_'+in_id).attr('is-selected', 1);
-        if(in_type_play_id == 6684){
-            //Single Selection
-            $('.ln_answer_'+in_id+' .check-icon i').removeClass('far fa-circle').addClass('fas fa-check-circle');
-        } else if(in_type_play_id == 7231){
-            //Multi Selection
-            $('.ln_answer_'+in_id+' .check-icon i').removeClass('far fa-square').addClass('fas fa-check-square');
-        }
+        $('.ln_answer_'+in_id+' .check-icon i').removeClass('far').addClass('fas');
 
     }
 
