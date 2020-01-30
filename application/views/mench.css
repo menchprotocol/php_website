@@ -1115,6 +1115,12 @@ label {
     width:    -moz-calc(100% - 37px);
     width:         calc(100% - 37px);
 }
+.add-coin {
+    width: -webkit-calc(100% - 34px);
+    width:    -moz-calc(100% - 34px);
+    width:         calc(100% - 34px);
+}
+
 .texttype_4356_sm {
     text-align: center;
     padding-right: 2px;

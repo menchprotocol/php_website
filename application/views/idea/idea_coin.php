@@ -146,11 +146,11 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= echo_in($child_in, $in['in_id'], false, in_is_author($child_in['in_id']));
             }
 
-            $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10939).'">
+            $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10939).'" style="padding-left: 0;">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean">'.$en_all_2738[4535]['m_icon'].'</span>
+                    <span class="input-group-addon addon-lean"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control ideaadder-level-2-child form-control-thick algolia_search"
+                           class="form-control ideaadder-level-2-child form-control-thick algolia_search add-coin"
                            maxlength="' . config_var(11071) . '"
                            idea-id="' . $in['in_id'] . '"
                            id="addidea-c-' . $in['in_id'] . '-0"
