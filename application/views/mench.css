@@ -23,6 +23,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .container {padding-left:5px;padding-right:5px;}
 */
 [class*="col-"], .no-side-padding {padding-left:0px;padding-right:0px;}
+.no-left-padding {padding-left:0px;}
 .row {margin-left:0px;margin-right:0px;}
 .container {
     max-width:767px;
@@ -60,7 +61,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .list-group-item {
     border: 0;
     border-radius: 0 !important;
-    padding:10px 10px 10px 0;
+    padding:10px;
     margin: 0;
     width: 100%;
 }

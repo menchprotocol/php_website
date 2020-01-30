@@ -6,7 +6,7 @@ function echo_en_load_more($page, $limit, $en__child_count)
      * Gives an option to "Load More" players when we have too many to show in one go
      * */
 
-    $ui = '<div class="load-more montserrat list-group-item itemplay" style="padding-bottom:20px;"><a href="javascript:void(0);" onclick="en_load_next_page(' . $page . ', 0)">';
+    $ui = '<div class="load-more montserrat list-group-item itemplay no-left-padding" style="padding-bottom:20px;"><a href="javascript:void(0);" onclick="en_load_next_page(' . $page . ', 0)">';
 
     //Regular section:
     $max_players = (($page + 1) * $limit);
@@ -533,7 +533,7 @@ function echo_ln($ln, $is_inner = false)
 
     //Display the item
     $ui = '<div style="margin-bottom:20px;">';
-    $ui .= '<div class="list-group-item">';
+    $ui .= '<div class="list-group-item no-left-padding">';
 
 
     //What type of main content do we have, if any?
@@ -1523,7 +1523,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
         }
     }
 
-    $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'] : '/read/'.$in['in_id'] ) . '" class="list-group-item itemread '.$extra_class.'">';
+    $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'] : '/read/'.$in['in_id'] ) . '" class="list-group-item no-left-padding itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
 
