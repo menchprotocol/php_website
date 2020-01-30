@@ -2183,6 +2183,8 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     $ui .= '<div class="doclear">&nbsp;</div>';
 
+    $ui .= '<span class="icon-block">&nbsp;</span>';
+
     //IDEA STATUS
     $ui .= echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']);
 

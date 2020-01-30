@@ -1102,18 +1102,18 @@ label {
     display: block;
     float: left;
     /* Accomodate Right Follow Links */
-    width: -webkit-calc(100% - 22px);
-    width:    -moz-calc(100% - 22px);
-    width:         calc(100% - 22px);
+    width: -webkit-calc(100% - 15px);
+    width:    -moz-calc(100% - 15px);
+    width:         calc(100% - 15px);
 }
 .texttype_4736_sm{
     display: inline-block;
     color: #000;
     padding: 0;
     /* Accomodate .icon-block */
-    width: -webkit-calc(100% - 37px);
-    width:    -moz-calc(100% - 37px);
-    width:         calc(100% - 37px);
+    width: -webkit-calc(100% - 34px);
+    width:    -moz-calc(100% - 34px);
+    width:         calc(100% - 34px);
 }
 .input-group .algolia-autocomplete {
     width: -webkit-calc(100% - 34px) !important;
