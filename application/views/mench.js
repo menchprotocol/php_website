@@ -365,7 +365,7 @@ $(document).ready(function () {
                             return '<div class="not-found"><span class="icon-block"><i class="fas fa-exclamation-triangle"></i></span>No PLAY found</div>';
                         }
                     } else {
-                        return '<div class="not-found"><span class="icon-block"><i class="fas fa-exclamation-triangle"></i></span>No results found</div>';
+                        return '<div class="not-found suggestion"><span class="icon-block"><i class="fas fa-exclamation-triangle"></i></span>No results found</div>';
                     }
                 },
             }
