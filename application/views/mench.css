@@ -1069,7 +1069,10 @@ label {
     background-color:#c1dffb !important;
 }
 
-.card-header{ padding: 0; }
+.card-header{
+    padding: 0;
+    background-color: #f4f5f7;
+}
 .card-body{
     padding-top: 10px;
 }
