@@ -468,7 +468,7 @@ class Idea extends CI_Controller {
             //All good, Update Link:
             $this->READ_model->ln_update($_POST['ln_id'], array(
                 $en_all_6232[$_POST['element_id']]['m_desc'] => $_POST['new_en_id'],
-            ), $session_en['en_id'], $link_update_types[0]);
+            ), $session_en['en_id'], end($link_update_types));
 
         } else {
 

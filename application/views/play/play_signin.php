@@ -78,7 +78,7 @@ if(count($current_sign_in_attempt) == 0){
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
         ));
         if(count($ins) > 0){
-            echo '<p class="text-center montserrat doupper">TO <a href="/'.$referrer_in_id.'"><u>'.echo_in_title($ins[0]['in_title']).'</u></a> & READ UP TO '.config_var(11061).' IDEAS PER WEEK FOR FREE</p>';
+            echo '<p class="text-center montserrat doupper">ACCESS <a href="/'.$referrer_in_id.'"><u>'.echo_in_title($ins[0]['in_title']).'</u></a> & READ UP TO '.config_var(11061).' IDEAS PER WEEK FOR FREE</p>';
         }
     } elseif(isset($_GET['url']) && strlen($_GET['url']) > 0){
         echo '<p class="text-center montserrat doupper">TO '.trim(urldecode($_GET['url']), '/').' & READ UP TO '.config_var(11061).' IDEAS PER WEEK FOR FREE</p>';

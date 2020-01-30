@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-29 23:19:42 PST
+//Generated 2020-01-30 10:20:58 PST
 
 //MENCH GLOSSARY:
 $config['en_ids_4463'] = array(3084,3000,4535,4485,4536,4430,4755,6205);
@@ -128,13 +128,13 @@ $config['en_all_12420'] = array(
 $config['en_ids_12413'] = array(11020,11019);
 $config['en_all_12413'] = array(
     11020 => array(
-        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'NEXT',
         'm_desc' => '',
         'm_parents' => array(12413,11025,11018),
     ),
     11019 => array(
-        'm_icon' => '<i class="fad fa-step-backward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-backward idea" aria-hidden="true"></i>',
         'm_name' => 'PREVIOUS',
         'm_desc' => '',
         'm_parents' => array(12413,10990,11025),
@@ -462,7 +462,7 @@ $config['en_all_4535'] = array(
     ),
     4228 => array(
         'm_icon' => '<i class="fad fa-play idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA LINK UNCONDITIONAL',
+        'm_name' => 'IDEA LINK FIXED',
         'm_desc' => '',
         'm_parents' => array(4535,6410,4593,4486),
     ),
@@ -4360,7 +4360,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.231',
+        'm_desc' => '1.23',
         'm_parents' => array(6404),
     ),
     12363 => array(
@@ -4736,7 +4736,7 @@ $config['en_all_11028'] = array(
 $config['en_ids_11018'] = array(11020,7585);
 $config['en_all_11018'] = array(
     11020 => array(
-        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'NEXT',
         'm_desc' => '',
         'm_parents' => array(12413,11025,11018),
@@ -4776,7 +4776,7 @@ $config['en_all_11021'] = array(
 $config['en_ids_10990'] = array(11019,4356,4737,12138,4736,6205);
 $config['en_all_10990'] = array(
     11019 => array(
-        'm_icon' => '<i class="fad fa-step-backward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-backward idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA PREVIOUS',
         'm_desc' => '',
         'm_parents' => array(12413,10990,11025),
@@ -8529,7 +8529,7 @@ $config['en_all_4593'] = array(
     ),
     4228 => array(
         'm_icon' => '<i class="fad fa-play idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA LINK UNCONDITIONAL',
+        'm_name' => 'IDEA LINK FIXED',
         'm_desc' => '',
         'm_parents' => array(4535,6410,4593,4486),
     ),
@@ -9425,7 +9425,7 @@ $config['en_ids_4486'] = array(4228,4229);
 $config['en_all_4486'] = array(
     4228 => array(
         'm_icon' => '<i class="fad fa-play idea" aria-hidden="true"></i>',
-        'm_name' => 'UNCONDITIONAL',
+        'm_name' => 'FIXED',
         'm_desc' => 'Ideas that always follow each other',
         'm_parents' => array(4535,6410,4593,4486),
     ),
