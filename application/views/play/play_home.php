@@ -3,7 +3,7 @@
     //Include some cached players:
     var open_en_id = <?= (isset($_GET['open_en_id']) && intval($_GET['open_en_id'])>0 ? intval($_GET['open_en_id']) : 0 ) ?>;
 </script>
-<script src="/application/views/play/play_my.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/play/play_home.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 <div class="container">
 
 <?php

@@ -288,7 +288,7 @@ class Read extends CI_Controller
         echo 'Sent '.$email_recipients.' Emails';
     }
 
-    function read_my(){
+    function read_home(){
 
         $session_en = superpower_assigned(null);
         $player_reads = array();
@@ -320,7 +320,7 @@ class Read extends CI_Controller
             'title' => $en_all_2738[6205]['m_name'],
         ));
 
-        $this->load->view('read/read_my', array(
+        $this->load->view('read/read_home', array(
             'session_en' => $session_en,
             'player_reads' => $player_reads,
         ));

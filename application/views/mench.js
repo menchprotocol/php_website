@@ -85,17 +85,11 @@ function getRandomInt(min, max) {
 function echo_js_suggestion(alg_obj){
 
     //Determine object type:
-    var obj_type = ( parseInt(alg_obj.alg_obj_is_in)==1 ? 'in' : 'en' );
-
-    if(obj_type=='in'){
-        var focus_field = js_en_all_4737;
-    } else {
-        var focus_field = js_en_all_6177;
-    }
-
+    var obj_type = ( parseInt(alg_obj.alg_obj_is_in)==1 ? 'idea' : 'play' );
+    var is_published = ( parseInt(alg_obj.alg_obj_status) in (obj_type=='idea' ? js_en_all_7355 : js_en_all_7357 ));
     var obj_full_name = ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name );
 
-    return '<span class="icon-block-sm">' + alg_obj.alg_obj_icon + '</span>' + obj_full_name;
+    return '<span class="icon-block-sm"><i class="fas fa-circle '+obj_type+'"></i></span>' + ( is_published ? '' : '<span class="icon-block-sm"><i class="far fa-spinner fa-spin"></i></span>' ) + obj_full_name;
 }
 
 

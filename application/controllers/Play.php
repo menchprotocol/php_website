@@ -2406,7 +2406,7 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function play_my()
+    function play_home()
     {
 
         //Authenticate user:
@@ -2424,7 +2424,7 @@ fragment PostListingItemSidebar_post on Post {
         $this->load->view('header', array(
             'title' => $en_all_2738[4536]['m_name'],
         ));
-        $this->load->view('play/play_my', array(
+        $this->load->view('play/play_home', array(
             'session_en' => $session_en,
         ));
         $this->load->view('footer');
