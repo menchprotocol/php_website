@@ -263,6 +263,7 @@ img.no-radius {
 
 .card-header{
     padding: 0;
+    background-color:#FFFFFF;
 }
 .card-body{
     padding-top: 10px;
@@ -275,7 +276,7 @@ img.no-radius {
 .table-striped tbody tr:nth-of-type(even) {
     background-color:transparent;
 }
-.table-striped tbody tr:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .accordion .card:nth-of-type(odd), .card-header:nth-of-type(odd) {
+.table-striped tbody tr:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .accordion .card:nth-of-type(odd) {
     background-color:#FFFFFF;
 }
 .table-striped tbody tr:nth-of-type(even), .list-group .list-group-item:nth-of-type(even), .accordion .card:nth-of-type(even), .card-header:nth-of-type(even) {
