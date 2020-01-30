@@ -112,17 +112,17 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             }
 
             if( $in['in_id'] != config_var(12156)){
-                $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10984).'">
-                            <div class="form-group is-empty '.( $is_author && $is_active ? '' : ' hidden ' ).'" style="margin: 0; padding: 0;">
-                                <input type="text"
-                                       class="form-control ideaadder-level-2-parent form-control-thick algolia_search"
-                                       idea-id="' . $in['in_id'] . '"
-                                       id="addidea-c-' . $in['in_id'] . '-1"
-                                       style="margin-bottom: 0; padding: 5px 0;"
-                                       placeholder="ADD PREVIOUS IDEA">
-                            </div>
-                           <div class="algolia_pad_search hidden in_pad_top"></div>
-                    </div>';
+                $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10984).'" style="padding:5px 0;">
+                <div class="input-group border '.( $is_author && $is_active ? '' : ' hidden ' ).'">
+                    <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
+                    <input type="text"
+                           class="form-control ideaadder-level-2-parent form-control-thick algolia_search"
+                           maxlength="' . config_var(11071) . '"
+                           idea-id="' . $in['in_id'] . '"
+                           id="addidea-c-' . $in['in_id'] . '-1"
+                           style="margin-bottom: 0; padding: 5px 0;"
+                           placeholder="ADD PREVIOUS IDEA">
+                </div><div class="algolia_pad_search hidden in_pad_top"></div></div>';
             }
 
             $this_tab .= '</div>';
@@ -156,7 +156,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                            id="addidea-c-' . $in['in_id'] . '-0"
                            style="margin-bottom: 0; padding: 5px 0;"
                            placeholder="ADD NEXT IDEA">
-                </div></div>';
+                </div><div class="algolia_pad_search hidden in_pad_bottom"></div></div>';
 
         } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
 
