@@ -1161,6 +1161,9 @@ label {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
 }
+.form-control::placeholder{
+    color: #AAAAAA;
+}
 
 
 
