@@ -155,9 +155,9 @@ echo '<h1 class="montserrat play"><span class="icon-block-xlg icon_photo">'.$en_
 
 echo '<table class="table table-sm table-striped dotransparent" style="margin-bottom: 30px;">';
 echo '<tr>';
-echo '<td class="play MENCHcolumn1"><span class="montserrat">PLAYERS</span></td>';
-echo '<td class="idea MENCHcolumn2"><span class="montserrat">IDEAS</span></td>';
-echo '<td class="read MENCHcolumn3"><span class="montserrat">READS</span></td>';
+echo '<td class="play MENCHcolumn1"><span class="montserrat" style="padding-left: 8px;">PLAYERS</span></td>';
+echo '<td class="idea MENCHcolumn2"><span class="montserrat" style="padding-left: 8px;">IDEAS</span></td>';
+echo '<td class="read MENCHcolumn3"><span class="montserrat" style="padding-left: 8px;">READS</span></td>';
 echo '</tr>';
 echo '<tr>';
 echo '<td class="play MENCHcolumn1"><span class="play"><span class="parent-icon icon-block">' . $en_all_2738[4536]['m_icon'] . '</span><span class="montserrat" title="'.number_format($play_coins[0]['total_coins'], 0).'">'.echo_number($play_coins[0]['total_coins']).'</span></span></td>';
