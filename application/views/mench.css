@@ -1117,9 +1117,9 @@ label {
     color: #000;
     padding: 0;
     /* Accomodate .icon-block */
-    width: -webkit-calc(100% - 34px);
-    width:    -moz-calc(100% - 34px);
-    width:         calc(100% - 34px);
+    width: -webkit-calc(100% - 68px);
+    width:    -moz-calc(100% - 68px);
+    width:         calc(100% - 68px);
 }
 .input-group .algolia-autocomplete {
     width: -webkit-calc(100% - 34px) !important;
