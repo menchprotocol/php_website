@@ -696,6 +696,9 @@ td.MENCHcolumn3{ width: 21%; }
 .tablepadded td{
     padding:10px 0 !important;
 }
+.top-margin{
+    margin-top: 21px;
+}
 
 #MENCHmenu a.play:hover, #MENCHmenu a.play.focustab  { border-color:#008DF2; }
 #MENCHmenu a.read:hover, #MENCHmenu a.read.focustab  { border-color:#FC1B44; }
