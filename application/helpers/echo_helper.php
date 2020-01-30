@@ -2152,7 +2152,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $session_en = superpower_assigned();
     $is_published = in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355'));
     $is_link_published = in_array($in['ln_status_play_id'], $CI->config->item('en_ids_7359'));
-
+    $sort_handle = ( $is_author && !$is_parent ? ' idea-sort-handle ' : '' );
 
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_play_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item itemidea ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' idea_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
 
@@ -2161,7 +2161,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '<div class="idea-left">';
 
     //IDEA ICON:
-    $ui .= '<div class="icon-block '.superpower_active(10939).'" data-toggle="tooltip" data-placement="right" title="Hold & drag up/down to sort"><a href="/idea/'.$in['in_id'].'" class="'.( !$is_parent ? 'idea-sort-handle' : '' ).'">' . $en_all_2738[4535]['m_icon'] . '</a></div>';
+    $ui .= '<div class="icon-block '.superpower_active(10939).'" data-toggle="tooltip" data-placement="right" title="Hold & drag up/down to sort"><a href="/idea/'.$in['in_id'].'" class="'.$sort_handle.'">' . $en_all_2738[4535]['m_icon'] . '</a></div>';
 
     //LINK STATUS (IF NOT PUBLISHED)
     $ui .= '<div class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . '</span></div>';
@@ -2171,7 +2171,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     if(superpower_active(10984, true)){
         $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author), (($in['ln_order']*100)+1));
     } else {
-        $ui .= '<a href="/idea/'.$in['in_id'].'" class="montserrat">' . echo_in_title($in['in_title']) . '</a>';
+        $ui .= '<a href="/idea/'.$in['in_id'].'" class="montserrat '.$sort_handle.'">' . echo_in_title($in['in_title']) . '</a>';
     }
 
     $ui .= '</div>';

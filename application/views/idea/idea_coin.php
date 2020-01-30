@@ -147,20 +147,16 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             }
 
             $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10939).'">
-                    <div class="form-group is-empty '.( !$is_author || !$is_active ? ' hidden ' : '' ).'" style="margin: 0; padding: 0;">
-                        <span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>
-                        <input type="text"
-                               class="form-control ideaadder-level-2-child form-control-thick algolia_search inline-block"
-                               maxlength="' . config_var(11071) . '"
-                               idea-id="' . $in['in_id'] . '"
-                               id="addidea-c-' . $in['in_id'] . '-0"
-                               style="margin-bottom: 0; padding: 5px 0;"
-                               placeholder="ADD NEXT IDEA">
-                    </div>
-                   <div class="algolia_pad_search hidden in_pad_bottom"></div>
-            </div>';
-            $this_tab .= '</div>';
-
+                <div class="input-group border">
+                    <span class="icon-block input-group-addon addon-lean">'.$en_all_2738[4535]['m_icon'].'</span>
+                    <input type="text"
+                           class="form-control ideaadder-level-2-child form-control-thick algolia_search"
+                           maxlength="' . config_var(11071) . '"
+                           idea-id="' . $in['in_id'] . '"
+                           id="addidea-c-' . $in['in_id'] . '-0"
+                           style="margin-bottom: 0; padding: 5px 0;"
+                           placeholder="ADD NEXT IDEA">
+                </div></div>';
 
         } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
 

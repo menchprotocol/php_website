@@ -60,7 +60,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .list-group-item {
     border: 0;
     border-radius: 0 !important;
-    padding:5px 10px;
+    padding:10px;
     margin: 0;
     width: 100%;
 }
@@ -1099,13 +1099,12 @@ label {
 
 
 .idea-left {
-    padding:5px 0 0 0;
     display: block;
     float: left;
     /* Accomodate Right Follow Links */
-    width: -webkit-calc(100% - 102px);
-    width:    -moz-calc(100% - 102px);
-    width:         calc(100% - 102px);
+    width: -webkit-calc(100% - 22px);
+    width:    -moz-calc(100% - 22px);
+    width:         calc(100% - 22px);
 }
 .texttype_4736_sm{
     display: inline-block;
