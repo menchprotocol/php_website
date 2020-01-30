@@ -19,9 +19,5 @@
         echo echo_tree_actionplan($in, $autoexpand);
     }
 
-    if($in['in_id']==config_var(12156)){
-        echo echo_mench_stats();
-    }
-
     ?>
 </div>

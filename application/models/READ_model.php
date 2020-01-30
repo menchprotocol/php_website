@@ -1521,6 +1521,8 @@ class READ_model extends CI_Model
                 );
             }
 
+
+
             //Give option to add to reading list:
             if($push_message){
                 $this->READ_model->dispatch_message(
@@ -1544,8 +1546,28 @@ class READ_model extends CI_Model
                     )
                 );
             } elseif(!isset($_GET['autoexpand'])) {
+
                 //Redirect to login page:
-                echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">GET STARTED <i class="fad fa-step-forward"></i></a></div>';
+                echo '<div class="inline-block margin-top-down read-add">';
+                echo '<a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">GET STARTED <i class="fad fa-step-forward"></i></a>';
+
+                if($ins[0]['in_id']==config_var(12156)){
+
+                    $en_all_11035 = $this->config->item('en_all_11035');
+
+                    //Give option to load stats:
+                    echo '<span class="mench-stats">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.mench-stats\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>UPDATE ANSWER</u></a></span>';
+
+                    //Show Stats:
+                    echo '<div class="equal-columns mench-stats hidden">';
+                    echo echo_mench_stats();
+                    echo '<div><a href="/play" class="montserrat '.extract_icon_color($en_all_11035[12437]['m_icon']).'"><span class="icon-block">'.$en_all_11035[12437]['m_icon'].'</span>'.$en_all_11035[12437]['m_name'].'</a></div>';
+                    echo '</div>';
+
+                }
+
+                echo '</div>';
+
             }
 
             return true;
@@ -3076,14 +3098,14 @@ class READ_model extends CI_Model
 
                 if($is_user_message){
 
-                    $player_name_replacement = ( $has_text ? ( $ens[0]['en_icon'] ? '<span class="icon-block-sm icon_photo">'.$ens[0]['en_icon'].'</span>' : '' ).'<span class="player-name '.extract_icon_color($ens[0]['en_icon']).'">'.$ens[0]['en_name'].'</span>' : '' );
+                    $player_name_replacement = ( $has_text ? '<span class="montserrat doupper">'.$ens[0]['en_name'].'</span>' : '' );
                     $output_body_message = str_replace('@' . $string_references['ref_players'][0], $player_name_replacement, $output_body_message);
 
                 } else {
 
                     //Show player link with status:
                     $current_mench = current_mench();
-                    $output_body_message = str_replace('@' . $string_references['ref_players'][0], '<span class="'.( $parents_media_shown > 0 ? superpower_active(10983) : '' ).'">'.( !in_array($ens[0]['en_status_play_id'], $this->config->item('en_ids_7357')) ? '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_play_id']]['m_icon'].'</span>' : '' ).( $ens[0]['en_icon'] ? '<span class="icon-block">'.$ens[0]['en_icon'].'</span>' : '' ).( $current_mench['x_name']=='read' ? '<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">' . $ens[0]['en_name']  . '</span>' : '<a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/play/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_players'][0], '<span class="'.( $parents_media_shown > 0 ? superpower_active(10983) : '' ).'">'.( !in_array($ens[0]['en_status_play_id'], $this->config->item('en_ids_7357')) ? '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_play_id']]['m_icon'].'</span>' : '' ).( $current_mench['x_name']=='read' ? '<span class="montserrat doupper">' . $ens[0]['en_name']  . '</span>' : '<a class="montserrat doupper" href="/play/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
 
                 }
 

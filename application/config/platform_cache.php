@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-30 10:20:58 PST
+//Generated 2020-01-30 12:24:52 PST
 
 //MENCH GLOSSARY:
 $config['en_ids_4463'] = array(3084,3000,4535,4485,4536,4430,4755,6205);
@@ -50,7 +50,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
         'm_name' => 'PLAYERS',
         'm_desc' => 'Those actively playing MENCH.',
-        'm_parents' => array(11035,4463,10573,4983,6827,4426),
+        'm_parents' => array(12437,11035,4463,10573,4983,6827,4426),
     ),
     4755 => array(
         'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
@@ -4265,7 +4265,7 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12210,12130,12355,11077,11074,12124,11076,11075,12176,12156,11071,11064,11065,11063,11079,11060,12363,11073,11066,11072,12232,11057,11056,12331,12113,12427,12088,11061,11162,11163,11986,12209,12208);
+$config['en_ids_6404'] = array(12210,12130,12355,11077,11074,12124,11076,11075,12176,12156,11071,11064,11986,11065,11063,11079,11060,12363,11073,11066,11072,12232,11057,11056,12331,12113,12427,12088,11061,11162,11163,12209,12208);
 $config['en_all_6404'] = array(
     12210 => array(
         'm_icon' => '',
@@ -4323,7 +4323,7 @@ $config['en_all_6404'] = array(
     ),
     12156 => array(
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA START',
+        'm_name' => 'IDEA NORTH STAR',
         'm_desc' => '7766',
         'm_parents' => array(6404),
     ),
@@ -4337,6 +4337,12 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'ITEMS PER PAGE',
         'm_desc' => '100',
+        'm_parents' => array(6404),
+    ),
+    11986 => array(
+        'm_icon' => '',
+        'm_name' => 'LEADERBOARD VISIBLE',
+        'm_desc' => '10',
         'm_parents' => array(6404),
     ),
     11065 => array(
@@ -4445,12 +4451,6 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'SUBSCRIPTION USD RATE YEARLY',
         'm_desc' => '50',
-        'm_parents' => array(6404),
-    ),
-    11986 => array(
-        'm_icon' => '',
-        'm_name' => 'TOP PLAYERS VISIBLE',
-        'm_desc' => '10',
         'm_parents' => array(6404),
     ),
     12209 => array(
@@ -4591,7 +4591,7 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(12214,12343,12201,12344,11068,7291,12205,12211,11999,6225,4430,12275,10957,6287,12339,6415,7256,4269,12358,7540);
+$config['en_ids_11035'] = array(12214,12343,12201,12344,11068,7291,12437,12205,12211,11999,6225,4430,12275,10957,6287,12339,6415,7256,4269,12358,7540);
 $config['en_all_11035'] = array(
     12214 => array(
         'm_icon' => '<i class="fad fa-plus idea" aria-hidden="true"></i>',
@@ -4629,6 +4629,12 @@ $config['en_all_11035'] = array(
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
+    12437 => array(
+        'm_icon' => '<i class="fad fa-trophy play"></i>',
+        'm_name' => 'MENCH LEADERBOARD',
+        'm_desc' => '',
+        'm_parents' => array(11035,11986),
+    ),
     12205 => array(
         'm_icon' => '<i class="fad fa-user-circle play" aria-hidden="true"></i>',
         'm_name' => 'MY PLAYER PROFILE',
@@ -4657,7 +4663,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
         'm_name' => 'PLAYERS',
         'm_desc' => '',
-        'm_parents' => array(11035,4463,10573,4983,6827,4426),
+        'm_parents' => array(12437,11035,4463,10573,4983,6827,4426),
     ),
     12275 => array(
         'm_icon' => '<i class="fas fa-cog play" aria-hidden="true"></i>',
@@ -6746,7 +6752,7 @@ $config['en_all_4983'] = array(
         'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
         'm_name' => 'PLAYERS',
         'm_desc' => '',
-        'm_parents' => array(11035,4463,10573,4983,6827,4426),
+        'm_parents' => array(12437,11035,4463,10573,4983,6827,4426),
     ),
 );
 
@@ -7527,7 +7533,7 @@ $config['en_all_6827'] = array(
         'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
         'm_name' => 'PLAYERS',
         'm_desc' => 'Users who are pursuing their intentions using Mench, mainly to get hired at their dream job',
-        'm_parents' => array(11035,4463,10573,4983,6827,4426),
+        'm_parents' => array(12437,11035,4463,10573,4983,6827,4426),
     ),
 );
 
@@ -8011,7 +8017,7 @@ $config['en_all_4426'] = array(
         'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
         'm_name' => 'PLAYERS',
         'm_desc' => '',
-        'm_parents' => array(11035,4463,10573,4983,6827,4426),
+        'm_parents' => array(12437,11035,4463,10573,4983,6827,4426),
     ),
     6196 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger play" aria-hidden="true"></i>',

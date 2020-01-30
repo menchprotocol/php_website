@@ -29,7 +29,7 @@ if($session_en) {
 
     echo '</div>';
 
-    echo '<h1 class="play pull-left inline-block"><span class="icon-block-xlg icon_photo icon_en_'.$session_en['en_id'].'">' . echo_en_icon($session_en['en_icon']) . '</span><span class="en_name_full_'.$session_en['en_id'].'">' . $session_en['en_name'] . '</span></h1>';
+    echo '<h2 class="play pull-left inline-block"><span class="icon-block icon_photo icon_en_'.$session_en['en_id'].'">' . echo_en_icon($session_en['en_icon']) . '</span><span class="en_name_full_'.$session_en['en_id'].'">' . $session_en['en_name'] . '</span></h2>';
 
     echo '<div class="doclear">&nbsp;</div>';
 
@@ -50,7 +50,7 @@ if($session_en) {
         echo '<div class="card">
     <div class="card-header" id="heading' . $acc_en_id . '">
     <button class="btn btn-block" type="button" data-toggle="collapse" data-target="#openEn' . $acc_en_id . '" aria-expanded="' . ($expand_by_default ? 'true' : 'false') . '" aria-controls="openEn' . $acc_en_id . '">
-      <span class="icon-block-lg">' . $acc_detail['m_icon'] . '</span><b class="montserrat play doupper ' . extract_icon_color($acc_detail['m_icon']) . '" style="padding-left:5px;">' . $acc_detail['m_name'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
+      <span class="icon-block">' . $acc_detail['m_icon'] . '</span><b class="montserrat play doupper ' . extract_icon_color($acc_detail['m_icon']) . '" style="padding-left:5px;">' . $acc_detail['m_name'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
     </button>
     </div>
     
@@ -144,7 +144,7 @@ echo echo_mench_stats();
 ?>
 
 <!-- Top Players -->
-<h1 class="montserrat play"><span class="icon-block-xlg icon_photo"><?= $en_all_11035[4430]['m_icon'] ?></span><?= $en_all_11035[4430]['m_name'] ?></h1>
+<h2 class="montserrat play"><span class="icon-block"><?= $en_all_11035[12437]['m_icon'] ?></span><?= $en_all_11035[12437]['m_name'] ?></h2>
     <div class="one-pix">
         <div id="load_top_players"></div>
     </div>

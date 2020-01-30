@@ -164,7 +164,7 @@ li a {
 }
 
 /* FONTS */
-.montserrat, .new-player-input, .algolia-autocomplete, .read-topic, .btn, .player-name {
+.montserrat, .new-player-input, .algolia-autocomplete, .read-topic, .btn {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     text-decoration: none;
@@ -173,7 +173,7 @@ li a {
     text-decoration: underline;
 }
 
-.doupper, .new-player-input, .player-name{
+.doupper, .new-player-input {
     text-transform: uppercase;
 }
 
@@ -687,10 +687,14 @@ textarea.note-textarea{
     padding: 0 !important;
 }
 
+
 td.MENCHcolumn1{ width: 58%; }
 td.MENCHcolumn2{ width: 21%; }
 td.MENCHcolumn3{ width: 21%; }
 
+.equal-columns td.MENCHcolumn1{ width: 33.3%; }
+.equal-columns td.MENCHcolumn2{ width: 33.3%; }
+.equal-columns td.MENCHcolumn3{ width: 33.3%; }
 
 .tablepadded td{
     padding:10px 0 !important;

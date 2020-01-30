@@ -31,7 +31,7 @@ echo '<div class="container" style="padding-bottom:42px;">';
 
 
 if(!$is_author){
-    echo '<div class="alert alert-warning no-margin"><i class="fas fa-exclamation-triangle read"></i> You are not an author of this idea, yet. <a href="/idea/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'"> or <a href="/idea/in_become_author/'.$in['in_id'].'" class="montserrat">BECOME AUTHOR</a></span></div>';
+    echo '<div class="alert alert-warning no-margin"><i class="fas fa-exclamation-triangle read"></i> You are not an author of this idea, yet. <a href="/idea/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/idea/in_become_author/'.$in['in_id'].'" class="montserrat">BECOME AUTHOR</a></span></div>';
 }
 
 $col_num = 0;
