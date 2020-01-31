@@ -1546,31 +1546,20 @@ class READ_model extends CI_Model
                     );
                 }
 
+
                 //Redirect to login page:
                 echo '<div class="inline-block margin-top-down read-add">'; //Open read-add
                 echo '<a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">GET STARTED <i class="fad fa-step-forward"></i></a>';
 
                 if($ins[0]['in_id']==config_var(12156)){
 
-                    $en_all_11035 = $this->config->item('en_all_11035');
-
                     //Give option to load stats:
-                    echo '<span class="mench-stats">&nbsp;&nbsp;or see <a href="javascript:void(0);" onclick="$(\'.mench-stats\').toggleClass(\'hidden\');" class="montserrat '.extract_icon_color($en_all_11035[12358]['m_icon']).'"><span class="icon-block">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</a></span>';
-
-                    echo '</div>'; //Close read-add
-
-
-                    //Show Stats:
-                    echo '<div class="equal-columns mench-stats hidden">';
-                    echo echo_mench_stats();
-                    echo '<div><a href="/play" class="montserrat '.extract_icon_color($en_all_11035[12437]['m_icon']).'"><span class="icon-block">'.$en_all_11035[12437]['m_icon'].'</span>'.$en_all_11035[12437]['m_name'].'</a></div>';
-                    echo '</div>';
-
-                } else {
-
-                    echo '</div>'; //Close read-add
+                    $en_all_11035 = $this->config->item('en_all_11035');
+                    echo '<span class="mench-stats">&nbsp;&nbsp;or see <a href="/play" class="montserrat '.extract_icon_color($en_all_11035[12358]['m_icon']).'"><span class="icon-block">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</a></span>';
 
                 }
+
+                echo '</div>'; //Close read-add
 
 
             }
