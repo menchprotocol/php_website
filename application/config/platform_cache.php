@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-01-30 21:00:32 PST
+//Generated 2020-01-30 21:01:11 PST
 
 //MENCH GLOSSARY:
 $config['en_ids_4463'] = array(3084,3000,4535,4485,4536,4430,4755,6205);
@@ -2847,7 +2847,7 @@ $config['en_all_11088'] = array(
 );
 
 //PLAY BODY:
-$config['en_ids_11089'] = array(12273,10573,12419,4231,4601,7347,6255,6146,11029,7545,4997,11039);
+$config['en_ids_11089'] = array(12273,10573,12419,4231,4601,6255,7347,6146,11029,7545,4997,11039);
 $config['en_all_11089'] = array(
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -2879,17 +2879,17 @@ $config['en_all_11089'] = array(
         'm_desc' => '',
         'm_parents' => array(10939,11089,12365,4535,12322,4986,10593,4593,4485),
     ),
-    7347 => array(
-        'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ START',
-        'm_desc' => '',
-        'm_parents' => array(10964,11089,12365,6205,12228,4527),
-    ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ COIN',
         'm_desc' => '',
         'm_parents' => array(11089,10939,12410,12365,6771,12358,12228,4527),
+    ),
+    7347 => array(
+        'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ START',
+        'm_desc' => '',
+        'm_parents' => array(10964,11089,12365,6205,12228,4527),
     ),
     6146 => array(
         'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
