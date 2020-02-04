@@ -2248,12 +2248,12 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         'ln_child_idea_id' => $in['in_id'],
         'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-    ), array(), 0, 0, array(), 'COUNT(in_id) as total_ideas');
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ideas');
     $next_ideas = $CI->READ_model->ln_fetch(array(
         'ln_parent_idea_id' => $in['in_id'],
         'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-    ), array(), 0, 0, array(), 'COUNT(in_id) as total_ideas');
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ideas');
 
 
     $ui .= '<div class="inline-block '.superpower_active(10964).'">';
