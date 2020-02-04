@@ -1451,53 +1451,82 @@ function echo_in_idea($in)
     //See if user is logged-in:
     $CI =& get_instance();
     $en_all_4737 = $CI->config->item('en_all_4737'); // Idea Statuses
+    $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
 
     $ui = '<a href="/idea/'.$in['in_id'] . '" class="list-group-item itemidea no-side-padding">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-
-    $ui .= '<td class="MENCHcolumn1 idea">';
+    $ui .= '<td class="MENCHcolumn1">';
         //Image on RIGHT:
         $ui .= '<div class="inline-block pull-right">'.echo_in_thumbnail($in['in_id']).'</div>';
         $ui .= '<div class="inline-block pull-left">';
+
+
+            $ui .= '<span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>';
+
+            $ui .= '<span class="icon-block '.( in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ).'">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].'</span>';
+
             $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false).'</b>';
 
 
-            $echo_in_stats = echo_in_stats($in['in_id']);
-            if($echo_in_stats){
-                $ui .= '<div style="padding: 10px 0 2px; margin-left: -8px;">'.$echo_in_stats.'</div>';
-            }
-
-
             //Footnote
-            $ui .= '<div class="montserrat idea-info doupper">';
-
-            //Now do measurements:
             $metadata = unserialize($in['in_metadata']);
             if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0 && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-                $ui .= echo_time_range($in, true).' READ ';
+                $ui .= '<div class="montserrat idea-info doupper '.superpower_active(10964).'">'.echo_time_range($in, true).' READ</div>';
             }
 
-            $ui .= '<span class="icon-block" data-toggle="tooltip" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'" data-placement="top">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].'</span>';
-
-            $ui .= '</div>'; //End Footnote
         $ui .= '</div>';
     $ui .= '</td>';
+
+
+
 
 
     //READ
     $ui .= '<td class="MENCHcolumn2 read">';
 
+    if(superpower_active(10964, true)){
+
+        $read_coins = $this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
+            'ln_parent_idea_id' => $in['in_id'],
+        ), array(), 1, 0, array(), 'COUNT(ln_id) as total_coins');
+
+        if($read_coins[0]['total_coins'] > 0){
+            $ui .= '<span class="icon-block '.superpower_active(10964).'">'.$en_all_2738[4536]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']);
+        }
+
+    }
+
     $ui .= '</td>';
+
+
+
 
 
     //PLAY
     $ui .= '<td class="MENCHcolumn3 play">';
 
+    if(superpower_active(10984, true)){
+        //Authors:
+        $play_coins = $this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id' => 4983,
+            'ln_child_idea_id' => $in['in_id'],
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+        if($play_coins[0]['total_coins'] > 0){
+            $ui .= '<span class="icon-block '.superpower_active(10984).'">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($play_coins[0]['total_coins']);
+        }
+    }
 
     $ui .= '</td>';
+
+
+
+
 
 
     $ui .= '</tr></table>';
@@ -2103,7 +2132,7 @@ function echo_in_stats($in_id){
 
             $item_counters = $CI->READ_model->ln_fetch($filters, array(), 1, 0, array(), 'COUNT(ln_id) as totals');
             if($item_counters[0]['totals']>0){
-                $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block icon_photo">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
+                $stats_ui .= '<span class="montserrat '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="'.number_format($item_counters[0]['totals'], 0).' '.$m['m_name'].'"><span class="icon-block">'.$m['m_icon'].'</span>'.echo_number($item_counters[0]['totals']).'</span>';
             }
         }
     }
@@ -2112,7 +2141,7 @@ function echo_in_stats($in_id){
     //Show if any stats found:
     $ui = null;
     if(strlen($stats_ui)){
-        $ui .= '<span class="inline-block read-stat-box">';
+        $ui .= '<span class="inline-block">';
         $ui .= $stats_ui;
         $ui .= '</span>';
     }
@@ -2132,12 +2161,13 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_4486 = $CI->config->item('en_all_4486');
     $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
+    $en_all_12413 = $CI->config->item('en_all_12413');
 
     //Prep link metadata to be analyzed later:
     $ln_id = $in['ln_id'];
     $ln_metadata = unserialize($in['ln_metadata']);
     $in_metadata = unserialize($in['in_metadata']);
-
+    $is_author = ($is_author || superpower_active(10985, true));
 
     $session_en = superpower_assigned();
     $is_published = in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355'));
@@ -2211,18 +2241,32 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= echo_in_stats($in['in_id']);
 
 
-    //IDEA PARENTS
-    $ui .= '<div class="inline-block '.superpower_active(10964).'">';
-    foreach ($CI->READ_model->ln_fetch(array(
-        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
-        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+
+
+    //PREVIOUS & NEXT IDEAS
+    $previous_ideas = $CI->READ_model->ln_fetch(array(
         'ln_child_idea_id' => $in['in_id'],
-        'ln_parent_idea_id !=' => $in_linked_id,
-    ), array('in_parent')) as $in_parent){
-        $ui .= '<a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_title']) . '" data-placement="bottom" class="icon-block in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_2738[4535]['m_icon'] . '</a> &nbsp;';
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+    ), array(), 0, 0, array(), 'COUNT(in_id) as total_ideas');
+    $next_ideas = $CI->READ_model->ln_fetch(array(
+        'ln_parent_idea_id' => $in['in_id'],
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+    ), array(), 0, 0, array(), 'COUNT(in_id) as total_ideas');
+
+
+    $ui .= '<div class="inline-block '.superpower_active(10964).'">';
+    if($previous_ideas[0]['total_ideas'] > 1){
+        $ui .= '<span data-toggle="tooltip" data-placement="right" title="' . $en_all_12413[11019]['m_name'] . '"><span class="icon-block">' . $en_all_12413[11019]['m_icon'] . '</span>'.$previous_ideas[0]['total_ideas'].'</span> &nbsp;';
+    }
+    if($next_ideas[0]['total_ideas'] > 0){
+        $ui .= '<span data-toggle="tooltip" data-placement="right" title="' . $en_all_12413[11020]['m_name'] . '"><span class="icon-block">' . $en_all_12413[11020]['m_icon'] . '</span>'.$next_ideas[0]['total_ideas'].'</span> &nbsp;';
     }
     $ui .= '</div>';
+
+
+
 
     $ui .= '</div>';
 
@@ -2274,7 +2318,7 @@ function echo_caret($en_id, $m, $url_append){
     $ui .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
     $ui .= '<div class="dropdown-menu">';
     foreach ($CI->config->item('en_all_'.$en_id) as $en_id2 => $m2){
-        $ui .= '<a class="dropdown-item" target="_blank" href="' . $m2['m_desc'] . $url_append . '"><span class="icon-block icon_photo">'.$m2['m_icon'].'</span> '.$m2['m_name'].'</a>';
+        $ui .= '<a class="dropdown-item" target="_blank" href="' . $m2['m_desc'] . $url_append . '"><span class="icon-block">'.$m2['m_icon'].'</span> '.$m2['m_name'].'</a>';
     }
     $ui .= '</div>';
     $ui .= '</li>';
@@ -2528,13 +2572,13 @@ function echo_mench_stats(){
     ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
     $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
-    $ui .= '<h2 class="montserrat '.extract_icon_color($en_all_11035[12358]['m_icon']).'"><span class="icon-block-xlg icon_photo">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</h2>';
+    $ui .= '<h2 class="montserrat '.extract_icon_color($en_all_11035[12358]['m_icon']).'"><span class="icon-block-xl">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</h2>';
 
     $ui .= '<table class="table table-sm table-striped dotransparent tablepadded" style="margin-bottom:50px;">';
     $ui .= '<tr>';
-    $ui .= '<td class="play MENCHcolumn1"><span class="play"><span class="parent-icon icon-block">' . $en_all_2738[4536]['m_icon'] . '</span><span class="montserrat" title="'.number_format($play_coins[0]['total_coins'], 0).'">'.echo_number($play_coins[0]['total_coins']).'</span></span></td>';
-    $ui .= '<td class="idea MENCHcolumn2"><span class="idea"><span class="parent-icon icon-block">' . $en_all_2738[4535]['m_icon'] . '</span><span class="montserrat" title="'.number_format($idea_coins[0]['total_coins'], 0).'">'.echo_number($idea_coins[0]['total_coins']).'</span></span></td>';
-    $ui .= '<td class="read MENCHcolumn3"><span class="read"><span class="parent-icon icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="montserrat" title="'.number_format($read_coins[0]['total_coins'], 0).'">'.echo_number($read_coins[0]['total_coins']).'</span></span></td>';
+    $ui .= '<td class="play MENCHcolumn1"><span class="play"><span class="icon-block">' . $en_all_2738[4536]['m_icon'] . '</span><span class="montserrat" title="'.number_format($play_coins[0]['total_coins'], 0).'">'.echo_number($play_coins[0]['total_coins']).'</span></span></td>';
+    $ui .= '<td class="idea MENCHcolumn2"><span class="idea"><span class="icon-block">' . $en_all_2738[4535]['m_icon'] . '</span><span class="montserrat" title="'.number_format($idea_coins[0]['total_coins'], 0).'">'.echo_number($idea_coins[0]['total_coins']).'</span></span></td>';
+    $ui .= '<td class="read MENCHcolumn3"><span class="read"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="montserrat" title="'.number_format($read_coins[0]['total_coins'], 0).'">'.echo_number($read_coins[0]['total_coins']).'</span></span></td>';
     $ui .= '</tr>';
     $ui .= '<tr>';
     $ui .= '<td class="play MENCHcolumn1"><span class="montserrat" style="padding-left: 8px;">PLAYERS</span></td>';
@@ -2601,7 +2645,7 @@ function echo_en($en, $is_parent = false)
 
 
     //PLAYER ICON
-    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' icon_photo en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
+    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
 
 
     //PLAYER STATUS
@@ -2659,7 +2703,7 @@ function echo_en($en, $is_parent = false)
                 'ln_owner_play_id' => $en['en_id'], //Only owner matters in read groups
             ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
             if ($item_counters[0]['totals'] > 0) {
-                $stats_ui .= '<span class="montserrat ' . extract_icon_color($m['m_icon']) . (count($superpower_actives) ? superpower_active(end($superpower_actives)) : '') . '" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="' . number_format($item_counters[0]['totals'], 0) . ' ' . $m['m_name'] . '"><span class="icon-block icon_photo">' . $m['m_icon'] . '</span>' . echo_number($item_counters[0]['totals']) . '</span>';
+                $stats_ui .= '<span class="montserrat ' . extract_icon_color($m['m_icon']) . (count($superpower_actives) ? superpower_active(end($superpower_actives)) : '') . '" style="padding-right: 5px;" data-toggle="tooltip" data-placement="top" title="' . number_format($item_counters[0]['totals'], 0) . ' ' . $m['m_name'] . '"><span class="icon-block">' . $m['m_icon'] . '</span>' . echo_number($item_counters[0]['totals']) . '</span>';
             }
         }
     }
@@ -2711,7 +2755,7 @@ function echo_en($en, $is_parent = false)
     //PARENT ICONS
     $ui .= '<div class="inline-block '. superpower_active(10964) .'">';
     foreach ($en__parents as $en_parent) {
-        $ui .= ' <span class="icon_photo en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span>';
+        $ui .= ' <span class="icon-block en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span>';
     }
     $ui .= ' </div>';
 
@@ -2748,8 +2792,10 @@ function echo_en($en, $is_parent = false)
 
 
 function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tabindex = 0, $is_idea_title_lg = false){
+
     $CI =& get_instance();
     $en_all_12112 = $CI->config->item('en_all_12112');
+    $is_author = ($is_author || superpower_active(10985, true));
 
     //Define element attributes:
     $attributes = ( $is_author ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' in_ln__id_'.$in_ln__id.' texttype_'.$cache_en_id.($is_idea_title_lg?'_lg':'_sm').'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" ';
@@ -2795,6 +2841,7 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
     $en_all_12079 = $CI->config->item('en_all_12079');
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_this = $CI->config->item('en_all_'.$cache_en_id);
+    $is_author = ($is_author || superpower_active(10985, true));
 
     //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
     $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'_'.$in_id.'_'.$ln_id.' '.( !$show_full_name ? ' icon-block ' : '' ).'">';
@@ -2809,20 +2856,6 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
 
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
         $requires_sign = in_array($en_id, $CI->config->item('en_ids_4269'));
-
-        if($cache_en_id==7585){
-
-            //TODO further integrate as this is kind of a hack. Its logic dependency on the play tree can grow...
-
-            $en_all_10602 = $CI->config->item('en_all_10602');
-
-            if($en_id==6677){
-                $ui .= '<h6 class="dropdown-header"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_10602[6192]['m_desc'].'" style="border-bottom:1px dotted #AAAAAA;">'.$en_all_10602[6192]['m_name'].'</span></h6>';
-            } elseif($en_id==6684){
-                $ui .= '<h6 class="dropdown-header"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_10602[6193]['m_desc'].'" style="border-bottom:1px dotted #AAAAAA;">'.$en_all_10602[6193]['m_name'].'</span></h6>';
-            }
-        }
-
         $is_url_desc = ( substr($m['m_desc'], 0, 1)=='/' );
 
         $ui .= '<a class="dropdown-item dropi_'.$cache_en_id.'_'.$in_id.'_'.$ln_id.' montserrat optiond_'.$en_id.'_'.$in_id.'_'.$ln_id.' doupper '.( $en_id==$selected_en_id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).( $requires_sign && !superpower_assigned() ? ' hidden ' : '' ).'" '.( $is_url_desc ? ( $en_id==$selected_en_id ? 'href="javascript:void();"' : 'href="'.$m['m_desc'].'"' ) : 'href="javascript:void();" new-en-id="'.$en_id.'" onclick="in_update_dropdown('.$cache_en_id.', '.$en_id.', '.$in_id.', '.$ln_id.', '.intval($show_full_name).')"' ).'><span '.( strlen($m['m_desc']) && !$is_url_desc ? 'title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right"' : '' ).'><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</span></a>';

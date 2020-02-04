@@ -88,22 +88,14 @@ class Read extends CI_Controller
 
     function read_in_history($tab_group_id, $note_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
 
-        $session_en = superpower_assigned(10939);
-        if (!$session_en) {
-
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
-            ));
-
-        } elseif (!$note_in_id && !$owner_en_id) {
+        if (!$note_in_id && !$owner_en_id) {
 
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Require either Idea or Play ID',
             ));
 
-        } elseif (!in_array($tab_group_id, $this->config->item('en_ids_12410')) || !count($this->config->item('en_ids_'.$tab_group_id))) {
+        } elseif (!in_array($tab_group_id, $this->config->item('en_ids_12410') /* IDEA & READ COIN */) || !count($this->config->item('en_ids_'.$tab_group_id))) {
 
             return echo_json(array(
                 'status' => 0,
@@ -112,28 +104,42 @@ class Read extends CI_Controller
 
         }
 
-        $list_filters = array(
+        $match_columns = array(
             'ln_id >' => $last_loaded_ln_id,
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$tab_group_id)) . ')' => null,
         );
 
         if($note_in_id > 0){
-            $list_filters['ln_parent_idea_id'] = $note_in_id;
+
+            $match_columns['ln_parent_idea_id'] = $note_in_id;
             $list_url = '/idea/'.$note_in_id;
             $list_class = 'itemidea';
             $join_objects = array('en_owner');
+
         } elseif($owner_en_id > 0){
-            $list_filters['ln_owner_play_id'] = $owner_en_id;
-            $list_url = '/play/'.$owner_en_id;
-            $list_class = 'itemplay';
-            $join_objects = array('in_parent');
+
+            if($tab_group_id == 12273 /* IDEA COIN */){
+
+                $list_class = 'itemread';
+                $join_objects = array('in_child');
+                $match_columns['ln_parent_play_id'] = $owner_en_id;
+
+            } elseif($tab_group_id == 6255 /* READ COIN */){
+
+                $list_class = 'itemplay';
+                $list_url = '/play/'.$owner_en_id;
+                $join_objects = array('in_parent');
+                $match_columns['ln_owner_play_id'] = $owner_en_id;
+
+            }
+
         }
 
 
         //List Read History:
         $ui = '<div class="list-group dynamic-reads">';
-        foreach($this->READ_model->ln_fetch($list_filters, $join_objects, config_var(11064), 0, array('ln_id' => 'DESC')) as $in_read){
+        foreach($this->READ_model->ln_fetch($match_columns, $join_objects, config_var(11064), 0, array('ln_id' => 'DESC')) as $in_read){
             if($note_in_id > 0){
 
                 $ui .= echo_en($in_read);

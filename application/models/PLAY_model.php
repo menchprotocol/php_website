@@ -1311,12 +1311,14 @@ class PLAY_model extends CI_Model
             'ln_child_play_id' => $added_en['en']['en_id'],
         ));
 
+        /*
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 4230, //Raw link
             'ln_parent_play_id' => 11010, //FREE ACCOUNT
             'ln_owner_play_id' => $added_en['en']['en_id'],
             'ln_child_play_id' => $added_en['en']['en_id'],
         ));
+        */
 
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 4230, //Raw link

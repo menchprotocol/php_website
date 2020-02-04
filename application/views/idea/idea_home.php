@@ -37,7 +37,7 @@
         echo '</div>';
 
         //LEFT
-        echo '<h1 class="pull-left inline-block idea"><span class="icon-block-xlg">' . $en_all_2738[4535]['m_icon'] . '</span>'.$en_all_2738[4535]['m_name'].'</h1>';
+        echo '<h1 class="pull-left inline-block idea"><span class="icon-block-xl">' . $en_all_2738[4535]['m_icon'] . '</span>'.$en_all_2738[4535]['m_name'].'</h1>';
 
         echo '<div class="doclear">&nbsp;</div>';
 
@@ -71,7 +71,7 @@
         //Add Idea Title:
         echo '<div class="add-idea-toggle hidden">';
 
-        echo '<h1 class="idea"><span class="icon-block-xlg">' . $en_all_11035[12214]['m_icon'] . '</span>'.$en_all_11035[12214]['m_name'].'</h1>';
+        echo '<h1 class="idea"><span class="icon-block-xl">' . $en_all_11035[12214]['m_icon'] . '</span>'.$en_all_11035[12214]['m_name'].'</h1>';
 
         if(superpower_assigned(10939)) {
 

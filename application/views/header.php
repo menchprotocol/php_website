@@ -143,13 +143,13 @@ if(!isset($hide_header)){
                             if($en_id==4536){
 
                                 //PLAY
-                                echo '<span class="parent-icon icon-block">'.$session_en['en_icon'].'</span>';
+                                echo '<span class="icon-block">'.$session_en['en_icon'].'</span>';
                                 echo '<span class="montserrat play en_name_first_'.$session_en['en_id'].'">'.one_two_explode('', ' ', $session_en['en_name']).'</span>';
 
                             } else {
 
                                 //READ IDEA
-                                echo '<span class="parent-icon icon-block">'.$m['m_icon'].'</span>';
+                                echo '<span class="icon-block">'.$m['m_icon'].'</span>';
                                 echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span> ';
                                 if($is_current){
                                     echo '<span class="montserrat '.$mench_coin.'_name">' . $m['m_name'] . 'S</span>';

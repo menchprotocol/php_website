@@ -52,7 +52,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     //LEFT
-    echo '<h1 class="'.extract_icon_color($player['en_icon']).' pull-left inline-block"><span class="icon-block-xlg icon_photo en_ui_icon_'.$player['en_id'].'">'.echo_en_icon($player['en_icon']).'</span><span class="icon-block-xlg en_status_play_id_' . $player['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$player['en_status_play_id']]['m_name'].': '.$en_all_6177[$player['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$player['en_status_play_id']]['m_icon'] . '</span></span><span class="en_name_'.$player['en_id'].'">'.$player['en_name'].'</span></h1>';
+    echo '<h1 class="'.extract_icon_color($player['en_icon']).' pull-left inline-block"><span class="icon-block-xl en_ui_icon_'.$player['en_id'].'">'.echo_en_icon($player['en_icon']).'</span><span class="icon-block-xl en_status_play_id_' . $player['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$player['en_status_play_id']]['m_name'].': '.$en_all_6177[$player['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$player['en_status_play_id']]['m_icon'] . '</span></span><span class="en_name_'.$player['en_id'].'">'.$player['en_name'].'</span></h1>';
 
 
     echo '<div class="doclear">&nbsp;</div>';
@@ -127,7 +127,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                                 <input type="text" id="en_icon" value=""
                                        maxlength="<?= config_var(11072) ?>" data-lpignore="true" placeholder=""
                                        class="form-control">
-                                <span class="input-group-addon addon-lean addon-grey icon-demo" style="color:#000000; font-weight: 300; padding-left:7px !important; padding-right:6px !important;"></span>
+                                <span class="input-group-addon addon-lean addon-grey icon-demo icon-block"></span>
                             </div>
                         </div>
 
@@ -299,8 +299,12 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
                 $counter = $child_links[0]['totals'];
 
-                $default_active = ( !in_array(4983, $activated_tabs) && $counter>0 );
+                //Active if count exists and not already activated.
+                $default_active = ( $counter>0 && !count(array_intersect($activated_tabs, $this->config->item('en_ids_12440'))) );
 
+                if($default_active){
+                    array_push($activated_tabs, $en_id2);
+                }
 
                 $play__children = $this->READ_model->ln_fetch(array(
                     'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
@@ -383,16 +387,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 //COUNT ONLY
                 $item_counters = $this->READ_model->ln_fetch($idea_note_filters, array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
                 $counter = $item_counters[0]['totals'];
-                $default_active = ($en_id2==4983 && ($counter>0 || !count($this->READ_model->ln_fetch(array(
-                            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                            'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
-                            'ln_parent_play_id' => $player['en_id'],
-                        ), array('en_child'), 1))));
 
-                if($default_active){
-                    array_push($activated_tabs, $en_id2);
-                }
 
                 //SHOW LASTEST 100
                 if($counter>0){
@@ -428,6 +423,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             } elseif(in_array($en_id2, $this->config->item('en_ids_12410'))){
 
                 $join_objects = array();
+                $order_columns = array();
                 $match_columns = array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
@@ -436,13 +432,28 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 if($en_id2 == 12273){
                     $join_objects = array('in_child');
+                    $order_columns = array(
+                        'in_status_play_id' => 'DESC',
+                        'in_title' => 'ASC'
+                    );
                     $match_columns['in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Idea Statuses Public
                 }
 
                 //READER READS & BOOKMARKS
-                $item_counters = $this->READ_model->ln_fetch($match_columns, $join_objects, 1, 0, array(), 'COUNT(ln_id) as totals');
+                $item_counters = $this->READ_model->ln_fetch($match_columns, $join_objects, 1, 0, $order_columns, 'COUNT(ln_id) as totals');
 
                 $counter = $item_counters[0]['totals'];
+
+                $default_active = ( in_array($en_id2, $this->config->item('en_ids_12440')) && ($counter>0 || !count($this->READ_model->ln_fetch(array(
+                            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                            'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                            'ln_parent_play_id' => $player['en_id'],
+                        ), array('en_child'), 1))));
+
+                if($default_active){
+                    array_push($activated_tabs, $en_id2);
+                }
 
                 if($counter > 0){
 

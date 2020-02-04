@@ -727,7 +727,7 @@ class Idea extends CI_Controller {
             $item_ui = '<tr>';
             $item_ui .= '<td valign="top">'.$current_count.'</td>';
             $item_ui .= '<td style="text-align:left;">';
-            $item_ui .= '<span class="icon-block icon_photo">'.echo_en_icon($apu['en_icon']).'</span> '.$apu['en_name'];
+            $item_ui .= '<span class="icon-block">'.echo_en_icon($apu['en_icon']).'</span> '.$apu['en_name'];
             $item_ui .= ( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->READ_model->dispatch_message($apu['ln_content']).'</div>' : '' );
             $item_ui .= '</td>';
 

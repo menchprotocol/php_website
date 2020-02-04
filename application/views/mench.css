@@ -1098,27 +1098,31 @@ label {
 .inline-block{ display: inline-block !important; }
 .inline{ display: inline !important; }
 .hidden { display: none !important; }
-.icon-block-xs{ min-width:24px; display: inline-block; text-align: center; }
-.icon-block-sm{ min-width:28px; display: inline-block; text-align: center; }
-.icon-block { width:32px !important; display: inline-block; text-align: center; }
-.icon-block-lg{ min-width:50px; display: inline-block; text-align: center; }
-.icon-block-xlg{ min-width:32px; display: inline-block; text-align: center; }
-.icon-block-sm img,
-.icon-block img,
-.icon_photo img,
-.icon-demo img{
-    width: 24px !important;
-    margin: -13px 0 -8px -2px !important;
-    height: 24px !important;
-    border-radius: 50%;
+#mench_search{
+    background-color: #FFFFFF !important;
 }
 
-.icon-block-lg img {
-    width: 38px !important;
+.icon-block { width:32px !important; display: inline-block; text-align: center; }
+.icon-block-xs{ width:24px; display: inline-block; text-align: center; }
+.icon-block-sm{ width:28px; display: inline-block; text-align: center; }
+.icon-block-lg{ width:50px; display: inline-block; text-align: center; }
+.icon-block-xl{ width:32px; display: inline-block; text-align: center; }
+
+.icon-block-xl img,
+.icon-block-lg img,
+.icon-block-sm img,
+.icon-block-xs img,
+.icon-block img{
+    width: 24px !important;
+    height: 24px !important;
     margin: -13px 0 -8px -2px !important;
-    height: 38px !important;
     border-radius: 50%;
 }
+.icon-block-lg img {
+    width: 38px !important;
+    height: 38px !important;
+}
+
 
 
 .idea-left {

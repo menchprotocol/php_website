@@ -29,7 +29,7 @@ if($session_en) {
 
     echo '</div>';
 
-    echo '<h2 class="play pull-left inline-block"><span class="icon-block icon_photo icon_en_'.$session_en['en_id'].'">' . echo_en_icon($session_en['en_icon']) . '</span><span class="en_name_full_'.$session_en['en_id'].'">' . $session_en['en_name'] . '</span></h2>';
+    echo '<h2 class="play pull-left inline-block"><span class="icon-block icon_en_'.$session_en['en_id'].'">' . echo_en_icon($session_en['en_icon']) . '</span><span class="en_name_full_'.$session_en['en_id'].'">' . $session_en['en_name'] . '</span></h2>';
 
     echo '<div class="doclear">&nbsp;</div>';
 
@@ -131,10 +131,6 @@ if($session_en) {
 
     echo '</div>'; //End of accordion
 
-} else {
-
-    echo '<div style="padding:10px 0 20px;"><a href="/sign?url=/play" class="btn btn-play montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start playing.</div>';
-
 
 }
 
@@ -149,3 +145,10 @@ echo echo_mench_stats();
         <div id="load_leaderboard"></div>
     </div>
 </div>
+
+
+<?php
+if(!$session_en){
+    echo '<div style="padding:10px 0 20px;"><a href="/sign?url=/play" class="btn btn-play montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start playing.</div>';
+}
+?>

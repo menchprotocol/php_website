@@ -701,7 +701,7 @@ function in_note_create_upload(droppedFiles, uploadType, focus_ln_type_play_id) 
                 in_message_form_unlock(data, focus_ln_type_play_id);
 
                 //Adjust icon again:
-                $('.file_label_' + focus_ln_type_play_id).html('<span class="icon-block icon_photo"><i class="far fa-paperclip"></i></span>');
+                $('.file_label_' + focus_ln_type_play_id).html('<span class="icon-block"><i class="far fa-paperclip"></i></span>');
 
             },
             error: function (data) {
