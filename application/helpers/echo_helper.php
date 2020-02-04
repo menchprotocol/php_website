@@ -2258,10 +2258,10 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     $ui .= '<div class="inline-block '.superpower_active(10964).'">';
     if($previous_ideas[0]['total_ideas'] > 1){
-        $ui .= '<span class="montserrat idea" data-toggle="tooltip" data-placement="right" title="' . $en_all_12413[11019]['m_name'] . '"><span class="icon-block-sm">' . $en_all_12413[11019]['m_icon'] . '</span>'.$previous_ideas[0]['total_ideas'].'</span> &nbsp;';
+        $ui .= '<span class="montserrat idea" data-toggle="tooltip" data-placement="right" title="' . $en_all_12413[11019]['m_name'] . '"><span class="icon-block">' . $en_all_12413[11019]['m_icon'] . '</span>'.$previous_ideas[0]['total_ideas'].'</span>';
     }
     if($next_ideas[0]['total_ideas'] > 0){
-        $ui .= '<span class="montserrat idea" data-toggle="tooltip" data-placement="right" title="' . $en_all_12413[11020]['m_name'] . '"><span class="icon-block-sm">' . $en_all_12413[11020]['m_icon'] . '</span>'.$next_ideas[0]['total_ideas'].'</span> &nbsp;';
+        $ui .= '<span class="montserrat idea" data-toggle="tooltip" data-placement="right" title="' . $en_all_12413[11020]['m_name'] . '"><span class="icon-block">' . $en_all_12413[11020]['m_icon'] . '</span>'.$next_ideas[0]['total_ideas'].'</span>';
     }
     $ui .= '</div>';
 
