@@ -423,7 +423,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             } elseif(in_array($en_id2, $this->config->item('en_ids_12410'))){
 
                 $join_objects = array();
-                $order_columns = array();
                 $match_columns = array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
@@ -431,16 +430,12 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 );
 
                 if($en_id2 == 12273){
-                    $join_objects = array('in_child');
-                    $order_columns = array(
-                        'in_status_play_id' => 'DESC',
-                        'in_title' => 'ASC'
-                    );
                     $match_columns['in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Idea Statuses Public
+                    $join_objects = array('in_child');
                 }
 
                 //READER READS & BOOKMARKS
-                $item_counters = $this->READ_model->ln_fetch($match_columns, $join_objects, 1, 0, $order_columns, 'COUNT(ln_id) as totals');
+                $item_counters = $this->READ_model->ln_fetch($match_columns, $join_objects, 1, 0, array(), 'COUNT(ln_id) as totals');
 
                 $counter = $item_counters[0]['totals'];
 

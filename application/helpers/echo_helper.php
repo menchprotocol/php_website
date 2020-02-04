@@ -1489,9 +1489,9 @@ function echo_in_idea($in)
 
     if(superpower_active(10964, true)){
 
-        $read_coins = $this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null,
+        $read_coins = $CI->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
             'ln_parent_idea_id' => $in['in_id'],
         ), array(), 1, 0, array(), 'COUNT(ln_id) as total_coins');
 
@@ -1512,8 +1512,8 @@ function echo_in_idea($in)
 
     if(superpower_active(10984, true)){
         //Authors:
-        $play_coins = $this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        $play_coins = $CI->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => 4983,
             'ln_child_idea_id' => $in['in_id'],
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
