@@ -2218,6 +2218,13 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
+
+    //Stats:
+    $ui .= echo_in_stat_read($in['in_id']);
+    $ui .= echo_in_stat_play($in['in_id']);
+
+
+
     //PREVIOUS & NEXT IDEAS
     $previous_ideas = $CI->READ_model->ln_fetch(array(
         'ln_child_idea_id' => $in['in_id'],
@@ -2240,9 +2247,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '</div>';
 
 
-    //Stats:
-    $ui .= echo_in_stat_read($in['in_id']);
-    $ui .= echo_in_stat_play($in['in_id']);
+
 
     $ui .= '</div>'; //End stats row
 
