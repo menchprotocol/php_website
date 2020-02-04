@@ -2184,11 +2184,8 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     //SECOND STATS ROW
     $ui .= '<div class="doclear">&nbsp;</div>';
-    $ui .= '<table class="table table-sm ' . superpower_active(10984) . '" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-    $ui .= '<td class="MENCHcolumn1">';
-
-    $ui .= '<span class="icon-block">&nbsp;</span>';
+    $ui .= '<div class="' . superpower_active(10984) . '">';
 
     //IDEA TYPE
     $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['in_id']);
@@ -2242,25 +2239,13 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     }
     $ui .= '</div>';
 
-    $ui .= '</td>';
 
-
-
-
-    //READ
-    $ui .= '<td class="MENCHcolumn2 read">';
+    //Stats:
     $ui .= echo_in_stat_read($in['in_id']);
-    $ui .= '</td>';
-
-
-
-    //PLAY
-    $ui .= '<td class="MENCHcolumn3 play">';
     $ui .= echo_in_stat_play($in['in_id']);
-    $ui .= '</td>';
 
+    $ui .= '</div>'; //End stats row
 
-    $ui .= '</tr></table>';
 
 
     $ui .= '</div>';
