@@ -2134,7 +2134,30 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_play_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item itemidea ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' idea_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
 
 
-    //Left content wrapper:
+
+    //RIGHT EDITING:
+    $ui .= '<div class="pull-right inline-block">';
+    $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'">';
+    $ui .= '<span class="show-on-hover">';
+    if($is_author || !$is_parent){
+
+        //Unlink:
+        $ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink" style="font-size: 0.8em;"></i></a></span>';
+
+    } elseif(!$is_author) {
+
+        //Indicate if NOT an author:
+        $ui .= '<span data-toggle="tooltip" title="You are not yet an author of this idea" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
+
+    }
+    $ui .= '</span>';
+    $ui .= '</div>';
+    $ui .= '</div>';
+
+
+
+
+    //LEFT TITLE
     $ui .= '<div class="idea-left">';
 
     //IDEA ICON:
@@ -2158,10 +2181,12 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-    //Should we give more publishing tools here?
-    $ui .= '<div class="inline-block' . superpower_active(10984) . '">';
 
+    //SECOND STATS ROW
     $ui .= '<div class="doclear">&nbsp;</div>';
+    $ui .= '<table class="table table-sm ' . superpower_active(10984) . '" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
+
+    $ui .= '<td class="MENCHcolumn1">';
 
     $ui .= '<span class="icon-block">&nbsp;</span>';
 
@@ -2171,32 +2196,28 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     //LINK TYPE & SETTING
     $ui .= '<div class="inline-block ' . superpower_active(10985) . '">';
 
-        //IDEA READ TIME
-        $ui .= echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
+    //IDEA READ TIME
+    $ui .= echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
 
-        //LINK TYPE
-        $ui .= echo_in_dropdown(4486, $in['ln_type_play_id'], null, $is_author, false, $in['in_id'], $in['ln_id']);
+    //LINK TYPE
+    $ui .= echo_in_dropdown(4486, $in['ln_type_play_id'], null, $is_author, false, $in['in_id'], $in['ln_id']);
 
-        //LINK MARKS
-        $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_play_id']==4228 ? : 'hidden' ).'">';
-        $ui .= echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+2 );
-        $ui .='</span>';
+    //LINK MARKS
+    $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_play_id']==4228 ? : 'hidden' ).'">';
+    $ui .= echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+2 );
+    $ui .='</span>';
 
 
-        //LINK CONDIITONAL RANGE
-        $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_play_id']==4229 ? : 'hidden' ).'">';
-        //MIN
-        $ui .= echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+3);
-        //MAX
-        $ui .= echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+4);
-        $ui .= '</span>';
+    //LINK CONDIITONAL RANGE
+    $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_play_id']==4229 ? : 'hidden' ).'">';
+    //MIN
+    $ui .= echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+3);
+    //MAX
+    $ui .= echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+4);
+    $ui .= '</span>';
 
     $ui .= '</div>';
 
-
-    //Link Stats:
-    $ui .= echo_in_stat_read($in['in_id']);
-    $ui .= echo_in_stat_play($in['in_id']);
 
 
 
@@ -2221,41 +2242,26 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     }
     $ui .= '</div>';
 
+    $ui .= '</td>';
 
 
 
 
-
-    $ui .= '</div>';
-
-
-
-    /*
-     *
-     * Start Right Side
-     *
-     * */
-
-    $ui .= '<div class="pull-right inline-block">';
+    //READ
+    $ui .= '<td class="MENCHcolumn2 read">';
+    $ui .= echo_in_stat_read($in['in_id']);
+    $ui .= '</td>';
 
 
-    $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
-    if($is_author || !$is_parent){
 
-        //Unlink:
-        $ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink" style="font-size: 0.8em;"></i></a></span>';
+    //PLAY
+    $ui .= '<td class="MENCHcolumn3 play">';
+    $ui .= echo_in_stat_play($in['in_id']);
+    $ui .= '</td>';
 
-    } elseif(!$is_author) {
 
-        //Indicate if NOT an author:
-        $ui .= '<span data-toggle="tooltip" title="You are not yet an author of this idea" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
+    $ui .= '</tr></table>';
 
-    }
-    $ui .= '</span></div>';
-
-    $ui .= '<div class="doclear">&nbsp;</div>';
-
-    $ui .= '</div>';
 
     $ui .= '</div>';
 
