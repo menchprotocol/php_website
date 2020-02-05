@@ -580,7 +580,6 @@ img.no-radius {
 }
 
 textarea.note-textarea{
-    width:100%;
     border:0;
     border-radius: 0;
     padding: 2px 22px 0 1px;
@@ -595,11 +594,11 @@ textarea.note-textarea{
     padding:0 22px 0 33px;
 }
 .add_note_form{
-    padding-left: 37px;
+    margin-left: 37px;
 }
 
 .note-textarea.edit-on {
-    padding-left: 33px;
+    margin-left: 33px;
 }
 
 .text_message{
@@ -1149,7 +1148,7 @@ label {
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
 }
-.input-group .algolia-autocomplete, .texttype_4736_lg, #newIdeaTitle {
+.input-group .algolia-autocomplete, .texttype_4736_lg, #newIdeaTitle, textarea.note-textarea {
     width: -webkit-calc(100% - 36px) !important;
     width:    -moz-calc(100% - 36px) !important;
     width:         calc(100% - 36px) !important;
