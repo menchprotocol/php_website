@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-02-04 13:16:39 PST
+//Generated 2020-02-04 18:07:24 PST
 
 //PLAY BODY ACTIVE:
 $config['en_ids_12440'] = array(12273,11029);
@@ -49,7 +49,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA',
         'm_desc' => 'Intents define the intention of an entity as defined similar to a SMART goal.',
-        'm_parents' => array(10876,4527,12155,2738,4463),
+        'm_parents' => array(12112,10876,4527,12155,2738,4463),
     ),
     4485 => array(
         'm_icon' => '<i class="fas fa-comment-plus idea" aria-hidden="true"></i>',
@@ -165,7 +165,7 @@ $config['en_all_10876'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA',
         'm_desc' => 'https://mench.com/idea',
-        'm_parents' => array(10876,4527,12155,2738,4463),
+        'm_parents' => array(12112,10876,4527,12155,2738,4463),
     ),
     10939 => array(
         'm_icon' => '<i class="fad fa-pen idea" aria-hidden="true"></i>',
@@ -2679,8 +2679,14 @@ $config['en_all_12138'] = array(
 );
 
 //IDEA TEXT INPUTS:
-$config['en_ids_12112'] = array(4356,4736,4358,4739,4735);
+$config['en_ids_12112'] = array(4535,4356,4736,4358,4739,4735);
 $config['en_all_12112'] = array(
+    4535 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA',
+        'm_desc' => '',
+        'm_parents' => array(12112,10876,4527,12155,2738,4463),
+    ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch " aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME',
@@ -5297,7 +5303,7 @@ $config['en_all_2738'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA',
         'm_desc' => '',
-        'm_parents' => array(10876,4527,12155,2738,4463),
+        'm_parents' => array(12112,10876,4527,12155,2738,4463),
     ),
     6205 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
@@ -5421,7 +5427,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA',
         'm_desc' => '',
-        'm_parents' => array(10876,4527,12155,2738,4463),
+        'm_parents' => array(12112,10876,4527,12155,2738,4463),
     ),
     11047 => array(
         'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
