@@ -21,7 +21,7 @@ if(!$session_en){
 
 } else {
 
-    echo '<div id="actionplan_steps" class="list-group">';
+    echo '<div id="actionplan_steps" class="list-group no-side-padding">';
     foreach ($player_reads as $priority => $ln) {
 
         //Display row:

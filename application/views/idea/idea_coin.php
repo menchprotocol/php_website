@@ -187,6 +187,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //ADD NEW NOTE:
             $this_tab .= '<div class="list-group-item itemidea add_note_form add_note_' . $en_id2 . ( $is_author && $is_active ? '' : ' hidden ' ).'">';
+            $this_tab .= '<div class="add_note_form">';
             $this_tab .= '<form class="box box' . $en_id2 . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
 
 
@@ -230,6 +231,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
             $this_tab .= '</form>';
+            $this_tab .= '</div>';
             $this_tab .= '</div>';
 
             $this_tab .= '</div>';
