@@ -12,7 +12,7 @@ $(document).ready(function () {
 
             autosize($('#newIdeaTitle'));
 
-            in_load_search("#newIdeaTitle",0, 'a', false /* Search Only */);
+            in_load_search("#newIdeaTitle",0, 'a', 'link_my_idea');
 
         }
 
@@ -31,8 +31,10 @@ function idea_create(){
 
     //Lockdown:
     $('#newIdeaTitle').prop('disabled', true);
-    $('.ideaCreationController').addClass('hidden');
-    $('.ideaCreateStatusUpdate').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('#tempLoader').remove();
+
+    //Set processing status:
+    add_to_list('myIdeas', '.itemidea', '<div id="tempLoader" class="list-group-item itemidea montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>Adding... </div>');
 
     //Process this:
     $.post("/idea/idea_create", {
@@ -41,14 +43,13 @@ function idea_create(){
         if (data.status) {
 
             //Redirect:
-            $('.ideaCreateStatusUpdate').html(data.message);
+            $('#tempLoader').html(data.message);
             window.location = '/' + data.in_id;
 
         } else {
 
             //Unlock:
-            $('.ideaCreationController').removeClass('hidden');
-            $('.ideaCreateStatusUpdate').html('<span class="read"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</span>');
+            $('#tempLoader').html('<span class="read"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</span>');
             $('#newIdeaTitle').prop('disabled', false).focus();
 
         }

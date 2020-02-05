@@ -13,8 +13,10 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
     //Not yet loaded, continue with loading it:
     $(element_focus).addClass('search-bar-loaded').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        if(is_add_mode){
+        if(is_add_mode=='link_idea'){
             in_link_or_create($(this).attr('idea-id'), is_in_parent, suggestion.alg_obj_id);
+        } else if(is_add_mode=='link_my_idea'){
+            idea_create();
         } else {
             //Go to idea:
             window.location = '/idea/' + suggestion.alg_obj_id;
@@ -32,7 +34,7 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
                 algolia_index.search(q, {
 
                     filters: ' alg_obj_is_in=1 AND ( _tags:alg_is_published_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_author_' + js_pl_id : '' ) + ' ) ',
-                    hitsPerPage:( is_add_mode ? 7 : 10 ),
+                    hitsPerPage:( is_add_mode=='link_idea' ? 7 : 10 ),
 
                 }, function (error, content) {
                     if (error) {
@@ -52,12 +54,12 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
                 return echo_js_suggestion(suggestion);
             },
             header: function (data) {
-                if (is_add_mode && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
+                if (is_add_mode=='link_idea' && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
                     return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
-                if(is_add_mode){
+                if(is_add_mode=='link_idea'){
                     if($(element_focus).val().charAt(0)=='#'){
                         return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
                     } else {
@@ -69,8 +71,10 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            if(is_add_mode) {
+            if(is_add_mode=='link_idea') {
                 return in_link_or_create($(this).attr('idea-id'), is_in_parent, 0);
+            } else if(is_add_mode=='link_my_idea') {
+                return idea_create();
             }
             e.preventDefault();
         }

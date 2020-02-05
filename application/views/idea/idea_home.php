@@ -20,7 +20,7 @@
 
         if(superpower_assigned($superpower)) {
 
-            echo '<div class="list-group">';
+            echo '<div id="myIdeas" class="list-group">';
 
             //List current ideas:
             foreach($this->READ_model->ln_fetch(array(
@@ -44,8 +44,6 @@
                 </div><div class="algolia_pad_search hidden in_pad_new_idea"></div></div>';
 
             echo '</div>';
-
-            echo '<div class="ideaCreateStatusUpdate montserrat"></div>';
 
         } else {
 

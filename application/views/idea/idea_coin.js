@@ -81,8 +81,8 @@ $(document).ready(function () {
     });
 
     //Load top/bottom idea searches:
-    in_load_search(".ideaadder-level-2-parent",1, 'q', true);
-    in_load_search(".ideaadder-level-2-child",0, 'w', true);
+    in_load_search(".ideaadder-level-2-parent",1, 'q', 'link_idea');
+    in_load_search(".ideaadder-level-2-child",0, 'w', 'link_idea');
 
     //Expand selections:
     prep_search_pad();
