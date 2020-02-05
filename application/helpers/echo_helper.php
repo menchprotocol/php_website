@@ -1531,7 +1531,7 @@ function echo_in_stat_play($in_id){
             'ln_type_play_id' => 4983,
             'ln_child_idea_id' => $in_id,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        if($play_coins[0]['total_coins'] > 1){
+        if($play_coins[0]['total_coins'] > 0){
             return '<span class="montserrat play '.superpower_active(10984).'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($play_coins[0]['total_coins']).'</span>';
         }
     }
