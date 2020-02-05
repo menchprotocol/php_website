@@ -1592,7 +1592,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $ui .= '<td>';
 
     //Title
-    $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$en_all_12446[$read_icon_play_id]['m_name'].' '.$completion_rate['completion_percentage'].'% DONE">'.$en_all_12446[$read_icon_play_id]['m_icon'].'</span><b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
+    $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12446[$read_icon_play_id]['m_name'].' '.$completion_rate['completion_percentage'].'% DONE">'.$en_all_12446[$read_icon_play_id]['m_icon'].'</span><b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
 
 
     //Description:
