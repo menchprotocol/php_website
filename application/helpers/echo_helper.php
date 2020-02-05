@@ -1502,7 +1502,7 @@ function echo_in_stat_read($in_id){
     $CI =& get_instance();
     $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
 
-    if(superpower_active(10989, true)){
+    if(superpower_active(10964, true)){
 
         $read_coins = $CI->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
