@@ -1147,9 +1147,9 @@ label {
     width:         calc(100% - 68px);
 }
 .input-group .algolia-autocomplete, .texttype_4736_lg, #newIdeaTitle, .add_note_form {
-    width: -webkit-calc(100% - 36px) !important;
-    width:    -moz-calc(100% - 36px) !important;
-    width:         calc(100% - 36px) !important;
+    width: -webkit-calc(100% - 34px) !important;
+    width:    -moz-calc(100% - 34px) !important;
+    width:         calc(100% - 34px) !important;
 }
 
 .texttype_4356_sm {
