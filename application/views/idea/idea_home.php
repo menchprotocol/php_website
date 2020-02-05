@@ -33,8 +33,6 @@
                 echo echo_in_idea($bookmark_in);
             }
 
-            echo '<div class="ideaCreateStatusUpdate montserrat" style="padding-bottom: 20px;"></div>';
-
             echo '<div class="list-group-item itemidea '.superpower_active($superpower).'" style="padding:5px 0;">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
@@ -47,6 +45,8 @@
                 </div><div class="algolia_pad_search hidden in_pad_bottom"></div></div>';
 
             echo '</div>';
+
+            echo '<div class="ideaCreateStatusUpdate montserrat"></div>';
 
         } else {
 
