@@ -1142,13 +1142,14 @@ label {
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
 }
-.input-group .algolia-autocomplete {
+.input-group .algolia-autocomplete, .texttype_4736_lg, #newIdeaTitle {
     width: -webkit-calc(100% - 34px) !important;
     width:    -moz-calc(100% - 34px) !important;
     width:         calc(100% - 34px) !important;
 }
 
 .texttype_4356_sm {
+    margin-top: 5px;
     text-align: center;
     padding-right: 2px;
     padding-left: 2px;
@@ -1159,7 +1160,6 @@ label {
     font-size: 1.7em;
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
-    width: 100%;
     color:#000000;
     padding:5px 0 0 5px;
 }
