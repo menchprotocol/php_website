@@ -2319,35 +2319,35 @@ function echo_read_breadcrumbs($in_id){
     $en_all_2738 = $CI->config->item('en_all_2738');
 
     foreach ($recursive_parents as $grand_parent_ids) {
-        foreach(array_intersect($grand_parent_ids, $list_ids) as $intersect){
+        foreach(array_intersect($grand_parent_ids, $list_ids) as $intersect) {
             //Show the breadcrumb since it's connected:
             $ui .= '<nav aria-label="breadcrumb">';
             $ui .= '<ol class="breadcrumb">';
 
             $breadcrumb_items = array();
 
-            foreach($grand_parent_ids as $parent_in_id){
+            foreach ($grand_parent_ids as $parent_in_id) {
 
                 //Fetch this idea name:
                 $ins_this = $CI->IDEA_model->in_fetch(array(
                     'in_id' => $parent_in_id,
                 ));
-                if(count($ins_this) > 0){
+                if (count($ins_this) > 0) {
 
                     $completion_ui_rate = '';
-                    if(superpower_active(10989, true)){
+                    if (superpower_active(10989, true)) {
                         //Calcullate completion time:
                         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $ins_this[0]);
-                        if($completion_rate['completion_percentage'] > 0){
-                            $completion_ui_rate = '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'% DONE]</span>';
+                        if ($completion_rate['completion_percentage'] > 0) {
+                            $completion_ui_rate = '<span title="' . $completion_rate['steps_completed'] . '/' . $completion_rate['steps_total'] . ' read">[' . $completion_rate['completion_percentage'] . '% DONE]</span>';
                         }
                     }
 
 
-                    array_push($breadcrumb_items, '<li class="breadcrumb-item"><a href="/'.$parent_in_id.'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span><span class="icon-block' . ( in_array($ins_this[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$ins_this[0]['in_status_play_id']]['m_name'].': '.$en_all_4737[$ins_this[0]['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_icon'] . '</span></span>'.$ins_this[0]['in_title'].$completion_ui_rate.'</a></li>');
+                    array_push($breadcrumb_items, '<li class="breadcrumb-item"><a href="/' . $parent_in_id . '"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="icon-block' . (in_array($ins_this[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '') . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_name'] . ': ' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_desc'] . '">' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_icon'] . '</span></span>' . $ins_this[0]['in_title'] . $completion_ui_rate . '</a></li>');
                 }
 
-                if($parent_in_id==$intersect){
+                if ($parent_in_id == $intersect) {
                     break;
                 }
             }
@@ -2355,9 +2355,7 @@ function echo_read_breadcrumbs($in_id){
             $ui .= join('', array_reverse($breadcrumb_items));
             $ui .= '</ol>';
             $ui .= '</nav>';
-        }
 
-        if($ui){
             break;
         }
     }
