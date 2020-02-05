@@ -391,7 +391,7 @@ img.no-radius {
 
 .nav-tabs{
     margin-top:15px;
-    margin-left: -1px;
+    margin-left: 39px;
 }
 
 .info-item{
@@ -592,7 +592,10 @@ textarea.note-textarea{
 
 
 .toidea .i_content {
-    padding:0 22px 0 0;
+    padding:0 22px 0 33px;
+}
+.add_note_form{
+    padding-left: 37px;
 }
 
 .text_message{
