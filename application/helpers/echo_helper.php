@@ -2464,7 +2464,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         } else {
             echo '</div>';
             if($found_upcoming > 0 && !$all_done){
-                echo '<div class="is_upcoming montserrat" style="padding:5px 0 5px 7px;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><span class="icon-block"><i class="far fa-plus-circle"></i></span>'.$found_upcoming.' MORE</a></div>';
+                echo '<div class="is_upcoming montserrat" style="padding:5px 0 5px 0;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-plus-circle read"></i></span>'.$found_upcoming.' MORE</a></div>';
             }
         }
     }
