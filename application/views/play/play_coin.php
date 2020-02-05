@@ -300,7 +300,13 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 $counter = $child_links[0]['totals'];
 
                 //Active if count exists and not already activated.
-                $default_active = ( $counter>0 && !count(array_intersect($activated_tabs, $this->config->item('en_ids_12440'))) );
+                $authored_ideas = $this->READ_model->ln_fetch(array(
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id' => $en_id2,
+                    '(ln_owner_play_id='.$player['en_id'].' OR ln_child_play_id='.$player['en_id'].' OR ln_parent_play_id='.$player['en_id'].')' => null,
+                ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
+
+                $default_active = ( !count(array_intersect($activated_tabs, $this->config->item('en_ids_12440'))) && ( $counter || !$authored_ideas[0]['totals'] ));
 
                 if($default_active){
                     array_push($activated_tabs, $en_id2);
@@ -379,21 +385,18 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     '(ln_owner_play_id='.$player['en_id'].' OR ln_child_play_id='.$player['en_id'].' OR ln_parent_play_id='.$player['en_id'].')' => null,
                 );
 
-                if($en_id2==4983){
-                    //Idea Statuses Featured
-                    $idea_note_filters['in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')'] = null;
-                }
-
                 //COUNT ONLY
                 $item_counters = $this->READ_model->ln_fetch($idea_note_filters, array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
                 $counter = $item_counters[0]['totals'];
-
 
                 //SHOW LASTEST 100
                 if($counter>0){
 
                     $this_tab .= '<div class="list-group">';
-                    foreach ($this->READ_model->ln_fetch($idea_note_filters, array('in_child'), config_var(11064), 0, array('in_title' => 'ASC')) as $idea_note) {
+                    foreach ($this->READ_model->ln_fetch($idea_note_filters, array('in_child'), config_var(11064), 0, array(
+                        'in_status_play_id' => 'DESC',
+                        'in_title'          => 'ASC'
+                    )) as $idea_note) {
                         if(in_array($en_id2, $this->config->item('en_ids_12321'))){
 
                             $this_tab .= echo_in_read($idea_note);
