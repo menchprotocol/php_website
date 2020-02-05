@@ -40,9 +40,9 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     margin:30px 0;
 }
 .container-wide .content-image {
-    margin: 10px 0 0 -10px;
-    max-width: calc(100% + 20px);
-    max-height:500px;
+    margin: 10px 0 0 0;
+    max-width: calc(100% - 33px);
+    max-height:377px;
 }
 .yt-container{
     margin: 10px -10px 0 -10px;
