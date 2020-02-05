@@ -33,8 +33,8 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .container-wide {
     max-width:767px;
 }
-.container-wide .i_content, .container-wide h1, .padded {
-    margin: 0 10px 20px;
+.container-wide .i_content, .padded {
+    margin: 0 0 20px 33px;
 }
 .margin-top-down{
     margin:30px 0;
@@ -201,7 +201,7 @@ img.no-radius {
     margin-bottom: 10px;
     background-color: #FFFFFF;
     border-radius:0;
-    padding: 10px;
+    padding: 10px 0;
     font-family: 'Montserrat', sans-serif;
 }
 
