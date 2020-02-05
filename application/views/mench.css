@@ -1146,7 +1146,7 @@ label {
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
 }
-.input-group .algolia-autocomplete, .texttype_4736_lg, #newIdeaTitle, .add_note_form {
+.input-group .algolia-autocomplete, .texttype_4736_lg, #newIdeaTitle, .add_note_form, .idea-info {
     width: -webkit-calc(100% - 33px) !important;
     width:    -moz-calc(100% - 33px) !important;
     width:         calc(100% - 33px) !important;

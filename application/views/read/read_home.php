@@ -29,10 +29,11 @@ if(!$session_en){
 
         echo echo_in_thumbnail($ln['in_id'], true, 'margin-right-18');
 
+        echo '<span class="icon-block"><i class="fas fa-circle read" aria-hidden="true"></i></span>';
         echo '<b class="actionplan-title montserrat montserrat idea-url in-title-'.$ln['in_id'].'">' . $ln['in_title'] . '</b>';
 
         if(superpower_active(10989, true)){
-            echo '<div class="montserrat idea-info doupper">';
+            echo '<div class="montserrat idea-info doupper '.superpower_active(10989).'">';
 
             $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $ln);
             $metadata = unserialize($ln['in_metadata']);
