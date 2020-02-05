@@ -1453,7 +1453,7 @@ function echo_in_idea($in)
     $en_all_4737 = $CI->config->item('en_all_4737'); // Idea Statuses
     $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
 
-    $ui = '<a href="/idea/'.$in['in_id'] . '" class="list-group-item itemidea no-side-padding">';
+    $ui = '<a href="/idea/'.$in['in_id'] . '" class="list-group-item itemidea itemidealist no-side-padding">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
