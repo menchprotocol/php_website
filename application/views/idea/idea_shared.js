@@ -15,8 +15,6 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
 
         if(is_add_mode=='link_idea'){
             in_link_or_create($(this).attr('idea-id'), is_in_parent, suggestion.alg_obj_id);
-        } else if(is_add_mode=='link_my_idea'){
-            idea_create();
         } else {
             //Go to idea:
             window.location = '/idea/' + suggestion.alg_obj_id;
@@ -56,6 +54,8 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
             header: function (data) {
                 if (is_add_mode=='link_idea' && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
                     return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                } else if(is_add_mode=='link_my_idea'){
+                    return '<a href="javascript:idea_create()" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
@@ -65,6 +65,8 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
                     } else {
                         return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                     }
+                } else if(is_add_mode=='link_my_idea'){
+                    return '<a href="javascript:idea_create()" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
             },
         }
