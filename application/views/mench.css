@@ -594,7 +594,7 @@ textarea.note-textarea{
     padding:0 22px 0 33px;
 }
 .add_note_form{
-    margin-left: 37px;
+    margin-left: 33px;
 }
 
 .note-textarea.edit-on {
@@ -1146,7 +1146,7 @@ label {
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
 }
-.input-group .algolia-autocomplete, .texttype_4736_lg, #newIdeaTitle, textarea.note-textarea {
+.input-group .algolia-autocomplete, .texttype_4736_lg, #newIdeaTitle, .add_note_form {
     width: -webkit-calc(100% - 36px) !important;
     width:    -moz-calc(100% - 36px) !important;
     width:         calc(100% - 36px) !important;
