@@ -21,40 +21,7 @@ if(!$session_en){
 
 } else {
 
-    //echo '<div class="pull-left">' . echo_menu(12201, 'btn-read') . '</div>';
-    $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
-
-
-    echo '<div class="pull-right inline-block">';
-
-    echo '<a href="/read/next" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12211]['m_name'].'">'.$en_all_11035[12211]['m_icon'].'</a>';
-
-    //READ HISTORY
-    //echo '<a href="/oii?ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_owner_play_id='.$session_en['en_id'].'" class="btn btn-read btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11999]['m_name'].'">'.$en_all_11035[11999]['m_icon'].'</a>';
-
-    //Give option to delete all:
-    echo '<a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="btn btn-read btn-five icon-block-lg '.superpower_active(10984).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[6415]['m_name'].'">'.$en_all_11035[6415]['m_icon'].'</a>';
-
-    echo '</div>';
-
-
-    //LEFT
-    echo '<h1 class="pull-left inline-block read"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span>'.$en_all_2738[6205]['m_name'].'</h1>';
-
-
-    echo '<div class="doclear">&nbsp;</div>';
-
-
-    echo '<div class="clear-reading-list hidden">';
-
-    echo '<p><span class="icon-block"><i class="fas fa-exclamation-triangle read"></i></span><b class="read montserrat">WARNING:</b> You are about to clear you entire reading list. You will lose all your <span class="icon-block">🔴</span><b class="montserrat read">READ COINS</b> but can earn them back by reading again.</p>';
-    echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="clear_all_reads()" class="btn btn-read"><i class="far fa-trash-alt"></i> CLEAR ALL READS</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
-
-    echo '</div>';
-
-
-    //User has multiple READING LISTs, so list all READING LISTs to enable User to choose:
-    echo '<div id="actionplan_steps" class="list-group actionplan-list">';
+    echo '<div id="actionplan_steps" class="list-group">';
     foreach ($player_reads as $priority => $ln) {
 
         //Display row:
@@ -102,6 +69,23 @@ if(!$session_en){
     }
 
     echo '</div>';
+
+
+
+    echo '<div style="margin-top: 10px;">';
+
+        echo '<a href="/read/next" class="btn btn-read">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a>';
+
+        //Give option to delete all:
+        echo '<span class="'.superpower_active(10984).'">&nbsp; or <a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="btn btn-read">'.$en_all_11035[6415]['m_name'].' '.$en_all_11035[6415]['m_icon'].'</a></span>';
+
+        echo '<div class="clear-reading-list hidden">';
+        echo '<p><span class="icon-block"><i class="fas fa-exclamation-triangle read"></i></span><b class="read montserrat">WARNING:</b> You are about to clear you entire reading list. You will lose all your <span class="icon-block">🔴</span><b class="montserrat read">READ COINS</b> but can earn them back by reading again.</p>';
+        echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="clear_all_reads()" class="btn btn-read"><i class="far fa-trash-alt"></i> CLEAR ALL READS</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
+        echo '</div>';
+
+    echo '</div>';
+
 
 }
 ?>
