@@ -7,7 +7,6 @@
     <?php
 
     $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
-    $en_all_6201 = $this->config->item('en_all_6201'); //IDEA TABLE
     $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
     if(!$session_en){
@@ -41,8 +40,8 @@
                            maxlength="' . config_var(11071) . '"
                            id="newIdeaTitle"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="'.$en_all_6201[4736]['m_name'].'">
-                </div><div class="algolia_pad_search hidden in_pad_bottom"></div></div>';
+                           placeholder="NEW IDEA">
+                </div><div class="algolia_pad_search hidden in_pad_new_idea"></div></div>';
 
             echo '</div>';
 

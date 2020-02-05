@@ -1,18 +1,31 @@
 
 
+$(document).ready(function () {
+    var new_idea_loaded = false;
 
-function idea_create_initiate(){
+    $('#newIdeaTitle').focus(function() {
 
-    //Load Idea Adder:
-    autosize($('#newIdeaTitle'));
+        //Load Idea Adder:
+        if(!new_idea_loaded){
 
-    in_load_search("#newIdeaTitle",0, 'a', false /* Search Only */);
-    $('#newIdeaTitle').focus();
+            new_idea_loaded = true;
 
-    //Show UI:
-    $('.add-idea-toggle').toggleClass('hidden');
+            autosize($('#newIdeaTitle'));
 
-}
+            in_load_search("#newIdeaTitle",0, 'a', false /* Search Only */);
+
+        }
+
+        $('.in_pad_new_idea' ).removeClass('hidden');
+
+    }).focusout(function() {
+
+        $('.in_pad_new_idea' ).addClass('hidden');
+
+    });
+
+});
+
 
 function idea_create(){
 
