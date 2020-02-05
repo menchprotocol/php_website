@@ -1,27 +1,14 @@
 
 
 $(document).ready(function () {
-    var new_idea_loaded = false;
+
+    //Load Idea Search:
+    in_load_search("#newIdeaTitle",0, 'a', 'link_my_idea');
 
     $('#newIdeaTitle').focus(function() {
-
-        //Load Idea Adder:
-        if(!new_idea_loaded){
-
-            new_idea_loaded = true;
-
-            autosize($('#newIdeaTitle'));
-
-            in_load_search("#newIdeaTitle",0, 'a', 'link_my_idea');
-
-        }
-
         $('.in_pad_new_idea' ).removeClass('hidden');
-
     }).focusout(function() {
-
         $('.in_pad_new_idea' ).addClass('hidden');
-
     });
 
 });
