@@ -1554,7 +1554,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $completion_rate['completion_percentage'] = 0; //Default value
     $en_all_12446 = $CI->config->item('en_all_12446'); //READ ICONS
 
-    if($session_en && $in_reads){
+    if($session_en){ // && $in_reads
         //Make sure in reading list:
         $player_read_ids = $CI->READ_model->read_ids($session_en['en_id']);
         if(in_array($in['in_id'], $player_read_ids)){
@@ -2452,7 +2452,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         foreach($in__children as $key => $child_in){
 
             //Has this been completed before by this user?
-            $footnotes = ( $completion_rate[$key]['completion_percentage'] > 0 ? '<span class="'.superpower_active(10989).'">['.$completion_rate[$key]['completion_percentage'].'% DONE] </span>' : '' );
+            //$footnotes = ( $completion_rate[$key]['completion_percentage'] > 0 ? '<span class="'.superpower_active(10989).'">['.$completion_rate[$key]['completion_percentage'].'% DONE] </span>' : '' );
 
             if($push_message){
 
