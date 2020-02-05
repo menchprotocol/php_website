@@ -15,32 +15,9 @@
 
     } else {
 
-        //LEFT
-        //echo '<div class="pull-left">'.echo_menu(12343, 'btn-idea').'</div>';
 
-        $add_idea_btn = '<a href="javascript:void(0);" onclick="idea_create_initiate()" class="btn btn-idea btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12214]['m_name'].'">'.$en_all_11035[12214]['m_icon'].'</a>';
-
-        $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
         echo '<div class="add-idea-toggle">';
-
-        //RIGHT
-        echo '<div class="pull-right inline-block">';
-
-            //Idea History
-            //echo '<a href="/oii?ln_type_play_id='.join(',', $this->config->item('en_ids_12273')).'&ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_owner_play_id='.$session_en['en_id'].'" class="btn btn-idea btn-five icon-block-lg '.superpower_active(10939).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[11999]['m_name'].'">'.$en_all_11035[11999]['m_icon'].'</a>';
-
-            //Create Idea:
-            echo $add_idea_btn;
-
-
-        echo '</div>';
-
-        //LEFT
-        echo '<h1 class="pull-left inline-block idea"><span class="icon-block">' . $en_all_2738[4535]['m_icon'] . '</span>'.$en_all_2738[4535]['m_name'].'</h1>';
-
-        echo '<div class="doclear">&nbsp;</div>';
-
 
         //List current ideas:
         $player_ideas = $this->READ_model->ln_fetch(array(
@@ -64,7 +41,13 @@
 
         }
 
+
+        //Add New Idea:
+        echo '<a href="javascript:void(0);" onclick="idea_create_initiate()" class="btn btn-idea btn-five icon-block-lg" style="padding-top:10px;">'.$en_all_11035[12214]['m_icon'].' '.$en_all_11035[12214]['m_name'].'</a>';
+
         echo '</div>';
+
+
 
 
 
