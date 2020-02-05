@@ -49,7 +49,7 @@
 
             //Introduce Super Power:
             $en_all_10957 = $this->config->item('en_all_10957'); //PLAY SUPERPOWERS
-            echo '<div style="padding:10px 0;"><p>Unlock the superpowers of '.$en_all_10957[$superpower]['m_icon'].' '.$en_all_10957[$superpower]['m_name'].' to '.$en_all_10957[$superpower]['m_desc'].'</p></div>';
+            echo '<div style="padding:10px 0;"><p>Unlock the superpowers of '.$en_all_10957[$superpower]['m_icon'].' <span class="montserrat doupper '.extract_icon_color($en_all_10957[$superpower]['m_icon']).'">'.$en_all_10957[$superpower]['m_name'].'</span> to '.$en_all_10957[$superpower]['m_desc'].'</p></div>';
 
             //Link to it on the website:
             $en_all_10876 = $this->config->item('en_all_10876'); //MENCH WEBSITE
