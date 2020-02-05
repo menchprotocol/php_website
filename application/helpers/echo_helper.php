@@ -2305,7 +2305,7 @@ function echo_read_breadcrumbs($in_id){
     ), array('in_parent'), 0);
 
     //Cleanup the list:
-    $ui = '';
+    $ui = null;
     $list_ids = array();
     foreach($player_list as $in_list){
         array_push($list_ids, $in_list['in_id']);
@@ -2355,6 +2355,10 @@ function echo_read_breadcrumbs($in_id){
             $ui .= join('', array_reverse($breadcrumb_items));
             $ui .= '</ol>';
             $ui .= '</nav>';
+        }
+
+        if($ui){
+            break;
         }
     }
 
