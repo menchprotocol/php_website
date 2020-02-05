@@ -25,7 +25,7 @@ if(!$session_en){
     foreach ($player_reads as $priority => $ln) {
 
         //Display row:
-        echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item itemread '.( $has_multiple_ideas ? 'actionplan_sort' : '').'">';
+        echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item no-side-padding itemread '.( $has_multiple_ideas ? 'actionplan_sort' : '').'">';
 
         echo echo_in_thumbnail($ln['in_id'], true, 'margin-right-18');
 
