@@ -307,7 +307,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     'ln_parent_play_id' => $player['en_id'],
                 ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
 
-                echo count(array_intersect($activated_tabs, $this->config->item('en_ids_12440'))) .'/'.$counter.'/'$authored_ideas[0]['totals'].'<hr />';
 
                 $default_active = ( !count(array_intersect($activated_tabs, $this->config->item('en_ids_12440'))) && ( $counter || !$authored_ideas[0]['totals'] ));
 
@@ -323,6 +322,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 ), array('en_child'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
                 $this_tab .= '<div id="list-children" class="list-group">';
+
+                $this_tab .= count(array_intersect($activated_tabs, $this->config->item('en_ids_12440'))) .'/'.$counter.'/'.$authored_ideas[0]['totals'].'<hr />';
 
                 foreach ($play__children as $en) {
                     $this_tab .= echo_en($en,false);
