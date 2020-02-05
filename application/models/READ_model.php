@@ -1536,7 +1536,7 @@ class READ_model extends CI_Model
             } else {
 
                 //IDEA TITLE
-                echo '<h1>' . echo_in_title($ins[0]['in_title']) . '</h1>';
+                echo '<h1><span class="icon-block"><i class="fas fa-circle read" aria-hidden="true"></i></span>' . echo_in_title($ins[0]['in_title']) . '</h1>';
 
                 foreach ($in__messages as $message_ln) {
                     echo $this->READ_model->dispatch_message(
@@ -1681,7 +1681,7 @@ class READ_model extends CI_Model
             if(!$push_message){
 
                 //IDEA TITLE
-                echo '<h1>' . echo_in_title($ins[0]['in_title']) . '</h1>';
+                echo '<h1><span class="icon-block"><i class="fas fa-circle read" aria-hidden="true"></i></span>' . echo_in_title($ins[0]['in_title']) . '</h1>';
 
                 if(superpower_active(10989, true)){
                     //Show More Information:
