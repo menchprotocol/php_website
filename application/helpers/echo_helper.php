@@ -2187,6 +2187,9 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     $ui .= '<div class="' . superpower_active(10984) . '">';
 
+    //Blank space:
+    $ui .= '<div class="icon-block">&nbsp;</div>';
+
     //IDEA TYPE
     $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['in_id']);
 
