@@ -1453,19 +1453,23 @@ function echo_in_idea($in)
     $en_all_4737 = $CI->config->item('en_all_4737'); // Idea Statuses
     $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
 
-    $ui = '<a href="/idea/'.$in['in_id'] . '" class="list-group-item itemidea itemidealist no-side-padding">';
-
+    $ui = '<div class="list-group-item itemidea itemidealist no-side-padding">';
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
     $ui .= '<td class="MENCHcolumn1">';
-        //Image on RIGHT:
 
-        $ui .= '<span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>';
+        //Idea:
+        $ui .= '<a href="/idea/'.$in['in_id'] . '">';
 
-        $ui .= '<span class="icon-block '.( in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ).'">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].'</span>';
+            $ui .= '<span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>';
 
-        $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false).'</b>';
+            $ui .= '<span class="icon-block '.( in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ).'">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].'</span>';
+
+            $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false).'</b>';
+
+        $ui .= '</a>';
+
 
         //Footnote
         $metadata = unserialize($in['in_metadata']);
@@ -1492,7 +1496,7 @@ function echo_in_idea($in)
 
 
     $ui .= '</tr></table>';
-    $ui .= '</a>';
+    $ui .= '</div>';
 
     return $ui;
 }
