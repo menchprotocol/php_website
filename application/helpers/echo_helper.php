@@ -1460,24 +1460,19 @@ function echo_in_idea($in)
 
     $ui .= '<td class="MENCHcolumn1">';
         //Image on RIGHT:
-        $ui .= '<div class="inline-block pull-right">'.echo_in_thumbnail($in['in_id']).'</div>';
-        $ui .= '<div class="inline-block pull-left">';
 
+        $ui .= '<span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>';
 
-            $ui .= '<span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>';
+        $ui .= '<span class="icon-block '.( in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ).'">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].'</span>';
 
-            $ui .= '<span class="icon-block '.( in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ).'">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].'</span>';
+        $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false).'</b>';
 
-            $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false).'</b>';
+        //Footnote
+        $metadata = unserialize($in['in_metadata']);
+        if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0 && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
+            $ui .= '<div class="montserrat idea-info doupper '.superpower_active(10964).'"><span class="icon-block">&nbsp;</span>'.echo_time_range($in, true).' READ</div>';
+        }
 
-
-            //Footnote
-            $metadata = unserialize($in['in_metadata']);
-            if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0 && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-                $ui .= '<div class="montserrat idea-info doupper '.superpower_active(10964).'">'.echo_time_range($in, true).' READ</div>';
-            }
-
-        $ui .= '</div>';
     $ui .= '</td>';
 
 
