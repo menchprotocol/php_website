@@ -2387,7 +2387,7 @@ class READ_model extends CI_Model
              * */
 
             //Set default seconds per step:
-            $step_default_seconds = 60;
+            $step_default_seconds = config_var(12176);
 
             //Calculate completion rate based on estimated time cost:
             $metadata_this['completion_percentage'] = intval(floor( ($metadata_this['seconds_completed']+($step_default_seconds*$metadata_this['steps_completed'])) / ($metadata_this['seconds_total']+($step_default_seconds*$metadata_this['steps_total'])) * 100 ));
