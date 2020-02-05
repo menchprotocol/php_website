@@ -2759,7 +2759,15 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tab
     $tooltip_span_end = '</span>';
 
 
-    $icon = ( in_array($cache_en_id, $CI->config->item('en_ids_12420')) ? '<span class="icon-block">'.$en_all_12112[$cache_en_id]['m_icon'].'</span>' : null );
+    //Determine ICON
+    if($is_idea_title_lg){
+        //IDEA COIN:
+        $icon = '<span class="icon-block">'.$en_all_12112[4535]['m_icon'].'</span>';
+    } elseif(in_array($cache_en_id, $CI->config->item('en_ids_12420'))){
+        $icon = '<span class="icon-block">'.$en_all_12112[$cache_en_id]['m_icon'].'</span>';
+    } else {
+        $icon = null;
+    }
 
     if($is_idea_title_lg){
 
