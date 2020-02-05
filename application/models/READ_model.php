@@ -1763,7 +1763,7 @@ class READ_model extends CI_Model
             }
 
             //List Children if any:
-            echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>NEXT READS:');
+            echo_in_list($ins[0], $in__children, $recipient_en, $push_message);
 
 
         } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7712'))){
@@ -2075,7 +2075,7 @@ class READ_model extends CI_Model
 
             if(count($read_completes)){
                 //Always show the next list:
-                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>NEXT READS:');
+                echo_in_list($ins[0], $in__children, $recipient_en, $push_message);
             } elseif (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7751'))) {
                 //Show next here:
                 echo '<div class="go_next_upload hidden inline-block">';
