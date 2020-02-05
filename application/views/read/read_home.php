@@ -27,7 +27,7 @@ if(!$session_en){
         //Display row:
         echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item no-side-padding itemread '.( $has_multiple_ideas ? 'actionplan_sort' : '').'">';
 
-        echo echo_in_thumbnail($ln['in_id'], true, 'margin-right-18');
+        echo echo_in_thumbnail($ln['in_id'], true, 'margin-right-icon');
 
         echo '<span class="icon-block"><i class="fas fa-circle read" aria-hidden="true"></i></span>';
         echo '<b class="actionplan-title montserrat montserrat idea-url in-title-'.$ln['in_id'].'">' . $ln['in_title'] . '</b>';
