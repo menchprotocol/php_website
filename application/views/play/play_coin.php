@@ -301,11 +301,11 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 //Active if count exists and not already activated.
                 $authored_ideas = $this->READ_model->ln_fetch(array(
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id' => $en_id2,
-                    '(ln_owner_play_id='.$player['en_id'].' OR ln_child_play_id='.$player['en_id'].' OR ln_parent_play_id='.$player['en_id'].')' => null,
-                ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
-
+                    'ln_type_play_id' => 4983,
+                    'ln_parent_play_id' => $player['en_id'],
+                ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
                 $default_active = ( !count(array_intersect($activated_tabs, $this->config->item('en_ids_12440'))) && ( $counter || !$authored_ideas[0]['totals'] ));
 
                 if($default_active){
