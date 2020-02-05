@@ -111,9 +111,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
             }
 
-            if( $in['in_id'] != config_var(12156)){
+            if( $is_author && $is_active && $in['in_id']!=config_var(12156)){
                 $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10984).'" style="padding:5px 0;">
-                <div class="input-group border '.( $is_author && $is_active ? '' : ' hidden ' ).'">
+                <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control ideaadder-level-2-parent form-control-thick algolia_search dotransparent"
@@ -146,7 +146,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= echo_in($child_in, $in['in_id'], false, in_is_author($child_in['in_id']));
             }
 
-            $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10939).'" style="padding:5px 0;">
+            if($is_author && $is_active){
+                $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10939).'" style="padding:5px 0;">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
@@ -157,6 +158,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                            style="margin-bottom: 0; padding: 5px 0;"
                            placeholder="ADD NEXT IDEA">
                 </div><div class="algolia_pad_search hidden in_pad_bottom"></div></div>';
+            }
+
 
         } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
 

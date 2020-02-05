@@ -1896,6 +1896,11 @@ function in_is_author($in_id, $session_en = array()){
         return false;
     }
 
+    //Always have power to edit ideas from anyone:
+    if(superpower_active(10985, true)){
+        return true;
+    }
+
     //Check if player is a idea author:
     return count($CI->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -2119,7 +2124,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ln_id = $in['ln_id'];
     $ln_metadata = unserialize($in['ln_metadata']);
     $in_metadata = unserialize($in['in_metadata']);
-    $is_author = ($is_author || superpower_active(10985, true));
 
     $session_en = superpower_assigned();
     $is_published = in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355'));
@@ -2747,7 +2751,6 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tab
 
     $CI =& get_instance();
     $en_all_12112 = $CI->config->item('en_all_12112');
-    $is_author = ($is_author || superpower_active(10985, true));
 
     //Define element attributes:
     $attributes = ( $is_author ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' in_ln__id_'.$in_ln__id.' texttype_'.$cache_en_id.($is_idea_title_lg?'_lg':'_sm').'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" ';
@@ -2801,7 +2804,6 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
     $en_all_12079 = $CI->config->item('en_all_12079');
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_this = $CI->config->item('en_all_'.$cache_en_id);
-    $is_author = ($is_author || superpower_active(10985, true));
 
     //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
     $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'_'.$in_id.'_'.$ln_id.' '.( !$show_full_name ? ' icon-block ' : '' ).'">';
