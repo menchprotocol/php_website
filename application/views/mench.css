@@ -598,6 +598,10 @@ textarea.note-textarea{
     padding-left: 37px;
 }
 
+.note-textarea.edit-on {
+    padding-left: 33px;
+}
+
 .text_message{
     margin:5px 0;
 }
