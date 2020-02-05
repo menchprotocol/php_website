@@ -2453,6 +2453,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
             //Has this been completed before by this user?
             //$footnotes = ( $completion_rate[$key]['completion_percentage'] > 0 ? '<span class="'.superpower_active(10989).'">['.$completion_rate[$key]['completion_percentage'].'% DONE] </span>' : '' );
+            $footnotes = '';
 
             if($push_message){
 
