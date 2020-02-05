@@ -227,7 +227,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 echo '<div class="container">';
 
-    echo '<h1 class="'.extract_icon_color($en_all_11035[11999]['m_icon']).' inline-block"><span class="icon-block-xl">'.$en_all_11035[11999]['m_icon'].'</span>'.$en_all_11035[11999]['m_name'].'</h1>';
+    echo '<h1 class="'.extract_icon_color($en_all_11035[11999]['m_icon']).' inline-block"><span class="icon-block">'.$en_all_11035[11999]['m_icon'].'</span>'.$en_all_11035[11999]['m_name'].'</h1>';
 
     echo '<div class="inline-block '.superpower_active(10985).'" style="padding-left:7px;"><i class="far fa-filter"></i><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="montserrat">FILTER</a></div>';
 

@@ -52,7 +52,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     //LEFT
-    echo '<h1 class="'.extract_icon_color($player['en_icon']).' pull-left inline-block"><span class="icon-block-xl en_ui_icon_'.$player['en_id'].'">'.echo_en_icon($player['en_icon']).'</span><span class="icon-block-xl en_status_play_id_' . $player['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$player['en_status_play_id']]['m_name'].': '.$en_all_6177[$player['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$player['en_status_play_id']]['m_icon'] . '</span></span><span class="en_name_'.$player['en_id'].'">'.$player['en_name'].'</span></h1>';
+    echo '<h1 class="'.extract_icon_color($player['en_icon']).' pull-left inline-block"><span class="icon-block en_ui_icon_'.$player['en_id'].'">'.echo_en_icon($player['en_icon']).'</span><span class="icon-block en_status_play_id_' . $player['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$player['en_status_play_id']]['m_name'].': '.$en_all_6177[$player['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$player['en_status_play_id']]['m_icon'] . '</span></span><span class="en_name_'.$player['en_id'].'">'.$player['en_name'].'</span></h1>';
 
 
     echo '<div class="doclear">&nbsp;</div>';

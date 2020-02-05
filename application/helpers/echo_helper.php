@@ -1524,7 +1524,7 @@ function echo_in_stat_play($in_id){
     $CI =& get_instance();
     $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
 
-    if(superpower_active(10984, true)){
+    if(superpower_active(10983, true)){
         //Authors:
         $play_coins = $CI->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -1532,7 +1532,7 @@ function echo_in_stat_play($in_id){
             'ln_child_idea_id' => $in_id,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         if($play_coins[0]['total_coins'] > 0){
-            return '<span class="montserrat play '.superpower_active(10984).'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($play_coins[0]['total_coins']).'</span>';
+            return '<span class="montserrat play '.superpower_active(10983).'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($play_coins[0]['total_coins']).'</span>';
         }
     }
 
@@ -2524,7 +2524,7 @@ function echo_mench_stats(){
     ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
     $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
-    $ui .= '<h2 class="montserrat '.extract_icon_color($en_all_11035[12358]['m_icon']).'"><span class="icon-block-xl">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</h2>';
+    $ui .= '<h2 class="montserrat '.extract_icon_color($en_all_11035[12358]['m_icon']).'"><span class="icon-block">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</h2>';
 
     $ui .= '<table class="table table-sm table-striped dotransparent tablepadded" style="margin-bottom:50px;">';
     $ui .= '<tr>';

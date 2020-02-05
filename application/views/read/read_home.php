@@ -39,7 +39,7 @@ if(!$session_en){
 
 
     //LEFT
-    echo '<h1 class="pull-left inline-block read"><span class="icon-block-xl">' . $en_all_2738[6205]['m_icon'] . '</span>'.$en_all_2738[6205]['m_name'].'</h1>';
+    echo '<h1 class="pull-left inline-block read"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span>'.$en_all_2738[6205]['m_name'].'</h1>';
 
 
     echo '<div class="doclear">&nbsp;</div>';
