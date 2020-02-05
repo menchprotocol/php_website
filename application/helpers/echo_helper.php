@@ -2356,7 +2356,11 @@ function echo_read_breadcrumbs($in_id){
             $ui .= '</ol>';
             $ui .= '</nav>';
 
-            break;
+            break; //TODO Remove later and allow multiple parent links
+        }
+
+        if($ui){
+            break; //TODO Remove later and allow multiple parent links
         }
     }
 
