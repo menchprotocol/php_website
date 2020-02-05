@@ -1470,7 +1470,7 @@ function echo_in_idea($in)
         //Footnote
         $metadata = unserialize($in['in_metadata']);
         if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0 && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-            $ui .= '<div class="montserrat idea-info doupper '.superpower_active(10964).'"><span class="icon-block">&nbsp;</span>'.echo_time_range($in, true).' READ</div>';
+            $ui .= '<div class="montserrat idea-info doupper '.superpower_active(10989).'"><span class="icon-block">&nbsp;</span>'.echo_time_range($in, true).' READ</div>';
         }
 
     $ui .= '</td>';
@@ -1502,7 +1502,7 @@ function echo_in_stat_read($in_id){
     $CI =& get_instance();
     $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
 
-    if(superpower_active(10964, true)){
+    if(superpower_active(10989, true)){
 
         $read_coins = $CI->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -1574,7 +1574,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
 
 
     //Show completion if glasses are on:
-    if(superpower_active(10964, true) && $in_reads && in_array($in['in_id'], $player_read_ids)){
+    if(superpower_active(10989, true) && $in_reads && in_array($in['in_id'], $player_read_ids)){
         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
         if($completion_rate['completion_percentage'] > 0){
             $ui .= '<div class="idea-info montserrat doupper"><span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% done]</span></div>';
@@ -2327,7 +2327,7 @@ function echo_read_breadcrumbs($in_id){
                 if(count($ins_this) > 0){
 
                     $completion_ui_rate = '';
-                    if(superpower_active(10964, true)){
+                    if(superpower_active(10989, true)){
                         //Calcullate completion time:
                         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $ins_this[0]);
                         if($completion_rate['completion_percentage'] > 0){

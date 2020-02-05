@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-02-04 18:48:56 PST
+//Generated 2020-02-04 19:05:56 PST
 
 //PLAY BODY ACTIVE:
 $config['en_ids_12440'] = array(12273,11029);
@@ -339,13 +339,13 @@ $config['en_all_12365'] = array(
         'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ START',
         'm_desc' => '',
-        'm_parents' => array(10964,11089,12365,6205,12228,4527),
+        'm_parents' => array(10989,11089,12365,6205,12228,4527),
     ),
     6146 => array(
         'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ SKIPPED',
         'm_desc' => '',
-        'm_parents' => array(10964,11089,12365,12228,4527),
+        'm_parents' => array(10989,11089,12365,12228,4527),
     ),
     11047 => array(
         'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
@@ -1224,7 +1224,7 @@ $config['en_all_6205'] = array(
         'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ START',
         'm_desc' => '',
-        'm_parents' => array(10964,11089,12365,6205,12228,4527),
+        'm_parents' => array(10989,11089,12365,6205,12228,4527),
     ),
     7304 => array(
         'm_icon' => '<i class="far fa-chart-bar read"></i>',
@@ -2225,13 +2225,13 @@ $config['en_all_12228'] = array(
         'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ SKIPPED',
         'm_desc' => 'Read was skipped or failed to complete',
-        'm_parents' => array(10964,11089,12365,12228,4527),
+        'm_parents' => array(10989,11089,12365,12228,4527),
     ),
     7347 => array(
         'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ START',
         'm_desc' => 'The top of reading list where readers start their reading experience',
-        'm_parents' => array(10964,11089,12365,6205,12228,4527),
+        'm_parents' => array(10989,11089,12365,6205,12228,4527),
     ),
     12327 => array(
         'm_icon' => '<i class="fas fa-lock-open read"></i>',
@@ -2918,13 +2918,13 @@ $config['en_all_11089'] = array(
         'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ START',
         'm_desc' => '',
-        'm_parents' => array(10964,11089,12365,6205,12228,4527),
+        'm_parents' => array(10989,11089,12365,6205,12228,4527),
     ),
     6146 => array(
         'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ SKIPPED',
         'm_desc' => '',
-        'm_parents' => array(10964,11089,12365,12228,4527),
+        'm_parents' => array(10989,11089,12365,12228,4527),
     ),
     11029 => array(
         'm_icon' => '<i class="fas fa-caret-circle-down play" aria-hidden="true"></i>',
@@ -4813,7 +4813,7 @@ $config['en_all_10990'] = array(
 );
 
 //PLAY SUPERPOWERS:
-$config['en_ids_10957'] = array(10939,10984,10985,10964,10983,10967);
+$config['en_ids_10957'] = array(10939,10984,10985,10964,10989,10983,10967);
 $config['en_all_10957'] = array(
     10939 => array(
         'm_icon' => '<i class="fad fa-pen idea" aria-hidden="true"></i>',
@@ -4836,6 +4836,12 @@ $config['en_all_10957'] = array(
     10964 => array(
         'm_icon' => '<i class="fad fa-glasses-alt read" aria-hidden="true"></i>',
         'm_name' => 'READ GLASSES',
+        'm_desc' => '',
+        'm_parents' => array(10957),
+    ),
+    10989 => array(
+        'm_icon' => '<i class="fad fa-hourglass-half read" aria-hidden="true"></i>',
+        'm_name' => 'READ HOURGLASS',
         'm_desc' => '',
         'm_parents' => array(10957),
     ),
@@ -6039,13 +6045,13 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ SKIPPED',
         'm_desc' => '',
-        'm_parents' => array(10964,11089,12365,12228,4527),
+        'm_parents' => array(10989,11089,12365,12228,4527),
     ),
     7347 => array(
         'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ START',
         'm_desc' => '',
-        'm_parents' => array(10964,11089,12365,6205,12228,4527),
+        'm_parents' => array(10989,11089,12365,6205,12228,4527),
     ),
     7304 => array(
         'm_icon' => '<i class="far fa-chart-bar read"></i>',

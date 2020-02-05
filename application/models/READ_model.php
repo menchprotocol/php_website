@@ -1691,7 +1691,7 @@ class READ_model extends CI_Model
                 //IDEA TITLE
                 echo '<h1>' . echo_in_title($ins[0]['in_title']) . '</h1>';
 
-                if(superpower_active(10964, true)){
+                if(superpower_active(10989, true)){
                     //Show More Information:
                     echo '<div class="read-topic read-info-topic"><span class="info-item">';
 

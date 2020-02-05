@@ -64,7 +64,7 @@ if(!$session_en){
 
         echo '<b class="actionplan-title montserrat montserrat idea-url in-title-'.$ln['in_id'].'">' . $ln['in_title'] . '</b>';
 
-        if(superpower_active(10964, true)){
+        if(superpower_active(10989, true)){
             echo '<div class="montserrat idea-info doupper">';
 
             $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $ln);
