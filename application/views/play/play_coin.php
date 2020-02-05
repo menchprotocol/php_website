@@ -306,6 +306,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     'ln_type_play_id' => 4983,
                     'ln_parent_play_id' => $player['en_id'],
                 ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
+
+                echo count(array_intersect($activated_tabs, $this->config->item('en_ids_12440'))) .'/'.$counter.'/'$authored_ideas[0]['totals'].'<hr />';
+
                 $default_active = ( !count(array_intersect($activated_tabs, $this->config->item('en_ids_12440'))) && ( $counter || !$authored_ideas[0]['totals'] ));
 
                 if($default_active){
