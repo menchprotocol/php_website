@@ -2762,7 +2762,7 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tab
     //Determine ICON
     if($is_idea_title_lg){
         //IDEA COIN:
-        $icon = '<span class="icon-block">'.$en_all_12112[4535]['m_icon'].'</span>';
+        $icon = '<span class="icon-block title-icon">'.$en_all_12112[4535]['m_icon'].'</span>';
     } elseif(in_array($cache_en_id, $CI->config->item('en_ids_12420'))){
         $icon = '<span class="icon-block">'.$en_all_12112[$cache_en_id]['m_icon'].'</span>';
     } else {

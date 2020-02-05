@@ -1149,19 +1149,23 @@ label {
 }
 
 .texttype_4356_sm {
-    margin-top: 5px;
     text-align: center;
     padding-right: 2px;
     padding-left: 2px;
     width: 55px;
 }
 .texttype_4736_lg, #newIdeaTitle {
+    margin-top: 10px;
     background-color: transparent;
     font-size: 1.7em;
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     color:#000000;
     padding:5px 0 0 5px;
+}
+.title-icon{
+    vertical-align: top;
+    margin-top: 10px;
 }
 
 .texttype_4736_lg::placeholder{
