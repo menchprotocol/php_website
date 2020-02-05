@@ -1560,34 +1560,34 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
         }
     }
 
-    $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'] : '/read/'.$in['in_id'] ) . '" class="list-group-item itemread '.$extra_class.'">';
+    $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'] : '/read/'.$in['in_id'] ) . '" class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
 
     //Title
-    $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
+    $ui .= '<span class="icon-block"><i class="fas fa-circle read" aria-hidden="true"></i></span><b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
 
 
     //Description:
     if($show_description){
         $in_description = echo_in_description($in['in_id']);
         if($in_description){
-            $ui .= '<div class="idea-desc">'.$in_description.'</div>';
+            $ui .= '<div class="idea-desc"><span class="icon-block">&nbsp;</span>'.$in_description.'</div>';
         }
     }
 
 
     //Show completion if glasses are on:
-    if(superpower_active(10989, true) && $in_reads && in_array($in['in_id'], $player_read_ids)){
+    if(superpower_active(10964, true) && $in_reads && in_array($in['in_id'], $player_read_ids)){
         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
         if($completion_rate['completion_percentage'] > 0){
-            $ui .= '<div class="idea-info montserrat doupper"><span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% done]</span></div>';
+            $ui .= '<div class="idea-info montserrat doupper '.superpower_active(10964).'"><span class="icon-block">&nbsp;</span><span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% done]</span></div>';
         }
     }
 
 
     if($footnotes){
-        $ui .= '<div class="idea-footnote">' . $footnotes . '</div>';
+        $ui .= '<div class="idea-footnote"><span class="icon-block">&nbsp;</span>' . $footnotes . '</div>';
     }
 
 
