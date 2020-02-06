@@ -182,6 +182,10 @@ li a {
 }
 
 
+.bottom-read-line{
+    order-bottom: 1px solid #FC1B44;
+    margin-bottom: 10px;
+}
 
 .btn {
     font-family: 'Montserrat', sans-serif;
@@ -410,7 +414,6 @@ img.no-radius {
 .read, .read .fas, .read .far, .read .fal, .read .fad, .color6205, .info-item i.read:hover, .info-item a.read:hover  { color:#FC1B44 !important; }
 .grey, .grey i { color:#AAAAAA !important; }
 .black { color:#000000 !important; }
-
 
 .btn-play i, .btn-read i, .btn-idea i { color: #000000 !important; }
 
