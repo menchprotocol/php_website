@@ -1197,7 +1197,7 @@ function echo_tree_actionplan($in, $autoexpand){
 
         if($has_level2_content){
             $return_html .= '<a class="js-ln-create-steps-review" idea-id="'.$in_level2['in_id'].'" role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
-            $return_html .= '<span class="icon-block"><i class="fas fa-plus-circle"></i></span>';
+            $return_html .= '<span class="icon-block"><i class="fad fa-plus-circle"></i></span>';
         } else {
             $return_html .= '<span class="empty-block">';
             $return_html .= '<span class="icon-block"><i class="fal fa-check-circle"></i></span>';
@@ -1252,7 +1252,7 @@ function echo_tree_actionplan($in, $autoexpand){
 
                     if(count($in_level3_messages) > 0){
                         $return_html .= '<a role="button" data-toggle="collapse" class="second-level-link js-ln-create-steps-review" idea-id="'.$in_level3['in_id'].'" data-parent="#open' . $in_level2_counter . '-'.$in_level3_counter.'" href="#collapse' . $in_level2_counter . '-'.$in_level3_counter.'" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
-                        $return_html .= '<span class="icon-block"><i class="fas fa-plus-circle"></i></span>';
+                        $return_html .= '<span class="icon-block"><i class="fad fa-plus-circle"></i></span>';
                     } else {
                         $return_html .= '<span class="icon-block"><i class="fal fa-check-circle"></i></span>';
                     }
@@ -1825,7 +1825,7 @@ function echo_radio_players($parent_en_id, $child_en_id, $enable_mulitiselect, $
     //Did we have too many items?
     if($count>=$show_max){
         //Show "Show more" button
-        $ui .= '<a href="javascript:void(0);" class="list-group-item itemplay itemsetting montserrat extra-items-'.$parent_en_id.'" onclick="$(\'.extra-items-'.$parent_en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Show '.($count-$show_max).' more</a>';
+        $ui .= '<a href="javascript:void(0);" class="list-group-item itemplay itemsetting montserrat extra-items-'.$parent_en_id.'" onclick="$(\'.extra-items-'.$parent_en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="fad fa-plus-circle"></i></span>Show '.($count-$show_max).' more</a>';
     }
 
     $ui .= '</div>';
@@ -2008,7 +2008,7 @@ function echo_2level_stats($stat_name, $stats_en_id, $mother_en_id, $link_types_
 
     //Display RemainingIF ANY:
     echo_2level_players(array(
-        'm_icon' => '<i class="fas fa-plus-circle"></i>',
+        'm_icon' => '<i class="fad fa-plus-circle"></i>',
         'm_name' => 'Others',
         'm_desc' => 'What is left',
     ), $remaining_child, $link_types_counts, $all_shown, $link_field, 'en_all_'.$mother_en_id, $addup_total_count, $display_field);
@@ -2352,9 +2352,9 @@ function echo_read_breadcrumbs($in_id){
 
     foreach ($recursive_parents as $grand_parent_ids) {
         foreach(array_intersect($grand_parent_ids, $list_ids) as $intersect) {
+
             //Show the breadcrumb since it's connected:
-            $ui .= '<nav aria-label="breadcrumb">';
-            $ui .= '<ol class="breadcrumb">';
+            $ui = '<div class="list-group">';
 
             $breadcrumb_items = array();
 
@@ -2371,12 +2371,11 @@ function echo_read_breadcrumbs($in_id){
                         //Calcullate completion time:
                         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $ins_this[0]);
                         if ($completion_rate['completion_percentage'] > 0) {
-                            $completion_ui_rate = '<span title="' . $completion_rate['steps_completed'] . '/' . $completion_rate['steps_total'] . ' read">[' . $completion_rate['completion_percentage'] . '% DONE]</span>';
+                            $completion_ui_rate = '<span title="' . $completion_rate['steps_completed'] . '/' . $completion_rate['steps_total'] . ' read" class="'.superpower_active(10989).'"> [' . $completion_rate['completion_percentage'] . '%]</span>';
                         }
                     }
 
-
-                    array_push($breadcrumb_items, '<li class="breadcrumb-item"><a href="/' . $parent_in_id . '"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="icon-block' . (in_array($ins_this[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '') . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_name'] . ': ' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_desc'] . '">' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_icon'] . '</span></span>' . $ins_this[0]['in_title'] . $completion_ui_rate . '</a></li>');
+                    array_push($breadcrumb_items, '<a href="/' . $parent_in_id . '"class="list-group-item itemread no-side-padding"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="icon-block' . (in_array($ins_this[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '') . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_name'] . ': ' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_desc'] . '">' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_icon'] . '</span></span>' . $ins_this[0]['in_title'] . $completion_ui_rate . '</a>');
                 }
 
                 if ($parent_in_id == $intersect) {
@@ -2385,10 +2384,10 @@ function echo_read_breadcrumbs($in_id){
             }
 
             $ui .= join('', array_reverse($breadcrumb_items));
-            $ui .= '</ol>';
-            $ui .= '</nav>';
+            $ui .= '</div>';
 
             break; //TODO Remove later and allow multiple parent links
+
         }
 
         if($ui){
@@ -2493,7 +2492,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         } else {
             echo '</div>';
             if($found_upcoming > 0 && !$all_done){
-                echo '<div class="is_upcoming montserrat" style="padding:5px 0 5px 0;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-plus-circle read"></i></span>'.$found_upcoming.' MORE</a></div>';
+                echo '<div class="is_upcoming montserrat" style="padding:5px 0 5px 0;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fad fa-plus-circle read"></i></span>'.$found_upcoming.' MORE</a></div>';
             }
         }
     }
