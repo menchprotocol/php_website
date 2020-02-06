@@ -1623,7 +1623,10 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $ui .= '</td>';
 
     //Search for Idea Image:
-    $ui .= '<td class="featured-frame">'.echo_in_thumbnail($in['in_id']).'</td>';
+    $in_thumbnail = echo_in_thumbnail($in['in_id']);
+    if($in_thumbnail){
+        $ui .= '<td class="featured-frame">'.$in_thumbnail.'</td>';
+    }
     $ui .= '</tr></table>';
     $ui .= '</a>';
 
