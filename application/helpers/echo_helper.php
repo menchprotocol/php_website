@@ -1552,7 +1552,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $CI =& get_instance();
     $session_en = superpower_assigned();
 
-    if($session_en && !count($completion_rate)){
+    if($session_en){
         //Make sure in reading list:
         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
     } else {
