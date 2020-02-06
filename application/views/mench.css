@@ -1135,10 +1135,15 @@ label {
     width:    -moz-calc(100% - 15px);
     width:         calc(100% - 15px);
 }
-.input-group .algolia-autocomplete, .texttype_4736_lg, #newIdeaTitle, .add_note_form, .idea-info, .texttype_4736_sm {
-    width: -webkit-calc(100% - 67px) !important;
-    width:    -moz-calc(100% - 67px) !important;
-    width:         calc(100% - 67px) !important;
+.input-group .algolia-autocomplete, .texttype_4736_sm{
+    width: -webkit-calc(100% - 68px);
+    width:    -moz-calc(100% - 68px);
+    width:         calc(100% - 68px);
+}
+.texttype_4736_lg, #newIdeaTitle, .add_note_form, .idea-info, block-one {
+    width: -webkit-calc(100% - 34px) !important;
+    width:    -moz-calc(100% - 34px) !important;
+    width:         calc(100% - 34px) !important;
 }
 
 .texttype_4736_sm{
