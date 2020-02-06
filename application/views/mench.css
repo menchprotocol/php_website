@@ -1140,7 +1140,7 @@ label {
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
 }
-.texttype_4736_lg, #newIdeaTitle, .add_note_form, .idea-info, block-one {
+.texttype_4736_lg, #newIdeaTitle, .add_note_form, .idea-info, .block-one {
     width: -webkit-calc(100% - 34px) !important;
     width:    -moz-calc(100% - 34px) !important;
     width:         calc(100% - 34px) !important;
