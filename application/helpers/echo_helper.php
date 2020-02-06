@@ -1545,7 +1545,7 @@ function echo_in_stat_play($in_id){
 
 
 
-function echo_in_read($in, $show_description = false, $footnotes = null, $common_prefix = null, $extra_class = null, $force_icon = false, $in_reads = true, $completion_rate = array())
+function echo_in_read($in, $show_description = false, $footnotes = null, $common_prefix = null, $extra_class = null)
 {
 
     //See if user is logged-in:
@@ -1586,7 +1586,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     }
 
 
-    $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'] : '/read/'.$in['in_id'] ) . '" class="list-group-item no-side-padding itemread '.$extra_class.'">';
+    $ui = '<a href="/'.$in['in_id'] . '" class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
 
@@ -1607,7 +1607,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
 
 
     //Show completion if glasses are on:
-    if(superpower_active(10964, true) && $in_reads){
+    if(superpower_active(10964, true)){
         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
         if($completion_rate['completion_percentage'] > 0){
             $ui .= '<div class="idea-info montserrat doupper '.superpower_active(10964).'"><span class="icon-block">&nbsp;</span><span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% done]</span></div>';
@@ -1623,7 +1623,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $ui .= '</td>';
 
     //Search for Idea Image:
-    $ui .= '<td class="featured-frame">'.echo_in_thumbnail($in['in_id'], $force_icon).'</td>';
+    $ui .= '<td class="featured-frame">'.echo_in_thumbnail($in['in_id']).'</td>';
     $ui .= '</tr></table>';
     $ui .= '</a>';
 
@@ -1663,7 +1663,7 @@ function echo_in_description($in_id){
 
 }
 
-function echo_in_thumbnail($in_id, $force_icon = false, $extra_css = null){
+function echo_in_thumbnail($in_id){
 
     $CI =& get_instance();
 
@@ -1683,7 +1683,7 @@ function echo_in_thumbnail($in_id, $force_icon = false, $extra_css = null){
 
         //Did we find an image for this message?
         if(count($images) > 0){
-            return '<div class="inline-block featured-frame pull-right '.$extra_css.'"><span class="featured-image"><img src="'.$images[0]['ln_content'].'" /></span></div>';
+            return '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="'.$images[0]['ln_content'].'" /></span></div>';
         }
 
         //Maybe we have an Embed Video?
@@ -1697,14 +1697,14 @@ function echo_in_thumbnail($in_id, $force_icon = false, $extra_css = null){
         if(count($embeds) > 0){
             $youtube_id = extract_youtube_id($embeds[0]['ln_content']);
             if(strlen($youtube_id) > 0){
-                return '<div class="inline-block featured-frame pull-right '.$extra_css.'"><span class="featured-image"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
+                return '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
             }
         }
 
     }
 
     //Not found:
-    return ( $force_icon ? '<div class="inline-block pull-right '.$extra_css.'"><i class="fas fa-chevron-circle-right read large-icon"></i></div>' : null );
+    return null;
 
 }
 
@@ -2475,7 +2475,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
             } else {
 
-                echo echo_in_read($child_in, false, null, $common_prefix, ( $next_key>=0 && $next_key!=$key && !$all_done ? 'hidden is_upcoming' : '' ), true, $in_reads, $completion_rate[$key]);
+                echo echo_in_read($child_in, false, null, $common_prefix, ( $next_key>=0 && $next_key!=$key && !$all_done ? 'hidden is_upcoming' : '' ));
 
             }
         }
