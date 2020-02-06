@@ -1126,6 +1126,10 @@ label {
 }
 
 
+.top-icon{
+    vertical-align: top;
+    margin-top: 4px;
+}
 
 .idea-left {
     display: block;
