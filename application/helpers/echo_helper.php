@@ -1551,9 +1551,8 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = superpower_assigned();
-    $en_all_12446 = $CI->config->item('en_all_12446'); //READ ICONS
 
-    if($session_en && $in_reads && !count($completion_rate)){
+    if($session_en && !count($completion_rate)){
         //Make sure in reading list:
         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
     } else {
@@ -1592,6 +1591,9 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $ui .= '<td>';
 
     //Title
+
+    $en_all_12446 = $CI->config->item('en_all_12446'); //READ ICONS
+
     $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12446[$read_icon_play_id]['m_name'].' '.$completion_rate['completion_percentage'].'% DONE">'.$en_all_12446[$read_icon_play_id]['m_icon'].'</span><b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
 
 
