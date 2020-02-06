@@ -1545,21 +1545,23 @@ function echo_in_stat_play($in_id){
 
 
 
-function echo_in_read($in, $show_description = false, $footnotes = null, $common_prefix = null, $extra_class = null, $force_icon = false, $in_reads = true)
+function echo_in_read($in, $show_description = false, $footnotes = null, $common_prefix = null, $extra_class = null, $force_icon = false, $in_reads = true, $completion_rate = array())
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = superpower_assigned();
-    $completion_rate['completion_percentage'] = 0; //Default value
     $en_all_12446 = $CI->config->item('en_all_12446'); //READ ICONS
 
-    if($session_en && $in_reads){
+    if($session_en && $in_reads && !count($completion_rate)){
         //Make sure in reading list:
         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
+    } else {
+        $completion_rate['completion_percentage'] = 0; //Default value
     }
 
-    //Determine ICON:
+
+    //Determine ICON based on completion rate:
     if($completion_rate['completion_percentage']==0){
 
         //Not Started:
@@ -1583,6 +1585,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
         $read_icon_play_id = 12447;
 
     }
+
 
     $ui = '<a href="'.( $in_reads ? '/'.$in['in_id'] : '/read/'.$in['in_id'] ) . '" class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -2448,12 +2451,9 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
         foreach($in__children as $key => $child_in){
 
-            //Has this been completed before by this user?
-            $footnotes = ( $completion_rate[$key]['completion_percentage'] > 0 ? '<span class="'.superpower_active(10989).'">['.$completion_rate[$key]['completion_percentage'].'% DONE] </span>' : '' );
-
             if($push_message){
 
-                $message_content .= ($key+1).'. '.echo_in_title($child_in['in_title'], $push_message, $common_prefix).' '.$footnotes."\n";
+                $message_content .= ($key+1).'. '.echo_in_title($child_in['in_title'], $push_message, $common_prefix).( $completion_rate[$key]['completion_percentage'] > 0 ? '<span class="'.superpower_active(10989).'">['.$completion_rate[$key]['completion_percentage'].'% DONE] </span>' : '' )."\n";
 
                 if($next_key==$key){
                     array_push($msg_quick_reply, array(
@@ -2473,7 +2473,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
             } else {
 
-                echo echo_in_read($child_in, false, $footnotes, $common_prefix, ( $next_key>=0 && $next_key!=$key && !$all_done ? 'hidden is_upcoming' : '' ), true, $in_reads);
+                echo echo_in_read($child_in, false, null, $common_prefix, ( $next_key>=0 && $next_key!=$key && !$all_done ? 'hidden is_upcoming' : '' ), true, $in_reads, $completion_rate[$key]);
 
             }
         }
