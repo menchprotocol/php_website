@@ -1602,7 +1602,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
 
 
     //Show completion if glasses are on:
-    if(superpower_active(10964, true) && $in_reads && in_array($in['in_id'], $player_read_ids)){
+    if(superpower_active(10964, true) && $in_reads){
         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
         if($completion_rate['completion_percentage'] > 0){
             $ui .= '<div class="idea-info montserrat doupper '.superpower_active(10964).'"><span class="icon-block">&nbsp;</span><span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% done]</span></div>';
