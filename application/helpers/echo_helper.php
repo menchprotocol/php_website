@@ -1554,12 +1554,9 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $completion_rate['completion_percentage'] = 0; //Default value
     $en_all_12446 = $CI->config->item('en_all_12446'); //READ ICONS
 
-    if($session_en){ // && $in_reads
+    if($session_en && $in_reads){
         //Make sure in reading list:
-        $player_read_ids = $CI->READ_model->read_ids($session_en['en_id']);
-        if(in_array($in['in_id'], $player_read_ids)){
-            $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
-        }
+        $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
     }
 
     //Determine ICON:
