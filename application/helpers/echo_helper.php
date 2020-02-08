@@ -1504,7 +1504,6 @@ function echo_in_idea($in)
 function echo_in_stat_read($in_id = 0, $en_id = 0){
 
     $CI =& get_instance();
-    $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
 
     if(superpower_active(10964, true)){
 
@@ -1524,7 +1523,7 @@ function echo_in_stat_read($in_id = 0, $en_id = 0){
 
         $read_coins = $CI->READ_model->ln_fetch($coin_filter, array(), 1, 0, array(), 'COUNT(ln_id) as total_coins');
         if($read_coins[0]['total_coins'] > 0){
-            return '<span class="montserrat read '.superpower_active(10964).'"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>';
+            return '<span class="montserrat read '.superpower_active(10964).'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($read_coins[0]['total_coins']).'</span>';
         }
 
     }
@@ -1535,19 +1534,18 @@ function echo_in_stat_read($in_id = 0, $en_id = 0){
 function echo_in_stat_play($in_id = 0, $en_id = 0){
 
     $CI =& get_instance();
-    $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
 
     if(superpower_active(10983, true)){
 
         if($in_id){
-            $icon = $en_all_2738[6205]['m_icon'];
+            $mench = 'play';
             $coin_filter = array(
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id' => 4983,
                 'ln_child_idea_id' => $in_id,
             );
         } elseif($en_id){
-            $icon = $en_all_2738[4535]['m_icon'];
+            $mench = 'idea';
             $coin_filter = array(
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id' => 4983,
@@ -1557,7 +1555,7 @@ function echo_in_stat_play($in_id = 0, $en_id = 0){
 
         $play_coins = $CI->READ_model->ln_fetch($coin_filter, array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         if($play_coins[0]['total_coins'] > 0){
-            return '<span class="montserrat play '.superpower_active(10983).'"><span class="icon-block">'.$icon.'</span>'.echo_number($play_coins[0]['total_coins']).'</span>';
+            return '<span class="montserrat '.$mench.' '.superpower_active(10983).'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($play_coins[0]['total_coins']).'</span>';
         }
     }
 
