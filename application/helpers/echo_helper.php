@@ -2774,9 +2774,10 @@ function echo_en($en, $is_parent = false)
 
 
     //PARENT ICONS
-    $ui .= '<div class="inline-block '. superpower_active(10986) .'">';
+    $ui .= '<div class="'. superpower_active(10986) .'">';
+    $ui .= '<span class="icon-block">&nbsp;</span>';
     foreach ($en__parents as $en_parent) {
-        $ui .= ' <span class="icon-block en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span>';
+        $ui .= '<span class="icon-block en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span>';
     }
     $ui .= ' </div>';
 
@@ -2787,17 +2788,17 @@ function echo_en($en, $is_parent = false)
 
 
 
-
-    //READ
-    $ui .= '<td class="MENCHcolumn2 read">';
-    $ui .= echo_in_stat_read(0, $en['en_id']);
-    $ui .= '</td>';
-
-
+    if($is_read_progress){
+        //READ
+        $ui .= '<td class="MENCHcolumn2 read">';
+        $ui .= echo_in_stat_read(0, $en['en_id']);
+        $ui .= '</td>';
 
 
-    //PLAY
-    $ui .= '<td class="MENCHcolumn3 play">';
+
+
+        //IDEA
+        $ui .= '<td class="MENCHcolumn3 play">';
 
 
         //RIGHT EDITING:
@@ -2816,9 +2817,42 @@ function echo_en($en, $is_parent = false)
 
 
         $ui .= echo_in_stat_play(0, $en['en_id']);
+        $ui .= '</td>';
 
 
-    $ui .= '</td>';
+    } else {
+
+        //IDEA
+        $ui .= '<td class="MENCHcolumn3 play">';
+
+
+        //RIGHT EDITING:
+        $ui .= '<div class="pull-right inline-block">';
+        $ui .= '<div class="note-edit edit-off '.superpower_active(10967).'">';
+        $ui .= '<span class="show-on-hover">';
+        if($can_modify){
+
+            //Unlink:
+            $ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog" style="font-size: 0.8em;"></i></a></span>';
+
+        }
+        $ui .= '</span>';
+        $ui .= '</div>';
+        $ui .= '</div>';
+
+        $ui .= echo_in_stat_play(0, $en['en_id']);
+
+        $ui .= '</td>';
+
+
+
+        //READ
+        $ui .= '<td class="MENCHcolumn2 read">';
+        $ui .= echo_in_stat_read(0, $en['en_id']);
+        $ui .= '</td>';
+
+
+    }
 
 
     $ui .= '</tr></table>';
