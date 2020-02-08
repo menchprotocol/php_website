@@ -381,6 +381,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 //IDEA NOTES
                 $idea_note_filters = array(
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_play_id' => $en_id2,
                     'ln_parent_play_id' => $player['en_id'],
