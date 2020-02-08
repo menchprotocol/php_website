@@ -1540,6 +1540,7 @@ function echo_in_stat_play($in_id = 0, $en_id = 0){
         if($in_id){
             $mench = 'play';
             $coin_filter = array(
+                'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id' => 4983,
                 'ln_child_idea_id' => $in_id,
@@ -1547,13 +1548,14 @@ function echo_in_stat_play($in_id = 0, $en_id = 0){
         } elseif($en_id){
             $mench = 'idea';
             $coin_filter = array(
+                'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id' => 4983,
                 'ln_parent_play_id' => $en_id,
             );
         }
 
-        $play_coins = $CI->READ_model->ln_fetch($coin_filter, array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+        $play_coins = $CI->READ_model->ln_fetch($coin_filter, array('in_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         if($play_coins[0]['total_coins'] > 0){
             return '<span class="montserrat '.$mench.' '.superpower_active(10983).'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($play_coins[0]['total_coins']).'</span>';
         }
