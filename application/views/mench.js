@@ -274,7 +274,7 @@ $(document).ready(function () {
                         //For Players:
                         if(search_only_play || search_only_idea){
 
-                            if(search_only_play && js_session_superpowers_assigned.includes(10983)){
+                            if(search_only_play && js_session_superpowers_assigned.includes(10967)){
 
                                 //Can view ALL Players:
                                 search_filters += ' ( alg_obj_is_in = 0 ) ';
@@ -287,7 +287,7 @@ $(document).ready(function () {
 
                         } else {
 
-                            if(js_session_superpowers_assigned.includes(10983)){
+                            if(js_session_superpowers_assigned.includes(10967)){
 
                                 //no filter
 

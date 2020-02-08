@@ -31,7 +31,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     //RIGHT
-    echo '<div class="pull-right inline-block '.superpower_active(10983).'">';
+    echo '<div class="pull-right inline-block '.superpower_active(10967).'">';
 
         //REFERENCES
         $en_count_references = en_count_references($player['en_id']);
@@ -279,7 +279,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 }
 
                 //Input to add new parents:
-                $this_tab .= '<div id="new-parent" class="list-group-item no-side-padding '.superpower_active(10983).'">
+                $this_tab .= '<div id="new-parent" class="list-group-item no-side-padding '.superpower_active(10967).'">
                     <div class="form-group is-empty"><input type="text" class="form-control new-player-input algolia_search form-control-thick dotransparent" data-lpignore="true" placeholder="ADD PLAYER PASTE URL"></div>
                     <div class="algolia_pad_search hidden"></div>
             </div>';
@@ -330,7 +330,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 }
 
                 //Input to add new child:
-                $this_tab .= '<div id="new-children" class="list-group-item no-side-padding '.superpower_active(10983).'">
+                $this_tab .= '<div id="new-children" class="list-group-item no-side-padding '.superpower_active(10967).'">
 
 
             <div class="form-group is-empty"><input type="text" class="form-control new-player-input form-control-thick algolia_search dotransparent" data-lpignore="true" placeholder="ADD PLAYER"></div>
@@ -362,7 +362,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     $en_all_6177 = $this->config->item('en_all_6177'); //Player Statuses
 
                     //Add 2nd Navigation to UI
-                    $tab_content .= '<div class="nav nav-tabs nav-tabs-sm '.superpower_active(10967).'">';
+                    $tab_content .= '<div class="nav nav-tabs nav-tabs-sm '.superpower_active(10986).'">';
 
                     //Show fixed All button:
                     $tab_content .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all players"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="counter-11029">' . $player_count . '</span>]</a></li>';

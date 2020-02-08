@@ -668,7 +668,7 @@ class Read extends CI_Controller
 
 
         //Player Statuses
-        echo '<table class="table table-sm table-striped stats-table mini-stats-table player_statuses '.superpower_active(10983).'">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table player_statuses '.superpower_active(10967).'">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7303[6177]['m_name'].echo__s(count($this->config->item('en_all_6177')), true).'</td>';
         echo '</tr>';
@@ -729,12 +729,12 @@ class Read extends CI_Controller
                 }
 
                 //Display row:
-                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_play_id != 6181 /* Player Featured */ ? ' class="' . superpower_active(10983) . '"' : '' ).'><a href="/play/' . $en_id .'#status-'.$en_status_play_id.'">'.number_format($source_count,0).'</a></td>';
+                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_play_id != 6181 /* Player Featured */ ? ' class="' . superpower_active(10967) . '"' : '' ).'><a href="/play/' . $en_id .'#status-'.$en_status_play_id.'">'.number_format($source_count,0).'</a></td>';
 
             }
 
             //Echo stats:
-            $expert_sources = '<tr class="' .( !$total_counts[6181] ? superpower_active(10983) : '' ) . '">';
+            $expert_sources = '<tr class="' .( !$total_counts[6181] ? superpower_active(10967) : '' ) . '">';
             $expert_sources .= '<td style="text-align: left;"><span class="icon-block">'.$m['m_icon'].'</span><a href="/play/'.$en_id.'">'.$m['m_name'].'</a></td>';
             $expert_sources .= $expert_source_statuses;
             $expert_sources .= '</tr>';
@@ -753,9 +753,9 @@ class Read extends CI_Controller
         echo '<td style="text-align: left;">'.$en_all_7303[3000]['m_name'].' ['.number_format($total_counts[6181], 0).']</td>';
         foreach($this->config->item('en_all_7358') /* Player Active Statuses */ as $en_status_play_id => $m_status){
             if($en_status_play_id == 6181 /* Player Published */){
-                echo '<td style="text-align:right;"><div class="' . superpower_active(10983) . '">' . $en_all_6177[$en_status_play_id]['m_name'] . '</div></td>';
+                echo '<td style="text-align:right;"><div class="' . superpower_active(10967) . '">' . $en_all_6177[$en_status_play_id]['m_name'] . '</div></td>';
             } else {
-                echo '<td style="text-align:right;" class="' . superpower_active(10983) . '">' . $en_all_6177[$en_status_play_id]['m_name'] . '</td>';
+                echo '<td style="text-align:right;" class="' . superpower_active(10967) . '">' . $en_all_6177[$en_status_play_id]['m_name'] . '</td>';
             }
         }
         echo '</tr>';
@@ -765,10 +765,10 @@ class Read extends CI_Controller
         echo $expert_sources_unpublished;
 
 
-        echo '<tr style="font-weight: bold;" class="'.superpower_active(10983).'">';
+        echo '<tr style="font-weight: bold;" class="'.superpower_active(10967).'">';
         echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Totals</td>';
         foreach($this->config->item('en_all_7358') /* Player Active Statuses */ as $en_status_play_id => $m_status){
-            echo '<td style="text-align: right;" '.( $en_status_play_id != 6181 /* Player Featured */ ? ' class="' . superpower_active(10983) . '"' : '' ).'>' . number_format($total_counts[$en_status_play_id], 0) . '</td>';
+            echo '<td style="text-align: right;" '.( $en_status_play_id != 6181 /* Player Featured */ ? ' class="' . superpower_active(10967) . '"' : '' ).'>' . number_format($total_counts[$en_status_play_id], 0) . '</td>';
         }
         echo '</tr>';
 
@@ -1486,7 +1486,7 @@ class Read extends CI_Controller
     function messenger_fetch_profile($psid)
     {
 
-        if (!superpower_assigned(10967)) {
+        if (!superpower_assigned(10986)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing superpower',

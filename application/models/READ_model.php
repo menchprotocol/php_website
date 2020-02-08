@@ -2387,10 +2387,15 @@ class READ_model extends CI_Model
              * */
 
             //Set default seconds per step:
+            $metadata_this['completion_percentage'] = 0;
             $step_default_seconds = config_var(12176);
 
+
             //Calculate completion rate based on estimated time cost:
-            $metadata_this['completion_percentage'] = intval(floor( ($metadata_this['seconds_completed']+($step_default_seconds*$metadata_this['steps_completed'])) / ($metadata_this['seconds_total']+($step_default_seconds*$metadata_this['steps_total'])) * 100 ));
+            if($metadata_this['steps_total'] > 0 || $metadata_this['seconds_total'] > 0){
+                $metadata_this['completion_percentage'] = intval(floor( ($metadata_this['seconds_completed']+($step_default_seconds*$metadata_this['steps_completed'])) / ($metadata_this['seconds_total']+($step_default_seconds*$metadata_this['steps_total'])) * 100 ));
+            }
+
 
             //Hack for now, investigate later:
             if($metadata_this['completion_percentage'] > 100){
@@ -3093,7 +3098,7 @@ class READ_model extends CI_Model
 
                     //Show player link with status:
                     $current_mench = current_mench();
-                    $output_body_message = str_replace('@' . $string_references['ref_players'][0], '<span class="'.( $parents_media_shown > 0 ? superpower_active(10983) : '' ).'">'.( !in_array($ens[0]['en_status_play_id'], $this->config->item('en_ids_7357')) ? '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_play_id']]['m_icon'].'</span>' : '' ).( $current_mench['x_name']=='read' ? '<span class="montserrat doupper">' . $ens[0]['en_name']  . '</span>' : '<a class="montserrat doupper" href="/play/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_players'][0], '<span class="'.( $parents_media_shown > 0 ? superpower_active(10967) : '' ).'">'.( !in_array($ens[0]['en_status_play_id'], $this->config->item('en_ids_7357')) ? '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_play_id']]['m_icon'].'</span>' : '' ).( $current_mench['x_name']=='read' ? '<span class="montserrat doupper">' . $ens[0]['en_name']  . '</span>' : '<a class="montserrat doupper" href="/play/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
 
                 }
 
