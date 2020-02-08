@@ -288,8 +288,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
     if($show_tab_menu_count >= 2){
-        $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
-        echo '<ul class="nav nav-tabs nav-tabs-sm '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
+        echo '<ul class="nav nav-tabs nav-tabs-sm">';
         echo $show_tab_ui;
         echo '</ul>';
     }
