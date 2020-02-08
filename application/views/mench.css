@@ -1117,6 +1117,7 @@ label {
 .icon-block-sm{ width:28px; display: inline-block; text-align: center; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; }
 
+.icon-block-img img,
 .icon-block-lg img,
 .icon-block-sm img,
 .icon-block-xs img,
