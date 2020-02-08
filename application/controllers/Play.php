@@ -760,7 +760,7 @@ fragment PostListingItemSidebar_post on Post {
 
                 ( $session_en
 
-                    ? '<a href="/oii?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_12273')).'&ln_owner_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : '' ).'" class="montserrat idea"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>'
+                    ? '<a href="/oii?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_12273')).'&ln_parent_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : '' ).'" class="montserrat idea"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>'
 
                     : '<span class="montserrat idea"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>'
 
@@ -2799,7 +2799,7 @@ fragment PostListingItemSidebar_post on Post {
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-            'ln_owner_play_id' => $session_en['en_id'],
+            'ln_parent_play_id' => $session_en['en_id'],
         ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
         $read_coins = $this->READ_model->ln_fetch(array(
