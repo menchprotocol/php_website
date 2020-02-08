@@ -2737,7 +2737,7 @@ function echo_en($en, $is_parent = false)
             'en_status_play_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
         if($child_links[0]['totals'] > 0){
-            $ui .= '<div class="inline-block '. superpower_active(10967) .'"><span class="icon-block">' . $en_all_11028[11029]['m_icon'] . '</span>' . echo_number($child_links[0]['totals']) . '</div>';
+            $ui .= '<div class="inline-block '. superpower_active(10967) .' montserrat play"><span class="icon-block">' . $en_all_11028[11029]['m_icon'] . '</span>' . echo_number($child_links[0]['totals']) . '</div>';
         }
     }
 
