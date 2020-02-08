@@ -1528,15 +1528,15 @@ function echo_in_stat_play($in_id){
     $CI =& get_instance();
     $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
 
-    if(superpower_active(10967, true)){
+    if(superpower_active(10983, true)){
         //Authors:
         $play_coins = $CI->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => 4983,
             'ln_child_idea_id' => $in_id,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        if($play_coins[0]['total_coins'] > 1){
-            return '<span class="montserrat play '.superpower_active(10967).'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($play_coins[0]['total_coins']).'</span>';
+        if($play_coins[0]['total_coins'] > 0){
+            return '<span class="montserrat play '.superpower_active(10983).'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($play_coins[0]['total_coins']).'</span>';
         }
     }
 
