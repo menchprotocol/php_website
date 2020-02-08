@@ -292,6 +292,12 @@ img.no-radius {
 }
 .gateway{
     color:transparent !important;
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+}
+.gateway:hover{
+    background-color: #FFFFFF;
 }
 .pull-right{
     float:right;

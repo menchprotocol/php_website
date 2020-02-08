@@ -183,7 +183,7 @@ if(!isset($hide_header)){
                     <td>
                         <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
-                        <div class="supwerpower_view"><span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) || 1 ? ' hidden ' : '' ) ?>">MENCH</span><?= ( count($this->session->userdata('session_superpowers_assigned')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');" class="gateway">|</a>' : '' ) ?></div>
+                        <div class="supwerpower_view"><span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) || 1 ? ' hidden ' : '' ) ?>">MENCH</span><?= ( count($this->session->userdata('session_superpowers_assigned')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');" class="gateway">&nbsp;</a>' : '' ) ?></div>
 
                         <div class="supwerpower_view hidden">
                             <div class="full-width">
