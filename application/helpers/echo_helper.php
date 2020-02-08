@@ -1542,7 +1542,7 @@ function echo_in_stat_play($in_id = 0, $en_id = 0){
             $coin_filter = array(
                 'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+                'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                 'ln_child_idea_id' => $in_id,
             );
         } elseif($en_id){
@@ -1550,7 +1550,7 @@ function echo_in_stat_play($in_id = 0, $en_id = 0){
             $coin_filter = array(
                 'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+                'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                 'ln_parent_play_id' => $en_id,
             );
         }
