@@ -296,9 +296,6 @@ img.no-radius {
     height: 25px;
     display: inline-block;
 }
-.gateway:hover{
-    background-color: #FFFFFF;
-}
 .pull-right{
     float:right;
 }
@@ -398,7 +395,7 @@ img.no-radius {
 }
 
 .nav-tabs{
-    margin-top:15px;
+    margin-top:10px;
     margin-left: 33px;
 }
 
