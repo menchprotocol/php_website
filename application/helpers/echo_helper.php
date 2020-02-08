@@ -483,7 +483,7 @@ function echo_ln_connections($ln){
             //PLAY
             $ens = $CI->PLAY_model->en_fetch(array('en_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
             if(count($ens) > 0){
-                $ln_connections_ui .= echo_en($ens[0], false, true);
+                $ln_connections_ui .= echo_en($ens[0], false);
             }
         } elseif(in_array(6202 , $m['m_parents'])){
             //IDEA
@@ -2684,7 +2684,7 @@ function echo_en($en, $is_parent = false)
 
 
     //PLAYER ICON
-    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
+    $ui .= '<a href="/play/'.$en['en_id'] . '"><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
 
 
     //PLAYER STATUS
@@ -2745,22 +2745,15 @@ function echo_en($en, $is_parent = false)
 
 
     //Does this player also include a link?
-    $can_modify = false;
-    if ($ln_id > 0) {
+    if ($ln_id > 0 && strlen($en['ln_content']) > 0) {
         if($is_play_link){
 
             //PLAY LINKS:
-            $can_modify = true;
 
-            //Show link content:
-            $ln_content = echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']);
-
-            $ui .= ' <span class="ln_content ln_content_' . $ln_id . '">';
-            $ui .= $ln_content;
-            $ui .= '</span>';
+            $ui .= '<div class="ln_content ln_content_' . $ln_id . '"><span class="icon-block">&nbsp;</span>' . echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']) . '</div>';
 
             //For JS editing only (HACK):
-            $ui .= '<span class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</span>';
+            $ui .= '<div class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</div>';
 
         } elseif($is_read_progress && strlen($en['ln_content'])){
 
@@ -2788,69 +2781,42 @@ function echo_en($en, $is_parent = false)
 
 
 
+
+    //READ
+    $read_ui = '<td class="MENCHcolumn2 read">';
+    $read_ui .= echo_in_stat_read(0, $en['en_id']);
+    $read_ui .= '</td>';
+
+
+
+
+
+    //IDEA
+    $idea_ui = '<td class="MENCHcolumn3 play">';
+
+    //RIGHT EDITING:
+    $idea_ui .= '<div class="pull-right inline-block">';
+    $idea_ui .= '<div class="note-edit edit-off '.superpower_active(10967).'">';
+    $idea_ui .= '<span class="show-on-hover">';
+    $idea_ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog" style="font-size: 0.8em;"></i></a></span>';
+    $idea_ui .= '</span>';
+    $idea_ui .= '</div>';
+    $idea_ui .= '</div>';
+
+
+    $idea_ui .= echo_in_stat_play(0, $en['en_id']);
+    $idea_ui .= '</td>';
+
+
+
+    //Set order based on view mode:
     if($is_read_progress){
-        //READ
-        $ui .= '<td class="MENCHcolumn2 read">';
-        $ui .= echo_in_stat_read(0, $en['en_id']);
-        $ui .= '</td>';
 
-
-
-
-        //IDEA
-        $ui .= '<td class="MENCHcolumn3 play">';
-
-
-        //RIGHT EDITING:
-        $ui .= '<div class="pull-right inline-block">';
-        $ui .= '<div class="note-edit edit-off '.superpower_active(10967).'">';
-        $ui .= '<span class="show-on-hover">';
-        if($can_modify){
-
-            //Unlink:
-            $ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog" style="font-size: 0.8em;"></i></a></span>';
-
-        }
-        $ui .= '</span>';
-        $ui .= '</div>';
-        $ui .= '</div>';
-
-
-        $ui .= echo_in_stat_play(0, $en['en_id']);
-        $ui .= '</td>';
-
+        $ui .= $read_ui.$idea_ui;
 
     } else {
 
-        //IDEA
-        $ui .= '<td class="MENCHcolumn3 play">';
-
-
-        //RIGHT EDITING:
-        $ui .= '<div class="pull-right inline-block">';
-        $ui .= '<div class="note-edit edit-off '.superpower_active(10967).'">';
-        $ui .= '<span class="show-on-hover">';
-        if($can_modify){
-
-            //Unlink:
-            $ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog" style="font-size: 0.8em;"></i></a></span>';
-
-        }
-        $ui .= '</span>';
-        $ui .= '</div>';
-        $ui .= '</div>';
-
-        $ui .= echo_in_stat_play(0, $en['en_id']);
-
-        $ui .= '</td>';
-
-
-
-        //READ
-        $ui .= '<td class="MENCHcolumn2 read">';
-        $ui .= echo_in_stat_read(0, $en['en_id']);
-        $ui .= '</td>';
-
+        $ui .= $idea_ui.$read_ui;
 
     }
 
