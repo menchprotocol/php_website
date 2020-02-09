@@ -1220,7 +1220,6 @@ label {
     .featured-image { max-width:89px; max-height:89px; }
     .content-image{ max-height:233px; }
     .show-on-hover { display:inline-block !important; }
-    .show-max{display: none !important;}
     .form-control-thick { padding-left: 26px; }
     .avatar-item { width:110px !important; padding:10px 0 !important; }
     .avatar-item .avatar-icon { font-size: 2.4em; }
@@ -1230,6 +1229,8 @@ label {
     .texttype_4736_sm {
         width: calc(100vw - 60px) !important;
     }
+
+    .show-max{display: none !important;}
 }
 
 
