@@ -2305,7 +2305,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         if($is_author || !$is_parent){
 
             if($is_author && !$is_parent){
-                $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-unlink black idea-sort-handle"></i></span>';
+                $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort black idea-sort-handle"></i></span>';
             }
 
             //Unlink:
