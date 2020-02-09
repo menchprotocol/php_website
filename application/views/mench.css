@@ -1214,6 +1214,8 @@ label {
     .form-control-thick { padding-left: 26px; }
     .avatar-item { width:110px !important; padding:10px 0 !important; }
     .avatar-item .avatar-icon { font-size: 2.4em; }
+
+    td.MENCHcolumn1, td.MENCHcolumn2, td.MENCHcolumn3{ width: 100%; }
 }
 
 
