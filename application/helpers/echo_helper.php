@@ -2214,7 +2214,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
         //IDEA STATUS
-        $ui .= '<span class="' . ( $is_published ? superpower_active(10984) : '' ) . '">' . echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']) . ' </span>';
+        $ui .= '<div class="' . ( $is_published ? superpower_active(10984) : '' ) . '">' . echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']) . ' </div>';
 
 
         $ui .= '</div>';
