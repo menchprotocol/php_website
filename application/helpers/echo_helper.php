@@ -2725,6 +2725,8 @@ function echo_en($en, $is_parent = false)
 
     //CHILDREN & PARENTS
     $ui .= '<div class="doclear">&nbsp;</div>';
+    $ui .= '<span class="icon-block">&nbsp;</span>';
+
 
 
     $ui .= '<div class="inline-block">';
@@ -2765,7 +2767,6 @@ function echo_en($en, $is_parent = false)
 
 
     $ui .= '<div class="inline-block '. superpower_active(10986) .'">';
-    $ui .= '<span class="icon-block">&nbsp;</span>';
 
     //Count Children if proper superpower:
     if(superpower_assigned(10967)){
