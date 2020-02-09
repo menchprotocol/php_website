@@ -2195,28 +2195,30 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '<td class="MENCHcolumn1">';
 
 
-        //LEFT TITLE
-        $ui .= '<div class="idea-left">'; //START idea-left
+        $ui .= '<div class="inline-block">';
 
         //IDEA ICON:
         $ui .= '<span class="icon-block '.superpower_active(10939).'" data-toggle="tooltip" data-placement="right" title="Hold & drag up/down to sort"><a href="/idea/'.$in['in_id'].'" class="'.$sort_handle.'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
-
-
-        //IDEA STATUS
-        $ui .= '<span class="' . ( $is_published ? superpower_active(10984) : '' ) . '">' . echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']) . ' </span>';
-
-        //LINK STATUS (IF NOT PUBLISHED)
-        $ui .= '<span class="ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . ' </span></span>';
 
 
         //IDEA TITLE
         if(superpower_active(10984, true)){
             $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author), (($in['ln_order']*100)+1));
         } else {
-            $ui .= '<a href="/idea/'.$in['in_id'].'" class="montserrat '.$sort_handle.'">' . echo_in_title($in['in_title']) . '</a>';
+            $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat '.$sort_handle.'">' . echo_in_title($in['in_title']) . '</a>';
         }
 
+
+        //LINK STATUS (IF NOT PUBLISHED, SHOULD NOT HAPPEN!)
+        $ui .= '<span class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . ' </span></span>';
+
+
+        //IDEA STATUS
+        $ui .= '<span class="' . ( $is_published ? superpower_active(10984) : '' ) . '">' . echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']) . ' </span>';
+
+
         $ui .= '</div>';
+
 
 
 
@@ -2228,6 +2230,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
         //Blank space:
         $ui .= '<div class="icon-block">&nbsp;</div>';
+
 
         //IDEA TYPE
         $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['in_id']);
@@ -2685,9 +2688,7 @@ function echo_en($en, $is_parent = false)
     $ui .= '<a href="/play/'.$en['en_id'] . '"><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
 
     //PLAYER NAME
-    $ui .= '<a href="/play/'.$en['en_id'] . '" class="title-block montserrat '.extract_icon_color($en['en_icon']).' en_name_' . $en['en_id'] . '">';
-    $ui .= $en['en_name'];
-    $ui .= '</a>';
+    $ui .= '<a href="/play/'.$en['en_id'] . '" class="title-block montserrat '.extract_icon_color($en['en_icon']).' en_name_' . $en['en_id'] . '">'.$en['en_name'].'</a>';
 
 
     $ui .= '</div>';
