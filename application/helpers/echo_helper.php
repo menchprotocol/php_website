@@ -2733,15 +2733,13 @@ function echo_en($en, $is_parent = false)
 
 
     //Does this player also include a link?
-    if ($ln_id > 0 && strlen($en['ln_content']) > 0 && 0) {
+    if ($ln_id > 0 && strlen($en['ln_content']) > 0) {
         if($is_play_link){
 
             //PLAY LINKS:
-            $ui .= '<div class="doclear">&nbsp;</div>';
 
             //$ui .= '<div class="inline-block">';
-            $ui .= '<span class="icon-block">&nbsp;</span>';
-            $ui .= '<span class="inline-block ln_content ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']) . '</span>';
+            $ui .= '<span class="message_content ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']) . '</span>';
             //$ui .= '</div>';
 
             //For JS editing only (HACK):

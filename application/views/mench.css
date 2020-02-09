@@ -696,7 +696,7 @@ textarea.note-textarea{
 }
 .ln_content img, .i_content img { max-width: 100%; }
 
-td.MENCHcolumn1{ width: 58%; background-color: #CCC; }
+td.MENCHcolumn1{ width: 58%; overflow: hidden; background-color: #CCC; }
 td.MENCHcolumn2{ width: 21%; }
 td.MENCHcolumn3{ width: 21%; }
 
