@@ -941,6 +941,7 @@ label {
 .btn{
     text-decoration: none;
     line-height: 1.1;
+    border:0;
 }
 
 .btn.dropdown-toggle{
@@ -1153,7 +1154,7 @@ label {
     width:    -moz-calc(100% - 15px);
     width:         calc(100% - 15px);
 }
-.input-group .algolia-autocomplete, .texttype_4736_sm{
+.input-group .algolia-autocomplete {
     width: -webkit-calc(100% - 68px);
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
@@ -1195,7 +1196,9 @@ label {
 .form-control::placeholder{
     color: #AAAAAA;
 }
-
+.texttype_4736_sm{
+    width: 377px;
+}
 
 
 
@@ -1224,6 +1227,11 @@ label {
 
     td.MENCHcolumn1:not(.footerNav), td.MENCHcolumn2:not(.footerNav), td.MENCHcolumn3:not(.footerNav){ width: 100%; display: block; }
     .ln_content { max-width: 100%; }
+    .texttype_4736_sm {
+        width: -webkit-calc(100% - 34px) !important;
+        width:    -moz-calc(100% - 34px) !important;
+        width:         calc(100% - 34px) !important;
+    }
 }
 
 
