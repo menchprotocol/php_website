@@ -691,9 +691,9 @@ textarea.note-textarea{
 .ln_content {
     display:inline-block;
     overflow: hidden;
-    max-width: -webkit-calc(58vh - 34px) !important;
-    max-width:    -moz-calc(58vh - 34px) !important;
-    max-width:         calc(58vh - 34px) !important;
+    max-width: -webkit-calc(.58vh - 34px) !important;
+    max-width:    -moz-calc(.58vh - 34px) !important;
+    max-width:         calc(.58vh - 34px) !important;
 }
 .ln_content img, .i_content img { max-width: 100%; }
 
