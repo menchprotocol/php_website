@@ -2738,7 +2738,7 @@ function echo_en($en, $is_parent = false)
 
             //PLAY LINKS:
 
-            $ui .= '<div class=inline-block"><span class="icon-block">&nbsp;</span><span class="inline-block ln_content ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']) . '</span></div>';
+            $ui .= '<span class=inline-block"><span class="icon-block">&nbsp;</span><span class="inline-block ln_content ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']) . '</span></span>';
 
             //For JS editing only (HACK):
             $ui .= '<div class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</div>';
@@ -2746,7 +2746,7 @@ function echo_en($en, $is_parent = false)
         } elseif($is_read_progress && strlen($en['ln_content'])){
 
             //READ PROGRESS
-            $ui .= '<div class="message_content message_slim">';
+            $ui .= '<div class="message_content">';
             $ui .= $CI->READ_model->dispatch_message($en['ln_content']);
             $ui .= '</div>';
 

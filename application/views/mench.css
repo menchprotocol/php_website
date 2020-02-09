@@ -71,9 +71,6 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .table {
     width: 100%;
 }
-.message_slim{
-    padding: 10px;
-}
 
 table td { border: none !important; }
 
@@ -394,7 +391,7 @@ img.no-radius {
     overflow-x: hidden;
 }
 
-.nav-tabs{
+.nav-tabs, .message_content{
     margin-top:10px;
     margin-left: 33px;
 }
