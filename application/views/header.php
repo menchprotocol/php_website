@@ -144,7 +144,11 @@ if(!isset($hide_header)){
 
                                 //PLAY
                                 echo '<span class="icon-block">'.$session_en['en_icon'].'</span>';
-                                echo '<span class="montserrat play en_name_first_'.$session_en['en_id'].'">'.one_two_explode('', ' ', $session_en['en_name']).'</span>';
+                                if($current_mench['x_name']=='play'){
+                                    echo '<span class="montserrat play en_name_first_'.$session_en['en_id'].'">'.one_two_explode('', ' ', $session_en['en_name']).'</span>';
+                                } else {
+                                    echo '<span class="montserrat play">ME</span>';
+                                }
 
                             } else {
 

@@ -65,7 +65,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     margin: 0;
     width: 100%;
 }
-.ln_content { overflow: hidden; width: 100%; }
+.ln_content { overflow: hidden; }
 .ln_content img, .i_content img { max-width: 100%; }
 .table-sm td, .table-sm th { padding: 5px 0; }
 .table {
@@ -1147,7 +1147,7 @@ label {
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
 }
-.texttype_4736_lg, #newIdeaTitle, .add_note_form, .idea-info, .block-one {
+.texttype_4736_lg, #newIdeaTitle, .add_note_form, .idea-info, .block-one, .ln_content {
     width: -webkit-calc(100% - 34px) !important;
     width:    -moz-calc(100% - 34px) !important;
     width:         calc(100% - 34px) !important;

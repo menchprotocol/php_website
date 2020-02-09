@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-02-08 10:35:48 PST
+//Generated 2020-02-09 05:33:00 PST
 
 //READ ICONS:
 $config['en_ids_12446'] = array(12347,6146,12447,12448);
@@ -315,12 +315,12 @@ $config['en_all_12391'] = array(
         'm_icon' => '<i class="fas fa-caret-circle-up play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PROFILE',
         'm_desc' => '',
-        'm_parents' => array(11033,12391,10939,11084,11028),
+        'm_parents' => array(10967,11033,12391,11084,11028),
     ),
 );
 
 //IDEA BODY:
-$config['en_ids_12365'] = array(4231,4601,12419,10573,4983,7545,6255,7347,6146,11047);
+$config['en_ids_12365'] = array(4231,4601,12419,10573,6255,7347,6146,4983,7545,11047);
 $config['en_all_12365'] = array(
     4231 => array(
         'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
@@ -346,18 +346,6 @@ $config['en_all_12365'] = array(
         'm_desc' => '',
         'm_parents' => array(10985,11089,12365,4535,12321,4593,7551,4485),
     ),
-    4983 => array(
-        'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
-        'm_name' => 'IDEA AUTHORS',
-        'm_desc' => '',
-        'm_parents' => array(10983,12273,12228,4535,12391,12365,10593,4527,7551,4985,4593,4485),
-    ),
-    7545 => array(
-        'm_icon' => '<i class="fas fa-tag play" aria-hidden="true"></i>',
-        'm_name' => 'IDEA PLAYER TAGS',
-        'm_desc' => '',
-        'm_parents' => array(10986,11089,12365,4535,12321,7551,4593,4485),
-    ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ COIN',
@@ -375,6 +363,18 @@ $config['en_all_12365'] = array(
         'm_name' => 'READ INCOMPLETE',
         'm_desc' => '',
         'm_parents' => array(12446,10989,11089,12365,12228,4527),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
+        'm_name' => 'IDEA AUTHORS',
+        'm_desc' => '',
+        'm_parents' => array(10983,12273,12228,4535,12391,12365,10593,4527,7551,4985,4593,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-tag play" aria-hidden="true"></i>',
+        'm_name' => 'IDEA PLAYER TAGS',
+        'm_desc' => '',
+        'm_parents' => array(10986,11089,12365,4535,12321,7551,4593,4485),
     ),
     11047 => array(
         'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
@@ -3864,7 +3864,7 @@ $config['en_all_11084'] = array(
         'm_icon' => '<i class="fas fa-caret-circle-up play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PROFILE',
         'm_desc' => '',
-        'm_parents' => array(11033,12391,10939,11084,11028),
+        'm_parents' => array(10967,11033,12391,11084,11028),
     ),
 );
 
@@ -3875,7 +3875,7 @@ $config['en_all_11033'] = array(
         'm_icon' => '<i class="fas fa-caret-circle-up play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PROFILE',
         'm_desc' => '',
-        'm_parents' => array(11033,12391,10939,11084,11028),
+        'm_parents' => array(10967,11033,12391,11084,11028),
     ),
 );
 
@@ -4728,7 +4728,7 @@ $config['en_all_11028'] = array(
         'm_icon' => '<i class="fas fa-caret-circle-up play" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => 'Describe PLAYER. Where it comes from. It\'s origin.',
-        'm_parents' => array(11033,12391,10939,11084,11028),
+        'm_parents' => array(10967,11033,12391,11084,11028),
     ),
     11029 => array(
         'm_icon' => '<i class="fas fa-caret-circle-down play" aria-hidden="true"></i>',
