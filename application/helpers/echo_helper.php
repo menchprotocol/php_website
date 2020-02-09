@@ -2728,9 +2728,6 @@ function echo_en($en, $is_parent = false)
     $ui .= '<span class="icon-block">&nbsp;</span>';
 
 
-
-    $ui .= '<div class="inline-block">';
-
     //PLAYER STATUS
     $ui .= '<span class="en_status_play_id_' . $en['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_play_id']]['m_name'].' @'.$en['en_status_play_id'].': '.$en_all_6177[$en['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_play_id']]['m_icon'] . '</span>&nbsp;</span>';
 
@@ -2761,12 +2758,9 @@ function echo_en($en, $is_parent = false)
 
     }
 
-    $ui .= '</div>';
 
 
-
-
-    $ui .= '<div class="inline-block '. superpower_active(10986) .'">';
+    $ui .= '<span class="'. superpower_active(10986) .'">';
 
     //Count Children if proper superpower:
     if(superpower_assigned(10967)){
@@ -2784,7 +2778,7 @@ function echo_en($en, $is_parent = false)
     foreach ($en__parents as $en_parent) {
         $ui .= '<span class="icon-block-img en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span> ';
     }
-    $ui .= ' </div>';
+    $ui .= ' </span>';
 
 
 
