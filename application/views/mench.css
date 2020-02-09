@@ -688,14 +688,12 @@ textarea.note-textarea{
 }
 
 
-.ln_content {
-    display:inline-block;
+.ln_content, .ln_content img, .i_content img {
     overflow: hidden;
-    max-width: -webkit-calc(.58vh - 34px) !important;
-    max-width:    -moz-calc(.58vh - 34px) !important;
-    max-width:         calc(.58vh - 34px) !important;
+    max-width: -webkit-calc(40vh) !important;
+    max-width:    -moz-calc(40vh) !important;
+    max-width:         calc(40vh) !important;
 }
-.ln_content img, .i_content img { max-width: 100%; }
 
 td.MENCHcolumn1{ width: 58%; background-color: #CCC; }
 td.MENCHcolumn2{ width: 21%; }
