@@ -2202,10 +2202,10 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         $ui .= '<div class="icon-block '.superpower_active(10939).'" data-toggle="tooltip" data-placement="right" title="Hold & drag up/down to sort"><a href="/idea/'.$in['in_id'].'" class="'.$sort_handle.'">' . $en_all_2738[4535]['m_icon'] . '</a></div>';
 
         //IDEA STATUS
-        $ui .= '<div class="inline-block' . ( $is_published ? superpower_active(10984) : '' ) . '">' . echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']) . '</div>';
+        $ui .= '<div class="' . ( $is_published ? superpower_active(10984) : '' ) . '">' . echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']) . ' </div>';
 
         //LINK STATUS (IF NOT PUBLISHED)
-        $ui .= '<div class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . '</span></div>';
+        $ui .= '<div class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . ' </span></div>';
 
 
         //IDEA TITLE
@@ -2223,16 +2223,13 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         //SECOND STATS ROW
         $ui .= '<div class="doclear">&nbsp;</div>';
 
-        $ui .= '<div class="' . superpower_active(10984) . '">';
+        $ui .= '<div class="' . superpower_active(10985) . '">';
 
         //Blank space:
         $ui .= '<div class="icon-block">&nbsp;</div>';
 
         //IDEA TYPE
         $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['in_id']);
-
-        //LINK TYPE & SETTING
-        $ui .= '<div class="inline-block ' . superpower_active(10985) . '">';
 
         //IDEA READ TIME
         $ui .= echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
@@ -2276,7 +2273,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-        $ui .= '</div>';
         $ui .= '</div>'; //END idea-left
 
     $ui .= '</td>';
