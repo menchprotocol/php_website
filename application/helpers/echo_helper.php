@@ -2738,7 +2738,7 @@ function echo_en($en, $is_parent = false)
 
             //PLAY LINKS:
 
-            $ui .= '<span class=inline-block"><span class="icon-block">&nbsp;</span><span class="inline-block ln_content ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']) . '</span></span>';
+            $ui .= '<div class=inline-block block-one"><span class="icon-block">&nbsp;</span><span class="inline-block ln_content ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']) . '</span></div>';
 
             //For JS editing only (HACK):
             $ui .= '<div class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</div>';
