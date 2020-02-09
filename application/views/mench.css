@@ -691,7 +691,7 @@ textarea.note-textarea{
 .ln_content {
     display:inline-block;
     overflow: hidden;
-    max-width: 300px;
+    max-width: 377px;
 }
 .ln_content img, .i_content img { max-width: 100%; }
 

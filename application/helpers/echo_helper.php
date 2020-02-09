@@ -2737,10 +2737,9 @@ function echo_en($en, $is_parent = false)
         if($is_play_link){
 
             //PLAY LINKS:
+            $ui .= '<div class="doclear">&nbsp;</div>';
 
-            //$ui .= '<div class="inline-block">';
             $ui .= '<span class="message_content ln_content ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']) . '</span>';
-            //$ui .= '</div>';
 
             //For JS editing only (HACK):
             $ui .= '<div class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</div>';
@@ -2803,7 +2802,7 @@ function echo_en($en, $is_parent = false)
     $idea_ui .= '<div class="pull-right inline-block">';
     $idea_ui .= '<div class="note-edit edit-off '.superpower_active(10967).'">';
     $idea_ui .= '<span class="show-on-hover">';
-    $idea_ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog" style="font-size: 0.8em;"></i></a></span>';
+    $idea_ui .= '<span title="Modify Player" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog" style="font-size: 0.8em;"></i></a></span>';
     $idea_ui .= '</span>';
     $idea_ui .= '</div>';
     $idea_ui .= '</div>';
