@@ -363,12 +363,15 @@ class Read extends CI_Controller
         if ( count($ins) < 1) {
             return redirect_message('/', '<div class="alert alert-danger" role="alert">Idea #' . $in_id . ' not found</div>');
         } elseif(!in_array($ins[0]['in_status_play_id'], $this->config->item('en_ids_7355') /* Idea Statuses Public */)){
+
+            $message = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fal fa-exclamation-triangle"></i></span>Idea #' . $in_id . ' not yet published</div>';
+
             if(superpower_assigned(10939)){
                 //Give them idea access:
-                return redirect_message('/idea/' . $in_id);
+                return redirect_message('/idea/' . $in_id, $message);
             } else {
                 //Inform them not published:
-                return redirect_message('/', '<div class="alert alert-danger" role="alert">Idea #' . $in_id . ' not published yet</div>');
+                return redirect_message('/', $message);
             }
         }
 
