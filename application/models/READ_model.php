@@ -3098,7 +3098,7 @@ class READ_model extends CI_Model
 
                     //Show player link with status:
                     $current_mench = current_mench();
-                    $output_body_message = str_replace('@' . $string_references['ref_players'][0], '<span class="'.( $parents_media_shown > 0 ? superpower_active(10983) : '' ).'">'.'<span class="icon-block '.extract_icon_color($ens[0]['en_icon']).'">'.echo_en_icon($ens[0]['en_icon']).'</span>'.( !in_array($ens[0]['en_status_play_id'], $this->config->item('en_ids_7357')) ? '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_play_id']]['m_icon'].'</span>' : '' ).( $current_mench['x_name']=='read' ? '<span class="montserrat doupper">' . $ens[0]['en_name']  . '</span>' : '<a class="montserrat doupper" href="/play/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_players'][0], '<span class="'.( $parents_media_shown > 0 ? superpower_active(10983) : '' ).'">'.( !in_array($ens[0]['en_status_play_id'], $this->config->item('en_ids_7357')) ? '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_play_id']]['m_icon'].'</span>' : '' ).'<span class="icon-block">'.echo_en_icon($ens[0]['en_icon']).'</span>'.( $current_mench['x_name']=='read' ? '<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">' . $ens[0]['en_name']  . '</span>' : '<a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/play/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
 
                 }
 
