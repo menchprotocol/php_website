@@ -65,8 +65,6 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     margin: 0;
     width: 100%;
 }
-.ln_content { overflow: hidden; }
-.ln_content img, .i_content img { max-width: 100%; }
 .table-sm td, .table-sm th { padding: 5px 0; }
 .table {
     width: 100%;
@@ -690,11 +688,13 @@ textarea.note-textarea{
 }
 
 
-.MENCHcolumn1 .ln_content {
-    width: -webkit-calc(58% - 34px) !important;
-    width:    -moz-calc(58% - 34px) !important;
-    width:         calc(58% - 34px) !important;
+.ln_content {
+    overflow: hidden;
+    max-width: -webkit-calc(58% - 34px) !important;
+    max-width:    -moz-calc(58% - 34px) !important;
+    max-width:         calc(58% - 34px) !important;
 }
+.ln_content img, .i_content img { max-width: 100%; }
 
 td.MENCHcolumn1{ width: 58%; }
 td.MENCHcolumn2{ width: 21%; }
