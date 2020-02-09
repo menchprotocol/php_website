@@ -752,7 +752,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
             //PLAY
-            echo '<td class="play MENCHcolumn1"><span class="icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="montserrat play en_name_first_'.$ln['en_id'].'">'.$first_name.'</a>' : '<b class="montserrat play en_name_first_'.$ln['en_id'].'">'.$first_name.'</b>' ).echo_rank($count+1).'</td>';
+            echo '<td class="play MENCHcolumn1"><span class="icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.'<a href="/play/'.$ln['en_id'].'" class="montserrat play en_name_first_'.$ln['en_id'].'">'.$first_name.'</a>'.echo_rank($count+1).'</td>';
 
 
             //IDEA

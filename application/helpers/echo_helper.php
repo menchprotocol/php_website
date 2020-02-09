@@ -1464,7 +1464,7 @@ function echo_in_idea($in)
 
             $ui .= '<span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>';
 
-            $ui .= '<span class="icon-block '.( in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ).'">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].'</span>';
+            $ui .= '<span class="'.( in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '' ).'">'.$en_all_4737[$in['in_status_play_id']]['m_icon'].' </span>';
 
             $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false).'</b>';
 
