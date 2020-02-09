@@ -699,7 +699,7 @@ class Idea extends CI_Controller {
         if(count($actionplan_users) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => '<i class="fas fa-exclamation-triangle"></i> Nobody has completed this idea yet',
+                'message' => '<i class="fad fa-exclamation-triangle"></i> Nobody has completed this idea yet',
             ));
         }
 

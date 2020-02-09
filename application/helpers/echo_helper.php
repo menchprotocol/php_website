@@ -518,7 +518,7 @@ function echo_ln($ln, $is_inner = false)
     if(!isset($en_all_4593[$ln['ln_type_play_id']])){
         //We've probably have not yet updated php cache, set error:
         $en_all_4593[$ln['ln_type_play_id']] = array(
-            'm_icon' => '<i class="fal fa-exclamation-triangle redalert"></i>',
+            'm_icon' => '<i class="fad fa-exclamation-triangle redalert"></i>',
             'm_name' => 'Link Type Not Synced in PHP Cache',
             'm_desc' => '',
             'm_parents' => array(),
@@ -2580,7 +2580,7 @@ function echo_message($message, $is_error, $recipient_en, $push_message){
         );
     } else {
         //HTML:
-        echo '<div class="alert '.( $is_error ? 'alert-danger' : 'alert-info' ).'">'.( $is_error ? '<i class="fas fa-exclamation-triangle"></i> ' : '<i class="fas fa-info-circle"></i> ' ).$message.' </div>';
+        echo '<div class="alert '.( $is_error ? 'alert-danger' : 'alert-info' ).'">'.( $is_error ? '<i class="fad fa-exclamation-triangle"></i> ' : '<i class="fas fa-info-circle"></i> ' ).$message.' </div>';
     }
 
 }

@@ -36,7 +36,7 @@ function idea_create(){
         } else {
 
             //Unlock:
-            $('#tempLoader').html('<span class="read"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</span>');
+            $('#tempLoader').html('<span class="read"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</span>');
             $('#newIdeaTitle').prop('disabled', false).focus();
 
         }

@@ -89,7 +89,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                             <input type="hidden" id="en_link_count" value="0" />
                             <div class="alert alert-danger" style="margin:5px 0px; padding:7px;">
-                                <i class="fas fa-exclamation-triangle"></i>
+                                <i class="fad fa-exclamation-triangle"></i>
                                 Saving will archive this player and UNLINK ALL <span class="player_remove_stats" style="display:inline-block; padding: 0;"></span> links
                             </div>
 
@@ -154,7 +154,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                             <div class="notify_unlink_en hidden">
                                 <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
-                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <i class="fad fa-exclamation-triangle"></i>
                                     Saving will unlink player
                                 </div>
                             </div>

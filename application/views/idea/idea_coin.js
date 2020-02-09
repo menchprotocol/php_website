@@ -605,7 +605,7 @@ function in_note_modify_save(ln_id, focus_ln_type_play_id) {
 
         } else {
             //Oops, some sort of an error, lets
-            $("#ul-nav-" + ln_id + " .edit-updates").html('<b style="color:#FF0000 !important; line-height: 110% !important;"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</b>');
+            $("#ul-nav-" + ln_id + " .edit-updates").html('<b style="color:#FF0000 !important; line-height: 110% !important;"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</b>');
         }
 
         //Tooltips:

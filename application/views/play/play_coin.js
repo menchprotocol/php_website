@@ -38,7 +38,7 @@ $(document).ready(function () {
                 return echo_js_suggestion(suggestion);
             },
             empty: function (data) {
-                return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No players found</div>';
+                return '<div class="not-found"><i class="fad fa-exclamation-triangle"></i> No players found</div>';
             },
         }
     }]);
@@ -691,7 +691,7 @@ function en_modify_save() {
 
         } else {
             //Ooops there was an error!
-            $('.save_player_changes').html('<span style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
+            $('.save_player_changes').html('<span style="color:#FF0000;"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
         }
 
     });
