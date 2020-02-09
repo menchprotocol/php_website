@@ -902,7 +902,7 @@ class Read extends CI_Controller
 
             //Do we have more to show?
             if($has_more_links){
-                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="load_oii(link_filters, link_join_by, '.$next_page.');"><span class="icon-block"><i class="fad fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
+                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="load_oii(link_filters, link_join_by, '.$next_page.');"><span class="icon-block"><i class="far fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
                 $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$lns_count[0]['total_count'].' link'.echo__s($lns_count[0]['total_count']).' have been loaded</div>';

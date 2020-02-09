@@ -1197,7 +1197,7 @@ function echo_tree_actionplan($in, $autoexpand){
 
         if($has_level2_content){
             $return_html .= '<a class="js-ln-create-steps-review" idea-id="'.$in_level2['in_id'].'" role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
-            $return_html .= '<span class="icon-block"><i class="fad fa-plus-circle"></i></span>';
+            $return_html .= '<span class="icon-block"><i class="far fa-plus-circle"></i></span>';
         } else {
             $return_html .= '<span class="empty-block">';
             $return_html .= '<span class="icon-block"><i class="fal fa-check-circle"></i></span>';
@@ -1252,7 +1252,7 @@ function echo_tree_actionplan($in, $autoexpand){
 
                     if(count($in_level3_messages) > 0){
                         $return_html .= '<a role="button" data-toggle="collapse" class="second-level-link js-ln-create-steps-review" idea-id="'.$in_level3['in_id'].'" data-parent="#open' . $in_level2_counter . '-'.$in_level3_counter.'" href="#collapse' . $in_level2_counter . '-'.$in_level3_counter.'" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
-                        $return_html .= '<span class="icon-block"><i class="fad fa-plus-circle"></i></span>';
+                        $return_html .= '<span class="icon-block"><i class="far fa-plus-circle"></i></span>';
                     } else {
                         $return_html .= '<span class="icon-block"><i class="fal fa-check-circle"></i></span>';
                     }
@@ -1846,7 +1846,7 @@ function echo_radio_players($parent_en_id, $child_en_id, $enable_mulitiselect, $
     //Did we have too many items?
     if($count>=$show_max){
         //Show "Show more" button
-        $ui .= '<a href="javascript:void(0);" class="list-group-item itemplay itemsetting montserrat extra-items-'.$parent_en_id.'" onclick="$(\'.extra-items-'.$parent_en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="fad fa-plus-circle"></i></span>Show '.($count-$show_max).' more</a>';
+        $ui .= '<a href="javascript:void(0);" class="list-group-item itemplay itemsetting montserrat extra-items-'.$parent_en_id.'" onclick="$(\'.extra-items-'.$parent_en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle"></i></span>Show '.($count-$show_max).' more</a>';
     }
 
     $ui .= '</div>';
@@ -2029,7 +2029,7 @@ function echo_2level_stats($stat_name, $stats_en_id, $mother_en_id, $link_types_
 
     //Display RemainingIF ANY:
     echo_2level_players(array(
-        'm_icon' => '<i class="fad fa-plus-circle"></i>',
+        'm_icon' => '<i class="far fa-plus-circle"></i>',
         'm_name' => 'Others',
         'm_desc' => 'What is left',
     ), $remaining_child, $link_types_counts, $all_shown, $link_field, 'en_all_'.$mother_en_id, $addup_total_count, $display_field);
@@ -2534,7 +2534,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         } else {
             echo '</div>';
             if($found_upcoming > 0 && !$all_done){
-                echo '<div class="is_upcoming montserrat" style="padding:5px 0 5px 0;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fad fa-plus-circle read"></i></span>'.$found_upcoming.' MORE</a></div>';
+                echo '<div class="is_upcoming montserrat" style="padding:5px 0 5px 0;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><span class="icon-block"><i class="far fa-plus-circle read"></i></span>'.$found_upcoming.' MORE</a></div>';
             }
         }
     }
