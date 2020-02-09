@@ -691,9 +691,7 @@ textarea.note-textarea{
 .ln_content {
     display:inline-block;
     overflow: hidden;
-    max-width: -webkit-calc(40vh) !important;
-    max-width:    -moz-calc(40vh) !important;
-    max-width:         calc(40vh) !important;
+    max-width: 300px;
 }
 .ln_content img, .i_content img { max-width: 100%; }
 
@@ -1215,7 +1213,8 @@ label {
     .avatar-item { width:110px !important; padding:10px 0 !important; }
     .avatar-item .avatar-icon { font-size: 2.4em; }
 
-    td.MENCHcolumn1, td.MENCHcolumn2, td.MENCHcolumn3{ width: 100%; }
+    td.MENCHcolumn1:not(.footerNav), td.MENCHcolumn2:not(.footerNav), td.MENCHcolumn3:not(.footerNav){ width: 100%; display: block; }
+    .ln_content { max-width: 100%; }
 }
 
 
