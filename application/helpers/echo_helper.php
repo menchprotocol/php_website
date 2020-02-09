@@ -2730,20 +2730,6 @@ function echo_en($en, $is_parent = false)
 
 
 
-    //Count Children if proper superpower:
-    if(superpower_assigned(10967)){
-        $child_links = $CI->READ_model->ln_fetch(array(
-            'ln_parent_play_id' => $en['en_id'],
-            'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'en_status_play_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
-        ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
-        if($child_links[0]['totals'] > 0){
-            $ui .= '<div class="inline-block '. superpower_active(10967) .' montserrat play"><span class="icon-block">' . $en_all_11028[11029]['m_icon'] . '</span>' . echo_number($child_links[0]['totals']) . '</div>';
-        }
-    }
-
-
 
 
     //Does this player also include a link?
@@ -2768,9 +2754,23 @@ function echo_en($en, $is_parent = false)
     }
 
 
-    //PARENT ICONS
+    //CHILDREN & PARENTS
     $ui .= '<div class="'. superpower_active(10986) .'">';
     $ui .= '<span class="icon-block">&nbsp;</span>';
+
+    //Count Children if proper superpower:
+    if(superpower_assigned(10967)){
+        $child_links = $CI->READ_model->ln_fetch(array(
+            'ln_parent_play_id' => $en['en_id'],
+            'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'en_status_play_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+        ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
+        if($child_links[0]['totals'] > 0){
+            $ui .= '<span class="montserrat play">' . $en_all_11028[11029]['m_icon'] . '&nbsp;' . echo_number($child_links[0]['totals']) . '&nbsp;&nbsp;</span>';
+        }
+    }
+
     foreach ($en__parents as $en_parent) {
         $ui .= '<span class="icon-block-img en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span>&nbsp;';
     }
