@@ -1685,7 +1685,7 @@ class READ_model extends CI_Model
 
                 if(superpower_active(10989, true)){
                     //Show More Information:
-                    echo '<div class="read-topic read-info-topic"><span class="info-item">';
+                    echo '<div class="read-topic read-info-topic"><div class="doclear">&nbsp;</div><span class="info-item">';
 
                     $metadata = unserialize($ins[0]['in_metadata']);
                     if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
