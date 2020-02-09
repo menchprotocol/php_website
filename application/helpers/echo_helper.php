@@ -2725,7 +2725,7 @@ function echo_en($en, $is_parent = false)
 
     //CHILDREN & PARENTS
     $ui .= '<div class="doclear">&nbsp;</div>';
-    $ui .= '<span class="icon-block">&nbsp;</span>';
+    $ui .= '<div style="padding-left:34px; display: block;">';
 
 
     //PLAYER STATUS
@@ -2780,6 +2780,7 @@ function echo_en($en, $is_parent = false)
     }
     $ui .= ' </span>';
 
+    $ui .= '</div>';
 
 
 
