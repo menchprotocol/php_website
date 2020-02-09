@@ -1228,9 +1228,7 @@ label {
     td.MENCHcolumn1:not(.footerNav), td.MENCHcolumn2:not(.footerNav), td.MENCHcolumn3:not(.footerNav){ width: 100%; display: block; }
     .ln_content { max-width: 100%; }
     .texttype_4736_sm {
-        width: -webkit-calc(100% - 34px) !important;
-        width:    -moz-calc(100% - 34px) !important;
-        width:         calc(100% - 34px) !important;
+        width: calc(100vw - 34px) !important;
     }
 }
 
