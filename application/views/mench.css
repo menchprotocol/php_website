@@ -1127,7 +1127,7 @@ label {
 .icon-block img{
     width: 20px !important;
     height: 20px !important;
-    margin: 5px 0 !important;
+    margin: -5px 0 -3px !important;
     border-radius: 50%;
 }
 .icon-block-lg img {
