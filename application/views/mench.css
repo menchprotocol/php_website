@@ -687,6 +687,11 @@ textarea.note-textarea{
     padding: 0 !important;
 }
 
+.title-block{
+    display: inline-block;
+    padding-left: 34px;
+    margin-top: -19px;
+}
 
 .ln_content {
     display:inline-block;
