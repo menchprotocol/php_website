@@ -2737,8 +2737,9 @@ function echo_en($en, $is_parent = false)
         if($is_play_link){
 
             //PLAY LINKS:
+            $ui .= '<div class="doclear">&nbsp;</div>';
 
-            $ui .= '<div class=inline-block block-one"><span class="icon-block">&nbsp;</span><span class="inline-block ln_content ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']) . '</span></div>';
+            $ui .= '<div class="inline-block block-one"><span class="icon-block">&nbsp;</span><span class="inline-block ln_content ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']) . '</span></div>';
 
             //For JS editing only (HACK):
             $ui .= '<div class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</div>';
@@ -2755,7 +2756,8 @@ function echo_en($en, $is_parent = false)
 
 
     //CHILDREN & PARENTS
-    $ui .= '<div class="'. superpower_active(10986) .'">';
+    $ui .= '<div class="doclear">&nbsp;</div>';
+    $ui .= '<div class="inline-block '. superpower_active(10986) .'">';
     $ui .= '<span class="icon-block">&nbsp;</span>';
 
     //Count Children if proper superpower:
