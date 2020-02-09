@@ -689,14 +689,15 @@ textarea.note-textarea{
 
 
 .ln_content {
+    display:inline-block;
     overflow: hidden;
-    max-width: -webkit-calc(58% - 34px) !important;
-    max-width:    -moz-calc(58% - 34px) !important;
-    max-width:         calc(58% - 34px) !important;
+    max-width: -webkit-calc(58vh - 34px) !important;
+    max-width:    -moz-calc(58vh - 34px) !important;
+    max-width:         calc(58vh - 34px) !important;
 }
 .ln_content img, .i_content img { max-width: 100%; }
 
-td.MENCHcolumn1{ width: 58%; overflow: hidden; background-color: #CCC; }
+td.MENCHcolumn1{ width: 58%; background-color: #CCC; }
 td.MENCHcolumn2{ width: 21%; }
 td.MENCHcolumn3{ width: 21%; }
 

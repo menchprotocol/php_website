@@ -2739,7 +2739,7 @@ function echo_en($en, $is_parent = false)
             //PLAY LINKS:
 
             //$ui .= '<div class="inline-block">';
-            $ui .= '<span class="message_content ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']) . '</span>';
+            $ui .= '<span class="message_content ln_content ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']) . '</span>';
             //$ui .= '</div>';
 
             //For JS editing only (HACK):
