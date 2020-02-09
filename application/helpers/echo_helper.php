@@ -2425,7 +2425,7 @@ function echo_read_breadcrumbs($in_id){
             $ui .= '</div>';
 
             //Now show button to show parents:
-            $ui .= '<div class="previous_reads"><a href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');" class="montserrat grey"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span>'.count($breadcrumb_items).' Previous Reads</a></div>';
+            $ui .= '<div class="previous_reads"><a href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');" class="montserrat grey"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span>'.count($breadcrumb_items).' Read'.echo__s(count($breadcrumb_items)).' Deep</a></div>';
 
 
             break; //TODO Remove later and allow multiple parent links
