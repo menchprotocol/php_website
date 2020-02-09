@@ -399,10 +399,6 @@ img.no-radius {
     margin-left: 33px;
 }
 
-.info-item{
-    margin-left:7px;
-    display: inline-block;
-}
 .info-item a, .info-item i {
     color:#AAAAAA !important;
 }
