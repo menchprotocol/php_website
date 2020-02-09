@@ -364,7 +364,7 @@ class Read extends CI_Controller
             return redirect_message('/', '<div class="alert alert-danger" role="alert">Idea #' . $in_id . ' not found</div>');
         } elseif(!in_array($ins[0]['in_status_play_id'], $this->config->item('en_ids_7355') /* Idea Statuses Public */)){
 
-            $message = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>Idea #' . $in_id . ' not yet published</div>';
+            $message = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>Cannot read this idea because it\'s not published yet.</div>';
 
             if(superpower_assigned(10939)){
                 //Give them idea access:
