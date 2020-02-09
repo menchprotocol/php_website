@@ -2725,7 +2725,7 @@ function echo_en($en, $is_parent = false)
 
     //CHILDREN & PARENTS
     $ui .= '<div class="doclear">&nbsp;</div>';
-    $ui .= '<div style="padding-left:34px; display: block;">';
+    $ui .= '<div class="space-content">';
 
 
     //PLAYER STATUS
@@ -2735,13 +2735,7 @@ function echo_en($en, $is_parent = false)
     if ($ln_id > 0) {
 
         //Link Type Full List:
-        $en_all_4593 = $CI->config->item('en_all_4593');
         $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
-
-        if($is_read_progress){
-            //LINK TYPE
-            $ui .= '<span class="ln_type_' . $ln_id . superpower_active(10986).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span>&nbsp;</span>';
-        }
 
         //LINK STATUS
         $ui .= '<span class="ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_play_id']]['m_name'].' @'.$en['ln_status_play_id'].': '.$en_all_6186[$en['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_play_id']]['m_icon'] . '</span>&nbsp;</span>';
@@ -2792,6 +2786,17 @@ function echo_en($en, $is_parent = false)
     //READ
     $read_ui = '<td class="MENCHcolumn2 read">';
     $read_ui .= echo_in_stat_read(0, $en['en_id']);
+
+
+    //READ TYPE
+    if ($ln_id > 0 && $is_read_progress) {
+        //LINK TYPE
+        $en_all_4593 = $CI->config->item('en_all_4593');
+        $ui .= '<div class="space-content">';
+        $ui .= '<span class="ln_type_' . $ln_id . superpower_active(10986).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span>&nbsp;</span>';
+        $ui .= '</div>';
+    }
+
     $read_ui .= '</td>';
 
 

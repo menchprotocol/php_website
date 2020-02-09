@@ -687,6 +687,10 @@ textarea.note-textarea{
     padding: 0 !important;
 }
 
+.space-content{
+    padding-left:34px;
+    display: block;
+}
 .title-block{
     display: block;
     padding-left: 34px;
