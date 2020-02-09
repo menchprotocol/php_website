@@ -2305,7 +2305,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         if($is_author || !$is_parent){
 
             //Unlink:
-            $ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink" style="font-size: 0.8em;"></i></a></span>';
+            $ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink black" style="font-size: 0.8em;"></i></a></span>';
 
         } elseif(!$is_author) {
 
@@ -2805,7 +2805,7 @@ function echo_en($en, $is_parent = false)
     $idea_ui .= '<div class="pull-right inline-block">';
     $idea_ui .= '<div class="note-edit edit-off '.superpower_active(10967).'">';
     $idea_ui .= '<span class="show-on-hover">';
-    $idea_ui .= '<span title="Modify Player" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog" style="font-size: 0.8em;"></i></a></span>';
+    $idea_ui .= '<span title="Modify Player" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog black" style="font-size: 0.8em;"></i></a></span>';
     $idea_ui .= '</span>';
     $idea_ui .= '</div>';
     $idea_ui .= '</div>';
