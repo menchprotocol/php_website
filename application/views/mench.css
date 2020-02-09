@@ -831,7 +831,10 @@ td.MENCHcolumn3{ width: 21%; }
 
 
 
-
+.show-on-hover i {
+    font-size: 0.8em;
+    margin-bottom:7px;
+}
 
 .show-on-hover .fa-sort {
     margin-bottom: 2px;

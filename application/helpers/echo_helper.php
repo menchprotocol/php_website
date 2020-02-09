@@ -2185,7 +2185,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $session_en = superpower_assigned();
     $is_published = in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355'));
     $is_link_published = in_array($in['ln_status_play_id'], $CI->config->item('en_ids_7359'));
-    $sort_handle = ( $is_author && !$is_parent ? ' idea-sort-handle ' : '' );
 
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_play_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' idea_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
 
@@ -2198,14 +2197,14 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         $ui .= '<div class="inline-block">';
 
         //IDEA ICON:
-        $ui .= '<span class="icon-block '.superpower_active(10939).'" data-toggle="tooltip" data-placement="right" title="Hold & drag up/down to sort"><a href="/idea/'.$in['in_id'].'" class="'.$sort_handle.'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
+        $ui .= '<span class="icon-block '.superpower_active(10939).'"><a href="/idea/'.$in['in_id'].'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
 
 
         //IDEA TITLE
         if(superpower_active(10984, true)){
             $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author), (($in['ln_order']*100)+1));
         } else {
-            $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat '.$sort_handle.'">' . echo_in_title($in['in_title']) . '</a>';
+            $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in['in_title']) . '</a>';
         }
 
 
@@ -2305,8 +2304,12 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         $ui .= '<span class="show-on-hover">';
         if($is_author || !$is_parent){
 
+            if($is_author && !$is_parent){
+                $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-unlink black idea-sort-handle"></i></span>';
+            }
+
             //Unlink:
-            $ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink black" style="font-size: 0.8em;"></i></a></span>';
+            $ui .= '<span title="Unlink idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink black"></i></a></span>';
 
         } elseif(!$is_author) {
 
@@ -2809,7 +2812,7 @@ function echo_en($en, $is_parent = false)
     $idea_ui .= '<div class="pull-right inline-block">';
     $idea_ui .= '<div class="note-edit edit-off '.superpower_active(10967).'">';
     $idea_ui .= '<span class="show-on-hover">';
-    $idea_ui .= '<span title="Modify Player" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog black" style="font-size: 0.8em;"></i></a></span>';
+    $idea_ui .= '<span title="Modify Player" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog black"></i></a></span>';
     $idea_ui .= '</span>';
     $idea_ui .= '</div>';
     $idea_ui .= '</div>';
