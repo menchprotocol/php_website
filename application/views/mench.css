@@ -403,9 +403,9 @@ img.no-radius {
 
 
 /* MENCH Colors */
-.play, .play .fas, .play .far, .play .fal, .play .fad, .color4536, .info-item i.play:hover, .info-item a.play:hover  { color:#008DF2 !important; }
-.idea, .idea .fas, .idea .far, .idea .fal, .idea .fad, .color4535, .info-item i.idea:hover, .info-item a.idea:hover  { color:#ffd600 !important; } /* f1d104 */
-.read, .read .fas, .read .far, .read .fal, .read .fad, .color6205, .info-item i.read:hover, .info-item a.read:hover  { color:#FC1B44 !important; }
+.play, .play .fas, .play .far, .play .fal, .play .fad, .play.fas, .play.far, .play.fal, .play.fad, .color4536, .info-item i.play:hover, .info-item a.play:hover  { color:#008DF2 !important; }
+.idea, .idea .fas, .idea .far, .idea .fal, .idea .fad, .idea.fas, .idea.far, .idea.fal, .idea.fad, .color4535, .info-item i.idea:hover, .info-item a.idea:hover  { color:#ffd600 !important; } /* f1d104 */
+.read, .read .fas, .read .far, .read .fal, .read .fad, .read.fas, .read.far, .read.fal, .read.fad, .color6205, .info-item i.read:hover, .info-item a.read:hover  { color:#FC1B44 !important; }
 .grey, .grey i { color:#AAAAAA !important; }
 .black, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
