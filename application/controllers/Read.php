@@ -180,13 +180,13 @@ class Read extends CI_Controller
         //IDEA
         $idea_coins_new_last_week = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+            'ln_type_play_id' => 4250, //UNIQUE IDEAS
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         $idea_coins_last_week = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+            'ln_type_play_id' => 4250, //UNIQUE IDEAS
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         $idea_coins_growth_rate = format_percentage( $idea_coins_last_week[0]['total_coins'] / ( $idea_coins_last_week[0]['total_coins'] - $idea_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100;
