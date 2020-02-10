@@ -181,6 +181,34 @@ class Idea extends CI_Controller {
 
     }
 
+    function in_request_invite($in_id){
+
+        //Make sure it's a logged in trainer:
+        $session_en = superpower_assigned(null, true);
+
+        //Blog Author:
+        $this->READ_model->ln_create(array(
+            'ln_status_play_id' => 6175, //Drafting
+            'ln_type_play_id' => 4983,
+            'ln_owner_play_id' => $session_en['en_id'],
+            'ln_parent_play_id' => $session_en['en_id'],
+            'ln_content' => '@'.$session_en['en_id'],
+            'ln_child_idea_id' => $in_id,
+        ));
+
+        //Inform moderators:
+        $this->READ_model->ln_create(array(
+            'ln_content' => 'Player requesting to join as idea author',
+            'ln_type_play_id' => 7504, //Trainer Review Required
+            'ln_owner_play_id' => $session_en['en_id'],
+            'ln_child_idea_id' => $in_id,
+        ));
+
+        //Go back to idea:
+        return redirect_message('/idea/'.$in_id, '<div class="alert alert-success" role="alert"><i class="far fa-thumbs-up"></i> Successfully submitted your request to join as an author of this idea. You will receive a confirmation once your request has been reviewed.</div>');
+
+    }
+
     function in_become_author($in_id){
 
         //Make sure it's a logged in trainer:
