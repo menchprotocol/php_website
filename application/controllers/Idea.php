@@ -187,29 +187,18 @@ class Idea extends CI_Controller {
         $session_en = superpower_assigned(null, true);
 
         if(count($this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'ln_type_play_id' => 4983,
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id' => 12450,
+            'ln_owner_play_id' => $session_en['en_id'],
             'ln_child_idea_id' => $in_id,
-            'ln_parent_play_id' => $session_en['en_id'],
         )))){
             return redirect_message('/idea/'.$in_id, '<div class="alert alert-warning" role="alert"><i class="fad fa-exclamation-triangle"></i> You have already requested to join this idea. No further action is necessary.</div>');
 
         }
 
-        //Blog Author:
-        $this->READ_model->ln_create(array(
-            'ln_status_play_id' => 6175, //Drafting
-            'ln_type_play_id' => 4983,
-            'ln_owner_play_id' => $session_en['en_id'],
-            'ln_parent_play_id' => $session_en['en_id'],
-            'ln_content' => '@'.$session_en['en_id'],
-            'ln_child_idea_id' => $in_id,
-        ));
-
         //Inform moderators:
         $this->READ_model->ln_create(array(
-            'ln_content' => 'Player requesting to join as idea author',
-            'ln_type_play_id' => 7504, //Trainer Review Required
+            'ln_type_play_id' => 12450,
             'ln_owner_play_id' => $session_en['en_id'],
             'ln_child_idea_id' => $in_id,
         ));
