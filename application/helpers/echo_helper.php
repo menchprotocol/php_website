@@ -2696,7 +2696,7 @@ function echo_en($en, $is_parent = false)
 
 
     //Does this player also include a link?
-    if ($ln_id > 0 && strlen($en['ln_content']) > 0) {
+    if ($ln_id > 0) {
         if($is_play_link){
 
             //PLAY LINKS:
