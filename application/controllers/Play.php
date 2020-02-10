@@ -2564,7 +2564,7 @@ fragment PostListingItemSidebar_post on Post {
                 'status' => 0,
                 'message' => 'Session expired',
             ));
-        } elseif (!isset($_POST['en_email']) || (strlen($_POST['en_email']) > 0 && !filter_var($_POST['en_email'], FILTER_VALIDATE_EMAIL))) {
+        } elseif (!isset($_POST['en_email']) || !filter_var($_POST['en_email'], FILTER_VALIDATE_EMAIL)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Email',
