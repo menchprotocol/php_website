@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-02-10 12:57:05 PST
+//Generated 2020-02-10 13:56:14 PST
 
 //READ ICONS:
 $config['en_ids_12446'] = array(12347,6146,12447,12448);
@@ -445,7 +445,7 @@ $config['en_all_4536'] = array(
         'm_icon' => '<i class="fad fa-bolt play" aria-hidden="true"></i>',
         'm_name' => 'PLAY SUPERPOWERS',
         'm_desc' => '',
-        'm_parents' => array(11035,4536,5007,4527),
+        'm_parents' => array(6122,6225,11035,4536,5007,4527),
     ),
 );
 
@@ -4681,7 +4681,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fad fa-bolt play" aria-hidden="true"></i>',
         'm_name' => 'PLAY SUPERPOWERS',
         'm_desc' => '',
-        'm_parents' => array(11035,4536,5007,4527),
+        'm_parents' => array(6122,6225,11035,4536,5007,4527),
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-tools" aria-hidden="true"></i>',
@@ -5896,7 +5896,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fad fa-bolt play" aria-hidden="true"></i>',
         'm_name' => 'PLAY SUPERPOWERS',
         'm_desc' => '',
-        'm_parents' => array(11035,4536,5007,4527),
+        'm_parents' => array(6122,6225,11035,4536,5007,4527),
     ),
     12401 => array(
         'm_icon' => '<i class="fad fa-sync play"></i>',
@@ -7671,13 +7671,19 @@ $config['en_all_4986'] = array(
 );
 
 //PLAY ACCOUNT:
-$config['en_ids_6225'] = array(12289,6197,3288,3286);
+$config['en_ids_6225'] = array(12289,10957,6197,3288,3286);
 $config['en_all_6225'] = array(
     12289 => array(
         'm_icon' => '<i class="fad fa-paw play" aria-hidden="true"></i>',
         'm_name' => 'AVATAR',
         'm_desc' => '',
         'm_parents' => array(4536,6225),
+    ),
+    10957 => array(
+        'm_icon' => '<i class="fad fa-bolt play" aria-hidden="true"></i>',
+        'm_name' => 'SUPERPOWERS',
+        'm_desc' => '',
+        'm_parents' => array(6122,6225,11035,4536,5007,4527),
     ),
     6197 => array(
         'm_icon' => '<i class="fad fa-fingerprint play" aria-hidden="true"></i>',
