@@ -538,8 +538,8 @@ class Idea extends CI_Controller {
                     //Remove all links:
                     $this->IDEA_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
 
-                //Notify moderators of Feature request?
-                } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !count($this->READ_model->ln_fetch(array(
+                //Notify moderators of Feature request? Only if they don't have the powers themselves:
+                } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !superpower_assigned(10985) && !count($this->READ_model->ln_fetch(array(
                         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                         'ln_type_play_id' => 4601, //IDEA KEYWORDS
                         'ln_parent_play_id IN (' . join(',', featured_topic_ids()) . ')' => null,
