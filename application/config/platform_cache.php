@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-02-10 13:56:14 PST
+//Generated 2020-02-10 15:08:38 PST
 
 //READ ICONS:
 $config['en_ids_12446'] = array(12347,6146,12447,12448);
@@ -445,7 +445,7 @@ $config['en_all_4536'] = array(
         'm_icon' => '<i class="fad fa-bolt play" aria-hidden="true"></i>',
         'm_name' => 'PLAY SUPERPOWERS',
         'm_desc' => '',
-        'm_parents' => array(6122,6225,11035,4536,5007,4527),
+        'm_parents' => array(6225,11035,4536,5007,4527),
     ),
 );
 
@@ -989,7 +989,7 @@ $config['en_all_6205'] = array(
         'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
         'm_name' => 'READ CLEAR ALL',
         'm_desc' => '',
-        'm_parents' => array(6205,11035,5967,4755,6418,4593,6414),
+        'm_parents' => array(6205,11035,4755,6418,4593,6414),
     ),
     6559 => array(
         'm_icon' => '<i class="read fad fa-wand-magic"></i>',
@@ -4681,7 +4681,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fad fa-bolt play" aria-hidden="true"></i>',
         'm_name' => 'PLAY SUPERPOWERS',
         'm_desc' => '',
-        'm_parents' => array(6122,6225,11035,4536,5007,4527),
+        'm_parents' => array(6225,11035,4536,5007,4527),
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-tools" aria-hidden="true"></i>',
@@ -4699,7 +4699,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
         'm_name' => 'READ CLEAR ALL',
         'm_desc' => '',
-        'm_parents' => array(6205,11035,5967,4755,6418,4593,6414),
+        'm_parents' => array(6205,11035,4755,6418,4593,6414),
     ),
     7256 => array(
         'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
@@ -5896,7 +5896,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fad fa-bolt play" aria-hidden="true"></i>',
         'm_name' => 'PLAY SUPERPOWERS',
         'm_desc' => '',
-        'm_parents' => array(6122,6225,11035,4536,5007,4527),
+        'm_parents' => array(6225,11035,4536,5007,4527),
     ),
     12401 => array(
         'm_icon' => '<i class="fad fa-sync play"></i>',
@@ -7154,7 +7154,7 @@ $config['en_all_7585'] = array(
 );
 
 //READ READ CC:
-$config['en_ids_5967'] = array(12450,4246,7504,6415,4235);
+$config['en_ids_5967'] = array(12450,4246,7504,4235);
 $config['en_all_5967'] = array(
     12450 => array(
         'm_icon' => '<i class="fas fa-pen-square idea"></i>',
@@ -7173,12 +7173,6 @@ $config['en_all_5967'] = array(
         'm_name' => 'PLAY REVIEW TRIGGER',
         'm_desc' => '&var_en_subscriber_ids=1',
         'm_parents' => array(4535,5967,4755,4593),
-    ),
-    6415 => array(
-        'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
-        'm_name' => 'READ CLEAR ALL',
-        'm_desc' => '&var_en_subscriber_ids=1',
-        'm_parents' => array(6205,11035,5967,4755,6418,4593,6414),
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
@@ -7676,14 +7670,14 @@ $config['en_all_6225'] = array(
     12289 => array(
         'm_icon' => '<i class="fad fa-paw play" aria-hidden="true"></i>',
         'm_name' => 'AVATAR',
-        'm_desc' => '',
+        'm_desc' => 'Choose your avatar:',
         'm_parents' => array(4536,6225),
     ),
     10957 => array(
         'm_icon' => '<i class="fad fa-bolt play" aria-hidden="true"></i>',
         'm_name' => 'SUPERPOWERS',
         'm_desc' => '',
-        'm_parents' => array(6122,6225,11035,4536,5007,4527),
+        'm_parents' => array(6225,11035,4536,5007,4527),
     ),
     6197 => array(
         'm_icon' => '<i class="fad fa-fingerprint play" aria-hidden="true"></i>',
@@ -8160,7 +8154,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
         'm_name' => 'READ CLEAR ALL',
         'm_desc' => '',
-        'm_parents' => array(6205,11035,5967,4755,6418,4593,6414),
+        'm_parents' => array(6205,11035,4755,6418,4593,6414),
     ),
     6559 => array(
         'm_icon' => '<i class="read fad fa-wand-magic"></i>',
@@ -8957,7 +8951,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
         'm_name' => 'READ CLEAR ALL',
         'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for trainers.',
-        'm_parents' => array(6205,11035,5967,4755,6418,4593,6414),
+        'm_parents' => array(6205,11035,4755,6418,4593,6414),
     ),
     6559 => array(
         'm_icon' => '<i class="read fad fa-wand-magic"></i>',
