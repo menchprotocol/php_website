@@ -389,8 +389,12 @@ img.no-radius {
     overflow-x: hidden;
 }
 
-.nav-tabs, .message_content{
+.nav-tabs {
     margin-top:10px;
+    margin-left: 33px;
+}
+
+.message_content{
     margin-left: 33px;
 }
 

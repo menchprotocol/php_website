@@ -2700,7 +2700,9 @@ function echo_en($en, $is_parent = false)
         if($is_play_link){
 
             //PLAY LINKS:
-            $ui .= '<div class="doclear">&nbsp;</div>';
+            if(strlen($en['ln_content'])){
+                $ui .= '<div class="doclear">&nbsp;</div>';
+            }
 
             $ui .= '<span class="message_content ln_content ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_play_id']) . '</span>';
 
