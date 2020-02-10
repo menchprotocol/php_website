@@ -432,12 +432,16 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 $match_columns = array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
-                    'ln_parent_play_id' => $player['en_id'],
                 );
 
                 if($en_id2 == 12273){
+                    //Idea Coins
+                    $match_columns['ln_parent_play_id'] = $player['en_id'];
                     $match_columns['in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Idea Statuses Public
                     $join_objects = array('in_child');
+                } elseif($en_id2 == 6255){
+                    //Read Coins:
+                    $match_columns['ln_owner_play_id'] = $player['en_id'];
                 }
 
                 //READER READS & BOOKMARKS
