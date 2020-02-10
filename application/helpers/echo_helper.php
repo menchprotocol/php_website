@@ -1540,7 +1540,6 @@ function echo_in_stat_play($in_id = 0, $en_id = 0){
         if($in_id){
             $mench = 'play';
             $coin_filter = array(
-                'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                 'ln_child_idea_id' => $in_id,
@@ -1548,14 +1547,13 @@ function echo_in_stat_play($in_id = 0, $en_id = 0){
         } elseif($en_id){
             $mench = 'idea';
             $coin_filter = array(
-                'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                 'ln_parent_play_id' => $en_id,
             );
         }
 
-        $play_coins = $CI->READ_model->ln_fetch($coin_filter, array('in_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+        $play_coins = $CI->READ_model->ln_fetch($coin_filter, array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         if($play_coins[0]['total_coins'] > 0){
             return '<span class="montserrat '.$mench.' '.superpower_active(10983).'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($play_coins[0]['total_coins']).'</span>';
         }
@@ -2174,7 +2172,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $en_all_7585 = $CI->config->item('en_all_7585');
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_4486 = $CI->config->item('en_all_4486');
-    $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
+    $en_all_2738 = $CI->config->item('en_all_2738');
     $en_all_12413 = $CI->config->item('en_all_12413');
 
     //Prep link metadata to be analyzed later:
