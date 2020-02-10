@@ -186,6 +186,16 @@ class Idea extends CI_Controller {
         //Make sure it's a logged in trainer:
         $session_en = superpower_assigned(null, true);
 
+        if(count($this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_type_play_id' => 4983,
+            'ln_child_idea_id' => $in_id,
+            'ln_parent_play_id' => $session_en['en_id'],
+        )))){
+            return redirect_message('/idea/'.$in_id, '<div class="alert alert-warning" role="alert"><i class="fad fa-exclamation-triangle"></i> You have already requested to join this idea. No further action is necessary.</div>');
+
+        }
+
         //Blog Author:
         $this->READ_model->ln_create(array(
             'ln_status_play_id' => 6175, //Drafting
