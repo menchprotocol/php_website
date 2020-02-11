@@ -7,12 +7,9 @@ $total_completed = 0;
 
 
 //FEATURED IDEA
-foreach($this->READ_model->ln_fetch(array(
+foreach($this->IDEA_model->in_fetch(array(
     'in_status_play_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null, //Idea Statuses Featured
-    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    'ln_type_play_id' => 4601, //IDEA KEYWORDS
-    'ln_parent_play_id IN (' . join(',', featured_topic_ids()) . ')' => null,
-), array('in_child'), 0) as $in_published_tree){
+)) as $in_published_tree){
 
     //Count Enrolled Users:
     $enrolled_users = $this->READ_model->ln_fetch(array(

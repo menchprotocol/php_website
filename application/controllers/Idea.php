@@ -541,17 +541,17 @@ class Idea extends CI_Controller {
                 //Notify moderators of Feature request? Only if they don't have the powers themselves:
                 } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !superpower_assigned(10985) && !count($this->READ_model->ln_fetch(array(
                         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_play_id' => 4601, //IDEA KEYWORDS
-                        'ln_parent_play_id IN (' . join(',', featured_topic_ids()) . ')' => null,
+                        'ln_type_play_id' => 12453, //Idea Feature Request
+                        'ln_owner_play_id' => $session_en['en_id'],
                         'ln_child_idea_id' => $_POST['in_id'],
                     )))){
-                    //Inform moderators:
+
                     $this->READ_model->ln_create(array(
-                        'ln_content' => 'Player requesting feature review',
-                        'ln_type_play_id' => 7504, //Trainer Review Required
+                        'ln_type_play_id' => 12453, //Idea Feature Request
                         'ln_owner_play_id' => $session_en['en_id'],
                         'ln_child_idea_id' => $_POST['in_id'],
                     ));
+
                 }
 
             }

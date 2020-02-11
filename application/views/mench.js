@@ -282,7 +282,7 @@ $(document).ready(function () {
                             } else {
 
                                 //Can view limited players:
-                                search_filters += ' ( alg_obj_is_in = '+( search_only_idea ? '1' : '0' )+' AND ( _tags:alg_is_published_featured OR _tags:alg_author_' + js_pl_id + ' )) ';
+                                search_filters += ' ( alg_obj_is_in = '+( search_only_idea ? '1' : '0' )+' AND ( alg_obj_status:12137 OR _tags:alg_author_' + js_pl_id + ' )) ';
                             }
 
                         } else {
@@ -294,7 +294,7 @@ $(document).ready(function () {
                             } else {
 
                                 //Can view limited players:
-                                search_filters += ' ( _tags:alg_is_published_featured OR _tags:alg_author_' + js_pl_id + ' ) ';
+                                search_filters += ' ( alg_obj_status:12137 OR _tags:alg_author_' + js_pl_id + ' ) ';
 
                             }
 
@@ -306,12 +306,12 @@ $(document).ready(function () {
                         if(search_only_play || search_only_idea){
 
                             //Guest can search players only with a starting @ sign
-                            search_filters += ' ( alg_obj_is_in = '+( search_only_idea ? '1' : '0' )+' AND _tags:alg_is_published_featured ) ';
+                            search_filters += ' ( alg_obj_is_in = '+( search_only_idea ? '1' : '0' )+' AND alg_obj_status:12137 ) ';
 
                         } else {
 
                             //Guest can search ideas only by default as they start typing;
-                            search_filters += ' ( alg_obj_is_in = 1 AND _tags:alg_is_published_featured ) ';
+                            search_filters += ' ( alg_obj_is_in = 1 AND alg_obj_status:12137 ) ';
 
                         }
 

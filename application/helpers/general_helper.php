@@ -910,16 +910,6 @@ function analyze_domain($full_url){
 }
 
 
-function featured_topic_ids(){
-    $CI =& get_instance();
-    $featured_topic_ids = array();
-    foreach($CI->config->item('en_ids_10869') as $topic_id){
-        array_push($featured_topic_ids, $topic_id);
-        $featured_topic_ids = array_merge($featured_topic_ids, $CI->config->item('en_ids_'.$topic_id));
-    }
-    return $featured_topic_ids;
-}
-
 
 function boost_power()
 {
@@ -1007,7 +997,6 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
     }
 
 
-    $featured_topic_ids = featured_topic_ids();
     $all_export_rows = array();
     $all_db_rows = array();
     $synced_count = 0;
@@ -1122,10 +1111,6 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
 
-                if($has_featured_parent_en && in_array(intval($db_row['en_status_play_id']), $CI->config->item('en_ids_7357'))){
-                    array_push($export_row['_tags'], 'alg_is_published_featured');
-                }
-
             } elseif ($loop_obj == 'in') {
 
                 //See if this tree has a time-range:
@@ -1158,18 +1143,6 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                     'ln_parent_play_id >' => 0, //Where the author player is stored
                 ), array(), 0) as $author){
                     array_push($export_row['_tags'], 'alg_author_' . $author['ln_parent_play_id']);
-                }
-
-
-                //Set published status if featured:
-                if(count($CI->READ_model->ln_fetch(array(
-                        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_12138')) . ')' => null, //Idea Statuses Featured
-                        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_play_id' => 4601, //IDEA KEYWORDS
-                        'ln_child_idea_id' => $db_row['in_id'],
-                        'ln_parent_play_id IN (' . join(',', $featured_topic_ids) . ')' => null,
-                    ), array('in_child')))){
-                    array_push($export_row['_tags'], 'alg_is_published_featured');
                 }
 
             }
