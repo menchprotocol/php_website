@@ -124,6 +124,7 @@ class Read extends CI_Controller
                 $list_class = 'itemread';
                 $join_objects = array('in_child');
                 $match_columns['ln_parent_play_id'] = $owner_en_id;
+                $match_columns['in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null;
 
             } elseif($tab_group_id == 6255 /* READ COIN */){
 
