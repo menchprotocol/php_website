@@ -404,7 +404,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     )) as $idea_note) {
                         if(in_array($en_id2, $this->config->item('en_ids_12321'))){
 
-                            $this_tab .= echo_in_idea($idea_note);
+                            $this_tab .= echo_in_read($idea_note);
 
                         } elseif(in_array($en_id2, $this->config->item('en_ids_12322'))){
 
