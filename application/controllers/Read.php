@@ -154,7 +154,7 @@ class Read extends CI_Controller
                     $footnotes .= '</div>';
                 }
 
-                $ui .= echo_in_idea($in_read);
+                $ui .= echo_in_idea($in_read, true);
 
                 //$ui .= echo_in_read($in_read,false, $footnotes);
 

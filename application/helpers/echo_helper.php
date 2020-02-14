@@ -1445,7 +1445,7 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 
 
 
-function echo_in_idea($in)
+function echo_in_idea($in, $flip_order = false)
 {
 
     //See if user is logged-in:
@@ -1480,18 +1480,31 @@ function echo_in_idea($in)
     $ui .= '</td>';
 
 
+    if($flip_order){
 
-    //READ
-    $ui .= '<td class="MENCHcolumn2 read">';
-    $ui .= echo_in_stat_read($in['in_id'], 0);
-    $ui .= '</td>';
+        //PLAY
+        $ui .= '<td class="MENCHcolumn3 play">';
+        $ui .= echo_in_stat_play($in['in_id'], 0);
+        $ui .= '</td>';
 
+        //READ
+        $ui .= '<td class="MENCHcolumn2 read">';
+        $ui .= echo_in_stat_read($in['in_id'], 0);
+        $ui .= '</td>';
 
+    } else {
 
-    //PLAY
-    $ui .= '<td class="MENCHcolumn3 play">';
-    $ui .= echo_in_stat_play($in['in_id'], 0);
-    $ui .= '</td>';
+        //READ
+        $ui .= '<td class="MENCHcolumn2 read">';
+        $ui .= echo_in_stat_read($in['in_id'], 0);
+        $ui .= '</td>';
+
+        //PLAY
+        $ui .= '<td class="MENCHcolumn3 play">';
+        $ui .= echo_in_stat_play($in['in_id'], 0);
+        $ui .= '</td>';
+
+    }
 
 
 
