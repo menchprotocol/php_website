@@ -250,7 +250,7 @@ img.no-radius {
     margin: -10px 0 30px;
 }
 .list-group .read-topic{
-    margin:5px;
+    margin:5px 0;
     color: #000000;
 }
 .btn-five{ margin-left:5px; }
@@ -333,7 +333,7 @@ img.no-radius {
 
 .aa-dropdown-menu .aa-suggestion, .suggestion {
     background-color: #FFFFFF;
-    border:1px solid #f4f5f7;
+    border:0px solid #f4f5f7;
     cursor: pointer;
     padding: 7px 5px;
     color: #000000;
@@ -342,6 +342,10 @@ img.no-radius {
     margin: 0;
     display: block;
     text-decoration: none;
+}
+
+.aa-dropdown-menu {
+    margin-left: -34px;
 }
 
 
