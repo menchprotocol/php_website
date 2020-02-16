@@ -1899,6 +1899,9 @@ class READ_model extends CI_Model
 
                 }
 
+                //Determine Prefix:
+                $common_prefix = common_prefix($in__children, 'in_title');
+
 
                 //List children to choose from:
                 foreach ($in__children as $key => $child_in) {
@@ -1915,7 +1918,7 @@ class READ_model extends CI_Model
                     if ($push_message) {
 
                         if(!in_array(($key+1), $answer_referencing)){
-                            $message_content .= ($key+1).'. '.echo_in_title($child_in['in_title'], $push_message).( $previously_selected ? ' [Previously Selected]' : '' )."\n";
+                            $message_content .= ($key+1).'. '.echo_in_title($child_in['in_title'], $push_message, $common_prefix).( $previously_selected ? ' [Previously Selected]' : '' )."\n";
                         }
 
                         if($quick_replies_allowed){
@@ -1933,7 +1936,7 @@ class READ_model extends CI_Model
                         echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
                         echo '<td class="icon-block check-icon"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
                         echo '<td style="width: 100%;">';
-                        echo '<b class="montserrat idea-url" style="margin-left:0;">'.echo_in_title($child_in['in_title'], false).'</b>';
+                        echo '<b class="montserrat idea-url" style="margin-left:0;">'.echo_in_title($child_in['in_title'], false, $common_prefix).'</b>';
                         echo '</td>';
 
                         echo '<td class="featured-frame">' . echo_in_thumbnail($child_in['in_id']) . '</td>';

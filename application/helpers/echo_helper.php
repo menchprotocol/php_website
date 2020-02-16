@@ -2468,7 +2468,6 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         $found_upcoming = 0;
         $max_and_list = ( $push_message ? 5 : 0 );
         $common_prefix = common_prefix($in__children, 'in_title', $in, $max_and_list);
-        echo '['.$common_prefix.']';
         $completion_rate = array();
         $next_key = -1;
         $has_content = ($prefix_statement || strlen($common_prefix));
