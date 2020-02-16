@@ -4162,7 +4162,7 @@ class READ_model extends CI_Model
             $search_index = load_algolia('alg_index');
             $res = $search_index->search($master_command, [
                 'hitsPerPage' => 6, //Max results
-                'filters' => 'alg_obj_is_in=1 AND alg_obj_status=12137',
+                'filters' => 'alg_obj_is_in=1 AND _tags:is_featured',
             ]);
             $search_results = $res['hits'];
 

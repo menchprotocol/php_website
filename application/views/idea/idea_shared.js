@@ -31,7 +31,7 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
             } else {
                 algolia_index.search(q, {
 
-                    filters: ' alg_obj_is_in=1 AND ( alg_obj_status=12137 ' + ( js_pl_id > 0 ? 'OR _tags:alg_author_' + js_pl_id : '' ) + ' ) ',
+                    filters: ' alg_obj_is_in=1 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_author_' + js_pl_id : '' ) + ' ) ',
                     hitsPerPage:( is_add_mode=='link_idea' ? 7 : 10 ),
 
                 }, function (error, content) {
