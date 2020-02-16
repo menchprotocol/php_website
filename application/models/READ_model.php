@@ -1776,13 +1776,13 @@ class READ_model extends CI_Model
                 //Mark this as complete since there is no child to choose from:
                 if(!count($this->READ_model->ln_fetch(array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id' => 12119, //READ ANSWER MISSING
+                    'ln_type_play_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                     'ln_owner_play_id' => $recipient_en['en_id'],
                     'ln_parent_idea_id' => $ins[0]['in_id'],
                 )))){
 
                     array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
-                        'ln_type_play_id' => 12119, //READ ANSWER MISSING
+                        'ln_type_play_id' => 4559, //READ MESSAGES
                         'ln_owner_play_id' => $recipient_en['en_id'],
                         'ln_parent_idea_id' => $ins[0]['in_id'],
                     )));
