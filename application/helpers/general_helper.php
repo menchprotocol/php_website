@@ -1122,7 +1122,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_play_id']]['m_icon']; //Player type icon
                 $export_row['alg_obj_name'] = $db_row['in_title'];
 
-                if(in_array($db_row['en_status_play_id'], $this->config->item('en_ids_12138'))){
+                if(in_array($db_row['in_status_play_id'], $CI->config->item('en_ids_12138'))){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
