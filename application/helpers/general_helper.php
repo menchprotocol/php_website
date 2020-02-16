@@ -674,10 +674,6 @@ function common_prefix($child_list, $child_field, $in = null, $max_look = 0){
 
     $CI =& get_instance();
 
-    if($in && in_array($in['in_type_play_id'], $CI->config->item('en_ids_7712'))){
-        return null; //Cannot have this for selectables
-    }
-
     if(count($child_list) < 2){
         return null; //Cannot do this for less than 2 ideas
     }
