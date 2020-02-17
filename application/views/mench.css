@@ -344,11 +344,6 @@ img.no-radius {
     text-decoration: none;
 }
 
-.aa-dropdown-menu {
-    margin-left: -34px;
-}
-
-
 .aa-dropdown-menu .aa-suggestion.aa-cursor, .suggestion:hover {
     background-color: #DDDDDD;
     text-decoration: none;
