@@ -2628,9 +2628,9 @@ function echo_mench_stats(){
     $ui .= '<td class="read fixedColumns MENCHcolumn3"><span class="read"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="montserrat" title="'.number_format($read_coins[0]['total_coins'], 0).'">'.echo_number($read_coins[0]['total_coins']).'</span></span></td>';
     $ui .= '</tr>';
     $ui .= '<tr>';
-    $ui .= '<td class="play MENCHcolumn1"><span class="icon-block show-max" style="margin-right: -8px;">&nbsp;</span><span class="montserrat" style="padding-left: 8px;">PLAYERS</span></td>';
-    $ui .= '<td class="idea MENCHcolumn2"><span class="icon-block show-max" style="margin-right: -8px;">&nbsp;</span><span class="montserrat" style="padding-left: 8px;">IDEAS</span></td>';
-    $ui .= '<td class="read MENCHcolumn3"><span class="icon-block show-max" style="margin-right: -8px;">&nbsp;</span><span class="montserrat" style="padding-left: 8px;">READS</span></td>';
+    $ui .= '<td class="play fixedColumns MENCHcolumn1"><span class="icon-block show-max" style="margin-right: -8px;">&nbsp;</span><span class="montserrat" style="padding-left: 8px;">PLAYERS</span></td>';
+    $ui .= '<td class="idea fixedColumns MENCHcolumn2"><span class="icon-block show-max" style="margin-right: -8px;">&nbsp;</span><span class="montserrat" style="padding-left: 8px;">IDEAS</span></td>';
+    $ui .= '<td class="read fixedColumns MENCHcolumn3"><span class="icon-block show-max" style="margin-right: -8px;">&nbsp;</span><span class="montserrat" style="padding-left: 8px;">READS</span></td>';
     $ui .= '</tr>';
     $ui .= '</table>';
 
