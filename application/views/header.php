@@ -137,7 +137,7 @@ if(!isset($hide_header)){
                                 }
                             }
 
-                            echo '<td class="footerNav MENCHcolumn'.$MENCHcolumn1.' '.$mench_coin.'">';
+                            echo '<td class="fixedColumns MENCHcolumn'.$MENCHcolumn1.' '.$mench_coin.'">';
                             echo '<a class="'.$mench_coin.' border-'.$mench_coin.( $is_current ? ' focustab ': '' ).'" href="'.$url.'">';
 
                             if($en_id==4536){

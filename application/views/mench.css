@@ -1233,7 +1233,7 @@ label {
     .avatar-item { width:110px !important; padding:10px 0 !important; }
     .avatar-item .avatar-icon { font-size: 2.4em; }
 
-    td.MENCHcolumn1:not(.footerNav), td.MENCHcolumn2:not(.footerNav), td.MENCHcolumn3:not(.footerNav){ width: 100%; display: block; }
+    td.MENCHcolumn1:not(.fixedColumns), td.MENCHcolumn2:not(.fixedColumns), td.MENCHcolumn3:not(.fixedColumns){ width: 100%; display: block; }
     .ln_content { max-width: 100%; }
     .texttype_4736_sm {
         width: calc(100vw - 60px) !important;
