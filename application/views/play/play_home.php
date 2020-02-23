@@ -111,12 +111,12 @@ if($session_en) {
                 if($has_training_url && ($is_unlocked || $is_available)){
 
                     //Superpower Available
-                    echo '<a href="'.$has_training_url.'" class="item'.$extract_icon_color.' list-group-item montserrat itemsetting"><span class="icon-block">'.$m['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m['m_name'].'</b> '.$m['m_desc'].'<span class="icon-block pull-right">'.( $is_unlocked ? '<i class="fas fa-lock-open"></i>' : '<i class="fas fa-lock"></i>' ).'</span></a>';
+                    echo '<a href="'.$has_training_url.'" class="list-group-item itemsetting"><span class="icon-block '.$extract_icon_color.'">'.$m['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m['m_name'].'</b> '.$m['m_desc'].'<span class="icon-block pull-right">'.( $is_unlocked ? '<i class="fas fa-lock-open"></i>' : '<i class="fas fa-lock"></i>' ).'</span></a>';
 
                 } else {
 
                     //Locked
-                    echo '<div class="item'.$extract_icon_color.' list-group-item montserrat itemsetting"><span class="icon-block">'.$m['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m['m_name'].'</b> '.$m['m_name'].'<span class="icon-block pull-right"><i class="fas fa-lock"></i></span></div>';
+                    echo '<div class="list-group-item itemsetting"><span class="icon-block '.$extract_icon_color.'">'.$m['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m['m_name'].'</b> '.$m['m_desc'].'<span class="icon-block pull-right"><i class="fas fa-lock"></i></span></div>';
 
                 }
             }
