@@ -116,7 +116,7 @@ if($session_en) {
                 } else {
 
                     //Locked
-                    echo '<div class="list-group-item"><span class="icon-block '.$extract_icon_color.'">'.$m['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m['m_name'].'</b> '.$m['m_desc'].'<span class="icon-block pull-right"><i class="fas fa-lock"></i></span></div>';
+                    //echo '<div class="list-group-item"><span class="icon-block '.$extract_icon_color.'">'.$m['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m['m_name'].'</b> '.$m['m_desc'].'<span class="icon-block pull-right"><i class="fas fa-lock"></i></span></div>';
 
                 }
             }
