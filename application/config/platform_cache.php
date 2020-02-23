@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-02-22 21:47:23 PST
+//Generated 2020-02-22 22:10:20 PST
 
 //READ ICONS:
 $config['en_ids_12446'] = array(12347,6146,12447,12448);
@@ -6702,19 +6702,19 @@ $config['en_all_4986'] = array(
 );
 
 //PLAY ACCOUNT:
-$config['en_ids_6225'] = array(12289,10957,6197,3288,3286);
+$config['en_ids_6225'] = array(10957,12289,6197,3288,3286);
 $config['en_all_6225'] = array(
-    12289 => array(
-        'm_icon' => '<i class="fad fa-paw play" aria-hidden="true"></i>',
-        'm_name' => 'AVATAR',
-        'm_desc' => 'Choose your avatar:',
-        'm_parents' => array(4536,6225),
-    ),
     10957 => array(
         'm_icon' => '<i class="fad fa-bolt play" aria-hidden="true"></i>',
         'm_name' => 'SUPERPOWERS',
         'm_desc' => '',
         'm_parents' => array(6225,11035,4536,5007,4527),
+    ),
+    12289 => array(
+        'm_icon' => '<i class="fad fa-paw play" aria-hidden="true"></i>',
+        'm_name' => 'AVATAR',
+        'm_desc' => 'Choose your avatar:',
+        'm_parents' => array(4536,6225),
     ),
     6197 => array(
         'm_icon' => '<i class="fad fa-fingerprint play" aria-hidden="true"></i>',
