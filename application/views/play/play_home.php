@@ -92,16 +92,36 @@ if($session_en) {
 
         } elseif ($acc_en_id == 10957 /* Superpowers */) {
 
+            //Load Website URLs:
+            $en_all_10876 = $this->config->item('en_all_10876'); //MENCH WEBSITE
+
+
+            echo '<div class="list-group">';
+
             //List avatars:
-            foreach ($this->config->item('en_all_12279') as $en_id => $m) {
+            foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
 
-                $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m['m_icon']));
-                $avatar_type_match = ($player_icon_parts[0] == $avatar_icon_parts[0]);
+                //What is the superpower requirement?
                 $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
+                $is_available = (!count($superpower_actives) || superpower_assigned(end($superpower_actives)));
+                $is_unlocked = ($is_available && superpower_assigned($superpower_en_id));
+                $has_training_url = ( strlen($en_all_10876[$superpower_en_id]['m_desc']) ? $en_all_10876[$superpower_en_id]['m_desc'] : false );
+                $extract_icon_color = extract_icon_color($m['m_icon']);
 
-                echo '<span class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a href="javascript:void(0);" onclick="account_update_avatar_icon(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemplay avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $player_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a></span>';
+                if($has_training_url && ($is_unlocked || $is_available)){
 
+                    //Superpower Available
+                    echo '<a href="'.$has_training_url.'" class="item'.$extract_icon_color.' list-group-item montserrat itemsetting '.( $is_unlocked ? ' active ' : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m['m_name'].'</b> '.$m['m_name'].'<span class="icon-block pull-right">'.( $is_unlocked ? '<i class="fas fa-lock-open"></i>' : '<i class="fas fa-lock"></i>' ).'</span></a>';
+
+                } else {
+
+                    //Locked
+                    echo '<div class="item'.$extract_icon_color.' list-group-item montserrat itemsetting"><span class="icon-block">'.$m['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m['m_name'].'</b> '.$m['m_name'].'<span class="icon-block pull-right"><i class="fas fa-lock"></i></span></div>';
+
+                }
             }
+
+            echo '</div>';
 
         } elseif ($acc_en_id == 6197 /* Name */) {
 
