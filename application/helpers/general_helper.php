@@ -266,6 +266,22 @@ function ln_detect_type($string)
             'ln_type_play_id' => 4318,
         );
 
+    } elseif (strlen($string) > 9 && (is_valid_date($string) || strtotime($string) > 0)) {
+
+        //Date/time:
+        return array(
+            'status' => 1,
+            'ln_type_play_id' => 4318,
+        );
+
+    } elseif (substr($string, -1)=='%' && is_numeric(substr($string, 0, (strlen($string)-1)))) {
+
+        //Percent:
+        return array(
+            'status' => 1,
+            'ln_type_play_id' => 7657,
+        );
+
     } else {
 
         //Regular text link:
