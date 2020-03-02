@@ -205,7 +205,7 @@ if(!isset($hide_header)){
 
                         echo '<td class="block-link '.superpower_active(10985).'"><a href="/play/play_admin" title="'.$en_all_11035[6287]['m_name'].'">'.$en_all_11035[6287]['m_icon'].'</a></td>';
 
-                        echo '<td class="block-link"><a href="/account" title="'.$en_all_11035[6225]['m_name'].'">'.$en_all_11035[6225]['m_icon'].'</a></td>';
+                        echo '<td class="block-link"><a href="/play/account" title="'.$en_all_11035[6225]['m_name'].'">'.$en_all_11035[6225]['m_icon'].'</a></td>';
 
                         //TODO Create feedback input
                         //echo '<td class="block-link '.superpower_active(10939).'"><a href="https://github.com/menchideas/platform/issues/new" target="_blank" title="'.$en_all_11035[12200]['m_name'].': '.$en_all_11035[12200]['m_desc'].'">'.$en_all_11035[12200]['m_icon'].'</a></td>';

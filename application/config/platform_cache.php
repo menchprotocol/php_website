@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-01 21:39:38 PST
+//Generated 2020-03-01 21:55:24 PST
 
 //READ ICONS:
 $config['en_ids_12446'] = array(12347,6146,12447,12448);
@@ -454,7 +454,7 @@ $config['en_all_4536'] = array(
         'm_parents' => array(4536,6225),
     ),
     6225 => array(
-        'm_icon' => '<i class="fas fa-user play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
         'm_name' => 'PLAYER ACCOUNT',
         'm_desc' => '',
         'm_parents' => array(4536,11035,4527),
@@ -3781,7 +3781,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035),
     ),
     6225 => array(
-        'm_icon' => '<i class="fas fa-user play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
         'm_name' => 'PLAYER ACCOUNT',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(4536,11035,4527),
@@ -4822,7 +4822,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(12412,4758,4527,6212),
     ),
     6225 => array(
-        'm_icon' => '<i class="fas fa-user play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
         'm_name' => 'PLAYER ACCOUNT',
         'm_desc' => '',
         'm_parents' => array(4536,11035,4527),
