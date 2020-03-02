@@ -2968,7 +2968,7 @@ function echo_navigation_menu($cache_en_id){
 
             $href = 'href="'.$en_all_10876[$en_id]['m_desc'].'"';
 
-        } elseif(in_array($en_id, $CI->config->item('en_ids_12502'))){
+        } elseif(0 && in_array($en_id, $CI->config->item('en_ids_12502'))){
 
             $href = 'href="javascript:void();" onclick="'.$en_all_12502[$en_id]['m_desc'].'"';
 
