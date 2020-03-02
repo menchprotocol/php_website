@@ -2954,7 +2954,7 @@ function echo_navigation_menu($cache_en_id){
 
     $ui = '<div class="dropdown inline-block">';
     $ui .= '<button type="button" class="btn no-side-padding dropdown-toggle" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-    $ui .= '<span class="icon-block">' .$en_all_4527[$cache_en_id]['m_icon'].'</span>'.$en_all_4527[$cache_en_id]['m_name'];
+    $ui .= '<span class="icon-block" title="'.$en_all_4527[$cache_en_id]['m_name'].'" data-toggle="tooltip" data-placement="bottom">' .$en_all_4527[$cache_en_id]['m_icon'].'</span>';
     $ui .= '</button>';
 
     $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$cache_en_id.'">';
@@ -2968,7 +2968,7 @@ function echo_navigation_menu($cache_en_id){
 
             $href = 'href="'.$en_all_10876[$en_id]['m_desc'].'"';
 
-        } elseif(0 && in_array($en_id, $CI->config->item('en_ids_12502'))){
+        } elseif(in_array($en_id, $CI->config->item('en_ids_12502'))){
 
             $href = 'href="javascript:void();" onclick="'.$en_all_12502[$en_id]['m_desc'].'"';
 
