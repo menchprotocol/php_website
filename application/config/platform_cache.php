@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-01 21:57:37 PST
+//Generated 2020-03-01 22:12:13 PST
 
 //READ ICONS:
 $config['en_ids_12446'] = array(12347,6146,12447,12448);
@@ -3493,7 +3493,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.26',
+        'm_desc' => '1.261',
         'm_parents' => array(6404),
     ),
     12363 => array(
