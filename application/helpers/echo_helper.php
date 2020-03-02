@@ -2972,6 +2972,16 @@ function echo_navigation_menu($cache_en_id){
 
             $href = 'href="javascript:void();" onclick="'.$en_all_12502[$en_id]['m_desc'].'"';
 
+        } elseif($en_id==12205){
+
+            $session_en = superpower_assigned();
+
+            if($session_en){
+                $href = 'href="/play/'.$session_en['en_id'].'"';
+            } else {
+                continue;
+            }
+
         } else {
 
             //No Link Structure:
