@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-02 10:52:05 PST
+//Generated 2020-03-02 11:09:19 PST
 
 //MENCH JAVASCRIPT FUNCTIONS:
 $config['en_ids_12502'] = array(12496,10957,7256);
@@ -123,31 +123,31 @@ $config['en_all_12491'] = array(
     12492 => array(
         'm_icon' => '<i class="fas fa-plus-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ',
-        'm_desc' => '',
+        'm_desc' => 'Explore books by title or category',
         'm_parents' => array(10876,12491),
     ),
     12493 => array(
         'm_icon' => '<i class="fas fa-plus-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA',
-        'm_desc' => '',
+        'm_desc' => 'Organize ideas your find when reading a book',
         'm_parents' => array(10939,10876,12491),
     ),
     12494 => array(
         'm_icon' => '<i class="fas fa-book play" aria-hidden="true"></i>',
         'm_name' => 'BOOK',
-        'm_desc' => '',
+        'm_desc' => 'Add a new book to the MENCH Library',
         'm_parents' => array(10983,10876,12491),
     ),
     12495 => array(
         'm_icon' => '<i class="fas fa-user-plus play" aria-hidden="true"></i>',
         'm_name' => 'PLAYER',
-        'm_desc' => '',
+        'm_desc' => 'Invite your friends to play MENCH',
         'm_parents' => array(10876,12491),
     ),
     12496 => array(
         'm_icon' => '<i class="fas fa-comment-plus" aria-hidden="true"></i>',
         'm_name' => 'FEEDBACK',
-        'm_desc' => '',
+        'm_desc' => 'Share your thoughts & feedback',
         'm_parents' => array(12502,12491),
     ),
 );
