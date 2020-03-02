@@ -171,13 +171,10 @@ if(!isset($hide_header)){
 
                         <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
-                        <div class="supwerpower_view"><span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) || 1 ? ' hidden ' : '' ) ?>">MENCH</span><?= ( count($this->session->userdata('session_superpowers_assigned')) ? '<a href="javascript:void(0);" onclick="toggle_superpowers()" class="gateway">&nbsp;</a>' : '' ) ?></div>
-
                         <div class="supwerpower_view hidden">
                             <div class="full-width">
                             <?php
                             if(count($this->session->userdata('session_superpowers_assigned'))){
-
                                 foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
                                     if(superpower_assigned($superpower_en_id)){
 
@@ -186,10 +183,6 @@ if(!isset($hide_header)){
 
                                     }
                                 }
-
-                                //Option to revert back:
-                                echo '&nbsp;<a class="btn btn-sm btn-superpower icon-block" style="cursor: alias !important;" href="javascript:void(0);" onclick="toggle_superpowers()" title="Back to Normal ;)"><i class="far fa-times"></i></a>';
-
                             }
                             ?>
                             </div>
