@@ -2464,7 +2464,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
         //List children so they know what's ahead:
         $found_incomplete = false;
-        $found_done = 0;
+        $trigger_show_all = 0;
         $found_upcoming = 0;
         $max_and_list = ( $push_message ? 5 : 0 );
         $common_prefix = common_prefix($in__children, 'in_title', $in, $max_and_list);
@@ -2489,7 +2489,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         //First analyze overall list to see how things are:
         foreach($in__children as $key => $child_in) {
             $completion_rate[$key] = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $child_in);
-            $found_done += ( $completion_rate[$key]['completion_percentage']==100 ? 1 : 0 );
+            $trigger_show_all += ( $completion_rate[$key]['completion_percentage']==100 || $completion_rate[$key]['completion_percentage']==0 ? 1 : 0 );
             if($completion_rate[$key]['completion_percentage']<100 && !$found_incomplete){
                 //We found the next incomplete step:
                 $found_incomplete = true;
@@ -2500,7 +2500,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         }
 
         //If all done, everything would be visible:
-        $all_done = ( $found_done == count($in__children) );
+        $all_done = ( $trigger_show_all == count($in__children) );
 
         if($next_key < 0){
             $found_upcoming--;
