@@ -205,9 +205,7 @@ if(isset($_GET['ln_type_play_id'])){
 
 }
 
-
 $has_filters = ( count($_GET) > 0 );
-
 
 $en_all_2738 = $this->config->item('en_all_2738');
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
@@ -220,7 +218,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     var ln_content_search = '<?= ( isset($_GET['ln_content_search']) && strlen($_GET['ln_content_search']) > 0 ? $_GET['ln_content_search'] : '' ) ?>';
     var ln_content_replace = '<?= ( isset($_GET['ln_content_replace']) && strlen($_GET['ln_content_replace']) > 0 ? $_GET['ln_content_replace'] : '' ) ?>';
 </script>
-<script src="/application/views/read/read_history.js?v=v<?= config_var(11060) ?>"
+<script src="/application/views/read/read_ledger.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <?php
@@ -411,7 +409,7 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
     echo '<input type="submit" class="btn btn-read" value="Apply" />';
 
     if($has_filters){
-        echo ' &nbsp;<a href="/oii" style="font-size: 0.8em;">Remove Filters</a>';
+        echo ' &nbsp;<a href="/ledger" style="font-size: 0.8em;">Remove Filters</a>';
     }
 
     echo '</form>';

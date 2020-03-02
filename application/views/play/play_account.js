@@ -1,11 +1,6 @@
 
 
-
-
 $(document).ready(function () {
-
-    //Load players:
-    load_leaderboard();
 
     //Do we need to auto open?
     if(open_en_id > 0){

@@ -226,15 +226,15 @@ class Read extends CI_Controller
         $play_coins_growth_rate = format_percentage( $play_coins_last_week[0]['total_coins'] / ( $play_coins_last_week[0]['total_coins'] - $play_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100;
 
 
-        //oii
-        $oii_transactions_new_last_week = $this->READ_model->ln_fetch(array(
+        //ledger
+        $ledger_transactions_new_last_week = $this->READ_model->ln_fetch(array(
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $oii_transactions_last_week = $this->READ_model->ln_fetch(array(
+        $ledger_transactions_last_week = $this->READ_model->ln_fetch(array(
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $oii_transactions_growth_rate = format_percentage( $oii_transactions_last_week[0]['total_coins'] / ( $oii_transactions_last_week[0]['total_coins'] - $oii_transactions_new_last_week[0]['total_coins'] ) * 100 ) - 100;
+        $ledger_transactions_growth_rate = format_percentage( $ledger_transactions_last_week[0]['total_coins'] / ( $ledger_transactions_last_week[0]['total_coins'] - $ledger_transactions_new_last_week[0]['total_coins'] ) * 100 ) - 100;
 
 
 
@@ -246,7 +246,7 @@ class Read extends CI_Controller
         $html_message .= '<div>MENCH growth for the <span title="'.$last_week_start.' to '.$last_week_end.' '.config_var(11079).' Timezone" style="border-bottom:1px dotted #AAAAAA;">week of '.date("M jS", $last_week_start_timestamp).'</span>:</div>';
         $html_message .= '<br />';
 
-        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:55px; display: inline-block;">'.( $oii_transactions_growth_rate >= 0 ? '+' : '-' ).$oii_transactions_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($oii_transactions_last_week[0]['total_coins'], 0).' Transactions" style="border-bottom:1px dotted #AAAAAA;">'.echo_number($oii_transactions_last_week[0]['total_coins']).'</span></span><a href="https://mench.com/oii" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">TRANSACTIONS &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:55px; display: inline-block;">'.( $ledger_transactions_growth_rate >= 0 ? '+' : '-' ).$ledger_transactions_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($ledger_transactions_last_week[0]['total_coins'], 0).' Transactions" style="border-bottom:1px dotted #AAAAAA;">'.echo_number($ledger_transactions_last_week[0]['total_coins']).'</span></span><a href="https://mench.com/ledger" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">TRANSACTIONS &raquo;</a></div>';
 
         $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔵</b><b style="min-width:55px; display: inline-block;">'.( $play_coins_growth_rate >= 0 ? '+' : '-' ).$play_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($play_coins_last_week[0]['total_coins'], 0).' Coins" style="border-bottom:1px dotted #AAAAAA;">'.echo_number($play_coins_last_week[0]['total_coins']).'</span></span><a href="https://mench.com/play" target="_blank" style="color: #008DF2; font-weight:bold; text-decoration:none;">PLAY &raquo;</a></div>';
 
@@ -593,7 +593,7 @@ class Read extends CI_Controller
 
 
 
-    function read_history()
+    function read_ledger()
     {
         /*
          *
@@ -609,7 +609,7 @@ class Read extends CI_Controller
         $this->load->view('header', array(
             'title' => $en_all_11035[11999]['m_name'],
         ));
-        $this->load->view('read/read_history');
+        $this->load->view('read/read_ledger');
         $this->load->view('footer');
     }
 
@@ -639,7 +639,7 @@ class Read extends CI_Controller
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
 
-            echo '<td style="text-align: right;">' . '<a href="/oii?in_status_play_id=' . $en_id . '&ln_type_play_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
+            echo '<td style="text-align: right;">' . '<a href="/ledger?in_status_play_id=' . $en_id . '&ln_type_play_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
 
             echo '</tr>';
 
@@ -688,7 +688,7 @@ class Read extends CI_Controller
             //Display this status count:
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
-            echo '<td style="text-align: right;">' . '<a href="/oii?en_status_play_id=' . $en_id . '&ln_type_play_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
+            echo '<td style="text-align: right;">' . '<a href="/ledger?en_status_play_id=' . $en_id . '&ln_type_play_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
             echo '</tr>';
 
         }
@@ -811,7 +811,7 @@ class Read extends CI_Controller
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
             echo '<td style="text-align: right;">';
-            echo '<a href="/oii?ln_status_play_id=' . $en_id . '">' . number_format($objects_count[0]['totals'],0) . '</a>';
+            echo '<a href="/ledger?ln_status_play_id=' . $en_id . '">' . number_format($objects_count[0]['totals'],0) . '</a>';
             echo '</td>';
             echo '</tr>';
 
@@ -853,7 +853,7 @@ class Read extends CI_Controller
     }
 
 
-    function load_oii(){
+    function load_ledger(){
 
         /*
          * Loads the list of links based on the
@@ -908,7 +908,7 @@ class Read extends CI_Controller
 
             //Do we have more to show?
             if($has_more_links){
-                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="load_oii(link_filters, link_join_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
+                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="load_ledger(link_filters, link_join_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
                 $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$lns_count[0]['total_count'].' link'.echo__s($lns_count[0]['total_count']).' have been loaded</div>';

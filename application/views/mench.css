@@ -34,14 +34,14 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     max-width:767px;
 }
 .container-wide .i_content, .padded {
-    margin: 0 0 20px 33px;
+    margin: 0 33px 20px 33px;
 }
 .margin-top-down{
     margin:30px 0;
 }
 .container-wide .content-image {
     margin: 10px 0 0 0;
-    max-width: calc(100% - 33px);
+    max-width: calc(100% - 66px);
     max-height:377px;
 }
 .yt-container{
@@ -545,7 +545,7 @@ img.no-radius {
     margin-right: 6px;
 }
 
-.nav-tabs-sm .nav-link {
+.nav-sm .nav-link {
     display: block;
     padding: .5rem .5rem;
     font-family: 'Montserrat', sans-serif;
@@ -589,7 +589,7 @@ textarea.note-textarea{
 
 
 .toidea .i_content {
-    padding:0 22px 0 33px;
+    padding:0 33px;
 }
 .add_note_form{
     margin-left: 33px;
@@ -692,11 +692,13 @@ textarea.note-textarea{
 
 .space-content{
     padding-left:33px;
+    padding-right:33px;
     display: block;
 }
 .title-block{
     display: block;
     padding-left: 33px;
+    padding-right:33px;
     margin-top: -19px;
 }
 
@@ -707,9 +709,9 @@ textarea.note-textarea{
 }
 .ln_content img, .i_content img { max-width: 100%; }
 
-td.MENCHcolumn1{ width: 58%; }
-td.MENCHcolumn2{ width: 21%; }
-td.MENCHcolumn3{ width: 21%; }
+td.MENCHcolumn1{ width: 50%; }
+td.MENCHcolumn2{ width: 25%; }
+td.MENCHcolumn3{ width: 25%; }
 
 .equal-columns td.MENCHcolumn1{ width: 33.3%; }
 .equal-columns td.MENCHcolumn2{ width: 33.3%; }
@@ -1138,7 +1140,8 @@ label {
 .icon-block-lg img,
 .icon-block-sm img,
 .icon-block-xs img,
-.icon-block img{
+.icon-block img,
+.img-block img {
     width: 20px !important;
     height: 20px !important;
     margin: -5px 0 -3px !important;
@@ -1234,6 +1237,7 @@ label {
     .avatar-item .avatar-icon { font-size: 2.4em; }
 
     td.MENCHcolumn1:not(.fixedColumns), td.MENCHcolumn2:not(.fixedColumns), td.MENCHcolumn3:not(.fixedColumns){ width: 100%; display: block; }
+
     .ln_content { max-width: 100%; }
     .texttype_4736_sm {
         width: calc(100vw - 60px) !important;

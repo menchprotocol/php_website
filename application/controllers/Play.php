@@ -760,7 +760,7 @@ fragment PostListingItemSidebar_post on Post {
 
                 ( $session_en
 
-                    ? '<a href="/oii?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_12273')).'&ln_parent_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : '' ).'" class="montserrat idea"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>'
+                    ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_12273')).'&ln_parent_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : '' ).'" class="montserrat idea"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>'
 
                     : '<span class="montserrat idea"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>'
 
@@ -770,7 +770,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
             //READ
-            echo '<td class="read fixedColumns MENCHcolumn3">'.( $session_en ? '<a href="/oii?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_owner_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' ).'</td>';
+            echo '<td class="read fixedColumns MENCHcolumn3">'.( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_owner_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' ).'</td>';
 
             echo '</tr>';
 
@@ -808,7 +808,7 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<td class="idea fixedColumns MENCHcolumn2"></td>';
 
                 //READ
-                echo '<td class="read fixedColumns MENCHcolumn3">'.( $session_en ? '<a href="/oii?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_owner_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>' ).'</td>';
+                echo '<td class="read fixedColumns MENCHcolumn3">'.( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_owner_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>' ).'</td>';
 
                 echo '</tr>';
 
@@ -2241,7 +2241,7 @@ fragment PostListingItemSidebar_post on Post {
         $ens[0] = $this->PLAY_model->en_activate_session($ens[0]);
 
         //Take them to their account:
-        return redirect_message( '/play?open_en_id=3286' , '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Successfully signed in. You can set a new password below.</div>');
+        return redirect_message( '/play/account?open_en_id=3286' , '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Successfully signed in. You can set a new password below.</div>');
 
     }
 
@@ -2416,6 +2416,29 @@ fragment PostListingItemSidebar_post on Post {
         ));
     }
 
+    function account(){
+
+        //Authenticate user:
+        $session_en = superpower_assigned(null);
+
+        //Log View:
+        if($session_en){
+            $this->READ_model->ln_create(array(
+                'ln_type_play_id' => 4282, //Opened Account
+                'ln_owner_play_id' => $session_en['en_id'],
+            ));
+        }
+
+        $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
+        $this->load->view('header', array(
+            'title' => $en_all_2738[4536]['m_name'],
+        ));
+        $this->load->view('play/play_account', array(
+            'session_en' => $session_en,
+        ));
+        $this->load->view('footer');
+
+    }
 
     function play_home()
     {
@@ -2423,10 +2446,10 @@ fragment PostListingItemSidebar_post on Post {
         //Authenticate user:
         $session_en = superpower_assigned(null);
 
-        //Log My Account View:
+        //Log View:
         if($session_en){
             $this->READ_model->ln_create(array(
-                'ln_type_play_id' => 4282, //Opened My Account
+                'ln_type_play_id' => 12489, //Opened Leaderboard
                 'ln_owner_play_id' => $session_en['en_id'],
             ));
         }

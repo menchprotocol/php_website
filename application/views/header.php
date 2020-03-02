@@ -139,28 +139,11 @@ if(!isset($hide_header)){
 
                             echo '<td class="fixedColumns MENCHcolumn'.$MENCHcolumn1.' '.$mench_coin.'">';
                             echo '<a class="'.$mench_coin.' border-'.$mench_coin.( $is_current ? ' focustab ': '' ).'" href="'.$url.'">';
-
-                            if($en_id==4536){
-
-                                //PLAY
-                                echo '<span class="icon-block">'.$session_en['en_icon'].'</span>';
-                                if($current_mench['x_name']=='play'){
-                                    echo '<span class="montserrat play en_name_first_'.$session_en['en_id'].'">'.one_two_explode('', ' ', $session_en['en_name']).'</span>';
-                                } else {
-                                    echo '<span class="montserrat play">ME</span>';
-                                }
-
-                            } else {
-
-                                //READ IDEA
-                                echo '<span class="icon-block">'.$m['m_icon'].'</span>';
-                                echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span> ';
-                                if($is_current){
-                                    echo '<span class="montserrat '.$mench_coin.'_name">' . $m['m_name'] . 'S</span>';
-                                }
-
+                            echo '<span class="icon-block">'.$m['m_icon'].'</span>';
+                            echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
+                            if($is_current){
+                                echo ' <span class="montserrat '.$mench_coin.'_name">' . $m['m_name'] . 'S</span>';
                             }
-
                             echo '</a>';
                             echo '</td>';
 
@@ -193,6 +176,7 @@ if(!isset($hide_header)){
                             <div class="full-width">
                             <?php
                             if(count($this->session->userdata('session_superpowers_assigned'))){
+
                                 foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
                                     if(superpower_assigned($superpower_en_id)){
 
@@ -220,6 +204,8 @@ if(!isset($hide_header)){
                         $en_all_11035 = $this->config->item('en_all_11035');
 
                         echo '<td class="block-link '.superpower_active(10985).'"><a href="/play/play_admin" title="'.$en_all_11035[6287]['m_name'].'">'.$en_all_11035[6287]['m_icon'].'</a></td>';
+
+                        echo '<td class="block-link"><a href="/account" title="'.$en_all_11035[6225]['m_name'].'">'.$en_all_11035[6225]['m_icon'].'</a></td>';
 
                         //TODO Create feedback input
                         //echo '<td class="block-link '.superpower_active(10939).'"><a href="https://github.com/menchideas/platform/issues/new" target="_blank" title="'.$en_all_11035[12200]['m_name'].': '.$en_all_11035[12200]['m_desc'].'">'.$en_all_11035[12200]['m_icon'].'</a></td>';

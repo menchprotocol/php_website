@@ -1700,11 +1700,11 @@ class READ_model extends CI_Model
 
                     //Show all completions:
                     $en_all_12229 = $this->config->item('en_all_12229');
-                    foreach($read_completes as $read_history){
+                    foreach($read_completes as $read_ledger){
 
-                        echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_history['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_history['ln_id'].' ['.$en_all_12229[$read_history['ln_type_play_id']]['m_name'].'] ['.$read_history['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_history['ln_type_play_id']]['m_icon'].'</span></span>';
+                        echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_ledger['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_ledger['ln_id'].' ['.$en_all_12229[$read_ledger['ln_type_play_id']]['m_name'].'] ['.$read_ledger['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_ledger['ln_type_play_id']]['m_icon'].'</span></span>';
 
-                        $previous_answers .= ( strlen($read_history['ln_content']) ? '<div class="previous_answer">'.$this->READ_model->dispatch_message($read_history['ln_content']).'</div>' : '' );
+                        $previous_answers .= ( strlen($read_ledger['ln_content']) ? '<div class="previous_answer">'.$this->READ_model->dispatch_message($read_ledger['ln_content']).'</div>' : '' );
                     }
 
                     echo '</span></div>';
@@ -1886,11 +1886,11 @@ class READ_model extends CI_Model
                     //HTML:
                     if ($ins[0]['in_type_play_id'] == 6684) {
 
-                        echo '<div class="montserrat margin-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE:</div>';
+                        echo '<div class="montserrat margin-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE TO CONTINUE:</div>';
 
                     } elseif ($ins[0]['in_type_play_id'] == 7231) {
 
-                        echo '<div class="montserrat margin-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE OR MORE:</div>';
+                        echo '<div class="montserrat margin-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE OR MORE TO CONTINUE:</div>';
 
                     }
 
@@ -2025,7 +2025,7 @@ class READ_model extends CI_Model
                 echo '</form>';
                 echo '</div>';
 
-                echo '<label class="btn btn-read" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD</label>';
+                echo '<label class="btn btn-read" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD TO CONTINUE</label>';
 
                 ?>
 
@@ -3092,7 +3092,7 @@ class READ_model extends CI_Model
                  *
                  * */
 
-                $en_icon = '<span class="icon-block">'.echo_en_icon($ens[0]['en_icon']).'</span>';
+                $en_icon = '<span class="img-block">'.echo_en_icon($ens[0]['en_icon']).'</span> ';
 
                 if($is_user_message){
 
@@ -3103,7 +3103,7 @@ class READ_model extends CI_Model
 
                     //Show player link with status:
                     $current_mench = current_mench();
-                    $output_body_message = str_replace('@' . $string_references['ref_players'][0], '<span class="'.( $parents_media_shown > 0 ? superpower_active(10983) : '' ).'">'.( !in_array($ens[0]['en_status_play_id'], $this->config->item('en_ids_7357')) ? '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_play_id']]['m_icon'].'</span>' : '' ).$en_icon.( $current_mench['x_name']=='read' ? '<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">' . $ens[0]['en_name']  . '</span>' : '<a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/play/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_players'][0], '<span class="'.( $parents_media_shown > 0 ? superpower_active(10983) : '' ).'">'.( !in_array($ens[0]['en_status_play_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block">'.$en_all_6177[$ens[0]['en_status_play_id']]['m_icon'].'</span> ' : '' ).$en_icon.( $current_mench['x_name']=='read' ? '<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">' . $ens[0]['en_name']  . '</span>' : '<a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/play/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
 
                 }
 

@@ -766,7 +766,7 @@ class Idea extends CI_Controller {
             $item_ui .= '<a href="/idea/'.$_POST['in_loaded_id'].'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
             $item_ui .= '&nbsp;<a href="/play/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="User Player"><i class="fas fa-at"></i></a>';
 
-            $item_ui .= '&nbsp;<a href="/oii?ln_owner_play_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
+            $item_ui .= '&nbsp;<a href="/ledger?ln_owner_play_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
 
             $item_ui .= '</td>';
             $item_ui .= '</tr>';

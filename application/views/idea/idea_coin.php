@@ -192,7 +192,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
 
-            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder="'.'ADD '.rtrim(strtoupper($en_all_4485[$en_id2]['m_name']), 'S').( in_array(12359, $en_all_4485[$en_id2]['m_parents']) ? ', PASTE URL OR DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder="'.'ADD '.rtrim(strtoupper($en_all_4485[$en_id2]['m_name']), 'S').( in_array(12359, $en_all_4485[$en_id2]['m_parents']) ? ', URL OR FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
@@ -291,7 +291,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
     if($show_tab_menu_count >= 2){
-        echo '<ul class="nav nav-tabs nav-tabs-sm">';
+        echo '<ul class="nav nav-tabs nav-sm">';
         echo $show_tab_ui;
         echo '</ul>';
     }

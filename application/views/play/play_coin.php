@@ -239,7 +239,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
         echo '<div class="col-lg-12 '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<ul class="nav nav-tabs nav-tabs-sm">';
+        echo '<ul class="nav nav-tabs nav-sm">';
 
         foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
 
@@ -362,7 +362,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     $en_all_6177 = $this->config->item('en_all_6177'); //Player Statuses
 
                     //Add 2nd Navigation to UI
-                    $tab_content .= '<div class="nav nav-tabs nav-tabs-sm '.superpower_active(10986).'">';
+                    $tab_content .= '<div class="nav nav-pills nav-sm '.superpower_active(10986).'">';
 
                     //Show fixed All button:
                     $tab_content .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all players"><i class="fas fa-asterisk"></i><span class="show-max"> All</span> <span class="counter-11029">' . $player_count . '</span></a></li>';
@@ -429,6 +429,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 }
 
             } elseif(in_array($en_id2, $this->config->item('en_ids_12410'))){
+
+                //PLAYER COINS (READ & IDEA)
 
                 $join_objects = array();
                 $match_columns = array(
