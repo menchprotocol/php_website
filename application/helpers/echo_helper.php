@@ -2953,8 +2953,8 @@ function echo_navigation_menu($cache_en_id){
 
 
     $ui = '<div class="dropdown inline-block">';
-    $ui .= '<button type="button" class="btn no-side-padding dropdown-toggle" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-    $ui .= '<span class="icon-block"><span title="'.$en_all_4527[$cache_en_id]['m_name'].'" data-toggle="tooltip" data-placement="bottom">' .$en_all_4527[$cache_en_id]['m_icon'].'</span></span>';
+    $ui .= '<button type="button" class="btn no-side-padding dropdown-toggle" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$en_all_4527[$cache_en_id]['m_name'].'" data-tooltip="tooltip" data-placement="bottom">';
+    $ui .= '<span class="icon-block">' .$en_all_4527[$cache_en_id]['m_icon'].'</span>';
     $ui .= '</button>';
 
     $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$cache_en_id.'">';
@@ -2990,7 +2990,7 @@ function echo_navigation_menu($cache_en_id){
         }
 
         //Navigation
-        $ui .= '<a '.$href.' class="dropdown-item montserrat doupper '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).( strlen($m['m_desc']) ? 'title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right"' : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+        $ui .= '<a '.$href.' class="dropdown-item montserrat doupper '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" '.( strlen($m['m_desc']) ? ' title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right" ' : '' ).'><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
 
     }
 
