@@ -502,6 +502,14 @@ var update_coin_counter = function( ) {
 };
 
 
+function add_feedback(){
+    alert('This feature will be released soon.');
+}
+
+function toggle_superpowers(){
+    $('.supwerpower_view').toggleClass('hidden');
+}
+
 function modify_cancel(){
     $('.fixed-box').addClass('hidden');
     remove_all_highlights();

@@ -2934,7 +2934,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-    function play_admin($action = null, $command1 = null, $command2 = null)
+    function admin_panel($action = null, $command1 = null, $command2 = null)
     {
 
         boost_power();
@@ -2947,7 +2947,7 @@ fragment PostListingItemSidebar_post on Post {
             'title' => 'Moderation Tools',
         ));
 
-        $this->load->view('play/play_admin' , array(
+        $this->load->view('play/play_admin_panel' , array(
             'action' => $action,
             'command1' => $command1,
             'command2' => $command2,

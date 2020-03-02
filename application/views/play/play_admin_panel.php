@@ -10,27 +10,27 @@ $en_all_4463 = $this->config->item('en_all_4463'); //GLOSSARY
 $moderation_tools = array(
 
     //Moderator Tools
-    '/play/play_admin/link_coins_words_stats' => 'Coin Stats',
-    '/play/play_admin/orphan_ideas' => 'Orphan Ideas',
-    '/play/play_admin/orphan_players' => 'Orphan Players',
-    '/play/play_admin/in_replace_outcomes' => 'Idea Search/Replace Titles',
-    '/play/play_admin/in_invalid_outcomes' => 'Idea Invalid Titles',
-    '/play/play_admin/identical_idea_outcomes' => 'Identical Idea Titles',
-    '/play/play_admin/identical_player_names' => 'Identical Player Names',
-    '/play/play_admin/actionplan_debugger' => 'My READING LIST Debugger',
-    '/play/play_admin/en_icon_search' => 'Player Icon Search',
-    '/play/play_admin/sync_player_links' => 'Player Sync Link Types',
-    '/play/play_admin/or__children' => 'List OR Ideas + Answers',
-    '/play/play_admin/assessment_marks_list_all' => 'Completion Marks List All',
-    '/play/play_admin/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
-    '/play/play_admin/compose_test_message' => 'Compose Test Message',
-    '/play/play_admin/random_player_avatar' => 'Random User Icons',
+    '/play/admin_panel/link_coins_words_stats' => 'Coin Stats',
+    '/play/admin_panel/orphan_ideas' => 'Orphan Ideas',
+    '/play/admin_panel/orphan_players' => 'Orphan Players',
+    '/play/admin_panel/in_replace_outcomes' => 'Idea Search/Replace Titles',
+    '/play/admin_panel/in_invalid_outcomes' => 'Idea Invalid Titles',
+    '/play/admin_panel/identical_idea_outcomes' => 'Identical Idea Titles',
+    '/play/admin_panel/identical_player_names' => 'Identical Player Names',
+    '/play/admin_panel/actionplan_debugger' => 'My READING LIST Debugger',
+    '/play/admin_panel/en_icon_search' => 'Player Icon Search',
+    '/play/admin_panel/sync_player_links' => 'Player Sync Link Types',
+    '/play/admin_panel/or__children' => 'List OR Ideas + Answers',
+    '/play/admin_panel/assessment_marks_list_all' => 'Completion Marks List All',
+    '/play/admin_panel/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
+    '/play/admin_panel/compose_test_message' => 'Compose Test Message',
+    '/play/admin_panel/random_player_avatar' => 'Random User Icons',
 
     //Hope to get zero:
-    '/play/play_admin/sync_play_idea_statuses' => 'Analyze & Fix Play & Idea Statuses',
-    '/play/play_admin/analyze_play' => 'Analyze & Fix Player Links',
-    '/play/play_admin/in_crossovers' => 'Analyze & Fix Idea Crossover Parent/Children',
-    '/play/play_admin/analyze_idea_authors' => 'Analyze & Fix Idea Authors',
+    '/play/admin_panel/sync_play_idea_statuses' => 'Analyze & Fix Play & Idea Statuses',
+    '/play/admin_panel/analyze_play' => 'Analyze & Fix Player Links',
+    '/play/admin_panel/in_crossovers' => 'Analyze & Fix Idea Crossover Parent/Children',
+    '/play/admin_panel/analyze_idea_authors' => 'Analyze & Fix Idea Authors',
 );
 
 $cron_jobs = array(
@@ -53,7 +53,8 @@ $developer_tools = array(
 if(!$action) {
 
     $en_all_11035 = $this->config->item('en_all_11035');
-    echo '<h1>'.$en_all_11035[6287]['m_icon'].' '.$en_all_11035[6287]['m_name'].' <a href="/play/6287" style="font-size: 0.5em; color: #AAAAAA;" title="'.$en_all_11035[6287]['m_name'].' player controlling this tool" data-toggle="tooltip" data-placement="right">@6287</a></h1>';
+
+    echo '<h1>'.$en_all_11035[6287]['m_icon'].' '.$en_all_11035[6287]['m_name'].'</h1>';
 
     echo '<div class="list-group maxout">';
     foreach ($moderation_tools as $tool_key => $tool_name) {
@@ -100,7 +101,7 @@ if(!$action) {
 
 
     //Show breadcrumb:
-    echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
 
     echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
@@ -148,7 +149,7 @@ if(!$action) {
 } elseif($action=='random_player_avatar'){
 
     //Show breadcrumb:
-    echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
     if(isset($_GET['update_user_icons'])){
 
@@ -303,7 +304,7 @@ if(!$action) {
 
 } elseif($action=='orphan_ideas') {
 
-    echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
     $orphan_ins = $this->IDEA_model->in_fetch(array(
         ' NOT EXISTS (SELECT 1 FROM table_read WHERE in_id=ln_child_idea_id AND ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_play_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
@@ -344,7 +345,7 @@ if(!$action) {
             echo '<br />';
             echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
             echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All ideas and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing idea.<br /><br /></div>';
-            echo '<a class="remove-all hidden maxout" href="/play/play_admin/orphan_ideas/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
+            echo '<a class="remove-all hidden maxout" href="/play/admin_panel/orphan_ideas/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
         }
 
     } else {
@@ -385,7 +386,7 @@ if(!$action) {
 
 } elseif($action=='orphan_players') {
 
-    echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
     $orphan_ens = $this->PLAY_model->en_fetch(array(
         ' NOT EXISTS (SELECT 1 FROM table_read WHERE en_id=ln_child_play_id AND ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status_play_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
@@ -425,7 +426,7 @@ if(!$action) {
             echo '<br />';
             echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
             echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All players and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing player.<br /><br /></div>';
-            echo '<a class="remove-all hidden maxout" href="/play/play_admin/orphan_players/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
+            echo '<a class="remove-all hidden maxout" href="/play/admin_panel/orphan_players/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
         }
 
     } else {
@@ -435,7 +436,7 @@ if(!$action) {
 
 } elseif($action=='en_icon_search') {
 
-    echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
     //UI to compose a test message:
     echo '<form method="GET" action="">';
@@ -503,7 +504,7 @@ if(!$action) {
 
 } elseif($action=='actionplan_debugger') {
 
-    echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
     //List this users 🔴 READING LIST ideas so they can choose:
     echo '<div>Choose one of your 🔴 READING LIST ideas to debug:</div><br />';
@@ -545,7 +546,7 @@ if(!$action) {
 
 } elseif($action=='in_invalid_outcomes') {
 
-    echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
     $active_ins = $this->IDEA_model->in_fetch(array(
         'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
@@ -587,7 +588,7 @@ if(!$action) {
 } elseif($action=='in_replace_outcomes') {
 
 
-    echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
     //UI to compose a test message:
     echo '<form method="GET" action="">';
@@ -721,7 +722,7 @@ if(!$action) {
 
 } elseif($action=='identical_idea_outcomes') {
 
-    echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
     //Do a query to detect Ideas with the exact same title:
     $q = $this->db->query('select in1.* from table_idea in1 where (select count(*) from table_idea in2 where in2.in_title = in1.in_title AND in2.in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_title ASC');
@@ -745,7 +746,7 @@ if(!$action) {
 
 } elseif($action=='identical_player_names') {
 
-    echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
     $q = $this->db->query('select en1.* from table_play en1 where (select count(*) from table_play en2 where en2.en_name = en1.en_name AND en2.en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')) > 1 AND en1.en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ') ORDER BY en1.en_name ASC');
     $duplicates = $q->result_array();
@@ -855,7 +856,7 @@ if(!$action) {
 } elseif($action=='assessment_marks_list_all') {
 
 
-    echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
     echo '<p>Below are all the Conditional Step Links:</p>';
     echo '<table class="table table-sm table-striped maxout" style="text-align: left;">';
@@ -993,7 +994,7 @@ if(!$action) {
     //Give an overview of the point links in a hierchial format to enable trainers to overview:
     $_GET['depth_levels']   = ( isset($_GET['depth_levels']) && intval($_GET['depth_levels']) > 0 ? $_GET['depth_levels'] : 3 );
 
-    echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
 
     echo '<form method="GET" action="">';
@@ -1045,7 +1046,7 @@ $.post("/idea/in_report_conditional_steps", {
 
     if(isset($_POST['test_message'])){
 
-        echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><a href="/play/play_admin/'.$action.'">'.$moderation_tools['/play/play_admin/'.$action].'</a></li><li><b>Review Message</b></li></ul>';
+        echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><a href="/play/admin_panel/'.$action.'">'.$moderation_tools['/play/admin_panel/'.$action].'</a></li><li><b>Review Message</b></li></ul>';
 
         if(intval($_POST['push_message']) && intval($_POST['recipient_en'])){
 
@@ -1071,7 +1072,7 @@ $.post("/idea/in_report_conditional_steps", {
 
     } else {
 
-        echo '<ul class="breadcrumb"><li><a href="/play/play_admin">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/play_admin/'.$action].'</b></li></ul>';
+        echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
         //UI to compose a test message:
         echo '<form method="POST" action="" class="maxout">';

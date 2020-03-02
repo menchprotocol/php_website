@@ -1801,7 +1801,7 @@ function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_leve
 
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$en_all_7585[$in_ln['in_type_play_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_play_id']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$en_all_4737[$in_ln['in_status_play_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_play_id']]['m_icon']. '</span>';
-        $ui .= '<a href="/play/play_admin/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   echo_in_title($in_ln['in_title'], false) . '</u></a>';
+        $ui .= '<a href="/play/admin_panel/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   echo_in_title($in_ln['in_title'], false) . '</u></a>';
 
         $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_play_id'] == 4228 && in_array($parent_in_type_play_id , $CI->config->item('en_ids_6193') /* OR Ideas */ )) || ($in_ln['ln_type_play_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
 
@@ -2938,6 +2938,57 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
     $ui .= '</div>';
 
     return $ui;
+}
+
+
+
+function echo_navigation_menu($cache_en_id){
+
+    $CI =& get_instance();
+
+    $en_all_this = $CI->config->item('en_all_'.$cache_en_id);
+    $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Memory
+    $en_all_10876 = $CI->config->item('en_all_10876'); //Mench Website
+    $en_all_12502 = $CI->config->item('en_all_12502'); //JS Functions
+
+
+    $ui = '<div class="dropdown inline-block">';
+    $ui .= '<button type="button" class="btn no-side-padding dropdown-toggle" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+    $ui .= '<span class="icon-block">' .$en_all_4527[$cache_en_id]['m_icon'].'</span>'.$en_all_4527[$cache_en_id]['m_name'];
+    $ui .= '</button>';
+
+    $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$cache_en_id.'">';
+
+    foreach ($en_all_this as $en_id => $m) {
+
+        $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
+
+        //Determine URL:
+        if(in_array($en_id, $CI->config->item('en_ids_10876'))){
+
+            $href = 'href="'.$en_all_10876[$en_id]['m_desc'].'"';
+
+        } elseif(in_array($en_id, $CI->config->item('en_ids_12502'))){
+
+            $href = 'href="javascript:void();" onclick="'.$en_all_12502[$en_id]['m_desc'].'"';
+
+        } else {
+
+            //No Link Structure:
+            continue;
+
+        }
+
+        //Navigation
+        $ui .= '<a '.$href.' class="dropdown-item montserrat doupper '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span '.( strlen($m['m_desc']) ? 'title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right"' : '' ).'><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</span></a>';
+
+    }
+
+    $ui .= '</div>';
+    $ui .= '</div>';
+
+    return $ui;
+
 }
 
 

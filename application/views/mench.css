@@ -757,7 +757,7 @@ td.MENCHcolumn3{ width: 21%; }
     padding: 0;
     line-height: 100% !important;
 }
-.mench-navigation .block-link a{
+.mench-navigation .block-link a, .mench-navigation .block-link .btn {
     display: block;
     text-align: center;
     margin-left:5px;

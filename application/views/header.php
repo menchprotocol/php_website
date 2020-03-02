@@ -168,9 +168,10 @@ if(!isset($hide_header)){
                     <td class="block-link block-logo"><img src="/img/mench.png" class="mench-logo mench-spin" /></td>
 
                     <td>
+
                         <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
-                        <div class="supwerpower_view"><span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) || 1 ? ' hidden ' : '' ) ?>">MENCH</span><?= ( count($this->session->userdata('session_superpowers_assigned')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');" class="gateway">&nbsp;</a>' : '' ) ?></div>
+                        <div class="supwerpower_view"><span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) || 1 ? ' hidden ' : '' ) ?>">MENCH</span><?= ( count($this->session->userdata('session_superpowers_assigned')) ? '<a href="javascript:void(0);" onclick="toggle_superpowers()" class="gateway">&nbsp;</a>' : '' ) ?></div>
 
                         <div class="supwerpower_view hidden">
                             <div class="full-width">
@@ -187,7 +188,7 @@ if(!isset($hide_header)){
                                 }
 
                                 //Option to revert back:
-                                echo '&nbsp;<a class="btn btn-sm btn-superpower icon-block" style="cursor: alias !important;" href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');" title="Back to Normal ;)"><i class="far fa-times"></i></a>';
+                                echo '&nbsp;<a class="btn btn-sm btn-superpower icon-block" style="cursor: alias !important;" href="javascript:void(0);" onclick="toggle_superpowers()" title="Back to Normal ;)"><i class="far fa-times"></i></a>';
 
                             }
                             ?>
@@ -203,12 +204,11 @@ if(!isset($hide_header)){
 
                         $en_all_11035 = $this->config->item('en_all_11035');
 
-                        echo '<td class="block-link '.superpower_active(10985).'"><a href="/play/play_admin" title="'.$en_all_11035[6287]['m_name'].'">'.$en_all_11035[6287]['m_icon'].'</a></td>';
+                        //Add Menu
+                        echo '<td class="block-link">'.echo_navigation_menu(12491).'</td>';
 
-                        echo '<td class="block-link"><a href="/play/account" title="'.$en_all_11035[6225]['m_name'].'">'.$en_all_11035[6225]['m_icon'].'</a></td>';
-
-                        //TODO Create feedback input
-                        //echo '<td class="block-link '.superpower_active(10939).'"><a href="https://github.com/menchideas/platform/issues/new" target="_blank" title="'.$en_all_11035[12200]['m_name'].': '.$en_all_11035[12200]['m_desc'].'">'.$en_all_11035[12200]['m_icon'].'</a></td>';
+                        //Player Menu
+                        echo '<td class="block-link">'.echo_navigation_menu(12500).'</td>';
 
                     } else {
 
