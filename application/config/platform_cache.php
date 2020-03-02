@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-01 21:55:24 PST
+//Generated 2020-03-01 21:57:37 PST
 
 //READ ICONS:
 $config['en_ids_12446'] = array(12347,6146,12447,12448);
@@ -3770,7 +3770,7 @@ $config['en_all_11035'] = array(
     ),
     12205 => array(
         'm_icon' => '<i class="fad fa-user-circle play" aria-hidden="true"></i>',
-        'm_name' => 'MY PLAYER PROFILE',
+        'm_name' => 'MY PUBLIC PROFILE',
         'm_desc' => '',
         'm_parents' => array(11035),
     ),

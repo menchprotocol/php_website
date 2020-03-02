@@ -9,11 +9,12 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 </script>
 
 <div class="container">
-<!-- Top Players -->
-<h2 class="montserrat play"><span class="icon-block"><?= $en_all_11035[12437]['m_icon'] ?></span><?= $en_all_11035[12437]['m_name'] ?></h2>
-    <div class="one-pix">
-        <div id="load_leaderboard"></div>
-    </div>
+
+    <!-- Top Players -->
+    <h2 class="montserrat play"><span class="icon-block"><?= $en_all_11035[12437]['m_icon'] ?></span><?= $en_all_11035[12437]['m_name'] ?></h2>
+
+    <div id="load_leaderboard"></div>
+
 </div>
 
 <?php
