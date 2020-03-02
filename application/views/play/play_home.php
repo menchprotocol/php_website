@@ -10,6 +10,11 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 <div class="container">
 
+    <?php
+    //Total Stats
+    echo echo_mench_stats();
+    ?>
+
     <!-- Top Players -->
     <h2 class="montserrat play"><span class="icon-block"><?= $en_all_11035[12437]['m_icon'] ?></span><?= $en_all_11035[12437]['m_name'] ?></h2>
 
@@ -18,11 +23,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 </div>
 
 <?php
-
-
-//Total Stats
-echo echo_mench_stats();
-
 
 //Link to Account or Login:
 if(!$session_en){
