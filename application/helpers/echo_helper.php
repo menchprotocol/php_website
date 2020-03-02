@@ -2489,7 +2489,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         //First analyze overall list to see how things are:
         foreach($in__children as $key => $child_in) {
             $completion_rate[$key] = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $child_in);
-            $trigger_show_all += ( $completion_rate[$key]['completion_percentage']==100 || $completion_rate[$key]['completion_percentage']==0 ? 1 : 0 );
+            $trigger_show_all += ( $completion_rate[$key]['completion_percentage']==100 ? 1 : 0 );
             if($completion_rate[$key]['completion_percentage']<100 && !$found_incomplete){
                 //We found the next incomplete step:
                 $found_incomplete = true;
