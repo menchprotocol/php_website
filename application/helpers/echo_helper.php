@@ -2952,9 +2952,9 @@ function echo_navigation_menu($cache_en_id){
     $en_all_12502 = $CI->config->item('en_all_12502'); //JS Functions
 
 
-    $ui = '<div class="dropdown inline-block">';
+    $ui = '<div class="dropdown inline-block" title="'.$en_all_4527[$cache_en_id]['m_name'].'" data-toggle="tooltip" data-placement="bottom">';
     $ui .= '<button type="button" class="btn no-side-padding dropdown-toggle" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-    $ui .= '<span class="icon-block" title="'.$en_all_4527[$cache_en_id]['m_name'].'" data-toggle="tooltip" data-placement="bottom">' .$en_all_4527[$cache_en_id]['m_icon'].'</span>';
+    $ui .= '<span class="icon-block">' .$en_all_4527[$cache_en_id]['m_icon'].'</span>';
     $ui .= '</button>';
 
     $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$cache_en_id.'">';
