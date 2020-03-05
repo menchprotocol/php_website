@@ -388,7 +388,7 @@ img.no-radius {
     overflow-x: hidden;
 }
 
-.nav-tabs {
+.nav-tabs, .nav-pills {
     margin-top:10px;
     margin-left: 33px;
 }

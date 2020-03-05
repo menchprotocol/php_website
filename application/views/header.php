@@ -197,9 +197,6 @@ if(!isset($hide_header)){
 
                         $en_all_11035 = $this->config->item('en_all_11035');
 
-                        //Add Menu
-                        echo '<td class="block-menu">'.echo_navigation_menu(12491).'</td>';
-
                         //Player Menu
                         echo '<td class="block-menu">'.echo_navigation_menu(12500).'</td>';
 
