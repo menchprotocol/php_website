@@ -2964,7 +2964,7 @@ function echo_navigation_menu($cache_en_id){
         //Skip superpowers if not assigned
         if($en_id==10957 && !count($CI->session->userdata('session_superpowers_assigned'))){
             continue;
-        } elseif($en_id==7291 && intval($this->session->userdata('session_6196_sign'))){
+        } elseif($en_id==7291 && intval($CI->session->userdata('session_6196_sign'))){
             //Messenger sign in does not allow Signout:
             continue;
         }
