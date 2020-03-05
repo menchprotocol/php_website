@@ -1886,11 +1886,11 @@ class READ_model extends CI_Model
                     //HTML:
                     if ($ins[0]['in_type_play_id'] == 6684) {
 
-                        echo '<div class="montserrat margin-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE TO CONTINUE:</div>';
+                        echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE TO CONTINUE:</div>';
 
                     } elseif ($ins[0]['in_type_play_id'] == 7231) {
 
-                        echo '<div class="montserrat margin-top-down"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE OR MORE TO CONTINUE:</div>';
+                        echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE OR MORE TO CONTINUE:</div>';
 
                     }
 

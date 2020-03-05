@@ -2474,13 +2474,13 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
         if($push_message){
 
-            $message_content = ( $has_content ? trim($prefix_statement.' '.$common_prefix)."\n\n" : '' );
+            $message_content = ( $has_content ? trim($prefix_statement)."\n\n" : '' );
             $msg_quick_reply = array();
 
         } else {
             //HTML:
             if($has_content){
-                echo '<div class="read-topic">'.trim($prefix_statement.' '.$common_prefix).'</div>';
+                echo '<div class="read-topic">'.trim($prefix_statement).'</div>';
             }
             echo '<div class="list-group">';
         }
