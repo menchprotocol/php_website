@@ -389,7 +389,7 @@ img.no-radius {
 }
 
 .nav-tabs, .nav-pills {
-    margin-top:10px;
+    margin:10px 0;
     margin-left: 33px;
 }
 
@@ -752,10 +752,11 @@ td.MENCHcolumn3{ width: 21%; }
     padding:3px 0 3px;
 }
 .mench-navigation .block-link, .mench-navigation .block-menu {
-    width:48px;
+    width:42px;
     margin: 0;
     padding: 0;
     line-height: 100% !important;
+    text-align: center;
 }
 .mench-navigation .block-link a {
     display: block;
