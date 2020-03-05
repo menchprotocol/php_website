@@ -2962,7 +2962,7 @@ function echo_navigation_menu($cache_en_id){
     foreach ($en_all_this as $en_id => $m) {
 
         //Skip superpowers if not assigned
-        if($en_id==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
+        if($en_id==10957 && !count($CI->session->userdata('session_superpowers_assigned'))){
             continue;
         }
 
