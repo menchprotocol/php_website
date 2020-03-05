@@ -1584,49 +1584,14 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $CI =& get_instance();
     $session_en = superpower_assigned();
 
-    if($session_en){
-        //Make sure in reading list:
-        $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
-    } else {
-        $completion_rate['completion_percentage'] = 0; //Default value
-    }
-
-
-    //Determine ICON based on completion rate:
-    if($completion_rate['completion_percentage']==0){
-
-        //Not Started:
-        $read_icon_play_id = 12448;
-
-    } elseif($completion_rate['completion_percentage']==100){
-
-        //Completed, depending on completion type:
-        $read_coins = $CI->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
-            'ln_parent_idea_id' => $in['in_id'],
-            'ln_owner_play_id' => $session_en['en_id'],
-        ), array(), 1, 0, array(), 'COUNT(ln_id) as total_coins');
-
-        $read_icon_play_id = ( $read_coins[0]['total_coins'] > 0 ? 12347 : 6146 );
-
-    } else {
-
-        //In progress:
-        $read_icon_play_id = 12447;
-
-    }
-
 
     $ui = '<a href="/'.$in['in_id'] . '" class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
 
-    //Title
 
-    $en_all_12446 = $CI->config->item('en_all_12446'); //READ ICONS
-
-    $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12446[$read_icon_play_id]['m_name'].' '.$completion_rate['completion_percentage'].'% DONE">'.$en_all_12446[$read_icon_play_id]['m_icon'].'</span><b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
+    //READ ICON
+    $ui .= '<span class="icon-block"><i class="fas fa-circle read"></span><b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
 
 
     //Description:
