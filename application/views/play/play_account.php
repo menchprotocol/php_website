@@ -10,37 +10,15 @@
 
     <?php
 
+    //My Account Header
     $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+    echo '<h2 class="'.extract_icon_color($en_all_11035[6225]['m_icon']).' inline-block"><span class="icon-block">' . echo_en_icon($en_all_11035[6225]['m_icon']) . '</span>'.$en_all_11035[6225]['m_name'].'</h2>';
 
-    //See how this user is connected to Mench
-    $messenger_activated = in_array(6196, $this->session->userdata('session_parent_ids'));
-    $web_email_activated = in_array(12103, $this->session->userdata('session_parent_ids'));
-
-
-    echo '<div class="pull-right inline-block">';
-
-    echo '<a href="/play/' . $session_en['en_id'] . '" class="btn btn-play btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="' . $en_all_11035[12205]['m_name'] . '">' . $en_all_11035[12205]['m_icon'] . '</a>';
-
-    if (!intval($this->session->userdata('session_6196_sign'))) {
-        //Only give signout option if NOT logged-in from Messenger
-        echo '<a href="/play/signout" class="btn btn-play btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="' . $en_all_11035[7291]['m_name'] . '">' . $en_all_11035[7291]['m_icon'] . '</a>';
-    }
-
-    echo '</div>';
-
-    echo '<h2 class="play pull-left inline-block"><span class="icon-block icon_en_'.$session_en['en_id'].'">' . echo_en_icon($session_en['en_icon']) . '</span><span class="en_name_full_'.$session_en['en_id'].'">' . $session_en['en_name'] . '</span></h2>';
-
-    echo '<div class="doclear">&nbsp;</div>';
 
     echo '<div class="accordion" id="MyPlayerAccordion" style="margin-bottom:34px;">';
 
     //Display account fields ordered with their player links:
     foreach ($this->config->item('en_all_6225') as $acc_en_id => $acc_detail) {
-
-        if(in_array(6196, $acc_detail['m_parents']) && !$messenger_activated){
-            //Messenger Setting but player is not connected via Messenger
-            continue;
-        }
 
         //Keep all closed for now:
         $expand_by_default = false;

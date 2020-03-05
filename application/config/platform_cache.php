@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-05 09:10:15 PST
+//Generated 2020-03-05 10:06:26 PST
 
 //MENCH JAVASCRIPT FUNCTIONS:
 $config['en_ids_12502'] = array(10957,7256);
@@ -3574,7 +3574,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.262',
+        'm_desc' => '1.28',
         'm_parents' => array(6404),
     ),
     12363 => array(
@@ -6824,7 +6824,7 @@ $config['en_all_6225'] = array(
     12289 => array(
         'm_icon' => '<i class="fad fa-paw play" aria-hidden="true"></i>',
         'm_name' => 'AVATAR',
-        'm_desc' => 'Choose your avatar:',
+        'm_desc' => '',
         'm_parents' => array(4536,6225),
     ),
     6197 => array(
