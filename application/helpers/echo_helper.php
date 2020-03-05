@@ -1591,8 +1591,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
 
 
     //READ ICON
-    $ui .= '<span class="icon-block"><i class="fas fa-circle read"></span><b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
-
+    $ui .= '<span class="icon-block"><i class="fas fa-circle read"></i></span><b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
 
     //Description:
     if($show_description){
@@ -2443,11 +2442,13 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
             $msg_quick_reply = array();
 
         } else {
+
             //HTML:
             if($has_content){
                 echo '<div class="read-topic">'.trim($prefix_statement).'</div>';
             }
             echo '<div class="list-group">';
+
         }
 
 
@@ -2501,17 +2502,21 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         }
 
         if($push_message){
+
             $CI->READ_model->dispatch_message(
                 $message_content,
                 $recipient_en,
                 true,
                 $msg_quick_reply
             );
+
         } else {
+
             echo '</div>';
             if($found_upcoming > 0 && !$all_done){
                 echo '<div class="is_upcoming montserrat" style="padding:5px 0 5px 0;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-plus-circle read"></i></span>'.$found_upcoming.' MORE</a></div>';
             }
+
         }
     }
 
