@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-05 12:34:24 PST
+//Generated 2020-03-15 22:13:18 PST
 
 //MENCH JAVASCRIPT FUNCTIONS:
 $config['en_ids_12502'] = array(10957,7256);
@@ -573,7 +573,7 @@ $config['en_all_4536'] = array(
 );
 
 //IDEA:
-$config['en_ids_4535'] = array(10671,12450,10573,12419,4250,12453,4601,11021,4229,4228,10686,10663,10664,6226,4231,4485,10676,10678,10679,10677,4983,7545,11160,6768,10681,10675,7302,6201,10662,10648,10650,10644,10651,4993,10672,4246,7657,10653,4259,10657,4261,10669,4260,4319,4230,10656,4255,4318,10659,10673,4256,4258,4257,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,10689,10646,7504,10654,5007,4994);
+$config['en_ids_4535'] = array(10671,12450,10573,12419,4250,12453,4601,11021,4229,4228,10686,10663,10664,6226,4231,4485,10676,10678,10679,10677,4983,7545,11160,6768,10681,10675,7302,6201,10662,10648,10650,10644,10651,4993,10672,4246,10653,4259,10657,4261,10669,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,4257,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,10689,10646,7504,10654,5007,4994);
 $config['en_all_4535'] = array(
     10671 => array(
         'm_icon' => '<i class="fad fa-trash-alt idea" aria-hidden="true"></i>',
@@ -791,12 +791,6 @@ $config['en_all_4535'] = array(
         'm_desc' => '',
         'm_parents' => array(4535,5967,4755,4593),
     ),
-    7657 => array(
-        'm_icon' => '<i class="fas fa-divide play" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER LINK PERCENT',
-        'm_desc' => '',
-        'm_parents' => array(4535,4593,4592),
-    ),
     10653 => array(
         'm_icon' => '<i class="fad fa-user-circle play"></i>',
         'm_name' => 'PLAY ICON UPDATE',
@@ -836,6 +830,12 @@ $config['en_all_4535'] = array(
     4319 => array(
         'm_icon' => '<i class="fad fa-sort-numeric-down play"></i>',
         'm_name' => 'PLAY LINK INTEGER',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    7657 => array(
+        'm_icon' => '<i class="fas fa-divide play" aria-hidden="true"></i>',
+        'm_name' => 'PLAY LINK PERCENT',
         'm_desc' => '',
         'm_parents' => array(4535,4593,4592),
     ),
@@ -7530,7 +7530,7 @@ $config['en_all_4755'] = array(
 );
 
 //READ TYPE:
-$config['en_ids_4593'] = array(10671,12450,10573,12419,4250,12453,4601,4229,4228,10686,10663,10664,6226,4231,10676,10678,10679,10677,4983,7545,10681,10675,10662,10648,10650,10644,10651,4993,10672,4246,4251,6157,7489,12117,7657,4559,6144,7485,7486,6997,10653,4259,10657,4261,10669,4260,4319,4230,10656,4255,4318,10659,10673,4256,4258,4257,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,10689,10646,7504,10654,5007,4994,12129,12336,12334,4554,7757,6155,12106,6415,6559,6560,6556,6578,7611,4556,4235,6149,6969,4275,4283,7610,4555,7563,12360,10690,4266,4267,12489,4282,6563,5967,10683,6132,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,12197,7492,4552,6140,12328,7578,6224,4553,7562);
+$config['en_ids_4593'] = array(10671,12450,10573,12419,4250,12453,4601,4229,4228,10686,10663,10664,6226,4231,10676,10678,10679,10677,4983,7545,10681,10675,10662,10648,10650,10644,10651,4993,10672,4246,4251,6157,7489,12117,4559,6144,7485,7486,6997,10653,4259,10657,4261,10669,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,4257,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,10689,10646,7504,10654,5007,4994,12129,12336,12334,4554,7757,6155,12106,6415,6559,6560,6556,6578,7611,4556,4235,6149,6969,4275,4283,7610,4555,7563,12360,10690,4266,4267,12489,4282,6563,5967,10683,6132,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,12197,7492,4552,6140,12328,7578,6224,4553,7562);
 $config['en_all_4593'] = array(
     10671 => array(
         'm_icon' => '<i class="fad fa-trash-alt idea" aria-hidden="true"></i>',
@@ -7736,12 +7736,6 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
     ),
-    7657 => array(
-        'm_icon' => '<i class="fas fa-divide play" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER LINK PERCENT',
-        'm_desc' => '',
-        'm_parents' => array(4535,4593,4592),
-    ),
     4559 => array(
         'm_icon' => '<i class="far fa-eye read"></i>',
         'm_name' => 'PLAYER READ MESSAGES',
@@ -7811,6 +7805,12 @@ $config['en_all_4593'] = array(
     4319 => array(
         'm_icon' => '<i class="fad fa-sort-numeric-down play"></i>',
         'm_name' => 'PLAY LINK INTEGER',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    7657 => array(
+        'm_icon' => '<i class="fas fa-divide play" aria-hidden="true"></i>',
+        'm_name' => 'PLAY LINK PERCENT',
         'm_desc' => '',
         'm_parents' => array(4535,4593,4592),
     ),
@@ -8351,77 +8351,77 @@ $config['en_all_4593'] = array(
 );
 
 //PLAY LINKS:
-$config['en_ids_4592'] = array(7657,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257);
+$config['en_ids_4592'] = array(4259,4261,10669,4260,4319,7657,4230,4255,4318,4256,4258,4257);
 $config['en_all_4592'] = array(
-    7657 => array(
-        'm_icon' => '<i class="fas fa-divide play" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER LINK PERCENT',
-        'm_desc' => '',
-        'm_parents' => array(4535,4593,4592),
-    ),
     4259 => array(
         'm_icon' => '<i class="fad fa-volume-up play"></i>',
-        'm_name' => 'PLAY LINK AUDIO',
+        'm_name' => 'AUDIO',
         'm_desc' => '',
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
     4261 => array(
         'm_icon' => '<i class="fad fa-file-pdf play"></i>',
-        'm_name' => 'PLAY LINK FILE',
+        'm_name' => 'FILE',
         'm_desc' => '',
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
     10669 => array(
         'm_icon' => '<i class="fab fa-font-awesome-alt play"></i>',
-        'm_name' => 'PLAY LINK ICON',
+        'm_name' => 'ICON',
         'm_desc' => 'Icons maping to the Font Awesome database',
         'm_parents' => array(4535,4593,6198,4592),
     ),
     4260 => array(
         'm_icon' => '<i class="fad fa-image play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY LINK IMAGE',
+        'm_name' => 'IMAGE',
         'm_desc' => '',
         'm_parents' => array(4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
     4319 => array(
         'm_icon' => '<i class="fad fa-sort-numeric-down play"></i>',
-        'm_name' => 'PLAY LINK INTEGER',
+        'm_name' => 'INTEGER',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    7657 => array(
+        'm_icon' => '<i class="fas fa-divide play" aria-hidden="true"></i>',
+        'm_name' => 'PERCENT',
         'm_desc' => '',
         'm_parents' => array(4535,4593,4592),
     ),
     4230 => array(
         'm_icon' => '<i class="fad fa-link rotate90 play"></i>',
-        'm_name' => 'PLAY LINK RAW',
+        'm_name' => 'RAW',
         'm_desc' => '',
         'm_parents' => array(4535,4593,4592),
     ),
     4255 => array(
         'm_icon' => '<i class="fad fa-align-left play"></i>',
-        'm_name' => 'PLAY LINK TEXT',
+        'm_name' => 'TEXT',
         'm_desc' => '',
         'm_parents' => array(4535,10593,4593,4592),
     ),
     4318 => array(
         'm_icon' => '<i class="fad fa-clock play"></i>',
-        'm_name' => 'PLAY LINK TIME',
+        'm_name' => 'TIME',
         'm_desc' => '',
         'm_parents' => array(4535,4593,4592),
     ),
     4256 => array(
         'm_icon' => '<i class="fad fa-browser play"></i>',
-        'm_name' => 'PLAY LINK URL',
+        'm_name' => 'URL',
         'm_desc' => '',
         'm_parents' => array(4535,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="fad fa-video play"></i>',
-        'm_name' => 'PLAY LINK VIDEO',
+        'm_name' => 'VIDEO',
         'm_desc' => '',
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
     4257 => array(
         'm_icon' => '<i class="fad fa-play-circle play"></i>',
-        'm_name' => 'PLAY LINK WIDGET',
+        'm_name' => 'WIDGET',
         'm_desc' => '',
         'm_parents' => array(12403,4535,4593,4592,4537,4506),
     ),
