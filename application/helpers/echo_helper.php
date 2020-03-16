@@ -78,7 +78,7 @@ function echo_url_type_4537($url, $en_type_link_id)
 
     } elseif ($en_type_link_id == 4257 /* Embed Widget URL? */) {
 
-        return  echo_url_embed($url, $url);
+        return echo_url_embed($url);
 
     } elseif ($en_type_link_id == 4260 /* Image URL */) {
 

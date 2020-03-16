@@ -168,6 +168,8 @@ if(!$action) {
             'en_sync_url' => $this->PLAY_model->en_sync_url($_GET['url_to_analyze']),
         ), true))).'<hr />';
 
+        echo 'Embed Code:<hr />'.echo_url_embed($_GET['url_to_analyze']);
+
     } else {
 
         echo '<hr />Enter URL to get started.';
