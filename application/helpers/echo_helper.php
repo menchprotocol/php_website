@@ -447,7 +447,7 @@ function echo_ln_urls($ln_content, $ln_type_play_id){
     if (in_array($ln_type_play_id, $CI->config->item('en_ids_4537'))) {
 
         //Player URL Links
-        return echo_url_type_4537(htmlentities($ln_content), $ln_type_play_id);
+        return echo_url_type_4537($ln_content, $ln_type_play_id);
 
     } elseif($ln_type_play_id==10669) {
 
@@ -1665,6 +1665,7 @@ function echo_in_description($in_id){
 function echo_in_thumbnail($in_id){
 
     $CI =& get_instance();
+    $embed_code = null;
 
     foreach ($CI->READ_model->ln_fetch(array(
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -1673,37 +1674,31 @@ function echo_in_thumbnail($in_id){
         'ln_parent_play_id >' => 0, //Reference a player
     ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
 
-        //See if this player has an image:
-        $images = $CI->READ_model->ln_fetch(array(
+        //Images?
+        foreach($CI->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => 4260, //Image
             'ln_child_play_id' => $ln['ln_parent_play_id'],
-        ), array(), 1);
-
-        //Did we find an image for this message?
-        if(count($images) > 0){
-            return '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="'.$images[0]['ln_content'].'" /></span></div>';
+        )) as $embed_image){
+            $embed_code .= '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="'.$embed_image['ln_content'].'" /></span></div>';
         }
 
-        //Maybe we have an Embed Video?
-        $embeds = $CI->READ_model->ln_fetch(array(
+        //Embed Videos?
+        foreach($CI->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => 4257, //Embed
             'ln_child_play_id' => $ln['ln_parent_play_id'],
-        ), array(), 1);
-
-        //Did we find an image for this message?
-        if(count($embeds) > 0){
-            $youtube_id = extract_youtube_id($embeds[0]['ln_content']);
+        )) as $embed_video){
+            $youtube_id = extract_youtube_id($embed_video['ln_content']);
             if(strlen($youtube_id) > 0){
-                return '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
+                $embed_code .= '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
             }
         }
 
     }
 
-    //Not found:
-    return null;
+    //Return results:
+    return $embed_code;
 
 }
 
