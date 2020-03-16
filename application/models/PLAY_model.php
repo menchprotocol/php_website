@@ -540,14 +540,6 @@ class PLAY_model extends CI_Model
         //Remember if player name was passed:
         $name_was_passed = ( $page_title ? true : false );
 
-        //Analyze domain:
-        $domain_analysis = analyze_domain($url);
-
-        if ($domain_analysis['url_is_root']) {
-            //Update URL to keep synced:
-            $url = $domain_analysis['url_clean_domain'];
-        }
-
         //Initially assume Generic URL unless we can prove otherwise:
         $ln_type_play_id = 4256; //Generic URL
 
@@ -557,10 +549,13 @@ class PLAY_model extends CI_Model
         //Start with null and see if we can find/add:
         $en_url = null;
 
+        //Analyze domain:
+        $domain_analysis = analyze_domain($url);
+
         //Now let's analyze further based on type:
         if ($domain_analysis['url_is_root']) {
 
-            //Since this is the root, update to the clean URL:
+            //Update URL to keep synced:
             $url = $domain_analysis['url_clean_domain'];
 
         } else {
@@ -579,7 +574,7 @@ class PLAY_model extends CI_Model
              * */
 
             //Is this an embed URL?
-            $embed_code = echo_url_embed($url, $url, true);
+            $embed_code = echo_url_embed($url, null, true);
 
             if ($embed_code['status']) {
 
@@ -607,6 +602,7 @@ class PLAY_model extends CI_Model
                     ));
 
                     $ln_type_play_id = 4256; //Assign URL as default
+
                 }
             }
         }

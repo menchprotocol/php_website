@@ -25,6 +25,7 @@ $moderation_tools = array(
     '/play/admin_panel/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
     '/play/admin_panel/compose_test_message' => 'Compose Test Message',
     '/play/admin_panel/random_player_avatar' => 'Random User Icons',
+    '/play/admin_panel/analyze_url' => 'Analyze URL',
 
     //Hope to get zero:
     '/play/admin_panel/sync_play_idea_statuses' => 'Analyze & Fix Play & Idea Statuses',
@@ -145,6 +146,35 @@ if(!$action) {
     }
 
     echo '</table>';
+
+} elseif($action=='analyze_url'){
+
+    echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
+
+    //UI to compose a test message:
+    echo '<form method="GET" action="">';
+
+    echo '<div class="mini-header">URL:</div>';
+    echo '<input type="url" placeholder="URL" class="form-control border maxout" name="url_to_analyze" value="'.@$_GET['url_to_analyze'].'"><br />';
+    echo '<input type="submit" class="btn btn-idea" value="Analyze">';
+
+
+    if(isset($_GET['url_to_analyze']) && strlen($_GET['url_to_analyze'])>0){
+
+        //Show analysis results:
+        echo print_r(array(
+            'analyze_domain' => analyze_domain($_GET['url_to_analyze']),
+            'echo_url_embed' => echo_url_embed($_GET['url_to_analyze'], null, true),
+            'en_sync_url' => $this->PLAY_model->en_sync_url($_GET['url_to_analyze']),
+        ), true);
+
+    } else {
+
+        echo 'Enter URL to get started.';
+
+    }
+
+    echo '</form>';
 
 } elseif($action=='random_player_avatar'){
 
