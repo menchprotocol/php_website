@@ -162,11 +162,11 @@ if(!$action) {
     if(isset($_GET['url_to_analyze']) && strlen($_GET['url_to_analyze'])>0){
 
         //Show analysis results:
-        echo '<hr />'.nl2br(print_r(array(
+        echo '<hr />'.nl2br(str_replace(' ','&nbsp;', print_r(array(
             'analyze_domain' => analyze_domain($_GET['url_to_analyze']),
             'echo_url_embed' => echo_url_embed($_GET['url_to_analyze'], null, true),
             'en_sync_url' => $this->PLAY_model->en_sync_url($_GET['url_to_analyze']),
-        ), true)).'<hr />';
+        ), true))).'<hr />';
 
     } else {
 

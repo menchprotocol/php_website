@@ -138,7 +138,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
     //See if $url has a valid embed video in it, and transform it if it does:
     $is_embed = (substr_count($url, 'youtube.com/embed/') == 1);
 
-    if (substr_count($url, 'youtube.com/watch?v=') == 1 || substr_count($url, 'youtu.be/') == 1 || $is_embed) {
+    if ((substr_count($url, 'youtube.com/watch') == 1) || substr_count($url, 'youtu.be/') == 1 || $is_embed) {
 
         $start_sec = 0;
         $end_sec = 0;

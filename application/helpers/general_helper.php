@@ -1418,6 +1418,10 @@ function extract_youtube_id($url)
 
         $video_id = trim(one_two_explode('youtube.com/watch?v=', '&', $url));
 
+    } elseif (substr_count($url, 'youtube.com/watch') == 1 && substr_count($url, '&v=') == 1) {
+
+        $video_id = trim(one_two_explode('&v=', '&', $url));
+
     } elseif (substr_count($url, 'youtu.be/') == 1) {
 
         $video_id = trim(one_two_explode('youtu.be/', '?', $url));
