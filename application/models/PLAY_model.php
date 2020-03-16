@@ -588,7 +588,6 @@ class PLAY_model extends CI_Model
 
             } elseif ($domain_analysis['url_file_extension']) {
 
-
                 $ln_type_play_id = 0;
                 foreach($this->config->item('en_all_11080') as $en_id => $m){
                     if(in_array($domain_analysis['url_file_extension'], explode('|' , $m['m_desc']))){
@@ -607,7 +606,7 @@ class PLAY_model extends CI_Model
                         'ln_metadata' => $domain_analysis,
                     ));
 
-                    $ln_type_play_id = 4261; //Assign FILE as default
+                    $ln_type_play_id = 4256; //Assign URL as default
                 }
             }
         }
