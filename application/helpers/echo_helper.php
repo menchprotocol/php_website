@@ -144,17 +144,16 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
         $end_sec = 0;
         $video_id = extract_youtube_id($url);
 
-        if($is_embed){
-            if(is_numeric(one_two_explode('start=','&',$url))){
-                $start_sec = one_two_explode('start=','&',$url);
-            }
-            if(is_numeric(one_two_explode('end=','&',$url))){
-                $end_sec = one_two_explode('end=','&',$url);
-            }
-        }
-
-
         if ($video_id) {
+
+            if($is_embed){
+                if(is_numeric(one_two_explode('start=','&',$url))){
+                    $start_sec = one_two_explode('start=','&',$url);
+                }
+                if(is_numeric(one_two_explode('end=','&',$url))){
+                    $end_sec = one_two_explode('end=','&',$url);
+                }
+            }
 
             //Set the Clean URL:
             $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
