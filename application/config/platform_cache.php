@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-15 22:13:18 PST
+//Generated 2020-03-16 07:14:49 PST
 
 //MENCH JAVASCRIPT FUNCTIONS:
 $config['en_ids_12502'] = array(10957,7256);
@@ -810,7 +810,7 @@ $config['en_all_4535'] = array(
         'm_parents' => array(4535,10593,4593,10658,10645),
     ),
     4261 => array(
-        'm_icon' => '<i class="fad fa-file-pdf play"></i>',
+        'm_icon' => '<i class="fad fa-file-pdf play" aria-hidden="true"></i>',
         'm_name' => 'PLAY LINK FILE',
         'm_desc' => '',
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
@@ -876,10 +876,10 @@ $config['en_all_4535'] = array(
         'm_parents' => array(4535,10645,4593,10658),
     ),
     4256 => array(
-        'm_icon' => '<i class="fad fa-browser play"></i>',
+        'm_icon' => '<i class="fad fa-browser play" aria-hidden="true"></i>',
         'm_name' => 'PLAY LINK URL',
         'm_desc' => '',
-        'm_parents' => array(4535,4593,4592,4537),
+        'm_parents' => array(11080,4535,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="fad fa-video play"></i>',
@@ -3339,7 +3339,7 @@ $config['en_all_6232'] = array(
 );
 
 //MEDIA FILE EXTENSIONS:
-$config['en_ids_11080'] = array(4259,4261,4260,4258);
+$config['en_ids_11080'] = array(4259,4261,4260,4256,4258);
 $config['en_all_11080'] = array(
     4259 => array(
         'm_icon' => '<i class="fad fa-volume-up play"></i>',
@@ -3348,9 +3348,9 @@ $config['en_all_11080'] = array(
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
     4261 => array(
-        'm_icon' => '<i class="fad fa-file-pdf play"></i>',
+        'm_icon' => '<i class="fad fa-file-pdf play" aria-hidden="true"></i>',
         'm_name' => 'FILE',
-        'm_desc' => 'pdc|doc|docx|tex|txt|7z|rar|zip|csv|sql|tar|xml|exe',
+        'm_desc' => 'pdf|pdc|doc|docx|tex|txt|7z|rar|zip|csv|sql|tar|xml|exe',
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
     4260 => array(
@@ -3358,6 +3358,12 @@ $config['en_all_11080'] = array(
         'm_name' => 'IMAGE',
         'm_desc' => 'jpeg|jpg|png|gif|tiff|bmp|img|svg|ico|webp',
         'm_parents' => array(4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4256 => array(
+        'm_icon' => '<i class="fad fa-browser play" aria-hidden="true"></i>',
+        'm_name' => 'URL',
+        'm_desc' => 'htm|html',
+        'm_parents' => array(11080,4535,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="fad fa-video play"></i>',
@@ -3377,7 +3383,7 @@ $config['en_all_11059'] = array(
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
     4261 => array(
-        'm_icon' => '<i class="fad fa-file-pdf play"></i>',
+        'm_icon' => '<i class="fad fa-file-pdf play" aria-hidden="true"></i>',
         'm_name' => 'FILE',
         'm_desc' => 'file',
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
@@ -5352,7 +5358,7 @@ $config['en_all_10627'] = array(
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
     4261 => array(
-        'm_icon' => '<i class="fad fa-file-pdf play"></i>',
+        'm_icon' => '<i class="fad fa-file-pdf play" aria-hidden="true"></i>',
         'm_name' => 'PLAY LINK FILE',
         'm_desc' => '',
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
@@ -5483,7 +5489,7 @@ $config['en_all_10593'] = array(
         'm_parents' => array(4535,10593,4593,10658,10645),
     ),
     4261 => array(
-        'm_icon' => '<i class="fad fa-file-pdf play"></i>',
+        'm_icon' => '<i class="fad fa-file-pdf play" aria-hidden="true"></i>',
         'm_name' => 'PLAY LINK FILE',
         'm_desc' => '',
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
@@ -7785,7 +7791,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4535,10593,4593,10658,10645),
     ),
     4261 => array(
-        'm_icon' => '<i class="fad fa-file-pdf play"></i>',
+        'm_icon' => '<i class="fad fa-file-pdf play" aria-hidden="true"></i>',
         'm_name' => 'PLAY LINK FILE',
         'm_desc' => '',
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
@@ -7851,10 +7857,10 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4535,10645,4593,10658),
     ),
     4256 => array(
-        'm_icon' => '<i class="fad fa-browser play"></i>',
+        'm_icon' => '<i class="fad fa-browser play" aria-hidden="true"></i>',
         'm_name' => 'PLAY LINK URL',
         'm_desc' => '',
-        'm_parents' => array(4535,4593,4592,4537),
+        'm_parents' => array(11080,4535,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="fad fa-video play"></i>',
@@ -8360,7 +8366,7 @@ $config['en_all_4592'] = array(
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
     4261 => array(
-        'm_icon' => '<i class="fad fa-file-pdf play"></i>',
+        'm_icon' => '<i class="fad fa-file-pdf play" aria-hidden="true"></i>',
         'm_name' => 'FILE',
         'm_desc' => '',
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
@@ -8408,10 +8414,10 @@ $config['en_all_4592'] = array(
         'm_parents' => array(4535,4593,4592),
     ),
     4256 => array(
-        'm_icon' => '<i class="fad fa-browser play"></i>',
+        'm_icon' => '<i class="fad fa-browser play" aria-hidden="true"></i>',
         'm_name' => 'URL',
         'm_desc' => '',
-        'm_parents' => array(4535,4593,4592,4537),
+        'm_parents' => array(11080,4535,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="fad fa-video play"></i>',
@@ -8495,7 +8501,7 @@ $config['en_all_4537'] = array(
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
     4261 => array(
-        'm_icon' => '<i class="fad fa-file-pdf play"></i>',
+        'm_icon' => '<i class="fad fa-file-pdf play" aria-hidden="true"></i>',
         'm_name' => 'FILE',
         'm_desc' => 'Link notes contain a URL to a raw file.',
         'm_parents' => array(4535,11080,11059,10627,10593,6203,4593,4592,4537),
@@ -8507,10 +8513,10 @@ $config['en_all_4537'] = array(
         'm_parents' => array(4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
     4256 => array(
-        'm_icon' => '<i class="fad fa-browser play"></i>',
+        'm_icon' => '<i class="fad fa-browser play" aria-hidden="true"></i>',
         'm_name' => 'URL',
         'm_desc' => 'Link note contains a generic URL only.',
-        'm_parents' => array(4535,4593,4592,4537),
+        'm_parents' => array(11080,4535,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="fad fa-video play"></i>',
