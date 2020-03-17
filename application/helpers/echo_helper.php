@@ -2595,6 +2595,8 @@ function echo_mench_stats(){
     $ui .= '<table class="table table-sm table-striped dotransparent tablepadded" style="margin-bottom:50px;">';
 
 
+    $ui .= '<tr></tr>';
+
     $ui .= '<tr>';
     $ui .= '<td class="play fixedColumns MENCHcolumn1"><span class="icon-block show-max" style="margin-right: -8px;">&nbsp;</span><span class="montserrat" style="padding-left: 8px;">PLAYERS</span></td>';
     $ui .= '<td class="idea fixedColumns MENCHcolumn2"><span class="icon-block show-max" style="margin-right: -8px;">&nbsp;</span><span class="montserrat" style="padding-left: 8px;">IDEAS</span></td>';
