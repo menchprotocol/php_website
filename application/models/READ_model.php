@@ -2717,7 +2717,7 @@ class READ_model extends CI_Model
                     'message' => $en_all_4485[$message_type_en_id]['m_name'].' do not support player referencing.',
                 );
 
-            } elseif(in_array(7551 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_players']) != 1){
+            } elseif(in_array(7551 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_players']) != 1 && count($string_references['ref_urls']) != 1){
 
                 return array(
                     'status' => 0,
