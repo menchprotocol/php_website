@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-16 21:16:51 PST
+//Generated 2020-03-17 08:21:55 PST
 
 //MENCH JAVASCRIPT FUNCTIONS:
 $config['en_ids_12502'] = array(10957,7256);
@@ -3539,7 +3539,7 @@ $config['en_all_6404'] = array(
     11073 => array(
         'm_icon' => '',
         'm_name' => 'MESSAGE MAX LENGTH',
-        'm_desc' => '610',
+        'm_desc' => '1000',
         'm_parents' => array(6404),
     ),
     11066 => array(
