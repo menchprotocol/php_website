@@ -678,7 +678,7 @@ textarea.note-textarea{
 
 #MENCHmenu td, #leaderboard td{
     vertical-align: bottom;
-    white-space: nowrap;
+    /* white-space: nowrap; */
     overflow: hidden;
     text-overflow: ellipsis;
     border-spacing: 0 !important;
