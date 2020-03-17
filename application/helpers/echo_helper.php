@@ -2649,6 +2649,13 @@ function echo_en($en, $is_parent = false)
         'en_status_play_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
     ), array('en_parent'), 0, 0, array('en_name' => 'ASC'));
 
+    $child_links = $CI->READ_model->ln_fetch(array(
+        'ln_parent_play_id' => $en['en_id'],
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'en_status_play_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+    ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
+
     $is_published = in_array($en['en_status_play_id'], $CI->config->item('en_ids_7357'));
     $is_link_published = ( $ln_id > 0 && in_array($en['ln_status_play_id'], $CI->config->item('en_ids_7359')));
     $is_hidden = filter_array($en__parents, 'en_id', '4755');
@@ -2665,9 +2672,6 @@ function echo_en($en, $is_parent = false)
     $ui .= '<div class="list-group-item no-side-padding itemplay en-item object_highlight '.( $is_hidden ? superpower_active(10986) : '' ).' highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-player ' : '' ) . '" player-id="' . $en['en_id'] . '" en-status="' . $en['en_status_play_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_play_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
-
-
-
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
     $ui .= '<td class="MENCHcolumn1">';
@@ -2678,11 +2682,10 @@ function echo_en($en, $is_parent = false)
     $ui .= '<a href="/play/'.$en['en_id'] . '"><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
 
     //PLAYER NAME
-    $ui .= '<a href="/play/'.$en['en_id'] . '" class="title-block montserrat '.extract_icon_color($en['en_icon']).' en_name_' . $en['en_id'] . '">'.$en['en_name'].'</a>';
+    $ui .= '<a href="/play/'.$en['en_id'] . '" class="title-block montserrat '.extract_icon_color($en['en_icon']).'">'.($child_links[0]['totals'] > 0 ? echo_number($child_links[0]['totals']).' ' : '').'<span class="en_name_' . $en['en_id'] . '">'.$en['en_name'].'</span></a>';
 
 
     $ui .= '</div>';
-
 
 
 
@@ -2743,19 +2746,6 @@ function echo_en($en, $is_parent = false)
 
 
     $ui .= '<span class="'. superpower_active(10986) .'">';
-
-    //Count Children if proper superpower:
-    if(superpower_assigned(10967)){
-        $child_links = $CI->READ_model->ln_fetch(array(
-            'ln_parent_play_id' => $en['en_id'],
-            'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-            'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'en_status_play_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
-        ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
-        if($child_links[0]['totals'] > 0){
-            $ui .= '<span class="montserrat play">' . $en_all_11028[11029]['m_icon'] . '&nbsp;' . echo_number($child_links[0]['totals']) . '&nbsp;&nbsp;</span>';
-        }
-    }
 
     foreach ($en__parents as $en_parent) {
         $ui .= '<span class="icon-block-img en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span> ';
