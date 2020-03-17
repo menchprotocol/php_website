@@ -2599,7 +2599,7 @@ class READ_model extends CI_Model
         } elseif ($strict_validation && strlen($input_message) > config_var(11073)) {
             return array(
                 'status' => 0,
-                'message' => 'Message is longer than the allowed ' . config_var(11073) . ' characters',
+                'message' => 'Message is '.strlen($input_message).' characters long which is more than the allowed ' . config_var(11073) . ' characters',
             );
         } elseif (!preg_match('//u', $input_message)) {
             return array(
