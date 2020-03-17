@@ -2766,23 +2766,6 @@ function echo_en($en, $is_parent = false)
 
 
 
-    //IDEA
-    $idea_ui = '<td class="MENCHcolumn3 play">';
-
-    //RIGHT EDITING:
-    $idea_ui .= '<div class="pull-right inline-block">';
-    $idea_ui .= '<div class="note-edit edit-off '.superpower_active(10967).'">';
-    $idea_ui .= '<span class="show-on-hover">';
-    $idea_ui .= '<span title="Modify Player" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog black"></i></a></span>';
-    $idea_ui .= '</span>';
-    $idea_ui .= '</div>';
-    $idea_ui .= '</div>';
-
-
-    $idea_ui .= echo_in_stat_play(0, $en['en_id']);
-    $idea_ui .= '</td>';
-
-
 
 
 
@@ -2802,6 +2785,30 @@ function echo_en($en, $is_parent = false)
     }
 
     $read_ui .= '</td>';
+
+
+
+
+
+
+    //IDEA
+    $idea_ui = '<td class="MENCHcolumn3 play">';
+
+    //RIGHT EDITING:
+    $idea_ui .= '<div class="pull-right inline-block">';
+    $idea_ui .= '<div class="note-edit edit-off '.superpower_active(10967).'">';
+    $idea_ui .= '<span class="show-on-hover">';
+    $idea_ui .= '<span title="Modify Player" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog black"></i></a></span>';
+    $idea_ui .= '</span>';
+    $idea_ui .= '</div>';
+    $idea_ui .= '</div>';
+
+
+    $idea_ui .= echo_in_stat_play(0, $en['en_id']);
+    $idea_ui .= '</td>';
+
+
+
 
 
     //Set order based on view mode:
