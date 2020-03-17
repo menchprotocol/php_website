@@ -739,8 +739,6 @@ fragment PostListingItemSidebar_post on Post {
 
             }
 
-            $first_name = one_two_explode('',' ',$ln['en_name']);
-
             //COUNT this PLAYERS total READ COINS:
             $read_coins = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -752,7 +750,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
             //PLAY
-            echo '<td class="play fixedColumns MENCHcolumn1"><span class="icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.'<a href="/play/'.$ln['en_id'].'" class="montserrat play en_name_first_'.$ln['en_id'].'">'.$first_name.'</a>'.echo_rank($count+1).'</td>';
+            echo '<td class="play fixedColumns MENCHcolumn1"><span class="icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.'<a href="/play/'.$ln['en_id'].'" class="montserrat play en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a>'.echo_rank($count+1).'</td>';
 
 
 
@@ -803,12 +801,10 @@ fragment PostListingItemSidebar_post on Post {
 
                 }
 
-                $first_name = one_two_explode('',' ',$ln['en_name']);
-
                 echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
 
                 //PLAY
-                echo '<td class="play fixedColumns MENCHcolumn1"><span class="icon-block">'.echo_en_icon($ln['en_icon']).'</span><a href="/play/'.$ln['en_id'].'" class="montserrat play">'.$first_name.'</a>'.echo_rank($count+1).'</td>';
+                echo '<td class="play fixedColumns MENCHcolumn1"><span class="icon-block">'.echo_en_icon($ln['en_icon']).'</span><a href="/play/'.$ln['en_id'].'" class="montserrat play en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a>'.echo_rank($count+1).'</td>';
 
                 //READ
                 echo '<td class="read fixedColumns MENCHcolumn2">'.( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_owner_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>' ).'</td>';
