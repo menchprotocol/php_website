@@ -2859,7 +2859,7 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tab
 
     } else {
 
-        return $tooltip_span_start.$icon.'<input type="text" placeholder="'.$en_all_12112[$cache_en_id]['m_desc'].'" value="'.$current_value.'" '.$attributes.' />'.$tooltip_span_end;
+        return $tooltip_span_start.$icon.'<input type="text" placeholder="__" value="'.$current_value.'" '.$attributes.' />'.$tooltip_span_end;
 
     }
 }

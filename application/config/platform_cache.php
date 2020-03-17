@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-17 08:21:55 PST
+//Generated 2020-03-17 12:37:05 PST
 
 //MENCH JAVASCRIPT FUNCTIONS:
 $config['en_ids_12502'] = array(10957,7256);
@@ -208,7 +208,7 @@ $config['en_all_12420'] = array(
         'm_parents' => array(12112,12420,10888,10650,6232,6201),
     ),
     4358 => array(
-        'm_icon' => '<i class="fad fa-thermometer-half" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-comment-alt-check" aria-hidden="true"></i>',
         'm_name' => 'READ MARKS',
         'm_desc' => '',
         'm_parents' => array(12420,10985,12112,10663,6103,6410,6232),
@@ -2732,7 +2732,7 @@ $config['en_all_12112'] = array(
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch " aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME',
-        'm_desc' => '#',
+        'm_desc' => '',
         'm_parents' => array(12112,12420,10888,10650,6232,6201),
     ),
     4736 => array(
@@ -2742,21 +2742,21 @@ $config['en_all_12112'] = array(
         'm_parents' => array(10990,12112,11071,10644,6232,6201),
     ),
     4358 => array(
-        'm_icon' => '<i class="fad fa-thermometer-half" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-comment-alt-check" aria-hidden="true"></i>',
         'm_name' => 'READ MARKS',
-        'm_desc' => '#',
+        'm_desc' => '',
         'm_parents' => array(12420,10985,12112,10663,6103,6410,6232),
     ),
     4739 => array(
         'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MAX PERCENTAGE',
-        'm_desc' => '%',
+        'm_desc' => '',
         'm_parents' => array(12420,12112,6402,6232),
     ),
     4735 => array(
         'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MIN PERCENTAGE',
-        'm_desc' => '%',
+        'm_desc' => '',
         'm_parents' => array(12420,12112,6402,6232),
     ),
 );
@@ -3259,7 +3259,7 @@ $config['en_all_6232'] = array(
         'm_parents' => array(6232,6215,4341),
     ),
     4358 => array(
-        'm_icon' => '<i class="fad fa-thermometer-half" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-comment-alt-check" aria-hidden="true"></i>',
         'm_name' => 'READ MARKS',
         'm_desc' => 'tr__assessment_points',
         'm_parents' => array(12420,10985,12112,10663,6103,6410,6232),
@@ -5836,7 +5836,7 @@ $config['en_all_6103'] = array(
         'm_parents' => array(6232,6215,2793,6103),
     ),
     4358 => array(
-        'm_icon' => '<i class="fad fa-thermometer-half" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-comment-alt-check" aria-hidden="true"></i>',
         'm_name' => 'READ MARKS',
         'm_desc' => '',
         'm_parents' => array(12420,10985,12112,10663,6103,6410,6232),
