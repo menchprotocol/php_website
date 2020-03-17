@@ -2249,17 +2249,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-
-    //READ
-    $echo_in_stat_read = echo_in_stat_read($in['in_id'], 0);
-    $ui .= '<td class="MENCHcolumn2 read '.( !$echo_in_stat_read ? 'show-max' : '' ).'">';
-    $ui .= $echo_in_stat_read;
-    $ui .= '</td>';
-
-
-
-
-
     //PLAY
     $ui .= '<td class="MENCHcolumn3 play">';
 
@@ -2291,6 +2280,17 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         $ui .= echo_in_stat_play($in['in_id'], 0);
 
     $ui .= '</td>';
+
+
+
+
+    //READ
+    $echo_in_stat_read = echo_in_stat_read($in['in_id'], 0);
+    $ui .= '<td class="MENCHcolumn2 read '.( !$echo_in_stat_read ? 'show-max' : '' ).'">';
+    $ui .= $echo_in_stat_read;
+    $ui .= '</td>';
+
+
 
 
 
