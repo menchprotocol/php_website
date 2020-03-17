@@ -72,7 +72,7 @@ if(!$action) {
     echo '<h1>Developer Tools</h1>';
     echo '<div class="list-group maxout">';
     foreach ($developer_tools as $tool_key => $tool_name) {
-        echo '<a href="' . $tool_key . '" target="_blank" class="list-group-item">';
+        echo '<a href="' . $tool_key . '" class="list-group-item">';
         echo '<span class="pull-right">';
         echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-external-link"></i></span>';
         echo '</span>';
@@ -87,7 +87,7 @@ if(!$action) {
     echo '<h1>Automated Cron Jobs</h1>';
     echo '<div class="list-group maxout">';
     foreach ($cron_jobs as $tool_key => $tool_name) {
-        echo '<a href="' . $tool_key . '" target="_blank" class="list-group-item">';
+        echo '<a href="' . $tool_key . '" class="list-group-item">';
         echo '<span class="pull-right">';
         echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-external-link"></i></span>';
         echo '</span>';

@@ -890,7 +890,7 @@ fragment PostListingItemSidebar_post on Post {
         //Return results:
         return echo_json(array(
             'status' => 1,
-            'player_domain_ui' => '<span class="en_mini_ui_icon">' . (isset($url_player['en_domain']['en_icon']) && strlen($url_player['en_domain']['en_icon']) > 0 ? $url_player['en_domain']['en_icon'] : detect_fav_icon($url_player['url_clean_domain'], true)) . '</span> ' . (isset($url_player['en_domain']['en_name']) ? $url_player['en_domain']['en_name'] . ' <a href="/play/' . $url_player['en_domain']['en_id'] . '" class="underdot" data-toggle="tooltip" title="Click to open domain player in a new windows" data-placement="top" target="_blank">@' . $url_player['en_domain']['en_id'] . '</a>' : $url_player['url_domain_name'] . ' [<span data-toggle="tooltip" title="Domain player not yet added" data-placement="top">New</span>]'),
+            'player_domain_ui' => '<span class="en_mini_ui_icon">' . (isset($url_player['en_domain']['en_icon']) && strlen($url_player['en_domain']['en_icon']) > 0 ? $url_player['en_domain']['en_icon'] : detect_fav_icon($url_player['url_clean_domain'], true)) . '</span> ' . (isset($url_player['en_domain']['en_name']) ? $url_player['en_domain']['en_name'] . ' <a href="/play/' . $url_player['en_domain']['en_id'] . '" class="underdot" data-toggle="tooltip" title="Click to open domain player" data-placement="top">@' . $url_player['en_domain']['en_id'] . '</a>' : $url_player['url_domain_name'] . ' [<span data-toggle="tooltip" title="Domain player not yet added" data-placement="top">New</span>]'),
             'js_url_player' => $url_player,
         ));
 

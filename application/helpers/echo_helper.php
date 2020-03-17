@@ -74,7 +74,7 @@ function echo_url_type_4537($url, $en_type_link_id)
 
     if ($en_type_link_id == 4256 /* Generic URL */) {
 
-        return '<a href="' . $url . '" target="_blank"><span class="url_truncate">' . echo_url_clean($url) . '</span></a>';
+        return '<a href="' . $url . '"><span class="url_truncate">' . echo_url_clean($url) . '</span></a>';
 
     } elseif ($en_type_link_id == 4257 /* Embed Widget URL? */) {
 
@@ -84,7 +84,7 @@ function echo_url_type_4537($url, $en_type_link_id)
 
         $current_mench = current_mench();
         if($current_mench['x_name']=='play'){
-            return '<a href="' . $url . '" target="_blank"><img src="' . $url . '" class="content-image" /></a>';
+            return '<a href="' . $url . '"><img src="' . $url . '" class="content-image" /></a>';
         } else {
             return '<img src="' . $url . '" class="content-image" />';
         }
@@ -326,7 +326,7 @@ function echo_en_icon($en_icon = null)
 function echo_url($text)
 {
     //Find and makes links within $text clickable
-    return preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1" target="_blank"><u>$1</u></a>', $text);
+    return preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1"><u>$1</u></a>', $text);
 }
 
 
@@ -648,7 +648,7 @@ function echo_ln($ln, $is_inner = false)
 
     //Is this a trainer? Show them metadata status:
     if(!$hide_sensitive_details && strlen($ln['ln_metadata']) > 0){
-        $ui .= '<span class="read-micro-data">'.$en_all_4341[6103]['m_icon']. ' <a href="/read/view_json/' . $ln['ln_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="View link metadata (in new window)" style="min-width:26px; display: inline-block;">Metadata</a></span> &nbsp;';
+        $ui .= '<span class="read-micro-data">'.$en_all_4341[6103]['m_icon']. ' <a href="/read/view_json/' . $ln['ln_id'] . '" data-toggle="tooltip" data-placement="top" title="View link metadata (in new window)" style="min-width:26px; display: inline-block;">Metadata</a></span> &nbsp;';
     }
 
     if(!$hide_sensitive_details && $ln['ln_external_id'] > 0){
@@ -2316,7 +2316,7 @@ function echo_caret($en_id, $m, $url_append){
     $ui .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
     $ui .= '<div class="dropdown-menu">';
     foreach ($CI->config->item('en_all_'.$en_id) as $en_id2 => $m2){
-        $ui .= '<a class="dropdown-item" target="_blank" href="' . $m2['m_desc'] . $url_append . '"><span class="icon-block">'.$m2['m_icon'].'</span> '.$m2['m_name'].'</a>';
+        $ui .= '<a class="dropdown-item" href="' . $m2['m_desc'] . $url_append . '"><span class="icon-block">'.$m2['m_icon'].'</span> '.$m2['m_name'].'</a>';
     }
     $ui .= '</div>';
     $ui .= '</li>';
@@ -2737,7 +2737,7 @@ function echo_en($en, $is_parent = false)
         if($is_play_link && $en['ln_external_id'] > 0){
             if($en['ln_parent_play_id']==6196){
                 //Give trainers the ability to ping Messenger profiles:
-                $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/read/messenger_fetch_profile/'.$en['ln_external_id'].'" target="_blank"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
+                $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/read/messenger_fetch_profile/'.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
             } else {
                 $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i>&nbsp;</span>';
             }

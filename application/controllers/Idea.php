@@ -758,7 +758,7 @@ class Idea extends CI_Controller {
             $item_ui .= ( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->READ_model->dispatch_message($apu['ln_content']).'</div>' : '' );
             $item_ui .= '</td>';
 
-            $item_ui .= '<td style="text-align:left;"><a href="/read/view_json/'.$apu['ln_id'].'" target="_blank">'.echo_en_cache('en_all_6255' /* User Reads Progress */, $apu['ln_type_play_id']).'</a></td>';
+            $item_ui .= '<td style="text-align:left;"><a href="/read/view_json/'.$apu['ln_id'].'">'.echo_en_cache('en_all_6255' /* User Reads Progress */, $apu['ln_type_play_id']).'</a></td>';
             $item_ui .= '<td style="text-align:left;">'.echo_number($count_progression[0]['totals']).'</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
             $item_ui .= '<td style="text-align:left;">';
