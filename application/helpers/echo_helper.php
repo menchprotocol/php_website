@@ -2763,23 +2763,6 @@ function echo_en($en, $is_parent = false)
 
 
 
-    //READ
-    $read_ui = '<td class="MENCHcolumn2 read">';
-    $read_ui .= echo_in_stat_read(0, $en['en_id']);
-
-
-    //READ TYPE
-    if ($ln_id > 0 && $is_read_progress) {
-        //LINK TYPE
-        $en_all_4593 = $CI->config->item('en_all_4593');
-        $read_ui .= '<div class="space-content">';
-        $read_ui .= '<span class="ln_type_' . $ln_id . superpower_active(10986).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span>&nbsp;</span>';
-        $read_ui .= '</div>';
-    }
-
-    $read_ui .= '</td>';
-
-
 
 
 
@@ -2799,6 +2782,26 @@ function echo_en($en, $is_parent = false)
     $idea_ui .= echo_in_stat_play(0, $en['en_id']);
     $idea_ui .= '</td>';
 
+
+
+
+
+
+    //READ
+    $read_ui = '<td class="MENCHcolumn2 read">';
+    $read_ui .= echo_in_stat_read(0, $en['en_id']);
+
+
+    //READ TYPE
+    if ($ln_id > 0 && $is_read_progress) {
+        //LINK TYPE
+        $en_all_4593 = $CI->config->item('en_all_4593');
+        $read_ui .= '<div class="space-content">';
+        $read_ui .= '<span class="ln_type_' . $ln_id . superpower_active(10986).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span>&nbsp;</span>';
+        $read_ui .= '</div>';
+    }
+
+    $read_ui .= '</td>';
 
 
     //Set order based on view mode:
