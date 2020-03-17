@@ -1481,26 +1481,26 @@ function echo_in_idea($in, $flip_order = false)
 
     if($flip_order){
 
-        //PLAY
-        $ui .= '<td class="MENCHcolumn3 play fixedColumns">';
-        $ui .= echo_in_stat_play($in['in_id'], 0);
-        $ui .= '</td>';
-
         //READ
         $ui .= '<td class="MENCHcolumn2 read fixedColumns">';
         $ui .= echo_in_stat_read($in['in_id'], 0);
+        $ui .= '</td>';
+
+        //PLAY
+        $ui .= '<td class="MENCHcolumn3 play fixedColumns">';
+        $ui .= echo_in_stat_play($in['in_id'], 0);
         $ui .= '</td>';
 
     } else {
 
-        //READ
-        $ui .= '<td class="MENCHcolumn2 read fixedColumns">';
-        $ui .= echo_in_stat_read($in['in_id'], 0);
-        $ui .= '</td>';
-
         //PLAY
         $ui .= '<td class="MENCHcolumn3 play fixedColumns">';
         $ui .= echo_in_stat_play($in['in_id'], 0);
+        $ui .= '</td>';
+
+        //READ
+        $ui .= '<td class="MENCHcolumn2 read fixedColumns">';
+        $ui .= echo_in_stat_read($in['in_id'], 0);
         $ui .= '</td>';
 
     }
