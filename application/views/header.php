@@ -126,7 +126,7 @@ if(!isset($hide_header)){
                             $MENCHcolumn1++;
                             $url_extension = null;
                             $is_current = ($current_mench['x_id']==$en_id);
-                            $this_mench = current_mench(strtolower($this_mench['x_name']));
+                            $this_mench = current_mench(strtolower($m['m_name']));
                             $url = '/'.$this_mench['x_name'];
 
                             if(!$is_current && isset($in) && in_array($this_mench['x_name'], array('read','idea'))){
