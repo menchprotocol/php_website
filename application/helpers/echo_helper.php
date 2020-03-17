@@ -2814,11 +2814,11 @@ function echo_en($en, $is_parent = false)
     //Set order based on view mode:
     if($is_read_progress){
 
-        $ui .= $read_ui.$idea_ui;
+        $ui .= $idea_ui.$read_ui;
 
     } else {
 
-        $ui .= $idea_ui.$read_ui;
+        $ui .= $read_ui.$idea_ui;
 
     }
 
