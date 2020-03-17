@@ -602,15 +602,17 @@ function extract_icon_color($en_icon){
     }
 }
 
-function current_mench(){
+function current_mench($part1 = null){
     $CI =& get_instance();
-    $part1 = $CI->uri->segment(1);
-    if($part1=='play'){
+    if(!$part1){
+        $part1 = $CI->uri->segment(1);
+    }
+    if($part1=='players' || $part1=='play'){
         return array(
             'x_id' => 4536,
             'x_name' => 'play',
         );
-    } elseif($part1=='idea'){
+    } elseif($part1=='idea' || $part1=='ideas'){
         return array(
             'x_id' => 4535,
             'x_name' => 'idea',

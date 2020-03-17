@@ -126,22 +126,23 @@ if(!isset($hide_header)){
                             $MENCHcolumn1++;
                             $url_extension = null;
                             $is_current = ($current_mench['x_id']==$en_id);
-                            $url = '/'.$current_mench['x_name'];
+                            $this_mench = current_mench(strtolower($this_mench['x_name']));
+                            $url = '/'.$this_mench['x_name'];
 
-                            if(!$is_current && isset($in) && in_array($current_mench['x_name'], array('read','idea'))){
-                                if($current_mench['x_name']=='read' && $current_mench['x_name']=='idea'){
+                            if(!$is_current && isset($in) && in_array($this_mench['x_name'], array('read','idea'))){
+                                if($this_mench['x_name']=='read' && $this_mench['x_name']=='idea'){
                                     $url = '/idea/'.$in['in_id'];
-                                } elseif($current_mench['x_name']=='idea' && $current_mench['x_name']=='read'){
+                                } elseif($this_mench['x_name']=='idea' && $this_mench['x_name']=='read'){
                                     $url = '/'.$in['in_id'];
                                 }
                             }
 
-                            echo '<td class="fixedColumns MENCHcolumn'.$MENCHcolumn1.' '.$current_mench['x_name'].'">';
-                            echo '<a class="'.$current_mench['x_name'].' border-'.$current_mench['x_name'].( $is_current ? ' focustab ': '' ).'" href="'.$url.'">';
+                            echo '<td class="fixedColumns MENCHcolumn'.$MENCHcolumn1.' '.$this_mench['x_name'].'">';
+                            echo '<a class="'.$this_mench['x_name'].' border-'.$this_mench['x_name'].( $is_current ? ' focustab ': '' ).'" href="'.$url.'">';
                             echo '<span class="icon-block">'.$m['m_icon'].'</span>';
                             echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
                             if($is_current){
-                                echo ' <span class="montserrat '.$current_mench['x_name'].'_name">' . $m['m_name'] . '</span>';
+                                echo ' <span class="montserrat '.$this_mench['x_name'].'_name">' . $m['m_name'] . '</span>';
                             }
                             echo '</a>';
                             echo '</td>';
