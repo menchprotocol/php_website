@@ -761,8 +761,6 @@ fragment PostListingItemSidebar_post on Post {
             //READ
             echo '<td class="read fixedColumns MENCHcolumn2">'.( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_owner_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' ).'</td>';
 
-            echo '</tr>';
-
 
 
             //IDEA
@@ -777,6 +775,10 @@ fragment PostListingItemSidebar_post on Post {
                 )
 
                 . '</td>';
+
+
+            echo '</tr>';
+
 
 
         }
