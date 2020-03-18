@@ -3009,7 +3009,8 @@ class READ_model extends CI_Model
             }
 
             //See if this player has any parent links to be shown in this appendix
-            $parents_media_shown = 0;
+            $valid_url = array();
+            $message_visual_media = 0;
             $player_appendix = null;
 
             //Determine what type of Media this reference has:
@@ -3023,9 +3024,11 @@ class READ_model extends CI_Model
                     'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
                 ), array('en_parent'), 0) as $parent_en) {
 
-                    if (in_array($parent_en['ln_type_play_id'], $this->config->item('en_ids_11059'))) {
+                    if (in_array($parent_en['ln_type_play_id'], $this->config->item('en_ids_12524'))) {
                         //Raw media file: Audio, Video, Image OR File...
-                        $parents_media_shown++;
+                        $message_visual_media++;
+                    } elseif($parent_en['ln_type_play_id'] == 4256 /* URL */){
+                        array_push($valid_url, $parent_en['ln_content']);
                     }
 
                     if($push_message){
@@ -3077,7 +3080,7 @@ class READ_model extends CI_Model
 
 
             //Append any appendix generated:
-            if($player_appendix){
+            if($player_appendix && (count($valid_url)>=2 || $message_visual_media > 0)){
                 $output_body_message .= $player_appendix;
             }
 
@@ -3105,7 +3108,7 @@ class READ_model extends CI_Model
 
                     //Show player link with status:
                     $current_mench = current_mench();
-                    $output_body_message = str_replace('@' . $string_references['ref_players'][0], '<span class="inline-block '.( $parents_media_shown > 0 ? superpower_active(10983) : '' ).'">'.( !in_array($ens[0]['en_status_play_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block">'.$en_all_6177[$ens[0]['en_status_play_id']]['m_icon'].'</span> ' : '' ).$en_icon.( $current_mench['x_name']=='read' && !superpower_assigned(10983) ? '<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">' . $ens[0]['en_name']  . '</span>' : '<a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/play/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_players'][0], '<span class="inline-block '.( $message_visual_media > 0 ? superpower_active(10983) : '' ).'">'.( !in_array($ens[0]['en_status_play_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block">'.$en_all_6177[$ens[0]['en_status_play_id']]['m_icon'].'</span> ' : '' ).$en_icon.( $current_mench['x_name']=='read' && !superpower_assigned(10983) ? ( !$message_visual_media && count($valid_url)==1 ? '<a class="montserrat doupper underline '.extract_icon_color($ens[0]['en_icon']).'" href="' . $valid_url[0] . '">' . $ens[0]['en_name']  . '</a>' : '<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">' . $ens[0]['en_name']  . '</span>' ) : '<a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/play/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
 
                 }
 

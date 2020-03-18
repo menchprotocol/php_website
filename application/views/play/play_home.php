@@ -44,9 +44,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     echo '<tr>';
-    echo '<td class="play fixedColumns MENCHcolumn1"><span class="play"><span class="icon-block">' . $en_all_2738[4536]['m_icon'] . '</span><span class="montserrat" title="'.number_format($play_coins[0]['total_coins'], 0).'">'.echo_number($play_coins[0]['total_coins']).'</span><b class="block"><span class="icon-block show-max">&nbsp;</span>PLAYERS</b></span></td>';
-    echo '<td class="read fixedColumns MENCHcolumn2"><span class="read"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="montserrat" title="'.number_format($read_coins[0]['total_coins'], 0).'">'.echo_number($read_coins[0]['total_coins']).'</span><b class="block"><span class="icon-block show-max">&nbsp;</span>READ</b></span></td>';
-    echo '<td class="idea fixedColumns MENCHcolumn3"><span class="idea"><span class="icon-block">' . $en_all_2738[4535]['m_icon'] . '</span><span class="montserrat" title="'.number_format($idea_coins[0]['total_coins'], 0).'">'.echo_number($idea_coins[0]['total_coins']).'</span><b class="block"><span class="icon-block show-max">&nbsp;</span>IDEAS</b></span></td>';
+    echo '<td class="play fixedColumns MENCHcolumn1"><span class="play"><span class="icon-block">' . $en_all_2738[4536]['m_icon'] . '</span><span class="montserrat" title="'.number_format($play_coins[0]['total_coins'], 0).'">'.echo_number($play_coins[0]['total_coins']).'</span><b class="block montserrat"><span class="icon-block show-max">&nbsp;</span>PLAYERS</b></span></td>';
+    echo '<td class="read fixedColumns MENCHcolumn2"><span class="read"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="montserrat" title="'.number_format($read_coins[0]['total_coins'], 0).'">'.echo_number($read_coins[0]['total_coins']).'</span><b class="block montserrat"><span class="icon-block show-max">&nbsp;</span>READ</b></span></td>';
+    echo '<td class="idea fixedColumns MENCHcolumn3"><span class="idea"><span class="icon-block">' . $en_all_2738[4535]['m_icon'] . '</span><span class="montserrat" title="'.number_format($idea_coins[0]['total_coins'], 0).'">'.echo_number($idea_coins[0]['total_coins']).'</span><b class="block montserrat"><span class="icon-block show-max">&nbsp;</span>IDEAS</b></span></td>';
     echo '</tr>';
 
     echo '</table>';
