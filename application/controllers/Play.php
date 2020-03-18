@@ -1732,6 +1732,32 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
+    function cron__inherit_icons()
+    {
+
+        $updated = 0;
+        foreach($this->config->item('en_all_12523') as $en_id => $m) {
+
+            //Update All Child Icons that are not the same:
+            foreach($this->READ_model->ln_fetch(array(
+                'ln_parent_play_id' => $en_id,
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                'en_icon !=' => $m['m_icon'],
+            ), array('en_child'), 0) as $en) {
+                $updated++;
+                $this->PLAY_model->en_update($en['en_id'], array(
+                    'en_icon' => $m['m_icon'],
+                ));
+            }
+
+        }
+
+        echo $updated.' Icons updated across '.count($this->config->item('en_all_12523')).' players.';
+
+    }
+
     function facebook_deauthorize(){
         //When a user removes us:
         $this->READ_model->ln_create(array(

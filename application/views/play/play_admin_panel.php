@@ -40,6 +40,7 @@ $cron_jobs = array(
     '/read/cron__sync_algolia' => 'Sync Algolia Index [Limited calls!]',
     '/read/cron__sync_gephi' => 'Sync Gephi Graph Index',
     '/read/cron__clean_metadatas' => 'Clean Unused Metadata Variables',
+    '/play/cron__inherit_icons' => 'Inherit Parent Icons',
 );
 
 
