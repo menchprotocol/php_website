@@ -2678,19 +2678,22 @@ function echo_en($en, $is_parent = false)
 
     $ui .= '<td class="MENCHcolumn1">';
 
+
+
     $ui .= '<div class="inline-block">';
 
-    if($is_play_link){
-        //Link Type
-        $en_all_4592 = $CI->config->item('en_all_4592');
-        $ui .= '<span class="icon-block ln_type_' . $ln_id . superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4592[$en['ln_type_play_id']]['m_icon'] . '</span>';
-    }
 
     //PLAYER ICON
     $ui .= '<a href="/play/'.$en['en_id'] . '"><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
 
     //PLAYER NAME
     $ui .= '<a href="/play/'.$en['en_id'] . '" class="title-block montserrat '.extract_icon_color($en['en_icon']).'">'.($child_links[0]['totals'] > 0 ? echo_number($child_links[0]['totals']).' ' : '').'<span class="en_name_' . $en['en_id'] . '">'.$en['en_name'].'</span></a>';
+
+    if($is_play_link){
+        //Link Type
+        $en_all_4592 = $CI->config->item('en_all_4592');
+        $ui .= '<span class="icon-block ln_type_' . $ln_id . superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4592[$en['ln_type_play_id']]['m_icon'] . '</span>';
+    }
 
 
     $ui .= '</div>';
