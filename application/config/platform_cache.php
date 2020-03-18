@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-18 16:20:11 PST
+//Generated 2020-03-18 16:25:22 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -263,7 +263,7 @@ $config['en_all_4463'] = array(
     ),
     6205 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READS',
+        'm_name' => 'READ',
         'm_desc' => 'An electronic log book containing a list of transactions and balances typically involving financial accounts.',
         'm_parents' => array(12499,10876,4527,5008,12155,2738,4463),
     ),
@@ -345,7 +345,7 @@ $config['en_all_12413'] = array(
 );
 
 //MENCH WEBSITE:
-$config['en_ids_10876'] = array(3000,4535,10984,10939,10985,11999,6225,6287,7291,10986,4536,10983,10967,10964,10989,6205,10988);
+$config['en_ids_10876'] = array(3000,4535,10984,10939,10985,11999,6225,6287,7291,10986,4536,10983,10967,6205,10964,10989,10988);
 $config['en_all_10876'] = array(
     3000 => array(
         'm_icon' => '<i class="fad fa-file-certificate play" aria-hidden="true"></i>',
@@ -425,6 +425,12 @@ $config['en_all_10876'] = array(
         'm_desc' => 'https://mench.com/13277',
         'm_parents' => array(10876,10985,10957),
     ),
+    6205 => array(
+        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ',
+        'm_desc' => 'https://mench.com/read',
+        'm_parents' => array(12499,10876,4527,5008,12155,2738,4463),
+    ),
     10964 => array(
         'm_icon' => '<i class="fad fa-glasses-alt read" aria-hidden="true"></i>',
         'm_name' => 'READ GLASSES',
@@ -436,12 +442,6 @@ $config['en_all_10876'] = array(
         'm_name' => 'READ MICROSCOPE',
         'm_desc' => 'https://mench.com/13280',
         'm_parents' => array(10876,10985,10957),
-    ),
-    6205 => array(
-        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READS',
-        'm_desc' => 'https://mench.com/read',
-        'm_parents' => array(12499,10876,4527,5008,12155,2738,4463),
     ),
     10988 => array(
         'm_icon' => '<i class="fad fa-telescope read" aria-hidden="true"></i>',
@@ -1109,7 +1109,7 @@ $config['en_all_4535'] = array(
     ),
 );
 
-//READS:
+//READ:
 $config['en_ids_6205'] = array(12024,6157,7489,12117,4559,6144,7485,7486,6997,12129,12336,12334,4554,7757,6155,12106,6415,6559,6560,6556,6578,7611,4556,4235,6149,6969,4275,4283,7610,4555,7563,10690,4266,4267,12489,4282,6563,5967,10683,6132,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,6771,7560,7561,7564,7559,7558,6143,7347,7304,4341,12197,7492,4552,6140,12328,7578,6224,10658,4553,7562);
 $config['en_all_6205'] = array(
     12024 => array(
@@ -2295,7 +2295,7 @@ $config['en_all_12279'] = array(
     ),
 );
 
-//PLAY COIN:
+//PLAYER COIN:
 $config['en_ids_12274'] = array(4251);
 $config['en_all_12274'] = array(
     4251 => array(
@@ -2393,7 +2393,7 @@ $config['en_all_12228'] = array(
     ),
     12274 => array(
         'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY COIN',
+        'm_name' => 'PLAYER COIN',
         'm_desc' => '',
         'm_parents' => array(12467,12228,12358,4527,4758),
     ),
@@ -4551,7 +4551,7 @@ $config['en_all_2738'] = array(
     ),
     6205 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READS',
+        'm_name' => 'READ',
         'm_desc' => '',
         'm_parents' => array(12499,10876,4527,5008,12155,2738,4463),
     ),
@@ -4599,7 +4599,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(6150,3000,10627,4535,11047,6192,12365,12079,11018,10990,11021,4229,4485,12012,6193,4983,7302,4737,7356,12138,7355,12400,6201,12112,12420,11968,4486,12413,7585,10602,12330,12324,7309,7712,7751,12523,10717,11080,2738,12105,4463,12502,11035,7555,10876,12524,11059,11058,6225,6287,10957,12501,6404,4527,11054,6232,10956,12279,11089,12440,12274,6194,4536,11039,12410,6827,12273,4426,4997,12500,4986,7551,11028,4537,7357,6206,11033,3290,12421,11088,4592,12403,7303,6177,12401,12391,11084,3289,4755,10571,11081,7704,6255,12229,6345,4280,4277,6102,12446,12326,6146,6103,10692,12227,5967,6205,7347,7304,6186,7360,7364,7359,4341,4593,10593,12228,12141,12327,10658,6204,12322,12321,6805,7358);
+$config['en_ids_4527'] = array(6150,3000,10627,4535,11047,6192,12365,12079,11018,10990,11021,4229,4485,12012,6193,4983,7302,4737,7356,12138,7355,12400,6201,12112,12420,11968,4486,12413,7585,10602,12330,12324,7309,7712,7751,12523,10717,11080,2738,12105,4463,12502,11035,7555,10876,12524,11059,11058,6225,6287,10957,12501,6404,4527,11054,6232,10956,12279,11089,12440,6194,4536,11039,12274,12410,6827,12273,4426,4997,12500,4986,7551,11028,4537,7357,6206,11033,3290,12421,11088,4592,12403,7303,6177,12401,12391,11084,3289,4755,10571,6205,11081,7704,6255,12229,6345,4280,4277,6102,12446,12326,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,4593,10593,12228,12141,12327,10658,6204,12322,12321,6805,7358);
 $config['en_all_4527'] = array(
     6150 => array(
         'm_icon' => '<i class="far fa-bookmark read"></i>',
@@ -4961,12 +4961,6 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,4758),
     ),
-    12274 => array(
-        'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY COIN',
-        'm_desc' => '',
-        'm_parents' => array(12467,12228,12358,4527,4758),
-    ),
     6194 => array(
         'm_icon' => '<i class="fad fa-database . play" aria-hidden="true"></i>',
         'm_name' => 'PLAY CONNECTIONS',
@@ -4984,6 +4978,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'PLAYER ADMIN MENU',
         'm_desc' => '',
         'm_parents' => array(10986,11089,4527,11040),
+    ),
+    12274 => array(
+        'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER COIN',
+        'm_desc' => '',
+        'm_parents' => array(12467,12228,12358,4527,4758),
     ),
     12410 => array(
         'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
@@ -5141,6 +5141,12 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,4758),
     ),
+    6205 => array(
+        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ',
+        'm_desc' => '',
+        'm_parents' => array(12499,10876,4527,5008,12155,2738,4463),
+    ),
     11081 => array(
         'm_icon' => '<i class="far fa-bezier-curve read"></i>',
         'm_name' => 'READ ALL CONNECTIONS',
@@ -5230,12 +5236,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'READ READ CC',
         'm_desc' => '',
         'm_parents' => array(6205,4506,4527,7569,4755,4593),
-    ),
-    6205 => array(
-        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READS',
-        'm_desc' => '',
-        'm_parents' => array(12499,10876,4527,5008,12155,2738,4463),
     ),
     7347 => array(
         'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
