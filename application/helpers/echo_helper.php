@@ -2635,7 +2635,6 @@ function echo_en($en, $is_parent = false)
     }
     $session_en = superpower_assigned();
     $en_all_6177 = $CI->config->item('en_all_6177'); //Player Statuses
-    $en_all_4593 = $CI->config->item('en_all_4593'); //Playern Link Types
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_2738 = $CI->config->item('en_all_2738');
     $en_all_11028 = $CI->config->item('en_all_11028'); //PLAYERS LINKS DIRECTION
@@ -2738,8 +2737,9 @@ function echo_en($en, $is_parent = false)
         if($is_play_link){
 
             //Link Type
+            $en_all_4592 = $CI->config->item('en_all_4592');
             $ui .= '<div class="space-content">';
-            $ui .= '<span class="ln_type_' . $ln_id . superpower_active(10986).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span>&nbsp;</span>';
+            $ui .= '<span class="ln_type_' . $ln_id . superpower_active(10986).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4592[$en['ln_type_play_id']]['m_icon'] . '</span>&nbsp;</span>';
             $ui .= '</div>';
 
             //External ID
@@ -2788,8 +2788,9 @@ function echo_en($en, $is_parent = false)
     //READ TYPE
     if ($ln_id > 0 && $is_read_progress) {
         //LINK TYPE
+        $en_all_12227 = $CI->config->item('en_all_12227');
         $read_ui .= '<div class="space-content">';
-        $read_ui .= '<span class="ln_type_' . $ln_id . superpower_active(10986).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span>&nbsp;</span>';
+        $read_ui .= '<span class="ln_type_' . $ln_id . superpower_active(10989).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_12227[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_12227[$en['ln_type_play_id']]['m_icon'] . '</span>&nbsp;</span>';
         $read_ui .= '</div>';
     }
 
