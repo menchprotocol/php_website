@@ -142,7 +142,7 @@ if(!isset($hide_header)){
                             echo '<span class="icon-block">'.$m['m_icon'].'</span>';
                             echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
                             if($is_current){
-                                echo ' <span class="montserrat '.$this_mench['x_name'].'_name">' . $m['m_name'] . '</span>';
+                                echo ' <span class="montserrat '.$this_mench['x_name'].'_name">' . $m['m_name'] . 'S</span>';
                             }
                             echo '</a>';
                             echo '</td>';

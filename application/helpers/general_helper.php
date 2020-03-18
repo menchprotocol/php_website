@@ -607,7 +607,7 @@ function current_mench($part1 = null){
     if(!$part1){
         $part1 = $CI->uri->segment(1);
     }
-    if($part1=='players' || $part1=='play'){
+    if($part1=='players' || $part1=='player' || $part1=='play'){
         return array(
             'x_id' => 4536,
             'x_name' => 'play',
