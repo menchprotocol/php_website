@@ -2757,7 +2757,7 @@ function echo_en($en, $is_parent = false)
     if($is_play_link){
         //Link Type
         $en_all_4592 = $CI->config->item('en_all_4592');
-        $ui .= '<span class="icon-block-img ln_type_' . $ln_id . superpower_active(10986).'" data-toggle="tooltip" data-placement="bottom" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4592[$en['ln_type_play_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block-img ln_type_' . $ln_id . superpower_active(10986).'" data-toggle="tooltip" data-placement="bottom" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4592[$en['ln_type_play_id']]['m_icon'] . '</span> ';
     }
 
     foreach ($en__parents as $en_parent) {
