@@ -62,7 +62,7 @@ class Idea extends CI_Controller {
     }
 
     function idea_home(){
-        $session_en = superpower_assigned();
+        $session_en = superpower_assigned(null, true);
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
         $this->load->view('header', array(
             'title' => $en_all_2738[4535]['m_name'],

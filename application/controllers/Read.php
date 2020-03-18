@@ -299,7 +299,7 @@ class Read extends CI_Controller
 
     function read_home(){
 
-        $session_en = superpower_assigned(null);
+        $session_en = superpower_assigned(null, true);
         $player_reads = array();
 
 
