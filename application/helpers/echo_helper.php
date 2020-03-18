@@ -2689,13 +2689,6 @@ function echo_en($en, $is_parent = false)
     //PLAYER NAME
     $ui .= '<a href="/play/'.$en['en_id'] . '" class="title-block montserrat '.extract_icon_color($en['en_icon']).'">'.($child_links[0]['totals'] > 0 ? echo_number($child_links[0]['totals']).' ' : '').'<span class="en_name_' . $en['en_id'] . '">'.$en['en_name'].'</span></a>';
 
-    if($is_play_link){
-        //Link Type
-        $en_all_4592 = $CI->config->item('en_all_4592');
-        $ui .= '<span class="icon-block ln_type_' . $ln_id . superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4592[$en['ln_type_play_id']]['m_icon'] . '</span>';
-    }
-
-
     $ui .= '</div>';
 
 
@@ -2760,6 +2753,12 @@ function echo_en($en, $is_parent = false)
 
 
     $ui .= '<span class="'. superpower_active(10986) .'">';
+
+    if($is_play_link){
+        //Link Type
+        $en_all_4592 = $CI->config->item('en_all_4592');
+        $ui .= '<span class="icon-block-img ln_type_' . $ln_id . superpower_active(10986).'" data-toggle="tooltip" data-placement="bottom" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4592[$en['ln_type_play_id']]['m_icon'] . '</span>';
+    }
 
     foreach ($en__parents as $en_parent) {
         $ui .= '<span class="icon-block-img en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span> ';
