@@ -1746,6 +1746,7 @@ fragment PostListingItemSidebar_post on Post {
                 'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
                 'en_icon !=' => $m['m_icon'],
             ), array('en_child'), 0) as $en) {
+                echo '['.htmlentities($en['en_icon']).'] Updated to ['.htmlentities($m['m_icon']).']<hr />';
                 $updated++;
                 $this->PLAY_model->en_update($en['en_id'], array(
                     'en_icon' => $m['m_icon'],
