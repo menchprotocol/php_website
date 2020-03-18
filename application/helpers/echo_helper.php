@@ -2635,6 +2635,7 @@ function echo_en($en, $is_parent = false)
     }
     $session_en = superpower_assigned();
     $en_all_6177 = $CI->config->item('en_all_6177'); //Player Statuses
+    $en_all_4593 = $CI->config->item('en_all_4593'); //Playern Link Types
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_2738 = $CI->config->item('en_all_2738');
     $en_all_11028 = $CI->config->item('en_all_11028'); //PLAYERS LINKS DIRECTION
@@ -2734,12 +2735,21 @@ function echo_en($en, $is_parent = false)
         $ui .= '<span class="ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_play_id']]['m_name'].' @'.$en['ln_status_play_id'].': '.$en_all_6186[$en['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_play_id']]['m_icon'] . '</span>&nbsp;</span>';
 
         //Show link index
-        if($is_play_link && $en['ln_external_id'] > 0){
-            if($en['ln_parent_play_id']==6196){
-                //Give trainers the ability to ping Messenger profiles:
-                $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/read/messenger_fetch_profile/'.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
-            } else {
-                $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i>&nbsp;</span>';
+        if($is_play_link){
+
+            //Link Type
+            $ui .= '<div class="space-content">';
+            $ui .= '<span class="ln_type_' . $ln_id . superpower_active(10986).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span>&nbsp;</span>';
+            $ui .= '</div>';
+
+            //External ID
+            if($en['ln_external_id'] > 0){
+                if($en['ln_parent_play_id']==6196){
+                    //Give trainers the ability to ping Messenger profiles:
+                    $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/read/messenger_fetch_profile/'.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
+                } else {
+                    $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i>&nbsp;</span>';
+                }
             }
         }
 
@@ -2778,7 +2788,6 @@ function echo_en($en, $is_parent = false)
     //READ TYPE
     if ($ln_id > 0 && $is_read_progress) {
         //LINK TYPE
-        $en_all_4593 = $CI->config->item('en_all_4593');
         $read_ui .= '<div class="space-content">';
         $read_ui .= '<span class="ln_type_' . $ln_id . superpower_active(10986).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4593[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4593[$en['ln_type_play_id']]['m_icon'] . '</span>&nbsp;</span>';
         $read_ui .= '</div>';
