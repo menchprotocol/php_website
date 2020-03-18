@@ -178,7 +178,7 @@ function read_text_answer(){
                 window.location = '/'+in_loaded_id+'/next';
             }, 987);
         } else {
-            $('.text_saving_result').html('<span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><span class="montserrat read">ERROR: '+data.message+'</span>');
+            $('.text_saving_result').html('<span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><span class="montserrat read">Attention: '+data.message+'</span>');
         }
     });
 }
@@ -206,7 +206,7 @@ function read_answer(){
                 window.location = '/'+in_loaded_id+'/next';
             }, 987);
         } else {
-            $('.result-update').html('<span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><span class="montserrat read">ERROR: '+data.message+'</span>');
+            $('.result-update').html('<span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><span class="montserrat read">Attention: '+data.message+'</span>');
         }
     });
 }

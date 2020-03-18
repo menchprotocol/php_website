@@ -167,7 +167,7 @@ function read_in_history(tab_group_id, note_in_id, owner_en_id, last_loaded_ln_i
         if (data.status) {
             $(load_class).html(data.message);
         } else {
-            $(load_class).html('<b style="color:#FF0000 !important; line-height: 110% !important;"><i class="fad fa-exclamation-triangle"></i> ERROR: ' + data.message + '</b>');
+            $(load_class).html('<b style="color:#FF0000 !important; line-height: 110% !important;"><i class="fad fa-exclamation-triangle"></i> Attention: ' + data.message + '</b>');
         }
 
         //Tooltips:
@@ -624,7 +624,7 @@ function toggle_superpower(superpower_id){
 
         if(!data.status){
 
-            alert('Error: ' + data.message);
+            alert('Attention: ' + data.message);
 
         } else {
 

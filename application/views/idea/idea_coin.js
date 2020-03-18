@@ -33,7 +33,7 @@ function in_update_text(this_handler){
             $(handler).val(data.original_val);
 
             //Show error:
-            alert('ERROR: ' + data.message);
+            alert('Attention: ' + data.message);
 
         } else {
             //Update value:
@@ -269,7 +269,7 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
             $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m_icon']+'</span>' + ( show_full_name ? data_object[current_selected]['m_name'] : '' ));
 
             //Show error:
-            alert('ERROR: ' + data.message);
+            alert('Attention: ' + data.message);
 
         }
     });
@@ -476,7 +476,7 @@ function in_notes_sort_apply(focus_ln_type_play_id) {
             //Only show message if there was an error:
             if (!data.status) {
                 //Show error:
-                alert('ERROR: ' + data.message);
+                alert('Attention: ' + data.message);
             }
         });
     }
@@ -653,7 +653,7 @@ function in_message_form_unlock(result, focus_ln_type_play_id) {
 
     } else {
 
-        $(".note_error_"+focus_ln_type_play_id).html('<span class="read">ERROR: '+result.message+'</span>');
+        $(".note_error_"+focus_ln_type_play_id).html('<span class="read">Attention: '+result.message+'</span>');
 
     }
 }
@@ -815,7 +815,7 @@ function in_sort_save(in_id) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
-                alert('ERROR: ' + data.message);
+                alert('Attention: ' + data.message);
             }
         });
     }
@@ -863,7 +863,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
     if( idea_name.charAt(0)=='#'){
         if(isNaN(idea_name.substr(1))){
-            alert('Error: Use numbers only. Example: #1234');
+            alert('Attention: Use numbers only. Example: #1234');
             return false;
         } else {
             //Update the references:
@@ -877,7 +877,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
     //We either need the idea name (to create a new idea) or the in_link_child_id>0 to create an IDEA link:
     if (!in_link_child_id && idea_name.length < 1) {
-        alert('Error: Enter something');
+        alert('Attention: Enter something');
         input_field.focus();
         return false;
     }
@@ -915,7 +915,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
         } else {
             //Show errors:
-            alert('ERROR: ' + data.message);
+            alert('Attention: ' + data.message);
         }
 
     });

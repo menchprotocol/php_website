@@ -254,7 +254,7 @@ function en_add_or_link(en_existing_id, is_parent) {
     if (en_existing_id == 0) {
         en_new_string = input.val();
         if (en_new_string.length < 1) {
-            alert('ERROR: Missing player name or URL, try again');
+            alert('Attention: Missing player name or URL, try again');
             input.focus();
             return false;
         }
@@ -291,7 +291,7 @@ function en_add_or_link(en_existing_id, is_parent) {
 
         } else {
             //We had an error:
-            alert('Error: ' + data.message);
+            alert('Attention: ' + data.message);
         }
 
     });
@@ -371,7 +371,7 @@ function en_ln_type_preview() {
         ln_id: parseInt($('#modifybox').attr('player-link-id')),
     }, function (data) {
         //All good, let's load the data into the Modify Widget...
-        $('#en_type_link_id').html((data.status ? data.html_ui : 'Error: ' + data.message));
+        $('#en_type_link_id').html((data.status ? data.html_ui : 'Attention: ' + data.message));
 
         if(data.status && data.en_link_preview.length > 0){
             $('#en_link_preview').html(data.en_link_preview);
@@ -394,7 +394,7 @@ function en_modify_load(en_id, ln_id) {
 
     //Make sure inputs are valid:
     if (!$('.en___' + en_id).length) {
-        alert('Error: Invalid Player ID');
+        alert('Attention: Invalid Player ID');
         return false;
     }
 
@@ -468,7 +468,7 @@ function player_link_form_unlock(result){
 
     //What was the result?
     if (!result.status) {
-        alert('ERROR: ' + result.message);
+        alert('Attention: ' + result.message);
     }
 
     //Unlock either way:

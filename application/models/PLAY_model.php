@@ -743,7 +743,7 @@ class PLAY_model extends CI_Model
                 } else {
                     //Log error:
                     $this->READ_model->ln_create(array(
-                        'ln_content' => 'en_sync_url['.$url.'] FAILED to en_verify_create['.$page_title.'] with error: '.$added_en['message'],
+                        'ln_content' => 'en_sync_url['.$url.'] FAILED to en_verify_create['.$page_title.'] with message: '.$added_en['message'],
                         'ln_type_play_id' => 4246, //Platform Bug Reports
                         'ln_owner_play_id' => $ln_owner_play_id,
                         'ln_parent_play_id' => $domain_player['en_domain']['en_id'],

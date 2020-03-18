@@ -697,7 +697,7 @@ if(!$action) {
                 if($replace_with_is_set){
 
                     echo '<td style="text-align: left;">'.$new_outcome.'</td>';
-                    echo '<td style="text-align: left;">'.( !$in_titlevalidation['status'] ? ' <i class="fad fa-exclamation-triangle"></i> Error: '.$in_titlevalidation['message'] : ( $replace_with_is_confirmed && $in_titlevalidation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
+                    echo '<td style="text-align: left;">'.( !$in_titlevalidation['status'] ? ' <i class="fad fa-exclamation-triangle"></i> Attention: '.$in_titlevalidation['message'] : ( $replace_with_is_confirmed && $in_titlevalidation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
                 } else {
                     //Show parents now:
                     echo '<td style="text-align: left;">';
@@ -1061,8 +1061,8 @@ $.post("/idea/in_report_conditional_steps", {
     depth_levels: parseInt($(\'#depth_levels\').val()),
 }, function (data) {
     if (!data.status) {
-        //Show Error:
-        $(\'#in_report_conditional_steps\').html(\'<span style="color:#FF0000;">Error: \'+ data.message +\'</span>\');
+        //Show Errors:
+        $(\'#in_report_conditional_steps\').html(\'<span style="color:#FF0000;">Attention: \'+ data.message +\'</span>\');
     } else {
         //Load Report:
         $(\'#in_report_conditional_steps\').html(data.message);

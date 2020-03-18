@@ -662,7 +662,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert">Error: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'Sign-in to access this page.') . '</div>');
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert">Attention: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'Sign-in to access this page.') . '</div>');
     }
 
 }
