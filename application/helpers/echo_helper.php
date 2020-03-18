@@ -2562,63 +2562,6 @@ function echo_message($message, $is_error, $recipient_en, $push_message){
 }
 
 
-function echo_mench_stats(){
-
-    $CI =& get_instance();
-
-
-    $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
-    $ui = '';
-
-
-    //MENCH COINS
-    $read_coins = $CI->READ_model->ln_fetch(array(
-        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-    $idea_coins = $CI->READ_model->ln_fetch(array(
-        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_play_id' => 4250, //UNIQUE IDEAS
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-    $play_coins = $CI->READ_model->ln_fetch(array(
-        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-
-
-    $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
-
-
-    $ui .= '<h2 class="montserrat '.extract_icon_color($en_all_11035[12358]['m_icon']).'"><span class="icon-block">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</h2>';
-
-
-    $ui .= '<table class="table table-sm table-striped dotransparent tablepadded" style="margin-bottom:50px;">';
-
-
-    $ui .= '<tr></tr>';
-
-    $ui .= '<tr>';
-
-
-    $ui .= '<td class="play fixedColumns MENCHcolumn1"><span class="icon-block show-max" style="margin-right: -8px;">&nbsp;</span><span class="montserrat" style="padding-left: 8px;">PLAYERS</span></td>';
-    $ui .= '<td class="read fixedColumns MENCHcolumn2"><span class="icon-block show-max" style="margin-right: -8px;">&nbsp;</span><span class="montserrat" style="padding-left: 8px;">READ</span></td>';
-    $ui .= '<td class="idea fixedColumns MENCHcolumn3"><span class="icon-block show-max" style="margin-right: -8px;">&nbsp;</span><span class="montserrat" style="padding-left: 8px;">IDEAS</span></td>';
-    $ui .= '</tr>';
-
-
-    $ui .= '<tr>';
-    $ui .= '<td class="play fixedColumns MENCHcolumn1"><span class="play"><span class="icon-block">' . $en_all_2738[4536]['m_icon'] . '</span><span class="montserrat" title="'.number_format($play_coins[0]['total_coins'], 0).'">'.echo_number($play_coins[0]['total_coins']).'</span></span></td>';
-    $ui .= '<td class="read fixedColumns MENCHcolumn2"><span class="read"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="montserrat" title="'.number_format($read_coins[0]['total_coins'], 0).'">'.echo_number($read_coins[0]['total_coins']).'</span></span></td>';
-    $ui .= '<td class="idea fixedColumns MENCHcolumn3"><span class="idea"><span class="icon-block">' . $en_all_2738[4535]['m_icon'] . '</span><span class="montserrat" title="'.number_format($idea_coins[0]['total_coins'], 0).'">'.echo_number($idea_coins[0]['total_coins']).'</span></span></td>';
-    $ui .= '</tr>';
-
-
-    $ui .= '</table>';
-
-    return $ui;
-
-}
-
 function echo_en($en, $is_parent = false)
 {
 
