@@ -223,7 +223,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <?php
 
     $col_num = 0;
-    echo '<div class="row">';
     foreach ($this->config->item('en_all_11088') as $en_id => $m){
 
         $col_num++;
@@ -231,21 +230,21 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             //PLAY HEADER already printed above...
             continue;
         }
+        $nav_content = '';
         $tab_content = '';
-        $default_active_found = false;
+        $default_active_found = 0;
         $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
         $activated_tabs = array();
 
 
-        echo '<div class="col-lg-12 '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
-
-        echo '<ul class="nav nav-tabs nav-sm">';
+        $nav_content .= '<div class="col-lg-12 '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
+        $nav_content .= '<ul class="nav nav-tabs nav-sm">';
 
         foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
 
             //Is this a caret menu?
             if(in_array(11040 , $m2['m_parents'])){
-                echo echo_caret($en_id2, $m2, $player['en_id']);
+                $nav_content .= echo_caret($en_id2, $m2, $player['en_id']);
                 continue;
             }
 
@@ -618,26 +617,28 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             $show_tab_names = in_array($en_id2, $this->config->item('en_ids_11084')); //Should we show tab names?
 
-            echo '<li class="nav-item '.( !$must_show && count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m2['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.',0,'.$player['en_id'].')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.superpower_active(10939).'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
+            $nav_content .= '<li class="nav-item '.( !$must_show && count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m2['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.',0,'.$player['en_id'].')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.superpower_active(10939).'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
 
 
-            $tab_content .= '<div class="tab-content tab-group-'.$en_id.' tab-data-'.$en_id2.( $default_active ? '' : ' hidden ' ).'">';
+            $tab_content .= '<div class="tab-content tab-group-'.$en_id.' tab-data-'.$en_id2.( $default_active ? '' : ' hidden ' ).( $default_active ? ' hidden ' : '' ).'">';
             $tab_content .= $this_tab;
             $tab_content .= '</div>';
 
             if($default_active){
-                $default_active_found = true;
+                $default_active_found++;
             }
         }
 
-        echo '</ul>';
+        $nav_content .= '</ul>';
 
-        echo $tab_content;
-        echo '</div>';
+        $nav_content .= $tab_content;
+        $nav_content .= '</div>';
     }
 
-    echo '</div>';
 
+    echo '<div class="row '.( $default_active_found<=1 && !superpower_assigned() ? ' hidden ' : '' ).'">';
+    echo $nav_content;
+    echo '</div>';
 
 
     //FOR EDITING ONLY (HIDDEN FROM UI):
