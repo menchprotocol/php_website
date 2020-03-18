@@ -2680,6 +2680,14 @@ function echo_en($en, $is_parent = false)
 
     $ui .= '<div class="inline-block">';
 
+    if($is_play_link){
+        //Link Type
+        $en_all_4592 = $CI->config->item('en_all_4592');
+        $ui .= '<div class="space-content">';
+        $ui .= '<span class="ln_type_' . $ln_id . superpower_active(10986).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4592[$en['ln_type_play_id']]['m_icon'] . '</span>&nbsp;</span>';
+        $ui .= '</div>';
+    }
+
     //PLAYER ICON
     $ui .= '<a href="/play/'.$en['en_id'] . '"><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
 
@@ -2734,23 +2742,16 @@ function echo_en($en, $is_parent = false)
         $ui .= '<span class="ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_play_id']]['m_name'].' @'.$en['ln_status_play_id'].': '.$en_all_6186[$en['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_play_id']]['m_icon'] . '</span>&nbsp;</span>';
 
         //Show link index
-        if($is_play_link){
-
-            //Link Type
-            $en_all_4592 = $CI->config->item('en_all_4592');
-            $ui .= '<div class="space-content">';
-            $ui .= '<span class="ln_type_' . $ln_id . superpower_active(10986).'"><span data-toggle="tooltip" data-placement="right" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_play_id']]['m_name'].' @'.$en['ln_type_play_id'].'">' . $en_all_4592[$en['ln_type_play_id']]['m_icon'] . '</span>&nbsp;</span>';
-            $ui .= '</div>';
+        if($is_play_link && $en['ln_external_id'] > 0){
 
             //External ID
-            if($en['ln_external_id'] > 0){
-                if($en['ln_parent_play_id']==6196){
-                    //Give trainers the ability to ping Messenger profiles:
-                    $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/read/messenger_fetch_profile/'.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
-                } else {
-                    $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i>&nbsp;</span>';
-                }
+            if($en['ln_parent_play_id']==6196){
+                //Give trainers the ability to ping Messenger profiles:
+                $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/read/messenger_fetch_profile/'.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
+            } else {
+                $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i>&nbsp;</span>';
             }
+
         }
 
     }
