@@ -3023,16 +3023,15 @@ class READ_model extends CI_Model
                     'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
                 ), array('en_parent'), 0) as $parent_en) {
 
-                    //Any Type of URL: Generic, Embed, Video, Audio, Image & File
-                    $parents_media_shown++;
+                    if (in_array($parent_en['ln_type_play_id'], $this->config->item('en_ids_11059'))) {
+                        //Raw media file: Audio, Video, Image OR File...
+                        $parents_media_shown++;
+                    }
 
                     if($push_message){
 
                         //Messenger templates:
                         if (in_array($parent_en['ln_type_play_id'], $this->config->item('en_ids_11059'))) {
-
-                            //Raw media file: Audio, Video, Image OR File...
-                            $parents_media_shown++;
 
                             //Search for Facebook Attachment ID IF $push_message = TRUE
                             $fb_att_id = 0;
