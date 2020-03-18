@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-18 12:40:05 PST
+//Generated 2020-03-18 14:37:37 PST
 
 //INHERIT PARENT ICON:
 $config['en_ids_12523'] = array(2997,4446,3005,4763,3147,2999,3084,5948,3192,2998);
@@ -345,7 +345,7 @@ $config['en_all_10876'] = array(
     11999 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
-        'm_desc' => 'https://mench.com/oii',
+        'm_desc' => 'https://mench.com/ledger',
         'm_parents' => array(10876,11039,6771,11035),
     ),
     6225 => array(
@@ -3823,19 +3823,13 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(12214,12437,11068,11999,6225,6287,7291,12205,10957,12211,4430,12275,6415,7256,4269,12358,7540);
+$config['en_ids_11035'] = array(12214,11068,11999,6225,6287,7291,12205,10957,12211,4430,12275,6415,7256,4269,12358,7540,12437);
 $config['en_all_11035'] = array(
     12214 => array(
         'm_icon' => '<i class="fad fa-plus idea" aria-hidden="true"></i>',
         'm_name' => 'ADD IDEA',
         'm_desc' => '',
         'm_parents' => array(11035),
-    ),
-    12437 => array(
-        'm_icon' => '<i class="fad fa-trophy play" aria-hidden="true"></i>',
-        'm_name' => 'LEADERBOARD',
-        'm_desc' => '',
-        'm_parents' => array(12489,11035,11986),
     ),
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -3926,6 +3920,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'TERMS OF SERVICE',
         'm_desc' => '',
         'm_parents' => array(11035),
+    ),
+    12437 => array(
+        'm_icon' => '<i class="fad fa-trophy play" aria-hidden="true"></i>',
+        'm_name' => 'TOP PLAYERS',
+        'm_desc' => '',
+        'm_parents' => array(12489,11035,11986),
     ),
 );
 
