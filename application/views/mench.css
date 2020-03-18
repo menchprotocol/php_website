@@ -408,17 +408,14 @@ img.no-radius {
 /* MENCH Colors */
 .play, .play .fas, .play .far, .play .fal, .play .fad, .play.fas, .play.far, .play.fal, .play.fad, .color4536, .info-item i.play:hover, .info-item a.play:hover  { color:#008DF2 !important; }
 .idea, .idea .fas, .idea .far, .idea .fal, .idea .fad, .idea.fas, .idea.far, .idea.fal, .idea.fad, .color4535, .info-item i.idea:hover, .info-item a.idea:hover  { color:#ffd600 !important; } /* f1d104 */
-.read, .read .fas, .read .far, .read .fal, .read .fad, .read.fas, .read.far, .read.fal, .read.fad, .color6205, .info-item i.read:hover, .info-item a.read:hover  { color:#FC1B44 !important; }
+.read, .read .fas, .read .far, .read .fal, .read .fad, .read.fas, .read.far, .read.fal, .read.fad, .color6205, .info-item i.read:hover, .info-item a.read:hover, .isred, .isred a, .fas.redalert  { color:#FC1B44 !important; }
 .grey, .grey i { color:#AAAAAA !important; }
 .black, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
 .btn-play i, .btn-read i, .btn-idea i { color: #000000 !important; }
 
 /* Color Palette @10604 */
-.isgreen, .isgreen a                { color:#228B22 !important; }
-.isred, .isred a, .fas.redalert     { color:#FF0000 !important; }
 .isgrey, .isgrey a, .lightgrey      { color:#f4f5f7 !important; }
-.ismatt, .ismatt a                  { color:#000000 !important; }
 
 .mixed-a{
     text-decoration:none !important;
