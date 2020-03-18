@@ -3727,7 +3727,7 @@ class READ_model extends CI_Model
 
                 //Confirm if they are interested to subscribe to this idea:
                 $this->READ_model->dispatch_message(
-                    '❌ Attention: I cannot add this idea to your 🔴 READING LIST because its not yet published.',
+                    '❌ Note: I cannot add this idea to your 🔴 READING LIST because its not yet published.',
                     $en,
                     true,
                     array(

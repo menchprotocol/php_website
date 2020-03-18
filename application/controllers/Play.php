@@ -2926,7 +2926,7 @@ fragment PostListingItemSidebar_post on Post {
  * So we don\'t have to make DB calls to figure them out every time!<br />
  * See here for all players cached: https://mench.com/play/4527<br />
  *<br />
- * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base<br />
+ * Note: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base<br />
  *<br />
  */<br /><br />';
         echo '//Generated '.date("Y-m-d H:i:s").' PST<br />';

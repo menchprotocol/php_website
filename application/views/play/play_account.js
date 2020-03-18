@@ -72,7 +72,7 @@ function account_update_avatar_icon(type_css, icon_css){
         if (!data.status) {
 
             //Ooops there was an error!
-            alert('Attention: ' + data.message);
+            alert('Note: ' + data.message);
 
         } else {
 

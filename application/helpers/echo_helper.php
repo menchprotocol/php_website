@@ -2550,7 +2550,7 @@ function echo_message($message, $is_error, $recipient_en, $push_message){
     if($push_message){
         $CI =& get_instance();
         $CI->READ_model->dispatch_message(
-            ( $is_error ? 'Attention: ' : 'Note: ') . $message,
+            'Note: ' . $message,
             $recipient_en,
             true
         );

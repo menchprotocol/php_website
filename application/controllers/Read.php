@@ -2005,7 +2005,7 @@ class Read extends CI_Controller
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->READ_model->dispatch_message(
-                                'Attention: You should '.$en_all_7585[$mismatch_focus['in_type_play_id']]['m_name'].' to complete this step.',
+                                'Note: You should '.$en_all_7585[$mismatch_focus['in_type_play_id']]['m_name'].' to complete this step.',
                                 $en,
                                 true
                             );
