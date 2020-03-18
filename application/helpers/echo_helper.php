@@ -2639,7 +2639,7 @@ function echo_en($en, $is_parent = false)
 
     //Does this player also include a link?
     if ($ln_id > 0) {
-        if($is_play_link){
+        if($is_play_link && (strlen($en['ln_content']) || superpower_assigned(10983))){
 
             //PLAY LINKS:
             $ui .= '<div class="doclear">&nbsp;</div>';
