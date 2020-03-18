@@ -1744,14 +1744,12 @@ fragment PostListingItemSidebar_post on Post {
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                '(LENGTH(en_icon) < 1 OR en_icon IS NULL)' => null, //Missing Icon
             ), array('en_child'), 0) as $en) {
-                if(!strlen($en['en_icon']) || $en['en_icon']!==$m['m_icon']){
-                    echo '@'.$en['en_id'].' ['.htmlentities($en['en_icon']).'] Updated to ['.htmlentities($m['m_icon']).']<hr />';
-                    $updated++;
-                    $this->PLAY_model->en_update($en['en_id'], array(
-                        'en_icon' => $m['m_icon'],
-                    ));
-                }
+                $updated++;
+                $this->PLAY_model->en_update($en['en_id'], array(
+                    'en_icon' => $m['m_icon'],
+                ));
             }
 
         }
