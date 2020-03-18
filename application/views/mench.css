@@ -1125,6 +1125,7 @@ label {
 /* FUNCTIONAL */
 .inline-block{ display: inline-block !important; }
 .inline{ display: inline !important; }
+.block{ display: block !important; }
 .hidden { display: none !important; }
 #mench_search{
     background-color: #FFFFFF !important;
