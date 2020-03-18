@@ -1732,6 +1732,29 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
+    function facebook_deauthorize(){
+        //When a user removes us:
+        $this->READ_model->ln_create(array(
+            'ln_content' => 'facebook_deauthorize() Just Called',
+            'ln_type_play_id' => 4246, //Platform Bug Reports
+            'ln_metadata' => array(
+                'POST' => $_POST,
+                'GET' => $_GET,
+            ),
+        ));
+    }
+
+    function auth0(){
+        //Just Log
+        $this->READ_model->ln_create(array(
+            'ln_content' => 'auth0() Callback',
+            'ln_type_play_id' => 4246, //Platform Bug Reports
+            'ln_metadata' => array(
+                'POST' => $_POST,
+                'GET' => $_GET,
+            ),
+        ));
+    }
 
     function singin_check_password(){
 
