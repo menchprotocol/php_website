@@ -223,6 +223,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <?php
 
     $col_num = 0;
+    echo '<div class="row">';
     foreach ($this->config->item('en_all_11088') as $en_id => $m){
 
         $col_num++;
@@ -237,9 +238,11 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         $activated_tabs = array();
 
 
-        $nav_content .= '<div class="col-lg-12 '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
-        $nav_content .= '<ul class="nav nav-tabs nav-sm">';
+        echo '<div class="col-lg-12 '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
+
+        //Generate Navigaation for this section:
+        $nav_content .= '<ul class="nav nav-tabs nav-sm">';
         foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
 
             //Is this a caret menu?
@@ -628,16 +631,16 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 $default_active_found++;
             }
         }
-
         $nav_content .= '</ul>';
 
-        $nav_content .= $tab_content;
-        $nav_content .= '</div>';
+        if($default_active_found>=2 || superpower_assigned()){
+            echo $nav_content;
+        }
+
+        //Always show tab content:
+        echo $tab_content;
+        echo '</div>';
     }
-
-
-    echo '<div class="row '.( $default_active_found<=1 && !superpower_assigned() ? ' hidden ' : '' ).'">';
-    echo $nav_content;
     echo '</div>';
 
 
