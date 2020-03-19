@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-19 12:35:53 PST
+//Generated 2020-03-19 13:09:56 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -128,7 +128,7 @@ $config['en_all_12502'] = array(
 $config['en_ids_12501'] = array(12500);
 $config['en_all_12501'] = array(
     12500 => array(
-        'm_icon' => '<i class="fas fa-user play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user" aria-hidden="true"></i>',
         'm_name' => 'PLAYER MENU',
         'm_desc' => '',
         'm_parents' => array(12497,12501,4527),
@@ -5040,7 +5040,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(10967,11089,4758,4506,4527),
     ),
     12500 => array(
-        'm_icon' => '<i class="fas fa-user play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user" aria-hidden="true"></i>',
         'm_name' => 'PLAYER MENU',
         'm_desc' => '',
         'm_parents' => array(12497,12501,4527),
