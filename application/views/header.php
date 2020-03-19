@@ -112,6 +112,8 @@ if(isset($custom_header)){
 
 if(!isset($hide_header)){
 
+
+    /*
     if(isset($session_en['en_id']) && !isset($basic_header)){
         ?>
         <!-- 3X NAVIGATION -->
@@ -156,6 +158,8 @@ if(!isset($hide_header)){
 
         <?php
     }
+    */
+
     ?>
 
 
