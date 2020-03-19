@@ -393,6 +393,7 @@ function toggle_nav(load_tab){
     }
     $('.main_nav').addClass('hidden');
     $('.'+load_tab).removeClass('hidden');
+    current_nav = load_tab;
 }
 
 
