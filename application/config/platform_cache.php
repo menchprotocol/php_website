@@ -7,11 +7,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 * So we don't have to make DB calls to figure them out every time!
 * See here for all players cached: https://mench.com/play/4527
 *
-* ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
+* Note: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
 *
 */
 
-//Generated 2020-03-18 16:25:22 PST
+//Generated 2020-03-18 17:36:35 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -217,19 +217,25 @@ $config['en_all_12440'] = array(
 );
 
 //MENCH GLOSSARY:
-$config['en_ids_4463'] = array(3084,3000,4535,4485,4536,4430,4755,6205);
+$config['en_ids_4463'] = array(3000,3084,4430,4535,4485,4536,4755,6205);
 $config['en_all_4463'] = array(
+    3000 => array(
+        'm_icon' => '<i class="fad fa-file-certificate play" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT CONTENT',
+        'm_desc' => 'We train the Mench personal assistant with sources produced by industry experts. Sources include videos, articles, books, online courses and other channels used by experts to share their knowledge.',
+        'm_parents' => array(6204,10876,7303,10571,4527,4463),
+    ),
     3084 => array(
         'm_icon' => '<i class="fas fa-user-astronaut play" aria-hidden="true"></i>',
         'm_name' => 'EXPERTS',
         'm_desc' => 'People with experience in their respective industry that have shown a consistent commitment to advancing their industry.',
         'm_parents' => array(12523,10571,4983,6827,4463),
     ),
-    3000 => array(
-        'm_icon' => '<i class="fad fa-file-certificate play" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT SOURCES',
-        'm_desc' => 'We train the Mench personal assistant with sources produced by industry experts. Sources include videos, articles, books, online courses and other channels used by experts to share their knowledge.',
-        'm_parents' => array(6204,10876,7303,10571,4527,4463),
+    4430 => array(
+        'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
+        'm_name' => 'HUMAN PLAYERS',
+        'm_desc' => 'Those actively playing MENCH.',
+        'm_parents' => array(12437,11035,4463,10573,4983,6827,4426),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -248,12 +254,6 @@ $config['en_all_4463'] = array(
         'm_name' => 'PLAYER',
         'm_desc' => 'Entities represent people, objects and things.',
         'm_parents' => array(12499,10876,4527,5008,12155,2738,4463),
-    ),
-    4430 => array(
-        'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
-        'm_name' => 'PLAYERS',
-        'm_desc' => 'Those actively playing MENCH.',
-        'm_parents' => array(12437,11035,4463,10573,4983,6827,4426),
     ),
     4755 => array(
         'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
@@ -349,7 +349,7 @@ $config['en_ids_10876'] = array(3000,4535,10984,10939,10985,11999,6225,6287,7291
 $config['en_all_10876'] = array(
     3000 => array(
         'm_icon' => '<i class="fad fa-file-certificate play" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT SOURCES',
+        'm_name' => 'EXPERT CONTENT',
         'm_desc' => 'https://mench.com/play/3000',
         'm_parents' => array(6204,10876,7303,10571,4527,4463),
     ),
@@ -3858,13 +3858,25 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(12214,11068,11999,6225,6287,7291,12205,10957,12211,4430,12275,6415,7256,4269,12358,7540,12437);
+$config['en_ids_11035'] = array(12214,12358,4430,11068,11999,6225,6287,7291,12205,10957,12211,12275,6415,7256,4269,7540,12437);
 $config['en_all_11035'] = array(
     12214 => array(
         'm_icon' => '<i class="fad fa-plus idea" aria-hidden="true"></i>',
         'm_name' => 'ADD IDEA',
         'm_desc' => '',
         'm_parents' => array(11035),
+    ),
+    12358 => array(
+        'm_icon' => '<i class="fas fa-chart-bar play" aria-hidden="true"></i>',
+        'm_name' => 'COIN COUNTS',
+        'm_desc' => '',
+        'm_parents' => array(11035,12144),
+    ),
+    4430 => array(
+        'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
+        'm_name' => 'HUMAN PLAYERS',
+        'm_desc' => '',
+        'm_parents' => array(12437,11035,4463,10573,4983,6827,4426),
     ),
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -3914,12 +3926,6 @@ $config['en_all_11035'] = array(
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
-    4430 => array(
-        'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
-        'm_name' => 'PLAYERS',
-        'm_desc' => '',
-        'm_parents' => array(12437,11035,4463,10573,4983,6827,4426),
-    ),
     12275 => array(
         'm_icon' => '<i class="fas fa-cog play" aria-hidden="true"></i>',
         'm_name' => 'PLAY MODIFY',
@@ -3943,12 +3949,6 @@ $config['en_all_11035'] = array(
         'm_name' => 'SIGN IN/UP',
         'm_desc' => '',
         'm_parents' => array(11035),
-    ),
-    12358 => array(
-        'm_icon' => '<i class="fas fa-chart-bar play" aria-hidden="true"></i>',
-        'm_name' => 'STATS',
-        'm_desc' => '',
-        'm_parents' => array(11035,12144),
     ),
     7540 => array(
         'm_icon' => '<i class="fad fa-university" aria-hidden="true"></i>',
@@ -4609,7 +4609,7 @@ $config['en_all_4527'] = array(
     ),
     3000 => array(
         'm_icon' => '<i class="fad fa-file-certificate play" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT SOURCES',
+        'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
         'm_parents' => array(6204,10876,7303,10571,4527,4463),
     ),
@@ -5774,7 +5774,7 @@ $config['en_all_10602'] = array(
 );
 
 //PUBLIC PLAYERS:
-$config['en_ids_10571'] = array(2997,4446,3005,4763,3147,2999,3084,3000,5948,3192,2998);
+$config['en_ids_10571'] = array(2997,4446,3005,4763,3000,3147,2999,3084,5948,3192,2998);
 $config['en_all_10571'] = array(
     2997 => array(
         'm_icon' => '<i class="fad fa-file-word play" aria-hidden="true"></i>',
@@ -5800,6 +5800,12 @@ $config['en_all_10571'] = array(
         'm_desc' => '',
         'm_parents' => array(12523,10571,4983,7614,6805,3000),
     ),
+    3000 => array(
+        'm_icon' => '<i class="fad fa-file-certificate play" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT CONTENT',
+        'm_desc' => '',
+        'm_parents' => array(6204,10876,7303,10571,4527,4463),
+    ),
     3147 => array(
         'm_icon' => '<i class="fad fa-presentation play" aria-hidden="true"></i>',
         'm_name' => 'EXPERT COURSES',
@@ -5817,12 +5823,6 @@ $config['en_all_10571'] = array(
         'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(12523,10571,4983,6827,4463),
-    ),
-    3000 => array(
-        'm_icon' => '<i class="fad fa-file-certificate play" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT SOURCES',
-        'm_desc' => '',
-        'm_parents' => array(6204,10876,7303,10571,4527,4463),
     ),
     5948 => array(
         'm_icon' => '<i class="fad fa-file-invoice play" aria-hidden="true"></i>',
@@ -5909,7 +5909,7 @@ $config['en_all_4983'] = array(
     ),
     4430 => array(
         'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
-        'm_name' => 'PLAYERS',
+        'm_name' => 'HUMAN PLAYERS',
         'm_desc' => '',
         'm_parents' => array(12437,11035,4463,10573,4983,6827,4426),
     ),
@@ -6125,7 +6125,7 @@ $config['en_ids_6204'] = array(3000,4737,7585,10602,3290,6177,3289,6186,4593);
 $config['en_all_6204'] = array(
     3000 => array(
         'm_icon' => '<i class="fad fa-file-certificate play" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT SOURCES',
+        'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
         'm_parents' => array(6204,10876,7303,10571,4527,4463),
     ),
@@ -6580,7 +6580,7 @@ $config['en_ids_7303'] = array(3000,6827,6177);
 $config['en_all_7303'] = array(
     3000 => array(
         'm_icon' => '<i class="fad fa-file-certificate play" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT SOURCES',
+        'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
         'm_parents' => array(6204,10876,7303,10571,4527,4463),
     ),
@@ -6696,7 +6696,7 @@ $config['en_all_6827'] = array(
     ),
     4430 => array(
         'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
-        'm_name' => 'PLAYERS',
+        'm_name' => 'HUMAN PLAYERS',
         'm_desc' => 'Users who are pursuing their intentions using Mench, mainly to get hired at their dream job',
         'm_parents' => array(12437,11035,4463,10573,4983,6827,4426),
     ),
@@ -7140,8 +7140,14 @@ $config['en_all_4997'] = array(
 );
 
 //PLAYER LOCK:
-$config['en_ids_4426'] = array(3288,3286,4426,4430,6196,4755);
+$config['en_ids_4426'] = array(4430,3288,3286,4426,6196,4755);
 $config['en_all_4426'] = array(
+    4430 => array(
+        'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
+        'm_name' => 'HUMAN PLAYERS',
+        'm_desc' => '',
+        'm_parents' => array(12437,11035,4463,10573,4983,6827,4426),
+    ),
     3288 => array(
         'm_icon' => '<i class="fad fa-envelope-open play" aria-hidden="true"></i>',
         'm_name' => 'MY EMAIL',
@@ -7159,12 +7165,6 @@ $config['en_all_4426'] = array(
         'm_name' => 'PLAYER LOCK',
         'm_desc' => '',
         'm_parents' => array(4758,3303,4426,4527),
-    ),
-    4430 => array(
-        'm_icon' => '<i class="fas fa-horse-head play" aria-hidden="true"></i>',
-        'm_name' => 'PLAYERS',
-        'm_desc' => '',
-        'm_parents' => array(12437,11035,4463,10573,4983,6827,4426),
     ),
     6196 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger play" aria-hidden="true"></i>',
@@ -8638,7 +8638,7 @@ $config['en_all_4537'] = array(
     ),
 );
 
-//EXPERT SOURCES:
+//EXPERT CONTENT:
 $config['en_ids_3000'] = array(3005,2999,2998,2997,3147,4446,3192,4763,5948);
 $config['en_all_3000'] = array(
     3005 => array(

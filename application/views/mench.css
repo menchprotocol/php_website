@@ -434,8 +434,8 @@ img.no-radius {
 
 
 .mench-spin {
-    -webkit-animation: mench-spin 7s infinite linear;
-    animation: mench-spin 7s infinite linear;
+    -webkit-animation: mench-spin 13s infinite linear;
+    animation: mench-spin 13s infinite linear;
 }
 
 @-webkit-keyframes mench-spin {
