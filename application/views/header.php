@@ -166,7 +166,7 @@ if(!isset($hide_header)){
                 <tr>
 
                     <?php
-                    if (@isset($session_en['en_id'])) {
+                    if (!isset($session_en['en_id'])) {
                         echo '<td class="block-link block-logo"><img src="/img/mench.png" class="mench-logo mench-spin" /></td>';
                     }
                     ?>
