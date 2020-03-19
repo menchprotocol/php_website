@@ -432,10 +432,13 @@ img.no-radius {
     font-weight: bold;
 }
 .main_nav{
-    text-align: right;
     padding-right: 10px;
     width: 100% !important;
     max-width: none !important;
+}
+
+.main_nav.a{
+    text-align: right;
 }
 
 .mench-spin {
