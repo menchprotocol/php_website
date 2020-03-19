@@ -732,7 +732,21 @@ td.MENCHcolumn3{ width: 21%; }
 .mench_coin.idea:hover, .mench_coin.idea.focustab  { border-color:#ffd600; }
 .mench_coin{
     padding:7px 0 5px;
-    display: block;
+    display:inline-block;
+    text-decoration: none;
+    border-top:0px solid;
+    line-height: 110%;
+    border-bottom: 5px solid #f4f5f7;
+}
+
+
+#MENCHmenu a.play:hover, #MENCHmenu a.play.focustab  { border-color:#008DF2; }
+#MENCHmenu a.read:hover, #MENCHmenu a.read.focustab  { border-color:#FC1B44; }
+#MENCHmenu a.idea:hover, #MENCHmenu a.idea.focustab  { border-color:#ffd600; }
+
+#MENCHmenu a{
+    padding:7px 0 5px;
+    display: block !important;
     text-decoration: none;
     border-top:0px solid;
     line-height: 110%;
