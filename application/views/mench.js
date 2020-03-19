@@ -384,19 +384,22 @@ var isAdvancedUpload = function () {
     return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
 }();
 
-
-
-var searchbar_loaded = false;
-function load_searchbar(){
-    if(searchbar_loaded){
-        return false;
+//Main navigation
+var default_nav = 'mench_nav';
+var current_nav = default_nav;
+function toggle_nav(load_tab){
+    if(current_nav==load_tab){
+        load_tab = default_nav;
     }
+    $('.main_nav').addClass('hidden');
+    $(load_tab).removeClass('hidden');
+}
 
-    searchbar_loaded = 1; //Indicate as loaded
-    $('.search-toggle').toggleClass('hidden');
-    $('.supwerpower_view').addClass('hidden');
+
+function toggle_search(){
+    toggle_nav('search_nav');
     $('#mench_search').focus();
-
+    $('.search_button').toggleClass('hidden');
 }
 
 
@@ -413,6 +416,7 @@ $(document).ready(function () {
     }
 
 
+    //For the S shortcut to load search:
     $("#mench_search").focus(function() {
         if(!searchbar_loaded){
             load_searchbar();
@@ -504,10 +508,6 @@ var update_coin_counter = function( ) {
 
 function add_feedback(){
     alert('This feature will be released soon.');
-}
-
-function toggle_superpowers(){
-    $('.supwerpower_view').toggleClass('hidden');
 }
 
 function modify_cancel(){

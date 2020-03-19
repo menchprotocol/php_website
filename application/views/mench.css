@@ -431,7 +431,12 @@ img.no-radius {
     color: #FC1B44;
     font-weight: bold;
 }
-
+.main_nav{
+    text-align: right;
+    padding-right: 10px;
+    width: 100% !important;
+    max-width: none !important;
+}
 
 .mench-spin {
     -webkit-animation: mench-spin 13s infinite linear;
@@ -940,11 +945,6 @@ label {
 .no-cursor{
     cursor: default !important;
 
-}
-
-.full-width {
-    width: 100% !important;
-    max-width: none !important;
 }
 
 /* STYLES */

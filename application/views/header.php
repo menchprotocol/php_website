@@ -169,10 +169,42 @@ if(!isset($hide_header)){
 
                     <td>
 
-                        <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
+                        <div class="main_nav mench_nav">
+                            <?php
 
-                        <div class="supwerpower_view hidden">
-                            <div class="full-width">
+                            $MENCHcolumn1 = 0;
+                            foreach($en_all_2738_mench as $en_id => $m){
+
+                                $MENCHcolumn1++;
+                                $url_extension = null;
+                                $is_current = ($current_mench['x_id']==$en_id);
+                                $this_mench = current_mench(strtolower($m['m_name']));
+                                $url = '/'.$this_mench['x_name'];
+
+                                if(!$is_current && isset($in) && in_array($this_mench['x_name'], array('read','idea'))){
+                                    if($current_mench['x_name']=='read' && $this_mench['x_name']=='idea'){
+                                        $url = '/idea/'.$in['in_id'];
+                                    } elseif($current_mench['x_name']=='idea' && $this_mench['x_name']=='read'){
+                                        $url = '/'.$in['in_id'];
+                                    }
+                                }
+
+                                echo '<a class="'.$this_mench['x_name'].' border-'.$this_mench['x_name'].( $is_current ? ' focustab ': '' ).'" href="'.$url.'">';
+                                echo '<span class="icon-block">'.$m['m_icon'].'</span>';
+                                echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
+                                if($is_current){
+                                    echo ' <span class="montserrat '.$this_mench['x_name'].'_name">' . $m['m_name'] . 'S</span>';
+                                }
+                                echo '</a>';
+
+                            }
+
+                            ?>
+                        </div>
+
+                        <div class="main_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
+
+                        <div class="main_nav superpower_nav hidden">
                             <?php
                             if(count($this->session->userdata('session_superpowers_assigned'))){
                                 foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
@@ -185,13 +217,15 @@ if(!isset($hide_header)){
                                 }
                             }
                             ?>
-                            </div>
                         </div>
+
                     </td>
 
-                    <td class="block-link search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="javascript:void(0);" onclick="load_searchbar();"><?= $en_all_11035[7256]['m_icon'] ?></a></td>
+                    <td class="block-link <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a class="search_button" href="javascript:void(0);" onclick="toggle_search()"><?= $en_all_11035[7256]['m_icon'] ?></a><a class="search_button hidden" href="javascript:void(0);" onclick="toggle_search()"><i class="far fa-times"></i></a></td>
 
                     <?php
+
+
 
                     if (isset($session_en['en_id'])) {
 
@@ -209,6 +243,7 @@ if(!isset($hide_header)){
                         echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/sign" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
 
                     }
+
                     ?>
 
                 </tr>
