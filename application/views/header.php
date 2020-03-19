@@ -165,12 +165,15 @@ if(!isset($hide_header)){
             <table class="mench-navigation">
                 <tr>
 
-                    <td class="block-link block-logo"><img src="/img/mench.png" class="mench-logo mench-spin" /></td>
+                    <?php
+                    if (@isset($session_en['en_id'])) {
+                        echo '<td class="block-link block-logo"><img src="/img/mench.png" class="mench-logo mench-spin" /></td>';
+                    }
+                    ?>
 
                     <td>
 
                         <div class="main_nav mench_nav">
-                            <div style="text-align: right;">
                             <?php
                             if (isset($session_en['en_id'])) {
 
@@ -198,9 +201,9 @@ if(!isset($hide_header)){
                                     echo '</a>';
 
                                 }
+
                             }
                             ?>
-                            </div>
                         </div>
 
                         <div class="main_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
