@@ -392,7 +392,7 @@ function toggle_nav(load_tab){
         load_tab = default_nav;
     }
     $('.main_nav').addClass('hidden');
-    $(load_tab).removeClass('hidden');
+    $('.'+load_tab).removeClass('hidden');
 }
 
 

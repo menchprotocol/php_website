@@ -138,7 +138,7 @@ if(!isset($hide_header)){
                             }
 
                             echo '<td class="fixedColumns MENCHcolumn'.$MENCHcolumn1.' '.$this_mench['x_name'].'">';
-                            echo '<a class="'.$this_mench['x_name'].' border-'.$this_mench['x_name'].( $is_current ? ' focustab ': '' ).'" href="'.$url.'">';
+                            echo '<a class="mench_coin '.$this_mench['x_name'].' border-'.$this_mench['x_name'].( $is_current ? ' focustab ': '' ).'" href="'.$url.'">';
                             echo '<span class="icon-block">'.$m['m_icon'].'</span>';
                             echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
                             if($is_current){
@@ -189,7 +189,7 @@ if(!isset($hide_header)){
                                     }
                                 }
 
-                                echo '<a class="'.$this_mench['x_name'].' border-'.$this_mench['x_name'].( $is_current ? ' focustab ': '' ).'" href="'.$url.'">';
+                                echo '<a class="mench_coin '.$this_mench['x_name'].' border-'.$this_mench['x_name'].( $is_current ? ' focustab ': '' ).'" href="'.$url.'">';
                                 echo '<span class="icon-block">'.$m['m_icon'].'</span>';
                                 echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
                                 if($is_current){
