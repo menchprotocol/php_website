@@ -436,11 +436,6 @@ img.no-radius {
     width: 100% !important;
     max-width: none !important;
 }
-
-.main_nav.a{
-    text-align: right;
-}
-
 .mench-spin {
     -webkit-animation: mench-spin 13s infinite linear;
     animation: mench-spin 13s infinite linear;

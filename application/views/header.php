@@ -170,6 +170,7 @@ if(!isset($hide_header)){
                     <td>
 
                         <div class="main_nav mench_nav">
+                            <div style="text-align: right;">
                             <?php
 
                             $MENCHcolumn1 = 0;
@@ -200,6 +201,7 @@ if(!isset($hide_header)){
                             }
 
                             ?>
+                            </div>
                         </div>
 
                         <div class="main_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
