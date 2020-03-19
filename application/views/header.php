@@ -130,9 +130,9 @@ if(!isset($hide_header)){
                             $url = '/'.$this_mench['x_name'];
 
                             if(!$is_current && isset($in) && in_array($this_mench['x_name'], array('read','idea'))){
-                                if($this_mench['x_name']=='read' && $this_mench['x_name']=='idea'){
+                                if($current_mench['x_name']=='read' && $this_mench['x_name']=='idea'){
                                     $url = '/idea/'.$in['in_id'];
-                                } elseif($this_mench['x_name']=='idea' && $this_mench['x_name']=='read'){
+                                } elseif($current_mench['x_name']=='idea' && $this_mench['x_name']=='read'){
                                     $url = '/'.$in['in_id'];
                                 }
                             }
