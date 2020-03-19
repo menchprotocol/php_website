@@ -224,7 +224,7 @@ if(!isset($hide_header)){
 
                     </td>
 
-                    <td class="block-link <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a class="search_button" href="javascript:void(0);" onclick="toggle_search()"><?= $en_all_11035[7256]['m_icon'] ?></a><a class="search_button hidden" href="javascript:void(0);" onclick="toggle_search()"><i class="far fa-times"></i></a></td>
+                    <td class="block-link <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="javascript:void(0);" onclick="toggle_search()"><span class="search_icon"><?= $en_all_11035[7256]['m_icon'] ?></span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>
 
                     <?php
 

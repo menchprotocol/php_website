@@ -391,16 +391,17 @@ function toggle_nav(load_tab){
     if(current_nav==load_tab){
         load_tab = default_nav;
     }
+    current_nav = load_tab;
+
     $('.main_nav').addClass('hidden');
     $('.'+load_tab).removeClass('hidden');
-    current_nav = load_tab;
 }
 
 
 function toggle_search(){
     toggle_nav('search_nav');
     $('#mench_search').focus();
-    $('.search_button').toggleClass('hidden');
+    $('.search_icon').toggleClass('hidden');
 }
 
 
@@ -419,8 +420,8 @@ $(document).ready(function () {
 
     //For the S shortcut to load search:
     $("#mench_search").focus(function() {
-        if(!searchbar_loaded){
-            load_searchbar();
+        if(current_nav!='search_nav'){
+            toggle_nav('search_nav');
         }
     });
 
