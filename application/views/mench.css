@@ -707,7 +707,6 @@ textarea.note-textarea{
     display:inline-block;
     overflow: hidden;
     max-width: 377px;
-    width:100%;
 }
 .ln_content img, .i_content img { max-width: 100%; }
 
@@ -1179,7 +1178,7 @@ label {
     width:    -moz-calc(100% - 15px);
     width:         calc(100% - 15px);
 }
-.input-group .algolia-autocomplete {
+.input-group .algolia-autocomplete, .ln_content {
     width: -webkit-calc(100% - 68px);
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
