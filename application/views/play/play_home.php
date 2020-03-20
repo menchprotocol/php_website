@@ -32,9 +32,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
 
-    echo '<h2 class="montserrat '.extract_icon_color($en_all_11035[12358]['m_icon']).'"><span class="icon-block">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</h2>';
-
-
     echo '<table class="table table-sm table-striped dotransparent tablepadded" style="margin-bottom:50px;">';
 
 
