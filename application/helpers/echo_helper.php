@@ -1572,6 +1572,7 @@ function echo_in_stat_play($in_id = 0, $en_id = 0){
         if($play_coins[0]['total_coins'] > 0){
             return '<span class="montserrat '.$mench.' '.superpower_active(10983).'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($play_coins[0]['total_coins']).'</span>';
         }
+
     }
 
     return null;
@@ -2541,8 +2542,22 @@ function echo_in_next($in_id, $recipient_en, $push_message){
             )
         );
     } else {
+
+        ?>
+        <div class="container fixed-bottom" style="padding-bottom: 0 !important;">
+            <div class="row">
+                <table>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td class="read"><a class="mench_coin read border-read" href="/'.$in_id.'/next">NEXT <i class="fad fa-step-forward"></i></a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <?php
+
         //HTML:
-        echo '<div class="inline-block margin-top-down"><a class="btn btn-read" href="/'.$in_id.'/next">NEXT <i class="fad fa-step-forward"></i></a></div>';
+        //echo '<div class="inline-block margin-top-down"><a class="btn btn-read" href="/'.$in_id.'/next">NEXT <i class="fad fa-step-forward"></i></a></div>';
     }
 
 }
@@ -2569,7 +2584,6 @@ function echo_en($en, $is_parent = false)
 {
 
     $CI =& get_instance();
-
 
     if(!isset($en['en_id'])){
         $CI->READ_model->ln_create(array(
@@ -2759,7 +2773,6 @@ function echo_en($en, $is_parent = false)
     $idea_ui .= '</span>';
     $idea_ui .= '</div>';
     $idea_ui .= '</div>';
-
 
     $idea_ui .= echo_in_stat_play(0, $en['en_id']);
     $idea_ui .= '</td>';

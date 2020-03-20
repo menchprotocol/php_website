@@ -117,7 +117,7 @@ if(!isset($hide_header)){
     if(isset($session_en['en_id']) && !isset($basic_header)){
         ?>
         <!-- 3X NAVIGATION -->
-        <div class="container show-while-searching fixed-bottom" style="padding-bottom: 0 !important;">
+        <div class="container fixed-bottom" style="padding-bottom: 0 !important;">
             <div class="row">
                 <table id="MENCHmenu">
                     <tr>
@@ -164,7 +164,7 @@ if(!isset($hide_header)){
 
 
     <!-- MENCH LINE -->
-    <div class="container show-while-searching fixed-top" style="padding-bottom: 0 !important;">
+    <div class="container fixed-top" style="padding-bottom: 0 !important;">
         <div class="row">
             <table class="mench-navigation">
                 <tr>
