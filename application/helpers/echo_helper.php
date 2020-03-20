@@ -2543,6 +2543,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
         );
     } else {
 
+        /*
         ?>
         <div class="container fixed-bottom" style="padding-bottom: 0 !important;">
             <div class="row">
@@ -2555,9 +2556,10 @@ function echo_in_next($in_id, $recipient_en, $push_message){
             </div>
         </div>
         <?php
+        */
 
         //HTML:
-        //echo '<div class="inline-block margin-top-down"><a class="btn btn-read" href="/'.$in_id.'/next">NEXT <i class="fad fa-step-forward"></i></a></div>';
+        echo '<div class="inline-block margin-top-down"><a class="btn btn-read" href="/'.$in_id.'/next">NEXT <i class="fad fa-step-forward"></i></a></div>';
     }
 
 }
