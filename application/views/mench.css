@@ -187,10 +187,11 @@ li a {
     text-transform: uppercase;
     font-size: 1em !important;
     border-radius: 0 !important;
-    padding: 15px;
 }
 
-
+a.btn{
+    padding: 15px;
+}
 
 
 img.no-radius {
