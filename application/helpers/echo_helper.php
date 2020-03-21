@@ -1589,13 +1589,16 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
 
 
-    $ui = ( $completion_rate['completion_percentage'] > 0 ? '<a href="/'.$in['in_id'] . '"' : '<div' ).' class="list-group-item no-side-padding itemread '.$extra_class.'">';
+    $ui  = '<div class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
 
 
     //READ ICON
-    $ui .= '<span class="icon-block">'.( $completion_rate['completion_percentage'] > 0 ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-circle read"></i>' ).'</span><b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
+    $ui .= ( $completion_rate['completion_percentage'] > 0 ? '<a href="/'.$in['in_id'] . '">' : '' );
+    $ui .= '<span class="icon-block">'.( $completion_rate['completion_percentage'] > 0 ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-circle read"></i>' ).'</span>';
+    $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
+    $ui .= ( $completion_rate['completion_percentage'] > 0 ? '</a>' : '' );
 
     //Description:
     if($show_description){
@@ -1614,7 +1617,6 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
         $ui .= '<div class="idea-footnote"><span class="icon-block">&nbsp;</span>' . $footnotes . '</div>';
     }
 
-
     $ui .= '</td>';
 
     //Search for Idea Image:
@@ -1626,9 +1628,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     }
 
     $ui .= '</tr></table>';
-
-
-    $ui .= ($completion_rate['completion_percentage'] > 0 ? '</a>' : '</div>' );
+    $ui .= '</div>';
 
     return $ui;
 }
