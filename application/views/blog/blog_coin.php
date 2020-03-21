@@ -58,8 +58,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         //BLOG CONTROLLER
 
-        echo '<div class="inline-block top-margin left-margin previous_blogs"><a class="btn btn-read" href="javascript:void(0)" onclick="$(\'.previous_blogs\').toggleClass(\'hidden\')"><i class="fad fa-step-backward"></i></a></div>';
-
         //BLOG STATUS
         echo '<div class="inline-block top-margin left-half-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-blog', $is_author, true, $in['in_id']).'</div>';
 
@@ -101,6 +99,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             $counter = count($blog__parents);
 
+
+
+            $this_tab .= '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-backward"></i></span>PREVIOUS:</div>';
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-1" class="list-group hidden previous_blogs">';
 
             foreach ($blog__parents as $parent_in) {
@@ -137,6 +138,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $default_active = true;
 
             //List child blogs:
+            $this_tab .= '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-forward"></i></span>NEXT:</div>';
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group next_blogs">';
             foreach ($blog__children as $child_in) {
                 $this_tab .= echo_in($child_in, $in['in_id'], false, in_is_author($child_in['in_id']));
