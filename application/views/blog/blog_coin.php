@@ -43,15 +43,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     $show_tab_menu_count = 0;
     $show_tab_ui = '';
 
-
     if($col_num==2){
 
         //BLOG BODY
-
-
-        //BLOG STATUS
-        echo '<div class="inline-block top-margin left-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-blog', $is_author, true, $in['in_id']).'</div>';
-
 
         //BLOG TITLE
         echo '<div class="itemblog">';
@@ -63,15 +57,15 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     } elseif($col_num==3){
 
         //BLOG FOOTER
-        echo '<div class="top-margin">';
 
-        //BLOG TIME
-        echo '<div class="left-margin '.superpower_active(10985).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
+        //BLOG STATUS
+        echo '<div class="inline-block top-margin left-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-blog', $is_author, true, $in['in_id']).'</div>';
 
         //BLOG TYPE
-        echo '<span class="left-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active, true, $in['in_id']).'</span>';
+        echo '<span class="inline-block top-margin left-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active, true, $in['in_id']).'</span>';
 
-        echo '</div>';
+        //BLOG TIME
+        echo '<div class="inline-block top-margin left-margin '.superpower_active(10985).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
 
     }
 

@@ -2175,7 +2175,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     $ui .= '<td class="MENCHcolumn1">';
 
-
         $ui .= '<div class="inline-block">';
 
         //BLOG ICON:
