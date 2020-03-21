@@ -35,7 +35,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
 
-    echo '<table class="table table-sm table-striped dotransparent tablepadded" style="margin-top:-15px;">';
+    echo '<table class="table table-sm table-striped dotransparent tablepadded">';
 
     echo '<tr>';
 
