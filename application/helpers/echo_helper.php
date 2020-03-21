@@ -1586,15 +1586,16 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = superpower_assigned();
+    $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
 
 
-    $ui = '<a href="/'.$in['in_id'] . '" class="list-group-item no-side-padding itemread '.$extra_class.'">';
+    $ui = ( $completion_rate['completion_percentage'] > 0 ? '<a href="/'.$in['in_id'] . '"' : '<span' ).' class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
 
 
     //READ ICON
-    $ui .= '<span class="icon-block"><i class="fas fa-circle read"></i></span><b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
+    $ui .= '<span class="icon-block">'.( $completion_rate['completion_percentage'] > 0 ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-circle read"></i>' ).'</span><b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
 
     //Description:
     if($show_description){
@@ -1604,15 +1605,10 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
         }
     }
 
-
     //Show completion if glasses are on:
-    if(superpower_active(10989, true)){
-        $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
-        if($completion_rate['completion_percentage'] > 0){
-            $ui .= '<div class="idea-info montserrat doupper '.superpower_active(10989).'"><span class="icon-block">&nbsp;</span><span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% done]</span></div>';
-        }
+    if($completion_rate['completion_percentage'] > 0){
+        $ui .= '<div class="idea-info montserrat doupper '.superpower_active(10989).'"><span class="icon-block">&nbsp;</span><span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% done]</span></div>';
     }
-
 
     if($footnotes){
         $ui .= '<div class="idea-footnote"><span class="icon-block">&nbsp;</span>' . $footnotes . '</div>';
@@ -1622,12 +1618,17 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $ui .= '</td>';
 
     //Search for Idea Image:
-    $in_thumbnail = echo_in_thumbnail($in['in_id']);
-    if($in_thumbnail){
-        $ui .= '<td class="featured-frame">'.$in_thumbnail.'</td>';
+    if($completion_rate['completion_percentage'] > 0){
+        $in_thumbnail = echo_in_thumbnail($in['in_id']);
+        if($in_thumbnail){
+            $ui .= '<td class="featured-frame">'.$in_thumbnail.'</td>';
+        }
     }
+
     $ui .= '</tr></table>';
-    $ui .= '</a>';
+
+
+    $ui .= ($completion_rate['completion_percentage'] > 0 ? '</a>' : '</div>' );
 
     return $ui;
 }
