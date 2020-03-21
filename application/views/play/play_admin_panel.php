@@ -632,7 +632,6 @@ if(!$action) {
 
     $search_for_is_set = (isset($_GET['search_for']) && strlen($_GET['search_for'])>0);
     $replace_with_is_set = ((isset($_GET['replace_with']) && strlen($_GET['replace_with'])>0) || (isset($_GET['append_text']) && strlen($_GET['append_text'])>0));
-    $qualifying_replacements = 0;
     $replace_with_is_confirmed = false;
 
     if($search_for_is_set){
@@ -719,13 +718,9 @@ if(!$action) {
     }
 
     if($replace_with_is_set){
-        if($qualifying_replacements==count($matching_results) /*No Errors*/){
-            //now give option to replace with:
-            echo '<div class="mini-header">Confirm Replacement by Typing "'.$confirmation_keyword.'":</div>';
-            echo '<input type="text" class="form-control border maxout" name="confirm_statement" value="'. @$_GET['confirm_statement'] .'"><br />';
-        } else {
-            echo '<div class="alert alert-danger"><i class="fad fa-exclamation-triangle"></i> Fix errors above to then apply search/replace</div>';
-        }
+        //now give option to replace with:
+        echo '<div class="mini-header">Confirm Replacement by Typing "'.$confirmation_keyword.'":</div>';
+        echo '<input type="text" class="form-control border maxout" name="confirm_statement" value="'. @$_GET['confirm_statement'] .'"><br />';
     }
 
 
