@@ -719,7 +719,7 @@ td.MENCHcolumn3{ width: 21%; }
 .equal-columns td.MENCHcolumn3{ width: 33.3%; }
 
 .tablepadded td{
-    padding:10px 0 !important;
+    padding:5px 0 !important;
 }
 .top-margin{
     margin-top: 21px;
