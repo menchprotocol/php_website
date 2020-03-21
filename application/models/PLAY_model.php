@@ -82,7 +82,7 @@ class PLAY_model extends CI_Model
     function en_create($insert_columns, $external_sync = false, $ln_owner_play_id = 0)
     {
 
-        //What is required to create a new idea?
+        //What is required to create a new Blog?
         if (detect_missing_columns($insert_columns, array('en_status_play_id', 'en_name'), $ln_owner_play_id)) {
             return false;
         }
@@ -206,7 +206,7 @@ class PLAY_model extends CI_Model
                     continue;
                 }
 
-                //FYI: Unlike ideas, we cannot log parent/child player relations since the child player slot is already taken...
+                //FYI: Unlike Blogs, we cannot log parent/child player relations since the child player slot is already taken...
 
                 if($key=='en_name') {
 
@@ -343,11 +343,11 @@ class PLAY_model extends CI_Model
         //Fetch all player links:
         $adjusted_count = 0;
         foreach(array_merge(
-                //Player references within idea notes:
+                //Player references within Blog notes:
                     $this->READ_model->ln_fetch(array(
                         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
-                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
+                        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
                         'ln_parent_play_id' => $en_id,
                     ), array('in_child'), 0, 0, array('ln_order' => 'ASC')),
                     //Player links:
@@ -367,7 +367,7 @@ class PLAY_model extends CI_Model
                     $target_field => $merger_en_id,
                 );
 
-                //Also update possible player references within Idea Notes content:
+                //Also update possible player references within Blog Notes content:
                 if(substr_count($adjust_tr['ln_content'], '@'.$adjust_tr[$target_field]) == 1){
                     $updating_fields['ln_content'] = str_replace('@'.$adjust_tr[$target_field],'@'.$merger_en_id, $adjust_tr['ln_content']);
                 }

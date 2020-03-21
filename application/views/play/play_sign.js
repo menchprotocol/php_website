@@ -51,7 +51,7 @@ function sign_on_messenger(referrer_in_id){
 
     //Redirect to Messenger with a bit of delay to log the link above:
     setTimeout(function () {
-        window.location = 'https://m.me/menchideas' + ( referrer_in_id > 0 ? '?ref=' + referrer_in_id : '' );
+        window.location = 'https://m.me/menchblogs' + ( referrer_in_id > 0 ? '?ref=' + referrer_in_id : '' );
     }, 377);
 
 }

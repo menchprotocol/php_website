@@ -5,7 +5,7 @@ $(document).ready(function () {
 
     check_in_en_status_play_id();
 
-    //Watch for idea status change:
+    //Watch for Blog status change:
     $("#ln_type_play_id").change(function () {
         check_in_en_status_play_id();
     });
@@ -17,8 +17,8 @@ $(document).ready(function () {
 
 
 function check_in_en_status_play_id(){
-    //Checks to see if the Idea/Player status filter should be visible
-    //Would only make visible if Link type is Created Idea/Player
+    //Checks to see if the Blog/Player status filter should be visible
+    //Would only make visible if Link type is Created Blog/Player
 
     //Hide both in/en status:
     $(".filter-statuses").addClass('hidden');

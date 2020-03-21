@@ -1,7 +1,7 @@
 /*
 *
-* Functions related to modifying ideas
-* and managing idea notes.
+* Functions related to modifying blogs
+* and managing blog notes.
 *
 * */
 
@@ -19,7 +19,7 @@ function in_update_text(this_handler){
     //Grey background to indicate saving...
     $(handler).addClass('dynamic_saving');
 
-    $.post("/idea/in_update_text", {
+    $.post("/blog/in_update_text", {
 
         in_ln__id: $(this_handler).attr('in_ln__id'),
         cache_en_id: $(this_handler).attr('cache_en_id'),
@@ -74,15 +74,15 @@ $(document).ready(function () {
 
     autosize($('.text__4736_'+in_loaded_id));
 
-    $('#expand_ideas .expand_all').click(function (e) {
-        $(".list-is-children .ideas_sortable").each(function () {
+    $('#expand_blogs .expand_all').click(function (e) {
+        $(".list-is-children .blogs_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 1);
         });
     });
 
-    //Load top/bottom idea searches:
-    in_load_search(".ideaadder-level-2-parent",1, 'q', 'link_idea');
-    in_load_search(".ideaadder-level-2-child",0, 'w', 'link_idea');
+    //Load top/bottom blog searches:
+    in_load_search(".blogadder-level-2-parent",1, 'q', 'link_blog');
+    in_load_search(".blogadder-level-2-child",0, 'w', 'link_blog');
 
     //Expand selections:
     prep_search_pad();
@@ -91,13 +91,13 @@ $(document).ready(function () {
     in_sort_load(in_loaded_id);
 
     //Watch the expand/close all buttons:
-    $('#expand_ideas .expand_all').click(function (e) {
-        $(".list-is-children .ideas_sortable").each(function () {
+    $('#expand_blogs .expand_all').click(function (e) {
+        $(".list-is-children .blogs_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 1);
         });
     });
-    $('#expand_ideas .close_all').click(function (e) {
-        $(".list-is-children .ideas_sortable").each(function () {
+    $('#expand_blogs .close_all').click(function (e) {
+        $(".list-is-children .blogs_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 0);
         });
     });
@@ -180,11 +180,11 @@ $(document).ready(function () {
 
 function read_preview(){
     if(parseInt($('.dropi_4737_'+in_loaded_id+'_0.active').attr('new-en-id')) in js_en_all_7355){
-        //Idea is public, go to preview:
+        //Blog is public, go to preview:
         window.location = '/' + in_loaded_id;
     } else {
         //Inform them that they cannot read yet:
-        alert('Publish idea before reading it.');
+        alert('Publish blog before reading it.');
     }
 }
 
@@ -210,10 +210,10 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
     }
 
     //Are we deleting a status?
-    var is_idea_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
-    if(is_idea_delete){
+    var is_blog_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
+    if(is_blog_delete){
         //Seems to be deleting, confirm:
-        var r = confirm("Archive this idea AND remove all its links to other ideas?");
+        var r = confirm("Archive this blog AND remove all its links to other blogs?");
         if (r == false) {
             return false;
         }
@@ -225,7 +225,7 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
     var data_object = eval('js_en_all_'+element_id);
     $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
 
-    $.post("/idea/in_update_dropdown", {
+    $.post("/blog/in_update_dropdown", {
 
         in_id: in_id,
         ln_id: ln_id,
@@ -242,10 +242,10 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
             $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .optiond_' + new_en_id+'_'+in_id+ '_' + ln_id).addClass('active');
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
-                //Go to main idea page:
+                //Go to main blog page:
                 window.location = data.deletion_redirect;
             } else if( data.remove_element && data.remove_element.length > 0 ){
-                //Go to main idea page:
+                //Go to main blog page:
                 setTimeout(function () {
                     //Restore background:
                     $( data.remove_element ).fadeOut();
@@ -281,8 +281,8 @@ function in_unlink(in_id, ln_id){
     var r = confirm("Unlink ["+$('.in_ln__id_'+in_id).val()+"]?");
     if (r == true) {
 
-        //Fetch Idea Data to load modify widget:
-        $.post("/idea/in_unlink", {
+        //Fetch Blog Data to load modify widget:
+        $.post("/blog/in_unlink", {
             in_id: in_id,
             ln_id: ln_id,
         }, function (data) {
@@ -295,8 +295,8 @@ function in_unlink(in_id, ln_id){
 
 function in_ui_remove(in_id,ln_id){
 
-    //Fetch parent idea before removing element from DOM:
-    var parent_in_id = parseInt($('.idea_line_' + in_id).attr('parent-idea-id'));
+    //Fetch parent blog before removing element from DOM:
+    var parent_in_id = parseInt($('.blog_line_' + in_id).attr('parent-blog-id'));
 
     //Remove from UI:
     $('.in__tr_' + ln_id).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i></span>');
@@ -313,7 +313,7 @@ function in_ui_remove(in_id,ln_id){
         //Hide editing box:
         $('#modifybox').addClass('hidden');
 
-        //Re-sort sibling ideas:
+        //Re-sort sibling blogs:
         in_sort_save(parent_in_id);
 
     }, 610);
@@ -327,7 +327,7 @@ function in_ui_remove(in_id,ln_id){
 
 /*
 *
-* IDEA NOTES
+* BLOG NOTES
 *
 * */
 
@@ -350,9 +350,9 @@ function in_new_note_count(focus_ln_type_play_id) {
 
     //Only show counter if getting close to limit:
     if(len > ( js_en_all_6404[11073]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
-        $('#ideaNoteNewCount' + focus_ln_type_play_id).removeClass('hidden');
+        $('#blogNoteNewCount' + focus_ln_type_play_id).removeClass('hidden');
     } else {
-        $('#ideaNoteNewCount' + focus_ln_type_play_id).addClass('hidden');
+        $('#blogNoteNewCount' + focus_ln_type_play_id).addClass('hidden');
     }
 
 }
@@ -393,9 +393,9 @@ function in_edit_note_count(ln_id) {
 
     //Only show counter if getting close to limit:
     if(len > ( js_en_all_6404[11073]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
-        $('#ideaNoteCount' + ln_id).removeClass('hidden');
+        $('#blogNoteCount' + ln_id).removeClass('hidden');
     } else {
-        $('#ideaNoteCount' + ln_id).addClass('hidden');
+        $('#blogNoteCount' + ln_id).addClass('hidden');
     }
 }
 
@@ -472,7 +472,7 @@ function in_notes_sort_apply(focus_ln_type_play_id) {
 
     //Update backend if any:
     if(sort_rank > 0){
-        $.post("/idea/in_notes_sort", {new_ln_orders: new_ln_orders}, function (data) {
+        $.post("/blog/in_notes_sort", {new_ln_orders: new_ln_orders}, function (data) {
             //Only show message if there was an error:
             if (!data.status) {
                 //Show error:
@@ -488,7 +488,7 @@ function in_notes_sort_load(focus_ln_type_play_id) {
 
     var sort_msg = Sortable.create( document.getElementById("in_notes_list_" + focus_ln_type_play_id) , {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        handle: ".idea_note_sorting", // Restricts sort start click/touch to the specified element
+        handle: ".blog_note_sorting", // Restricts sort start click/touch to the specified element
         draggable: ".notes_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
@@ -562,7 +562,7 @@ function in_note_modify_save(ln_id, focus_ln_type_play_id) {
     };
 
     //Update message:
-    $.post("/idea/in_note_modify_save", modify_data, function (data) {
+    $.post("/blog/in_note_modify_save", modify_data, function (data) {
 
         if (data.status) {
 
@@ -686,7 +686,7 @@ function in_note_create_upload(droppedFiles, uploadType, focus_ln_type_play_id) 
         ajaxData.append('focus_ln_type_play_id', focus_ln_type_play_id);
 
         $.ajax({
-            url: '/idea/in_note_create_upload',
+            url: '/blog/in_note_create_upload',
             type: $('.box' + focus_ln_type_play_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -722,7 +722,7 @@ function in_note_add(focus_ln_type_play_id) {
     in_message_form_lock(focus_ln_type_play_id);
 
     //Update backend:
-    $.post("/idea/in_note_create_text", {
+    $.post("/blog/in_note_create_text", {
 
         in_id: in_loaded_id, //Synonymous
         ln_content: $('#ln_content' + focus_ln_type_play_id).val(),
@@ -778,13 +778,13 @@ function in_note_add(focus_ln_type_play_id) {
 function prep_search_pad(){
 
     //All level 2s:
-    $('.ideaadder-level-2-parent').focus(function() {
+    $('.blogadder-level-2-parent').focus(function() {
         $('.in_pad_top' ).removeClass('hidden');
     }).focusout(function() {
         $('.in_pad_top' ).addClass('hidden');
     });
 
-    $('.ideaadder-level-2-child').focus(function() {
+    $('.blogadder-level-2-child').focus(function() {
         $('.in_pad_bottom' ).removeClass('hidden');
     }).focusout(function() {
         $('.in_pad_bottom' ).addClass('hidden');
@@ -797,9 +797,9 @@ function in_sort_save(in_id) {
     var new_ln_orders = [];
     var sort_rank = 0;
 
-    $("#list-in-" + in_loaded_id + "-0 .ideas_sortable").each(function () {
-        //Fetch variables for this idea:
-        var in_id = parseInt($(this).attr('idea-id'));
+    $("#list-in-" + in_loaded_id + "-0 .blogs_sortable").each(function () {
+        //Fetch variables for this blog:
+        var in_id = parseInt($(this).attr('blog-id'));
         var ln_id = parseInt($(this).attr('in-link-id'));
 
         sort_rank++;
@@ -811,7 +811,7 @@ function in_sort_save(in_id) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0 && in_id) {
         //Update backend:
-        $.post("/idea/in_sort_save", {in_id: in_id, new_ln_orders: new_ln_orders}, function (data) {
+        $.post("/blog/in_sort_save", {in_id: in_id, new_ln_orders: new_ln_orders}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -828,14 +828,14 @@ function in_sort_load(in_id) {
     var element_key = null;
     var theobject = document.getElementById("list-in-" + in_loaded_id + "-0");
     if (!theobject) {
-        //due to duplicate ideas belonging in this tree:
+        //due to duplicate blogs belonging in this tree:
         return false;
     }
 
     var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        draggable: ".ideas_sortable", // Specifies which items inside the element should be sortable
-        handle: ".idea-sort-handle", // Restricts sort start click/touch to the specified element
+        draggable: ".blogs_sortable", // Specifies which items inside the element should be sortable
+        handle: ".blog-sort-handle", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             in_sort_save(in_id);
         }
@@ -848,48 +848,48 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
     /*
      *
-     * Either creates an IDEA link between in_linked_id & in_link_child_id
-     * OR will create a new idea based on input text and then link it
+     * Either creates an BLOG link between in_linked_id & in_link_child_id
+     * OR will create a new blog based on input text and then link it
      * to in_linked_id (In this case in_link_child_id=0)
      *
      * */
 
 
-    var sort_handler = ".ideas_sortable";
+    var sort_handler = ".blogs_sortable";
     var sort_list_id = "list-in-" + in_loaded_id + '-' + is_parent;
-    var input_field = $('#addidea-c-' + in_linked_id + '-' + is_parent);
-    var idea_name = input_field.val();
+    var input_field = $('#addblog-c-' + in_linked_id + '-' + is_parent);
+    var blog_name = input_field.val();
 
 
-    if( idea_name.charAt(0)=='#'){
-        if(isNaN(idea_name.substr(1))){
+    if( blog_name.charAt(0)=='#'){
+        if(isNaN(blog_name.substr(1))){
             alert('Note: Use numbers only. Example: #1234');
             return false;
         } else {
             //Update the references:
-            in_link_child_id = parseInt(idea_name.substr(1));
-            idea_name = in_link_child_id; //As if we were just linking
+            in_link_child_id = parseInt(blog_name.substr(1));
+            blog_name = in_link_child_id; //As if we were just linking
         }
     }
 
 
 
 
-    //We either need the idea name (to create a new idea) or the in_link_child_id>0 to create an IDEA link:
-    if (!in_link_child_id && idea_name.length < 1) {
+    //We either need the blog name (to create a new blog) or the in_link_child_id>0 to create an BLOG link:
+    if (!in_link_child_id && blog_name.length < 1) {
         alert('Note: Enter something');
         input_field.focus();
         return false;
     }
 
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item itemidea montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>Adding... </div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item itemblog montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin blog"></i></span>Adding... </div>');
 
     //Update backend:
-    $.post("/idea/in_link_or_create", {
+    $.post("/blog/in_link_or_create", {
         in_linked_id: in_linked_id,
         is_parent:is_parent,
-        in_title: idea_name,
+        in_title: blog_name,
         in_link_child_id: in_link_child_id
     }, function (data) {
 
@@ -901,7 +901,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
             //Add new
             add_to_list(sort_list_id, sort_handler, data.in_child_html);
 
-            //Reload sorting to enable sorting for the newly added idea:
+            //Reload sorting to enable sorting for the newly added blog:
             in_sort_load(in_linked_id);
 
             //Lookout for textinput updates

@@ -409,12 +409,12 @@ img.no-radius {
 
 /* MENCH Colors */
 .play, .play .fas, .play .far, .play .fal, .play .fad, .play.fas, .play.far, .play.fal, .play.fad, .color4536, .info-item i.play:hover, .info-item a.play:hover  { color:#008DF2 !important; }
-.idea, .idea .fas, .idea .far, .idea .fal, .idea .fad, .idea.fas, .idea.far, .idea.fal, .idea.fad, .color4535, .info-item i.idea:hover, .info-item a.idea:hover  { color:#ffd600 !important; } /* f1d104 */
+.blog, .blog .fas, .blog .far, .blog .fal, .blog .fad, .blog.fas, .blog.far, .blog.fal, .blog.fad, .color4535, .info-item i.blog:hover, .info-item a.blog:hover  { color:#ffd600 !important; } /* f1d104 */
 .read, .read .fas, .read .far, .read .fal, .read .fad, .read.fas, .read.far, .read.fal, .read.fad, .color6205, .info-item i.read:hover, .info-item a.read:hover, .isred, .isred a, .fas.redalert  { color:#FC1B44 !important; }
 .grey, .grey i { color:#AAAAAA !important; }
 .black, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
-.btn-play i, .btn-read i, .btn-idea i { color: #000000 !important; }
+.btn-play i, .btn-read i, .btn-blog i { color: #000000 !important; }
 
 /* Color Palette @10604 */
 .isgrey, .isgrey a, .lightgrey      { color:#f4f5f7 !important; }
@@ -589,7 +589,7 @@ textarea.note-textarea{
 }
 
 
-.toidea .i_content {
+.toblog .i_content {
     padding:0 33px;
 }
 .add_note_form{
@@ -730,7 +730,7 @@ td.MENCHcolumn3{ width: 21%; }
 
 .mench_coin.play:hover, .mench_coin.play.focustab  { border-color:#008DF2; }
 .mench_coin.read:hover, .mench_coin.read.focustab  { border-color:#FC1B44; }
-.mench_coin.idea:hover, .mench_coin.idea.focustab  { border-color:#ffd600; }
+.mench_coin.blog:hover, .mench_coin.blog.focustab  { border-color:#ffd600; }
 .mench_coin{
     padding:7px 0 5px;
     display:inline-block;
@@ -744,7 +744,7 @@ td.MENCHcolumn3{ width: 21%; }
 
 #MENCHmenu a.play:hover, #MENCHmenu a.play.focustab  { border-color:#008DF2; }
 #MENCHmenu a.read:hover, #MENCHmenu a.read.focustab  { border-color:#FC1B44; }
-#MENCHmenu a.idea:hover, #MENCHmenu a.idea.focustab  { border-color:#ffd600; }
+#MENCHmenu a.blog:hover, #MENCHmenu a.blog.focustab  { border-color:#ffd600; }
 
 #MENCHmenu a{
     padding:7px 0 5px;
@@ -993,7 +993,7 @@ label {
 .btn-superpower.active .fas.play, .btn-superpower.active .far.play, .btn-superpower.active .fal.play, .btn-superpower.active .fad.play {
     color:#008DF2 !important;
 }
-.btn-superpower.active .fas.idea, .btn-superpower.active .far.idea, .btn-superpower.active .fal.idea, .btn-superpower.active .fad.idea {
+.btn-superpower.active .fas.blog, .btn-superpower.active .far.blog, .btn-superpower.active .fal.blog, .btn-superpower.active .fad.blog {
     color:#ffd600 !important;
 }
 .btn-superpower.active .fas.read, .btn-superpower.active .far.read, .btn-superpower.active .fal.read, .btn-superpower.active .fad.read {
@@ -1023,12 +1023,12 @@ label {
 
 .btn-read .fas,.btn-read .far,.btn-read .fal ,.btn-read .fad { color: #000000 !important; }
 
-.btn.btn-idea, .btn.btn-idea:hover, .btn.btn-idea:focus, .btn.btn-idea:active, .btn.btn-idea.active, .btn.btn-idea:active:focus, .btn.btn-idea:active:hover, .btn.btn-idea.active:focus, .btn.btn-idea.active:hover, .open > .btn.btn-idea.dropdown-toggle, .open > .btn.btn-idea.dropdown-toggle:focus, .open > .btn.btn-idea.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-idea, .navbar .navbar-nav > li > a.btn.btn-idea:hover, .navbar .navbar-nav > li > a.btn.btn-idea:focus, .navbar .navbar-nav > li > a.btn.btn-idea:active, .navbar .navbar-nav > li > a.btn.btn-idea.active, .navbar .navbar-nav > li > a.btn.btn-idea:active:focus, .navbar .navbar-nav > li > a.btn.btn-idea:active:hover, .navbar .navbar-nav > li > a.btn.btn-idea.active:focus, .navbar .navbar-nav > li > a.btn.btn-idea.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle:hover {
+.btn.btn-blog, .btn.btn-blog:hover, .btn.btn-blog:focus, .btn.btn-blog:active, .btn.btn-blog.active, .btn.btn-blog:active:focus, .btn.btn-blog:active:hover, .btn.btn-blog.active:focus, .btn.btn-blog.active:hover, .open > .btn.btn-blog.dropdown-toggle, .open > .btn.btn-blog.dropdown-toggle:focus, .open > .btn.btn-blog.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-blog, .navbar .navbar-nav > li > a.btn.btn-blog:hover, .navbar .navbar-nav > li > a.btn.btn-blog:focus, .navbar .navbar-nav > li > a.btn.btn-blog:active, .navbar .navbar-nav > li > a.btn.btn-blog.active, .navbar .navbar-nav > li > a.btn.btn-blog:active:focus, .navbar .navbar-nav > li > a.btn.btn-blog:active:hover, .navbar .navbar-nav > li > a.btn.btn-blog.active:focus, .navbar .navbar-nav > li > a.btn.btn-blog.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:hover {
     background-color: #ffd600;
     color: #000000;
 }
 
-.btn-idea .fas,.btn-idea .far,.btn-idea .fal,.btn-idea .fad { color: #000000 !important; }
+.btn-blog .fas,.btn-blog .far,.btn-blog .fal,.btn-blog .fad { color: #000000 !important; }
 
 
 
@@ -1099,23 +1099,23 @@ label {
 .inputfile + label * {
     pointer-events: none;
 }
-.idea-url{
+.blog-url{
     margin:0;
     line-height: 110%;
 }
-.idea-info, .idea-footnote {
+.blog-info, .blog-footnote {
     margin:5px 0 0;
 }
 
-.idea-info, .idea-info i {
+.blog-info, .blog-info i {
     color:#AAAAAA !important;
 }
 
-.idea-desc{
+.blog-desc{
     padding: 10px 0 5px;
 }
 
-.idea-desc .icon-block{
+.blog-desc .icon-block{
     display: none;
 }
 .btn-block {
@@ -1173,7 +1173,7 @@ label {
     margin-top: 4px;
 }
 
-.idea-left {
+.blog-left {
     display: block;
     float: left;
     /* Accomodate Right Follow Links */
@@ -1186,7 +1186,7 @@ label {
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
 }
-.texttype_4736_lg, #newIdeaTitle, .add_note_form, .idea-info, .block-one, .note-textarea.edit-on {
+.texttype_4736_lg, #newBlogTitle, .add_note_form, .blog-info, .block-one, .note-textarea.edit-on {
     width: -webkit-calc(100% - 34px) !important;
     width:    -moz-calc(100% - 34px) !important;
     width:         calc(100% - 34px) !important;
@@ -1263,12 +1263,12 @@ label {
     .show-max{display: none !important;}
 }
 
-.itemidea.list-group-item {
+.itemblog.list-group-item {
     padding:5px 5px;
 }
 
 @media (min-width:767px) {
-    a.itemidea:hover {
+    a.itemblog:hover {
         background-color:#fff4b5 !important;
     }
     a.itemplay:hover {

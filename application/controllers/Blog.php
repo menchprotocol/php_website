@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Idea extends CI_Controller {
+class Blog extends CI_Controller {
 
     function __construct()
     {
@@ -12,9 +12,9 @@ class Idea extends CI_Controller {
         date_default_timezone_set(config_var(11079));
     }
 
-    function idea_create(){
+    function blog_create(){
 
-        $en_all_6201 = $this->config->item('en_all_6201'); //idea Table
+        $en_all_6201 = $this->config->item('en_all_6201'); //Blog Table
         $session_en = superpower_assigned(10939);
         if (!$session_en) {
 
@@ -23,7 +23,7 @@ class Idea extends CI_Controller {
                 'message' => 'Expired Session or Missing Superpower',
             ));
 
-        } elseif (!isset($_POST['newIdeaTitle'])) {
+        } elseif (!isset($_POST['newBlogTitle'])) {
 
             //Do not treat this case as error as it could happen in moving Messages between types:
             return echo_json(array(
@@ -34,21 +34,21 @@ class Idea extends CI_Controller {
         }
 
         //Validate Title:
-        $in_titlevalidation = $this->IDEA_model->in_titlevalidate($_POST['newIdeaTitle']);
+        $in_titlevalidation = $this->BLOG_model->in_titlevalidate($_POST['newBlogTitle']);
         if(!$in_titlevalidation['status']){
             //We had an error, return it:
             return echo_json($in_titlevalidation);
         }
 
 
-        //Create idea:
-        $in = $this->IDEA_model->in_link_or_create($in_titlevalidation['in_cleaned_outcome'], $session_en['en_id']);
+        //Create Blog:
+        $in = $this->BLOG_model->in_link_or_create($in_titlevalidation['in_cleaned_outcome'], $session_en['en_id']);
 
         //Also add to bookmarks:
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 10573, //Bookmarks
             'ln_owner_play_id' => $session_en['en_id'],
-            'ln_child_idea_id' => $in['new_in_id'],
+            'ln_child_blog_id' => $in['new_in_id'],
             'ln_parent_play_id' => $session_en['en_id'],
             'ln_content' => '@'.$session_en['en_id'],
         ), true);
@@ -61,28 +61,28 @@ class Idea extends CI_Controller {
 
     }
 
-    function idea_home(){
+    function blog_home(){
         $session_en = superpower_assigned(null, true);
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
         $this->load->view('header', array(
             'title' => $en_all_2738[4535]['m_name'],
             'session_en' => $session_en,
         ));
-        $this->load->view('idea/idea_home');
+        $this->load->view('blog/blog_home');
         $this->load->view('footer');
     }
 
-    function idea_coin($in_id){
+    function blog_coin($in_id){
 
         //Make sure user is logged in
         $session_en = superpower_assigned(null, true);
 
-        //Validate/fetch IDEA:
-        $ins = $this->IDEA_model->in_fetch(array(
+        //Validate/fetch Blog:
+        $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
         ));
         if ( count($ins) < 1) {
-            return redirect_message('/idea', '<div class="alert alert-danger" role="alert">IDEA #' . $in_id . ' not found</div>');
+            return redirect_message('/blog', '<div class="alert alert-danger" role="alert">BLOG #' . $in_id . ' not found</div>');
         }
 
         //Update session count and log link:
@@ -91,8 +91,8 @@ class Idea extends CI_Controller {
             $this->session->set_userdata('session_page_count', $new_order);
             $this->READ_model->ln_create(array(
                 'ln_owner_play_id' => $session_en['en_id'],
-                'ln_type_play_id' => 4993, //Trainer Opened Idea
-                'ln_child_idea_id' => $in_id,
+                'ln_type_play_id' => 4993, //Trainer Opened Blog
+                'ln_child_blog_id' => $in_id,
                 'ln_order' => $new_order,
             ));
         }
@@ -100,10 +100,10 @@ class Idea extends CI_Controller {
 
         //Load views:
         $this->load->view('header', array(
-            'title' => $ins[0]['in_title'].' | IDEA',
+            'title' => $ins[0]['in_title'].' | BLOG',
             'in' => $ins[0],
         ));
-        $this->load->view('idea/idea_coin', array(
+        $this->load->view('blog/blog_coin', array(
             'in' => $ins[0],
             'session_en' => $session_en,
         ));
@@ -126,7 +126,7 @@ class Idea extends CI_Controller {
 
         } else {
 
-            //Go to focus idea
+            //Go to focus Blog
             return redirect_message('/read/next');
 
         }
@@ -146,7 +146,7 @@ class Idea extends CI_Controller {
         } elseif (!isset($_POST['starting_in']) || intval($_POST['starting_in']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Starting Idea',
+                'message' => 'Missing Starting Blog',
             ));
         } elseif (!isset($_POST['depth_levels']) || intval($_POST['depth_levels']) < 1) {
             return echo_json(array(
@@ -155,22 +155,22 @@ class Idea extends CI_Controller {
             ));
         }
 
-        //Fetch/Validate idea:
-        $ins = $this->IDEA_model->in_fetch(array(
+        //Fetch/Validate blog:
+        $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $_POST['starting_in'],
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
         ));
         if(count($ins) != 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Could not find idea #'.$_POST['starting_in'],
+                'message' => 'Could not find blog #'.$_POST['starting_in'],
             ));
         }
 
 
-        //Load AND/OR Ideas:
-        $en_all_7585 = $this->config->item('en_all_7585'); // Idea Subtypes
-        $en_all_4737 = $this->config->item('en_all_4737'); // Idea Statuses
+        //Load AND/OR Blogs:
+        $en_all_7585 = $this->config->item('en_all_7585'); // Blog Subtypes
+        $en_all_4737 = $this->config->item('en_all_4737'); // Blog Statuses
 
 
         //Return report:
@@ -190,9 +190,9 @@ class Idea extends CI_Controller {
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => 12450,
             'ln_owner_play_id' => $session_en['en_id'],
-            'ln_child_idea_id' => $in_id,
+            'ln_child_blog_id' => $in_id,
         )))){
-            return redirect_message('/idea/'.$in_id, '<div class="alert alert-warning" role="alert"><i class="fad fa-exclamation-triangle"></i> You have already requested to join this idea. No further action is necessary.</div>');
+            return redirect_message('/blog/'.$in_id, '<div class="alert alert-warning" role="alert"><i class="fad fa-exclamation-triangle"></i> You have already requested to join this blog. No further action is necessary.</div>');
 
         }
 
@@ -200,11 +200,11 @@ class Idea extends CI_Controller {
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 12450,
             'ln_owner_play_id' => $session_en['en_id'],
-            'ln_child_idea_id' => $in_id,
+            'ln_child_blog_id' => $in_id,
         ));
 
-        //Go back to idea:
-        return redirect_message('/idea/'.$in_id, '<div class="alert alert-success" role="alert"><i class="far fa-thumbs-up"></i> Successfully submitted your request to join as an author of this idea. You will receive a confirmation once your request has been reviewed.</div>');
+        //Go back to blog:
+        return redirect_message('/blog/'.$in_id, '<div class="alert alert-success" role="alert"><i class="far fa-thumbs-up"></i> Successfully submitted your request to join as an author of this blog. You will receive a confirmation once your request has been reviewed.</div>');
 
     }
 
@@ -219,11 +219,11 @@ class Idea extends CI_Controller {
             'ln_owner_play_id' => $session_en['en_id'],
             'ln_parent_play_id' => $session_en['en_id'],
             'ln_content' => '@'.$session_en['en_id'],
-            'ln_child_idea_id' => $in_id,
+            'ln_child_blog_id' => $in_id,
         ));
 
-        //Go back to idea:
-        return redirect_message('/idea/'.$in_id, '<div class="alert alert-success" role="alert"><i class="far fa-thumbs-up"></i> SUCCESSFULLY JOINED</div>');
+        //Go back to blog:
+        return redirect_message('/blog/'.$in_id, '<div class="alert alert-success" role="alert"><i class="far fa-thumbs-up"></i> SUCCESSFULLY JOINED</div>');
 
     }
 
@@ -250,22 +250,22 @@ class Idea extends CI_Controller {
                 'original_val' => '',
             ));
 
-        } elseif($_POST['cache_en_id']==4736 /* IDEA TITLE */){
+        } elseif($_POST['cache_en_id']==4736 /* BLOG TITLE */){
 
-            $ins = $this->IDEA_model->in_fetch(array(
+            $ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => $_POST['in_ln__id'],
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
             ));
             if(!count($ins)){
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Idea ID.',
+                    'message' => 'Invalid Blog ID.',
                     'original_val' => '',
                 ));
             }
 
-            //Validate Idea Outcome:
-            $in_titlevalidation = $this->IDEA_model->in_titlevalidate($_POST['field_value']);
+            //Validate Blog Outcome:
+            $in_titlevalidation = $this->BLOG_model->in_titlevalidate($_POST['field_value']);
             if(!$in_titlevalidation['status']){
                 //We had an error, return it:
                 return echo_json(array_merge($in_titlevalidation, array(
@@ -274,7 +274,7 @@ class Idea extends CI_Controller {
             } else {
 
                 //All good, go ahead and update:
-                $this->IDEA_model->in_update($_POST['in_ln__id'], array(
+                $this->BLOG_model->in_update($_POST['in_ln__id'], array(
                     'in_title' => trim($_POST['field_value']),
                 ), true, $session_en['en_id']);
 
@@ -286,16 +286,16 @@ class Idea extends CI_Controller {
 
         } elseif($_POST['cache_en_id']==4356 /* READ TIME */){
 
-            $ins = $this->IDEA_model->in_fetch(array(
+            $ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => $_POST['in_ln__id'],
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
             ));
 
             if(!count($ins)){
 
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Idea ID.',
+                    'message' => 'Invalid Blog ID.',
                     'original_val' => '',
                 ));
 
@@ -312,7 +312,7 @@ class Idea extends CI_Controller {
                 $hours = rtrim(number_format((config_var(12113)/3600), 1), '.0');
                 return echo_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be less than '.$hours.' Hour'.echo__s($hours).', or '.config_var(12113).' Seconds long. You can break down your idea into smaller ideas.',
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be less than '.$hours.' Hour'.echo__s($hours).', or '.config_var(12113).' Seconds long. You can break down your blog into smaller blogs.',
                     'original_val' => $ins[0]['in_read_time'],
                 ));
 
@@ -320,14 +320,14 @@ class Idea extends CI_Controller {
 
                 return echo_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to read ideas ;)',
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to read blogs ;)',
                     'original_val' => $ins[0]['in_read_time'],
                 ));
 
             } else {
 
                 //All good, go ahead and update:
-                $this->IDEA_model->in_update($_POST['in_ln__id'], array(
+                $this->BLOG_model->in_update($_POST['in_ln__id'], array(
                     'in_read_time' => $_POST['field_value'],
                 ), true, $session_en['en_id']);
 
@@ -343,7 +343,7 @@ class Idea extends CI_Controller {
             $lns = $this->READ_model->ln_fetch(array(
                 'ln_id' => $_POST['in_ln__id'],
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
             ));
             $ln_metadata = unserialize($lns[0]['ln_metadata']);
 
@@ -370,7 +370,7 @@ class Idea extends CI_Controller {
                     'ln_metadata' => array_merge($ln_metadata, array(
                         'tr__assessment_points' => intval($_POST['field_value']),
                     )),
-                ), $session_en['en_id'], 10663 /* Idea Link Iterated Marks */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' iterated'.( isset($ln_metadata['tr__assessment_points']) ? ' from [' . $ln_metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
+                ), $session_en['en_id'], 10663 /* Blog Link Iterated Marks */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' iterated'.( isset($ln_metadata['tr__assessment_points']) ? ' from [' . $ln_metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
 
                 return echo_json(array(
                     'status' => 1,
@@ -384,7 +384,7 @@ class Idea extends CI_Controller {
             $lns = $this->READ_model->ln_fetch(array(
                 'ln_id' => $_POST['in_ln__id'],
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
             ));
             $ln_metadata = unserialize($lns[0]['ln_metadata']);
             $field_name = ( $_POST['cache_en_id']==4735 ? 'tr__conditional_score_min' : 'tr__conditional_score_max' );
@@ -412,7 +412,7 @@ class Idea extends CI_Controller {
                     'ln_metadata' => array_merge($ln_metadata, array(
                         $field_name => intval($_POST['field_value']),
                     )),
-                ), $session_en['en_id'], 10664 /* Idea Link Iterated Score */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' iterated'.( isset($ln_metadata[$field_name]) ? ' from [' . $ln_metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
+                ), $session_en['en_id'], 10664 /* Blog Link Iterated Score */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' iterated'.( isset($ln_metadata[$field_name]) ? ' from [' . $ln_metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
 
                 return echo_json(array(
                     'status' => 1,
@@ -433,7 +433,7 @@ class Idea extends CI_Controller {
 
     function in_update_dropdown(){
 
-        //Maintain a manual index as a hack for the Idea/Player tables for now:
+        //Maintain a manual index as a hack for the Blog/Player tables for now:
         $en_all_6232 = $this->config->item('en_all_6232'); //PLATFORM VARIABLES
         $deletion_redirect = null;
         $remove_element = null;
@@ -448,12 +448,12 @@ class Idea extends CI_Controller {
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Target Idea ID',
+                'message' => 'Missing Target Blog ID',
             ));
         } elseif (!isset($_POST['in_loaded_id']) || intval($_POST['in_loaded_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Loaded Idea ID',
+                'message' => 'Missing Loaded Blog ID',
             ));
         } elseif (!isset($_POST['ln_id'])) {
             return echo_json(array(
@@ -500,19 +500,19 @@ class Idea extends CI_Controller {
         } else {
 
 
-            //See if Idea is being removed:
+            //See if Blog is being removed:
             if($_POST['element_id']==4737){
 
-                //Remove all idea links?
+                //Remove all blog links?
                 if(!in_array($_POST['new_en_id'], $this->config->item('en_ids_7356'))){
 
                     //Determine what to do after removed:
                     if($_POST['in_id'] == $_POST['in_loaded_id']){
 
-                        //Since we're removing the FOCUS IDEA we need to move to the first parent idea:
-                        foreach ($this->IDEA_model->in_fetch_recursive_parents($_POST['in_id'], true, false) as $grand_parent_ids) {
+                        //Since we're removing the FOCUS BLOG we need to move to the first parent blog:
+                        foreach ($this->BLOG_model->in_fetch_recursive_parents($_POST['in_id'], true, false) as $grand_parent_ids) {
                             foreach ($grand_parent_ids as $parent_in_id) {
-                                $deletion_redirect = '/idea/'.$parent_in_id; //First parent in first branch of parents
+                                $deletion_redirect = '/blog/'.$parent_in_id; //First parent in first branch of parents
                                 break;
                             }
                         }
@@ -520,7 +520,7 @@ class Idea extends CI_Controller {
                         //Go to main page if no parent found:
                         if(!$deletion_redirect){
 
-                            $deletion_redirect = '/idea';
+                            $deletion_redirect = '/blog';
 
                         }
 
@@ -529,35 +529,35 @@ class Idea extends CI_Controller {
                         if(!$remove_element){
 
                             //Just remove from UI using JS:
-                            $remove_element = '.idea_line_' . $_POST['in_id'];
+                            $remove_element = '.blog_line_' . $_POST['in_id'];
 
                         }
 
                     }
 
                     //Remove all links:
-                    $this->IDEA_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
+                    $this->BLOG_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
 
                 //Notify moderators of Feature request? Only if they don't have the powers themselves:
                 } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !superpower_assigned(10985) && !count($this->READ_model->ln_fetch(array(
                         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_play_id' => 12453, //Idea Feature Request
+                        'ln_type_play_id' => 12453, //Blog Feature Request
                         'ln_owner_play_id' => $session_en['en_id'],
-                        'ln_child_idea_id' => $_POST['in_id'],
+                        'ln_child_blog_id' => $_POST['in_id'],
                     )))){
 
                     $this->READ_model->ln_create(array(
-                        'ln_type_play_id' => 12453, //Idea Feature Request
+                        'ln_type_play_id' => 12453, //Blog Feature Request
                         'ln_owner_play_id' => $session_en['en_id'],
-                        'ln_child_idea_id' => $_POST['in_id'],
+                        'ln_child_blog_id' => $_POST['in_id'],
                     ));
 
                 }
 
             }
 
-            //Update Idea:
-            $this->IDEA_model->in_update($_POST['in_id'], array(
+            //Update Blog:
+            $this->BLOG_model->in_update($_POST['in_id'], array(
                 $en_all_6232[$_POST['element_id']]['m_desc'] => $_POST['new_en_id'],
             ), true, $session_en['en_id']);
 
@@ -584,7 +584,7 @@ class Idea extends CI_Controller {
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Idea ID',
+                'message' => 'Missing Blog ID',
             ));
         } elseif (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1) {
             return echo_json(array(
@@ -596,7 +596,7 @@ class Idea extends CI_Controller {
         //Remove this link:
         $this->READ_model->ln_update($_POST['ln_id'], array(
             'ln_status_play_id' => 6173, //Link Removed
-        ), $session_en['en_id'], 10686 /* Idea Link Unlinked */);
+        ), $session_en['en_id'], 10686 /* Blog Link Unlinked */);
 
         return echo_json(array(
             'status' => 1,
@@ -611,8 +611,8 @@ class Idea extends CI_Controller {
 
         /*
          *
-         * Either creates a IDEA link between in_linked_id & in_link_child_id
-         * OR will create a new idea with outcome in_title and then link it
+         * Either creates a BLOG link between in_linked_id & in_link_child_id
+         * OR will create a new blog with outcome in_title and then link it
          * to in_linked_id (In this case in_link_child_id=0)
          *
          * */
@@ -627,7 +627,7 @@ class Idea extends CI_Controller {
         } elseif (!isset($_POST['in_linked_id']) || intval($_POST['in_linked_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Parent Idea ID',
+                'message' => 'Missing Parent Blog ID',
             ));
         } elseif (!isset($_POST['is_parent']) || !in_array(intval($_POST['is_parent']), array(0,1))) {
             return echo_json(array(
@@ -637,12 +637,12 @@ class Idea extends CI_Controller {
         } elseif (!isset($_POST['in_title']) || !isset($_POST['in_link_child_id']) || ( strlen($_POST['in_title']) < 1 && intval($_POST['in_link_child_id']) < 1)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing either Idea Outcome OR Child Idea ID',
+                'message' => 'Missing either Blog Outcome OR Child Blog ID',
             ));
         } elseif (strlen($_POST['in_title']) > config_var(11071)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Idea outcome cannot be longer than '.config_var(11071).' characters',
+                'message' => 'Blog outcome cannot be longer than '.config_var(11071).' characters',
             ));
         } elseif($_POST['in_link_child_id'] >= 2147483647){
             return echo_json(array(
@@ -652,32 +652,32 @@ class Idea extends CI_Controller {
         }
 
 
-        $new_idea_type = 6677; //Idea Read-Only
+        $new_blog_type = 6677; //Blog Read-Only
         $linked_ins = array();
 
         if($_POST['in_link_child_id'] > 0){
 
-            //Fetch link idea to determine idea type:
-            $linked_ins = $this->IDEA_model->in_fetch(array(
+            //Fetch link blog to determine blog type:
+            $linked_ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => intval($_POST['in_link_child_id']),
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
             ));
 
             if(count($linked_ins)==0){
-                //validate linked Idea:
+                //validate linked Blog:
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Idea #'.$_POST['in_link_child_id'].' is not active',
+                    'message' => 'Blog #'.$_POST['in_link_child_id'].' is not active',
                 ));
             }
 
             if(!intval($_POST['is_parent']) && in_array($linked_ins[0]['in_type_play_id'], $this->config->item('en_ids_7712'))){
-                $new_idea_type = 6914; //Require All
+                $new_blog_type = 6914; //Require All
             }
         }
 
-        //All seems good, go ahead and try creating the Idea:
-        return echo_json($this->IDEA_model->in_link_or_create(trim($_POST['in_title']), $session_en['en_id'], $_POST['in_linked_id'], intval($_POST['is_parent']), 6183, $new_idea_type, $_POST['in_link_child_id']));
+        //All seems good, go ahead and try creating the Blog:
+        return echo_json($this->BLOG_model->in_link_or_create(trim($_POST['in_title']), $session_en['en_id'], $_POST['in_linked_id'], intval($_POST['is_parent']), 6183, $new_blog_type, $_POST['in_link_child_id']));
 
     }
 
@@ -695,23 +695,23 @@ class Idea extends CI_Controller {
         } elseif (!isset($_POST['in_loaded_id']) || intval($_POST['in_loaded_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Focus Idea ID',
+                'message' => 'Invalid Focus Blog ID',
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Idea ID',
+                'message' => 'Invalid Blog ID',
             ));
         }
 
-        //Validate Idea:
-        $ins = $this->IDEA_model->in_fetch(array(
+        //Validate Blog:
+        $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
         ));
         if(count($ins) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Idea not found',
+                'message' => 'Blog not found',
             ));
         }
 
@@ -719,14 +719,14 @@ class Idea extends CI_Controller {
         //Fetch READING LIST users:
         $actionplan_users = $this->READ_model->ln_fetch(array(
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-            'ln_parent_idea_id' => $ins[0]['in_id'],
+            'ln_parent_blog_id' => $ins[0]['in_id'],
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
         ), array('en_owner'), 500);
         if(count($actionplan_users) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => '<i class="fad fa-exclamation-triangle"></i> Nobody has completed this idea yet',
+                'message' => '<i class="fad fa-exclamation-triangle"></i> Nobody has completed this blog yet',
             ));
         }
 
@@ -763,7 +763,7 @@ class Idea extends CI_Controller {
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
             $item_ui .= '<td style="text-align:left;">';
 
-            $item_ui .= '<a href="/idea/'.$_POST['in_loaded_id'].'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
+            $item_ui .= '<a href="/blog/'.$_POST['in_loaded_id'].'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
             $item_ui .= '&nbsp;<a href="/play/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="User Player"><i class="fas fa-at"></i></a>';
 
             $item_ui .= '&nbsp;<a href="/ledger?ln_owner_play_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
@@ -802,14 +802,14 @@ class Idea extends CI_Controller {
 
 
     function in_review_metadata($in_id){
-        //Fetch Idea:
-        $ins = $this->IDEA_model->in_fetch(array(
+        //Fetch Blog:
+        $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
         ));
         if(count($ins) > 0){
             echo_json(unserialize($ins[0]['in_metadata']));
         } else {
-            echo 'Idea #'.$in_id.' not found!';
+            echo 'Blog #'.$in_id.' not found!';
         }
     }
 
@@ -835,8 +835,8 @@ class Idea extends CI_Controller {
             ));
         } else {
 
-            //Validate Parent Idea:
-            $parent_ins = $this->IDEA_model->in_fetch(array(
+            //Validate Parent Blog:
+            $parent_ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => intval($_POST['in_id']),
             ));
             if (count($parent_ins) < 1) {
@@ -848,8 +848,8 @@ class Idea extends CI_Controller {
 
                 //Fetch for the record:
                 $children_before = $this->READ_model->ln_fetch(array(
-                    'ln_parent_idea_id' => intval($_POST['in_id']),
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                    'ln_parent_blog_id' => intval($_POST['in_id']),
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -857,13 +857,13 @@ class Idea extends CI_Controller {
                 foreach ($_POST['new_ln_orders'] as $rank => $ln_id) {
                     $this->READ_model->ln_update(intval($ln_id), array(
                         'ln_order' => intval($rank),
-                    ), $session_en['en_id'], 10675 /* Ideas Ordered by Trainer */);
+                    ), $session_en['en_id'], 10675 /* Blogs Ordered by Trainer */);
                 }
 
                 //Fetch again for the record:
                 $children_after = $this->READ_model->ln_fetch(array(
-                    'ln_parent_idea_id' => intval($_POST['in_id']),
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                    'ln_parent_blog_id' => intval($_POST['in_id']),
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -894,7 +894,7 @@ class Idea extends CI_Controller {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Idea ID',
+                'message' => 'Invalid Blog ID',
             ));
 
         } elseif (!isset($_POST['focus_ln_type_play_id']) || intval($_POST['focus_ln_type_play_id']) < 1) {
@@ -907,15 +907,15 @@ class Idea extends CI_Controller {
         }
 
 
-        //Fetch/Validate the idea:
-        $ins = $this->IDEA_model->in_fetch(array(
+        //Fetch/Validate the blog:
+        $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
         ));
         if(count($ins)<1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Idea',
+                'message' => 'Invalid Blog',
             ));
         }
 
@@ -933,13 +933,13 @@ class Idea extends CI_Controller {
             'ln_order' => 1 + $this->READ_model->ln_max_order(array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'ln_type_play_id' => intval($_POST['focus_ln_type_play_id']),
-                    'ln_child_idea_id' => intval($_POST['in_id']),
+                    'ln_child_blog_id' => intval($_POST['in_id']),
                 )),
             //Referencing attributes:
             'ln_type_play_id' => intval($_POST['focus_ln_type_play_id']),
             'ln_parent_play_id' => $msg_validation['ln_parent_play_id'],
-            'ln_parent_idea_id' => $msg_validation['ln_parent_idea_id'],
-            'ln_child_idea_id' => intval($_POST['in_id']),
+            'ln_parent_blog_id' => $msg_validation['ln_parent_blog_id'],
+            'ln_child_blog_id' => intval($_POST['in_id']),
             'ln_content' => $msg_validation['input_message'],
         ), true);
 
@@ -971,7 +971,7 @@ class Idea extends CI_Controller {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing IDEA',
+                'message' => 'Missing BLOG',
             ));
 
         } elseif (!isset($_POST['focus_ln_type_play_id'])) {
@@ -1004,14 +1004,14 @@ class Idea extends CI_Controller {
 
         }
 
-        //Validate Idea:
-        $ins = $this->IDEA_model->in_fetch(array(
+        //Validate Blog:
+        $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
         ));
         if(count($ins)<1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Idea ID',
+                'message' => 'Invalid Blog ID',
             ));
         }
 
@@ -1043,11 +1043,11 @@ class Idea extends CI_Controller {
             'ln_owner_play_id' => $session_en['en_id'],
             'ln_type_play_id' => $_POST['focus_ln_type_play_id'],
             'ln_parent_play_id' => $cdn_status['cdn_en']['en_id'],
-            'ln_child_idea_id' => intval($_POST['in_id']),
+            'ln_child_blog_id' => intval($_POST['in_id']),
             'ln_content' => '@' . $cdn_status['cdn_en']['en_id'], //Just place the player reference as the entire message
             'ln_order' => 1 + $this->READ_model->ln_max_order(array(
                     'ln_type_play_id' => $_POST['focus_ln_type_play_id'],
-                    'ln_child_idea_id' => $_POST['in_id'],
+                    'ln_child_blog_id' => $_POST['in_id'],
                 )),
         ));
 
@@ -1099,7 +1099,7 @@ class Idea extends CI_Controller {
                 //Log update and give credit to the session Trainer:
                 $this->READ_model->ln_update($ln_id, array(
                     'ln_order' => intval($ln_order),
-                ), $session_en['en_id'], 10676 /* Idea Notes Ordered */);
+                ), $session_en['en_id'], 10676 /* Blog Notes Ordered */);
             }
         }
 
@@ -1138,18 +1138,18 @@ class Idea extends CI_Controller {
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Idea ID',
+                'message' => 'Invalid Blog ID',
             ));
         }
 
-        //Validate Idea:
-        $ins = $this->IDEA_model->in_fetch(array(
+        //Validate Blog:
+        $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
         ));
         if (count($ins) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Idea Not Found',
+                'message' => 'Blog Not Found',
             ));
         }
 
@@ -1178,8 +1178,8 @@ class Idea extends CI_Controller {
             $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                 'ln_content' => $msg_validation['input_message'],
                 'ln_parent_play_id' => $msg_validation['ln_parent_play_id'],
-                'ln_parent_idea_id' => $msg_validation['ln_parent_idea_id'],
-            ), $session_en['en_id'], 10679 /* Idea Notes Iterated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
+                'ln_parent_blog_id' => $msg_validation['ln_parent_blog_id'],
+            ), $session_en['en_id'], 10679 /* Blog Notes Iterated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
 
         }
 
@@ -1215,14 +1215,14 @@ class Idea extends CI_Controller {
                 //yes, do so and return results:
                 $affected_rows = $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_play_id' => $_POST['message_ln_status_play_id'],
-                ), $session_en['en_id'], 10677 /* Idea Notes Iterated Status */);
+                ), $session_en['en_id'], 10677 /* Blog Notes Iterated Status */);
 
             } else {
 
-                //New status is no longer active, so remove the idea note:
+                //New status is no longer active, so remove the blog note:
                 $affected_rows = $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_play_id' => $_POST['message_ln_status_play_id'],
-                ), $session_en['en_id'], 10678 /* Idea Notes Unlinked */);
+                ), $session_en['en_id'], 10678 /* Blog Notes Unlinked */);
 
                 //Return success:
                 if($affected_rows > 0){
@@ -1262,31 +1262,31 @@ class Idea extends CI_Controller {
 
         /*
          *
-         * Updates common base metadata for published ideas
+         * Updates common base metadata for published blogs
          *
          * */
 
         if($in_id < 0){
             //Gateway URL to give option to run...
-            die('<a href="/idea/cron__sync_common_base">Click here</a> to start running this function.');
+            die('<a href="/blog/cron__sync_common_base">Click here</a> to start running this function.');
         }
 
         boost_power();
         $start_time = time();
         $filters = array(
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         );
         if($in_id > 0){
             $filters['in_id'] = $in_id;
         }
 
-        $published_ins = $this->IDEA_model->in_fetch($filters);
+        $published_ins = $this->BLOG_model->in_fetch($filters);
         foreach($published_ins as $published_in){
-            $tree = $this->IDEA_model->in_metadata_common_base($published_in);
+            $tree = $this->BLOG_model->in_metadata_common_base($published_in);
         }
 
         $total_time = time() - $start_time;
-        $success_message = 'Common Base Metadata updated for '.count($published_ins).' published idea'.echo__s(count($published_ins)).'.';
+        $success_message = 'Common Base Metadata updated for '.count($published_ins).' published blog'.echo__s(count($published_ins)).'.';
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
             $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . $success_message . '</div>');
@@ -1316,7 +1316,7 @@ class Idea extends CI_Controller {
 
         if($in_id < 0){
             //Gateway URL to give option to run...
-            die('<a href="/idea/cron__sync_extra_insights">Click here</a> to start running this function.');
+            die('<a href="/blog/cron__sync_extra_insights">Click here</a> to start running this function.');
         }
 
         boost_power();
@@ -1329,20 +1329,20 @@ class Idea extends CI_Controller {
             $update_count++;
 
             //Start with common base:
-            foreach($this->IDEA_model->in_fetch(array('in_id' => $in_id)) as $published_in){
-                $this->IDEA_model->in_metadata_common_base($published_in);
+            foreach($this->BLOG_model->in_fetch(array('in_id' => $in_id)) as $published_in){
+                $this->BLOG_model->in_metadata_common_base($published_in);
             }
 
             //Update extra insights:
-            $tree = $this->IDEA_model->in_metadata_extra_insights($in_id);
+            $tree = $this->BLOG_model->in_metadata_extra_insights($in_id);
 
         } else {
 
-            //Update all Recommended Ideas and their tree:
-            foreach ($this->IDEA_model->in_fetch(array(
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+            //Update all Recommended Blogs and their tree:
+            foreach ($this->BLOG_model->in_fetch(array(
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             )) as $published_in) {
-                $tree = $this->IDEA_model->in_metadata_extra_insights($published_in['in_id']);
+                $tree = $this->BLOG_model->in_metadata_extra_insights($published_in['in_id']);
                 if($tree){
                     $update_count++;
                 }
@@ -1353,7 +1353,7 @@ class Idea extends CI_Controller {
 
 
         $end_time = time() - $start_time;
-        $success_message = 'Extra Insights Metadata updated for '.$update_count.' idea'.echo__s($update_count).'.';
+        $success_message = 'Extra Insights Metadata updated for '.$update_count.' blog'.echo__s($update_count).'.';
 
         //Show json:
         echo_json(array(

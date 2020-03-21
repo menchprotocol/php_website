@@ -697,10 +697,10 @@ fragment PostListingItemSidebar_post on Post {
         $en_all_4463 = $this->config->item('en_all_4463'); //GLOSSARY
 
         //Create FILTERS:
-        $filters_idea = array(
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+        $filters_blog = array(
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //Blog COIN
         );
         $filters_read = array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -718,18 +718,18 @@ fragment PostListingItemSidebar_post on Post {
             } else {
                 $start_date = date("Y-m-d", strtotime('previous monday'));
             }
-            $filters_idea['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
+            $filters_blog['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
         }
         */
 
         //Fetch leaderboard:
-        $idea_player_coins = $this->READ_model->ln_fetch($filters_idea, array('en_parent','in_child'), $load_max, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        $blog_player_coins = $this->READ_model->ln_fetch($filters_blog, array('en_parent','in_child'), $load_max, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
 
         echo '<table id="leaderboard" class="table table-sm table-striped tablepadded" style="margin-bottom: 0;">';
 
         //Start with top Players:
-        foreach ($idea_player_coins as $count=>$ln) {
+        foreach ($blog_player_coins as $count=>$ln) {
 
             if($count==$show_max){
 
@@ -765,14 +765,14 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-            //IDEA
-            echo '<td class="idea fixedColumns MENCHcolumn3">'.
+            //BLOG
+            echo '<td class="blog fixedColumns MENCHcolumn3">'.
 
                 ( $session_en
 
-                    ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_12273')).'&ln_parent_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : '' ).'" class="montserrat idea"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>'
+                    ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_12273')).'&ln_parent_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : '' ).'" class="montserrat blog"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>'
 
-                    : '<span class="montserrat idea"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>'
+                    : '<span class="montserrat blog"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>'
 
                 )
 
@@ -787,7 +787,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //Then show top readers to hit the target $load_max
         //TODO retire this once we hit 100+ Players, which means no more need for readers
-        $players_found = count($idea_player_coins);
+        $players_found = count($blog_player_coins);
         $show_readers = $load_max - $players_found;
         if($show_readers > 0){
 
@@ -813,8 +813,8 @@ fragment PostListingItemSidebar_post on Post {
                 //READ
                 echo '<td class="read fixedColumns MENCHcolumn2">'.( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_owner_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>' ).'</td>';
 
-                //IDEA
-                echo '<td class="idea fixedColumns MENCHcolumn3"></td>';
+                //BLOG
+                echo '<td class="blog fixedColumns MENCHcolumn3"></td>';
 
                 echo '</tr>';
 
@@ -1387,11 +1387,11 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-            //Count player references in Idea Notes:
+            //Count player references in Blog Notes:
             $messages = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
                 'ln_parent_play_id' => $_POST['en_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1403,7 +1403,7 @@ fragment PostListingItemSidebar_post on Post {
 
                 //Yes, validate this player:
 
-                //Validate the input for updating linked Idea:
+                //Validate the input for updating linked Blog:
                 $merger_en_id = 0;
                 if (substr($_POST['en_merge'], 0, 1) == '@') {
                     $parts = explode(' ', $_POST['en_merge']);
@@ -1442,10 +1442,10 @@ fragment PostListingItemSidebar_post on Post {
 
             } elseif(count($messages) > 0){
 
-                //Cannot delete this player until Idea references are removed:
+                //Cannot delete this player until Blog references are removed:
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'You can remove player after removing all its idea note references',
+                    'message' => 'You can remove player after removing all its blog note references',
                 ));
 
             }
@@ -1651,7 +1651,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
     function en_review_metadata($en_id){
-        //Fetch Idea:
+        //Fetch Blog:
         $ens = $this->PLAY_model->en_fetch(array(
             'en_id' => $en_id,
         ));
@@ -1806,7 +1806,7 @@ fragment PostListingItemSidebar_post on Post {
         } elseif (!isset($_POST['referrer_in_id'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing idea referrer',
+                'message' => 'Missing blog referrer',
             ));
         }
 
@@ -1853,9 +1853,9 @@ fragment PostListingItemSidebar_post on Post {
 
         //All good...
 
-        //Was there a Idea to read?
+        //Was there a Blog to read?
         if(intval($_POST['referrer_in_id']) > 0){
-            //Add this Idea to their READING LIST:
+            //Add this Blog to their READING LIST:
             $this->READ_model->read_add($ens[0]['en_id'], $_POST['referrer_in_id']);
         }
 
@@ -1973,7 +1973,7 @@ fragment PostListingItemSidebar_post on Post {
             //Log them in:
             $ens[0] = $this->PLAY_model->en_activate_session($ens[0]);
 
-            //Their next Idea in line:
+            //Their next Blog in line:
             return echo_json(array(
                 'status' => 1,
                 'login_url' => '/read/next',
@@ -2119,17 +2119,17 @@ fragment PostListingItemSidebar_post on Post {
         ));
 
 
-        //Fetch referral Idea, if any:
+        //Fetch referral Blog, if any:
         if(intval($_POST['referrer_in_id']) > 0){
 
-            //Fetch the Idea:
-            $referrer_ins = $this->IDEA_model->in_fetch(array(
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+            //Fetch the Blog:
+            $referrer_ins = $this->BLOG_model->in_fetch(array(
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                 'in_id' => $_POST['referrer_in_id'],
             ));
 
             if(count($referrer_ins) > 0){
-                //Add this Idea to their READING LIST:
+                //Add this Blog to their READING LIST:
                 $this->READ_model->read_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
             } else {
                 //Cannot be added, likely because its not published:
@@ -2152,7 +2152,7 @@ fragment PostListingItemSidebar_post on Post {
         $html_message .= '<div><a href="'.$actionplan_url.'" target="_blank">' . $actionplan_url . '</a></div><br />';
 
         $html_message .= '<div>Connect on Messenger:</div><br />';
-        $messenger_url = 'https://m.me/menchideas' . ( count($referrer_ins) > 0 ? '?ref=' . $referrer_ins[0]['in_id'] : '' ) ;
+        $messenger_url = 'https://m.me/menchblogs' . ( count($referrer_ins) > 0 ? '?ref=' . $referrer_ins[0]['in_id'] : '' ) ;
         $html_message .= '<div><a href="'.$messenger_url.'" target="_blank">' . $messenger_url . '</a></div>';
         $html_message .= '<br /><br />';
         $html_message .= '<div>Cheers,</div><br />';
@@ -2165,7 +2165,7 @@ fragment PostListingItemSidebar_post on Post {
         $invite_link = $this->READ_model->ln_create(array(
             'ln_type_play_id' => 7562, //User Signin Joined Mench
             'ln_owner_play_id' => $user_en['en']['en_id'],
-            'ln_parent_idea_id' => intval($_POST['referrer_in_id']),
+            'ln_parent_blog_id' => intval($_POST['referrer_in_id']),
             'ln_metadata' => array(
                 'email_log' => $email_log,
             ),
@@ -2228,7 +2228,7 @@ fragment PostListingItemSidebar_post on Post {
             'ln_type_play_id' => 7563, //User Signin Magic Link Email
             'ln_content' => $_POST['input_email'],
             'ln_owner_play_id' => $user_emails[0]['en_id'], //User making request
-            'ln_parent_idea_id' => intval($_POST['referrer_in_id']),
+            'ln_parent_blog_id' => intval($_POST['referrer_in_id']),
         ));
 
         //This is a new email, send invitation to join:
@@ -2262,7 +2262,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //Validate email:
         if(superpower_assigned(10939)){
-            return redirect_message('/idea');
+            return redirect_message('/blog');
         } elseif(superpower_assigned()){
             return redirect_message('/read/next');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
@@ -2320,9 +2320,9 @@ fragment PostListingItemSidebar_post on Post {
 
 
         if(intval($_POST['referrer_in_id']) > 0){
-            //Fetch the idea:
-            $referrer_ins = $this->IDEA_model->in_fetch(array(
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+            //Fetch the blog:
+            $referrer_ins = $this->BLOG_model->in_fetch(array(
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                 'in_id' => $_POST['referrer_in_id'],
             ));
         } else {
@@ -2856,8 +2856,8 @@ fragment PostListingItemSidebar_post on Post {
             return echo_json(array(
                 'play_count' => 0,
                 'play_raw_count' => 0,
-                'idea_count' => 0,
-                'idea_raw_count' => 0,
+                'blog_count' => 0,
+                'blog_raw_count' => 0,
                 'read_count' => 0,
                 'read_raw_count' => 0
             ));
@@ -2873,10 +2873,10 @@ fragment PostListingItemSidebar_post on Post {
             $play_coin_count = $play_coins[0]['total_coins'];
         }
 
-        $idea_coins = $this->READ_model->ln_fetch(array(
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+        $blog_coins = $this->READ_model->ln_fetch(array(
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //BLOG COIN
             'ln_parent_play_id' => $session_en['en_id'],
         ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
@@ -2889,8 +2889,8 @@ fragment PostListingItemSidebar_post on Post {
         return echo_json(array(
             'play_count' => echo_number($play_coin_count),
             'play_raw_count' => $play_coin_count,
-            'idea_count' => echo_number($idea_coins[0]['total_coins']),
-            'idea_raw_count' => $idea_coins[0]['total_coins'],
+            'blog_count' => echo_number($blog_coins[0]['total_coins']),
+            'blog_raw_count' => $blog_coins[0]['total_coins'],
             'read_count' => echo_number($read_coins[0]['total_coins']),
             'read_raw_count' => $read_coins[0]['total_coins']
         ));
@@ -2922,7 +2922,7 @@ fragment PostListingItemSidebar_post on Post {
         echo 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'.'<br /><br />';
 
         echo '/*<br />
- * Keep a cache of certain parts of the Idea tree for faster processing<br />
+ * Keep a cache of certain parts of the Blog tree for faster processing<br />
  * So we don\'t have to make DB calls to figure them out every time!<br />
  * See here for all players cached: https://mench.com/play/4527<br />
  *<br />

@@ -3,7 +3,7 @@
 echo '<div class="container">';
 
 //Define all moderation functions:
-$en_all_4737 = $this->config->item('en_all_4737'); // Idea Statuses
+$en_all_4737 = $this->config->item('en_all_4737'); // Blog Statuses
 $en_all_6177 = $this->config->item('en_all_6177'); //Player Statuses
 $en_all_4463 = $this->config->item('en_all_4463'); //GLOSSARY
 
@@ -11,17 +11,17 @@ $moderation_tools = array(
 
     //Moderator Tools
     '/play/admin_panel/link_coins_words_stats' => 'Coin Stats',
-    '/play/admin_panel/orphan_ideas' => 'Orphan Ideas',
+    '/play/admin_panel/orphan_blogs' => 'Orphan Blogs',
     '/play/admin_panel/orphan_players' => 'Orphan Players',
-    '/play/admin_panel/in_replace_outcomes' => 'Idea Search/Replace Titles',
+    '/play/admin_panel/in_replace_outcomes' => 'Blog Search/Replace Titles',
     '/play/admin_panel/en_replace_name' => 'Player Search/Replace Name',
-    '/play/admin_panel/in_invalid_outcomes' => 'Idea Invalid Titles',
-    '/play/admin_panel/identical_idea_outcomes' => 'Identical Idea Titles',
+    '/play/admin_panel/in_invalid_outcomes' => 'Blog Invalid Titles',
+    '/play/admin_panel/identical_blog_outcomes' => 'Identical Blog Titles',
     '/play/admin_panel/identical_player_names' => 'Identical Player Names',
     '/play/admin_panel/actionplan_debugger' => 'My READING LIST Debugger',
     '/play/admin_panel/en_icon_search' => 'Player Icon Search',
     '/play/admin_panel/sync_player_links' => 'Player Sync Link Types',
-    '/play/admin_panel/or__children' => 'List OR Ideas + Answers',
+    '/play/admin_panel/or__children' => 'List OR Blogs + Answers',
     '/play/admin_panel/assessment_marks_list_all' => 'Completion Marks List All',
     '/play/admin_panel/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
     '/play/admin_panel/compose_test_message' => 'Compose Test Message',
@@ -29,15 +29,15 @@ $moderation_tools = array(
     '/play/admin_panel/analyze_url' => 'Analyze URL',
 
     //Hope to get zero:
-    '/play/admin_panel/sync_play_idea_statuses' => 'Analyze & Fix Play & Idea Statuses',
+    '/play/admin_panel/sync_play_blog_statuses' => 'Analyze & Fix Play & Blog Statuses',
     '/play/admin_panel/analyze_play' => 'Analyze & Fix Player Links',
-    '/play/admin_panel/in_crossovers' => 'Analyze & Fix Idea Crossover Parent/Children',
-    '/play/admin_panel/analyze_idea_authors' => 'Analyze & Fix Idea Authors',
+    '/play/admin_panel/in_crossovers' => 'Analyze & Fix Blog Crossover Parent/Children',
+    '/play/admin_panel/analyze_blog_authors' => 'Analyze & Fix Blog Authors',
 );
 
 $cron_jobs = array(
-    '/idea/cron__sync_common_base' => 'Sync Common Base Metadata',
-    '/idea/cron__sync_extra_insights' => 'Sync Extra Insights Metadata',
+    '/blog/cron__sync_common_base' => 'Sync Common Base Metadata',
+    '/blog/cron__sync_extra_insights' => 'Sync Extra Insights Metadata',
     '/read/cron__sync_algolia' => 'Sync Algolia Index [Limited calls!]',
     '/read/cron__sync_gephi' => 'Sync Gephi Graph Index',
     '/read/cron__clean_metadatas' => 'Clean Unused Metadata Variables',
@@ -158,7 +158,7 @@ if(!$action) {
 
     echo '<div class="mini-header">URL:</div>';
     echo '<input type="url" class="form-control border maxout" name="url_to_analyze" value="'.@$_GET['url_to_analyze'].'"><br />';
-    echo '<input type="submit" class="btn btn-idea" value="Analyze">';
+    echo '<input type="submit" class="btn btn-blog" value="Analyze">';
 
 
     if(isset($_GET['url_to_analyze']) && strlen($_GET['url_to_analyze'])>0){
@@ -211,10 +211,10 @@ if(!$action) {
         echo '<span class="icon-block">'.random_player_avatar().'</span>';
     }
 
-} elseif($action=='analyze_idea_authors') {
+} elseif($action=='analyze_blog_authors') {
 
     $stats = array(
-        'ideas' => 0,
+        'blogs' => 0,
         'author_missing' => 0,
         'is_archived' => 0,
         'creator_missing' => 0,
@@ -223,56 +223,56 @@ if(!$action) {
     );
 
     //FInd and remove duplicate authors:
-    foreach($this->IDEA_model->in_fetch() as $in) {
+    foreach($this->BLOG_model->in_fetch() as $in) {
 
-        $stats['ideas']++;
+        $stats['blogs']++;
 
         $is_archived = !in_array($in['in_status_play_id'], $this->config->item('en_ids_7356'));
 
         //Scan authors:
-        $idea_players = $this->READ_model->ln_fetch(array(
+        $blog_players = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id' => 4983,
-            'ln_child_idea_id' => $in['in_id'],
+            'ln_child_blog_id' => $in['in_id'],
         ));
-        $idea_creators = $this->READ_model->ln_fetch(array(
-            'ln_type_play_id' => 4250, //New Idea Created
-            'ln_child_idea_id' => $in['in_id'],
+        $blog_creators = $this->READ_model->ln_fetch(array(
+            'ln_type_play_id' => 4250, //New Blog Created
+            'ln_child_blog_id' => $in['in_id'],
         ));
 
-        if(!count($idea_creators)) {
+        if(!count($blog_creators)) {
             $stats['creator_missing']++;
             $this->READ_model->ln_create(array(
                 'ln_owner_play_id' => 1,
-                'ln_child_idea_id' => $in['in_id'],
+                'ln_child_blog_id' => $in['in_id'],
                 'ln_content' => $in['in_title'],
-                'ln_type_play_id' => 4250, //New Idea Created
+                'ln_type_play_id' => 4250, //New Blog Created
             ));
         }
 
 
-        if(!count($idea_players)){
+        if(!count($blog_players)){
 
             $stats['author_missing']++;
 
-            if(count($idea_creators)){
+            if(count($blog_creators)){
                 $this->READ_model->ln_create(array(
                     'ln_type_play_id' => 4983,
-                    'ln_owner_play_id' => $idea_creators[0]['ln_owner_play_id'],
-                    'ln_parent_play_id' => $idea_creators[0]['ln_owner_play_id'],
-                    'ln_content' => '@'.$idea_creators[0]['ln_owner_play_id'],
-                    'ln_child_idea_id' => $in['in_id'],
+                    'ln_owner_play_id' => $blog_creators[0]['ln_owner_play_id'],
+                    'ln_parent_play_id' => $blog_creators[0]['ln_owner_play_id'],
+                    'ln_content' => '@'.$blog_creators[0]['ln_owner_play_id'],
+                    'ln_child_blog_id' => $in['in_id'],
                 ));
             }
 
-        } elseif(count($idea_players) >= 2){
+        } elseif(count($blog_players) >= 2){
 
             //See if duplicates:
             $found_duplicate = false;
             $authors = array();
-            foreach($idea_players as $idea_player){
-                if(!in_array($idea_player['ln_parent_play_id'], $authors)){
-                    array_push($authors, $idea_player['ln_parent_play_id']);
+            foreach($blog_players as $blog_player){
+                if(!in_array($blog_player['ln_parent_play_id'], $authors)){
+                    array_push($authors, $blog_player['ln_parent_play_id']);
                 } else {
                     $found_duplicate = true;
                     break;
@@ -336,14 +336,14 @@ if(!$action) {
 
     echo nl2br(print_r($stats, true));
 
-} elseif($action=='orphan_ideas') {
+} elseif($action=='orphan_blogs') {
 
     echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
-    $orphan_ins = $this->IDEA_model->in_fetch(array(
-        ' NOT EXISTS (SELECT 1 FROM table_read WHERE in_id=ln_child_idea_id AND ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_play_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
-        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
-        'in_id !=' => config_var(12156), //Not the Starting Idea
+    $orphan_ins = $this->BLOG_model->in_fetch(array(
+        ' NOT EXISTS (SELECT 1 FROM table_read WHERE in_id=ln_child_blog_id AND ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_play_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
+        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+        'in_id !=' => config_var(12156), //Not the Starting Blog
     ));
 
     if(count($orphan_ins) > 0){
@@ -351,26 +351,26 @@ if(!$action) {
         //List orphans:
         foreach ($orphan_ins as $count => $orphan_in) {
 
-            //Show idea:
-            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_play_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_play_id']]['m_icon'] . '</span> <a href="/idea/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_title'].'</b></a>';
+            //Show blog:
+            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_play_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_play_id']]['m_icon'] . '</span> <a href="/blog/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_title'].'</b></a>';
 
             //Do we need to remove?
             if($command1=='remove_all'){
 
-                //Remove idea links:
-                $links_removed = $this->IDEA_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
+                //Remove blog links:
+                $links_removed = $this->BLOG_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
 
-                //Remove idea:
-                $this->IDEA_model->in_update($orphan_in['in_id'], array(
-                    'in_status_play_id' => 6182, /* Idea Removed */
+                //Remove blog:
+                $this->BLOG_model->in_update($orphan_in['in_id'], array(
+                    'in_status_play_id' => 6182, /* Blog Removed */
                 ), true, $session_en['en_id']);
 
                 //Show confirmation:
-                echo ' [Idea + '.$links_removed.' links Removed]';
+                echo ' [Blog + '.$links_removed.' links Removed]';
 
             }
 
-            //Done showing the idea:
+            //Done showing the blog:
             echo '</div>';
         }
 
@@ -378,8 +378,8 @@ if(!$action) {
         if($command1!='remove_all'){
             echo '<br />';
             echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
-            echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All ideas and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing idea.<br /><br /></div>';
-            echo '<a class="remove-all hidden maxout" href="/play/admin_panel/orphan_ideas/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
+            echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All blogs and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing blog.<br /><br /></div>';
+            echo '<a class="remove-all hidden maxout" href="/play/admin_panel/orphan_blogs/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
         }
 
     } else {
@@ -477,7 +477,7 @@ if(!$action) {
 
     echo '<div class="mini-header">Search For:</div>';
     echo '<input type="text" class="form-control border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
-    echo '<input type="submit" class="btn btn-idea" value="Search">';
+    echo '<input type="submit" class="btn btn-blog" value="Search">';
 
 
     if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
@@ -530,7 +530,7 @@ if(!$action) {
 
         echo '<div class="mini-header">Replace With:</div>';
         echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
-        echo '<input type="submit" name="do_replace" class="btn btn-idea" value="Replace">';
+        echo '<input type="submit" name="do_replace" class="btn btn-blog" value="Replace">';
     }
 
 
@@ -540,14 +540,14 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
-    //List this users 🔴 READING LIST ideas so they can choose:
-    echo '<div>Choose one of your 🔴 READING LIST ideas to debug:</div><br />';
+    //List this users 🔴 READING LIST blogs so they can choose:
+    echo '<div>Choose one of your 🔴 READING LIST blogs to debug:</div><br />';
 
     $player_reads = $this->READ_model->ln_fetch(array(
         'ln_owner_play_id' => $session_en['en_id'],
-        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
     ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
     foreach ($player_reads as $priority => $ln) {
@@ -556,15 +556,15 @@ if(!$action) {
 
 } elseif($action=='in_crossovers') {
 
-    $active_ins = $this->IDEA_model->in_fetch(array(
-        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+    $active_ins = $this->BLOG_model->in_fetch(array(
+        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
     ), ( isset($_GET['limit']) ? $_GET['limit'] : 0 ));
     $found = 0;
     foreach($active_ins as $count=>$in){
 
-        $recursive_children = $this->IDEA_model->in_recursive_child_ids($in['in_id'], false);
+        $recursive_children = $this->BLOG_model->in_recursive_child_ids($in['in_id'], false);
         if(count($recursive_children) > 0){
-            $recursive_parents = $this->IDEA_model->in_fetch_recursive_parents($in['in_id']);
+            $recursive_parents = $this->BLOG_model->in_fetch_recursive_parents($in['in_id']);
             foreach ($recursive_parents as $grand_parent_ids) {
                 $crossovers = array_intersect($recursive_children, $grand_parent_ids);
                 if(count($crossovers) > 0){
@@ -582,12 +582,12 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
-    $active_ins = $this->IDEA_model->in_fetch(array(
-        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+    $active_ins = $this->BLOG_model->in_fetch(array(
+        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
     ));
 
     //Give an overview:
-    echo '<p>When the validation criteria change within the in_titlevalidate() function, this page lists all the ideas that no longer have a valid outcome.</p>';
+    echo '<p>When the validation criteria change within the in_titlevalidate() function, this page lists all the blogs that no longer have a valid outcome.</p>';
 
 
     //List the matching search:
@@ -602,16 +602,16 @@ if(!$action) {
     $invalid_outcomes = 0;
     foreach($active_ins as $count=>$in){
 
-        $in_titlevalidation = $this->IDEA_model->in_titlevalidate($in['in_title']);
+        $in_titlevalidation = $this->BLOG_model->in_titlevalidate($in['in_title']);
 
         if(!$in_titlevalidation['status']){
 
             $invalid_outcomes++;
 
-            //Update idea:
+            //Update blog:
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.$invalid_outcomes.'</td>';
-            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Idea Statuses */, $in['in_status_play_id'], true, 'right').' <a href="/idea/'.$in['in_id'].'">'.echo_in_title($in['in_title']).'</a></td>';
+            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Blog Statuses */, $in['in_status_play_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.echo_in_title($in['in_title']).'</a></td>';
             echo '</tr>';
 
         }
@@ -678,10 +678,11 @@ if(!$action) {
                     $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$en['en_name']).$append_text;
 
                     if($replace_with_is_confirmed){
-                        //Update idea:
+                        //Update blog:
                         $this->PLAY_model->en_update($en['en_id'], array(
                             'en_name' => $new_outcome,
                         ), true, $session_en['en_id']);
+                        $completed_replacements++;
                     }
                 }
 
@@ -730,7 +731,7 @@ if(!$action) {
     }
 
 
-    echo '<input type="submit" class="btn btn-idea" value="Go">';
+    echo '<input type="submit" class="btn btn-blog" value="Go">';
     echo '</form>';
 
 
@@ -753,8 +754,8 @@ if(!$action) {
 
     if($search_for_is_set){
 
-        $matching_results = $this->IDEA_model->in_fetch(array(
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+        $matching_results = $this->BLOG_model->in_fetch(array(
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
             'LOWER(in_title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
         ));
 
@@ -791,7 +792,7 @@ if(!$action) {
                     //Do replacement:
                     $append_text = @$_GET['append_text'];
                     $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_title']).$append_text;
-                    $in_titlevalidation = $this->IDEA_model->in_titlevalidate($new_outcome);
+                    $in_titlevalidation = $this->BLOG_model->in_titlevalidate($new_outcome);
 
                     if($in_titlevalidation['status']){
                         $qualifying_replacements++;
@@ -799,15 +800,15 @@ if(!$action) {
                 }
 
                 if($replace_with_is_confirmed && $in_titlevalidation['status']){
-                    //Update idea:
-                    $this->IDEA_model->in_update($in['in_id'], array(
+                    //Update blog:
+                    $this->BLOG_model->in_update($in['in_id'], array(
                         'in_title' => $in_titlevalidation['in_cleaned_outcome'],
                     ), true, $session_en['en_id']);
                 }
 
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
-                echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Idea Statuses */, $in['in_status_play_id'], true, 'right').' <a href="/idea/'.$in['in_id'].'">'.$in['in_title'].'</a></td>';
+                echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Blog Statuses */, $in['in_status_play_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.$in['in_title'].'</a></td>';
 
                 if($replace_with_is_set){
 
@@ -819,14 +820,14 @@ if(!$action) {
 
 
                     //Loop through parents:
-                    $en_all_7585 = $this->config->item('en_all_7585'); // Idea Subtypes
+                    $en_all_7585 = $this->config->item('en_all_7585'); // Blog Subtypes
                     foreach ($this->READ_model->ln_fetch(array(
                         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
-                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-                        'ln_child_idea_id' => $in['in_id'],
+                        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                        'ln_child_blog_id' => $in['in_id'],
                     ), array('in_parent')) as $in_parent) {
-                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_title'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_type_play_id']]['m_icon'] . '</a> &nbsp;</span>';
+                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/blog/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_title'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_type_play_id']]['m_icon'] . '</a> &nbsp;</span>';
                     }
 
                     echo '</td>';
@@ -864,16 +865,16 @@ if(!$action) {
     }
 
 
-    echo '<input type="submit" class="btn btn-idea" value="Go">';
+    echo '<input type="submit" class="btn btn-blog" value="Go">';
     echo '</form>';
 
 
-} elseif($action=='identical_idea_outcomes') {
+} elseif($action=='identical_blog_outcomes') {
 
     echo '<ul class="breadcrumb"><li><a href="/play/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_panel/'.$action].'</b></li></ul>';
 
-    //Do a query to detect Ideas with the exact same title:
-    $q = $this->db->query('select in1.* from table_idea in1 where (select count(*) from table_idea in2 where in2.in_title = in1.in_title AND in2.in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_title ASC');
+    //Do a query to detect Blogs with the exact same title:
+    $q = $this->db->query('select in1.* from table_blog in1 where (select count(*) from table_blog in2 where in2.in_title = in1.in_title AND in2.in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_title ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
@@ -885,7 +886,7 @@ if(!$action) {
                 $prev_title = $in['in_title'];
             }
 
-            echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_play_id']]['m_icon'] . '</span> <a href="/idea/' . $in['in_id'] . '"><b>' . $in['in_title'] . '</b></a> #' . $in['in_id'] . '</div>';
+            echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_play_id']]['m_name'].': '.$en_all_4737[$in['in_status_play_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_play_id']]['m_icon'] . '</span> <a href="/blog/' . $in['in_id'] . '"><b>' . $in['in_title'] . '</b></a> #' . $in['in_id'] . '</div>';
         }
 
     } else {
@@ -916,10 +917,10 @@ if(!$action) {
         echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No duplicates found!</div>';
     }
 
-} elseif($action=='sync_play_idea_statuses') {
+} elseif($action=='sync_play_blog_statuses') {
 
     //Sync ALL and echo results:
-    echo 'IDAE: '.nl2br(print_r($this->IDEA_model->in_sync_creation($session_en['en_id']), true)).'<hr />';
+    echo 'IDAE: '.nl2br(print_r($this->BLOG_model->in_sync_creation($session_en['en_id']), true)).'<hr />';
     echo 'PLAY: '.nl2br(print_r($this->PLAY_model->en_sync_creation($session_en['en_id']), true)).'<hr />';
 
 } elseif($action=='fix_read_coins') {
@@ -936,20 +937,20 @@ if(!$action) {
         //Anything set here would be updated:
         $update_columns = array();
 
-        if($ln['ln_child_idea_id'] > 0 && $ln['ln_type_play_id'] == 6157){ //ONE ANSWER
+        if($ln['ln_child_blog_id'] > 0 && $ln['ln_type_play_id'] == 6157){ //ONE ANSWER
 
             //Create separate answer:
             $total_added++;
             $this->READ_model->ln_create(array(
                 'ln_type_play_id' => 12336,
                 'ln_owner_play_id' => $ln['ln_owner_play_id'],
-                'ln_parent_idea_id' => $ln['ln_parent_idea_id'],
-                'ln_child_idea_id' => $ln['ln_child_idea_id'],
+                'ln_parent_blog_id' => $ln['ln_parent_blog_id'],
+                'ln_child_blog_id' => $ln['ln_child_blog_id'],
                 'ln_parent_read_id' => $ln['ln_id'],
             ));
 
             //Move answer away:
-            $update_columns['ln_child_idea_id'] = 0;
+            $update_columns['ln_child_blog_id'] = 0;
 
         }
 
@@ -963,37 +964,37 @@ if(!$action) {
 
 } elseif($action=='or__children') {
 
-    echo '<br /><p>Active <a href="/play/6914">Idea Answer Types</a> are listed below.</p><br />';
+    echo '<br /><p>Active <a href="/play/6914">Blog Answer Types</a> are listed below.</p><br />';
 
     $all_steps = 0;
     $all_children = 0;
     $updated = 0;
 
-    foreach ($this->IDEA_model->in_fetch(array(
-        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+    foreach ($this->BLOG_model->in_fetch(array(
+        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
         'in_type_play_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
     ), 0, 0, array('in_id' => 'DESC')) as $count => $in) {
 
-        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Idea Statuses */, $in['in_status_play_id']).' '.echo_en_cache('en_all_6193' /* OR Ideas */, $in['in_type_play_id']).' <b><a href="https://mench.com/idea/'.$in['in_id'].'">'.echo_in_title($in['in_title']).'</a></b></div>';
+        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Blog Statuses */, $in['in_status_play_id']).' '.echo_en_cache('en_all_6193' /* OR Blogs */, $in['in_type_play_id']).' <b><a href="https://mench.com/blog/'.$in['in_id'].'">'.echo_in_title($in['in_title']).'</a></b></div>';
 
         echo '<ul>';
         //Fetch all children for this OR:
         foreach($this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
-            'ln_type_play_id' => 4228, //Idea Link Regular Read
-            'ln_parent_idea_id' => $in['in_id'],
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            'ln_type_play_id' => 4228, //Blog Link Regular Read
+            'ln_parent_blog_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
             $user_steps = $this->READ_model->ln_fetch(array(
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-                'ln_parent_idea_id' => $child_or['in_id'],
+                'ln_parent_blog_id' => $child_or['in_id'],
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ), array(), 0);
             $all_steps += count($user_steps);
 
             $all_children++;
-            echo '<li>'.echo_en_cache('en_all_6186' /* Link Statuses */, $child_or['ln_status_play_id']).' '.echo_en_cache('en_all_4737' /* Idea Statuses */, $child_or['in_status_play_id']).' '.echo_en_cache('en_all_7585', $child_or['in_type_play_id']).' <a href="https://mench.com/idea/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_title($child_or['in_title']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
+            echo '<li>'.echo_en_cache('en_all_6186' /* Link Statuses */, $child_or['ln_status_play_id']).' '.echo_en_cache('en_all_4737' /* Blog Statuses */, $child_or['in_status_play_id']).' '.echo_en_cache('en_all_7585', $child_or['in_type_play_id']).' <a href="https://mench.com/blog/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_title($child_or['in_title']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
         }
         echo '</ul>';
         echo '<hr />';
@@ -1019,8 +1020,8 @@ if(!$action) {
     $total_count = 0;
     foreach ($this->READ_model->ln_fetch(array(
         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
-        'ln_type_play_id' => 4229, //Idea Link Locked Read
+        'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+        'ln_type_play_id' => 4229, //Blog Link Locked Read
         'LENGTH(ln_metadata) > 0' => null,
     ), array('in_child'), 0, 0) as $in_ln) {
         //Echo HTML format of this message:
@@ -1028,9 +1029,9 @@ if(!$action) {
         $mark = echo_in_marks($in_ln);
         if($mark){
 
-            //Fetch parent Idea:
-            $parent_ins = $this->IDEA_model->in_fetch(array(
-                'in_id' => $in_ln['ln_parent_idea_id'],
+            //Fetch parent Blog:
+            $parent_ins = $this->BLOG_model->in_fetch(array(
+                'in_id' => $in_ln['ln_parent_blog_id'],
             ));
 
             $counter++;
@@ -1042,20 +1043,20 @@ if(!$action) {
 
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_play_id']]['m_icon'].'</span>';
-            echo '<a href="/idea/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
+            echo '<a href="/blog/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
             echo '</div>';
 
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_play_id']]['m_icon'].'</span>';
-            echo '<a href="/idea/'.$in_ln['in_id'].'">'.$in_ln['in_title'].' [child]</a>';
+            echo '<a href="/blog/'.$in_ln['in_id'].'">'.$in_ln['in_title'].' [child]</a>';
             echo '</div>';
 
             if(count($this->READ_model->ln_fetch(array(
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
                     'in_type_play_id NOT IN (6907,6914)' => null, //NOT AND/OR Lock
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-                    'ln_child_idea_id' => $in_ln['in_id'],
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                    'ln_child_blog_id' => $in_ln['in_id'],
                 ), array('in_parent'))) > 1 || $in_ln['in_type_play_id'] != 6677){
 
                 echo '<div>';
@@ -1067,7 +1068,7 @@ if(!$action) {
                 //Update user progression link type:
                 $user_steps = $this->READ_model->ln_fetch(array(
                     'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-                    'ln_parent_idea_id' => $in_ln['in_id'],
+                    'ln_parent_blog_id' => $in_ln['in_id'],
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 ), array(), 0);
 
@@ -1099,8 +1100,8 @@ if(!$action) {
         $counter = 0;
         foreach ($this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Statuses Active
-            'ln_type_play_id' => 4228, //Idea Link Regular Read
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            'ln_type_play_id' => 4228, //Blog Link Regular Read
             'LENGTH(ln_metadata) > 0' => null,
         ), array('in_child'), 0, 0) as $in_ln) {
             //Echo HTML format of this message:
@@ -1108,9 +1109,9 @@ if(!$action) {
             $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
             if($tr__assessment_points!=0){
 
-                //Fetch parent Idea:
-                $parent_ins = $this->IDEA_model->in_fetch(array(
-                    'in_id' => $in_ln['ln_parent_idea_id'],
+                //Fetch parent Blog:
+                $parent_ins = $this->BLOG_model->in_fetch(array(
+                    'in_id' => $in_ln['ln_parent_blog_id'],
                 ));
 
                 $counter++;
@@ -1121,12 +1122,12 @@ if(!$action) {
                 echo '<td style="text-align: left;">';
                 echo '<div>';
                 echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_play_id']]['m_icon'].'</span>';
-                echo '<a href="/idea/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
+                echo '<a href="/blog/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
                 echo '</div>';
 
                 echo '<div>';
                 echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_play_id']]['m_icon'].'</span>';
-                echo '<a href="/idea/'.$in_ln['in_id'].'">'.$in_ln['in_title'].'</a>';
+                echo '<a href="/blog/'.$in_ln['in_id'].'">'.$in_ln['in_title'].'</a>';
                 echo '</div>';
                 echo '</td>';
                 echo '</tr>';
@@ -1158,7 +1159,7 @@ if(!$action) {
                     <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300; border-left: 1px solid #AAAAAA; border-right:0px solid #FFF;"> levels deep.</span>
                 </div>
             </div>
-            <input type="submit" class="btn btn-idea" value="Go" style="display: inline-block; margin-top: -41px;" />
+            <input type="submit" class="btn btn-blog" value="Go" style="display: inline-block; margin-top: -41px;" />
         </div>';
 
     echo '</form>';
@@ -1171,7 +1172,7 @@ $(document).ready(function () {
 //Show spinner:
 $(\'#in_report_conditional_steps\').html(\'<span><i class="far fa-yin-yang fa-spin"></i> \' + echo_loading_notify() +  \'</span>\').hide().fadeIn();
 //Load report based on input fields:
-$.post("/idea/in_report_conditional_steps", {
+$.post("/blog/in_report_conditional_steps", {
     starting_in: parseInt($(\'#starting_in\').val()),
     depth_levels: parseInt($(\'#depth_levels\').val()),
 }, function (data) {
@@ -1235,7 +1236,7 @@ $.post("/idea/in_report_conditional_steps", {
         echo '<input type="number" class="form-control border" name="push_message" value="1"><br /><br />';
 
 
-        echo '<input type="submit" class="btn btn-idea" value="Compose Test Message">';
+        echo '<input type="submit" class="btn btn-blog" value="Compose Test Message">';
         echo '</form>';
 
     }

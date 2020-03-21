@@ -205,8 +205,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <div id="message-frame" class="fixed-box hidden" player-id="">
 
         <h5 class="badge badge-h" data-toggle="tooltip"
-            title="Message management can only be done using Ideas. Player messages are listed below for view-only"
-            data-placement="bottom"><i class="fas fa-comment-plus"></i> Player References within Idea Notes
+            title="Message management can only be done using Blogs. Player messages are listed below for view-only"
+            data-placement="bottom"><i class="fas fa-comment-plus"></i> Player References within Blog Notes
         </h5>
         <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
             <a href="#" onclick="modify_cancel()"><i class="fas fa-times-circle"></i></a>
@@ -302,14 +302,14 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 $counter = $child_links[0]['totals'];
 
                 //Active if count exists and not already activated.
-                $authored_ideas = $this->READ_model->ln_fetch(array(
-                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+                $authored_blogs = $this->READ_model->ln_fetch(array(
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_play_id' => 4983,
                     'ln_parent_play_id' => $player['en_id'],
                 ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
 
-                $default_active = ( $counter || !$authored_ideas[0]['totals'] );
+                $default_active = ( $counter || !$authored_blogs[0]['totals'] );
 
                 if($default_active){
                     array_push($activated_tabs, $en_id2);
@@ -384,41 +384,41 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
 
-                //IDEA NOTES
-                $idea_note_filters = array(
-                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+                //BLOG NOTES
+                $blog_note_filters = array(
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                     'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_play_id' => $en_id2,
                     '(ln_owner_play_id='.$player['en_id'].' OR ln_child_play_id='.$player['en_id'].' OR ln_parent_play_id='.$player['en_id'].')' => null,
                 );
 
                 //COUNT ONLY
-                $item_counters = $this->READ_model->ln_fetch($idea_note_filters, array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
+                $item_counters = $this->READ_model->ln_fetch($blog_note_filters, array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
                 $counter = $item_counters[0]['totals'];
 
                 //SHOW LASTEST 100
                 if($counter>0){
 
                     $this_tab .= '<div class="list-group">';
-                    foreach ($this->READ_model->ln_fetch($idea_note_filters, array('in_child'), config_var(11064), 0, array(
+                    foreach ($this->READ_model->ln_fetch($blog_note_filters, array('in_child'), config_var(11064), 0, array(
                         'in_status_play_id' => 'DESC',
                         'in_title'          => 'ASC'
-                    )) as $idea_note) {
+                    )) as $blog_note) {
                         if(in_array($en_id2, $this->config->item('en_ids_12321'))){
 
-                            $this_tab .= echo_in_read($idea_note);
+                            $this_tab .= echo_in_read($blog_note);
 
                         } elseif(in_array($en_id2, $this->config->item('en_ids_12322'))){
 
                             //Include the message:
                             $footnotes = null;
-                            if($idea_note['ln_content']){
+                            if($blog_note['ln_content']){
                                 $footnotes .= '<div class="message_content">';
-                                $footnotes .= $this->READ_model->dispatch_message($idea_note['ln_content']);
+                                $footnotes .= $this->READ_model->dispatch_message($blog_note['ln_content']);
                                 $footnotes .= '</div>';
                             }
 
-                            $this_tab .= echo_in_read($idea_note, false, $footnotes);
+                            $this_tab .= echo_in_read($blog_note, false, $footnotes);
 
                         }
                     }
@@ -426,13 +426,13 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 } elseif($default_active){
 
-                    $this_tab .= '<div class="alert alert-warning">No ideas featured yet.</div>';
+                    $this_tab .= '<div class="alert alert-warning">No blogs featured yet.</div>';
 
                 }
 
             } elseif(in_array($en_id2, $this->config->item('en_ids_12410'))){
 
-                //PLAYER COINS (READ & IDEA)
+                //PLAYER COINS (READ & BLOG)
 
                 $join_objects = array();
                 $match_columns = array(
@@ -441,9 +441,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 );
 
                 if($en_id2 == 12273){
-                    //Idea Coins
+                    //Blog Coins
                     $match_columns['ln_parent_play_id'] = $player['en_id'];
-                    $match_columns['in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Idea Statuses Public
+                    $match_columns['in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Blog Statuses Public
                     $join_objects = array('in_child');
                 } elseif($en_id2 == 6255){
                     //Read Coins:

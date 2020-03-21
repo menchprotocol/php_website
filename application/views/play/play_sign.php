@@ -4,8 +4,8 @@ $en_all_7555 = $this->config->item('en_all_7555');
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 $this_attempt = array(
-    'ln_type_play_id' => ( $referrer_in_id > 0 ? 7560 /* User Signin Idea Channel Choose */ : 7561 /* User Signin on Website */ ),
-    'ln_parent_idea_id' => $referrer_in_id,
+    'ln_type_play_id' => ( $referrer_in_id > 0 ? 7560 /* User Signin Blog Channel Choose */ : 7561 /* User Signin on Website */ ),
+    'ln_parent_blog_id' => $referrer_in_id,
 );
 
 $current_sign_in_attempt = array(); //Will try to find this...
@@ -14,7 +14,7 @@ if(is_array($current_sign_in_attempts) && count($current_sign_in_attempts) > 0){
     //See if any of the current sign-in attempts match this:
     foreach($current_sign_in_attempts as $sign_in_attempt){
         $all_match = true;
-        foreach(array('ln_parent_idea_id') as $sign_in_attempt_field){
+        foreach(array('ln_parent_blog_id') as $sign_in_attempt_field){
             if(intval($this_attempt[$sign_in_attempt_field]) != intval($sign_in_attempt[$sign_in_attempt_field])){
                 $all_match = false;
                 break;
@@ -52,12 +52,12 @@ if(count($current_sign_in_attempt) == 0){
     var channel_choice_count = <?= count($en_all_7555) ?>;
     var channel_choice_messenger = {
         ln_type_play_id: 7558, //User Signin with Messenger Choice
-        ln_parent_idea_id: <?= intval($referrer_in_id) ?>,
+        ln_parent_blog_id: <?= intval($referrer_in_id) ?>,
         ln_parent_read_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
     var channel_choice_website = {
         ln_type_play_id: 7559, //User Signin with Website Choice
-        ln_parent_idea_id: <?= intval($referrer_in_id) ?>,
+        ln_parent_blog_id: <?= intval($referrer_in_id) ?>,
         ln_parent_read_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
 </script>
@@ -73,9 +73,9 @@ if(count($current_sign_in_attempt) == 0){
 
     <?php
     if($referrer_in_id > 0){
-        $ins = $this->IDEA_model->in_fetch(array(
+        $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $referrer_in_id,
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         ));
         if(count($ins) > 0){
             echo '<p class="text-center montserrat doupper"><a href="/'.$referrer_in_id.'"><u>'.echo_in_title($ins[0]['in_title']).'</u></a> FOR FREE</p>';

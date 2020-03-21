@@ -131,10 +131,10 @@ if(!isset($hide_header)){
                             $this_mench = current_mench(strtolower($m['m_name']));
                             $url = '/'.$this_mench['x_name'];
 
-                            if(!$is_current && isset($in) && in_array($this_mench['x_name'], array('read','idea'))){
-                                if($current_mench['x_name']=='read' && $this_mench['x_name']=='idea'){
-                                    $url = '/idea/'.$in['in_id'];
-                                } elseif($current_mench['x_name']=='idea' && $this_mench['x_name']=='read'){
+                            if(!$is_current && isset($in) && in_array($this_mench['x_name'], array('read','blog'))){
+                                if($current_mench['x_name']=='read' && $this_mench['x_name']=='blog'){
+                                    $url = '/blog/'.$in['in_id'];
+                                } elseif($current_mench['x_name']=='blog' && $this_mench['x_name']=='read'){
                                     $url = '/'.$in['in_id'];
                                 }
                             }
@@ -191,17 +191,17 @@ if(!isset($hide_header)){
                                     $this_mench = current_mench(strtolower($m['m_name']));
                                     $url = '/' . $this_mench['x_name'];
 
-                                    if (!$is_current && isset($in) && in_array($this_mench['x_name'], array('read', 'idea'))) {
-                                        if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'idea') {
-                                            $url = '/idea/' . $in['in_id'];
-                                        } elseif ($current_mench['x_name'] == 'idea' && $this_mench['x_name'] == 'read') {
+                                    if (!$is_current && isset($in) && in_array($this_mench['x_name'], array('read', 'blog'))) {
+                                        if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'blog') {
+                                            $url = '/blog/' . $in['in_id'];
+                                        } elseif ($current_mench['x_name'] == 'blog' && $this_mench['x_name'] == 'read') {
                                             $url = '/' . $in['in_id'];
                                         }
                                     }
 
                                     echo '<a class="mench_coin ' . $this_mench['x_name'] . ' border-' . $this_mench['x_name'] . ($is_current ? ' focustab ' : '') . ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" href="' . $url . '">';
                                     echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
-                                    echo '<span class="montserrat ' . $this_mench['x_name'] . '_name show-max">' . $m['m_name'] . ' </span>';
+                                    echo '<span class="montserrat ' . $this_mench['x_name'] . '_name show-max">' . $m['m_name'] . '</span>';
                                     echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
                                     echo '</a>';
 

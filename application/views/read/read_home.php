@@ -1,7 +1,7 @@
 <?php
 
 $timestamp = time();
-$has_multiple_ideas = ( count($player_reads) >= 2 );
+$has_multiple_blogs = ( count($player_reads) >= 2 );
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 ?>
@@ -25,12 +25,12 @@ if(!$session_en){
     foreach ($player_reads as $priority => $ln) {
 
         //Display row:
-        echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item no-side-padding itemread '.( $has_multiple_ideas ? 'actionplan_sort' : '').'" style="padding-right: 25px !important;">';
+        echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item no-side-padding itemread '.( $has_multiple_blogs ? 'actionplan_sort' : '').'" style="padding-right: 25px !important;">';
 
         echo echo_in_thumbnail($ln['in_id']);
 
         echo '<span class="icon-block"><i class="fas fa-circle read" aria-hidden="true"></i></span>';
-        echo '<b class="actionplan-title montserrat montserrat idea-url in-title-'.$ln['in_id'].'">' . $ln['in_title'] . '</b>';
+        echo '<b class="actionplan-title montserrat montserrat blog-url in-title-'.$ln['in_id'].'">' . $ln['in_title'] . '</b>';
 
 
         if(superpower_active(10989, true)){
@@ -38,12 +38,12 @@ if(!$session_en){
             $metadata = unserialize($ln['in_metadata']);
             if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
 
-                echo '<div class="montserrat idea-info doupper '.superpower_active(10989).'"><span class="icon-block">&nbsp;</span>';
+                echo '<div class="montserrat blog-info doupper '.superpower_active(10989).'"><span class="icon-block">&nbsp;</span>';
                 //It does have some children, let's show more details about it:
                 $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
                 echo ( $has_time_estimate ? echo_time_range($ln, true).' READ ' : '' );
-                echo '<span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas read">['.$completion_rate['completion_percentage'].'% DONE]</span> ';
+                echo '<span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read">['.$completion_rate['completion_percentage'].'% DONE]</span> ';
                 echo '</div>';
 
             }
@@ -55,7 +55,7 @@ if(!$session_en){
         echo '<div class="note-edit edit-off"><span class="show-on-hover">';
 
         //Sort:
-        if($has_multiple_ideas){
+        if($has_multiple_blogs){
             echo '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort"></i></span>';
         }
 
