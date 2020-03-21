@@ -2349,6 +2349,10 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
     if(count($in__children)){
 
+        if(!$push_message){
+            echo '<div class="previous_reads">';
+        }
+
         //List children so they know what's ahead:
         $found_incomplete = false;
         $trigger_show_all = 0;
@@ -2444,6 +2448,10 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
             }
 
         }
+    }
+
+    if(!$push_message){
+        echo '</div>';
     }
 
     //Always show next:

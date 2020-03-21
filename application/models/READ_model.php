@@ -1754,11 +1754,6 @@ class READ_model extends CI_Model
         }
 
 
-        if(!$push_message){
-            echo '<div class="previous_reads">';
-        }
-
-
 
         //LOCKED
         if (in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7309'))) {
@@ -2147,11 +2142,6 @@ class READ_model extends CI_Model
                 echo '<div style="font-size: 0.7em; margin-top: 10px;">Or <a href="javascript:void(0);" onclick="blog_skip(' . $recipient_en['en_id'] . ', ' . $ins[0]['in_id'] . ')"><u>Skip</u></a>.</div>';
 
             }
-        }
-
-
-        if(!$push_message){
-            echo '</div>';
         }
 
     }
