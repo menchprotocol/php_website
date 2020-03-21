@@ -1536,10 +1536,6 @@ class READ_model extends CI_Model
             } else {
 
                 //IDEA TITLE
-                echo '<div><h1 class="inline-block block-one">' . echo_in_title($ins[0]['in_title']) . '</h1></div>';
-
-
-
                 echo '<div>'.( isset($recipient_en['en_id']) ? '<span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span>' : '<span class="icon-block">&nbsp;</span>' ).'<h1 class="inline-block block-one">' . echo_in_title($ins[0]['in_title']) . '</h1></div>';
 
                 foreach ($in__messages as $message_ln) {
