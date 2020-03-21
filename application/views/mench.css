@@ -1260,7 +1260,9 @@ label {
     .show-max{display: none !important;}
 }
 
-
+.itemidea {
+    padding:0 5px;
+}
 
 @media (min-width:767px) {
     .itemidea:hover {

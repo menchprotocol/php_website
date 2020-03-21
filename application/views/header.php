@@ -202,7 +202,7 @@ if(!isset($hide_header)){
                                     echo '<a class="mench_coin ' . $this_mench['x_name'] . ' border-' . $this_mench['x_name'] . ($is_current ? ' focustab ' : '') . ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" href="' . $url . '">';
                                     echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                     echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
-                                    //echo ' <span class="montserrat ' . $this_mench['x_name'] . '_name show-max">' . $m['m_name'] . 'S</span>';
+                                    echo ' <span class="montserrat ' . $this_mench['x_name'] . '_name show-max">' . $m['m_name'] . 'S</span>';
                                     echo '</a>';
 
                                 }
