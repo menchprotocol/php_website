@@ -1269,13 +1269,13 @@ label {
 }
 
 @media (min-width:767px) {
-    a.itemblog:hover {
+    .itemblog:hover {
         background-color:#fff4b5 !important;
     }
-    a.itemplay:hover {
+    .itemplay:hover {
         background-color:#b2defd !important;
     }
-    a.itemread:hover {
+    .itemread:hover {
         background-color:#fbc4ce !important;
     }
 }
