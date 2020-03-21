@@ -1829,7 +1829,6 @@ class READ_model extends CI_Model
 
                         //In HTML Give extra option to change answer:
 
-                        echo '<div class="previous_reads">';
                         echo '<div class="selected_before">';
 
                         //List answers:
@@ -1838,7 +1837,6 @@ class READ_model extends CI_Model
                         //Allow to edit:
                         echo '<div class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>EDIT ANSWER</u></a></div>';
 
-                        echo '</div>';
                         echo '</div>';
 
                     }
@@ -1888,7 +1886,6 @@ class READ_model extends CI_Model
 
                 } else {
 
-                    echo '<div class="previous_reads">';
                     echo '<div class="selected_before '.( count($read_answers)>0 ? 'hidden' : '' ).'">';
 
                     //HTML:
@@ -1989,10 +1986,9 @@ class READ_model extends CI_Model
                     echo echo_in_previous($in_id, $recipient_en);
 
                     //Button to submit selection:
-                    echo '<div class="inline-block margin-top-down previous_reads"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($read_answers)>0 ? 'UPDATE' : 'SELECT' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($read_answers)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL</u></a></span>' : '' ).' <span class="result-update"></span></div>';
+                    echo '<div class="inline-block margin-top-down"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($read_answers)>0 ? 'UPDATE' : 'SELECT' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($read_answers)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL</u></a></span>' : '' ).' <span class="result-update"></span></div>';
 
                     //Close list:
-                    echo '</div>';
                     echo '</div>';
                     echo '</div>';
 
