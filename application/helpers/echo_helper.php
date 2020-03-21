@@ -1686,6 +1686,9 @@ function echo_in_thumbnail($in_id){
         )) as $embed_image){
             $embed_code .= '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="'.$embed_image['ln_content'].'" /></span></div>';
         }
+        if($embed_code){
+            break;
+        }
 
         //Embed Videos?
         foreach($CI->READ_model->ln_fetch(array(
@@ -1697,8 +1700,13 @@ function echo_in_thumbnail($in_id){
             if(strlen($youtube_id) > 0){
                 $embed_code .= '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
             }
+            if($embed_code){
+                break;
+            }
         }
-
+        if($embed_code){
+            break;
+        }
     }
 
     //Return results:
@@ -2361,6 +2369,8 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
             //HTML:
             if($has_content){
                 echo '<div class="read-topic">'.trim($prefix_statement).'</div>';
+            } else {
+                echo '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-forward"></i></span>UP NEXT:</div>';
             }
             echo '<div class="list-group">';
 
