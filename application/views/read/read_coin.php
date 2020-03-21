@@ -7,13 +7,6 @@
 
 <div class="container container-wide">
     <?php
-
-    //Show breadcrumbs
-    echo echo_read_breadcrumbs($in['in_id']);
-
-    echo '<div class="doclear">&nbsp;</div>';
-
     $this->READ_model->read_echo($in['in_id'], superpower_assigned());
-
     ?>
 </div>
