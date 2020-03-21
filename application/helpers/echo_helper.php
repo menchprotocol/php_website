@@ -2526,7 +2526,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
 
                     //Show the breadcrumb since it's connected:
                     $ui = '<div class="previous_reads hidden">';
-                    $ui .= '<p>Choose a Previous Read:</p>';
+                    $ui .= '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-forward"></i></span>CHOOSE PREVIOUS:</div>';
                     $ui .= '<div class="list-group bottom-read-line">';
 
                     $breadcrumb_items = array();
@@ -2559,7 +2559,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
 
                     $ui .= join('', array_reverse($breadcrumb_items));
                     $ui .= '</div>';
-                    $ui .= '<p>Or <a '.$previous_toggle.'>Cancel Going Back</a></p>';
+                    $ui .= '<p>Or <a '.$previous_toggle.' class="underline"><b>Cancel Going Back</b></a></p>';
                     $ui .= '</div>';
 
                     break; //TODO Remove later and allow multiple parent links
@@ -2581,7 +2581,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
         }
 
         //NEXT:
-        echo '<div class="inline-block margin-top-down"><a class="btn btn-read" href="/'.$in_id.'/next">NEXT <i class="fad fa-step-forward"></i></a></div>';
+        echo '<div class="inline-block margin-top-down previous_reads"><a class="btn btn-read" href="/'.$in_id.'/next">NEXT <i class="fad fa-step-forward"></i></a></div>';
 
     }
 
