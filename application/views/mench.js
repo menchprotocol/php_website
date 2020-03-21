@@ -67,7 +67,7 @@ function js_ln_create(new_ln_data){
 
 function load_leaderboard(){
     //Show loading icon:
-    $('#load_leaderboard').html('<div class="alert montserrat play"><span class="icon-block"><i class="far fa-yin-yang fa-spin play"></i></span>LOADING...</div>');
+    $('#load_leaderboard').html('<div class="alert montserrat play" style="background-color: #FFF;"><span class="icon-block"><i class="far fa-yin-yang fa-spin play"></i></span>LOADING...</div>');
     $('.top-players').addClass('hidden');
 
     $.post("/play/load_leaderboard/", { }, function (data) {
