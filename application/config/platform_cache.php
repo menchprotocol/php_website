@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-20 16:22:25 PST
+//Generated 2020-03-20 17:34:53 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -3916,7 +3916,7 @@ $config['en_all_11035'] = array(
     ),
     12211 => array(
         'm_icon' => '<i class="fad fa-step-forward read" aria-hidden="true"></i>',
-        'm_name' => 'NEXT READ',
+        'm_name' => 'NEXT',
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
