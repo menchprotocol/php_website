@@ -2502,7 +2502,6 @@ function echo_in_next($in_id, $recipient_en, $push_message){
             //Now fetch the parent of the current
             $ui = null;
             $recursive_parents = $CI->BLOG_model->in_fetch_recursive_parents($in_id, true, true);
-            $previous_toggle = 'href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"';
             $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
             $en_all_2738 = $CI->config->item('en_all_2738');
 
@@ -2559,7 +2558,6 @@ function echo_in_next($in_id, $recipient_en, $push_message){
 
                     $ui .= join('', array_reverse($breadcrumb_items));
                     $ui .= '</div>';
-                    $ui .= '<p>Or <a '.$previous_toggle.' class="underline"><b>Cancel Going Back</b></a></p>';
                     $ui .= '</div>';
 
                     break; //TODO Remove later and allow multiple parent links
@@ -2576,7 +2574,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
                 echo $ui;
 
                 //Now show button to show parents:
-                echo '<div class="inline-block margin-top-down"><a class="btn btn-read" '.$previous_toggle.'><i class="fad fa-step-backward"></i></a></div>&nbsp;&nbsp;&nbsp;';
+                echo '<div class="inline-block margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a></div>&nbsp;&nbsp;&nbsp;';
             }
         }
 
