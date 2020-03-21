@@ -1227,10 +1227,6 @@ label {
     width: 377px;
 }
 
-.previous_reads{
-    padding:10px 0;
-}
-
 /* RESPONSIVE */
 @media (max-width:767px) {
     .mini-hidden{
