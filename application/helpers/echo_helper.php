@@ -2587,7 +2587,7 @@ function echo_in_previous($in_id, $recipient_en){
     //Did We Find It?
     if($ui){
         //Now show button to show parents:
-        $ui .= '<a class="btn btn-read margin-top-down" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;&nbsp;&nbsp;';
+        $ui .= '<div class="inline-block margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a></div>&nbsp;&nbsp;&nbsp;';
     }
 
     return $ui;
