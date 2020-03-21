@@ -1268,13 +1268,13 @@ label {
 }
 
 @media (min-width:767px) {
-    .itemidea:hover {
+    a.itemidea:hover {
         background-color:#fff4b5 !important;
     }
-    .itemplay:hover {
+    a.itemplay:hover {
         background-color:#b2defd !important;
     }
-    .itemread:hover {
+    a.itemread:hover {
         background-color:#fbc4ce !important;
     }
 }

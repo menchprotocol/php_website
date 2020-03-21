@@ -1589,7 +1589,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
 
 
-    $ui = ( $completion_rate['completion_percentage'] > 0 ? '<a href="/'.$in['in_id'] . '"' : '<span' ).' class="list-group-item no-side-padding itemread '.$extra_class.'">';
+    $ui = ( $completion_rate['completion_percentage'] > 0 ? '<a href="/'.$in['in_id'] . '"' : '<div' ).' class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
 
