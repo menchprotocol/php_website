@@ -678,7 +678,7 @@ textarea.note-textarea{
 }
 
 #MENCHmenu td, #leaderboard td{
-    vertical-align: bottom;
+    vertical-align:top;
     /* white-space: nowrap; */
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1228,7 +1228,7 @@ label {
 }
 
 .previous_reads{
-    padding: 5px 0;
+    padding:10px 0;
 }
 
 /* RESPONSIVE */

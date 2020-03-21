@@ -1596,7 +1596,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
 
     //READ ICON
     $ui .= ( $completion_rate['completion_percentage'] > 0 ? '<a href="/'.$in['in_id'] . '">' : '' );
-    $ui .= '<span class="icon-block">'.( $completion_rate['completion_percentage'] > 0 ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-circle read"></i>' ).'</span>';
+    $ui .= '<span class="icon-block">'.( $completion_rate['completion_percentage'] > 0 ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-lock read" title="You Can Access This Idea Once Started" data-toggle="tooltip" data-placement="right"></i>' ).'</span>';
     $ui .= '<b class="montserrat idea-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
     $ui .= ( $completion_rate['completion_percentage'] > 0 ? '</a>' : '' );
 
