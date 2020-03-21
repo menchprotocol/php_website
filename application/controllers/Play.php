@@ -733,7 +733,7 @@ fragment PostListingItemSidebar_post on Post {
 
             if($count==$show_max){
 
-                echo '<tr class="see_more_who"><td colspan="3"><span class="icon-block"><i class="far fa-search-plus play"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat play" style="text-decoration: none !important;">TOP '.$load_max.'</b></a></td></tr>';
+                echo '<tr class="see_more_who"><td colspan="3"><span class="icon-block"><i class="far fa-search-plus play"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat play" style="text-decoration: none !important;">TOP '.$load_max.' PLAYERS</b></a></td></tr>';
 
                 echo '<tr class="see_more_who"></tr>';
 
