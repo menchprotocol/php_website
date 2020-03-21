@@ -75,7 +75,7 @@ $(document).ready(function () {
     autosize($('.text__4736_'+in_loaded_id));
 
     $('#expand_blogs .expand_all').click(function (e) {
-        $(".list-is-children .blogs_sortable").each(function () {
+        $(".next_blogs .blogs_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 1);
         });
     });
@@ -92,12 +92,12 @@ $(document).ready(function () {
 
     //Watch the expand/close all buttons:
     $('#expand_blogs .expand_all').click(function (e) {
-        $(".list-is-children .blogs_sortable").each(function () {
+        $(".next_blogs .blogs_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 1);
         });
     });
     $('#expand_blogs .close_all').click(function (e) {
-        $(".list-is-children .blogs_sortable").each(function () {
+        $(".next_blogs .blogs_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 0);
         });
     });

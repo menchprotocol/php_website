@@ -2232,7 +2232,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
         //PREVIOUS & NEXT BLOGS
-        $previous_blogs = $CI->READ_model->ln_fetch(array(
+        $previous_ins = $CI->READ_model->ln_fetch(array(
             'ln_child_blog_id' => $in['in_id'],
             'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -2243,8 +2243,8 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
             'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_blogs');
 
-        if($previous_blogs[0]['total_blogs'] > 1){
-            $ui .= '<span class="montserrat blog" data-toggle="tooltip" data-placement="right" title="' . $en_all_12413[11019]['m_name'] . '"><span class="icon-block">' . $en_all_12413[11019]['m_icon'] . '</span>'.$previous_blogs[0]['total_blogs'].'</span>';
+        if($previous_ins[0]['total_blogs'] > 1){
+            $ui .= '<span class="montserrat blog" data-toggle="tooltip" data-placement="right" title="' . $en_all_12413[11019]['m_name'] . '"><span class="icon-block">' . $en_all_12413[11019]['m_icon'] . '</span>'.$previous_ins[0]['total_blogs'].'</span>';
         }
         if($next_blogs[0]['total_blogs'] > 0){
             $ui .= '<span class="montserrat blog" data-toggle="tooltip" data-placement="right" title="' . $en_all_12413[11020]['m_name'] . '"><span class="icon-block">' . $en_all_12413[11020]['m_icon'] . '</span>'.$next_blogs[0]['total_blogs'].'</span>';

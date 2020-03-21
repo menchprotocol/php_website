@@ -43,7 +43,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     $show_tab_menu_count = 0;
     $show_tab_ui = '';
 
-    if($col_num==2){
+    if($en_id==12365){
 
         //BLOG BODY
 
@@ -54,18 +54,20 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '</div>';
 
 
-    } elseif($col_num==3){
+    } elseif($en_id==11018){
 
-        //BLOG FOOTER
+        //BLOG CONTROLLER
+
+        echo '<div class="inline-block top-margin left-margin previous_blogs"><a class="btn btn-read" href="javascript:void(0)" onclick="$(\'.previous_blogs\').toggleClass(\'hidden\')"><i class="fad fa-step-backward"></i></a></div>';
 
         //BLOG STATUS
-        echo '<div class="inline-block top-margin left-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-blog', $is_author, true, $in['in_id']).'</div>';
+        echo '<div class="inline-block top-margin left-half-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-blog', $is_author, true, $in['in_id']).'</div>';
 
         //BLOG TYPE
-        echo '<span class="inline-block top-margin left-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active, true, $in['in_id']).'</span>';
+        echo '<span class="inline-block top-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active, true, $in['in_id']).'</span>';
 
         //BLOG TIME
-        echo '<div class="inline-block top-margin left-margin '.superpower_active(10985).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
+        echo '<div class="inline-block top-margin left-half-margin '.superpower_active(10985).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
 
     }
 
@@ -99,7 +101,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             $counter = count($blog__parents);
 
-            $this_tab .= '<div id="list-in-' . $in['in_id'] . '-1" class="list-group">';
+            $this_tab .= '<div id="list-in-' . $in['in_id'] . '-1" class="list-group hidden previous_blogs">';
 
             foreach ($blog__parents as $parent_in) {
                 $this_tab .= echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
@@ -135,7 +137,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $default_active = true;
 
             //List child blogs:
-            $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children">';
+            $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group next_blogs">';
             foreach ($blog__children as $child_in) {
                 $this_tab .= echo_in($child_in, $in['in_id'], false, in_is_author($child_in['in_id']));
             }
@@ -153,7 +155,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                            placeholder="ADD NEXT BLOG">
                 </div><div class="algolia_pad_search hidden in_pad_bottom"></div></div>';
             }
-
 
         } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
 
