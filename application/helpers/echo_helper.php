@@ -1591,7 +1591,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
 
     $ui  = '<div class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= ( $completion_rate['completion_percentage'] > 0 ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
-    $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;" '.( $completion_rate['completion_percentage'] > 0 ? '' : ' title="Unlock By Completing Previous Blogs" data-toggle="tooltip" data-placement="top" ' ).'><tr>';
+    $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
 
 
