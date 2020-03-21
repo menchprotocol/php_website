@@ -633,7 +633,6 @@ if(!$action) {
     $search_for_is_set = (isset($_GET['search_for']) && strlen($_GET['search_for'])>0);
     $replace_with_is_set = ((isset($_GET['replace_with']) && strlen($_GET['replace_with'])>0) || (isset($_GET['append_text']) && strlen($_GET['append_text'])>0));
     $qualifying_replacements = 0;
-    $completed_replacements = 0;
     $replace_with_is_confirmed = false;
 
     if($search_for_is_set){
@@ -682,7 +681,6 @@ if(!$action) {
                         $this->PLAY_model->en_update($en['en_id'], array(
                             'en_name' => $new_outcome,
                         ), true, $session_en['en_id']);
-                        $completed_replacements++;
                     }
                 }
 
@@ -710,7 +708,7 @@ if(!$action) {
     }
 
 
-    if($search_for_is_set && count($matching_results) > 0 && !$completed_replacements){
+    if($search_for_is_set && count($matching_results) > 0){
         //now give option to replace with:
         echo '<div class="mini-header">Replace With:</div>';
         echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
@@ -720,7 +718,7 @@ if(!$action) {
         echo '<input type="text" class="form-control border maxout" name="append_text" value="'.@$_GET['append_text'].'"><br />';
     }
 
-    if($replace_with_is_set && !$completed_replacements){
+    if($replace_with_is_set){
         if($qualifying_replacements==count($matching_results) /*No Errors*/){
             //now give option to replace with:
             echo '<div class="mini-header">Confirm Replacement by Typing "'.$confirmation_keyword.'":</div>';
