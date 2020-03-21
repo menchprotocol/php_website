@@ -2496,87 +2496,8 @@ function echo_in_next($in_id, $recipient_en, $push_message){
         <?php
         */
 
-        //PREVIOUS?
-        if($recipient_en && $recipient_en['en_id'] > 0){
-
-            //Now fetch the parent of the current
-            $ui = null;
-            $recursive_parents = $CI->BLOG_model->in_fetch_recursive_parents($in_id, true, true);
-            $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
-            $en_all_2738 = $CI->config->item('en_all_2738');
-
-            //READ LIST
-            $player_list = $CI->READ_model->ln_fetch(array(
-                'ln_owner_play_id' => $recipient_en['en_id'],
-                'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            ), array('in_parent'), 0);
-
-            //Cleanup the list:
-            $list_ids = array();
-            foreach($player_list as $in_list){
-                array_push($list_ids, $in_list['in_id']);
-            }
-
-
-            foreach ($recursive_parents as $grand_parent_ids) {
-                foreach(array_intersect($grand_parent_ids, $list_ids) as $intersect) {
-
-                    //Show the breadcrumb since it's connected:
-                    $ui = '<div class="previous_reads hidden">';
-                    $ui .= '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-forward"></i></span>CHOOSE PREVIOUS:</div>';
-                    $ui .= '<div class="list-group bottom-read-line">';
-
-                    $breadcrumb_items = array();
-
-                    foreach ($grand_parent_ids as $parent_in_id) {
-
-                        //Fetch this blog name:
-                        $ins_this = $CI->BLOG_model->in_fetch(array(
-                            'in_id' => $parent_in_id,
-                        ));
-                        if (count($ins_this) > 0) {
-
-                            $completion_ui_rate = '';
-                            if (superpower_active(10989, true)) {
-                                //Calcullate completion time:
-                                $completion_rate = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $ins_this[0]);
-                                if ($completion_rate['completion_percentage'] > 0) {
-                                    $completion_ui_rate = '<span title="' . $completion_rate['steps_completed'] . '/' . $completion_rate['steps_total'] . ' read" class="'.superpower_active(10989).'"> [' . $completion_rate['completion_percentage'] . '%]</span>';
-                                }
-                            }
-
-                            array_push($breadcrumb_items, '<a href="/' . $parent_in_id . '"class="list-group-item itemread no-side-padding montserrat"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="icon-block' . (in_array($ins_this[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '') . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_name'] . ': ' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_desc'] . '">' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_icon'] . '</span></span>' . $ins_this[0]['in_title'] . $completion_ui_rate . '</a>');
-
-                        }
-
-                        if ($parent_in_id == $intersect) {
-                            break;
-                        }
-                    }
-
-                    $ui .= join('', array_reverse($breadcrumb_items));
-                    $ui .= '</div>';
-                    $ui .= '</div>';
-
-                    break; //TODO Remove later and allow multiple parent links
-
-                }
-
-                if($ui){
-                    break; //TODO Remove later and allow multiple parent links
-                }
-            }
-
-            //Did We Find It?
-            if($ui){
-                echo $ui;
-
-                //Now show button to show parents:
-                echo '<div class="inline-block margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a></div>&nbsp;&nbsp;&nbsp;';
-            }
-        }
+        //PREVIOUS:
+        echo echo_in_previous($in_id, $recipient_en);
 
         //NEXT:
         echo '<div class="inline-block margin-top-down previous_reads"><a class="btn btn-read" href="/'.$in_id.'/next">NEXT <i class="fad fa-step-forward"></i></a></div>';
@@ -2585,6 +2506,92 @@ function echo_in_next($in_id, $recipient_en, $push_message){
 
 }
 
+function echo_in_previous($in_id, $recipient_en){
+
+    if(!$recipient_en || $recipient_en['en_id'] < 1){
+        return null;
+    }
+
+    //Now fetch the parent of the current
+    $ui = null;
+    $CI =& get_instance();
+    $recursive_parents = $CI->BLOG_model->in_fetch_recursive_parents($in_id, true, true);
+    $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
+    $en_all_2738 = $CI->config->item('en_all_2738');
+
+    //READ LIST
+    $player_list = $CI->READ_model->ln_fetch(array(
+        'ln_owner_play_id' => $recipient_en['en_id'],
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+        'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    ), array('in_parent'), 0);
+
+    //Cleanup the list:
+    $list_ids = array();
+    foreach($player_list as $in_list){
+        array_push($list_ids, $in_list['in_id']);
+    }
+
+
+    foreach ($recursive_parents as $grand_parent_ids) {
+        foreach(array_intersect($grand_parent_ids, $list_ids) as $intersect) {
+
+            //Show the breadcrumb since it's connected:
+            $ui = '<div class="previous_reads hidden">';
+            $ui .= '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-forward"></i></span>CHOOSE PREVIOUS:</div>';
+            $ui .= '<div class="list-group bottom-read-line">';
+
+            $breadcrumb_items = array();
+
+            foreach ($grand_parent_ids as $parent_in_id) {
+
+                //Fetch this blog name:
+                $ins_this = $CI->BLOG_model->in_fetch(array(
+                    'in_id' => $parent_in_id,
+                ));
+                if (count($ins_this) > 0) {
+
+                    $completion_ui_rate = '';
+                    if (superpower_active(10989, true)) {
+                        //Calcullate completion time:
+                        $completion_rate = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $ins_this[0]);
+                        if ($completion_rate['completion_percentage'] > 0) {
+                            $completion_ui_rate = '<span title="' . $completion_rate['steps_completed'] . '/' . $completion_rate['steps_total'] . ' read" class="'.superpower_active(10989).'"> [' . $completion_rate['completion_percentage'] . '%]</span>';
+                        }
+                    }
+
+                    array_push($breadcrumb_items, '<a href="/' . $parent_in_id . '"class="list-group-item itemread no-side-padding montserrat"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="icon-block' . (in_array($ins_this[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '') . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_name'] . ': ' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_desc'] . '">' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_icon'] . '</span></span>' . $ins_this[0]['in_title'] . $completion_ui_rate . '</a>');
+
+                }
+
+                if ($parent_in_id == $intersect) {
+                    break;
+                }
+            }
+
+            $ui .= join('', array_reverse($breadcrumb_items));
+            $ui .= '</div>';
+            $ui .= '</div>';
+
+            break; //TODO Remove later and allow multiple parent links
+
+        }
+
+        if($ui){
+            break; //TODO Remove later and allow multiple parent links
+        }
+    }
+
+
+    //Did We Find It?
+    if($ui){
+        //Now show button to show parents:
+        $ui .= '<div class="inline-block margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a></div>&nbsp;&nbsp;&nbsp;';
+    }
+
+    return $ui;
+}
 function echo_message($message, $is_error, $recipient_en, $push_message){
 
     //A function to display warning/success messages to users:
