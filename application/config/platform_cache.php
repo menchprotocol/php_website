@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-21 12:19:56 PST
+//Generated 2020-03-21 12:42:10 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -338,7 +338,7 @@ $config['en_all_12413'] = array(
     ),
 );
 
-//MENCH WEBSITE:
+//MENCH LINKS:
 $config['en_ids_10876'] = array(4535,10984,10939,10985,3000,11999,6225,6287,7291,4536,10986,10983,10967,6205,10964,10989,10988);
 $config['en_all_10876'] = array(
     4535 => array(
@@ -608,14 +608,8 @@ $config['en_all_12365'] = array(
 );
 
 //PLAY:
-$config['en_ids_4536'] = array(11968,7305,6225,12289,10957,11088,10645,4758,7303,6206);
+$config['en_ids_4536'] = array(7305,6225,12289,10957,11088,10645,4758,7303,6206);
 $config['en_all_4536'] = array(
-    11968 => array(
-        'm_icon' => '<i class="far fa-lightbulb-on" aria-hidden="true"></i>',
-        'm_name' => 'BLOGTION. REIMAGINED.',
-        'm_desc' => '',
-        'm_parents' => array(4527,4536),
-    ),
     7305 => array(
         'm_icon' => '<i class="fas fa-layer-group play" aria-hidden="true"></i>',
         'm_name' => 'MENCH PLATFORM',
@@ -2936,47 +2930,6 @@ $config['en_all_12012'] = array(
     ),
 );
 
-//BLOGTION. REIMAGINED.:
-$config['en_ids_11968'] = array(4762,11969,11980,11984,11972,11977);
-$config['en_all_11968'] = array(
-    4762 => array(
-        'm_icon' => '<i class="fas fa-hand-holding-heart" aria-hidden="true"></i>',
-        'm_name' => 'NON-PROFIT',
-        'm_desc' => 'and on a mission to expand human potential by building and sharing consensus.',
-        'm_parents' => array(4430,11968,7315),
-    ),
-    11969 => array(
-        'm_icon' => '<i class="fas fa-exchange rotate315" aria-hidden="true"></i>',
-        'm_name' => 'INTERACTIVE',
-        'm_desc' => 'where micro-blogs are linked together with a flow that\'s either pre-determined or reader-determined to create engaging conversations.',
-        'm_parents' => array(11982,11968),
-    ),
-    11980 => array(
-        'm_icon' => '<i class="fas fa-users" aria-hidden="true"></i>',
-        'm_name' => 'SOCIAL',
-        'm_desc' => 'where players can make new friends based on their interests to discuss or practice something important to them.',
-        'm_parents' => array(11982,11968),
-    ),
-    11984 => array(
-        'm_icon' => '<i class="fas fa-puzzle-piece" aria-hidden="true"></i>',
-        'm_name' => 'MODULAR',
-        'm_desc' => 'where all published blogs can be reused to easily and quickly create an engaging conversation.',
-        'm_parents' => array(11968),
-    ),
-    11972 => array(
-        'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
-        'm_name' => 'INCLUSIVE',
-        'm_desc' => 'where everyone is welcome to share stories and blogs that matter to them, write code or even govern the platform.',
-        'm_parents' => array(11968),
-    ),
-    11977 => array(
-        'm_icon' => '<i class="fas fa-atom-alt" aria-hidden="true"></i>',
-        'm_name' => 'SCIENCE-BASED',
-        'm_desc' => 'where blogs can reference first-principles and best-practices from expert sources like books, videos and articles.',
-        'm_parents' => array(11968),
-    ),
-);
-
 //PLAYER LAYOUT:
 $config['en_ids_11088'] = array(12412,11089,11033);
 $config['en_all_11088'] = array(
@@ -3548,7 +3501,7 @@ $config['en_all_6404'] = array(
     ),
     12210 => array(
         'm_icon' => '',
-        'm_name' => 'COINS REFRESH MILLISECONDS BLOGTOR',
+        'm_name' => 'COINS REFRESH MILLISECONDS BLOGGER',
         'm_desc' => '4181',
         'm_parents' => array(6404),
     ),
@@ -3627,7 +3580,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.309',
+        'm_desc' => '1.3091',
         'm_parents' => array(6404),
     ),
     12363 => array(
@@ -3817,7 +3770,7 @@ $config['en_all_11047'] = array(
     11050 => array(
         'm_icon' => '<img src="https://partners.algolia.com/images/logos/algolia-logo-badge.svg">',
         'm_name' => 'UPDATE ALGOLIA',
-        'm_desc' => '/read/cron__sync_algolia/in/',
+        'm_desc' => '/blog/cron__sync_algolia/in/',
         'm_parents' => array(7279,11047),
     ),
     11048 => array(
@@ -4044,19 +3997,19 @@ $config['en_all_10957'] = array(
     10939 => array(
         'm_icon' => '<i class="fad fa-pen blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG PEN',
-        'm_desc' => 'Organize Your Blogs',
+        'm_desc' => 'Basic Interactive Blogging',
         'm_parents' => array(10876,10957),
     ),
     10984 => array(
         'm_icon' => '<i class="fad fa-paint-brush-alt blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG BRUSH',
-        'm_desc' => 'Collaboratively Research & Cite Expert Blogs',
+        'm_desc' => 'Collaborative Interactive Blogging',
         'm_parents' => array(10876,10983,10957),
     ),
     10985 => array(
         'm_icon' => '<i class="fad fa-magic blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG WAND',
-        'm_desc' => 'Build Advance Blog Trees',
+        'm_desc' => 'Advance Interactive Blogging',
         'm_parents' => array(10876,10984,10957),
     ),
     10964 => array(
@@ -4068,7 +4021,7 @@ $config['en_all_10957'] = array(
     10989 => array(
         'm_icon' => '<i class="fad fa-microscope read" aria-hidden="true"></i>',
         'm_name' => 'READ MICROSCOPE',
-        'm_desc' => 'View Blog Read Times',
+        'm_desc' => 'View Read Times',
         'm_parents' => array(10876,10985,10957),
     ),
     10988 => array(
@@ -4593,7 +4546,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(4535,11047,6192,12365,12079,11018,10990,11021,4229,4485,12012,6193,4983,7302,4737,7356,12138,7355,12400,6201,12112,12420,11968,4486,12413,7585,10602,12330,12324,7309,7712,7751,6150,3000,10627,12523,10717,11080,2738,12105,4463,12502,11035,10876,12524,11059,11058,6225,6287,10957,12501,6404,4527,11054,6232,4536,12274,11039,10956,12279,12273,11089,12440,12410,6194,11033,3290,6827,12421,11088,4592,12403,4426,4997,12500,7555,4986,7551,11028,4537,7303,6177,7357,12401,6206,12391,11084,3289,4755,10571,6205,11081,7704,12326,6255,12229,6345,4280,4277,6102,12446,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,4593,10593,12228,12141,12327,10658,6204,12322,12321,6805,7358);
+$config['en_ids_4527'] = array(4535,11047,6192,12365,12079,11018,10990,11021,4229,4485,12012,6193,4983,7302,4737,7356,12138,7355,12400,6201,12112,12420,4486,12413,7585,10602,12330,12324,7309,7712,7751,6150,3000,10627,12523,10717,11080,2738,12105,4463,12502,10876,11035,12524,11059,11058,6225,6287,10957,12501,6404,4527,11054,6232,4536,12274,11039,10956,12279,12273,11089,12440,12410,6194,11033,3290,6827,12421,11088,4592,12403,4426,4997,12500,7555,4986,7551,11028,4537,7303,6177,7357,12401,6206,12391,11084,3289,4755,10571,6205,11081,7704,12326,6255,12229,6345,4280,4277,6102,12446,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,4593,10593,12228,12141,12327,10658,6204,12322,12321,6805,7358);
 $config['en_all_4527'] = array(
     4535 => array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
@@ -4727,12 +4680,6 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6768),
     ),
-    11968 => array(
-        'm_icon' => '<i class="far fa-lightbulb-on" aria-hidden="true"></i>',
-        'm_name' => 'BLOGTION. REIMAGINED.',
-        'm_desc' => '',
-        'm_parents' => array(4527,4536),
-    ),
     4486 => array(
         'm_icon' => '<i class="fas fa-link blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG TREE LINKS',
@@ -4847,17 +4794,17 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,7305),
     ),
+    10876 => array(
+        'm_icon' => '<i class="fas fa-browser" aria-hidden="true"></i>',
+        'm_name' => 'MENCH LINKS',
+        'm_desc' => '',
+        'm_parents' => array(4527,1326,7305),
+    ),
     11035 => array(
         'm_icon' => '<i class="fad fa-compass" aria-hidden="true"></i>',
         'm_name' => 'MENCH NAVIGATION',
         'm_desc' => '',
         'm_parents' => array(4527,7305),
-    ),
-    10876 => array(
-        'm_icon' => '<i class="fas fa-browser" aria-hidden="true"></i>',
-        'm_name' => 'MENCH WEBSITE',
-        'm_desc' => '',
-        'm_parents' => array(4428,4527,1326,7305),
     ),
     12524 => array(
         'm_icon' => '<i class="fad fa-film-alt play" aria-hidden="true"></i>',
@@ -5756,13 +5703,13 @@ $config['en_all_10602'] = array(
     6192 => array(
         'm_icon' => '<i class="fad fa-sitemap" aria-hidden="true"></i>',
         'm_name' => 'AND',
-        'm_desc' => 'Readers must complete all child blogs',
+        'm_desc' => 'Reader completes blog by completing ALL child blogs',
         'm_parents' => array(4527,10602),
     ),
     6193 => array(
         'm_icon' => '<i class="fad fa-code-branch rotate180 " aria-hidden="true"></i>',
         'm_name' => 'OR',
-        'm_desc' => 'Readers choose child blogs relevant to them',
+        'm_desc' => 'Reader completes blog by completing ANY child blog',
         'm_parents' => array(10602,4527),
     ),
 );

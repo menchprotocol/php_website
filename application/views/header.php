@@ -111,57 +111,7 @@ if(isset($custom_header)){
 
 
 if(!isset($hide_header)){
-
-
-    /*
-    if(isset($session_en['en_id']) && !isset($basic_header)){
-        ?>
-        <!-- 3X NAVIGATION -->
-        <div class="container fixed-bottom" style="padding-bottom: 0 !important;">
-            <div class="row">
-                <table id="MENCHmenu">
-                    <tr>
-                        <?php
-                        $MENCHcolumn1 = 0;
-                        foreach($en_all_2738_mench as $en_id => $m){
-
-                            $MENCHcolumn1++;
-                            $url_extension = null;
-                            $is_current = ($current_mench['x_id']==$en_id);
-                            $this_mench = current_mench(strtolower($m['m_name']));
-                            $url = '/'.$this_mench['x_name'];
-
-                            if(!$is_current && isset($in) && in_array($this_mench['x_name'], array('read','blog'))){
-                                if($current_mench['x_name']=='read' && $this_mench['x_name']=='blog'){
-                                    $url = '/blog/'.$in['in_id'];
-                                } elseif($current_mench['x_name']=='blog' && $this_mench['x_name']=='read'){
-                                    $url = '/'.$in['in_id'];
-                                }
-                            }
-
-                            echo '<td class="fixedColumns MENCHcolumn'.$MENCHcolumn1.' '.$this_mench['x_name'].'">';
-                            echo '<a class="mench_coin '.$this_mench['x_name'].' border-'.$this_mench['x_name'].( $is_current ? ' focustab ': '' ).'" href="'.$url.'">';
-                            echo '<span class="icon-block">'.$m['m_icon'].'</span>';
-                            echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
-                            if($is_current){
-                                echo ' <span class="montserrat '.$this_mench['x_name'].'_name">' . $m['m_name'] . 'S</span>';
-                            }
-                            echo '</a>';
-                            echo '</td>';
-
-                        }
-                        ?>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <?php
-    }
-    */
-
     ?>
-
 
     <!-- MENCH LINE -->
     <div class="container fixed-top" style="padding-bottom: 0 !important;">
@@ -201,7 +151,7 @@ if(!isset($hide_header)){
 
                                     echo '<a class="mench_coin ' . $this_mench['x_name'] . ' border-' . $this_mench['x_name'] . ($is_current ? ' focustab ' : '') . ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" href="' . $url . '">';
                                     echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
-                                    echo '<span class="montserrat ' . $this_mench['x_name'] . '_name show-max">' . $m['m_name'] . '</span>';
+                                    echo '<span class="montserrat ' . $this_mench['x_name'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
                                     echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
                                     echo '</a>';
 
@@ -234,8 +184,6 @@ if(!isset($hide_header)){
 
                     <?php
 
-
-
                     if (isset($session_en['en_id'])) {
 
                         $en_all_11035 = $this->config->item('en_all_11035');
@@ -245,16 +193,12 @@ if(!isset($hide_header)){
 
                     } else {
 
-                        //TERMS
-                        //echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/8263" title="'.$en_all_11035[7540]['m_name'].'">'.$en_all_11035[7540]['m_icon'].'</a></td>';
-
                         //Give option to sign
                         echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/sign" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
 
                     }
 
                     ?>
-
                 </tr>
             </table>
         </div>
