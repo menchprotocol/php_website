@@ -244,7 +244,7 @@ img.no-radius {
 }
 
 .read-topic{
-    margin: 10px 0;
+    padding: 10px 0;
     color: #AAAAAA !important;
     text-transform: uppercase;
 }
