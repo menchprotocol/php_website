@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-21 12:42:10 PST
+//Generated 2020-03-21 13:40:14 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -4488,17 +4488,11 @@ $config['en_all_10956'] = array(
 );
 
 //MENCH:
-$config['en_ids_2738'] = array(4536,6205,4535);
+$config['en_ids_2738'] = array(4536,4535,6205);
 $config['en_all_2738'] = array(
     4536 => array(
         'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
-        'm_desc' => '',
-        'm_parents' => array(12499,10876,4527,5008,12155,2738,4463),
-    ),
-    6205 => array(
-        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ',
         'm_desc' => '',
         'm_parents' => array(12499,10876,4527,5008,12155,2738,4463),
     ),
@@ -4507,6 +4501,12 @@ $config['en_all_2738'] = array(
         'm_name' => 'BLOG',
         'm_desc' => '',
         'm_parents' => array(12499,12112,10876,4527,12155,2738,4463),
+    ),
+    6205 => array(
+        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ',
+        'm_desc' => '',
+        'm_parents' => array(12499,10876,4527,5008,12155,2738,4463),
     ),
 );
 

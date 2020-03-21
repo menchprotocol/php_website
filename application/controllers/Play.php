@@ -756,13 +756,6 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-            //READ
-            echo '<td class="read fixedColumns MENCHcolumn2">';
-            if($read_coins[0]['total_coins'] > 0){
-                echo ( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_owner_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' );
-            }
-            echo '</td>';
-
 
 
             //BLOG
@@ -781,6 +774,14 @@ fragment PostListingItemSidebar_post on Post {
 
             echo '</tr>';
 
+
+
+            //READ
+            echo '<td class="read fixedColumns MENCHcolumn2">';
+            if($read_coins[0]['total_coins'] > 0){
+                echo ( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_owner_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' );
+            }
+            echo '</td>';
 
 
         }
@@ -810,11 +811,11 @@ fragment PostListingItemSidebar_post on Post {
                 //PLAY
                 echo '<td class="play fixedColumns MENCHcolumn1"><span class="icon-block">'.echo_en_icon($ln['en_icon']).'</span><a href="/play/'.$ln['en_id'].'" class="montserrat play en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a>'.echo_rank($count+1).'</td>';
 
-                //READ
-                echo '<td class="read fixedColumns MENCHcolumn2">'.( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_owner_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>' ).'</td>';
-
                 //BLOG
                 echo '<td class="blog fixedColumns MENCHcolumn3"></td>';
+
+                //READ
+                echo '<td class="read fixedColumns MENCHcolumn2">'.( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_owner_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>' ).'</td>';
 
                 echo '</tr>';
 

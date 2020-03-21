@@ -1481,26 +1481,26 @@ function echo_in_blog($in, $flip_order = false)
 
     if($flip_order){
 
-        //READ
-        $ui .= '<td class="MENCHcolumn2 read fixedColumns">';
-        $ui .= echo_in_stat_read($in['in_id'], 0);
-        $ui .= '</td>';
-
         //PLAY
         $ui .= '<td class="MENCHcolumn3 play fixedColumns">';
         $ui .= echo_in_stat_play($in['in_id'], 0);
+        $ui .= '</td>';
+
+        //READ
+        $ui .= '<td class="MENCHcolumn2 read fixedColumns">';
+        $ui .= echo_in_stat_read($in['in_id'], 0);
         $ui .= '</td>';
 
     } else {
 
-        //PLAY
-        $ui .= '<td class="MENCHcolumn3 play fixedColumns">';
-        $ui .= echo_in_stat_play($in['in_id'], 0);
-        $ui .= '</td>';
-
         //READ
         $ui .= '<td class="MENCHcolumn2 read fixedColumns">';
         $ui .= echo_in_stat_read($in['in_id'], 0);
+        $ui .= '</td>';
+
+        //PLAY
+        $ui .= '<td class="MENCHcolumn3 play fixedColumns">';
+        $ui .= echo_in_stat_play($in['in_id'], 0);
         $ui .= '</td>';
 
     }
@@ -2786,11 +2786,11 @@ function echo_en($en, $is_parent = false)
     //Set order based on view mode:
     if($is_read_progress){
 
-        $ui .= $blog_ui.$read_ui;
+        $ui .= $read_ui.$blog_ui;
 
     } else {
 
-        $ui .= $read_ui.$blog_ui;
+        $ui .= $blog_ui.$read_ui;
 
     }
 
