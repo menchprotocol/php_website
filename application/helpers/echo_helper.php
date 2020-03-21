@@ -2370,7 +2370,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
             if($has_content){
                 echo '<div class="read-topic">'.trim($prefix_statement).'</div>';
             } else {
-                echo '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-forward"></i></span>UP NEXT:</div>';
+                echo '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-forward"></i></span>NEXT:</div>';
             }
             echo '<div class="list-group">';
 
