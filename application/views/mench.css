@@ -1260,7 +1260,7 @@ label {
     .show-max{display: none !important;}
 }
 
-.itemidea {
+.itemidea.list-group-item {
     padding:0 5px;
 }
 
