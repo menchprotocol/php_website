@@ -590,14 +590,14 @@ textarea.note-textarea{
 
 
 .toblog .i_content {
-    padding:0 33px;
+    padding:0 28px;
 }
 .add_note_form{
-    margin-left: 33px;
+    margin-left: 28px;
 }
 
 .note-textarea.edit-on {
-    margin-left: 33px;
+    margin-left: 28px;
 }
 
 .text_message{
@@ -1229,7 +1229,6 @@ label {
 
 .previous_reads{
     padding:10px 0;
-    background-color: #FFFFFF;
 }
 
 /* RESPONSIVE */
