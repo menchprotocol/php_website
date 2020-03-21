@@ -1224,7 +1224,9 @@ label {
     width: 377px;
 }
 
-
+.previous_reads{
+    padding: 10px 0 5px;
+}
 
 /* RESPONSIVE */
 @media (max-width:767px) {
