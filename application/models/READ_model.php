@@ -1681,6 +1681,8 @@ class READ_model extends CI_Model
             if(!$push_message){
 
                 //BLOG TITLE
+                echo '<div class="previous_reads">';
+
                 echo '<div style="padding-top:6px;"><span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span><h1 class="inline-block block-one">' . echo_in_title($ins[0]['in_title']) . '</h1></div>';
 
                 if(superpower_active(10989, true)){
@@ -1710,6 +1712,8 @@ class READ_model extends CI_Model
                     echo '</span></div>';
                 }
 
+                echo '</div>';
+
             } else {
 
                 $this->READ_model->dispatch_message(
@@ -1720,7 +1724,7 @@ class READ_model extends CI_Model
 
             }
 
-
+            echo '<div class="previous_reads">';
             foreach ($in__messages as $message_ln) {
                 echo $this->READ_model->dispatch_message(
                     $message_ln['ln_content'],
@@ -1728,6 +1732,8 @@ class READ_model extends CI_Model
                     $push_message
                 );
             }
+            echo '</div>';
+
         }
 
 
@@ -1747,6 +1753,10 @@ class READ_model extends CI_Model
             }
         }
 
+
+        if(!$push_message){
+            echo '<div class="previous_reads">';
+        }
 
 
 
@@ -2138,6 +2148,12 @@ class READ_model extends CI_Model
 
             }
         }
+
+
+        if(!$push_message){
+            echo '</div>';
+        }
+
     }
 
     function read__completion_marks($en_id, $in, $top_level = true)

@@ -2494,6 +2494,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
             //Now fetch the parent of the current
             $ui = null;
             $recursive_parents = $CI->BLOG_model->in_fetch_recursive_parents($in_id, true, true);
+            $previous_toggle = 'href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"';
             $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Statuses
             $en_all_2738 = $CI->config->item('en_all_2738');
 
@@ -2516,7 +2517,9 @@ function echo_in_next($in_id, $recipient_en, $push_message){
                 foreach(array_intersect($grand_parent_ids, $list_ids) as $intersect) {
 
                     //Show the breadcrumb since it's connected:
-                    $ui = '<div class="list-group bottom-read-line previous_reads hidden">';
+                    $ui = '<div class="previous_reads hidden">';
+                    $ui .= '<p>Choose a Previous Read:</p>';
+                    $ui .= '<div class="list-group bottom-read-line">';
 
                     $breadcrumb_items = array();
 
@@ -2548,6 +2551,8 @@ function echo_in_next($in_id, $recipient_en, $push_message){
 
                     $ui .= join('', array_reverse($breadcrumb_items));
                     $ui .= '</div>';
+                    $ui .= '<p>Or <a '.$previous_toggle.'>Cancel Going Back</a></p>';
+                    $ui .= '</div>';
 
                     break; //TODO Remove later and allow multiple parent links
 
@@ -2563,7 +2568,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
                 echo $ui;
 
                 //Now show button to show parents:
-                echo '<div class="inline-block margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><i class="fad fa-step-backward"></i></a></div>&nbsp;&nbsp;&nbsp;';
+                echo '<div class="inline-block margin-top-down"><a class="btn btn-read" '.$previous_toggle.'><i class="fad fa-step-backward"></i></a></div>&nbsp;&nbsp;&nbsp;';
             }
         }
 
