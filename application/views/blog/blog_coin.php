@@ -114,7 +114,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                            blog-id="' . $in['in_id'] . '"
                            id="addblog-c-' . $in['in_id'] . '-1"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="ADD BLOG">
+                           placeholder="PREVIOUS BLOG">
                 </div><div class="algolia_pad_search hidden in_pad_top"></div></div>';
             }
             $this_tab .= '</div>';
@@ -133,7 +133,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $default_active = true;
 
             //List child blogs:
-            $this_tab .= '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-forward"></i></span>NEXT:</div>';
+            //$this_tab .= '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-forward"></i></span>NEXT:</div>';
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group next_blogs">';
             foreach ($blog__children as $child_in) {
                 $this_tab .= echo_in($child_in, $in['in_id'], false, in_is_author($child_in['in_id']));
@@ -149,7 +149,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                            blog-id="' . $in['in_id'] . '"
                            id="addblog-c-' . $in['in_id'] . '-0"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="ADD BLOG">
+                           placeholder="NEXT BLOG">
                 </div><div class="algolia_pad_search hidden in_pad_bottom"></div></div>';
             }
 
