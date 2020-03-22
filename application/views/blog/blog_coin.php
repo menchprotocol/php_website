@@ -99,18 +99,13 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             $counter = count($blog__parents);
 
-            $this_tab_content = null;
+            $this_tab .= '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-backward"></i></span>PREVIOUS:</div>';
+            $this_tab .= '<div id="list-in-' . $in['in_id'] . '-1" class="list-group hidden previous_blogs">';
 
             foreach ($blog__parents as $parent_in) {
-                $this_tab_content .= echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
+                $this_tab .= echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
             }
 
-            if($this_tab_content){
-                $this_tab .= '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-backward"></i></span>PREVIOUS:</div>';
-            }
-
-            $this_tab .= '<div id="list-in-' . $in['in_id'] . '-1" class="list-group hidden previous_blogs">';
-            $this_tab .= $this_tab_content;
             if( $is_author && $is_active && $in['in_id']!=config_var(12156)){
                 $this_tab .= '<div class="list-group-item itemblog '.superpower_active(10939).'" style="padding:5px 0;">
                 <div class="input-group border">
