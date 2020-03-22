@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-21 21:32:26 PST
+//Generated 2020-03-22 00:50:15 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -3764,7 +3764,7 @@ $config['en_all_11047'] = array(
     11051 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'HISTORY',
-        'm_desc' => '/oii?any_in_id=',
+        'm_desc' => '/ledger?any_in_id=',
         'm_parents' => array(11047),
     ),
     11049 => array(
@@ -3793,7 +3793,7 @@ $config['en_all_11039'] = array(
     11999 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
-        'm_desc' => '/oil?any_en_id=',
+        'm_desc' => '/ledger?any_en_id=',
         'm_parents' => array(10876,11039,6771,11035),
     ),
     11044 => array(
