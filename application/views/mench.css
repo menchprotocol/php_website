@@ -722,7 +722,11 @@ td.MENCHcolumn3{ width: 21%; }
     padding:10px 0 !important;
 }
 .top-margin{
-    margin-top: 21px;
+    margin-top: 10px;
+}
+.both-margin{
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .left-margin{
     margin-left: 33px;

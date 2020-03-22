@@ -59,13 +59,13 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         //BLOG CONTROLLER
 
         //BLOG STATUS
-        echo '<div class="inline-block top-margin left-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-blog', $is_author, true, $in['in_id']).'</div>';
+        echo '<div class="inline-block both-margin left-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-blog', $is_author, true, $in['in_id']).'</div>';
 
         //BLOG TYPE
-        echo '<span class="inline-block top-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active, true, $in['in_id']).'</span>';
+        echo '<span class="inline-block both-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active, true, $in['in_id']).'</span>';
 
         //BLOG TIME
-        echo '<div class="inline-block top-margin left-half-margin '.superpower_active(10984).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
+        echo '<div class="inline-block both-margin left-half-margin '.superpower_active(10984).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
 
     }
 
