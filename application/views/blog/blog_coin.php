@@ -283,7 +283,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
     if($show_tab_menu_count >= 2){
-        echo '<ul class="nav nav-tabs nav-sm">';
+        echo '<ul class="nav nav-tabs nav-sm '.superpower_active(10984).'">';
         echo $show_tab_ui;
         echo '</ul>';
     }
