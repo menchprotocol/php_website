@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-21 17:04:15 PST
+//Generated 2020-03-21 17:14:32 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -334,7 +334,7 @@ $config['en_all_12413'] = array(
         'm_icon' => '<i class="fas fa-step-backward blog" aria-hidden="true"></i>',
         'm_name' => 'PREVIOUS',
         'm_desc' => '',
-        'm_parents' => array(12413,10990,11025),
+        'm_parents' => array(12365,12413,10990,11025),
     ),
 );
 
@@ -543,8 +543,14 @@ $config['en_all_12391'] = array(
 );
 
 //BLOG CONTENT:
-$config['en_ids_12365'] = array(4231,4601,12419,10573,4983,7545,6255,7347,6146,11047);
+$config['en_ids_12365'] = array(11019,4231,4601,12419,10573,4983,7545,6255,7347,6146,11047);
 $config['en_all_12365'] = array(
+    11019 => array(
+        'm_icon' => '<i class="fas fa-step-backward blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOG PREVIOUS',
+        'm_desc' => '',
+        'm_parents' => array(12365,12413,10990,11025),
+    ),
     4231 => array(
         'm_icon' => '<i class="fas fa-comment blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG MESSAGES',
@@ -3946,7 +3952,7 @@ $config['en_all_11018'] = array(
 );
 
 //BLOG LAYOUT:
-$config['en_ids_11021'] = array(12365,11018,10990);
+$config['en_ids_11021'] = array(12365,11018);
 $config['en_all_11021'] = array(
     12365 => array(
         'm_icon' => '<i class="fad fa-square blog" aria-hidden="true"></i>',
@@ -3960,12 +3966,6 @@ $config['en_all_11021'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,11021),
     ),
-    10990 => array(
-        'm_icon' => '<i class="fad fa-browser blog" aria-hidden="true"></i>',
-        'm_name' => 'PREVIOUS SECTION',
-        'm_desc' => '',
-        'm_parents' => array(11021,4527),
-    ),
 );
 
 //BLOG PREVIOUS SECTION:
@@ -3975,7 +3975,7 @@ $config['en_all_10990'] = array(
         'm_icon' => '<i class="fas fa-step-backward blog" aria-hidden="true"></i>',
         'm_name' => 'PREVIOUS',
         'm_desc' => '',
-        'm_parents' => array(12413,10990,11025),
+        'm_parents' => array(12365,12413,10990,11025),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h " aria-hidden="true"></i>',
@@ -4624,7 +4624,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fad fa-browser blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG PREVIOUS SECTION',
         'm_desc' => '',
-        'm_parents' => array(11021,4527),
+        'm_parents' => array(4527),
     ),
     7302 => array(
         'm_icon' => '<i class="far fa-chart-bar blog" aria-hidden="true"></i>',
