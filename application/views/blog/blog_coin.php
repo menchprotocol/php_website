@@ -89,7 +89,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         if($en_id2==11019){
 
             //BLOG TREE PREVIOUS
-            $default_active = true;
             $blog__parents = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
