@@ -160,7 +160,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
 
             //Inform User that this is a sliced video
             if ($start_sec || $end_sec) {
-                $embed_html_code .= '<div class="read-topic"><span class="icon-block"><i class="fas fa-film"></i></span>' . (($start_sec && $end_sec) ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'">' . echo_time_minutes(($end_sec - $start_sec)) . '</b> VIDEO CLIP' : 'FROM <b>' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
+                $embed_html_code .= '<div class="read-topic"><span class="icon-block"><i class="fad fa-play-circle"></i></span>' . (($start_sec && $end_sec) ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'">' . echo_time_minutes(($end_sec - $start_sec)) . '</b> VIDEO CLIP' : 'FROM <b>' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
             }
 
             $embed_html_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
@@ -2893,7 +2893,7 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
     $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'_'.$in_id.'_'.$ln_id.' '.( !$show_full_name ? ' icon-block ' : '' ).'">';
     $ui .= '<button type="button" '.( $is_author ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' '.$btn_class.'" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked  '.$btn_class.'"' ).' >';
     $ui .= '<span title="'.$en_all_12079[$cache_en_id]['m_name'].( !$is_author ? ' (YOU ARE NOT AN AUTHOR)' : '' ).'" data-toggle="tooltip" data-placement="right">';
-    $ui .= '<span class="icon-block">' .$en_all_this[$selected_en_id]['m_icon'].'</span>'.( $show_full_name ?  $en_all_this[$selected_en_id]['m_name'] : '' );
+    $ui .= '<span class="icon-block">' .$en_all_this[$selected_en_id]['m_icon'].'</span><span class="show-max">'.( $show_full_name ?  $en_all_this[$selected_en_id]['m_name'] : '' ).'</span>';
     $ui .= '</span>';
     $ui .= '</button>';
     $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$cache_en_id.'">';
