@@ -65,7 +65,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '<span class="inline-block top-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active, true, $in['in_id']).'</span>';
 
         //BLOG TIME
-        echo '<div class="inline-block top-margin left-half-margin">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
+        echo '<div class="inline-block top-margin left-half-margin '.superpower_active(10984).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
 
     }
 
