@@ -34,7 +34,7 @@ class Read extends CI_Controller
             'in_id' => $in_id,
         ));
         $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
-        return redirect_message('/'.($next_in_id > 0 ? $next_in_id : $in_id ), '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i> Successfully added to your reading list. Continue below.</div>');
+        return redirect_message('/'.($next_in_id > 0 ? $next_in_id : $in_id ), '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle read"></i></span>Added to your reading list. Continue below...</div>');
 
     }
 
