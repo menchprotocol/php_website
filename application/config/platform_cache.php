@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-21 13:40:14 PST
+//Generated 2020-03-21 17:04:15 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -542,7 +542,7 @@ $config['en_all_12391'] = array(
     ),
 );
 
-//BLOG BODY:
+//BLOG CONTENT:
 $config['en_ids_12365'] = array(4231,4601,12419,10573,4983,7545,6255,7347,6146,11047);
 $config['en_all_12365'] = array(
     4231 => array(
@@ -3928,7 +3928,7 @@ $config['en_all_11028'] = array(
     ),
 );
 
-//BLOG FOOTER:
+//BLOG NEXT SECTION:
 $config['en_ids_11018'] = array(11020,7585);
 $config['en_all_11018'] = array(
     11020 => array(
@@ -3946,29 +3946,29 @@ $config['en_all_11018'] = array(
 );
 
 //BLOG LAYOUT:
-$config['en_ids_11021'] = array(10990,12365,11018);
+$config['en_ids_11021'] = array(12365,11018,10990);
 $config['en_all_11021'] = array(
-    10990 => array(
-        'm_icon' => '<i class="fad fa-browser blog" aria-hidden="true"></i>',
-        'm_name' => 'HEADER',
-        'm_desc' => '',
-        'm_parents' => array(11021,4527),
-    ),
     12365 => array(
         'm_icon' => '<i class="fad fa-square blog" aria-hidden="true"></i>',
-        'm_name' => 'BODY',
+        'm_name' => 'CONTENT',
         'm_desc' => '',
         'm_parents' => array(4527,11021),
     ),
     11018 => array(
         'm_icon' => '<i class="fad fa-browser blog rotate180" aria-hidden="true"></i>',
-        'm_name' => 'FOOTER',
+        'm_name' => 'NEXT SECTION',
         'm_desc' => '',
         'm_parents' => array(4527,11021),
     ),
+    10990 => array(
+        'm_icon' => '<i class="fad fa-browser blog" aria-hidden="true"></i>',
+        'm_name' => 'PREVIOUS SECTION',
+        'm_desc' => '',
+        'm_parents' => array(11021,4527),
+    ),
 );
 
-//BLOG HEADER:
+//BLOG PREVIOUS SECTION:
 $config['en_ids_10990'] = array(11019,4737,4736);
 $config['en_all_10990'] = array(
     11019 => array(
@@ -4546,7 +4546,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(4535,11047,6192,12365,12079,11018,10990,11021,4229,4485,12012,6193,4983,7302,4737,7356,12138,7355,12400,6201,12112,12420,4486,12413,7585,10602,12330,12324,7309,7712,7751,6150,3000,10627,12523,10717,11080,2738,12105,4463,12502,10876,11035,12524,11059,11058,6225,6287,10957,12501,6404,4527,11054,6232,4536,12274,11039,10956,12279,12273,11089,12440,12410,6194,11033,3290,6827,12421,11088,4592,12403,4426,4997,12500,7555,4986,7551,11028,4537,7303,6177,7357,12401,6206,12391,11084,3289,4755,10571,6205,11081,7704,12326,6255,12229,6345,4280,4277,6102,12446,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,4593,10593,12228,12141,12327,10658,6204,12322,12321,6805,7358);
+$config['en_ids_4527'] = array(4535,11047,6192,12365,12079,11021,4229,11018,4485,12012,6193,4983,10990,7302,4737,7356,12138,7355,12400,6201,12112,12420,4486,12413,7585,10602,12330,12324,7309,7712,7751,6150,3000,10627,12523,10717,11080,2738,12105,4463,12502,10876,11035,12524,11059,11058,6225,6287,10957,12501,6404,4527,11054,6232,4536,12274,11039,10956,12279,12273,11089,12440,12410,6194,11033,3290,6827,12421,11088,4592,12403,4426,4997,12500,7555,4986,7551,11028,4537,7303,6177,7357,12401,6206,12391,11084,3289,4755,10571,6205,11081,7704,12326,6255,12229,6345,4280,4277,6102,12446,6146,6103,10692,12227,5967,7347,7304,6186,7360,7364,7359,4341,4593,10593,12228,12141,12327,10658,6204,12322,12321,6805,7358);
 $config['en_all_4527'] = array(
     4535 => array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
@@ -4568,7 +4568,7 @@ $config['en_all_4527'] = array(
     ),
     12365 => array(
         'm_icon' => '<i class="fad fa-square blog" aria-hidden="true"></i>',
-        'm_name' => 'BLOG BODY',
+        'm_name' => 'BLOG CONTENT',
         'm_desc' => '',
         'm_parents' => array(4527,11021),
     ),
@@ -4577,18 +4577,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'BLOG DROPDOWNS',
         'm_desc' => '',
         'm_parents' => array(6768,4527),
-    ),
-    11018 => array(
-        'm_icon' => '<i class="fad fa-browser blog rotate180" aria-hidden="true"></i>',
-        'm_name' => 'BLOG FOOTER',
-        'm_desc' => '',
-        'm_parents' => array(4527,11021),
-    ),
-    10990 => array(
-        'm_icon' => '<i class="fad fa-browser blog" aria-hidden="true"></i>',
-        'm_name' => 'BLOG HEADER',
-        'm_desc' => '',
-        'm_parents' => array(11021,4527),
     ),
     11021 => array(
         'm_icon' => '<i class="fad fa-crop-alt blog" aria-hidden="true"></i>',
@@ -4601,6 +4589,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'BLOG LINK CONDITIONAL',
         'm_desc' => '',
         'm_parents' => array(4535,4527,6410,6283,4593,4486),
+    ),
+    11018 => array(
+        'm_icon' => '<i class="fad fa-browser blog rotate180" aria-hidden="true"></i>',
+        'm_name' => 'BLOG NEXT SECTION',
+        'm_desc' => '',
+        'm_parents' => array(4527,11021),
     ),
     4485 => array(
         'm_icon' => '<i class="fas fa-comment-plus blog" aria-hidden="true"></i>',
@@ -4625,6 +4619,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'BLOG PLAYERS',
         'm_desc' => '',
         'm_parents' => array(10983,12273,12228,4535,12391,12365,10593,4527,7551,4985,4593,4485),
+    ),
+    10990 => array(
+        'm_icon' => '<i class="fad fa-browser blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOG PREVIOUS SECTION',
+        'm_desc' => '',
+        'm_parents' => array(11021,4527),
     ),
     7302 => array(
         'm_icon' => '<i class="far fa-chart-bar blog" aria-hidden="true"></i>',
