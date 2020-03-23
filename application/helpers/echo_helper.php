@@ -1444,34 +1444,45 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 
 
 
-function echo_in_stat_read($in_id = 0, $en_id = 0){
+function echo_in_stat_read($in = array(), $en = array()){
 
     $CI =& get_instance();
+    $ui = null;
 
     if(superpower_active(10964, true)){
 
-        if($in_id){
+        if(count($in)){
+            $item = $in;
             $coin_filter = array(
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
-                'ln_parent_blog_id' => $in_id,
+                'ln_parent_blog_id' => $in['in_id'],
             );
-        } elseif($en_id){
+        } elseif(count($en)){
+            $item = $en;
             $coin_filter = array(
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
-                'ln_owner_play_id' => $en_id,
+                'ln_owner_play_id' => $en['en_id'],
             );
         }
 
         $read_coins = $CI->READ_model->ln_fetch($coin_filter, array(), 1, 0, array(), 'COUNT(ln_id) as total_coins');
         if($read_coins[0]['total_coins'] > 0){
-            return '<span class="montserrat read '.superpower_active(10964).'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($read_coins[0]['total_coins']).'</span>';
+            $ui .= '<span class="montserrat read '.superpower_active(10964).'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($read_coins[0]['total_coins']).'</span>';
+
+            //If Progress Type then show progress here....
+            if(isset($item['ln_type_play_id']) && in_array($item['ln_type_play_id'], $CI->config->item('en_ids_12227'))){
+                $en_all_12227 = $CI->config->item('en_all_12227');
+                $ui = '<div class="space-content">';
+                $ui .= '<span class="' . superpower_active(10989).'">' . $en_all_12227[$item['ln_type_play_id']]['m_icon'] . '&nbsp;</span>';
+                $ui .= '</div>';
+            }
         }
 
     }
 
-    return null;
+    return $ui;
 }
 
 function echo_in_stat_play($in_id = 0, $en_id = 0){
@@ -2099,7 +2110,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $is_published = in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355'));
     $is_link_published = in_array($in['ln_status_play_id'], $CI->config->item('en_ids_7359'));
     $is_blog_link = in_array($in['ln_type_play_id'], $CI->config->item('en_ids_4486'));
-    $is_read_progress = in_array($in['ln_type_play_id'], $CI->config->item('en_ids_12227'));
 
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_play_id'] . '" blog-id="' . $in['in_id'] . '" parent-blog-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemblog blogs_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' blog_line_' . $in['in_id'] . ( $is_parent ? ' parent-blog ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
 
@@ -2237,14 +2247,9 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
     //READ
-    $echo_in_stat_read = echo_in_stat_read($in['in_id'], 0);
+    $echo_in_stat_read = echo_in_stat_read($in);
     $ui .= '<td class="MENCHcolumn2 read '.( !$echo_in_stat_read ? 'show-max' : '' ).'">';
     $ui .= $echo_in_stat_read;
-    //READ TYPE
-    if ($is_read_progress) {
-        //LINK TYPE
-        $ui .= echo_in_progress($in['ln_type_play_id']);
-    }
     $ui .= '</td>';
 
 
@@ -2554,16 +2559,6 @@ function echo_message($message, $is_error, $recipient_en, $push_message){
 }
 
 
-function echo_in_progress($ln_type_play_id){
-    $CI =& get_instance();
-    $en_all_12227 = $CI->config->item('en_all_12227');
-    $read_ui = '<div class="space-content">';
-    $read_ui .= '<span class="' . superpower_active(10989).'">' . $en_all_12227[$ln_type_play_id]['m_icon'] . '&nbsp;</span>';
-    $read_ui .= '</div>';
-    return $read_ui;
-}
-
-
 function echo_en($en, $is_parent = false)
 {
 
@@ -2725,12 +2720,7 @@ function echo_en($en, $is_parent = false)
 
     //READ
     $read_ui = '<td class="MENCHcolumn2 read">';
-    $read_ui .= echo_in_stat_read(0, $en['en_id']);
-    //READ TYPE
-    if ($is_read_progress) {
-        //LINK TYPE
-        $read_ui .= echo_in_progress($en['ln_type_play_id']);
-    }
+    $read_ui .= echo_in_stat_read(array(), $en);
     $read_ui .= '</td>';
 
 
