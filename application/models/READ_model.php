@@ -1835,7 +1835,7 @@ class READ_model extends CI_Model
                         echo_in_list($ins[0], $read_answers, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOU ANSWERED:');
 
                         //Allow to edit:
-                        echo '<div class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>EDIT ANSWER</u></a></div>';
+                        echo '<div class="inline-block margin-top-down previous_reads">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>EDIT ANSWER</u></a></div>';
 
                         echo '</div>';
 
