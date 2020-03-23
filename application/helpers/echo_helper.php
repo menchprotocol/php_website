@@ -2538,7 +2538,7 @@ function echo_in_previous($in_id, $recipient_en){
 
             //Show the breadcrumb since it's connected:
             $ui = '<div class="previous_reads hidden">';
-            $ui .= '<div class="read-topic"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT PREVIOUS READ:</div>';
+            $ui .= '<div class="read-topic"><span class="icon-block"><i class="fas fa-step-backward"></i></span>SELECT PREVIOUS READ:</div>';
             $ui .= '<div class="list-group bottom-read-line">';
 
             $breadcrumb_items = array();
