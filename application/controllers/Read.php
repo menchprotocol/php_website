@@ -139,7 +139,7 @@ class Read extends CI_Controller
 
 
         //List Read History:
-        $ui = '<div class="list-group dynamic-reads">aaa';
+        $ui = '<div class="list-group dynamic-reads">';
         foreach($this->READ_model->ln_fetch($match_columns, $join_objects, config_var(11064), 0, array('ln_id' => 'DESC')) as $in_read){
             if($note_in_id > 0){
 
