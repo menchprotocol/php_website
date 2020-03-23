@@ -1474,7 +1474,7 @@ function echo_in_stat_read($in = array(), $en = array()){
             //If Progress Type then show progress here....
             if(isset($item['ln_type_play_id']) && in_array($item['ln_type_play_id'], $CI->config->item('en_ids_12227'))){
                 $en_all_12227 = $CI->config->item('en_all_12227');
-                $ui = '<div class="space-content">';
+                $ui .= '<div class="space-content">';
                 $ui .= '<span class="' . superpower_active(10989).'">' . $en_all_12227[$item['ln_type_play_id']]['m_icon'] . '&nbsp;</span>';
                 $ui .= '</div>';
             }
