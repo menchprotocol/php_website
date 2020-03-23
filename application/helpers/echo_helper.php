@@ -2267,23 +2267,27 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         //RIGHT EDITING:
         $ui .= '<div class="pull-right inline-block">';
         $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'">';
-        $ui .= '<span class="show-on-hover">';
-        if($is_author || !$is_parent){
 
-            if($is_author && !$is_parent){
-                $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort black blog-sort-handle"></i></span>';
+        if($in['ln_id']){
+            $ui .= '<span class="show-on-hover">';
+            if($is_author || !$is_parent){
+
+                if($is_author && !$is_parent){
+                    $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort black blog-sort-handle"></i></span>';
+                }
+
+                //Unlink:
+                $ui .= '<span title="Unlink blog '.$in['ln_id'].'" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink black"></i></a></span>';
+
+            } elseif(!$is_author) {
+
+                //Indicate if NOT an author:
+                $ui .= '<span data-toggle="tooltip" title="You are not yet an author of this blog" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
+
             }
-
-            //Unlink:
-            $ui .= '<span title="Unlink blog" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink black"></i></a></span>';
-
-        } elseif(!$is_author) {
-
-            //Indicate if NOT an author:
-            $ui .= '<span data-toggle="tooltip" title="You are not yet an author of this blog" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
-
+            $ui .= '</span>';
         }
-        $ui .= '</span>';
+
         $ui .= '</div>';
         $ui .= '</div>';
 
@@ -2885,13 +2889,14 @@ function echo_menu($menu_id, $btn_class){
 function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author, $show_full_name, $in_id = 0, $ln_id = 0){
 
     $CI =& get_instance();
-    $en_all_12079 = $CI->config->item('en_all_12079');
-    $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_this = $CI->config->item('en_all_'.$cache_en_id);
 
     if(!$selected_en_id || !isset($en_all_this[$selected_en_id])){
         return false;
     }
+
+    $en_all_12079 = $CI->config->item('en_all_12079');
+    $en_all_4527 = $CI->config->item('en_all_4527');
 
     //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
     $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'_'.$in_id.'_'.$ln_id.' '.( !$show_full_name ? ' icon-block ' : '' ).'">';
