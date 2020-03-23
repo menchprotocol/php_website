@@ -1886,8 +1886,8 @@ class READ_model extends CI_Model
 
                 } else {
 
-                    echo '<div class="previous_reads">';
                     echo '<div class="selected_before '.( count($read_answers)>0 ? 'hidden' : '' ).'">';
+                    echo '<div class="previous_reads">';
 
                     //HTML:
                     if ($ins[0]['in_type_play_id'] == 6684) {
