@@ -29,7 +29,7 @@
                 'ln_type_play_id' => 10573, //Blog Note Bookmarks
                 'ln_parent_play_id' => $session_en['en_id'], //For this trainer
             ), array('in_child'), 0, 0, array('ln_id' => 'ASC')) as $bookmark_in){
-                echo echo_in_blog($bookmark_in);
+                echo echo_in($bookmark_in, 0, false, true);
             }
 
             echo '<div class="list-group-item itemblog '.superpower_active($superpower).'" style="padding:5px 0;">

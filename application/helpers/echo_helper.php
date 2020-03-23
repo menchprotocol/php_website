@@ -1596,7 +1596,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
 
 
     //READ ICON
-    $ui .= '<span class="icon-block">'.( $completion_rate['completion_percentage'] > 0 ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-lock read"></i>' ).'</span>';
+    $ui .= '<span class="icon-block">'.( $completion_rate['completion_percentage'] > 0 ? '<i class="fas fa-circle read"></i>' : '<i class="fas fa-lock read"></i>' ).'</span>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
 
     //Description:
@@ -2538,7 +2538,7 @@ function echo_in_previous($in_id, $recipient_en){
 
             //Show the breadcrumb since it's connected:
             $ui = '<div class="previous_reads hidden">';
-            $ui .= '<div class="read-topic"><span class="icon-block"><i class="fas fa-step-backward"></i></span>SELECT PREVIOUS READ:</div>';
+            $ui .= '<div class="read-topic"><span class="icon-block"><i class="fas fa-step-backward"></i></span>SELECT PREVIOUS:</div>';
             $ui .= '<div class="list-group bottom-read-line">';
 
             $breadcrumb_items = array();
