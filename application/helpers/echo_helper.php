@@ -2270,7 +2270,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
         $ui .= '<span class="show-on-hover">';
 
-        if($in['ln_type_play_id'] != 10573){
+        if(in_array($in['ln_type_play_id'], $this->config->item('en_ids_4486'))){
             if($is_author || !$is_parent){
 
                 if($is_author && !$is_parent){
