@@ -2268,8 +2268,9 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         $ui .= '<div class="pull-right inline-block">';
         $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'">';
 
-        if($in['ln_id']){
-            $ui .= '<span class="show-on-hover">';
+        $ui .= '<span class="show-on-hover">';
+
+        if($in['ln_type_play_id'] != 10573){
             if($is_author || !$is_parent){
 
                 if($is_author && !$is_parent){
@@ -2277,7 +2278,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
                 }
 
                 //Unlink:
-                $ui .= '<span title="Unlink blog '.$in['ln_type_play_id'].'" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink black"></i></a></span>';
+                $ui .= '<span title="Unlink blog" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink black"></i></a></span>';
 
             } elseif(!$is_author) {
 
@@ -2285,9 +2286,9 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
                 $ui .= '<span data-toggle="tooltip" title="You are not yet an author of this blog" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
 
             }
-            $ui .= '</span>';
         }
 
+        $ui .= '</span>';
         $ui .= '</div>';
         $ui .= '</div>';
 
