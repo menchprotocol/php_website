@@ -813,12 +813,12 @@ td.MENCHcolumn3{ width: 21%; }
 .mench-logo{
     font-size: 1.44em;
     line-height: 100%;
-    width: 38px !important;
+    width: 37px !important;
+    height: 37px !important;
     margin-left: 10px !important;
     margin-right: 4px !important;
-    margin-bottom: -6px !important;
+    margin-bottom: 0 !important;
     display: block;
-    height: 38px !important;
 }
 
 .link_marks{
