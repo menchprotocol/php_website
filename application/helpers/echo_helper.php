@@ -2889,6 +2889,10 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_this = $CI->config->item('en_all_'.$cache_en_id);
 
+    if(!$selected_en_id || !isset($en_all_this[$selected_en_id])){
+        return false;
+    }
+
     //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
     $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'_'.$in_id.'_'.$ln_id.' '.( !$show_full_name ? ' icon-block ' : '' ).'">';
     $ui .= '<button type="button" '.( $is_author ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' '.$btn_class.'" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked  '.$btn_class.'"' ).' >';
