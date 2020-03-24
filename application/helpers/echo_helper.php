@@ -2171,7 +2171,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
                     'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ), array(), 0, 0, array(), 'COUNT(ln_id) as total_blogs');
 
-                if($previous_ins[0]['total_blogs'] > 1){
+                if($previous_ins[0]['total_blogs'] > 0){
                     $ui .= '<span class="montserrat blog" style="padding-right:10px;" data-toggle="tooltip" data-placement="right" title="' . $en_all_12413[11019]['m_name'] . '">' . $previous_ins[0]['total_blogs'] . $en_all_12413[11019]['m_icon'] . '</span>';
                 }
                 if($next_blogs[0]['total_blogs'] > 0){
