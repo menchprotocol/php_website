@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-24 10:07:50 PST
+//Generated 2020-03-24 10:10:08 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -594,7 +594,7 @@ $config['en_all_12365'] = array(
         'm_parents' => array(12467,10964,11089,12410,12365,6771,12358,12228,4527),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-list-ul read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-eye read" aria-hidden="true"></i>',
         'm_name' => 'MY READS',
         'm_desc' => '',
         'm_parents' => array(11035,10989,11089,12365,6205,12228,4527),
@@ -1113,7 +1113,7 @@ $config['en_all_6205'] = array(
         'm_parents' => array(1,6205),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-list-ul read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-eye read" aria-hidden="true"></i>',
         'm_name' => 'MY READS',
         'm_desc' => '',
         'm_parents' => array(11035,10989,11089,12365,6205,12228,4527),
@@ -2386,7 +2386,7 @@ $config['en_all_12228'] = array(
         'm_parents' => array(10983,12273,12228,4535,12391,12365,10593,4527,7551,4985,4593,4485),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-list-ul read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-eye read" aria-hidden="true"></i>',
         'm_name' => 'MY READS',
         'm_desc' => 'The top of reading list where readers start their reading experience',
         'm_parents' => array(11035,10989,11089,12365,6205,12228,4527),
@@ -2987,7 +2987,7 @@ $config['en_all_11089'] = array(
         'm_parents' => array(12467,10964,11089,12410,12365,6771,12358,12228,4527),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-list-ul read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-eye read" aria-hidden="true"></i>',
         'm_name' => 'MY READS',
         'm_desc' => '',
         'm_parents' => array(11035,10989,11089,12365,6205,12228,4527),
@@ -3850,7 +3850,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(12500,10985,10876,11035,4527),
     ),
     12561 => array(
-        'm_icon' => '<i class="fas fa-pen-square blog"></i>',
+        'm_icon' => '<i class="fad fa-pen-square blog" aria-hidden="true"></i>',
         'm_name' => 'MY BLOGS',
         'm_desc' => '',
         'm_parents' => array(11035),
@@ -3868,7 +3868,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(12500,11035),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-list-ul read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-eye read" aria-hidden="true"></i>',
         'm_name' => 'MY READS',
         'm_desc' => '',
         'm_parents' => array(11035,10989,11089,12365,6205,12228,4527),
@@ -4843,7 +4843,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(12500,10985,10876,11035,4527),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-list-ul read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-eye read" aria-hidden="true"></i>',
         'm_name' => 'MY READS',
         'm_desc' => '',
         'm_parents' => array(11035,10989,11089,12365,6205,12228,4527),
