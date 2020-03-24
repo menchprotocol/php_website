@@ -337,7 +337,7 @@ $(document).ready(function () {
 
                     //Append filters:
                     algolia_index.search(q, {
-                        hitsPerPage: 20,
+                        hitsPerPage: 34,
                         filters:search_filters,
                     }, function (error, content) {
                         if (error) {
