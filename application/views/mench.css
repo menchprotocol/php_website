@@ -477,6 +477,9 @@ img.no-radius {
     width: 100%;
     font-family: 'Inter', sans-serif;
 }
+.sequal-topic{
+    padding: 20px 0 5px;
+}
 
 .nav-link.active, .nav-pills .show>.nav-link {
     color: #fff;

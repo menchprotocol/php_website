@@ -1,5 +1,21 @@
 <?php
+$en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+
+//COUNT COINS
+$read_coins = $this->READ_model->ln_fetch(array(
+    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+$blog_coins = $this->READ_model->ln_fetch(array(
+    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'ln_type_play_id' => 4250, //UNIQUE BLOGS
+), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+$play_coins = $this->READ_model->ln_fetch(array(
+    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
+), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+
 ?>
 
 <script>
@@ -11,36 +27,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 <div class="container">
 
     <?php
-    echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[12437]['m_icon'].'</span>'.$en_all_11035[12437]['m_name'].'</div>';
-    ?>
-
-    <!-- Top Players -->
-    <div id="load_leaderboard"></div>
-
-    <?php
-    //Total Stats
-    $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
-    $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
-    //MENCH COINS
-    $read_coins = $this->READ_model->ln_fetch(array(
-        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-    $blog_coins = $this->READ_model->ln_fetch(array(
-        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_play_id' => 4250, //UNIQUE BLOGS
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-    $play_coins = $this->READ_model->ln_fetch(array(
-        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-
-
-
-
-    echo '<div class="read-topic" style="padding: 20px 0 0;"><span class="icon-block">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</div>';
+    //COIN STATS
+    echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</div>';
     echo '<table class="table table-sm table-striped dotransparent tablepadded">';
 
     echo '<tr>';
@@ -52,8 +42,13 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     echo '<td class="read fixedColumns MENCHcolumn2"><span class="read"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="montserrat" title="'.number_format($read_coins[0]['total_coins'], 0).'">'.echo_number($read_coins[0]['total_coins']).'</span><b class="block montserrat"><span class="icon-block show-max">&nbsp;</span>'.$en_all_2738[6205]['m_name'].'S</b></span></td>';
 
     echo '</tr>';
-
     echo '</table>';
+
+
+
+    //Top Players
+    echo '<div class="read-topic sequal-topic"><span class="icon-block">'.$en_all_11035[12437]['m_icon'].'</span>'.$en_all_11035[12437]['m_name'].'</div>';
+    echo '<div id="load_leaderboard"></div>';
 
     ?>
 
