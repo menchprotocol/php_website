@@ -1188,10 +1188,11 @@ label {
     padding: 0;
 }
 .texttype_4356_sm {
-    text-align: center;
-    padding-right: 2px;
-    padding-left: 2px;
+    padding:0;
     width: 55px;
+    text-align: left;
+    margin-left: -6px;
+    color: #000 !important;
 }
 .texttype_4736_lg {
     background-color: transparent;
