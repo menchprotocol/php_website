@@ -248,6 +248,9 @@ img.no-radius {
     color: #AAAAAA !important;
     text-transform: uppercase;
 }
+.read-topic i {
+    color: #AAAAAA !important;
+}
 .read-info-topic{
     margin: -10px 0 30px;
 }
