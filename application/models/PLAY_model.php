@@ -1075,7 +1075,7 @@ class PLAY_model extends CI_Model
         //Return results:
         return array(
             'status' => 1,
-            'message' => $applied_success . '/' . count($children) . ' players updated',
+            'message' => '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$applied_success . '/' . count($children) . ' players updated</div>',
         );
 
     }
