@@ -307,7 +307,7 @@ class BLOG_model extends CI_Model
         return $stats;
     }
 
-    function in_link_or_create($in_title, $ln_owner_play_id, $link_to_blog_id = 0, $is_parent = false, $new_in_status = 6183, $in_type_play_id = 6677 /* Blog Read-Only */, $link_in_id = 0)
+    function in_link_or_create($in_title, $ln_owner_play_id, $link_to_blog_id = 0, $is_parent = false, $new_in_status = 6184, $in_type_play_id = 6677 /* Blog Read-Only */, $link_in_id = 0)
     {
 
         /*

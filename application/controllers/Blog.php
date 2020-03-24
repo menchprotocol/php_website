@@ -677,7 +677,7 @@ class Blog extends CI_Controller {
         }
 
         //All seems good, go ahead and try creating the Blog:
-        return echo_json($this->BLOG_model->in_link_or_create(trim($_POST['in_title']), $session_en['en_id'], $_POST['in_linked_id'], intval($_POST['is_parent']), 6183, $new_blog_type, $_POST['in_link_child_id']));
+        return echo_json($this->BLOG_model->in_link_or_create(trim($_POST['in_title']), $session_en['en_id'], $_POST['in_linked_id'], intval($_POST['is_parent']), 6184, $new_blog_type, $_POST['in_link_child_id']));
 
     }
 
