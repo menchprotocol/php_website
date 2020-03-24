@@ -2483,6 +2483,8 @@ function echo_in_previous($in_id, $recipient_en){
     }
 
 
+    $breadcrumb_links = array();
+
     foreach ($recursive_parents as $grand_parent_ids) {
         foreach(array_intersect($grand_parent_ids, $list_ids) as $intersect) {
 
@@ -2492,7 +2494,6 @@ function echo_in_previous($in_id, $recipient_en){
             $ui .= '<div class="list-group bottom-read-line">';
 
             $breadcrumb_items = array();
-            $breadcrumb_links = array();
 
             foreach ($grand_parent_ids as $parent_in_id) {
 
