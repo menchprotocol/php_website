@@ -476,8 +476,6 @@ img.no-radius {
     display: block;
     width: 100%;
     font-family: 'Inter', sans-serif;
-    border: 1px solid #AAAAAA;
-    padding: 5px;
 }
 
 .nav-link.active, .nav-pills .show>.nav-link {
