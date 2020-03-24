@@ -2538,7 +2538,7 @@ function echo_in_previous($in_id, $recipient_en){
 
     //Did We Find It?
     if($ui){
-        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" '.( count($breadcrumb_links)==1 ? 'href="'.$breadcrumb_links[0].'"' : 'href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"' ).'><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;&nbsp;&nbsp;</div>';
+        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" '.( count($breadcrumb_links)==1 && 0 ? 'href="'.$breadcrumb_links[0].'"' : 'href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"' ).'><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;&nbsp;&nbsp;</div>';
     }
 
     return $ui;
