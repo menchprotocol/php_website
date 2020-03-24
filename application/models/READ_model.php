@@ -2019,7 +2019,7 @@ class READ_model extends CI_Model
                 //Show Previous Button:
                 echo echo_in_previous($ins[0]['in_id'], $recipient_en);
 
-                echo '<div class="margin-top-down inline-block"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">'.( $previous_answers ? 'UPDATE' : 'ANSWER' ).' & NEXT <i class="fad fa-step-forward"></i></a>&nbsp;&nbsp;&nbsp;</div>';
+                echo '<div class="margin-top-down inline-block"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">'.( $previous_answers ? 'UPDATE' : 'ANSWER' ).' & NEXT <i class="fad fa-step-forward"></i></a>&nbsp;&nbsp;</div>';
 
                 echo '<span class="text_saving_result inline-block"></span>';
 

@@ -189,7 +189,7 @@ li a {
     border-radius: 0 !important;
 }
 
-a.btn, .btn.dropdown-toggle {
+a.btn, .btn.dropdown-toggle, label.btn {
     padding:10px;
 }
 
