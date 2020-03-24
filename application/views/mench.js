@@ -84,7 +84,6 @@ function getRandomInt(min, max) {
 
 function go_to_read(in_id){
     //Is It published?
-    alert('ok:'+parseInt($('.dropd_4737_'+in_id+'_0').attr('selected-val')));
     if( parseInt($('.dropd_4737_'+in_id+'_0').attr('selected-val')) in js_en_all_7355 ){
 
         //Yes, go to read:
