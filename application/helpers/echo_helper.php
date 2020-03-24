@@ -2796,7 +2796,7 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tab
     $attributes = ( $is_author ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' in_ln__id_'.$in_ln__id.' texttype_'.$cache_en_id.($is_blog_title_lg?'_lg':'_sm').'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" ';
 
 
-    $tooltip_span_start = '<span class="'.( !$is_author ? 'edit-locked' : '' ).'" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12112[$cache_en_id]['m_name'].( !$is_author ? ' (YOU ARE NOT AN AUTHOR)' : '' ).'">';
+    $tooltip_span_start = '<span class="'.( !$is_author ? 'edit-locked' : '' ).'" '.( !$is_blog_title_lg || !$is_author ? 'data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12112[$cache_en_id]['m_name'].( !$is_author ? ' (YOU ARE NOT AN AUTHOR)' : '' ).'"' : '').'>';
     $tooltip_span_end = '</span>';
 
 
