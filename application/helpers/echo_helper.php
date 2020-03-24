@@ -2094,7 +2094,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $CI =& get_instance();
 
     $en_all_6186 = $CI->config->item('en_all_6186');
-    $en_all_4737 = $CI->config->item('en_all_4737');
+    $en_all_4737 = $CI->config->item('en_all_4737'); //BLOG STATUS
     $en_all_7585 = $CI->config->item('en_all_7585');
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_4486 = $CI->config->item('en_all_4486');
@@ -2145,7 +2145,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
             $ui .= '<span class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . ' </span></span>';
 
             //BLOG IF NOT PUBLISHED:
-            $ui .= '<span class="icon-block in_status_play_id_' . $in['in_id'] . ( $is_published ? ' hidden ' : '' ) . '">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . '</span>';
+            $ui .= '<span class="icon-block in_status_play_id_' . $in['in_id'] . ( $is_published ? ' hidden ' : '' ) . '">' . $en_all_4737[$in['in_status_play_id']]['m_icon'] . '</span>';
 
 
             //Blog Brush
