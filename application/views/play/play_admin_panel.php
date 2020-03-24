@@ -204,7 +204,7 @@ if(!$action) {
                 'en_icon' => random_player_avatar(),
             ));
         }
-        echo '<div class="alert alert-success"><i class="fas fa-check-circle"></i> '.$updated.' User profiles updated with new random animal icons</div>';
+        echo '<div class="alert alert-success"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$updated.' User profiles updated with new random animal icons</div>';
     }
 
     for($i=0;$i<750;$i++){
@@ -383,7 +383,7 @@ if(!$action) {
         }
 
     } else {
-        echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No orphans found!</div>';
+        echo '<div class="alert alert-success maxout"><span class="icon-block"><i class="fas fa-check-circle"></i></span>No orphans found!</div>';
     }
 
 } elseif($action=='sync_player_links') {
@@ -464,7 +464,7 @@ if(!$action) {
         }
 
     } else {
-        echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No orphans found!</div>';
+        echo '<div class="alert alert-success maxout"><span class="icon-block"><i class="fas fa-check-circle"></i></span>No orphans found!</div>';
     }
     
 
@@ -521,7 +521,7 @@ if(!$action) {
             }
 
             if($replaced > 0){
-                echo '<div class="alert alert-success"><i class="fas fa-check-circle"></i> Updated icons for '.$replaced.' players.</div>';
+                echo '<div class="alert alert-success"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Updated icons for '.$replaced.' players.</div>';
             }
         }
 
@@ -853,7 +853,7 @@ if(!$action) {
             echo '<div class="mini-header">Confirm Replacement by Typing "'.$confirmation_keyword.'":</div>';
             echo '<input type="text" class="form-control border maxout" name="confirm_statement" value="'. @$_GET['confirm_statement'] .'"><br />';
         } else {
-            echo '<div class="alert alert-danger"><i class="fad fa-exclamation-triangle"></i> Fix errors above to then apply search/replace</div>';
+            echo '<div class="alert alert-danger"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>Fix errors above to then apply search/replace</div>';
         }
     }
 
@@ -883,7 +883,7 @@ if(!$action) {
         }
 
     } else {
-        echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No duplicates found!</div>';
+        echo '<div class="alert alert-success maxout"><span class="icon-block"><i class="fas fa-check-circle"></i></span>No duplicates found!</div>';
     }
 
 } elseif($action=='identical_player_names') {
@@ -907,7 +907,7 @@ if(!$action) {
         }
 
     } else {
-        echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No duplicates found!</div>';
+        echo '<div class="alert alert-success maxout"><span class="icon-block"><i class="fas fa-check-circle"></i></span>No duplicates found!</div>';
     }
 
 } elseif($action=='sync_play_blog_statuses') {

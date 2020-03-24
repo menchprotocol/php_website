@@ -251,7 +251,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
                 //Inform that nothing was found:
                 $en_all_12410 = $this->config->item('en_all_12410');
-                $this_tab .= '<div class="alert alert-warning">No <span class="montserrat '.extract_icon_color($en_all_12410[$en_id2]['m_icon']).'">'.$en_all_12410[$en_id2]['m_icon'].' '.$en_all_12410[$en_id2]['m_name'].'</span> added yet.</div>';
+                $this_tab .= '<div class="alert alert-warning"><span class="icon-block">'.$en_all_12410[$en_id2]['m_icon'].'</span><span class="montserrat '.extract_icon_color($en_all_12410[$en_id2]['m_icon']).'">'.$en_all_12410[$en_id2]['m_name'].'</span> is not added yet.</div>';
 
             }
 

@@ -915,7 +915,7 @@ class Read extends CI_Controller
         } else {
 
             //Show no link warning:
-            $message .= '<div class="alert alert-warning" role="alert" style="margin-top:20px;"><i class="fad fa-exclamation-triangle"></i> No Links found with the selected filters. Modify filters and try again.</div>';
+            $message .= '<div class="alert alert-warning" role="alert" style="margin-top:20px;"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>No Links found with the selected filters. Modify filters and try again.</div>';
 
         }
 
@@ -1334,7 +1334,7 @@ class Read extends CI_Controller
         }
 
         //Show basic UI for now:
-        return redirect_message('/read', '<div class="alert alert-success" role="alert"><i class="fas fa-trash-alt"></i> '.$message.'</div>');
+        return redirect_message('/read', '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
 
     }
 

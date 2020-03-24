@@ -192,7 +192,7 @@ class Blog extends CI_Controller {
             'ln_owner_play_id' => $session_en['en_id'],
             'ln_child_blog_id' => $in_id,
         )))){
-            return redirect_message('/blog/'.$in_id, '<div class="alert alert-warning" role="alert"><i class="fad fa-exclamation-triangle"></i> You have already requested to join this blog. No further action is necessary.</div>');
+            return redirect_message('/blog/'.$in_id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>You have already requested to join this blog. No further action is necessary.</div>');
 
         }
 
@@ -204,7 +204,7 @@ class Blog extends CI_Controller {
         ));
 
         //Go back to blog:
-        return redirect_message('/blog/'.$in_id, '<div class="alert alert-success" role="alert"><i class="far fa-thumbs-up"></i> Successfully submitted your request to join as an author of this blog. You will receive a confirmation once your request has been reviewed.</div>');
+        return redirect_message('/blog/'.$in_id, '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-thumbs-up"></i></span>Successfully submitted your request to join as an author of this blog. You will receive a confirmation once your request has been reviewed.</div>');
 
     }
 
@@ -223,7 +223,7 @@ class Blog extends CI_Controller {
         ));
 
         //Go back to blog:
-        return redirect_message('/blog/'.$in_id, '<div class="alert alert-success" role="alert"><i class="far fa-thumbs-up"></i> SUCCESSFULLY JOINED</div>');
+        return redirect_message('/blog/'.$in_id, '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-thumbs-up"></i></span>SUCCESSFULLY JOINED</div>');
 
     }
 
