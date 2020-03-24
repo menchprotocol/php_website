@@ -82,6 +82,13 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function offer_my_list(){
+    var r = confirm("You can only read this blog once published. Go to reading list?");
+    if (r == true) {
+        window.location = '/read';
+    }
+}
+
 function echo_js_suggestion(alg_obj){
 
     //Determine object type:

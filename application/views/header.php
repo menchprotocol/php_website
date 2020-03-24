@@ -139,17 +139,23 @@ if(!isset($hide_header)){
                                     $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
                                     $is_current = ($current_mench['x_id'] == $en_id);
                                     $this_mench = current_mench(strtolower($m['m_name']));
-                                    $url = '/' . $this_mench['x_name'];
+                                    $url = 'href="/' . $this_mench['x_name'].'"';
 
                                     if (!$is_current && isset($in) && in_array($this_mench['x_name'], array('read', 'blog'))) {
                                         if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'blog') {
-                                            $url = '/blog/' . $in['in_id'];
+                                            $url = 'href="/blog/' . $in['in_id'].'"';
                                         } elseif ($current_mench['x_name'] == 'blog' && $this_mench['x_name'] == 'read') {
-                                            $url = '/' . $in['in_id'];
+                                            if(in_array($in['in_status_play_id'], $this->config->item('en_ids_7355')/* Blog Statuses Public */)){
+                                                $url = 'href="/' . $in['in_id'].'"';
+                                            } else {
+                                                //Cannot view:
+                                                $url = 'href="javascript:void(0);" onclick="offer_my_list()"';
+
+                                            }
                                         }
                                     }
 
-                                    echo '<a class="mench_coin ' . $this_mench['x_name'] . ' border-' . $this_mench['x_name'] . ($is_current ? ' focustab ' : '') . ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" href="' . $url . '">';
+                                    echo '<a class="mench_coin ' . $this_mench['x_name'] . ' border-' . $this_mench['x_name'] . ($is_current ? ' focustab ' : '') . ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" ' . $url . '>';
                                     echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                     echo '<span class="montserrat ' . $this_mench['x_name'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
                                     echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
