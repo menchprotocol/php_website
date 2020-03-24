@@ -2492,6 +2492,7 @@ function echo_in_previous($in_id, $recipient_en){
             $ui .= '<div class="list-group bottom-read-line">';
 
             $breadcrumb_items = array();
+            $breadcrumb_links = array();
 
             foreach ($grand_parent_ids as $parent_in_id) {
 
@@ -2510,6 +2511,7 @@ function echo_in_previous($in_id, $recipient_en){
                         }
                     }
 
+                    array_push($breadcrumb_links, '/'.$parent_in_id);
                     array_push($breadcrumb_items, '<a href="/' . $parent_in_id . '"class="list-group-item itemread no-side-padding montserrat"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="icon-block' . (in_array($ins_this[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '') . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_name'] . ': ' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_desc'] . '">' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_icon'] . '</span></span>' . $ins_this[0]['in_title'] . $completion_ui_rate . '</a>');
 
                 }
@@ -2534,9 +2536,8 @@ function echo_in_previous($in_id, $recipient_en){
 
 
     //Did We Find It?
-    if($ui){
-        //Now show button to show parents:
-        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;&nbsp;&nbsp;</div>';
+    if(count($breadcrumb_links) > 0){
+        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" '.( count($breadcrumb_links)==1 ? 'href="'.$breadcrumb_links[0].'"' : 'href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"' ).'><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;&nbsp;&nbsp;</div>';
     }
 
     return $ui;
