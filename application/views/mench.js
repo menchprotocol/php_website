@@ -82,10 +82,21 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function offer_my_list(){
-    var r = confirm("You can only read this blog once published. Go to reading list?");
-    if (r == true) {
-        window.location = '/read';
+function go_to_read(in_id){
+    //Is It published?
+    if(parseInt($('.dropd_4737_'+in_id+'_0').attr('selected-val')) in js_en_all_7355){
+
+        //Yes, go to read:
+        window.location = '/read/'+in_id;
+
+    } else {
+
+        //No, give them option:
+        var r = confirm("You can only read this blog once published. Go to reading list?");
+        if (r == true) {
+            window.location = '/read';
+        }
+
     }
 }
 

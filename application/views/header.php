@@ -145,13 +145,7 @@ if(!isset($hide_header)){
                                         if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'blog') {
                                             $url = 'href="/blog/' . $in['in_id'].'"';
                                         } elseif ($current_mench['x_name'] == 'blog' && $this_mench['x_name'] == 'read') {
-                                            if(in_array($in['in_status_play_id'], $this->config->item('en_ids_7355')/* Blog Statuses Public */)){
-                                                $url = 'href="/' . $in['in_id'].'"';
-                                            } else {
-                                                //Cannot view:
-                                                $url = 'href="javascript:void(0);" onclick="offer_my_list()"';
-
-                                            }
+                                            $url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
                                         }
                                     }
 
