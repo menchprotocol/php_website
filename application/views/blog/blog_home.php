@@ -42,7 +42,7 @@
                            maxlength="' . config_var(11071) . '"
                            id="newBlogTitle"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="NEW BLOG">
+                           placeholder="NEW BLOG TITLE">
                 </div><div class="algolia_pad_search hidden in_pad_new_blog"></div></div>';
 
             echo '</div>';
