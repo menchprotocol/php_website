@@ -2180,16 +2180,10 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
                 //Previous blog:
-                $notable_prev_blogs = ($previous_ins[0]['total_blogs'] >= 2);
-                $notable_next_blogs = ($next_blogs[0]['total_blogs'] > 0);
+                $ui .= '<span class="montserrat blog blog-previous">' . ( $previous_ins[0]['total_blogs'] >= 2 ? $previous_ins[0]['total_blogs'] . $en_all_12413[11019]['m_icon'] : '&nbsp;') . '</span>';
 
-                if($notable_prev_blogs || $notable_next_blogs){
-
-                    $ui .= '<span class="montserrat blog blog-previous">' . ( $notable_prev_blogs ? $previous_ins[0]['total_blogs'] . $en_all_12413[11019]['m_icon'] : '&nbsp;') . '</span>';
-
-                    $ui .= '<span class="montserrat blog blog-next">' . ( $notable_next_blogs ? $en_all_12413[11020]['m_icon'] . $next_blogs[0]['total_blogs']: '&nbsp;' ) . '</span>';
-
-                }
+                //Next Blogs:
+                $ui .= '<span class="montserrat blog blog-next">' . ( $next_blogs[0]['total_blogs'] > 0 ? $en_all_12413[11020]['m_icon'] . $next_blogs[0]['total_blogs']: '&nbsp;' ) . '</span>';
 
 
             $ui .= '</div>';
