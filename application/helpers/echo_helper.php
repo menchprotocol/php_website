@@ -2172,10 +2172,10 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
                 ), array(), 0, 0, array(), 'COUNT(ln_id) as total_blogs');
 
                 if($previous_ins[0]['total_blogs'] > 0){
-                    $ui .= '<span class="montserrat blog" style="padding-right:10px;" data-toggle="tooltip" data-placement="right" title="' . $en_all_12413[11019]['m_name'] . '">' . $previous_ins[0]['total_blogs'] . $en_all_12413[11019]['m_icon'] . '</span>';
+                    $ui .= '<span class="montserrat blog blog-previous" data-toggle="tooltip" data-placement="right" title="' . $en_all_12413[11019]['m_name'] . '">' . $previous_ins[0]['total_blogs'] . $en_all_12413[11019]['m_icon'] . '</span>';
                 }
                 if($next_blogs[0]['total_blogs'] > 0){
-                    $ui .= '<span class="montserrat blog" style="padding-right:10px;" data-toggle="tooltip" data-placement="right" title="' . $en_all_12413[11020]['m_name'] . '">' . $en_all_12413[11020]['m_icon'] . $next_blogs[0]['total_blogs'] . '</span>';
+                    $ui .= '<span class="montserrat blog blog-next" data-toggle="tooltip" data-placement="right" title="' . $en_all_12413[11020]['m_name'] . '">' . $en_all_12413[11020]['m_icon'] . $next_blogs[0]['total_blogs'] . '</span>';
                 }
 
             $ui .= '</div>';

@@ -1276,6 +1276,17 @@ label {
     padding: 20px 0 5px;
 }
 
+.blog-previous{
+    padding-right: 5px;
+    min-width: 50px;
+    display: inline-block;
+    text-align: right;
+}
+.blog-next{
+    min-width:50px;
+    display: inline-block;
+}
+
 @media (min-width:767px) {
     .itemblog:hover {
         background-color:#fff4b5 !important;
