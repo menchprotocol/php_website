@@ -2408,7 +2408,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
 }
 
-function echo_in_next($in_id, $recipient_en, $push_message){
+function echo_in_next($in_id, $recipient_en, $push_message, $show_previous = true){
 
     //A function to display warning/success messages to users:
     $CI =& get_instance();
@@ -2445,8 +2445,10 @@ function echo_in_next($in_id, $recipient_en, $push_message){
         <?php
         */
 
-        //PREVIOUS:
-        echo echo_in_previous($in_id, $recipient_en);
+        if($show_previous){
+            //PREVIOUS:
+            echo echo_in_previous($in_id, $recipient_en);
+        }
 
         //NEXT:
         echo '<div class="inline-block margin-top-down previous_reads"><a class="btn btn-read" href="/'.$in_id.'/next">NEXT <i class="fad fa-step-forward"></i></a></div>';
