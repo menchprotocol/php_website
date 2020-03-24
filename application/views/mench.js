@@ -84,7 +84,8 @@ function getRandomInt(min, max) {
 
 function go_to_read(in_id){
     //Is It published?
-    if(parseInt($('.dropd_4737_'+in_id+'_0').attr('selected-val')) in js_en_all_7355){
+    alert('ok:'+parseInt($('.dropd_4737_'+in_id+'_0').attr('selected-val')));
+    if( parseInt($('.dropd_4737_'+in_id+'_0').attr('selected-val')) in js_en_all_7355 ){
 
         //Yes, go to read:
         window.location = '/read/'+in_id;
@@ -92,7 +93,7 @@ function go_to_read(in_id){
     } else {
 
         //No, give them option:
-        var r = confirm("You can only read this blog once published. Go to reading list?");
+        var r = confirm("You can only read this blog once its published. Navigate to reading list?");
         if (r == true) {
             window.location = '/read';
         }
