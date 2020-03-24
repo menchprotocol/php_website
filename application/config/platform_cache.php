@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-24 15:34:40 PST
+//Generated 2020-03-24 16:18:53 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -2813,7 +2813,7 @@ $config['en_all_12141'] = array(
 $config['en_ids_12138'] = array(12137);
 $config['en_all_12138'] = array(
     12137 => array(
-        'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
         'm_name' => 'BLOG SEARCHABLE',
         'm_desc' => '',
         'm_parents' => array(10648,12138,7356,7355,4737),
@@ -3485,7 +3485,7 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12176,12156,11071,12210,12130,12355,11077,11074,12124,11076,11075,11064,11986,11065,11063,11079,11060,11073,12363,11066,11072,12232,11057,11056,12331,12113,12427,12088,11061,11162,11163,12209,12208);
+$config['en_ids_6404'] = array(12176,12156,11071,12210,12130,12355,11077,11074,12124,11076,11075,11064,11986,11065,11063,11079,11060,12363,11073,11066,11072,12232,11057,11056,12331,12113,12427,12088,11061,11162,11163,12209,12208);
 $config['en_all_6404'] = array(
     12176 => array(
         'm_icon' => '<i class="fad fa-clock blog" aria-hidden="true"></i>',
@@ -3589,16 +3589,16 @@ $config['en_all_6404'] = array(
         'm_desc' => '1.3091',
         'm_parents' => array(6404),
     ),
+    12363 => array(
+        'm_icon' => '',
+        'm_name' => 'MESSAGE FEATURED MAX LENGTH',
+        'm_desc' => '233',
+        'm_parents' => array(6404),
+    ),
     11073 => array(
         'm_icon' => '',
         'm_name' => 'MESSAGE MAX LENGTH',
         'm_desc' => '1000',
-        'm_parents' => array(6404),
-    ),
-    12363 => array(
-        'm_icon' => '',
-        'm_name' => 'MESSAGE SEARCHABLE MAX LENGTH',
-        'm_desc' => '233',
         'm_parents' => array(6404),
     ),
     11066 => array(
@@ -4657,7 +4657,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(11054,10891,4527),
     ),
     12138 => array(
-        'm_icon' => '<i class="fad fa-megaphone blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-search blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG STATUS SEARCHABLE',
         'm_desc' => '',
         'm_parents' => array(4527,10891),
@@ -6493,7 +6493,7 @@ $config['en_all_7356'] = array(
         'm_parents' => array(10648,7355,7356,4737),
     ),
     12137 => array(
-        'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
         'm_name' => 'SEARCHABLE',
         'm_desc' => '',
         'm_parents' => array(10648,12138,7356,7355,4737),
@@ -6510,7 +6510,7 @@ $config['en_all_7355'] = array(
         'm_parents' => array(10648,7355,7356,4737),
     ),
     12137 => array(
-        'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
         'm_name' => 'SEARCHABLE',
         'm_desc' => '',
         'm_parents' => array(10648,12138,7356,7355,4737),
@@ -6839,7 +6839,7 @@ $config['en_all_6225'] = array(
 $config['en_ids_4737'] = array(12137,6184,6183,6182);
 $config['en_all_4737'] = array(
     12137 => array(
-        'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
         'm_name' => 'SEARCHABLE',
         'm_desc' => '',
         'm_parents' => array(10648,12138,7356,7355,4737),
