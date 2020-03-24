@@ -1538,7 +1538,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
 
 
     //READ ICON
-    $ui .= '<span class="icon-block">'.( $completion_rate['completion_percentage'] > 0 ? '<i class="fas fa-circle read"></i>' : '<i class="fas fa-lock read"></i>' ).'</span>';
+    $ui .= '<span class="icon-block">'.( $completion_rate['completion_percentage'] > 0 ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-lock read"></i>' ).'</span>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
 
     //Description:
