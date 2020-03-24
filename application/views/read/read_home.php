@@ -21,7 +21,7 @@ if(!$session_en){
 
 } else {
 
-    echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>MY BOOKMARKS</div>';
+    echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[7347]['m_icon'].'</span>'.$en_all_11035[7347]['m_name'].'</div>';
 
     echo '<div id="actionplan_steps" class="list-group no-side-padding">';
     foreach ($player_reads as $priority => $ln) {
