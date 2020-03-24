@@ -1173,7 +1173,7 @@ label {
     width:    -moz-calc(100% - 15px);
     width:         calc(100% - 15px);
 }
-.input-group .algolia-autocomplete, .ln_content {
+.input-group .algolia-autocomplete, .ln_content, .read_input {
     width: -webkit-calc(100% - 68px);
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
