@@ -2045,7 +2045,7 @@ class READ_model extends CI_Model
                 //Show Previous Button:
                 echo echo_in_previous($ins[0]['in_id'], $recipient_en);
 
-                echo '<label class="btn btn-read inline-block" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD TO CONTINUE</label>';
+                echo '<label class="btn btn-read inline-block" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top">UPLOAD & NEXT <i class="fad fa-step-forward"></i></label>';
 
                 ?>
 
