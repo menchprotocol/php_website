@@ -34,7 +34,7 @@ class Read extends CI_Controller
             'in_id' => $in_id,
         ));
         $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
-        return redirect_message('/'.($next_in_id > 0 ? $next_in_id : $in_id ), '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle read"></i></span>Added to your reading list. Continue below...</div>');
+        return redirect_message('/'.($next_in_id > 0 ? $next_in_id : $in_id ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-check-circle read"></i></span>Added to your reading list. Continue below...</div>');
 
     }
 
@@ -896,7 +896,7 @@ class Read extends CI_Controller
                         'ln_content' => $new_content,
                     ), $session_en['en_id'], 12360, update_description($ln['ln_content'], $new_content));
 
-                    $message .= '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['ln_content_search'].'] with ['.trim($_POST['ln_content_replace']).']</div>';
+                    $message .= '<div class="alert alert-danger" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['ln_content_search'].'] with ['.trim($_POST['ln_content_replace']).']</div>';
 
                 }
 
@@ -1334,7 +1334,7 @@ class Read extends CI_Controller
         }
 
         //Show basic UI for now:
-        return redirect_message('/read', '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
+        return redirect_message('/read', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
 
     }
 
@@ -1394,7 +1394,7 @@ class Read extends CI_Controller
         //Assume its all good!
 
         //We actually skipped, draft message:
-        $message = '<div class="alert alert-success" role="alert">I successfully skipped selected steps.</div>';
+        $message = '<div class="alert alert-danger" role="alert">I successfully skipped selected steps.</div>';
 
         //Find the next item to navigate them to:
         $next_in_id = $this->READ_model->read_next_go($en_id, false);
