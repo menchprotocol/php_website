@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-24 10:04:45 PST
+//Generated 2020-03-24 10:07:50 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -3815,7 +3815,7 @@ $config['en_ids_11035'] = array(12358,4430,11068,11999,6225,6287,12561,7291,1220
 $config['en_all_11035'] = array(
     12358 => array(
         'm_icon' => '<i class="fas fa-chart-bar play" aria-hidden="true"></i>',
-        'm_name' => 'COIN COUNTS',
+        'm_name' => 'COIN STATS',
         'm_desc' => '',
         'm_parents' => array(11035,12144),
     ),

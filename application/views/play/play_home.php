@@ -10,6 +10,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 <div class="container">
 
+    <?php
+    echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[12437]['m_icon'].'</span>'.$en_all_11035[12437]['m_name'].'</div>';
+    ?>
+
     <!-- Top Players -->
     <div id="load_leaderboard"></div>
 
@@ -35,6 +39,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
 
+
+    echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[12358]['m_icon'].'</span>'.$en_all_11035[12358]['m_name'].'</div>';
     echo '<table class="table table-sm table-striped dotransparent tablepadded">';
 
     echo '<tr>';
