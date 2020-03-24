@@ -2141,11 +2141,16 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
             $ui .= '<div class="space-content">';
 
+
             //LINK STATUS (IF NOT PUBLISHED, SHOULD NOT HAPPEN!)
             $ui .= '<span class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . ' </span></span>';
 
+
             //BLOG IF NOT PUBLISHED:
-            $ui .= '<span class="icon-block in_status_play_id_' . $in['in_id'] . ( $is_published ? ' hidden ' : '' ) . '">' . $en_all_4737[$in['in_status_play_id']]['m_icon'] . '</span>';
+            if(!superpower_active(10984, true)){
+                //Show them Blog status in this case:
+                $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']) . ' </div>';
+            }
 
 
             //Blog Brush
