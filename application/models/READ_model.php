@@ -2016,7 +2016,12 @@ class READ_model extends CI_Model
                 echo '<div class="edit-text '.($previous_answers ? ' hidden ' : '').'">';
                 echo '<textarea class="border i_content read_input" placeholder="Your Answer Here..." id="read_text_answer">'.( $previous_answers ? $read_completes[0]['ln_content'] : '' ).'</textarea>';
                 echo '<span class="text_saving_result"></span>';
-                echo '<div class="margin-top-down"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">'.( $previous_answers ? 'UPDATE' : 'ANSWER' ).' & NEXT <i class="fad fa-step-forward"></i></a></div>';
+
+                //Show Previous Button:
+                echo echo_in_previous($ins[0]['in_id'], $recipient_en);
+
+                echo '<div class="margin-top-down inline-block"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">'.( $previous_answers ? 'UPDATE' : 'ANSWER' ).' & NEXT <i class="fad fa-step-forward"></i></a></div>';
+
                 echo '</div>';
 
                 echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); $(\'#read_text_answer\').focus(); }); </script>';
@@ -2035,7 +2040,10 @@ class READ_model extends CI_Model
                 echo '</form>';
                 echo '</div>';
 
-                echo '<label class="btn btn-read" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD TO CONTINUE</label>';
+                //Show Previous Button:
+                echo echo_in_previous($ins[0]['in_id'], $recipient_en);
+
+                echo '<label class="btn btn-read inline-block" for="fileType'.$ins[0]['in_type_play_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD TO CONTINUE</label>';
 
                 ?>
 
@@ -2090,9 +2098,6 @@ class READ_model extends CI_Model
 
             if(count($read_completes)){
 
-                //Show Previous Button:
-                echo echo_in_previous($ins[0]['in_id'], $recipient_en);
-
                 //Always show the next list:
                 echo_in_list($ins[0], $in__children, $recipient_en, $push_message);
 
@@ -2100,9 +2105,6 @@ class READ_model extends CI_Model
 
                 //Show next here:
                 echo '<div class="go_next_upload hidden inline-block">';
-
-                //Show Previous Button:
-                echo echo_in_previous($ins[0]['in_id'], $recipient_en);
 
                 echo_in_next($ins[0]['in_id'], $recipient_en, $push_message);
 
