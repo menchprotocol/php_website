@@ -3109,7 +3109,7 @@ class READ_model extends CI_Model
 
 
             //Append any appendix generated:
-            if($player_appendix && (count($valid_url)>=2 || $message_visual_media > 0)){
+            if($player_appendix && (count($valid_url)>0 || $message_visual_media > 0)){
                 $output_body_message .= $player_appendix;
             }
 
