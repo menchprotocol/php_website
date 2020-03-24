@@ -241,6 +241,8 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
             $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .dropi_' + element_id +'_'+in_id+ '_' + ln_id).removeClass('active');
             $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .optiond_' + new_en_id+'_'+in_id+ '_' + ln_id).addClass('active');
 
+            $('.dropd_'+element_id+'_'+in_id+'_'+ln_id).attr('selected-val' , new_en_id);
+
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
                 //Go to main blog page:
                 window.location = data.deletion_redirect;
