@@ -2124,7 +2124,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
             $ui .= '<span class="icon-block"><a href="/blog/'.$in['in_id'].'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
 
             //BLOG TITLE
-            if(superpower_active(10984, true)){
+            if($is_blog_link && superpower_active(10984, true)){
                 $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author), (($in['ln_order']*100)+1));
             } else {
                 $ui .= '<a href="/blog/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in['in_title']) . '</a>';
@@ -2143,10 +2143,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
             //LINK STATUS (IF NOT PUBLISHED, SHOULD NOT HAPPEN!)
             $ui .= '<span class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . ' </span></span>';
-
-
-
-
 
 
 
