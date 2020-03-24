@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-24 09:28:42 PST
+//Generated 2020-03-24 10:04:45 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -3811,14 +3811,8 @@ $config['en_all_11039'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(12214,12358,4430,11068,11999,6225,6287,7291,12205,7347,10957,12211,12275,6415,7256,4269,7540,12437);
+$config['en_ids_11035'] = array(12358,4430,11068,11999,6225,6287,12561,7291,12205,7347,10957,12211,12275,6415,7256,4269,7540,12437);
 $config['en_all_11035'] = array(
-    12214 => array(
-        'm_icon' => '<i class="fad fa-plus blog" aria-hidden="true"></i>',
-        'm_name' => 'ADD BLOG',
-        'm_desc' => '',
-        'm_parents' => array(11035),
-    ),
     12358 => array(
         'm_icon' => '<i class="fas fa-chart-bar play" aria-hidden="true"></i>',
         'm_name' => 'COIN COUNTS',
@@ -3854,6 +3848,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'MY ADMIN PANEL',
         'm_desc' => '',
         'm_parents' => array(12500,10985,10876,11035,4527),
+    ),
+    12561 => array(
+        'm_icon' => '<i class="fas fa-pen-square blog"></i>',
+        'm_name' => 'MY BLOGS',
+        'm_desc' => '',
+        'm_parents' => array(11035),
     ),
     7291 => array(
         'm_icon' => '<i class="fad fa-power-off play" aria-hidden="true"></i>',
