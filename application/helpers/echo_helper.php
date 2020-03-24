@@ -2147,7 +2147,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
             //BLOG IF NOT PUBLISHED:
-            if(!superpower_active(10984, true)){
+            if(!superpower_active(10984, true) && !$is_published){
                 //Show them Blog status in this case:
                 $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']) . ' </div>';
             }
