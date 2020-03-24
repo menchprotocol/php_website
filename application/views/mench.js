@@ -87,7 +87,7 @@ function go_to_read(in_id){
     if( parseInt($('.dropd_4737_'+in_id+'_0').attr('selected-val')) in js_en_all_7355 ){
 
         //Yes, go to read:
-        window.location = '/read/'+in_id;
+        window.location = '/'+in_id;
 
     } else {
 
