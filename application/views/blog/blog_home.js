@@ -31,7 +31,7 @@ function blog_create(){
 
             //Redirect:
             $('#tempLoader').html(data.message);
-            window.location = '/' + data.in_id;
+            window.location = '/blog/' + data.in_id;
 
         } else {
 
