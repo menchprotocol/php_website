@@ -30,7 +30,7 @@
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id' => 10573, //Blog Note Bookmarks
                 'ln_parent_play_id' => $session_en['en_id'], //For this trainer
-            ), array('in_child'), 0, 0, array('ln_id' => 'ASC')) as $bookmark_in){
+            ), array('in_child'), 0, 0, array('in_weight' => 'DESC')) as $bookmark_in){
                 echo echo_in($bookmark_in, 0, false, true);
             }
 

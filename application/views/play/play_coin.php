@@ -400,10 +400,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 if($counter>0){
 
                     $this_tab .= '<div class="list-group">';
-                    foreach ($this->READ_model->ln_fetch($blog_note_filters, array('in_child'), config_var(11064), 0, array(
-                        'in_status_play_id' => 'DESC',
-                        'in_title'          => 'ASC'
-                    )) as $blog_note) {
+                    foreach ($this->READ_model->ln_fetch($blog_note_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC')) as $blog_note) {
                         if(in_array($en_id2, $this->config->item('en_ids_12321'))){
 
                             $this_tab .= echo_in_read($blog_note);
