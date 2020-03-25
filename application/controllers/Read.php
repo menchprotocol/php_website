@@ -230,7 +230,9 @@ class Read extends CI_Controller
 
         $stats['total_items'] = $stats['en_scanned'] + $stats['in_scanned'];
         $stats['end_time'] = time();
-        $stats['seconds_per_item'] = round((($stats['end_time'] - $stats['start_time']) / $stats['total_items']), 6);
+        if($stats['end_time'] > $stats['start_time']){
+            $stats['seconds_per_item'] = round((($stats['end_time'] - $stats['start_time']) / $stats['total_items']), 6);
+        }
 
         //Return results:
         echo_json($stats);
