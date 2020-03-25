@@ -434,15 +434,17 @@ function in_weight_calculator($in){
 function en_weight_calculator($en){
 
     //TRANSACTIONS
-    $count_transactions = $this->READ_model->ln_fetch(array(
-        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+    $CI =& get_instance();
+
+    $count_transactions = $CI->READ_model->ln_fetch(array(
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         '(ln_child_play_id='.$en['en_id'].' OR ln_parent_play_id='.$en['en_id'].' OR ln_owner_play_id='.$en['en_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     //TREES
-    $count_trees = $this->READ_model->ln_fetch(array(
-        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+    $count_trees = $CI->READ_model->ln_fetch(array(
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         '(ln_child_play_id='.$en['en_id'].' OR ln_parent_play_id='.$en['en_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
