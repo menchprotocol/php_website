@@ -20,7 +20,7 @@
 
         if(superpower_assigned($superpower)) {
 
-            echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[12561]['m_icon'].'</span>'.$en_all_11035[12561]['m_name'].'</div>';
+            echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[10573]['m_icon'].'</span>'.$en_all_11035[10573]['m_name'].'</div>';
 
             echo '<div id="myBlogs" class="list-group">';
 
