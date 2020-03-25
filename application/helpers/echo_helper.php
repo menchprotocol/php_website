@@ -2499,7 +2499,7 @@ function echo_in_previous($in_id, $recipient_en){
         'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
         'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    ), array('in_parent'), 0);
+    ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
     //Cleanup the list:
     $list_ids = array();
@@ -2576,11 +2576,7 @@ function echo_in_previous($in_id, $recipient_en){
 
 
             $ui .= '<div class="dropdown inline-block margin-top-down selected_before">';
-            $ui .= '<button type="button" class="btn btn-read no-left-padding dropdown-toggle" id="dropdownReadList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-            $ui .= '<span title="' . $en_all_11035[7347]['m_name'] . '" data-toggle="tooltip" data-placement="right">';
-            $ui .= '<span class="icon-block">' . $en_all_11035[7347]['m_icon'] . '</span>';
-            $ui .= '</span>';
-            $ui .= '</button>';
+            $ui .= '<button type="button" class="btn btn-read no-left-padding dropdown-toggle" id="dropdownReadList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block">' . $en_all_11035[7347]['m_icon'] . '</span></button>';
             $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownReadList">';
 
             //List All Reading List
