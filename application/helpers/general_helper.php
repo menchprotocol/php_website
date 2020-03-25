@@ -423,6 +423,7 @@ function curl_get_file_size( $url ) {
 }
 
 
+
 function in_weight_calculator($in){
 
     //Return the weight of a blog:
@@ -432,10 +433,26 @@ function in_weight_calculator($in){
 
 function en_weight_calculator($en){
 
+    //TRANSACTIONS
+    $count_transactions = $this->READ_model->ln_fetch(array(
+        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        '(ln_child_play_id='.$en['en_id'].' OR ln_parent_play_id='.$en['en_id'].' OR ln_owner_play_id='.$en['en_id'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
+    //TREES
+    $count_trees = $this->READ_model->ln_fetch(array(
+        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+        'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        '(ln_child_play_id='.$en['en_id'].' OR ln_parent_play_id='.$en['en_id'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
     //Returns the weight of a player:
-    return 2;
+    return ( $count_transactions[0]['totals'] * config_var(12568) )
+            + ( $count_trees[0]['totals'] * config_var(12565) );
 
 }
+
+
 
 function filter_cache_group($search_en_id, $cache_en_id){
 
