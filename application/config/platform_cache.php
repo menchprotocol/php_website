@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-25 16:11:26 PST
+//Generated 2020-03-25 16:38:27 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -3856,7 +3856,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(10876,12500,11035),
     ),
     12467 => array(
-        'm_icon' => '<img src="/img/mench.png" class="mench-spin no-radius">',
+        'm_icon' => '<i class="fas fa-circle"></i>',
         'm_name' => 'MENCH COINS',
         'm_desc' => '',
         'm_parents' => array(11035),
