@@ -104,6 +104,7 @@ class Read extends CI_Controller
 
         }
 
+        $order_columns = array('ln_id' => 'DESC');
         $match_columns = array(
             'ln_id >' => $last_loaded_ln_id,
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -121,6 +122,7 @@ class Read extends CI_Controller
 
             if($tab_group_id == 12273 /* BLOG COIN */){
 
+                $order_columns = array('in_weight' => 'DESC');
                 $list_class = 'itemread';
                 $join_objects = array('in_child');
                 $match_columns['ln_parent_play_id'] = $owner_en_id;
@@ -128,6 +130,7 @@ class Read extends CI_Controller
 
             } elseif($tab_group_id == 6255 /* READ COIN */){
 
+                $order_columns = array('in_weight' => 'DESC');
                 $list_class = 'itemplay';
                 $list_url = '/play/'.$owner_en_id;
                 $join_objects = array('in_parent');
@@ -140,7 +143,7 @@ class Read extends CI_Controller
 
         //List Read History:
         $ui = '<div class="list-group dynamic-reads">';
-        foreach($this->READ_model->ln_fetch($match_columns, $join_objects, config_var(11064), 0, array('ln_id' => 'DESC')) as $in_read){
+        foreach($this->READ_model->ln_fetch($match_columns, $join_objects, config_var(11064), 0, $order_columns) as $in_read){
             if($note_in_id > 0){
 
                 $ui .= echo_en($in_read);
