@@ -2568,9 +2568,10 @@ function echo_in_previous($in_id, $recipient_en){
         $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" '.( count($breadcrumb_links)==1 ? 'href="'.$breadcrumb_links[0].'"' : 'href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"' ).'><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;</div>';
 
         //READ LIST
-        $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
-        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" href="/read">' . $en_all_11035[7347]['m_icon'] . '</a>&nbsp;</div>';
-
+        if(count($player_list) >= 2) {
+            $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+            $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" href="/read">' . $en_all_11035[7347]['m_icon'] . '</a>&nbsp;</div>';
+        }
 
         //Read List
         /*
