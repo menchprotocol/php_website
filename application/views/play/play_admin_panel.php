@@ -57,8 +57,7 @@ if(!$action) {
 
     //Admin Panel Header
     $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
-    echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[12358]['6287'].'</span>'.$en_all_11035[6287]['m_name'].'</div>';
-
+    echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[6287]['m_icon'].'</span>'.$en_all_11035[6287]['m_name'].'</div>';
 
     echo '<div class="list-group maxout">';
     foreach ($moderation_tools as $tool_key => $tool_name) {
