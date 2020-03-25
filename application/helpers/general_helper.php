@@ -426,8 +426,24 @@ function curl_get_file_size( $url ) {
 
 function in_weight_calculator($in){
 
-    //Return the weight of a blog:
-    return 1;
+    //TRANSACTIONS
+    $CI =& get_instance();
+
+    $count_transactions = $CI->READ_model->ln_fetch(array(
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        '(ln_child_blog_id='.$in['in_id'].' OR ln_parent_blog_id='.$in['in_id'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
+    //TREES
+    $count_trees = $CI->READ_model->ln_fetch(array(
+        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+        '(ln_child_blog_id='.$in['in_id'].' OR ln_parent_blog_id='.$in['in_id'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
+    //Returns the weight of a blog:
+    return ( $count_transactions[0]['totals'] * config_var(12568) )
+        + ( $count_trees[0]['totals'] * config_var(12565) );
 
 }
 
