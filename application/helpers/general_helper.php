@@ -437,7 +437,7 @@ function in_weight_calculator($in){
     //TREES
     $count_trees = $CI->READ_model->ln_fetch(array(
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
         '(ln_child_blog_id='.$in['in_id'].' OR ln_parent_blog_id='.$in['in_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
