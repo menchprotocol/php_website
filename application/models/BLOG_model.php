@@ -663,6 +663,37 @@ class BLOG_model extends CI_Model
 
     }
 
+    function in_tree_weight($in_id)
+    {
+
+        /*
+         *
+         * Addup weights recursively
+         *
+         * */
+
+
+        $total_child_weights = 0;
+
+        foreach($this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+            'ln_parent_blog_id' => $in_id,
+        ), array('in_child'), 0) as $in_child){
+            $total_child_weights += $in_child['in_weight'] + $this->BLOG_model->in_tree_weight($in_child['in_id']);
+        }
+
+        //Update This Level:
+        if($total_child_weights > 0){
+            $this->db->query("UPDATE table_blog SET in_weight=in_weight+".$total_child_weights." WHERE in_id=".$in_id.";");
+        }
+
+        //Return data:
+        return $total_child_weights;
+
+    }
+
     function in_metadata_extra_insights($in_id, $update_db = true)
     {
 

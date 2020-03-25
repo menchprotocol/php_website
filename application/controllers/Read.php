@@ -181,11 +181,13 @@ class Read extends CI_Controller
             'start_time' => time(),
             'in_scanned' => 0,
             'in_updated' => 0,
+            'in_tree_weight' => 0,
             'en_scanned' => 0,
             'en_updated' => 0,
         );
 
         if(!$obj || $obj=='in'){
+
             //Update the weights for blogs and players
             foreach($this->BLOG_model->in_fetch(array(
                 'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
@@ -204,6 +206,10 @@ class Read extends CI_Controller
                     ));
                 }
             }
+
+            //Now Update Main Tree:
+            $stats['in_tree_weight'] = echo_number($this->BLOG_model->in_tree_weight(config_var(12156)));
+
         }
 
 
