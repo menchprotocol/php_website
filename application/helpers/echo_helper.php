@@ -2514,7 +2514,7 @@ function echo_in_previous($in_id, $recipient_en){
         foreach(array_intersect($grand_parent_ids, $list_ids) as $intersect) {
 
             //Show the breadcrumb since it's connected:
-            $ui = '<div class="previous_reads hidden">';
+            $ui .= '<div class="previous_reads hidden">';
             $ui .= '<div class="read-topic"><span class="icon-block"><i class="fas fa-step-backward"></i></span>SELECT PREVIOUS:</div>';
             $ui .= '<div class="list-group bottom-read-line">';
 
@@ -2563,7 +2563,35 @@ function echo_in_previous($in_id, $recipient_en){
 
     //Did We Find It?
     if($ui){
+
+        //Previous
         $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" '.( count($breadcrumb_links)==1 ? 'href="'.$breadcrumb_links[0].'"' : 'href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"' ).'><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;&nbsp;&nbsp;</div>';
+
+
+        //Read List
+        if(count($player_list) > 0) {
+
+            $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
+            $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+
+
+            $ui = '<div class="dropdown inline-block margin-top-down selected_before">';
+            $ui .= '<button type="button" class="btn no-left-padding dropdown-toggle" id="dropdownReadList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            $ui .= '<span title="' . $en_all_11035[7347]['m_name'] . '" data-toggle="tooltip" data-placement="right">';
+            $ui .= '<span class="icon-block">' . $en_all_11035[7347]['m_icon'] . '</span> ' . count($player_list);
+            $ui .= '</span>';
+            $ui .= '</button>';
+            $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownReadList">';
+
+            //List All Reading List
+            foreach($player_list as $in_list){
+                $ui .= '<a href="/' . $in_list['in_id'] . '" class="dropdown-item montserrat"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span>' . $in_list['in_title'] . '</a>';
+            }
+
+            $ui .= '</div>';
+            $ui .= '</div>';
+
+        }
     }
 
     return $ui;
