@@ -2565,7 +2565,7 @@ function echo_in_previous($in_id, $recipient_en){
     if($ui){
 
         //Previous
-        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" '.( count($breadcrumb_links)==1 ? 'href="'.$breadcrumb_links[0].'"' : 'href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"' ).'><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;&nbsp;&nbsp;</div>';
+        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" '.( count($breadcrumb_links)==1 ? 'href="'.$breadcrumb_links[0].'"' : 'href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"' ).'><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;&nbsp;</div>';
 
 
         //Read List
@@ -2576,9 +2576,9 @@ function echo_in_previous($in_id, $recipient_en){
 
 
             $ui .= '<div class="dropdown inline-block margin-top-down selected_before">';
-            $ui .= '<button type="button" class="btn btn-read no-left-padding dropdown-toggle" id="dropdownReadList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            $ui .= '<button type="button" class="btn btn-read no-left-padding dropdown-toggle" id="dropdownReadList" aria-haspopup="true" aria-expanded="false">';
             $ui .= '<span title="' . $en_all_11035[7347]['m_name'] . '" data-toggle="tooltip" data-placement="right">';
-            $ui .= '<span class="icon-block">' . $en_all_11035[7347]['m_icon'] . '</span> ' . count($player_list);
+            $ui .= '<span class="icon-block">' . $en_all_11035[7347]['m_icon'] . '</span>';
             $ui .= '</span>';
             $ui .= '</button>';
             $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownReadList">';
@@ -2589,7 +2589,7 @@ function echo_in_previous($in_id, $recipient_en){
             }
 
             $ui .= '</div>';
-            $ui .= '&nbsp;&nbsp;&nbsp;</div>';
+            $ui .= '&nbsp;&nbsp;</div>';
 
         }
     }
