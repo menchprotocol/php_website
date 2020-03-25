@@ -180,9 +180,9 @@ class Read extends CI_Controller
             'in_updated' => 0,
             'en_scanned' => 0,
             'en_updated' => 0,
-            'total_items' => 0,
             'end_time' => null,
-            'seconds_per_item' => null,
+            'total_items' => 0,
+            'milliseconds_per_item' => null,
         );
 
         if(!$obj || $obj=='in'){
@@ -231,7 +231,7 @@ class Read extends CI_Controller
         $stats['total_items'] = $stats['en_scanned'] + $stats['in_scanned'];
         $stats['end_time'] = time();
         if($stats['end_time'] > $stats['start_time']){
-            $stats['seconds_per_item'] = round((($stats['end_time'] - $stats['start_time']) / $stats['total_items']), 6);
+            $stats['milliseconds_per_item'] = round((($stats['end_time'] - $stats['start_time']) / $stats['total_items'] * 1000), 6);
         }
 
         //Return results:
