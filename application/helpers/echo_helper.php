@@ -2576,7 +2576,7 @@ function echo_in_previous($in_id, $recipient_en){
 
 
             $ui .= '<div class="dropdown inline-block margin-top-down selected_before">';
-            $ui .= '<button type="button" class="btn btn-read no-left-padding dropdown-toggle" id="dropdownReadList" aria-haspopup="true" aria-expanded="false">';
+            $ui .= '<button type="button" class="btn btn-read no-left-padding" id="dropdownReadList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
             $ui .= '<span title="' . $en_all_11035[7347]['m_name'] . '" data-toggle="tooltip" data-placement="right">';
             $ui .= '<span class="icon-block">' . $en_all_11035[7347]['m_icon'] . '</span>';
             $ui .= '</span>';
