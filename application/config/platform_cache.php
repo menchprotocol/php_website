@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-25 15:39:35 PST
+//Generated 2020-03-25 16:11:26 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -3688,7 +3688,7 @@ $config['en_all_6404'] = array(
     12565 => array(
         'm_icon' => '',
         'm_name' => 'WEIGHT ALGORITHM TREE RATE',
-        'm_desc' => '21',
+        'm_desc' => '89',
         'm_parents' => array(12569,6404),
     ),
 );
