@@ -2499,7 +2499,7 @@ function echo_in_previous($in_id, $recipient_en){
         'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
         'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    ), array('in_parent'));
+    ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
     //Cleanup the list:
     $list_ids = array();
@@ -2567,6 +2567,32 @@ function echo_in_previous($in_id, $recipient_en){
         //Previous
         $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" '.( count($breadcrumb_links)==1 ? 'href="'.$breadcrumb_links[0].'"' : 'href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"' ).'><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;&nbsp;</div>';
 
+        //READ LIST
+        $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" href="/read">' . $en_all_11035[7347]['m_icon'] . '</a>&nbsp;&nbsp;</div>';
+
+
+        //Read List
+        /*
+        if(count($player_list) >= 2) {
+
+            $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
+
+
+            $ui .= '<div class="dropdown inline-block margin-top-down selected_before">';
+            $ui .= '<button type="button" class="btn btn-read no-left-padding dropdown-toggle" id="dropdownReadList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block">' . $en_all_11035[7347]['m_icon'] . '</span></button>';
+            $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownReadList">';
+
+            //List All Reading List
+            foreach($player_list as $in_list){
+                $ui .= '<a href="/' . $in_list['in_id'] . '" class="dropdown-item montserrat"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span>' . $in_list['in_title'] . '</a>';
+            }
+
+            $ui .= '</div>';
+            $ui .= '&nbsp;&nbsp;</div>';
+
+        }
+        */
     }
 
     return $ui;
