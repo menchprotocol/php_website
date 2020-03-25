@@ -171,6 +171,65 @@ class Read extends CI_Controller
     }
 
 
+
+    function cron__weights($obj = null){
+
+        $stats = array(
+            'in_scanned' => 0,
+            'in_updated' => 0,
+            'en_scanned' => 0,
+            'en_updated' => 0,
+        );
+
+        if(!$obj || $obj=='in'){
+            //Update the weights for blogs and players
+            foreach($this->BLOG_model->in_fetch(array(
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+            )) as $in) {
+
+                $stats['in_scanned']++;
+
+                //Calculate the weight for this:
+                $weight = in_weight_calculator($in);
+
+                //Should we update?
+                if($weight != $in['in_weight']){
+                    $stats['in_updated']++;
+                    $this->BLOG_model->in_update($in['in_id'], array(
+                        'in_weight' => $weight,
+                    ));
+                }
+            }
+        }
+
+
+        if(!$obj || $obj=='en'){
+            //Update the weights for blogs and players
+            foreach($this->PLAY_model->en_fetch(array(
+                'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+            )) as $en) {
+
+                $stats['en_scanned']++;
+
+                //Calculate the weight for this:
+                $weight = en_weight_calculator($en);
+
+                //Should we update?
+                if($weight != $en['en_weight']){
+                    $stats['en_updated']++;
+                    $this->PLAY_model->en_update($en['en_id'], array(
+                        'en_weight' => $weight,
+                    ));
+                }
+            }
+        }
+
+        //Return results:
+        echo_json($stats);
+
+    }
+
+
     function cron__weekly_coins(){
 
         //Calculates the weekly coins issued:
@@ -579,7 +638,7 @@ class Read extends CI_Controller
         } elseif (!isset($_POST['answered_ins']) || !is_array($_POST['answered_ins']) || !count($_POST['answered_ins'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Select at-least one answer',
+                'message' => 'Select an answer',
             ));
         }
 

@@ -423,6 +423,20 @@ function curl_get_file_size( $url ) {
 }
 
 
+function in_weight_calculator($in){
+
+    //Return the weight of a blog:
+    return 1;
+
+}
+
+function en_weight_calculator($en){
+
+    //Returns the weight of a player:
+    return 2;
+
+}
+
 function filter_cache_group($search_en_id, $cache_en_id){
 
     //Determines which category an player belongs to
@@ -1095,6 +1109,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_status'] = intval($db_row['en_status_play_id']);
                 $export_row['alg_obj_icon'] = echo_en_icon($db_row['en_icon']);
                 $export_row['alg_obj_name'] = $db_row['en_name'];
+                $export_row['alg_obj_weight'] = $db_row['en_weight'];
 
                 array_push($export_row['_tags'], 'alg_author_' . $db_row['en_id']);
 
@@ -1135,6 +1150,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_status'] = intval($db_row['in_status_play_id']);
                 $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_play_id']]['m_icon']; //Player type icon
                 $export_row['alg_obj_name'] = $db_row['in_title'];
+                $export_row['alg_obj_weight'] = $db_row['in_weight'];
 
                 if(in_array($db_row['in_status_play_id'], $CI->config->item('en_ids_12138'))){
                     array_push($export_row['_tags'], 'is_featured');
