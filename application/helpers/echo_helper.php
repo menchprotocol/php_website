@@ -2575,8 +2575,8 @@ function echo_in_previous($in_id, $recipient_en){
             $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
-            $ui = '<div class="dropdown inline-block margin-top-down selected_before">';
-            $ui .= '<button type="button" class="btn no-left-padding dropdown-toggle" id="dropdownReadList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            $ui .= '<div class="dropdown inline-block margin-top-down selected_before">';
+            $ui .= '<button type="button" class="btn btn-read no-left-padding dropdown-toggle" id="dropdownReadList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
             $ui .= '<span title="' . $en_all_11035[7347]['m_name'] . '" data-toggle="tooltip" data-placement="right">';
             $ui .= '<span class="icon-block">' . $en_all_11035[7347]['m_icon'] . '</span> ' . count($player_list);
             $ui .= '</span>';
@@ -2589,7 +2589,7 @@ function echo_in_previous($in_id, $recipient_en){
             }
 
             $ui .= '</div>';
-            $ui .= '</div>';
+            $ui .= '&nbsp;&nbsp;&nbsp;</div>';
 
         }
     }
