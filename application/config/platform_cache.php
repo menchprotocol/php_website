@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-26 10:36:33 PST
+//Generated 2020-03-26 10:45:53 PST
 
 //PLAY UPDATER UPPERCASE:
 $config['en_ids_12577'] = array(4999,4998,5000,5981,11956,5982);
@@ -6835,7 +6835,7 @@ $config['en_all_4280'] = array(
 );
 
 //PLAY UPDATER:
-$config['en_ids_4997'] = array(5000,4998,4999,5001,5003,5865,5943,5981,5982,10625,11956,12318);
+$config['en_ids_4997'] = array(5000,4998,4999,5001,5003,5865,5943,12318,10625,5982,5981,11956);
 $config['en_all_4997'] = array(
     5000 => array(
         'm_icon' => '<i class="play fad fa-fingerprint"></i>',
@@ -6879,17 +6879,11 @@ $config['en_all_4997'] = array(
         'm_desc' => 'Updates all child entity icons with string which needs to be a valid icon',
         'm_parents' => array(4535,4593,4997),
     ),
-    5981 => array(
-        'm_icon' => '<i class="play fad fa-layer-plus"></i>',
-        'm_name' => 'PROFILE ADD',
-        'm_desc' => 'If not already done so, will add searched entity as the parent of all child entities',
-        'm_parents' => array(12577,4535,4593,4997),
-    ),
-    5982 => array(
-        'm_icon' => '<i class="play fad fa-layer-minus"></i>',
-        'm_name' => 'PROFILE REMOVE',
-        'm_desc' => 'If already added as the parent, this will remove searched entity as the parent of all child entities',
-        'm_parents' => array(12577,4535,4593,4997),
+    12318 => array(
+        'm_icon' => '<i class="fad fa-user-circle play" aria-hidden="true"></i>',
+        'm_name' => 'ICON UPDATE IF MISSING',
+        'm_desc' => 'Updates all icons that are not set to the new value.',
+        'm_parents' => array(4535,4593,4997),
     ),
     10625 => array(
         'm_icon' => '<i class="play fad fa-user-circle"></i>',
@@ -6897,17 +6891,23 @@ $config['en_all_4997'] = array(
         'm_desc' => 'Search for occurrence of string in child entity icons and if found, updates it with a replacement string',
         'm_parents' => array(4535,4593,4997),
     ),
+    5982 => array(
+        'm_icon' => '<i class="play fad fa-layer-minus"></i>',
+        'm_name' => 'PROFILE REMOVE',
+        'm_desc' => 'If already added as the parent, this will remove searched entity as the parent of all child entities',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    5981 => array(
+        'm_icon' => '<i class="play fad fa-layer-plus"></i>',
+        'm_name' => 'PROFILE ADD',
+        'm_desc' => 'If not already done so, will add searched entity as the parent of all child entities',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
     11956 => array(
         'm_icon' => '<i class="play fad fa-layer-plus" aria-hidden="true"></i>',
         'm_name' => 'PROFILE IF ADD',
         'm_desc' => 'Adds a parent entity only IF the entity has another parent entity.',
         'm_parents' => array(12577,4535,4593,4997),
-    ),
-    12318 => array(
-        'm_icon' => '<i class="fad fa-user-circle play" aria-hidden="true"></i>',
-        'm_name' => 'ICON UPDATE IF MISSING',
-        'm_desc' => 'Updates all icons that are not set to the new value.',
-        'm_parents' => array(4535,4593,4997),
     ),
 );
 
