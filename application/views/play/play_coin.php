@@ -290,6 +290,38 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
 
+            //Fetch current count for each status from DB:
+            $player_count = $this->PLAY_model->en_child_count($player['en_id'], $this->config->item('en_ids_7358') /* Player Statuses Active */);
+            $child_en_filters = $this->READ_model->ln_fetch(array(
+                'ln_parent_play_id' => $player['en_id'],
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+            ), array('en_child'), 0, 0, array('en_status_play_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_play_id', 'en_status_play_id');
+
+            //Only show filtering UI if we find child players with different statuses (Otherwise no need to filter):
+            if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $player_count) {
+
+                //Load status definitions:
+                $en_all_6177 = $this->config->item('en_all_6177'); //Player Statuses
+
+                //Add 2nd Navigation to UI
+                $this_body .= '<div class="nav nav-pills nav-sm '.superpower_active(10986).'">';
+
+                //Show fixed All button:
+                $this_body .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all players"><i class="fas fa-asterisk"></i><span class="show-max"> All</span> <span class="counter-11029">' . $player_count . '</span></a></li>';
+
+                //Show each specific filter based on DB counts:
+                foreach ($child_en_filters as $c_c) {
+                    $st = $en_all_6177[$c_c['en_status_play_id']];
+                    $this_body .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_play_id'] . '" onclick="en_filter_status(' . $c_c['en_status_play_id'] . ')" class="nav-link u-status-filter u-status-' . $c_c['en_status_play_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="show-max"> ' . $st['m_name'] . '</span> <span class="count-u-status-' . $c_c['en_status_play_id'] . '">' . $c_c['totals'] . '</span></a></li>';
+                }
+
+                $this_body .= '</div>';
+
+            }
+
+
             $this_body .= '<div id="list-children" class="list-group">';
 
             foreach ($play__children as $en) {
@@ -309,44 +341,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         
 </div>';
             $this_body .= '</div>';
-
-
-
-
-
-
-
-            //Fetch current count for each status from DB:
-            $player_count = $this->PLAY_model->en_child_count($player['en_id'], $this->config->item('en_ids_7358') /* Player Statuses Active */);
-            $child_en_filters = $this->READ_model->ln_fetch(array(
-                'ln_parent_play_id' => $player['en_id'],
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
-            ), array('en_child'), 0, 0, array('en_status_play_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_play_id', 'en_status_play_id');
-
-            //Only show filtering UI if we find child players with different statuses (Otherwise no need to filter):
-            if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $player_count) {
-
-                //Load status definitions:
-                $en_all_6177 = $this->config->item('en_all_6177'); //Player Statuses
-
-                //Add 2nd Navigation to UI
-                $tab_content .= '<div class="nav nav-pills nav-sm '.superpower_active(10986).'">';
-
-                //Show fixed All button:
-                $tab_content .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all players"><i class="fas fa-asterisk"></i><span class="show-max"> All</span> <span class="counter-11029">' . $player_count . '</span></a></li>';
-
-                //Show each specific filter based on DB counts:
-                foreach ($child_en_filters as $c_c) {
-                    $st = $en_all_6177[$c_c['en_status_play_id']];
-                    $tab_content .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_play_id'] . '" onclick="en_filter_status(' . $c_c['en_status_play_id'] . ')" class="nav-link u-status-filter u-status-' . $c_c['en_status_play_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="show-max"> ' . $st['m_name'] . '</span> <span class="count-u-status-' . $c_c['en_status_play_id'] . '">' . $c_c['totals'] . '</span></a></li>';
-                }
-
-                $tab_content .= '</div>';
-
-            }
-
 
 
 
