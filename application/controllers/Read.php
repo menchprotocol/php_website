@@ -210,7 +210,7 @@ class Read extends CI_Controller
             }
 
             //Now Update Main Tree:
-            $stats['in_tree_weight'] = echo_number($this->BLOG_model->in_tree_weight(config_var(12156)));
+            $stats['in_tree_weight'] = $this->BLOG_model->in_tree_weight(config_var(12156));
 
         }
 
