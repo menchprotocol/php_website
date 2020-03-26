@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-25 18:31:16 PST
+//Generated 2020-03-25 18:35:03 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -206,7 +206,7 @@ $config['en_all_12440'] = array(
         'm_icon' => '<i class="fas fa-step-forward play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(11033,12440,12391,10939,11028),
+        'm_parents' => array(11084,11033,12440,12391,10939,11028),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
@@ -538,7 +538,7 @@ $config['en_all_12391'] = array(
         'm_icon' => '<i class="fas fa-step-forward play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(11033,12440,12391,10939,11028),
+        'm_parents' => array(11084,11033,12440,12391,10939,11028),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
@@ -3072,11 +3072,17 @@ $config['en_all_10717'] = array(
 );
 
 //PLAY TAB SHOW FULL NAME:
-$config['en_ids_11084'] = array(11030);
+$config['en_ids_11084'] = array(11029,11030);
 $config['en_all_11084'] = array(
+    11029 => array(
+        'm_icon' => '<i class="fas fa-step-forward play" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO',
+        'm_desc' => '',
+        'm_parents' => array(11084,11033,12440,12391,10939,11028),
+    ),
     11030 => array(
         'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY PROFILE',
+        'm_name' => 'PROFILE',
         'm_desc' => '',
         'm_parents' => array(12440,11089,10967,12391,11084,11028),
     ),
@@ -3089,7 +3095,7 @@ $config['en_all_11033'] = array(
         'm_icon' => '<i class="fas fa-step-forward play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(11033,12440,12391,10939,11028),
+        'm_parents' => array(11084,11033,12440,12391,10939,11028),
     ),
 );
 
@@ -3954,7 +3960,7 @@ $config['en_all_11028'] = array(
         'm_icon' => '<i class="fas fa-step-forward play" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => 'What the PLAYER chooses to focus on. It\'s work. It\'s responsibility.',
-        'm_parents' => array(11033,12440,12391,10939,11028),
+        'm_parents' => array(11084,11033,12440,12391,10939,11028),
     ),
 );
 
