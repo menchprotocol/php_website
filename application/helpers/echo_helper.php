@@ -2126,7 +2126,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
             //BLOG TITLE
             if($is_blog_link && superpower_active(10984, true)){
-                $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author), (($in['ln_order']*100)+1));
+                $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], $is_author, (($in['ln_order']*100)+1));
             } else {
                 $ui .= '<a href="/blog/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in['in_title']) . '</a>';
             }
