@@ -676,11 +676,11 @@ class BLOG_model extends CI_Model
         $total_child_weights = 0;
 
         foreach($this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_type_play_id' => 4228, //Fixed Blog Link
             'ln_parent_blog_id' => $in_id,
-        ), array('in_child'), 0) as $in_child){
+        ), array('in_child')) as $in_child){
             $total_child_weights += $in_child['in_weight'] + $this->BLOG_model->in_tree_weight($in_child['in_id']);
         }
 
