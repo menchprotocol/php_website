@@ -77,7 +77,7 @@ class Blog extends CI_Controller {
         //Make sure user is logged in
         $session_en = superpower_assigned(null);
         if(!$session_en){
-            return redirect_message('/'+$in_id);
+            return redirect_message('/'.$in_id);
         }
 
         //Validate/fetch Blog:
