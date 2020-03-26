@@ -264,7 +264,15 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 //PLAY PARENT
 
-                $default_active = true; //LEFT
+                //Active if count exists and not already activated.
+                $authored_blogs = $this->READ_model->ln_fetch(array(
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id' => 4983,
+                    'ln_parent_play_id' => $player['en_id'],
+                ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
+
+                $default_active = in_array($en_id2, $this->config->item('en_ids_12440')) && !$authored_blogs[0]['totals']; //LEFT
 
                 $play__parents = $this->READ_model->ln_fetch(array(
                     'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
@@ -301,15 +309,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
                 $counter = $child_links[0]['totals'];
 
-                //Active if count exists and not already activated.
-                $authored_blogs = $this->READ_model->ln_fetch(array(
-                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id' => 4983,
-                    'ln_parent_play_id' => $player['en_id'],
-                ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
-
-                $default_active = ( $counter || !$authored_blogs[0]['totals'] );
+                $default_active = in_array($en_id2, $this->config->item('en_ids_12440'));
 
                 if($default_active){
                     array_push($activated_tabs, $en_id2);
@@ -461,13 +461,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 $item_counters = $this->READ_model->ln_fetch($match_columns, $join_objects, 1, 0, array(), 'COUNT(ln_id) as totals');
 
                 $counter = $item_counters[0]['totals'];
-
-                $default_active = ( in_array($en_id2, $this->config->item('en_ids_12440')) && ($counter>0 || !count($this->READ_model->ln_fetch(array(
-                            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                            'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
-                            'ln_parent_play_id' => $player['en_id'],
-                        ), array('en_child'), 1))));
+                $default_active = ( in_array($en_id2, $this->config->item('en_ids_12440')) && $counter>0 );
 
                 if($default_active){
                     array_push($activated_tabs, $en_id2);

@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-25 18:18:40 PST
+//Generated 2020-03-25 18:31:16 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -194,7 +194,7 @@ $config['en_all_12446'] = array(
 );
 
 //PLAY BODY ACTIVE:
-$config['en_ids_12440'] = array(12273,11029);
+$config['en_ids_12440'] = array(12273,11029,11030);
 $config['en_all_12440'] = array(
     12273 => array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
@@ -203,10 +203,16 @@ $config['en_all_12440'] = array(
         'm_parents' => array(12467,12440,12321,12410,11089,12228,4527,6768),
     ),
     11029 => array(
-        'm_icon' => '<i class="fas fa-caret-circle-down play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(12440,12391,10939,11089,11028),
+        'm_parents' => array(11033,12440,12391,10939,11028),
+    ),
+    11030 => array(
+        'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
+        'm_name' => 'PLAY PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(12440,11089,10967,12391,11084,11028),
     ),
 );
 
@@ -529,16 +535,16 @@ $config['en_all_12391'] = array(
         'm_parents' => array(10983,12273,12228,4535,12391,12365,10593,4527,7551,4985,4593,4485),
     ),
     11029 => array(
-        'm_icon' => '<i class="fas fa-caret-circle-down play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(12440,12391,10939,11089,11028),
+        'm_parents' => array(11033,12440,12391,10939,11028),
     ),
     11030 => array(
-        'm_icon' => '<i class="fas fa-caret-circle-up play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PROFILE',
         'm_desc' => '',
-        'm_parents' => array(10967,11033,12391,11084,11028),
+        'm_parents' => array(12440,11089,10967,12391,11084,11028),
     ),
 );
 
@@ -2949,18 +2955,18 @@ $config['en_all_11088'] = array(
         'm_icon' => '<i class="fad fa-browser play rotate180" aria-hidden="true"></i>',
         'm_name' => 'FOOTER',
         'm_desc' => '',
-        'm_parents' => array(10939,11088,4527),
+        'm_parents' => array(11088,4527),
     ),
 );
 
 //PLAY BODY:
-$config['en_ids_11089'] = array(11029,7545,4997,10573,12273,12419,4231,4601,7347,6255,6146,11039);
+$config['en_ids_11089'] = array(11030,7545,4997,10573,12273,12419,4231,4601,7347,6255,6146,11039);
 $config['en_all_11089'] = array(
-    11029 => array(
-        'm_icon' => '<i class="fas fa-caret-circle-down play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY PORTFOLIO',
+    11030 => array(
+        'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
+        'm_name' => 'PLAY PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12440,12391,10939,11089,11028),
+        'm_parents' => array(12440,11089,10967,12391,11084,11028),
     ),
     7545 => array(
         'm_icon' => '<i class="fas fa-tag play" aria-hidden="true"></i>',
@@ -3069,21 +3075,21 @@ $config['en_all_10717'] = array(
 $config['en_ids_11084'] = array(11030);
 $config['en_all_11084'] = array(
     11030 => array(
-        'm_icon' => '<i class="fas fa-caret-circle-up play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PROFILE',
         'm_desc' => '',
-        'm_parents' => array(10967,11033,12391,11084,11028),
+        'm_parents' => array(12440,11089,10967,12391,11084,11028),
     ),
 );
 
 //PLAY FOOTER:
-$config['en_ids_11033'] = array(11030);
+$config['en_ids_11033'] = array(11029);
 $config['en_all_11033'] = array(
-    11030 => array(
-        'm_icon' => '<i class="fas fa-caret-circle-up play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY PROFILE',
+    11029 => array(
+        'm_icon' => '<i class="fas fa-step-forward play" aria-hidden="true"></i>',
+        'm_name' => 'PLAY PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(10967,11033,12391,11084,11028),
+        'm_parents' => array(11033,12440,12391,10939,11028),
     ),
 );
 
@@ -3939,16 +3945,16 @@ $config['en_all_11035'] = array(
 $config['en_ids_11028'] = array(11030,11029);
 $config['en_all_11028'] = array(
     11030 => array(
-        'm_icon' => '<i class="fas fa-caret-circle-up play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => 'Describe PLAYER. Where it comes from. It\'s origin.',
-        'm_parents' => array(10967,11033,12391,11084,11028),
+        'm_parents' => array(12440,11089,10967,12391,11084,11028),
     ),
     11029 => array(
-        'm_icon' => '<i class="fas fa-caret-circle-down play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward play" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => 'What the PLAYER chooses to focus on. It\'s work. It\'s responsibility.',
-        'm_parents' => array(12440,12391,10939,11089,11028),
+        'm_parents' => array(11033,12440,12391,10939,11028),
     ),
 );
 
@@ -4948,7 +4954,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fad fa-browser play rotate180" aria-hidden="true"></i>',
         'm_name' => 'PLAY FOOTER',
         'm_desc' => '',
-        'm_parents' => array(10939,11088,4527),
+        'm_parents' => array(11088,4527),
     ),
     3290 => array(
         'm_icon' => '<i class="far fa-transgender play" aria-hidden="true"></i>',
