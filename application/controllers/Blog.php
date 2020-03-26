@@ -74,19 +74,21 @@ class Blog extends CI_Controller {
 
     function blog_coin($in_id){
 
-        //Make sure user is logged in
-        $session_en = superpower_assigned(null);
-        if(!$session_en){
-            return redirect_message('/'.$in_id);
-        }
-
         //Validate/fetch Blog:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
         ));
         if ( count($ins) < 1) {
-            return redirect_message('/blog', '<div class="alert alert-danger" role="alert">BLOG #' . $in_id . ' not found</div>');
+            return redirect_message('/', '<div class="alert alert-danger" role="alert">BLOG #' . $in_id . ' Not Found</div>');
         }
+
+        //Make sure user is logged in
+        $session_en = superpower_assigned(null, (!in_array($ins[0]['in_status_play_id'], $this->config->item('en_ids_7355'))));
+        if(!$session_en){
+            return redirect_message('/'.$in_id);
+        }
+
+
 
         //Update session count and log link:
         if(isset($session_en['en_id']) && $session_en['en_id'] > 0){
