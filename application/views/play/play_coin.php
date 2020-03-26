@@ -554,7 +554,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             $this_body .= $input_options;
 
-            $this_body .= '<input type="submit" value="GO" class="btn btn-play inline-block">';
+            $this_body .= '<div><input type="submit" value="APPLY" class="btn btn-play inline-block"></div>';
 
             $this_body .= '</div>';
             $this_body .= '</form>';
