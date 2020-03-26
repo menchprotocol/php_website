@@ -437,7 +437,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         } elseif($en_id==4997 /* PLAY UPDATER */){
 
 
-            $this_body .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important;"><div class="inline-box">';
 
             $dropdown_options = '';
             $input_options = '';
@@ -451,9 +450,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
                 //Start with the input wrapper:
-                $input_options .= '<span id="mass_id_'.$action_en_id.'" class="inline-block '. ( $counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+                $input_options .= '<span id="mass_id_'.$action_en_id.'" title="'.$mass_action_en['m_desc'].'" class="inline-block '. ( $counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
-                $input_options .= '<i class="fal fa-info-circle" data-toggle="tooltip" data-placement="right" title="'.$mass_action_en['m_desc'].'"></i> ';
+
 
                 if(in_array($action_en_id, array(5000, 5001, 10625))){
 
@@ -544,7 +543,11 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             }
 
-            $this_body .= '<select class="form-control border inline-block" name="mass_action_en_id" id="set_mass_action">';
+            $this_body .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important;">';
+            $this_body .= '<div class="inline-box">';
+
+            //Drop Down
+            $this_body .= '<select class="form-control border" name="mass_action_en_id" id="set_mass_action">';
             $this_body .= $dropdown_options;
             $this_body .= '</select>';
 
@@ -552,7 +555,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             $this_body .= '<input type="submit" value="GO" class="btn btn-play inline-block">';
 
-            $this_body .= '</div></form>';
+            $this_body .= '</div>';
+            $this_body .= '</form>';
 
             if(isset($play__children)){
                 //Also add invisible child IDs for quick copy/pasting:
