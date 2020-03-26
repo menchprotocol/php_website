@@ -2681,7 +2681,7 @@ function echo_en($en, $is_parent = false)
     $ui .= '<a href="/play/'.$en['en_id'] . '"><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
 
     //PLAYER NAME
-    $ui .= '<a href="/play/'.$en['en_id'] . '" class="title-block montserrat '.extract_icon_color($en['en_icon']).'">'.($child_links[0]['totals'] > 0 ? echo_number($child_links[0]['totals']).' ' : '').'<span class="en_name_' . $en['en_id'] . '">'.$en['en_name'].'</span></a>';
+    $ui .= '<a href="/play/'.$en['en_id'] . '" class="title-block montserrat '.extract_icon_color($en['en_icon']).'">'.($child_links[0]['totals'] > 0 ? '<span class="'.superpower_active(10983).'">'.echo_number($child_links[0]['totals']).'&nbsp;</span>' : '').'<span class="en_name_' . $en['en_id'] . '">'.$en['en_name'].'</span></a>';
 
     $ui .= '</div>';
 

@@ -842,7 +842,7 @@ function upload_to_cdn($file_url, $ln_owner_play_id = 0, $ln_metadata = null, $i
             }
 
             //Create and link new player to CDN and uploader:
-            $url_player = $CI->PLAY_model->en_sync_url($cdn_new_url, $ln_owner_play_id, array(4396 /* Mench CDN Player */, $ln_owner_play_id), 0, $page_title);
+            $url_player = $CI->PLAY_model->en_sync_url($cdn_new_url, $ln_owner_play_id, array($ln_owner_play_id), 0, $page_title);
 
             if(isset($url_player['en_url']['en_id']) && $url_player['en_url']['en_id'] > 0){
 

@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-25 20:44:46 PST
+//Generated 2020-03-25 21:24:59 PST
 
 //PLAY OPEN BY DEFAULT:
 $config['en_ids_12571'] = array(12273,11029,11030);
@@ -2914,19 +2914,13 @@ $config['en_all_12012'] = array(
 );
 
 //PLAY LAYOUT:
-$config['en_ids_11089'] = array(12412,7545,11030,10573,12273,12419,4231,4601,7347,6255,6146,11029,4997);
+$config['en_ids_11089'] = array(12412,11030,10573,12273,12419,4231,4601,7545,7347,6255,6146,11029,4997);
 $config['en_all_11089'] = array(
     12412 => array(
         'm_icon' => '<i class="fad fa-browser play" aria-hidden="true"></i>',
         'm_name' => 'PLAY HEADER',
         'm_desc' => '',
         'm_parents' => array(11089),
-    ),
-    7545 => array(
-        'm_icon' => '<i class="fas fa-tag play" aria-hidden="true"></i>',
-        'm_name' => 'BLOG PLAY TAGS',
-        'm_desc' => '',
-        'm_parents' => array(10986,11089,12365,4535,12321,7551,4593,4485),
     ),
     11030 => array(
         'm_icon' => '<i class="fad fa-id-badge play" aria-hidden="true"></i>',
@@ -2963,6 +2957,12 @@ $config['en_all_11089'] = array(
         'm_name' => 'BLOG KEYWORDS',
         'm_desc' => '',
         'm_parents' => array(10939,11089,12365,4535,12322,4986,10593,4593,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-tag play" aria-hidden="true"></i>',
+        'm_name' => 'BLOG PLAY TAGS',
+        'm_desc' => '',
+        'm_parents' => array(10986,11089,12365,4535,12321,7551,4593,4485),
     ),
     7347 => array(
         'm_icon' => '<i class="fas fa-list-ul read" aria-hidden="true"></i>',
