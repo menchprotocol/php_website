@@ -177,6 +177,8 @@ class Read extends CI_Controller
 
     function cron__weights($obj = null){
 
+        boost_power();
+
         $stats = array(
             'start_time' => time(),
             'in_scanned' => 0,
