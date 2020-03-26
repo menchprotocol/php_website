@@ -1469,6 +1469,7 @@ function echo_in_stat_read($in = array(), $en = array()){
 
         $read_coins = $CI->READ_model->ln_fetch($coin_filter, array(), 1, 0, array(), 'COUNT(ln_id) as total_coins');
         if($read_coins[0]['total_coins'] > 0){
+
             $ui .= '<span class="montserrat read '.superpower_active(10964).'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($read_coins[0]['total_coins']).'</span>';
 
             //If Progress Type then show progress here....

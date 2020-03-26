@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-25 22:09:09 PST
+//Generated 2020-03-26 09:45:03 PST
 
 //LAYOUT SHOW EVEN IF ZERO:
 $config['en_ids_12574'] = array(4997,11029,11030);
@@ -32,7 +32,7 @@ $config['en_all_12574'] = array(
         'm_icon' => '<i class="fad fa-id-badge play" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12574,12571,11089,11028),
+        'm_parents' => array(12574,11089,11028),
     ),
 );
 
@@ -48,7 +48,7 @@ $config['en_all_12575'] = array(
 );
 
 //LAYOUT OPEN BY DEFAULT:
-$config['en_ids_12571'] = array(12273,11029,11030);
+$config['en_ids_12571'] = array(12273,11029);
 $config['en_all_12571'] = array(
     12273 => array(
         'm_icon' => '<i class="fas fa-circle blog" aria-hidden="true"></i>',
@@ -59,12 +59,6 @@ $config['en_all_12571'] = array(
     11029 => array(
         'm_icon' => '<i class="fad fa-sitemap play" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
-        'm_desc' => '',
-        'm_parents' => array(12574,12571,11089,11028),
-    ),
-    11030 => array(
-        'm_icon' => '<i class="fad fa-id-badge play" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE',
         'm_desc' => '',
         'm_parents' => array(12574,12571,11089,11028),
     ),
@@ -2895,7 +2889,7 @@ $config['en_all_11089'] = array(
         'm_icon' => '<i class="fad fa-id-badge play" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12574,12571,11089,11028),
+        'm_parents' => array(12574,11089,11028),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-list-ul blog" aria-hidden="true"></i>',
@@ -3832,7 +3826,7 @@ $config['en_all_11028'] = array(
         'm_icon' => '<i class="fad fa-id-badge play" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => 'Describe PLAYER. Where it comes from. It\'s origin.',
-        'm_parents' => array(12574,12571,11089,11028),
+        'm_parents' => array(12574,11089,11028),
     ),
     11029 => array(
         'm_icon' => '<i class="fad fa-sitemap play" aria-hidden="true"></i>',
