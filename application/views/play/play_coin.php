@@ -233,12 +233,11 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         }
         $nav_content = '';
         $tab_content = '';
-        $default_active_found = 0;
-        $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
+        $default_active_found = array();
         $activated_tabs = array();
 
 
-        echo '<div class="col-lg-12 '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
+        echo '<div class="col-lg-12">';
 
 
         //Generate Navigaation for this section:
@@ -629,13 +628,16 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             $tab_content .= '</div>';
 
             if($default_active){
-                $default_active_found++;
+                array_push($default_active_found, $m2);
             }
         }
         $nav_content .= '</ul>';
 
-        if($default_active_found>=2 || superpower_assigned()){
+        if(count($default_active_found)>=2){
             echo $nav_content;
+        } elseif(count($default_active_found)==1){
+            //Show Status Menu:
+            echo '<div class="read-topic"><span class="icon-block">'.$default_active_found[0]['m_icon'].'</span>'.$default_active_found[0]['m_name'].'</div>';
         }
 
         //Always show tab content:

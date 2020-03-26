@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-25 18:36:29 PST
+//Generated 2020-03-25 18:45:13 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -212,7 +212,7 @@ $config['en_all_12440'] = array(
         'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12440,11089,10967,12391,11084,11028),
+        'm_parents' => array(12440,11089,12391,11084,11028),
     ),
 );
 
@@ -544,7 +544,7 @@ $config['en_all_12391'] = array(
         'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12440,11089,10967,12391,11084,11028),
+        'm_parents' => array(12440,11089,12391,11084,11028),
     ),
 );
 
@@ -2966,7 +2966,7 @@ $config['en_all_11089'] = array(
         'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12440,11089,10967,12391,11084,11028),
+        'm_parents' => array(12440,11089,12391,11084,11028),
     ),
     7545 => array(
         'm_icon' => '<i class="fas fa-tag play" aria-hidden="true"></i>',
@@ -3084,7 +3084,7 @@ $config['en_all_11084'] = array(
         'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12440,11089,10967,12391,11084,11028),
+        'm_parents' => array(12440,11089,12391,11084,11028),
     ),
 );
 
@@ -3954,7 +3954,7 @@ $config['en_all_11028'] = array(
         'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => 'Describe PLAYER. Where it comes from. It\'s origin.',
-        'm_parents' => array(12440,11089,10967,12391,11084,11028),
+        'm_parents' => array(12440,11089,12391,11084,11028),
     ),
     11029 => array(
         'm_icon' => '<i class="fas fa-step-forward play" aria-hidden="true"></i>',
