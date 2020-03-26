@@ -2832,7 +2832,7 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tab
     $attributes = ( $is_author ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' in_ln__id_'.$in_ln__id.' texttype_'.$cache_en_id.($is_blog_title_lg?'_lg':'_sm').'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" ';
 
 
-    $tooltip_span_start = '<span class="'.( !$is_author ? 'edit-locked' : '' ).'" '.( !$is_blog_title_lg || !$is_author ? 'data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12112[$cache_en_id]['m_name'].( !$is_author ? ' (YOU ARE NOT AN AUTHOR)' : '' ).'"' : '').'>';
+    $tooltip_span_start = '<span class="'.( !$is_author ? 'edit-locked' : '' ).'" '.( !$is_blog_title_lg || !$is_author ? 'data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12112[$cache_en_id]['m_name'].'"' : '').'>';
     $tooltip_span_end = '</span>';
 
 
@@ -2889,7 +2889,7 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
     //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
     $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'_'.$in_id.'_'.$ln_id.' '.( !$show_full_name ? ' icon-block ' : '' ).'" selected-val="'.$selected_en_id.'">';
     $ui .= '<button type="button" '.( $is_author ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' '.$btn_class.'" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked  '.$btn_class.'"' ).' >';
-    $ui .= '<span title="'.$en_all_12079[$cache_en_id]['m_name'].( !$is_author ? ' (YOU ARE NOT AN AUTHOR)' : '' ).'" data-toggle="tooltip" data-placement="right">';
+    $ui .= '<span title="'.$en_all_12079[$cache_en_id]['m_name'].'" data-toggle="tooltip" data-placement="right">';
     $ui .= '<span class="icon-block">' .$en_all_this[$selected_en_id]['m_icon'].'</span><span class="show-max">'.( $show_full_name ?  $en_all_this[$selected_en_id]['m_name'] : '' ).'</span>';
     $ui .= '</span>';
     $ui .= '</button>';
