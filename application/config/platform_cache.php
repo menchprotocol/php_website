@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-25 18:35:03 PST
+//Generated 2020-03-25 18:36:29 PST
 
 //MESSAGE VISUAL MEDIA:
 $config['en_ids_12524'] = array(4259,4261,4260,4258,4257);
@@ -204,13 +204,13 @@ $config['en_all_12440'] = array(
     ),
     11029 => array(
         'm_icon' => '<i class="fas fa-step-forward play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY PORTFOLIO',
+        'm_name' => 'PORTFOLIO',
         'm_desc' => '',
         'm_parents' => array(11084,11033,12440,12391,10939,11028),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY PROFILE',
+        'm_name' => 'PROFILE',
         'm_desc' => '',
         'm_parents' => array(12440,11089,10967,12391,11084,11028),
     ),
@@ -536,13 +536,13 @@ $config['en_all_12391'] = array(
     ),
     11029 => array(
         'm_icon' => '<i class="fas fa-step-forward play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY PORTFOLIO',
+        'm_name' => 'PORTFOLIO',
         'm_desc' => '',
         'm_parents' => array(11084,11033,12440,12391,10939,11028),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY PROFILE',
+        'm_name' => 'PROFILE',
         'm_desc' => '',
         'm_parents' => array(12440,11089,10967,12391,11084,11028),
     ),
@@ -2964,7 +2964,7 @@ $config['en_ids_11089'] = array(11030,7545,4997,10573,12273,12419,4231,4601,7347
 $config['en_all_11089'] = array(
     11030 => array(
         'm_icon' => '<i class="fas fa-step-backward play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY PROFILE',
+        'm_name' => 'PROFILE',
         'm_desc' => '',
         'm_parents' => array(12440,11089,10967,12391,11084,11028),
     ),
@@ -3093,7 +3093,7 @@ $config['en_ids_11033'] = array(11029);
 $config['en_all_11033'] = array(
     11029 => array(
         'm_icon' => '<i class="fas fa-step-forward play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY PORTFOLIO',
+        'm_name' => 'PORTFOLIO',
         'm_desc' => '',
         'm_parents' => array(11084,11033,12440,12391,10939,11028),
     ),
