@@ -811,7 +811,7 @@ td.MENCHcolumn3{ width: 21%; }
 }
 
 .mass_modify .form-control{
-    margin:10px 0;
+    margin:0 0 10px 0;
     width: auto;
 }
 
