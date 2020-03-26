@@ -226,16 +226,22 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     //Print Play Layout
     foreach ($this->config->item('en_all_11089') as $en_id => $m){
 
-
         //Don't show empty tabs:
         $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
             continue;
         }
 
+        $this_body = null;
+        $counter = 0;
 
         //PLAY
-        if($en_id==11030){
+        if($en_id==12412){
+
+            //Play Header Skip as already printed above:
+            continue;
+
+        } elseif($en_id==11030){
 
             $play__parents = $this->READ_model->ln_fetch(array(
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
