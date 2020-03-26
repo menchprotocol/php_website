@@ -432,12 +432,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     $this_body .= $read_history_ui['message'];
                 }
 
-            } else {
-
-                //Inform that nothing was found:
-                $en_all_12410 = $this->config->item('en_all_12410');
-                $this_body .= '<div class="alert alert-warning">No <span class="montserrat '.extract_icon_color($en_all_12410[$en_id]['m_icon']).'">'.$en_all_12410[$en_id]['m_icon'].' '.$en_all_12410[$en_id]['m_name'].'</span> added yet.</div>';
-
             }
 
         } elseif($en_id==4997 /* PLAY MASS UPDATE */){
@@ -569,9 +563,12 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             }
         }
 
+        if(!$counter){
+            continue;
+        }
 
         //HEADER
-        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].' '.$counter.'</a></div>';
+        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'<span class="'.superpower_active(10983).'">&nbsp;'.$counter.'</span></a></div>';
 
         //BODY
         echo '<div class="contentTab'.$en_id.( in_array($en_id, $this->config->item('en_ids_12571')) ? '' : ' hidden ' ).'">';
