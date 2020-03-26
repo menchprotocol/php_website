@@ -30,6 +30,11 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     $is_published = in_array($player['en_status_play_id'], $this->config->item('en_ids_7357'));
 
 
+    //LEFT
+    echo '<h1 class="'.extract_icon_color($player['en_icon']).' pull-left inline-block" style="padding-top:5px;"><span class="icon-block en_ui_icon_'.$player['en_id'].'">'.echo_en_icon($player['en_icon']).'</span><span class="icon-block en_status_play_id_' . $player['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$player['en_status_play_id']]['m_name'].': '.$en_all_6177[$player['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$player['en_status_play_id']]['m_icon'] . '</span></span><span class="en_name_'.$player['en_id'].'">'.$player['en_name'].'</span></h1>';
+
+
+
     //RIGHT
     echo '<div class="pull-right inline-block '.superpower_active(10967).'">';
 
@@ -49,10 +54,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $player['en_id'] . ',0)" class="btn btn-play btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
 
     echo '</div>';
-
-
-    //LEFT
-    echo '<h1 class="'.extract_icon_color($player['en_icon']).' pull-left inline-block" style="padding-top:5px;"><span class="icon-block en_ui_icon_'.$player['en_id'].'">'.echo_en_icon($player['en_icon']).'</span><span class="icon-block en_status_play_id_' . $player['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$player['en_status_play_id']]['m_name'].': '.$en_all_6177[$player['en_status_play_id']]['m_desc'].'">' . $en_all_6177[$player['en_status_play_id']]['m_icon'] . '</span></span><span class="en_name_'.$player['en_id'].'">'.$player['en_name'].'</span></h1>';
 
 
     echo '<div class="doclear">&nbsp;</div>';
@@ -220,436 +221,364 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
 
+
     <?php
+    //Print Play Layout
+    foreach ($this->config->item('en_all_11089') as $en_id => $m){
 
-    $col_num = 0;
-    echo '<div class="row">';
-    foreach ($this->config->item('en_all_11088') as $en_id => $m){
 
-        $col_num++;
-        if($col_num==1){
-            //PLAY HEADER already printed above...
+        //Don't show empty tabs:
+        $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
+        if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
             continue;
         }
-        $nav_content = '';
-        $tab_content = '';
-        $tab_is_active_navs = array();
 
 
-        echo '<div class="col-lg-12">';
+        //PLAY
+        if($en_id==11030){
+
+            $play__parents = $this->READ_model->ln_fetch(array(
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                'ln_child_play_id' => $player['en_id'],
+            ), array('en_parent'), 0);
+
+            $counter = count($play__parents);
+
+            //PLAY PARENT
+
+            $this_body .= '<div id="list-parent" class="list-group ">';
+            foreach ($play__parents as $en) {
+                $this_body .= echo_en($en,true);
+            }
+
+            //Input to add new parents:
+            $this_body .= '<div id="new-parent" class="list-group-item itemplay no-side-padding '.superpower_active(10967).'">
+                <div class="form-group is-empty"><input type="text" class="form-control new-player-input algolia_search form-control-thick dotransparent" data-lpignore="true" placeholder="ADD PLAYER"></div>
+                <div class="algolia_pad_search hidden"></div>
+        </div>';
+
+            $this_body .= '</div>';
+
+        } elseif($en_id==11029){
+
+            //PLAY CHILD
+
+            //COUNT TOTAL
+            $child_links = $this->READ_model->ln_fetch(array(
+                'ln_parent_play_id' => $player['en_id'],
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+            ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
+            $counter = $child_links[0]['totals'];
 
 
-        //Generate Navigaation for this section:
-        $nav_content .= '<ul class="nav nav-tabs nav-sm">';
-        foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
+            $play__children = $this->READ_model->ln_fetch(array(
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                'ln_parent_play_id' => $player['en_id'],
+            ), array('en_child'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
-            //Is this a caret menu?
-            if(in_array(11040 , $m2['m_parents'])){
-                $nav_content .= echo_caret($en_id2, $m2, $player['en_id']);
-                continue;
+
+
+            $this_body .= '<div id="list-children" class="list-group">';
+
+            foreach ($play__children as $en) {
+                $this_body .= echo_en($en,false);
+            }
+            if ($counter > count($play__children)) {
+                $this_body .= echo_en_load_more(1, config_var(11064), $counter);
+            }
+
+            //Input to add new child:
+            $this_body .= '<div id="new-children" class="list-group-item itemplay no-side-padding '.superpower_active(10967).'">
+
+
+        <div class="form-group is-empty"><input type="text" class="form-control new-player-input form-control-thick algolia_search dotransparent" data-lpignore="true" placeholder="ADD PLAYER"></div>
+        <div class="algolia_pad_search hidden"></div>
+        
+        
+</div>';
+            $this_body .= '</div>';
+
+
+
+
+
+
+
+            //Fetch current count for each status from DB:
+            $player_count = $this->PLAY_model->en_child_count($player['en_id'], $this->config->item('en_ids_7358') /* Player Statuses Active */);
+            $child_en_filters = $this->READ_model->ln_fetch(array(
+                'ln_parent_play_id' => $player['en_id'],
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+            ), array('en_child'), 0, 0, array('en_status_play_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_play_id', 'en_status_play_id');
+
+            //Only show filtering UI if we find child players with different statuses (Otherwise no need to filter):
+            if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $player_count) {
+
+                //Load status definitions:
+                $en_all_6177 = $this->config->item('en_all_6177'); //Player Statuses
+
+                //Add 2nd Navigation to UI
+                $tab_content .= '<div class="nav nav-pills nav-sm '.superpower_active(10986).'">';
+
+                //Show fixed All button:
+                $tab_content .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all players"><i class="fas fa-asterisk"></i><span class="show-max"> All</span> <span class="counter-11029">' . $player_count . '</span></a></li>';
+
+                //Show each specific filter based on DB counts:
+                foreach ($child_en_filters as $c_c) {
+                    $st = $en_all_6177[$c_c['en_status_play_id']];
+                    $tab_content .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_play_id'] . '" onclick="en_filter_status(' . $c_c['en_status_play_id'] . ')" class="nav-link u-status-filter u-status-' . $c_c['en_status_play_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="show-max"> ' . $st['m_name'] . '</span> <span class="count-u-status-' . $c_c['en_status_play_id'] . '">' . $c_c['totals'] . '</span></a></li>';
+                }
+
+                $tab_content .= '</div>';
+
             }
 
 
-            //Determine counter:
-            $tab_is_active = false;
-            $counter = null; //Assume no counters
-            $this_tab = '';
 
 
+        } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
 
-            //PLAY
-            if($en_id2==11030){
+            //BLOG NOTES
+            $blog_note_filters = array(
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+                'ln_type_play_id' => $en_id,
+                '(ln_owner_play_id='.$player['en_id'].' OR ln_child_play_id='.$player['en_id'].' OR ln_parent_play_id='.$player['en_id'].')' => null,
+            );
 
-                $play__parents = $this->READ_model->ln_fetch(array(
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
-                    'ln_child_play_id' => $player['en_id'],
-                ), array('en_parent'), 0);
+            //COUNT ONLY
+            $item_counters = $this->READ_model->ln_fetch($blog_note_filters, array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
+            $counter = $item_counters[0]['totals'];
 
-                $counter = count($play__parents);
+            //SHOW LASTEST 100
+            if($counter>0){
 
-                //PLAY PARENT
-                $tab_is_active = in_array($en_id2, $this->config->item('en_ids_12440')) && $counter;
+                $this_body .= '<div class="list-group">';
+                foreach ($this->READ_model->ln_fetch($blog_note_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC')) as $blog_note) {
+                    if(in_array($en_id, $this->config->item('en_ids_12321'))){
 
-                $this_tab .= '<div id="list-parent" class="list-group ">';
-                foreach ($play__parents as $en) {
-                    $this_tab .= echo_en($en,true);
-                }
+                        $this_body .= echo_in_read($blog_note);
 
-                //Input to add new parents:
-                $this_tab .= '<div id="new-parent" class="list-group-item itemplay no-side-padding '.superpower_active(10967).'">
-                    <div class="form-group is-empty"><input type="text" class="form-control new-player-input algolia_search form-control-thick dotransparent" data-lpignore="true" placeholder="ADD PLAYER"></div>
-                    <div class="algolia_pad_search hidden"></div>
-            </div>';
+                    } elseif(in_array($en_id, $this->config->item('en_ids_12322'))){
 
-                $this_tab .= '</div>';
-
-            } elseif($en_id2==11029){
-
-                //PLAY CHILD
-
-                //COUNT TOTAL
-                $child_links = $this->READ_model->ln_fetch(array(
-                    'ln_parent_play_id' => $player['en_id'],
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
-                ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
-                $counter = $child_links[0]['totals'];
-
-                $tab_is_active = in_array($en_id2, $this->config->item('en_ids_12440'));
-
-                $play__children = $this->READ_model->ln_fetch(array(
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
-                    'ln_parent_play_id' => $player['en_id'],
-                ), array('en_child'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
-
-
-
-                $this_tab .= '<div id="list-children" class="list-group">';
-
-                foreach ($play__children as $en) {
-                    $this_tab .= echo_en($en,false);
-                }
-                if ($counter > count($play__children)) {
-                    $this_tab .= echo_en_load_more(1, config_var(11064), $counter);
-                }
-
-                //Input to add new child:
-                $this_tab .= '<div id="new-children" class="list-group-item itemplay no-side-padding '.superpower_active(10967).'">
-
-
-            <div class="form-group is-empty"><input type="text" class="form-control new-player-input form-control-thick algolia_search dotransparent" data-lpignore="true" placeholder="ADD PLAYER"></div>
-            <div class="algolia_pad_search hidden"></div>
-            
-            
-    </div>';
-                $this_tab .= '</div>';
-
-
-
-
-
-
-
-                //Fetch current count for each status from DB:
-                $player_count = $this->PLAY_model->en_child_count($player['en_id'], $this->config->item('en_ids_7358') /* Player Statuses Active */);
-                $child_en_filters = $this->READ_model->ln_fetch(array(
-                    'ln_parent_play_id' => $player['en_id'],
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
-                ), array('en_child'), 0, 0, array('en_status_play_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_play_id', 'en_status_play_id');
-
-                //Only show filtering UI if we find child players with different statuses (Otherwise no need to filter):
-                if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $player_count) {
-
-                    //Load status definitions:
-                    $en_all_6177 = $this->config->item('en_all_6177'); //Player Statuses
-
-                    //Add 2nd Navigation to UI
-                    $tab_content .= '<div class="nav nav-pills nav-sm '.superpower_active(10986).'">';
-
-                    //Show fixed All button:
-                    $tab_content .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all players"><i class="fas fa-asterisk"></i><span class="show-max"> All</span> <span class="counter-11029">' . $player_count . '</span></a></li>';
-
-                    //Show each specific filter based on DB counts:
-                    foreach ($child_en_filters as $c_c) {
-                        $st = $en_all_6177[$c_c['en_status_play_id']];
-                        $tab_content .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_play_id'] . '" onclick="en_filter_status(' . $c_c['en_status_play_id'] . ')" class="nav-link u-status-filter u-status-' . $c_c['en_status_play_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="show-max"> ' . $st['m_name'] . '</span> <span class="count-u-status-' . $c_c['en_status_play_id'] . '">' . $c_c['totals'] . '</span></a></li>';
-                    }
-
-                    $tab_content .= '</div>';
-
-                }
-
-
-
-
-            } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
-
-                //BLOG NOTES
-                $blog_note_filters = array(
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-                    'ln_type_play_id' => $en_id2,
-                    '(ln_owner_play_id='.$player['en_id'].' OR ln_child_play_id='.$player['en_id'].' OR ln_parent_play_id='.$player['en_id'].')' => null,
-                );
-
-                //COUNT ONLY
-                $item_counters = $this->READ_model->ln_fetch($blog_note_filters, array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
-                $counter = $item_counters[0]['totals'];
-
-                //SHOW LASTEST 100
-                if($counter>0){
-
-                    $this_tab .= '<div class="list-group">';
-                    foreach ($this->READ_model->ln_fetch($blog_note_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC')) as $blog_note) {
-                        if(in_array($en_id2, $this->config->item('en_ids_12321'))){
-
-                            $this_tab .= echo_in_read($blog_note);
-
-                        } elseif(in_array($en_id2, $this->config->item('en_ids_12322'))){
-
-                            //Include the message:
-                            $footnotes = null;
-                            if($blog_note['ln_content']){
-                                $footnotes .= '<div class="message_content">';
-                                $footnotes .= $this->READ_model->dispatch_message($blog_note['ln_content']);
-                                $footnotes .= '</div>';
-                            }
-
-                            $this_tab .= echo_in_read($blog_note, false, $footnotes);
-
+                        //Include the message:
+                        $footnotes = null;
+                        if($blog_note['ln_content']){
+                            $footnotes .= '<div class="message_content">';
+                            $footnotes .= $this->READ_model->dispatch_message($blog_note['ln_content']);
+                            $footnotes .= '</div>';
                         }
-                    }
-                    $this_tab .= '</div>';
 
-                } elseif($tab_is_active){
-
-                    $this_tab .= '<div class="alert alert-warning">No blogs featured yet.</div>';
-
-                }
-
-            } elseif($en_id2 == 7347 /* READ LIST */){
-
-                $player_reads = $this->READ_model->ln_fetch(array(
-                    'ln_owner_play_id' => $player['en_id'],
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                ), array('in_parent'), 1, 0, array(), 'COUNT(ln_id) as totals');
-                $counter = $player_reads[0]['totals'];
-
-            } elseif(in_array($en_id2, $this->config->item('en_ids_12410'))){
-
-                //PLAYER COINS (READ & BLOG)
-
-                $join_objects = array();
-                $match_columns = array(
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
-                );
-
-                if($en_id2 == 12273){
-                    //Blog Coins
-                    $match_columns['ln_parent_play_id'] = $player['en_id'];
-                    $match_columns['in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Blog Statuses Public
-                    $join_objects = array('in_child');
-                } elseif($en_id2 == 6255){
-                    //Read Coins:
-                    $match_columns['ln_owner_play_id'] = $player['en_id'];
-                }
-
-                //READER READS & BOOKMARKS
-                $item_counters = $this->READ_model->ln_fetch($match_columns, $join_objects, 1, 0, array(), 'COUNT(ln_id) as totals');
-
-                $counter = $item_counters[0]['totals'];
-                $tab_is_active = ( in_array($en_id2, $this->config->item('en_ids_12440')) && $counter>0 );
-
-                if($counter > 0){
-
-                    //Dynamic Loading when clicked:
-                    $this_tab .= '<div class="dynamic-reads"></div>';
-
-                } else {
-
-                    //Inform that nothing was found:
-                    $en_all_12410 = $this->config->item('en_all_12410');
-                    $this_tab .= '<div class="alert alert-warning">No <span class="montserrat '.extract_icon_color($en_all_12410[$en_id2]['m_icon']).'">'.$en_all_12410[$en_id2]['m_icon'].' '.$en_all_12410[$en_id2]['m_name'].'</span> added yet.</div>';
-
-                }
-
-            } elseif($en_id2==4997 /* PLAY MASS UPDATE */){
-
-
-                $this_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important;"><div class="inline-box">';
-
-                $dropdown_options = '';
-                $input_options = '';
-                $counter = 0;
-
-                foreach ($this->config->item('en_all_4997') as $action_en_id => $mass_action_en) {
-
-                    $counter++;
-                    $dropdown_options .= '<option value="' . $action_en_id . '">' .$mass_action_en['m_name'] . '</option>';
-
-
-                    //Start with the input wrapper:
-                    $input_options .= '<span id="mass_id_'.$action_en_id.'" class="inline-block '. ( $counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
-
-                    $input_options .= '<i class="fal fa-info-circle" data-toggle="tooltip" data-placement="right" title="'.$mass_action_en['m_desc'].'"></i> ';
-
-                    if(in_array($action_en_id, array(5000, 5001, 10625))){
-
-                        //String Find and Replace:
-
-                        //Find:
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" placeholder="Search" style="width: 145px;" class="form-control border">';
-
-                        //Replace:
-                        $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" placeholder="Replace" stycacle="width: 145px;" class="form-control border">';
-
-
-                    } elseif(in_array($action_en_id, array(5981, 5982))){
-
-                        //Player search box:
-
-                        //String command:
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" style="width:300px;" placeholder="Search players..." class="form-control algolia_search en_quick_search border">';
-
-                        //We don't need the second value field here:
-                        $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
-
-
-                    } elseif($action_en_id == 11956){
-
-                        //IF HAS THIS
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" style="width:300px;" placeholder="IF THIS PLAYER..." class="form-control algolia_search en_quick_search border">';
-
-                        //ADD THIS
-                        $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" style="width:300px;" placeholder="ADD THIS PLAYER..." class="form-control algolia_search en_quick_search border">';
-
-
-                    } elseif($action_en_id == 5003){
-
-                        //Player Status update:
-
-                        //Find:
-                        $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
-                        $input_options .= '<option value="">Set Condition...</option>';
-                        $input_options .= '<option value="*">Update All Statuses</option>';
-                        foreach($this->config->item('en_all_6177') /* Player Statuses */ as $en_id3 => $m3){
-                            $input_options .= '<option value="'.$en_id3.'">Update All '.$m3['m_name'].'</option>';
-                        }
-                        $input_options .= '</select>';
-
-                        //Replace:
-                        $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
-                        $input_options .= '<option value="">Set New Status...</option>';
-                        foreach($this->config->item('en_all_6177') /* Player Statuses */ as $en_id3 => $m3){
-                            $input_options .= '<option value="'.$en_id3.'">Set to '.$m3['m_name'].'</option>';
-                        }
-                        $input_options .= '</select>';
-
-
-                    } elseif($action_en_id == 5865){
-
-                        //Link Status update:
-
-                        //Find:
-                        $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
-                        $input_options .= '<option value="">Set Condition...</option>';
-                        $input_options .= '<option value="*">Update All Statuses</option>';
-                        foreach($this->config->item('en_all_6186') /* Link Statuses */ as $en_id3 => $m3){
-                            $input_options .= '<option value="'.$en_id3.'">Update All '.$m3['m_name'].'</option>';
-                        }
-                        $input_options .= '</select>';
-
-                        //Replace:
-                        $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
-                        $input_options .= '<option value="">Set New Status...</option>';
-                        foreach($this->config->item('en_all_6186') /* Link Statuses */ as $en_id3 => $m3){
-                            $input_options .= '<option value="'.$en_id3.'">Set to '.$m3['m_name'].'</option>';
-                        }
-                        $input_options .= '</select>';
-
-
-                    } else {
-
-                        //String command:
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" style="width:300px;" placeholder="String..." class="form-control border">';
-
-                        //We don't need the second value field here:
-                        $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
+                        $this_body .= echo_in_read($blog_note, false, $footnotes);
 
                     }
-
-                    $input_options .= '</span>';
-
                 }
-
-                $this_tab .= '<select class="form-control border inline-block" name="mass_action_en_id" id="set_mass_action">';
-                $this_tab .= $dropdown_options;
-                $this_tab .= '</select>';
-
-                $this_tab .= $input_options;
-
-                $this_tab .= '<input type="submit" value="GO" class="btn btn-play inline-block">';
-
-                $this_tab .= '</div></form>';
-
-                if(isset($play__children)){
-                    //Also add invisible child IDs for quick copy/pasting:
-                    $this_tab .= '<div style="color:transparent;">';
-                    foreach ($play__children as $en) {
-                        $this_tab .= $en['en_id'].',';
-                    }
-                    $this_tab .= '</div>';
-                }
-            }
-
-            //Don't show empty tabs:
-            $must_show = in_array($en_id2, $this->config->item('en_ids_12391'));
-            if(!$must_show){
-                $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m2['m_parents']);
-                if((count($superpower_actives) && !superpower_assigned(end($superpower_actives))) || intval($counter) < 1){
-                    continue;
-                }
-            }
-
-
-            $show_tab_names = in_array($en_id2, $this->config->item('en_ids_11084')); //Should we show tab names?
-
-            //Hack for Blog coins & Parent Players to show properly:
-            if($en_id2==11030){
-
-                //Active if count exists and not already activated.
-                $authored_blogs = $this->READ_model->ln_fetch(array(
-                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id' => 4983,
-                    'ln_parent_play_id' => $player['en_id'],
-                ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
-
-                $show_active = $tab_is_active && !$authored_blogs[0]['totals'];
+                $this_body .= '</div>';
 
             } else {
 
-                $show_active = $tab_is_active;
+                $this_body .= '<div class="alert alert-warning">No blogs yet.</div>';
 
             }
 
-            $nav_content .= '<li class="nav-item '.( !$must_show && count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $show_active ? ' active ' : '' ).extract_icon_color($m2['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.',0,'.$player['en_id'].')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.superpower_active(10939).'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
+        } elseif($en_id == 7347 /* READ LIST */){
+
+            $player_reads = $this->READ_model->ln_fetch(array(
+                'ln_owner_play_id' => $player['en_id'],
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            ), array('in_parent'), 1, 0, array(), 'COUNT(ln_id) as totals');
+            $counter = $player_reads[0]['totals'];
+
+        } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
+
+            //PLAYER COINS (READ & BLOG)
+
+            $join_objects = array();
+            $match_columns = array(
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$en_id)) . ')' => null,
+            );
+
+            if($en_id == 12273){
+                //Blog Coins
+                $match_columns['ln_parent_play_id'] = $player['en_id'];
+                $match_columns['in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Blog Statuses Public
+                $join_objects = array('in_child');
+            } elseif($en_id == 6255){
+                //Read Coins:
+                $match_columns['ln_owner_play_id'] = $player['en_id'];
+            }
+
+            //READER READS & BOOKMARKS
+            $item_counters = $this->READ_model->ln_fetch($match_columns, $join_objects, 1, 0, array(), 'COUNT(ln_id) as totals');
+
+            $counter = $item_counters[0]['totals'];
+
+            if($counter > 0){
+
+                //Dynamic Loading when clicked:
+                $read_history_ui = $this->READ_model->read_history_ui($en_id, 0, $player['en_id']);
+                if($read_history_ui['status']){
+                    $this_body .= $read_history_ui['message'];
+                }
+
+            } else {
+
+                //Inform that nothing was found:
+                $en_all_12410 = $this->config->item('en_all_12410');
+                $this_body .= '<div class="alert alert-warning">No <span class="montserrat '.extract_icon_color($en_all_12410[$en_id]['m_icon']).'">'.$en_all_12410[$en_id]['m_icon'].' '.$en_all_12410[$en_id]['m_name'].'</span> added yet.</div>';
+
+            }
+
+        } elseif($en_id==4997 /* PLAY MASS UPDATE */){
 
 
-            $tab_content .= '<div class="tab-content tab-group-'.$en_id.' tab-data-'.$en_id2.( $show_active ? '' : ' hidden ' ).'">';
-            $tab_content .= $this_tab;
-            $tab_content .= '</div>';
+            $this_body .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important;"><div class="inline-box">';
 
-            if($tab_is_active){
-                array_push($tab_is_active_navs, $m2);
+            $dropdown_options = '';
+            $input_options = '';
+            $counter = 0;
+
+            foreach ($this->config->item('en_all_4997') as $action_en_id => $mass_action_en) {
+
+                $counter++;
+                $dropdown_options .= '<option value="' . $action_en_id . '">' .$mass_action_en['m_name'] . '</option>';
+
+
+                //Start with the input wrapper:
+                $input_options .= '<span id="mass_id_'.$action_en_id.'" class="inline-block '. ( $counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+
+                $input_options .= '<i class="fal fa-info-circle" data-toggle="tooltip" data-placement="right" title="'.$mass_action_en['m_desc'].'"></i> ';
+
+                if(in_array($action_en_id, array(5000, 5001, 10625))){
+
+                    //String Find and Replace:
+
+                    //Find:
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" placeholder="Search" style="width: 145px;" class="form-control border">';
+
+                    //Replace:
+                    $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" placeholder="Replace" stycacle="width: 145px;" class="form-control border">';
+
+
+                } elseif(in_array($action_en_id, array(5981, 5982))){
+
+                    //Player search box:
+
+                    //String command:
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" style="width:300px;" placeholder="Search players..." class="form-control algolia_search en_quick_search border">';
+
+                    //We don't need the second value field here:
+                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
+
+
+                } elseif($action_en_id == 11956){
+
+                    //IF HAS THIS
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" style="width:300px;" placeholder="IF THIS PLAYER..." class="form-control algolia_search en_quick_search border">';
+
+                    //ADD THIS
+                    $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" style="width:300px;" placeholder="ADD THIS PLAYER..." class="form-control algolia_search en_quick_search border">';
+
+
+                } elseif($action_en_id == 5003){
+
+                    //Player Status update:
+
+                    //Find:
+                    $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
+                    $input_options .= '<option value="">Set Condition...</option>';
+                    $input_options .= '<option value="*">Update All Statuses</option>';
+                    foreach($this->config->item('en_all_6177') /* Player Statuses */ as $en_id3 => $m3){
+                        $input_options .= '<option value="'.$en_id3.'">Update All '.$m3['m_name'].'</option>';
+                    }
+                    $input_options .= '</select>';
+
+                    //Replace:
+                    $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
+                    $input_options .= '<option value="">Set New Status...</option>';
+                    foreach($this->config->item('en_all_6177') /* Player Statuses */ as $en_id3 => $m3){
+                        $input_options .= '<option value="'.$en_id3.'">Set to '.$m3['m_name'].'</option>';
+                    }
+                    $input_options .= '</select>';
+
+
+                } elseif($action_en_id == 5865){
+
+                    //Link Status update:
+
+                    //Find:
+                    $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
+                    $input_options .= '<option value="">Set Condition...</option>';
+                    $input_options .= '<option value="*">Update All Statuses</option>';
+                    foreach($this->config->item('en_all_6186') /* Link Statuses */ as $en_id3 => $m3){
+                        $input_options .= '<option value="'.$en_id3.'">Update All '.$m3['m_name'].'</option>';
+                    }
+                    $input_options .= '</select>';
+
+                    //Replace:
+                    $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
+                    $input_options .= '<option value="">Set New Status...</option>';
+                    foreach($this->config->item('en_all_6186') /* Link Statuses */ as $en_id3 => $m3){
+                        $input_options .= '<option value="'.$en_id3.'">Set to '.$m3['m_name'].'</option>';
+                    }
+                    $input_options .= '</select>';
+
+
+                } else {
+
+                    //String command:
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" style="width:300px;" placeholder="String..." class="form-control border">';
+
+                    //We don't need the second value field here:
+                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
+
+                }
+
+                $input_options .= '</span>';
+
+            }
+
+            $this_body .= '<select class="form-control border inline-block" name="mass_action_en_id" id="set_mass_action">';
+            $this_body .= $dropdown_options;
+            $this_body .= '</select>';
+
+            $this_body .= $input_options;
+
+            $this_body .= '<input type="submit" value="GO" class="btn btn-play inline-block">';
+
+            $this_body .= '</div></form>';
+
+            if(isset($play__children)){
+                //Also add invisible child IDs for quick copy/pasting:
+                $this_body .= '<div style="color:transparent;">';
+                foreach ($play__children as $en) {
+                    $this_body .= $en['en_id'].',';
+                }
+                $this_body .= '</div>';
             }
         }
-        $nav_content .= '</ul>';
 
 
-        if(count($tab_is_active_navs)>=2){
-            echo $nav_content;
-        } elseif(count($tab_is_active_navs)==1){
-            //Show Status Menu:
-            echo '<div class="read-topic"><span class="icon-block">'.$tab_is_active_navs[0]['m_icon'].'</span>'.$tab_is_active_navs[0]['m_name'].'</div>';
-        }
+        //HEADER
+        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].' '.$counter.'</a></div>';
 
-        //Always show tab content:
-        echo $tab_content;
+        //BODY
+        echo '<div class="contentTab'.$en_id.( in_array($en_id, $this->config->item('en_ids_12571')) ? '' : ' hidden ' ).'">';
+        echo $this_body;
         echo '</div>';
-    }
-    echo '</div>';
 
+    }
 
     //FOR EDITING ONLY (HIDDEN FROM UI):
     echo '<div class="hidden">'.echo_en($player).'</div>';

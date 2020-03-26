@@ -1222,6 +1222,8 @@ label {
 
 .read-topic{
     padding: 10px 0;
+}
+.read-topic, .read-topic a {
     color: #AAAAAA !important;
     text-transform: uppercase;
 }
