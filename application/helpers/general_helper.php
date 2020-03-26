@@ -1148,8 +1148,11 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 array_push($export_row['_tags'], 'alg_author_' . $db_row['en_id']);
 
+                if(in_array($db_row['en_status_play_id'], $CI->config->item('en_ids_12575'))){
+                    array_push($export_row['_tags'], 'is_featured');
+                }
+
                 //Add keywords:
-                $has_featured_parent_en = false;
                 $export_row['alg_obj_keywords'] = '';
                 foreach ($CI->READ_model->ln_fetch(array(
                     'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
@@ -1160,11 +1163,6 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                     //Always add to tags:
                     array_push($export_row['_tags'], 'alg_author_' . $ln['en_id']);
-
-
-                    if(!$has_featured_parent_en && in_array($ln['en_id'], $CI->config->item('en_ids_10571'))){
-                        $has_featured_parent_en = true;
-                    }
 
                     //Add content to keywords if any:
                     if (strlen($ln['ln_content']) > 0) {

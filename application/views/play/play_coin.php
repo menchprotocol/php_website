@@ -561,14 +561,16 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 }
                 $this_body .= '</div>';
             }
+
+            $counter = 0;
         }
 
-        if(!$counter){
+        if(!$counter && !in_array($en_id, $this->config->item('en_ids_12574'))){
             continue;
         }
 
         //HEADER
-        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'<span class="'.superpower_active(10983).'">&nbsp;'.$counter.'</span></a></div>';
+        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].($counter>0 ? '<span class="'.superpower_active(10983).'">&nbsp;'.$counter.'</span>' : '').'</a></div>';
 
         //BODY
         echo '<div class="contentTab'.$en_id.( in_array($en_id, $this->config->item('en_ids_12571')) ? '' : ' hidden ' ).'">';
