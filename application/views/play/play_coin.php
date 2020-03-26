@@ -233,8 +233,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         }
         $nav_content = '';
         $tab_content = '';
-        $default_active_found = array();
-        $activated_tabs = array();
+        $tab_is_active_navs = array();
 
 
         echo '<div class="col-lg-12">';
@@ -252,7 +251,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
             //Determine counter:
-            $default_active = false;
+            $tab_is_active = false;
             $counter = null; //Assume no counters
             $this_tab = '';
 
@@ -260,18 +259,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             //PLAY
             if($en_id2==11030){
-
-                //PLAY PARENT
-
-                //Active if count exists and not already activated.
-                $authored_blogs = $this->READ_model->ln_fetch(array(
-                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id' => 4983,
-                    'ln_parent_play_id' => $player['en_id'],
-                ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
-
-                $default_active = in_array($en_id2, $this->config->item('en_ids_12440')) && !$authored_blogs[0]['totals']; //LEFT
 
                 $play__parents = $this->READ_model->ln_fetch(array(
                     'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
@@ -281,6 +268,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 ), array('en_parent'), 0);
 
                 $counter = count($play__parents);
+
+                //PLAY PARENT
+                $tab_is_active = in_array($en_id2, $this->config->item('en_ids_12440')) && $counter;
 
                 $this_tab .= '<div id="list-parent" class="list-group ">';
                 foreach ($play__parents as $en) {
@@ -308,11 +298,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
                 $counter = $child_links[0]['totals'];
 
-                $default_active = in_array($en_id2, $this->config->item('en_ids_12440'));
-
-                if($default_active){
-                    array_push($activated_tabs, $en_id2);
-                }
+                $tab_is_active = in_array($en_id2, $this->config->item('en_ids_12440'));
 
                 $play__children = $this->READ_model->ln_fetch(array(
                     'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
@@ -320,6 +306,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     'en_status_play_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
                     'ln_parent_play_id' => $player['en_id'],
                 ), array('en_child'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
+
+
 
                 $this_tab .= '<div id="list-children" class="list-group">';
 
@@ -420,7 +408,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     }
                     $this_tab .= '</div>';
 
-                } elseif($default_active){
+                } elseif($tab_is_active){
 
                     $this_tab .= '<div class="alert alert-warning">No blogs featured yet.</div>';
 
@@ -460,11 +448,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 $item_counters = $this->READ_model->ln_fetch($match_columns, $join_objects, 1, 0, array(), 'COUNT(ln_id) as totals');
 
                 $counter = $item_counters[0]['totals'];
-                $default_active = ( in_array($en_id2, $this->config->item('en_ids_12440')) && $counter>0 );
-
-                if($default_active){
-                    array_push($activated_tabs, $en_id2);
-                }
+                $tab_is_active = ( in_array($en_id2, $this->config->item('en_ids_12440')) && $counter>0 );
 
                 if($counter > 0){
 
@@ -620,24 +604,44 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             $show_tab_names = in_array($en_id2, $this->config->item('en_ids_11084')); //Should we show tab names?
 
-            $nav_content .= '<li class="nav-item '.( !$must_show && count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m2['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.',0,'.$player['en_id'].')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.superpower_active(10939).'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
+            //Hack for Blog coins & Parent Players to show properly:
+            if($en_id2==11030){
+
+                //Active if count exists and not already activated.
+                $authored_blogs = $this->READ_model->ln_fetch(array(
+                    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id' => 4983,
+                    'ln_parent_play_id' => $player['en_id'],
+                ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
+
+                $show_active = $tab_is_active && !$authored_blogs[0]['totals'];
+
+            } else {
+
+                $show_active = $tab_is_active;
+
+            }
+
+            $nav_content .= '<li class="nav-item '.( !$must_show && count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $show_active ? ' active ' : '' ).extract_icon_color($m2['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.',0,'.$player['en_id'].')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.superpower_active(10939).'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
 
 
-            $tab_content .= '<div class="tab-content tab-group-'.$en_id.' tab-data-'.$en_id2.( $default_active ? '' : ' hidden ' ).'">';
+            $tab_content .= '<div class="tab-content tab-group-'.$en_id.' tab-data-'.$en_id2.( $show_active ? '' : ' hidden ' ).'">';
             $tab_content .= $this_tab;
             $tab_content .= '</div>';
 
-            if($default_active){
-                array_push($default_active_found, $m2);
+            if($tab_is_active){
+                array_push($tab_is_active_navs, $m2);
             }
         }
         $nav_content .= '</ul>';
 
-        if(count($default_active_found)>=2){
+
+        if(count($tab_is_active_navs)>=2){
             echo $nav_content;
-        } elseif(count($default_active_found)==1){
+        } elseif(count($tab_is_active_navs)==1){
             //Show Status Menu:
-            echo '<div class="read-topic"><span class="icon-block">'.$default_active_found[0]['m_icon'].'</span>'.$default_active_found[0]['m_name'].'</div>';
+            echo '<div class="read-topic"><span class="icon-block">'.$tab_is_active_navs[0]['m_icon'].'</span>'.$tab_is_active_navs[0]['m_name'].'</div>';
         }
 
         //Always show tab content:
