@@ -810,6 +810,11 @@ td.MENCHcolumn3{ width: 21%; }
     display: inline-block;
 }
 
+.mass_modify .form-control{
+    margin:10px 0;
+    width: auto;
+}
+
 .link_marks .form-control{
     width: 34px;
     display: inline-block;

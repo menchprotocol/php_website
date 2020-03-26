@@ -454,15 +454,16 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
 
+
                 if(in_array($action_en_id, array(5000, 5001, 10625))){
 
                     //String Find and Replace:
 
                     //Find:
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" placeholder="Search" style="width: 145px;" class="form-control border '.$is_upper.'">';
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" placeholder="Search" class="form-control border '.$is_upper.'">';
 
                     //Replace:
-                    $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" placeholder="Replace" stycacle="width: 145px;" class="form-control border '.$is_upper.'">';
+                    $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" placeholder="Replace" class="form-control border '.$is_upper.'">';
 
 
                 } elseif(in_array($action_en_id, array(5981, 5982))){
@@ -470,7 +471,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     //Player search box:
 
                     //String command:
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" style="width:300px;" placeholder="Search players..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search players..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
 
                     //We don't need the second value field here:
                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
@@ -479,10 +480,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 } elseif($action_en_id == 11956){
 
                     //IF HAS THIS
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" style="width:300px;" placeholder="IF THIS PLAYER..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="IF THIS PLAYER..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
 
                     //ADD THIS
-                    $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" style="width:300px;" placeholder="ADD THIS PLAYER..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
+                    $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'"  placeholder="ADD THIS PLAYER..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
 
 
                 } elseif($action_en_id == 5003){
@@ -532,7 +533,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 } else {
 
                     //String command:
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" style="width:300px;" placeholder="String..." class="form-control border '.$is_upper.'">';
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="String..." class="form-control border '.$is_upper.'">';
 
                     //We don't need the second value field here:
                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
@@ -543,7 +544,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
             }
 
-            $this_body .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important;">';
+            $this_body .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
             $this_body .= '<div class="inline-box">';
 
             //Drop Down
