@@ -447,7 +447,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 $counter++;
                 $dropdown_options .= '<option value="' . $action_en_id . '">' .$mass_action_en['m_name'] . '</option>';
-                $is_upper = ( in_array($action_en_id, $this->config->item('en_ids_7355') /* Blog Statuses Public */) ? ' montserrat doupper ' : false );
+                $is_upper = ( in_array($action_en_id, $this->config->item('en_ids_12577') /* PLAY UPDATER UPPERCASE */) ? ' montserrat doupper ' : false );
 
 
                 //Start with the input wrapper:
