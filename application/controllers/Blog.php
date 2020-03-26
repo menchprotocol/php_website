@@ -75,7 +75,10 @@ class Blog extends CI_Controller {
     function blog_coin($in_id){
 
         //Make sure user is logged in
-        $session_en = superpower_assigned(null, true);
+        $session_en = superpower_assigned(null);
+        if(!$session_en){
+            return redirect_message('/'+$in_id);
+        }
 
         //Validate/fetch Blog:
         $ins = $this->BLOG_model->in_fetch(array(
