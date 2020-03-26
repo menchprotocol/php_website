@@ -184,7 +184,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
 
-            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder="WRITE'.( in_array(12359, $en_all_4485[$en_id2]['m_parents']) ? ', PASTE URL OR DRAG FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder="WRITE'.( in_array($en_id2, $this->config->item('en_ids_7551')) || in_array($en_id2, $this->config->item('en_ids_4986')) ? ' OR PASTE URL' : '' ).( in_array($en_id2, $this->config->item('en_ids_12359')) ? ' OR DRAG FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
