@@ -565,7 +565,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             $counter = 0;
         }
 
-        if(!$counter && !in_array($en_id, $this->config->item('en_ids_12574'))){
+        if(!$counter && (!in_array($en_id, $this->config->item('en_ids_12574')) || !$session_en)){
             continue;
         }
 
