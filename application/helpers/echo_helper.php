@@ -2117,7 +2117,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-    $ui .= '<td class="MENCHcolumn1">';
+    $ui .= '<td class="'.( $session_en ? 'MENCHcolumn1' : 'MENCHcolumnFull' ).'">';
 
 
         $ui .= '<div class="inline-block">';
@@ -2225,10 +2225,9 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-
-
-    //PLAY
-    $ui .= '<td class="MENCHcolumn3 play">';
+    if($session_en){
+        //PLAY
+        $ui .= '<td class="MENCHcolumn3 play">';
 
         //RIGHT EDITING:
         $ui .= '<div class="pull-right inline-block">';
@@ -2262,19 +2261,17 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         //PLAY STATS
         $ui .= echo_in_stat_play($in['in_id'], 0);
 
-    $ui .= '</td>';
+        $ui .= '</td>';
 
 
 
 
-    //READ
-    $echo_in_stat_read = echo_in_stat_read($in);
-    $ui .= '<td class="MENCHcolumn2 read '.( !$echo_in_stat_read ? 'show-max' : '' ).'">';
-    $ui .= $echo_in_stat_read;
-    $ui .= '</td>';
-
-
-
+        //READ
+        $echo_in_stat_read = echo_in_stat_read($in);
+        $ui .= '<td class="MENCHcolumn2 read '.( !$echo_in_stat_read ? 'show-max' : '' ).'">';
+        $ui .= $echo_in_stat_read;
+        $ui .= '</td>';
+    }
 
 
     $ui .= '</tr></table>';

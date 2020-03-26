@@ -694,6 +694,8 @@ textarea.note-textarea{
 }
 .ln_content img, .i_content img { max-width: 100%; }
 
+td.MENCHcolumnFull{ width: 100%; }
+
 td.MENCHcolumn1{ width: 58%; }
 td.MENCHcolumn2{ width: 21%; }
 td.MENCHcolumn3{ width: 21%; }
