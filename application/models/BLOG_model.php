@@ -680,7 +680,7 @@ class BLOG_model extends CI_Model
             'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
             'ln_type_play_id' => 4228, //Fixed Blog Link
             'ln_parent_blog_id' => $in_id,
-        ), array('in_child')) as $in_child){
+        ), array('in_child'), 0, 0, array(), 'in_id, in_weight') as $in_child){
             $total_child_weights += $in_child['in_weight'] + $this->BLOG_model->in_tree_weight($in_child['in_id']);
         }
 
