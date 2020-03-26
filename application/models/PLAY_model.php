@@ -926,7 +926,7 @@ class PLAY_model extends CI_Model
             if ($action_en_id == 4998) { //Add Prefix String
 
                 $this->PLAY_model->en_update($en['en_id'], array(
-                    'en_name' => $action_command1 . $en['en_name'],
+                    'en_name' => strtoupper($action_command1) . $en['en_name'],
                 ), true, $ln_owner_play_id);
 
                 $applied_success++;
@@ -934,7 +934,7 @@ class PLAY_model extends CI_Model
             } elseif ($action_en_id == 4999) { //Add Postfix String
 
                 $this->PLAY_model->en_update($en['en_id'], array(
-                    'en_name' => $en['en_name'] . $action_command1,
+                    'en_name' => $en['en_name'] . strtoupper($action_command1),
                 ), true, $ln_owner_play_id);
 
                 $applied_success++;
@@ -1014,10 +1014,10 @@ class PLAY_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 5000 && substr_count($en['en_name'], $action_command1) > 0) { //Replace Player Matching Name
+            } elseif ($action_en_id == 5000 && substr_count($en['en_name'], strtoupper($action_command1)) > 0) { //Replace Player Matching Name
 
                 $this->PLAY_model->en_update($en['en_id'], array(
-                    'en_name' => str_replace($action_command1, $action_command2, $en['en_name']),
+                    'en_name' => str_replace(strtoupper($action_command1), strtoupper($action_command2), $en['en_name']),
                 ), true, $ln_owner_play_id);
 
                 $applied_success++;
