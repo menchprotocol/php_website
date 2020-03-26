@@ -2110,6 +2110,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $is_published = in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355'));
     $is_link_published = in_array($in['ln_status_play_id'], $CI->config->item('en_ids_7359'));
     $is_blog_link = in_array($in['ln_type_play_id'], $CI->config->item('en_ids_4486'));
+    $is_author = ( !$is_blog_link ? false : $is_author ); //Disable Edits on Blog List Page
 
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_play_id'] . '" blog-id="' . $in['in_id'] . '" parent-blog-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemblog blogs_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' blog_line_' . $in['in_id'] . ( $is_parent ? ' parent-blog ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
 
