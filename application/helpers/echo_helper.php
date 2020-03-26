@@ -2134,94 +2134,91 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-        if($is_blog_link){
+        //SECOND STATS ROW
+        $ui .= '<div class="doclear">&nbsp;</div>';
 
-            //SECOND STATS ROW
-            $ui .= '<div class="doclear">&nbsp;</div>';
-
-            $ui .= '<div class="space-content">';
+        $ui .= '<div class="space-content">';
 
 
-            //LINK STATUS (IF NOT PUBLISHED, SHOULD NOT HAPPEN!)
-            $ui .= '<span class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . ' </span></span>';
+        //LINK STATUS (IF NOT PUBLISHED, SHOULD NOT HAPPEN!)
+        $ui .= '<span class="icon-block ln_status_play_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_play_id']]['m_name'].' @'.$in['ln_status_play_id'].': '.$en_all_6186[$in['ln_status_play_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_play_id']]['m_icon'] . ' </span></span>';
 
 
-            //BLOG IF NOT PUBLISHED:
-            if(!superpower_active(10984, true) && !$is_published){
-                //Show them Blog status in this case:
-                $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']) . ' </div>';
-            }
-
-
-            //Blog Brush
-            $ui .= '<div class="inline-block ' . superpower_active(10984) . '">';
-
-                //BLOG STATUS
-                $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']) . ' </div>';
-
-                //BLOG TYPE
-                $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['in_id']);
-
-                //BLOG READ TIME
-                $ui .= echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
-
-
-                //PREVIOUS & NEXT BLOGS
-                $previous_ins = $CI->READ_model->ln_fetch(array(
-                    'ln_child_blog_id' => $in['in_id'],
-                    'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                    'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                ), array(), 0, 0, array(), 'COUNT(ln_id) as total_blogs');
-                $next_blogs = $CI->READ_model->ln_fetch(array(
-                    'ln_parent_blog_id' => $in['in_id'],
-                    'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                    'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                ), array(), 0, 0, array(), 'COUNT(ln_id) as total_blogs');
-
-
-                //Previous blog:
-                $ui .= '<span class="montserrat blog blog-previous">' . ( $previous_ins[0]['total_blogs'] >= 2 ? $previous_ins[0]['total_blogs'] . $en_all_12413[11019]['m_icon'] : '&nbsp;') . '</span>';
-
-                //Next Blogs:
-                $ui .= '<span class="montserrat blog blog-next">' . ( $next_blogs[0]['total_blogs'] > 0 ? $en_all_12413[11020]['m_icon'] . $next_blogs[0]['total_blogs']: '&nbsp;' ) . '</span>';
-
-
-            $ui .= '</div>';
-
-
-
-
-
-
-
-            //Blog Wand
-            $ui .= '<div class="inline-block ' . superpower_active(10985) . '">';
-                //LINK TYPE
-                $ui .= echo_in_dropdown(4486, $in['ln_type_play_id'], null, $is_author, false, $in['in_id'], $in['ln_id']);
-
-                //LINK MARKS
-                $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_play_id']==4228 ? : 'hidden' ).'">';
-                $ui .= echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+2 );
-                $ui .='</span>';
-
-
-                //LINK CONDIITONAL RANGE
-                $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_play_id']==4229 ? : 'hidden' ).'">';
-                //MIN
-                $ui .= echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+3);
-                //MAX
-                $ui .= echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+4);
-                $ui .= '</span>';
-            $ui .= '</div>';
-
-
-
-
-
-
-
-            $ui .= '</div>';
+        //BLOG IF NOT PUBLISHED:
+        if(!superpower_active(10984, true) && !$is_published){
+            //Show them Blog status in this case:
+            $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']) . ' </div>';
         }
+
+
+        //Blog Brush
+        $ui .= '<div class="inline-block ' . superpower_active(10984) . '">';
+
+            //BLOG STATUS
+            $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_play_id'], null, $is_author, false, $in['in_id']) . ' </div>';
+
+            //BLOG TYPE
+            $ui .= echo_in_dropdown(7585, $in['in_type_play_id'], null, $is_author, false, $in['in_id']);
+
+            //BLOG READ TIME
+            $ui .= echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
+
+
+            //PREVIOUS & NEXT BLOGS
+            $previous_ins = $CI->READ_model->ln_fetch(array(
+                'ln_child_blog_id' => $in['in_id'],
+                'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_blogs');
+            $next_blogs = $CI->READ_model->ln_fetch(array(
+                'ln_parent_blog_id' => $in['in_id'],
+                'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_blogs');
+
+
+            //Previous blog:
+            $ui .= '<span class="montserrat blog blog-previous">' . ( $previous_ins[0]['total_blogs'] >= 2 ? $previous_ins[0]['total_blogs'] . $en_all_12413[11019]['m_icon'] : '&nbsp;') . '</span>';
+
+            //Next Blogs:
+            $ui .= '<span class="montserrat blog blog-next">' . ( $next_blogs[0]['total_blogs'] > 0 ? $en_all_12413[11020]['m_icon'] . $next_blogs[0]['total_blogs']: '&nbsp;' ) . '</span>';
+
+
+        $ui .= '</div>';
+
+
+
+
+
+
+
+        //Blog Wand
+        $ui .= '<div class="inline-block ' . superpower_active(10985) . '">';
+            //LINK TYPE
+            $ui .= echo_in_dropdown(4486, $in['ln_type_play_id'], null, $is_author, false, $in['in_id'], $in['ln_id']);
+
+            //LINK MARKS
+            $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_play_id']==4228 ? : 'hidden' ).'">';
+            $ui .= echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+2 );
+            $ui .='</span>';
+
+
+            //LINK CONDIITONAL RANGE
+            $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_play_id']==4229 ? : 'hidden' ).'">';
+            //MIN
+            $ui .= echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+3);
+            //MAX
+            $ui .= echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+4);
+            $ui .= '</span>';
+        $ui .= '</div>';
+
+
+
+
+
+
+
+        $ui .= '</div>';
 
     $ui .= '</td>';
 
