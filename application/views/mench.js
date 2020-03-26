@@ -208,6 +208,10 @@ function loadtab(tab_group_id, tab_data_id, note_in_id, owner_en_id){
     if($('.tab-data-'+tab_data_id).find('div.dynamic-reads').length > 0){
         //Load First Page:
         read_in_history(tab_data_id, note_in_id, owner_en_id, 0);
+    } else {
+        //Do we need to focus on input field?
+        alert(tab_data_id);
+        $('#ln_content'+tab_data_id).focus();
     }
 
 }
