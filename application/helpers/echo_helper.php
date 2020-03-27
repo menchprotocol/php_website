@@ -1529,17 +1529,23 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = superpower_assigned();
-    $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
 
+    if($session_en){
+        $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
+    } else {
+        $completion_rate['completion_percentage'] = 0;
+    }
+
+    $can_click = ( (!$session_en && $in['in_id']==config_var(11066) || $completion_rate['completion_percentage']>0 );
 
     $ui  = '<div class="list-group-item no-side-padding itemread '.$extra_class.'">';
-    $ui .= ( $completion_rate['completion_percentage'] > 0 ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
+    $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';
 
 
     //READ ICON
-    $ui .= '<span class="icon-block">'.( $completion_rate['completion_percentage'] > 0 ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-lock read"></i>' ).'</span>';
+    $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-lock read"></i>' ).'</span>';
     $ui .= '<b class="montserrat blog-url">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
 
     //Description:
@@ -1562,7 +1568,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $ui .= '</td>';
 
     //Search for Blog Image:
-    if($completion_rate['completion_percentage'] > 0){
+    if($can_click){
         $in_thumbnail = echo_in_thumbnail($in['in_id']);
         if($in_thumbnail){
             $ui .= '<td class="featured-frame">'.$in_thumbnail.'</td>';
@@ -1570,7 +1576,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     }
 
     $ui .= '</tr></table>';
-    $ui .= ( $completion_rate['completion_percentage'] > 0 ? '</a>' : '' );
+    $ui .= ( $can_click ? '</a>' : '' );
     $ui .= '</div>';
 
     return $ui;

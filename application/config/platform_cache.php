@@ -3326,7 +3326,7 @@ $config['en_all_6232'] = array(
     4364 => array(
         'm_icon' => '<i class="far fa-user-edit read" aria-hidden="true"></i>',
         'm_name' => 'READ OWNER',
-        'm_desc' => 'ln_owner_play_id',
+        'm_desc' => 'ln_player_play_id',
         'm_parents' => array(11081,6160,6232,6194,4341),
     ),
     4368 => array(
@@ -6486,7 +6486,7 @@ $config['en_all_6194'] = array(
     4364 => array(
         'm_icon' => '<i class="far fa-user-edit read" aria-hidden="true"></i>',
         'm_name' => 'READ OWNER',
-        'm_desc' => 'SELECT count(ln_id) as totals FROM table_read WHERE ln_status_play_id IN (6175,6176) AND ln_owner_play_id=',
+        'm_desc' => 'SELECT count(ln_id) as totals FROM table_read WHERE ln_status_play_id IN (6175,6176) AND ln_player_play_id=',
         'm_parents' => array(11081,6160,6232,6194,4341),
     ),
     6186 => array(
