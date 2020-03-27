@@ -27,6 +27,38 @@ $play_focus_found = false; //Used to determine the first tab to be opened
 
 
 
+
+//BLOG TREE PREVIOUS
+$blog__parents = $this->READ_model->ln_fetch(array(
+    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
+    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+    'ln_child_blog_id' => $in['in_id'],
+), array('in_parent'), 0);
+$blog_tree_previous = '<div id="list-in-' . $in['in_id'] . '-1" class="list-group previous_blogs">';
+foreach ($blog__parents as $parent_in) {
+    $blog_tree_previous .= echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
+}
+if( $is_author && $is_active && $in['in_id']!=config_var(12156)){
+    $blog_tree_previous .= '<div class="list-group-item itemblog '.superpower_active(10939).'" style="padding:5px 0;">
+                <div class="input-group border">
+                    <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
+                    <input type="text"
+                           class="form-control blogadder-level-2-parent form-control-thick algolia_search dotransparent"
+                           maxlength="' . config_var(11071) . '"
+                           blog-id="' . $in['in_id'] . '"
+                           id="addblog-c-' . $in['in_id'] . '-1"
+                           style="margin-bottom: 0; padding: 5px 0;"
+                           placeholder="PREVIOUS BLOG TITLE">
+                </div><div class="algolia_pad_search hidden in_pad_top"></div></div>';
+}
+$blog_tree_previous .= '</div>';
+
+
+
+
+
+
 echo '<div class="container" style="padding-bottom:42px;">';
 
 
@@ -46,6 +78,11 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     if($en_id==12365){
 
         //BLOG BODY
+
+        if(superpower_active(10985, true)){
+            //BLOG TREE PREVIOUS
+            echo $blog_tree_previous;
+        }
 
         //BLOG TITLE
         echo '<div class="itemblog">';
@@ -86,38 +123,10 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
         //BLOG
-        if($en_id2==11019){
+        if($en_id2==11019 && !superpower_active(10985, true)){
 
-            //BLOG TREE PREVIOUS
-            $blog__parents = $this->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                'ln_child_blog_id' => $in['in_id'],
-            ), array('in_parent'), 0);
-
+            $this_tab .= $blog_tree_previous;
             $counter = count($blog__parents);
-
-            $this_tab .= '<div id="list-in-' . $in['in_id'] . '-1" class="list-group previous_blogs">';
-
-            foreach ($blog__parents as $parent_in) {
-                $this_tab .= echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
-            }
-
-            if( $is_author && $is_active && $in['in_id']!=config_var(12156)){
-                $this_tab .= '<div class="list-group-item itemblog '.superpower_active(10939).'" style="padding:5px 0;">
-                <div class="input-group border">
-                    <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
-                    <input type="text"
-                           class="form-control blogadder-level-2-parent form-control-thick algolia_search dotransparent"
-                           maxlength="' . config_var(11071) . '"
-                           blog-id="' . $in['in_id'] . '"
-                           id="addblog-c-' . $in['in_id'] . '-1"
-                           style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="PREVIOUS BLOG TITLE">
-                </div><div class="algolia_pad_search hidden in_pad_top"></div></div>';
-            }
-            $this_tab .= '</div>';
 
         } elseif($en_id2==11020){
 
