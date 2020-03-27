@@ -356,12 +356,12 @@ img.no-radius {
 
 .featured-frame{
     text-align: center;
-    width: 233px;
+    width: 144px;
     margin-left:5px;
 }
 .featured-image {
-    max-width: 233px;
-    max-height: 233px;
+    max-width: 144px;
+    max-height: 144px;
     overflow: hidden;
     display: block;
 }
@@ -1262,7 +1262,7 @@ label {
     }
     .featured-frame{ width:89px; }
     .featured-image { max-width:89px; max-height:89px; }
-    .content-image{ max-height:233px; }
+    .content-image{ max-height:144px; }
     .show-on-hover { display:inline-block !important; }
     .form-control-thick { padding-left: 26px; }
     .avatar-item { width:110px !important; padding:10px 0 !important; }
