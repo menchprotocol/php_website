@@ -1524,6 +1524,9 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     }
 
     $can_click = ( $show_description || $completion_rate['completion_percentage']>0 );
+    if($can_click){
+        $in_thumbnail = echo_in_thumbnail($in['in_id']);
+    }
 
     $ui  = '<div class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
@@ -1537,7 +1540,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
 
     //READ ICON
     $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-lock read"></i>' ).'</span>';
-    $ui .= '<b class="montserrat blog-url title-block">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
+    $ui .= '<b class="montserrat blog-url title-block '.( $in_thumbnail ? 'title-no-right' : '' ).'">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
 
 
 
@@ -1562,7 +1565,6 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
 
     //Search for Blog Image:
     if($can_click){
-        $in_thumbnail = echo_in_thumbnail($in['in_id']);
         if($in_thumbnail){
             $ui .= '<td class="featured-frame">'.$in_thumbnail.'</td>';
         }
@@ -2679,7 +2681,7 @@ function echo_en($en, $is_parent = false)
     $ui .= '<a href="/play/'.$en['en_id'] . '"><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
 
     //PLAYER NAME
-    $ui .= '<a href="/play/'.$en['en_id'] . '" class="title-block montserrat '.extract_icon_color($en['en_icon']).'">'.($child_links[0]['totals'] > 0 ? '<span class="'.superpower_active(10983).'">'.echo_number($child_links[0]['totals']).'&nbsp;</span>' : '').'<span class="en_name_' . $en['en_id'] . '">'.$en['en_name'].'</span></a>';
+    $ui .= '<a href="/play/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">'.($child_links[0]['totals'] > 0 ? '<span class="'.superpower_active(10983).'">'.echo_number($child_links[0]['totals']).'&nbsp;</span>' : '').'<span class="en_name_' . $en['en_id'] . '">'.$en['en_name'].'</span></a>';
 
     $ui .= '</div>';
 
