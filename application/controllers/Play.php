@@ -750,7 +750,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
             //PLAY
-            echo '<td class="play fixedColumns MENCHcolumn1"><span class="icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.'<a href="/play/'.$ln['en_id'].'" class="montserrat play title-block en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a>'.echo_rank($count+1).'</td>';
+            echo '<td class="play fixedColumns MENCHcolumn1"><span class="icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.'<a href="/play/'.$ln['en_id'].'" class="montserrat play title-block en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
 
 
 
@@ -809,7 +809,7 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
 
                 //PLAY
-                echo '<td class="play fixedColumns MENCHcolumn1"><span class="icon-block">'.echo_en_icon($ln['en_icon']).'</span><a href="/play/'.$ln['en_id'].'" class="montserrat play title-block en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a>'.echo_rank($count+1).'</td>';
+                echo '<td class="play fixedColumns MENCHcolumn1"><span class="icon-block">'.echo_en_icon($ln['en_icon']).'</span><a href="/play/'.$ln['en_id'].'" class="montserrat play title-block en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
 
                 //BLOG
                 echo '<td class="blog fixedColumns MENCHcolumn3"></td>';
