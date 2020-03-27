@@ -409,13 +409,14 @@ var isAdvancedUpload = function () {
 var default_nav = 'mench_nav';
 var current_nav = default_nav;
 function toggle_nav(load_tab){
+    $('.'+load_tab).toggleClass('hidden');
+
     if(current_nav==load_tab){
         load_tab = default_nav;
     }
     current_nav = load_tab;
 
     $('.main_nav').addClass('hidden');
-    $('.'+load_tab).toggleClass('hidden');
 }
 
 
