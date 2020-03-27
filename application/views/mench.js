@@ -415,7 +415,7 @@ function toggle_nav(load_tab){
     current_nav = load_tab;
 
     $('.main_nav').addClass('hidden');
-    $('.'+load_tab).removeClass('hidden');
+    $('.'+load_tab).toggleClass('hidden');
 }
 
 

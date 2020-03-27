@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-27 15:01:06 PST
+//Generated 2020-03-27 15:06:05 PST
 
 //SIGN IN/UP:
 $config['en_ids_4269'] = array(3288,6197,3286);
@@ -668,7 +668,7 @@ $config['en_all_4536'] = array(
         'm_parents' => array(4536,6225),
     ),
     12582 => array(
-        'm_icon' => '<i class="fad fa-users-crown play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-gamepad-alt play" aria-hidden="true"></i>',
         'm_name' => 'PLAYGROUND',
         'm_desc' => '',
         'm_parents' => array(11035,4536),
@@ -3580,7 +3580,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.314',
+        'm_desc' => '1.31',
         'm_parents' => array(6404),
     ),
     12363 => array(
@@ -3857,7 +3857,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035),
     ),
     12582 => array(
-        'm_icon' => '<i class="fad fa-users-crown play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-gamepad-alt play" aria-hidden="true"></i>',
         'm_name' => 'PLAYGROUND',
         'm_desc' => '',
         'm_parents' => array(11035,4536),
