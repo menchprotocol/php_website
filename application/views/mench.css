@@ -398,7 +398,7 @@ img.no-radius {
 .blog, .blog .fas, .blog .far, .blog .fal, .blog .fad, .color4535, .info-item i.blog:hover, .info-item a.blog:hover  { color:#ffc500 !important; }
 .read, .read .fas, .read .far, .read .fal, .read .fad, .color6205, .info-item i.read:hover, .info-item a.read:hover, .isred, .isred a, .fas.redalert  { color:#FC1B44 !important; }
 .grey, .grey i { color:#AAAAAA !important; }
-.black, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
+.black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
 .btn-play i, .btn-read i, .btn-blog i { color: #000000 !important; }
 

@@ -180,7 +180,7 @@ if(!isset($hide_header)){
 
                     </td>
 
-                    <td class="block-link <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="javascript:void(0);" onclick="toggle_search()"><span class="search_icon"><?= $en_all_11035[7256]['m_icon'] ?></span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>
+                    <td class="block-link black <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="javascript:void(0);" onclick="toggle_search()"><span class="search_icon"><?= $en_all_11035[7256]['m_icon'] ?></span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>
 
                     <?php
 
@@ -194,10 +194,10 @@ if(!isset($hide_header)){
                     } else {
 
                         //Playground
-                        echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/play" title="'.$en_all_11035[12582]['m_name'].'">'.$en_all_11035[12582]['m_icon'].'</a></td>';
+                        echo '<td class="block-link black '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/play" title="'.$en_all_11035[12582]['m_name'].'">'.$en_all_11035[12582]['m_icon'].'</a></td>';
 
                         //Sign In/Up
-                        echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/sign'.( isset($in) ? '/'.$in['in_id'] : '' ).'" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
+                        echo '<td class="block-link black '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/sign'.( isset($in) ? '/'.$in['in_id'] : '' ).'" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
 
                     }
 
