@@ -755,10 +755,16 @@ function common_prefix($child_list, $child_field, $in = null, $max_look = 0){
 
         //Make sure this is the same word across all blogs:
         $all_the_same = true;
+        $include_colon = false;
         foreach($child_list as $child_item){
             $child_words = explode(' ', $child_item[$child_field]);
 
-            if(!isset($child_words[$word_pos]) || $child_words[$word_pos]!=$word){
+            if(substr($word, 0, 1)==':'){
+                $include_colon = true;
+                $word = substr($word, 1);
+            }
+
+            if(!isset($child_words[$word_pos]) || $child_words[$word_pos]!=$word || $include_colon){
                 //Not the same:
                 $all_the_same = false;
                 break;
@@ -768,6 +774,9 @@ function common_prefix($child_list, $child_field, $in = null, $max_look = 0){
         if($all_the_same){
             $common_prefix .= $word.' ';
         } else {
+            if($include_colon){
+                $common_prefix .= ':';
+            }
             break;
         }
     }
