@@ -47,19 +47,6 @@ function echo_time_minutes($sec_int)
     return ($min ? $min . ' Min.' : '') . ($sec ? ($min ? ' ' : '') . $sec . ' Sec.' : '');
 }
 
-function echo_rank($integer){
-    if($integer==1){
-        return ' 🏅';
-    } elseif($integer==2){
-        return ' 🥈';
-    } elseif($integer==3){
-        return ' 🥉';
-    } else {
-        //return echo_ordinal_number($integer);
-        return null;
-    }
-}
-
 function echo_url_type_4537($url, $en_type_link_id)
 {
 
@@ -1540,42 +1527,50 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
 
     $ui  = '<div class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
-    $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-    $ui .= '<td>';
+
 
 
     //READ ICON
     $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-lock read"></i>' ).'</span>';
     $ui .= '<b class="montserrat blog-url title-block">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
 
-    //Description:
-    if($show_description){
-        $in_description = echo_in_description($in['in_id']);
-        if($in_description){
-            $ui .= '<div class="blog-desc"><span class="icon-block">&nbsp;</span>'.$in_description.'</div>';
+
+    if($show_description || $footnotes || $can_click){
+        $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
+        $ui .= '<td>';
+
+
+        //Description:
+        if($show_description){
+            $in_description = echo_in_description($in['in_id']);
+            if($in_description){
+                $ui .= '<div class="blog-desc"><span class="icon-block">&nbsp;</span>'.$in_description.'</div>';
+            }
         }
-    }
 
-    //Show completion if glasses are on:
-    if($completion_rate['completion_percentage'] > 0){
-        $ui .= '<div class="blog-info montserrat doupper '.superpower_active(10989).'"><span class="icon-block">&nbsp;</span><span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read">['.$completion_rate['completion_percentage'].'% done]</span></div>';
-    }
-
-    if($footnotes){
-        $ui .= '<div class="blog-footnote"><span class="icon-block">&nbsp;</span>' . $footnotes . '</div>';
-    }
-
-    $ui .= '</td>';
-
-    //Search for Blog Image:
-    if($can_click){
-        $in_thumbnail = echo_in_thumbnail($in['in_id']);
-        if($in_thumbnail){
-            $ui .= '<td class="featured-frame">'.$in_thumbnail.'</td>';
+        //Show completion if glasses are on:
+        if($completion_rate['completion_percentage'] > 0){
+            $ui .= '<div class="blog-info montserrat doupper '.superpower_active(10989).'"><span class="icon-block">&nbsp;</span><span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read">['.$completion_rate['completion_percentage'].'% done]</span></div>';
         }
+
+        if($footnotes){
+            $ui .= '<div class="blog-footnote"><span class="icon-block">&nbsp;</span>' . $footnotes . '</div>';
+        }
+
+        $ui .= '</td>';
+
+        //Search for Blog Image:
+        if($can_click){
+            $in_thumbnail = echo_in_thumbnail($in['in_id']);
+            if($in_thumbnail){
+                $ui .= '<td class="featured-frame">'.$in_thumbnail.'</td>';
+            }
+        }
+
+        $ui .= '</tr></table>';
     }
 
-    $ui .= '</tr></table>';
+
     $ui .= ( $can_click ? '</a>' : '' );
     $ui .= '</div>';
 
