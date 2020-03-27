@@ -1284,6 +1284,9 @@ label {
 .itemblog.list-group-item {
     padding:5px 5px;
 }
+blogs_sortable.itemblog {
+    padding: 10px 5px;
+}
 .sequal-topic{
     padding: 20px 0 5px;
 }
