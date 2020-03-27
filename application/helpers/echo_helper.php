@@ -1524,9 +1524,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     }
 
     $can_click = ( $show_description || $completion_rate['completion_percentage']>0 );
-    if($can_click){
-        $in_thumbnail = echo_in_thumbnail($in['in_id']);
-    }
+    $in_thumbnail = ($can_click ?  echo_in_thumbnail($in['in_id']) : false );
 
     $ui  = '<div class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
@@ -1564,10 +1562,8 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
     $ui .= '</td>';
 
     //Search for Blog Image:
-    if($can_click){
-        if($in_thumbnail){
-            $ui .= '<td class="featured-frame">'.$in_thumbnail.'</td>';
-        }
+    if($in_thumbnail){
+        $ui .= '<td class="featured-frame">'.$in_thumbnail.'</td>';
     }
 
     $ui .= '</tr></table>';
