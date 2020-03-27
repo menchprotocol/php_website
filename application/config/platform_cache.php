@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-27 11:55:22 PST
+//Generated 2020-03-27 12:57:58 PST
 
 //SIGN IN/UP:
 $config['en_ids_4269'] = array(3288,6197,3286);
@@ -3574,7 +3574,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.311',
+        'm_desc' => '1.31',
         'm_parents' => array(6404),
     ),
     12363 => array(
@@ -3788,7 +3788,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION MENU:
-$config['en_ids_11035'] = array(6287,10573,12561,4430,11068,7291,12467,11999,6225,12211,12275,12205,6415,7347,7256,4269,10957,7540,12437);
+$config['en_ids_11035'] = array(6287,10573,12561,4430,11068,7291,12467,11999,6225,12581,12211,12275,12205,6415,7347,7256,4269,10957,7540,12437);
 $config['en_all_11035'] = array(
     6287 => array(
         'm_icon' => '<i class="fad fa-user-shield play" aria-hidden="true"></i>',
@@ -3843,6 +3843,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'MY ACCOUNT',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(10876,12500,4536,11035,4527),
+    ),
+    12581 => array(
+        'm_icon' => '<i class="fad fa-plus read"></i>',
+        'm_name' => 'NEW READ',
+        'm_desc' => '',
+        'm_parents' => array(11035),
     ),
     12211 => array(
         'm_icon' => '<i class="fad fa-step-forward read" aria-hidden="true"></i>',
