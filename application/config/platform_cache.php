@@ -11,7 +11,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-26 19:14:22 PST
+//Generated 2020-03-26 20:07:27 PST
+
+//SIGN IN/UP:
+$config['en_ids_4269'] = array(3288,6197,3286);
+$config['en_all_4269'] = array(
+    3288 => array(
+        'm_icon' => '<i class="fad fa-envelope-open play" aria-hidden="true"></i>',
+        'm_name' => 'EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(4269,12221,12103,6225,4426,4755),
+    ),
+    6197 => array(
+        'm_icon' => '<i class="fad fa-fingerprint play" aria-hidden="true"></i>',
+        'm_name' => 'NICKNAME',
+        'm_desc' => '',
+        'm_parents' => array(4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
+    ),
+    3286 => array(
+        'm_icon' => '<i class="fad fa-key play" aria-hidden="true"></i>',
+        'm_name' => 'PASSWORD',
+        'm_desc' => '',
+        'm_parents' => array(4269,4426,7578,6225,4755),
+    ),
+);
 
 //FILE UPLOADING ALLOWED:
 $config['en_ids_12359'] = array(12419,4231);
@@ -3250,7 +3273,7 @@ $config['en_all_6232'] = array(
         'm_icon' => '<i class="fad fa-fingerprint play" aria-hidden="true"></i>',
         'm_name' => 'PLAY NICKNAME',
         'm_desc' => 'en_name',
-        'm_parents' => array(12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
+        'm_parents' => array(4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h play" aria-hidden="true"></i>',
@@ -3861,7 +3884,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fad fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
         'm_desc' => '',
-        'm_parents' => array(11035),
+        'm_parents' => array(4527,11035),
     ),
     10957 => array(
         'm_icon' => '<i class="fad fa-bolt play" aria-hidden="true"></i>',
@@ -4512,7 +4535,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(6287,4535,11047,6192,12365,12273,12079,11018,11021,4229,4485,12012,6193,4983,10990,7302,4737,7356,7355,12138,12400,6201,12112,12420,4486,12413,7585,10602,12330,12324,7309,7712,7751,6150,3000,10627,12359,12523,10717,12571,12574,11080,2738,12105,12502,10876,11035,12524,11059,11058,6225,12501,6404,4527,11054,6232,4536,10956,12279,12410,12274,6194,3290,6827,12421,11089,4592,12403,4426,12500,7555,4986,7551,11028,4537,6177,7358,7357,12575,12401,6206,3289,12577,4997,4755,6205,11081,7704,12326,6255,12229,6345,4280,4277,6102,12446,6146,7347,6103,10692,12227,5967,7304,6186,7360,7364,7359,4341,4593,10593,12228,12141,12327,10658,6204,10957,12322,12321,6805);
+$config['en_ids_4527'] = array(6287,4535,11047,6192,12365,12273,12079,11018,11021,4229,4485,12012,6193,4983,10990,7302,4737,7356,7355,12138,12400,6201,12112,12420,4486,12413,7585,10602,12330,12324,7309,7712,7751,6150,3000,10627,12359,12523,10717,12571,12574,11080,2738,12105,12502,10876,11035,12524,11059,11058,6225,12501,6404,4527,11054,6232,4536,10956,12279,12410,12274,6194,3290,6827,12421,11089,4592,12403,4426,12500,7555,4986,7551,11028,4537,6177,7358,7357,12575,12401,6206,3289,12577,4997,4755,6205,11081,7704,12326,6255,12229,6345,4280,4277,6102,12446,6146,7347,6103,10692,12227,5967,7304,6186,7360,7364,7359,4341,4593,10593,12228,12141,12327,10658,4269,6204,10957,12322,12321,6805);
 $config['en_all_4527'] = array(
     6287 => array(
         'm_icon' => '<i class="fad fa-user-shield play" aria-hidden="true"></i>',
@@ -5198,6 +5221,12 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6205),
     ),
+    4269 => array(
+        'm_icon' => '<i class="fad fa-sign-in-alt" aria-hidden="true"></i>',
+        'm_name' => 'SIGN IN/UP',
+        'm_desc' => '',
+        'm_parents' => array(4527,11035),
+    ),
     6204 => array(
         'm_icon' => '<i class="fas fa-check" aria-hidden="true"></i>',
         'm_name' => 'SINGLE SELECTABLE',
@@ -5875,7 +5904,7 @@ $config['en_all_6206'] = array(
         'm_icon' => '<i class="fad fa-fingerprint play" aria-hidden="true"></i>',
         'm_name' => 'NICKNAME',
         'm_desc' => '',
-        'm_parents' => array(12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
+        'm_parents' => array(4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h play" aria-hidden="true"></i>',
@@ -6655,19 +6684,19 @@ $config['en_all_6225'] = array(
         'm_icon' => '<i class="fad fa-fingerprint play" aria-hidden="true"></i>',
         'm_name' => 'PLAY NICKNAME',
         'm_desc' => '',
-        'm_parents' => array(12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
+        'm_parents' => array(4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
     ),
     3288 => array(
         'm_icon' => '<i class="fad fa-envelope-open play" aria-hidden="true"></i>',
         'm_name' => 'PLAY EMAIL',
         'm_desc' => '',
-        'm_parents' => array(12221,12103,6225,4426,4755),
+        'm_parents' => array(4269,12221,12103,6225,4426,4755),
     ),
     3286 => array(
         'm_icon' => '<i class="fad fa-key play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PASSWORD',
         'm_desc' => '',
-        'm_parents' => array(4426,7578,6225,4755),
+        'm_parents' => array(4269,4426,7578,6225,4755),
     ),
 );
 
@@ -6953,7 +6982,7 @@ $config['en_all_4426'] = array(
         'm_icon' => '<i class="fad fa-envelope-open play" aria-hidden="true"></i>',
         'm_name' => 'PLAY EMAIL',
         'm_desc' => '',
-        'm_parents' => array(12221,12103,6225,4426,4755),
+        'm_parents' => array(4269,12221,12103,6225,4426,4755),
     ),
     4426 => array(
         'm_icon' => '<i class="fas fa-lock" aria-hidden="true"></i>',
@@ -6971,7 +7000,7 @@ $config['en_all_4426'] = array(
         'm_icon' => '<i class="fad fa-key play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PASSWORD',
         'm_desc' => '',
-        'm_parents' => array(4426,7578,6225,4755),
+        'm_parents' => array(4269,4426,7578,6225,4755),
     ),
     4755 => array(
         'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
@@ -7036,7 +7065,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fad fa-envelope-open play" aria-hidden="true"></i>',
         'm_name' => 'PLAY EMAIL',
         'm_desc' => '',
-        'm_parents' => array(12221,12103,6225,4426,4755),
+        'm_parents' => array(4269,12221,12103,6225,4426,4755),
     ),
     12117 => array(
         'm_icon' => '<i class="far fa-paperclip read" aria-hidden="true"></i>',
@@ -7048,7 +7077,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fad fa-key play" aria-hidden="true"></i>',
         'm_name' => 'PLAY PASSWORD',
         'm_desc' => '',
-        'm_parents' => array(4426,7578,6225,4755),
+        'm_parents' => array(4269,4426,7578,6225,4755),
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-eye read"></i>',
