@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-27 11:17:23 PST
+//Generated 2020-03-27 11:55:22 PST
 
 //SIGN IN/UP:
 $config['en_ids_4269'] = array(3288,6197,3286);
@@ -3574,7 +3574,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.3091',
+        'm_desc' => '1.31',
         'm_parents' => array(6404),
     ),
     12363 => array(
@@ -3827,7 +3827,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(10876,12500,11035),
     ),
     12467 => array(
-        'm_icon' => '<i class="fas fa-circle"></i>',
+        'm_icon' => '<i class="fad fa-coin" aria-hidden="true"></i>',
         'm_name' => 'MENCH COINS',
         'm_desc' => '',
         'm_parents' => array(11035),
