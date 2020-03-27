@@ -121,7 +121,7 @@ if(!isset($hide_header)){
 
                     <?php
                     if (!isset($session_en['en_id'])) {
-                        echo '<td class="block-link block-logo"><img src="/img/mench.png" class="mench-logo mench-spin" /></td>';
+                        echo '<td class="block-link block-logo"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /></a></td>';
                     }
                     ?>
 
