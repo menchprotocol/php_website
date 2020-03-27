@@ -685,6 +685,7 @@ textarea.note-textarea{
     padding-left: 33px;
     padding-right:33px;
     margin-top: -19px !important;
+    margin-bottom: 5px;
 }
 .title-no-right {
     padding-right:5px !important;
