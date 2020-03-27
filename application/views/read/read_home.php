@@ -77,7 +77,7 @@ if(!$session_en){
     echo '<div style="margin-top: 10px;">';
 
         //Add New Read:
-        echo '<a href="/" class="btn btn-read">'.$en_all_11035[12581]['m_name'].' '.$en_all_11035[12581]['m_icon'].'</a>&nbsp;&nbsp;';
+        echo '<a href="/" class="btn btn-read">'.$en_all_11035[12581]['m_icon'].' '.$en_all_11035[12581]['m_name'].'</a>&nbsp;&nbsp;';
 
         //Next Read:
         echo '<a href="/read/next" class="btn btn-read">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a>&nbsp;&nbsp;';
