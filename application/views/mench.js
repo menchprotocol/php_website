@@ -409,7 +409,10 @@ var isAdvancedUpload = function () {
 var default_nav = 'mench_nav';
 var current_nav = default_nav;
 function toggle_nav(load_tab){
-    $('.'+load_tab).toggleClass('hidden');
+
+    if(load_tab=='search_nav'){
+        $('.block-logo').toggleClass('hidden');
+    }
 
     if(current_nav==load_tab){
         load_tab = default_nav;
@@ -417,6 +420,7 @@ function toggle_nav(load_tab){
     current_nav = load_tab;
 
     $('.main_nav').addClass('hidden');
+    $('.'+load_tab).removeClass('hidden');
 }
 
 
