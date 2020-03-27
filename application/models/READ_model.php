@@ -1554,7 +1554,7 @@ class READ_model extends CI_Model
                 }
 
                 //List Children:
-                echo_in_list($ins[0], $in__children, $recipient_en, $push_message);
+                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true, false, false);
 
 
                 //Redirect to login page:

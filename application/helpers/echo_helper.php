@@ -2306,7 +2306,7 @@ function echo_caret($en_id, $m, $url_append){
 }
 
 
-function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null, $in_reads = true, $show_previous = true){
+function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null, $in_reads = true, $show_previous = true, $show_next = true){
 
     //If no list just return the next step:
     if(!count($in__children)){
@@ -2422,8 +2422,9 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         echo '</div>';
     }
 
-    //Always show next:
-    echo_in_next($in['in_id'], $recipient_en, $push_message, $show_previous);
+    if($show_next){
+        echo_in_next($in['in_id'], $recipient_en, $push_message, $show_previous);
+    }
 
 }
 
