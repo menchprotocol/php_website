@@ -2306,7 +2306,7 @@ function echo_caret($en_id, $m, $url_append){
 }
 
 
-function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null, $in_reads = true, $show_previous = true, $show_next = true){
+function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null, $in_reads = true, $show_previous = true){
 
     //If no list just return the next step:
     if(!count($in__children)){
@@ -2341,7 +2341,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
             //HTML:
             if($has_content){
                 echo '<div class="read-topic">'.trim($prefix_statement).'</div>';
-            } elseif($show_next) {
+            } else {
                 echo '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-forward"></i></span>NEXT:</div>';
             }
             echo '<div class="list-group">';
@@ -2422,9 +2422,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         echo '</div>';
     }
 
-    if($show_next){
-        echo_in_next($in['in_id'], $recipient_en, $push_message, $show_previous);
-    }
+    echo_in_next($in['in_id'], $recipient_en, $push_message, $show_previous);
 
 }
 
