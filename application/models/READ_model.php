@@ -1561,7 +1561,7 @@ class READ_model extends CI_Model
                 echo '</div>';
 
 
-                if($ins[0]['in_title'] != config_var(12156)){
+                if($ins[0]['in_id'] != config_var(12156)){
                     //Redirect to login page:
                     echo '<div class="inline-block margin-top-down read-add">';
                     echo '<a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">GET STARTED <i class="fad fa-step-forward"></i></a>';
