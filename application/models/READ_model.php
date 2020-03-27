@@ -1553,15 +1553,17 @@ class READ_model extends CI_Model
                     );
                 }
 
+                $is_home_page = ($ins[0]['in_id'] == config_var(12156));
+
                 //List Children:
                 echo '<div class="list-group">';
                 foreach($in__children as $key => $child_in){
-                    echo echo_in_read($child_in, true);
+                    echo echo_in_read($child_in, $is_home_page);
                 }
                 echo '</div>';
 
 
-                if($ins[0]['in_id'] != config_var(12156)){
+                if(!$is_home_page){
                     //Redirect to login page:
                     echo '<div class="inline-block margin-top-down read-add">';
                     echo '<a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">GET STARTED <i class="fad fa-step-forward"></i></a>';
