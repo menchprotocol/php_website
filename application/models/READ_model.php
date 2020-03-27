@@ -1561,12 +1561,12 @@ class READ_model extends CI_Model
                 echo '</div>';
 
 
-                //Redirect to login page:
-                echo '<div class="inline-block margin-top-down read-add">'; //Open read-add
-                echo '<a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">GET STARTED <i class="fad fa-step-forward"></i></a>';
-
-                echo '</div>'; //Close read-add
-
+                if($ins[0]['in_title'] != config_var(12156)){
+                    //Redirect to login page:
+                    echo '<div class="inline-block margin-top-down read-add">';
+                    echo '<a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">GET STARTED <i class="fad fa-step-forward"></i></a>';
+                    echo '</div>';
+                }
 
             }
 
