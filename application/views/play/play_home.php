@@ -28,9 +28,10 @@ $play_coins = $this->READ_model->ln_fetch(array(
 
     <?php
 
+    //PLAYGROUND
+    echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[12582]['m_icon'].'</span>'.$en_all_11035[12582]['m_name'].'</div>';
 
     //MENCH COINS
-    echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[12467]['m_icon'].'</span>'.$en_all_11035[12467]['m_name'].'</div>';
     echo '<table class="table table-sm table-striped dotransparent tablepadded">';
 
     echo '<tr>';
