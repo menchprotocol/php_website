@@ -1468,6 +1468,13 @@ class READ_model extends CI_Model
             'ln_child_blog_id' => $ins[0]['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
+        //Fetch Children:
+        $in__children = $this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'ln_type_play_id' => 4228, //Blog Link Regular Read
+            'ln_parent_blog_id' => $ins[0]['in_id'],
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
 
         //Log View:
@@ -1546,6 +1553,9 @@ class READ_model extends CI_Model
                     );
                 }
 
+                //List Children:
+                echo_in_list($ins[0], $in__children, $recipient_en, $push_message);
+
 
                 //Redirect to login page:
                 echo '<div class="inline-block margin-top-down read-add">'; //Open read-add
@@ -1570,14 +1580,6 @@ class READ_model extends CI_Model
 
 
 
-
-        //Fetch Children:
-        $in__children = $this->READ_model->ln_fetch(array(
-            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-            'ln_type_play_id' => 4228, //Blog Link Regular Read
-            'ln_parent_blog_id' => $ins[0]['in_id'],
-        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
 
         //Fetch progress history:

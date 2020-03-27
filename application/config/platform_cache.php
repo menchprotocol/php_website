@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-26 12:23:11 PST
+//Generated 2020-03-26 19:11:10 PST
 
 //FILE UPLOADING ALLOWED:
 $config['en_ids_12359'] = array(12419,4231);
@@ -72,22 +72,22 @@ $config['en_all_12577'] = array(
 );
 
 //LAYOUT SHOW EVEN IF ZERO:
-$config['en_ids_12574'] = array(4997,11029,11030);
+$config['en_ids_12574'] = array(11029,4997,11030);
 $config['en_all_12574'] = array(
-    4997 => array(
-        'm_icon' => '<i class="fas fa-tools play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY UPDATER',
-        'm_desc' => '',
-        'm_parents' => array(12574,10967,11089,4758,4506,4527),
-    ),
     11029 => array(
         'm_icon' => '<i class="fad fa-sitemap play" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIOS',
         'm_desc' => '',
         'm_parents' => array(12574,12571,11089,11028),
     ),
+    4997 => array(
+        'm_icon' => '<i class="fas fa-edit play" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIOS EDITOR',
+        'm_desc' => '',
+        'm_parents' => array(11029,12574,10967,11089,4758,4506,4527),
+    ),
     11030 => array(
-        'm_icon' => '<i class="fad fa-id-badge play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-circle play" aria-hidden="true"></i>',
         'm_name' => 'PROFILES',
         'm_desc' => '',
         'm_parents' => array(12574,11089,11028),
@@ -2944,7 +2944,7 @@ $config['en_all_11089'] = array(
         'm_parents' => array(11089),
     ),
     11030 => array(
-        'm_icon' => '<i class="fad fa-id-badge play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-circle play" aria-hidden="true"></i>',
         'm_name' => 'PROFILES',
         'm_desc' => '',
         'm_parents' => array(12574,11089,11028),
@@ -3010,10 +3010,10 @@ $config['en_all_11089'] = array(
         'm_parents' => array(12574,12571,11089,11028),
     ),
     4997 => array(
-        'm_icon' => '<i class="fas fa-tools play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY UPDATER',
+        'm_icon' => '<i class="fas fa-edit play" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIOS EDITOR',
         'm_desc' => '',
-        'm_parents' => array(12574,10967,11089,4758,4506,4527),
+        'm_parents' => array(11029,12574,10967,11089,4758,4506,4527),
     ),
 );
 
@@ -3881,7 +3881,7 @@ $config['en_all_11035'] = array(
 $config['en_ids_11028'] = array(11030,11029);
 $config['en_all_11028'] = array(
     11030 => array(
-        'm_icon' => '<i class="fad fa-id-badge play" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-circle play" aria-hidden="true"></i>',
         'm_name' => 'PROFILES',
         'm_desc' => 'Describe PLAYER. Where it comes from. It\'s origin.',
         'm_parents' => array(12574,11089,11028),
@@ -4506,7 +4506,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(6287,4535,11047,6192,12365,12273,12079,11018,11021,4229,4485,12012,6193,4983,10990,7302,4737,7356,7355,12138,12400,6201,12112,12420,4486,12413,7585,10602,12330,12324,7309,7712,7751,6150,3000,10627,12359,12523,10717,12571,12574,11080,2738,12105,12502,10876,11035,12524,11059,11058,6225,12501,6404,4527,11054,6232,4536,10956,12279,12410,12274,6194,3290,6827,12421,11089,4592,12403,4426,12500,7555,4986,7551,11028,4537,6177,7358,7357,12575,12401,6206,3289,4997,12577,4755,6205,11081,7704,12326,6255,12229,6345,4280,4277,6102,12446,6146,7347,6103,10692,12227,5967,7304,6186,7360,7364,7359,4341,4593,10593,12228,12141,12327,10658,6204,10957,12322,12321,6805);
+$config['en_ids_4527'] = array(6287,4535,11047,6192,12365,12273,12079,11018,11021,4229,4485,12012,6193,4983,10990,7302,4737,7356,7355,12138,12400,6201,12112,12420,4486,12413,7585,10602,12330,12324,7309,7712,7751,6150,3000,10627,12359,12523,10717,12571,12574,11080,2738,12105,12502,10876,11035,12524,11059,11058,6225,12501,6404,4527,11054,6232,4536,10956,12279,12410,12274,6194,3290,6827,12421,11089,4592,12403,4426,12500,7555,4986,7551,11028,4537,6177,7358,7357,12575,12401,6206,3289,12577,4997,4755,6205,11081,7704,12326,6255,12229,6345,4280,4277,6102,12446,6146,7347,6103,10692,12227,5967,7304,6186,7360,7364,7359,4341,4593,10593,12228,12141,12327,10658,6204,10957,12322,12321,6805);
 $config['en_all_4527'] = array(
     6287 => array(
         'm_icon' => '<i class="fad fa-user-shield play" aria-hidden="true"></i>',
@@ -5000,17 +5000,17 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6204),
     ),
-    4997 => array(
-        'm_icon' => '<i class="fas fa-tools play" aria-hidden="true"></i>',
-        'm_name' => 'PLAY UPDATER',
-        'm_desc' => '',
-        'm_parents' => array(12574,10967,11089,4758,4506,4527),
-    ),
     12577 => array(
         'm_icon' => '<i class="fad fa-text"></i>',
         'm_name' => 'PLAY UPDATER UPPERCASE',
         'm_desc' => '',
         'm_parents' => array(4527,4758),
+    ),
+    4997 => array(
+        'm_icon' => '<i class="fas fa-edit play" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIOS EDITOR',
+        'm_desc' => '',
+        'm_parents' => array(11029,12574,10967,11089,4758,4506,4527),
     ),
     4755 => array(
         'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
@@ -6857,7 +6857,7 @@ $config['en_all_4280'] = array(
     ),
 );
 
-//PLAY UPDATER:
+//PORTFOLIOS EDITOR:
 $config['en_ids_4997'] = array(5000,4998,4999,5001,5003,5865,5943,12318,10625,5982,5981,11956);
 $config['en_all_4997'] = array(
     5000 => array(
@@ -8376,8 +8376,14 @@ $config['en_all_4485'] = array(
 );
 
 //BLOG TREE LINKS:
-$config['en_ids_4486'] = array(4228,4229);
+$config['en_ids_4486'] = array(10643,4228,4229);
 $config['en_all_4486'] = array(
+    10643 => array(
+        'm_icon' => '<i class="fas fa-yin-yang mench-spin blog" aria-hidden="true"></i>',
+        'm_name' => 'YIN YANG',
+        'm_desc' => 'Blogs with opposing concepts that are each valid on their own',
+        'm_parents' => array(4486),
+    ),
     4228 => array(
         'm_icon' => '<i class="fad fa-play blog" aria-hidden="true"></i>',
         'm_name' => 'FIXED',
