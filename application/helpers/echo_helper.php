@@ -1536,7 +1536,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
         $completion_rate['completion_percentage'] = 0;
     }
 
-    $can_click = ( (!$session_en && $in['in_id']==config_var(11066)) || $completion_rate['completion_percentage']>0 );
+    $can_click = ( (!$session_en && $in['in_id']==config_var(12156)) || $completion_rate['completion_percentage']>0 );
 
     $ui  = '<div class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
