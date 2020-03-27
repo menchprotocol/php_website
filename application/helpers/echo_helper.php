@@ -2468,7 +2468,8 @@ function echo_in_next($in_id, $recipient_en, $push_message, $show_previous = tru
         }
 
         //NEXT:
-        echo '<div class="inline-block margin-top-down previous_reads"><a class="btn btn-read" href="/'.$in_id.'/next">NEXT <i class="fad fa-step-forward"></i></a></div>';
+        $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+        echo '<div class="inline-block margin-top-down previous_reads"><a class="btn btn-read" href="/'.$in_id.'/next">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a></div>';
 
     }
 
