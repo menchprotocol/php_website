@@ -562,11 +562,11 @@ function echo_ln($ln, $is_inner = false)
         $ui .= '<span class="icon-main"><i class="fal fa-eye-slash"></i></span>';
         $ui .= '<b data-toggle="tooltip" data-placement="top" title="Details are kept private" class="montserrat">&nbsp;Private Player</b>';
 
-    } elseif($ln['ln_owner_play_id'] > 0){
+    } elseif($ln['ln_player_play_id'] > 0){
 
         //Show Player:
         $trainer_ens = $CI->PLAY_model->en_fetch(array(
-            'en_id' => $ln['ln_owner_play_id'],
+            'en_id' => $ln['ln_player_play_id'],
         ));
         $full_name = one_two_explode('',' ', $trainer_ens[0]['en_name']);
 
@@ -1463,7 +1463,7 @@ function echo_in_stat_read($in = array(), $en = array()){
             $coin_filter = array(
                 'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
-                'ln_owner_play_id' => $en['en_id'],
+                'ln_player_play_id' => $en['en_id'],
             );
         }
 
@@ -2492,7 +2492,7 @@ function echo_in_previous($in_id, $recipient_en){
 
     //READ LIST
     $player_list = $CI->READ_model->ln_fetch(array(
-        'ln_owner_play_id' => $recipient_en['en_id'],
+        'ln_player_play_id' => $recipient_en['en_id'],
         'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
         'in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
         'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public

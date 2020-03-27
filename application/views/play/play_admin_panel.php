@@ -246,7 +246,7 @@ if(!$action) {
         if(!count($blog_creators)) {
             $stats['creator_missing']++;
             $this->READ_model->ln_create(array(
-                'ln_owner_play_id' => 1,
+                'ln_player_play_id' => 1,
                 'ln_child_blog_id' => $in['in_id'],
                 'ln_content' => $in['in_title'],
                 'ln_type_play_id' => 4250, //New Blog Created
@@ -261,9 +261,9 @@ if(!$action) {
             if(count($blog_creators)){
                 $this->READ_model->ln_create(array(
                     'ln_type_play_id' => 4983,
-                    'ln_owner_play_id' => $blog_creators[0]['ln_owner_play_id'],
-                    'ln_parent_play_id' => $blog_creators[0]['ln_owner_play_id'],
-                    'ln_content' => '@'.$blog_creators[0]['ln_owner_play_id'],
+                    'ln_player_play_id' => $blog_creators[0]['ln_player_play_id'],
+                    'ln_parent_play_id' => $blog_creators[0]['ln_player_play_id'],
+                    'ln_content' => '@'.$blog_creators[0]['ln_player_play_id'],
                     'ln_child_blog_id' => $in['in_id'],
                 ));
             }
@@ -312,7 +312,7 @@ if(!$action) {
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array(), 1));
         $is_ledger = count($this->READ_model->ln_fetch(array(
-            'ln_owner_play_id' => $en['en_id'],
+            'ln_player_play_id' => $en['en_id'],
         ), array(), 1));
 
         if($is_player){
@@ -330,7 +330,7 @@ if(!$action) {
             $this->READ_model->ln_create(array(
                 'ln_type_play_id' => 4230, //Raw link
                 'ln_parent_play_id' => 4430, //Mench User
-                'ln_owner_play_id' => $en['en_id'],
+                'ln_player_play_id' => $en['en_id'],
                 'ln_child_play_id' => $en['en_id'],
             ));
         }
@@ -547,7 +547,7 @@ if(!$action) {
     echo '<div>Choose one of your 🔴 READING LIST blogs to debug:</div><br />';
 
     $player_reads = $this->READ_model->ln_fetch(array(
-        'ln_owner_play_id' => $session_en['en_id'],
+        'ln_player_play_id' => $session_en['en_id'],
         'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
         'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
@@ -939,7 +939,7 @@ if(!$action) {
             $total_added++;
             $this->READ_model->ln_create(array(
                 'ln_type_play_id' => 12336,
-                'ln_owner_play_id' => $ln['ln_owner_play_id'],
+                'ln_player_play_id' => $ln['ln_player_play_id'],
                 'ln_parent_blog_id' => $ln['ln_parent_blog_id'],
                 'ln_child_blog_id' => $ln['ln_child_blog_id'],
                 'ln_parent_read_id' => $ln['ln_id'],

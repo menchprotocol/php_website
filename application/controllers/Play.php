@@ -17,7 +17,7 @@ class Play extends CI_Controller
     function add_11158(){
 
         //A function that goes through Medium topics @11097 and fetches all the top Publishers @11158 within that topic
-        $ln_owner_play_id = 1; //Shervin as Developer for logging all READS
+        $ln_player_play_id = 1; //Shervin as Developer for logging all READS
 
         //Fetch URL:
         $medium_urls = $this->READ_model->ln_fetch(array(
@@ -98,13 +98,13 @@ class Play extends CI_Controller
                         $newly_added++;
 
                         //Create new Player:
-                        $added_en = $this->PLAY_model->en_verify_create($author_handler, $ln_owner_play_id, 6181, random_player_avatar());
+                        $added_en = $this->PLAY_model->en_verify_create($author_handler, $ln_player_play_id, 6181, random_player_avatar());
 
                         //Create relevant READS:
 
                         $this->READ_model->ln_create(array(
                             'ln_type_play_id' => 4256, //Generic URL
-                            'ln_owner_play_id' => $ln_owner_play_id,
+                            'ln_player_play_id' => $ln_player_play_id,
                             'ln_parent_play_id' => 3311, //Medium URL
                             'ln_child_play_id' => $added_en['en']['en_id'],
                             'ln_content' => $full_url,
@@ -112,14 +112,14 @@ class Play extends CI_Controller
 
                         $this->READ_model->ln_create(array(
                             'ln_type_play_id' => 4230, //Raw link
-                            'ln_owner_play_id' => $ln_owner_play_id,
+                            'ln_player_play_id' => $ln_player_play_id,
                             'ln_parent_play_id' => 1278, //People
                             'ln_child_play_id' => $added_en['en']['en_id'],
                         ));
 
                         $this->READ_model->ln_create(array(
                             'ln_type_play_id' => 4230, //Raw link
-                            'ln_owner_play_id' => $ln_owner_play_id,
+                            'ln_player_play_id' => $ln_player_play_id,
                             'ln_parent_play_id' => 11158, //Medium Publisher
                             'ln_child_play_id' => $added_en['en']['en_id'],
                         ));
@@ -127,7 +127,7 @@ class Play extends CI_Controller
                         //Medium Topic
                         $this->READ_model->ln_create(array(
                             'ln_type_play_id' => 4230, //Raw link
-                            'ln_owner_play_id' => $ln_owner_play_id,
+                            'ln_player_play_id' => $ln_player_play_id,
                             'ln_parent_play_id' => $medium_topic['en_id'],
                             'ln_child_play_id' => $added_en['en']['en_id'],
                         ));
@@ -647,7 +647,7 @@ fragment PostListingItemSidebar_post on Post {
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
             $this->READ_model->ln_create(array(
-                'ln_owner_play_id' => $session_en['en_id'],
+                'ln_player_play_id' => $session_en['en_id'],
                 'ln_type_play_id' => 4994, //Trainer Opened Player
                 'ln_child_play_id' => $en_id,
                 'ln_order' => $new_order,
@@ -743,7 +743,7 @@ fragment PostListingItemSidebar_post on Post {
             $read_coins = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-                'ln_owner_play_id' => $ln['en_id'],
+                'ln_player_play_id' => $ln['en_id'],
             ), array(), 1, 0, array(), 'COUNT(ln_id) as total_coins');
 
             echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
@@ -776,7 +776,7 @@ fragment PostListingItemSidebar_post on Post {
             //READ
             echo '<td class="read fixedColumns MENCHcolumn2">';
             if($read_coins[0]['total_coins'] > 0){
-                echo ( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_owner_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' );
+                echo ( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_player_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' );
             }
             echo '</td>';
 
@@ -815,7 +815,7 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<td class="blog fixedColumns MENCHcolumn3"></td>';
 
                 //READ
-                echo '<td class="read fixedColumns MENCHcolumn2">'.( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_owner_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>' ).'</td>';
+                echo '<td class="read fixedColumns MENCHcolumn2">'.( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_player_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>' ).'</td>';
 
                 echo '</tr>';
 
@@ -1177,7 +1177,7 @@ fragment PostListingItemSidebar_post on Post {
 
             // Link to new OR existing player:
             $ur2 = $this->READ_model->ln_create(array(
-                'ln_owner_play_id' => $session_en['en_id'],
+                'ln_player_play_id' => $session_en['en_id'],
                 'ln_type_play_id' => $ln_type_play_id,
                 'ln_content' => $ln_content,
                 'ln_child_play_id' => $ln_child_play_id,
@@ -1277,7 +1277,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //Log Link:
         $this->READ_model->ln_create(array(
-            'ln_owner_play_id' => $session_en['en_id'],
+            'ln_player_play_id' => $session_en['en_id'],
             'ln_type_play_id' => 5007, //TOGGLE SUPERPOWER
             'ln_parent_play_id' => $superpower_en_id,
             'ln_content' => 'SUPERPOWER '.$toggled_setting, //To be used when trainer logs in again
@@ -1914,7 +1914,7 @@ fragment PostListingItemSidebar_post on Post {
 
             //Validate user:
             $ens = $this->PLAY_model->en_fetch(array(
-                'en_id' => $validate_links[0]['ln_owner_play_id'],
+                'en_id' => $validate_links[0]['ln_player_play_id'],
             ));
             if(count($ens) < 1){
                 return echo_json(array(
@@ -1956,7 +1956,7 @@ fragment PostListingItemSidebar_post on Post {
                     'ln_type_play_id' => 4255, //Text link
                     'ln_content' => $password_hash,
                     'ln_parent_play_id' => 3286, //Mench Password
-                    'ln_owner_play_id' => $ens[0]['en_id'],
+                    'ln_player_play_id' => $ens[0]['en_id'],
                     'ln_child_play_id' => $ens[0]['en_id'],
                 ));
 
@@ -1965,7 +1965,7 @@ fragment PostListingItemSidebar_post on Post {
 
             //Log password reset:
             $this->READ_model->ln_create(array(
-                'ln_owner_play_id' => $ens[0]['en_id'],
+                'ln_player_play_id' => $ens[0]['en_id'],
                 'ln_type_play_id' => 7578, //User Iterated Password
                 'ln_content' => $password_hash, //A copy of their password set at this time
             ));
@@ -2071,7 +2071,7 @@ fragment PostListingItemSidebar_post on Post {
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 4230, //Raw link
             'ln_parent_play_id' => 4430, //Mench User
-            'ln_owner_play_id' => $user_en['en']['en_id'],
+            'ln_player_play_id' => $user_en['en']['en_id'],
             'ln_child_play_id' => $user_en['en']['en_id'],
         ));
 
@@ -2079,7 +2079,7 @@ fragment PostListingItemSidebar_post on Post {
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 4230, //Raw link
             'ln_parent_play_id' => 11010, //FREE ACCOUNT
-            'ln_owner_play_id' => $user_en['en']['en_id'],
+            'ln_player_play_id' => $user_en['en']['en_id'],
             'ln_child_play_id' => $user_en['en']['en_id'],
         ));
         */
@@ -2087,35 +2087,35 @@ fragment PostListingItemSidebar_post on Post {
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 4230, //Raw link
             'ln_parent_play_id' => 1278, //People
-            'ln_owner_play_id' => $user_en['en']['en_id'],
+            'ln_player_play_id' => $user_en['en']['en_id'],
             'ln_child_play_id' => $user_en['en']['en_id'],
         ));
 
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 4230, //Raw link
             'ln_parent_play_id' => 12221, //Notify on EMAIL
-            'ln_owner_play_id' => $user_en['en']['en_id'],
+            'ln_player_play_id' => $user_en['en']['en_id'],
             'ln_child_play_id' => $user_en['en']['en_id'],
         ));
 
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 4230, //Raw link
             'ln_parent_play_id' => 3504, //English Language (Since everything is in English so far)
-            'ln_owner_play_id' => $user_en['en']['en_id'],
+            'ln_player_play_id' => $user_en['en']['en_id'],
             'ln_child_play_id' => $user_en['en']['en_id'],
         ));
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 4255, //Text link
             'ln_content' => trim(strtolower($_POST['input_email'])),
             'ln_parent_play_id' => 3288, //Mench Email
-            'ln_owner_play_id' => $user_en['en']['en_id'],
+            'ln_player_play_id' => $user_en['en']['en_id'],
             'ln_child_play_id' => $user_en['en']['en_id'],
         ));
         $this->READ_model->ln_create(array(
             'ln_type_play_id' => 4255, //Text link
             'ln_content' => strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $user_en['en']['en_id'])),
             'ln_parent_play_id' => 3286, //Mench Password
-            'ln_owner_play_id' => $user_en['en']['en_id'],
+            'ln_player_play_id' => $user_en['en']['en_id'],
             'ln_child_play_id' => $user_en['en']['en_id'],
         ));
 
@@ -2165,7 +2165,7 @@ fragment PostListingItemSidebar_post on Post {
         //Log User Signin Joined Mench
         $invite_link = $this->READ_model->ln_create(array(
             'ln_type_play_id' => 7562, //User Signin Joined Mench
-            'ln_owner_play_id' => $user_en['en']['en_id'],
+            'ln_player_play_id' => $user_en['en']['en_id'],
             'ln_parent_blog_id' => intval($_POST['referrer_in_id']),
             'ln_metadata' => array(
                 'email_log' => $email_log,
@@ -2228,7 +2228,7 @@ fragment PostListingItemSidebar_post on Post {
         $reset_link = $this->READ_model->ln_create(array(
             'ln_type_play_id' => 7563, //User Signin Magic Link Email
             'ln_content' => $_POST['input_email'],
-            'ln_owner_play_id' => $user_emails[0]['en_id'], //User making request
+            'ln_player_play_id' => $user_emails[0]['en_id'], //User making request
             'ln_parent_blog_id' => intval($_POST['referrer_in_id']),
         ));
 
@@ -2287,7 +2287,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //Fetch player:
         $ens = $this->PLAY_model->en_fetch(array(
-            'en_id' => $validate_links[0]['ln_owner_play_id'],
+            'en_id' => $validate_links[0]['ln_player_play_id'],
         ));
         if(count($ens) < 1){
             return redirect_message('/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
@@ -2448,7 +2448,7 @@ fragment PostListingItemSidebar_post on Post {
             $this->READ_model->ln_create(array(
                 'ln_parent_play_id' => $_POST['selected_en_id'],
                 'ln_child_play_id' => $session_en['en_id'],
-                'ln_owner_play_id' => $session_en['en_id'],
+                'ln_player_play_id' => $session_en['en_id'],
                 'ln_type_play_id' => 4230, //Raw
             ));
         }
@@ -2457,7 +2457,7 @@ fragment PostListingItemSidebar_post on Post {
         //Log Account iteration link type:
         $_POST['account_update_function'] = 'account_update_radio'; //Add this variable to indicate which My Account function created this link
         $this->READ_model->ln_create(array(
-            'ln_owner_play_id' => $session_en['en_id'],
+            'ln_player_play_id' => $session_en['en_id'],
             'ln_type_play_id' => 6224, //My Account Iterated
             'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_already_selected'] ? 'Removed' : 'Added' ),
             'ln_metadata' => $_POST,
@@ -2481,7 +2481,7 @@ fragment PostListingItemSidebar_post on Post {
         if($session_en){
             $this->READ_model->ln_create(array(
                 'ln_type_play_id' => 4282, //Opened Account
-                'ln_owner_play_id' => $session_en['en_id'],
+                'ln_player_play_id' => $session_en['en_id'],
             ));
         }
 
@@ -2506,7 +2506,7 @@ fragment PostListingItemSidebar_post on Post {
         if($session_en){
             $this->READ_model->ln_create(array(
                 'ln_type_play_id' => 12489, //Opened Leaderboard
-                'ln_owner_play_id' => $session_en['en_id'],
+                'ln_player_play_id' => $session_en['en_id'],
             ));
         }
 
@@ -2720,7 +2720,7 @@ fragment PostListingItemSidebar_post on Post {
 
             //Create new link:
             $this->READ_model->ln_create(array(
-                'ln_owner_play_id' => $session_en['en_id'],
+                'ln_player_play_id' => $session_en['en_id'],
                 'ln_child_play_id' => $session_en['en_id'],
                 'ln_type_play_id' => 4255, //Emails are of type Text
                 'ln_parent_play_id' => 3288, //Mench Email
@@ -2746,7 +2746,7 @@ fragment PostListingItemSidebar_post on Post {
             //Log Account iteration link type:
             $_POST['account_update_function'] = 'account_update_email'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->ln_create(array(
-                'ln_owner_play_id' => $session_en['en_id'],
+                'ln_player_play_id' => $session_en['en_id'],
                 'ln_type_play_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_email']) > 0 ? ': '.$_POST['en_email'] : ''),
                 'ln_metadata' => $_POST,
@@ -2818,7 +2818,7 @@ fragment PostListingItemSidebar_post on Post {
             $this->READ_model->ln_create(array(
                 'ln_type_play_id' => 4255, //Passwords are of type Text
                 'ln_parent_play_id' => 3286, //Password
-                'ln_owner_play_id' => $session_en['en_id'],
+                'ln_player_play_id' => $session_en['en_id'],
                 'ln_child_play_id' => $session_en['en_id'],
                 'ln_content' => $hashed_password,
             ), true);
@@ -2835,7 +2835,7 @@ fragment PostListingItemSidebar_post on Post {
         if($return['status']){
             $_POST['account_update_function'] = 'account_update_password'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->ln_create(array(
-                'ln_owner_play_id' => $session_en['en_id'],
+                'ln_player_play_id' => $session_en['en_id'],
                 'ln_type_play_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$return['message'],
                 'ln_metadata' => $_POST,
@@ -2869,7 +2869,7 @@ fragment PostListingItemSidebar_post on Post {
             $play_coins = $this->READ_model->ln_fetch(array(
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
-                'ln_owner_play_id' => $session_en['en_id'],
+                'ln_player_play_id' => $session_en['en_id'],
             ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
             $play_coin_count = $play_coins[0]['total_coins'];
         }
@@ -2884,7 +2884,7 @@ fragment PostListingItemSidebar_post on Post {
         $read_coins = $this->READ_model->ln_fetch(array(
             'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-            'ln_owner_play_id' => $session_en['en_id'],
+            'ln_player_play_id' => $session_en['en_id'],
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
 
         return echo_json(array(

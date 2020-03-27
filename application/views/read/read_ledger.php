@@ -70,12 +70,12 @@ if(isset($_GET['ln_status_play_id']) && strlen($_GET['ln_status_play_id']) > 0){
     }
 }
 
-if(isset($_GET['ln_owner_play_id']) && strlen($_GET['ln_owner_play_id']) > 0){
-    if (substr_count($_GET['ln_owner_play_id'], ',') > 0) {
+if(isset($_GET['ln_player_play_id']) && strlen($_GET['ln_player_play_id']) > 0){
+    if (substr_count($_GET['ln_player_play_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_owner_play_id IN (' . $_GET['ln_owner_play_id'] . '))'] = null;
-    } elseif (intval($_GET['ln_owner_play_id']) > 0) {
-        $filters['ln_owner_play_id'] = $_GET['ln_owner_play_id'];
+        $filters['( ln_player_play_id IN (' . $_GET['ln_player_play_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_player_play_id']) > 0) {
+        $filters['ln_player_play_id'] = $_GET['ln_player_play_id'];
     }
 }
 
@@ -138,9 +138,9 @@ if(isset($_GET['any_en_id']) && strlen($_GET['any_en_id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_en_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_child_play_id IN (' . $_GET['any_en_id'] . ') OR ln_parent_play_id IN (' . $_GET['any_en_id'] . ') OR ln_owner_play_id IN (' . $_GET['any_en_id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $filters['( ln_child_play_id IN (' . $_GET['any_en_id'] . ') OR ln_parent_play_id IN (' . $_GET['any_en_id'] . ') OR ln_player_play_id IN (' . $_GET['any_en_id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_en_id']) > 0) {
-        $filters['( ln_child_play_id = ' . $_GET['any_en_id'] . ' OR ln_parent_play_id = ' . $_GET['any_en_id'] . ' OR ln_owner_play_id = ' . $_GET['any_en_id'] . $parent_tr_filter . ' )'] = null;
+        $filters['( ln_child_play_id = ' . $_GET['any_en_id'] . ' OR ln_parent_play_id = ' . $_GET['any_en_id'] . ' OR ln_player_play_id = ' . $_GET['any_en_id'] . $parent_tr_filter . ' )'] = null;
     }
 }
 
@@ -267,7 +267,7 @@ echo '<div class="container">';
     echo '<input type="text" name="any_en_id" value="' . ((isset($_GET['any_en_id'])) ? $_GET['any_en_id'] : '') . '" class="form-control border">';
     echo '</div></td>';
 
-    echo '<td><span class="mini-header">PLAYER CREATOR:</span><input type="text" name="ln_owner_play_id" value="' . ((isset($_GET['ln_owner_play_id'])) ? $_GET['ln_owner_play_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">PLAYER CREATOR:</span><input type="text" name="ln_player_play_id" value="' . ((isset($_GET['ln_player_play_id'])) ? $_GET['ln_player_play_id'] : '') . '" class="form-control border"></td>';
 
     echo '<td><span class="mini-header">PLAYER PROFILE:</span><input type="text" name="ln_parent_play_id" value="' . ((isset($_GET['ln_parent_play_id'])) ? $_GET['ln_parent_play_id'] : '') . '" class="form-control border"></td>';
 
@@ -353,7 +353,7 @@ echo '</div></td>';
 
         echo '<select class="form-control border" name="ln_type_play_id" id="ln_type_play_id" class="border" style="width: 100% !important;">';
 
-        if(isset($_GET['ln_owner_play_id'])) {
+        if(isset($_GET['ln_player_play_id'])) {
 
             //Fetch details for this user:
             $all_link_count = 0;

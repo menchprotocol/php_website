@@ -351,7 +351,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
                 'ln_type_play_id' => $en_id,
-                '(ln_owner_play_id='.$player['en_id'].' OR ln_child_play_id='.$player['en_id'].' OR ln_parent_play_id='.$player['en_id'].')' => null,
+                '(ln_player_play_id='.$player['en_id'].' OR ln_child_play_id='.$player['en_id'].' OR ln_parent_play_id='.$player['en_id'].')' => null,
             );
 
             //COUNT ONLY
@@ -392,7 +392,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         } elseif($en_id == 7347 /* READ LIST */){
 
             $player_reads = $this->READ_model->ln_fetch(array(
-                'ln_owner_play_id' => $player['en_id'],
+                'ln_player_play_id' => $player['en_id'],
                 'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
                 'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
                 'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -416,7 +416,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 $join_objects = array('in_child');
             } elseif($en_id == 6255){
                 //Read Coins:
-                $match_columns['ln_owner_play_id'] = $player['en_id'];
+                $match_columns['ln_player_play_id'] = $player['en_id'];
             }
 
             //READER READS & BOOKMARKS

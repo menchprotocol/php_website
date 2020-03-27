@@ -15,11 +15,11 @@ class BLOG_model extends CI_Model
     }
 
 
-    function in_create($insert_columns, $external_sync = false, $ln_owner_play_id = 0)
+    function in_create($insert_columns, $external_sync = false, $ln_player_play_id = 0)
     {
 
         //What is required to create a new Blog?
-        if (detect_missing_columns($insert_columns, array('in_title', 'in_type_play_id', 'in_status_play_id'), $ln_owner_play_id)) {
+        if (detect_missing_columns($insert_columns, array('in_title', 'in_type_play_id', 'in_status_play_id'), $ln_player_play_id)) {
             return false;
         }
 
@@ -37,7 +37,7 @@ class BLOG_model extends CI_Model
 
         if ($insert_columns['in_id'] > 0) {
 
-            if ($ln_owner_play_id > 0) {
+            if ($ln_player_play_id > 0) {
 
                 if($external_sync){
                     //Update Algolia:
@@ -46,7 +46,7 @@ class BLOG_model extends CI_Model
 
                 //Log link new Blog:
                 $this->READ_model->ln_create(array(
-                    'ln_owner_play_id' => $ln_owner_play_id,
+                    'ln_player_play_id' => $ln_player_play_id,
                     'ln_child_blog_id' => $insert_columns['in_id'],
                     'ln_content' => $insert_columns['in_title'],
                     'ln_type_play_id' => 4250, //New Blog Created
@@ -55,10 +55,10 @@ class BLOG_model extends CI_Model
 
                 //Also add as author:
                 $this->READ_model->ln_create(array(
-                    'ln_owner_play_id' => $ln_owner_play_id,
-                    'ln_parent_play_id' => $ln_owner_play_id,
+                    'ln_player_play_id' => $ln_player_play_id,
+                    'ln_parent_play_id' => $ln_player_play_id,
                     'ln_type_play_id' => 4983,
-                    'ln_content' => '@'.$ln_owner_play_id,
+                    'ln_content' => '@'.$ln_player_play_id,
                     'ln_child_blog_id' => $insert_columns['in_id'],
                 ), $external_sync);
 
@@ -82,7 +82,7 @@ class BLOG_model extends CI_Model
             $this->READ_model->ln_create(array(
                 'ln_content' => 'in_create() failed to create a new blog',
                 'ln_type_play_id' => 4246, //Platform Bug Reports
-                'ln_owner_play_id' => $ln_owner_play_id,
+                'ln_player_play_id' => $ln_player_play_id,
                 'ln_metadata' => $insert_columns,
             ));
             return false;
@@ -116,7 +116,7 @@ class BLOG_model extends CI_Model
         return $q->result_array();
     }
 
-    function in_update($id, $update_columns, $external_sync = false, $ln_owner_play_id = 0)
+    function in_update($id, $update_columns, $external_sync = false, $ln_player_play_id = 0)
     {
 
         if (count($update_columns) == 0) {
@@ -124,7 +124,7 @@ class BLOG_model extends CI_Model
         }
 
         //Fetch current Blog filed values so we can compare later on after we've updated it:
-        if($ln_owner_play_id > 0){
+        if($ln_player_play_id > 0){
             $before_data = $this->BLOG_model->in_fetch(array('in_id' => $id));
         }
 
@@ -139,7 +139,7 @@ class BLOG_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows > 0 && $ln_owner_play_id > 0) {
+        if ($affected_rows > 0 && $ln_player_play_id > 0) {
 
 
             //Note that unlike player modification, we require a trainer player ID to log the modification link:
@@ -196,7 +196,7 @@ class BLOG_model extends CI_Model
 
                 //Value has changed, log link:
                 $this->READ_model->ln_create(array(
-                    'ln_owner_play_id' => $ln_owner_play_id,
+                    'ln_player_play_id' => $ln_player_play_id,
                     'ln_type_play_id' => $ln_type_play_id,
                     'ln_child_blog_id' => $id,
                     'ln_child_play_id' => $ln_child_play_id,
@@ -223,7 +223,7 @@ class BLOG_model extends CI_Model
             $this->READ_model->ln_create(array(
                 'ln_child_blog_id' => $id,
                 'ln_type_play_id' => 4246, //Platform Bug Reports
-                'ln_owner_play_id' => $ln_owner_play_id,
+                'ln_player_play_id' => $ln_player_play_id,
                 'ln_content' => 'in_update() Failed to update',
                 'ln_metadata' => array(
                     'input' => $update_columns,
@@ -235,7 +235,7 @@ class BLOG_model extends CI_Model
         return $affected_rows;
     }
 
-    function in_unlink($in_id, $ln_owner_play_id = 0){
+    function in_unlink($in_id, $ln_player_play_id = 0){
 
         //Remove blog relations:
         $links_removed = 0;
@@ -247,14 +247,14 @@ class BLOG_model extends CI_Model
             //Remove this link:
             $links_removed += $this->READ_model->ln_update($ln['ln_id'], array(
                 'ln_status_play_id' => 6173, //Link Removed
-            ), $ln_owner_play_id, 10686 /* Blog Link Unlinked */);
+            ), $ln_player_play_id, 10686 /* Blog Link Unlinked */);
         }
 
         //Return links removed:
         return $links_removed;
     }
 
-    function in_sync_creation($ln_owner_play_id, $query= array()){
+    function in_sync_creation($ln_player_play_id, $query= array()){
 
         //STATS
         $stats = array(
@@ -286,7 +286,7 @@ class BLOG_model extends CI_Model
                 $stats['missing_creation_fix']++;
 
                 $this->READ_model->ln_create(array(
-                    'ln_owner_play_id' => $ln_owner_play_id,
+                    'ln_player_play_id' => $ln_player_play_id,
                     'ln_child_blog_id' => $in['in_id'],
                     'ln_content' => $in['in_title'],
                     'ln_type_play_id' => $stats['ln_type_play_id'],
@@ -307,7 +307,7 @@ class BLOG_model extends CI_Model
         return $stats;
     }
 
-    function in_link_or_create($in_title, $ln_owner_play_id, $link_to_blog_id = 0, $is_parent = false, $new_in_status = 6184, $in_type_play_id = 6677 /* Blog Read-Only */, $link_in_id = 0)
+    function in_link_or_create($in_title, $ln_player_play_id, $link_to_blog_id = 0, $is_parent = false, $new_in_status = 6184, $in_type_play_id = 6677 /* Blog Read-Only */, $link_in_id = 0)
     {
 
         /*
@@ -446,7 +446,7 @@ class BLOG_model extends CI_Model
                 'in_title' => $in_titlevalidation['in_cleaned_outcome'],
                 'in_type_play_id' => $in_type_play_id,
                 'in_status_play_id' => $new_in_status,
-            ), true, $ln_owner_play_id);
+            ), true, $ln_player_play_id);
 
         }
 
@@ -455,7 +455,7 @@ class BLOG_model extends CI_Model
         if($link_to_blog_id > 0){
 
             $relation = $this->READ_model->ln_create(array(
-                'ln_owner_play_id' => $ln_owner_play_id,
+                'ln_player_play_id' => $ln_player_play_id,
                 'ln_type_play_id' => 4228, //Blog Link Regular Read
                 ( $is_parent ? 'ln_child_blog_id' : 'ln_parent_blog_id' ) => $link_to_blog_id,
                 ( $is_parent ? 'ln_parent_blog_id' : 'ln_child_blog_id' ) => $blog_new['in_id'],
