@@ -1563,7 +1563,7 @@ class READ_model extends CI_Model
                 if(count($in__children) > 0){
 
                     //Give option to review:
-                    echo '<div class="inline-block margin-top-down read-add read_topics">&nbsp;or&nbsp;<a class="btn btn-read" href="javascript:void();" onclick="toggle_read()"><i class="fad fa-search-plus read_topics"></i><i class="fad fa-search-minus read_topics hidden"></i> LIST '.count($in__children).' READ'.echo__s(count($in__children)).'</a></div>';
+                    echo '<div class="inline-block margin-top-down read-add">&nbsp;or&nbsp;<a class="btn btn-read" href="javascript:void();" onclick="toggle_read()"><i class="fad fa-search-plus read_topics"></i><i class="fad fa-search-minus read_topics hidden"></i> LIST '.count($in__children).' READ'.echo__s(count($in__children)).'</a></div>';
 
                     //List Children:
                     echo '<div class="list-group read_topics hidden">';
