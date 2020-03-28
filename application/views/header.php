@@ -81,7 +81,16 @@ if($found_at > 1){
     <script src="/application/views/mench.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:800&display=swap" rel="stylesheet">
+
+
     <link href="/application/views/mench.css?v=v<?= config_var(11060) ?>" rel="stylesheet"/>
+    <script>
+        if(js_pl_id>0){
+            // This is an example script - don't forget to change it!
+            FS.identify(js_pl_id, { displayName: '<?= ( isset($session_en['en_name']) ? $session_en['en_name'] : '' ) ?>' });
+        }
+    </script>
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92774608-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
