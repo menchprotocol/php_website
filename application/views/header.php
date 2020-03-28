@@ -90,7 +90,7 @@ if($found_at > 1){
             FS.identify(js_pl_id, {
                 displayName: '<?= ( isset($session_en['en_name']) ? $session_en['en_name'] : '' ) ?>',
                 uid: js_pl_id,
-                profileURL: 'https://mench.com/play/'+js_pl_id,
+                profileURL: 'https://mench.com/play/'+js_pl_id
             });
         }
     </script>
