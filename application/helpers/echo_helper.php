@@ -44,7 +44,8 @@ function echo_time_minutes($sec_int)
     if ($sec_int >= 60) {
         $min = floor($sec_int / 60);
     }
-    return ($min ? $min . ' Min.' : '') . ($sec ? ($min ? ' ' : '') . $sec . ' Sec.' : '');
+
+    return ( $min ? $min . ' Min.' : ( $sec ? $sec . ' Sec.' : false ) );
 }
 
 function echo_url_type_4537($url, $en_type_link_id)
@@ -147,7 +148,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
 
             //Inform User that this is a sliced video
             if ($start_sec || $end_sec) {
-                $embed_html_code .= '<div class="read-topic"><i class="fad fa-play-circle"></i>&nbsp;' . (($start_sec && $end_sec) ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'">WATCH ' . echo_time_minutes(($end_sec - $start_sec)) . '</b> VIDEO CLIP' : 'FROM <b>' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
+                $embed_html_code .= '<div class="read-topic"><i class="fad fa-play-circle"></i>&nbsp;' . (($start_sec && $end_sec) ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'">WATCH THIS ' . echo_time_minutes(($end_sec - $start_sec)) . ' CLIP:</b>' : '<b>WATCH FROM ' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . ':</b>') . ':</div>';
             }
 
             $embed_html_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
@@ -1510,7 +1511,7 @@ function echo_in_stat_play($in_id = 0, $en_id = 0){
 
 
 
-function echo_in_read($in, $show_description = false, $footnotes = null, $common_prefix = null, $extra_class = null)
+function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_prefix = null, $extra_class = null)
 {
 
     //See if user is logged-in:
@@ -1523,8 +1524,8 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
         $completion_rate['completion_percentage'] = 0;
     }
 
-    $can_click = ( $show_description || $completion_rate['completion_percentage']>0 );
-    $in_thumbnail = ($can_click ?  echo_in_thumbnail($in['in_id']) : false );
+    $can_click = ( ( $parent_is_or && in_array($in['in_status_play_id'], $this->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 );
+    $in_thumbnail = ( $can_click ?  echo_in_thumbnail($in['in_id']) : false );
 
     $ui  = '<div class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
@@ -1543,7 +1544,7 @@ function echo_in_read($in, $show_description = false, $footnotes = null, $common
 
 
     //Description:
-    if($show_description){
+    if($can_click){
         $in_description = echo_in_description($in['in_id']);
         if($in_description){
             $ui .= '<div class="blog-desc"><span class="icon-block">&nbsp;</span>'.$in_description.'</div>';

@@ -1553,26 +1553,26 @@ class READ_model extends CI_Model
                     );
                 }
 
-                $is_home_page = ($ins[0]['in_id'] == config_var(12156));
+                //Redirect to login page:
+                echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START HERE <i class="fad fa-step-forward"></i></a></div>';
 
-                //List Children:
-                echo '<div class="list-group">';
-                foreach($in__children as $key => $child_in){
-                    echo echo_in_read($child_in, $is_home_page);
-                }
-                echo '</div>';
+                //Any Sub Topics?
+                if(count($in__children) > 0){
 
+                    //Give option to review:
+                    echo '<div class="inline-block margin-top-down read-add">&nbsp;or&nbsp;<a class="btn btn-read" href="javascript:void();" onclick="$(\'.read_topics\').toggleClass(\'hidden\');"><i class="fad fa-search-plus read_topics"></i><i class="fad fa-search-minus read_topics hidden"></i> SEE '.count($in__children).' TOPIC'.echo__s(count($in__children)).'</a></div>';
 
-                if(!$is_home_page){
-                    //Redirect to login page:
-                    echo '<div class="inline-block margin-top-down read-add">';
-                    echo '<a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">GET STARTED <i class="fad fa-step-forward"></i></a>';
+                    //List Children:
+                    echo '<div class="list-group read_topics hidden">';
+                    foreach($in__children as $key => $child_in){
+                        echo echo_in_read($child_in, in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_6193')));
+                    }
                     echo '</div>';
+
                 }
+
 
             }
-
-
 
             return true;
         }
