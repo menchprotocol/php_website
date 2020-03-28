@@ -121,7 +121,7 @@ function search_email(){
 
         //Release field lock:
         email_is_searching = false;
-        $('#email_check_next').html('<i class="fad fa-step-forward"></i>');
+        $('#email_check_next').html('NEXT <i class="fad fa-step-forward"></i>');
         $('#input_email').prop('disabled', false).css('background-color','#FFFFFF');
 
         if (data.status) {
@@ -232,7 +232,7 @@ function singin_check_password(){
 
             //Release field lock:
             password_is_checking = false;
-            $('#password_check_next').html('<i class="fad fa-step-forward"></i>');
+            $('#password_check_next').html('NEXT <i class="fad fa-step-forward"></i>');
             $('#input_password').prop('disabled', false).css('background-color','#FFFFFF').focus();
 
             //Show errors:
