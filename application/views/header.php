@@ -53,6 +53,7 @@ if($found_at > 1){
 
     echo ' var js_session_superpowers_assigned = ' . json_encode( count($this->session->userdata('session_superpowers_assigned')) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
     echo ' var js_pl_id = ' . ( isset($session_en['en_id']) ? $session_en['en_id'] : 0 ) . '; ';
+    echo ' var js_pl_name = \'' . ( isset($session_en['en_name']) ? $session_en['en_name'] : 'Unknown' ) . '\'; ';
 
     //LOAD JS CACHE:
     foreach($this->config->item('en_all_11054') as $en_id => $m){
@@ -88,7 +89,7 @@ if($found_at > 1){
         if(js_pl_id>0){
             //https://help.fullstory.com/hc/en-us/articles/360020623294-FS-setUserVars-Recording-custom-user-data
             FS.identify(js_pl_id, {
-                displayName: '<?= ( isset($session_en['en_name']) ? $session_en['en_name'] : '' ) ?>',
+                displayName: js_pl_name,
                 uid: js_pl_id,
                 profileURL: 'https://mench.com/play/'+js_pl_id
             });
