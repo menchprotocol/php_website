@@ -142,10 +142,10 @@ if(!isset($hide_header)){
                     <td>
 
                         <?php
+                        echo '<div class="main_nav mench_nav">';
                         if (isset($session_en['en_id'])) {
 
                             $MENCHcolumn1 = 0;
-                            echo '<div class="main_nav mench_nav">';
                             foreach ($en_all_2738_mench as $en_id => $m) {
 
                                 $MENCHcolumn1++;
@@ -170,9 +170,8 @@ if(!isset($hide_header)){
                                 echo '</a>';
 
                             }
-                            echo '</div>';
-
                         }
+                        echo '</div>';
                         ?>
 
 
