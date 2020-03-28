@@ -122,7 +122,6 @@ if(count($current_sign_in_attempt) == 0){
             echo '</div>';
 
             ?>
-
         </div>
 
 
