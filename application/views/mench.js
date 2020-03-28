@@ -68,6 +68,15 @@ function js_ln_create(new_ln_data){
     });
 }
 
+function toggle_read(){
+
+    $('.read_topics').toggleClass('hidden');
+
+    $([document.documentElement, document.body]).animate({
+        scrollTop: $("#readScroll").offset().top
+    }, 500);
+
+}
 
 function load_leaderboard(){
     //Show loading icon:

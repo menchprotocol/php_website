@@ -1545,6 +1545,7 @@ class READ_model extends CI_Model
                 //BLOG TITLE
                 echo '<div style="padding-top:6px;">'.( $recipient_en['en_id']>0 || 1 ? '<span class="icon-block top-icon"><i class="fas fa-circle read"></i></span>' : '<span class="icon-block">&nbsp;</span>' ).'<h1 class="inline-block block-one">' . echo_in_title($ins[0]['in_title']) . '</h1></div>';
 
+
                 foreach ($in__messages as $message_ln) {
                     echo $this->READ_model->dispatch_message(
                         $message_ln['ln_content'],
@@ -1553,6 +1554,8 @@ class READ_model extends CI_Model
                     );
                 }
 
+                echo '<div id="readScroll">&nbsp;</div>';
+
                 //Redirect to login page:
                 echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START HERE <i class="fad fa-step-forward"></i></a></div>';
 
@@ -1560,7 +1563,7 @@ class READ_model extends CI_Model
                 if(count($in__children) > 0){
 
                     //Give option to review:
-                    echo '<div class="inline-block margin-top-down read-add">&nbsp;or&nbsp;<a class="btn btn-read" href="javascript:void();" onclick="$(\'.read_topics\').toggleClass(\'hidden\');"><i class="fad fa-search-plus read_topics"></i><i class="fad fa-search-minus read_topics hidden"></i> LIST '.count($in__children).' READ'.echo__s(count($in__children)).'</a></div>';
+                    echo '<div class="inline-block margin-top-down read-add read_topics">&nbsp;or&nbsp;<a class="btn btn-read" href="javascript:void();" onclick="toggle_read()"><i class="fad fa-search-plus read_topics"></i><i class="fad fa-search-minus read_topics hidden"></i> LIST '.count($in__children).' READ'.echo__s(count($in__children)).'</a></div>';
 
                     //List Children:
                     echo '<div class="list-group read_topics hidden">';
