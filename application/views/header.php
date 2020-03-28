@@ -208,9 +208,6 @@ if(!isset($hide_header)){
 
                     } else {
 
-                        //Playground
-                        echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/play" title="'.$en_all_2738[4536]['m_name'].'">'.$en_all_2738[4536]['m_icon'].'</a></td>';
-
                         //Sign In/Up
                         echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/sign'.( isset($in) ? '/'.$in['in_id'] : '' ).'" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
 
