@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-03-27 15:06:05 PST
+//Generated 2020-03-28 08:20:18 PST
 
 //SIGN IN/UP:
 $config['en_ids_4269'] = array(3288,6197,3286);
@@ -95,19 +95,19 @@ $config['en_all_12577'] = array(
 );
 
 //LAYOUT SHOW EVEN IF ZERO:
-$config['en_ids_12574'] = array(11029,4997,11030);
+$config['en_ids_12574'] = array(4997,11029,11030);
 $config['en_all_12574'] = array(
+    4997 => array(
+        'm_icon' => '<i class="fas fa-edit play" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO EDITOR',
+        'm_desc' => '',
+        'm_parents' => array(11029,12574,10967,11089,4758,4506,4527),
+    ),
     11029 => array(
         'm_icon' => '<i class="fad fa-sitemap play" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIOS',
         'm_desc' => '',
         'm_parents' => array(12574,12571,11089,11028),
-    ),
-    4997 => array(
-        'm_icon' => '<i class="fas fa-edit play" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIOS EDITOR',
-        'm_desc' => '',
-        'm_parents' => array(11029,12574,10967,11089,4758,4506,4527),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-user-circle play" aria-hidden="true"></i>',
@@ -647,8 +647,14 @@ $config['en_all_12365'] = array(
 );
 
 //PLAY:
-$config['en_ids_4536'] = array(7305,6225,12289,12582,11089,10645,4758,6206);
+$config['en_ids_4536'] = array(12467,7305,6225,12289,11089,10645,4758,6206,12437);
 $config['en_all_4536'] = array(
+    12467 => array(
+        'm_icon' => '<i class="fas fa-circle" aria-hidden="true"></i>',
+        'm_name' => 'MENCH COINS',
+        'm_desc' => '',
+        'm_parents' => array(4536,11035),
+    ),
     7305 => array(
         'm_icon' => '<i class="fas fa-layer-group play" aria-hidden="true"></i>',
         'm_name' => 'MENCH PLATFORM',
@@ -666,12 +672,6 @@ $config['en_all_4536'] = array(
         'm_name' => 'PLAY AVATAR',
         'm_desc' => '',
         'm_parents' => array(4536,6225),
-    ),
-    12582 => array(
-        'm_icon' => '<i class="fad fa-gamepad-alt play" aria-hidden="true"></i>',
-        'm_name' => 'PLAYGROUND',
-        'm_desc' => '',
-        'm_parents' => array(11035,4536),
     ),
     11089 => array(
         'm_icon' => '<i class="fad fa-crop-alt play" aria-hidden="true"></i>',
@@ -696,6 +696,12 @@ $config['en_all_4536'] = array(
         'm_name' => 'PLAY TABLE',
         'm_desc' => '',
         'm_parents' => array(4527,7735,4536),
+    ),
+    12437 => array(
+        'm_icon' => '<i class="fad fa-trophy play" aria-hidden="true"></i>',
+        'm_name' => 'TOP PLAYERS',
+        'm_desc' => '',
+        'm_parents' => array(4536,12489,11035,11986),
     ),
 );
 
@@ -3046,7 +3052,7 @@ $config['en_all_11089'] = array(
     ),
     4997 => array(
         'm_icon' => '<i class="fas fa-edit play" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIOS EDITOR',
+        'm_name' => 'PORTFOLIO EDITOR',
         'm_desc' => '',
         'm_parents' => array(11029,12574,10967,11089,4758,4506,4527),
     ),
@@ -3264,7 +3270,7 @@ $config['en_all_6232'] = array(
         'm_parents' => array(10653,5943,10625,6232,6206),
     ),
     6160 => array(
-        'm_icon' => '<i class="fas fa-user-circle play"></i>',
+        'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
         'm_name' => 'PLAY ID',
         'm_desc' => 'en_id',
         'm_parents' => array(6232,6215,6206),
@@ -3580,7 +3586,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.31',
+        'm_desc' => '1.315',
         'm_parents' => array(6404),
     ),
     12363 => array(
@@ -3794,7 +3800,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION MENU:
-$config['en_ids_11035'] = array(6287,10573,4430,11068,7291,12467,11999,6225,12581,12211,12582,12275,12205,6415,7347,7256,4269,10957,7540,12437);
+$config['en_ids_11035'] = array(6287,10573,4430,11068,7291,12467,11999,6225,12581,12211,12275,12205,6415,7347,7256,4269,10957,7540,12437);
 $config['en_all_11035'] = array(
     6287 => array(
         'm_icon' => '<i class="fad fa-user-shield play" aria-hidden="true"></i>',
@@ -3830,7 +3836,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fas fa-circle" aria-hidden="true"></i>',
         'm_name' => 'MENCH COINS',
         'm_desc' => '',
-        'm_parents' => array(12582,11035),
+        'm_parents' => array(4536,11035),
     ),
     11999 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
@@ -3855,12 +3861,6 @@ $config['en_all_11035'] = array(
         'm_name' => 'NEXT READ',
         'm_desc' => '',
         'm_parents' => array(11035),
-    ),
-    12582 => array(
-        'm_icon' => '<i class="fad fa-gamepad-alt play" aria-hidden="true"></i>',
-        'm_name' => 'PLAYGROUND',
-        'm_desc' => '',
-        'm_parents' => array(11035,4536),
     ),
     12275 => array(
         'm_icon' => '<i class="fas fa-cog play" aria-hidden="true"></i>',
@@ -3914,7 +3914,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fad fa-trophy play" aria-hidden="true"></i>',
         'm_name' => 'TOP PLAYERS',
         'm_desc' => '',
-        'm_parents' => array(12582,12489,11035,11986),
+        'm_parents' => array(4536,12489,11035,11986),
     ),
 );
 
@@ -5049,7 +5049,7 @@ $config['en_all_4527'] = array(
     ),
     4997 => array(
         'm_icon' => '<i class="fas fa-edit play" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIOS EDITOR',
+        'm_name' => 'PORTFOLIO EDITOR',
         'm_desc' => '',
         'm_parents' => array(11029,12574,10967,11089,4758,4506,4527),
     ),
@@ -5901,7 +5901,7 @@ $config['en_all_6206'] = array(
         'm_parents' => array(10653,5943,10625,6232,6206),
     ),
     6160 => array(
-        'm_icon' => '<i class="fas fa-user-circle play"></i>',
+        'm_icon' => '<i class="fas fa-circle play" aria-hidden="true"></i>',
         'm_name' => 'ID',
         'm_desc' => '',
         'm_parents' => array(6232,6215,6206),
@@ -6904,7 +6904,7 @@ $config['en_all_4280'] = array(
     ),
 );
 
-//PORTFOLIOS EDITOR:
+//PORTFOLIO EDITOR:
 $config['en_ids_4997'] = array(5000,4998,4999,5001,5003,5865,5943,12318,10625,5982,5981,11956);
 $config['en_all_4997'] = array(
     5000 => array(

@@ -141,39 +141,40 @@ if(!isset($hide_header)){
 
                     <td>
 
-                        <div class="main_nav mench_nav">
-                            <?php
-                            if (isset($session_en['en_id'])) {
+                        <?php
+                        if (isset($session_en['en_id'])) {
 
-                                $MENCHcolumn1 = 0;
-                                foreach ($en_all_2738_mench as $en_id => $m) {
+                            $MENCHcolumn1 = 0;
+                            echo '<div class="main_nav mench_nav">';
+                            foreach ($en_all_2738_mench as $en_id => $m) {
 
-                                    $MENCHcolumn1++;
-                                    $url_extension = null;
-                                    $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
-                                    $is_current = ($current_mench['x_id'] == $en_id);
-                                    $this_mench = current_mench(strtolower($m['m_name']));
-                                    $url = 'href="/' . $this_mench['x_name'].'"';
+                                $MENCHcolumn1++;
+                                $url_extension = null;
+                                $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
+                                $is_current = ($current_mench['x_id'] == $en_id);
+                                $this_mench = current_mench(strtolower($m['m_name']));
+                                $url = 'href="/' . $this_mench['x_name'].'"';
 
-                                    if (!$is_current && isset($in) && in_array($this_mench['x_name'], array('read', 'blog'))) {
-                                        if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'blog') {
-                                            $url = 'href="/blog/' . $in['in_id'].'"';
-                                        } elseif ($current_mench['x_name'] == 'blog' && $this_mench['x_name'] == 'read') {
-                                            $url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
-                                        }
+                                if (!$is_current && isset($in) && in_array($this_mench['x_name'], array('read', 'blog'))) {
+                                    if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'blog') {
+                                        $url = 'href="/blog/' . $in['in_id'].'"';
+                                    } elseif ($current_mench['x_name'] == 'blog' && $this_mench['x_name'] == 'read') {
+                                        $url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
                                     }
-
-                                    echo '<a class="mench_coin ' . $this_mench['x_name'] . ' border-' . $this_mench['x_name'] . ($is_current ? ' focustab ' : '') . ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" ' . $url . '>';
-                                    echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
-                                    echo '<span class="montserrat ' . $this_mench['x_name'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
-                                    echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
-                                    echo '</a>';
-
                                 }
 
+                                echo '<a class="mench_coin ' . $this_mench['x_name'] . ' border-' . $this_mench['x_name'] . ($is_current ? ' focustab ' : '') . ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" ' . $url . '>';
+                                echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
+                                echo '<span class="montserrat ' . $this_mench['x_name'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
+                                echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
+                                echo '</a>';
+
                             }
-                            ?>
-                        </div>
+                            echo '</div>';
+
+                        }
+                        ?>
+
 
                         <div class="main_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
@@ -194,7 +195,7 @@ if(!isset($hide_header)){
 
                     </td>
 
-                    <td class="block-link black <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="javascript:void(0);" onclick="toggle_search()"><span class="search_icon"><?= $en_all_11035[7256]['m_icon'] ?></span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>
+                    <td class="block-link <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="javascript:void(0);" onclick="toggle_search()"><span class="search_icon"><?= $en_all_11035[7256]['m_icon'] ?></span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>
 
                     <?php
 
@@ -208,10 +209,10 @@ if(!isset($hide_header)){
                     } else {
 
                         //Playground
-                        echo '<td class="block-link black '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/play" title="'.$en_all_11035[12582]['m_name'].'">'.$en_all_11035[12582]['m_icon'].'</a></td>';
+                        echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/play" title="'.$en_all_2738[4536]['m_name'].'">'.$en_all_2738[4536]['m_icon'].'</a></td>';
 
                         //Sign In/Up
-                        echo '<td class="block-link black '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/sign'.( isset($in) ? '/'.$in['in_id'] : '' ).'" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
+                        echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/sign'.( isset($in) ? '/'.$in['in_id'] : '' ).'" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
 
                     }
 
