@@ -1524,7 +1524,7 @@ function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_pre
         $completion_rate['completion_percentage'] = 0;
     }
 
-    $can_click = ( ( $parent_is_or && in_array($in['in_status_play_id'], $this->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 );
+    $can_click = ( ( $parent_is_or && in_array($in['in_status_play_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 );
     $in_thumbnail = ( $can_click ?  echo_in_thumbnail($in['in_id']) : false );
 
     $ui  = '<div class="list-group-item no-side-padding itemread '.$extra_class.'">';
