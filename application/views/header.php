@@ -84,15 +84,19 @@ if($found_at > 1){
 
 
     <link href="/application/views/mench.css?v=v<?= config_var(11060) ?>" rel="stylesheet"/>
-    <script>
+    <script type="text/javascript">
         if(js_pl_id>0){
-            // This is an example script - don't forget to change it!
-            FS.identify(js_pl_id, { displayName: '<?= ( isset($session_en['en_name']) ? $session_en['en_name'] : '' ) ?>' });
+            //https://help.fullstory.com/hc/en-us/articles/360020623294-FS-setUserVars-Recording-custom-user-data
+            FS.identify(js_pl_id, {
+                displayName: '<?= ( isset($session_en['en_name']) ? $session_en['en_name'] : '' ) ?>',
+                uid: js_pl_id,
+                profileURL: 'https://mench.com/play/'+js_pl_id,
+            });
         }
     </script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92774608-1"></script>
-    <script>
+    <script type="text/javascript">
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
