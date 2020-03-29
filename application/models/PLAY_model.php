@@ -468,7 +468,7 @@ class PLAY_model extends CI_Model
         //PLAY STATUS
         $status_converter = array(
             6181 => 6176, //PLAY PUBLISH => READ PUBLISH
-            6180 => 6175, //PLAY DRAFT => READ DRAFT
+            6181 => 6175, //PLAY DRAFT => READ DRAFT
             6178 => 6173, //PLAY ARCHIVE => READ ARCHIVE
         );
         foreach($this->PLAY_model->en_fetch($query) as $en){
@@ -1144,7 +1144,7 @@ class PLAY_model extends CI_Model
 
     }
 
-    function en_verify_create($en_name, $ln_player_play_id = 0, $en_status_play_id = 6180 /* Player Drafting */, $en_icon = null){
+    function en_verify_create($en_name, $ln_player_play_id = 0, $en_status_play_id = 6181 /* Player Drafting */, $en_icon = null){
 
         //If PSID exists, make sure it's not a duplicate:
         if(!in_array($en_status_play_id, $this->config->item('en_ids_6177'))){

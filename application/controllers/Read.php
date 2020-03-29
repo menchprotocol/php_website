@@ -56,7 +56,27 @@ class Read extends CI_Controller
             //Should we check for auto next redirect if empty? Only if this is a selection:
             $append_url = null;
             if(in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_7712'))){
-                $append_url = '?next_if_empty=1';
+
+                $append_url = '?check_if_empty=1';
+
+            } elseif($ins[0]['in_type_play_id']==6677){
+
+                //Mark as read If not already:
+                $read_completes = $this->READ_model->ln_fetch(array(
+                    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+                    'ln_player_play_id' => $session_en['en_id'],
+                    'ln_parent_blog_id' => $ins[0]['in_id'],
+                ));
+
+                if(!count($read_completes)){
+                    $this->READ_model->read_is_complete($ins[0], array(
+                        'ln_type_play_id' => 4559, //READ MESSAGES
+                        'ln_player_play_id' => $session_en['en_id'],
+                        'ln_parent_blog_id' => $ins[0]['in_id'],
+                    ));
+                }
+
             }
 
 

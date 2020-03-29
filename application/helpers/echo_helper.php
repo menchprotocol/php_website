@@ -136,10 +136,10 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
 
             if($is_embed){
                 if(is_numeric(one_two_explode('start=','&',$url))){
-                    $start_sec = one_two_explode('start=','&',$url);
+                    $start_sec = intval(one_two_explode('start=','&',$url));
                 }
                 if(is_numeric(one_two_explode('end=','&',$url))){
-                    $end_sec = one_two_explode('end=','&',$url);
+                    $end_sec = intval(one_two_explode('end=','&',$url));
                 }
             }
 
@@ -148,7 +148,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
 
             //Inform User that this is a sliced video
             if ($start_sec || $end_sec) {
-                $embed_html_code .= '<div class="read-topic"><i class="fad fa-play-circle"></i>&nbsp;' . (($start_sec && $end_sec) ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'">WATCH THIS ' . echo_time_minutes(($end_sec - $start_sec)) . ' CLIP:</b>' : '<b>WATCH FROM ' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . ':</b>') . ':</div>';
+                $embed_html_code .= '<div class="read-topic"><i class="fad fa-play-circle"></i>&nbsp;' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'">WATCH THIS ' . echo_time_minutes(($end_sec - $start_sec)) . ' CLIP</b>' : '<b>WATCH FROM ' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
             }
 
             $embed_html_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
@@ -1532,7 +1532,9 @@ function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_pre
     $ui  = '<div class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
 
-
+    if($completion_rate['completion_percentage']>0 || $session_en){
+        $ui .= '<div class="progress-bg"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+    }
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
     $ui .= '<td>';

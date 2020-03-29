@@ -1073,6 +1073,12 @@ class READ_model extends CI_Model
                 'ln_order' => $in_rank, //Always place at the top of their reading list
             ));
 
+            //Mark as read:
+            $this->READ_model->read_is_complete($ins[0], array(
+                'ln_type_play_id' => 4559, //READ MESSAGES
+                'ln_player_play_id' => $en_id,
+                'ln_parent_blog_id' => $ins[0]['in_id'],
+            ));
 
             //Move other blogs down in the reading list:
             foreach($this->READ_model->ln_fetch(array(
@@ -1599,15 +1605,17 @@ class READ_model extends CI_Model
             'ln_parent_blog_id' => $ins[0]['in_id'],
         ));
 
+        $qualify_for_autocomplete = ( isset($_GET['check_if_empty']) && !count($in__children) || (count($in__children)==1 && $ins[0]['in_type_play_id'] == 6677)) && !count($in__messages) && !in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_12324'));
+
 
         //Is it incomplete & can it be instantly marked as complete?
         if (!count($read_completes) && in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_12330'))) {
 
             //We might be able to complete it now:
             //It can, let's process it accordingly for each type within @12330
-            if ($ins[0]['in_type_play_id'] == 6677) {
+            if ($ins[0]['in_type_play_id'] == 6677 && $qualify_for_autocomplete) {
 
-                //Log progress link:
+                //They should read and then complete...
                 array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
                     'ln_type_play_id' => 4559, //READ MESSAGES
                     'ln_player_play_id' => $recipient_en['en_id'],
@@ -1748,8 +1756,7 @@ class READ_model extends CI_Model
 
 
 
-
-        if(count($read_completes) && !count($in__children) && !count($in__messages) && isset($_GET['next_if_empty']) && !in_array($ins[0]['in_type_play_id'], $this->config->item('en_ids_12324'))){
+        if(count($read_completes) && $qualify_for_autocomplete){
             //Move to the next one as there is nothing to do here:
             if($push_message){
 

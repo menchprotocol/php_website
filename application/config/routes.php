@@ -14,7 +14,7 @@ $route['default_controller']        = "read/read_coin";
 $route['read']                      = "read/read_home";
 $route['read/next']                 = "read/read_next";
 $route['read/(:num)']               = "read/read_add/$1";
-$route['ledger']                       = "read/read_ledger";
+$route['ledger']                    = "read/read_ledger";
 $route['(:num)']                    = "read/read_coin/$1";
 $route['(:num)/next']               = "read/read_next/$1";
 

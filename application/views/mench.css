@@ -402,6 +402,17 @@ img.no-radius {
 
 .btn-play i, .btn-read i, .btn-blog i { color: #000000 !important; }
 
+.progress-bg{
+    margin-top:-3px;
+    width: 100% !important;
+    background-color: #AAA;
+}
+
+.progress-done{
+    height: 5px;
+    background-color: #FC1B44;
+}
+
 /* Color Palette @10604 */
 .isgrey, .isgrey a, .lightgrey      { color:#f4f5f7 !important; }
 
