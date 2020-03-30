@@ -2340,7 +2340,6 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         //List children so they know what's ahead:
         $max_and_list = ( $push_message ? 5 : 0 );
         $common_prefix = common_prefix($in__children, 'in_title', $in, $max_and_list);
-        $completion_rate = array();
         $has_content = ($prefix_statement || strlen($common_prefix));
 
         if($push_message){
@@ -2367,9 +2366,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
             if($push_message){
 
-                $completion_rate[$key] = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $child_in);
-
-                $message_content .= ($key+1).'. '.echo_in_title($child_in['in_title'], $push_message, $common_prefix).( $completion_rate[$key]['completion_percentage'] > 0 ? '<span class="'.superpower_active(10989).'">['.$completion_rate[$key]['completion_percentage'].'% DONE] </span>' : '' )."\n";
+                $message_content .= ($key+1).'. '.echo_in_title($child_in['in_title'], $push_message, $common_prefix)."\n";
 
 
                 //We know that the $next_step_message length cannot surpass the limit defined by facebook
@@ -2450,7 +2447,7 @@ function echo_in_next($in_id, $recipient_en, $push_message, $show_previous = tru
 
         if($show_previous){
             //PREVIOUS:
-            echo echo_in_previous($in_id, $recipient_en);
+            echo echo_in_read_previous($in_id, $recipient_en);
         }
 
         //NEXT:
@@ -2461,7 +2458,7 @@ function echo_in_next($in_id, $recipient_en, $push_message, $show_previous = tru
 
 }
 
-function echo_in_previous($in_id, $recipient_en){
+function echo_in_read_previous($in_id, $recipient_en){
 
     if(!$recipient_en || $recipient_en['en_id'] < 1){
         return null;
@@ -2484,7 +2481,9 @@ function echo_in_previous($in_id, $recipient_en){
 
     //Cleanup the list:
     $list_ids = array();
+    $player_list_id = array();
     foreach($player_list as $in_list){
+        $player_list_id[$in_list['in_id']] = $in_list;
         array_push($list_ids, $in_list['in_id']);
     }
 
@@ -2507,20 +2506,11 @@ function echo_in_previous($in_id, $recipient_en){
                 $ins_this = $CI->BLOG_model->in_fetch(array(
                     'in_id' => $parent_in_id,
                 ));
+
+
                 if (count($ins_this) > 0) {
-
-                    $completion_ui_rate = '';
-                    if (superpower_active(10989, true)) {
-                        //Calcullate completion time:
-                        $completion_rate = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $ins_this[0]);
-                        if ($completion_rate['completion_percentage'] > 0) {
-                            $completion_ui_rate = '<span title="' . $completion_rate['steps_completed'] . '/' . $completion_rate['steps_total'] . ' read" class="'.superpower_active(10989).'"> [' . $completion_rate['completion_percentage'] . '%]</span>';
-                        }
-                    }
-
                     array_push($breadcrumb_links, '/'.$parent_in_id);
-                    array_push($breadcrumb_items, '<a href="/' . $parent_in_id . '"class="list-group-item itemread no-side-padding montserrat"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span><span class="icon-block' . (in_array($ins_this[0]['in_status_play_id'], $CI->config->item('en_ids_7355')) ? ' hidden ' : '') . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_name'] . ': ' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_desc'] . '">' . $en_all_4737[$ins_this[0]['in_status_play_id']]['m_icon'] . '</span></span>' . $ins_this[0]['in_title'] . $completion_ui_rate . '</a>');
-
+                    array_push($breadcrumb_items, echo_in_read($player_list_id[$parent_in_id]));
                 }
 
                 if ($parent_in_id == $intersect) {

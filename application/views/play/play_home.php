@@ -43,7 +43,6 @@ $play_coins = $this->READ_model->ln_fetch(array(
 
 
 
-
     //Top Players
     echo '<div class="read-topic sequal-topic"><span class="icon-block">'.$en_all_11035[12437]['m_icon'].'</span>'.$en_all_11035[12437]['m_name'].'</div>';
     echo '<div id="load_leaderboard"></div>';
