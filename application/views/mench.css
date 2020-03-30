@@ -403,9 +403,9 @@ img.no-radius {
 .btn-play i, .btn-read i, .btn-blog i { color: #000000 !important; }
 
 .progress-bg{
-    margin-top:-3px;
+    margin: -10px 0 10px 0;
     width: 100% !important;
-    background-color: #AAA;
+    background-color: #AAAAAA;
 }
 
 .progress-done{
