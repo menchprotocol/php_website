@@ -1571,7 +1571,7 @@ function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_pre
     //Search for Blog Image:
     if($in_thumbnail || $show_editor){
 
-        $ui .= '<td class="featured-frame">';
+        $ui .= '<td class="featured-frame" '.( $show_editor ? ' style="padding-right:25px;" ' : '' ).'>';
         $ui .= $in_thumbnail;
 
         if($show_editor){
