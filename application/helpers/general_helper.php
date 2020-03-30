@@ -669,7 +669,7 @@ function current_mench($part1 = null){
     } else {
         return array(
             'x_id' => 6205,
-            'x_name' => 'read',
+            'x_name' => ( superpower_assigned() ? 'read' : '' ),
         );
     }
 }
@@ -679,7 +679,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
 
     //Authenticates logged-in users with their session information
     $CI =& get_instance();
-    $session_en = $CI->session->userdata('session_profile');
+    $session_en = superpower_assigned();
     $has_session = ( is_array($session_en) && count($session_en) > 0 );
 
     //Let's start checking various ways we can give user access:
