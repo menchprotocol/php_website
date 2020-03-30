@@ -1,7 +1,6 @@
 <?php
 
 $timestamp = time();
-$has_multiple_blogs = ( count($player_reads) >= 2 );
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 ?>
@@ -10,72 +9,34 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 <script>
     //Include some cached players:
     var clear_read_url = '<?= '/read/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('cred_password_salt') . $timestamp) ?>';
+
+    <?= ( count($player_reads) >= 2 ? '$(document).ready(function () {load_read_sort()});' : '' ) ?>
+
 </script>
 <script src="/application/views/read/read_home.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
 <?php
+echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[7347]['m_icon'].'</span>'.$en_all_11035[7347]['m_name'].'</div>';
+
+
 if(!$session_en){
 
     echo '<div style="padding:10px 0 20px;"><a href="/sign?url=/read" class="btn btn-read montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to get started.</div>';
 
 } else {
 
-    echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[7347]['m_icon'].'</span>'.$en_all_11035[7347]['m_name'].'</div>';
 
+    //List Reads:
     echo '<div id="actionplan_steps" class="list-group no-side-padding">';
     foreach ($player_reads as $priority => $ln) {
-
-        //Display row:
-        echo '<a id="ap_in_'.$ln['in_id'].'" href="/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item no-side-padding itemread '.( $has_multiple_blogs ? 'actionplan_sort' : '').'" style="padding-right: 25px !important;">';
-
-        echo echo_in_thumbnail($ln['in_id']);
-
-        echo '<span class="icon-block"><i class="fas fa-circle read" aria-hidden="true"></i></span>';
-        echo '<b class="actionplan-title montserrat montserrat blog-url in-title-'.$ln['in_id'].'">' . $ln['in_title'] . '</b>';
-
-
-        if(superpower_active(10989, true)){
-            $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $ln);
-            $metadata = unserialize($ln['in_metadata']);
-            if( isset($metadata['in__metadata_common_steps']) && count(array_flatten($metadata['in__metadata_common_steps'])) > 0){
-
-                echo '<div class="montserrat blog-info doupper '.superpower_active(10989).'"><span class="icon-block">&nbsp;</span>';
-                //It does have some children, let's show more details about it:
-                $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-
-                echo ( $has_time_estimate ? echo_time_range($ln, true).' READ ' : '' );
-                echo '<span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read">['.$completion_rate['completion_percentage'].'% DONE]</span> ';
-                echo '</div>';
-
-            }
-        }
-
-
-
-
-        echo '<div class="note-edit edit-off"><span class="show-on-hover">';
-
-        //Sort:
-        if($has_multiple_blogs){
-            echo '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort"></i></span>';
-        }
-
-        //Remove:
-        echo '<span title="Remove from list" data-toggle="tooltip" data-placement="left"><span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
-
-        echo '</span></div>';
-
-
-        echo '</a>';
+        echo echo_in_read($ln, false, null, null, null, true);
     }
-
     echo '</div>';
 
 
-
+    //Call to Actions:
     echo '<div style="margin-top: 10px;">';
-
 
         //Add New Read:
         echo '<a href="/" class="btn btn-read">'.$en_all_11035[12581]['m_icon'].' '.$en_all_11035[12581]['m_name'].'</a>&nbsp;&nbsp;';

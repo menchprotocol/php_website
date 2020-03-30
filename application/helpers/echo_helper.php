@@ -1511,12 +1511,15 @@ function echo_in_stat_play($in_id = 0, $en_id = 0){
 
 
 
-function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_prefix = null, $extra_class = null)
+function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_prefix = null, $extra_class = null, $show_editor = false)
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = superpower_assigned();
+
+    $metadata = unserialize($in['in_metadata']);
+    $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
     if($session_en){
         $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
@@ -1525,15 +1528,15 @@ function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_pre
     }
 
 
-    $can_click = ( ( $parent_is_or && in_array($in['in_status_play_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 );
+    $can_click = ( ( $parent_is_or && in_array($in['in_status_play_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor );
     $in_thumbnail = ( $can_click ?  echo_in_thumbnail($in['in_id']) : false );
 
 
-    $ui  = '<div class="list-group-item no-side-padding itemread '.$extra_class.'">';
-    $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
+    $ui  = '<div class="list-group-item no-side-padding '.( $show_editor ? 'actionplan_sort' : '' ).' itemread '.$extra_class.'">';
+    $ui .= ( $can_click ? '<a id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' href="/'.$in['in_id'] . '" class="itemread">' : '' );
 
     if($can_click && ($completion_rate['completion_percentage']>0 || $session_en)){
-        $ui .= '<div class="progress-bg"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+        $ui .= '<div class="progress-bg" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' blogs read'.( $has_time_estimate ? ' ('.echo_time_range($in, true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1566,8 +1569,24 @@ function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_pre
     $ui .= '</td>';
 
     //Search for Blog Image:
-    if($in_thumbnail){
-        $ui .= '<td class="featured-frame">'.$in_thumbnail.'</td>';
+    if($in_thumbnail || $show_editor){
+
+        $ui .= '<td class="featured-frame">';
+        $ui .= $in_thumbnail;
+
+        if($show_editor){
+            $ui .= '<div class="note-edit edit-off"><span class="show-on-hover">';
+
+            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort"></i></span>';
+
+            //Remove:
+            $ui .= '<span title="Remove from list" data-toggle="tooltip" data-placement="left"><span class="actionplan_remove" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
+
+            $ui .= '</span></div>';
+        }
+
+        $ui .= '</td>';
+
     }
 
     $ui .= '</tr></table>';

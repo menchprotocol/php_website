@@ -32,6 +32,9 @@ function clear_all_reads(){
 
 }
 
+
+
+
 $(document).ready(function () {
 
     //Watch for READING LIST removal click:
@@ -72,7 +75,9 @@ $(document).ready(function () {
 
     });
 
+});
 
+function load_read_sort(){
     //Load sorter:
     var sort = Sortable.create(document.getElementById('actionplan_steps'), {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
@@ -82,7 +87,5 @@ $(document).ready(function () {
             actionplan_sort_save();
         }
     });
-
-
-});
+}
 
