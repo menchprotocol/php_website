@@ -207,7 +207,7 @@ class Read extends CI_Controller
             'ln_type_play_id' => 4250, //UNIQUE BLOGS
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $blog_coins_growth_rate = format_percentage( $blog_coins_last_week[0]['total_coins'] / ( $blog_coins_last_week[0]['total_coins'] - $blog_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100;
+        $blog_coins_growth_rate = format_percentage(($blog_coins_last_week[0]['total_coins'] / ( $blog_coins_last_week[0]['total_coins'] - $blog_coins_new_last_week[0]['total_coins'] ) * 100) - 100);
 
 
         //READ
@@ -222,7 +222,7 @@ class Read extends CI_Controller
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $read_coins_growth_rate = format_percentage( $read_coins_last_week[0]['total_coins'] / ( $read_coins_last_week[0]['total_coins'] - $read_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100;
+        $read_coins_growth_rate = format_percentage(( $read_coins_last_week[0]['total_coins'] / ( $read_coins_last_week[0]['total_coins'] - $read_coins_new_last_week[0]['total_coins'] ) * 100)-100);
 
 
 
@@ -238,7 +238,7 @@ class Read extends CI_Controller
             'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $play_coins_growth_rate = format_percentage( $play_coins_last_week[0]['total_coins'] / ( $play_coins_last_week[0]['total_coins'] - $play_coins_new_last_week[0]['total_coins'] ) * 100 ) - 100;
+        $play_coins_growth_rate = format_percentage( ($play_coins_last_week[0]['total_coins'] / ( $play_coins_last_week[0]['total_coins'] - $play_coins_new_last_week[0]['total_coins'] ) * 100)-100);
 
 
         //ledger
@@ -249,7 +249,7 @@ class Read extends CI_Controller
         $ledger_transactions_last_week = $this->READ_model->ln_fetch(array(
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $ledger_transactions_growth_rate = format_percentage( $ledger_transactions_last_week[0]['total_coins'] / ( $ledger_transactions_last_week[0]['total_coins'] - $ledger_transactions_new_last_week[0]['total_coins'] ) * 100 ) - 100;
+        $ledger_transactions_growth_rate = format_percentage(($ledger_transactions_last_week[0]['total_coins'] / ( $ledger_transactions_last_week[0]['total_coins'] - $ledger_transactions_new_last_week[0]['total_coins'] ) * 100)-100);
 
 
 
