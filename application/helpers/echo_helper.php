@@ -1532,7 +1532,7 @@ function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_pre
     $ui  = '<div class="list-group-item no-side-padding itemread '.$extra_class.'">';
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
 
-    if($completion_rate['completion_percentage']>0 || $session_en){
+    if($can_click && ($completion_rate['completion_percentage']>0 || $session_en)){
         $ui .= '<div class="progress-bg"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
