@@ -1699,35 +1699,41 @@ class READ_model extends CI_Model
 
             if(!$push_message){
 
+                // % DONE
+                $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
+                $metadata = unserialize($ins[0]['in_metadata']);
+                $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+
                 //BLOG TITLE
                 echo '<div class="previous_reads">';
 
+
+                echo '<div class="progress-bg" title="You are '.$completion_rate['completion_percentage'].'% done as you have read '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($ins[0], true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+
+
                 echo '<div style="padding-top:6px;"><span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span><h1 class="inline-block block-one">' . echo_in_title($ins[0]['in_title']) . '</h1></div>';
 
-                if(superpower_active(10989, true)){
 
-                    // % DONE
-                    $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
+                if(count($read_completes) > 0){
 
-                    if($completion_rate['completion_percentage'] > 0 || count($read_completes) > 0){
+                    //Show More Information:
+                    echo '<div class="read-topic read-info-topic '.superpower_active(10964).'">';
+                    echo '<span class="info-item inline-block">';
+                    echo '<div class="icon-block">&nbsp;</div>';
 
-                        //Show More Information:
-                        echo '<div class="read-topic read-info-topic"><span class="info-item inline-block"><div class="icon-block">&nbsp;</div>';
-                        if($completion_rate['completion_percentage'] > 0){
-                            echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' read">['.$completion_rate['completion_percentage'].'% DONE]</span> ';
-                        }
+                    //Show all completions:
+                    $en_all_12229 = $this->config->item('en_all_12229');
+                    foreach($read_completes as $read_ledger){
 
-                        //Show all completions:
-                        $en_all_12229 = $this->config->item('en_all_12229');
-                        foreach($read_completes as $read_ledger){
+                        echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_ledger['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_ledger['ln_id'].' ['.$en_all_12229[$read_ledger['ln_type_play_id']]['m_name'].'] ['.$read_ledger['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_ledger['ln_type_play_id']]['m_icon'].'</span></span>';
 
-                            echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_ledger['ln_type_play_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_ledger['ln_id'].' ['.$en_all_12229[$read_ledger['ln_type_play_id']]['m_name'].'] ['.$read_ledger['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_ledger['ln_type_play_id']]['m_icon'].'</span></span>';
+                        $previous_answers .= ( strlen($read_ledger['ln_content']) ? '<div class="previous_answer">'.$this->READ_model->dispatch_message($read_ledger['ln_content']).'</div>' : '' );
 
-                            $previous_answers .= ( strlen($read_ledger['ln_content']) ? '<div class="previous_answer">'.$this->READ_model->dispatch_message($read_ledger['ln_content']).'</div>' : '' );
-                        }
-
-                        echo '</span></div>';
                     }
+
+                    echo '</span>';
+                    echo '</div>';
+
                 }
 
                 echo '</div>';

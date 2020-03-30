@@ -1464,7 +1464,7 @@ function echo_in_stat_read($in = array(), $en = array()){
             if(isset($item['ln_type_play_id']) && in_array($item['ln_type_play_id'], $CI->config->item('en_ids_12227'))){
                 $en_all_12227 = $CI->config->item('en_all_12227');
                 $ui .= '<div class="space-content">';
-                $ui .= '<span class="' . superpower_active(10989).'">' . $en_all_12227[$item['ln_type_play_id']]['m_icon'] . '&nbsp;</span>';
+                $ui .= '<span class="' . superpower_active(10964).'">' . $en_all_12227[$item['ln_type_play_id']]['m_icon'] . '&nbsp;</span>';
                 $ui .= '</div>';
             }
         }
@@ -1536,7 +1536,7 @@ function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_pre
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
 
     if($can_click && ($completion_rate['completion_percentage']>0 || $session_en)){
-        $ui .= '<div class="progress-bg" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' blogs read'.( $has_time_estimate ? ' ('.echo_time_range($in, true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+        $ui .= '<div class="progress-bg" title="You are '.$completion_rate['completion_percentage'].'% done as you have read '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($in, true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1548,18 +1548,12 @@ function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_pre
     $ui .= '<b class="montserrat blog-url title-block '.( $in_thumbnail ? 'title-no-right' : '' ).'">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
 
 
-
     //Description:
     if($can_click){
         $in_description = echo_in_description($in['in_id']);
         if($in_description){
             $ui .= '<div class="blog-desc"><span class="icon-block">&nbsp;</span>'.$in_description.'</div>';
         }
-    }
-
-    //Show completion if glasses are on:
-    if($completion_rate['completion_percentage'] > 0){
-        $ui .= '<div class="blog-info montserrat doupper '.superpower_active(10989).'"><span class="icon-block">&nbsp;</span><span title="'.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs read">['.$completion_rate['completion_percentage'].'% done]</span></div>';
     }
 
     if($footnotes){
@@ -2344,13 +2338,9 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         }
 
         //List children so they know what's ahead:
-        $found_incomplete = false;
-        $trigger_show_all = 0;
-        $found_upcoming = 0;
         $max_and_list = ( $push_message ? 5 : 0 );
         $common_prefix = common_prefix($in__children, 'in_title', $in, $max_and_list);
         $completion_rate = array();
-        $next_key = -1;
         $has_content = ($prefix_statement || strlen($common_prefix));
 
         if($push_message){
@@ -2371,40 +2361,16 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         }
 
 
-        //First analyze overall list to see how things are:
-        foreach($in__children as $key => $child_in) {
-            $completion_rate[$key] = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $child_in);
-            //Show if All reads are read or none of them are read
-            $trigger_show_all += ( $completion_rate[$key]['completion_percentage']==100 || $completion_rate[$key]['completion_percentage']==0 ? 1 : 0 );
-            if($completion_rate[$key]['completion_percentage']<100 && !$found_incomplete){
-                //We found the next incomplete step:
-                $found_incomplete = true;
-                $next_key = $key;
-            } else {
-                $found_upcoming++;
-            }
-        }
 
-        //If all done, everything would be visible:
-        $all_done = ( $trigger_show_all == count($in__children) );
-
-        if($next_key < 0){
-            $found_upcoming--;
-        }
 
         foreach($in__children as $key => $child_in){
 
             if($push_message){
 
+                $completion_rate[$key] = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $child_in);
+
                 $message_content .= ($key+1).'. '.echo_in_title($child_in['in_title'], $push_message, $common_prefix).( $completion_rate[$key]['completion_percentage'] > 0 ? '<span class="'.superpower_active(10989).'">['.$completion_rate[$key]['completion_percentage'].'% DONE] </span>' : '' )."\n";
 
-                if($next_key==$key){
-                    array_push($msg_quick_reply, array(
-                        'content_type' => 'text',
-                        'title' => 'NEXT',
-                        'payload' => ( $in_reads ? 'GONEXT_'.$child_in['in_id'] : 'ADD_RECOMMENDED_' . $in['in_id']. '_' . $child_in['in_id'] ),
-                    ));
-                }
 
                 //We know that the $next_step_message length cannot surpass the limit defined by facebook
                 if (($key >= $max_and_list || strlen($message_content) > (config_var(11074) - 150))) {
@@ -2416,7 +2382,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
             } else {
 
-                echo echo_in_read($child_in, false, null, $common_prefix, ( $next_key>=0 && $next_key!=$key && !$all_done ? 'hidden is_upcoming' : '' ));
+                echo echo_in_read($child_in, false, null, $common_prefix);
 
             }
         }
@@ -2433,9 +2399,6 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         } else {
 
             echo '</div>';
-            if($found_upcoming > 0 && !$all_done){
-                echo '<div class="is_upcoming montserrat" style="padding:5px 0 5px 0;"><a href="javascript:void(0);" onclick="$(\'.is_upcoming\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-plus-circle read"></i></span>'.$found_upcoming.' MORE</a></div>';
-            }
 
         }
     }
