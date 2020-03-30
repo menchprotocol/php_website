@@ -659,16 +659,19 @@ function current_mench($part1 = null){
     if($part1=='play' || $part1=='source'){
         return array(
             'x_id' => 4536,
+            'x_class' => 'play',
             'x_name' => 'play',
         );
     } elseif($part1=='blog'){
         return array(
             'x_id' => 4535,
+            'x_class' => 'blog',
             'x_name' => 'blog',
         );
     } else {
         return array(
             'x_id' => 6205,
+            'x_class' => 'read',
             'x_name' => ( superpower_assigned() ? 'read' : '' ),
         );
     }

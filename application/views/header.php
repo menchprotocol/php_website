@@ -44,7 +44,7 @@ if($found_at > 1){
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/img/<?= $current_mench['x_name'] ?>.png">
+    <link rel="icon" type="image/png" href="/img/<?= $current_mench['x_class'] ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= (isset($title) ? $title . ' | ' : '') ?>MENCH</title>
 
@@ -105,7 +105,7 @@ if($found_at > 1){
     </script>
 </head>
 
-<body class="<?= 'to'.$current_mench['x_name'] ?>">
+<body class="<?= 'to'.$current_mench['x_class'] ?>">
 
 <?php
 //Any message we need to show here?
@@ -157,9 +157,9 @@ if(!isset($hide_header)){
                                 }
                             }
 
-                            echo '<a class="mench_coin ' . $this_mench['x_name'] . ' border-' . $this_mench['x_name'] . ($is_current ? ' focustab ' : '') .'" ' . $url . '>';
+                            echo '<a class="mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current ? ' focustab ' : '') .'" ' . $url . '>';
                             echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
-                            echo '<span class="montserrat ' . $this_mench['x_name'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
+                            echo '<span class="montserrat ' . $this_mench['x_class'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
                             echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
                             echo '</a>';
 
