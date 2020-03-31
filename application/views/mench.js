@@ -453,7 +453,6 @@ $(document).ready(function () {
         update_coin_counter();
 
         setInterval(update_coin_counter, js_en_all_6404[( js_session_superpowers_assigned.includes(10939) ? 12210 : 12130 )]['m_desc']);
-
     }
 
 
