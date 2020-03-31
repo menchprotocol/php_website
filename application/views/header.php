@@ -44,7 +44,7 @@ if($found_at > 1){
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/img/<?= $current_mench['x_name'] ?>.png">
+    <link rel="icon" type="image/png" href="/img/<?= $current_mench['x_class'] ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= (isset($title) ? $title . ' | ' : '') ?>MENCH</title>
 
@@ -105,7 +105,7 @@ if($found_at > 1){
     </script>
 </head>
 
-<body class="<?= 'to'.$current_mench['x_name'] ?>">
+<body class="<?= 'to'.$current_mench['x_class'] ?>">
 
 <?php
 //Any message we need to show here?
@@ -134,42 +134,35 @@ if(!isset($hide_header)){
                 <tr>
 
                     <?php
-                    if (!isset($session_en['en_id'])) {
-                        echo '<td class="block-link block-logo"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /></a></td>';
-                    }
+                    //MENCH LOGO
+                    //if (!isset($session_en['en_id'])) { echo '<td class="block-link block-logo"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /></a></td>'; }
                     ?>
 
                     <td>
 
                         <?php
                         echo '<div class="main_nav mench_nav">';
-                        if (isset($session_en['en_id'])) {
+                        foreach ($en_all_2738_mench as $en_id => $m) {
 
-                            $MENCHcolumn1 = 0;
-                            foreach ($en_all_2738_mench as $en_id => $m) {
+                            $url_extension = null;
+                            $is_current = ($current_mench['x_id'] == $en_id);
+                            $this_mench = current_mench(strtolower($m['m_name']));
+                            $url = 'href="/' . $this_mench['x_name'].'"';
 
-                                $MENCHcolumn1++;
-                                $url_extension = null;
-                                $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
-                                $is_current = ($current_mench['x_id'] == $en_id);
-                                $this_mench = current_mench(strtolower($m['m_name']));
-                                $url = 'href="/' . $this_mench['x_name'].'"';
-
-                                if (!$is_current && isset($in) && in_array($this_mench['x_name'], array('read', 'blog'))) {
-                                    if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'blog') {
-                                        $url = 'href="/blog/' . $in['in_id'].'"';
-                                    } elseif ($current_mench['x_name'] == 'blog' && $this_mench['x_name'] == 'read') {
-                                        $url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
-                                    }
+                            if (!$is_current && isset($in) && in_array($this_mench['x_name'], array('read', 'blog'))) {
+                                if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'blog') {
+                                    $url = 'href="/blog/' . $in['in_id'].'"';
+                                } elseif ($current_mench['x_name'] == 'blog' && $this_mench['x_name'] == 'read') {
+                                    $url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
                                 }
-
-                                echo '<a class="mench_coin ' . $this_mench['x_name'] . ' border-' . $this_mench['x_name'] . ($is_current ? ' focustab ' : '') . ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" ' . $url . '>';
-                                echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
-                                echo '<span class="montserrat ' . $this_mench['x_name'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
-                                echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
-                                echo '</a>';
-
                             }
+
+                            echo '<a class="mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current ? ' focustab ' : '') .'" ' . $url . '>';
+                            echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
+                            echo '<span class="montserrat ' . $this_mench['x_class'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
+                            echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
+                            echo '</a>';
+
                         }
                         echo '</div>';
                         ?>

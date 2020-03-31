@@ -2854,14 +2854,31 @@ fragment PostListingItemSidebar_post on Post {
 
         $session_en = superpower_assigned();
         if (!$session_en) {
+            //Return All Count:
+
+            //COUNT COINS
+            $read_coins = $this->READ_model->ln_fetch(array(
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+            $blog_coins = $this->READ_model->ln_fetch(array(
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_play_id' => 4250, //UNIQUE BLOGS
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+            $play_coins = $this->READ_model->ln_fetch(array(
+                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+
             return echo_json(array(
-                'play_count' => 0,
-                'play_raw_count' => 0,
-                'blog_count' => 0,
-                'blog_raw_count' => 0,
-                'read_count' => 0,
-                'read_raw_count' => 0
+                'play_count' => echo_number($play_coins[0]['total_coins']),
+                'play_raw_count' => $play_coins[0]['total_coins'],
+                'blog_count' => echo_number($blog_coins[0]['total_coins']),
+                'blog_raw_count' => $blog_coins[0]['total_coins'],
+                'read_count' => echo_number($read_coins[0]['total_coins']),
+                'read_raw_count' => $read_coins[0]['total_coins']
             ));
+
         }
 
         $play_coin_count = 1;

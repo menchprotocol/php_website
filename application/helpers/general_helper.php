@@ -659,17 +659,20 @@ function current_mench($part1 = null){
     if($part1=='play' || $part1=='source'){
         return array(
             'x_id' => 4536,
+            'x_class' => 'play',
             'x_name' => 'play',
         );
     } elseif($part1=='blog'){
         return array(
             'x_id' => 4535,
+            'x_class' => 'blog',
             'x_name' => 'blog',
         );
     } else {
         return array(
             'x_id' => 6205,
-            'x_name' => 'read',
+            'x_class' => 'read',
+            'x_name' => ( superpower_assigned() ? 'read' : '' ),
         );
     }
 }
@@ -679,7 +682,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
 
     //Authenticates logged-in users with their session information
     $CI =& get_instance();
-    $session_en = $CI->session->userdata('session_profile');
+    $session_en = superpower_assigned();
     $has_session = ( is_array($session_en) && count($session_en) > 0 );
 
     //Let's start checking various ways we can give user access:
