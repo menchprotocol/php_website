@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-01 08:39:19 PST
+//Generated 2020-04-01 10:44:33 PST
 
 //SIGN IN/UP:
 $config['en_ids_4269'] = array(3288,6197,3286);
@@ -841,7 +841,7 @@ $config['en_all_4535'] = array(
         'm_parents' => array(4535),
     ),
     6768 => array(
-        'm_icon' => '<i class="far fa-cog blog"></i>',
+        'm_icon' => '<i class="far fa-cog blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG SETTINGS',
         'm_desc' => '',
         'm_parents' => array(4535),
@@ -3141,7 +3141,7 @@ $config['en_all_11081'] = array(
 );
 
 //PLATFORM VARIABLES:
-$config['en_ids_6232'] = array(6202,6159,4356,4737,4736,4486,7585,5008,6207,6203,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,4369,4429,7694,4367,4358,4372,6103,4368,4371,4366,4370,4364,6186,4362,4593,6198,6160,6172,6197,6177,4739,4735);
+$config['en_ids_6232'] = array(6202,6159,4356,4737,4736,4486,7585,6207,6203,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,4369,4429,7694,4367,4358,4372,6103,4368,4371,4366,4370,4364,6186,4362,4593,6198,6160,6172,6197,6177,4739,4735);
 $config['en_all_6232'] = array(
     6202 => array(
         'm_icon' => '<i class="fas fa-plus-circle "></i>',
@@ -3184,12 +3184,6 @@ $config['en_all_6232'] = array(
         'm_name' => 'BLOG TYPE',
         'm_desc' => 'in_type_play_id',
         'm_parents' => array(11018,12079,11054,6204,10651,6160,6194,6232,4527,6201),
-    ),
-    5008 => array(
-        'm_icon' => '<i class="fad fa-tools " aria-hidden="true"></i>',
-        'm_name' => 'BLOG VERB',
-        'm_desc' => 'in_verb_play_id',
-        'm_parents' => array(6232,6201,6768,4736,7777,6160),
     ),
     6207 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
@@ -5927,7 +5921,7 @@ $config['en_all_6206'] = array(
 );
 
 //BLOG TABLE:
-$config['en_ids_6201'] = array(6202,6159,4356,4737,4736,7585,5008);
+$config['en_ids_6201'] = array(6202,6159,4356,4737,4736,7585);
 $config['en_all_6201'] = array(
     6202 => array(
         'm_icon' => '<i class="fas fa-plus-circle "></i>',
@@ -5964,12 +5958,6 @@ $config['en_all_6201'] = array(
         'm_name' => 'TYPE',
         'm_desc' => '',
         'm_parents' => array(11018,12079,11054,6204,10651,6160,6194,6232,4527,6201),
-    ),
-    5008 => array(
-        'm_icon' => '<i class="fad fa-tools " aria-hidden="true"></i>',
-        'm_name' => 'VERB',
-        'm_desc' => '',
-        'm_parents' => array(6232,6201,6768,4736,7777,6160),
     ),
 );
 
