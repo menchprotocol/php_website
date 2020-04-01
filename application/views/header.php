@@ -40,7 +40,7 @@ if($found_at > 1){
 }
 
 ?><!doctype html>
-<html lang="en">
+<html lang="en" >
 <head>
 
     <meta charset="utf-8" />
@@ -51,9 +51,9 @@ if($found_at > 1){
     <?php
     echo '<script type="text/javascript">';
 
-    echo ' var js_session_superpowers_assigned = ' . json_encode( isset($session_en['en_id']) && count($this->session->userdata('session_superpowers_assigned')) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
-    echo ' var js_pl_id = ' . ( isset($session_en['en_id']) ? $session_en['en_id'] : 0 ) . '; ';
-    echo ' var js_pl_name = \'' . ( isset($session_en['en_name']) ? $session_en['en_name'] : 'Unknown' ) . '\'; ';
+    echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_en && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
+    echo ' var js_pl_id = ' . ( $session_en ? $session_en['en_id'] : 0 ) . '; ';
+    echo ' var js_pl_name = \'' . ( $session_en ? $session_en['en_name'] : 'Unknown' ) . '\'; ';
 
     //LOAD JS CACHE:
     foreach($this->config->item('en_all_11054') as $en_id => $m){
