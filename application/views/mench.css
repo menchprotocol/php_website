@@ -407,6 +407,10 @@ img.no-radius {
     width: 100% !important;
 }
 
+.no-top-margin{
+    margin-top: 0;
+}
+
 .progress-done{
     height: 5px;
     background-color: #FC1B44;

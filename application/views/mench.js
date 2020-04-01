@@ -524,7 +524,7 @@ var update_coin_counter = function( ) {
     var fadeout_speed = 21;
 
     //COUNT COINS:
-    $.post("/play/update_coin_counter", { }, function (data) {
+    $.post("/mench/update_coin_counter", { }, function (data) {
 
         //PLAY
         if(data.play_count != $('.play .current_count').html()){

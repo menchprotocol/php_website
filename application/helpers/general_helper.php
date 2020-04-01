@@ -652,10 +652,13 @@ function extract_icon_color($en_icon){
 }
 
 function current_mench($part1 = null){
+
     $CI =& get_instance();
+
     if(!$part1){
         $part1 = $CI->uri->segment(1);
     }
+
     if($part1=='play' || $part1=='source'){
         return array(
             'x_id' => 4536,
@@ -675,6 +678,7 @@ function current_mench($part1 = null){
             'x_name' => ( superpower_assigned() ? 'read' : '' ),
         );
     }
+
 }
 
 function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
