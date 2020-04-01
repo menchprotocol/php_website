@@ -51,7 +51,7 @@ if($found_at > 1){
     <?php
     echo '<script type="text/javascript">';
 
-    echo ' var js_session_superpowers_assigned = ' . json_encode( count($this->session->userdata('session_superpowers_assigned')) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
+    echo ' var js_session_superpowers_assigned = ' . json_encode( isset($session_en['en_id']) && count($this->session->userdata('session_superpowers_assigned')) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
     echo ' var js_pl_id = ' . ( isset($session_en['en_id']) ? $session_en['en_id'] : 0 ) . '; ';
     echo ' var js_pl_name = \'' . ( isset($session_en['en_name']) ? $session_en['en_name'] : 'Unknown' ) . '\'; ';
 
