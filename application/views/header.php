@@ -105,7 +105,7 @@ if($found_at > 1){
     </script>
 </head>
 
-<body class="<?= 'to'.$current_mench['x_class'] ?> body">
+<body class="<?= 'to'.$current_mench['x_class'] ?>">
 
 <?php
 //Any message we need to show here?
