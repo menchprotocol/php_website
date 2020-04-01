@@ -49,7 +49,7 @@ if($found_at > 1){
     <title><?= ( isset($title) ? $title . ' | ' : '' ) ?>MENCH</title>
 
     <?php
-    echo '<script type="text/javascript" >';
+    echo '<script type="text/javascript">';
 
     echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_en && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
     echo ' var js_pl_id = ' . ( $session_en ? $session_en['en_id'] : 0 ) . '; ';
@@ -105,7 +105,7 @@ if($found_at > 1){
     </script>
 </head>
 
-<body class="<?= 'to'.$current_mench['x_class'] ?>">
+<body class="<?= 'to'.$current_mench['x_class'] ?> body">
 
 <?php
 //Any message we need to show here?
