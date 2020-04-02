@@ -1657,7 +1657,7 @@ function echo_in_thumbnail($in_id){
         )) as $embed_video){
             $youtube_id = extract_youtube_id($embed_video['ln_content']);
             if(strlen($youtube_id) > 0){
-                $embed_code .= '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="http://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
+                $embed_code .= '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="https://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
             }
             if($embed_code){
                 break;
