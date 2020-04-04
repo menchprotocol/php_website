@@ -407,9 +407,8 @@ img.no-radius {
     width: 100% !important;
 }
 
-.some-top-margin{
+.no-horizonal-margin{
     margin-top: 0 !important;
-    padding-top: 2px;
     margin-bottom: 0 !important;
 }
 .read-connector{
@@ -1278,6 +1277,9 @@ label {
 
 /* RESPONSIVE */
 @media (max-width:767px) {
+    body{
+        margin: 44px 0 0;
+    }
     .mini-hidden{
         display: none;
     }
