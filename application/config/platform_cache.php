@@ -3,15 +3,19 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
-* Keep a cache of certain parts of the Blog tree for faster processing
-* So we don't have to make DB calls to figure them out every time!
-* See here for all players cached: https://mench.com/play/4527
-*
-* Note: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
+* Keep a cache of certain parts of the tree for faster processing
+* See here for more details: https://mench.com/play/4527
 *
 */
 
-//Generated 2020-04-02 14:19:15 PST
+//Generated 2020-04-03 17:20:26 PST
+
+//PLATFORM STATS:
+$config['ps_read_count'] = 120988;
+$config['ps_blog_count'] = 3827;
+$config['ps_play_count'] = 9231;
+
+
 
 //SIGN IN/UP:
 $config['en_ids_4269'] = array(3288,6197,3286);
@@ -3479,7 +3483,7 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12176,12156,11071,12210,12130,12355,11077,11074,12124,11076,11075,11064,11986,11065,11063,11079,11060,12363,11073,11066,11057,11056,12331,12113,12427,12088,11072,12232,11061,11162,11163,12209,12208,12568,12565);
+$config['en_ids_6404'] = array(12176,12156,11071,12355,11077,11074,12124,11076,11075,11064,11986,11065,11063,11079,11060,12363,11073,11066,11057,11056,12331,12113,12427,12088,11072,12232,11061,11162,11163,12209,12208,12568,12565);
 $config['en_all_6404'] = array(
     12176 => array(
         'm_icon' => '<i class="fad fa-clock blog" aria-hidden="true"></i>',
@@ -3497,18 +3501,6 @@ $config['en_all_6404'] = array(
         'm_icon' => '<i class="fad fa-ruler-horizontal blog"></i>',
         'm_name' => 'BLOG TITLE MAX LENGTH',
         'm_desc' => '89',
-        'm_parents' => array(6404),
-    ),
-    12210 => array(
-        'm_icon' => '',
-        'm_name' => 'COINS REFRESH MILLISECONDS BLOGGER',
-        'm_desc' => '4181',
-        'm_parents' => array(6404),
-    ),
-    12130 => array(
-        'm_icon' => '',
-        'm_name' => 'COINS REFRESH MILLISECONDS READER',
-        'm_desc' => '121393',
         'm_parents' => array(6404),
     ),
     12355 => array(
@@ -3580,7 +3572,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.3151',
+        'm_desc' => '1.318',
         'm_parents' => array(6404),
     ),
     12363 => array(
