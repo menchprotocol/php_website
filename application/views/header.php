@@ -135,34 +135,61 @@ if(!isset($hide_header)){
 
                     <?php
                     //MENCH LOGO
-                    //if (!isset($session_en['en_id'])) { echo '<td class="block-link block-logo"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /></a></td>'; }
+                    if (!isset($session_en['en_id'])) { echo '<td class="block-link block-logo"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /></a></td>'; }
                     ?>
 
                     <td>
 
                         <?php
                         echo '<div class="main_nav mench_nav">';
-                        foreach ($en_all_2738_mench as $en_id => $m) {
+                        if(isset($session_en['en_id'])){
 
-                            $url_extension = null;
-                            $is_current = ($current_mench['x_id'] == $en_id);
-                            $this_mench = current_mench(strtolower($m['m_name']));
-                            $url = 'href="/' . $this_mench['x_name'].'"';
+                            //Count Player Coins:
+                            $play_coins = $this->READ_model->ln_fetch(array(
+                                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
+                                'ln_player_play_id' => $session_en['en_id'],
+                            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+                            $blog_coins = $this->READ_model->ln_fetch(array(
+                                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+                                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //BLOG COIN
+                                'ln_parent_play_id' => $session_en['en_id'],
+                            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+                            $read_coins = $this->READ_model->ln_fetch(array(
+                                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+                                'ln_player_play_id' => $session_en['en_id'],
+                            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+                            $player_stats = array(
+                                'play_count' => $play_coins[0]['total_coins'],
+                                'blog_count' => $blog_coins[0]['total_coins'],
+                                'read_count' => $read_coins[0]['total_coins']
+                            );
 
-                            if (!$is_current && isset($in) && in_array($this_mench['x_name'], array('read', 'blog'))) {
-                                if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'blog') {
-                                    $url = 'href="/blog/' . $in['in_id'].'"';
-                                } elseif ($current_mench['x_name'] == 'blog' && $this_mench['x_name'] == 'read') {
-                                    $url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
+                            //Show Mench Menu:
+                            foreach ($en_all_2738_mench as $en_id => $m) {
+
+                                $url_extension = null;
+                                $is_current = ($current_mench['x_id'] == $en_id);
+                                $this_mench = current_mench(strtolower($m['m_name']));
+                                $url = 'href="/' . $this_mench['x_name'].'"';
+
+                                if (!$is_current && isset($in) && in_array($this_mench['x_name'], array('read', 'blog'))) {
+                                    if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'blog') {
+                                        $url = 'href="/blog/' . $in['in_id'].'"';
+                                    } elseif ($current_mench['x_name'] == 'blog' && $this_mench['x_name'] == 'read') {
+                                        $url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
+                                    }
                                 }
+
+                                echo '<a class="mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current ? ' focustab ' : '') .'" ' . $url . '>';
+                                echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
+                                echo '<span class="montserrat ' . $this_mench['x_class'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
+                                echo '<span class="montserrat" title="'.$player_stats[$this_mench['x_name'].'_count'].'">'.echo_number($player_stats[$this_mench['x_name'].'_count']).'</span>';
+                                echo '</a>';
+
                             }
-
-                            echo '<a class="mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current ? ' focustab ' : '') .'" ' . $url . '>';
-                            echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
-                            echo '<span class="montserrat ' . $this_mench['x_class'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
-                            echo '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span>';
-                            echo '</a>';
-
                         }
                         echo '</div>';
                         ?>

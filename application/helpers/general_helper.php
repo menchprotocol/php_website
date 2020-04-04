@@ -687,7 +687,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
     //Authenticates logged-in users with their session information
     $CI =& get_instance();
     $session_en = $CI->session->userdata('session_profile');
-    $has_session = ( is_array($session_en) && count($session_en) > 0 );
+    $has_session = ( is_array($session_en) && count($session_en) > 0 && isset($session_en['en_id']) );
 
     //Let's start checking various ways we can give user access:
     if ($has_session && !$superpower_en_id) {
@@ -711,7 +711,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
     } else {
 
         //Block access:
-        if(isset($session_en['en_id'])){
+        if($has_session){
             $goto_url = '/play/'.$session_en['en_id'];
             $redirect_message = null;
         } else {

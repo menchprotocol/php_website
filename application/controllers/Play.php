@@ -2873,16 +2873,39 @@ fragment PostListingItemSidebar_post on Post {
         echo 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'.'<br /><br />';
 
         echo '/*<br />
- * Keep a cache of certain parts of the Blog tree for faster processing<br />
- * So we don\'t have to make DB calls to figure them out every time!<br />
- * See here for all players cached: https://mench.com/play/4527<br />
- *<br />
- * Note: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base<br />
+ * Keep a cache of certain parts of the tree for faster processing<br />
+ * See here for more details: https://mench.com/play/4527<br />
  *<br />
  */<br /><br />';
         echo '//Generated '.date("Y-m-d H:i:s").' PST<br />';
 
 
+
+
+        //PLATFORM STATS
+        $read_coins = $this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+        $blog_coins = $this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id' => 4250, //UNIQUE BLOGS
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+        $play_coins = $this->READ_model->ln_fetch(array(
+            'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+        echo '<br />//PLATFORM STATS:<br />';
+        echo '$config[\'ps_read_count\'] = '.$read_coins[0]['total_coins'].';<br />';
+        echo '$config[\'ps_blog_count\'] = '.$blog_coins[0]['total_coins'].';<br />';
+        echo '$config[\'ps_play_count\'] = '.$play_coins[0]['total_coins'].';<br />';
+        echo '<br /><br />';
+
+
+
+
+
+        //CONFIG VARS
         foreach($config_ens as $en){
 
             //Now fetch all its children:

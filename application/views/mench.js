@@ -446,11 +446,6 @@ function toggle_search(){
 
 $(document).ready(function () {
 
-    //Update stats on load:
-    update_coin_counter();
-
-    setInterval(update_coin_counter, js_en_all_6404[( js_session_superpowers_assigned.includes(10939) ? 12210 : 12130 )]['m_desc']);
-
 
     //For the S shortcut to load search:
     $("#mench_search").focus(function() {
@@ -512,34 +507,6 @@ $(document).ready(function () {
     });
 
 });
-
-
-//Update page count stats & refresh them visually once they change:
-var update_coin_counter = function( ) {
-
-    var fadeout_speed = 21;
-
-    //COUNT COINS:
-    $.post("/mench/update_coin_counter", { }, function (data) {
-
-        //PLAY
-        if(data.play_count != $('.play .current_count').html()){
-            $('.play .current_count').html(data.play_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
-        }
-
-        //READ
-        if(data.read_count != $('.read .current_count').html()){
-            $('.read .current_count').html(data.read_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
-        }
-
-        //BLOG
-        if(data.blog_count != $('.blog .current_count').html()){
-            $('.blog .current_count').html(data.blog_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
-        }
-
-    });
-
-};
 
 
 function add_feedback(){
