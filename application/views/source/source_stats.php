@@ -36,7 +36,7 @@ foreach($this->BLOG_model->in_fetch(array(
     $completion_rate = $completed_users[0]['totals']/$enrolled_users[0]['totals']*100;
 
     $course_details .= '<tr class="panel-title down-border">';
-    $course_details .= '<td style="text-align: left;"><a href="/'.$in_published_tree['in_id'].'">'.echo_in_title($in_published_tree['in_title']).'</a></td>';
+    $course_details .= '<td style="text-align: left;"><a href="/'.$in_published_tree['in_id'].'">'.echo_in_title($in_published_tree).'</a></td>';
     $course_details .= '<td style="text-align: left;">'.number_format($enrolled_users[0]['totals'], 0).'</td>';
     $course_details .= '<td style="text-align: left;">'.number_format($completion_rate, ( $completion_rate<100 && $completion_rate>0 ? 1 : 0 )).'%</td>';
     $course_details .= '</tr>';

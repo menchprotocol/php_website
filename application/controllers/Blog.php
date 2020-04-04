@@ -181,7 +181,7 @@ class Blog extends CI_Controller {
         //Return report:
         return echo_json(array(
             'status' => 1,
-            'message' => '<h3>'.$en_all_7585[$ins[0]['in_type_source_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_source_id']]['m_icon'].' '.echo_in_title($ins[0]['in_title'], false).'</h3>'.echo_in_scores_answer($_POST['starting_in'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_source_id']),
+            'message' => '<h3>'.$en_all_7585[$ins[0]['in_type_source_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_source_id']]['m_icon'].' '.echo_in_title($ins[0], false).'</h3>'.echo_in_scores_answer($_POST['starting_in'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_source_id']),
         ));
 
     }

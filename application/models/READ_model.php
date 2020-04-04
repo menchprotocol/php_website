@@ -1549,7 +1549,7 @@ class READ_model extends CI_Model
             } else {
 
                 //BLOG TITLE
-                echo '<div style="padding-top:6px;">'.( $recipient_en['en_id']>0 || 1 ? '<span class="icon-block top-icon"><i class="fas fa-circle read"></i></span>' : '<span class="icon-block">&nbsp;</span>' ).'<h1 class="inline-block block-one">' . echo_in_title($ins[0]['in_title']) . '</h1></div>';
+                echo '<div style="padding-top:6px;">'.( $recipient_en['en_id']>0 || 1 ? '<span class="icon-block top-icon"><i class="fas fa-circle read"></i></span>' : '<span class="icon-block">&nbsp;</span>' ).'<h1 class="inline-block block-one">' . echo_in_title($ins[0]) . '</h1></div>';
 
 
                 foreach ($in__messages as $message_ln) {
@@ -1714,7 +1714,7 @@ class READ_model extends CI_Model
                 }
 
 
-                echo '<div style="padding-top:6px;"><span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span><h1 class="inline-block block-one">' . echo_in_title($ins[0]['in_title']) . '</h1></div>';
+                echo '<div style="padding-top:6px;"><span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span><h1 class="inline-block block-one">' . echo_in_title($ins[0]) . '</h1></div>';
 
 
                 if(count($read_completes) > 0){
@@ -1950,7 +1950,7 @@ class READ_model extends CI_Model
                     if ($push_message) {
 
                         if(!in_array(($key+1), $answer_referencing)){
-                            $message_content .= ($key+1).'. '.echo_in_title($child_in['in_title'], $push_message, $common_prefix).( $previously_selected ? ' [Previously Selected]' : '' )."\n";
+                            $message_content .= ($key+1).'. '.echo_in_title($child_in, $push_message, $common_prefix).( $previously_selected ? ' [Previously Selected]' : '' )."\n";
                         }
 
                         if($quick_replies_allowed){
@@ -1968,7 +1968,7 @@ class READ_model extends CI_Model
                         echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
                         echo '<td class="icon-block check-icon"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
                         echo '<td style="width: 100%;">';
-                        echo '<b class="montserrat blog-url" style="margin-left:0;">'.echo_in_title($child_in['in_title'], false, $common_prefix).'</b>';
+                        echo '<b class="montserrat blog-url" style="margin-left:0;">'.echo_in_title($child_in, false, $common_prefix).'</b>';
                         echo '</td>';
 
                         echo '<td class="featured-frame">' . echo_in_thumbnail($child_in['in_id']) . '</td>';
@@ -3327,7 +3327,7 @@ class READ_model extends CI_Model
 
 
                 //Add Blog up-vote to beginning:
-                $output_body_message = '<div style="margin-bottom:5px;" class="'.superpower_active(10984).'"><span class="icon-block"><i class="far fa-thumbs-up read"></i></span><a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent" class="montserrat">' . echo_in_title($referenced_ins[0]['in_title'], false) . '</a></div>' . $output_body_message;
+                $output_body_message = '<div style="margin-bottom:5px;" class="'.superpower_active(10984).'"><span class="icon-block"><i class="far fa-thumbs-up read"></i></span><a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent" class="montserrat">' . echo_in_title($referenced_ins[0], false) . '</a></div>' . $output_body_message;
 
             } else {
 
@@ -3337,7 +3337,7 @@ class READ_model extends CI_Model
                 $output_body_message = trim(str_replace('#' . $referenced_ins[0]['in_id'], '', $output_body_message));
 
                 //Add Blog up-vote to beginning:
-                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;"><a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_title($referenced_ins[0]['in_title'], false) . '</a></div>' . $output_body_message;
+                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;"><a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_title($referenced_ins[0], false) . '</a></div>' . $output_body_message;
 
             }
 

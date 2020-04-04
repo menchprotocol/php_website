@@ -554,7 +554,7 @@ if(!$action) {
     ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
     foreach ($player_reads as $priority => $ln) {
-        echo '<div>'.($priority+1).') <a href="/read/debug/' . $ln['in_id'] . '">' . echo_in_title($ln['in_title']) . '</a></div>';
+        echo '<div>'.($priority+1).') <a href="/read/debug/' . $ln['in_id'] . '">' . echo_in_title($ln) . '</a></div>';
     }
 
 } elseif($action=='in_crossovers') {
@@ -614,7 +614,7 @@ if(!$action) {
             //Update blog:
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.$invalid_outcomes.'</td>';
-            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Blog Status */, $in['in_status_source_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.echo_in_title($in['in_title']).'</a></td>';
+            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Blog Status */, $in['in_status_source_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.echo_in_title($in).'</a></td>';
             echo '</tr>';
 
         }
@@ -971,7 +971,7 @@ if(!$action) {
         'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
     ), 0, 0, array('in_id' => 'DESC')) as $count => $in) {
 
-        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Blog Status */, $in['in_status_source_id']).' '.echo_en_cache('en_all_6193' /* OR Blogs */, $in['in_type_source_id']).' <b><a href="https://mench.com/blog/'.$in['in_id'].'">'.echo_in_title($in['in_title']).'</a></b></div>';
+        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Blog Status */, $in['in_status_source_id']).' '.echo_en_cache('en_all_6193' /* OR Blogs */, $in['in_type_source_id']).' <b><a href="https://mench.com/blog/'.$in['in_id'].'">'.echo_in_title($in).'</a></b></div>';
 
         echo '<ul>';
         //Fetch all children for this OR:
@@ -990,7 +990,7 @@ if(!$action) {
             $all_steps += count($user_steps);
 
             $all_children++;
-            echo '<li>'.echo_en_cache('en_all_6186' /* Transaction Status */, $child_or['ln_status_source_id']).' '.echo_en_cache('en_all_4737' /* Blog Status */, $child_or['in_status_source_id']).' '.echo_en_cache('en_all_7585', $child_or['in_type_source_id']).' <a href="https://mench.com/blog/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_title($child_or['in_title']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
+            echo '<li>'.echo_en_cache('en_all_6186' /* Transaction Status */, $child_or['ln_status_source_id']).' '.echo_en_cache('en_all_4737' /* Blog Status */, $child_or['in_status_source_id']).' '.echo_en_cache('en_all_7585', $child_or['in_type_source_id']).' <a href="https://mench.com/blog/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_title($child_or).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
         }
         echo '</ul>';
         echo '<hr />';

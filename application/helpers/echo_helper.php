@@ -196,19 +196,19 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
     }
 }
 
-function echo_in_title($in_title, $push_message = false, $common_prefix = null){
+function echo_in_title($in, $push_message = false, $common_prefix = null){
 
     if(strlen($common_prefix) > 0){
-        $in_title = trim(substr($in_title, strlen($common_prefix)));
+        $in['in_title'] = trim(substr($in['in_title'], strlen($common_prefix)));
     }
 
     if($push_message){
 
-        return $in_title;
+        return $in['in_title'];
 
     } else {
 
-        return htmlentities(trim($in_title));
+        return '<span class="text__4736_'.$in['in_id'].'">'.htmlentities(trim($in['in_title'])).'</span>';
 
     }
 
@@ -677,7 +677,7 @@ function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $com
     //Open list:
     $ui = '<a href="/'.$in['in_id']. '" class="list-group-item itemread">';
 
-    $ui .= echo_in_title($in['in_title'], false, $common_prefix);
+    $ui .= echo_in_title($in, false, $common_prefix);
 
     if($is_unlocked_step){
         $en_all_4229 = $CI->config->item('en_all_4229'); //Link Metadata
@@ -700,7 +700,7 @@ function echo_actionplan_step_parent($in)
     $ui .= '<span class="badge badge-primary fr-bgd"><i class="fad fa-step-backward"></i></span>';
     $ui .= '</span>';
 
-    $ui .= ' <span>' . echo_in_title($in['in_title']).'</span>';
+    $ui .= ' <span>' . echo_in_title($in).'</span>';
 
     $ui .= '</a>';
 
@@ -1189,7 +1189,7 @@ function echo_tree_actionplan($in, $autoexpand){
         }
 
 
-        $return_html .= '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_title($in_level2['in_title'], false, $common_prefix) . '</span>';
+        $return_html .= '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_title($in_level2, false, $common_prefix) . '</span>';
 
 
         if($has_level2_content){
@@ -1242,7 +1242,7 @@ function echo_tree_actionplan($in, $autoexpand){
                         $return_html .= '<span class="icon-block"><i class="fal fa-check-circle"></i></span>';
                     }
 
-                    $return_html .= echo_in_title($in_level3['in_title'], false, $common_prefix_granchild);
+                    $return_html .= echo_in_title($in_level3, false, $common_prefix_granchild);
 
                     if(count($in_level3_messages) > 0){
                         $return_html .= '</a>';
@@ -1543,7 +1543,7 @@ function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_pre
 
     //READ ICON
     $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-lock read"></i>' ).'</span>';
-    $ui .= '<b class="montserrat blog-url title-block '.( $in_thumbnail ? 'title-no-right' : '' ).'">'.echo_in_title($in['in_title'], false, $common_prefix).'</b>';
+    $ui .= '<b class="montserrat blog-url title-block '.( $in_thumbnail ? 'title-no-right' : '' ).'">'.echo_in_title($in, false, $common_prefix).'</b>';
 
 
     //Description:
@@ -1681,7 +1681,7 @@ function echo_in_dashboard($in)
     //FOLLOW
     $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="/blog/' . $in['in_id']. '"><i class="fad fa-step-forward"></i></a></div>';
     $ui .= '<span class="icon-block">'.$en_all_7585[$in['in_type_source_id']]['m_icon'].'</span>';
-    $ui .= '<b class="montserrat">'.echo_in_title($in['in_title'], false).'</b>';
+    $ui .= '<b class="montserrat">'.echo_in_title($in, false).'</b>';
     $ui .= '</div>';
     return $ui;
 
@@ -1729,7 +1729,7 @@ function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_leve
 
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Type: '.$en_all_7585[$in_ln['in_type_source_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_source_id']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Status: '.$en_all_4737[$in_ln['in_status_source_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_source_id']]['m_icon']. '</span>';
-        $ui .= '<a href="/source/admin_panel/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this blog"><u>' .   echo_in_title($in_ln['in_title'], false) . '</u></a>';
+        $ui .= '<a href="/source/admin_panel/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this blog"><u>' .   echo_in_title($in_ln, false) . '</u></a>';
 
         $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_source_id'] == 4228 && in_array($parent_in_type_source_id , $CI->config->item('en_ids_6193') /* OR Blogs */ )) || ($in_ln['ln_type_source_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
 
@@ -2143,7 +2143,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
             if($is_blog_link && superpower_active(10984, true)){
                 $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], $is_author, (($in['ln_order']*100)+1));
             } else {
-                $ui .= '<a href="/blog/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in['in_title']) . '</a>';
+                $ui .= '<a href="/blog/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in) . '</a>';
             }
         $ui .= '</div>';
 
@@ -2364,7 +2364,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
             if($push_message){
 
-                $message_content .= ($key+1).'. '.echo_in_title($child_in['in_title'], $push_message, $common_prefix)."\n";
+                $message_content .= ($key+1).'. '.echo_in_title($child_in, $push_message, $common_prefix)."\n";
 
 
                 //We know that the $next_step_message length cannot surpass the limit defined by facebook

@@ -41,7 +41,7 @@ $(document).ready(function () {
     $('.actionplan_remove').on('click', function(e) {
 
         var in_id = $(this).attr('in-id');
-        var r = confirm("Remove ["+$('.in-title-'+in_id).text()+"] from your reading list?");
+        var r = confirm("Remove ["+$('.text__4736_'+in_id).text()+"] from your reading list?");
         if (r == true) {
             //Save changes:
             $.post("/read/actionplan_stop_save", { js_pl_id:js_pl_id ,in_id:in_id }, function (data) {

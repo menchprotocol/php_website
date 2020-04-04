@@ -2100,12 +2100,12 @@ fragment PostListingItemSidebar_post on Post {
 
 
         ##Email Subject
-        $subject =  ( count($referrer_ins) > 0 ? echo_in_title($referrer_ins[0]['in_title'], true).' with ' : 'Welcome to ' ) . 'MENCH';
+        $subject =  ( count($referrer_ins) > 0 ? echo_in_title($referrer_ins[0], true).' with ' : 'Welcome to ' ) . 'MENCH';
 
         ##Email Body
         $html_message = '<div>Hi '.$name_parts[0].' 👋</div><br />';
 
-        $html_message .= '<div>'.( count($referrer_ins) > 0 ? echo_in_title($referrer_ins[0]['in_title'], true) : 'Get started' ).':</div><br />';
+        $html_message .= '<div>'.( count($referrer_ins) > 0 ? echo_in_title($referrer_ins[0], true) : 'Get started' ).':</div><br />';
         $actionplan_url = $this->config->item('base_url') . ( count($referrer_ins) > 0 ? 'actionplan/'.$referrer_ins[0]['in_id'] : '' );
         $html_message .= '<div><a href="'.$actionplan_url.'" target="_blank">' . $actionplan_url . '</a></div><br />';
 
