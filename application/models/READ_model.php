@@ -1710,7 +1710,7 @@ class READ_model extends CI_Model
 
 
                 if($completion_rate['completion_percentage']>0){
-                    echo '<div class="progress-bg some-top-margin" title="You are '.$completion_rate['completion_percentage'].'% done as you have read '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($ins[0], true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+                    echo '<div class="progress-bg some-top-margin" title="You are '.$completion_rate['completion_percentage'].'% done as you have read '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($ins[0], true).')' : '' ).'"><div class="read-connector"></div><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
                 }
 
 
