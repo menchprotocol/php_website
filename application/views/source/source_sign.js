@@ -62,9 +62,9 @@ function vote_channel(en_chosen){
 
     //Cast Vote:
     js_ln_create({
-        ln_type_play_id: 12106,
-        ln_parent_play_id: 12105,
-        ln_child_play_id: en_chosen,
+        ln_type_source_id: 12106,
+        ln_parent_source_id: 12105,
+        ln_child_source_id: en_chosen,
     });
 
     $('.vote-results').html('Vote successfully casted. Choose a reading platform to continue.');
@@ -112,7 +112,7 @@ function search_email(){
     $('#custom_message').html(''); //Remove previous errors, if any
 
     //Check email and validate:
-    $.post("/play/singin_check_email", {
+    $.post("/source/singin_check_email", {
 
         input_email: $('#input_email').val(),
         referrer_in_id: referrer_in_id,
@@ -126,7 +126,7 @@ function search_email(){
 
         if (data.status) {
 
-            //Update player id IF existed already:
+            //Update source id IF existed already:
             $('#login_en_id').val(data.login_en_id);
 
             //Update email:
@@ -159,7 +159,7 @@ function add_account(){
     $('#input_name, #new_password').prop('disabled', true).css('background-color','#f4f5f7');
 
     //Check email and validate:
-    $.post("/play/sign_create_account", {
+    $.post("/source/sign_create_account", {
         input_email: $('#input_email').val(),
         input_name: $('#input_name').val(),
         new_password: $('#new_password').val(),
@@ -212,7 +212,7 @@ function singin_check_password(){
     $('#input_password').prop('disabled', true).css('background-color','#f4f5f7');
 
     //Check email and validate:
-    $.post("/play/singin_check_password", {
+    $.post("/source/singin_check_password", {
         login_en_id: $('#login_en_id').val(),
         input_password: $('#input_password').val(),
         referrer_url: referrer_url,
@@ -252,7 +252,7 @@ function magicemail(){
         $('.magic_result').html('<div><i class="far fa-yin-yang fa-spin"></i> Sending email...</div>');
 
         //Check email and validate:
-        $.post("/play/magicemail", {
+        $.post("/source/magicemail", {
             input_email: $('#input_email').val(),
             referrer_in_id: referrer_in_id,
         }, function (data) {

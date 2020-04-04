@@ -6,7 +6,7 @@
 
     <?php
 
-    $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+    $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
     $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
     if(!$session_en){
@@ -26,10 +26,10 @@
 
             //List current blogs:
             foreach($this->READ_model->ln_fetch(array(
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_play_id' => 10573, //Blog Note Bookmarks
-                'ln_parent_play_id' => $session_en['en_id'], //For this trainer
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_type_source_id' => 10573, //Blog Note Bookmarks
+                'ln_parent_source_id' => $session_en['en_id'], //For this trainer
             ), array('in_child'), 0, 0, array('in_weight' => 'DESC')) as $bookmark_in){
                 echo echo_in($bookmark_in, 0, false, true);
             }
@@ -42,7 +42,7 @@
                            maxlength="' . config_var(11071) . '"
                            id="newBlogTitle"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="NEW BLOG TITLE">
+                           placeholder="NEW BLOG">
                 </div><div class="algolia_pad_search hidden in_pad_new_blog"></div></div>';
 
             echo '</div>';
@@ -50,7 +50,7 @@
         } else {
 
             //Introduce Super Power:
-            $en_all_10957 = $this->config->item('en_all_10957'); //PLAY SUPERPOWERS
+            $en_all_10957 = $this->config->item('en_all_10957'); //PLAYER SUPERPOWERS
             echo '<div style="padding:10px 0;"><p>Unlock the superpowers of '.$en_all_10957[$superpower]['m_icon'].' <span class="montserrat doupper '.extract_icon_color($en_all_10957[$superpower]['m_icon']).'">'.$en_all_10957[$superpower]['m_name'].'</span> to '.$en_all_10957[$superpower]['m_desc'].'</p></div>';
 
             //Link to it on the website:

@@ -14,9 +14,9 @@ $(document).ready(function () {
 
             //Log this section:
             js_ln_create({
-                ln_player_play_id: js_pl_id, //If we have a user we log here
-                ln_type_play_id: 7611, //Blog User Engage
-                ln_parent_play_id: section_en_id, //The section this user engaged with
+                ln_creator_source_id: js_pl_id, //If we have a user we log here
+                ln_type_source_id: 7611, //Blog User Engage
+                ln_parent_source_id: section_en_id, //The section this user engaged with
                 ln_parent_blog_id: in_loaded_id,
                 ln_child_blog_id: 0, //Since they just opened the heading, not a sub-section of Reads Overview
                 ln_order: '7611_' + section_en_id + '_' + in_loaded_id, //The section for this blog
@@ -34,9 +34,9 @@ $(document).ready(function () {
 
             //Log this section:
             js_ln_create({
-                ln_player_play_id: js_pl_id, //If we have a user we log here
-                ln_type_play_id: 7611, //Blog User Engage
-                ln_parent_play_id: section_en_id, //The section this user engaged with
+                ln_creator_source_id: js_pl_id, //If we have a user we log here
+                ln_type_source_id: 7611, //Blog User Engage
+                ln_parent_source_id: section_en_id, //The section this user engaged with
                 ln_parent_blog_id: in_loaded_id,
                 ln_child_blog_id: child_in_id,
                 ln_order: section_en_id + '_' + child_in_id + '__' + in_loaded_id,
@@ -50,10 +50,10 @@ $(document).ready(function () {
 
         //Log this section:
         js_ln_create({
-            ln_player_play_id: js_pl_id, //If we have a user we log here
-            ln_type_play_id: 7611, //Blog User Engage
-            ln_parent_play_id: 7614, //Expert Overview
-            ln_child_play_id: section_en_id, //The section this user engaged with
+            ln_creator_source_id: js_pl_id, //If we have a user we log here
+            ln_type_source_id: 7611, //Blog User Engage
+            ln_parent_source_id: 7614, //Expert Overview
+            ln_child_source_id: section_en_id, //The section this user engaged with
             ln_parent_blog_id: in_loaded_id,
             ln_order: section_en_id + '__' + in_loaded_id,
         });
@@ -66,10 +66,10 @@ $(document).ready(function () {
 
         //Log this section:
         js_ln_create({
-            ln_player_play_id: js_pl_id, //If we have a user we log here
-            ln_type_play_id: 7611, //Blog User Engage
-            ln_parent_play_id: 7614, //Expert Overview
-            ln_child_play_id: section_en_id, //The section this user engaged with
+            ln_creator_source_id: js_pl_id, //If we have a user we log here
+            ln_type_source_id: 7611, //Blog User Engage
+            ln_parent_source_id: 7614, //Expert Overview
+            ln_child_source_id: section_en_id, //The section this user engaged with
             ln_parent_blog_id: in_loaded_id,
             ln_order: section_en_id + '__' + in_loaded_id,
         });
@@ -82,11 +82,11 @@ $(document).ready(function () {
 function select_answer(in_id){
 
     //Allow answer to be saved/updated:
-    var in_type_play_id = parseInt($('.list-answers').attr('in_type_play_id'));
+    var in_type_source_id = parseInt($('.list-answers').attr('in_type_source_id'));
     var current_status = parseInt($('.ln_answer_'+in_id).attr('is-selected'));
 
     //Clear all if single selection:
-    if(in_type_play_id == 6684){
+    if(in_type_source_id == 6684){
         //Single Selection, clear all:
         $('.answer-item').attr('is-selected', 0);
         $('.check-icon i').removeClass('fas').addClass('far');
@@ -95,7 +95,7 @@ function select_answer(in_id){
     if(current_status==1){
 
         //Already Selected, remove selection:
-        if(in_type_play_id == 7231){
+        if(in_type_source_id == 7231){
             //Multi Selection
             $('.ln_answer_'+in_id).attr('is-selected', 0);
             $('.ln_answer_'+in_id+' .check-icon i').removeClass('fas').addClass('far');

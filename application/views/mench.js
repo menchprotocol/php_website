@@ -45,7 +45,7 @@ if(js_pl_id < 1){
                 var psid = thread_context.psid;
                 var signed_request = thread_context.signed_request;
                 //Fetch Page:
-                $.post("/play/singin_check_psid/" + psid + "?sr=" + signed_request, {}, function (data) {
+                $.post("/source/singin_check_psid/" + psid + "?sr=" + signed_request, {}, function (data) {
                     if(data.status){
                         //All good, refresh this page:
                         location.reload();
@@ -80,10 +80,10 @@ function toggle_read(){
 
 function load_leaderboard(){
     //Show loading icon:
-    $('#load_leaderboard').html('<div class="alert montserrat play" style="background-color: #FFF;"><span class="icon-block"><i class="far fa-yin-yang fa-spin play"></i></span>LOADING...</div>');
-    $('.top-players').addClass('hidden');
+    $('#load_leaderboard').html('<div class="alert montserrat source" style="background-color: #FFF;"><span class="icon-block"><i class="far fa-yin-yang fa-spin source"></i></span>LOADING...</div>');
+    $('.top-sources').addClass('hidden');
 
-    $.post("/play/load_leaderboard/", { }, function (data) {
+    $.post("/source/load_leaderboard/", { }, function (data) {
         $('#load_leaderboard').html(data);
         $('[data-toggle="tooltip"]').tooltip();
     });
@@ -116,7 +116,7 @@ function go_to_read(in_id){
 function echo_js_suggestion(alg_obj){
 
     //Determine object type:
-    var obj_type = ( parseInt(alg_obj.alg_obj_is_in) ? 'blog' : 'play' );
+    var obj_type = ( parseInt(alg_obj.alg_obj_is_in) ? 'blog' : 'source' );
     var is_published = ( parseInt(alg_obj.alg_obj_status) in ( parseInt(alg_obj.alg_obj_is_in) ? js_en_all_7355 : js_en_all_7357 ));
     var obj_icon = ( parseInt(alg_obj.alg_obj_is_in) ? '<i class="fas fa-circle '+( js_session_superpowers_assigned.includes(10939) ? 'blog' : 'read' )+'"></i>' : alg_obj.alg_obj_icon );
     var obj_full_name = ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name );
@@ -231,8 +231,8 @@ function loadtab(tab_group_id, tab_data_id, note_in_id, owner_en_id){
 var algolia_index = false;
 $(document).ready(function () {
 
-    //Sync all PLAY column widths:
-    $('td.play').css('width', $('#MENCHmenu td.play').width() + 'px !important');
+    //Sync all SOURCE column widths:
+    $('td.source').css('width', $('#MENCHmenu td.source').width() + 'px !important');
 
     //Load Algolia on Focus:
     $(".algolia_search").focus(function () {
@@ -281,7 +281,7 @@ $(document).ready(function () {
         if (parseInt(suggestion.alg_obj_is_in)==1) {
             window.location = "/" + ( js_session_superpowers_assigned.includes(10939) ? 'blog/' : '' ) + suggestion.alg_obj_id;
         } else {
-            window.location = "/play/" + suggestion.alg_obj_id;
+            window.location = "/source/" + suggestion.alg_obj_id;
         }
 
     }).autocomplete({minLength: 1, autoselect: true, keyboardShortcuts: ['s']}, [
@@ -289,11 +289,11 @@ $(document).ready(function () {
             source: function (q, cb) {
 
                 //Players can filter search with first word:
-                var search_only_play = $("#mench_search").val().charAt(0) == '@';
+                var search_only_source = $("#mench_search").val().charAt(0) == '@';
                 var search_only_blog = $("#mench_search").val().charAt(0) == '#';
 
                 //Do not search if specific command ONLY:
-                if (( search_only_blog || search_only_play ) && !isNaN($("#mench_search").val().substr(1)) ) {
+                if (( search_only_blog || search_only_source ) && !isNaN($("#mench_search").val().substr(1)) ) {
 
                     cb([]);
                     return;
@@ -306,16 +306,16 @@ $(document).ready(function () {
                     if(js_pl_id > 0){
 
                         //For Players:
-                        if(search_only_play || search_only_blog){
+                        if(search_only_source || search_only_blog){
 
-                            if(search_only_play && js_session_superpowers_assigned.includes(10967)){
+                            if(search_only_source && js_session_superpowers_assigned.includes(10967)){
 
                                 //Can view ALL Players:
                                 search_filters += ' ( alg_obj_is_in = 0 ) ';
 
                             } else {
 
-                                //Can view limited players:
+                                //Can view limited sources:
                                 search_filters += ' ( alg_obj_is_in = '+( search_only_blog ? '1' : '0' )+' AND ( _tags:is_featured OR _tags:alg_author_' + js_pl_id + ' )) ';
                             }
 
@@ -327,7 +327,7 @@ $(document).ready(function () {
 
                             } else {
 
-                                //Can view limited players:
+                                //Can view limited sources:
                                 search_filters += ' ( _tags:is_featured OR _tags:alg_author_' + js_pl_id + ' ) ';
 
                             }
@@ -337,9 +337,9 @@ $(document).ready(function () {
                     } else {
 
                         //For Guests:
-                        if(search_only_play || search_only_blog){
+                        if(search_only_source || search_only_blog){
 
-                            //Guest can search players only with a starting @ sign
+                            //Guest can search sources only with a starting @ sign
                             search_filters += ' ( alg_obj_is_in = '+( search_only_blog ? '1' : '0' )+' AND _tags:is_featured ) ';
 
                         } else {
@@ -382,7 +382,7 @@ $(document).ready(function () {
                         var search_body = $("#mench_search").val().substr(1);
                         if(!isNaN(search_body)){
                             //Valid Integer, Give option to go there:
-                            return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/' : '/play/' ) + search_body + '" class="suggestion"><span class="icon-block-sm"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
+                            return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/' : '/source/' ) + search_body + '" class="suggestion"><span class="icon-block-sm"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
                         }
 
                     }
@@ -396,7 +396,7 @@ $(document).ready(function () {
                         }
                     } else if($("#mench_search").val().charAt(0)=='@'){
                         if(isNaN($("#mench_search").val().substr(1))) {
-                            return '<div class="not-found"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>No PLAY found</div>';
+                            return '<div class="not-found"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>No SOURCE found</div>';
                         }
                     } else {
                         return '<div class="not-found suggestion"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>No results found</div>';
@@ -527,11 +527,11 @@ function modify_cancel(){
 function en_fetch_canonical_url(query_string, not_found){
 
     //Do a call to PHP to fetch canonical URL and see if that exists:
-    $.post("/play/en_fetch_canonical_url", { search_url:query_string }, function (searchdata) {
+    $.post("/source/en_fetch_canonical_url", { search_url:query_string }, function (searchdata) {
         if(searchdata.status && searchdata.url_already_existed){
             //URL was detected via PHP, update the search results:
             $('.add-source-suggest').remove();
-            $('.not-found').html('<a href="/play/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object)+'</a>');
+            $('.not-found').html('<a href="/source/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object)+'</a>');
         }
     });
 
@@ -620,7 +620,7 @@ function toggle_superpower(superpower_id){
     $('.superpower-frame-'+superpower_id).html('<i class="far fa-yin-yang fa-spin"></i>');
 
     //Save session variable to save the state of advance setting:
-    $.post("/play/toggle_superpower/"+superpower_id, {}, function (data) {
+    $.post("/source/toggle_superpower/"+superpower_id, {}, function (data) {
 
         //Change top menu icon:
         $('.superpower-frame-'+superpower_id).html(superpower_icon);

@@ -1,13 +1,13 @@
 <?php
 
 $timestamp = time();
-$en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
 ?>
 
 
 <script>
-    //Include some cached players:
+    //Include some cached sources:
     var clear_read_url = '<?= '/read/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('cred_password_salt') . $timestamp) ?>';
 
     <?= ( count($player_reads) >= 2 ? '$(document).ready(function () {load_read_sort()});' : '' ) ?>

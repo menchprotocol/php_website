@@ -158,16 +158,16 @@ li a {
 }
 
 /* FONTS */
-.montserrat, .new-player-input, .algolia-autocomplete, .read-topic, .btn {
+.montserrat, .new-source-input, .algolia-autocomplete, .read-topic, .btn {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     text-decoration: none;
 }
-.player-appendix a, .player-appendix a .url_truncate {
+.source-appendix a, .source-appendix a .url_truncate {
     text-decoration: underline;
 }
 
-.doupper, .new-player-input {
+.doupper, .new-source-input {
     text-transform: uppercase;
 }
 
@@ -394,13 +394,13 @@ img.no-radius {
 
 
 /* MENCH Colors */
-.play, .play .fas, .play .far, .play .fal, .play .fad, .color4536, .info-item i.play:hover, .info-item a.play:hover  { color:#007AFD !important; }
+.source, .source .fas, .source .far, .source .fal, .source .fad, .color4536, .info-item i.source:hover, .info-item a.source:hover  { color:#007AFD !important; }
 .blog, .blog .fas, .blog .far, .blog .fal, .blog .fad, .color4535, .info-item i.blog:hover, .info-item a.blog:hover  { color:#ffc500 !important; }
 .read, .read .fas, .read .far, .read .fal, .read .fad, .color6205, .info-item i.read:hover, .info-item a.read:hover, .isred, .isred a, .fas.redalert  { color:#FC1B44 !important; }
 .grey, .grey i { color:#AAAAAA !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
-.btn-play i, .btn-read i, .btn-blog i { color: #000000 !important; }
+.btn-source i, .btn-read i, .btn-blog i { color: #000000 !important; }
 
 .progress-bg{
     margin: -10px 0 10px 0;
@@ -409,7 +409,7 @@ img.no-radius {
 
 .some-top-margin{
     margin-top: 0 !important;
-    padding-top: 5px;
+    padding-top: 2px;
 }
 
 .progress-done{
@@ -741,7 +741,7 @@ td.MENCHcolumn3{ width: 21%; }
     margin-left:10px;
 }
 
-.mench_coin.play:hover, .mench_coin.play.focustab  { border-color:#007AFD; }
+.mench_coin.source:hover, .mench_coin.source.focustab  { border-color:#007AFD; }
 .mench_coin.read:hover, .mench_coin.read.focustab  { border-color:#FC1B44; }
 .mench_coin.blog:hover, .mench_coin.blog.focustab  { border-color:#ffc500; }
 .mench_coin{
@@ -754,7 +754,7 @@ td.MENCHcolumn3{ width: 21%; }
 }
 
 
-#MENCHmenu a.play:hover, #MENCHmenu a.play.focustab  { border-color:#007AFD; }
+#MENCHmenu a.source:hover, #MENCHmenu a.source.focustab  { border-color:#007AFD; }
 #MENCHmenu a.read:hover, #MENCHmenu a.read.focustab  { border-color:#FC1B44; }
 #MENCHmenu a.blog:hover, #MENCHmenu a.blog.focustab  { border-color:#ffc500; }
 
@@ -853,7 +853,7 @@ td.MENCHcolumn3{ width: 21%; }
     background-color: #AAAAAA !important;
 }
 
-.itemplay{
+.itemsource{
     padding-left: 0;
     padding-right: 0;
 }
@@ -1006,7 +1006,7 @@ label {
     cursor: not-allowed !important;
 }
 
-.btn-superpower.active .fas.play, .btn-superpower.active .far.play, .btn-superpower.active .fal.play, .btn-superpower.active .fad.play {
+.btn-superpower.active .fas.source, .btn-superpower.active .far.source, .btn-superpower.active .fal.source, .btn-superpower.active .fad.source {
     color:#007AFD !important;
 }
 .btn-superpower.active .fas.blog, .btn-superpower.active .far.blog, .btn-superpower.active .fal.blog, .btn-superpower.active .fad.blog {
@@ -1019,12 +1019,12 @@ label {
 
 
 
-.btn.btn-play, .btn.btn-play:hover, .btn.btn-play:focus, .btn.btn-play:active, .btn.btn-play.active, .btn.btn-play:active:focus, .btn.btn-play:active:hover, .btn.btn-play.active:focus, .btn.btn-play.active:hover, .open > .btn.btn-play.dropdown-toggle, .open > .btn.btn-play.dropdown-toggle:focus, .open > .btn.btn-play.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-play, .navbar .navbar-nav > li > a.btn.btn-play:hover, .navbar .navbar-nav > li > a.btn.btn-play:focus, .navbar .navbar-nav > li > a.btn.btn-play:active, .navbar .navbar-nav > li > a.btn.btn-play.active, .navbar .navbar-nav > li > a.btn.btn-play:active:focus, .navbar .navbar-nav > li > a.btn.btn-play:active:hover, .navbar .navbar-nav > li > a.btn.btn-play.active:focus, .navbar .navbar-nav > li > a.btn.btn-play.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle:hover, .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+.btn.btn-source, .btn.btn-source:hover, .btn.btn-source:focus, .btn.btn-source:active, .btn.btn-source.active, .btn.btn-source:active:focus, .btn.btn-source:active:hover, .btn.btn-source.active:focus, .btn.btn-source.active:hover, .open > .btn.btn-source.dropdown-toggle, .open > .btn.btn-source.dropdown-toggle:focus, .open > .btn.btn-source.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-source, .navbar .navbar-nav > li > a.btn.btn-source:hover, .navbar .navbar-nav > li > a.btn.btn-source:focus, .navbar .navbar-nav > li > a.btn.btn-source:active, .navbar .navbar-nav > li > a.btn.btn-source.active, .navbar .navbar-nav > li > a.btn.btn-source:active:focus, .navbar .navbar-nav > li > a.btn.btn-source:active:hover, .navbar .navbar-nav > li > a.btn.btn-source.active:focus, .navbar .navbar-nav > li > a.btn.btn-source.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-source.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-source.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-source.dropdown-toggle:hover, .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
     background-color: #007AFD;
     color: #000000;
 }
 
-.btn-play .fas,.btn-play .far,.btn-play .fal,.btn-play .fad { color: #000000 !important; }
+.btn-source .fas,.btn-source .far,.btn-source .fal,.btn-source .fad { color: #000000 !important; }
 
 .btn.btn-main, .btn.btn-main:hover, .btn.btn-main:focus, .btn.btn-main:active, .btn.btn-main.active, .btn.btn-main:active:focus, .btn.btn-main:active:hover, .btn.btn-main.active:focus, .btn.btn-main.active:hover, .open > .btn.btn-main.dropdown-toggle, .open > .btn.btn-main.dropdown-toggle:focus, .open > .btn.btn-main.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-main, .navbar .navbar-nav > li > a.btn.btn-main:hover, .navbar .navbar-nav > li > a.btn.btn-main:focus, .navbar .navbar-nav > li > a.btn.btn-main:active, .navbar .navbar-nav > li > a.btn.btn-main.active, .navbar .navbar-nav > li > a.btn.btn-main:active:focus, .navbar .navbar-nav > li > a.btn.btn-main:active:hover, .navbar .navbar-nav > li > a.btn.btn-main.active:focus, .navbar .navbar-nav > li > a.btn.btn-main.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle:hover {
     background-color: #000000;
@@ -1325,7 +1325,7 @@ label {
     .itemblog:hover {
         background-color:#fff4b5 !important;
     }
-    .itemplay:hover {
+    .itemsource:hover {
         background-color:#b2defd !important;
     }
     .itemread:hover {

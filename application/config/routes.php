@@ -2,12 +2,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $route['translate_uri_dashes']      = FALSE;
 
-//PLAY
-$route['404_override']              = 'play/play_404';
-$route['sign/(:num)']               = "play/sign/$1";
-$route['sign']                      = "play/sign";
-$route['play']                      = "play/play_home";
-$route['play/(:num)']               = "play/play_coin/$1";
+//SOURCE
+$route['404_override']              = 'source/source_404';
+$route['sign/(:num)']               = "source/sign/$1";
+$route['sign']                      = "source/sign";
+$route['source']                      = "source/source_home";
+$route['source/(:num)']               = "source/source_coin/$1";
 
 //READ
 $route['default_controller']        = "read/read_coin";

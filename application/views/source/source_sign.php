@@ -1,10 +1,10 @@
 <?php
 $en_all_4269 = $this->config->item('en_all_4269');
 $en_all_7555 = $this->config->item('en_all_7555');
-$en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
 $this_attempt = array(
-    'ln_type_play_id' => ( $referrer_in_id > 0 ? 7560 /* User Signin Blog Channel Choose */ : 7561 /* User Signin on Website */ ),
+    'ln_type_source_id' => ( $referrer_in_id > 0 ? 7560 /* User Signin Blog Channel Choose */ : 7561 /* User Signin on Website */ ),
     'ln_parent_blog_id' => $referrer_in_id,
 );
 
@@ -51,17 +51,17 @@ if(count($current_sign_in_attempt) == 0){
     var referrer_url = '<?= @$_GET['url'] ?>';
     var channel_choice_count = <?= count($en_all_7555) ?>;
     var channel_choice_messenger = {
-        ln_type_play_id: 7558, //User Signin with Messenger Choice
+        ln_type_source_id: 7558, //User Signin with Messenger Choice
         ln_parent_blog_id: <?= intval($referrer_in_id) ?>,
         ln_parent_read_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
     var channel_choice_website = {
-        ln_type_play_id: 7559, //User Signin with Website Choice
+        ln_type_source_id: 7559, //User Signin with Website Choice
         ln_parent_blog_id: <?= intval($referrer_in_id) ?>,
         ln_parent_read_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
 </script>
-<script src="/application/views/play/play_sign.js?v=v<?= config_var(11060) ?>"
+<script src="/application/views/source/source_sign.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 
@@ -75,7 +75,7 @@ if(count($current_sign_in_attempt) == 0){
     if($referrer_in_id > 0){
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $referrer_in_id,
-            'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
         ));
         if(count($ins) > 0){
             echo '<p class="text-center montserrat doupper"><a href="/'.$referrer_in_id.'"><u>'.echo_in_title($ins[0]['in_title']).'</u></a> FOR FREE</p>';
@@ -97,7 +97,7 @@ if(count($current_sign_in_attempt) == 0){
             foreach ($en_all_7555 as $en_id => $m) {
                 echo '<div class="row" style="padding:5px 0;">';
 
-                echo '<a class="btn btn-play" href="javascript:void(0);" onclick="select_channel('.$en_id.', '.$referrer_in_id.')"><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . ' <i class="fad fa-step-forward"></i></a>';
+                echo '<a class="btn btn-source" href="javascript:void(0);" onclick="select_channel('.$en_id.', '.$referrer_in_id.')"><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . ' <i class="fad fa-step-forward"></i></a>';
 
                 echo '<div class="help_me_choose hidden"><i class="fal fa-info-circle"></i> '.$m['m_desc'].'<br /></div>';
 
@@ -131,10 +131,10 @@ if(count($current_sign_in_attempt) == 0){
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="isred"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-play transparent pass btn-raised btn-round <?= ( $referrer_in_id > 0 && count($en_all_7555)>=2 ? '' : ' hidden ' ) ?>"><i class="fad fa-step-backward"></i></a>
-                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-play pass btn-raised btn-round">NEXT <i class="fad fa-step-forward"></i></a>
+                <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-source transparent pass btn-raised btn-round <?= ( $referrer_in_id > 0 && count($en_all_7555)>=2 ? '' : ' hidden ' ) ?>"><i class="fad fa-step-backward"></i></a>
+                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-source pass btn-raised btn-round">NEXT <i class="fad fa-step-forward"></i></a>
             </span>
-            <span id="messenger_sign" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 || !in_array(6196 , $this->config->item('en_ids_7555')) ? ' hidden ' : '' ) ?>">OR <a href="javascript:void(0)" onclick="confirm_sign_on_messenger(<?= $referrer_in_id ?>)" class="dounderline">USE MESSENGER</a> <i class="fab fa-facebook-messenger play"></i></span>
+            <span id="messenger_sign" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 || !in_array(6196 , $this->config->item('en_ids_7555')) ? ' hidden ' : '' ) ?>">OR <a href="javascript:void(0)" onclick="confirm_sign_on_messenger(<?= $referrer_in_id ?>)" class="dounderline">USE MESSENGER</a> <i class="fab fa-facebook-messenger source"></i></span>
         </div>
 
 
@@ -167,8 +167,8 @@ if(count($current_sign_in_attempt) == 0){
             <!-- Signup Buttons -->
             <div id="new_account_errors" class="isred"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-play transparent pass btn-raised btn-round"><i class="fad fa-step-backward"></i></a>
-                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-play pass btn-raised btn-round">NEXT <i class="fad fa-step-forward"></i></a>
+                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-source transparent pass btn-raised btn-round"><i class="fad fa-step-backward"></i></a>
+                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-source pass btn-raised btn-round">NEXT <i class="fad fa-step-forward"></i></a>
             </span>
 
         </div>
@@ -184,8 +184,8 @@ if(count($current_sign_in_attempt) == 0){
             <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
             <div id="password_errors" class="isred"></div>
             <span id="step3buttons">
-                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-play transparent pass btn-raised btn-round"><i class="fad fa-step-backward"></i></a>
-                <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-play pass btn-raised btn-round">NEXT <i class="fad fa-step-forward"></i></a>
+                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-source transparent pass btn-raised btn-round"><i class="fad fa-step-backward"></i></a>
+                <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-source pass btn-raised btn-round">NEXT <i class="fad fa-step-forward"></i></a>
             </span>
 
             <span style="padding-left:5px; font-size:0.9em !important;">OR EMAIL <a href="javascript:void(0)" onclick="magicemail()" class="dounderline"><?= $en_all_11035[11068]['m_name'] ?></a> <?= $en_all_11035[11068]['m_icon'] ?></span>

@@ -11,7 +11,7 @@ var $input = $('.drag-box').find('input[type="file"]'),
 
 $(document).ready(function () {
 
-    //Load player search for mass update function:
+    //Load search for mass update function:
     $('.en_quick_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
         $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
@@ -20,7 +20,7 @@ $(document).ready(function () {
 
         source: function (q, cb) {
             algolia_index.search(q, {
-                filters: 'alg_obj_is_in=0', //Search players
+                filters: 'alg_obj_is_in=0',
                 hitsPerPage: 5,
             }, function (error, content) {
                 if (error) {
@@ -38,7 +38,7 @@ $(document).ready(function () {
                 return echo_js_suggestion(suggestion);
             },
             empty: function (data) {
-                return '<div class="not-found"><i class="fad fa-exclamation-triangle"></i> No players found</div>';
+                return '<div class="not-found"><i class="fad fa-exclamation-triangle"></i> No sources found</div>';
             },
         }
     }]);
@@ -49,8 +49,8 @@ $(document).ready(function () {
     });
 
     //Lookout for blog link related changes:
-    $('#ln_status_play_id').change(function () {
-        if (parseInt($('#ln_status_play_id').find(":selected").val()) == 6173 /* Link Removed */ ) {
+    $('#ln_status_source_id').change(function () {
+        if (parseInt($('#ln_status_source_id').find(":selected").val()) == 6173 /* Link Removed */ ) {
             //About to delete? Notify them:
             $('.notify_unlink_en').removeClass('hidden');
         } else {
@@ -62,19 +62,19 @@ $(document).ready(function () {
         mass_action_ui();
     });
 
-    $('#en_status_play_id').change(function () {
+    $('#en_status_source_id').change(function () {
 
-        if (parseInt($('#en_status_play_id').find(":selected").val()) == 6178 /* Player Removed */) {
+        if (parseInt($('#en_status_source_id').find(":selected").val()) == 6178 /* Player Removed */) {
 
             //Notify Trainer:
             $('.notify_en_remove').removeClass('hidden');
-            $('.player_remove_stats').html('<i class="far fa-yin-yang fa-spin"></i>');
+            $('.source_remove_stats').html('<i class="far fa-yin-yang fa-spin"></i>');
 
             //About to delete... Fetch total links:
-            $.post("/play/en_count_to_be_removed_links", { en_id: parseInt($('#modifybox').attr('player-id')) }, function (data) {
+            $.post("/source/en_count_to_be_removed_links", { en_id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
 
                 if(data.status){
-                    $('.player_remove_stats').html('<b>'+data.en_link_count+'</b>');
+                    $('.source_remove_stats').html('<b>'+data.en_link_count+'</b>');
                     $('#en_link_count').val(data.en_link_count); //This would require a confirmation upon saving...
                 }
 
@@ -83,7 +83,7 @@ $(document).ready(function () {
         } else {
 
             $('.notify_en_remove').addClass('hidden');
-            $('.player_remove_stats').html('');
+            $('.source_remove_stats').html('');
             $('#en_link_count').val('0');
 
         }
@@ -173,7 +173,7 @@ $(document).ready(function () {
 
 function en_load_search(element_focus, is_en_parent, shortcut) {
 
-    $(element_focus + ' .new-player-input')
+    $(element_focus + ' .new-source-input')
 
         .focus(function() {
         $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');
@@ -206,11 +206,11 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus play"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus play"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
+                return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
             },
         }
     }]).keypress(function (e) {
@@ -234,18 +234,18 @@ function mass_action_ui(){
 
 
 
-//Adds OR links players to players
+//Adds OR links sources to sources
 function en_add_or_link(en_existing_id, is_parent) {
 
-    //if en_existing_id>0 it means we're linking to an existing player, in which case en_new_string should be null
-    //If en_existing_id=0 it means we are creating a new player and then linking it, in which case en_new_string is required
+    //if en_existing_id>0 it means we're linking to an existing source, in which case en_new_string should be null
+    //If en_existing_id=0 it means we are creating a new source and then linking it, in which case en_new_string is required
 
     if (is_parent) {
-        var input = $('#new-parent .new-player-input');
+        var input = $('#new-parent .new-source-input');
         var list_id = 'list-parent';
         var counter_class = '.counter-11030';
     } else {
-        var input = $('#new-children .new-player-input');
+        var input = $('#new-children .new-source-input');
         var list_id = 'list-children';
         var counter_class = '.counter-11029';
     }
@@ -254,7 +254,7 @@ function en_add_or_link(en_existing_id, is_parent) {
     if (en_existing_id == 0) {
         en_new_string = input.val();
         if (en_new_string.length < 1) {
-            alert('Note: Missing player name or URL, try again');
+            alert('Note: Missing source name or URL, try again');
             input.focus();
             return false;
         }
@@ -262,7 +262,7 @@ function en_add_or_link(en_existing_id, is_parent) {
 
 
     //Add via Ajax:
-    $.post("/play/en_add_or_link", {
+    $.post("/source/en_add_or_link", {
 
         en_id: en_focus_id,
         en_existing_id: en_existing_id,
@@ -330,7 +330,7 @@ function en_load_next_page(page, load_new_filter) {
         $('.load-more').html('<span class="load-more"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
     }
 
-    $.post("/play/en_load_next_page", {
+    $.post("/source/en_load_next_page", {
         page: page,
         parent_en_id: en_focus_id,
         en_focus_filter: en_focus_filter,
@@ -340,7 +340,7 @@ function en_load_next_page(page, load_new_filter) {
         $('.load-more').remove();
 
         if (load_new_filter) {
-            $('#list-children').html(data + '<div id="new-children" class="list-group-item itemplay grey-input">' + append_div + '</div>').hide().fadeIn();
+            $('#list-children').html(data + '<div id="new-children" class="list-group-item itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
             en_load_search("#new-children", 0, 'w');
         } else {
@@ -366,9 +366,9 @@ function en_ln_type_preview() {
 
 
     //Fetch Blog Data to load modify widget:
-    $.post("/play/en_ln_type_preview", {
+    $.post("/source/en_ln_type_preview", {
         ln_content: $('#ln_content').val(),
-        ln_id: parseInt($('#modifybox').attr('player-link-id')),
+        ln_id: parseInt($('#modifybox').attr('source-link-id')),
     }, function (data) {
         //All good, let's load the data into the Modify Widget...
         $('#en_type_link_id').html((data.status ? data.html_ui : 'Note: ' + data.message));
@@ -394,7 +394,7 @@ function en_modify_load(en_id, ln_id) {
 
     //Make sure inputs are valid:
     if (!$('.en___' + en_id).length) {
-        alert('Note: Invalid Player ID');
+        alert('Note: Invalid Source ID');
         return false;
     }
 
@@ -403,8 +403,8 @@ function en_modify_load(en_id, ln_id) {
     $("#modifybox").removeClass('hidden').hide().fadeIn();
 
     //Update variables:
-    $('#modifybox').attr('player-link-id', ln_id);
-    $('#modifybox').attr('player-id', en_id);
+    $('#modifybox').attr('source-link-id', ln_id);
+    $('#modifybox').attr('source-id', en_id);
 
     //Cannot be removed OR unlinked as this would not load, so remove them:
     $('.notify_en_remove, .notify_unlink_en').addClass('hidden');
@@ -417,9 +417,9 @@ function en_modify_load(en_id, ln_id) {
     var en_full_name = $(".en_name_" + en_id + ":first").text();
     $('#en_name').val(en_full_name.toUpperCase()).focus();
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
-    $('#en_status_play_id').val($(".en___" + en_id + ":first").attr('en-status'));
-    $('.save_player_changes').html('');
-    $('.player_remove_stats').html('');
+    $('#en_status_source_id').val($(".en___" + en_id + ":first").attr('en-status'));
+    $('.save_source_changes').html('');
+    $('.source_remove_stats').html('');
 
     if (parseInt($('.en__icon_' + en_id).attr('en-is-set')) > 0) {
         $('#en_icon').val($('.en__icon_' + en_id).html());
@@ -434,12 +434,12 @@ function en_modify_load(en_id, ln_id) {
     //Only show unlink button if not level 1
     if (parseInt(ln_id) > 0) {
 
-        $('#ln_status_play_id').val($(".en___" + en_id + ":first").attr('ln-status'));
+        $('#ln_status_source_id').val($(".en___" + en_id + ":first").attr('ln-status'));
         $('#en_link_count').val('0');
 
 
         //Make the UI link and the notes in the edit box:
-        $('.unlink-player, .en-has-tr').removeClass('hidden');
+        $('.unlink-source, .en-has-tr').removeClass('hidden');
 
         //Assign value:
         $('#ln_content').val($(".ln_content_val_" + ln_id + ":first").text());
@@ -452,19 +452,19 @@ function en_modify_load(en_id, ln_id) {
     } else {
 
         //Hide the section and clear it:
-        $('.unlink-player, .en-has-tr').addClass('hidden');
+        $('.unlink-source, .en-has-tr').addClass('hidden');
 
     }
 }
 
-function player_link_form_lock(){
+function source_link_form_lock(){
     $('#ln_content').prop("disabled", true).css('background-color','#AAAAAA');
 
     $('.btn-save').addClass('grey').attr('href', '#').html('<i class="far fa-yin-yang fa-spin"></i> Uploading');
 
 }
 
-function player_link_form_unlock(result){
+function source_link_form_unlock(result){
 
     //What was the result?
     if (!result.status) {
@@ -504,7 +504,7 @@ function en_save_file_upload(droppedFiles, uploadType) {
     if (isAdvancedUpload) {
 
         //Lock message:
-        player_link_form_lock();
+        source_link_form_lock();
 
         var ajaxData = new FormData($('.drag-box').get(0));
         if (droppedFiles) {
@@ -520,7 +520,7 @@ function en_save_file_upload(droppedFiles, uploadType) {
         ajaxData.append('upload_type', uploadType);
 
         $.ajax({
-            url: '/play/en_save_file_upload',
+            url: '/source/en_save_file_upload',
             type: 'post',
             data: ajaxData,
             dataType: 'json',
@@ -545,14 +545,14 @@ function en_save_file_upload(droppedFiles, uploadType) {
                 }
 
                 //Unlock form:
-                player_link_form_unlock(data);
+                source_link_form_unlock(data);
 
             },
             error: function (data) {
                 var result = [];
                 result.status = 0;
                 result.message = data.responseText;
-                player_link_form_unlock(result);
+                source_link_form_unlock(result);
             }
         });
     } else {
@@ -564,22 +564,22 @@ function en_save_file_upload(droppedFiles, uploadType) {
 function en_modify_save() {
 
     //Validate that we have all we need:
-    if ($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('player-id'))) {
+    if ($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('source-id'))) {
         //Oops, this should not happen!
         return false;
     }
 
-    //Are we about to remove an player with a lot of links?
+    //Are we about to remove an source with a lot of links?
     var link_count= parseInt($('#en_link_count').val());
     var action_verb = ( $('#en_merge').val().length > 0 ? 'merge' : 'remove' );
     var confirm_string = action_verb + " " + link_count;
     if(link_count >= 3){
         //Yes, confirm before doing so:
-        var confirm_removal = prompt("You are about to remove this player and "+action_verb+" all its "+link_count+" links. Type \""+confirm_string+"\" to confirm and "+action_verb+" player with all its links.", "");
+        var confirm_removal = prompt("You are about to remove this source and "+action_verb+" all its "+link_count+" links. Type \""+confirm_string+"\" to confirm and "+action_verb+" source with all its links.", "");
 
         if (!(confirm_removal == confirm_string)) {
             //Abandon process:
-            alert('Player will not be '+action_verb+'d.');
+            alert('Source will not be '+action_verb+'d.');
             return false;
         }
     }
@@ -587,28 +587,28 @@ function en_modify_save() {
     //Prepare data to be modified for this blog:
     var modify_data = {
         en_focus_id: en_focus_id, //Determines if we need to change location upon removing...
-        en_id: parseInt($('#modifybox').attr('player-id')),
+        en_id: parseInt($('#modifybox').attr('source-id')),
         en_name: $('#en_name').val().toUpperCase(),
         en_icon: $('#en_icon').val(),
-        en_status_play_id: $('#en_status_play_id').val(), //The new status (might not have changed too)
+        en_status_source_id: $('#en_status_source_id').val(), //The new status (might not have changed too)
         en_merge: $('#en_merge').val(),
         //Link data:
-        ln_id: parseInt($('#modifybox').attr('player-link-id')),
+        ln_id: parseInt($('#modifybox').attr('source-link-id')),
         ln_content: $('#ln_content').val(),
-        ln_status_play_id: $('#ln_status_play_id').val(),
+        ln_status_source_id: $('#ln_status_source_id').val(),
     };
 
     //Show spinner:
-    $('.save_player_changes').html('<span><i class="far fa-yin-yang fa-spin"></i></span> ' + echo_saving_notify() +  '').hide().fadeIn();
+    $('.save_source_changes').html('<span><i class="far fa-yin-yang fa-spin"></i></span> ' + echo_saving_notify() +  '').hide().fadeIn();
 
 
-    $.post("/play/en_modify_save", modify_data, function (data) {
+    $.post("/source/en_modify_save", modify_data, function (data) {
 
         if (data.status) {
 
             if(data.remove_from_ui){
 
-                //need to remove this player:
+                //need to remove this source:
                 //Blog has been either removed OR unlinked:
                 if (data.remove_redirect_url) {
 
@@ -644,14 +644,14 @@ function en_modify_save() {
 
 
                 //Player Status:
-                $(".en___" + modify_data['en_id']).attr('en-status', modify_data['en_status_play_id']);
-                $('.en_status_play_id_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6177[modify_data['en_status_play_id']]["m_name"] + ': ' + js_en_all_6177[modify_data['en_status_play_id']]["m_desc"] + '">' + js_en_all_6177[modify_data['en_status_play_id']]["m_icon"] + '</span>');
+                $(".en___" + modify_data['en_id']).attr('en-status', modify_data['en_status_source_id']);
+                $('.en_status_source_id_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6177[modify_data['en_status_source_id']]["m_name"] + ': ' + js_en_all_6177[modify_data['en_status_source_id']]["m_desc"] + '">' + js_en_all_6177[modify_data['en_status_source_id']]["m_icon"] + '</span>');
 
 
                 //Player Icon:
                 var icon_is_set = ( modify_data['en_icon'].length > 0 ? 1 : 0 );
                 if(!icon_is_set){
-                    //Set player default icon:
+                    //Set source default icon:
                     modify_data['en_icon'] = js_en_all_2738[4536]['m_icon'];
                 }
                 $('.en__icon_' + modify_data['en_id']).attr('en-is-set' , icon_is_set );
@@ -673,17 +673,17 @@ function en_modify_save() {
 
 
                     //Link Icon:
-                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + en_all_4592[data.js_ln_type_play_id]["m_name"] + ': ' + en_all_4592[data.js_ln_type_play_id]["m_desc"] + '">' + en_all_4592[data.js_ln_type_play_id]["m_icon"] + '</span>');
+                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + en_all_4592[data.js_ln_type_source_id]["m_name"] + ': ' + en_all_4592[data.js_ln_type_source_id]["m_desc"] + '">' + en_all_4592[data.js_ln_type_source_id]["m_icon"] + '</span>');
 
-                    //Link Status:
-                    $(".en___" + modify_data['en_id']).attr('ln-status', modify_data['ln_status_play_id'])
-                    $('.ln_status_play_id_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6186[modify_data['ln_status_play_id']]["m_name"] + ': ' + js_en_all_6186[modify_data['ln_status_play_id']]["m_desc"] + '">' + js_en_all_6186[modify_data['ln_status_play_id']]["m_icon"] + '</span>');
+                    //Transaction Status:
+                    $(".en___" + modify_data['en_id']).attr('ln-status', modify_data['ln_status_source_id'])
+                    $('.ln_status_source_id_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6186[modify_data['ln_status_source_id']]["m_name"] + ': ' + js_en_all_6186[modify_data['ln_status_source_id']]["m_desc"] + '">' + js_en_all_6186[modify_data['ln_status_source_id']]["m_icon"] + '</span>');
 
                 }
 
 
-                //Update player timestamp:
-                $('.save_player_changes').html(data.message);
+                //Update source timestamp:
+                $('.save_source_changes').html(data.message);
 
                 //Reload Tooltip again:
                 $('[data-toggle="tooltip"]').tooltip();
@@ -691,7 +691,7 @@ function en_modify_save() {
 
         } else {
             //Ooops there was an error!
-            $('.save_player_changes').html('<span style="color:#FF0000;"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
+            $('.save_source_changes').html('<span style="color:#FF0000;"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
         }
 
     });

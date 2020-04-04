@@ -3,11 +3,11 @@
 
 $(document).ready(function () {
 
-    check_in_en_status_play_id();
+    check_in_en_status_source_id();
 
     //Watch for Blog status change:
-    $("#ln_type_play_id").change(function () {
-        check_in_en_status_play_id();
+    $("#ln_type_source_id").change(function () {
+        check_in_en_status_source_id();
     });
 
     //Load first page of links:
@@ -16,7 +16,7 @@ $(document).ready(function () {
 });
 
 
-function check_in_en_status_play_id(){
+function check_in_en_status_source_id(){
     //Checks to see if the Blog/Player status filter should be visible
     //Would only make visible if Link type is Created Blog/Player
 
@@ -24,9 +24,9 @@ function check_in_en_status_play_id(){
     $(".filter-statuses").addClass('hidden');
 
     //Show only if creating new in/en Link type:
-    if($("#ln_type_play_id").val()==4250){
+    if($("#ln_type_source_id").val()==4250){
         $(".filter-in-status").removeClass('hidden');
-    } else if($("#ln_type_play_id").val()==4251){
+    } else if($("#ln_type_source_id").val()==4251){
         $(".filter-en-status").removeClass('hidden');
     }
 }

@@ -64,7 +64,7 @@ function account_update_avatar_icon(type_css, icon_css){
 
 
     //Update via call:
-    $.post("/play/account_update_avatar_icon", {
+    $.post("/source/account_update_avatar_icon", {
         type_css: type_css,
         icon_css: icon_css,
     }, function (data) {
@@ -112,7 +112,7 @@ function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect)
         $('.radio-'+parent_en_id+' .item-'+selected_en_id).addClass('active');
     }
 
-    $.post("/play/account_update_radio", {
+    $.post("/source/account_update_radio", {
         parent_en_id: parent_en_id,
         selected_en_id: selected_en_id,
         enable_mulitiselect: enable_mulitiselect,
@@ -142,7 +142,7 @@ function account_update_name(){
 
     //Save the rest of the content:
     var en_name_new = $('#en_name').val().toUpperCase();
-    $.post("/play/account_update_name", {
+    $.post("/source/account_update_name", {
         en_name: en_name_new,
     }, function (data) {
 
@@ -178,7 +178,7 @@ function account_update_email(){
     $('.save_email').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/play/account_update_email", {
+    $.post("/source/account_update_email", {
         en_email: $('#en_email').val(),
     }, function (data) {
 
@@ -209,7 +209,7 @@ function account_update_password(){
     $('.save_password').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/play/account_update_password", {
+    $.post("/source/account_update_password", {
         input_password: $('#input_password').val(),
     }, function (data) {
 

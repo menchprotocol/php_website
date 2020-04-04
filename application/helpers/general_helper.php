@@ -27,7 +27,7 @@ function load_algolia($index_name)
     return $client->initIndex($index_name);
 }
 
-function detect_missing_columns($insert_columns, $required_columns, $ln_player_play_id)
+function detect_missing_columns($insert_columns, $required_columns, $ln_creator_source_id)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach ($required_columns as $req_field) {
@@ -40,8 +40,8 @@ function detect_missing_columns($insert_columns, $required_columns, $ln_player_p
                     'insert_columns' => $insert_columns,
                     'required_columns' => $required_columns,
                 ),
-                'ln_type_play_id' => 4246, //Platform Bug Reports
-                'ln_player_play_id' => $ln_player_play_id,
+                'ln_type_source_id' => 4246, //Platform Bug Reports
+                'ln_creator_source_id' => $ln_creator_source_id,
             ));
 
             return true; //We have an issue
@@ -119,7 +119,7 @@ function extract_references($ln_content)
     //Analyze the message to find referencing URLs and Players in the message text:
     $string_references = array(
         'ref_urls' => array(),
-        'ref_players' => array(),
+        'ref_sources' => array(),
         'ref_blogs' => array(),
         'ref_commands' => array(),
         'ref_custom' => array(),
@@ -149,7 +149,7 @@ function extract_references($ln_content)
 
         } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1)) && intval(substr($word, 1)) > 0) {
 
-            array_push($string_references['ref_players'], intval(substr($word, 1)));
+            array_push($string_references['ref_sources'], intval(substr($word, 1)));
 
         } elseif (substr($word, 0, 1) == '#' && is_numeric(substr($word, 1)) && intval(substr($word, 1)) > 0) {
 
@@ -217,8 +217,8 @@ function ln_detect_type($string)
 {
 
     /*
-     * Detect what type of player-to-player URL type should we create
-     * based on options listed in this tree: https://mench.com/play/4227
+     * Detect what type of Source URL type should we create
+     * based on options listed in this tree: https://mench.com/source/4227
      * */
 
     $string = trim($string);
@@ -235,35 +235,35 @@ function ln_detect_type($string)
 
         return array(
             'status' => 1,
-            'ln_type_play_id' => 4230, //Raw
+            'ln_type_source_id' => 4230, //Raw
         );
 
     } elseif (in_array(substr($string, 0, 3), array('fas', 'far', 'fal', 'fad')) && substr($string, 3, 4)==' fa-') {
 
         return array(
             'status' => 1,
-            'ln_type_play_id' => 10669, //ICON
+            'ln_type_source_id' => 10669, //ICON
         );
 
     } elseif ((strlen(bigintval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(bigintval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {
 
         return array(
             'status' => 1,
-            'ln_type_play_id' => 4319, //Number
+            'ln_type_source_id' => 4319, //Number
         );
 
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
 
         //It's a URL, see what type (this could fail if duplicate, etc...):
         $CI =& get_instance();
-        return $CI->PLAY_model->en_sync_url($string);
+        return $CI->SOURCE_model->en_sync_url($string);
 
     } elseif (strlen($string) > 9 && (is_valid_date($string) || strtotime($string) > 0)) {
 
         //Date/time:
         return array(
             'status' => 1,
-            'ln_type_play_id' => 4318,
+            'ln_type_source_id' => 4318,
         );
 
     } elseif (strlen($string) > 9 && (is_valid_date($string) || strtotime($string) > 0)) {
@@ -271,7 +271,7 @@ function ln_detect_type($string)
         //Date/time:
         return array(
             'status' => 1,
-            'ln_type_play_id' => 4318,
+            'ln_type_source_id' => 4318,
         );
 
     } elseif (substr($string, -1)=='%' && is_numeric(substr($string, 0, (strlen($string)-1)))) {
@@ -279,7 +279,7 @@ function ln_detect_type($string)
         //Percent:
         return array(
             'status' => 1,
-            'ln_type_play_id' => 7657,
+            'ln_type_source_id' => 7657,
         );
 
     } else {
@@ -287,7 +287,7 @@ function ln_detect_type($string)
         //Regular text link:
         return array(
             'status' => 1,
-            'ln_type_play_id' => 4255, //Text Link
+            'ln_type_source_id' => 4255, //Text Link
         );
 
     }
@@ -430,14 +430,14 @@ function in_weight_calculator($in){
     $CI =& get_instance();
 
     $count_transactions = $CI->READ_model->ln_fetch(array(
-        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         '(ln_child_blog_id='.$in['in_id'].' OR ln_parent_blog_id='.$in['in_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     //TREES
     $count_trees = $CI->READ_model->ln_fetch(array(
-        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
         '(ln_child_blog_id='.$in['in_id'].' OR ln_parent_blog_id='.$in['in_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -453,18 +453,18 @@ function en_weight_calculator($en){
     $CI =& get_instance();
 
     $count_transactions = $CI->READ_model->ln_fetch(array(
-        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        '(ln_child_play_id='.$en['en_id'].' OR ln_parent_play_id='.$en['en_id'].' OR ln_player_play_id='.$en['en_id'].')' => null,
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+        '(ln_child_source_id='.$en['en_id'].' OR ln_parent_source_id='.$en['en_id'].' OR ln_creator_source_id='.$en['en_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     //TREES
     $count_trees = $CI->READ_model->ln_fetch(array(
-        'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-        'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        '(ln_child_play_id='.$en['en_id'].' OR ln_parent_play_id='.$en['en_id'].')' => null,
+        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+        '(ln_child_source_id='.$en['en_id'].' OR ln_parent_source_id='.$en['en_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
-    //Returns the weight of a player:
+    //Returns the weight of a source:
     return ( $count_transactions[0]['totals'] * config_var(12568) )
             + ( $count_trees[0]['totals'] * config_var(12565) );
 
@@ -474,7 +474,7 @@ function en_weight_calculator($en){
 
 function filter_cache_group($search_en_id, $cache_en_id){
 
-    //Determines which category an player belongs to
+    //Determines which category an source belongs to
 
     $CI =& get_instance();
     foreach ($CI->config->item('en_all_'.$cache_en_id) as $en_id => $m) {
@@ -544,7 +544,7 @@ function ISO8601ToSeconds($ISO8601){
 }
 
 
-function random_player_avatar(){
+function random_source_avatar(){
     $CI =& get_instance();
     $en_all_10956 = $CI->config->item('en_all_10956');
     return $en_all_10956[array_rand($en_all_10956)]['m_icon'];
@@ -595,7 +595,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
 
 function in_is_unlockable($in){
     $CI =& get_instance();
-    return in_array($in['in_status_play_id'], $CI->config->item('en_ids_7355') /* Blog Statuses Public */);
+    return in_array($in['in_status_source_id'], $CI->config->item('en_ids_7355') /* Blog Status Public */);
 }
 
 function redirect_message($url, $message = null)
@@ -644,8 +644,8 @@ function extract_icon_color($en_icon){
         return ' read ';
     } elseif(substr_count($en_icon, 'blog')>0){
         return ' blog ';
-    } elseif(substr_count($en_icon, 'play')>0 && (!substr_count($en_icon, 'fa-play') || substr_count($en_icon, 'play')>1)){
-        return ' play ';
+    } elseif(substr_count($en_icon, 'source')>0){
+        return ' source ';
     } else {
         return '';
     }
@@ -659,11 +659,11 @@ function current_mench($part1 = null){
         $part1 = $CI->uri->segment(1);
     }
 
-    if($part1=='play' || $part1=='source'){
+    if($part1=='source'){
         return array(
             'x_id' => 4536,
-            'x_class' => 'play',
-            'x_name' => 'play',
+            'x_class' => 'source',
+            'x_name' => 'source',
         );
     } elseif($part1=='blog'){
         return array(
@@ -675,7 +675,7 @@ function current_mench($part1 = null){
         return array(
             'x_id' => 6205,
             'x_class' => 'read',
-            'x_name' => ( superpower_assigned() ? 'read' : '' ),
+            'x_name' => 'read',
         );
     }
 
@@ -712,7 +712,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
 
         //Block access:
         if($has_session){
-            $goto_url = '/play/'.$session_en['en_id'];
+            $goto_url = '/source/'.$session_en['en_id'];
         } else {
             $goto_url = '/sign?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
@@ -791,7 +791,7 @@ function common_prefix($child_list, $child_field, $in = null, $max_look = 0){
     return trim($common_prefix);
 }
 
-function upload_to_cdn($file_url, $ln_player_play_id = 0, $ln_metadata = null, $is_local = false, $page_title = null)
+function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null, $is_local = false, $page_title = null)
 {
 
     /*
@@ -849,7 +849,7 @@ function upload_to_cdn($file_url, $ln_player_play_id = 0, $ln_metadata = null, $
             //Define new URL:
             $cdn_new_url = trim($result['ObjectURL']);
 
-            if($ln_player_play_id < 1){
+            if($ln_creator_source_id < 1){
                 //Just return URL:
                 return array(
                     'status' => 1,
@@ -857,24 +857,24 @@ function upload_to_cdn($file_url, $ln_player_play_id = 0, $ln_metadata = null, $
                 );
             }
 
-            //Create and link new player to CDN and uploader:
-            $url_player = $CI->PLAY_model->en_sync_url($cdn_new_url, $ln_player_play_id, array($ln_player_play_id), 0, $page_title);
+            //Create and link new source to CDN and uploader:
+            $url_source = $CI->SOURCE_model->en_sync_url($cdn_new_url, $ln_creator_source_id, array($ln_creator_source_id), 0, $page_title);
 
-            if(isset($url_player['en_url']['en_id']) && $url_player['en_url']['en_id'] > 0){
+            if(isset($url_source['en_url']['en_id']) && $url_source['en_url']['en_id'] > 0){
 
                 //All good:
                 return array(
                     'status' => 1,
-                    'cdn_en' => $url_player['en_url'],
+                    'cdn_en' => $url_source['en_url'],
                     'cdn_url' => $cdn_new_url,
                 );
 
             } else {
 
                 $CI->READ_model->ln_create(array(
-                    'ln_type_play_id' => 4246, //Platform Bug Reports
-                    'ln_player_play_id' => $ln_player_play_id,
-                    'ln_content' => 'upload_to_cdn() Failed to create new player from CDN file',
+                    'ln_type_source_id' => 4246, //Platform Bug Reports
+                    'ln_creator_source_id' => $ln_creator_source_id,
+                    'ln_content' => 'upload_to_cdn() Failed to create new source from CDN file',
                     'ln_metadata' => array(
                         'file_url' => $file_url,
                         'ln_metadata' => $ln_metadata,
@@ -884,15 +884,15 @@ function upload_to_cdn($file_url, $ln_player_play_id = 0, $ln_metadata = null, $
 
                 return array(
                     'status' => 0,
-                    'message' => 'Failed to create new player from CDN file',
+                    'message' => 'Failed to create new source from CDN file',
                 );
             }
 
         } else {
 
             $CI->READ_model->ln_create(array(
-                'ln_type_play_id' => 4246, //Platform Bug Reports
-                'ln_player_play_id' => $ln_player_play_id,
+                'ln_type_source_id' => 4246, //Platform Bug Reports
+                'ln_creator_source_id' => $ln_creator_source_id,
                 'ln_content' => 'upload_to_cdn() Failed to upload file to Mench CDN',
                 'ln_metadata' => array(
                     'file_url' => $file_url,
@@ -912,8 +912,8 @@ function upload_to_cdn($file_url, $ln_player_play_id = 0, $ln_metadata = null, $
 
         //Log error:
         $CI->READ_model->ln_create(array(
-            'ln_type_play_id' => 4246, //Platform Bug Reports
-            'ln_player_play_id' => $ln_player_play_id,
+            'ln_type_source_id' => 4246, //Platform Bug Reports
+            'ln_creator_source_id' => $ln_creator_source_id,
             'ln_content' => 'upload_to_cdn() Failed to load AWS S3 module',
             'ln_metadata' => array(
                 'file_url' => $file_url,
@@ -1063,7 +1063,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
     } else {
 
-        //Do both blogs and players:
+        //Do both blogs and sources:
         $fetch_objects = $valid_objects;
 
         if (!$return_row_only) {
@@ -1090,7 +1090,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             if($input_obj_id){
                 $limits['in_id'] = $input_obj_id;
             } else {
-                $limits['in_status_play_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //Blog Statuses Active
+                $limits['in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //Blog Status Active
             }
 
             $db_rows['in'] = $CI->BLOG_model->in_fetch($limits);
@@ -1100,10 +1100,10 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             if($input_obj_id){
                 $limits['en_id'] = $input_obj_id;
             } else {
-                $limits['en_status_play_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')'] = null; //Player Statuses Active
+                $limits['en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')'] = null; //Source Status Active
             }
 
-            $db_rows['en'] = $CI->PLAY_model->en_fetch($limits);
+            $db_rows['en'] = $CI->SOURCE_model->en_fetch($limits);
 
         }
 
@@ -1149,32 +1149,32 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Count published children:
                 $published_child_count = $CI->READ_model->ln_fetch(array(
-                    'ln_parent_play_id' => $db_row['en_id'],
-                    'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'en_status_play_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Player Statuses Public
+                    'ln_parent_source_id' => $db_row['en_id'],
+                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
+                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
                 ), array('en_child'), 0, 0, array(), 'COUNT(ln_id) AS published_child_count');
 
                 $export_row['alg_obj_is_in'] = 0;
                 $export_row['alg_obj_id'] = intval($db_row['en_id']);
-                $export_row['alg_obj_status'] = intval($db_row['en_status_play_id']);
+                $export_row['alg_obj_status'] = intval($db_row['en_status_source_id']);
                 $export_row['alg_obj_icon'] = echo_en_icon($db_row['en_icon']);
                 $export_row['alg_obj_name'] = $db_row['en_name'];
                 $export_row['alg_obj_weight'] = intval($db_row['en_weight']);
 
                 array_push($export_row['_tags'], 'alg_author_' . $db_row['en_id']);
 
-                if(in_array($db_row['en_status_play_id'], $CI->config->item('en_ids_12575'))){
+                if(in_array($db_row['en_status_source_id'], $CI->config->item('en_ids_12575'))){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
                 //Add keywords:
                 $export_row['alg_obj_keywords'] = '';
                 foreach ($CI->READ_model->ln_fetch(array(
-                    'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Player-to-Player Links
-                    'ln_child_play_id' => $db_row['en_id'], //This child player
-                    'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'en_status_play_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Player Statuses Active
+                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
+                    'ln_child_source_id' => $db_row['en_id'], //This child source
+                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                    'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Source Status Active
                 ), array('en_parent'), 0, 0, array('en_name' => 'ASC')) as $ln) {
 
                     //Always add to tags:
@@ -1196,20 +1196,20 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 $export_row['alg_obj_is_in'] = 1; //This is an BLOG
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
-                $export_row['alg_obj_status'] = intval($db_row['in_status_play_id']);
-                $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_play_id']]['m_icon']; //Player type icon
+                $export_row['alg_obj_status'] = intval($db_row['in_status_source_id']);
+                $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_source_id']]['m_icon']; //Player type icon
                 $export_row['alg_obj_name'] = $db_row['in_title'];
                 $export_row['alg_obj_weight'] = intval($db_row['in_weight']);
 
-                if(in_array($db_row['in_status_play_id'], $CI->config->item('en_ids_12138'))){
+                if(in_array($db_row['in_status_source_id'], $CI->config->item('en_ids_12138'))){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
                 //Add keywords:
                 $export_row['alg_obj_keywords'] = '';
                 foreach ($CI->READ_model->ln_fetch(array(
-                    'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'ln_type_play_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
+                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
                     'ln_child_blog_id' => $db_row['in_id'],
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
                     $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
@@ -1219,12 +1219,12 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //If trainer has up-voted then give them access to manage blog
                 foreach($CI->READ_model->ln_fetch(array(
-                    'ln_status_play_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_play_id' => 4983,
+                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_type_source_id' => 4983,
                     'ln_child_blog_id' => $db_row['in_id'],
-                    'ln_parent_play_id >' => 0, //Where the author player is stored
+                    'ln_parent_source_id >' => 0, //Where the author source is stored
                 ), array(), 0) as $author){
-                    array_push($export_row['_tags'], 'alg_author_' . $author['ln_parent_play_id']);
+                    array_push($export_row['_tags'], 'alg_author_' . $author['ln_parent_source_id']);
                 }
 
             }
@@ -1258,7 +1258,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be removed?
-        if (in_array($all_db_rows[0][$input_obj_type . '_status_play_id'], array(6178 /* Player Removed */, 6182 /* Blog Removed */))) {
+        if (in_array($all_db_rows[0][$input_obj_type . '_status_source_id'], array(6178 /* Player Removed */, 6182 /* Blog Removed */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
@@ -1349,7 +1349,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 }
 
-function update_metadata($obj_type, $obj_id, $new_fields, $ln_player_play_id = 0)
+function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id = 0)
 {
 
     $CI =& get_instance();
@@ -1381,7 +1381,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_player_play_id = 0
 
     } elseif ($obj_type == 'en') {
 
-        $db_objects = $CI->PLAY_model->en_fetch(array(
+        $db_objects = $CI->SOURCE_model->en_fetch(array(
             $obj_type . '_id' => $obj_id,
         ));
 
@@ -1426,13 +1426,13 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_player_play_id = 0
 
         $affected_rows = $CI->BLOG_model->in_update($obj_id, array(
             'in_metadata' => $metadata,
-        ), false, $ln_player_play_id);
+        ), false, $ln_creator_source_id);
 
     } elseif ($obj_type == 'en') {
 
-        $affected_rows = $CI->PLAY_model->en_update($obj_id, array(
+        $affected_rows = $CI->SOURCE_model->en_update($obj_id, array(
             'en_metadata' => $metadata,
-        ), false, $ln_player_play_id);
+        ), false, $ln_creator_source_id);
 
     } elseif ($obj_type == 'ln') {
 

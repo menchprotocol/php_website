@@ -5,7 +5,7 @@ $en_all_4485 = $this->config->item('en_all_4485'); //Blog Notes
 $en_all_2738 = $this->config->item('en_all_2738');
 
 $is_author = in_is_author($in['in_id']);
-$is_active = in_array($in['in_status_play_id'], $this->config->item('en_ids_7356'));
+$is_active = in_array($in['in_status_source_id'], $this->config->item('en_ids_7356'));
 ?>
 
 <style>
@@ -15,7 +15,7 @@ $is_active = in_array($in['in_status_play_id'], $this->config->item('en_ids_7356
 
 
 <script>
-    //Include some cached players:
+    //Include some cached sources:
     var in_loaded_id = <?= $in['in_id'] ?>;
 </script>
 <script src="/application/views/blog/blog_coin.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
@@ -23,16 +23,16 @@ $is_active = in_array($in['in_status_play_id'], $this->config->item('en_ids_7356
 
 <?php
 
-$play_focus_found = false; //Used to determine the first tab to be opened
+$source_focus_found = false; //Used to determine the first tab to be opened
 
 
 
 
 //BLOG TREE PREVIOUS
 $blog__parents = $this->READ_model->ln_fetch(array(
-    'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-    'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-    'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
+    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
     'ln_child_blog_id' => $in['in_id'],
 ), array('in_parent'), 0);
 $blog_tree_previous = '<div id="list-in-' . $in['in_id'] . '-1" class="list-group previous_blogs">';
@@ -49,7 +49,7 @@ if( $is_author && $is_active && $in['in_id']!=config_var(12156)){
                            blog-id="' . $in['in_id'] . '"
                            id="addblog-c-' . $in['in_id'] . '-1"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="PREVIOUS BLOG TITLE">
+                           placeholder="PREVIOUS BLOG">
                 </div><div class="algolia_pad_search hidden in_pad_top"></div></div>';
 }
 $blog_tree_previous .= '</div>';
@@ -96,10 +96,10 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         //BLOG CONTROLLER
 
         //BLOG STATUS
-        echo '<div class="inline-block both-margin left-margin">'.echo_in_dropdown(4737, $in['in_status_play_id'], 'btn-blog', $is_author, true, $in['in_id']).'</div>';
+        echo '<div class="inline-block both-margin left-margin">'.echo_in_dropdown(4737, $in['in_status_source_id'], 'btn-blog', $is_author, true, $in['in_id']).'</div>';
 
         //BLOG TYPE
-        echo '<span class="inline-block both-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_play_id'], 'btn-blog', $is_author && $is_active, true, $in['in_id']).'</span>';
+        echo '<span class="inline-block both-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_source_id'], 'btn-blog', $is_author && $is_active, true, $in['in_id']).'</span>';
 
         //BLOG TIME
         echo '<div class="inline-block both-margin left-half-margin '.superpower_active(10984).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
@@ -132,9 +132,9 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //BLOG TREE NEXT
             $blog__children = $this->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Statuses Active
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
                 'ln_parent_blog_id' => $in['in_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -158,7 +158,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                            blog-id="' . $in['in_id'] . '"
                            id="addblog-c-' . $in['in_id'] . '-0"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="NEXT BLOG TITLE">
+                           placeholder="NEXT BLOG">
                 </div><div class="algolia_pad_search hidden in_pad_bottom"></div></div>';
             }
 
@@ -166,8 +166,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //BLOG NOTE
             $blog_notes = $this->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_play_id' => $en_id2,
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                'ln_type_source_id' => $en_id2,
                 'ln_child_blog_id' => $in['in_id'],
             ), array(), 0, 0, array('ln_order' => 'ASC'));
 
@@ -212,7 +212,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<td class="remove_loading '.superpower_active(10984).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=&end=\');" data-toggle="tooltip" title="YouTube Clip with Start & End Seconds" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
 
             //Reference Player
-            $this_tab .= '<td class="remove_loading '.superpower_active(10983).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Reference PLAYER" data-placement="top"><span class="icon-block"><i class="far fa-at"></i></span></a></td>';
+            $this_tab .= '<td class="remove_loading '.superpower_active(10983).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Reference SOURCE" data-placement="top"><span class="icon-block"><i class="far fa-at"></i></span></a></td>';
 
             //Upload File:
             if(in_array(12359, $en_all_4485[$en_id2]['m_parents'])){
@@ -222,10 +222,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= '</td>';
             }
 
-
-            //TODO ADD MORE OPTIONS HERE?
-            //LIST PLAYERS
-            //DRIP PLAYERS
 
             $this_tab .= '</tr></table>';
 
@@ -244,8 +240,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //READER READS & BOOKMARKS
             $item_counters = $this->READ_model->ln_fetch(array(
-                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
                 'ln_parent_blog_id' => $in['in_id'],
             ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 

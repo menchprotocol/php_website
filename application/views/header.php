@@ -2,14 +2,14 @@
 $session_en = superpower_assigned();
 $current_mench = current_mench();
 $first_segment = $this->uri->segment(1);
-$en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 $en_all_2738 = $this->config->item('en_all_2738');
 
 //Arrange based on current mench:
 $en_all_2738_mench = array();
 $did_find = false;
 $found_at = 1; //1 or 2 or 3
-foreach($en_all_2738 /* Player Statuses */ as $en_id => $m){
+foreach($en_all_2738 /* Source Status */ as $en_id => $m){
     if(!$did_find){
         if($current_mench['x_id']==$en_id){
             $did_find = true;
@@ -27,7 +27,7 @@ if($found_at > 1){
 
     $append_end = 1;
 
-    foreach($en_all_2738 /* Player Statuses */ as $en_id => $m){
+    foreach($en_all_2738 /* Source Status */ as $en_id => $m){
         //Append this:
         $en_all_2738_mench[$en_id] = $m;
         $append_end++;
@@ -91,7 +91,7 @@ if($found_at > 1){
             FS.identify(js_pl_id, {
                 displayName: js_pl_name,
                 uid: js_pl_id,
-                profileURL: 'https://mench.com/play/'+js_pl_id
+                profileURL: 'https://mench.com/source/'+js_pl_id
             });
         }
     </script>
@@ -145,24 +145,24 @@ if(!isset($hide_header)){
                         if(isset($session_en['en_id'])){
 
                             //Count Player Coins:
-                            $play_coins = $this->READ_model->ln_fetch(array(
-                                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //PLAY COIN
-                                'ln_player_play_id' => $session_en['en_id'],
+                            $source_coins = $this->READ_model->ln_fetch(array(
+                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
+                                'ln_creator_source_id' => $session_en['en_id'],
                             ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
                             $blog_coins = $this->READ_model->ln_fetch(array(
-                                'in_status_play_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Statuses Public
-                                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //BLOG COIN
-                                'ln_parent_play_id' => $session_en['en_id'],
+                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
+                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //BLOG COIN
+                                'ln_parent_source_id' => $session_en['en_id'],
                             ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
                             $read_coins = $this->READ_model->ln_fetch(array(
-                                'ln_status_play_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                                'ln_type_play_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-                                'ln_player_play_id' => $session_en['en_id'],
+                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+                                'ln_creator_source_id' => $session_en['en_id'],
                             ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
                             $player_stats = array(
-                                'play_count' => $play_coins[0]['total_coins'],
+                                'source_count' => $source_coins[0]['total_coins'],
                                 'blog_count' => $blog_coins[0]['total_coins'],
                                 'read_count' => $read_coins[0]['total_coins']
                             );
