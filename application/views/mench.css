@@ -413,11 +413,12 @@ img.no-radius {
     margin-bottom: 0 !important;
 }
 .read-connector{
-    height: 12px;
+    height: 22px;
     position: absolute;
-    border-left: 2px solid #FC1B44;
-    left: 15px;
+    border-left: 5px solid #FC1B44;
     margin-top: 5px;
+    border-bottom: 5px solid #FC1B44;
+    width: 9px;
 }
 
 .progress-done{
