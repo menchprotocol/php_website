@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-04 10:23:27 PST
+//Generated 2020-04-04 13:12:58 PST
 
 //PLATFORM STATS:
-$config['ps_read_count'] = 121007;
+$config['ps_read_count'] = 120974;
 $config['ps_blog_count'] = 3827;
 $config['ps_source_count'] = 9231;
 
@@ -3572,7 +3572,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.318',
+        'm_desc' => '1.32',
         'm_parents' => array(6404),
     ),
     12363 => array(
