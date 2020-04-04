@@ -1304,11 +1304,11 @@ label {
 }
 
 .itemblog.list-group-item {
-    padding:5px 5px;
+    padding:5px 0;
 }
 
 .blogs_sortable.itemblog {
-    padding: 10px 5px;
+    padding: 10px 0;
 }
 .sequal-topic{
     padding: 20px 0 5px;
