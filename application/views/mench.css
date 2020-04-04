@@ -415,7 +415,7 @@ img.no-radius {
 .read-connector{
     height: 22px;
     position: absolute;
-    border-left: 5px solid #FC1B44;
+    border-left: 4px solid #FC1B44;
     margin-top: 5px;
     border-bottom: 5px solid #FC1B44;
     width: 9px;
