@@ -2508,7 +2508,7 @@ function echo_in_read_previous($in_id, $recipient_en){
                 ));
 
 
-                if (count($ins_this) > 0) {
+                if (count($ins_this) > 0 && isset($player_list_id[$parent_in_id]) /* Not sure why $parent_in_id does exist in $player_list_id! */) {
                     array_push($breadcrumb_links, '/'.$parent_in_id);
                     array_push($breadcrumb_items, echo_in_read($player_list_id[$parent_in_id]));
                 }
