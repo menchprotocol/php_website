@@ -407,8 +407,8 @@ img.no-radius {
     width: 100% !important;
 }
 
-.no-top-margin{
-    margin-top: 0;
+.some-top-margin{
+    margin-top: 2px;
 }
 
 .progress-done{

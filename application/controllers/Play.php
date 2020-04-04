@@ -661,7 +661,7 @@ fragment PostListingItemSidebar_post on Post {
         ));
 
         if (count($ens) < 1) {
-            return redirect_message('/play', '<div class="alert alert-danger" role="alert">Invalid Player ID</div>');
+            return redirect_message('/play');
         }
 
         //Load views:

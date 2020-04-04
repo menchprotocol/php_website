@@ -713,14 +713,12 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
         //Block access:
         if($has_session){
             $goto_url = '/play/'.$session_en['en_id'];
-            $redirect_message = null;
         } else {
             $goto_url = '/sign?url=' . urlencode($_SERVER['REQUEST_URI']);
-            $redirect_message = '<div class="alert alert-danger" role="alert">Note: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'Sign-in to access this page.') . '</div>';
         }
 
         //Now redirect:
-        return redirect_message($goto_url, $redirect_message);
+        return redirect_message($goto_url);
     }
 
 }
