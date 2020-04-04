@@ -2016,8 +2016,8 @@ class READ_model extends CI_Model
                     echo echo_in_read_previous($in_id, $recipient_en);
 
                     //Button to submit selection:
+                    echo '<div class="result-update"></div>';
                     echo '<div class="inline-block margin-top-down previous_reads"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($read_answers)>0 ? 'UPDATE' : 'SELECT' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($read_answers)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL</u></a></span>' : '' ).'</div>';
-                    echo '<div class="result-update inline-block margin-top-down"></div>';
 
                     echo '</div>';
 
