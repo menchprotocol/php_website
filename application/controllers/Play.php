@@ -750,9 +750,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
             //PLAY
-            echo '<td class="play fixedColumns MENCHcolumn1"><span class="icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.'<a href="/play/'.$ln['en_id'].'" class="montserrat play title-block title-no-right en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
-
-
+            echo '<td class="play fixedColumns MENCHcolumn12"><span class="icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.'<a href="/play/'.$ln['en_id'].'" class="montserrat play title-block title-no-right en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
 
 
 
@@ -771,61 +769,20 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-
-
             //READ
+            /*
             echo '<td class="read fixedColumns MENCHcolumn2">';
             if($read_coins[0]['total_coins'] > 0){
                 echo ( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_player_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' );
             }
             echo '</td>';
+            */
+
 
             echo '</tr>';
 
-
-
         }
-
-        //Then show top readers to hit the target $load_max
-        //TODO retire this once we hit 100+ Players, which means no more need for readers
-        $players_found = count($blog_player_coins);
-        $show_readers = $load_max - $players_found;
-        if($show_readers > 0){
-
-            $read_coins = $this->READ_model->ln_fetch($filters_read, array('en_owner'), $show_readers, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
-
-            foreach ($read_coins as $count=>$ln) {
-
-                $count += $players_found;
-
-                if($count==$show_max){
-
-                    echo '<tr class="see_more_who"><td colspan="3"><span class="icon-block"><i class="far fa-search-plus play"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat play" style="text-decoration: none !important;">TOP '.$load_max.'</b></a></td></tr>';
-
-                    echo '<tr class="see_more_who"></tr>';
-
-                }
-
-                echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
-
-                //PLAY
-                echo '<td class="play fixedColumns MENCHcolumn1"><span class="icon-block">'.echo_en_icon($ln['en_icon']).'</span><a href="/play/'.$ln['en_id'].'" class="montserrat play title-block title-no-right en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
-
-                //BLOG
-                echo '<td class="blog fixedColumns MENCHcolumn3"></td>';
-
-                //READ
-                echo '<td class="read fixedColumns MENCHcolumn2">'.( $session_en ? '<a href="/ledger?ln_status_play_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_play_id='.join(',', $this->config->item('en_ids_6255')).'&ln_player_play_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>' ).'</td>';
-
-                echo '</tr>';
-
-            }
-        }
-
-
-
         echo '</table>';
-
     }
 
     function stats(){
