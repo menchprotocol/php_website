@@ -2013,7 +2013,7 @@ class READ_model extends CI_Model
                     echo '</div>';
                     echo '</div>';
 
-                    echo '<div class="result-update"></div>';
+                    echo '<div class="result-update margin-top-down"></div>';
 
                     echo echo_in_read_previous($in_id, $recipient_en);
 
