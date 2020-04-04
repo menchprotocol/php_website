@@ -2042,7 +2042,7 @@ class READ_model extends CI_Model
                 echo '</div>';
 
                 echo '<div class="edit-text '.($previous_answers ? ' hidden ' : '').'">';
-                echo '<textarea class="border i_content read_input" placeholder="Your Answer Here..." id="read_text_answer">'.( $previous_answers ? $read_completes[0]['ln_content'] : '' ).'</textarea>';
+                echo '<textarea class="border i_content padded read_input" placeholder="Your Answer Here..." id="read_text_answer">'.( $previous_answers ? $read_completes[0]['ln_content'] : '' ).'</textarea>';
 
                 //Show Previous Button:
                 echo echo_in_read_previous($ins[0]['in_id'], $recipient_en);
@@ -3515,7 +3515,7 @@ class READ_model extends CI_Model
             //Always returns a single (sometimes long) HTML message:
             array_push($output_messages, array(
                 'message_type_en_id' => 4570, //User Received Email Message
-                'message_body' => '<div class="i_content"><div class="msg">' . nl2br($output_body_message) . '</div></div>',
+                'message_body' => '<div class="i_content padded"><div class="msg">' . nl2br($output_body_message) . '</div></div>',
             ));
 
         }

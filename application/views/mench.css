@@ -33,7 +33,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .container-wide {
     max-width:767px;
 }
-.container-wide .i_content, .padded {
+.padded {
     margin: 0 33px 20px 33px;
 }
 .margin-top-down{
@@ -1136,7 +1136,7 @@ label {
 }
 
 .blog-desc{
-    padding: 10px 0 5px 33px;
+    padding: 10px 0 5px;
 }
 
 .blog-desc .icon-block{
