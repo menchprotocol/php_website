@@ -1581,7 +1581,7 @@ class READ_model extends CI_Model
                     //List Children:
                     echo '<div class="list-group '.( !$is_home ? 'read_topics hidden' : '' ).'">';
                     foreach($in__children as $key => $child_in){
-                        echo echo_in_read($child_in, in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_6193')));
+                        echo echo_in_read($child_in, ($is_home || in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_6193'))));
                     }
                     echo '</div>';
 
