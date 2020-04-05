@@ -798,7 +798,7 @@ td.MENCHcolumn3{ width: 21%; }
     text-align: center;
     margin-left:5px;
     color:#000000;
-    padding:5px 10px;
+    padding:6px 10px;
 }
 
 .mench-navigation .block-link .fas, .block-link .fal, .block-link .far, .block-link .fad{
@@ -987,8 +987,9 @@ label {
 /* STYLES */
 .btn{
     text-decoration: none;
-    line-height: 1.1;
-    border:0;
+    line-height: 100%;
+    border: 0;
+    padding: 7px;
 }
 
 .btn.dropdown-toggle{
