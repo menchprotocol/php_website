@@ -4,7 +4,7 @@ $en_all_7555 = $this->config->item('en_all_7555');
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
 //See if we have a session assigned:
-$referrer_in_id = intval($this->session->userdata('session_superpowers_assigned'));
+$referrer_in_id = intval($this->session->userdata('sign_in_id'));
 
 $this_attempt = array(
     'ln_type_source_id' => ( $referrer_in_id > 0 ? 7560 /* User Signin Blog Channel Choose */ : 7561 /* User Signin on Website */ ),
