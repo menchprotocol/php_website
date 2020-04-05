@@ -443,6 +443,10 @@ img.no-radius {
     -webkit-animation: mench-spin 13s infinite linear;
     animation: mench-spin 13s infinite linear;
 }
+.mench-large{
+    width: 89px;
+    margin-bottom: 34px;
+}
 
 @-webkit-keyframes mench-spin {
     0% {
