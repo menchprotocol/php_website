@@ -81,12 +81,12 @@ if(count($current_sign_in_attempt) == 0){
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
         ));
         if(count($ins) > 0){
-            echo '<p class="text-center montserrat doupper">TO READ <a href="/'.$referrer_in_id.'"><u>'.echo_in_title($ins[0]).'</u></a> FOR FREE</p>';
+            echo '<p class="text-center montserrat">TO READ <a href="/'.$referrer_in_id.'"><u>'.echo_in_title($ins[0]).'</u></a> FOR FREE</p>';
         }
     } elseif(isset($_GET['url']) && strlen($_GET['url']) > 0){
-        echo '<p class="text-center montserrat doupper">TO '.trim(urldecode($_GET['url']), '/').' FOR FREE</p>';
+        echo '<p class="text-center montserrat">TO '.strtoupper(trim(urldecode($_GET['url']), '/')).' FOR FREE</p>';
     } else {
-        echo '<p class="text-center montserrat doupper">TO GET STARTED FOR FREE</p>';
+        echo '<p class="text-center montserrat">TO GET STARTED FOR FREE</p>';
     }
     ?>
 
