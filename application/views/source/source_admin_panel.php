@@ -11,10 +11,10 @@ $moderation_tools = array(
 
     //Moderator Tools
     '/source/admin_panel/link_coins_words_stats' => 'Coin Stats',
-    '/source/admin_panel/orphan_blogs' => 'Orphan Blogs',
-    '/source/admin_panel/orphan_sources' => 'Orphan Sources',
-    '/source/admin_panel/in_replace_outcomes' => 'Blog Search/Replace Titles',
-    '/source/admin_panel/en_replace_name' => 'Player Search/Replace Name',
+    '/source/admin_panel/orphan_blogs' => 'List Orphan Blogs',
+    '/source/admin_panel/orphan_sources' => 'List Orphan Sources',
+    '/source/admin_panel/in_replace_outcomes' => 'Blog Title Search & Replace',
+    '/source/admin_panel/en_replace_name' => 'Source Name Search & Replace',
     '/source/admin_panel/in_invalid_outcomes' => 'Blog Invalid Titles',
     '/source/admin_panel/identical_blog_outcomes' => 'Identical Blog Titles',
     '/source/admin_panel/identical_source_names' => 'Identical Source Names',

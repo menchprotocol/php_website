@@ -110,11 +110,14 @@ if($found_at > 1){
 <?php
 //Any message we need to show here?
 if (!isset($flash_message)) {
-    $flash_message = $this->session->flashdata('flash_message');
+    $flash_message = $this->session->getFlashdata('flash_message');
 }
 
 
 if(strlen($flash_message) > 0) {
+
+
+
     echo '<div class="container '.( isset($hide_header) ? ' center-info ' : '' ).'" id="custom_message" style="padding-bottom: 0;">'.$flash_message.'</div>';
 }
 
