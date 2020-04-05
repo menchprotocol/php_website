@@ -2320,11 +2320,11 @@ function echo_caret($en_id, $m, $url_append){
 }
 
 
-function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null, $in_reads = true, $show_previous = true){
+function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null, $in_reads = true){
 
     //If no list just return the next step:
     if(!count($in__children)){
-        return echo_in_next($in['in_id'], $recipient_en, $push_message, $show_previous);
+        return echo_in_next($in['in_id'], $recipient_en, $push_message);
     }
 
     $CI =& get_instance();
@@ -2402,11 +2402,11 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         echo '</div>';
     }
 
-    echo_in_next($in['in_id'], $recipient_en, $push_message, $show_previous);
+    echo_in_next($in['in_id'], $recipient_en, $push_message);
 
 }
 
-function echo_in_next($in_id, $recipient_en, $push_message, $show_previous = true){
+function echo_in_next($in_id, $recipient_en, $push_message){
 
     //A function to display warning/success messages to users:
     $CI =& get_instance();
@@ -2443,10 +2443,8 @@ function echo_in_next($in_id, $recipient_en, $push_message, $show_previous = tru
         <?php
         */
 
-        if($show_previous){
-            //PREVIOUS:
-            echo echo_in_read_previous($in_id, $recipient_en);
-        }
+        //PREVIOUS:
+        echo echo_in_read_previous($in_id, $recipient_en);
 
         //NEXT:
         $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH  NAVIGATION

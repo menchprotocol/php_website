@@ -1796,7 +1796,7 @@ class READ_model extends CI_Model
             if(!count($read_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
                 //List Unlock paths:
-                echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>SUGGESTED READS:', false);
+                echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>SUGGESTED READS:');
 
             }
 
@@ -2135,14 +2135,14 @@ class READ_model extends CI_Model
             if(count($read_completes) || $ins[0]['in_type_source_id']==6677){
 
                 //Always show the next list:
-                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true, false);
+                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
 
             } elseif (in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7751'))) {
 
                 //Show next here:
                 echo '<div class="go_next_upload hidden inline-block">';
 
-                echo_in_next($ins[0]['in_id'], $recipient_en, $push_message, false);
+                echo_in_next($ins[0]['in_id'], $recipient_en, $push_message);
 
                 echo '</div>';
 
