@@ -195,7 +195,7 @@ if(!isset($hide_header)){
                         ?>
 
 
-                        <div class="main_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
+                        <div class="main_nav search_nav hidden"><form id="searchFrontForm" style="margin-top:5px;"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
                         <div class="main_nav superpower_nav hidden">
                             <?php
