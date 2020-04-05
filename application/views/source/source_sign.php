@@ -86,7 +86,7 @@ if(count($current_sign_in_attempt) == 0){
     } elseif(isset($_GET['url']) && strlen($_GET['url']) > 0){
         echo '<p class="text-center montserrat doupper">TO '.trim(urldecode($_GET['url']), '/').' FOR FREE</p>';
     } else {
-        echo '<p class="text-center montserrat doupper">TO PLAY MENCH FOR FREE</p>';
+        echo '<p class="text-center montserrat doupper">TO GET STARTED FOR FREE</p>';
     }
     ?>
 
