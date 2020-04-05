@@ -2532,13 +2532,7 @@ function echo_in_read_previous($in_id, $recipient_en){
     if($ui){
 
         //Previous
-        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" '.( count($breadcrumb_links)==1 ? 'href="'.$breadcrumb_links[0].'"' : 'href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"' ).'><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;</div>';
-
-        //READ LIST
-        if(count($player_reads) >= 2) {
-            $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH  NAVIGATION
-            $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" href="/read">' . $en_all_11035[7347]['m_icon'] . '</a>&nbsp;</div>';
-        }
+        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;</div>';
 
         //Read List
         /*
