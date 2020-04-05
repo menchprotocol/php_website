@@ -411,15 +411,6 @@ img.no-radius {
     margin-top: 0 !important;
     margin-bottom: -5px !important;
 }
-.read-connector{
-    display: none; /* Retired for now */
-    height: 17px;
-    position: absolute;
-    border-left: 4px solid #FC1B44 !important;
-    margin-top: 5px;
-    border-bottom: 5px solid #FC1B44 !important;
-    width: 9px;
-}
 
 .progress-done{
     height: 5px;

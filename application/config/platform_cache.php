@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-05 08:52:08 PST
+//Generated 2020-04-05 12:32:25 PST
 
 //PLATFORM STATS:
-$config['ps_read_count'] = 121018;
+$config['ps_read_count'] = 121022;
 $config['ps_blog_count'] = 3827;
 $config['ps_source_count'] = 9229;
 
@@ -121,12 +121,12 @@ $config['en_all_12574'] = array(
     ),
 );
 
-//SOURCE STATUS SEARCHABLE:
+//SOURCE STATUS FEATURED:
 $config['en_ids_12575'] = array(12563);
 $config['en_all_12575'] = array(
     12563 => array(
         'm_icon' => '<i class="fad fa-search"></i>',
-        'm_name' => 'SOURCE SEARCHABLE',
+        'm_name' => 'SOURCE FEATURED',
         'm_desc' => '',
         'm_parents' => array(12575,10654,7358,7357,6177),
     ),
@@ -2852,12 +2852,12 @@ $config['en_all_12141'] = array(
     ),
 );
 
-//BLOG STATUS SEARCHABLE:
+//BLOG STATUS FEATURED:
 $config['en_ids_12138'] = array(12137);
 $config['en_all_12138'] = array(
     12137 => array(
         'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
-        'm_name' => 'BLOG SEARCHABLE',
+        'm_name' => 'BLOG FEATURED',
         'm_desc' => '',
         'm_parents' => array(10648,12138,7356,7355,4737),
     ),
@@ -2908,7 +2908,7 @@ $config['en_all_12112'] = array(
 $config['en_ids_12105'] = array(10895,3314,10896,10899,10898);
 $config['en_all_12105'] = array(
     10895 => array(
-        'm_icon' => '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Amazon_Alexa_play_logo.svg/1024px-Amazon_Alexa_play_logo.svg.png">',
+        'm_icon' => '<i class="fab fa-amazon"></i>',
         'm_name' => 'ALEXA',
         'm_desc' => '',
         'm_parents' => array(12105),
@@ -4527,7 +4527,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(6287,4535,11047,6192,12365,12273,12079,11018,11021,4229,4485,12012,6193,10990,4983,7302,4737,7356,7355,12138,12400,6201,12112,12420,4486,12413,7585,10602,12330,12324,7309,7712,7751,6150,3000,10627,12359,12523,10717,12571,12574,11080,2738,12105,12502,10876,11035,12524,11059,11058,6225,12501,6404,4527,11054,6232,4997,4755,6205,11081,7704,12326,6255,12229,6345,4280,4277,6102,12446,6146,7347,6103,10692,12227,5967,7304,6186,7360,7364,7359,4341,4593,10593,12228,12141,12327,10658,4269,6204,4536,10956,12279,12410,12274,6194,3290,6827,12421,11089,4592,12403,4426,12500,7555,4986,7551,11028,4537,6177,7358,7357,12575,12401,6206,3289,12577,10957,12322,12321,6805);
+$config['en_ids_4527'] = array(6287,4535,11047,6192,12365,12273,12079,11018,11021,4229,4485,12012,6193,10990,4983,7302,4737,7356,12138,7355,12400,6201,12112,12420,4486,12413,7585,10602,12330,12324,7309,7712,7751,6150,3000,10627,12359,12523,10717,12571,12574,11080,2738,12105,12502,10876,11035,12524,11059,11058,6225,12501,6404,4527,11054,6232,4997,4755,6205,11081,7704,12326,6255,12229,6345,4280,4277,6102,12446,6146,7347,6103,10692,12227,5967,7304,6186,7360,7364,7359,4341,4593,10593,12228,12141,12327,10658,4269,6204,4536,10956,12279,12410,12274,6194,3290,6827,12421,11089,4592,12403,4426,12500,7555,4986,7551,11028,4537,6177,7358,12575,7357,12401,6206,3289,12577,10957,12322,12321,6805);
 $config['en_all_4527'] = array(
     6287 => array(
         'm_icon' => '<i class="fad fa-user-shield source" aria-hidden="true"></i>',
@@ -4637,17 +4637,17 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(11054,10891,4527),
     ),
+    12138 => array(
+        'm_icon' => '<i class="fad fa-search blog" aria-hidden="true"></i>',
+        'm_name' => 'BLOG STATUS FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(4527,10891),
+    ),
     7355 => array(
         'm_icon' => '<i class="far fa-eye" aria-hidden="true"></i>',
         'm_name' => 'BLOG STATUS PUBLIC',
         'm_desc' => '',
         'm_parents' => array(11054,10891,4527),
-    ),
-    12138 => array(
-        'm_icon' => '<i class="fad fa-search blog" aria-hidden="true"></i>',
-        'm_name' => 'BLOG STATUS SEARCHABLE',
-        'm_desc' => '',
-        'm_parents' => array(4527,10891),
     ),
     12400 => array(
         'm_icon' => '<i class="fad fa-sync blog"></i>',
@@ -5189,17 +5189,17 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(12572,4527),
     ),
+    12575 => array(
+        'm_icon' => '<i class="fad fa-search"></i>',
+        'm_name' => 'SOURCE STATUS FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(4527,12572),
+    ),
     7357 => array(
         'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'SOURCE STATUS PUBLIC',
         'm_desc' => '',
         'm_parents' => array(12572,11054,4527),
-    ),
-    12575 => array(
-        'm_icon' => '<i class="fad fa-search"></i>',
-        'm_name' => 'SOURCE STATUS SEARCHABLE',
-        'm_desc' => '',
-        'm_parents' => array(4527,12572),
     ),
     12401 => array(
         'm_icon' => '<i class="fad fa-sync source"></i>',
@@ -6272,7 +6272,7 @@ $config['en_all_7364'] = array(
 );
 
 //READ STATUS ACTIVE:
-$config['en_ids_7360'] = array(6175,6176,12399);
+$config['en_ids_7360'] = array(6175,12399,6176);
 $config['en_all_7360'] = array(
     6175 => array(
         'm_icon' => '<i class="far fa-spinner fa-spin" aria-hidden="true"></i>',
@@ -6280,39 +6280,39 @@ $config['en_all_7360'] = array(
         'm_desc' => '',
         'm_parents' => array(7364,7360,6186),
     ),
+    12399 => array(
+        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(7360,7359,6186),
+    ),
     6176 => array(
         'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(12012,7360,7359,6186),
-    ),
-    12399 => array(
-        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
-        'm_name' => 'SEARCHABLE',
-        'm_desc' => '',
-        'm_parents' => array(7360,7359,6186),
     ),
 );
 
 //READ STATUS PUBLIC:
-$config['en_ids_7359'] = array(6176,12399);
+$config['en_ids_7359'] = array(12399,6176);
 $config['en_all_7359'] = array(
+    12399 => array(
+        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(7360,7359,6186),
+    ),
     6176 => array(
         'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(12012,7360,7359,6186),
     ),
-    12399 => array(
-        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
-        'm_name' => 'SEARCHABLE',
-        'm_desc' => '',
-        'm_parents' => array(7360,7359,6186),
-    ),
 );
 
 //SOURCE STATUS ACTIVE:
-$config['en_ids_7358'] = array(6180,6181,12563);
+$config['en_ids_7358'] = array(6180,12563,6181);
 $config['en_all_7358'] = array(
     6180 => array(
         'm_icon' => '<i class="far fa-spinner fa-spin" aria-hidden="true"></i>',
@@ -6320,39 +6320,39 @@ $config['en_all_7358'] = array(
         'm_desc' => '',
         'm_parents' => array(10654,7358,6177),
     ),
+    12563 => array(
+        'm_icon' => '<i class="fad fa-search"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(12575,10654,7358,7357,6177),
+    ),
     6181 => array(
         'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(10654,7358,7357,6177),
-    ),
-    12563 => array(
-        'm_icon' => '<i class="fad fa-search"></i>',
-        'm_name' => 'SEARCHABLE',
-        'm_desc' => '',
-        'm_parents' => array(12575,10654,7358,7357,6177),
     ),
 );
 
 //SOURCE STATUS PUBLIC:
-$config['en_ids_7357'] = array(6181,12563);
+$config['en_ids_7357'] = array(12563,6181);
 $config['en_all_7357'] = array(
+    12563 => array(
+        'm_icon' => '<i class="fad fa-search"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(12575,10654,7358,7357,6177),
+    ),
     6181 => array(
         'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(10654,7358,7357,6177),
     ),
-    12563 => array(
-        'm_icon' => '<i class="fad fa-search"></i>',
-        'm_name' => 'SEARCHABLE',
-        'm_desc' => '',
-        'm_parents' => array(12575,10654,7358,7357,6177),
-    ),
 );
 
 //BLOG STATUS ACTIVE:
-$config['en_ids_7356'] = array(6183,6184,12137);
+$config['en_ids_7356'] = array(6183,12137,6184);
 $config['en_all_7356'] = array(
     6183 => array(
         'm_icon' => '<i class="far fa-spinner fa-spin " aria-hidden="true"></i>',
@@ -6360,34 +6360,34 @@ $config['en_all_7356'] = array(
         'm_desc' => '',
         'm_parents' => array(10648,7356,4737),
     ),
+    12137 => array(
+        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(10648,12138,7356,7355,4737),
+    ),
     6184 => array(
         'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(10648,7355,7356,4737),
-    ),
-    12137 => array(
-        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
-        'm_name' => 'SEARCHABLE',
-        'm_desc' => '',
-        'm_parents' => array(10648,12138,7356,7355,4737),
     ),
 );
 
 //BLOG STATUS PUBLIC:
-$config['en_ids_7355'] = array(6184,12137);
+$config['en_ids_7355'] = array(12137,6184);
 $config['en_all_7355'] = array(
+    12137 => array(
+        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(10648,12138,7356,7355,4737),
+    ),
     6184 => array(
         'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(10648,7355,7356,4737),
-    ),
-    12137 => array(
-        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
-        'm_name' => 'SEARCHABLE',
-        'm_desc' => '',
-        'm_parents' => array(10648,12138,7356,7355,4737),
     ),
 );
 
@@ -6424,7 +6424,7 @@ $config['en_ids_6186'] = array(12399,6176,6175,6173);
 $config['en_all_6186'] = array(
     12399 => array(
         'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
-        'm_name' => 'SEARCHABLE',
+        'm_name' => 'FEATURED',
         'm_desc' => '',
         'm_parents' => array(7360,7359,6186),
     ),
@@ -6691,7 +6691,7 @@ $config['en_ids_4737'] = array(12137,6184,6183,6182);
 $config['en_all_4737'] = array(
     12137 => array(
         'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
-        'm_name' => 'SEARCHABLE',
+        'm_name' => 'FEATURED',
         'm_desc' => '',
         'm_parents' => array(10648,12138,7356,7355,4737),
     ),
@@ -6720,7 +6720,7 @@ $config['en_ids_6177'] = array(12563,6181,6180,6178);
 $config['en_all_6177'] = array(
     12563 => array(
         'm_icon' => '<i class="fad fa-search"></i>',
-        'm_name' => 'SEARCHABLE',
+        'm_name' => 'FEATURED',
         'm_desc' => '',
         'm_parents' => array(12575,10654,7358,7357,6177),
     ),
