@@ -403,7 +403,7 @@ img.no-radius {
 .btn-source i, .btn-read i, .btn-blog i { color: #000000 !important; }
 
 .progress-bg{
-    margin: -10px 0 10px 0;
+    margin: -10px 0 5px 0;
     width: 100% !important;
 }
 
@@ -412,7 +412,7 @@ img.no-radius {
     margin-bottom: 0 !important;
 }
 .read-connector{
-    height: 22px;
+    height: 17px;
     position: absolute;
     border-left: 4px solid #FC1B44 !important;
     margin-top: 5px;
