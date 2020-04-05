@@ -750,7 +750,7 @@ td.MENCHcolumn3{ width: 21%; }
 .mench_coin.read:hover, .mench_coin.read.focustab  { border-color:#FC1B44; }
 .mench_coin.blog:hover, .mench_coin.blog.focustab  { border-color:#ffc500; }
 .mench_coin{
-    padding:10px 0;
+    padding:5px 0;
     display:inline-block;
     text-decoration: none;
     line-height: 110%;
@@ -798,7 +798,7 @@ td.MENCHcolumn3{ width: 21%; }
     text-align: center;
     margin-left:5px;
     color:#000000;
-    padding:6px 10px;
+    padding:5px 10px;
 }
 
 .mench-navigation .block-link .fas, .block-link .fal, .block-link .far, .block-link .fad{
