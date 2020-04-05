@@ -81,7 +81,7 @@ if(count($current_sign_in_attempt) == 0){
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
         ));
         if(count($ins) > 0){
-            echo '<p class="text-center montserrat doupper"><a href="/'.$referrer_in_id.'"><u>'.echo_in_title($ins[0]).'</u></a> FOR FREE</p>';
+            echo '<p class="text-center montserrat doupper">TO READ <a href="/'.$referrer_in_id.'"><u>'.echo_in_title($ins[0]).'</u></a> FOR FREE</p>';
         }
     } elseif(isset($_GET['url']) && strlen($_GET['url']) > 0){
         echo '<p class="text-center montserrat doupper">TO '.trim(urldecode($_GET['url']), '/').' FOR FREE</p>';
@@ -205,7 +205,7 @@ if(count($current_sign_in_attempt) == 0){
 
 
 
-        <div class="fb-login-button" data-width="" data-size="medium" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div>
+        <div class="fb-login-button" data-width="" data-size="medium" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true" onclick="testStatus()"></div>
 
         <script>
 
@@ -223,6 +223,13 @@ if(count($current_sign_in_attempt) == 0){
                     console.log(response);
                 });
             };
+
+            function testStatus(){
+                alert('testing...');
+                FB.getLoginStatus(function(response) {
+                    console.log(response);
+                });
+            }
 
 
             (function(d, s, id){
