@@ -802,19 +802,28 @@ fragment PostListingItemSidebar_post on Post {
             if($in_id > 0){
                 return redirect_message('/' . $in_id);
             } else {
-                return redirect_message('/source');
+                return redirect_message('/read');
             }
         }
+
+        //Update focus blog session:
+        if($in_id > 0){
+            //Set in session:
+            $this->session->set_userdata(array(
+                'sign_in_id' => $in_id,
+            ));
+
+            //Redirect to basic login URL (So Facebook OAuth can validate)
+            return redirect_message('/sign');
+        }
+
 
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
         $this->load->view('header', array(
             'hide_header' => 1,
             'title' => $en_all_11035[4269]['m_name'],
         ));
-        $this->load->view('source/source_sign', array(
-            'referrer_in_id' => intval($in_id),
-            'contrainer_class_append' => intval($in_id),
-        ));
+        $this->load->view('source/source_sign');
         $this->load->view('footer');
 
     }
@@ -2110,7 +2119,7 @@ fragment PostListingItemSidebar_post on Post {
         $html_message .= '<div><a href="'.$actionplan_url.'" target="_blank">' . $actionplan_url . '</a></div><br />';
 
         $html_message .= '<div>Connect on Messenger:</div><br />';
-        $messenger_url = 'https://m.me/menchblogs' . ( count($referrer_ins) > 0 ? '?ref=' . $referrer_ins[0]['in_id'] : '' ) ;
+        $messenger_url = 'https://m.me/' . config_var(12587) . ( count($referrer_ins) > 0 ? '?ref=' . $referrer_ins[0]['in_id'] : '' ) ;
         $html_message .= '<div><a href="'.$messenger_url.'" target="_blank">' . $messenger_url . '</a></div>';
         $html_message .= '<br /><br />';
         $html_message .= '<div>Cheers,</div><br />';

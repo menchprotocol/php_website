@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-05 08:15:52 PST
+//Generated 2020-04-05 08:52:08 PST
 
 //PLATFORM STATS:
 $config['ps_read_count'] = 121018;
 $config['ps_blog_count'] = 3827;
-$config['ps_source_count'] = 9231;
+$config['ps_source_count'] = 9229;
 
 
 
@@ -3483,18 +3483,12 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12176,12156,11071,12355,11077,11074,12124,11076,11075,11064,11986,11065,11063,11079,11060,12363,11073,11066,11057,11056,12331,12113,12427,12088,11072,12232,11061,11162,11163,12209,12208,12568,12565);
+$config['en_ids_6404'] = array(12176,11071,12355,11077,11074,12124,11076,12587,11075,11064,11986,11065,11063,12156,11079,11060,12363,11073,11066,11057,11056,12331,12113,12427,12088,11072,12232,11061,11162,11163,12568,12565);
 $config['en_all_6404'] = array(
     12176 => array(
         'm_icon' => '<i class="fad fa-clock blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG DEFAULT TIME SECONDS',
         'm_desc' => '30',
-        'm_parents' => array(6404),
-    ),
-    12156 => array(
-        'm_icon' => '<i class="fas fa-star blog" aria-hidden="true"></i>',
-        'm_name' => 'BLOG NORTH STAR',
-        'm_desc' => '7766',
         'm_parents' => array(6404),
     ),
     11071 => array(
@@ -3533,6 +3527,12 @@ $config['en_all_6404'] = array(
         'm_desc' => '1782431902047009',
         'm_parents' => array(6404),
     ),
+    12587 => array(
+        'm_icon' => '',
+        'm_name' => 'FACEBOOK MENCH PAGE HANDLER',
+        'm_desc' => 'menchideas',
+        'm_parents' => array(6404),
+    ),
     11075 => array(
         'm_icon' => '',
         'm_name' => 'FACEBOOK MENCH PAGE ID',
@@ -3561,6 +3561,12 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'MAX FILE SIZE [MB]',
         'm_desc' => '25',
+        'm_parents' => array(6404),
+    ),
+    12156 => array(
+        'm_icon' => '<i class="fas fa-star blog" aria-hidden="true"></i>',
+        'm_name' => 'MENCH HOME BLOG ID',
+        'm_desc' => '7766',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -3613,13 +3619,13 @@ $config['en_all_6404'] = array(
     ),
     12113 => array(
         'm_icon' => '',
-        'm_name' => 'READ TIME MAX',
+        'm_name' => 'READ TIME MAX. SECONDS',
         'm_desc' => '7200',
         'm_parents' => array(4356,6404),
     ),
     12427 => array(
         'm_icon' => '',
-        'm_name' => 'READ TIME MIN',
+        'm_name' => 'READ TIME MIN. SECONDS',
         'm_desc' => '3',
         'm_parents' => array(6404,4356),
     ),
@@ -3657,18 +3663,6 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'SUBSCRIPTION USD RATE YEARLY',
         'm_desc' => '50',
-        'm_parents' => array(6404),
-    ),
-    12209 => array(
-        'm_icon' => '',
-        'm_name' => 'WEEKS PER MONTH',
-        'm_desc' => '4.34524',
-        'm_parents' => array(6404),
-    ),
-    12208 => array(
-        'm_icon' => '',
-        'm_name' => 'WEEKS PER YEAR',
-        'm_desc' => '52.1775',
         'm_parents' => array(6404),
     ),
     12568 => array(

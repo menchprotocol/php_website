@@ -3,6 +3,9 @@ $en_all_4269 = $this->config->item('en_all_4269');
 $en_all_7555 = $this->config->item('en_all_7555');
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
+//See if we have a session assigned:
+$referrer_in_id = intval($this->session->userdata('session_superpowers_assigned'));
+
 $this_attempt = array(
     'ln_type_source_id' => ( $referrer_in_id > 0 ? 7560 /* User Signin Blog Channel Choose */ : 7561 /* User Signin on Website */ ),
     'ln_parent_blog_id' => $referrer_in_id,
@@ -201,17 +204,8 @@ if(count($current_sign_in_attempt) == 0){
 
 
 
-        <fb:login-button
-                scope="public_profile,email">
-        </fb:login-button>
-
-        <hr />
 
         <div class="fb-login-button" data-width="" data-size="medium" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div>
-
-        <hr />
-
-        <div id="fb-root"></div>
 
         <script>
 
