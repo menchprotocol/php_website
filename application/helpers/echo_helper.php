@@ -2240,53 +2240,53 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-    if($session_en){
-        //SOURCE
-        $ui .= '<td class="MENCHcolumn3 source">';
 
-        //RIGHT EDITING:
-        $ui .= '<div class="pull-right inline-block">';
-        $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'">';
+    //READ
+    $echo_in_stat_read = echo_in_stat_read($in);
+    $ui .= '<td class="MENCHcolumn2 read '.( !$echo_in_stat_read ? 'show-max' : '' ).'">';
+    $ui .= $echo_in_stat_read;
+    $ui .= '</td>';
 
-        $ui .= '<span class="show-on-hover">';
 
-        if($is_blog_link){
-            if($is_author || !$is_parent){
 
-                if($is_author && !$is_parent){
-                    $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort black blog-sort-handle"></i></span>';
-                }
 
-                //Unlink:
-                $ui .= '<span title="Unlink Blog '.$in['ln_type_source_id'].'" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink black"></i></a></span>';
+    //SOURCE
+    $ui .= '<td class="MENCHcolumn3 source">';
 
-            } elseif(!$is_author) {
+    //RIGHT EDITING:
+    $ui .= '<div class="pull-right inline-block">';
+    $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'">';
 
-                //Indicate if NOT an author:
-                $ui .= '<span data-toggle="tooltip" title="You are not yet an author of this blog" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
+    $ui .= '<span class="show-on-hover">';
 
+    if($is_blog_link){
+        if($is_author || !$is_parent){
+
+            if($is_author && !$is_parent){
+                $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort black blog-sort-handle"></i></span>';
             }
+
+            //Unlink:
+            $ui .= '<span title="Unlink Blog '.$in['ln_type_source_id'].'" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-unlink black"></i></a></span>';
+
+        } elseif(!$is_author) {
+
+            //Indicate if NOT an author:
+            $ui .= '<span data-toggle="tooltip" title="You are not yet an author of this blog" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
+
         }
-
-        $ui .= '</span>';
-        $ui .= '</div>';
-        $ui .= '</div>';
-
-
-        //SOURCE STATS
-        $ui .= echo_in_stat_source($in['in_id'], 0);
-
-        $ui .= '</td>';
-
-
-
-
-        //READ
-        $echo_in_stat_read = echo_in_stat_read($in);
-        $ui .= '<td class="MENCHcolumn2 read '.( !$echo_in_stat_read ? 'show-max' : '' ).'">';
-        $ui .= $echo_in_stat_read;
-        $ui .= '</td>';
     }
+
+    $ui .= '</span>';
+    $ui .= '</div>';
+    $ui .= '</div>';
+
+
+    //SOURCE STATS
+    $ui .= echo_in_stat_source($in['in_id'], 0);
+
+    $ui .= '</td>';
+
 
 
     $ui .= '</tr></table>';
