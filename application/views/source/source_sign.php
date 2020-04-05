@@ -205,7 +205,11 @@ if(count($current_sign_in_attempt) == 0){
 
 
 
-        <div class="fb-login-button" data-width="" data-size="medium" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true" onclick="testStatus()"></div>
+
+        <fb:login-button
+                scope="public_profile,email"
+                onlogin="checkLoginState();">
+        </fb:login-button>
 
         <script>
 
@@ -224,7 +228,7 @@ if(count($current_sign_in_attempt) == 0){
                 });
             };
 
-            function testStatus(){
+            function checkLoginState(){
                 alert('testing...');
                 FB.getLoginStatus(function(response) {
                     console.log(response);
