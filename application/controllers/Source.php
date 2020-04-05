@@ -1706,6 +1706,12 @@ fragment PostListingItemSidebar_post on Post {
     function cron__inherit_icons()
     {
 
+        /*
+         *
+         * Cronjob to sync icons where granchildren of source 12523 will inherit their parent icon (child of 12523)
+         *
+         * */
+
         $updated = 0;
         foreach($this->config->item('en_all_12523') as $en_id => $m) {
 
