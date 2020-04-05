@@ -1562,7 +1562,7 @@ class READ_model extends CI_Model
 
                 $is_home = ($ins[0]['in_id']==config_var(12156));
 
-                if($is_home){
+                if(!$is_home){
                     echo '<div id="readScroll">&nbsp;</div>';
 
                     //Redirect to login page:
@@ -1573,13 +1573,13 @@ class READ_model extends CI_Model
                 //Any Sub Topics?
                 if(count($in__children) > 0){
 
-                    if($is_home){
+                    if(!$is_home){
                         //Give option to review:
                         echo '<div class="inline-block margin-top-down read-add">&nbsp;or&nbsp;<a class="btn btn-read" href="javascript:void();" onclick="toggle_read()"><i class="fad fa-search-plus read_topics"></i><i class="fad fa-search-minus read_topics hidden"></i> LIST '.count($in__children).' READ'.echo__s(count($in__children)).'</a></div>';
                     }
 
                     //List Children:
-                    echo '<div class="list-group '.( $is_home ? '' : 'read_topics hidden' ).'">';
+                    echo '<div class="list-group '.( !$is_home ? 'read_topics hidden' : '' ).'">';
                     foreach($in__children as $key => $child_in){
                         echo echo_in_read($child_in, in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_6193')));
                     }
