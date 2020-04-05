@@ -202,9 +202,7 @@ if(count($current_sign_in_attempt) == 0){
         </div>
 
 
-
-
-
+        <?php /*
 
         <fb:login-button
                 scope="public_profile,email"
@@ -220,16 +218,10 @@ if(count($current_sign_in_attempt) == 0){
                     xfbml      : true,
                     version    : js_en_all_6404[11077]['m_desc']
                 });
-
                 FB.AppEvents.logPageView();
-
-                FB.getLoginStatus(function(response) {
-                    console.log(response);
-                });
             };
 
             function checkLoginState(){
-                alert('testing...');
                 FB.getLoginStatus(function(response) {
                     console.log(response);
                 });
@@ -246,6 +238,7 @@ if(count($current_sign_in_attempt) == 0){
 
         </script>
 
+        */ ?>
 
     </div>
 </div>
