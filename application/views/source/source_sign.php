@@ -200,5 +200,47 @@ if(count($current_sign_in_attempt) == 0){
 
 
 
+
+        <fb:login-button
+                scope="public_profile,email">
+        </fb:login-button>
+
+        <hr />
+
+        <div class="fb-login-button" data-width="" data-size="medium" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div>
+
+        <hr />
+
+        <div id="fb-root"></div>
+
+        <script>
+
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId      : js_en_all_6404[11076]['m_desc'],
+                    cookie     : true,
+                    xfbml      : true,
+                    version    : js_en_all_6404[11077]['m_desc']
+                });
+
+                FB.AppEvents.logPageView();
+
+                FB.getLoginStatus(function(response) {
+                    console.log(response);
+                });
+            };
+
+
+            (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+        </script>
+
+
     </div>
 </div>

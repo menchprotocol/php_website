@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-04 13:12:58 PST
+//Generated 2020-04-05 08:15:52 PST
 
 //PLATFORM STATS:
-$config['ps_read_count'] = 120974;
+$config['ps_read_count'] = 121018;
 $config['ps_blog_count'] = 3827;
 $config['ps_source_count'] = 9231;
 
@@ -3511,8 +3511,8 @@ $config['en_all_6404'] = array(
     ),
     11077 => array(
         'm_icon' => '',
-        'm_name' => 'FACEBOOK DEFAULT GRAPH VERSION',
-        'm_desc' => 'v3.2',
+        'm_name' => 'FACEBOOK GRAPH VERSION',
+        'm_desc' => 'v6.0',
         'm_parents' => array(4506,6404),
     ),
     11074 => array(
