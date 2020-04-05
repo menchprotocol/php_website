@@ -2463,31 +2463,15 @@ function echo_in_read_previous($in_id, $recipient_en){
     //Now fetch the parent of the current
     $ui = null;
     $CI =& get_instance();
-    $recursive_parents = $CI->BLOG_model->in_fetch_recursive_parents($in_id, true, true);
     $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Status
     $en_all_2738 = $CI->config->item('en_all_2738');
 
     //READ LIST
-    $player_reads = $CI->READ_model->ln_fetch(array(
-        'ln_creator_source_id' => $recipient_en['en_id'],
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-        'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-    ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
-
-    //Cleanup the list:
-    $list_ids = array();
-    $player_reads_id = array();
-    foreach($player_reads as $in_list){
-        $player_reads_id[$in_list['in_id']] = $in_list;
-        array_push($list_ids, $in_list['in_id']);
-    }
-
-
-    $breadcrumb_links = array();
+    $player_read_ids = $CI->READ_model->read_ids($recipient_en['en_id']);
+    $recursive_parents = $CI->BLOG_model->in_fetch_recursive_parents($in_id, true, true);
 
     foreach ($recursive_parents as $grand_parent_ids) {
-        foreach(array_intersect($grand_parent_ids, $list_ids) as $intersect) {
+        foreach(array_intersect($grand_parent_ids, $player_read_ids) as $intersect) {
 
             //Show the breadcrumb since it's connected:
             $ui .= '<div class="previous_reads hidden">';
@@ -2498,16 +2482,11 @@ function echo_in_read_previous($in_id, $recipient_en){
 
             foreach ($grand_parent_ids as $parent_in_id) {
 
-                //Fetch this blog name:
                 $ins_this = $CI->BLOG_model->in_fetch(array(
                     'in_id' => $parent_in_id,
                 ));
 
-
-                if (count($ins_this) > 0 && isset($player_reads_id[$parent_in_id]) /* Not sure why $parent_in_id does exist in $player_reads_id! */) {
-                    array_push($breadcrumb_links, '/'.$parent_in_id);
-                    array_push($breadcrumb_items, echo_in_read($player_reads_id[$parent_in_id]));
-                }
+                array_push($breadcrumb_items, echo_in_read($ins_this[0]));
 
                 if ($parent_in_id == $intersect) {
                     break;
@@ -2530,31 +2509,8 @@ function echo_in_read_previous($in_id, $recipient_en){
 
     //Did We Find It?
     if($ui){
-
         //Previous
         $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;</div>';
-
-        //Read List
-        /*
-        if(count($player_reads) >= 2) {
-
-            $en_all_2738 = $CI->config->item('en_all_2738'); //MENCH
-
-
-            $ui .= '<div class="dropdown inline-block margin-top-down selected_before">';
-            $ui .= '<button type="button" class="btn btn-read no-left-padding dropdown-toggle" id="dropdownReadList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block">' . $en_all_11035[7347]['m_icon'] . '</span></button>';
-            $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownReadList">';
-
-            //List All Reading List
-            foreach($player_reads as $in_list){
-                $ui .= '<a href="/' . $in_list['in_id'] . '" class="dropdown-item montserrat"><span class="icon-block">' . $en_all_2738[6205]['m_icon'] . '</span>' . $in_list['in_title'] . '</a>';
-            }
-
-            $ui .= '</div>';
-            $ui .= '&nbsp;</div>';
-
-        }
-        */
     }
 
     return $ui;
