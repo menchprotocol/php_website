@@ -78,7 +78,12 @@ function toggle_read(){
 
 }
 
-function load_en_quick_search(){
+function load_editor(){
+
+    $('#set_mass_action').change(function () {
+        mass_action_ui();
+    });
+
     $('.en_quick_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
         $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);

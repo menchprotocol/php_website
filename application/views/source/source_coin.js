@@ -12,7 +12,7 @@ var $input = $('.drag-box').find('input[type="file"]'),
 $(document).ready(function () {
 
     //Load search for mass update function:
-    load_en_quick_search();
+    load_editor();
 
     //Keep an eye for icon change:
     $('#en_icon').keyup(function() {
@@ -27,10 +27,6 @@ $(document).ready(function () {
         } else {
             $('.notify_unlink_en').addClass('hidden');
         }
-    });
-
-    $('#set_mass_action').change(function () {
-        mass_action_ui();
     });
 
     $('#en_status_source_id').change(function () {
