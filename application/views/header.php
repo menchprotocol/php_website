@@ -201,14 +201,14 @@ if(!isset($hide_header)){
 
                         <div class="main_nav search_nav hidden"><form id="searchFrontForm" style="margin-top:5px;"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
-                        <div class="main_nav superpower_nav hidden" style="margin-top:5px;">
+                        <div class="main_nav superpower_nav hidden" style="margin-top:10px;">
                             <?php
                             if(count($this->session->userdata('session_superpowers_assigned'))){
                                 foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
                                     if(superpower_assigned($superpower_en_id)){
 
                                         //Superpower already unlocked:
-                                        echo '<a class="btn btn-sm btn-superpower icon-block superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].' @'.$superpower_en_id.'">'.$m['m_icon'].'</a>';
+                                        echo '<a class="btn btn-sm btn-superpower icon-block-sm superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].' @'.$superpower_en_id.'">'.$m['m_icon'].'</a>';
 
                                     }
                                 }
