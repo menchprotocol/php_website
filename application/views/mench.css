@@ -382,10 +382,10 @@ img.no-radius {
 }
 
 .ledger-info{
-    margin:0 0 10px 0;
     background-color: #000000;
     color: #FFFFFF;
     padding: 5px 0;
+    margin: 0;
 }
 .message_content{
     margin-left: 33px;
