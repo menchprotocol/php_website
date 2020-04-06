@@ -206,7 +206,7 @@ if(!isset($hide_header)){
                             if(count($this->session->userdata('session_superpowers_assigned'))){
 
                                 //Option to Close:
-                                echo '<a class="btn btn-sm btn-superpower black icon-block" style="cursor:zoom-out;" href="javascript:void();" onclick="toggle_nav(\'superpower_nav\')" title="Close '.$en_all_11035[10957]['m_name'].'"><i class="far fa-times-circle"></i></a>';
+                                echo '<a class="btn btn-sm btn-superpower icon-block" style="cursor:zoom-out;" href="javascript:void();" onclick="toggle_nav(\'superpower_nav\')" title="Close '.$en_all_11035[10957]['m_name'].'"><i class="fas fa-times"></i></a>';
 
                                 //List Superpowers:
                                 foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
