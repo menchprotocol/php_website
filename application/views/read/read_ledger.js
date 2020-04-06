@@ -60,7 +60,7 @@ function load_ledger(link_filters, link_join_by, page_num){
 function load_link_connections(ln_id,load_main) {
 
     //Show loading instead of button:
-    $('.link_connections_link_'+ln_id).html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_loading_notify() +  '</span>').hide().fadeIn();
+    $('.link_connections_link_'+ln_id).html('<span class="montserrat"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + echo_loading_notify() +  '</span>').hide().fadeIn();
 
     //Fetch Connections UI
     $.post("/read/load_link_connections", {

@@ -947,7 +947,7 @@ class Read extends CI_Controller
     }
 
 
-    function view_json($ln_id)
+    function transaction_json($ln_id)
     {
 
         //Fetch link metadata and display it:

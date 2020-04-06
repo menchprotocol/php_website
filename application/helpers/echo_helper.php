@@ -515,8 +515,6 @@ function echo_ln($ln, $is_inner = false)
 
 
 
-    $hide_sensitive_details = ( in_array($ln['ln_type_source_id'] , $CI->config->item('en_ids_4755')) && !superpower_active(10985, true) );
-
 
 
     //Display the item
@@ -529,40 +527,59 @@ function echo_ln($ln, $is_inner = false)
     $ui .= '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4341[4367]['m_name'].'"><span class="icon-block">'.$en_all_4341[4367]['m_icon'].'</span>'.$ln['ln_id'].'</span></div>';
 
 
+    //Time
+    $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="' . $ln['ln_timestamp'] . ' PST"><span class="icon-block">'.$en_all_4341[4362]['m_icon']. '</span>' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span></div>';
+
+
     //Status
     $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[6186]['m_name'].( strlen($en_all_6186[$ln['ln_status_source_id']]['m_desc']) ? ': '.$en_all_6186[$ln['ln_status_source_id']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$en_all_6186[$ln['ln_status_source_id']]['m_icon'].'</span>'.$en_all_6186[$ln['ln_status_source_id']]['m_name'].'</span></div>';
-
-
-    //Time
-    $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4362]['m_name'].': ' . $ln['ln_timestamp'] . ' PST"><span class="icon-block">'.$en_all_4341[4362]['m_icon']. '</span>' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span></div>';
 
 
     //Transaction Type
     $ui .= '<div><a href="/source/'.$ln['ln_type_source_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4593]['m_name'].( strlen($en_all_4593[$ln['ln_type_source_id']]['m_desc']) ? ': '.$en_all_4593[$ln['ln_type_source_id']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'. $en_all_4593[$ln['ln_type_source_id']]['m_icon']. '</span>'. $en_all_4593[$ln['ln_type_source_id']]['m_name'] . '</a></div>';
 
 
-    if($hide_sensitive_details){
+    //Hide Sensitive Details?
+    if(in_array($ln['ln_type_source_id'] , $CI->config->item('en_ids_4755')) && !superpower_active(10985, true)){
 
         //Hide Creator:
         $ui .= '<div><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
 
-    } elseif($ln['ln_creator_source_id'] > 0){
+    } else {
 
-        //Show Creatpr:
-        $trainer_ens = $CI->SOURCE_model->en_fetch(array(
-            'en_id' => $ln['ln_creator_source_id'],
-        ));
-        $ui .= '<div><a href="/source/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.echo_en_icon($trainer_ens[0]['en_icon']).'</span>' . $trainer_ens[0]['en_name'] . '</a></div>';
+
+        //Creator
+        if($ln['ln_creator_source_id'] > 0){
+            $trainer_ens = $CI->SOURCE_model->en_fetch(array(
+                'en_id' => $ln['ln_creator_source_id'],
+            ));
+            $ui .= '<div><a href="/source/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.echo_en_icon($trainer_ens[0]['en_icon']).'</span>' . $trainer_ens[0]['en_name'] . '</a></div>';
+        }
+
+
+        //Metadata
+        if(strlen($ln['ln_metadata']) > 0){
+            $ui .= '<div><a href="/read/transaction_json/' . $ln['ln_id'] . '" class="montserrat"><span class="icon-block">'.$en_all_4341[6103]['m_icon']. '</span>'.$en_all_4341[6103]['m_name']. '</a></div>';
+        }
+
+
+        //External ID
+        if($ln['ln_external_id'] > 0){
+            $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[7694]['m_name'].'"><span class="icon-block">'.$en_all_4341[7694]['m_icon']. '</span>'.$ln['ln_external_id'].'</span></div>';
+        }
+
+        //Message
+        if(strlen($ln['ln_content']) > 0){
+            $ui .= '<div data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.$CI->READ_model->dispatch_message($ln['ln_content']).'</div></div>';
+        }
+
+
 
     }
 
 
 
 
-    //Do we have a content to show?
-    if(!$hide_sensitive_details && strlen($ln['ln_content']) > 0){
-        $ui .= '<div data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.$CI->READ_model->dispatch_message($ln['ln_content']).'</div></div>';
-    }
 
 
     //Transaction Connections
@@ -608,6 +625,7 @@ function echo_ln($ln, $is_inner = false)
     }
 
 
+
     //Link coins
     if(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12141'))){
         $direction = filter_cache_group($ln['ln_type_source_id'], 2738);
@@ -620,14 +638,7 @@ function echo_ln($ln, $is_inner = false)
         $ui .= '<span class="read-micro-data"><span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).'" style="min-width:30px; display: inline-block;">'.$en_all_4341[4370]['m_icon']. ' '.echo_ordinal_number($ln['ln_order']).'</span></span> &nbsp;';
     }
 
-    //Is this a trainer? Show them metadata status:
-    if(!$hide_sensitive_details && strlen($ln['ln_metadata']) > 0){
-        $ui .= '<span class="read-micro-data">'.$en_all_4341[6103]['m_icon']. ' <a href="/read/view_json/' . $ln['ln_id'] . '" data-toggle="tooltip" data-placement="top" title="View link metadata (in new window)" style="min-width:26px; display: inline-block;">Metadata</a></span> &nbsp;';
-    }
 
-    if(!$hide_sensitive_details && $ln['ln_external_id'] > 0){
-        $ui .= '<span class="read-micro-data" data-toggle="tooltip" data-placement="top" title="Link External ID">'.$en_all_4527[6103]['m_icon']. ' '.$ln['ln_external_id'].'</span> &nbsp;';
-    }
 
     //Give option to load if it has connections:
     if(!$is_inner && (strlen($link_connections_clean_name) > 0 || $load_main)){
