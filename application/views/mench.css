@@ -815,7 +815,9 @@ td.MENCHcolumn3{ width: 21%; }
 .mench-navigation .block-logo a:hover {
     background-color: transparent;
 }
-
+.ledger-list div{
+    padding: 5px 0;
+}
 .mench-logo{
     font-size: 1.44em;
     line-height: 100%;

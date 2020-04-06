@@ -499,6 +499,7 @@ function echo_ln($ln, $is_inner = false)
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_4341 = $CI->config->item('en_all_4341'); //Link Table
     $en_all_2738 = $CI->config->item('en_all_2738');
+    $en_all_6186 = $CI->config->item('en_all_6186'); //Transaction Status
 
 
 
@@ -520,11 +521,8 @@ function echo_ln($ln, $is_inner = false)
 
     //Display the item
     $ui = '<div style="margin-bottom:20px;">';
-    $ui .= '<div class="list-group-item no-left-padding">';
+    $ui .= '<div class="list-group-item no-left-padding ledger-list">';
 
-
-    //What type of main content do we have, if any?
-    $en_all_6186 = $CI->config->item('en_all_6186'); //Transaction Status
 
 
     //READ ID Row of data:
@@ -534,7 +532,7 @@ function echo_ln($ln, $is_inner = false)
     $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[6186]['m_name'].( strlen($en_all_6186[$ln['ln_status_source_id']]['m_desc']) ? ': '.$en_all_6186[$ln['ln_status_source_id']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$en_all_6186[$ln['ln_status_source_id']]['m_icon'].'</span>'.$en_all_6186[$ln['ln_status_source_id']]['m_name'].'</span></div>';
 
     //Time
-    $ui .= '<div><span data-toggle="tooltip" class="montserrat" data-placement="top" title="'.$en_all_4341[4362]['m_name'].': ' . $ln['ln_timestamp'] . ' PST"><span class="icon-block">'.$en_all_4341[4362]['m_icon']. '</span>' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' AGO</span></div>';
+    $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4362]['m_name'].': ' . $ln['ln_timestamp'] . ' PST"><span class="icon-block">'.$en_all_4341[4362]['m_icon']. '</span>' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' AGO</span></div>';
 
     //Transaction Type
     $ui .= '<div><a href="/source/'.$ln['ln_type_source_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4593]['m_name'].( strlen($en_all_4593[$ln['ln_type_source_id']]['m_desc']) ? ': '.$en_all_4593[$ln['ln_type_source_id']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'. $en_all_4593[$ln['ln_type_source_id']]['m_icon']. '</span>'. $en_all_4593[$ln['ln_type_source_id']]['m_name'] . '</a></div>';
