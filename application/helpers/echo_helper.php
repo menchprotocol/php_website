@@ -547,33 +547,40 @@ function echo_ln($ln, $is_inner = false)
     }
 
 
+    //5x Relations:
+
+
+
     if(!$is_inner){
 
         $en_all_6232 = $CI->config->item('en_all_6232'); //PLATFORM VARIABLES
         foreach ($CI->config->item('en_all_10692') as $en_id => $m) {
 
+            //Do we have this set?
             if(!intval($ln[$en_all_6232[$en_id]['m_desc']])){
                 continue;
             }
 
             if(in_array(6160 , $m['m_parents'])){
+
                 //SOURCE
                 $ens = $CI->SOURCE_model->en_fetch(array('en_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
-                if(count($ens) > 0){
-                    $ui .= echo_en($ens[0], false);
-                }
+
+                $ui .= '<div class="simple-line"><a href="/source/'.$ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat '.extract_icon_color($ens[0]['en_icon']).'"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span><span class="icon-block">'.echo_en_icon($ens[0]['en_icon']). '</span>'.$ens[0]['en_name'].'</a></div>';
+
             } elseif(in_array(6202 , $m['m_parents'])){
+
                 //BLOG
                 $ins = $CI->BLOG_model->in_fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
-                if(count($ins) > 0){
-                    $ui .= echo_in_read($ins[0]);
-                }
+
+                $ui .= '<div class="simple-line"><a href="/blog/'.$ins[0]['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span><span class="icon-block">'.$en_all_2738[4535]['m_icon']. '</span>'.echo_in_title($ins[0]).'</a></div>';
+
             } elseif(in_array(4367 , $m['m_parents'])){
+
                 //READ
                 $lns = $CI->READ_model->ln_fetch(array('ln_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
-                if(count($lns) > 0){
-                    $ui .= echo_ln($lns[0], true);
-                }
+                $ui .= echo_ln($lns[0], true);
+
             }
         }
     }

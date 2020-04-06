@@ -816,8 +816,8 @@ td.MENCHcolumn3{ width: 21%; }
     background-color: transparent;
 }
 .ledger-list {
-    margin-bottom:34px;
-    border-bottom: 1px solid #000;
+    padding:21px 0;
+    border-bottom: 5px solid #AAAAAA;
 }
 .simple-line{
     padding: 5px 0;
