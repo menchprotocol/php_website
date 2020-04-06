@@ -292,7 +292,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             }
 
-            $this_tab .= 'Hiiii<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
+            $this_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
             $this_tab .= '<div class="inline-box">';
 
             //Drop Down
