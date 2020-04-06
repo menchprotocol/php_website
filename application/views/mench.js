@@ -78,6 +78,11 @@ function toggle_read(){
 
 }
 
+function mass_action_ui(){
+    $('.mass_action_item').addClass('hidden');
+    $('#mass_id_' + $('#set_mass_action').val() ).removeClass('hidden');
+}
+
 function load_editor(){
 
     $('#set_mass_action').change(function () {

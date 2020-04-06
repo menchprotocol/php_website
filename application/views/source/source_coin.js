@@ -193,11 +193,6 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 
 
 
-function mass_action_ui(){
-    $('.mass_action_item').addClass('hidden');
-    $('#mass_id_' + $('#set_mass_action').val() ).removeClass('hidden');
-}
-
 
 
 
