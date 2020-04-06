@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-06 10:56:20 PST
+//Generated 2020-04-06 11:01:47 PST
 
 //PLATFORM STATS:
 $config['ps_read_count'] = 120961;
@@ -3115,7 +3115,7 @@ $config['en_all_10717'] = array(
 );
 
 //READ ALL CONNECTIONS:
-$config['en_ids_11081'] = array(4364,4369,4371,4429,4368,4366,4593);
+$config['en_ids_11081'] = array(4364,4369,4429,4368,4366,4371,4593);
 $config['en_all_11081'] = array(
     4364 => array(
         'm_icon' => '<i class="fad fa-user-edit" aria-hidden="true"></i>',
@@ -3128,12 +3128,6 @@ $config['en_all_11081'] = array(
         'm_name' => 'NEXT BLOG',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6202,6232,4341),
-    ),
-    4371 => array(
-        'm_icon' => '<i class="fad fa-link" aria-hidden="true"></i>',
-        'm_name' => 'PARENT TRANSACTION',
-        'm_desc' => '',
-        'm_parents' => array(11081,10692,4367,6232,4341),
     ),
     4429 => array(
         'm_icon' => '<i class="fad fa-sitemap" aria-hidden="true"></i>',
@@ -3153,6 +3147,12 @@ $config['en_all_11081'] = array(
         'm_desc' => '',
         'm_parents' => array(11081,10692,6160,6232,4341),
     ),
+    4371 => array(
+        'm_icon' => '<i class="fad fa-link" aria-hidden="true"></i>',
+        'm_name' => 'REFERENCE',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,4367,6232,4341),
+    ),
     4593 => array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
         'm_name' => 'TYPE',
@@ -3162,7 +3162,7 @@ $config['en_all_11081'] = array(
 );
 
 //PLATFORM VARIABLES:
-$config['en_ids_6232'] = array(6202,6159,4356,4737,4736,4486,7585,6207,6203,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,4358,6198,6160,6172,6197,6177,4364,7694,4367,4372,6103,4369,4371,4429,4368,4366,4370,6186,4362,4593,4739,4735);
+$config['en_ids_6232'] = array(6202,6159,4356,4737,4736,4486,7585,6207,6203,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,4358,6198,6160,6172,6197,6177,4364,7694,4367,4372,6103,4369,4429,4368,4366,4370,4371,6186,4362,4593,4739,4735);
 $config['en_all_6232'] = array(
     6202 => array(
         'm_icon' => '<i class="fas fa-plus-circle "></i>',
@@ -3350,12 +3350,6 @@ $config['en_all_6232'] = array(
         'm_desc' => 'ln_child_blog_id',
         'm_parents' => array(11081,10692,6202,6232,4341),
     ),
-    4371 => array(
-        'm_icon' => '<i class="fad fa-link" aria-hidden="true"></i>',
-        'm_name' => 'TRANSACTION PARENT TRANSACTION',
-        'm_desc' => 'ln_parent_read_id',
-        'm_parents' => array(11081,10692,4367,6232,4341),
-    ),
     4429 => array(
         'm_icon' => '<i class="fad fa-sitemap" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION PORTFOLIO SOURCE',
@@ -3379,6 +3373,12 @@ $config['en_all_6232'] = array(
         'm_name' => 'TRANSACTION RANK',
         'm_desc' => 'ln_order',
         'm_parents' => array(10676,10675,6232,4341),
+    ),
+    4371 => array(
+        'm_icon' => '<i class="fad fa-link" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION REFERENCE',
+        'm_desc' => 'ln_parent_transaction_id',
+        'm_parents' => array(11081,10692,4367,6232,4341),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
@@ -4537,7 +4537,7 @@ $config['en_all_10692'] = array(
     ),
     4371 => array(
         'm_icon' => '<i class="fad fa-link" aria-hidden="true"></i>',
-        'm_name' => 'PARENT TRANSACTION',
+        'm_name' => 'REFERENCE',
         'm_desc' => '',
         'm_parents' => array(11081,10692,4367,6232,4341),
     ),
@@ -5806,7 +5806,7 @@ $config['en_all_6103'] = array(
 );
 
 //MENCH LEDGER:
-$config['en_ids_4341'] = array(4364,7694,4367,4372,6103,4369,4371,4429,4368,4366,4370,6186,4362,4593);
+$config['en_ids_4341'] = array(4364,7694,4367,4372,6103,4369,4429,4368,4366,4370,4371,6186,4362,4593);
 $config['en_all_4341'] = array(
     4364 => array(
         'm_icon' => '<i class="fad fa-user-edit" aria-hidden="true"></i>',
@@ -5844,12 +5844,6 @@ $config['en_all_4341'] = array(
         'm_desc' => '',
         'm_parents' => array(11081,10692,6202,6232,4341),
     ),
-    4371 => array(
-        'm_icon' => '<i class="fad fa-link" aria-hidden="true"></i>',
-        'm_name' => 'TRANSACTION PARENT TRANSACTION',
-        'm_desc' => '',
-        'm_parents' => array(11081,10692,4367,6232,4341),
-    ),
     4429 => array(
         'm_icon' => '<i class="fad fa-sitemap" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION PORTFOLIO SOURCE',
@@ -5873,6 +5867,12 @@ $config['en_all_4341'] = array(
         'm_name' => 'TRANSACTION RANK',
         'm_desc' => '',
         'm_parents' => array(10676,10675,6232,4341),
+    ),
+    4371 => array(
+        'm_icon' => '<i class="fad fa-link" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION REFERENCE',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,4367,6232,4341),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
