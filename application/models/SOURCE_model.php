@@ -332,7 +332,7 @@ class SOURCE_model extends CI_Model
                 'ln_child_source_id' => $ln_creator_source_id,
                 'ln_parent_source_id' => $set_en_child_id,
                 'ln_type_source_id' => 4230, //Raw link
-                'ln_parent_read_id' => $updated_ln_id,
+                'ln_parent_transaction_id' => $updated_ln_id,
             ));
         }
 

@@ -3342,7 +3342,7 @@ $config['en_all_6232'] = array(
     4371 => array(
         'm_icon' => '<i class="fad fa-link" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION PARENT TRANSACTION',
-        'm_desc' => 'ln_parent_read_id',
+        'm_desc' => 'ln_parent_transaction_id',
         'm_parents' => array(11081,10692,4367,6232,4341),
     ),
     4429 => array(

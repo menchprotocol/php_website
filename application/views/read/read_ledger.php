@@ -6,7 +6,7 @@ $join_by = array();
 
 //We have a special OR filter when combined with any_en_id & any_in_id
 $any_in_en_set = ( ( isset($_GET['any_en_id']) && $_GET['any_en_id'] > 0 ) || ( isset($_GET['any_in_id']) && $_GET['any_in_id'] > 0 ) );
-$parent_tr_filter = ( isset($_GET['ln_parent_read_id']) && $_GET['ln_parent_read_id'] > 0 ? ' OR ln_parent_read_id = '.$_GET['ln_parent_read_id'].' ' : false );
+$parent_tr_filter = ( isset($_GET['ln_parent_transaction_id']) && $_GET['ln_parent_transaction_id'] > 0 ? ' OR ln_parent_transaction_id = '.$_GET['ln_parent_transaction_id'].' ' : false );
 
 
 
@@ -116,12 +116,12 @@ if(isset($_GET['ln_child_blog_id']) && strlen($_GET['ln_child_blog_id']) > 0){
     }
 }
 
-if(isset($_GET['ln_parent_read_id']) && strlen($_GET['ln_parent_read_id']) > 0 && !$any_in_en_set){
-    if (substr_count($_GET['ln_parent_read_id'], ',') > 0) {
+if(isset($_GET['ln_parent_transaction_id']) && strlen($_GET['ln_parent_transaction_id']) > 0 && !$any_in_en_set){
+    if (substr_count($_GET['ln_parent_transaction_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_parent_read_id IN (' . $_GET['ln_parent_read_id'] . '))'] = null;
-    } elseif (intval($_GET['ln_parent_read_id']) > 0) {
-        $filters['ln_parent_read_id'] = $_GET['ln_parent_read_id'];
+        $filters['( ln_parent_transaction_id IN (' . $_GET['ln_parent_transaction_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_parent_transaction_id']) > 0) {
+        $filters['ln_parent_transaction_id'] = $_GET['ln_parent_transaction_id'];
     }
 }
 
@@ -158,9 +158,9 @@ if(isset($_GET['any_ln_id']) && strlen($_GET['any_ln_id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_ln_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_id IN (' . $_GET['any_ln_id'] . ') OR ln_parent_read_id IN (' . $_GET['any_ln_id'] . '))'] = null;
+        $filters['( ln_id IN (' . $_GET['any_ln_id'] . ') OR ln_parent_transaction_id IN (' . $_GET['any_ln_id'] . '))'] = null;
     } elseif (intval($_GET['any_ln_id']) > 0) {
-        $filters['( ln_id = ' . $_GET['any_ln_id'] . ' OR ln_parent_read_id = ' . $_GET['any_ln_id'] . ')'] = null;
+        $filters['( ln_id = ' . $_GET['any_ln_id'] . ' OR ln_parent_transaction_id = ' . $_GET['any_ln_id'] . ')'] = null;
     }
 }
 
@@ -289,7 +289,7 @@ echo '<div class="container">';
 
     echo '<td><span class="mini-header">READ:</span><input type="text" name="ln_id" value="' . ((isset($_GET['ln_id'])) ? $_GET['ln_id'] : '') . '" class="form-control border"></td>';
 
-    echo '<td><span class="mini-header">PARENT READ:</span><input type="text" name="ln_parent_read_id" value="' . ((isset($_GET['ln_parent_read_id'])) ? $_GET['ln_parent_read_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">PARENT READ:</span><input type="text" name="ln_parent_transaction_id" value="' . ((isset($_GET['ln_parent_transaction_id'])) ? $_GET['ln_parent_transaction_id'] : '') . '" class="form-control border"></td>';
 
     echo '<td><span class="mini-header">READ STATUS:</span><input type="text" name="ln_status_source_id" value="' . ((isset($_GET['ln_status_source_id'])) ? $_GET['ln_status_source_id'] : '') . '" class="form-control border"></td>';
 

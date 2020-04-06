@@ -56,12 +56,12 @@ if(count($current_sign_in_attempt) == 0){
     var channel_choice_messenger = {
         ln_type_source_id: 7558, //User Signin with Messenger Choice
         ln_parent_blog_id: <?= intval($referrer_in_id) ?>,
-        ln_parent_read_id: <?= $current_sign_in_attempt['ln_id'] ?>,
+        ln_parent_transaction_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
     var channel_choice_website = {
         ln_type_source_id: 7559, //User Signin with Website Choice
         ln_parent_blog_id: <?= intval($referrer_in_id) ?>,
-        ln_parent_read_id: <?= $current_sign_in_attempt['ln_id'] ?>,
+        ln_parent_transaction_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
 </script>
 <script src="/application/views/source/source_sign.js?v=v<?= config_var(11060) ?>"
