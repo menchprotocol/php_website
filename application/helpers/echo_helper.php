@@ -526,13 +526,16 @@ function echo_ln($ln, $is_inner = false)
 
 
     //READ ID Row of data:
-    $ui .= '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4341[4367]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[4367]['m_icon'].'</span>'.$ln['ln_id'].'</span></div>';
+    $ui .= '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4341[4367]['m_name'].'"><span class="icon-block">'.$en_all_4341[4367]['m_icon'].'</span>'.$ln['ln_id'].'</span></div>';
+
 
     //Status
     $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[6186]['m_name'].( strlen($en_all_6186[$ln['ln_status_source_id']]['m_desc']) ? ': '.$en_all_6186[$ln['ln_status_source_id']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$en_all_6186[$ln['ln_status_source_id']]['m_icon'].'</span>'.$en_all_6186[$ln['ln_status_source_id']]['m_name'].'</span></div>';
 
+
     //Time
-    $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4362]['m_name'].': ' . $ln['ln_timestamp'] . ' PST"><span class="icon-block">'.$en_all_4341[4362]['m_icon']. '</span>' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' AGO</span></div>';
+    $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4362]['m_name'].': ' . $ln['ln_timestamp'] . ' PST"><span class="icon-block">'.$en_all_4341[4362]['m_icon']. '</span>' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span></div>';
+
 
     //Transaction Type
     $ui .= '<div><a href="/source/'.$ln['ln_type_source_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4593]['m_name'].( strlen($en_all_4593[$ln['ln_type_source_id']]['m_desc']) ? ': '.$en_all_4593[$ln['ln_type_source_id']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'. $en_all_4593[$ln['ln_type_source_id']]['m_icon']. '</span>'. $en_all_4593[$ln['ln_type_source_id']]['m_name'] . '</a></div>';
@@ -558,7 +561,7 @@ function echo_ln($ln, $is_inner = false)
 
     //Do we have a content to show?
     if(!$hide_sensitive_details && strlen($ln['ln_content']) > 0){
-        $ui .= '<div><span data-toggle="tooltip" class="montserrat" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span>'.$CI->READ_model->dispatch_message($ln['ln_content']).'</span></div>';
+        $ui .= '<div data-toggle="tooltip" class="montserrat" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="inline-block">'.$CI->READ_model->dispatch_message($ln['ln_content']).'</div></div>';
     }
 
 
