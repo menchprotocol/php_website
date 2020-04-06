@@ -300,4 +300,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 echo '</div>';
 
+echo echo_tree_sources($in, false, true);
+echo echo_tree_blogs($in, true);
+
 ?>

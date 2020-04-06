@@ -775,84 +775,13 @@ function echo_time_hours($seconds, $micro = false)
     }
 }
 
-function echo_tree_html_body($section_en_id, $pitch_title, $pitch_body, $autoexpand = false){
-
-    //The body of the tree expansion HTML panel:
-    return '<div class="panel-group" id="open' . $section_en_id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
-            <div class="panel-heading" role="tab" id="heading' . $section_en_id . '">
-                <h4 class="panel-title">
-                    <a role="button" class="collapsed js-ln-create-overview-link" section-en-id="'.$section_en_id.'" data-toggle="collapse" data-parent="#open' . $section_en_id . '" href="#collapse' . $section_en_id . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $section_en_id . '">' . $pitch_title . '
-                    
-                    <span class="pull-right" style="padding: 1px 11px 0 0;"><i class="fas fa-angle-down"></i></span>
-                    
-                    </a>
-                </h4>
-            </div>
-            <div id="collapse' . $section_en_id . '" class="panel-collapse collapse ' . ($autoexpand ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $section_en_id . '">
-                <div class="panel-body overview-pitch"><div style="padding:10px 5px !important;">' . $pitch_body . '</div></div>
-            </div>
-        </div></div>';
-}
 
 
 
-function echo_tree_users($in, $push_message = false, $autoexpand = false){
 
-    return false;
 
-    //TODO Consider enabling later?
-    //return null; //Disable for now
 
-    /*
-     *
-     * a BLOG function to display current users for this blog
-     * and the percentage of them that have completed it...
-     *
-     * */
-
-    //Count total users:
-    $CI =& get_instance();
-    $min_user_show = 101; //Needs this much or more users to display
-
-    //Count users who have completed this blog:
-    $enrolled_users_count = $CI->READ_model->ln_fetch(array(
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
-        'ln_parent_blog_id' => $in['in_id'],
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-
-    if($enrolled_users_count[0]['totals'] < $min_user_show){
-        //No one has added this blog to their 🔴 READING LIST yet:
-        return false;
-    }
-
-    //Count users who have completed the common base:
-    $in_metadata = unserialize($in['in_metadata']);
-    $array_flatten = array_flatten($in_metadata['in__metadata_common_steps']);
-    $completed_users_count = $CI->READ_model->ln_fetch(array(
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
-        'ln_parent_blog_id' => end($array_flatten),
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-    if($completed_users_count[0]['totals'] > $enrolled_users_count[0]['totals']){
-        $completed_users_count[0]['totals'] = $enrolled_users_count[0]['totals'];
-    }
-    $completion_percentage_raw = round($completed_users_count[0]['totals'] / $enrolled_users_count[0]['totals'] * 100);
-    $completion_percentage_fancy = ( $completion_percentage_raw == 0 ? 'none' : ( $completion_percentage_raw==100 ? 'all' : $completion_percentage_raw.'%' ) );
-
-    //As messenger default format and HTML extra notes:
-    $pitch_body  = $completion_percentage_fancy .' of all '.echo_number($enrolled_users_count[0]['totals']).' users completed this blog.';
-
-    if ($push_message) {
-        return '👤 ' . $pitch_body. "\n\n";
-    } else {
-        //HTML format
-        $pitch_title = '<span class="icon-block"><i class="fas fa-users"></i></span>&nbsp;'. echo_number($enrolled_users_count[0]['totals']) .' users engaged';
-        return echo_tree_html_body(7615, $pitch_title, $pitch_body, $autoexpand);
-    }
-}
-
-function echo_tree_experts($in, $push_message = false, $autoexpand = false)
+function echo_tree_sources($in, $push_message = false, $autoexpand = false)
 {
 
     /*
@@ -993,8 +922,6 @@ function echo_tree_experts($in, $push_message = false, $autoexpand = false)
 
 
 
-
-
     $pitch_title = '<span class="icon-block"><i class="fas fa-shield-check"></i></span>&nbsp;';
     $pitch_body = 'References ';
     if($source_count > 0){
@@ -1014,7 +941,7 @@ function echo_tree_experts($in, $push_message = false, $autoexpand = false)
         return '⭐ ' . $pitch_body. "\n\n";
     } else {
         //HTML format
-        return echo_tree_html_body(7614, $pitch_title, $pitch_body, $autoexpand);
+        return $pitch_title.$pitch_body;
     }
 }
 
@@ -1039,7 +966,7 @@ function echo_step_range($in, $educational_mode = false){
     }
 }
 
-function echo_tree_actionplan($in, $autoexpand){
+function echo_tree_blogs($in, $autoexpand){
 
 
     $CI =& get_instance();
@@ -1187,6 +1114,7 @@ function echo_tree_actionplan($in, $autoexpand){
     $return_html .= '</div>';
 
     return $return_html;
+
 }
 
 
