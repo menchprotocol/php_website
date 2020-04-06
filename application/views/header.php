@@ -209,11 +209,12 @@ if(!isset($hide_header)){
                                 echo '<a class="btn btn-sm btn-superpower grey icon-block" href="javascript:void();" onclick="toggle_nav(\'superpower_nav\')" title="Close '.$en_all_11035[10957]['m_name'].'">'.$en_all_11035[10957]['m_icon'].'</a>';
 
                                 //List Superpowers:
+                                $show_counter = 0;
                                 foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
                                     if(superpower_assigned($superpower_en_id)){
-
                                         //Superpower already unlocked:
-                                        echo '<a class="btn btn-sm btn-superpower superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].' @'.$superpower_en_id.'">'.$m['m_icon'].'</a>&nbsp;';
+                                        $show_counter++;
+                                        echo '<a class="btn btn-sm btn-superpower '.( $show_counter>0 ? 'icon-block-sm' : '' ).' superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].' @'.$superpower_en_id.'">'.$m['m_icon'].'</a>';
 
                                     }
                                 }
