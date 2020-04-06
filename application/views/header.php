@@ -204,6 +204,11 @@ if(!isset($hide_header)){
                         <div class="main_nav superpower_nav hidden" style="margin-top:10px;">
                             <?php
                             if(count($this->session->userdata('session_superpowers_assigned'))){
+
+                                //Option to Close:
+                                echo '<a class="btn btn-sm btn-superpower grey icon-block" href="javascript:void();" onclick="toggle_nav(\'superpower_nav\')" title="Close '.$en_all_11035[10957]['m_name'].'">'.$en_all_11035[10957]['m_icon'].'</a>';
+
+                                //List Superpowers:
                                 foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
                                     if(superpower_assigned($superpower_en_id)){
 
