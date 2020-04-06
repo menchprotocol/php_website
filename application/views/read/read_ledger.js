@@ -35,7 +35,7 @@ function check_in_en_status_source_id(){
 
 function load_ledger(link_filters, link_join_by, page_num){
     //Show spinner:
-    $('#link_page_'+page_num).html('<div style="margin:20px 0 100px 0;"><i class="far fa-yin-yang fa-spin"></i> ' + echo_loading_notify() +  '</div>').hide().fadeIn();
+    $('#link_page_'+page_num).html('<div class="montserrat"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + echo_loading_notify() +  '</div>').hide().fadeIn();
 
     //Load report based on input fields:
     $.post("/read/load_ledger", {
