@@ -566,7 +566,7 @@ function echo_ln($ln, $is_inner = false)
                 //SOURCE
                 $ens = $CI->SOURCE_model->en_fetch(array('en_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/source/'.$ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat '.extract_icon_color($ens[0]['en_icon']).'"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span><span class="icon-block">'.echo_en_icon($ens[0]['en_icon']). '</span>'.$ens[0]['en_name'].'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/source/'.$ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span><span class="icon-block">'.echo_en_icon($ens[0]['en_icon']). '</span><span class="'.extract_icon_color($ens[0]['en_icon']).'">'.$ens[0]['en_name'].'</span></a></div>';
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
