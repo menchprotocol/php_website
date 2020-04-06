@@ -494,13 +494,13 @@ function echo_ln($ln, $is_inner = false)
 
 
     //Transaction Type
-    $ui .= '<div class="simple-line"><a href="/source/'.$ln['ln_type_source_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4593]['m_name'].( strlen($en_all_4593[$ln['ln_type_source_id']]['m_desc']) ? ': '.$en_all_4593[$ln['ln_type_source_id']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'. $en_all_4593[$ln['ln_type_source_id']]['m_icon']. '</span>'. $en_all_4593[$ln['ln_type_source_id']]['m_name'] . '</a></div>';
+    $ui .= '<div class="simple-line"><a href="/source/'.$ln['ln_type_source_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4593]['m_name'].( strlen($en_all_4593[$ln['ln_type_source_id']]['m_desc']) ? ': '.$en_all_4593[$ln['ln_type_source_id']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$en_all_4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($en_all_4593[$ln['ln_type_source_id']]['m_icon']).'">'. $en_all_4593[$ln['ln_type_source_id']]['m_icon']. ' '. $en_all_4593[$ln['ln_type_source_id']]['m_name'] . '</span></a></div>';
 
 
     //Hide Sensitive Details?
     if(in_array($ln['ln_type_source_id'] , $CI->config->item('en_ids_4755')) && !superpower_active(10985, true)){
 
-        //Hide Creator:
+        //Hide Information:
         $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
 
     } else {
@@ -511,7 +511,7 @@ function echo_ln($ln, $is_inner = false)
             $trainer_ens = $CI->SOURCE_model->en_fetch(array(
                 'en_id' => $ln['ln_creator_source_id'],
             ));
-            $ui .= '<div class="simple-line"><a href="/source/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.echo_en_icon($trainer_ens[0]['en_icon']).'</span>' . $trainer_ens[0]['en_name'] . '</a></div>';
+            $ui .= '<div class="simple-line"><a href="/source/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($trainer_ens[0]['en_icon']).'">'.echo_en_icon($trainer_ens[0]['en_icon']) . ' ' . $trainer_ens[0]['en_name'] . '</span></a></div>';
         }
 
 
@@ -528,16 +528,9 @@ function echo_ln($ln, $is_inner = false)
 
         //Message
         if(strlen($ln['ln_content']) > 0){
-            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.$CI->READ_model->dispatch_message($ln['ln_content']).'</div></div>';
+            //$CI->READ_model->dispatch_message($ln['ln_content'])
+            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.htmlentities($ln['ln_content']).'</div></div>';
         }
-
-
-        //Coins
-        if(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12141'))){
-            $direction = filter_cache_group($ln['ln_type_source_id'], 2738);
-            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4370]['m_name']. '" class="montserrat '.extract_icon_color($direction['m_icon']).'"><span class="icon-block">'.$direction['m_icon'].'</span>COIN AWARDED</span></div>';
-        }
-
 
         //Order
         if($ln['ln_order'] > 0){
@@ -548,9 +541,6 @@ function echo_ln($ln, $is_inner = false)
 
 
     //5x Relations:
-
-
-
     if(!$is_inner){
 
         $en_all_6232 = $CI->config->item('en_all_6232'); //PLATFORM VARIABLES

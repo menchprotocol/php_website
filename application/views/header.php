@@ -180,7 +180,7 @@ if(!isset($hide_header)){
                                 $url = 'href="/' . $this_mench['x_name'].'"';
 
                                 if (!$is_current && isset($in) && in_array($this_mench['x_name'], array('read', 'blog'))) {
-                                    if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'blog') {
+                                    if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'blog' && $in['in_id']!=config_var(12156) ) {
                                         $url = 'href="/blog/' . $in['in_id'].'"';
                                     } elseif ($current_mench['x_name'] == 'blog' && $this_mench['x_name'] == 'read') {
                                         $url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
