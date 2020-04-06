@@ -1560,6 +1560,11 @@ class READ_model extends CI_Model
                     );
                 }
 
+                //OVERVIEW STATS
+                echo echo_tree_sources($ins[0], false, true);
+                echo echo_tree_blogs($ins[0], true);
+
+
                 $is_home = ($ins[0]['in_id']==config_var(12156));
 
                 if(!$is_home){
