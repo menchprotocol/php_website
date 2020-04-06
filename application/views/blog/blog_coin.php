@@ -304,12 +304,10 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             $this_tab .= $input_options;
 
-            $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-source inline-block"></div>';
+            $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-blog inline-block"></div>';
 
             $this_tab .= '</div>';
             $this_tab .= '</form>';
-
-            $counter = 0;
 
         } else {
 
