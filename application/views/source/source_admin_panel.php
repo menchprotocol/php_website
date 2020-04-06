@@ -152,18 +152,6 @@ if(!$action) {
 
     echo '</table>';
 
-} elseif($action=='sync_ledger_ids'){
-
-    $new_ln_id = 1;
-    foreach($this->READ_model->ln_fetch(array('ln_id >' => 0 ), array(), 0, 0, array('ln_timestamp' => 'ASC')) as $ln){
-        if($ln['ln_id'] != $new_ln_id){
-            $this->db->query("UPDATE table_read SET ln_parent_transaction_id=".$new_ln_id." WHERE ln_parent_transaction_id=".$ln['ln_id'].";");
-            $this->db->query("UPDATE table_read SET ln_id=".$new_ln_id." WHERE ln_id=".$ln['ln_id'].";");
-            $new_ln_id++;
-        }
-    }
-    echo 'Updated '.($new_ln_id-1).' Transactions.';
-
 } elseif($action=='analyze_url'){
 
     echo '<ul class="breadcrumb"><li><a href="/source/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/source/admin_panel/'.$action].'</b></li></ul>';
