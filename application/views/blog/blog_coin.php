@@ -66,10 +66,8 @@ if(!$is_author){
     echo '<div class="alert alert-warning no-margin"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>You are not an author of this blog, yet. <a href="/blog/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10985).'">&nbsp;or <a href="/blog/in_become_author/'.$in['in_id'].'" class="montserrat">BECOME AUTHOR</a></span></div>';
 }
 
-$col_num = 0;
 foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
-    $col_num++;
     $tab_content = '';
     $tab_is_active = false;
     $show_tab_menu_count = 0;
@@ -262,7 +260,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         } elseif($en_id2==12589){
 
-            //BLOG EDITOR
+            //NEXT EDITOR
 
             $dropdown_options = '';
             $input_options = '';
@@ -294,7 +292,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             }
 
-            $this_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
+            $this_tab .= 'Hiiii<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
             $this_tab .= '<div class="inline-box">';
 
             //Drop Down
