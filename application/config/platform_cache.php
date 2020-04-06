@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-05 20:42:01 PST
+//Generated 2020-04-06 10:02:39 PST
 
 //PLATFORM STATS:
 $config['ps_read_count'] = 120961;
-$config['ps_blog_count'] = 3831;
+$config['ps_blog_count'] = 3833;
 $config['ps_source_count'] = 9229;
 
 
@@ -1681,7 +1681,7 @@ $config['en_ids_12324'] = array(6683,7637);
 $config['en_all_12324'] = array(
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard " aria-hidden="true"></i>',
-        'm_name' => 'TEXT REPLY & NEXT',
+        'm_name' => 'REPLY & NEXT',
         'm_desc' => '',
         'm_parents' => array(12324,6144,7585,6192),
     ),
@@ -3584,7 +3584,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.32',
+        'm_desc' => '1.321',
         'm_parents' => array(6404),
     ),
     12363 => array(
@@ -5660,7 +5660,7 @@ $config['en_all_6192'] = array(
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard " aria-hidden="true"></i>',
-        'm_name' => 'TEXT REPLY & NEXT',
+        'm_name' => 'REPLY & NEXT',
         'm_desc' => '',
         'm_parents' => array(12324,6144,7585,6192),
     ),
@@ -6109,7 +6109,7 @@ $config['en_all_7585'] = array(
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard " aria-hidden="true"></i>',
-        'm_name' => 'TEXT REPLY & NEXT',
+        'm_name' => 'REPLY & NEXT',
         'm_desc' => 'Give a text response & complete all child blogs',
         'm_parents' => array(12324,6144,7585,6192),
     ),

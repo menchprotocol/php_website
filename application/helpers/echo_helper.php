@@ -569,7 +569,7 @@ function echo_ln($ln, $is_inner = false)
 
                 //READ
                 $lns = $CI->READ_model->ln_fetch(array('ln_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
-                $ui .= '<div class="message_content">'.echo_ln($lns[0], true).'</div>';
+                $ui .= '<div class="transaction-ref">'.echo_ln($lns[0], true).'</div>';
 
             }
         }

@@ -392,6 +392,12 @@ img.no-radius {
     text-decoration: underline;
 }
 
+.transaction-ref{
+    margin-left: 24px;
+    border-top: 1px solid #AAAAAA;
+    margin-top: 21px;
+}
+
 
 /* MENCH Colors */
 .source, .source .fas, .source .far, .source .fal, .source .fad, .color4536, .info-item i.source:hover, .info-item a.source:hover  { color:#007AFD !important; }
