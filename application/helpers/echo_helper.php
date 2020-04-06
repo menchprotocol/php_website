@@ -451,41 +451,6 @@ function echo_ln_urls($ln_content, $ln_type_source_id){
     }
 }
 
-function echo_ln_connections($ln){
-
-    $CI =& get_instance();
-    $ln_connections_ui = '';
-    $en_all_6232 = $CI->config->item('en_all_6232'); //PLATFORM VARIABLES
-
-
-    foreach ($CI->config->item('en_all_10692') as $en_id => $m) {
-
-        if(!intval($ln[$en_all_6232[$en_id]['m_desc']])){
-            continue;
-        }
-
-        if(in_array(6160 , $m['m_parents'])){
-            //SOURCE
-            $ens = $CI->SOURCE_model->en_fetch(array('en_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
-            if(count($ens) > 0){
-                $ln_connections_ui .= echo_en($ens[0], false);
-            }
-        } elseif(in_array(6202 , $m['m_parents'])){
-            //BLOG
-            $ins = $CI->BLOG_model->in_fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
-            if(count($ins) > 0){
-                $ln_connections_ui .= echo_in_read($ins[0]);
-            }
-        } elseif(in_array(4367 , $m['m_parents'])){
-            //READ
-            $lns = $CI->READ_model->ln_fetch(array('ln_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
-            if(count($lns) > 0){
-                $ln_connections_ui .= echo_ln($lns[0], true);
-            }
-        }
-    }
-    return $ln_connections_ui;
-}
 
 function echo_ln($ln, $is_inner = false)
 {
@@ -515,30 +480,28 @@ function echo_ln($ln, $is_inner = false)
 
     //Display the item
     $ui = '<div class="ledger-list">';
-    $ui .= '<div class="ledger-list-frame">';
-
 
 
     //READ ID Row of data:
-    $ui .= '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4341[4367]['m_name'].'"><span class="icon-block">'.$en_all_4341[4367]['m_icon'].'</span>'.$ln['ln_id'].'</span></div>';
+    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4341[4367]['m_name'].'"><span class="icon-block">'.$en_all_4341[4367]['m_icon'].'</span>'.$ln['ln_id'].'</span></div>';
 
 
     //Status
-    $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[6186]['m_name'].( strlen($en_all_6186[$ln['ln_status_source_id']]['m_desc']) ? ': '.$en_all_6186[$ln['ln_status_source_id']]['m_desc'] : '' ).'"><span class="icon-block">'.$en_all_6186[$ln['ln_status_source_id']]['m_icon'].'</span>'.$en_all_6186[$ln['ln_status_source_id']]['m_name'].'</span></div>';
+    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[6186]['m_name'].( strlen($en_all_6186[$ln['ln_status_source_id']]['m_desc']) ? ': '.$en_all_6186[$ln['ln_status_source_id']]['m_desc'] : '' ).'"><span class="icon-block">'.$en_all_6186[$ln['ln_status_source_id']]['m_icon'].'</span>'.$en_all_6186[$ln['ln_status_source_id']]['m_name'].'</span></div>';
 
     //Time
-    $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="' . $ln['ln_timestamp'] . ' PST"><span class="icon-block">'.$en_all_4341[4362]['m_icon']. '</span>' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span></div>';
+    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $ln['ln_timestamp'] . ' PST"><span class="icon-block">'.$en_all_4341[4362]['m_icon']. '</span>' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span></div>';
 
 
     //Transaction Type
-    $ui .= '<div><a href="/source/'.$ln['ln_type_source_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4593]['m_name'].( strlen($en_all_4593[$ln['ln_type_source_id']]['m_desc']) ? ': '.$en_all_4593[$ln['ln_type_source_id']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'. $en_all_4593[$ln['ln_type_source_id']]['m_icon']. '</span>'. $en_all_4593[$ln['ln_type_source_id']]['m_name'] . '</a></div>';
+    $ui .= '<div class="simple-line"><a href="/source/'.$ln['ln_type_source_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4593]['m_name'].( strlen($en_all_4593[$ln['ln_type_source_id']]['m_desc']) ? ': '.$en_all_4593[$ln['ln_type_source_id']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'. $en_all_4593[$ln['ln_type_source_id']]['m_icon']. '</span>'. $en_all_4593[$ln['ln_type_source_id']]['m_name'] . '</a></div>';
 
 
     //Hide Sensitive Details?
     if(in_array($ln['ln_type_source_id'] , $CI->config->item('en_ids_4755')) && !superpower_active(10985, true)){
 
         //Hide Creator:
-        $ui .= '<div><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
+        $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
 
     } else {
 
@@ -548,116 +511,75 @@ function echo_ln($ln, $is_inner = false)
             $trainer_ens = $CI->SOURCE_model->en_fetch(array(
                 'en_id' => $ln['ln_creator_source_id'],
             ));
-            $ui .= '<div><a href="/source/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.echo_en_icon($trainer_ens[0]['en_icon']).'</span>' . $trainer_ens[0]['en_name'] . '</a></div>';
+            $ui .= '<div class="simple-line"><a href="/source/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.echo_en_icon($trainer_ens[0]['en_icon']).'</span>' . $trainer_ens[0]['en_name'] . '</a></div>';
         }
 
 
         //Metadata
         if(strlen($ln['ln_metadata']) > 0){
-            $ui .= '<div><a href="/read/transaction_json/' . $ln['ln_id'] . '" class="montserrat"><span class="icon-block">'.$en_all_4341[6103]['m_icon']. '</span>'.$en_all_4341[6103]['m_name']. '</a></div>';
+            $ui .= '<div class="simple-line"><a href="/read/transaction_json/' . $ln['ln_id'] . '" class="montserrat"><span class="icon-block">'.$en_all_4341[6103]['m_icon']. '</span>'.$en_all_4341[6103]['m_name']. '</a></div>';
         }
 
 
         //External ID
         if($ln['ln_external_id'] > 0){
-            $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[7694]['m_name'].'"><span class="icon-block">'.$en_all_4341[7694]['m_icon']. '</span>'.$ln['ln_external_id'].'</span></div>';
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[7694]['m_name'].'"><span class="icon-block">'.$en_all_4341[7694]['m_icon']. '</span>'.$ln['ln_external_id'].'</span></div>';
         }
 
         //Message
         if(strlen($ln['ln_content']) > 0){
-            $ui .= '<div data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.$CI->READ_model->dispatch_message($ln['ln_content']).'</div></div>';
+            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.$CI->READ_model->dispatch_message($ln['ln_content']).'</div></div>';
         }
 
 
+        //Coins
+        if(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12141'))){
+            $direction = filter_cache_group($ln['ln_type_source_id'], 2738);
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4370]['m_name']. '" class="montserrat '.extract_icon_color($direction['m_icon']).'"><span class="icon-block">'.$direction['m_icon'].'</span>COIN AWARDED</span></div>';
+        }
+
+
+        //Order
+        if($ln['ln_order'] > 0){
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4370]['m_name']. '"><span class="icon-block">'.$en_all_4341[4370]['m_icon']. '</span>'.echo_ordinal_number($ln['ln_order']).'</span></div>';
+        }
 
     }
 
 
-
-
-
-
-    //Transaction Connections
-    $link_connections_clean_name = ''; //All link connections including child links
-    $link_connections_count = 0; //Core link connections excluding child links (2x Blogs, 2x Players & 1x Parent Transaction)
-    $auto_load_max_connections = 99; //TODO Deprecate
     if(!$is_inner){
 
         $en_all_6232 = $CI->config->item('en_all_6232'); //PLATFORM VARIABLES
-
-        //First count to see if this link has any connections:
         foreach ($CI->config->item('en_all_10692') as $en_id => $m) {
 
-            if (!intval($ln[$en_all_6232[$en_id]['m_desc']])) {
+            if(!intval($ln[$en_all_6232[$en_id]['m_desc']])){
                 continue;
             }
 
-            if($link_connections_count > 0){
-                $link_connections_clean_name .= ', ';
+            if(in_array(6160 , $m['m_parents'])){
+                //SOURCE
+                $ens = $CI->SOURCE_model->en_fetch(array('en_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
+                if(count($ens) > 0){
+                    $ui .= echo_en($ens[0], false);
+                }
+            } elseif(in_array(6202 , $m['m_parents'])){
+                //BLOG
+                $ins = $CI->BLOG_model->in_fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
+                if(count($ins) > 0){
+                    $ui .= echo_in_read($ins[0]);
+                }
+            } elseif(in_array(4367 , $m['m_parents'])){
+                //READ
+                $lns = $CI->READ_model->ln_fetch(array('ln_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
+                if(count($lns) > 0){
+                    $ui .= echo_ln($lns[0], true);
+                }
             }
-            $link_connections_clean_name .= $m['m_name'];
-            $link_connections_count++;
-        }
-
-        //Count child links:
-        $child_links = $CI->READ_model->ln_fetch(array(
-            'ln_parent_read_id' => $ln['ln_id'],
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_child_links');
-
-        $load_main = ( $link_connections_count <= $auto_load_max_connections ? 1 : 0 ); //Decide if we should auto-load the main connections for this link
-
-        if($link_connections_count>0 && $link_connections_count <= $auto_load_max_connections){
-            //Since it would be auto loaded, remove from UI link:
-            $link_connections_clean_name = ''; //All link connections including child links
-        }
-
-        if($child_links[0]['total_child_links'] > 0){
-            if(strlen($link_connections_clean_name) > 0){
-                $link_connections_clean_name .= ' & ';
-            }
-            $link_connections_clean_name .= $child_links[0]['total_child_links'].' Links';
         }
     }
 
 
-
-    //Link coins
-    if(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12141'))){
-        $direction = filter_cache_group($ln['ln_type_source_id'], 2738);
-        $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4370]['m_name']. '" class="montserrat '.extract_icon_color($direction['m_icon']).'"><span class="icon-block">'.$direction['m_icon'].'</span>COIN AWARDED</span></div>';
-    }
-
-
-
-    if($ln['ln_order'] > 0){
-        $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4370]['m_name']. '"><span class="icon-block">'.$en_all_4341[4370]['m_icon']. '</span>'.echo_ordinal_number($ln['ln_order']).'</span></div>';
-    }
-
-
-
-    //Give option to load if it has connections:
-    if(!$is_inner && (strlen($link_connections_clean_name) > 0 || $load_main)){
-
-        if(!$load_main || $child_links[0]['total_child_links'] > 0){
-            $ui .= '<span class="link_connections_link_'.$ln['ln_id'].' read-micro-data"><a href="#linkconnection-'.$ln['ln_id'].'" onclick="load_link_connections('.$ln['ln_id'].','.$load_main.')"  data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[10692]['m_name'].'">'.$en_all_4527[10692]['m_icon'].' '.$link_connections_clean_name.'</a></span>';
-        }
-
-        $ui .= '</div>'; //Close main link box
-
-        if($load_main){
-            //Load main connections:
-            $ui .= echo_ln_connections($ln);
-        }
-
-        $ui .= '<div class="link_connections_content_'.$ln['ln_id'].'"></div>';
-
-    } else {
-
-        $ui .= '</div>'; //Close main link box
-
-    }
-
-    $ui .= '</div>'; //Close it all
+    $ui .= '</div>';
 
     return $ui;
 }

@@ -55,35 +55,3 @@ function load_ledger(link_filters, link_join_by, page_num){
         }
     });
 }
-
-
-function load_link_connections(ln_id,load_main) {
-
-    //Show loading instead of button:
-    $('.link_connections_link_'+ln_id).html('<span class="montserrat"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + echo_loading_notify() +  '</span>').hide().fadeIn();
-
-    //Fetch Connections UI
-    $.post("/read/load_link_connections", {
-        ln_id: ln_id,
-        load_main:load_main,
-    }, function (data) {
-
-        //Remove Link:
-        $('.link_connections_link_'+ln_id).remove();
-
-        if (!data.status) {
-
-            //Opppsi, show the error:
-            alert('Error Loading Links: ' + data.message);
-
-        } else {
-
-            //Load content:
-            $('.link_connections_content_'+ln_id).html(data.ln_connections_ui).hide().fadeIn();
-
-            //Reload Tooltip again:
-            $('[data-toggle="tooltip"]').tooltip();
-
-        }
-    });
-}

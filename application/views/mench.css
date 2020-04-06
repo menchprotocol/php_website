@@ -816,13 +816,10 @@ td.MENCHcolumn3{ width: 21%; }
     background-color: transparent;
 }
 .ledger-list {
-    margin-bottom:20px;
-}
-.ledger-list-frame {
-    background-color: #FFFFFF;
+    margin-bottom:34px;
     border-bottom: 1px solid #000;
 }
-.ledger-list-frame>div{
+.simple-line{
     padding: 5px 0;
 }
 
