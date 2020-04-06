@@ -858,8 +858,7 @@ class SOURCE_model extends CI_Model
     function en_mass_update($en_id, $action_en_id, $action_command1, $action_command2, $ln_creator_source_id)
     {
 
-        //Fetch Status:
-        $en_all_4997 = $this->config->item('en_all_4997');
+        //NOTE: Has a twin function called in_mass_update()
 
         boost_power();
 

@@ -232,7 +232,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
             continue;
         }
 
-        $this_body = null;
+        $this_tab = null;
         $counter = 0;
 
         //SOURCE
@@ -254,18 +254,18 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
             //SOURCE PARENT
 
-            $this_body .= '<div id="list-parent" class="list-group ">';
+            $this_tab .= '<div id="list-parent" class="list-group ">';
             foreach ($source__parents as $en) {
-                $this_body .= echo_en($en,true);
+                $this_tab .= echo_en($en,true);
             }
 
             //Input to add new parents:
-            $this_body .= '<div id="new-parent" class="list-group-item itemsource no-side-padding '.superpower_active(10967).'">
+            $this_tab .= '<div id="new-parent" class="list-group-item itemsource no-side-padding '.superpower_active(10967).'">
                 <div class="form-group is-empty"><input type="text" class="form-control new-source-input algolia_search form-control-thick dotransparent" data-lpignore="true" placeholder="+ SOURCE"></div>
                 <div class="algolia_pad_search hidden"></div>
         </div>';
 
-            $this_body .= '</div>';
+            $this_tab .= '</div>';
 
         } elseif($en_id==11029){
 
@@ -306,33 +306,33 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
                 $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
 
                 //Add 2nd Navigation to UI
-                $this_body .= '<div class="nav nav-pills nav-sm '.superpower_active(10986).'">';
+                $this_tab .= '<div class="nav nav-pills nav-sm '.superpower_active(10986).'">';
 
                 //Show fixed All button:
-                $this_body .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk"></i><span class="show-max"> All</span> <span class="counter-11029">' . $source_count . '</span></a></li>';
+                $this_tab .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk"></i><span class="show-max"> All</span> <span class="counter-11029">' . $source_count . '</span></a></li>';
 
                 //Show each specific filter based on DB counts:
                 foreach ($child_en_filters as $c_c) {
                     $st = $en_all_6177[$c_c['en_status_source_id']];
-                    $this_body .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_source_id'] . '" onclick="en_filter_status(' . $c_c['en_status_source_id'] . ')" class="nav-link u-status-filter u-status-' . $c_c['en_status_source_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="show-max"> ' . $st['m_name'] . '</span> <span class="count-u-status-' . $c_c['en_status_source_id'] . '">' . $c_c['totals'] . '</span></a></li>';
+                    $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_source_id'] . '" onclick="en_filter_status(' . $c_c['en_status_source_id'] . ')" class="nav-link u-status-filter u-status-' . $c_c['en_status_source_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="show-max"> ' . $st['m_name'] . '</span> <span class="count-u-status-' . $c_c['en_status_source_id'] . '">' . $c_c['totals'] . '</span></a></li>';
                 }
 
-                $this_body .= '</div>';
+                $this_tab .= '</div>';
 
             }
 
 
-            $this_body .= '<div id="list-children" class="list-group">';
+            $this_tab .= '<div id="list-children" class="list-group">';
 
             foreach ($source__children as $en) {
-                $this_body .= echo_en($en,false);
+                $this_tab .= echo_en($en,false);
             }
             if ($counter > count($source__children)) {
-                $this_body .= echo_en_load_more(1, config_var(11064), $counter);
+                $this_tab .= echo_en_load_more(1, config_var(11064), $counter);
             }
 
             //Input to add new child:
-            $this_body .= '<div id="new-children" class="list-group-item itemsource no-side-padding '.superpower_active(10967).'">
+            $this_tab .= '<div id="new-children" class="list-group-item itemsource no-side-padding '.superpower_active(10967).'">
 
 
         <div class="form-group is-empty"><input type="text" class="form-control new-source-input form-control-thick algolia_search dotransparent" data-lpignore="true" placeholder="+ SOURCE"></div>
@@ -340,7 +340,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
         
         
 </div>';
-            $this_body .= '</div>';
+            $this_tab .= '</div>';
 
 
 
@@ -361,11 +361,11 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
             //SHOW LASTEST 100
             if($counter>0){
 
-                $this_body .= '<div class="list-group">';
+                $this_tab .= '<div class="list-group">';
                 foreach ($this->READ_model->ln_fetch($blog_note_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC')) as $blog_note) {
                     if(in_array($en_id, $this->config->item('en_ids_12321'))){
 
-                        $this_body .= echo_in_read($blog_note);
+                        $this_tab .= echo_in_read($blog_note);
 
                     } elseif(in_array($en_id, $this->config->item('en_ids_12322'))){
 
@@ -377,15 +377,15 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
                             $footnotes .= '</div>';
                         }
 
-                        $this_body .= echo_in_read($blog_note, false, $footnotes);
+                        $this_tab .= echo_in_read($blog_note, false, $footnotes);
 
                     }
                 }
-                $this_body .= '</div>';
+                $this_tab .= '</div>';
 
             } else {
 
-                $this_body .= '<div class="alert alert-warning">No blogs yet.</div>';
+                $this_tab .= '<div class="alert alert-warning">No blogs yet.</div>';
 
             }
 
@@ -429,7 +429,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
                 //Dynamic Loading when clicked:
                 $read_history_ui = $this->READ_model->read_history_ui($en_id, 0, $source['en_id']);
                 if($read_history_ui['status']){
-                    $this_body .= $read_history_ui['message'];
+                    $this_tab .= $read_history_ui['message'];
                 }
 
             }
@@ -544,28 +544,28 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
             }
 
-            $this_body .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
-            $this_body .= '<div class="inline-box">';
+            $this_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
+            $this_tab .= '<div class="inline-box">';
 
             //Drop Down
-            $this_body .= '<select class="form-control border" name="mass_action_en_id" id="set_mass_action">';
-            $this_body .= $dropdown_options;
-            $this_body .= '</select>';
+            $this_tab .= '<select class="form-control border" name="mass_action_en_id" id="set_mass_action">';
+            $this_tab .= $dropdown_options;
+            $this_tab .= '</select>';
 
-            $this_body .= $input_options;
+            $this_tab .= $input_options;
 
-            $this_body .= '<div><input type="submit" value="APPLY" class="btn btn-source inline-block"></div>';
+            $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-source inline-block"></div>';
 
-            $this_body .= '</div>';
-            $this_body .= '</form>';
+            $this_tab .= '</div>';
+            $this_tab .= '</form>';
 
             if(isset($source__children)){
                 //Also add invisible child IDs for quick copy/pasting:
-                $this_body .= '<div style="color:transparent;">';
+                $this_tab .= '<div style="color:transparent;">';
                 foreach ($source__children as $en) {
-                    $this_body .= $en['en_id'].',';
+                    $this_tab .= $en['en_id'].',';
                 }
-                $this_body .= '</div>';
+                $this_tab .= '</div>';
             }
 
             $counter = 0;
@@ -583,7 +583,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
         //BODY
         echo '<div class="contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';
-        echo $this_body;
+        echo $this_tab;
         echo '</div>';
         echo '</div>';
 

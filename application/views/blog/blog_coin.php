@@ -260,6 +260,57 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             }
 
+        } elseif($en_id2==12589){
+
+            //BLOG EDITOR
+
+            $dropdown_options = '';
+            $input_options = '';
+            $counter = 0;
+
+            foreach ($this->config->item('en_all_12589') as $action_en_id => $mass_action_en) {
+
+                $counter++;
+                $dropdown_options .= '<option value="' . $action_en_id . '">' .$mass_action_en['m_name'] . '</option>';
+                $is_upper = false;
+
+
+                //Start with the input wrapper:
+                $input_options .= '<span id="mass_id_'.$action_en_id.'" title="'.$mass_action_en['m_desc'].'" class="inline-block '. ( $counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+
+                if(in_array($action_en_id, array(12591, 12592))){
+
+                    //Player search box:
+
+                    //String command:
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search sources..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
+
+                    //We don't need the second value field here:
+                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
+
+                }
+
+                $input_options .= '</span>';
+
+            }
+
+            $this_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
+            $this_tab .= '<div class="inline-box">';
+
+            //Drop Down
+            $this_tab .= '<select class="form-control border" name="mass_action_en_id" id="set_mass_action">';
+            $this_tab .= $dropdown_options;
+            $this_tab .= '</select>';
+
+            $this_tab .= $input_options;
+
+            $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-source inline-block"></div>';
+
+            $this_tab .= '</div>';
+            $this_tab .= '</form>';
+
+            $counter = 0;
+
         } else {
 
             //Not supported via here:
@@ -276,7 +327,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         //Populate tab content:
         $show_tab_menu_count++;
         $show_tab_ui .= '<li class="nav-item '.( !$tab_is_active && count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $tab_is_active ? ' active ' : '' ).extract_icon_color($m2['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.', '.$in['in_id'].', 0)" data-toggle="tooltip" data-placement="top" title="'.$m2['m_name'].'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.'">'.echo_number($counter).'</span>' ).'</a></li>';
-
 
 
         $tab_content .= '<div class="tab-content tab-group-'.$en_id.' tab-data-'.$en_id2.( $tab_is_active ? '' : ' hidden ' ).'">';

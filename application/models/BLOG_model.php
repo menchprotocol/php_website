@@ -663,6 +663,113 @@ class BLOG_model extends CI_Model
 
     }
 
+    function in_mass_update($in_id, $action_en_id, $action_command1, $action_command2, $ln_creator_source_id)
+    {
+
+        //NOTE: Has a twin function called en_mass_update()
+
+        boost_power();
+
+        if(!in_array($action_en_id, $this->config->item('en_ids_12589'))) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Unknown mass action',
+            );
+
+        } elseif(!is_valid_en_string($action_command1)){
+
+            return array(
+                'status' => 0,
+                'message' => 'Unknown Source. Format must be: @123 Source Name',
+            );
+
+        }
+
+
+
+        //Basic input validation done, let's continue...
+
+
+        //Fetch all children:
+        $applied_success = 0; //To be populated...
+
+        $in__children = $this->READ_model->ln_fetch(array(
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
+            'ln_type_source_id' => 4228, //Blog Link Regular Read
+            'ln_parent_blog_id' => $in_id,
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+
+
+        //Process request:
+        foreach ($in__children as $in) {
+
+            //Logic here must match items in en_mass_actions config variable
+
+            if(in_array($action_en_id , array(12591, 12592))){
+
+                //Check if it hs this item:
+                $parent_en_id = intval(one_two_explode('@',' ',$action_command1));
+                $blog_has_sources = $this->READ_model->ln_fetch(array(
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                    'ln_type_source_id' => 4983,
+                    'ln_child_blog_id' => $in['in_id'],
+                    'ln_parent_source_id' => $parent_en_id,
+                ));
+
+                if($action_en_id==12591 && !count($blog_has_sources)){
+
+                    //Missing & Must be Added:
+                    $this->READ_model->ln_create(array(
+                        'ln_creator_source_id' => $ln_creator_source_id,
+                        'ln_parent_source_id' => $parent_en_id,
+                        'ln_type_source_id' => 4983,
+                        'ln_content' => '@'.$parent_en_id,
+                        'ln_child_blog_id' => $in['in_id'],
+                    ), true);
+
+                    $applied_success++;
+
+                } elseif($action_en_id==12592 && count($blog_has_sources)){
+
+                    //Has and must be removed:
+                    $this->READ_model->ln_update($blog_has_sources[0]['ln_id'], array(
+                        'ln_status_source_id' => 6173,
+                    ), $ln_creator_source_id, 10678 /* Blog Notes Unlinked */);
+
+                    $applied_success++;
+
+                }
+
+            }
+
+        }
+
+
+        //Log mass source edit link:
+        $this->READ_model->ln_create(array(
+            'ln_creator_source_id' => $ln_creator_source_id,
+            'ln_type_source_id' => $action_en_id,
+            'ln_child_blog_id' => $in_id,
+            'ln_metadata' => array(
+                'payload' => $_POST,
+                'blogs_total' => count($in__children),
+                'blogs_updated' => $applied_success,
+                'command1' => $action_command1,
+                'command2' => $action_command2,
+            ),
+        ));
+
+        //Return results:
+        return array(
+            'status' => 1,
+            'message' => '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$applied_success . '/' . count($in__children) . ' blogs updated</div>',
+        );
+
+    }
+
+
     function in_tree_weight($in_id)
     {
 
