@@ -584,7 +584,7 @@ function echo_ln($ln, $is_inner = false)
     //Transaction Connections
     $link_connections_clean_name = ''; //All link connections including child links
     $link_connections_count = 0; //Core link connections excluding child links (2x Blogs, 2x Players & 1x Parent Transaction)
-    $auto_load_max_connections = 3; //If a link has this many of LESS connections, it would auto load them
+    $auto_load_max_connections = 99; //TODO Deprecate
     if(!$is_inner){
 
         $en_all_6232 = $CI->config->item('en_all_6232'); //PLATFORM VARIABLES
@@ -628,13 +628,13 @@ function echo_ln($ln, $is_inner = false)
     //Link coins
     if(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12141'))){
         $direction = filter_cache_group($ln['ln_type_source_id'], 2738);
-        $ui .= '<span class="read-micro-data"><span style="min-width:30px; display: inline-block;" class="montserrat '.extract_icon_color($direction['m_icon']).'">'.$direction['m_icon'].'</i> COIN</span></span> &nbsp;';
+        $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4370]['m_name']. '" class="montserrat '.extract_icon_color($direction['m_icon']).'"><span class="icon-block">'.$direction['m_icon'].'</span>COIN AWARDED</span></div>';
     }
 
 
 
     if($ln['ln_order'] > 0){
-        $ui .= '<span class="read-micro-data"><span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).'" style="min-width:30px; display: inline-block;">'.$en_all_4341[4370]['m_icon']. ' '.echo_ordinal_number($ln['ln_order']).'</span></span> &nbsp;';
+        $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4370]['m_name']. '"><span class="icon-block">'.$en_all_4341[4370]['m_icon']. '</span>'.echo_ordinal_number($ln['ln_order']).'</span></div>';
     }
 
 
