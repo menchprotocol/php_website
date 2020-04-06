@@ -528,59 +528,45 @@ function echo_ln($ln, $is_inner = false)
 
 
     //READ ID Row of data:
-    $ui .= '<div class="read-micro-data">';
+    $ui .= '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4341[4367]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[4367]['m_icon'].'</span>'.$ln['ln_id'].'</span></div>';
 
-    $ui .= '<span data-toggle="tooltip" data-placement="top" title="READ ID" class="montserrat"><i class="fas fa-atlas"></i> '.$ln['ln_id'].'</span>';
+    //Status
+    $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[6186]['m_name'].( strlen($en_all_6186[$ln['ln_status_source_id']]['m_desc']) ? ': '.$en_all_6186[$ln['ln_status_source_id']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$en_all_6186[$ln['ln_status_source_id']]['m_icon'].'</span>'.$en_all_6186[$ln['ln_status_source_id']]['m_name'].'</span></div>';
 
-    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is '.$en_all_6186[$ln['ln_status_source_id']]['m_desc'].'" class="montserrat">'.$en_all_6186[$ln['ln_status_source_id']]['m_icon'].' '.$en_all_6186[$ln['ln_status_source_id']]['m_name'].'</span>';
+    //Time
+    $ui .= '<div><span data-toggle="tooltip" class="montserrat" data-placement="top" title="'.$en_all_4341[4362]['m_name'].': ' . $ln['ln_timestamp'] . ' PST"><span class="icon-block">'.$en_all_4341[4362]['m_icon']. '</span>' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' AGO</span></div>';
 
-    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" class="montserrat" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST">'.$en_all_4341[4362]['m_icon']. ' ' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
+    //Transaction Type
+    $ui .= '<div><a href="/source/'.$ln['ln_type_source_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4593]['m_name'].( strlen($en_all_4593[$ln['ln_type_source_id']]['m_desc']) ? ': '.$en_all_4593[$ln['ln_type_source_id']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'. $en_all_4593[$ln['ln_type_source_id']]['m_icon']. '</span>'. $en_all_4593[$ln['ln_type_source_id']]['m_name'] . '</a></div>';
 
-    $ui .= '</div>';
-
-
-
-    //Trainer and Link Type row:
-    $ui .= '<div style="padding: 10px 0;">';
 
     if($hide_sensitive_details){
 
-        $full_name = 'Hidden User';
-        $ui .= '<span class="icon-main"><i class="fal fa-eye-slash"></i></span>';
-        $ui .= '<b data-toggle="tooltip" data-placement="top" title="Details are kept private" class="montserrat">&nbsp;Private Source</b>';
+        //Hide Creator:
+        $ui .= '<div><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
 
     } elseif($ln['ln_creator_source_id'] > 0){
 
-        //Show Player:
+        //Show Creatpr:
         $trainer_ens = $CI->SOURCE_model->en_fetch(array(
             'en_id' => $ln['ln_creator_source_id'],
         ));
-        $full_name = one_two_explode('',' ', $trainer_ens[0]['en_name']);
-
-        $ui .= '<span class="icon-main">'.echo_en_icon($trainer_ens[0]['en_icon']).'</span> ';
-        $ui .= '<a href="/source/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Creator"><b class="montserrat">' . $full_name . '</b></a>';
+        $ui .= '<div><a href="/source/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.echo_en_icon($trainer_ens[0]['en_icon']).'</span>' . $trainer_ens[0]['en_name'] . '</a></div>';
 
     }
-
-    //Link Type:
-    $ui .= '&nbsp;'.( strlen($en_all_4593[$ln['ln_type_source_id']]['m_icon']) > 0 ? '&nbsp;'.$en_all_4593[$ln['ln_type_source_id']]['m_icon'].'&nbsp;' : '' ).'<a href="/source/'.$ln['ln_type_source_id'].'" data-toggle="tooltip" data-placement="top" title="Link Type"><b style="padding-left:5px;" class="montserrat">'. $en_all_4593[$ln['ln_type_source_id']]['m_name'] . '</b></a>';
-
-    $ui .= '</div>';
 
 
 
 
     //Do we have a content to show?
     if(!$hide_sensitive_details && strlen($ln['ln_content']) > 0){
-        $ui .= '<div class="read-history-msg">';
-        $ui .= $CI->READ_model->dispatch_message($ln['ln_content']);
-        $ui .= '</div>';
+        $ui .= '<div><span data-toggle="tooltip" class="montserrat" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span>'.$CI->READ_model->dispatch_message($ln['ln_content']).'</span></div>';
     }
 
 
-    //Link Connections
+    //Transaction Connections
     $link_connections_clean_name = ''; //All link connections including child links
-    $link_connections_count = 0; //Core link connections excluding child links (2x Blogs, 2x Players & 1x Parent Link)
+    $link_connections_count = 0; //Core link connections excluding child links (2x Blogs, 2x Players & 1x Parent Transaction)
     $auto_load_max_connections = 3; //If a link has this many of LESS connections, it would auto load them
     if(!$is_inner){
 
