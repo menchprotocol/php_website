@@ -96,11 +96,12 @@ class Blog extends CI_Controller {
             $process_mass_action = $this->BLOG_model->in_mass_update($in_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
 
             //Pass-on results to UI:
-            $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-success' : 'alert-danger' ).'" role="alert">'.$process_mass_action['message'].'</div>';
+            $message = $process_mass_action['message'];
 
         } else {
 
             //No mass action, just viewing...
+            $message = null;
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
             $this->READ_model->ln_create(array(
@@ -118,6 +119,7 @@ class Blog extends CI_Controller {
         $this->load->view('header', array(
             'title' => $ins[0]['in_title'].' | BLOG',
             'in' => $ins[0],
+            'flash_message' => $message, //Possible mass-action message for UI:
         ));
         $this->load->view('blog/blog_coin', array(
             'in' => $ins[0],
