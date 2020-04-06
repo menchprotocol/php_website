@@ -2889,8 +2889,8 @@ fragment PostListingItemSidebar_post on Post {
             ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
 
-            //Find common base, if any:
-            $common_prefix = common_prefix($children, 'en_name');
+            //Find common base, if allowed:
+            $common_prefix = ( in_array($en['ln_child_source_id'], $this->config->item('en_ids_12588')) ? null : common_prefix($children, 'en_name') );
 
             //Generate raw IDs:
             $child_ids = array();
