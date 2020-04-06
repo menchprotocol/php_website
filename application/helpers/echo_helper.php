@@ -482,8 +482,8 @@ function echo_ln($ln, $is_inner = false)
     $ui = '<div class="ledger-list">';
 
 
-    //READ ID Row of data:
-    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4341[4367]['m_name'].'"><span class="icon-block">'.$en_all_4341[4367]['m_icon'].'</span>'.$ln['ln_id'].'</span></div>';
+    //Transaction ID
+    $ui .= '<div class="simple-line"><a href="/ledger?ln_id='.$ln['ln_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4367]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[4367]['m_icon']. '</span>'.$ln['ln_id'].'</a></div>';
 
 
     //Status
