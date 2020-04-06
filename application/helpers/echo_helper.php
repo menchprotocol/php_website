@@ -527,12 +527,11 @@ function echo_ln($ln, $is_inner = false)
     $ui .= '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4341[4367]['m_name'].'"><span class="icon-block">'.$en_all_4341[4367]['m_icon'].'</span>'.$ln['ln_id'].'</span></div>';
 
 
-    //Time
-    $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="' . $ln['ln_timestamp'] . ' PST"><span class="icon-block">'.$en_all_4341[4362]['m_icon']. '</span>' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span></div>';
-
-
     //Status
     $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[6186]['m_name'].( strlen($en_all_6186[$ln['ln_status_source_id']]['m_desc']) ? ': '.$en_all_6186[$ln['ln_status_source_id']]['m_desc'] : '' ).'"><span class="icon-block">'.$en_all_6186[$ln['ln_status_source_id']]['m_icon'].'</span>'.$en_all_6186[$ln['ln_status_source_id']]['m_name'].'</span></div>';
+
+    //Time
+    $ui .= '<div><span data-toggle="tooltip" data-placement="top" title="' . $ln['ln_timestamp'] . ' PST"><span class="icon-block">'.$en_all_4341[4362]['m_icon']. '</span>' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span></div>';
 
 
     //Transaction Type

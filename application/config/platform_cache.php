@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-05 19:54:40 PST
+//Generated 2020-04-05 20:42:01 PST
 
 //PLATFORM STATS:
 $config['ps_read_count'] = 120961;
@@ -453,7 +453,7 @@ $config['en_all_10876'] = array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER V4',
         'm_desc' => 'https://mench.com/ledger',
-        'm_parents' => array(10876,6771,11035),
+        'm_parents' => array(10876,6771),
     ),
     6225 => array(
         'm_icon' => '<i class="fad fa-user-cog source" aria-hidden="true"></i>',
@@ -1157,9 +1157,9 @@ $config['en_ids_6205'] = array(4341,12024,12129,12336,12334,4554,6149,6969,4275,
 $config['en_all_6205'] = array(
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas read" aria-hidden="true"></i>',
-        'm_name' => 'MENCH LEDGER V3',
+        'm_name' => 'MENCH LEDGER',
         'm_desc' => '',
-        'm_parents' => array(4527,7735,6205),
+        'm_parents' => array(11035,4527,7735,6205),
     ),
     12024 => array(
         'm_icon' => '<i class="fas fa-flag read" aria-hidden="true"></i>',
@@ -3786,7 +3786,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION MENU:
-$config['en_ids_11035'] = array(6287,10573,4430,11068,7291,12467,11999,6225,12581,12211,12205,6415,7347,7256,4269,12275,10957,7540,12437);
+$config['en_ids_11035'] = array(6287,10573,4430,11068,7291,12467,4341,6225,12581,12211,12205,6415,7347,7256,4269,12275,10957,7540,12437);
 $config['en_all_11035'] = array(
     6287 => array(
         'm_icon' => '<i class="fad fa-user-shield source" aria-hidden="true"></i>',
@@ -3824,11 +3824,11 @@ $config['en_all_11035'] = array(
         'm_desc' => '',
         'm_parents' => array(4536,11035),
     ),
-    11999 => array(
-        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
-        'm_name' => 'MENCH LEDGER V4',
+    4341 => array(
+        'm_icon' => '<i class="fas fa-atlas read" aria-hidden="true"></i>',
+        'm_name' => 'MENCH LEDGER',
         'm_desc' => '',
-        'm_parents' => array(10876,6771,11035),
+        'm_parents' => array(11035,4527,7735,6205),
     ),
     6225 => array(
         'm_icon' => '<i class="fad fa-user-cog source" aria-hidden="true"></i>',
@@ -4801,9 +4801,9 @@ $config['en_all_4527'] = array(
     ),
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas read" aria-hidden="true"></i>',
-        'm_name' => 'MENCH LEDGER V3',
+        'm_name' => 'MENCH LEDGER',
         'm_desc' => '',
-        'm_parents' => array(4527,7735,6205),
+        'm_parents' => array(11035,4527,7735,6205),
     ),
     10876 => array(
         'm_icon' => '<i class="fas fa-browser" aria-hidden="true"></i>',
@@ -5788,7 +5788,7 @@ $config['en_all_6103'] = array(
     ),
 );
 
-//MENCH LEDGER V3:
+//MENCH LEDGER:
 $config['en_ids_4341'] = array(4364,7694,4367,4372,6103,4369,4371,4429,4368,4366,4370,6186,4362,4593);
 $config['en_all_4341'] = array(
     4364 => array(

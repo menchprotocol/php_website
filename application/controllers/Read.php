@@ -622,7 +622,7 @@ class Read extends CI_Controller
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
         $this->load->view('header', array(
-            'title' => $en_all_11035[11999]['m_name'],
+            'title' => $en_all_11035[4341]['m_name'],
         ));
         $this->load->view('read/read_ledger');
         $this->load->view('footer');
