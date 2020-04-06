@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-05 16:53:40 PST
+//Generated 2020-04-05 17:02:35 PST
 
 //PLATFORM STATS:
 $config['ps_read_count'] = 120961;
@@ -188,7 +188,7 @@ $config['en_all_12524'] = array(
 $config['en_ids_12523'] = array(2997,4446,3005,4763,3147,2999,5948,3192,2998,3084,3308);
 $config['en_all_12523'] = array(
     2997 => array(
-        'm_icon' => '<i class="fad fa-file-word source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-newspaper source" aria-hidden="true"></i>',
         'm_name' => 'EXPERT ARTICLES',
         'm_desc' => '',
         'm_parents' => array(12523,4983,7614,3000),
@@ -5687,7 +5687,7 @@ $config['en_all_10602'] = array(
 $config['en_ids_4983'] = array(2997,4446,3005,4763,3147,2999,5948,3192,2998,4430,3084);
 $config['en_all_4983'] = array(
     2997 => array(
-        'm_icon' => '<i class="fad fa-file-word source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-newspaper source" aria-hidden="true"></i>',
         'm_name' => 'EXPERT ARTICLES',
         'm_desc' => '',
         'm_parents' => array(12523,4983,7614,3000),
@@ -8494,7 +8494,7 @@ $config['en_all_3000'] = array(
         'm_parents' => array(12523,4983,7614,3000),
     ),
     2997 => array(
-        'm_icon' => '<i class="fad fa-file-word source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-newspaper source" aria-hidden="true"></i>',
         'm_name' => 'ARTICLES',
         'm_desc' => '',
         'm_parents' => array(12523,4983,7614,3000),
