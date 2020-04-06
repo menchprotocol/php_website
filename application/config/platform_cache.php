@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-06 10:55:31 PST
+//Generated 2020-04-06 10:56:20 PST
 
 //PLATFORM STATS:
 $config['ps_read_count'] = 120961;
@@ -5810,85 +5810,85 @@ $config['en_ids_4341'] = array(4364,7694,4367,4372,6103,4369,4371,4429,4368,4366
 $config['en_all_4341'] = array(
     4364 => array(
         'm_icon' => '<i class="fad fa-user-edit" aria-hidden="true"></i>',
-        'm_name' => 'CREATOR',
+        'm_name' => 'TRANSACTION CREATOR',
         'm_desc' => '',
         'm_parents' => array(11081,6160,6232,6194,4341),
     ),
     7694 => array(
         'm_icon' => '<i class="fad fa-project-diagram"></i>',
-        'm_name' => 'EXTERNAL ID',
+        'm_name' => 'TRANSACTION EXTERNAL ID',
         'm_desc' => '',
         'm_parents' => array(6215,6232,4341),
     ),
     4367 => array(
         'm_icon' => '<i class="fad fa-atlas" aria-hidden="true"></i>',
-        'm_name' => 'ID',
+        'm_name' => 'TRANSACTION ID',
         'm_desc' => '',
         'm_parents' => array(6232,6215,4341),
     ),
     4372 => array(
         'm_icon' => '<i class="fad fa-comment-lines" aria-hidden="true"></i>',
-        'm_name' => 'MESSAGE',
+        'm_name' => 'TRANSACTION MESSAGE',
         'm_desc' => '',
         'm_parents' => array(7578,10679,10657,5001,6232,4341),
     ),
     6103 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
-        'm_name' => 'METADATA',
+        'm_name' => 'TRANSACTION METADATA',
         'm_desc' => '',
         'm_parents' => array(4527,6232,6195,4341),
     ),
     4369 => array(
         'm_icon' => '<i class="fad fa-step-forward" aria-hidden="true"></i>',
-        'm_name' => 'NEXT BLOG',
+        'm_name' => 'TRANSACTION NEXT BLOG',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6202,6232,4341),
     ),
     4371 => array(
         'm_icon' => '<i class="fad fa-link" aria-hidden="true"></i>',
-        'm_name' => 'PARENT TRANSACTION',
+        'm_name' => 'TRANSACTION PARENT TRANSACTION',
         'm_desc' => '',
         'm_parents' => array(11081,10692,4367,6232,4341),
     ),
     4429 => array(
         'm_icon' => '<i class="fad fa-sitemap" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIO SOURCE',
+        'm_name' => 'TRANSACTION PORTFOLIO SOURCE',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6160,6232,4341),
     ),
     4368 => array(
         'm_icon' => '<i class="fad fa-step-backward" aria-hidden="true"></i>',
-        'm_name' => 'PREVIOUS BLOG',
+        'm_name' => 'TRANSACTION PREVIOUS BLOG',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6202,6232,4341),
     ),
     4366 => array(
         'm_icon' => '<i class="fas fa-id-badge" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE SOURCE',
+        'm_name' => 'TRANSACTION PROFILE SOURCE',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6160,6232,4341),
     ),
     4370 => array(
         'm_icon' => '<i class="fad fa-sort" aria-hidden="true"></i>',
-        'm_name' => 'RANK',
+        'm_name' => 'TRANSACTION RANK',
         'm_desc' => '',
         'm_parents' => array(10676,10675,6232,4341),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
-        'm_name' => 'STATUS',
+        'm_name' => 'TRANSACTION STATUS',
         'm_desc' => '',
         'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
     ),
     4362 => array(
         'm_icon' => '<i class="fad fa-clock" aria-hidden="true"></i>',
-        'm_name' => 'TIME',
+        'm_name' => 'TRANSACTION TIME',
         'm_desc' => '',
         'm_parents' => array(6232,4341),
     ),
     4593 => array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
-        'm_name' => 'TYPE',
+        'm_name' => 'TRANSACTION TYPE',
         'm_desc' => '',
         'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
     ),
