@@ -561,7 +561,7 @@ function echo_ln($ln, $is_inner = false)
 
     //Do we have a content to show?
     if(!$hide_sensitive_details && strlen($ln['ln_content']) > 0){
-        $ui .= '<div data-toggle="tooltip" class="montserrat" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="inline-block">'.$CI->READ_model->dispatch_message($ln['ln_content']).'</div></div>';
+        $ui .= '<div data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.$CI->READ_model->dispatch_message($ln['ln_content']).'</div></div>';
     }
 
 

@@ -818,6 +818,13 @@ td.MENCHcolumn3{ width: 21%; }
 .ledger-list div{
     padding: 5px 0;
 }
+.ledger-msg{
+    margin-top:-25px !important;
+}
+.ledger-msg .i_content, .ledger-msg .msg{
+    margin:0 !important;
+    padding:0 !important;
+}
 .mench-logo{
     font-size: 1.44em;
     line-height: 100%;
