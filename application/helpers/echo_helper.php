@@ -464,8 +464,6 @@ function echo_ln_connections($ln){
             continue;
         }
 
-        $ln_connections_ui .= '<div class="read-hisotry-child">';
-
         if(in_array(6160 , $m['m_parents'])){
             //SOURCE
             $ens = $CI->SOURCE_model->en_fetch(array('en_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
@@ -485,8 +483,6 @@ function echo_ln_connections($ln){
                 $ln_connections_ui .= echo_ln($lns[0], true);
             }
         }
-
-        $ln_connections_ui .= '</div>';
     }
     return $ln_connections_ui;
 }
@@ -518,8 +514,8 @@ function echo_ln($ln, $is_inner = false)
 
 
     //Display the item
-    $ui = '<div style="margin-bottom:20px;">';
-    $ui .= '<div class="list-group-item no-left-padding ledger-list">';
+    $ui = '<div class="ledger-list">';
+    $ui .= '<div class="ledger-list-frame">';
 
 
 

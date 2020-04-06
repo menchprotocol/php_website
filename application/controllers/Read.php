@@ -1029,7 +1029,7 @@ class Read extends CI_Controller
         foreach ($this->READ_model->ln_fetch(array(
             'ln_parent_read_id' => $_POST['ln_id'],
         ), array(), 0, 0, array('ln_id' => 'DESC')) as $ln_child) {
-            $ln_connections_ui .= '<div class="read-hisotry-child">' . echo_ln($ln_child, true) . '</div>';
+            $ln_connections_ui .= echo_ln($ln_child, true);
         }
 
         //Return UI:

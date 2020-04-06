@@ -815,9 +815,17 @@ td.MENCHcolumn3{ width: 21%; }
 .mench-navigation .block-logo a:hover {
     background-color: transparent;
 }
-.ledger-list div{
+.ledger-list {
+    margin-bottom:20px;
+}
+.ledger-list-frame {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #000;
+}
+.ledger-list-frame>div{
     padding: 5px 0;
 }
+
 .ledger-msg{
     margin-top:-25px !important;
 }
@@ -1062,9 +1070,6 @@ label {
 
 
 
-.read-hisotry-child {
-    margin: 0 0 0 30px;
-}
 .read-micro-data {
     text-transform: uppercase;
 }
