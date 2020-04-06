@@ -64,6 +64,9 @@ function in_update_text_start(){
 
 $(document).ready(function () {
 
+    //Load search for mass update function:
+    load_en_quick_search();
+
     //Lookout for textinput updates
     in_update_text_start();
 

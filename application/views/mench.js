@@ -78,6 +78,39 @@ function toggle_read(){
 
 }
 
+function load_en_quick_search(){
+    $('.en_quick_search').on('autocomplete:selected', function (event, suggestion, dataset) {
+
+        $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
+
+    }).autocomplete({hint: false, minLength: 2}, [{
+
+        source: function (q, cb) {
+            algolia_index.search(q, {
+                filters: 'alg_obj_is_in=0',
+                hitsPerPage: 5,
+            }, function (error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+                cb(content.hits, content);
+            });
+        },
+        displayKey: function (suggestion) {
+            return '@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name;
+        },
+        templates: {
+            suggestion: function (suggestion) {
+                return echo_js_suggestion(suggestion);
+            },
+            empty: function (data) {
+                return '<div class="not-found"><i class="fad fa-exclamation-triangle"></i> No sources found</div>';
+            },
+        }
+    }]);
+}
+
 function load_leaderboard(){
     //Show loading icon:
     $('#load_leaderboard').html('<div class="alert montserrat source" style="background-color: #FFF;"><span class="icon-block"><i class="far fa-yin-yang fa-spin source"></i></span>LOADING...</div>');
