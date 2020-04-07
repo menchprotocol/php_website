@@ -327,7 +327,7 @@ function is_valid_icon($string, $only_return_requirements = false){
 
 
     //See if this is an image URL:
-    if (substr($string, 0, 4) == '<img' && substr($string, -1) == '>') {
+    if (substr($string, 0, 4) == '<img' && substr($string, -1) == '>' && substr_count($string, 'https://') && !substr_count($string, 'http://')) {
 
         //Image URLs are valid:
         return true;
