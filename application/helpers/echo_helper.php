@@ -1827,7 +1827,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
         $ui .= '<div class="inline-block">';
             //BLOG ICON:
-            $ui .= '<span class="icon-block"><a href="/blog/'.$in['in_id'].'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
+            $ui .= '<span class="icon-block"><a href="/blog/'.$in['in_id'].'" title="Weight: '.number_format($in['in_weight'], 0).'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
 
             //BLOG TITLE
             if($is_blog_link && superpower_active(10984, true)){
