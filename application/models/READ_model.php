@@ -3728,7 +3728,7 @@ class READ_model extends CI_Model
         //All good, something happened:
         return array(
             'status' => 1,
-            'message' => $answers_newly_added.' answer'.echo__s($answers_newly_added).' saved. Going next...',
+            'message' => $answers_newly_added.' Selected. Going Next...',
         );
 
     }
