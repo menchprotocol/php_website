@@ -293,7 +293,7 @@ function ln_detect_type($string)
 }
 
 function is_https_url($url){
-    return (substr(trim($url), 0, 8) == "https://");
+    return substr($url, 0, 8) == 'https://';
 }
 
 function is_valid_en_string($string){
