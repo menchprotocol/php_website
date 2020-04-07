@@ -358,6 +358,7 @@ img.no-radius {
     text-align: center;
     width: 144px;
     margin-left:5px;
+    margin-right:5px;
 }
 .featured-image {
     max-width: 144px;
