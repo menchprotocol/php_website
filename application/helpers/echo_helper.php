@@ -1166,7 +1166,7 @@ function echo_in_stat_source($in_id = 0, $en_id = 0){
 
     $CI =& get_instance();
 
-    if(superpower_active(10983, true)){
+    if(superpower_active(10983, true) || $en_id){
 
         if($in_id){
             $mench = 'source';
