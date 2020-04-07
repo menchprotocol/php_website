@@ -114,6 +114,8 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
      *
      * */
 
+
+
     $clean_url = null;
     $embed_html_code = null;
     $prefix_message = null;
@@ -123,56 +125,58 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
         $full_message = $url;
     }
 
-    //See if $url has a valid embed video in it, and transform it if it does:
-    $is_embed = (substr_count($url, 'youtube.com/embed/') == 1);
+    if(is_https_url($url)){
+        //See if $url has a valid embed video in it, and transform it if it does:
+        $is_embed = (substr_count($url, 'youtube.com/embed/') == 1);
 
-    if ((substr_count($url, 'youtube.com/watch') == 1) || substr_count($url, 'youtu.be/') == 1 || $is_embed) {
+        if ((substr_count($url, 'youtube.com/watch') == 1) || substr_count($url, 'youtu.be/') == 1 || $is_embed) {
 
-        $start_sec = 0;
-        $end_sec = 0;
-        $video_id = extract_youtube_id($url);
+            $start_sec = 0;
+            $end_sec = 0;
+            $video_id = extract_youtube_id($url);
 
-        if ($video_id) {
+            if ($video_id) {
 
-            if($is_embed){
-                if(is_numeric(one_two_explode('start=','&',$url))){
-                    $start_sec = intval(one_two_explode('start=','&',$url));
+                if($is_embed){
+                    if(is_numeric(one_two_explode('start=','&',$url))){
+                        $start_sec = intval(one_two_explode('start=','&',$url));
+                    }
+                    if(is_numeric(one_two_explode('end=','&',$url))){
+                        $end_sec = intval(one_two_explode('end=','&',$url));
+                    }
                 }
-                if(is_numeric(one_two_explode('end=','&',$url))){
-                    $end_sec = intval(one_two_explode('end=','&',$url));
+
+                //Set the Clean URL:
+                $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
+
+                //Inform User that this is a sliced video
+                if ($start_sec || $end_sec) {
+                    $embed_html_code .= '<div class="read-topic"><i class="fad fa-play-circle"></i>&nbsp;' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'">WATCH THIS ' . echo_time_minutes(($end_sec - $start_sec)) . ' CLIP</b>' : '<b>WATCH FROM ' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
                 }
+
+                $embed_html_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+
             }
 
-            //Set the Clean URL:
-            $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
+        } elseif (substr_count($url, 'vimeo.com/') == 1 && is_numeric(one_two_explode('vimeo.com/','?',$url))) {
 
-            //Inform User that this is a sliced video
-            if ($start_sec || $end_sec) {
-                $embed_html_code .= '<div class="read-topic"><i class="fad fa-play-circle"></i>&nbsp;' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'">WATCH THIS ' . echo_time_minutes(($end_sec - $start_sec)) . ' CLIP</b>' : '<b>WATCH FROM ' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
+            //Seems to be Vimeo:
+            $video_id = trim(one_two_explode('vimeo.com/', '?', $url));
+
+            //This should be an integer!
+            if (intval($video_id) == $video_id) {
+                $clean_url = 'https://vimeo.com/' . $video_id;
+                $embed_html_code = '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://player.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
             }
 
-            $embed_html_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+        } elseif (substr_count($url, 'wistia.com/medias/') == 1) {
+
+            //Seems to be Wistia:
+            $video_id = trim(one_two_explode('wistia.com/medias/', '?', $url));
+            $clean_url = trim(one_two_explode('', '?', $url));
+            $embed_html_code = '<script src="https://fast.wistia.com/embed/medias/' . $video_id . '.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding video-sorting" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_' . $video_id . ' seo=false videoFoam=true" style="height:100%;width:100%">&nbsp;</div></div></div>';
 
         }
-
-    } elseif (substr_count($url, 'vimeo.com/') == 1 && is_numeric(one_two_explode('vimeo.com/','?',$url))) {
-
-        //Seems to be Vimeo:
-        $video_id = trim(one_two_explode('vimeo.com/', '?', $url));
-
-        //This should be an integer!
-        if (intval($video_id) == $video_id) {
-            $clean_url = 'https://vimeo.com/' . $video_id;
-            $embed_html_code = '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://player.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
-        }
-
-    } elseif (substr_count($url, 'wistia.com/medias/') == 1) {
-
-        //Seems to be Wistia:
-        $video_id = trim(one_two_explode('wistia.com/medias/', '?', $url));
-        $clean_url = trim(one_two_explode('', '?', $url));
-        $embed_html_code = '<script src="https://fast.wistia.com/embed/medias/' . $video_id . '.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding video-sorting" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_' . $video_id . ' seo=false videoFoam=true" style="height:100%;width:100%">&nbsp;</div></div></div>';
-
     }
 
 

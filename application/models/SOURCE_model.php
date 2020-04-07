@@ -581,28 +581,25 @@ class SOURCE_model extends CI_Model
                 //URL Was detected as an embed URL:
                 $ln_type_source_id = 4257;
 
-            } elseif ($domain_analysis['url_file_extension']) {
+            } elseif ($domain_analysis['url_file_extension'] && is_https_url($url)) {
 
-                $ln_type_source_id = 0;
+                $detected_extension = false;
                 foreach($this->config->item('en_all_11080') as $en_id => $m){
                     if(in_array($domain_analysis['url_file_extension'], explode('|' , $m['m_desc']))){
                         $ln_type_source_id = $en_id;
+                        $detected_extension = true;
                         break;
                     }
                 }
 
-                if(!$ln_type_source_id){
-
-                    //Log error:
+                if(!$detected_extension){
+                    //Log error to notify admin:
                     $this->READ_model->ln_create(array(
                         'ln_content' => 'en_sync_url() detected unknown file extension ['.$domain_analysis['url_file_extension'].'] that needs to be added to @11080',
                         'ln_type_source_id' => 4246, //Platform Bug Reports
                         'ln_parent_source_id' => 11080,
                         'ln_metadata' => $domain_analysis,
                     ));
-
-                    $ln_type_source_id = 4256; //Assign URL as default
-
                 }
             }
         }
@@ -787,14 +784,6 @@ class SOURCE_model extends CI_Model
             ));
         }
 
-        //Make sure we meet the HTTPS requirement:
-        if(in_array($ln_type_source_id, $this->config->item('en_ids_12605')) && !is_https_url($url)){
-            $en_all_12605 = $this->config->item('en_all_12605');
-            return array(
-                'status' => 0,
-                'message' => $en_all_12605[$ln_type_source_id]['m_name'].' requires a secure HTTPS URL',
-            );
-        }
 
         //Return results:
         return array_merge(
