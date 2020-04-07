@@ -1091,12 +1091,14 @@ class READ_model extends CI_Model
                 'ln_order' => $in_rank, //Always place at the top of their reading list
             ));
 
-            //Mark as read:
-            $this->READ_model->read_is_complete($ins[0], array(
-                'ln_type_source_id' => 4559, //READ MESSAGES
-                'ln_creator_source_id' => $en_id,
-                'ln_parent_blog_id' => $ins[0]['in_id'],
-            ));
+            //Mark as read if possible:
+            if($ins[0]['in_type_source_id']==6677){
+                $this->READ_model->read_is_complete($ins[0], array(
+                    'ln_type_source_id' => 4559, //READ MESSAGES
+                    'ln_creator_source_id' => $en_id,
+                    'ln_parent_blog_id' => $ins[0]['in_id'],
+                ));
+            }
 
             //Move other blogs down in the reading list:
             foreach($this->READ_model->ln_fetch(array(

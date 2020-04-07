@@ -2120,20 +2120,14 @@ fragment PostListingItemSidebar_post on Post {
 
         ##Email Body
         $html_message = '<div>Hi '.$name_parts[0].' 👋</div><br />';
-
-        $html_message .= '<div>'.( count($referrer_ins) > 0 ? echo_in_title($referrer_ins[0], true) : 'Get started' ).':</div><br />';
-        $actionplan_url = $this->config->item('base_url') . ( count($referrer_ins) > 0 ? 'actionplan/'.$referrer_ins[0]['in_id'] : '' );
-        $html_message .= '<div><a href="'.$actionplan_url.'" target="_blank">' . $actionplan_url . '</a></div><br />';
-
-        $html_message .= '<div>Connect on Messenger:</div><br />';
-        $messenger_url = 'https://m.me/' . config_var(12587) . ( count($referrer_ins) > 0 ? '?ref=' . $referrer_ins[0]['in_id'] : '' ) ;
-        $html_message .= '<div><a href="'.$messenger_url.'" target="_blank">' . $messenger_url . '</a></div>';
+        $html_message .= '<div>Just wanted to welcome you to Mench and with you enjoy blogging interactively.</div>';
         $html_message .= '<br /><br />';
         $html_message .= '<div>Cheers,</div><br />';
-        $html_message .= '<div>MENCH</div>';
+        $html_message .= '<div>Team MENCH</div>';
 
         //Send Welcome Email:
         $email_log = $this->READ_model->dispatch_emails(array($_POST['input_email']), $subject, $html_message);
+
 
         //Log User Signin Joined Mench
         $invite_link = $this->READ_model->ln_create(array(
