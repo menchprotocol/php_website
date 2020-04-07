@@ -1601,7 +1601,7 @@ class READ_model extends CI_Model
                     }
 
                     //List Children:
-                    $common_prefix = common_prefix($child_in, 'in_title');
+                    $common_prefix = common_prefix($in__children, 'in_title');
                     echo '<div class="list-group '.( !$is_home ? 'read_topics hidden' : '' ).'">';
                     foreach($in__children as $key => $child_in){
                         echo echo_in_read($child_in, ($is_home || in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_6193'))), null, $common_prefix);
