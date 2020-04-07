@@ -358,7 +358,9 @@ img.no-radius {
     text-align: center;
     width: 144px;
     margin-left:5px;
-    margin-right:5px;
+}
+.table-sm td .featured-frame{
+    margin-right:10px;
 }
 .featured-image {
     max-width: 144px;
