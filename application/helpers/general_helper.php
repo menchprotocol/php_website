@@ -328,7 +328,7 @@ function is_valid_icon($string){
     //See if this is an image URL:
     if (substr($string, 0, 4) == '<img') {
 
-        if(!is_https_url($string)){
+        if(!is_https_url(one_two_explode('src="','"',$string))){
 
             return array(
                 'status' => 0,
