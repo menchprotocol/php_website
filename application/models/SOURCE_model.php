@@ -862,6 +862,8 @@ class SOURCE_model extends CI_Model
 
         boost_power();
 
+        $is_valid_icon = is_valid_icon($action_command1);
+
         if(!in_array($action_en_id, $this->config->item('en_ids_4997'))) {
 
             return array(
@@ -876,11 +878,11 @@ class SOURCE_model extends CI_Model
                 'message' => 'Missing primary command',
             );
 
-        } elseif(in_array($action_en_id, array(5943,12318)) && !is_valid_icon($action_command1)){
+        } elseif(in_array($action_en_id, array(5943,12318)) && !$is_valid_icon['status']){
 
             return array(
                 'status' => 0,
-                'message' => 'Invalid icon: '. is_valid_icon(null, true),
+                'message' => $is_valid_icon['message'],
             );
 
         } elseif(in_array($action_en_id, array(5981, 5982, 11956)) && !is_valid_en_string($action_command1)){

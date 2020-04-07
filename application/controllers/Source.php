@@ -1265,6 +1265,7 @@ fragment PostListingItemSidebar_post on Post {
         //Auth user and check required variables:
         $session_en = superpower_assigned(10967);
         $success_message = 'Saved'; //Default, might change based on what we do...
+        $is_valid_icon = is_valid_icon($_POST['en_icon']);
 
         //Fetch current data:
         $ens = $this->SOURCE_model->en_fetch(array(
@@ -1311,11 +1312,11 @@ fragment PostListingItemSidebar_post on Post {
                 'status' => 0,
                 'message' => 'Name is shorter than the minimum ' . config_var(12232) . ' characters.',
             ));
-        } elseif(!isset($_POST['en_icon']) || !is_valid_icon($_POST['en_icon'])){
+        } elseif(!$is_valid_icon['status']){
             //Check if valid icon:
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid icon: '. is_valid_icon(null, true),
+                'message' => $is_valid_icon['message'],
             ));
         }
 

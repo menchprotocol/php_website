@@ -204,9 +204,8 @@ function bigintval($value) {
 
 function detect_fav_icon($url_clean_domain, $return_icon = false){
     //Does this domain have a Favicon?
-    $fav_icon = $url_clean_domain . '/favicon.ico';
-    $is_valid_icon = @file_get_contents($fav_icon);
-    if ($is_valid_icon) {
+    $fav_icon = str_replace('http://','https://',$url_clean_domain) . '/favicon.ico';
+    if (@file_get_contents($fav_icon)) {
         return '<img src="'.$fav_icon.'">';
     } else {
         return ( $return_icon ? echo_en_icon() : null );
@@ -309,44 +308,68 @@ function is_emojis_only( $string ) {
 }
 
 
-function is_valid_icon($string, $only_return_requirements = false){
+function is_valid_icon($string){
 
     $CI =& get_instance();
 
-    if($only_return_requirements){
 
-        //This is a text description of what this function is checking for:
-        return 'If set, must be a single emoji OR &lt;img src=&quot;URL&quot;&gt; where URL is an image OR &lt;i class=&quot;CODE&quot;&gt;&lt;/i&gt; where CODE is a font-awesome icon.';
-
-    } elseif(strlen($string)==0){
-
-        //No icon is valid:
-        return true;
-
+    if(strlen($string)==0){
+        return array(
+            'status' => 1,
+        );
     }
 
 
-    //See if this is an image URL:
-    if (substr($string, 0, 4) == '<img' && substr($string, -1) == '>' && substr_count($string, 'https://') && !substr_count($string, 'http://')) {
 
-        //Image URLs are valid:
-        return true;
+
+    //See if this is an image URL:
+    if (substr($string, 0, 4) == '<img') {
+
+        if(!substr_count($string, 'src="https://')){
+
+            return array(
+                'status' => 0,
+                'message' => 'Image references must use a secure HTTPS URL',
+            );
+
+        } elseif(!substr($string, -1) == '>'){
+
+            return array(
+                'status' => 0,
+                'message' => 'Image references must end with a closing tag >',
+            );
+
+        } else {
+
+            //Image URLs are valid:
+            return array(
+                'status' => 1,
+            );
+
+        }
 
     } elseif(substr($string, 0, 12) == '<i class="fa' && substr_count($string , ' fa-')>=1 && substr_count($string , ' fa-')<=2 && substr($string, -6) == '"></i>'){
 
         //FontAwesome icons are supported https://fontawesome.com/icons
-        return true;
+        return array(
+            'status' => 1,
+        );
 
     } elseif(is_emojis_only($string)){
 
         //Image URLs are valid:
         //TODO Prevent the submission of multiple emojis as I did not know how to check for that...
-        return true;
+        return array(
+            'status' => 1,
+        );
 
     } else {
 
         //Not valid:
-        return false;
+        return array(
+            'status' => 0,
+            'message' => 'If set, must be a single emoji OR &lt;img src=&quot;URL&quot;&gt; where URL is an image OR &lt;i class=&quot;CODE&quot;&gt;&lt;/i&gt; where CODE is a font-awesome icon.',
+        );
 
     }
 
