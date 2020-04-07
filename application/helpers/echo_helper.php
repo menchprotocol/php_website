@@ -2397,7 +2397,7 @@ function echo_en($en, $is_parent = false)
 
     //RIGHT EDITING:
     $blog_ui .= '<div class="pull-right inline-block">';
-    $blog_ui .= '<div class="note-edit edit-off '.superpower_active(10967).'">';
+    $blog_ui .= '<div class="note-edit edit-off">';
     $blog_ui .= '<span class="show-on-hover">';
     $blog_ui .= '<span title="Modify Source" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog black"></i></a></span>';
     $blog_ui .= '</span>';
