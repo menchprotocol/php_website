@@ -368,7 +368,7 @@ function is_valid_icon($string){
         //Not valid:
         return array(
             'status' => 0,
-            'message' => 'If set, must be a single emoji OR &lt;img src=&quot;URL&quot;&gt; where URL is an image OR &lt;i class=&quot;CODE&quot;&gt;&lt;/i&gt; where CODE is a font-awesome icon.',
+            'message' => 'If set, must be a single emoji OR &lt;img src=&quot;SECURE URL&quot;&gt; where URL is an image OR &lt;i class=&quot;CODE&quot;&gt;&lt;/i&gt; where CODE is a font-awesome icon.',
         );
 
     }

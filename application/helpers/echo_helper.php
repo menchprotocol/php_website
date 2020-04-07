@@ -303,12 +303,7 @@ function echo_en_icon($en_icon = null)
     //A simple function to display the Player Icon OR the default icon if not available:
     if (strlen($en_icon) > 0) {
 
-        if(substr_count($en_icon, 'http://')){
-            //To ensure all pages are secure:
-            return str_replace('http://','https://', $en_icon);
-        } else {
-            return $en_icon;
-        }
+        return $en_icon;
 
     } else {
         //Return default icon for sources:
