@@ -618,7 +618,7 @@ class READ_model extends CI_Model
             //Have they completed this?
             if($is_expansion){
 
-                //First fetch answers based on correct order:
+                //First fetch all possible answers based on correct order:
                 $found_expansion = 0;
                 foreach ($this->READ_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -627,7 +627,7 @@ class READ_model extends CI_Model
                     'ln_parent_blog_id' => $common_step_in_id,
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $ln){
 
-                    //See if this answer was seleted:
+                    //See if this answer was selected:
                     if(count($this->READ_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ BLOG LINK
@@ -638,11 +638,25 @@ class READ_model extends CI_Model
 
                         $found_expansion++;
 
-                        //Yes was answered:
-                        $found_in_id = $this->READ_model->read_next_find($en_id, $ln, false);
+                        //Yes was answered, see if it's completed:
+                        if(!count($this->READ_model->ln_fetch(array(
+                            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                            'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+                            'ln_creator_source_id' => $en_id, //Belongs to this User
+                            'ln_parent_blog_id' => $ln['in_id'],
+                        )))){
 
-                        if($found_in_id != 0){
-                            return $found_in_id;
+                            //Answer is not completed, go there:
+                            return $ln['in_id'];
+
+                        } else {
+
+                            //Answer already completed, see if there is anyting else:
+                            $found_in_id = $this->READ_model->read_next_find($en_id, $ln, false);
+                            if($found_in_id != 0){
+                                return $found_in_id;
+                            }
+
                         }
                     }
                 }
