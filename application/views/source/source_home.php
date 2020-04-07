@@ -1,8 +1,6 @@
 <?php
 $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
-$en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
-
-
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 ?>
 
 <script>
@@ -11,7 +9,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
     });
 </script>
 
-
 <div class="container">
     <?php
     //Top Players
@@ -19,14 +16,3 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
     echo '<div id="load_leaderboard"></div>';
     ?>
 </div>
-
-<?php
-
-//Link to Account or Login:
-if(!$session_en){
-
-    echo '<div style="padding:10px 0 20px;"><a href="/sign?url=/source" class="btn btn-source montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start sourceing.</div>';
-
-}
-
-?>
