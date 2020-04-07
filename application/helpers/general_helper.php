@@ -292,6 +292,9 @@ function ln_detect_type($string)
     }
 }
 
+function is_https_url($url){
+    return (substr(trim($url), 0, 8) == "https://");
+}
 
 function is_valid_en_string($string){
     return substr($string, 0, 1) == '@' && is_numeric(one_two_explode('@',' ',$string));
@@ -325,7 +328,7 @@ function is_valid_icon($string){
     //See if this is an image URL:
     if (substr($string, 0, 4) == '<img') {
 
-        if(!substr_count($string, 'src="https://')){
+        if(!is_https_url($string)){
 
             return array(
                 'status' => 0,

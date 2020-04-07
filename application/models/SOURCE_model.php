@@ -787,6 +787,14 @@ class SOURCE_model extends CI_Model
             ));
         }
 
+        //Make sure we meet the HTTPS requirement:
+        if(in_array($ln_type_source_id, $this->config->item('en_ids_12605')) && !is_https_url($url)){
+            $en_all_12605 = $this->config->item('en_all_12605');
+            return array(
+                'status' => 0,
+                'message' => $en_all_12605[$ln_type_source_id]['m_name'].' requires a secure HTTPS URL',
+            );
+        }
 
         //Return results:
         return array_merge(
