@@ -1994,15 +1994,19 @@ class READ_model extends CI_Model
 
                         echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['in_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ins="'.$child_in['in_id'].'" class="ln_answer_'.$child_in['in_id'].' answer-item list-group-item itemread no-left-padding">';
 
+
                         echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-                        echo '<td class="icon-block check-icon"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
-                        echo '<td style="width: 100%;">';
+                        echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
+
+                        echo '<td style="width: 100%; padding: 0 !important;">';
                         echo '<b class="montserrat blog-url" style="margin-left:0;">'.echo_in_title($child_in, false, $common_prefix).'</b>';
                         echo '</td>';
 
                         echo '<td class="featured-frame">' . echo_in_thumbnail($child_in['in_id']) . '</td>';
 
                         echo '</tr></table>';
+
+
                         echo '</a>';
 
                     }
