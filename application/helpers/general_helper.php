@@ -804,7 +804,7 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
 
     if (!$is_local) {
         //Save this remote file to local first:
-        $file_path = 'application/cache/temp_files/';
+        $file_path = 'application/cache/';
 
 
         //Fetch Remote:
