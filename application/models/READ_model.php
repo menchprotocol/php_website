@@ -429,6 +429,12 @@ class READ_model extends CI_Model
             $sub_emails = array();
             $sub_en_ids = array();
             foreach(explode(',', one_two_explode('&var_en_subscriber_ids=','', $en_all_5967[$insert_columns['ln_type_source_id']]['m_desc'])) as $subscriber_en_id){
+
+                //Do not inform the user who just took the action:
+                if($subscriber_en_id==$insert_columns['ln_creator_source_id']){
+                    continue;
+                }
+
                 //Try fetching subscribers email:
                 foreach($this->READ_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -528,9 +534,7 @@ class READ_model extends CI_Model
                         'ln_parent_source_id' => $insert_columns['ln_parent_source_id'],
                     ));
                 }
-
             }
-
         }
 
 
