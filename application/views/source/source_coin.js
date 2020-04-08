@@ -19,7 +19,7 @@ $(document).ready(function () {
         update_demo_icon();
     });
 
-    //Lookout for blog link related changes:
+    //Lookout for note link related changes:
     $('#ln_status_source_id').change(function () {
         if (parseInt($('#ln_status_source_id').find(":selected").val()) == 6173 /* Link Removed */ ) {
             //About to delete? Notify them:
@@ -216,7 +216,7 @@ function en_add_or_link(en_existing_id, is_parent) {
     if (en_existing_id == 0) {
         en_new_string = input.val();
         if (en_new_string.length < 1) {
-            alert('Note: Missing source name or URL, try again');
+            alert('Alert: Missing source name or URL, try again');
             input.focus();
             return false;
         }
@@ -253,7 +253,7 @@ function en_add_or_link(en_existing_id, is_parent) {
 
         } else {
             //We had an error:
-            alert('Note: ' + data.message);
+            alert('Alert: ' + data.message);
         }
 
     });
@@ -327,13 +327,13 @@ function en_ln_type_preview() {
     $('#en_type_link_id').html('<i class="far fa-yin-yang fa-spin"></i>');
 
 
-    //Fetch Blog Data to load modify widget:
+    //Fetch Note Data to load modify widget:
     $.post("/source/en_ln_type_preview", {
         ln_content: $('#ln_content').val(),
         ln_id: parseInt($('#modifybox').attr('source-link-id')),
     }, function (data) {
         //All good, let's load the data into the Modify Widget...
-        $('#en_type_link_id').html((data.status ? data.html_ui : 'Note: ' + data.message));
+        $('#en_type_link_id').html((data.status ? data.html_ui : 'Alert: ' + data.message));
 
         if(data.status && data.en_link_preview.length > 0){
             $('#en_link_preview').html(data.en_link_preview);
@@ -356,7 +356,7 @@ function en_modify_load(en_id, ln_id) {
 
     //Make sure inputs are valid:
     if (!$('.en___' + en_id).length) {
-        alert('Note: Invalid Source ID');
+        alert('Alert: Invalid Source ID');
         return false;
     }
 
@@ -430,7 +430,7 @@ function source_link_form_unlock(result){
 
     //What was the result?
     if (!result.status) {
-        alert('Note: ' + result.message);
+        alert('Alert: ' + result.message);
     }
 
     //Unlock either way:
@@ -546,7 +546,7 @@ function en_modify_save() {
         }
     }
 
-    //Prepare data to be modified for this blog:
+    //Prepare data to be modified for this note:
     var modify_data = {
         en_focus_id: en_focus_id, //Determines if we need to change location upon removing...
         en_id: parseInt($('#modifybox').attr('source-id')),
@@ -571,10 +571,10 @@ function en_modify_save() {
             if(data.remove_from_ui){
 
                 //need to remove this source:
-                //Blog has been either removed OR unlinked:
+                //Note has been either removed OR unlinked:
                 if (data.remove_redirect_url) {
 
-                    //move up 1 level as this was the focus blog:
+                    //move up 1 level as this was the focus note:
                     window.location = data.remove_redirect_url;
 
                 } else {

@@ -1,7 +1,7 @@
 /*
 *
-* Functions related to modifying blogs
-* and managing blog notes.
+* Functions related to modifying notes
+* and managing Note Pads.
 *
 * */
 
@@ -19,7 +19,7 @@ function in_update_text(this_handler){
     //Grey background to indicate saving...
     $(handler).addClass('dynamic_saving');
 
-    $.post("/blog/in_update_text", {
+    $.post("/note/in_update_text", {
 
         in_ln__id: $(this_handler).attr('in_ln__id'),
         cache_en_id: $(this_handler).attr('cache_en_id'),
@@ -33,7 +33,7 @@ function in_update_text(this_handler){
             $(handler).val(data.original_val);
 
             //Show error:
-            alert('Note: ' + data.message);
+            alert('Alert: ' + data.message);
 
         } else {
             //Update value:
@@ -71,21 +71,21 @@ $(document).ready(function () {
     in_update_text_start();
 
     //Put focus on messages if no message:
-    if(!$('#in_notes_list_4231 .notes_sortable').length){
+    if(!$('#in_pads_list_4231 .pads_sortable').length){
         $('#ln_content4231').focus();
     }
 
     autosize($('.text__4736_'+in_loaded_id));
 
-    $('#expand_blogs .expand_all').click(function (e) {
-        $(".next_blogs .blogs_sortable").each(function () {
+    $('#expand_ins .expand_all').click(function (e) {
+        $(".next_ins .notes_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 1);
         });
     });
 
-    //Load top/bottom blog searches:
-    in_load_search(".blogadder-level-2-parent",1, 'q', 'link_blog');
-    in_load_search(".blogadder-level-2-child",0, 'w', 'link_blog');
+    //Load top/bottom note searches:
+    in_load_search(".noteadder-level-2-parent",1, 'q', 'link_in');
+    in_load_search(".noteadder-level-2-child",0, 'w', 'link_in');
 
     //Expand selections:
     prep_search_pad();
@@ -94,37 +94,37 @@ $(document).ready(function () {
     in_sort_load(in_loaded_id);
 
     //Watch the expand/close all buttons:
-    $('#expand_blogs .expand_all').click(function (e) {
-        $(".next_blogs .blogs_sortable").each(function () {
+    $('#expand_ins .expand_all').click(function (e) {
+        $(".next_ins .notes_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 1);
         });
     });
-    $('#expand_blogs .close_all').click(function (e) {
-        $(".next_blogs .blogs_sortable").each(function () {
+    $('#expand_ins .close_all').click(function (e) {
+        $(".next_ins .notes_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 0);
         });
     });
 
 
     //Loop through all new note inboxes:
-    $(".new-note").each(function () {
+    $(".new-pads").each(function () {
 
-        var focus_ln_type_source_id = parseInt($(this).attr('note-type-id'));
+        var focus_ln_type_source_id = parseInt($(this).attr('pads-type-id'));
 
         //Initiate @ search for all note text areas:
         in_message_inline_en_search($(this));
 
         //Watch for focus:
         $(this).focus(function() {
-            $( '#notes_control_'+focus_ln_type_source_id ).removeClass('hidden');
+            $( '#pads_control_'+focus_ln_type_source_id ).removeClass('hidden');
         }).keyup(function() {
-            $( '#notes_control_'+focus_ln_type_source_id ).removeClass('hidden');
+            $( '#pads_control_'+focus_ln_type_source_id ).removeClass('hidden');
         });
 
         autosize($(this));
 
         //Activate sorting:
-        in_notes_sort_load(focus_ln_type_source_id);
+        in_pads_sort_load(focus_ln_type_source_id);
 
         var showFiles = function (files) {
             if(typeof files[0] !== 'undefined'){
@@ -144,13 +144,13 @@ $(document).ready(function () {
         //Watch for message creation:
         $('#ln_content' + focus_ln_type_source_id).keydown(function (e) {
             if (e.ctrlKey && e.keyCode == 13) {
-                in_note_add(focus_ln_type_source_id);
+                in_pads_add(focus_ln_type_source_id);
             }
         });
 
         //Watchout for file uplods:
         $('.box' + focus_ln_type_source_id).find('input[type="file"]').change(function () {
-            in_note_create_upload(droppedFiles, 'file', focus_ln_type_source_id);
+            in_pads_create_upload(droppedFiles, 'file', focus_ln_type_source_id);
         });
 
 
@@ -165,15 +165,15 @@ $(document).ready(function () {
                 e.stopPropagation();
             })
                 .on('dragover dragenter', function () {
-                    $('.add_note_' + focus_ln_type_source_id).addClass('is-working');
+                    $('.add_pads_' + focus_ln_type_source_id).addClass('is-working');
                 })
                 .on('dragleave dragend drop', function () {
-                    $('.add_note_' + focus_ln_type_source_id).removeClass('is-working');
+                    $('.add_pads_' + focus_ln_type_source_id).removeClass('is-working');
                 })
                 .on('drop', function (e) {
                     droppedFiles = e.originalEvent.dataTransfer.files;
                     e.preventDefault();
-                    in_note_create_upload(droppedFiles, 'drop', focus_ln_type_source_id);
+                    in_pads_create_upload(droppedFiles, 'drop', focus_ln_type_source_id);
                 });
         }
 
@@ -183,11 +183,11 @@ $(document).ready(function () {
 
 function read_preview(){
     if(parseInt($('.dropi_4737_'+in_loaded_id+'_0.active').attr('new-en-id')) in js_en_all_7355){
-        //Blog is public, go to preview:
+        //Note is public, go to preview:
         window.location = '/' + in_loaded_id;
     } else {
         //Inform them that they cannot read yet:
-        alert('Publish blog before reading it.');
+        alert('Publish note before reading it.');
     }
 }
 
@@ -213,10 +213,10 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
     }
 
     //Are we deleting a status?
-    var is_blog_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
-    if(is_blog_delete){
+    var is_in_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
+    if(is_in_delete){
         //Seems to be deleting, confirm:
-        var r = confirm("Archive this blog AND remove all its links to other blogs?");
+        var r = confirm("Archive this note AND remove all its links to other notes?");
         if (r == false) {
             return false;
         }
@@ -228,7 +228,7 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
     var data_object = eval('js_en_all_'+element_id);
     $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
 
-    $.post("/blog/in_update_dropdown", {
+    $.post("/note/in_update_dropdown", {
 
         in_id: in_id,
         ln_id: ln_id,
@@ -247,10 +247,10 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
             $('.dropd_'+element_id+'_'+in_id+'_'+ln_id).attr('selected-val' , new_en_id);
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
-                //Go to main blog page:
+                //Go to main note page:
                 window.location = data.deletion_redirect;
             } else if( data.remove_element && data.remove_element.length > 0 ){
-                //Go to main blog page:
+                //Go to main note page:
                 setTimeout(function () {
                     //Restore background:
                     $( data.remove_element ).fadeOut();
@@ -274,7 +274,7 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
             $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m_icon']+'</span>' + ( show_full_name ? data_object[current_selected]['m_name'] : '' ));
 
             //Show error:
-            alert('Note: ' + data.message);
+            alert('Alert: ' + data.message);
 
         }
     });
@@ -286,8 +286,8 @@ function in_unlink(in_id, ln_id){
     var r = confirm("Unlink ["+$('.in_ln__id_'+in_id).val()+"]?");
     if (r == true) {
 
-        //Fetch Blog Data to load modify widget:
-        $.post("/blog/in_unlink", {
+        //Fetch Note Data to load modify widget:
+        $.post("/note/in_unlink", {
             in_id: in_id,
             ln_id: ln_id,
         }, function (data) {
@@ -300,8 +300,8 @@ function in_unlink(in_id, ln_id){
 
 function in_ui_remove(in_id,ln_id){
 
-    //Fetch parent blog before removing element from DOM:
-    var parent_in_id = parseInt($('.blog_line_' + in_id).attr('parent-blog-id'));
+    //Fetch parent note before removing element from DOM:
+    var parent_in_id = parseInt($('.in_line_' + in_id).attr('parent-note-id'));
 
     //Remove from UI:
     $('.in__tr_' + ln_id).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i></span>');
@@ -318,7 +318,7 @@ function in_ui_remove(in_id,ln_id){
         //Hide editing box:
         $('#modifybox').addClass('hidden');
 
-        //Re-sort sibling blogs:
+        //Re-sort sibling notes:
         in_sort_save(parent_in_id);
 
     }, 610);
@@ -332,18 +332,18 @@ function in_ui_remove(in_id,ln_id){
 
 /*
 *
-* BLOG NOTES
+* Note Pads
 *
 * */
 
-function in_note_insert_string(focus_ln_type_source_id, add_string) {
+function in_pads_insert_string(focus_ln_type_source_id, add_string) {
     $('#ln_content' + focus_ln_type_source_id).insertAtCaret(add_string);
-    in_new_note_count(focus_ln_type_source_id);
+    in_new_pads_count(focus_ln_type_source_id);
 }
 
 
 //Count text area characters:
-function in_new_note_count(focus_ln_type_source_id) {
+function in_new_pads_count(focus_ln_type_source_id) {
 
     //Update count:
     var len = $('#ln_content' + focus_ln_type_source_id).val().length;
@@ -355,9 +355,9 @@ function in_new_note_count(focus_ln_type_source_id) {
 
     //Only show counter if getting close to limit:
     if(len > ( js_en_all_6404[11073]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
-        $('#blogNoteNewCount' + focus_ln_type_source_id).removeClass('hidden');
+        $('#notePadsNewCount' + focus_ln_type_source_id).removeClass('hidden');
     } else {
-        $('#blogNoteNewCount' + focus_ln_type_source_id).addClass('hidden');
+        $('#notePadsNewCount' + focus_ln_type_source_id).addClass('hidden');
     }
 
 }
@@ -383,7 +383,7 @@ function in_title_count() {
     }
 }
 
-function in_edit_note_count(ln_id) {
+function in_edit_pads_count(ln_id) {
     //See if this is a valid text message editing:
     if (!($('#charEditingNum' + ln_id).length)) {
         return false;
@@ -398,9 +398,9 @@ function in_edit_note_count(ln_id) {
 
     //Only show counter if getting close to limit:
     if(len > ( js_en_all_6404[11073]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
-        $('#blogNoteCount' + ln_id).removeClass('hidden');
+        $('#notePadsCount' + ln_id).removeClass('hidden');
     } else {
-        $('#blogNoteCount' + ln_id).addClass('hidden');
+        $('#notePadsCount' + ln_id).addClass('hidden');
     }
 }
 
@@ -461,7 +461,7 @@ function in_message_inline_en_search(obj) {
 
 
 
-function in_notes_sort_apply(focus_ln_type_source_id) {
+function in_pads_sort_apply(focus_ln_type_source_id) {
 
     var new_ln_orders = [];
     var sort_rank = 0;
@@ -477,27 +477,27 @@ function in_notes_sort_apply(focus_ln_type_source_id) {
 
     //Update backend if any:
     if(sort_rank > 0){
-        $.post("/blog/in_notes_sort", {new_ln_orders: new_ln_orders}, function (data) {
+        $.post("/note/in_pads_sort", {new_ln_orders: new_ln_orders}, function (data) {
             //Only show message if there was an error:
             if (!data.status) {
                 //Show error:
-                alert('Note: ' + data.message);
+                alert('Alert: ' + data.message);
             }
         });
     }
 }
 
-function in_notes_sort_load(focus_ln_type_source_id) {
+function in_pads_sort_load(focus_ln_type_source_id) {
 
     var inner_content = null;
 
-    var sort_msg = Sortable.create( document.getElementById("in_notes_list_" + focus_ln_type_source_id) , {
+    var sort_msg = Sortable.create( document.getElementById("in_pads_list_" + focus_ln_type_source_id) , {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        handle: ".blog_note_sorting", // Restricts sort start click/touch to the specified element
-        draggable: ".notes_sortable", // Specifies which items inside the element should be sortable
+        handle: ".in_pads_sorting", // Restricts sort start click/touch to the specified element
+        draggable: ".pads_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
-            in_notes_sort_apply(focus_ln_type_source_id);
+            in_pads_sort_apply(focus_ln_type_source_id);
         },
         //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
         onChoose: function (evt/**Event*/) {
@@ -520,7 +520,7 @@ function in_notes_sort_load(focus_ln_type_source_id) {
 
 }
 
-function in_note_modify_start(ln_id) {
+function in_pads_modify_start(ln_id) {
 
     //Start editing:
     $("#ul-nav-" + ln_id).addClass('in-editing');
@@ -538,11 +538,11 @@ function in_note_modify_start(ln_id) {
     in_message_inline_en_search(textinput);
 
     //Try to initiate the editor, which only applies to text messages:
-    in_edit_note_count(ln_id);
+    in_edit_pads_count(ln_id);
 
 }
 
-function in_note_modify_cancel(ln_id) {
+function in_pads_modify_cancel(ln_id) {
     //Revert editing:
     $("#ul-nav-" + ln_id).removeClass('in-editing');
     $("#ul-nav-" + ln_id + " .edit-off").removeClass('hidden');
@@ -550,13 +550,13 @@ function in_note_modify_cancel(ln_id) {
     $("#ul-nav-" + ln_id + ">div").css('width', 'inherit');
 }
 
-function in_note_modify_save(ln_id, focus_ln_type_source_id) {
+function in_pads_modify_save(ln_id, focus_ln_type_source_id) {
 
     //Show loader:
     $("#ul-nav-" + ln_id + " .edit-updates").html('<div><i class="far fa-yin-yang fa-spin"></i></div>');
 
     //Revert View:
-    in_note_modify_cancel(ln_id);
+    in_pads_modify_cancel(ln_id);
 
 
     var modify_data = {
@@ -567,7 +567,7 @@ function in_note_modify_save(ln_id, focus_ln_type_source_id) {
     };
 
     //Update message:
-    $.post("/blog/in_note_modify_save", modify_data, function (data) {
+    $.post("/note/in_pads_modify_save", modify_data, function (data) {
 
         if (data.status) {
 
@@ -588,7 +588,7 @@ function in_note_modify_save(ln_id, focus_ln_type_source_id) {
                         $("#ul-nav-" + ln_id).remove();
 
                         //Adjust sort for this message type:
-                        in_notes_sort_apply(focus_ln_type_source_id);
+                        in_pads_sort_apply(focus_ln_type_source_id);
 
                     }, 610);
                 }, 610);
@@ -626,8 +626,8 @@ function in_note_modify_save(ln_id, focus_ln_type_source_id) {
 
 
 function in_message_form_lock(focus_ln_type_source_id) {
-    $('.save_note_' + focus_ln_type_source_id).html('<span class="icon-block-lg"><i class="far fa-yin-yang fa-spin"></i></span>').attr('href', '#');
-    $('.add_note_' + focus_ln_type_source_id).addClass('is-working');
+    $('.save_pads_' + focus_ln_type_source_id).html('<span class="icon-block-lg"><i class="far fa-yin-yang fa-spin"></i></span>').attr('href', '#');
+    $('.add_pads_' + focus_ln_type_source_id).addClass('is-working');
     $('#ln_content' + focus_ln_type_source_id).prop("disabled", true);
     $('.remove_loading').hide();
 }
@@ -636,34 +636,34 @@ function in_message_form_lock(focus_ln_type_source_id) {
 function in_message_form_unlock(result, focus_ln_type_source_id) {
 
     //Update UI to unlock:
-    $('.save_note_' + focus_ln_type_source_id).html('SAVE').attr('href', 'javascript:in_note_add('+focus_ln_type_source_id+');');
-    $('.add_note_' + focus_ln_type_source_id).removeClass('is-working');
+    $('.save_pads_' + focus_ln_type_source_id).html('SAVE').attr('href', 'javascript:in_pads_add('+focus_ln_type_source_id+');');
+    $('.add_pads_' + focus_ln_type_source_id).removeClass('is-working');
     $("#ln_content" + focus_ln_type_source_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
-    $( '#notes_control_'+focus_ln_type_source_id ).addClass('hidden');
+    $( '#pads_control_'+focus_ln_type_source_id ).addClass('hidden');
 
     //What was the result?
     if (result.status) {
 
         //Append data:
-        $(result.message).insertBefore( ".add_note_" + focus_ln_type_source_id );
+        $(result.message).insertBefore( ".add_pads_" + focus_ln_type_source_id );
 
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();
 
         //Hide any errors:
         setTimeout(function () {
-            $(".note_error_"+focus_ln_type_source_id).fadeOut();
+            $(".pads_error_"+focus_ln_type_source_id).fadeOut();
         }, 4181);
 
     } else {
 
-        $(".note_error_"+focus_ln_type_source_id).html('<span class="read">Note: '+result.message+'</span>');
+        $(".pads_error_"+focus_ln_type_source_id).html('<span class="read">Alert: '+result.message+'</span>');
 
     }
 }
 
-function in_note_create_upload(droppedFiles, uploadType, focus_ln_type_source_id) {
+function in_pads_create_upload(droppedFiles, uploadType, focus_ln_type_source_id) {
 
     //Prevent multiple concurrent uploads:
     if ($('.box' + focus_ln_type_source_id).hasClass('is-uploading')) {
@@ -691,7 +691,7 @@ function in_note_create_upload(droppedFiles, uploadType, focus_ln_type_source_id
         ajaxData.append('focus_ln_type_source_id', focus_ln_type_source_id);
 
         $.ajax({
-            url: '/blog/in_note_create_upload',
+            url: '/note/in_pads_create_upload',
             type: $('.box' + focus_ln_type_source_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -721,13 +721,13 @@ function in_note_create_upload(droppedFiles, uploadType, focus_ln_type_source_id
     }
 }
 
-function in_note_add(focus_ln_type_source_id) {
+function in_pads_add(focus_ln_type_source_id) {
 
     //Lock message:
     in_message_form_lock(focus_ln_type_source_id);
 
     //Update backend:
-    $.post("/blog/in_note_create_text", {
+    $.post("/note/in_pads_create_text", {
 
         in_id: in_loaded_id, //Synonymous
         ln_content: $('#ln_content' + focus_ln_type_source_id).val(),
@@ -740,7 +740,7 @@ function in_note_add(focus_ln_type_source_id) {
 
             //Reset input field:
             $("#ln_content" + focus_ln_type_source_id).val("");
-            in_new_note_count(focus_ln_type_source_id);
+            in_new_pads_count(focus_ln_type_source_id);
 
         }
 
@@ -783,13 +783,13 @@ function in_note_add(focus_ln_type_source_id) {
 function prep_search_pad(){
 
     //All level 2s:
-    $('.blogadder-level-2-parent').focus(function() {
+    $('.noteadder-level-2-parent').focus(function() {
         $('.in_pad_top' ).removeClass('hidden');
     }).focusout(function() {
         $('.in_pad_top' ).addClass('hidden');
     });
 
-    $('.blogadder-level-2-child').focus(function() {
+    $('.noteadder-level-2-child').focus(function() {
         $('.in_pad_bottom' ).removeClass('hidden');
     }).focusout(function() {
         $('.in_pad_bottom' ).addClass('hidden');
@@ -802,9 +802,9 @@ function in_sort_save(in_id) {
     var new_ln_orders = [];
     var sort_rank = 0;
 
-    $("#list-in-" + in_loaded_id + "-0 .blogs_sortable").each(function () {
-        //Fetch variables for this blog:
-        var in_id = parseInt($(this).attr('blog-id'));
+    $("#list-in-" + in_loaded_id + "-0 .notes_sortable").each(function () {
+        //Fetch variables for this note:
+        var in_id = parseInt($(this).attr('note-id'));
         var ln_id = parseInt($(this).attr('in-link-id'));
 
         sort_rank++;
@@ -816,11 +816,11 @@ function in_sort_save(in_id) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0 && in_id) {
         //Update backend:
-        $.post("/blog/in_sort_save", {in_id: in_id, new_ln_orders: new_ln_orders}, function (data) {
+        $.post("/note/in_sort_save", {in_id: in_id, new_ln_orders: new_ln_orders}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
-                alert('Note: ' + data.message);
+                alert('Alert: ' + data.message);
             }
         });
     }
@@ -833,14 +833,14 @@ function in_sort_load(in_id) {
     var element_key = null;
     var theobject = document.getElementById("list-in-" + in_loaded_id + "-0");
     if (!theobject) {
-        //due to duplicate blogs belonging in this tree:
+        //due to duplicate notes belonging in this tree:
         return false;
     }
 
     var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        draggable: ".blogs_sortable", // Specifies which items inside the element should be sortable
-        handle: ".blog-sort-handle", // Restricts sort start click/touch to the specified element
+        draggable: ".notes_sortable", // Specifies which items inside the element should be sortable
+        handle: ".note-sort-handle", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             in_sort_save(in_id);
         }
@@ -853,48 +853,48 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
     /*
      *
-     * Either creates an BLOG link between in_linked_id & in_link_child_id
-     * OR will create a new blog based on input text and then link it
+     * Either creates an NOTE link between in_linked_id & in_link_child_id
+     * OR will create a new note based on input text and then link it
      * to in_linked_id (In this case in_link_child_id=0)
      *
      * */
 
 
-    var sort_handler = ".blogs_sortable";
+    var sort_handler = ".notes_sortable";
     var sort_list_id = "list-in-" + in_loaded_id + '-' + is_parent;
-    var input_field = $('#addblog-c-' + in_linked_id + '-' + is_parent);
-    var blog_name = input_field.val();
+    var input_field = $('#addnote-c-' + in_linked_id + '-' + is_parent);
+    var in_name = input_field.val();
 
 
-    if( blog_name.charAt(0)=='#'){
-        if(isNaN(blog_name.substr(1))){
-            alert('Note: Use numbers only. Example: #1234');
+    if( in_name.charAt(0)=='#'){
+        if(isNaN(in_name.substr(1))){
+            alert('Alert: Use numbers only. Example: #1234');
             return false;
         } else {
             //Update the references:
-            in_link_child_id = parseInt(blog_name.substr(1));
-            blog_name = in_link_child_id; //As if we were just linking
+            in_link_child_id = parseInt(in_name.substr(1));
+            in_name = in_link_child_id; //As if we were just linking
         }
     }
 
 
 
 
-    //We either need the blog name (to create a new blog) or the in_link_child_id>0 to create an BLOG link:
-    if (!in_link_child_id && blog_name.length < 1) {
-        alert('Note: Enter something');
+    //We either need the note name (to create a new note) or the in_link_child_id>0 to create an NOTE link:
+    if (!in_link_child_id && in_name.length < 1) {
+        alert('Alert: Enter something');
         input_field.focus();
         return false;
     }
 
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="blog montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin blog"></i></span>' + echo_saving_notify() +  '</div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="note montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin note"></i></span>' + echo_saving_notify() +  '</div>');
 
     //Update backend:
-    $.post("/blog/in_link_or_create", {
+    $.post("/note/in_link_or_create", {
         in_linked_id: in_linked_id,
         is_parent:is_parent,
-        in_title: blog_name,
+        in_title: in_name,
         in_link_child_id: in_link_child_id
     }, function (data) {
 
@@ -906,7 +906,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
             //Add new
             add_to_list(sort_list_id, sort_handler, data.in_child_html);
 
-            //Reload sorting to enable sorting for the newly added blog:
+            //Reload sorting to enable sorting for the newly added note:
             in_sort_load(in_linked_id);
 
             //Lookout for textinput updates
@@ -920,7 +920,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
         } else {
             //Show errors:
-            alert('Note: ' + data.message);
+            alert('Alert: ' + data.message);
         }
 
     });

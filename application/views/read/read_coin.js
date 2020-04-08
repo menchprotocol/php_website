@@ -5,7 +5,7 @@ $(document).ready(function () {
     autosize($('#read_text_answer'));
 
 
-    //Lookout for blog link type changes:
+    //Lookout for note link type changes:
     $('.js-ln-create-overview-link').click(function () {
         //Only log engagement if opening:
         if($(this).hasClass('collapsed')){
@@ -15,11 +15,11 @@ $(document).ready(function () {
             //Log this section:
             js_ln_create({
                 ln_creator_source_id: js_pl_id, //If we have a user we log here
-                ln_type_source_id: 7611, //Blog User Engage
+                ln_type_source_id: 7611, //Note User Engage
                 ln_parent_source_id: section_en_id, //The section this user engaged with
-                ln_parent_blog_id: in_loaded_id,
-                ln_child_blog_id: 0, //Since they just opened the heading, not a sub-section of Reads Overview
-                ln_order: '7611_' + section_en_id + '_' + in_loaded_id, //The section for this blog
+                ln_previous_note_id: in_loaded_id,
+                ln_next_note_id: 0, //Since they just opened the heading, not a sub-section of Reads Overview
+                ln_order: '7611_' + section_en_id + '_' + in_loaded_id, //The section for this note
             });
         }
     });
@@ -30,15 +30,15 @@ $(document).ready(function () {
         if($(this).attr('aria-expanded')=='false'){
 
             var section_en_id = 7613; //Reads Overview
-            var child_in_id = parseInt($(this).attr('blog-id'));
+            var child_in_id = parseInt($(this).attr('note-id'));
 
             //Log this section:
             js_ln_create({
                 ln_creator_source_id: js_pl_id, //If we have a user we log here
-                ln_type_source_id: 7611, //Blog User Engage
+                ln_type_source_id: 7611, //Note User Engage
                 ln_parent_source_id: section_en_id, //The section this user engaged with
-                ln_parent_blog_id: in_loaded_id,
-                ln_child_blog_id: child_in_id,
+                ln_previous_note_id: in_loaded_id,
+                ln_next_note_id: child_in_id,
                 ln_order: section_en_id + '_' + child_in_id + '__' + in_loaded_id,
             });
         }
@@ -46,15 +46,15 @@ $(document).ready(function () {
 
     $('.js-ln-create-expert-full-list').click(function () {
         //Only log engagement if opening:
-        var section_en_id = 7616; //Blog Engage Experts Full List
+        var section_en_id = 7616; //Note Engage Experts Full List
 
         //Log this section:
         js_ln_create({
             ln_creator_source_id: js_pl_id, //If we have a user we log here
-            ln_type_source_id: 7611, //Blog User Engage
+            ln_type_source_id: 7611, //Note User Engage
             ln_parent_source_id: 7614, //Expert Overview
             ln_child_source_id: section_en_id, //The section this user engaged with
-            ln_parent_blog_id: in_loaded_id,
+            ln_previous_note_id: in_loaded_id,
             ln_order: section_en_id + '__' + in_loaded_id,
         });
     });
@@ -67,10 +67,10 @@ $(document).ready(function () {
         //Log this section:
         js_ln_create({
             ln_creator_source_id: js_pl_id, //If we have a user we log here
-            ln_type_source_id: 7611, //Blog User Engage
+            ln_type_source_id: 7611, //Note User Engage
             ln_parent_source_id: 7614, //Expert Overview
             ln_child_source_id: section_en_id, //The section this user engaged with
-            ln_parent_blog_id: in_loaded_id,
+            ln_previous_note_id: in_loaded_id,
             ln_order: section_en_id + '__' + in_loaded_id,
         });
     });
@@ -178,7 +178,7 @@ function read_text_answer(){
                 window.location = '/'+in_loaded_id+'/next';
             }, 987);
         } else {
-            $('.text_saving_result').html('<span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><span class="montserrat read">Note: '+data.message+'</span>');
+            $('.text_saving_result').html('<span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><span class="montserrat read">Alert: '+data.message+'</span>');
         }
     });
 }
@@ -206,13 +206,13 @@ function read_answer(){
                 window.location = '/'+in_loaded_id+'/next';
             }, 987);
         } else {
-            $('.result-update').html('<span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><span class="montserrat read">Note: '+data.message+'</span>');
+            $('.result-update').html('<span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><span class="montserrat read">Alert: '+data.message+'</span>');
         }
     });
 }
 
 
-function blog_skip(en_id, in_id) {
+function in_skip(en_id, in_id) {
     //Make a AJAX Call to see how many steps would be skipped if we were to continue:
     $.post("/read/actionplan_skip_preview/"+ en_id+"/"+in_id, {}, function (data) {
 

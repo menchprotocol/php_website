@@ -120,7 +120,7 @@ function extract_references($ln_content)
     $string_references = array(
         'ref_urls' => array(),
         'ref_sources' => array(),
-        'ref_blogs' => array(),
+        'ref_ins' => array(),
         'ref_commands' => array(),
         'ref_custom' => array(),
     );
@@ -153,7 +153,7 @@ function extract_references($ln_content)
 
         } elseif (substr($word, 0, 1) == '#' && is_numeric(substr($word, 1)) && intval(substr($word, 1)) > 0) {
 
-            array_push($string_references['ref_blogs'], intval(substr($word, 1)));
+            array_push($string_references['ref_ins'], intval(substr($word, 1)));
 
         }
     }
@@ -457,17 +457,17 @@ function in_weight_calculator($in){
 
     $count_transactions = $CI->READ_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-        '(ln_child_blog_id='.$in['in_id'].' OR ln_parent_blog_id='.$in['in_id'].')' => null,
+        '(ln_next_note_id='.$in['in_id'].' OR ln_previous_note_id='.$in['in_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     //TREES
     $count_trees = $CI->READ_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-        '(ln_child_blog_id='.$in['in_id'].' OR ln_parent_blog_id='.$in['in_id'].')' => null,
+        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
+        '(ln_next_note_id='.$in['in_id'].' OR ln_previous_note_id='.$in['in_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
-    //Returns the weight of a blog:
+    //Returns the weight of a note:
     return ( $count_transactions[0]['totals'] * config_var(12568) )
         + ( $count_trees[0]['totals'] * config_var(12565) );
 
@@ -621,7 +621,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
 
 function in_is_unlockable($in){
     $CI =& get_instance();
-    return in_array($in['in_status_source_id'], $CI->config->item('en_ids_7355') /* Blog Status Public */);
+    return in_array($in['in_status_source_id'], $CI->config->item('en_ids_7355') /* Note Status Public */);
 }
 
 function redirect_message($url, $message = null)
@@ -668,8 +668,8 @@ function superpower_active($superpower_en_id, $boolean_only = false){
 function extract_icon_color($en_icon){
     if(substr_count($en_icon, 'read')>0){
         return ' read ';
-    } elseif(substr_count($en_icon, 'blog')>0){
-        return ' blog ';
+    } elseif(substr_count($en_icon, 'note')>0){
+        return ' note ';
     } elseif(substr_count($en_icon, 'source')>0){
         return ' source ';
     } else {
@@ -691,11 +691,11 @@ function current_mench($part1 = null){
             'x_class' => 'source',
             'x_name' => 'source',
         );
-    } elseif($part1=='blog'){
+    } elseif($part1=='note'){
         return array(
             'x_id' => 4535,
-            'x_class' => 'blog',
-            'x_name' => 'blog',
+            'x_class' => 'note',
+            'x_name' => 'note',
         );
     } else {
         return array(
@@ -775,7 +775,7 @@ function common_prefix($child_list, $child_field, $in = null, $max_look = 0){
     $CI =& get_instance();
 
     if(count($child_list) < 2){
-        return null; //Cannot do this for less than 2 Blogs
+        return null; //Cannot do this for less than 2 Notes
     }
 
     //Go through each child one by one and see if each word exists in all:
@@ -786,7 +786,7 @@ function common_prefix($child_list, $child_field, $in = null, $max_look = 0){
             break; //Look no more...
         }
 
-        //Make sure this is the same word across all blogs:
+        //Make sure this is the same word across all notes:
         $all_the_same = true;
         $include_colon = false;
         foreach($child_list as $child_item){
@@ -1062,7 +1062,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         );
     }
 
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Blog Subtypes
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Note Subtypes
 
     //Define the support objects indexed on algolia:
     $input_obj_id = intval($input_obj_id);
@@ -1089,7 +1089,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
     } else {
 
-        //Do both blogs and sources:
+        //Do both notes and sources:
         $fetch_objects = $valid_objects;
 
         if (!$return_row_only) {
@@ -1116,10 +1116,10 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             if($input_obj_id){
                 $limits['in_id'] = $input_obj_id;
             } else {
-                $limits['in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //Blog Status Active
+                $limits['in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //Note Status Active
             }
 
-            $db_rows['in'] = $CI->BLOG_model->in_fetch($limits);
+            $db_rows['in'] = $CI->NOTE_model->in_fetch($limits);
 
         } elseif ($loop_obj == 'en') {
 
@@ -1220,7 +1220,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 //See if this tree has a time-range:
                 $metadata = unserialize($db_row['in_metadata']);
 
-                $export_row['alg_obj_is_in'] = 1; //This is an BLOG
+                $export_row['alg_obj_is_in'] = 1; //This is an NOTE
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
                 $export_row['alg_obj_status'] = intval($db_row['in_status_source_id']);
                 $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_source_id']]['m_icon']; //Player type icon
@@ -1235,19 +1235,19 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_keywords'] = '';
                 foreach ($CI->READ_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
-                    'ln_child_blog_id' => $db_row['in_id'],
+                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Note Pads
+                    'ln_next_note_id' => $db_row['in_id'],
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
                     $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
                 }
                 $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
 
 
-                //If trainer has up-voted then give them access to manage blog
+                //If trainer has up-voted then give them access to manage note
                 foreach($CI->READ_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id' => 4983,
-                    'ln_child_blog_id' => $db_row['in_id'],
+                    'ln_next_note_id' => $db_row['in_id'],
                     'ln_parent_source_id >' => 0, //Where the author source is stored
                 ), array(), 0) as $author){
                     array_push($export_row['_tags'], 'alg_author_' . $author['ln_parent_source_id']);
@@ -1284,7 +1284,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be removed?
-        if (in_array($all_db_rows[0][$input_obj_type . '_status_source_id'], array(6178 /* Player Removed */, 6182 /* Blog Removed */))) {
+        if (in_array($all_db_rows[0][$input_obj_type . '_status_source_id'], array(6178 /* Player Removed */, 6182 /* Note Removed */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
@@ -1386,7 +1386,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
      *
      * $obj_type:               Either in, en or tr
      *
-     * $obj:                    The Player, Blog or Link itself.
+     * $obj:                    The Player, Note or Link itself.
      *                          We're looking for the $obj ID and METADATA
      *
      * $new_fields:             The new array of metadata fields to be Set,
@@ -1401,7 +1401,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
     //Fetch metadata for this object:
     if ($obj_type == 'in') {
 
-        $db_objects = $CI->BLOG_model->in_fetch(array(
+        $db_objects = $CI->NOTE_model->in_fetch(array(
             $obj_type . '_id' => $obj_id,
         ));
 
@@ -1450,7 +1450,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
     //Now update DB without logging any links as this is considered a back-end update:
     if ($obj_type == 'in') {
 
-        $affected_rows = $CI->BLOG_model->in_update($obj_id, array(
+        $affected_rows = $CI->NOTE_model->in_update($obj_id, array(
             'in_metadata' => $metadata,
         ), false, $ln_creator_source_id);
 

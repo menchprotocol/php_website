@@ -154,10 +154,10 @@ if(!isset($hide_header)){
                                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
                                 'ln_creator_source_id' => $session_en['en_id'],
                             ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-                            $blog_coins = $this->READ_model->ln_fetch(array(
-                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
+                            $note_coins = $this->READ_model->ln_fetch(array(
+                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
                                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //BLOG COIN
+                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //NOTE COIN
                                 'ln_parent_source_id' => $session_en['en_id'],
                             ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
                             $read_coins = $this->READ_model->ln_fetch(array(
@@ -167,7 +167,7 @@ if(!isset($hide_header)){
                             ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
                             $player_stats = array(
                                 'source_count' => $source_coins[0]['total_coins'],
-                                'blog_count' => $blog_coins[0]['total_coins'],
+                                'in_count' => $note_coins[0]['total_coins'],
                                 'read_count' => $read_coins[0]['total_coins']
                             );
 
@@ -179,10 +179,10 @@ if(!isset($hide_header)){
                                 $this_mench = current_mench(strtolower($m['m_name']));
                                 $url = 'href="/' . $this_mench['x_name'].'"';
 
-                                if (!$is_current && isset($in) && in_array($this_mench['x_name'], array('read', 'blog'))) {
-                                    if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'blog' && $in['in_id']!=config_var(12156) ) {
-                                        $url = 'href="/blog/' . $in['in_id'].'"';
-                                    } elseif ($current_mench['x_name'] == 'blog' && $this_mench['x_name'] == 'read') {
+                                if (!$is_current && isset($in) && in_array($this_mench['x_name'], array('read', 'note'))) {
+                                    if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'note' && $in['in_id']!=config_var(12156) ) {
+                                        $url = 'href="/note/' . $in['in_id'].'"';
+                                    } elseif ($current_mench['x_name'] == 'note' && $this_mench['x_name'] == 'read') {
                                         $url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
                                     }
                                 }

@@ -136,7 +136,7 @@ $config['subclass_prefix'] = 'MY_';
 |
 | For more information about Composer, please visit http://getcomposer.org/
 |
-| Note: This will NOT disable or override the CodeIgniter-specific
+| Alert: This will NOT disable or override the CodeIgniter-specific
 |	autoloading (application/config/autoload.php)
 */
 $config['composer_autoload'] = FALSE;
@@ -183,7 +183,7 @@ $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
 | invoke your controllers and its functions:
 | example.com/index.php?c=controller&m=function
 |
-| Please note that some of the helpers won't work as expected when
+| Some of the helpers won't work as expected when
 | this feature is enabled, since CodeIgniter is designed primarily to
 | use segment based URLs.
 |
@@ -238,7 +238,7 @@ $config['log_path'] = '';
 | protecting the log files via basic scripting, when they are to be stored
 | under a publicly accessible directory.
 |
-| Note: Leaving it blank will default to 'php'.
+| Alert: Leaving it blank will default to 'php'.
 |
 */
 $config['log_file_extension'] = '';
@@ -389,7 +389,7 @@ $config['sess_regenerate_destroy'] = FALSE;
 | 'cookie_secure'   = Cookie will only be set if a secure HTTPS connection exists.
 | 'cookie_httponly' = Cookie will only be accessible via HTTP(S) (no javascript)
 |
-| Note: These settings (with the exception of 'cookie_prefix' and
+| Alert: These settings (with the exception of 'cookie_prefix' and
 |       'cookie_httponly') will also affect sessions.
 |
 */
@@ -492,7 +492,7 @@ $config['time_reference'] = 'local';
 | can rewrite the tags on-the-fly, enabling you to utilize that syntax
 | in your view files.  Options are TRUE or FALSE (boolean)
 |
-| Note: You need to have eval() enabled for this to work.
+| Alert: You need to have eval() enabled for this to work.
 |
 */
 $config['rewrite_short_tags'] = FALSE;

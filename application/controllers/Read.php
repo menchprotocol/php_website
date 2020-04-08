@@ -23,14 +23,14 @@ class Read extends CI_Controller
             return redirect_message('/sign/'.$in_id);
         }
 
-        //Add this Blog to their READING LIST:
+        //Add this Note to their READING LIST:
         if(!$this->READ_model->read_add($session_en['en_id'], $in_id)){
             //Failed to add to reading list:
-            return redirect_message('/read', '<div class="alert alert-danger" role="alert">Failed to add blog to your reading list.</div>');
+            return redirect_message('/read', '<div class="alert alert-danger" role="alert">Failed to add note to your reading list.</div>');
         }
 
         //Find Next & go:
-        $ins = $this->BLOG_model->in_fetch(array(
+        $ins = $this->NOTE_model->in_fetch(array(
             'in_id' => $in_id,
         ));
         $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
@@ -47,8 +47,8 @@ class Read extends CI_Controller
 
         if($in_id > 0){
 
-            //Fetch Blog:
-            $ins = $this->BLOG_model->in_fetch(array(
+            //Fetch Note:
+            $ins = $this->NOTE_model->in_fetch(array(
                 'in_id' => $in_id,
             ));
 
@@ -66,21 +66,21 @@ class Read extends CI_Controller
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                     'ln_creator_source_id' => $session_en['en_id'],
-                    'ln_parent_blog_id' => $ins[0]['in_id'],
+                    'ln_previous_note_id' => $ins[0]['in_id'],
                 ));
 
                 if(!count($read_completes)){
                     $this->READ_model->read_is_complete($ins[0], array(
                         'ln_type_source_id' => 4559, //READ MESSAGES
                         'ln_creator_source_id' => $session_en['en_id'],
-                        'ln_parent_blog_id' => $ins[0]['in_id'],
+                        'ln_previous_note_id' => $ins[0]['in_id'],
                     ));
                 }
 
             }
 
 
-            //Find next Blog based on source's reading list:
+            //Find next Note based on source's reading list:
             $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
             if($next_in_id > 0){
                 return redirect_message('/' . $next_in_id.$append_url);
@@ -95,7 +95,7 @@ class Read extends CI_Controller
 
         } else {
 
-            //Find the next blog in the READING LIST to skip:
+            //Find the next note in the READING LIST to skip:
             $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false);
             if($next_in_id > 0){
                 return redirect_message('/' . $next_in_id);
@@ -106,9 +106,9 @@ class Read extends CI_Controller
         }
     }
 
-    function read_in_history($tab_group_id, $note_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
+    function read_in_history($tab_group_id, $pads_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
 
-        return echo_json($this->READ_model->read_history_ui($tab_group_id, $note_in_id, $owner_en_id, $last_loaded_ln_id));
+        return echo_json($this->READ_model->read_history_ui($tab_group_id, $pads_in_id, $owner_en_id, $last_loaded_ln_id));
 
     }
 
@@ -129,9 +129,9 @@ class Read extends CI_Controller
 
         if(!$obj || $obj=='in'){
 
-            //Update the weights for blogs and sources
-            foreach($this->BLOG_model->in_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
+            //Update the weights for notes and sources
+            foreach($this->NOTE_model->in_fetch(array(
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
             )) as $in) {
 
                 $stats['in_scanned']++;
@@ -142,20 +142,20 @@ class Read extends CI_Controller
                 //Should we update?
                 if($weight != $in['in_weight']){
                     $stats['in_updated']++;
-                    $this->BLOG_model->in_update($in['in_id'], array(
+                    $this->NOTE_model->in_update($in['in_id'], array(
                         'in_weight' => $weight,
                     ));
                 }
             }
 
             //Now Update Main Tree:
-            $stats['in_tree_weight'] = $this->BLOG_model->in_tree_weight(config_var(12156));
+            $stats['in_tree_weight'] = $this->NOTE_model->in_tree_weight(config_var(12156));
 
         }
 
 
         if(!$obj || $obj=='en'){
-            //Update the weights for blogs and sources
+            //Update the weights for notes and sources
             foreach($this->SOURCE_model->en_fetch(array(
                 'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
             )) as $en) {
@@ -195,19 +195,19 @@ class Read extends CI_Controller
         $last_week_start = date(config_var(12355), $last_week_start_timestamp);
         $last_week_end = date(config_var(12355), mktime(23, 59, 59, date("n"), date("j")-1, date("Y")));
 
-        //BLOG
-        $blog_coins_new_last_week = $this->READ_model->ln_fetch(array(
+        //NOTE
+        $note_coins_new_last_week = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4250, //UNIQUE BLOGS
+            'ln_type_source_id' => 4250, //UNIQUE NOTES
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $blog_coins_last_week = $this->READ_model->ln_fetch(array(
+        $note_coins_last_week = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4250, //UNIQUE BLOGS
+            'ln_type_source_id' => 4250, //UNIQUE NOTES
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $blog_coins_growth_rate = format_percentage(($blog_coins_last_week[0]['total_coins'] / ( $blog_coins_last_week[0]['total_coins'] - $blog_coins_new_last_week[0]['total_coins'] ) * 100) - 100);
+        $note_coins_growth_rate = format_percentage(($note_coins_last_week[0]['total_coins'] / ( $note_coins_last_week[0]['total_coins'] - $note_coins_new_last_week[0]['total_coins'] ) * 100) - 100);
 
 
         //READ
@@ -267,7 +267,7 @@ class Read extends CI_Controller
 
         $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔴</b><b style="min-width:55px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($read_coins_last_week[0]['total_coins'], 0).' Coins" style="border-bottom:1px dotted #AAAAAA;">'.echo_number($read_coins_last_week[0]['total_coins']).'</span></span><a href="https://mench.com" target="_blank" style="color: #FC1B44; font-weight:bold; text-decoration:none;">READ &raquo;</a></div>';
 
-        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🟡</b><b style="min-width:55px; display: inline-block;">'.( $blog_coins_growth_rate >= 0 ? '+' : '-' ).$blog_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($blog_coins_last_week[0]['total_coins'], 0).' Coins" style="border-bottom:1px dotted #AAAAAA;">'.echo_number($blog_coins_last_week[0]['total_coins']).'</span></span><a href="https://mench.com/blog" target="_blank" style="color: #ffc500; font-weight:bold; text-decoration:none;">BLOG &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🟡</b><b style="min-width:55px; display: inline-block;">'.( $note_coins_growth_rate >= 0 ? '+' : '-' ).$note_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($note_coins_last_week[0]['total_coins'], 0).' Coins" style="border-bottom:1px dotted #AAAAAA;">'.echo_number($note_coins_last_week[0]['total_coins']).'</span></span><a href="https://mench.com/note" target="_blank" style="color: #ffc500; font-weight:bold; text-decoration:none;">NOTE &raquo;</a></div>';
 
         $html_message .= '<br /><br />';
         $html_message .= '<div>Cheers,</div>';
@@ -323,8 +323,8 @@ class Read extends CI_Controller
             //Fetch reading list:
             $player_reads = $this->READ_model->ln_fetch(array(
                 'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Note Set
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
             if(!count($player_reads)){
@@ -360,7 +360,7 @@ class Read extends CI_Controller
 
         /*
          *
-         * Enables a Player to READ a BLOG
+         * Enables a Player to READ a NOTE
          * on the public web
          *
          * */
@@ -369,26 +369,26 @@ class Read extends CI_Controller
         $session_en = superpower_assigned();
 
         if(!$in_id){
-            //Load the Starting Blog:
+            //Load the Starting Note:
             $in_id = config_var(12156);
         }
 
         //Fetch data:
-        $ins = $this->BLOG_model->in_fetch(array(
+        $ins = $this->NOTE_model->in_fetch(array(
             'in_id' => $in_id,
         ));
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return redirect_message('/', '<div class="alert alert-danger" role="alert">Blog #' . $in_id . ' not found</div>');
-        } elseif(!in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7355') /* Blog Status Public */)){
+            return redirect_message('/', '<div class="alert alert-danger" role="alert">Note #' . $in_id . ' not found</div>');
+        } elseif(!in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7355') /* Note Status Public */)){
 
             if(superpower_assigned(10939)){
-                //Give them blog access:
-                return redirect_message('/blog/' . $in_id);
+                //Give them note access:
+                return redirect_message('/note/' . $in_id);
             } else {
                 //Inform them not published:
-                return redirect_message('/', '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>Cannot read this blog because it\'s not published yet.</div>');
+                return redirect_message('/', '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>Cannot read this note because it\'s not published yet.</div>');
             }
 
         }
@@ -398,7 +398,7 @@ class Read extends CI_Controller
             'in' => $ins[0],
         ));
 
-        //Load specific view based on Blog Level:
+        //Load specific view based on Note Level:
         $this->load->view('read/read_coin', array(
             'in' => $ins[0],
             'session_en' => $session_en,
@@ -413,7 +413,7 @@ class Read extends CI_Controller
     function read_file_upload()
     {
 
-        //TODO: MERGE WITH FUNCTION in_note_create_upload()
+        //TODO: MERGE WITH FUNCTION in_pads_create_upload()
 
         //Authenticate Trainer:
         $session_en = superpower_assigned();
@@ -428,7 +428,7 @@ class Read extends CI_Controller
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing BLOG',
+                'message' => 'Missing NOTE',
             ));
 
         } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
@@ -454,15 +454,15 @@ class Read extends CI_Controller
 
         }
 
-        //Validate Blog:
-        $ins = $this->BLOG_model->in_fetch(array(
+        //Validate Note:
+        $ins = $this->NOTE_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
         ));
         if(count($ins)<1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Blog ID',
+                'message' => 'Invalid Note ID',
             ));
         }
 
@@ -491,7 +491,7 @@ class Read extends CI_Controller
         foreach($this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-            'ln_parent_blog_id' => $ins[0]['in_id'],
+            'ln_previous_note_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
         )) as $read_progress){
             $this->READ_model->ln_update($read_progress['ln_id'], array(
@@ -503,7 +503,7 @@ class Read extends CI_Controller
         $new_message = '@'.$cdn_status['cdn_en']['en_id'];
         $this->READ_model->read_is_complete($ins[0], array(
             'ln_type_source_id' => 12117,
-            'ln_parent_blog_id' => $ins[0]['in_id'],
+            'ln_previous_note_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_content' => $new_message,
             'ln_parent_source_id' => $cdn_status['cdn_en']['en_id'],
@@ -531,7 +531,7 @@ class Read extends CI_Controller
         } elseif (!isset($_POST['in_id']) || !intval($_POST['in_id'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing blog ID.',
+                'message' => 'Missing note ID.',
             ));
         } elseif (!isset($_POST['read_text_answer']) || !strlen($_POST['read_text_answer'])) {
             return echo_json(array(
@@ -540,15 +540,15 @@ class Read extends CI_Controller
             ));
         }
 
-        //Validate/Fetch blog:
-        $ins = $this->BLOG_model->in_fetch(array(
+        //Validate/Fetch note:
+        $ins = $this->NOTE_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
         ));
         if(count($ins) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Blog not published.',
+                'message' => 'Note not published.',
             ));
         }
 
@@ -556,7 +556,7 @@ class Read extends CI_Controller
         foreach($this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-            'ln_parent_blog_id' => $ins[0]['in_id'],
+            'ln_previous_note_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
         )) as $read_progress){
             $this->READ_model->ln_update($read_progress['ln_id'], array(
@@ -567,7 +567,7 @@ class Read extends CI_Controller
         //Save new answer:
         $this->READ_model->read_is_complete($ins[0], array(
             'ln_type_source_id' => 6144,
-            'ln_parent_blog_id' => $ins[0]['in_id'],
+            'ln_previous_note_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_content' => $_POST['read_text_answer'],
         ));
@@ -592,7 +592,7 @@ class Read extends CI_Controller
         } elseif (!isset($_POST['in_loaded_id'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing blog id.',
+                'message' => 'Missing note id.',
             ));
         } elseif (!isset($_POST['answered_ins']) || !is_array($_POST['answered_ins']) || !count($_POST['answered_ins'])) {
             return echo_json(array(
@@ -613,7 +613,7 @@ class Read extends CI_Controller
         /*
          *
          * List all Links on reverse chronological order
-         * and Display Status for blogs, sources and
+         * and Display Status for notes, sources and
          * links.
          *
          * */
@@ -633,20 +633,20 @@ class Read extends CI_Controller
     function read_stats(){
 
 
-        //Blogs
+        //Notes
 
-        $en_all_7302 = $this->config->item('en_all_7302'); //Blog Stats
+        $en_all_7302 = $this->config->item('en_all_7302'); //Note Stats
 
 
-        //Blog Status:
-        echo '<table class="table table-sm table-striped stats-table mini-stats-table blog_statuses">';
+        //Note Status:
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table in_statuses">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</td>';
         echo '</tr>';
         foreach ($this->config->item('en_all_4737') as $en_id => $m) {
 
             //Count this status:
-            $objects_count = $this->BLOG_model->in_fetch(array(
+            $objects_count = $this->NOTE_model->in_fetch(array(
                 'in_status_source_id' => $en_id
             ), 0, 0, array(), 'COUNT(in_id) as totals');
 
@@ -665,16 +665,16 @@ class Read extends CI_Controller
 
 
 
-        //Count all Blog Subtypes:
-        $blog_types_counts = $this->BLOG_model->in_fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
+        //Count all Note Subtypes:
+        $in_types_counts = $this->NOTE_model->in_fetch(array(
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
         ), 0, 0, array(), 'COUNT(in_type_source_id) as total_count, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
         //Count totals:
-        $addup_count = addup_array($blog_types_counts, 'total_count');
+        $addup_count = addup_array($in_types_counts, 'total_count');
 
         //Link Stages
-        echo_2level_stats($en_all_7302[10602]['m_name'], 10602, 7585, $blog_types_counts, $addup_count, 'in_type_source_id', 'total_count');
+        echo_2level_stats($en_all_7302[10602]['m_name'], 10602, 7585, $in_types_counts, $addup_count, 'in_type_source_id', 'total_count');
 
 
 
@@ -893,7 +893,7 @@ class Read extends CI_Controller
         $has_more_links = ($lns_count[0]['total_count'] > 0 && $total_items_loaded < $lns_count[0]['total_count']);
 
 
-        //Display filter notes:
+        //Display filter:
         if($total_items_loaded > 0){
             $message .= '<div class="montserrat ledger-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' TRANSACTIONS:</div>';
         }
@@ -1017,10 +1017,10 @@ class Read extends CI_Controller
         $this->db->query("TRUNCATE TABLE public.gephi_edges CONTINUE IDENTITY RESTRICT;");
         $this->db->query("TRUNCATE TABLE public.gephi_nodes CONTINUE IDENTITY RESTRICT;");
 
-        //Load Blog-to-Blog Links:
+        //Load Note-to-Note Links:
         $en_all_4593 = $this->config->item('en_all_4593');
 
-        //To make sure Blog/source IDs are unique:
+        //To make sure Note/source IDs are unique:
         $id_prefix = array(
             'in' => 100,
             'en' => 200,
@@ -1033,36 +1033,36 @@ class Read extends CI_Controller
             'msg' => 1,
         );
 
-        //Add Blogs:
-        $ins = $this->BLOG_model->in_fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
+        //Add Notes:
+        $ins = $this->NOTE_model->in_fetch(array(
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
         ));
         foreach($ins as $in){
 
             //Prep metadata:
             $in_metadata = ( strlen($in['in_metadata']) > 0 ? unserialize($in['in_metadata']) : array());
 
-            //Add Blog node:
+            //Add Note node:
             $this->db->insert('gephi_nodes', array(
                 'id' => $id_prefix['in'].$in['in_id'],
                 'label' => $in['in_title'],
                 //'size' => ( isset($in_metadata['in__metadata_max_seconds']) ? round(($in_metadata['in__metadata_max_seconds']/3600),0) : 0 ), //Max time
                 'size' => $node_size['in'],
-                'node_type' => 1, //Blog
+                'node_type' => 1, //Note
                 'node_status' => $in['in_status_source_id'],
             ));
 
             //Fetch children:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                'ln_parent_blog_id' => $in['in_id'],
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
+                'ln_previous_note_id' => $in['in_id'],
             ), array('in_child'), 0, 0) as $child_in){
 
                 $this->db->insert('gephi_edges', array(
-                    'source' => $id_prefix['in'].$child_in['ln_parent_blog_id'],
-                    'target' => $id_prefix['in'].$child_in['ln_child_blog_id'],
+                    'source' => $id_prefix['in'].$child_in['ln_previous_note_id'],
+                    'target' => $id_prefix['in'].$child_in['ln_next_note_id'],
                     'label' => $en_all_4593[$child_in['ln_type_source_id']]['m_name'], //TODO maybe give visibility to condition here?
                     'weight' => 1,
                     'edge_type_en_id' => $child_in['ln_type_source_id'],
@@ -1111,8 +1111,8 @@ class Read extends CI_Controller
         //Add messages:
         $messages = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Note Pads
         ), array('in_child'), 0, 0);
         foreach($messages as $message) {
 
@@ -1125,20 +1125,20 @@ class Read extends CI_Controller
                 'node_status' => $message['ln_status_source_id'],
             ));
 
-            //Add child blog link:
+            //Add child note link:
             $this->db->insert('gephi_edges', array(
                 'source' => $message['ln_id'],
-                'target' => $id_prefix['in'].$message['ln_child_blog_id'],
-                'label' => 'Child Blog',
+                'target' => $id_prefix['in'].$message['ln_next_note_id'],
+                'label' => 'Child Note',
                 'weight' => 1,
             ));
 
-            //Add parent blog link?
-            if ($message['ln_parent_blog_id'] > 0) {
+            //Add parent note link?
+            if ($message['ln_previous_note_id'] > 0) {
                 $this->db->insert('gephi_edges', array(
-                    'source' => $id_prefix['in'].$message['ln_parent_blog_id'],
+                    'source' => $id_prefix['in'].$message['ln_previous_note_id'],
                     'target' => $message['ln_id'],
-                    'label' => 'Parent Blog',
+                    'label' => 'Parent Note',
                     'weight' => 1,
                 ));
             }
@@ -1155,7 +1155,7 @@ class Read extends CI_Controller
 
         }
 
-        echo count($ins).' blogs & '.count($ens).' sources & '.count($messages).' messages synced.';
+        echo count($ins).' notes & '.count($ens).' sources & '.count($messages).' messages synced.';
     }
 
 
@@ -1197,8 +1197,8 @@ class Read extends CI_Controller
         //Now let's start the cleanup process...
         $invalid_variables = array();
 
-        //Blog Metadata
-        foreach($this->BLOG_model->in_fetch(array()) as $in){
+        //Note Metadata
+        foreach($this->NOTE_model->in_fetch(array()) as $in){
 
             if(strlen($in['in_metadata']) < 1){
                 continue;
@@ -1251,7 +1251,7 @@ class Read extends CI_Controller
         if(count($invalid_variables) > 0){
             //Did we have anything to remove? Report with system bug:
             $this->READ_model->ln_create(array(
-                'ln_content' => 'cron__clean_metadatas() removed '.count($invalid_variables).' unknown variables from blog/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
+                'ln_content' => 'cron__clean_metadatas() removed '.count($invalid_variables).' unknown variables from note/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_parent_source_id' => 6232, //Variables Names
                 'ln_metadata' => $ln_metadata,
@@ -1318,8 +1318,8 @@ class Read extends CI_Controller
         /*
          *
          * When users indicate they want to stop
-         * a BLOG this function saves the changes
-         * necessary and remove the blog from their
+         * a NOTE this function saves the changes
+         * necessary and remove the note from their
          * 🔴 READING LIST.
          *
          * */
@@ -1333,7 +1333,7 @@ class Read extends CI_Controller
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing blog ID',
+                'message' => 'Missing note ID',
             ));
         }
 
@@ -1384,7 +1384,7 @@ class Read extends CI_Controller
     {
         /*
          *
-         * Saves the order of 🔴 READING LIST blogs based on
+         * Saves the order of 🔴 READING LIST notes based on
          * user preferences.
          *
          * */
@@ -1397,7 +1397,7 @@ class Read extends CI_Controller
         } elseif (!isset($_POST['new_actionplan_order']) || !is_array($_POST['new_actionplan_order']) || count($_POST['new_actionplan_order']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing sorting blogs',
+                'message' => 'Missing sorting notes',
             ));
         }
 
@@ -1408,14 +1408,14 @@ class Read extends CI_Controller
                 //Update order of this link:
                 $results[$ln_order] = $this->READ_model->ln_update(intval($ln_id), array(
                     'ln_order' => $ln_order,
-                ), $_POST['js_pl_id'], 6132 /* Blogs Ordered by User */);
+                ), $_POST['js_pl_id'], 6132 /* Notes Ordered by User */);
             }
         }
 
         //All good:
         return echo_json(array(
             'status' => 1,
-            'message' => count($_POST['new_actionplan_order']).' Blogs Sorted',
+            'message' => count($_POST['new_actionplan_order']).' Notes Sorted',
         ));
     }
 
@@ -1431,19 +1431,19 @@ class Read extends CI_Controller
         }
 
 
-        $ins = $this->BLOG_model->in_fetch(array(
+        $ins = $this->NOTE_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
         ));
 
         if(count($ins) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Public Blog not found',
+                'message' => 'Public Note not found',
             ));
         }
 
-        //List the blog:
+        //List the note:
         return echo_json(array(
             'in_user' => array(
                 'next_in_id' => $this->READ_model->read_next_find($session_en['en_id'], $ins[0]),
@@ -1451,8 +1451,8 @@ class Read extends CI_Controller
                 'marks' => $this->READ_model->read__completion_marks($session_en['en_id'], $ins[0]),
             ),
             'in_general' => array(
-                'recursive_parents' => $this->BLOG_model->in_fetch_recursive_parents($ins[0]['in_id']),
-                'common_base' => $this->BLOG_model->in_metadata_common_base($ins[0]),
+                'recursive_parents' => $this->NOTE_model->in_fetch_recursive_parents($ins[0]['in_id']),
+                'common_base' => $this->NOTE_model->in_metadata_common_base($ins[0]),
             ),
         ));
 
@@ -1544,7 +1544,7 @@ class Read extends CI_Controller
                         array(
                             'title' => '🟡 '.$en_all_2738[4535]['m_name'],
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/blog',
+                            'url' => 'https://mench.com/note',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
@@ -1667,7 +1667,7 @@ class Read extends CI_Controller
                     $is_quick_reply = (isset($im['message']['quick_reply']['payload']));
 
                     //Set more variables:
-                    $matching_types = array(); //Defines the supported Blog Subtypes
+                    $matching_types = array(); //Defines the supported Note Subtypes
 
                     unset($ln_data); //Reset everything in case its set from the previous loop!
                     $ln_data = array(
@@ -1908,7 +1908,7 @@ class Read extends CI_Controller
                         $pending_matches = array();
                         $pending_mismatches = array();
 
-                        //TODO Yes, see if we have a pending blog that requires answer 6144:
+                        //TODO Yes, see if we have a pending note that requires answer 6144:
 
                         //Did we find any matching or mismatching requirement submissions?
                         if(count($pending_matches) > 0 && 0){
@@ -1925,7 +1925,7 @@ class Read extends CI_Controller
                                 'ln_type_source_id' => 6144, //🔴 READING LIST Submit Requirements
                                 'ln_creator_source_id' => $en['en_id'], //for this user
                                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Transaction Status Incomplete
-                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
+                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
                             ), array('in_parent'));
 
 
@@ -1977,7 +1977,7 @@ class Read extends CI_Controller
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->READ_model->dispatch_message(
-                                'Note: You should '.$en_all_7585[$mismatch_focus['in_type_source_id']]['m_name'].' to complete this step.',
+                                'Alert: You should '.$en_all_7585[$mismatch_focus['in_type_source_id']]['m_name'].' to complete this step.',
                                 $en,
                                 true
                             );
@@ -2154,7 +2154,7 @@ class Read extends CI_Controller
          * 1) Media received from users
          * 2) Media sent from Mench Trainers via Facebook Chat Inbox
          *
-         * Note: It would not store media that is sent from blog
+         * Alert: It would not store media that is sent from note
          * notes since those are already stored.
          *
          * */
@@ -2214,7 +2214,7 @@ class Read extends CI_Controller
         $ln_pending = $this->READ_model->ln_fetch(array(
             'ln_type_source_id IN (' . join(',', array_keys($en_all_11059)) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_metadata' => null, //Missing Facebook Attachment ID [NOTE: Must make sure ln_metadata is not used for anything else for these link types]
+            'ln_metadata' => null, //Missing Facebook Attachment ID [Alert: Must make sure ln_metadata is not used for anything else for these link types]
         ), array(), 10, 0, array('ln_id' => 'ASC')); //Sort by oldest added first
 
 

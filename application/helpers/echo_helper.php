@@ -23,8 +23,8 @@ function echo_clean_db_name($field_name){
         //Link field:
         return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('ln_', 'Transaction ', $field_name))));
     } elseif(substr($field_name, 0, 3) == 'in_'){
-        //Blog field:
-        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('in_', 'Blog ', $field_name))));
+        //Note field:
+        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('in_', 'Note ', $field_name))));
     } elseif(substr($field_name, 0, 3) == 'en_'){
         //Player field:
         return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('en_', 'Source ', $field_name))));
@@ -87,7 +87,7 @@ function echo_url_type_4537($url, $en_type_link_id)
 
     } elseif ($en_type_link_id == 4261 /* File URL */) {
 
-        return '<a href="' . $url . '" class="btn btn-blog" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+        return '<a href="' . $url . '" class="btn btn-note" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
 
     } else {
 
@@ -108,7 +108,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
      *
      * Detects and displays URLs from supported website with an embed widget
      *
-     * NOTE: Changes to this function requires us to re-calculate all current
+     * Alert: Changes to this function requires us to re-calculate all current
      *       values for ln_type_source_id as this could change the equation for those
      *       link types. Change with care...
      *
@@ -219,7 +219,7 @@ function echo_in_title($in, $push_message = false, $common_prefix = null){
 }
 
 
-function echo_in_note($ln)
+function echo_in_pads($ln)
 {
 
     /*
@@ -232,7 +232,7 @@ function echo_in_note($ln)
 
     $CI =& get_instance();
     $session_en = superpower_assigned();
-    $en_all_4485 = $CI->config->item('en_all_4485'); //Blog Notes
+    $en_all_4485 = $CI->config->item('en_all_4485'); //Note Pads
 
 
     //Transaction Status
@@ -241,43 +241,43 @@ function echo_in_note($ln)
 
     //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item itemblog is-msg notes_sortable msg_en_type_' . $ln['ln_type_source_id'] . '" id="ul-nav-' . $ln['ln_id'] . '" tr-id="' . $ln['ln_id'] . '">';
+    $ui .= '<div class="list-group-item itemnote is-msg pads_sortable msg_en_type_' . $ln['ln_type_source_id'] . '" id="ul-nav-' . $ln['ln_id'] . '" tr-id="' . $ln['ln_id'] . '">';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
     $ui .= '<div class="edit-off text_message" id="msgbody_' . $ln['ln_id'] . '">';
-    $ui .= $CI->READ_model->dispatch_message($ln['ln_content'], $session_en, false, array(), $ln['ln_child_blog_id']);
+    $ui .= $CI->READ_model->dispatch_message($ln['ln_content'], $session_en, false, array(), $ln['ln_next_note_id']);
     $ui .= '</div>';
 
     //Editing menu:
-    $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
+    $ui .= '<div class="pads-edit edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
 
         //Sort:
         if(in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents'])){
-            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars '.( in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents']) ? 'blog_note_sorting' : '' ).'"></i></span>';
+            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars '.( in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents']) ? 'in_pads_sorting' : '' ).'"></i></span>';
         }
 
         //Modify:
-        $ui .= '<span title="Modify Message" data-toggle="tooltip" data-placement="left"><a href="javascript:in_note_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
+        $ui .= '<span title="Modify Message" data-toggle="tooltip" data-placement="left"><a href="javascript:in_pads_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
 
     $ui .= '</span></div>';
 
 
     //Text editing:
-    $ui .= '<textarea onkeyup="in_edit_note_count(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($ln['ln_content']).'">' . $ln['ln_content'] . '</textarea>';
+    $ui .= '<textarea onkeyup="in_edit_pads_count(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg pads-textarea algolia_search" placeholder="'.stripslashes($ln['ln_content']).'">' . $ln['ln_content'] . '</textarea>';
 
 
     //Editing menu:
     $ui .= '<ul class="msg-nav '.superpower_active(10939).'">';
 
     //Counter:
-    $ui .= '<li class="edit-on hidden"><span id="blogNoteCount' . $ln['ln_id'] . '"><span id="charEditingNum' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</span></li>';
+    $ui .= '<li class="edit-on hidden"><span id="notePadsCount' . $ln['ln_id'] . '"><span id="charEditingNum' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</span></li>';
 
     //Save Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-blog white-third" href="javascript:in_note_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_source_id'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-note white-third" href="javascript:in_pads_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_source_id'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
 
     //Cancel Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-blog white-third" href="javascript:in_note_modify_cancel(' . $ln['ln_id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-note white-third" href="javascript:in_pads_modify_cancel(' . $ln['ln_id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
 
     //Show drop down for message link status:
     $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 0 0 0; display: block;">';
@@ -566,10 +566,10 @@ function echo_ln($ln, $is_inner = false)
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
-                //BLOG
-                $ins = $CI->BLOG_model->in_fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
+                //NOTE
+                $ins = $CI->NOTE_model->in_fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/blog/'.$ins[0]['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span>'.$en_all_2738[4535]['m_icon']. ' '.echo_in_title($ins[0]).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/note/'.$ins[0]['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span>'.$en_all_2738[4535]['m_icon']. ' '.echo_in_title($ins[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
@@ -638,12 +638,12 @@ function echo_random_message($message_key, $return_all = false){
      * */
 
     $rotation_index = array(
-        'next_blog_is' => array(
+        'next_in_is' => array(
             'Next: ',
-            'Next blog is: ',
-            'The next blog is: ',
-            'Ok moving on to the next blog: ',
-            'Moving to the next blog: ',
+            'Next note is: ',
+            'The next note is: ',
+            'Ok moving on to the next note: ',
+            'Moving to the next note: ',
         ),
         'one_way_only' => array(
             'I am not designed to respond to custom messages. I can understand you only when you choose one of the options that I recommend to you.',
@@ -718,7 +718,7 @@ function echo_random_message($message_key, $return_all = false){
             "Getting smarter ^~^",
         ),
         'command_me' => array(
-            'You can search for new blogs by sending me a message starting with "Search for", for example: "Search for assess my back-end skills" or "Search for recruit top talent"',
+            'You can search for new notes by sending me a message starting with "Search for", for example: "Search for assess my back-end skills" or "Search for recruit top talent"',
         ),
         'goto_next' => array(
             'Say next to continue',
@@ -792,8 +792,8 @@ function echo_tree_sources($in, $push_message = false, $autoexpand = false)
 
     /*
      *
-     * a BLOG function to display experts sources for
-     * the entire Blog tree stored in the metadata field.
+     * a NOTE function to display experts sources for
+     * the entire Note tree stored in the metadata field.
      *
      * */
 
@@ -804,7 +804,7 @@ function echo_tree_sources($in, $push_message = false, $autoexpand = false)
     }
 
 
-    //Let's count to see how many content pieces we have references for this Blog tree:
+    //Let's count to see how many content pieces we have references for this Note tree:
     $source_info = '';
     $source_count = 0;
 
@@ -980,8 +980,8 @@ function echo_time_range($in, $micro = false, $hide_zero = false)
     if (!isset($in['in_metadata'])) {
         //We don't have it, so fetch it:
         $CI =& get_instance();
-        $ins = $CI->BLOG_model->in_fetch(array(
-            'in_id' => $in['in_id'], //We should always have Blog ID
+        $ins = $CI->NOTE_model->in_fetch(array(
+            'in_id' => $in['in_id'], //We should always have Note ID
         ));
         if (count($ins) > 0) {
             $in = $ins[0];
@@ -1136,7 +1136,7 @@ function echo_in_stat_read($in = array(), $en = array()){
             $coin_filter = array(
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
-                'ln_parent_blog_id' => $in['in_id'],
+                'ln_previous_note_id' => $in['in_id'],
             );
         } elseif(count($en)){
             $item = $en;
@@ -1177,16 +1177,16 @@ function echo_in_stat_source($in_id = 0, $en_id = 0){
             $join_objects = array();
             $coin_filter = array(
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //BLOG COIN
-                'ln_child_blog_id' => $in_id,
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //NOTE COIN
+                'ln_next_note_id' => $in_id,
             );
         } elseif($en_id){
-            $mench = 'blog';
+            $mench = 'note';
             $join_objects = array('in_child');
             $coin_filter = array(
-                'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
+                'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Note Status Public
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //BLOG COIN
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //NOTE COIN
                 'ln_parent_source_id' => $en_id,
             );
         }
@@ -1203,7 +1203,7 @@ function echo_in_stat_source($in_id = 0, $en_id = 0){
 
 
 
-function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_prefix = null, $extra_class = null, $show_editor = false)
+function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $common_prefix = null, $extra_class = null, $show_editor = false)
 {
 
     //See if user is logged-in:
@@ -1228,7 +1228,7 @@ function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_pre
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
 
     if($can_click && $completion_rate['completion_percentage']>0){
-        $ui .= '<div class="progress-bg" title="You are '.$completion_rate['completion_percentage'].'% done as you have read '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' blogs'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($in, true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+        $ui .= '<div class="progress-bg" title="You are '.$completion_rate['completion_percentage'].'% done as you have read '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' notes'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($in, true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1237,31 +1237,31 @@ function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_pre
 
     //READ ICON
     $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-lock read"></i>' ).'</span>';
-    $ui .= '<b class="montserrat blog-url title-block '.( $in_thumbnail ? 'title-no-right' : '' ).'">'.echo_in_title($in, false, $common_prefix).'</b>';
+    $ui .= '<b class="montserrat note-url title-block '.( $in_thumbnail ? 'title-no-right' : '' ).'">'.echo_in_title($in, false, $common_prefix).'</b>';
 
 
     //Description:
     if($can_click){
         $in_description = echo_in_description($in['in_id']);
         if($in_description){
-            $ui .= '<div class="blog-desc"><span class="icon-block">&nbsp;</span>'.$in_description.'</div>';
+            $ui .= '<div class="note-desc"><span class="icon-block">&nbsp;</span>'.$in_description.'</div>';
         }
     }
 
-    if($footnotes){
-        $ui .= '<div class="blog-footnote"><span class="icon-block">&nbsp;</span>' . $footnotes . '</div>';
+    if($infobar_details){
+        $ui .= '<div class="note-footer"><span class="icon-block">&nbsp;</span>' . $infobar_details . '</div>';
     }
 
     $ui .= '</td>';
 
-    //Search for Blog Image:
+    //Search for Note Image:
     if($in_thumbnail || $show_editor){
 
         $ui .= '<td class="featured-frame" '.( $show_editor ? ' style="padding-right:25px;" ' : '' ).'>';
         $ui .= $in_thumbnail;
 
         if($show_editor){
-            $ui .= '<div class="note-edit edit-off"><span class="show-on-hover">';
+            $ui .= '<div class="pads-edit edit-off"><span class="show-on-hover">';
 
             $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
 
@@ -1290,8 +1290,8 @@ function echo_in_description($in_id){
 
     foreach ($CI->READ_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        'ln_type_source_id' => 4231, //Blog Note Messages
-        'ln_child_blog_id' => $in_id,
+        'ln_type_source_id' => 4231, //Note Pads Messages
+        'ln_next_note_id' => $in_id,
     ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
 
         //See if Text Message:
@@ -1324,8 +1324,8 @@ function echo_in_thumbnail($in_id){
 
     foreach ($CI->READ_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        'ln_type_source_id' => 4231, //Blog Note Messages
-        'ln_child_blog_id' => $in_id,
+        'ln_type_source_id' => 4231, //Note Pads Messages
+        'ln_next_note_id' => $in_id,
         'ln_parent_source_id >' => 0, //Reference a source
     ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
 
@@ -1369,11 +1369,11 @@ function echo_in_thumbnail($in_id){
 function echo_in_dashboard($in)
 {
     $CI =& get_instance();
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Blog Subtypes
-    $ui = '<div class="list-group-item itemblog">';
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Note Subtypes
+    $ui = '<div class="list-group-item itemnote">';
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-blog" href="/blog/' . $in['in_id']. '"><i class="fad fa-step-forward"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-note" href="/note/' . $in['in_id']. '"><i class="fad fa-step-forward"></i></a></div>';
     $ui .= '<span class="icon-block">'.$en_all_7585[$in['in_type_source_id']]['m_icon'].'</span>';
     $ui .= '<b class="montserrat">'.echo_in_title($in, false).'</b>';
     $ui .= '</div>';
@@ -1395,16 +1395,16 @@ function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_leve
     $CI =& get_instance();
     $en_all_6186 = $CI->config->item('en_all_6186'); //Transaction Status
     $en_all_4486 = $CI->config->item('en_all_4486');
-    $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Status
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Blog Subtypes
+    $en_all_4737 = $CI->config->item('en_all_4737'); // Note Status
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Note Subtypes
 
 
     $ui = null;
     foreach($CI->READ_model->ln_fetch(array(
-        'ln_parent_blog_id' => $starting_in,
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+        'ln_previous_note_id' => $starting_in,
+        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-        'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
+        'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Note Status Active
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $in_ln){
 
         //Prep Metadata:
@@ -1412,20 +1412,20 @@ function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_leve
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         $messages = $CI->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'ln_type_source_id' => 4231, //Blog Note Messages
-            'ln_child_blog_id' => $in_ln['in_id'],
+            'ln_type_source_id' => 4231, //Note Pads Messages
+            'ln_next_note_id' => $in_ln['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         //Display block:
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Link Type: '.$en_all_4486[$in_ln['ln_type_source_id']]['m_name'].'">'. $en_all_4486[$in_ln['ln_type_source_id']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Transaction Status: '.$en_all_6186[$in_ln['ln_status_source_id']]['m_name'].'">'. $en_all_6186[$in_ln['ln_status_source_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Note Link Type: '.$en_all_4486[$in_ln['ln_type_source_id']]['m_name'].'">'. $en_all_4486[$in_ln['ln_type_source_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Note Transaction Status: '.$en_all_6186[$in_ln['ln_status_source_id']]['m_name'].'">'. $en_all_6186[$in_ln['ln_status_source_id']]['m_icon'] . '</span>';
 
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Type: '.$en_all_7585[$in_ln['in_type_source_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_source_id']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Status: '.$en_all_4737[$in_ln['in_status_source_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_source_id']]['m_icon']. '</span>';
-        $ui .= '<a href="/source/admin_panel/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this blog"><u>' .   echo_in_title($in_ln, false) . '</u></a>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Note Type: '.$en_all_7585[$in_ln['in_type_source_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_source_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Note Status: '.$en_all_4737[$in_ln['in_status_source_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_source_id']]['m_icon']. '</span>';
+        $ui .= '<a href="/source/admin_panel/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this note"><u>' .   echo_in_title($in_ln, false) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_source_id'] == 4228 && in_array($parent_in_type_source_id , $CI->config->item('en_ids_6193') /* OR Blogs */ )) || ($in_ln['ln_type_source_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_source_id'] == 4228 && in_array($parent_in_type_source_id , $CI->config->item('en_ids_6193') /* OR Notes */ )) || ($in_ln['ln_type_source_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
 
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$in_ln['in_id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
@@ -1586,16 +1586,16 @@ function in_is_author($in_id, $session_en = array()){
         return false;
     }
 
-    //Always have power to edit blogs from anyone:
+    //Always have power to edit notes from anyone:
     if(superpower_active(10985, true)){
         return true;
     }
 
-    //Check if source is a blog author:
+    //Check if source is a note author:
     return count($CI->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id' => 4983,
-            'ln_child_blog_id' => $in_id,
+            'ln_next_note_id' => $in_id,
             'ln_parent_source_id' => $session_en['en_id'],
         )));
 }
@@ -1603,7 +1603,7 @@ function in_is_author($in_id, $session_en = array()){
 function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
 
     $CI =& get_instance();
-    $en_all_7302 = $CI->config->item('en_all_7302'); //Blog Stats
+    $en_all_7302 = $CI->config->item('en_all_7302'); //Note Stats
 
     $ui =  '<table class="table table-sm table-striped stats-table mini-stats-table ">';
 
@@ -1614,15 +1614,15 @@ function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
     foreach ($CI->config->item('en_all_'.$in_setting_en_id) as $type_en_id => $in_type) {
 
         //Count this sub-type from the database:
-        $in_count = $CI->BLOG_model->in_fetch(array(
+        $in_count = $CI->NOTE_model->in_fetch(array(
             $in_field_name => $type_en_id,
-            'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
-        ), 0, 0, array(), 'COUNT(in_id) as total_public_blogs');
+            'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+        ), 0, 0, array(), 'COUNT(in_id) as total_public_ins');
 
         //$ui .= this as the main title:
         $ui .= '<tr>';
         $ui .= '<td style="text-align: left;"><span class="icon-block">'.$in_type['m_icon'].'</span><a href="/source/'.$type_en_id.'">'.$in_type['m_name'].'</a></td>';
-        $ui .= '<td style="text-align: right;"><a href="/ledger?ln_type_source_id=4250&in_status_source_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($in_count[0]['total_public_blogs'], 0).' Blog'.echo__s($in_count[0]['total_public_blogs']).'">'.number_format($in_count[0]['total_public_blogs']/$addup_total_count*100, 1).'%</a></td>';
+        $ui .= '<td style="text-align: right;"><a href="/ledger?ln_type_source_id=4250&in_status_source_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($in_count[0]['total_public_ins'], 0).' Note'.echo__s($in_count[0]['total_public_ins']).'">'.number_format($in_count[0]['total_public_ins']/$addup_total_count*100, 1).'%</a></td>';
         $ui .= '</tr>';
 
     }
@@ -1730,7 +1730,7 @@ function echo_2level_sources($main_obj, $all_link_types, $link_types_counts, $al
             $rows .= '<td style="text-align: right;" class="'.( $show_in_advance_only ? superpower_active(10967) : '' ).'">';
             if($focus_field=='total_count'){
 
-                $rows .= '<a href="/ledger?ln_status_source_id='.join(',', $CI->config->item('en_ids_7359')) /* Transaction Status Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Blog'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
+                $rows .= '<a href="/ledger?ln_status_source_id='.join(',', $CI->config->item('en_ids_7359')) /* Transaction Status Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Note'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
 
             } elseif($focus_field=='total_coins'){
 
@@ -1768,7 +1768,7 @@ function echo_2level_sources($main_obj, $all_link_types, $link_types_counts, $al
 
     if($focus_field=='total_count'){
 
-        echo '<a href="/ledger?ln_status_source_id='.join(',', $CI->config->item('en_ids_7359')) /* Transaction Status Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Blog'.echo__s($total_sum).'">'.number_format($total_sum/$addup_total_count*100, 1).'%</a>';
+        echo '<a href="/ledger?ln_status_source_id='.join(',', $CI->config->item('en_ids_7359')) /* Transaction Status Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Note'.echo__s($total_sum).'">'.number_format($total_sum/$addup_total_count*100, 1).'%</a>';
 
     } elseif($focus_field=='total_coins'){
 
@@ -1803,7 +1803,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $CI =& get_instance();
 
     $en_all_6186 = $CI->config->item('en_all_6186');
-    $en_all_4737 = $CI->config->item('en_all_4737'); //BLOG STATUS
+    $en_all_4737 = $CI->config->item('en_all_4737'); //NOTE STATUS
     $en_all_7585 = $CI->config->item('en_all_7585');
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_4486 = $CI->config->item('en_all_4486');
@@ -1818,10 +1818,10 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $session_en = superpower_assigned();
     $is_published = in_array($in['in_status_source_id'], $CI->config->item('en_ids_7355'));
     $is_link_published = in_array($in['ln_status_source_id'], $CI->config->item('en_ids_7359'));
-    $is_blog_link = in_array($in['ln_type_source_id'], $CI->config->item('en_ids_4486'));
-    $is_author = ( !$is_blog_link ? false : $is_author ); //Disable Edits on Blog List Page
+    $is_in_link = in_array($in['ln_type_source_id'], $CI->config->item('en_ids_4486'));
+    $is_author = ( !$is_in_link ? false : $is_author ); //Disable Edits on Note List Page
 
-    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" blog-id="' . $in['in_id'] . '" parent-blog-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemblog blogs_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' blog_line_' . $in['in_id'] . ( $is_parent ? ' parent-blog ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
+    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" note-id="' . $in['in_id'] . '" parent-note-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemnote notes_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-note ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1830,14 +1830,14 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
         $ui .= '<div class="block">';
-            //BLOG ICON:
-            $ui .= '<span class="icon-block"><a href="/blog/'.$in['in_id'].'" title="Weight: '.number_format($in['in_weight'], 0).'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
+            //NOTE ICON:
+            $ui .= '<span class="icon-block"><a href="/note/'.$in['in_id'].'" title="Weight: '.number_format($in['in_weight'], 0).'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
 
-            //BLOG TITLE
-            if($is_blog_link && superpower_active(10984, true)){
+            //NOTE TITLE
+            if($is_in_link && superpower_active(10984, true)){
                 $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], $is_author, (($in['ln_order']*100)+1));
             } else {
-                $ui .= '<a href="/blog/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in) . '</a>';
+                $ui .= '<a href="/note/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in) . '</a>';
             }
         $ui .= '</div>';
 
@@ -1854,44 +1854,44 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         $ui .= '<span class="icon-block ln_status_source_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_source_id']]['m_name'].' @'.$in['ln_status_source_id'].': '.$en_all_6186[$in['ln_status_source_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_source_id']]['m_icon'] . ' </span></span>';
 
 
-        //BLOG IF NOT PUBLISHED:
+        //NOTE IF NOT PUBLISHED:
         if(!superpower_active(10984, true) && !$is_published){
-            //Show them Blog status in this case:
+            //Show them Note status in this case:
             $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_source_id'], null, $is_author, false, $in['in_id']) . ' </div>';
         }
 
 
-        //Blog Brush
+        //Note Brush
         $ui .= '<div class="inline-block ' . superpower_active(10984) . '">';
 
-            //BLOG STATUS
+            //NOTE STATUS
             $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_source_id'], null, $is_author, false, $in['in_id']) . ' </div>';
 
-            //BLOG TYPE
+            //NOTE TYPE
             $ui .= echo_in_dropdown(7585, $in['in_type_source_id'], null, $is_author, false, $in['in_id']);
 
-            //BLOG READ TIME
+            //NOTE READ TIME
             $ui .= echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
 
 
-            //PREVIOUS & NEXT BLOGS
+            //PREVIOUS & NEXT NOTES
             $previous_ins = $CI->READ_model->ln_fetch(array(
-                'ln_child_blog_id' => $in['in_id'],
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+                'ln_next_note_id' => $in['in_id'],
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_blogs');
-            $next_blogs = $CI->READ_model->ln_fetch(array(
-                'ln_parent_blog_id' => $in['in_id'],
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
+            $next_ins = $CI->READ_model->ln_fetch(array(
+                'ln_previous_note_id' => $in['in_id'],
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_blogs');
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
 
 
-            //Previous blog:
-            $ui .= '<span class="montserrat blog blog-previous">' . ( $previous_ins[0]['total_blogs'] >= 2 ? $previous_ins[0]['total_blogs'] . $en_all_12413[11019]['m_icon'] : '&nbsp;') . '</span>';
+            //Previous note:
+            $ui .= '<span class="montserrat note note-previous">' . ( $previous_ins[0]['total_ins'] >= 2 ? $previous_ins[0]['total_ins'] . $en_all_12413[11019]['m_icon'] : '&nbsp;') . '</span>';
 
-            //Next Blogs:
-            $ui .= '<span class="montserrat blog blog-next">' . ( $next_blogs[0]['total_blogs'] > 0 ? $en_all_12413[11020]['m_icon'] . $next_blogs[0]['total_blogs']: '&nbsp;' ) . '</span>';
+            //Next Notes:
+            $ui .= '<span class="montserrat note note-next">' . ( $next_ins[0]['total_ins'] > 0 ? $en_all_12413[11020]['m_icon'] . $next_ins[0]['total_ins']: '&nbsp;' ) . '</span>';
 
 
         $ui .= '</div>';
@@ -1902,7 +1902,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-        //Blog Wand
+        //Note Wand
         $ui .= '<div class="inline-block ' . superpower_active(10985) . '">';
             //LINK TYPE
             $ui .= echo_in_dropdown(4486, $in['ln_type_source_id'], null, $is_author, false, $in['in_id'], $in['ln_id']);
@@ -1949,24 +1949,24 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     //RIGHT EDITING:
     $ui .= '<div class="pull-right inline-block">';
-    $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'">';
+    $ui .= '<div class="pads-edit edit-off '.superpower_active(10939).'">';
 
     $ui .= '<span class="show-on-hover">';
 
-    if($is_blog_link){
+    if($is_in_link){
         if($is_author || !$is_parent){
 
             if($is_author && !$is_parent){
-                $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars black blog-sort-handle"></i></span>';
+                $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars black note-sort-handle"></i></span>';
             }
 
             //Unlink:
-            $ui .= '<span title="Unlink Blog '.$in['ln_type_source_id'].'" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-times black"></i></a></span>';
+            $ui .= '<span title="Unlink Note '.$in['ln_type_source_id'].'" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-times black"></i></a></span>';
 
         } elseif(!$is_author) {
 
             //Indicate if NOT an author:
-            $ui .= '<span data-toggle="tooltip" title="You are not yet an author of this blog" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
+            $ui .= '<span data-toggle="tooltip" title="You are not yet an author of this note" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
 
         }
     }
@@ -2157,12 +2157,12 @@ function echo_in_read_previous($in_id, $recipient_en){
     //Now fetch the parent of the current
     $ui = null;
     $CI =& get_instance();
-    $en_all_4737 = $CI->config->item('en_all_4737'); // Blog Status
+    $en_all_4737 = $CI->config->item('en_all_4737'); // Note Status
     $en_all_2738 = $CI->config->item('en_all_2738');
 
     //READ LIST
     $player_read_ids = $CI->READ_model->read_ids($recipient_en['en_id']);
-    $recursive_parents = $CI->BLOG_model->in_fetch_recursive_parents($in_id, true, true);
+    $recursive_parents = $CI->NOTE_model->in_fetch_recursive_parents($in_id, true, true);
 
     foreach ($recursive_parents as $grand_parent_ids) {
         foreach(array_intersect($grand_parent_ids, $player_read_ids) as $intersect) {
@@ -2176,7 +2176,7 @@ function echo_in_read_previous($in_id, $recipient_en){
 
             foreach ($grand_parent_ids as $parent_in_id) {
 
-                $ins_this = $CI->BLOG_model->in_fetch(array(
+                $ins_this = $CI->NOTE_model->in_fetch(array(
                     'in_id' => $parent_in_id,
                 ));
 
@@ -2215,7 +2215,7 @@ function echo_message($message, $is_error, $recipient_en, $push_message){
     if($push_message){
         $CI =& get_instance();
         $CI->READ_model->dispatch_message(
-            'Note: ' . $message,
+            'Alert: ' . $message,
             $recipient_en,
             true
         );
@@ -2396,20 +2396,20 @@ function echo_en($en, $is_parent = false)
 
 
 
-    //BLOG
-    $blog_ui = '<td class="MENCHcolumn3 source">';
+    //NOTE
+    $in_ui = '<td class="MENCHcolumn3 source">';
 
     //RIGHT EDITING:
-    $blog_ui .= '<div class="pull-right inline-block">';
-    $blog_ui .= '<div class="note-edit edit-off '.superpower_active(10967).'">';
-    $blog_ui .= '<span class="show-on-hover">';
-    $blog_ui .= '<span title="Modify Source" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog black"></i></a></span>';
-    $blog_ui .= '</span>';
-    $blog_ui .= '</div>';
-    $blog_ui .= '</div>';
+    $in_ui .= '<div class="pull-right inline-block">';
+    $in_ui .= '<div class="pads-edit edit-off '.superpower_active(10967).'">';
+    $in_ui .= '<span class="show-on-hover">';
+    $in_ui .= '<span title="Modify Source" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog black"></i></a></span>';
+    $in_ui .= '</span>';
+    $in_ui .= '</div>';
+    $in_ui .= '</div>';
 
-    $blog_ui .= echo_in_stat_source(0, $en['en_id']);
-    $blog_ui .= '</td>';
+    $in_ui .= echo_in_stat_source(0, $en['en_id']);
+    $in_ui .= '</td>';
 
 
 
@@ -2418,11 +2418,11 @@ function echo_en($en, $is_parent = false)
     //Set order based on view mode:
     if($is_read_progress){
 
-        $ui .= $read_ui.$blog_ui;
+        $ui .= $read_ui.$in_ui;
 
     } else {
 
-        $ui .= $blog_ui.$read_ui;
+        $ui .= $in_ui.$read_ui;
 
     }
 
@@ -2435,23 +2435,23 @@ function echo_en($en, $is_parent = false)
 }
 
 
-function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tabindex = 0, $is_blog_title_lg = false){
+function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tabindex = 0, $is_in_title_lg = false){
 
     $CI =& get_instance();
     $en_all_12112 = $CI->config->item('en_all_12112');
     $current_value = htmlentities($current_value);
 
     //Define element attributes:
-    $attributes = ( $is_author ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' in_ln__id_'.$in_ln__id.' texttype_'.$cache_en_id.($is_blog_title_lg?'_lg':'_sm').'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" ';
+    $attributes = ( $is_author ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' in_ln__id_'.$in_ln__id.' texttype_'.$cache_en_id.($is_in_title_lg?'_lg':'_sm').'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" ';
 
 
-    $tooltip_span_start = '<span class="'.( !$is_author ? 'edit-locked' : '' ).'" '.( !$is_blog_title_lg || !$is_author ? 'data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12112[$cache_en_id]['m_name'].'"' : '').'>';
+    $tooltip_span_start = '<span class="'.( !$is_author ? 'edit-locked' : '' ).'" '.( !$is_in_title_lg || !$is_author ? 'data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12112[$cache_en_id]['m_name'].'"' : '').'>';
     $tooltip_span_end = '</span>';
 
 
     //Determine ICON
-    if($is_blog_title_lg){
-        //BLOG COIN:
+    if($is_in_title_lg){
+        //NOTE COIN:
         $icon = '<span class="icon-block title-icon">'.$en_all_12112[4535]['m_icon'].'</span>';
     } elseif(in_array($cache_en_id, $CI->config->item('en_ids_12420'))){
         $icon = '<span class="icon-block">'.$en_all_12112[$cache_en_id]['m_icon'].'</span>';
@@ -2459,7 +2459,7 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tab
         $icon = null;
     }
 
-    if($is_blog_title_lg){
+    if($is_in_title_lg){
 
         return $tooltip_span_start.$icon.'<textarea onkeyup="in_title_count()" placeholder="'.$en_all_12112[$cache_en_id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>'.$tooltip_span_end;
 

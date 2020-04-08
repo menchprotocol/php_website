@@ -1,7 +1,7 @@
 
 <?php
-$en_all_6201 = $this->config->item('en_all_6201'); //Blog Table
-$en_all_4485 = $this->config->item('en_all_4485'); //Blog Notes
+$en_all_6201 = $this->config->item('en_all_6201'); //Note Table
+$en_all_4485 = $this->config->item('en_all_4485'); //Note Pads
 $en_all_2738 = $this->config->item('en_all_2738');
 
 $is_author = in_is_author($in['in_id']);
@@ -10,7 +10,7 @@ $is_active = in_array($in['in_status_source_id'], $this->config->item('en_ids_73
 
 <style>
     .in_child_icon_<?= $in['in_id'] ?> { display:none; }
-    <?= ( !$is_author ? '.note-edit {display:none;}' : '' ) ?>
+    <?= ( !$is_author ? '.pads-edit {display:none;}' : '' ) ?>
 </style>
 
 
@@ -18,8 +18,8 @@ $is_active = in_array($in['in_status_source_id'], $this->config->item('en_ids_73
     //Include some cached sources:
     var in_loaded_id = <?= $in['in_id'] ?>;
 </script>
-<script src="/application/views/blog/blog_coin.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
-<script src="/application/views/blog/blog_shared.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/note/note_coin.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/note/note_shared.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <?php
 
@@ -28,31 +28,31 @@ $source_focus_found = false; //Used to determine the first tab to be opened
 
 
 
-//BLOG TREE PREVIOUS
-$blog__parents = $this->READ_model->ln_fetch(array(
+//NOTE TREE PREVIOUS
+$in__parents = $this->READ_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-    'ln_child_blog_id' => $in['in_id'],
+    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
+    'ln_next_note_id' => $in['in_id'],
 ), array('in_parent'), 0);
-$blog_tree_previous = '<div id="list-in-' . $in['in_id'] . '-1" class="list-group previous_blogs">';
-foreach ($blog__parents as $parent_in) {
-    $blog_tree_previous .= echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
+$in_tree_previous = '<div id="list-in-' . $in['in_id'] . '-1" class="list-group previous_ins">';
+foreach ($in__parents as $parent_in) {
+    $in_tree_previous .= echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
 }
 if( $is_author && $is_active && $in['in_id']!=config_var(12156)){
-    $blog_tree_previous .= '<div class="list-group-item itemblog '.superpower_active(10939).'" style="padding:5px 0;">
+    $in_tree_previous .= '<div class="list-group-item itemnote '.superpower_active(10939).'" style="padding:5px 0;">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control blogadder-level-2-parent form-control-thick algolia_search dotransparent"
+                           class="form-control noteadder-level-2-parent form-control-thick algolia_search dotransparent"
                            maxlength="' . config_var(11071) . '"
-                           blog-id="' . $in['in_id'] . '"
-                           id="addblog-c-' . $in['in_id'] . '-1"
+                           note-id="' . $in['in_id'] . '"
+                           id="addnote-c-' . $in['in_id'] . '-1"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="PREVIOUS BLOG">
+                           placeholder="PREVIOUS NOTE">
                 </div><div class="algolia_pad_search hidden in_pad_top"></div></div>';
 }
-$blog_tree_previous .= '</div>';
+$in_tree_previous .= '</div>';
 
 
 
@@ -63,7 +63,7 @@ echo '<div class="container" style="padding-bottom:42px;">';
 
 
 if(!$is_author){
-    echo '<div class="alert alert-warning no-margin"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>You are not an author of this blog, yet. <a href="/blog/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10985).'">&nbsp;or <a href="/blog/in_become_author/'.$in['in_id'].'" class="montserrat">BECOME AUTHOR</a></span></div>';
+    echo '<div class="alert alert-warning no-margin"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>You are not an author of this note, yet. <a href="/note/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10985).'">&nbsp;or <a href="/note/in_become_author/'.$in['in_id'].'" class="montserrat">BECOME AUTHOR</a></span></div>';
 }
 
 foreach ($this->config->item('en_all_11021') as $en_id => $m){
@@ -75,15 +75,15 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
     if($en_id==12365){
 
-        //BLOG BODY
+        //NOTE BODY
 
         if(superpower_active(10985, true)){
-            //BLOG TREE PREVIOUS
-            echo $blog_tree_previous;
+            //NOTE TREE PREVIOUS
+            echo $in_tree_previous;
         }
 
-        //BLOG TITLE
-        echo '<div class="itemblog">';
+        //NOTE TITLE
+        echo '<div class="itemnote">';
         echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && $is_active), 0, true);
         echo '<div class="title_counter hidden grey montserrat doupper" style="text-align: right;"><span id="charTitleNum">0</span>/'.config_var(11071).' CHARACTERS</div>';
         echo '</div>';
@@ -91,15 +91,15 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
     } elseif($en_id==11018){
 
-        //BLOG CONTROLLER
+        //NOTE CONTROLLER
 
-        //BLOG STATUS
-        echo '<div class="inline-block both-margin left-margin">'.echo_in_dropdown(4737, $in['in_status_source_id'], 'btn-blog', $is_author, true, $in['in_id']).'</div>';
+        //NOTE STATUS
+        echo '<div class="inline-block both-margin left-margin">'.echo_in_dropdown(4737, $in['in_status_source_id'], 'btn-note', $is_author, true, $in['in_id']).'</div>';
 
-        //BLOG TYPE
-        echo '<span class="inline-block both-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_source_id'], 'btn-blog', $is_author && $is_active, true, $in['in_id']).'</span>';
+        //NOTE TYPE
+        echo '<span class="inline-block both-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_source_id'], 'btn-note', $is_author && $is_active, true, $in['in_id']).'</span>';
 
-        //BLOG TIME
+        //NOTE TIME
         echo '<div class="inline-block both-margin left-half-margin '.superpower_active(10984).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
 
     }
@@ -120,103 +120,103 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         $this_tab = '';
 
 
-        //BLOG
+        //NOTE
         if($en_id2==11019 && !superpower_active(10985, true)){
 
-            $this_tab .= $blog_tree_previous;
-            $counter = count($blog__parents);
+            $this_tab .= $in_tree_previous;
+            $counter = count($in__parents);
 
         } elseif($en_id2==11020){
 
-            //BLOG TREE NEXT
-            $blog__children = $this->READ_model->ln_fetch(array(
+            //NOTE TREE NEXT
+            $in__children = $this->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                'ln_parent_blog_id' => $in['in_id'],
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
+                'ln_previous_note_id' => $in['in_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
-            $counter = count($blog__children);
+            $counter = count($in__children);
             $tab_is_active = true;
 
-            //List child blogs:
+            //List child notes:
             //$this_tab .= '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-forward"></i></span>NEXT:</div>';
-            $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group next_blogs">';
-            foreach ($blog__children as $child_in) {
+            $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group next_ins">';
+            foreach ($in__children as $child_in) {
                 $this_tab .= echo_in($child_in, $in['in_id'], false, $is_author);
             }
 
             if($is_author && $is_active){
-                $this_tab .= '<div class="list-group-item itemblog '.superpower_active(10939).'" style="padding:5px 0;">
+                $this_tab .= '<div class="list-group-item itemnote '.superpower_active(10939).'" style="padding:5px 0;">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control blogadder-level-2-child form-control-thick algolia_search dotransparent"
+                           class="form-control noteadder-level-2-child form-control-thick algolia_search dotransparent"
                            maxlength="' . config_var(11071) . '"
-                           blog-id="' . $in['in_id'] . '"
-                           id="addblog-c-' . $in['in_id'] . '-0"
+                           note-id="' . $in['in_id'] . '"
+                           id="addnote-c-' . $in['in_id'] . '-0"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="NEXT BLOG">
+                           placeholder="NEXT NOTE">
                 </div><div class="algolia_pad_search hidden in_pad_bottom"></div></div>';
             }
 
         } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
 
-            //BLOG NOTE
-            $blog_notes = $this->READ_model->ln_fetch(array(
+            //NOTE PADS
+            $in_pads = $this->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'ln_type_source_id' => $en_id2,
-                'ln_child_blog_id' => $in['in_id'],
+                'ln_next_note_id' => $in['in_id'],
             ), array(), 0, 0, array('ln_order' => 'ASC'));
 
-            $counter = count($blog_notes);
+            $counter = count($in_pads);
 
             if($en_id2==4231){
-                $tab_is_active = true; //BLOG MESSAGES
+                $tab_is_active = true; //NOTE MESSAGES
             }
 
 
 
             //Show no-Message notifications for each message type:
-            $this_tab .= '<div id="in_notes_list_'.$en_id2.'" class="list-group">';
+            $this_tab .= '<div id="in_pads_list_'.$en_id2.'" class="list-group">';
 
-            foreach ($blog_notes as $in_note) {
-                $this_tab .= echo_in_note($in_note);
+            foreach ($in_pads as $in_pads) {
+                $this_tab .= echo_in_pads($in_pads);
             }
 
-            //ADD NEW NOTE:
-            $this_tab .= '<div class="list-group-item itemblog add_note_' . $en_id2 . ( $is_author && $is_active ? '' : ' hidden ' ).'">';
-            $this_tab .= '<div class="add_note_form">';
+            //ADD NEW Alert:
+            $this_tab .= '<div class="list-group-item itemnote add_pads_' . $en_id2 . ( $is_author && $is_active ? '' : ' hidden ' ).'">';
+            $this_tab .= '<div class="add_pads_form">';
             $this_tab .= '<form class="box box' . $en_id2 . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
 
 
 
-            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder="WRITE'.( in_array($en_id2, $this->config->item('en_ids_7551')) || in_array($en_id2, $this->config->item('en_ids_4986')) ? ', PASTE URL' : '' ).( in_array($en_id2, $this->config->item('en_ids_12359')) ? ', DRAG FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+            $this_tab .= '<textarea onkeyup="in_new_pads_count('.$en_id2.')" class="form-control msg pads-textarea algolia_search new-pads" pads-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder="WRITE'.( in_array($en_id2, $this->config->item('en_ids_7551')) || in_array($en_id2, $this->config->item('en_ids_4986')) ? ', PASTE URL' : '' ).( in_array($en_id2, $this->config->item('en_ids_12359')) ? ', DRAG FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
-            $this_tab .= '<table class="table table-condensed hidden" id="notes_control_'.$en_id2.'"><tr>';
+            $this_tab .= '<table class="table table-condensed hidden" id="pads_control_'.$en_id2.'"><tr>';
 
             //Save button:
-            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" class="btn btn-blog save_note_'.$en_id2.'">ADD</a></td>';
+            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_pads_add('.$en_id2.');" class="btn btn-note save_pads_'.$en_id2.'">ADD</a></td>';
 
             //File counter:
-            $this_tab .= '<td class="remove_loading" class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="blogNoteNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
+            $this_tab .= '<td class="remove_loading" class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="notePadsNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
 
             //First Name:
-            $this_tab .= '<td class="remove_loading '.superpower_active(10967).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'/firstname \');" data-toggle="tooltip" title="Mention readers first name" data-placement="top"><span class="icon-block"><i class="far fa-fingerprint"></i></span></a></td>';
+            $this_tab .= '<td class="remove_loading '.superpower_active(10967).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_pads_insert_string('.$en_id2.', \'/firstname \');" data-toggle="tooltip" title="Mention readers first name" data-placement="top"><span class="icon-block"><i class="far fa-fingerprint"></i></span></a></td>';
 
             //YouTube Embed
-            $this_tab .= '<td class="remove_loading '.superpower_active(10984).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=&end=\');" data-toggle="tooltip" title="YouTube Clip with Start & End Seconds" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
+            $this_tab .= '<td class="remove_loading '.superpower_active(10984).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_pads_insert_string('.$en_id2.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=&end=\');" data-toggle="tooltip" title="YouTube Clip with Start & End Seconds" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
 
             //Reference Player
-            $this_tab .= '<td class="remove_loading '.superpower_active(10983).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Reference SOURCE" data-placement="top"><span class="icon-block"><i class="far fa-at"></i></span></a></td>';
+            $this_tab .= '<td class="remove_loading '.superpower_active(10983).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_pads_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Reference SOURCE" data-placement="top"><span class="icon-block"><i class="far fa-at"></i></span></a></td>';
 
             //Upload File:
             if(in_array(12359, $en_all_4485[$en_id2]['m_parents'])){
                 $this_tab .= '<td class="remove_loading" style="width:36px; padding: 10px 0 0 0;">';
-                $this_tab .= '<input class="inputfile hidden" type="file" name="file" id="fileBlogType'.$en_id2.'" />';
-                $this_tab .= '<label class="file_label_'.$en_id2.'" for="fileBlogType'.$en_id2.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
+                $this_tab .= '<input class="inputfile hidden" type="file" name="file" id="fileNoteType'.$en_id2.'" />';
+                $this_tab .= '<label class="file_label_'.$en_id2.'" for="fileNoteType'.$en_id2.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
                 $this_tab .= '</td>';
             }
 
@@ -225,7 +225,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
             //Response result:
-            $this_tab .= '<div class="note_error_'.$en_id2.'"></div>';
+            $this_tab .= '<div class="pads_error_'.$en_id2.'"></div>';
 
 
             $this_tab .= '</form>';
@@ -240,7 +240,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $item_counters = $this->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
-                'ln_parent_blog_id' => $in['in_id'],
+                'ln_previous_note_id' => $in['in_id'],
             ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 
             $counter = $item_counters[0]['totals'];
@@ -288,10 +288,10 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
                 } elseif(in_array($action_en_id, array(12611, 12612))){
 
-                    //Blog search box:
+                    //Note search box:
 
                     //String command:
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search Blogs..." class="form-control algolia_search in_quick_search border montserrat '.$is_upper.'">';
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search Notes..." class="form-control algolia_search in_quick_search border montserrat '.$is_upper.'">';
 
                     //We don't need the second value field here:
                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
@@ -312,7 +312,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             $this_tab .= $input_options;
 
-            $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-blog inline-block"></div>';
+            $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-note inline-block"></div>';
 
             $this_tab .= '</div>';
             $this_tab .= '</form>';

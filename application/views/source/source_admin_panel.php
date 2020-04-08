@@ -3,7 +3,7 @@
 echo '<div class="container">';
 
 //Define all moderation functions:
-$en_all_4737 = $this->config->item('en_all_4737'); // Blog Status
+$en_all_4737 = $this->config->item('en_all_4737'); // Note Status
 $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
 $en_all_4463 = $this->config->item('en_all_4463'); //GLOSSARY
 
@@ -11,17 +11,17 @@ $moderation_tools = array(
 
     //Moderator Tools
     '/source/admin_panel/link_coins_words_stats' => 'Coin Stats',
-    '/source/admin_panel/orphan_blogs' => 'List Orphan Blogs',
+    '/source/admin_panel/orphan_ins' => 'List Orphan Notes',
     '/source/admin_panel/orphan_sources' => 'List Orphan Sources',
-    '/source/admin_panel/in_replace_outcomes' => 'Blog Title Search & Replace',
+    '/source/admin_panel/in_replace_outcomes' => 'Note Title Search & Replace',
     '/source/admin_panel/en_replace_name' => 'Source Name Search & Replace',
-    '/source/admin_panel/in_invalid_outcomes' => 'Blog Invalid Titles',
-    '/source/admin_panel/identical_blog_outcomes' => 'Identical Blog Titles',
+    '/source/admin_panel/in_invalid_outcomes' => 'Note Invalid Titles',
+    '/source/admin_panel/identical_in_outcomes' => 'Identical Note Titles',
     '/source/admin_panel/identical_source_names' => 'Identical Source Names',
     '/source/admin_panel/actionplan_debugger' => 'My READING LIST Debugger',
     '/source/admin_panel/en_icon_search' => 'Source Icon Search',
     '/source/admin_panel/sync_source_links' => 'Source Sync Link Types',
-    '/source/admin_panel/or__children' => 'List OR Blogs + Answers',
+    '/source/admin_panel/or__children' => 'List OR Notes + Answers',
     '/source/admin_panel/assessment_marks_list_all' => 'Completion Marks List All',
     '/source/admin_panel/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
     '/source/admin_panel/compose_test_message' => 'Compose Test Message',
@@ -29,17 +29,17 @@ $moderation_tools = array(
     '/source/admin_panel/analyze_url' => 'Analyze URL',
 
     //Hope to get zero:
-    '/source/admin_panel/sync_source_blog_statuses' => 'Analyze & Fix Play & Blog Statuses',
+    '/source/admin_panel/sync_source_in_statuses' => 'Analyze & Fix Play & Note Statuses',
     '/source/admin_panel/analyze_source' => 'Analyze & Fix Source Links',
-    '/source/admin_panel/in_crossovers' => 'Analyze & Fix Blog Crossover Parent/Children',
-    '/source/admin_panel/analyze_blog_authors' => 'Analyze & Fix Blog Authors',
+    '/source/admin_panel/in_crossovers' => 'Analyze & Fix Note Crossover Parent/Children',
+    '/source/admin_panel/analyze_in_authors' => 'Analyze & Fix Note Authors',
 );
 
 $cron_jobs = array(
-    '/blog/cron__sync_common_base' => 'Sync Common Base Metadata',
-    '/blog/cron__sync_extra_insights' => 'Sync Extra Insights Metadata',
-    '/read/cron__weights' => 'Sync Blog & Source Weights',
-    '/read/cron__weights/in' => 'Sync Blog Weights',
+    '/note/cron__sync_common_base' => 'Sync Common Base Metadata',
+    '/note/cron__sync_extra_insights' => 'Sync Extra Insights Metadata',
+    '/read/cron__weights' => 'Sync Note & Source Weights',
+    '/read/cron__weights/in' => 'Sync Note Weights',
     '/read/cron__weights/en' => 'Sync Source Weights',
     '/read/cron__sync_algolia' => 'Sync Algolia Index [Limited calls!]',
     '/read/cron__sync_gephi' => 'Sync Gephi Graph Index',
@@ -161,7 +161,7 @@ if(!$action) {
 
     echo '<div class="mini-header">URL:</div>';
     echo '<input type="url" class="form-control border maxout" name="url_to_analyze" value="'.@$_GET['url_to_analyze'].'"><br />';
-    echo '<input type="submit" class="btn btn-blog" value="Analyze">';
+    echo '<input type="submit" class="btn btn-note" value="Analyze">';
 
 
     if(isset($_GET['url_to_analyze']) && strlen($_GET['url_to_analyze'])>0){
@@ -214,10 +214,10 @@ if(!$action) {
         echo '<span class="icon-block">'.random_source_avatar().'</span>';
     }
 
-} elseif($action=='analyze_blog_authors') {
+} elseif($action=='analyze_in_authors') {
 
     $stats = array(
-        'blogs' => 0,
+        'notes' => 0,
         'author_missing' => 0,
         'is_archived' => 0,
         'creator_missing' => 0,
@@ -226,56 +226,56 @@ if(!$action) {
     );
 
     //FInd and remove duplicate authors:
-    foreach($this->BLOG_model->in_fetch() as $in) {
+    foreach($this->NOTE_model->in_fetch() as $in) {
 
-        $stats['blogs']++;
+        $stats['notes']++;
 
         $is_archived = !in_array($in['in_status_source_id'], $this->config->item('en_ids_7356'));
 
         //Scan authors:
-        $blog_sources = $this->READ_model->ln_fetch(array(
+        $in_sources = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id' => 4983,
-            'ln_child_blog_id' => $in['in_id'],
+            'ln_next_note_id' => $in['in_id'],
         ));
-        $blog_creators = $this->READ_model->ln_fetch(array(
-            'ln_type_source_id' => 4250, //New Blog Created
-            'ln_child_blog_id' => $in['in_id'],
+        $in_creators = $this->READ_model->ln_fetch(array(
+            'ln_type_source_id' => 4250, //New Note Created
+            'ln_next_note_id' => $in['in_id'],
         ));
 
-        if(!count($blog_creators)) {
+        if(!count($in_creators)) {
             $stats['creator_missing']++;
             $this->READ_model->ln_create(array(
                 'ln_creator_source_id' => 1,
-                'ln_child_blog_id' => $in['in_id'],
+                'ln_next_note_id' => $in['in_id'],
                 'ln_content' => $in['in_title'],
-                'ln_type_source_id' => 4250, //New Blog Created
+                'ln_type_source_id' => 4250, //New Note Created
             ));
         }
 
 
-        if(!count($blog_sources)){
+        if(!count($in_sources)){
 
             $stats['author_missing']++;
 
-            if(count($blog_creators)){
+            if(count($in_creators)){
                 $this->READ_model->ln_create(array(
                     'ln_type_source_id' => 4983,
-                    'ln_creator_source_id' => $blog_creators[0]['ln_creator_source_id'],
-                    'ln_parent_source_id' => $blog_creators[0]['ln_creator_source_id'],
-                    'ln_content' => '@'.$blog_creators[0]['ln_creator_source_id'],
-                    'ln_child_blog_id' => $in['in_id'],
+                    'ln_creator_source_id' => $in_creators[0]['ln_creator_source_id'],
+                    'ln_parent_source_id' => $in_creators[0]['ln_creator_source_id'],
+                    'ln_content' => '@'.$in_creators[0]['ln_creator_source_id'],
+                    'ln_next_note_id' => $in['in_id'],
                 ));
             }
 
-        } elseif(count($blog_sources) >= 2){
+        } elseif(count($in_sources) >= 2){
 
             //See if duplicates:
             $found_duplicate = false;
             $authors = array();
-            foreach($blog_sources as $blog_source){
-                if(!in_array($blog_source['ln_parent_source_id'], $authors)){
-                    array_push($authors, $blog_source['ln_parent_source_id']);
+            foreach($in_sources as $in_source){
+                if(!in_array($in_source['ln_parent_source_id'], $authors)){
+                    array_push($authors, $in_source['ln_parent_source_id']);
                 } else {
                     $found_duplicate = true;
                     break;
@@ -339,14 +339,14 @@ if(!$action) {
 
     echo nl2br(print_r($stats, true));
 
-} elseif($action=='orphan_blogs') {
+} elseif($action=='orphan_ins') {
 
     echo '<ul class="breadcrumb"><li><a href="/source/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/source/admin_panel/'.$action].'</b></li></ul>';
 
-    $orphan_ins = $this->BLOG_model->in_fetch(array(
-        ' NOT EXISTS (SELECT 1 FROM table_read WHERE in_id=ln_child_blog_id AND ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_source_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Transaction Status Active */.')) ' => null,
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
-        'in_id !=' => config_var(12156), //Not the Starting Blog
+    $orphan_ins = $this->NOTE_model->in_fetch(array(
+        ' NOT EXISTS (SELECT 1 FROM table_read WHERE in_id=ln_next_note_id AND ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_source_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Transaction Status Active */.')) ' => null,
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+        'in_id !=' => config_var(12156), //Not the Starting Note
     ));
 
     if(count($orphan_ins) > 0){
@@ -354,26 +354,26 @@ if(!$action) {
         //List orphans:
         foreach ($orphan_ins as $count => $orphan_in) {
 
-            //Show blog:
-            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_source_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_source_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_source_id']]['m_icon'] . '</span> <a href="/blog/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_title'].'</b></a>';
+            //Show note:
+            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_source_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_source_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_source_id']]['m_icon'] . '</span> <a href="/note/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_title'].'</b></a>';
 
             //Do we need to remove?
             if($command1=='remove_all'){
 
-                //Remove blog links:
-                $links_removed = $this->BLOG_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
+                //Remove note links:
+                $links_removed = $this->NOTE_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
 
-                //Remove blog:
-                $this->BLOG_model->in_update($orphan_in['in_id'], array(
-                    'in_status_source_id' => 6182, /* Blog Removed */
+                //Remove note:
+                $this->NOTE_model->in_update($orphan_in['in_id'], array(
+                    'in_status_source_id' => 6182, /* Note Removed */
                 ), true, $session_en['en_id']);
 
                 //Show confirmation:
-                echo ' [Blog + '.$links_removed.' links Removed]';
+                echo ' [Note + '.$links_removed.' links Removed]';
 
             }
 
-            //Done showing the blog:
+            //Done showing the note:
             echo '</div>';
         }
 
@@ -381,8 +381,8 @@ if(!$action) {
         if($command1!='remove_all'){
             echo '<br />';
             echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
-            echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All blogs and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing blog.<br /><br /></div>';
-            echo '<a class="remove-all hidden maxout" href="/source/admin_panel/orphan_blogs/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
+            echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All notes and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing note.<br /><br /></div>';
+            echo '<a class="remove-all hidden maxout" href="/source/admin_panel/orphan_ins/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
         }
 
     } else {
@@ -480,7 +480,7 @@ if(!$action) {
 
     echo '<div class="mini-header">Search For:</div>';
     echo '<input type="text" class="form-control border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
-    echo '<input type="submit" class="btn btn-blog" value="Search">';
+    echo '<input type="submit" class="btn btn-note" value="Search">';
 
 
     if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
@@ -533,7 +533,7 @@ if(!$action) {
 
         echo '<div class="mini-header">Replace With:</div>';
         echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
-        echo '<input type="submit" name="do_replace" class="btn btn-blog" value="Replace">';
+        echo '<input type="submit" name="do_replace" class="btn btn-note" value="Replace">';
     }
 
 
@@ -543,14 +543,14 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/source/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/source/admin_panel/'.$action].'</b></li></ul>';
 
-    //List this users 🔴 READING LIST blogs so they can choose:
-    echo '<div>Choose one of your 🔴 READING LIST blogs to debug:</div><br />';
+    //List this users 🔴 READING LIST notes so they can choose:
+    echo '<div>Choose one of your 🔴 READING LIST notes to debug:</div><br />';
 
     $player_reads = $this->READ_model->ln_fetch(array(
         'ln_creator_source_id' => $session_en['en_id'],
-        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
+        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Note Set
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
     ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
     foreach ($player_reads as $priority => $ln) {
@@ -559,15 +559,15 @@ if(!$action) {
 
 } elseif($action=='in_crossovers') {
 
-    $active_ins = $this->BLOG_model->in_fetch(array(
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
+    $active_ins = $this->NOTE_model->in_fetch(array(
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
     ), ( isset($_GET['limit']) ? $_GET['limit'] : 0 ));
     $found = 0;
     foreach($active_ins as $count=>$in){
 
-        $recursive_children = $this->BLOG_model->in_recursive_child_ids($in['in_id'], false);
+        $recursive_children = $this->NOTE_model->in_recursive_child_ids($in['in_id'], false);
         if(count($recursive_children) > 0){
-            $recursive_parents = $this->BLOG_model->in_fetch_recursive_parents($in['in_id']);
+            $recursive_parents = $this->NOTE_model->in_fetch_recursive_parents($in['in_id']);
             foreach ($recursive_parents as $grand_parent_ids) {
                 $crossovers = array_intersect($recursive_children, $grand_parent_ids);
                 if(count($crossovers) > 0){
@@ -585,12 +585,12 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/source/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/source/admin_panel/'.$action].'</b></li></ul>';
 
-    $active_ins = $this->BLOG_model->in_fetch(array(
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
+    $active_ins = $this->NOTE_model->in_fetch(array(
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
     ));
 
     //Give an overview:
-    echo '<p>When the validation criteria change within the in_titlevalidate() function, this page lists all the blogs that no longer have a valid outcome.</p>';
+    echo '<p>When the validation criteria change within the in_titlevalidate() function, this page lists all the notes that no longer have a valid outcome.</p>';
 
 
     //List the matching search:
@@ -605,16 +605,16 @@ if(!$action) {
     $invalid_outcomes = 0;
     foreach($active_ins as $count=>$in){
 
-        $in_titlevalidation = $this->BLOG_model->in_titlevalidate($in['in_title']);
+        $in_titlevalidation = $this->NOTE_model->in_titlevalidate($in['in_title']);
 
         if(!$in_titlevalidation['status']){
 
             $invalid_outcomes++;
 
-            //Update blog:
+            //Update note:
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.$invalid_outcomes.'</td>';
-            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Blog Status */, $in['in_status_source_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.echo_in_title($in).'</a></td>';
+            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Note Status */, $in['in_status_source_id'], true, 'right').' <a href="/note/'.$in['in_id'].'">'.echo_in_title($in).'</a></td>';
             echo '</tr>';
 
         }
@@ -679,7 +679,7 @@ if(!$action) {
                     $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$en['en_name']).$append_text;
 
                     if($replace_with_is_confirmed){
-                        //Update blog:
+                        //Update note:
                         $this->SOURCE_model->en_update($en['en_id'], array(
                             'en_name' => $new_outcome,
                         ), true, $session_en['en_id']);
@@ -727,7 +727,7 @@ if(!$action) {
     }
 
 
-    echo '<input type="submit" class="btn btn-blog" value="Go">';
+    echo '<input type="submit" class="btn btn-note" value="Go">';
     echo '</form>';
 
 
@@ -750,8 +750,8 @@ if(!$action) {
 
     if($search_for_is_set){
 
-        $matching_results = $this->BLOG_model->in_fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
+        $matching_results = $this->NOTE_model->in_fetch(array(
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
             'LOWER(in_title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
         ));
 
@@ -788,7 +788,7 @@ if(!$action) {
                     //Do replacement:
                     $append_text = @$_GET['append_text'];
                     $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_title']).$append_text;
-                    $in_titlevalidation = $this->BLOG_model->in_titlevalidate($new_outcome);
+                    $in_titlevalidation = $this->NOTE_model->in_titlevalidate($new_outcome);
 
                     if($in_titlevalidation['status']){
                         $qualifying_replacements++;
@@ -796,34 +796,34 @@ if(!$action) {
                 }
 
                 if($replace_with_is_confirmed && $in_titlevalidation['status']){
-                    //Update blog:
-                    $this->BLOG_model->in_update($in['in_id'], array(
+                    //Update note:
+                    $this->NOTE_model->in_update($in['in_id'], array(
                         'in_title' => $in_titlevalidation['in_cleaned_outcome'],
                     ), true, $session_en['en_id']);
                 }
 
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
-                echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Blog Status */, $in['in_status_source_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.$in['in_title'].'</a></td>';
+                echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Note Status */, $in['in_status_source_id'], true, 'right').' <a href="/note/'.$in['in_id'].'">'.$in['in_title'].'</a></td>';
 
                 if($replace_with_is_set){
 
                     echo '<td style="text-align: left;">'.$new_outcome.'</td>';
-                    echo '<td style="text-align: left;">'.( !$in_titlevalidation['status'] ? ' <i class="fad fa-exclamation-triangle"></i> Note: '.$in_titlevalidation['message'] : ( $replace_with_is_confirmed && $in_titlevalidation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
+                    echo '<td style="text-align: left;">'.( !$in_titlevalidation['status'] ? ' <i class="fad fa-exclamation-triangle"></i> Alert: '.$in_titlevalidation['message'] : ( $replace_with_is_confirmed && $in_titlevalidation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
                 } else {
                     //Show parents now:
                     echo '<td style="text-align: left;">';
 
 
                     //Loop through parents:
-                    $en_all_7585 = $this->config->item('en_all_7585'); // Blog Subtypes
+                    $en_all_7585 = $this->config->item('en_all_7585'); // Note Subtypes
                     foreach ($this->READ_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                        'ln_child_blog_id' => $in['in_id'],
+                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
+                        'ln_next_note_id' => $in['in_id'],
                     ), array('in_parent')) as $in_parent) {
-                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/blog/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_title'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_type_source_id']]['m_icon'] . '</a> &nbsp;</span>';
+                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/note/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_title'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_type_source_id']]['m_icon'] . '</a> &nbsp;</span>';
                     }
 
                     echo '</td>';
@@ -861,16 +861,16 @@ if(!$action) {
     }
 
 
-    echo '<input type="submit" class="btn btn-blog" value="Go">';
+    echo '<input type="submit" class="btn btn-note" value="Go">';
     echo '</form>';
 
 
-} elseif($action=='identical_blog_outcomes') {
+} elseif($action=='identical_in_outcomes') {
 
     echo '<ul class="breadcrumb"><li><a href="/source/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/source/admin_panel/'.$action].'</b></li></ul>';
 
-    //Do a query to detect Blogs with the exact same title:
-    $q = $this->db->query('select in1.* from table_blog in1 where (select count(*) from table_blog in2 where in2.in_title = in1.in_title AND in2.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_title ASC');
+    //Do a query to detect Notes with the exact same title:
+    $q = $this->db->query('select in1.* from table_note in1 where (select count(*) from table_note in2 where in2.in_title = in1.in_title AND in2.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_title ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
@@ -882,7 +882,7 @@ if(!$action) {
                 $prev_title = $in['in_title'];
             }
 
-            echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].': '.$en_all_4737[$in['in_status_source_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span> <a href="/blog/' . $in['in_id'] . '"><b>' . $in['in_title'] . '</b></a> #' . $in['in_id'] . '</div>';
+            echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].': '.$en_all_4737[$in['in_status_source_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span> <a href="/note/' . $in['in_id'] . '"><b>' . $in['in_title'] . '</b></a> #' . $in['in_id'] . '</div>';
         }
 
     } else {
@@ -913,10 +913,10 @@ if(!$action) {
         echo '<div class="alert alert-success maxout"><span class="icon-block"><i class="fas fa-check-circle"></i></span>No duplicates found!</div>';
     }
 
-} elseif($action=='sync_source_blog_statuses') {
+} elseif($action=='sync_source_in_statuses') {
 
     //Sync ALL and echo results:
-    echo 'IDAE: '.nl2br(print_r($this->BLOG_model->in_sync_creation($session_en['en_id']), true)).'<hr />';
+    echo 'IDAE: '.nl2br(print_r($this->NOTE_model->in_sync_creation($session_en['en_id']), true)).'<hr />';
     echo 'SOURCE: '.nl2br(print_r($this->SOURCE_model->en_sync_creation($session_en['en_id']), true)).'<hr />';
 
 } elseif($action=='fix_read_coins') {
@@ -933,20 +933,20 @@ if(!$action) {
         //Anything set here would be updated:
         $update_columns = array();
 
-        if($ln['ln_child_blog_id'] > 0 && $ln['ln_type_source_id'] == 6157){ //ONE ANSWER
+        if($ln['ln_next_note_id'] > 0 && $ln['ln_type_source_id'] == 6157){ //ONE ANSWER
 
             //Create separate answer:
             $total_added++;
             $this->READ_model->ln_create(array(
                 'ln_type_source_id' => 12336,
                 'ln_creator_source_id' => $ln['ln_creator_source_id'],
-                'ln_parent_blog_id' => $ln['ln_parent_blog_id'],
-                'ln_child_blog_id' => $ln['ln_child_blog_id'],
+                'ln_previous_note_id' => $ln['ln_previous_note_id'],
+                'ln_next_note_id' => $ln['ln_next_note_id'],
                 'ln_parent_transaction_id' => $ln['ln_id'],
             ));
 
             //Move answer away:
-            $update_columns['ln_child_blog_id'] = 0;
+            $update_columns['ln_next_note_id'] = 0;
 
         }
 
@@ -960,37 +960,37 @@ if(!$action) {
 
 } elseif($action=='or__children') {
 
-    echo '<br /><p>Active <a href="/source/6914">Blog Answer Types</a> are listed below.</p><br />';
+    echo '<br /><p>Active <a href="/source/6914">Note Answer Types</a> are listed below.</p><br />';
 
     $all_steps = 0;
     $all_children = 0;
     $updated = 0;
 
-    foreach ($this->BLOG_model->in_fetch(array(
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
+    foreach ($this->NOTE_model->in_fetch(array(
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
         'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
     ), 0, 0, array('in_id' => 'DESC')) as $count => $in) {
 
-        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Blog Status */, $in['in_status_source_id']).' '.echo_en_cache('en_all_6193' /* OR Blogs */, $in['in_type_source_id']).' <b><a href="https://mench.com/blog/'.$in['in_id'].'">'.echo_in_title($in).'</a></b></div>';
+        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Note Status */, $in['in_status_source_id']).' '.echo_en_cache('en_all_6193' /* OR Notes */, $in['in_type_source_id']).' <b><a href="https://mench.com/note/'.$in['in_id'].'">'.echo_in_title($in).'</a></b></div>';
 
         echo '<ul>';
         //Fetch all children for this OR:
         foreach($this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
-            'ln_type_source_id' => 4228, //Blog Link Regular Read
-            'ln_parent_blog_id' => $in['in_id'],
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+            'ln_type_source_id' => 4228, //Note Link Regular Read
+            'ln_previous_note_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
             $user_steps = $this->READ_model->ln_fetch(array(
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-                'ln_parent_blog_id' => $child_or['in_id'],
+                'ln_previous_note_id' => $child_or['in_id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             ), array(), 0);
             $all_steps += count($user_steps);
 
             $all_children++;
-            echo '<li>'.echo_en_cache('en_all_6186' /* Transaction Status */, $child_or['ln_status_source_id']).' '.echo_en_cache('en_all_4737' /* Blog Status */, $child_or['in_status_source_id']).' '.echo_en_cache('en_all_7585', $child_or['in_type_source_id']).' <a href="https://mench.com/blog/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_title($child_or).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
+            echo '<li>'.echo_en_cache('en_all_6186' /* Transaction Status */, $child_or['ln_status_source_id']).' '.echo_en_cache('en_all_4737' /* Note Status */, $child_or['in_status_source_id']).' '.echo_en_cache('en_all_7585', $child_or['in_type_source_id']).' <a href="https://mench.com/note/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_title($child_or).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
         }
         echo '</ul>';
         echo '<hr />';
@@ -1016,8 +1016,8 @@ if(!$action) {
     $total_count = 0;
     foreach ($this->READ_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
-        'ln_type_source_id' => 4229, //Blog Link Locked Read
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+        'ln_type_source_id' => 4229, //Note Link Locked Read
         'LENGTH(ln_metadata) > 0' => null,
     ), array('in_child'), 0, 0) as $in_ln) {
         //Echo HTML format of this message:
@@ -1025,9 +1025,9 @@ if(!$action) {
         $mark = echo_in_marks($in_ln);
         if($mark){
 
-            //Fetch parent Blog:
-            $parent_ins = $this->BLOG_model->in_fetch(array(
-                'in_id' => $in_ln['ln_parent_blog_id'],
+            //Fetch parent Note:
+            $parent_ins = $this->NOTE_model->in_fetch(array(
+                'in_id' => $in_ln['ln_previous_note_id'],
             ));
 
             $counter++;
@@ -1039,20 +1039,20 @@ if(!$action) {
 
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_source_id']]['m_icon'].'</span>';
-            echo '<a href="/blog/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
+            echo '<a href="/note/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
             echo '</div>';
 
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_source_id']]['m_icon'].'</span>';
-            echo '<a href="/blog/'.$in_ln['in_id'].'">'.$in_ln['in_title'].' [child]</a>';
+            echo '<a href="/note/'.$in_ln['in_id'].'">'.$in_ln['in_title'].' [child]</a>';
             echo '</div>';
 
             if(count($this->READ_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
+                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
                     'in_type_source_id NOT IN (6907,6914)' => null, //NOT AND/OR Lock
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Blog-to-Blog Links
-                    'ln_child_blog_id' => $in_ln['in_id'],
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
+                    'ln_next_note_id' => $in_ln['in_id'],
                 ), array('in_parent'))) > 1 || $in_ln['in_type_source_id'] != 6677){
 
                 echo '<div>';
@@ -1064,7 +1064,7 @@ if(!$action) {
                 //Update user progression link type:
                 $user_steps = $this->READ_model->ln_fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-                    'ln_parent_blog_id' => $in_ln['in_id'],
+                    'ln_previous_note_id' => $in_ln['in_id'],
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 ), array(), 0);
 
@@ -1096,8 +1096,8 @@ if(!$action) {
         $counter = 0;
         foreach ($this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
-            'ln_type_source_id' => 4228, //Blog Link Regular Read
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+            'ln_type_source_id' => 4228, //Note Link Regular Read
             'LENGTH(ln_metadata) > 0' => null,
         ), array('in_child'), 0, 0) as $in_ln) {
             //Echo HTML format of this message:
@@ -1105,9 +1105,9 @@ if(!$action) {
             $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
             if($tr__assessment_points!=0){
 
-                //Fetch parent Blog:
-                $parent_ins = $this->BLOG_model->in_fetch(array(
-                    'in_id' => $in_ln['ln_parent_blog_id'],
+                //Fetch parent Note:
+                $parent_ins = $this->NOTE_model->in_fetch(array(
+                    'in_id' => $in_ln['ln_previous_note_id'],
                 ));
 
                 $counter++;
@@ -1118,12 +1118,12 @@ if(!$action) {
                 echo '<td style="text-align: left;">';
                 echo '<div>';
                 echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_source_id']]['m_icon'].'</span>';
-                echo '<a href="/blog/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
+                echo '<a href="/note/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
                 echo '</div>';
 
                 echo '<div>';
                 echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_source_id']]['m_icon'].'</span>';
-                echo '<a href="/blog/'.$in_ln['in_id'].'">'.$in_ln['in_title'].'</a>';
+                echo '<a href="/note/'.$in_ln['in_id'].'">'.$in_ln['in_title'].'</a>';
                 echo '</div>';
                 echo '</td>';
                 echo '</tr>';
@@ -1155,7 +1155,7 @@ if(!$action) {
                     <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300; border-left: 1px solid #AAAAAA; border-right:0px solid #FFF;"> levels deep.</span>
                 </div>
             </div>
-            <input type="submit" class="btn btn-blog" value="Go" style="display: inline-block; margin-top: -41px;" />
+            <input type="submit" class="btn btn-note" value="Go" style="display: inline-block; margin-top: -41px;" />
         </div>';
 
     echo '</form>';
@@ -1168,13 +1168,13 @@ $(document).ready(function () {
 //Show spinner:
 $(\'#in_report_conditional_steps\').html(\'<span><i class="far fa-yin-yang fa-spin"></i> \' + echo_loading_notify() +  \'</span>\').hide().fadeIn();
 //Load report based on input fields:
-$.post("/blog/in_report_conditional_steps", {
+$.post("/note/in_report_conditional_steps", {
     starting_in: parseInt($(\'#starting_in\').val()),
     depth_levels: parseInt($(\'#depth_levels\').val()),
 }, function (data) {
     if (!data.status) {
         //Show Errors:
-        $(\'#in_report_conditional_steps\').html(\'<span style="color:#FF0000;">Note: \'+ data.message +\'</span>\');
+        $(\'#in_report_conditional_steps\').html(\'<span style="color:#FF0000;">Alert: \'+ data.message +\'</span>\');
     } else {
         //Load Report:
         $(\'#in_report_conditional_steps\').html(data.message);
@@ -1232,7 +1232,7 @@ $.post("/blog/in_report_conditional_steps", {
         echo '<input type="number" class="form-control border" name="push_message" value="1"><br /><br />';
 
 
-        echo '<input type="submit" class="btn btn-blog" value="Compose Test Message">';
+        echo '<input type="submit" class="btn btn-note" value="Compose Test Message">';
         echo '</form>';
 
     }

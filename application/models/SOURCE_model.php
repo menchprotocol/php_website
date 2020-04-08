@@ -82,7 +82,7 @@ class SOURCE_model extends CI_Model
     function en_create($insert_columns, $external_sync = false, $ln_creator_source_id = 0)
     {
 
-        //What is required to create a new Blog?
+        //What is required to create a new Note?
         if (detect_missing_columns($insert_columns, array('en_status_source_id', 'en_name'), $ln_creator_source_id)) {
             return false;
         }
@@ -206,7 +206,7 @@ class SOURCE_model extends CI_Model
                     continue;
                 }
 
-                //FYI: Unlike Blogs, we cannot log parent/child source relations since the child source slot is already taken...
+                //FYI: Unlike Notes, we cannot log parent/child source relations since the child source slot is already taken...
 
                 if($key=='en_name') {
 
@@ -343,11 +343,11 @@ class SOURCE_model extends CI_Model
         //Fetch all source links:
         $adjusted_count = 0;
         foreach(array_merge(
-                //Player references within Blog notes:
+                //Player references within Note Pads:
                     $this->READ_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
+                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Note Pads
                         'ln_parent_source_id' => $en_id,
                     ), array('in_child'), 0, 0, array('ln_order' => 'ASC')),
                     //Player links:
@@ -367,7 +367,7 @@ class SOURCE_model extends CI_Model
                     $target_field => $merger_en_id,
                 );
 
-                //Also update possible source references within Blog Notes content:
+                //Also update possible source references within Note Pads content:
                 if(substr_count($adjust_tr['ln_content'], '@'.$adjust_tr[$target_field]) == 1){
                     $updating_fields['ln_content'] = str_replace('@'.$adjust_tr[$target_field],'@'.$merger_en_id, $adjust_tr['ln_content']);
                 }
@@ -855,7 +855,7 @@ class SOURCE_model extends CI_Model
     function en_mass_update($en_id, $action_en_id, $action_command1, $action_command2, $ln_creator_source_id)
     {
 
-        //NOTE: Has a twin function called in_mass_update()
+        //Alert: Has a twin function called in_mass_update()
 
         boost_power();
 
@@ -1284,7 +1284,7 @@ class SOURCE_model extends CI_Model
         }
 
 
-        //Note that new source link is already logged in the source creation function
+        //New source link is already logged in the source creation function
         //Now create more relevant links:
 
         //Activate Mench Messenger

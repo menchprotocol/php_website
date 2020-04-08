@@ -1,6 +1,6 @@
 
-* * * * * /usr/bin/php /var/www/platform/index.php blog cron__sync_common_base
-0,30 * * * * /usr/bin/php /var/www/platform/index.php blog cron__sync_extra_insights
+* * * * * /usr/bin/php /var/www/platform/index.php note cron__sync_common_base
+0,30 * * * * /usr/bin/php /var/www/platform/index.php note cron__sync_extra_insights
 
 10,30,50 * * * * /usr/bin/php /var/www/platform/index.php source cron__inherit_icons
 

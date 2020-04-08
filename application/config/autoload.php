@@ -99,7 +99,7 @@ $autoload['helper'] = array('general_helper','echo_helper','cookie');
 |
 |	$autoload['config'] = array('config1', 'config2');
 |
-| NOTE: This item is intended for use ONLY if you have created custom
+| Alert: This item is intended for use ONLY if you have created custom
 | config files.  Otherwise, leave it blank.
 |
 */
@@ -113,7 +113,7 @@ $autoload['config'] = array('platform_cache', 'credentials');
 |
 |	$autoload['language'] = array('lang1', 'lang2');
 |
-| NOTE: Do not include the "_lang" part of your file.  For example
+| Alert: Do not include the "_lang" part of your file.  For example
 | "codeigniter_lang.php" would be referenced as array('codeigniter');
 |
 */
@@ -132,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('BLOG_model','SOURCE_model','READ_model', 'READ_model','READ_model');
+$autoload['model'] = array('NOTE_model','SOURCE_model','READ_model', 'READ_model','READ_model');

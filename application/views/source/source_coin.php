@@ -204,8 +204,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
     <div id="message-frame" class="fixed-box hidden" source-id="">
 
         <h5 class="badge badge-h" data-toggle="tooltip"
-            title="Message management can only be done using Blogs. Source messages are listed below for view-only"
-            data-placement="bottom"><i class="fas fa-comment-plus"></i> Source References within Blog Notes
+            title="Message management can only be done using Notes. Source messages are listed below for view-only"
+            data-placement="bottom"><i class="fas fa-comment-plus"></i> Source References within Note Pads
         </h5>
         <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
             <a href="#" onclick="modify_cancel()"><i class="fas fa-times-circle"></i></a>
@@ -344,38 +344,38 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
         } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
 
-            //BLOG NOTES
-            $blog_note_filters = array(
+            //Note Pads
+            $in_pads_filters = array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
                 'ln_type_source_id' => $en_id,
                 '(ln_creator_source_id='.$source['en_id'].' OR ln_child_source_id='.$source['en_id'].' OR ln_parent_source_id='.$source['en_id'].')' => null,
             );
 
             //COUNT ONLY
-            $item_counters = $this->READ_model->ln_fetch($blog_note_filters, array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
+            $item_counters = $this->READ_model->ln_fetch($in_pads_filters, array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
             $counter = $item_counters[0]['totals'];
 
             //SHOW LASTEST 100
             if($counter>0){
 
                 $this_tab .= '<div class="list-group">';
-                foreach ($this->READ_model->ln_fetch($blog_note_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC')) as $blog_note) {
+                foreach ($this->READ_model->ln_fetch($in_pads_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC')) as $in_pads) {
                     if(in_array($en_id, $this->config->item('en_ids_12321'))){
 
-                        $this_tab .= echo_in_read($blog_note);
+                        $this_tab .= echo_in_read($in_pads);
 
                     } elseif(in_array($en_id, $this->config->item('en_ids_12322'))){
 
                         //Include the message:
-                        $footnotes = null;
-                        if($blog_note['ln_content']){
-                            $footnotes .= '<div class="message_content">';
-                            $footnotes .= $this->READ_model->dispatch_message($blog_note['ln_content']);
-                            $footnotes .= '</div>';
+                        $infobar_details = null;
+                        if($in_pads['ln_content']){
+                            $infobar_details .= '<div class="message_content">';
+                            $infobar_details .= $this->READ_model->dispatch_message($in_pads['ln_content']);
+                            $infobar_details .= '</div>';
                         }
 
-                        $this_tab .= echo_in_read($blog_note, false, $footnotes);
+                        $this_tab .= echo_in_read($in_pads, false, $infobar_details);
 
                     }
                 }
@@ -383,7 +383,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
             } else {
 
-                $this_tab .= '<div class="alert alert-warning">No blogs yet.</div>';
+                $this_tab .= '<div class="alert alert-warning">No notes yet.</div>';
 
             }
 
@@ -391,15 +391,15 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
             $player_reads = $this->READ_model->ln_fetch(array(
                 'ln_creator_source_id' => $source['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Blog Set
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Note Set
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             ), array('in_parent'), 1, 0, array(), 'COUNT(ln_id) as totals');
             $counter = $player_reads[0]['totals'];
 
         } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
 
-            //SOURCE COINS (READ & BLOG)
+            //SOURCE COINS (READ & NOTE)
 
             $join_objects = array();
             $match_columns = array(
@@ -408,9 +408,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
             );
 
             if($en_id == 12273){
-                //Blog Coins
+                //Note Coins
                 $match_columns['ln_parent_source_id'] = $source['en_id'];
-                $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Blog Status Public
+                $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Note Status Public
                 $join_objects = array('in_child');
             } elseif($en_id == 6255){
                 //Read Coins:

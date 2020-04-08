@@ -697,10 +697,10 @@ fragment PostListingItemSidebar_post on Post {
         $en_all_4463 = $this->config->item('en_all_4463'); //GLOSSARY
 
         //Create FILTERS:
-        $filters_blog = array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
+        $filters_in = array(
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //Blog COIN
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //Note COIN
         );
         $filters_read = array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -718,18 +718,18 @@ fragment PostListingItemSidebar_post on Post {
             } else {
                 $start_date = date("Y-m-d", strtotime('previous monday'));
             }
-            $filters_blog['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
+            $filters_in['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
         }
         */
 
         //Fetch leaderboard:
-        $blog_source_coins = $this->READ_model->ln_fetch($filters_blog, array('en_parent','in_child'), $load_max, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        $in_source_coins = $this->READ_model->ln_fetch($filters_in, array('en_parent','in_child'), $load_max, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
 
         echo '<table id="leaderboard" class="table table-sm table-striped tablepadded" style="margin-bottom: 0;">';
 
         //Start with top Players:
-        foreach ($blog_source_coins as $count=>$ln) {
+        foreach ($in_source_coins as $count=>$ln) {
 
             if($count==$show_max){
 
@@ -754,14 +754,14 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-            //BLOG
-            echo '<td class="blog fixedColumns MENCHcolumn3">'.
+            //NOTE
+            echo '<td class="note fixedColumns MENCHcolumn3">'.
 
                 ( $session_en
 
-                    ? '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_12273')).'&ln_parent_source_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : '' ).'" class="montserrat blog"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>'
+                    ? '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_12273')).'&ln_parent_source_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : '' ).'" class="montserrat note"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>'
 
-                    : '<span class="montserrat blog"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>'
+                    : '<span class="montserrat note"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>'
 
                 )
 
@@ -806,7 +806,7 @@ fragment PostListingItemSidebar_post on Post {
             }
         }
 
-        //Update focus blog session:
+        //Update focus note session:
         if($in_id > 0){
             //Set in session:
             $this->session->set_userdata(array(
@@ -1355,11 +1355,11 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-            //Count source references in Blog Notes:
+            //Count source references in Note Pads:
             $messages = $this->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Blog Status Active
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Blog Notes
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Note Pads
                 'ln_parent_source_id' => $_POST['en_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1371,7 +1371,7 @@ fragment PostListingItemSidebar_post on Post {
 
                 //Yes, validate this source:
 
-                //Validate the input for updating linked Blog:
+                //Validate the input for updating linked Note:
                 $merger_en_id = 0;
                 if (substr($_POST['en_merge'], 0, 1) == '@') {
                     $parts = explode(' ', $_POST['en_merge']);
@@ -1410,10 +1410,10 @@ fragment PostListingItemSidebar_post on Post {
 
             } elseif(count($messages) > 0){
 
-                //Cannot delete this source until Blog references are removed:
+                //Cannot delete this source until Note references are removed:
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'You can remove source after removing all its blog note references',
+                    'message' => 'You can remove source after removing all its note pads references',
                 ));
 
             }
@@ -1619,7 +1619,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
     function en_review_metadata($en_id){
-        //Fetch Blog:
+        //Fetch Note:
         $ens = $this->SOURCE_model->en_fetch(array(
             'en_id' => $en_id,
         ));
@@ -1780,7 +1780,7 @@ fragment PostListingItemSidebar_post on Post {
         } elseif (!isset($_POST['referrer_in_id'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing blog referrer',
+                'message' => 'Missing note referrer',
             ));
         }
 
@@ -1827,9 +1827,9 @@ fragment PostListingItemSidebar_post on Post {
 
         //All good...
 
-        //Was there a Blog to read?
+        //Was there a Note to read?
         if(intval($_POST['referrer_in_id']) > 0){
-            //Add this Blog to their READING LIST:
+            //Add this Note to their READING LIST:
             $this->READ_model->read_add($ens[0]['en_id'], $_POST['referrer_in_id']);
         }
 
@@ -1947,7 +1947,7 @@ fragment PostListingItemSidebar_post on Post {
             //Log them in:
             $ens[0] = $this->SOURCE_model->en_activate_session($ens[0]);
 
-            //Their next Blog in line:
+            //Their next Note in line:
             return echo_json(array(
                 'status' => 1,
                 'login_url' => '/read/next',
@@ -2093,17 +2093,17 @@ fragment PostListingItemSidebar_post on Post {
         ));
 
 
-        //Fetch referral Blog, if any:
+        //Fetch referral Note, if any:
         if(intval($_POST['referrer_in_id']) > 0){
 
-            //Fetch the Blog:
-            $referrer_ins = $this->BLOG_model->in_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
+            //Fetch the Note:
+            $referrer_ins = $this->NOTE_model->in_fetch(array(
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
                 'in_id' => $_POST['referrer_in_id'],
             ));
 
             if(count($referrer_ins) > 0){
-                //Add this Blog to their READING LIST:
+                //Add this Note to their READING LIST:
                 $this->READ_model->read_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
             } else {
                 //Cannot be added, likely because its not published:
@@ -2120,7 +2120,7 @@ fragment PostListingItemSidebar_post on Post {
         $subject = 'Hi, '.$name_parts[0].'! 👋';
 
         ##Email Body
-        $html_message = '<div>Just wanted to welcome you to Mench. You can create your first blog here:</div>';
+        $html_message = '<div>Just wanted to welcome you to Mench. You can create your first note here:</div>';
         $html_message .= '<br /><br />';
         $html_message .= '<div>Cheers,</div><br />';
         $html_message .= '<div>Team MENCH</div>';
@@ -2133,7 +2133,7 @@ fragment PostListingItemSidebar_post on Post {
         $invite_link = $this->READ_model->ln_create(array(
             'ln_type_source_id' => 7562, //User Signin Joined Mench
             'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_parent_blog_id' => intval($_POST['referrer_in_id']),
+            'ln_previous_note_id' => intval($_POST['referrer_in_id']),
             'ln_metadata' => array(
                 'email_log' => $email_log,
             ),
@@ -2196,7 +2196,7 @@ fragment PostListingItemSidebar_post on Post {
             'ln_type_source_id' => 7563, //User Signin Magic Link Email
             'ln_content' => $_POST['input_email'],
             'ln_creator_source_id' => $user_emails[0]['en_id'], //User making request
-            'ln_parent_blog_id' => intval($_POST['referrer_in_id']),
+            'ln_previous_note_id' => intval($_POST['referrer_in_id']),
         ));
 
         //This is a new email, send invitation to join:
@@ -2230,7 +2230,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //Validate email:
         if(superpower_assigned(10939)){
-            return redirect_message('/blog');
+            return redirect_message('/note');
         } elseif(superpower_assigned()){
             return redirect_message('/read/next');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
@@ -2288,9 +2288,9 @@ fragment PostListingItemSidebar_post on Post {
 
 
         if(intval($_POST['referrer_in_id']) > 0){
-            //Fetch the blog:
-            $referrer_ins = $this->BLOG_model->in_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Blog Status Public
+            //Fetch the note:
+            $referrer_ins = $this->NOTE_model->in_fetch(array(
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
                 'in_id' => $_POST['referrer_in_id'],
             ));
         } else {
@@ -2435,7 +2435,7 @@ fragment PostListingItemSidebar_post on Post {
         //All good:
         return echo_json(array(
             'status' => 1,
-            'message' => 'Updated', //Note: NOT shown in UI
+            'message' => 'Updated', //Alert: NOT shown in UI
         ));
     }
 
@@ -2853,9 +2853,9 @@ fragment PostListingItemSidebar_post on Post {
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        $blog_coins = $this->READ_model->ln_fetch(array(
+        $note_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4250, //UNIQUE BLOGS
+            'ln_type_source_id' => 4250, //UNIQUE NOTES
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
         $source_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -2867,7 +2867,7 @@ fragment PostListingItemSidebar_post on Post {
         echo '<br />//PLATFORM STATS:<br />';
         echo '$config[\'ps_timestamp\'] = '.$ps_timestamp.';<br />';
         echo '$config[\'ps_read_count\'] = '.$read_coins[0]['total_coins'].';<br />';
-        echo '$config[\'ps_blog_count\'] = '.$blog_coins[0]['total_coins'].';<br />';
+        echo '$config[\'ps_in_count\'] = '.$note_coins[0]['total_coins'].';<br />';
         echo '$config[\'ps_source_count\'] = '.$source_coins[0]['total_coins'].';<br />';
         echo '<br /><br />';
 

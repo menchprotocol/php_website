@@ -18,7 +18,7 @@ $route['ledger']                    = "read/read_ledger";
 $route['(:num)']                    = "read/read_coin/$1";
 $route['(:num)/next']               = "read/read_next/$1";
 
-//Blog
-$route['blog']                      = "blog/blog_home";
-$route['blog/create']               = "blog/blog_create";
-$route['blog/(:num)']               = "blog/blog_coin/$1";
+//Note
+$route['note']                      = "note/note_home";
+$route['note/create']               = "note/in_create";
+$route['note/(:num)']               = "note/note_coin/$1";

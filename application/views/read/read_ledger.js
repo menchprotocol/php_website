@@ -5,7 +5,7 @@ $(document).ready(function () {
 
     check_in_en_status_source_id();
 
-    //Watch for Blog status change:
+    //Watch for Note status change:
     $("#ln_type_source_id").change(function () {
         check_in_en_status_source_id();
     });
@@ -17,8 +17,8 @@ $(document).ready(function () {
 
 
 function check_in_en_status_source_id(){
-    //Checks to see if the Blog/Player status filter should be visible
-    //Would only make visible if Link type is Created Blog/Player
+    //Checks to see if the Note/Player status filter should be visible
+    //Would only make visible if Link type is Created Note/Player
 
     //Hide both in/en status:
     $(".filter-statuses").addClass('hidden');
@@ -47,7 +47,7 @@ function load_ledger(link_filters, link_join_by, page_num){
     }, function (data) {
         if (!data.status) {
             //Show Error:
-            $('#link_page_'+page_num).html('<span style="color:#FF0000;">Note: '+ data.message +'</span>');
+            $('#link_page_'+page_num).html('<span style="color:#FF0000;">Alert: '+ data.message +'</span>');
         } else {
             //Load Report:
             $('#link_page_'+page_num).html(data.message);
