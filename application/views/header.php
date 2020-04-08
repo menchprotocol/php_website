@@ -167,7 +167,7 @@ if(!isset($hide_header)){
                             ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
                             $player_stats = array(
                                 'source_count' => $source_coins[0]['total_coins'],
-                                'in_count' => $note_coins[0]['total_coins'],
+                                'note_count' => $note_coins[0]['total_coins'],
                                 'read_count' => $read_coins[0]['total_coins']
                             );
 

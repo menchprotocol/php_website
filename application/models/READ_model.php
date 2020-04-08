@@ -4367,7 +4367,7 @@ class READ_model extends CI_Model
 
 
             //Show options for the User to add to their 🔴 READING LIST:
-            $new_in_count = 0;
+            $new_note_count = 0;
             $quick_replies = array();
 
             foreach ($search_results as $alg) {
@@ -4391,17 +4391,17 @@ class READ_model extends CI_Model
                     continue;
                 }
 
-                $new_in_count++;
+                $new_note_count++;
 
-                if($new_in_count==1){
+                if($new_note_count==1){
                     $message = 'I found these notes for "'.$master_command.'":';
                 }
 
                 //List Note:
-                $message .= "\n\n" . $new_in_count . '. ' . $ins[0]['in_title'];
+                $message .= "\n\n" . $new_note_count . '. ' . $ins[0]['in_title'];
                 array_push($quick_replies, array(
                     'content_type' => 'text',
-                    'title' => $new_in_count,
+                    'title' => $new_note_count,
                     'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'], //'SUBSCRIBE-INITIATE_' . $ins[0]['in_id']
                 ));
             }
@@ -4409,9 +4409,9 @@ class READ_model extends CI_Model
 
             //Log note search:
             $this->READ_model->ln_create(array(
-                'ln_content' => ( $new_in_count > 0 ? $message : 'Found ' . $new_in_count . ' note' . echo__s($new_in_count) . ' matching [' . $master_command . ']' ),
+                'ln_content' => ( $new_note_count > 0 ? $message : 'Found ' . $new_note_count . ' note' . echo__s($new_note_count) . ' matching [' . $master_command . ']' ),
                 'ln_metadata' => array(
-                    'new_in_count' => $new_in_count,
+                    'new_note_count' => $new_note_count,
                     'input_data' => $master_command,
                     'output' => $search_results,
                 ),
@@ -4420,7 +4420,7 @@ class READ_model extends CI_Model
             ));
 
 
-            if($new_in_count > 0){
+            if($new_note_count > 0){
 
                 //Give them a "None of the above" option:
                 array_push($quick_replies, array(

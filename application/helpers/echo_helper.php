@@ -1614,7 +1614,7 @@ function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
     foreach ($CI->config->item('en_all_'.$in_setting_en_id) as $type_en_id => $in_type) {
 
         //Count this sub-type from the database:
-        $in_count = $CI->NOTE_model->in_fetch(array(
+        $note_count = $CI->NOTE_model->in_fetch(array(
             $in_field_name => $type_en_id,
             'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Note Status Public
         ), 0, 0, array(), 'COUNT(in_id) as total_public_ins');
@@ -1622,7 +1622,7 @@ function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
         //$ui .= this as the main title:
         $ui .= '<tr>';
         $ui .= '<td style="text-align: left;"><span class="icon-block">'.$in_type['m_icon'].'</span><a href="/source/'.$type_en_id.'">'.$in_type['m_name'].'</a></td>';
-        $ui .= '<td style="text-align: right;"><a href="/ledger?ln_type_source_id=4250&in_status_source_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($in_count[0]['total_public_ins'], 0).' Note'.echo__s($in_count[0]['total_public_ins']).'">'.number_format($in_count[0]['total_public_ins']/$addup_total_count*100, 1).'%</a></td>';
+        $ui .= '<td style="text-align: right;"><a href="/ledger?ln_type_source_id=4250&in_status_source_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($note_count[0]['total_public_ins'], 0).' Note'.echo__s($note_count[0]['total_public_ins']).'">'.number_format($note_count[0]['total_public_ins']/$addup_total_count*100, 1).'%</a></td>';
         $ui .= '</tr>';
 
     }

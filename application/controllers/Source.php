@@ -2867,7 +2867,7 @@ fragment PostListingItemSidebar_post on Post {
         echo '<br />//PLATFORM STATS:<br />';
         echo '$config[\'ps_timestamp\'] = '.$ps_timestamp.';<br />';
         echo '$config[\'ps_read_count\'] = '.$read_coins[0]['total_coins'].';<br />';
-        echo '$config[\'ps_in_count\'] = '.$note_coins[0]['total_coins'].';<br />';
+        echo '$config[\'ps_note_count\'] = '.$note_coins[0]['total_coins'].';<br />';
         echo '$config[\'ps_source_count\'] = '.$source_coins[0]['total_coins'].';<br />';
         echo '<br /><br />';
 
