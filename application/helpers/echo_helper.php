@@ -1147,10 +1147,10 @@ function echo_in_stat_read($in = array(), $en = array()){
             );
         }
 
-        $read_coins = $CI->READ_model->ln_fetch($coin_filter, array(), 1, 0, array(), 'COUNT(ln_id) as total_coins');
-        if($read_coins[0]['total_coins'] > 0){
+        $read_coins = $CI->READ_model->ln_fetch($coin_filter, array(), 1, 0, array(), 'COUNT(ln_id) as totals');
+        if($read_coins[0]['totals'] > 0){
 
-            $ui .= '<span class="montserrat read '.superpower_active(10964).'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($read_coins[0]['total_coins']).'</span>';
+            $ui .= '<span class="montserrat read '.superpower_active(10964).'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($read_coins[0]['totals']).'</span>';
 
             //If Progress Type then show progress here....
             if(isset($item['ln_type_source_id']) && in_array($item['ln_type_source_id'], $CI->config->item('en_ids_12227'))){
@@ -1191,9 +1191,9 @@ function echo_in_stat_source($in_id = 0, $en_id = 0){
             );
         }
 
-        $source_coins = $CI->READ_model->ln_fetch($coin_filter, $join_objects, 0, 0, array(), 'COUNT(ln_id) as total_coins');
-        if($source_coins[0]['total_coins'] > 0){
-            return '<span class="montserrat '.$mench.' '.( $in_id ? superpower_active(10983) : '' ).'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($source_coins[0]['total_coins']).'</span>';
+        $source_coins = $CI->READ_model->ln_fetch($coin_filter, $join_objects, 0, 0, array(), 'COUNT(ln_id) as totals');
+        if($source_coins[0]['totals'] > 0){
+            return '<span class="montserrat '.$mench.' '.( $in_id ? superpower_active(10983) : '' ).'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($source_coins[0]['totals']).'</span>';
         }
 
     }
@@ -1641,7 +1641,7 @@ function echo_2level_stats($stat_name, $stats_en_id, $mother_en_id, $link_types_
 
     echo '<tr class="panel-title down-border">';
     echo '<td style="text-align: left;">'.$stat_name.'</td>';
-    if($focus_field=='total_coins'){
+    if($focus_field=='totals'){
         echo '<td style="text-align: right;">COINS</td>';
     } else {
         echo '<td>&nbsp;</td>';
@@ -1696,7 +1696,7 @@ function echo_2level_sources($main_obj, $all_link_types, $link_types_counts, $al
         }
 
         $ln = filter_array($link_types_counts, 'in_type_source_id', $en_id);
-        $show_in_advance_only = ($focus_field=='total_coins' && abs($ln[$focus_field]) < 1 );
+        $show_in_advance_only = ($focus_field=='totals' && abs($ln[$focus_field]) < 1 );
 
         if( !$ln['total_count'] ){
             continue;
@@ -1707,8 +1707,8 @@ function echo_2level_sources($main_obj, $all_link_types, $link_types_counts, $al
         //Addup counter:
         if($focus_field=='total_count'){
             $total_sum += $ln['total_count'];
-        } elseif($focus_field=='total_coins'){
-            $total_sum += abs($ln['total_coins']);
+        } elseif($focus_field=='totals'){
+            $total_sum += abs($ln['totals']);
         }
 
         //Subrow UI:
@@ -1732,9 +1732,9 @@ function echo_2level_sources($main_obj, $all_link_types, $link_types_counts, $al
 
                 $rows .= '<a href="/ledger?ln_status_source_id='.join(',', $CI->config->item('en_ids_7359')) /* Transaction Status Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Note'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
 
-            } elseif($focus_field=='total_coins'){
+            } elseif($focus_field=='totals'){
 
-                $rows .= '<a href="/ledger?ln_status_source_id='.join(',', $CI->config->item('en_ids_7359')) /* Transaction Status Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_coins'], 0).' Coin'.echo__s($ln['total_coins']).'">'.number_format($ln['total_coins'], 0) . '</a>';
+                $rows .= '<a href="/ledger?ln_status_source_id='.join(',', $CI->config->item('en_ids_7359')) /* Transaction Status Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['totals'], 0).' Coin'.echo__s($ln['totals']).'">'.number_format($ln['totals'], 0) . '</a>';
 
             }
             $rows .= '</td>';
@@ -1770,7 +1770,7 @@ function echo_2level_sources($main_obj, $all_link_types, $link_types_counts, $al
 
         echo '<a href="/ledger?ln_status_source_id='.join(',', $CI->config->item('en_ids_7359')) /* Transaction Status Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Note'.echo__s($total_sum).'">'.number_format($total_sum/$addup_total_count*100, 1).'%</a>';
 
-    } elseif($focus_field=='total_coins'){
+    } elseif($focus_field=='totals'){
 
         echo '<a href="/ledger?ln_status_source_id='.join(',', $CI->config->item('en_ids_7359')) /* Transaction Status Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Coin'.echo__s($total_sum).'">'.number_format($total_sum, 0).'</a>';
 

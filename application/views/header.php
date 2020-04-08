@@ -153,22 +153,22 @@ if(!isset($hide_header)){
                                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
                                 'ln_creator_source_id' => $session_en['en_id'],
-                            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+                            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
                             $note_coins = $this->READ_model->ln_fetch(array(
                                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
                                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //NOTE COIN
                                 'ln_parent_source_id' => $session_en['en_id'],
-                            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+                            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
                             $read_coins = $this->READ_model->ln_fetch(array(
                                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
                                 'ln_creator_source_id' => $session_en['en_id'],
-                            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+                            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
                             $player_stats = array(
-                                'source_count' => $source_coins[0]['total_coins'],
-                                'note_count' => $note_coins[0]['total_coins'],
-                                'read_count' => $read_coins[0]['total_coins']
+                                'source_count' => $source_coins[0]['totals'],
+                                'note_count' => $note_coins[0]['totals'],
+                                'read_count' => $read_coins[0]['totals']
                             );
 
                             //Show Mench Menu:

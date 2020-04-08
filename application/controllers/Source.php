@@ -723,7 +723,7 @@ fragment PostListingItemSidebar_post on Post {
         */
 
         //Fetch leaderboard:
-        $in_source_coins = $this->READ_model->ln_fetch($filters_in, array('en_parent','in_child'), $load_max, 0, array('total_coins' => 'DESC'), 'COUNT(ln_id) as total_coins, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        $in_source_coins = $this->READ_model->ln_fetch($filters_in, array('en_parent','in_child'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
 
         echo '<table id="leaderboard" class="table table-sm table-striped tablepadded" style="margin-bottom: 0;">';
@@ -744,7 +744,7 @@ fragment PostListingItemSidebar_post on Post {
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
                 'ln_creator_source_id' => $ln['en_id'],
-            ), array(), 1, 0, array(), 'COUNT(ln_id) as total_coins');
+            ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 
             echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
 
@@ -759,9 +759,9 @@ fragment PostListingItemSidebar_post on Post {
 
                 ( $session_en
 
-                    ? '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_12273')).'&ln_parent_source_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : '' ).'" class="montserrat note"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</a>'
+                    ? '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_12273')).'&ln_parent_source_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : '' ).'" class="montserrat note"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['totals']).'</a>'
 
-                    : '<span class="montserrat note"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_coins']).'</span>'
+                    : '<span class="montserrat note"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['totals']).'</span>'
 
                 )
 
@@ -772,8 +772,8 @@ fragment PostListingItemSidebar_post on Post {
             //READ
             /*
             echo '<td class="read fixedColumns MENCHcolumn2">';
-            if($read_coins[0]['total_coins'] > 0){
-                echo ( $session_en ? '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_6255')).'&ln_creator_source_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_coins']).'</span>' );
+            if($read_coins[0]['totals'] > 0){
+                echo ( $session_en ? '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_6255')).'&ln_creator_source_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['totals']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['totals']).'</span>' );
             }
             echo '</td>';
             */
@@ -2849,26 +2849,30 @@ fragment PostListingItemSidebar_post on Post {
 
         //PLATFORM STATS
         $ps_timestamp = time();
+        $transactions = $this->READ_model->ln_fetch(array(
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $read_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $note_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id' => 4250, //UNIQUE NOTES
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $source_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
 
         echo '//Generated '.date("Y-m-d H:i:s", $ps_timestamp).' PST<br />';
         echo '<br />//PLATFORM STATS:<br />';
         echo '$config[\'ps_timestamp\'] = '.$ps_timestamp.';<br />';
-        echo '$config[\'ps_read_count\'] = '.$read_coins[0]['total_coins'].';<br />';
-        echo '$config[\'ps_note_count\'] = '.$note_coins[0]['total_coins'].';<br />';
-        echo '$config[\'ps_source_count\'] = '.$source_coins[0]['total_coins'].';<br />';
+        echo '$config[\'ps_transactions\'] = '.$transactions[0]['totals'].';<br />';
+        echo '$config[\'ps_read_count\'] = '.$read_coins[0]['totals'].';<br />';
+        echo '$config[\'ps_note_count\'] = '.$note_coins[0]['totals'].';<br />';
+        echo '$config[\'ps_source_count\'] = '.$source_coins[0]['totals'].';<br />';
         echo '<br /><br />';
 
 
