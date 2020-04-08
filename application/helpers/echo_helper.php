@@ -254,7 +254,7 @@ function echo_in_note($ln)
 
         //Sort:
         if(in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents'])){
-            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents']) ? 'blog_note_sorting' : '' ).'"></i></span>';
+            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars '.( in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents']) ? 'blog_note_sorting' : '' ).'"></i></span>';
         }
 
         //Modify:
@@ -1263,7 +1263,7 @@ function echo_in_read($in, $parent_is_or = false, $footnotes = null, $common_pre
         if($show_editor){
             $ui .= '<div class="note-edit edit-off"><span class="show-on-hover">';
 
-            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort"></i></span>';
+            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
 
             //Remove:
             $ui .= '<span title="Remove from list" data-toggle="tooltip" data-placement="left"><span class="actionplan_remove" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
@@ -1957,7 +1957,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         if($is_author || !$is_parent){
 
             if($is_author && !$is_parent){
-                $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-sort black blog-sort-handle"></i></span>';
+                $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars black blog-sort-handle"></i></span>';
             }
 
             //Unlink:

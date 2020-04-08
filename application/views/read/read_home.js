@@ -82,7 +82,7 @@ function load_read_sort(){
     var sort = Sortable.create(document.getElementById('actionplan_steps'), {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: ".actionplan_sort", // Specifies which items inside the element should be sortable
-        handle: ".fa-sort", // Restricts sort start click/touch to the specified element
+        handle: ".fa-bars", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             actionplan_sort_save();
         }

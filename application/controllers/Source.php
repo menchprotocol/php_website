@@ -2844,12 +2844,11 @@ fragment PostListingItemSidebar_post on Post {
  * See here for more details: https://mench.com/source/4527<br />
  *<br />
  */<br /><br />';
-        echo '//Generated '.date("Y-m-d H:i:s").' PST<br />';
-
 
 
 
         //PLATFORM STATS
+        $ps_timestamp = time();
         $read_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
@@ -2862,7 +2861,11 @@ fragment PostListingItemSidebar_post on Post {
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_coins');
+
+
+        echo '//Generated '.date("Y-m-d H:i:s", $ps_timestamp).' PST<br />';
         echo '<br />//PLATFORM STATS:<br />';
+        echo '$config[\'ps_timestamp\'] = '.$ps_timestamp.';<br />';
         echo '$config[\'ps_read_count\'] = '.$read_coins[0]['total_coins'].';<br />';
         echo '$config[\'ps_blog_count\'] = '.$blog_coins[0]['total_coins'].';<br />';
         echo '$config[\'ps_source_count\'] = '.$source_coins[0]['total_coins'].';<br />';
