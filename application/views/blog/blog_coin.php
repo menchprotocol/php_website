@@ -278,10 +278,20 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
                 if(in_array($action_en_id, array(12591, 12592))){
 
-                    //Player search box:
+                    //Source search box:
 
                     //String command:
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search sources..." class="form-control algolia_search en_quick_search border montserrat '.$is_upper.'">';
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search Sources..." class="form-control algolia_search en_quick_search border montserrat '.$is_upper.'">';
+
+                    //We don't need the second value field here:
+                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
+
+                } elseif(in_array($action_en_id, array(12611, 12612))){
+
+                    //Blog search box:
+
+                    //String command:
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search Blogs..." class="form-control algolia_search in_quick_search border montserrat '.$is_upper.'">';
 
                     //We don't need the second value field here:
                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';

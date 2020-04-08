@@ -1597,9 +1597,16 @@ class READ_model extends CI_Model
                 //Any Sub Topics?
                 if(count($in__children) > 0){
 
-                    if(!$is_home){
+                    if($is_home){
+
+                        //Inform them of Featured Blogs
+                        echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-star"></i></span>FEATURED NOTES</div>';
+
+                    } else {
+
                         //Give option to review:
                         echo '<div class="inline-block margin-top-down read-add">&nbsp;or&nbsp;<a class="btn btn-read" href="javascript:void();" onclick="toggle_read()"><i class="fad fa-search-plus read_topics"></i><i class="fad fa-search-minus read_topics hidden"></i> LIST '.count($in__children).' READ'.echo__s(count($in__children)).'</a></div>';
+
                     }
 
                     //List Children:

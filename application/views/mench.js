@@ -115,7 +115,38 @@ function load_editor(){
                 return echo_js_suggestion(suggestion);
             },
             empty: function (data) {
-                return '<div class="not-found"><i class="fad fa-exclamation-triangle"></i> No sources found</div>';
+                return '<div class="not-found"><i class="fad fa-exclamation-triangle"></i> No Sources Found</div>';
+            },
+        }
+    }]);
+
+    $('.in_quick_search').on('autocomplete:selected', function (event, suggestion, dataset) {
+
+        $(this).val('#' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
+
+    }).autocomplete({hint: false, minLength: 2}, [{
+
+        source: function (q, cb) {
+            algolia_index.search(q, {
+                filters: ' alg_obj_is_in=1 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_author_' + js_pl_id : '' ) + ' ) ',
+                hitsPerPage: 5,
+            }, function (error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+                cb(content.hits, content);
+            });
+        },
+        displayKey: function (suggestion) {
+            return '#' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name;
+        },
+        templates: {
+            suggestion: function (suggestion) {
+                return echo_js_suggestion(suggestion);
+            },
+            empty: function (data) {
+                return '<div class="not-found"><i class="fad fa-exclamation-triangle"></i> No Blogs Found</div>';
             },
         }
     }]);
@@ -496,41 +527,6 @@ $(document).ready(function () {
             toggle_nav('search_nav');
         }
     });
-
-
-
-    //Load Algolia for link replacement search
-    $(".in_quick_search").on('autocomplete:selected', function (event, suggestion, dataset) {
-
-        $(this).val('#'+suggestion.alg_obj_id+' '+suggestion.alg_obj_name);
-
-    }).autocomplete({hint: false, minLength: 1}, [{
-
-        source: function (q, cb) {
-            algolia_index.search(q, {
-                filters: 'alg_obj_is_in=1',
-                hitsPerPage: 5,
-            }, function (error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-        },
-        displayKey: function (suggestion) {
-            return '#'+suggestion.alg_obj_id+' '+suggestion.alg_obj_name;
-        },
-        templates: {
-            suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion);
-            },
-            empty: function (data) {
-                return 'No blogs found';
-            },
-        }
-
-    }]);
 
 
 

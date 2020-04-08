@@ -2115,12 +2115,12 @@ fragment PostListingItemSidebar_post on Post {
         }
 
 
+
         ##Email Subject
-        $subject =  ( count($referrer_ins) > 0 ? echo_in_title($referrer_ins[0], true).' with ' : 'Welcome to ' ) . 'MENCH';
+        $subject = 'Hi, '.$name_parts[0].'! 👋';
 
         ##Email Body
-        $html_message = '<div>Hi '.$name_parts[0].' 👋</div><br />';
-        $html_message .= '<div>Just wanted to welcome you to Mench and with you enjoy blogging interactively.</div>';
+        $html_message = '<div>Just wanted to welcome you to Mench. You can create your first blog here:</div>';
         $html_message .= '<br /><br />';
         $html_message .= '<div>Cheers,</div><br />';
         $html_message .= '<div>Team MENCH</div>';

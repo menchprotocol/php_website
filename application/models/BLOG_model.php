@@ -742,6 +742,41 @@ class BLOG_model extends CI_Model
 
                 }
 
+            } elseif(in_array($action_en_id , array(12611, 12612))){
+
+                //Check if it hs this item:
+                $parent_in_id = intval(one_two_explode('#',' ',$action_command1));
+                $blog_has_parents = $this->READ_model->ln_fetch(array(
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                    'ln_type_source_id' => 4983,
+                    'ln_child_blog_id' => $in['in_id'],
+                    'ln_parent_source_id' => $parent_en_id,
+                ));
+
+                if($action_en_id==12591 && !count($blog_has_sources)){
+
+                    //Missing & Must be Added:
+                    $this->READ_model->ln_create(array(
+                        'ln_creator_source_id' => $ln_creator_source_id,
+                        'ln_parent_source_id' => $parent_en_id,
+                        'ln_type_source_id' => 4983,
+                        'ln_content' => '@'.$parent_en_id,
+                        'ln_child_blog_id' => $in['in_id'],
+                    ), true);
+
+                    $applied_success++;
+
+                } elseif($action_en_id==12592 && count($blog_has_sources)){
+
+                    //Has and must be removed:
+                    $this->READ_model->ln_update($blog_has_sources[0]['ln_id'], array(
+                        'ln_status_source_id' => 6173,
+                    ), $ln_creator_source_id, 10678 /* Blog Notes Unlinked */);
+
+                    $applied_success++;
+
+                }
+
             }
 
         }
