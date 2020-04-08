@@ -1829,7 +1829,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '<td class="'.( $session_en ? 'MENCHcolumn1' : 'MENCHcolumnFull' ).'">';
 
 
-        $ui .= '<div class="inline-block">';
+        $ui .= '<div class="block">';
             //BLOG ICON:
             $ui .= '<span class="icon-block"><a href="/blog/'.$in['in_id'].'" title="Weight: '.number_format($in['in_weight'], 0).'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
 

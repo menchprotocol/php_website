@@ -1190,7 +1190,7 @@ label {
 /* FUNCTIONAL */
 .inline-block{ display: inline-block !important; }
 .inline{ display: inline !important; }
-.block{ display: block !important; }
+.block{ display: block !important; width: 100%; }
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
 #mench_search{
