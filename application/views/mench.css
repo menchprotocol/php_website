@@ -1276,8 +1276,9 @@ label {
     color: #AAAAAA;
 }
 .texttype_4736_sm{
-    width: 377px;
+    width:calc(100% - 34px); /* Used to be 377px */
     margin-bottom: 5px;
+    border-bottom: 1px solid #AAAAAA;
 }
 
 
