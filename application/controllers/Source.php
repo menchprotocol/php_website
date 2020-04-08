@@ -2849,9 +2849,7 @@ fragment PostListingItemSidebar_post on Post {
 
         //PLATFORM STATS
         $ps_timestamp = time();
-        $transactions = $this->READ_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+        $transactions = $this->READ_model->ln_fetch(array(), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $read_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
