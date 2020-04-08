@@ -729,10 +729,10 @@ textarea.note-textarea{
 .ln_content img, .i_content img { max-width: 100%; }
 
 td.MENCHcolumnFull{ width: 100%; }
-td.MENCHcolumn1{ width: 70%; }
-td.MENCHcolumn2{ width: 15%; }
-td.MENCHcolumn12{ width:85%; }
-td.MENCHcolumn3{ width: 15%; }
+td.MENCHcolumn1{ width: 78%; }
+td.MENCHcolumn2{ width: 11%; }
+td.MENCHcolumn12{ width:89%; }
+td.MENCHcolumn3{ width: 11%; }
 
 .equal-columns td.MENCHcolumn1{ width: 33.3%; }
 .equal-columns td.MENCHcolumn2{ width: 33.3%; }
@@ -1278,7 +1278,6 @@ label {
 .texttype_4736_sm{
     width:calc(100% - 34px); /* Used to be 377px */
     margin-bottom: 5px;
-    border-bottom: 1px solid #AAAAAA;
 }
 
 
