@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-07 18:51:44 PST
+//Generated 2020-04-07 19:24:03 PST
 
 //PLATFORM STATS:
-$config['ps_timestamp'] = 1586310704;
+$config['ps_timestamp'] = 1586312643;
 $config['ps_read_count'] = 120962;
 $config['ps_blog_count'] = 3819;
 $config['ps_source_count'] = 9228;
@@ -808,7 +808,7 @@ $config['en_all_4535'] = array(
         'm_parents' => array(4535,6410,4593,4486),
     ),
     10686 => array(
-        'm_icon' => '<i class="fad fa-unlink blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-times blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG LINK UNLINKED',
         'm_desc' => '',
         'm_parents' => array(4535,4593,10658,10638),
@@ -850,7 +850,7 @@ $config['en_all_4535'] = array(
         'm_parents' => array(12408,4535,4527),
     ),
     10676 => array(
-        'm_icon' => '<i class="fad fa-sort blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG NOTES SORTED',
         'm_desc' => '',
         'm_parents' => array(4535,4593,10658,10638),
@@ -886,13 +886,13 @@ $config['en_all_4535'] = array(
         'm_parents' => array(4535),
     ),
     10681 => array(
-        'm_icon' => '<i class="fad fa-sort blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG SORT AUTO',
         'm_desc' => '',
         'm_parents' => array(4535,10638,4755,4593,10658),
     ),
     10675 => array(
-        'm_icon' => '<i class="fad fa-sort blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG SORT MANUAL',
         'm_desc' => '',
         'm_parents' => array(4535,4593,10658,10638),
@@ -1102,7 +1102,7 @@ $config['en_all_4535'] = array(
         'm_parents' => array(12605,12524,4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
     4319 => array(
-        'm_icon' => '<i class="fad fa-sort-numeric-down source"></i>',
+        'm_icon' => '<i class="fad fa-sort-numeric-down source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINK INTEGER',
         'm_desc' => '',
         'm_parents' => array(4535,4593,4592),
@@ -1401,7 +1401,7 @@ $config['en_all_6205'] = array(
         'm_parents' => array(6205,6153,10658,4593,7654),
     ),
     6132 => array(
-        'm_icon' => '<i class="read fad fa-sort read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars read" aria-hidden="true"></i>',
         'm_name' => 'READ READS SORTED',
         'm_desc' => '',
         'm_parents' => array(6205,10639,6153,4506,4755,4593),
@@ -2500,7 +2500,7 @@ $config['en_all_12228'] = array(
         'm_parents' => array(12228,4527),
     ),
     12326 => array(
-        'm_icon' => '<i class="far fa-sort read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars read" aria-hidden="true"></i>',
         'm_name' => 'READ BLOG LINKS',
         'm_desc' => '',
         'm_parents' => array(4527,12228),
@@ -3411,7 +3411,7 @@ $config['en_all_6232'] = array(
         'm_parents' => array(11081,10692,6160,6232,4341),
     ),
     4370 => array(
-        'm_icon' => '<i class="fad fa-sort" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION RANK',
         'm_desc' => 'ln_order',
         'm_parents' => array(10676,10675,6232,4341),
@@ -4967,7 +4967,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(12228,4527),
     ),
     12326 => array(
-        'm_icon' => '<i class="far fa-sort read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars read" aria-hidden="true"></i>',
         'm_name' => 'READ BLOG LINKS',
         'm_desc' => '',
         'm_parents' => array(4527,12228),
@@ -5320,7 +5320,7 @@ $config['en_all_4527'] = array(
 $config['en_ids_10658'] = array(10686,10663,10664,10676,10678,10679,10677,10681,10675,10662,10690,10683,12328,7578,10657,10656,10659,10673,10689);
 $config['en_all_10658'] = array(
     10686 => array(
-        'm_icon' => '<i class="fad fa-unlink blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-times blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG LINK UNLINKED',
         'm_desc' => '',
         'm_parents' => array(4535,4593,10658,10638),
@@ -5338,7 +5338,7 @@ $config['en_all_10658'] = array(
         'm_parents' => array(4535,10638,4593,4229,10658),
     ),
     10676 => array(
-        'm_icon' => '<i class="fad fa-sort blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG NOTES SORTED',
         'm_desc' => '',
         'm_parents' => array(4535,4593,10658,10638),
@@ -5362,13 +5362,13 @@ $config['en_all_10658'] = array(
         'm_parents' => array(4535,4593,10658,10638),
     ),
     10681 => array(
-        'm_icon' => '<i class="fad fa-sort blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG SORT AUTO',
         'm_desc' => '',
         'm_parents' => array(4535,10638,4755,4593,10658),
     ),
     10675 => array(
-        'm_icon' => '<i class="fad fa-sort blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG SORT MANUAL',
         'm_desc' => '',
         'm_parents' => array(4535,4593,10658,10638),
@@ -5905,7 +5905,7 @@ $config['en_all_4341'] = array(
         'm_parents' => array(11081,10692,6160,6232,4341),
     ),
     4370 => array(
-        'm_icon' => '<i class="fad fa-sort" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION RANK',
         'm_desc' => '',
         'm_parents' => array(10676,10675,6232,4341),
@@ -7071,7 +7071,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(12137,4535,4755,4593,5967),
     ),
     10681 => array(
-        'm_icon' => '<i class="fad fa-sort blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG SORT AUTO',
         'm_desc' => '',
         'm_parents' => array(4535,10638,4755,4593,10658),
@@ -7257,7 +7257,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(6205,4506,4527,7569,4755,4593),
     ),
     6132 => array(
-        'm_icon' => '<i class="read fad fa-sort read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars read" aria-hidden="true"></i>',
         'm_name' => 'READ READS SORTED',
         'm_desc' => '',
         'm_parents' => array(6205,10639,6153,4506,4755,4593),
@@ -7574,7 +7574,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4535,6410,4593,4486),
     ),
     10686 => array(
-        'm_icon' => '<i class="fad fa-unlink blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-times blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG LINK UNLINKED',
         'm_desc' => '',
         'm_parents' => array(4535,4593,10658,10638),
@@ -7610,7 +7610,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(11089,10939,12365,12359,4535,12322,10593,6345,4986,4603,4593,4485),
     ),
     10676 => array(
-        'm_icon' => '<i class="fad fa-sort blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG NOTES SORTED',
         'm_desc' => '',
         'm_parents' => array(4535,4593,10658,10638),
@@ -7634,13 +7634,13 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4535,4593,10658,10638),
     ),
     10681 => array(
-        'm_icon' => '<i class="fad fa-sort blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG SORT AUTO',
         'm_desc' => '',
         'm_parents' => array(4535,10638,4755,4593,10658),
     ),
     10675 => array(
-        'm_icon' => '<i class="fad fa-sort blog" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG SORT MANUAL',
         'm_desc' => '',
         'm_parents' => array(4535,4593,10658,10638),
@@ -7964,7 +7964,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(6205,6153,10658,4593,7654),
     ),
     6132 => array(
-        'm_icon' => '<i class="read fad fa-sort read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-bars read" aria-hidden="true"></i>',
         'm_name' => 'READ READS SORTED',
         'm_desc' => 'Student re-prioritized their top-level intentions to focus on intentions that currently matter the most.',
         'm_parents' => array(6205,10639,6153,4506,4755,4593),
@@ -8228,7 +8228,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(12605,12524,4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
     4319 => array(
-        'm_icon' => '<i class="fad fa-sort-numeric-down source"></i>',
+        'm_icon' => '<i class="fad fa-sort-numeric-down source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINK INTEGER',
         'm_desc' => '',
         'm_parents' => array(4535,4593,4592),
@@ -8389,7 +8389,7 @@ $config['en_all_4592'] = array(
         'm_parents' => array(12605,12524,4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
     4319 => array(
-        'm_icon' => '<i class="fad fa-sort-numeric-down source"></i>',
+        'm_icon' => '<i class="fad fa-sort-numeric-down source" aria-hidden="true"></i>',
         'm_name' => 'INTEGER',
         'm_desc' => '',
         'm_parents' => array(4535,4593,4592),
