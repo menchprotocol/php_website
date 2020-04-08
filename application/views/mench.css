@@ -729,10 +729,10 @@ textarea.note-textarea{
 .ln_content img, .i_content img { max-width: 100%; }
 
 td.MENCHcolumnFull{ width: 100%; }
-td.MENCHcolumn1{ width: 58%; }
-td.MENCHcolumn2{ width: 21%; }
-td.MENCHcolumn12{ width: 79%; }
-td.MENCHcolumn3{ width: 21%; }
+td.MENCHcolumn1{ width: 70%; }
+td.MENCHcolumn2{ width: 15%; }
+td.MENCHcolumn12{ width:85%; }
+td.MENCHcolumn3{ width: 15%; }
 
 .equal-columns td.MENCHcolumn1{ width: 33.3%; }
 .equal-columns td.MENCHcolumn2{ width: 33.3%; }
@@ -1325,6 +1325,11 @@ label {
     .avatar-item .avatar-icon { font-size: 2.4em; }
 
     td.MENCHcolumn1:not(.fixedColumns), td.MENCHcolumn2:not(.fixedColumns), td.MENCHcolumn3:not(.fixedColumns){ width: 100%; display: block; }
+
+    td.MENCHcolumn1{ width: 58%; }
+    td.MENCHcolumn2{ width: 21%; }
+    td.MENCHcolumn12{ width:79%; }
+    td.MENCHcolumn3{ width: 21%; }
 
     .ln_content { max-width: 100%; }
     .texttype_4736_sm {
