@@ -8,55 +8,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-07 08:40:59 PST
+//Generated 2020-04-07 18:51:44 PST
 
 //PLATFORM STATS:
-$config['ps_read_count'] = 120969;
-$config['ps_blog_count'] = 3835;
+$config['ps_timestamp'] = 1586310704;
+$config['ps_read_count'] = 120962;
+$config['ps_blog_count'] = 3819;
 $config['ps_source_count'] = 9228;
 
 
-
-//SOURCE LINK URL HTTPS REQUIRED:
-$config['en_ids_12605'] = array(6198,4259,4261,4260,4258,4257);
-$config['en_all_12605'] = array(
-    6198 => array(
-        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'ICON',
-        'm_desc' => 'If using the <img HTML code then requires the src attribute to contain a secure HTTPS URL.',
-        'm_parents' => array(12605,10653,5943,10625,6232,6206),
-    ),
-    4259 => array(
-        'm_icon' => '<i class="fad fa-volume-up source"></i>',
-        'm_name' => 'LINK AUDIO',
-        'm_desc' => '',
-        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
-    ),
-    4261 => array(
-        'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
-        'm_name' => 'LINK FILE',
-        'm_desc' => '',
-        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
-    ),
-    4260 => array(
-        'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
-        'm_name' => 'LINK IMAGE',
-        'm_desc' => '',
-        'm_parents' => array(12605,12524,4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
-    ),
-    4258 => array(
-        'm_icon' => '<i class="fad fa-video source"></i>',
-        'm_name' => 'LINK VIDEO',
-        'm_desc' => '',
-        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
-    ),
-    4257 => array(
-        'm_icon' => '<i class="fad fa-play-circle source"></i>',
-        'm_name' => 'LINK WIDGET',
-        'm_desc' => '',
-        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537,4506),
-    ),
-);
 
 //NEXT EDITOR:
 $config['en_ids_12589'] = array(12591,12592);
@@ -503,7 +463,7 @@ $config['en_all_10876'] = array(
     10939 => array(
         'm_icon' => '<i class="fad fa-pen blog" aria-hidden="true"></i>',
         'm_name' => 'BLOG PEN',
-        'm_desc' => 'https://mench.com/13273',
+        'm_desc' => 'https://mench.com/13440',
         'm_parents' => array(10876,10957),
     ),
     10985 => array(
@@ -4620,7 +4580,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(6287,12588,4535,11047,6192,12365,12079,11018,11021,4229,4485,12012,6193,10990,12273,4983,7302,4737,7356,12138,7355,12400,6201,12112,12420,4486,12413,7585,10602,12330,12324,7309,7712,7751,6150,3000,10627,12359,10717,12571,12574,11080,2738,12105,12502,4341,10876,11035,12524,11059,11058,6225,12501,12589,6404,4527,11054,6232,4997,12577,4755,6205,11081,7704,12326,12229,6345,4280,4277,6102,12446,6146,7347,10692,12227,5967,6255,7304,7360,7364,7359,10593,12228,12141,12327,10658,4269,6204,4536,10956,12279,12410,6194,3290,6827,12421,11089,4592,12403,12605,4426,12500,7555,4986,7551,12274,11028,4537,6177,7358,12575,7357,12401,6206,3289,10957,12523,12322,12321,6805,6103,6186,4593);
+$config['en_ids_4527'] = array(6287,12588,4535,11047,6192,12365,12079,11018,11021,4229,4485,12012,6193,10990,12273,4983,7302,4737,7356,12138,7355,12400,6201,12112,12420,4486,12413,7585,10602,12330,12324,7309,7712,7751,6150,3000,10627,12359,10717,12571,12574,11080,2738,12105,12502,4341,10876,11035,12524,11059,11058,6225,12501,12589,6404,4527,11054,6232,4997,12577,4755,6205,11081,7704,12326,12229,6345,4280,4277,6102,12446,6146,7347,10692,12227,5967,6255,7304,7360,7364,7359,10593,12228,12141,12327,10658,4269,6204,4536,10956,12279,12410,6194,3290,6827,12421,11089,4592,12403,4426,12500,7555,4986,7551,12274,11028,4537,6177,7358,12575,7357,12401,6206,3289,10957,12523,12322,12321,6805,6103,6186,4593);
 $config['en_all_4527'] = array(
     6287 => array(
         'm_icon' => '<i class="fad fa-user-shield source" aria-hidden="true"></i>',
@@ -5213,12 +5173,6 @@ $config['en_all_4527'] = array(
     12403 => array(
         'm_icon' => '<i class="far fa-object-ungroup" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINK TYPE CUSTOM UI',
-        'm_desc' => '',
-        'm_parents' => array(4527,4758),
-    ),
-    12605 => array(
-        'm_icon' => '<i class="fad fa-shield-check source"></i>',
-        'm_name' => 'SOURCE LINK URL HTTPS REQUIRED',
         'm_desc' => '',
         'm_parents' => array(4527,4758),
     ),
