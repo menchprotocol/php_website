@@ -728,11 +728,6 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
         //They are part of one of the levels assigned to them:
         return $session_en;
 
-    } elseif(!$has_session){
-
-        //Did not have session, maybe they are still logged in via AUth0
-        $auth0 = $CI->SOURCE_model->new_auth0();
-
     }
 
 
