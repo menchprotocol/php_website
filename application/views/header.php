@@ -51,20 +51,20 @@ if($found_at > 1){
     <?php
     echo '<script type="text/javascript">';
 
-    echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_en && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
+    echo ' var js_session_superpowers_assigned = ' . echo_json( ($session_en && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
     echo ' var js_pl_id = ' . ( $session_en ? $session_en['en_id'] : 0 ) . '; ';
     echo ' var js_pl_name = \'' . ( $session_en ? $session_en['en_name'] : 'Unknown' ) . '\'; ';
 
     //LOAD JS CACHE:
     foreach($this->config->item('en_all_11054') as $en_id => $m){
         if(count($this->config->item('en_all_'.$en_id))){
-            echo ' var js_en_all_'.$en_id.' = ' . json_encode($this->config->item('en_all_'.$en_id)) . '; ';
+            echo ' var js_en_all_'.$en_id.' = ' . echo_json($this->config->item('en_all_'.$en_id)) . '; ';
         }
     }
 
     //Random Messages:
-    echo ' var random_loading_message = ' . json_encode(echo_random_message('loading_notify', true)) . '; ';
-    echo ' var random_saving_message = ' . json_encode(echo_random_message('saving_notify', true)) . '; ';
+    echo ' var random_loading_message = ' . echo_json(echo_random_message('loading_notify', true)) . '; ';
+    echo ' var random_saving_message = ' . echo_json(echo_random_message('saving_notify', true)) . '; ';
 
     echo '</script>';
     ?>
