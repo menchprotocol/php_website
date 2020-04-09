@@ -1751,7 +1751,6 @@ fragment PostListingItemSidebar_post on Post {
     function auth0(){
 
         require 'vendor/autoload.php';
-        use Auth0\SDK\Auth0;
 
         $auth0 = new Auth0([
             'domain' => 'mench.auth0.com',
