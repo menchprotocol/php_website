@@ -12,11 +12,7 @@ $auth0 = new Auth0([
     'scope' => 'openid profile email',
 ]);
 
-$userInfo = $auth0->getUser();
-
-echo_json($userInfo);
-
-//$auth0->login();
+$auth0->login();
 
 if(0){
 

@@ -1750,7 +1750,7 @@ fragment PostListingItemSidebar_post on Post {
 
     function auth0(){
 
-        $this->load->view('source/source_sign');
+        $this->load->view('source/auth_test');
 
     }
 
