@@ -1,4 +1,24 @@
 <?php
+
+require 'vendor/autoload.php';
+use Auth0\SDK\Auth0;
+
+$auth0 = new Auth0([
+    'domain' => 'mench.auth0.com',
+    'client_id' => 'ExW9bFiMnJX21vogqcbKCLn08djYWnsi',
+    'client_secret' => 'YOUR_CLIENT_SECRET',
+    'redirect_uri' => 'https://mench.com/source/auth0',
+    'scope' => 'openid profile email',
+]);
+
+$auth0->login();
+
+
+
+
+if(0){
+
+
 $en_all_4269 = $this->config->item('en_all_4269');
 $en_all_7555 = $this->config->item('en_all_7555');
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
@@ -242,3 +262,5 @@ if(count($current_sign_in_attempt) == 0){
 
     </div>
 </div>
+
+<?php } ?>
