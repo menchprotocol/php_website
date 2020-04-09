@@ -9,5 +9,13 @@ $auth0 = new Auth0([
     'redirect_uri' => 'https://mench.com/source/auth0',
     'scope' => 'openid profile email',
 ]);
-$auth0->login();
+
+$return_to = 'https://mench.com';
+$auth0->logout();
+$logout_url = sprintf('http://%s/v2/logout?client_id=%s&returnTo=%s', 'mench.auth0.com', 'ExW9bFiMnJX21vogqcbKCLn08djYWnsi', $return_to);
+$this->session->sess_destroy();
+
+header('Location: ' . $logout_url);
+die();
+
 ?>

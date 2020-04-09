@@ -57,10 +57,6 @@
 define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 
 
-//Add Auth 0 to all pages
-require 'vendor/autoload.php';
-use Auth0\SDK\Auth0;
-
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

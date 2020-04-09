@@ -1,4 +1,5 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Source extends CI_Controller
@@ -9,6 +10,7 @@ class Source extends CI_Controller
         parent::__construct();
 
         $this->output->enable_profiler(FALSE);
+
 
         date_default_timezone_set(config_var(11079));
     }
@@ -817,14 +819,16 @@ fragment PostListingItemSidebar_post on Post {
             return redirect_message('/sign');
         }
 
-
-        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
-        $this->load->view('header', array(
-            'hide_header' => 1,
-            'title' => $en_all_11035[4269]['m_name'],
-        ));
         $this->load->view('source/source_sign');
-        $this->load->view('footer');
+
+    }
+
+    function auth0(){
+        $this->load->view('source/source_auth0');
+    }
+
+    function signout(){
+        $this->load->view('source/source_signout');
 
     }
 
@@ -1946,14 +1950,6 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function callback_auth0(){
-
-    }
-
-
-
-
-
 
     function sign_create_account(){
 
@@ -2323,6 +2319,9 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
+
+
+
     function account_update_radio()
     {
         /*
@@ -2472,18 +2471,6 @@ fragment PostListingItemSidebar_post on Post {
 
     }
 
-
-    function signout()
-    {
-        $return_to = 'https://mench.com';
-        $auth0 = $this->SOURCE_model->new_auth0($return_to);
-        $auth0->logout();
-        $logout_url = sprintf('http://%s/v2/logout?client_id=%s&returnTo=%s', 'mench.auth0.com', 'ExW9bFiMnJX21vogqcbKCLn08djYWnsi', $return_to);
-        $this->session->sess_destroy();
-
-        header('Location: ' . $logout_url);
-        die();
-    }
 
 
     function account_update_avatar_icon()

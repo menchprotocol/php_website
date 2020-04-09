@@ -1196,16 +1196,6 @@ class SOURCE_model extends CI_Model
 
     }
 
-    function new_auth0($redirect_uri = null){
-        //Check current status:
-        return new Auth0([
-            'domain' => 'mench.auth0.com',
-            'client_id' => 'ExW9bFiMnJX21vogqcbKCLn08djYWnsi',
-            'client_secret' => $this->config->item('cred_auth0_client_secret'),
-            'redirect_uri' => 'https://mench.com/read',
-            'scope' => 'openid profile email',
-        ]);
-    }
 
     function en_messenger_add($psid, $quick_reply_payload = null)
     {
