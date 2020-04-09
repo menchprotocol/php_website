@@ -1951,6 +1951,10 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
+
+
+
+
     function sign_create_account(){
 
         if (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_url'])) {
@@ -2472,7 +2476,7 @@ fragment PostListingItemSidebar_post on Post {
     function signout()
     {
         $return_to = 'https://mench.com';
-        $auth0 = new_auth0($return_to);
+        $auth0 = $this->SOURCE_model->new_auth0($return_to);
         $auth0->logout();
         $logout_url = sprintf('http://%s/v2/logout?client_id=%s&returnTo=%s', 'mench.auth0.com', 'ExW9bFiMnJX21vogqcbKCLn08djYWnsi', $return_to);
         $this->session->sess_destroy();

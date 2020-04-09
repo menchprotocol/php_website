@@ -18,7 +18,7 @@ $auth0 = new Auth0([
     'redirect_uri' => $redirect_uri,
     'scope' => 'openid profile email',
 ]);
-$auth0 = new_auth0($redirect_uri);
+$auth0 = $this->SOURCE_model->new_auth0($redirect_uri);
 $auth0->login();
 
 if(0){

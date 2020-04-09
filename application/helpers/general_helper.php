@@ -707,16 +707,6 @@ function current_mench($part1 = null){
 
 }
 
-function new_auth0($redirect_uri = null){
-    //Check current status:
-    return new Auth0([
-        'domain' => 'mench.auth0.com',
-        'client_id' => 'ExW9bFiMnJX21vogqcbKCLn08djYWnsi',
-        'client_secret' => $this->config->item('cred_auth0_client_secret'),
-        'redirect_uri' => 'https://mench.com/read',
-        'scope' => 'openid profile email',
-    ]);
-}
 
 function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
 {
@@ -741,7 +731,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
     } elseif(!$has_session){
 
         //Did not have session, maybe they are still logged in via AUth0
-        $auth0 = new_auth0();
+        $auth0 = $CI->SOURCE_model->new_auth0();
         $userInfo = $auth0->getUser();
         if($userInfo){
 
