@@ -319,13 +319,15 @@ function json_decode($json, $assoc = false, $depth = 512, $options = 0)
  * @throws \InvalidArgumentException if the JSON cannot be encoded.
  * @link http://www.php.net/manual/en/function.json-encode.php
  */
-function json_encode($value, $options = 0, $depth = 512)
-{
-    $json = \json_encode($value, $options, $depth);
-    if (JSON_ERROR_NONE !== json_last_error()) {
-        throw new \InvalidArgumentException(
-            'json_encode error: ' . json_last_error_msg());
-    }
+if(!function_exists('json_encode')){
+    function json_encode($value, $options = 0, $depth = 512)
+    {
+        $json = \json_encode($value, $options, $depth);
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw new \InvalidArgumentException(
+                'json_encode error: ' . json_last_error_msg());
+        }
 
-    return $json;
+        return $json;
+    }
 }
