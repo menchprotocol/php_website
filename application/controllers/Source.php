@@ -1749,15 +1749,22 @@ fragment PostListingItemSidebar_post on Post {
     }
 
     function auth0(){
-        //Just Log
-        $this->READ_model->ln_create(array(
-            'ln_content' => 'auth0() Callback',
-            'ln_type_source_id' => 4246, //Platform Bug Reports
-            'ln_metadata' => array(
-                'POST' => $_POST,
-                'GET' => $_GET,
-            ),
-        ));
+
+        require 'vendor/autoload.php';
+        use Auth0\SDK\Auth0;
+
+        $auth0 = new Auth0([
+            'domain' => 'mench.auth0.com',
+            'client_id' => 'ExW9bFiMnJX21vogqcbKCLn08djYWnsi',
+            'client_secret' => $this->config->item('cred_auth0_client_secret'),
+            'redirect_uri' => 'https://mench.com/source/auth0',
+            'scope' => 'openid profile email',
+        ]);
+
+        $userInfo = $auth0->getUser();
+
+        echo_json($userInfo);
+
     }
 
     function singin_check_password(){
