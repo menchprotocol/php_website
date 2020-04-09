@@ -1748,12 +1748,6 @@ fragment PostListingItemSidebar_post on Post {
         ));
     }
 
-    function auth0(){
-
-        $this->load->view('source/auth_test');
-
-    }
-
     function singin_check_password(){
 
         if (!isset($_POST['login_en_id']) || intval($_POST['login_en_id'])<1) {
@@ -1794,7 +1788,7 @@ fragment PostListingItemSidebar_post on Post {
         //Authenticate password:
         $user_passwords = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4255, //Text
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_parent_source_id' => 3286, //Password
             'ln_child_source_id' => $ens[0]['en_id'],
         ));
@@ -1952,6 +1946,11 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
+    function callback_auth0(){
+
+    }
+
+
     function sign_create_account(){
 
         if (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_url'])) {
@@ -2059,19 +2058,6 @@ fragment PostListingItemSidebar_post on Post {
         ));
 
         $this->READ_model->ln_create(array(
-            'ln_type_source_id' => 4230, //Raw link
-            'ln_parent_source_id' => 12221, //Notify on EMAIL
-            'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_child_source_id' => $user_en['en']['en_id'],
-        ));
-
-        $this->READ_model->ln_create(array(
-            'ln_type_source_id' => 4230, //Raw link
-            'ln_parent_source_id' => 3504, //English Language (Since everything is in English so far)
-            'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_child_source_id' => $user_en['en']['en_id'],
-        ));
-        $this->READ_model->ln_create(array(
             'ln_type_source_id' => 4255, //Text link
             'ln_content' => trim(strtolower($_POST['input_email'])),
             'ln_parent_source_id' => 3288, //Mench Email
@@ -2175,7 +2161,7 @@ fragment PostListingItemSidebar_post on Post {
         $user_emails = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_content' => $_POST['input_email'],
-            'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_parent_source_id' => 3288, //Mench Email
         ), array('en_child'));
         if(count($user_emails) < 1){
@@ -2296,7 +2282,7 @@ fragment PostListingItemSidebar_post on Post {
         $user_emails = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_content' => $_POST['input_email'],
-            'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_parent_source_id' => 3288, //Mench Email
         ), array('en_child'));
 
@@ -2485,9 +2471,14 @@ fragment PostListingItemSidebar_post on Post {
 
     function signout()
     {
-        //Destroys Session
+        $return_to = 'https://mench.com';
+        $auth0 = new_auth0($return_to);
+        $auth0->logout();
+        $logout_url = sprintf('http://%s/v2/logout?client_id=%s&returnTo=%s', 'mench.auth0.com', 'ExW9bFiMnJX21vogqcbKCLn08djYWnsi', $return_to);
         $this->session->sess_destroy();
-        header('Location: /');
+
+        header('Location: ' . $logout_url);
+        die();
     }
 
 
@@ -2620,7 +2611,7 @@ fragment PostListingItemSidebar_post on Post {
             //Check to make sure not duplicate:
             $duplicates = $this->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'ln_type_source_id' => 4255, //Emails are of type Text
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                 'ln_parent_source_id' => 3288, //Mench Email
                 'ln_child_source_id !=' => $session_en['en_id'],
                 'LOWER(ln_content)' => $_POST['en_email'],
@@ -2639,7 +2630,7 @@ fragment PostListingItemSidebar_post on Post {
         $user_emails = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_child_source_id' => $session_en['en_id'],
-            'ln_type_source_id' => 4255, //Emails are of type Text
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_parent_source_id' => 3288, //Mench Email
         ));
         if (count($user_emails) > 0) {
@@ -2742,7 +2733,7 @@ fragment PostListingItemSidebar_post on Post {
         //Fetch existing password:
         $user_passwords = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4255, //Passwords are of type Text
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_parent_source_id' => 3286, //Password
             'ln_child_source_id' => $session_en['en_id'],
         ));

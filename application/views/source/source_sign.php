@@ -1,17 +1,24 @@
 <?php
 
 
-require 'vendor/autoload.php';
-use Auth0\SDK\Auth0;
+//Determine Redirect URL:
+$referrer_in_id = intval($this->session->userdata('sign_in_id'));
+if(isset($_GET['url'])){
+    $redirect_uri = 'https://mench.com'.$_GET['url'];
+} elseif($referrer_in_id > 0){
+    $redirect_uri = 'https://mench.com/read/'.$referrer_in_id;
+} else {
+    $redirect_uri = 'https://mench.com/read';
+}
 
 $auth0 = new Auth0([
     'domain' => 'mench.auth0.com',
     'client_id' => 'ExW9bFiMnJX21vogqcbKCLn08djYWnsi',
     'client_secret' => $this->config->item('cred_auth0_client_secret'),
-    'redirect_uri' => 'https://mench.com/source/auth0',
+    'redirect_uri' => $redirect_uri,
     'scope' => 'openid profile email',
 ]);
-
+$auth0 = new_auth0($redirect_uri);
 $auth0->login();
 
 if(0){
@@ -22,7 +29,6 @@ $en_all_7555 = $this->config->item('en_all_7555');
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
 //See if we have a session assigned:
-$referrer_in_id = intval($this->session->userdata('sign_in_id'));
 
 $this_attempt = array(
     'ln_type_source_id' => ( $referrer_in_id > 0 ? 7560 /* User Signin Note Channel Choose */ : 7561 /* User Signin on Website */ ),

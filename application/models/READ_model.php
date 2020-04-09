@@ -439,7 +439,7 @@ class READ_model extends CI_Model
                 foreach($this->READ_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-                    'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                     'ln_parent_source_id' => 3288, //Mench Email
                     'ln_child_source_id' => $subscriber_en_id,
                 ), array('en_child')) as $en_email){
@@ -2980,7 +2980,7 @@ class READ_model extends CI_Model
                 $user_emails = $this->READ_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_child_source_id' => $recipient_en['en_id'],
-                    'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                     'ln_parent_source_id' => 3288, //Mench Email
                 ));
 

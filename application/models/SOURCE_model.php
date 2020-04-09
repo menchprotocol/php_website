@@ -1287,23 +1287,6 @@ class SOURCE_model extends CI_Model
         //New source link is already logged in the source creation function
         //Now create more relevant links:
 
-        //Activate Mench Messenger
-        $this->READ_model->ln_create(array(
-            'ln_parent_source_id' => 6196, //Mench Messenger
-            'ln_type_source_id' => 4230, //Raw link
-            'ln_creator_source_id' => $added_en['en']['en_id'],
-            'ln_child_source_id' => $added_en['en']['en_id'],
-            'ln_external_id' => $psid,
-        ));
-
-        //Add them to Users group:
-        $this->READ_model->ln_create(array(
-            'ln_parent_source_id' => 4430, //Mench User
-            'ln_type_source_id' => 4230, //Raw link
-            'ln_creator_source_id' => $added_en['en']['en_id'],
-            'ln_child_source_id' => $added_en['en']['en_id'],
-        ));
-
         /*
         $this->READ_model->ln_create(array(
             'ln_type_source_id' => 4230, //Raw link
@@ -1313,6 +1296,15 @@ class SOURCE_model extends CI_Model
         ));
         */
 
+
+
+        //Add them to Users group:
+        $this->READ_model->ln_create(array(
+            'ln_parent_source_id' => 4430, //Mench User
+            'ln_type_source_id' => 4230, //Raw link
+            'ln_creator_source_id' => $added_en['en']['en_id'],
+            'ln_child_source_id' => $added_en['en']['en_id'],
+        ));
         $this->READ_model->ln_create(array(
             'ln_type_source_id' => 4230, //Raw link
             'ln_parent_source_id' => 1278, //People
@@ -1320,21 +1312,28 @@ class SOURCE_model extends CI_Model
             'ln_child_source_id' => $added_en['en']['en_id'],
         ));
 
+
+
+        //Activate Mench Messenger
+        $this->READ_model->ln_create(array(
+            'ln_parent_source_id' => 6196, //Mench Messenger
+            'ln_type_source_id' => 4230, //Raw link
+            'ln_creator_source_id' => $added_en['en']['en_id'],
+            'ln_child_source_id' => $added_en['en']['en_id'],
+            'ln_external_id' => $psid,
+        ));
         $this->READ_model->ln_create(array(
             'ln_type_source_id' => 4230, //Raw link
             'ln_parent_source_id' => 12222, //Notify on MESSENGER
             'ln_creator_source_id' => $added_en['en']['en_id'],
             'ln_child_source_id' => $added_en['en']['en_id'],
         ));
-
-        //Add default Notification Level:
         $this->READ_model->ln_create(array(
             'ln_parent_source_id' => 4456, //Receive Regular Notifications (User can change later on...)
             'ln_type_source_id' => 4230, //Raw link
             'ln_creator_source_id' => $added_en['en']['en_id'],
             'ln_child_source_id' => $added_en['en']['en_id'],
         ));
-
 
         if(!$fetch_result){
             //Let them know to complete their profile:
