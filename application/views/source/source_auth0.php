@@ -1,5 +1,7 @@
 <?php
-//Add Auth 0 to all pages
+
+//This page is loaded after user successfully authenticates via Auth0
+
 require 'vendor/autoload.php';
 
 $auth0 = new Auth0\SDK\Auth0([

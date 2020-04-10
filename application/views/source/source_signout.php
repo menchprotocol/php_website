@@ -16,4 +16,5 @@ $this->session->sess_destroy();
 header('Location: ' . $logout_url);
 die();
 
+
 ?>
