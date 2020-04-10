@@ -12,7 +12,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
     //Set global variables:
     var en_focus_filter = -1; //No filter, show all
     var en_focus_id = <?= $source['en_id'] ?>;
-    var en_all_4592 = <?= echo_json($this->config->item('en_all_4592')) ?>;
+    var en_all_4592 = <?= json_encode($this->config->item('en_all_4592')) ?>;
 </script>
 
 <style>

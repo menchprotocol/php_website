@@ -11,7 +11,6 @@ class Source extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-
         date_default_timezone_set(config_var(11079));
     }
 

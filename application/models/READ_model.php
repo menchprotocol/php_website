@@ -3623,7 +3623,7 @@ class READ_model extends CI_Model
 
         if (count($payload) > 0) {
             $ch_setting[CURLOPT_HTTPHEADER] = array('Content-Type: application/json; charset=utf-8');
-            $ch_setting[CURLOPT_POSTFIELDS] = echo_json($payload);
+            $ch_setting[CURLOPT_POSTFIELDS] = json_encode($payload);
         }
 
         //Apply settings:
