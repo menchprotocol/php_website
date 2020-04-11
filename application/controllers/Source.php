@@ -2842,10 +2842,10 @@ fragment PostListingItemSidebar_post on Post {
         //Append more data:
         echo '<br />//PLATFORM STATS:<br />';
         echo '$config[\'cache_timestamp\'] = '.$cache_timestamp.';<br />';
-        echo '$config[\'count_transaction\'] = '.$transactions[0]['totals'].';<br />';
-        echo '$config[\'count_read\'] = '.$read_coins[0]['totals'].';<br />';
-        echo '$config[\'count_note\'] = '.$note_coins[0]['totals'].';<br />';
-        echo '$config[\'count_source\'] = '.$source_coins[0]['totals'].';<br />';
+        echo '$config[\'cache_count_transaction\'] = '.$transactions[0]['totals'].';<br />';
+        echo '$config[\'cache_count_read\'] = '.$read_coins[0]['totals'].';<br />';
+        echo '$config[\'cache_count_note\'] = '.$note_coins[0]['totals'].';<br />';
+        echo '$config[\'cache_count_source\'] = '.$source_coins[0]['totals'].';<br />';
         echo '<br /><br />';
 
 
@@ -2859,7 +2859,7 @@ fragment PostListingItemSidebar_post on Post {
                 'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
             ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
 
-            echo '$config[\'count_'.$en_id.'\'] = '.$child_links[0]['totals'].'; //'.$m['m_name'].'<br />';
+            echo '$config[\'cache_count_'.$en_id.'\'] = '.$child_links[0]['totals'].'; //'.$m['m_name'].'<br />';
 
         }
 
