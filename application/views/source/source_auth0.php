@@ -16,11 +16,6 @@ $auth0 = new Auth0\SDK\Auth0([
     'scope' => 'openid profile email',
 ]);
 
-if($auth0){
-    //Login validated:
-    $userInfo = $auth0->getUser();
-}
-
 
 
 /*
@@ -43,8 +38,7 @@ if($auth0){
  *
  * */
 
-
-/*
+$userInfo = $auth0->getUser();
 if($userInfo){
 
     //We have their email already?
@@ -91,7 +85,6 @@ if($userInfo){
     $this->SOURCE_model->en_activate_session($user_emails[0]);
 
 }
-*/
 
 //Still Here? Go home:
 header('Location: /');
