@@ -8,27 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-11 13:03:25 PST
-
-//PLATFORM STATS:
-$config['cache_timestamp'] = 1586635405;
-$config['count_transaction'] = 1111832;
-$config['count_read'] = 121006;
-$config['count_note'] = 3825;
-$config['count_source'] = 9208;
-
-$config['count_2997'] = 126; //EXPERT ARTICLES
-$config['count_4446'] = 34; //EXPERT ASSESSMENTS
-$config['count_3005'] = 2; //EXPERT BOOKS
-$config['count_4763'] = 10; //EXPERT CHANNELS
-$config['count_3147'] = 28; //EXPERT COURSES
-$config['count_2999'] = 8; //EXPERT PODCASTS
-$config['count_12640'] = 645; //EXPERT SOURCES
-$config['count_5948'] = 9; //EXPERT TEMPLATES
-$config['count_3192'] = 15; //EXPERT TOOLS
-$config['count_2998'] = 415; //EXPERT VIDEOS
-$config['count_1308'] = 2; //MODERATORS
-$config['count_4430'] = 2473; //PLAYERS
+//Generated 2020-04-11 13:24:40 PST
 
 //MEMORY CACHE COUNT:
 $config['en_ids_12639'] = array(2997,4446,3005,4763,3147,2999,12640,5948,3192,2998,1308,4430);
@@ -866,8 +846,8 @@ $config['en_all_4536'] = array(
         'm_parents' => array(10876,12500,4536,11035,4527),
     ),
     12634 => array(
-        'm_icon' => '<i class="fad fa-gift source"></i>',
-        'm_name' => 'PLAYER GIFTS',
+        'm_icon' => '<i class="fad fa-gift source" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER EARLY SIGNUP GIFTS',
         'm_desc' => '',
         'm_parents' => array(4536),
     ),
@@ -8755,3 +8735,25 @@ $config['en_all_3000'] = array(
         'm_parents' => array(12639,12523,4983,7614,3000),
     ),
 );
+
+
+//PLATFORM STATS:
+$config['cache_timestamp'] = 1586636680;
+$config['count_transaction'] = 1111865;
+$config['count_read'] = 121006;
+$config['count_note'] = 3825;
+$config['count_source'] = 9208;
+
+
+$config['count_2997'] = 126; //EXPERT ARTICLES
+$config['count_4446'] = 34; //EXPERT ASSESSMENTS
+$config['count_3005'] = 2; //EXPERT BOOKS
+$config['count_4763'] = 10; //EXPERT CHANNELS
+$config['count_3147'] = 28; //EXPERT COURSES
+$config['count_2999'] = 8; //EXPERT PODCASTS
+$config['count_12640'] = 645; //EXPERT SOURCES
+$config['count_5948'] = 9; //EXPERT TEMPLATES
+$config['count_3192'] = 15; //EXPERT TOOLS
+$config['count_2998'] = 415; //EXPERT VIDEOS
+$config['count_1308'] = 2; //MODERATORS
+$config['count_4430'] = 2473; //PLAYERS
