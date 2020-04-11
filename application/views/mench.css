@@ -612,7 +612,7 @@ textarea.pads-textarea{
 
 .pads-textarea.edit-on {
     margin-left: 33px;
-    padding: 5px 0;
+    padding: 5px 33px 10px 0;
 }
 
 .text_message{
