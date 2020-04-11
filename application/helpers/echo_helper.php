@@ -282,7 +282,7 @@ function echo_in_pads($ln)
     //Show drop down for message link status:
     $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 0 0 0; display: block;">';
     $ui .= '<select id="message_status_' . $ln['ln_id'] . '"  class="form-control border" style="margin-bottom:0;" title="Change message status" data-toggle="tooltip" data-placement="top">';
-    foreach($CI->config->item('en_all_12012') as $en_id => $m){
+    foreach($CI->config->item('en_all_6186') as $en_id => $m){
         $ui .= '<option value="' . $en_id . '" '.( $en_id==$ln['ln_status_source_id'] ? 'selected="selected"' : '' ).'>' . $m['m_name'] . '</option>';
     }
     $ui .= '</select>';
