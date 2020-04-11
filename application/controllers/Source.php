@@ -2848,7 +2848,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
         //PLATFORM STATS
-        $ps_timestamp = time();
+        $cache_timestamp = time();
         $transactions = $this->READ_model->ln_fetch(array(), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $read_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -2864,13 +2864,13 @@ fragment PostListingItemSidebar_post on Post {
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
 
-        echo '//Generated '.date("Y-m-d H:i:s", $ps_timestamp).' PST<br />';
+        echo '//Generated '.date("Y-m-d H:i:s", $cache_timestamp).' PST<br />';
         echo '<br />//PLATFORM STATS:<br />';
-        echo '$config[\'ps_timestamp\'] = '.$ps_timestamp.';<br />';
-        echo '$config[\'ps_transactions\'] = '.$transactions[0]['totals'].';<br />';
-        echo '$config[\'ps_read_count\'] = '.$read_coins[0]['totals'].';<br />';
-        echo '$config[\'ps_note_count\'] = '.$note_coins[0]['totals'].';<br />';
-        echo '$config[\'ps_source_count\'] = '.$source_coins[0]['totals'].';<br />';
+        echo '$config[\'cache_timestamp\'] = '.$cache_timestamp.';<br />';
+        echo '$config[\'count_transaction\'] = '.$transactions[0]['totals'].';<br />';
+        echo '$config[\'count_read\'] = '.$read_coins[0]['totals'].';<br />';
+        echo '$config[\'count_note\'] = '.$note_coins[0]['totals'].';<br />';
+        echo '$config[\'count_source\'] = '.$source_coins[0]['totals'].';<br />';
         echo '<br /><br />';
 
 
