@@ -3115,7 +3115,7 @@ class READ_model extends CI_Model
 
 
         if (in_array('/count:', $string_references['ref_commands'])) {
-            $cache_var_name = one_two_explode('/count:',' ',$string_references['ref_commands']);
+            $cache_var_name = one_two_explode('/count:',' ', $output_body_message);
             $output_body_message = str_replace('/count:'.$cache_var_name, number_format($this->config->item('count_'.$cache_var_name), 0), $output_body_message);
         }
 
