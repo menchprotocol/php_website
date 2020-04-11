@@ -8,27 +8,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-11 15:01:00 PST
+//Generated 2020-04-11 16:10:47 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1586642460;
-$config['cache_count_transaction'] = 1114477;
+$config['cache_timestamp'] = 1586646647;
+$config['cache_count_transaction'] = 1114524;
 $config['cache_count_read'] = 121006;
 $config['cache_count_note'] = 3825;
 $config['cache_count_source'] = 9209;
 
 
-$config['cache_count_2997'] = 126; //EXPERT ARTICLES
-$config['cache_count_4446'] = 34; //EXPERT ASSESSMENTS
-$config['cache_count_3005'] = 2; //EXPERT BOOKS
-$config['cache_count_4763'] = 10; //EXPERT CHANNELS
-$config['cache_count_3147'] = 28; //EXPERT COURSES
-$config['cache_count_2999'] = 8; //EXPERT PODCASTS
 $config['cache_count_12640'] = 645; //EXPERT SOURCES
-$config['cache_count_5948'] = 9; //EXPERT TEMPLATES
-$config['cache_count_3192'] = 15; //EXPERT TOOLS
-$config['cache_count_2998'] = 415; //EXPERT VIDEOS
 $config['cache_count_1308'] = 2; //MODERATORS
+$config['cache_count_2997'] = 126; //NON-FICTION ARTICLES
+$config['cache_count_4446'] = 34; //NON-FICTION ASSESSMENTS
+$config['cache_count_3005'] = 2; //NON-FICTION BOOKS
+$config['cache_count_4763'] = 10; //NON-FICTION CHANNELS
+$config['cache_count_3147'] = 28; //NON-FICTION COURSES
+$config['cache_count_2999'] = 8; //NON-FICTION PODCASTS
+$config['cache_count_5948'] = 9; //NON-FICTION TEMPLATES
+$config['cache_count_3192'] = 15; //NON-FICTION TOOLS
+$config['cache_count_2998'] = 415; //NON-FICTION VIDEOS
 $config['cache_count_4430'] = 2473; //PLAYERS
 
 //MEMORY CACHE COUNT:
@@ -149,20 +149,8 @@ $config['en_all_12467'] = array(
 );
 
 //NEXT EDITOR:
-$config['en_ids_12589'] = array(12611,12612,12591,12592);
+$config['en_ids_12589'] = array(12591,12592);
 $config['en_all_12589'] = array(
-    12611 => array(
-        'm_icon' => '<i class="fad fa-layer-plus note" aria-hidden="true"></i>',
-        'm_name' => 'ADD PREVIOUS',
-        'm_desc' => '',
-        'm_parents' => array(12589),
-    ),
-    12612 => array(
-        'm_icon' => '<i class="fad fa-layer-minus note" aria-hidden="true"></i>',
-        'm_name' => 'REMOVE PREVIOUS',
-        'm_desc' => '',
-        'm_parents' => array(12589),
-    ),
     12591 => array(
         'm_icon' => '<i class="fas fa-plus-circle source" aria-hidden="true"></i>',
         'm_name' => 'ADD SOURCE',

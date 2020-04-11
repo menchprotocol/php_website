@@ -296,6 +296,14 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                     //We don't need the second value field here:
                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
 
+                } elseif(in_array($action_en_id, array(12611, 12612))){
+
+                    $input_options .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>Notes will be archived.</div>';
+
+                    //No values for this:
+                    $input_options .= '<input type="hidden" name="mass_value1_'.$action_en_id.'" value="" />';
+                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
+
                 }
 
                 $input_options .= '</span>';

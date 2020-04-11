@@ -62,7 +62,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
 
 
-    <div id="modifybox" class="fixed-box hidden" source-id="0" source-link-id="0">
+    <div id="modifybox" class="fixed-box hidden" source-id="0" source-link-id="0" style="padding: 5px;">
 
         <h5 class="badge badge-h edit-header"><i class="fas fa-cog"></i> Modify</h5>
         <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
