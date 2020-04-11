@@ -1727,7 +1727,7 @@ fragment PostListingItemSidebar_post on Post {
                 $updated++;
                 $this->SOURCE_model->en_update($en['en_id'], array(
                     'en_icon' => $m['m_icon'],
-                ));
+                ), true);
             }
 
         }

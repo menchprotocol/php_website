@@ -596,21 +596,25 @@ img.no-radius {
     margin-right: 3px;
 }
 
+
+.add_pads_form{
+    margin-left: 33px;
+}
+
+
 textarea.pads-textarea{
     border:0;
     border-radius: 0;
-    padding: 2px 22px 0 1px;
     margin: 0;
     background-color: transparent !important;
     box-shadow: none;
     color: #000000;
 }
 
-.add_pads_form{
+.pads-textarea.edit-on {
     margin-left: 33px;
 }
-
-.pads-textarea.edit-on {
+.pads-textarea.edit-on, textarea.pads-textarea {
     margin-left: 33px;
     padding: 5px 33px 10px 0;
 }

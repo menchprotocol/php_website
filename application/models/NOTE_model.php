@@ -37,12 +37,12 @@ class NOTE_model extends CI_Model
 
         if ($insert_columns['in_id'] > 0) {
 
-            if ($ln_creator_source_id > 0) {
+            if($external_sync){
+                //Update Algolia:
+                $algolia_sync = update_algolia('in', $insert_columns['in_id']);
+            }
 
-                if($external_sync){
-                    //Update Algolia:
-                    $algolia_sync = update_algolia('in', $insert_columns['in_id']);
-                }
+            if ($ln_creator_source_id > 0) {
 
                 //Log link new Note:
                 $this->READ_model->ln_create(array(

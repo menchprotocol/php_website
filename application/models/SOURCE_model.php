@@ -195,6 +195,11 @@ class SOURCE_model extends CI_Model
         $this->db->update('table_source', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
+        if($affected_rows > 0 && $external_sync){
+            //Sync algolia:
+            $algolia_sync = update_algolia('en', $id);
+        }
+
         //Do we need to do any additional work?
         if ($affected_rows > 0 && $ln_creator_source_id > 0) {
 
@@ -249,11 +254,6 @@ class SOURCE_model extends CI_Model
                     ),
                 ));
 
-            }
-
-            if($external_sync){
-                //Sync algolia:
-                $algolia_sync = update_algolia('en', $id);
             }
 
         } elseif($affected_rows < 1){
