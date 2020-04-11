@@ -8,7 +8,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-11 13:24:40 PST
+//Generated 2020-04-11 14:22:34 PST
+
+//PLATFORM STATS:
+$config['cache_timestamp'] = 1586640154;
+$config['count_transaction'] = 1114378;
+$config['count_read'] = 121006;
+$config['count_note'] = 3825;
+$config['count_source'] = 9209;
+
+
+$config['count_2997'] = 126; //EXPERT ARTICLES
+$config['count_4446'] = 34; //EXPERT ASSESSMENTS
+$config['count_3005'] = 2; //EXPERT BOOKS
+$config['count_4763'] = 10; //EXPERT CHANNELS
+$config['count_3147'] = 28; //EXPERT COURSES
+$config['count_2999'] = 8; //EXPERT PODCASTS
+$config['count_12640'] = 645; //EXPERT SOURCES
+$config['count_5948'] = 9; //EXPERT TEMPLATES
+$config['count_3192'] = 15; //EXPERT TOOLS
+$config['count_2998'] = 415; //EXPERT VIDEOS
+$config['count_1308'] = 2; //MODERATORS
+$config['count_4430'] = 2473; //PLAYERS
 
 //MEMORY CACHE COUNT:
 $config['en_ids_12639'] = array(2997,4446,3005,4763,3147,2999,12640,5948,3192,2998,1308,4430);
@@ -3747,7 +3768,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.321',
+        'm_desc' => '1.322',
         'm_parents' => array(6404),
     ),
     12363 => array(
@@ -8735,25 +8756,3 @@ $config['en_all_3000'] = array(
         'm_parents' => array(12639,12523,4983,7614,3000),
     ),
 );
-
-
-//PLATFORM STATS:
-$config['cache_timestamp'] = 1586636680;
-$config['count_transaction'] = 1111865;
-$config['count_read'] = 121006;
-$config['count_note'] = 3825;
-$config['count_source'] = 9208;
-
-
-$config['count_2997'] = 126; //EXPERT ARTICLES
-$config['count_4446'] = 34; //EXPERT ASSESSMENTS
-$config['count_3005'] = 2; //EXPERT BOOKS
-$config['count_4763'] = 10; //EXPERT CHANNELS
-$config['count_3147'] = 28; //EXPERT COURSES
-$config['count_2999'] = 8; //EXPERT PODCASTS
-$config['count_12640'] = 645; //EXPERT SOURCES
-$config['count_5948'] = 9; //EXPERT TEMPLATES
-$config['count_3192'] = 15; //EXPERT TOOLS
-$config['count_2998'] = 415; //EXPERT VIDEOS
-$config['count_1308'] = 2; //MODERATORS
-$config['count_4430'] = 2473; //PLAYERS
