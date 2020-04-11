@@ -2037,7 +2037,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
         //PLATFORM STATS
-        $ps_timestamp = time();
+        $cache_timestamp = time();
         $transactions = $this->READ_model->ln_fetch(array(), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $read_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -2053,13 +2053,29 @@ fragment PostListingItemSidebar_post on Post {
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
 
-        echo '//Generated '.date("Y-m-d H:i:s", $ps_timestamp).' PST<br />';
+        echo '//Generated '.date("Y-m-d H:i:s", $cache_timestamp).' PST<br />';
         echo '<br />//PLATFORM STATS:<br />';
-        echo '$config[\'ps_timestamp\'] = '.$ps_timestamp.';<br />';
-        echo '$config[\'ps_transactions\'] = '.$transactions[0]['totals'].';<br />';
-        echo '$config[\'ps_read_count\'] = '.$read_coins[0]['totals'].';<br />';
-        echo '$config[\'ps_note_count\'] = '.$note_coins[0]['totals'].';<br />';
-        echo '$config[\'ps_source_count\'] = '.$source_coins[0]['totals'].';<br />';
+        echo '$config[\'cache_timestamp\'] = '.$cache_timestamp.';<br />';
+        //Main Objects:
+        echo '$config[\'cache_transaction\'] = '.$transactions[0]['totals'].';<br />';
+        echo '$config[\'cache_read\'] = '.$read_coins[0]['totals'].';<br />';
+        echo '$config[\'cache_note\'] = '.$note_coins[0]['totals'].';<br />';
+        echo '$config[\'cache_source\'] = '.$source_coins[0]['totals'].';<br />';
+
+        //Custom cache:
+        foreach($this->config->item('en_all_12639') as $en_id => $m){
+
+            $child_links = $this->READ_model->ln_fetch(array(
+                'ln_parent_source_id' => $en_id,
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+            ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
+
+            echo '$config[\'cache_'.$en_id.'\'] = '.$child_links[0]['totals'].'; //'.$m['m_name'].'<br />';
+
+        }
+
         echo '<br /><br />';
 
 

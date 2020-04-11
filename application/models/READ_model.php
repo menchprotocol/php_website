@@ -3113,9 +3113,9 @@ class READ_model extends CI_Model
         }
 
 
-        if (in_array('/count:', $string_references['ref_commands'])) {
-            $count_obj = one_two_explode('/count:',' ',$string_references['ref_commands']);
-            $output_body_message = str_replace('/count:'.$count_obj, number_format($this->config->item('ps_'.$count_obj.'_count'), 0), $output_body_message);
+        if (in_array('/stats:', $string_references['ref_commands'])) {
+            $stat_variable_name = one_two_explode('/stats:',' ',$string_references['ref_commands']);
+            $output_body_message = str_replace('/stats:'.$stat_variable_name, number_format($this->config->item($stat_variable_name), 0), $output_body_message);
         }
 
 

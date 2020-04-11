@@ -132,7 +132,7 @@ function extract_references($ln_content)
         if(substr($word, 0, 1) == '/') {
 
             //Check maybe it's a command?
-            $command = includes_any($word, array('/firstname', '/link:', '/setyourpassword', '/count:'));
+            $command = includes_any($word, array('/firstname', '/link:', '/setyourpassword', '/stats:'));
             if ($command) {
                 //Yes!
                 array_push($string_references['ref_commands'], $command);
