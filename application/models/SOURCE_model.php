@@ -467,9 +467,10 @@ class SOURCE_model extends CI_Model
 
         //SOURCE STATUS
         $status_converter = array(
-            6181 => 6176, //SOURCE PUBLISH => READ PUBLISH
-            6181 => 6175, //SOURCE DRAFT => READ DRAFT
-            6178 => 6173, //SOURCE ARCHIVE => READ ARCHIVE
+            12563 => 12399, //SOURCE FEATURED => TRANSACTION FEATURED
+            6181 => 6176, //SOURCE PUBLISH => TRANSACTION PUBLISH
+            6180 => 6175, //SOURCE DRAFT => TRANSACTION DRAFT
+            6178 => 6173, //SOURCE ARCHIVE => TRANSACTION ARCHIVE
         );
         foreach($this->SOURCE_model->en_fetch($query) as $en){
 
