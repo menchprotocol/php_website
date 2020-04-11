@@ -84,12 +84,6 @@ if($userInfo){
 }
 
 
-
-if(intval($this->session->userdata('sign_in_id'))>0){
-
-}
-
-
 //Still Here? Go home:
-header('Location: /');
+//header('Location: /');
 die();
