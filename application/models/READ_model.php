@@ -2859,7 +2859,7 @@ class READ_model extends CI_Model
 
             } elseif (count($string_references['ref_commands']) > 0) {
 
-                if(count($string_references['ref_commands']) != count(array_unique($string_references['ref_commands'])) && $string_references['ref_commands']!='/count:'){
+                if(count($string_references['ref_commands']) != count(array_unique($string_references['ref_commands'])) && !in_array('/count:', $string_references['ref_commands'])){
 
                     return array(
                         'status' => 0,
