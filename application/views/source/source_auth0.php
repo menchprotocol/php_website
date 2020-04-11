@@ -15,28 +15,31 @@ $auth0 = new Auth0([
 
 //Login validated:
 $userInfo = $auth0->getUser();
+
+
+/*
+ * Nice, they are logged in via Auth0,
+ * so we can either find them or
+ * create a new source for them.
+ *
+ * Example Array from Auth0:
+ *
+    [sub] => google-oauth2|113404464005949570684
+    [given_name] => Shervin
+    [family_name] => Enayati
+    [nickname] => shervin
+    [name] => Shervin Enayati
+    [picture] => https://lh3.googleusercontent.com/a-/AOh14GgjN8FLUHXttd_f6mweyBimBIs3AO4aTeQjL-wu7g
+    [locale] => en
+    [updated_at] => 2020-04-09T05:47:24.031Z
+    [email] => shervin@mench.com
+    [email_verified] => 1
+ *
+ * */
+
+
+/*
 if($userInfo){
-
-    /*
-     * Nice, they are logged in via Auth0,
-     * so we can either find them or
-     * create a new source for them.
-     *
-     * Example Array from Auth0:
-     *
-        [sub] => google-oauth2|113404464005949570684
-        [given_name] => Shervin
-        [family_name] => Enayati
-        [nickname] => shervin
-        [name] => Shervin Enayati
-        [picture] => https://lh3.googleusercontent.com/a-/AOh14GgjN8FLUHXttd_f6mweyBimBIs3AO4aTeQjL-wu7g
-        [locale] => en
-        [updated_at] => 2020-04-09T05:47:24.031Z
-        [email] => shervin@mench.com
-        [email_verified] => 1
-     *
-     * */
-
 
     //We have their email already?
     $user_emails = $this->READ_model->ln_fetch(array(
@@ -82,8 +85,8 @@ if($userInfo){
     $this->SOURCE_model->en_activate_session($user_emails[0]);
 
 }
-
+*/
 
 //Still Here? Go home:
-//header('Location: /');
+header('Location: /');
 die();
