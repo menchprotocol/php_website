@@ -8,16 +8,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-11 12:53:42 PST
+//Generated 2020-04-11 13:03:25 PST
 
 //PLATFORM STATS:
-$config['ps_timestamp'] = 1586634822;
-$config['ps_transactions'] = 1111797;
-$config['ps_read_count'] = 121006;
-$config['ps_note_count'] = 3825;
-$config['ps_source_count'] = 9226;
+$config['cache_timestamp'] = 1586635405;
+$config['count_transaction'] = 1111832;
+$config['count_read'] = 121006;
+$config['count_note'] = 3825;
+$config['count_source'] = 9208;
 
 
+$config['count_2997'] = 126; //EXPERT ARTICLES
+$config['count_4446'] = 34; //EXPERT ASSESSMENTS
+$config['count_3005'] = 2; //EXPERT BOOKS
+$config['count_4763'] = 10; //EXPERT CHANNELS
+$config['count_3147'] = 28; //EXPERT COURSES
+$config['count_2999'] = 8; //EXPERT PODCASTS
+$config['count_12640'] = 645; //EXPERT SOURCES
+$config['count_5948'] = 9; //EXPERT TEMPLATES
+$config['count_3192'] = 15; //EXPERT TOOLS
+$config['count_2998'] = 415; //EXPERT VIDEOS
+$config['count_1308'] = 2; //MODERATORS
+$config['count_4430'] = 2473; //PLAYERS
 
 //MEMORY CACHE COUNT:
 $config['en_ids_12639'] = array(2997,4446,3005,4763,3147,2999,12640,5948,3192,2998,1308,4430);
