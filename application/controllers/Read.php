@@ -297,7 +297,7 @@ class Read extends CI_Controller
             //Try fetching subscribers email:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                 'ln_parent_source_id' => 3288, //Mench Email
                 'ln_child_source_id' => $subscribed_player['en_id'],
             )) as $en_email){

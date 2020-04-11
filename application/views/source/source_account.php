@@ -107,25 +107,6 @@
                 <a href="javascript:void(0)" onclick="account_update_name()" class="btn btn-source">Save</a>
                 <span class="saving-account save_full_name"></span>';
 
-        } elseif ($acc_en_id == 3288 /* Email */) {
-
-            $user_emails = $this->READ_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_child_source_id' => $session_en['en_id'],
-                'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
-                'ln_parent_source_id' => 3288, //Mench Email
-            ));
-
-            echo '<span class="white-wrapper"><input type="email" id="en_email" class="form-control border dotransparent" value="' . (count($user_emails) > 0 ? $user_emails[0]['ln_content'] : '') . '" placeholder="you@gmail.com" /></span>
-                <a href="javascript:void(0)" onclick="account_update_email()" class="btn btn-source">Save</a>
-                <span class="saving-account save_email"></span>';
-
-        } elseif ($acc_en_id == 3286 /* Password */) {
-
-            echo '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
-                <a href="javascript:void(0)" onclick="account_update_password()" class="btn btn-source">Save</a>
-                <span class="saving-account save_password"></span>';
-
         } elseif ($is_multi_selectable || $is_single_selectable) {
 
             echo echo_radio_sources($acc_en_id, $session_en['en_id'], ($is_multi_selectable ? 1 : 0));

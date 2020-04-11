@@ -175,7 +175,7 @@ if(!isset($hide_header)){
                             foreach ($en_all_2738_mench as $en_id => $m) {
 
                                 $url_extension = null;
-                                $is_current = ($current_mench['x_id'] == $en_id);
+                                $is_current = ($current_mench['x_id'] == $en_id && ($en_id!=6205 || is_numeric($first_segment)));
                                 $this_mench = current_mench(strtolower($m['m_name']));
                                 $url = 'href="/' . $this_mench['x_name'].'"';
 
@@ -186,6 +186,7 @@ if(!isset($hide_header)){
                                         $url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
                                     }
                                 }
+
 
                                 echo '<a class="mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current ? ' focustab ' : '') .'" ' . $url . '>';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';

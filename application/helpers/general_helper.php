@@ -172,7 +172,6 @@ function webhook_curl_post($curl_url, $in_id, $en_id){
     return objectToArray(json_decode($server_output));
 }
 
-
 function is_valid_date($string)
 {
     //Determines if the input $string is a valid date
@@ -708,8 +707,10 @@ function current_mench($part1 = null){
 
 }
 
+
 function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
 {
+
 
     //Authenticates logged-in users with their session information
     $CI =& get_instance();
@@ -728,6 +729,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
         return $session_en;
 
     }
+
 
     //Still here?!
     //We could not find a reason to give user access, so block them:
