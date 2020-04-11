@@ -616,6 +616,7 @@ textarea.pads-textarea{
 }
 .pads-textarea.edit-on, textarea.pads-textarea {
     padding: 5px 33px 10px 0;
+    line-height: 120% !important;
 }
 
 .text_message{
