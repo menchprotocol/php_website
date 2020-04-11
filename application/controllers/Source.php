@@ -2040,40 +2040,13 @@ fragment PostListingItemSidebar_post on Post {
         }
 
 
-        //Create user links:
-        $this->READ_model->ln_create(array(
-            'ln_type_source_id' => 4230, //Raw link
-            'ln_parent_source_id' => 4430, //Mench User
-            'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_child_source_id' => $user_en['en']['en_id'],
-        ));
+        //Add Player
+        $this->SOURCE_model->en_create_player($user_en['en']['en_id']);
 
-        /*
-        $this->READ_model->ln_create(array(
-            'ln_type_source_id' => 4230, //Raw link
-            'ln_parent_source_id' => 11010, //FREE ACCOUNT
-            'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_child_source_id' => $user_en['en']['en_id'],
-        ));
-        */
-
-        $this->READ_model->ln_create(array(
-            'ln_type_source_id' => 4230, //Raw link
-            'ln_parent_source_id' => 1278, //People
-            'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_child_source_id' => $user_en['en']['en_id'],
-        ));
 
         $this->READ_model->ln_create(array(
             'ln_type_source_id' => 4230, //Raw link
             'ln_parent_source_id' => 12221, //Notify on EMAIL
-            'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_child_source_id' => $user_en['en']['en_id'],
-        ));
-
-        $this->READ_model->ln_create(array(
-            'ln_type_source_id' => 4230, //Raw link
-            'ln_parent_source_id' => 3504, //English Language (Since everything is in English so far)
             'ln_creator_source_id' => $user_en['en']['en_id'],
             'ln_child_source_id' => $user_en['en']['en_id'],
         ));
@@ -2865,30 +2838,6 @@ fragment PostListingItemSidebar_post on Post {
 
 
         echo '//Generated '.date("Y-m-d H:i:s", $cache_timestamp).' PST<br />';
-        echo '<br />//PLATFORM STATS:<br />';
-        echo '$config[\'cache_timestamp\'] = '.$cache_timestamp.';<br />';
-        echo '$config[\'count_transaction\'] = '.$transactions[0]['totals'].';<br />';
-        echo '$config[\'count_read\'] = '.$read_coins[0]['totals'].';<br />';
-        echo '$config[\'count_note\'] = '.$note_coins[0]['totals'].';<br />';
-        echo '$config[\'count_source\'] = '.$source_coins[0]['totals'].';<br />';
-        echo '<br /><br />';
-
-
-        //Custom cache:
-        foreach($this->config->item('en_all_12639') as $en_id => $m){
-
-            $child_links = $this->READ_model->ln_fetch(array(
-                'ln_parent_source_id' => $en_id,
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-            ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
-
-            echo '$config[\'count_'.$en_id.'\'] = '.$child_links[0]['totals'].'; //'.$m['m_name'].'<br />';
-
-        }
-
-
 
         //CONFIG VARS
         foreach($config_ens as $en){
@@ -2943,6 +2892,33 @@ fragment PostListingItemSidebar_post on Post {
             }
             echo ');<br />';
         }
+
+
+        //Append more data:
+        echo '<br /><br />//PLATFORM STATS:<br />';
+        echo '$config[\'cache_timestamp\'] = '.$cache_timestamp.';<br />';
+        echo '$config[\'count_transaction\'] = '.$transactions[0]['totals'].';<br />';
+        echo '$config[\'count_read\'] = '.$read_coins[0]['totals'].';<br />';
+        echo '$config[\'count_note\'] = '.$note_coins[0]['totals'].';<br />';
+        echo '$config[\'count_source\'] = '.$source_coins[0]['totals'].';<br />';
+        echo '<br /><br />';
+
+
+        //Custom cache:
+        foreach($this->config->item('en_all_12639') as $en_id => $m){
+
+            $child_links = $this->READ_model->ln_fetch(array(
+                'ln_parent_source_id' => $en_id,
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+            ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
+
+            echo '$config[\'count_'.$en_id.'\'] = '.$child_links[0]['totals'].'; //'.$m['m_name'].'<br />';
+
+        }
+
+
     }
 
 

@@ -17,7 +17,6 @@ $config['count_read'] = 121006;
 $config['count_note'] = 3825;
 $config['count_source'] = 9208;
 
-
 $config['count_2997'] = 126; //EXPERT ARTICLES
 $config['count_4446'] = 34; //EXPERT ASSESSMENTS
 $config['count_3005'] = 2; //EXPERT BOOKS
