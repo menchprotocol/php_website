@@ -12,8 +12,11 @@ $auth0 = new Auth0\SDK\Auth0([
     'scope' => 'openid profile email',
 ]);
 
-//Login validated:
-$userInfo = $auth0->getUser();
+if($auth0){
+    //Login validated:
+    $userInfo = $auth0->getUser();
+}
+
 
 
 /*
