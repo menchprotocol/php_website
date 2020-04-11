@@ -1243,9 +1243,9 @@ label {
     width:         calc(100% - 68px);
 }
 .texttype_4736_lg, #newNoteTitle, .add_pads_form, .note-info, .block-one, .pads-textarea.edit-on {
-    width: -webkit-calc(100% - 34px) !important;
-    width:    -moz-calc(100% - 34px) !important;
-    width:         calc(100% - 34px) !important;
+    width: -webkit-calc(100% - 33px) !important;
+    width:    -moz-calc(100% - 33px) !important;
+    width:         calc(100% - 33px) !important;
 }
 
 .texttype_4736_sm{
@@ -1281,7 +1281,7 @@ label {
     color: #AAAAAA;
 }
 .texttype_4736_sm{
-    width:calc(100% - 34px); /* Used to be 377px */
+    width:calc(100% - 33px); /* Used to be 377px */
     margin-bottom: 5px;
 }
 
