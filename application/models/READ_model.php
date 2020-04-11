@@ -2957,7 +2957,6 @@ class READ_model extends CI_Model
 
 
 
-
         //See if we have a valid way to connect to them if push:
         if ($push_message) {
 
@@ -3111,6 +3110,12 @@ class READ_model extends CI_Model
             //Replace name with command:
             $output_body_message = str_replace('/firstname', one_two_explode('', ' ', $recipient_en['en_name']), $output_body_message);
 
+        }
+
+
+        if (in_array('/count:', $string_references['ref_commands'])) {
+            $count_obj = one_two_explode('/count:',' ',$string_references['ref_commands']);
+            $output_body_message = str_replace('/count:'.$count_obj, number_format($this->config->item('ps_'.$count_obj.'_count'), 0), $output_body_message);
         }
 
 

@@ -132,15 +132,10 @@ function extract_references($ln_content)
         if(substr($word, 0, 1) == '/') {
 
             //Check maybe it's a command?
-            $command = includes_any($word, array('/firstname', '/link:', '/setyourpassword'));
+            $command = includes_any($word, array('/firstname', '/link:', '/setyourpassword', '/count:'));
             if ($command) {
                 //Yes!
                 array_push($string_references['ref_commands'], $command);
-
-                //Take more specific action:
-                if($command=='/link:'){
-                    break; //Will not search for any more referencing after a /link command...
-                }
             }
 
         } elseif (filter_var($word, FILTER_VALIDATE_URL)) {
