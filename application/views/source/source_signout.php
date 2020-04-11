@@ -1,5 +1,5 @@
 <?php
-//require 'vendor/autoload.php';
+require 'vendor/autoload.php';
 
 $auth0 = new Auth0\SDK\Auth0([
     'domain' => 'mench.auth0.com',

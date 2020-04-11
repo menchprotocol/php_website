@@ -2,7 +2,7 @@
 
 //This page is loaded after user successfully authenticates via Auth0
 
-//require 'vendor/autoload.php';
+require 'vendor/autoload.php';
 
 $auth0 = new Auth0\SDK\Auth0([
     'domain' => 'mench.auth0.com',
