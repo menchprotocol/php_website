@@ -609,12 +609,12 @@ textarea.pads-textarea{
     background-color: transparent !important;
     box-shadow: none;
     color: #000000;
+    padding: 0 33px 5px 0;
+    line-height: 120% !important;
 }
 
 .pads-textarea.edit-on {
     margin-left: 33px;
-}
-.pads-textarea.edit-on, textarea.pads-textarea {
     padding: 5px 33px 10px 0;
     line-height: 120% !important;
 }
