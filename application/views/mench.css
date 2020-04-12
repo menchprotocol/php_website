@@ -11,7 +11,7 @@ body {
     margin: 44px 0 0;
     font-family: 'Inter', sans-serif;
     font-weight: 400;
-    line-height: 120%;
+    line-height: 110%;
 }
 
 /*
@@ -326,7 +326,7 @@ img.no-radius {
     padding: 7px 5px;
     color: #000000;
     font-weight: 500;
-    line-height: 120%;
+    line-height: 110%;
     margin: 0;
     display: block;
     text-decoration: none;
@@ -335,7 +335,7 @@ img.no-radius {
 .aa-dropdown-menu .aa-suggestion.aa-cursor, .suggestion:hover {
     background-color: #DDDDDD;
     text-decoration: none;
-    line-height: 120%;
+    line-height: 110%;
 }
 
 .aa-dropdown-menu .aa-suggestion em {
@@ -610,13 +610,13 @@ textarea.pads-textarea{
     box-shadow: none;
     color: #000000;
     padding: 0 33px 5px 0;
-    line-height: 120% !important;
+    line-height: 110% !important;
 }
 
 .pads-textarea.edit-on {
     margin-left: 33px;
     padding: 5px 33px 10px 0;
-    line-height: 120% !important;
+    line-height: 110% !important;
 }
 
 .text_message{
