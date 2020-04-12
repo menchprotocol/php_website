@@ -531,7 +531,7 @@ function echo_ln($ln, $is_inner = false)
             $trainer_ens = $CI->SOURCE_model->en_fetch(array(
                 'en_id' => $ln['ln_creator_source_id'],
             ));
-            $ui .= '<div class="simple-line"><a href="/source/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat">'.echo_en_icon($trainer_ens[0]['en_icon']) . ( $ln['ln_creator_source_id']==$ln['ln_parent_source_id'] || (!$ln['ln_parent_source_id'] && $ln['ln_creator_source_id']==$ln['ln_child_source_id']) ? '' : '<span class="icon-block">'.$en_all_4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($trainer_ens[0]['en_icon']).'"> ' . $trainer_ens[0]['en_name'].'</span>' ) . '</a></div>';
+            $ui .= '<div class="simple-line"><a href="/source/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($trainer_ens[0]['en_icon']).'">' . ( $ln['ln_creator_source_id']==$ln['ln_parent_source_id'] || (!$ln['ln_parent_source_id'] && $ln['ln_creator_source_id']==$ln['ln_child_source_id']) ? '' : echo_en_icon($trainer_ens[0]['en_icon']) . ' ' . $trainer_ens[0]['en_name'] ) . '</span></a></div>';
         }
 
     }
