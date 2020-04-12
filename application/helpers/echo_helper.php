@@ -1330,7 +1330,7 @@ function echo_in_thumbnail($in_id){
 
 
     //Look for images first
-    foreach ($embed_code as $ln) {
+    foreach ($relevant_pads as $ln) {
         foreach($CI->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id' => 4260, //Images
@@ -1345,7 +1345,7 @@ function echo_in_thumbnail($in_id){
 
     //if not found, then look for embed videos which we can extract a cover image:
     if(!$embed_code){
-        foreach ($embed_code as $ln) {
+        foreach ($relevant_pads as $ln) {
             foreach($CI->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id' => 4257, //Embed Videos
