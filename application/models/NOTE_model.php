@@ -166,7 +166,7 @@ class NOTE_model extends CI_Model
                     if(in_array($value, $this->config->item('en_ids_7356') /* Note Status Active */)){
                         $ln_type_source_id = 10648; //Note Iterated Status
                     } else {
-                        $ln_type_source_id = 10671; //Note Iterated Archived
+                        $ln_type_source_id = 6182; //Note Archived
                     }
                     $en_all_4737 = $this->config->item('en_all_4737'); //Note Status
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_4737[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4737[$value]['m_name'] . ']';

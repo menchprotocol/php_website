@@ -20,8 +20,6 @@
 
         if(superpower_assigned($superpower)) {
 
-            echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[10573]['m_icon'].'</span>'.$en_all_11035[10573]['m_name'].'</div>';
-
             echo '<div id="myNotes" class="list-group">';
 
             //List current notes:
