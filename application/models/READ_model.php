@@ -1583,10 +1583,22 @@ class READ_model extends CI_Model
                 //OVERVIEW STATS
                 //echo echo_tree_sources($ins[0]);
 
+                $is_or = in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_6193'));
 
-                $is_home = ($ins[0]['in_id']==config_var(12156));
+                if($is_or){
+                    $all_child_featured = true;
+                    foreach($in__children as $key => $child_in){
+                        if(!in_array($child_in['in_status_source_id'], $this->config->item('en_ids_12138'))){
+                            $all_child_featured = false;
+                            break;
+                        }
+                    }
+                } else {
+                    $all_child_featured = false;
+                }
 
-                if(!$is_home){
+
+                if(!$all_child_featured){
                     echo '<div id="readScroll">&nbsp;</div>';
 
                     //Redirect to login page:
@@ -1597,12 +1609,7 @@ class READ_model extends CI_Model
                 //Any Sub Topics?
                 if(count($in__children) > 0){
 
-                    if($is_home){
-
-                        //Inform them of Featured Notes
-                        echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-star"></i></span>FEATURED NOTES</div>';
-
-                    } else {
+                    if(!$all_child_featured){
 
                         //Give option to review:
                         echo '<div class="inline-block margin-top-down read-add">&nbsp;or&nbsp;<a class="btn btn-read" href="javascript:void();" onclick="toggle_read()"><i class="fad fa-search-plus read_topics"></i><i class="fad fa-search-minus read_topics hidden"></i> LIST '.count($in__children).' READ'.echo__s(count($in__children)).'</a></div>';
@@ -1611,9 +1618,9 @@ class READ_model extends CI_Model
 
                     //List Children:
                     $common_prefix = common_prefix($in__children, 'in_title');
-                    echo '<div class="list-group '.( !$is_home ? 'read_topics hidden' : '' ).'">';
+                    echo '<div class="list-group '.( !$all_child_featured ? 'read_topics hidden' : '' ).'">';
                     foreach($in__children as $key => $child_in){
-                        echo echo_in_read($child_in, ($is_home || in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_6193'))), null, $common_prefix);
+                        echo echo_in_read($child_in, $is_or, null, $common_prefix);
                     }
                     echo '</div>';
 
