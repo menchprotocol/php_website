@@ -152,21 +152,6 @@ if(!$action) {
 
     echo '</table>';
 
-} elseif($action=='retire_note_bookmarks'){
-
-
-    echo '<div class="list-group">';
-    foreach($this->READ_model->ln_fetch(array(
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
-        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-        'ln_type_source_id' => 10573, //Note Pads Bookmarks
-    ), array('in_child'), 0, 0, array('in_weight' => 'DESC')) as $bookmark_in){
-        echo echo_in($bookmark_in, 0, false, true);
-    }
-    echo '</div>';
-
-
-
 } elseif($action=='analyze_url'){
 
     echo '<ul class="breadcrumb"><li><a href="/source/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/source/admin_panel/'.$action].'</b></li></ul>';

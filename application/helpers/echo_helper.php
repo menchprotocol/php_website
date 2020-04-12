@@ -2579,7 +2579,8 @@ function echo_navigation_menu($cache_en_id){
         } else {
 
             //No Link Structure:
-            continue;
+            $href = 'href="javascript:void();"';
+            //continue;
 
         }
 

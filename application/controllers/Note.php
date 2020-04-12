@@ -42,7 +42,16 @@ class Note extends CI_Controller {
 
 
         //Create Note:
-        $in = $this->NOTE_model->in_link_or_create($in_titlevalidation['in_cleaned_outcome'], $session_en['en_id'], 0, false, 12137);
+        $in = $this->NOTE_model->in_link_or_create($in_titlevalidation['in_cleaned_outcome'], $session_en['en_id']);
+
+        //Also add to bookmarks:
+        $this->READ_model->ln_create(array(
+            'ln_type_source_id' => 10573, //Note Bookmarks
+            'ln_creator_source_id' => $session_en['en_id'],
+            'ln_next_note_id' => $in['new_in_id'],
+            'ln_parent_source_id' => $session_en['en_id'],
+            'ln_content' => '@'.$session_en['en_id'],
+        ), true);
 
         return echo_json(array(
             'status' => 1,

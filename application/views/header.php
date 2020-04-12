@@ -171,6 +171,13 @@ if(!isset($hide_header)){
                                 'read_count' => $read_coins[0]['totals']
                             );
 
+                            //Navigation Controller:
+                            $nav_controller = array(
+                                6205 => 12648, //READ
+                                4536 => 12646, //SOURCE
+                                4535 => 12647, //NOTE
+                            );
+
                             //Show Mench Menu:
                             foreach ($en_all_2738_mench as $en_id => $m) {
 
@@ -187,11 +194,15 @@ if(!isset($hide_header)){
                                     }
                                 }
 
+                                echo echo_navigation_menu($nav_controller[$en_id]);
+
+                                /*
                                 echo '<a class="mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current ? ' focustab ' : '') .'" ' . $url . '>';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $this_mench['x_class'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
                                 echo '<span class="montserrat" title="'.$player_stats[$this_mench['x_name'].'_count'].'">'.echo_number($player_stats[$this_mench['x_name'].'_count']).'</span>';
                                 echo '</a>';
+                                */
 
                             }
                         }
