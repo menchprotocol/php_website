@@ -221,9 +221,9 @@ class SOURCE_model extends CI_Model
                 } elseif($key=='en_status_source_id') {
 
                     if(in_array($value, $this->config->item('en_ids_7358') /* Source Status Active */)){
-                        $ln_type_source_id = 10654; //Player Iterated Status
+                        $ln_type_source_id = 10654; //Source Iterated Status
                     } else {
-                        $ln_type_source_id = 10672; //Player Iterated Archived
+                        $ln_type_source_id = 6178; //Source Archived
                     }
                     $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_6177[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6177[$value]['m_name'] . ']';
