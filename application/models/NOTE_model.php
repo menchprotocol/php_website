@@ -28,7 +28,7 @@ class NOTE_model extends CI_Model
         }
 
         //Lets now add:
-        $this->db->insert('table_note', $insert_columns);
+        $this->db->insert('mench_notes', $insert_columns);
 
         //Fetch inserted id:
         if (!isset($insert_columns['in_id'])) {
@@ -95,7 +95,7 @@ class NOTE_model extends CI_Model
 
         //The basic fetcher for Notes
         $this->db->select($select);
-        $this->db->from('table_note');
+        $this->db->from('mench_notes');
 
         foreach ($match_columns as $key => $value) {
             $this->db->where($key, $value);
@@ -135,7 +135,7 @@ class NOTE_model extends CI_Model
 
         //Update:
         $this->db->where('in_id', $id);
-        $this->db->update('table_note', $update_columns);
+        $this->db->update('mench_notes', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
@@ -828,7 +828,7 @@ class NOTE_model extends CI_Model
 
         //Update This Level:
         if($total_child_weights > 0){
-            $this->db->query("UPDATE table_note SET in_weight=in_weight+".$total_child_weights." WHERE in_id=".$in_id.";");
+            $this->db->query("UPDATE mench_notes SET in_weight=in_weight+".$total_child_weights." WHERE in_id=".$in_id.";");
         }
 
         //Return data:

@@ -42,7 +42,7 @@ class READ_model extends CI_Model
 
         //Update:
         $this->db->where('ln_id', $id);
-        $this->db->update('table_read', $update_columns);
+        $this->db->update('mench_ledger', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
@@ -152,24 +152,24 @@ class READ_model extends CI_Model
     {
 
         $this->db->select($select);
-        $this->db->from('table_read');
+        $this->db->from('mench_ledger');
 
         //Any Note joins?
         if (in_array('in_parent', $join_objects)) {
-            $this->db->join('table_note', 'ln_previous_note_id=in_id','left');
+            $this->db->join('mench_notes', 'ln_previous_note_id=in_id','left');
         } elseif (in_array('in_child', $join_objects)) {
-            $this->db->join('table_note', 'ln_next_note_id=in_id','left');
+            $this->db->join('mench_notes', 'ln_next_note_id=in_id','left');
         }
 
         //Any source joins?
         if (in_array('en_parent', $join_objects)) {
-            $this->db->join('table_source', 'ln_parent_source_id=en_id','left');
+            $this->db->join('mench_sources', 'ln_parent_source_id=en_id','left');
         } elseif (in_array('en_child', $join_objects)) {
-            $this->db->join('table_source', 'ln_child_source_id=en_id','left');
+            $this->db->join('mench_sources', 'ln_child_source_id=en_id','left');
         } elseif (in_array('en_type', $join_objects)) {
-            $this->db->join('table_source', 'ln_type_source_id=en_id','left');
+            $this->db->join('mench_sources', 'ln_type_source_id=en_id','left');
         } elseif (in_array('en_owner', $join_objects)) {
-            $this->db->join('table_source', 'ln_creator_source_id=en_id','left');
+            $this->db->join('mench_sources', 'ln_creator_source_id=en_id','left');
         }
 
         foreach ($match_columns as $key => $value) {
@@ -242,7 +242,7 @@ class READ_model extends CI_Model
         }
 
         //Lets log:
-        $this->db->insert('table_read', $insert_columns);
+        $this->db->insert('mench_ledger', $insert_columns);
 
 
         //Fetch inserted id:
@@ -561,7 +561,7 @@ class READ_model extends CI_Model
 
         //Counts the current highest order value
         $this->db->select('MAX(ln_order) as largest_order');
-        $this->db->from('table_read');
+        $this->db->from('mench_ledger');
         foreach ($match_columns as $key => $value) {
             $this->db->where($key, $value);
         }

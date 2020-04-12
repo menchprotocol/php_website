@@ -97,7 +97,7 @@ class SOURCE_model extends CI_Model
         }
 
         //Lets now add:
-        $this->db->insert('table_source', $insert_columns);
+        $this->db->insert('mench_sources', $insert_columns);
 
         //Fetch inserted id:
         if (!isset($insert_columns['en_id'])) {
@@ -146,7 +146,7 @@ class SOURCE_model extends CI_Model
 
         //Fetch the target sources:
         $this->db->select($select);
-        $this->db->from('table_source');
+        $this->db->from('mench_sources');
         foreach ($match_columns as $key => $value) {
             if (!is_null($value)) {
                 $this->db->where($key, $value);
@@ -192,7 +192,7 @@ class SOURCE_model extends CI_Model
 
         //Update:
         $this->db->where('en_id', $id);
-        $this->db->update('table_source', $update_columns);
+        $this->db->update('mench_sources', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         if($affected_rows > 0 && $external_sync){

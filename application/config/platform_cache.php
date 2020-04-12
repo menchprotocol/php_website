@@ -8,19 +8,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-11 16:10:47 PST
+//Generated 2020-04-11 21:22:03 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1586646647;
-$config['cache_count_transaction'] = 1114524;
+$config['cache_timestamp'] = 1586665323;
+$config['cache_count_transaction'] = 1115195;
 $config['cache_count_read'] = 121006;
-$config['cache_count_note'] = 3825;
+$config['cache_count_note'] = 3830;
 $config['cache_count_source'] = 9209;
 
 
 $config['cache_count_12640'] = 645; //EXPERT SOURCES
 $config['cache_count_1308'] = 2; //MODERATORS
-$config['cache_count_2997'] = 126; //NON-FICTION ARTICLES
+$config['cache_count_2997'] = 127; //NON-FICTION ARTICLES
 $config['cache_count_4446'] = 34; //NON-FICTION ASSESSMENTS
 $config['cache_count_3005'] = 2; //NON-FICTION BOOKS
 $config['cache_count_4763'] = 10; //NON-FICTION CHANNELS
@@ -3720,7 +3720,7 @@ $config['en_all_6404'] = array(
     11064 => array(
         'm_icon' => '',
         'm_name' => 'ITEMS PER PAGE',
-        'm_desc' => '100',
+        'm_desc' => '50',
         'm_parents' => array(6404),
     ),
     11986 => array(
@@ -3756,7 +3756,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.3224',
+        'm_desc' => '1.322',
         'm_parents' => array(6404),
     ),
     12363 => array(
@@ -6662,37 +6662,37 @@ $config['en_all_6194'] = array(
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h note" aria-hidden="true"></i>',
         'm_name' => 'NOTE STATUS',
-        'm_desc' => 'SELECT count(in_id) as totals FROM table_note WHERE in_status_source_id=',
+        'm_desc' => 'SELECT count(in_id) as totals FROM mench_notes WHERE in_status_source_id=',
         'm_parents' => array(10990,12079,11054,6204,6226,6160,6232,7302,6194,6201,4527),
     ),
     7585 => array(
         'm_icon' => '<i class="fas fa-random note" aria-hidden="true"></i>',
         'm_name' => 'NOTE TYPE',
-        'm_desc' => 'SELECT count(in_id) as totals FROM table_note WHERE in_status_source_id IN (6183,6184) AND in_type_source_id=',
+        'm_desc' => 'SELECT count(in_id) as totals FROM mench_notes WHERE in_status_source_id IN (6183,6184) AND in_type_source_id=',
         'm_parents' => array(12079,11054,6204,10651,6160,6194,6232,4527,6201),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE STATUS',
-        'm_desc' => 'SELECT count(en_id) as totals FROM table_source WHERE en_status_source_id=',
+        'm_desc' => 'SELECT count(en_id) as totals FROM mench_sources WHERE en_status_source_id=',
         'm_parents' => array(11054,6204,5003,6160,6232,6194,6206,4527),
     ),
     4364 => array(
         'm_icon' => '<i class="fad fa-user-edit" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION CREATOR',
-        'm_desc' => 'SELECT count(ln_id) as totals FROM table_read WHERE ln_status_source_id IN (6175,6176) AND ln_creator_source_id=',
+        'm_desc' => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id IN (6175,6176) AND ln_creator_source_id=',
         'm_parents' => array(11081,6160,6232,6194,4341),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION STATUS',
-        'm_desc' => 'SELECT count(ln_id) as totals FROM table_read WHERE ln_status_source_id=',
+        'm_desc' => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id=',
         'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
     ),
     4593 => array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION TYPE',
-        'm_desc' => 'SELECT count(ln_id) as totals FROM table_read WHERE ln_status_source_id IN (6175,6176) AND ln_type_source_id=',
+        'm_desc' => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id IN (6175,6176) AND ln_type_source_id=',
         'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
     ),
 );
