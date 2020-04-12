@@ -1221,7 +1221,7 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 
 
     $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor );
-    $in_thumbnail = ( $can_click ?  echo_in_thumbnail($in['in_id']) : false );
+    $in_thumbnail = ( $can_click && 0 ?  echo_in_thumbnail($in['in_id']) : false );
 
 
     $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'actionplan_sort' : '' ).' itemread '.$extra_class.'">';
@@ -1242,7 +1242,8 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 
     //Description:
     if($can_click){
-        $in_description = echo_in_description($in['in_id']);
+        //$in_description = echo_in_description($in['in_id']);
+        $in_description = false;
         if($in_description){
             $ui .= '<div class="note-desc"><span class="icon-block">&nbsp;</span>'.$in_description.'</div>';
         }

@@ -1612,7 +1612,7 @@ class READ_model extends CI_Model
                     if(!$all_child_featured){
 
                         //Give option to review:
-                        echo '<div class="inline-block margin-top-down read-add">&nbsp;or&nbsp;<a class="btn btn-read" href="javascript:void();" onclick="toggle_read()"><i class="fad fa-search-plus read_topics"></i><i class="fad fa-search-minus read_topics hidden"></i> LIST '.count($in__children).' READ'.echo__s(count($in__children)).'</a></div>';
+                        echo '<div class="inline-block margin-top-down read-add">&nbsp;or&nbsp;<a class="btn btn-read" href="javascript:void();" onclick="toggle_read()"><i class="fad fa-search-plus read_topics"></i><i class="fad fa-search-minus read_topics hidden"></i> LIST '.count($in__children).' TOPIC'.echo__s(count($in__children)).'</a></div>';
 
                     }
 
