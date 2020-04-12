@@ -1321,18 +1321,19 @@ function echo_in_thumbnail($in_id){
 
     $CI =& get_instance();
     $embed_code = null;
-
-    foreach ($CI->READ_model->ln_fetch(array(
+    $relevant_pads = $CI->READ_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        'ln_type_source_id' => 4231, //Note Pads Messages
+        'ln_type_source_id IN (4231,4983)' => null, //Note Pads Messages & Sources
         'ln_next_note_id' => $in_id,
         'ln_parent_source_id >' => 0, //Reference a source
-    ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
+    ), array(), 0, 0, array('ln_order' => 'ASC'));
 
-        //Images?
+
+    //Look for images first
+    foreach ($embed_code as $ln) {
         foreach($CI->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4260, //Image
+            'ln_type_source_id' => 4260, //Images
             'ln_child_source_id' => $ln['ln_parent_source_id'],
         )) as $embed_image){
             $embed_code .= '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="'.$embed_image['ln_content'].'" /></span></div>';
@@ -1340,23 +1341,25 @@ function echo_in_thumbnail($in_id){
         if($embed_code){
             break;
         }
+    }
 
-        //Embed Videos?
-        foreach($CI->READ_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4257, //Embed
-            'ln_child_source_id' => $ln['ln_parent_source_id'],
-        )) as $embed_video){
-            $youtube_id = extract_youtube_id($embed_video['ln_content']);
-            if(strlen($youtube_id) > 0){
-                $embed_code .= '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="https://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
+    //if not found, then look for embed videos which we can extract a cover image:
+    if(!$embed_code){
+        foreach ($embed_code as $ln) {
+            foreach($CI->READ_model->ln_fetch(array(
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_type_source_id' => 4257, //Embed Videos
+                'ln_child_source_id' => $ln['ln_parent_source_id'],
+            )) as $embed_video){
+                $youtube_id = extract_youtube_id($embed_video['ln_content']);
+                if(strlen($youtube_id) > 0){
+                    $embed_code .= '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="https://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
+                    break;
+                }
             }
             if($embed_code){
                 break;
             }
-        }
-        if($embed_code){
-            break;
         }
     }
 
