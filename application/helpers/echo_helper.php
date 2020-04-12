@@ -575,7 +575,7 @@ function echo_ln($ln, $is_inner = false)
 
 
     //Message
-    if(strlen($ln['ln_content']) > 0){
+    if(strlen($ln['ln_content']) > 0 && $ln['ln_content']!='@'.$ln['ln_parent_source_id']){
         //$CI->READ_model->dispatch_message($ln['ln_content'])
         $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.htmlentities($ln['ln_content']).'</div></div>';
     }
