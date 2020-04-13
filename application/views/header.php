@@ -280,7 +280,12 @@ if(!isset($hide_header)){
 
                                         $nav_url = $en_all_10876[$en_id2]['m_desc'];
                                         $nav_url_parts = explode('/', one_two_explode('mench.com/','',$nav_url));
-                                        $is_active = ( $first_segment==$nav_url_parts[0] && ( (!$second_segment && !isset($nav_url_parts[1])) || (isset($nav_url_parts[1]) && $second_segment==$nav_url_parts[1]) ) );
+
+                                        $is_active = ( $first_segment==$nav_url_parts[0] && (
+                                                (!$second_segment && !isset($nav_url_parts[1])) ||
+                                                (isset($nav_url_parts[1]) && $second_segment==$nav_url_parts[1]) ||
+                                                (is_numeric($second_segment) && !isset($nav_url_parts[1]))
+                                            ));
 
                                     } elseif($en_id2==12581) {
 
@@ -295,11 +300,17 @@ if(!isset($hide_header)){
 
                                     }
 
-                                    $full_name = ( !is_null($count) ? $count.' ' : '' ).$m2['m_name'];
+                                    $full_name = ( !is_null($count) ? '<span title="'.number_format($count, 0).'">'.echo_number($count).'</span> ' : '' ).$m2['m_name'];
 
                                     //Determine Primary:
-                                    if(($is_current_mench && $is_active) || (!$is_current_mench && in_array($en_id2, $this->config->item('en_ids_12654')))){
-                                        $primary_button = '<a href="'.$nav_url.'" class="btn '.$this_mench['x_class'].'"><span class="icon-block">'.$m2['m_icon'].'</span><span class="show-max">'.$full_name.'</span></a>';
+                                    if($is_current_mench && $is_active){
+
+                                        $primary_button = '<button class="btn '.$this_mench['x_class'].'"><span class="icon-block">'.$m2['m_icon'].'</span><span class="show-max">'.$full_name.'</span></button>';
+
+                                    } elseif(!$is_current_mench && in_array($en_id2, $this->config->item('en_ids_12654'))){
+
+                                        $primary_button = '<a href="'.$nav_url.'" class="btn '.$this_mench['x_class'].'"><span class="icon-block">'.$m['m_icon'].'</span><span class="show-max">'.$m['m_name'].'</span></a>';
+
                                     }
 
                                     $nav_ui .= '<a href="'.$nav_url.'" class="dropdown-item montserrat doupper '.extract_icon_color($m2['m_icon']).( $is_active ? ' active ' : '' ).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.$full_name.'</a>';
@@ -311,10 +322,15 @@ if(!isset($hide_header)){
                                 //Show Split Menu:
                                 echo '<div class="btn-group">';
                                 echo $primary_button;
-                                echo '<button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
-                                echo '<div class="dropdown-menu">';
-                                echo $nav_ui;
-                                echo '</div>';
+
+                                //Show expanded Menu:
+                                if($is_current_mench){
+                                    echo '<button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
+                                    echo '<div class="dropdown-menu">';
+                                    echo $nav_ui;
+                                    echo '</div>';
+                                }
+
                                 echo '</div>';
 
                             }
