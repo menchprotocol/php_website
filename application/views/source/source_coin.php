@@ -265,9 +265,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
             }
 
 
-            //My Account Header
-            $this_tab .= '<div class="read-topic"><span class="icon-block">'.$en_all_11035[6225]['m_icon'].'</span>'.$en_all_11035[6225]['m_name'].'</div>';
-
 
             $this_tab .= '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:34px;">';
 
@@ -312,13 +309,13 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
 
                     //List avatars:
-                    foreach ($this->config->item('en_all_12279') as $en_id => $m) {
+                    foreach ($this->config->item('en_all_12279') as $en_id3 => $m3) {
 
-                        $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m['m_icon']));
+                        $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m3['m_icon']));
                         $avatar_type_match = ($source_icon_parts[0] == $avatar_icon_parts[0]);
-                        $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
+                        $superpower_actives3 = array_intersect($this->config->item('en_ids_10957'), $m3['m_parents']);
 
-                        $this_tab .= '<span class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a href="javascript:void(0);" onclick="account_update_avatar_icon(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemsource avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $source_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m['m_icon'] . '</div></a></span>';
+                        $this_tab .= '<span class="'.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'"><a href="javascript:void(0);" onclick="account_update_avatar_icon(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemsource avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $source_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m_icon'] . '</div></a></span>';
 
                     }
 
@@ -336,19 +333,19 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
                     $this_tab .= '<div class="list-group">';
 
                     //List avatars:
-                    foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
+                    foreach($this->config->item('en_all_10957') as $superpower_en_id => $m3){
 
                         //What is the superpower requirement?
-                        $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
-                        $is_available = (!count($superpower_actives) || superpower_assigned(end($superpower_actives)));
+                        $superpower_actives3 = array_intersect($this->config->item('en_ids_10957'), $m3['m_parents']);
+                        $is_available = (!count($superpower_actives3) || superpower_assigned(end($superpower_actives3)));
                         $is_unlocked = ($is_available && superpower_assigned($superpower_en_id));
                         $has_training_url = ( strlen($en_all_10876[$superpower_en_id]['m_desc']) ? $en_all_10876[$superpower_en_id]['m_desc'] : false );
-                        $extract_icon_color = extract_icon_color($m['m_icon']);
+                        $extract_icon_color = extract_icon_color($m3['m_icon']);
 
                         if($has_training_url && ($is_unlocked || $is_available)){
 
                             //Superpower Available
-                            $this_tab .= '<div class="list-group-item itemsetting"><a href="'.$has_training_url.'"><span class="icon-block">'.( $is_unlocked ? '<i class="fas fa-unlock-alt"></i>' : '<i class="fas fa-lock"></i>' ).'</span><span class="icon-block '.$extract_icon_color.'">'.$m['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m['m_name'].'</b> '.$m['m_desc'].'</a></div>';
+                            $this_tab .= '<div class="list-group-item itemsetting"><a href="'.$has_training_url.'"><span class="icon-block">'.( $is_unlocked ? '<i class="fas fa-unlock-alt"></i>' : '<i class="fas fa-lock"></i>' ).'</span><span class="icon-block '.$extract_icon_color.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a></div>';
 
                         } else {
 
