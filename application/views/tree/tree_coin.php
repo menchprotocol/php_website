@@ -77,10 +77,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         //TREE BODY
 
-        if(superpower_active(10985, true)){
-            //TREE PREVIOUS
-            echo $in_previous;
-        }
+        //TREE PREVIOUS
+        echo $in_previous;
 
         //TREE TITLE
         echo '<div class="itemtree">';
@@ -121,7 +119,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
         //TREE
-        if($en_id2==11019 && !superpower_active(10985, true)){
+        if($en_id2==11019 && 0){
 
             $this_tab .= $in_previous;
             $counter = count($in__parents);
