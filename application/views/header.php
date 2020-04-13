@@ -230,25 +230,6 @@ if(!isset($hide_header)){
 
                         <div class="main_nav search_nav hidden"><form id="searchFrontForm" style="margin-top:5px;"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
-                        <div class="main_nav superpower_nav hidden" style="margin-top:10px;">
-                            <?php
-                            if(count($this->session->userdata('session_superpowers_assigned'))){
-
-                                //Option to Close:
-                                echo '<a class="btn btn-sm btn-superpower icon-block" style="cursor:zoom-out;" href="javascript:void();" onclick="toggle_nav(\'superpower_nav\')" title="Close '.$en_all_11035[10957]['m_name'].'"><i class="fas fa-times"></i></a>';
-
-                                //List Superpowers:
-                                foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
-                                    if(superpower_assigned($superpower_en_id)){
-                                        //Superpower already unlocked:
-                                        echo '<a class="btn btn-sm btn-superpower icon-block-sm superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].' @'.$superpower_en_id.'">'.$m['m_icon'].'</a>';
-
-                                    }
-                                }
-                            }
-                            ?>
-                        </div>
-
                     </td>
 
                     <td class="block-link <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="javascript:void(0);" onclick="toggle_search()"><span class="search_icon"><?= $en_all_11035[7256]['m_icon'] ?></span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>

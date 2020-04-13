@@ -324,11 +324,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
                     //Load Website URLs:
                     $en_all_10876 = $this->config->item('en_all_10876'); //MENCH WEBSITE
 
-                    //Show option to Toggle if they have more than two:
-                    if(count($this->session->userdata('session_superpowers_assigned')) >= 2){
-                        $this_tab .= '<a href="javascript:void(0)" onclick="toggle_nav(\'superpower_nav\')">Toggle Superpowers</a>';
-                    }
-
                     //List Activated Powers:
                     $this_tab .= '<div class="list-group">';
 
@@ -345,7 +340,19 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
                         if($has_training_url && ($is_unlocked || $is_available)){
 
                             //Superpower Available
-                            $this_tab .= '<div class="list-group-item itemsetting"><a href="'.$has_training_url.'"><span class="icon-block">'.( $is_unlocked ? '<i class="fas fa-unlock-alt"></i>' : '<i class="fas fa-lock"></i>' ).'</span><span class="icon-block '.$extract_icon_color.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a></div>';
+                            $this_tab .= '<div class="list-group-item itemsetting">';
+
+                            $this_tab .= '<table><tr>';
+
+                            $this_tab .= '<td class="MENCHcolumn12"><a class="btn btn-sm btn-superpower icon-block-sm superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].' @'.$superpower_en_id.'"><span class="icon-block">'.( $is_unlocked ? '<i class="fas fa-unlock-alt"></i>' : '<i class="fas fa-lock"></i>' ).'</span><span class="icon-block '.$extract_icon_color.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a></td>';
+
+                            //Give option to Unlock:
+                            if(!$is_unlocked && $is_available){
+                                $this_tab .= '<td class="MENCHcolumn3"><a href="'.$has_training_url.'"><span class="icon-block">'.( $is_unlocked ? '<i class="fas fa-unlock-alt"></i>' : '<i class="fas fa-lock"></i>' ).'</span><span class="icon-block '.$extract_icon_color.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a></td>';
+                            }
+
+                            $this_tab .= '</tr></table>';
+                            $this_tab .= '</div>';
 
                         } else {
 
