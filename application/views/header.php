@@ -176,8 +176,6 @@ if(!isset($hide_header)){
                                 }
 
 
-
-
                                 echo '<div class="btn-group mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'].($is_current_mench ? ' focustab ' : '').'">';
 
                                 //Primary Button:
@@ -211,7 +209,7 @@ if(!isset($hide_header)){
                                         }
 
                                         //Skip if they don't have it:
-                                        if(!$page_url || (in_array($en_id2, $this->config->item('en_ids_12656')) && !$count)){
+                                        if(!$page_url){
                                             continue;
                                         }
 
