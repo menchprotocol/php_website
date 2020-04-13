@@ -273,7 +273,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
                 //Keep all closed for now:
                 $expand_by_default = false;
-                $counter++;
 
                 //Print header:
                 $this_tab .= '<div class="card">
