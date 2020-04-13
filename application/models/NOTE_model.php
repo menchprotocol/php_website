@@ -804,7 +804,7 @@ class NOTE_model extends CI_Model
     }
 
 
-    function in_tree_weight($in_id)
+    function in_weight($in_id)
     {
 
         /*
@@ -822,7 +822,7 @@ class NOTE_model extends CI_Model
             'ln_type_source_id' => 4228, //Fixed Note Link
             'ln_previous_note_id' => $in_id,
         ), array('in_child'), 0, 0, array(), 'in_id, in_weight') as $in_child){
-            $total_child_weights += $in_child['in_weight'] + $this->NOTE_model->in_tree_weight($in_child['in_id']);
+            $total_child_weights += $in_child['in_weight'] + $this->NOTE_model->in_weight($in_child['in_id']);
         }
 
         //Update This Level:

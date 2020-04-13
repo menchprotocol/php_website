@@ -31,6 +31,8 @@ class Cron extends CI_Controller
 
         boost_power();
 
+        die('Idle for now');
+
     }
 
 
@@ -42,7 +44,7 @@ class Cron extends CI_Controller
             'start_time' => time(),
             'in_scanned' => 0,
             'in_updated' => 0,
-            'in_tree_weight' => 0,
+            'in_weight' => 0,
             'en_scanned' => 0,
             'en_updated' => 0,
         );
@@ -69,7 +71,7 @@ class Cron extends CI_Controller
             }
 
             //Now Update Main Tree:
-            $stats['in_tree_weight'] = $this->NOTE_model->in_tree_weight(config_var(12156));
+            $stats['in_weight'] = $this->NOTE_model->in_weight(config_var(12156));
 
         }
 
@@ -278,7 +280,7 @@ class Cron extends CI_Controller
                 'message' => $success_message,
                 'total_time' => echo_time_minutes($total_time),
                 'item_time' => round(($total_time/count($published_ins)),1).' Seconds',
-                'last_tree' => $tree,
+                'last_item' => $tree,
             ));
         }
     }
@@ -340,7 +342,7 @@ class Cron extends CI_Controller
             'message' => $success_message,
             'total_time' => echo_time_minutes($end_time),
             'item_time' => round(($end_time/$update_count),1).' Seconds',
-            'last_tree' => $tree,
+            'last_item' => $tree,
         ));
     }
 

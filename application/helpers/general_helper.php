@@ -456,7 +456,7 @@ function in_weight_calculator($in){
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     //TREES
-    $count_trees = $CI->READ_model->ln_fetch(array(
+    $counts = $CI->READ_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
         '(ln_next_note_id='.$in['in_id'].' OR ln_previous_note_id='.$in['in_id'].')' => null,
@@ -464,7 +464,7 @@ function in_weight_calculator($in){
 
     //Returns the weight of a note:
     return ( $count_transactions[0]['totals'] * config_var(12568) )
-        + ( $count_trees[0]['totals'] * config_var(12565) );
+        + ( $counts[0]['totals'] * config_var(12565) );
 
 }
 
@@ -479,7 +479,7 @@ function en_weight_calculator($en){
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     //TREES
-    $count_trees = $CI->READ_model->ln_fetch(array(
+    $counts = $CI->READ_model->ln_fetch(array(
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         '(ln_child_source_id='.$en['en_id'].' OR ln_parent_source_id='.$en['en_id'].')' => null,
@@ -487,7 +487,7 @@ function en_weight_calculator($en){
 
     //Returns the weight of a source:
     return ( $count_transactions[0]['totals'] * config_var(12568) )
-            + ( $count_trees[0]['totals'] * config_var(12565) );
+            + ( $counts[0]['totals'] * config_var(12565) );
 
 }
 

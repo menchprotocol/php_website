@@ -787,13 +787,13 @@ function echo_time_hours($seconds, $micro = false)
 
 
 
-function echo_tree_sources($in, $push_message = false, $autoexpand = false)
+function echo_sources($in, $push_message = false, $autoexpand = false)
 {
 
     /*
      *
      * a NOTE function to display experts sources for
-     * the entire Note tree stored in the metadata field.
+     * the entire Note stored in the metadata field.
      *
      * */
 
@@ -804,7 +804,7 @@ function echo_tree_sources($in, $push_message = false, $autoexpand = false)
     }
 
 
-    //Let's count to see how many content pieces we have references for this Note tree:
+    //Let's count to see how many content pieces we have references for this Note:
     $source_info = '';
     $source_count = 0;
 

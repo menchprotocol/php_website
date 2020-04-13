@@ -28,19 +28,19 @@ $source_focus_found = false; //Used to determine the first tab to be opened
 
 
 
-//NOTE TREE PREVIOUS
+//NOTE PREVIOUS
 $in__parents = $this->READ_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
     'ln_next_note_id' => $in['in_id'],
 ), array('in_parent'), 0);
-$in_tree_previous = '<div id="list-in-' . $in['in_id'] . '-1" class="list-group previous_ins">';
+$in_previous = '<div id="list-in-' . $in['in_id'] . '-1" class="list-group previous_ins">';
 foreach ($in__parents as $parent_in) {
-    $in_tree_previous .= echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
+    $in_previous .= echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
 }
 if( $is_author && $is_active && $in['in_id']!=config_var(12156)){
-    $in_tree_previous .= '<div class="list-group-item itemnote '.superpower_active(10939).'" style="padding:5px 0;">
+    $in_previous .= '<div class="list-group-item itemnote '.superpower_active(10939).'" style="padding:5px 0;">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
@@ -52,7 +52,7 @@ if( $is_author && $is_active && $in['in_id']!=config_var(12156)){
                            placeholder="PREVIOUS NOTE">
                 </div><div class="algolia_pad_search hidden in_pad_top"></div></div>';
 }
-$in_tree_previous .= '</div>';
+$in_previous .= '</div>';
 
 
 
@@ -78,8 +78,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         //NOTE BODY
 
         if(superpower_active(10985, true)){
-            //NOTE TREE PREVIOUS
-            echo $in_tree_previous;
+            //NOTE PREVIOUS
+            echo $in_previous;
         }
 
         //NOTE TITLE
@@ -123,12 +123,12 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         //NOTE
         if($en_id2==11019 && !superpower_active(10985, true)){
 
-            $this_tab .= $in_tree_previous;
+            $this_tab .= $in_previous;
             $counter = count($in__parents);
 
         } elseif($en_id2==11020){
 
-            //NOTE TREE NEXT
+            //NOTE NEXT
             $in__children = $this->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active

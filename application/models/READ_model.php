@@ -1137,7 +1137,7 @@ class READ_model extends CI_Model
          * */
 
 
-        //First let's make sure this entire note tree completed by the user:
+        //First let's make sure this entire Note completed by the user:
         $completion_rate = $this->READ_model->read__completion_progress($en_id, $in);
 
 
@@ -1581,7 +1581,7 @@ class READ_model extends CI_Model
                 }
 
                 //OVERVIEW STATS
-                //echo echo_tree_sources($ins[0]);
+                //echo echo_sources($ins[0]);
 
                 $is_or = in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_6193'));
 

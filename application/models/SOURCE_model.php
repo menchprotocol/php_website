@@ -1351,25 +1351,4 @@ function en_create_player($en_id){
         'ln_child_source_id' => $en_id,
     ));
 
-
-    //See which promo to assign:
-    $child_links = $this->READ_model->ln_fetch(array(
-        'ln_parent_source_id' => 4430, //Count Players
-        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-    ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
-
-    //Early account signup gift:
-    if(child_links[0]['totals'] <= 10000){
-
-        $this->READ_model->ln_create(array(
-            'ln_type_source_id' => 4230, //Raw link
-            'ln_parent_source_id' => ( $child_links[0]['totals']<=5000 ? 12635 /* 5 Years */ : ( $child_links[0]['totals']<=8000 ? 12636 /* 3 Years */ : ( $child_links[0]['totals']<=10000 ? 12637 /* 2 Years */ : 12638 /* 1 Year which is inactive for now */ ) ) ), //FREE ACCOUNT
-            'ln_creator_source_id' => $en_id,
-            'ln_child_source_id' => $en_id,
-        ));
-
-    }
-
 }

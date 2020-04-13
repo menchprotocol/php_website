@@ -499,11 +499,6 @@ class Read extends CI_Controller
 
 
 
-        //Mench Community
-        echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_7303[6827]['m_name']);
-
-
-
 
         //Expert Sources
         $expert_sources_unpublished = ''; //Saved the UI for later view...
