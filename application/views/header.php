@@ -280,7 +280,7 @@ if(!isset($hide_header)){
 
                                         $nav_url = $en_all_10876[$en_id2]['m_desc'];
                                         $nav_url_parts = explode('/', one_two_explode('mench.com/','',$nav_url));
-                                        $is_active = ( $first_segment==$nav_url_parts[0] && ( !$second_segment || (isset($nav_url_parts[1]) && $second_segment==$nav_url_parts[1]) ) );
+                                        $is_active = ( $first_segment==$nav_url_parts[0] && ( (!$second_segment && !isset($nav_url_parts[1])) || (isset($nav_url_parts[1]) && $second_segment==$nav_url_parts[1]) ) );
 
                                     } elseif($en_id2==12581) {
 
@@ -295,12 +295,14 @@ if(!isset($hide_header)){
 
                                     }
 
+                                    $full_name = ( !is_null($count) ? $count.' ' : '' ).$m2['m_name'];
+
                                     //Determine Primary:
                                     if(($is_current_mench && $is_active) || (!$is_current_mench && in_array($en_id2, $this->config->item('en_ids_12654')))){
-                                        $primary_button = '<a href="'.$nav_url.'" class="btn '.$this_mench['x_class'].'"><span class="icon-block">'.$m2['m_icon'].'</span><span class="show-max">'.$m2['m_name'].'</span></a>';
+                                        $primary_button = '<a href="'.$nav_url.'" class="btn '.$this_mench['x_class'].'"><span class="icon-block">'.$m2['m_icon'].'</span><span class="show-max">'.$full_name.'</span></a>';
                                     }
 
-                                    $nav_ui .= '<a href="'.$nav_url.'" class="dropdown-item montserrat doupper '.( $is_active ? ' active ' : '' ).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.( !is_null($count) ? $count.' ' : '' ).$m2['m_name'].'</a>';
+                                    $nav_ui .= '<a href="'.$nav_url.'" class="dropdown-item montserrat doupper '.extract_icon_color($m2['m_icon']).( $is_active ? ' active ' : '' ).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.$full_name.'</a>';
 
                                 }
 
