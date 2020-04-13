@@ -156,9 +156,9 @@ class READ_model extends CI_Model
 
         //Any Tree joins?
         if (in_array('in_parent', $join_objects)) {
-            $this->db->join('mench_trees', 'ln_previous_tree_id=in_id','left');
+            $this->db->join('mench_tree', 'ln_previous_tree_id=in_id','left');
         } elseif (in_array('in_child', $join_objects)) {
-            $this->db->join('mench_trees', 'ln_next_tree_id=in_id','left');
+            $this->db->join('mench_tree', 'ln_next_tree_id=in_id','left');
         }
 
         //Any source joins?

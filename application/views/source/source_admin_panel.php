@@ -870,7 +870,7 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/source/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/source/admin_panel/'.$action].'</b></li></ul>';
 
     //Do a query to detect Trees with the exact same title:
-    $q = $this->db->query('select in1.* from mench_trees in1 where (select count(*) from mench_trees in2 where in2.in_title = in1.in_title AND in2.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_title ASC');
+    $q = $this->db->query('select in1.* from mench_tree in1 where (select count(*) from mench_tree in2 where in2.in_title = in1.in_title AND in2.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_title ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){

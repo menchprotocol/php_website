@@ -28,7 +28,7 @@ class TREE_model extends CI_Model
         }
 
         //Lets now add:
-        $this->db->insert('mench_trees', $insert_columns);
+        $this->db->insert('mench_tree', $insert_columns);
 
         //Fetch inserted id:
         if (!isset($insert_columns['in_id'])) {
@@ -95,7 +95,7 @@ class TREE_model extends CI_Model
 
         //The basic fetcher for Trees
         $this->db->select($select);
-        $this->db->from('mench_trees');
+        $this->db->from('mench_tree');
 
         foreach ($match_columns as $key => $value) {
             $this->db->where($key, $value);
@@ -135,7 +135,7 @@ class TREE_model extends CI_Model
 
         //Update:
         $this->db->where('in_id', $id);
-        $this->db->update('mench_trees', $update_columns);
+        $this->db->update('mench_tree', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
@@ -827,7 +827,7 @@ class TREE_model extends CI_Model
 
         //Update This Level:
         if($total_child_weights > 0){
-            $this->db->query("UPDATE mench_trees SET in_weight=in_weight+".$total_child_weights." WHERE in_id=".$in_id.";");
+            $this->db->query("UPDATE mench_tree SET in_weight=in_weight+".$total_child_weights." WHERE in_id=".$in_id.";");
         }
 
         //Return data:
