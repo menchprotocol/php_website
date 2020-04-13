@@ -23,8 +23,8 @@ function echo_clean_db_name($field_name){
         //Link field:
         return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('ln_', 'Transaction ', $field_name))));
     } elseif(substr($field_name, 0, 3) == 'in_'){
-        //Note field:
-        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('in_', 'Note ', $field_name))));
+        //Tree field:
+        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('in_', 'Tree ', $field_name))));
     } elseif(substr($field_name, 0, 3) == 'en_'){
         //Player field:
         return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('en_', 'Source ', $field_name))));
@@ -87,7 +87,7 @@ function echo_url_type_4537($url, $en_type_link_id)
 
     } elseif ($en_type_link_id == 4261 /* File URL */) {
 
-        return '<a href="' . $url . '" class="btn btn-note" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+        return '<a href="' . $url . '" class="btn btn-tree" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
 
     } else {
 
@@ -232,7 +232,7 @@ function echo_in_pads($ln)
 
     $CI =& get_instance();
     $session_en = superpower_assigned();
-    $en_all_4485 = $CI->config->item('en_all_4485'); //Note Pads
+    $en_all_4485 = $CI->config->item('en_all_4485'); //Tree Pads
 
 
     //Transaction Status
@@ -241,12 +241,12 @@ function echo_in_pads($ln)
 
     //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item itemnote is-msg pads_sortable msg_en_type_' . $ln['ln_type_source_id'] . '" id="ul-nav-' . $ln['ln_id'] . '" tr-id="' . $ln['ln_id'] . '">';
+    $ui .= '<div class="list-group-item itemtree is-msg pads_sortable msg_en_type_' . $ln['ln_type_source_id'] . '" id="ul-nav-' . $ln['ln_id'] . '" tr-id="' . $ln['ln_id'] . '">';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
     $ui .= '<div class="edit-off text_message" id="msgbody_' . $ln['ln_id'] . '">';
-    $ui .= $CI->READ_model->dispatch_message($ln['ln_content'], $session_en, false, array(), $ln['ln_next_note_id']);
+    $ui .= $CI->READ_model->dispatch_message($ln['ln_content'], $session_en, false, array(), $ln['ln_next_tree_id']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -271,13 +271,13 @@ function echo_in_pads($ln)
     $ui .= '<ul class="msg-nav '.superpower_active(10939).'">';
 
     //Counter:
-    $ui .= '<li class="edit-on hidden"><span id="notePadsCount' . $ln['ln_id'] . '"><span id="charEditingNum' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</span></li>';
+    $ui .= '<li class="edit-on hidden"><span id="treePadsCount' . $ln['ln_id'] . '"><span id="charEditingNum' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</span></li>';
 
     //Save Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-note white-third" href="javascript:in_pads_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_source_id'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-tree white-third" href="javascript:in_pads_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_source_id'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
 
     //Cancel Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-note white-third" href="javascript:in_pads_modify_cancel(' . $ln['ln_id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-tree white-third" href="javascript:in_pads_modify_cancel(' . $ln['ln_id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
 
     //Show drop down for message link status:
     $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 0 0 0; display: block;">';
@@ -557,10 +557,10 @@ function echo_ln($ln, $is_inner = false)
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
-                //NOTE
-                $ins = $CI->NOTE_model->in_fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
+                //TREE
+                $ins = $CI->TREE_model->in_fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/note/'.$ins[0]['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span>'.$en_all_2738[4535]['m_icon']. ' '.echo_in_title($ins[0]).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/tree/'.$ins[0]['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span>'.$en_all_2738[4535]['m_icon']. ' '.echo_in_title($ins[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
@@ -640,10 +640,10 @@ function echo_random_message($message_key, $return_all = false){
     $rotation_index = array(
         'next_in_is' => array(
             'Next: ',
-            'Next note is: ',
-            'The next note is: ',
-            'Ok moving on to the next note: ',
-            'Moving to the next note: ',
+            'Next tree is: ',
+            'The next tree is: ',
+            'Ok moving on to the next tree: ',
+            'Moving to the next tree: ',
         ),
         'one_way_only' => array(
             'I am not designed to respond to custom messages. I can understand you only when you choose one of the options that I recommend to you.',
@@ -718,7 +718,7 @@ function echo_random_message($message_key, $return_all = false){
             "Getting smarter ^~^",
         ),
         'command_me' => array(
-            'You can search for new notes by sending me a message starting with "Search for", for example: "Search for assess my back-end skills" or "Search for recruit top talent"',
+            'You can search for new trees by sending me a message starting with "Search for", for example: "Search for assess my back-end skills" or "Search for recruit top talent"',
         ),
         'goto_next' => array(
             'Say next to continue',
@@ -792,8 +792,8 @@ function echo_sources($in, $push_message = false, $autoexpand = false)
 
     /*
      *
-     * a NOTE function to display experts sources for
-     * the entire Note stored in the metadata field.
+     * a TREE function to display experts sources for
+     * the entire Tree stored in the metadata field.
      *
      * */
 
@@ -804,7 +804,7 @@ function echo_sources($in, $push_message = false, $autoexpand = false)
     }
 
 
-    //Let's count to see how many content pieces we have references for this Note:
+    //Let's count to see how many content pieces we have references for this Tree:
     $source_info = '';
     $source_count = 0;
 
@@ -980,8 +980,8 @@ function echo_time_range($in, $micro = false, $hide_zero = false)
     if (!isset($in['in_metadata'])) {
         //We don't have it, so fetch it:
         $CI =& get_instance();
-        $ins = $CI->NOTE_model->in_fetch(array(
-            'in_id' => $in['in_id'], //We should always have Note ID
+        $ins = $CI->TREE_model->in_fetch(array(
+            'in_id' => $in['in_id'], //We should always have Tree ID
         ));
         if (count($ins) > 0) {
             $in = $ins[0];
@@ -1136,7 +1136,7 @@ function echo_in_stat_read($in = array(), $en = array()){
             $coin_filter = array(
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
-                'ln_previous_note_id' => $in['in_id'],
+                'ln_previous_tree_id' => $in['in_id'],
             );
         } elseif(count($en)){
             $item = $en;
@@ -1177,16 +1177,16 @@ function echo_in_stat_source($in_id = 0, $en_id = 0){
             $join_objects = array();
             $coin_filter = array(
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //NOTE COIN
-                'ln_next_note_id' => $in_id,
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //TREE COIN
+                'ln_next_tree_id' => $in_id,
             );
         } elseif($en_id){
-            $mench = 'note';
+            $mench = 'tree';
             $join_objects = array('in_child');
             $coin_filter = array(
-                'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+                'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //NOTE COIN
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //TREE COIN
                 'ln_parent_source_id' => $en_id,
             );
         }
@@ -1228,7 +1228,7 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
 
     if($can_click && $completion_rate['completion_percentage']>0){
-        $ui .= '<div class="progress-bg" title="You are '.$completion_rate['completion_percentage'].'% done as you have read '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' notes'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($in, true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+        $ui .= '<div class="progress-bg" title="You are '.$completion_rate['completion_percentage'].'% done as you have read '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' trees'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($in, true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1237,24 +1237,24 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 
     //READ ICON
     $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-lock read"></i>' ).'</span>';
-    $ui .= '<b class="montserrat note-url title-block '.( $in_thumbnail ? 'title-no-right' : '' ).'">'.echo_in_title($in, false, $common_prefix).'</b>';
+    $ui .= '<b class="montserrat tree-url title-block '.( $in_thumbnail ? 'title-no-right' : '' ).'">'.echo_in_title($in, false, $common_prefix).'</b>';
 
 
     //Description:
     if($can_click){
         $in_description = echo_in_description($in['in_id']);
         if($in_description){
-            $ui .= '<div class="note-desc"><span class="icon-block">&nbsp;</span>'.$in_description.'</div>';
+            $ui .= '<div class="tree-desc"><span class="icon-block">&nbsp;</span>'.$in_description.'</div>';
         }
     }
 
     if($infobar_details){
-        $ui .= '<div class="note-footer"><span class="icon-block">&nbsp;</span>' . $infobar_details . '</div>';
+        $ui .= '<div class="tree-footer"><span class="icon-block">&nbsp;</span>' . $infobar_details . '</div>';
     }
 
     $ui .= '</td>';
 
-    //Search for Note Image:
+    //Search for Tree Image:
     if($in_thumbnail || $show_editor){
 
         $ui .= '<td class="featured-frame" '.( $show_editor ? ' style="padding-right:25px;" ' : '' ).'>';
@@ -1290,8 +1290,8 @@ function echo_in_description($in_id){
 
     foreach ($CI->READ_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        'ln_type_source_id' => 4231, //Note Pads Messages
-        'ln_next_note_id' => $in_id,
+        'ln_type_source_id' => 4231, //Tree Pads Messages
+        'ln_next_tree_id' => $in_id,
     ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
 
         //See if Text Message:
@@ -1323,8 +1323,8 @@ function echo_in_thumbnail($in_id){
     $embed_code = null;
     $relevant_pads = $CI->READ_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        'ln_type_source_id IN (4231,4983)' => null, //Note Pads Messages & Sources
-        'ln_next_note_id' => $in_id,
+        'ln_type_source_id IN (4231,4983)' => null, //Tree Pads Messages & Sources
+        'ln_next_tree_id' => $in_id,
         'ln_parent_source_id >' => 0, //Reference a source
     ), array(), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1372,11 +1372,11 @@ function echo_in_thumbnail($in_id){
 function echo_in_dashboard($in)
 {
     $CI =& get_instance();
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Note Subtypes
-    $ui = '<div class="list-group-item itemnote">';
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Tree Subtypes
+    $ui = '<div class="list-group-item itemtree">';
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-note" href="/note/' . $in['in_id']. '"><i class="fad fa-step-forward"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-tree" href="/tree/' . $in['in_id']. '"><i class="fad fa-step-forward"></i></a></div>';
     $ui .= '<span class="icon-block">'.$en_all_7585[$in['in_type_source_id']]['m_icon'].'</span>';
     $ui .= '<b class="montserrat">'.echo_in_title($in, false).'</b>';
     $ui .= '</div>';
@@ -1398,16 +1398,16 @@ function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_leve
     $CI =& get_instance();
     $en_all_6186 = $CI->config->item('en_all_6186'); //Transaction Status
     $en_all_4486 = $CI->config->item('en_all_4486');
-    $en_all_4737 = $CI->config->item('en_all_4737'); // Note Status
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Note Subtypes
+    $en_all_4737 = $CI->config->item('en_all_4737'); // Tree Status
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Tree Subtypes
 
 
     $ui = null;
     foreach($CI->READ_model->ln_fetch(array(
-        'ln_previous_note_id' => $starting_in,
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
+        'ln_previous_tree_id' => $starting_in,
+        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-        'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+        'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $in_ln){
 
         //Prep Metadata:
@@ -1415,20 +1415,20 @@ function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_leve
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         $messages = $CI->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'ln_type_source_id' => 4231, //Note Pads Messages
-            'ln_next_note_id' => $in_ln['in_id'],
+            'ln_type_source_id' => 4231, //Tree Pads Messages
+            'ln_next_tree_id' => $in_ln['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         //Display block:
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Note Link Type: '.$en_all_4486[$in_ln['ln_type_source_id']]['m_name'].'">'. $en_all_4486[$in_ln['ln_type_source_id']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Note Transaction Status: '.$en_all_6186[$in_ln['ln_status_source_id']]['m_name'].'">'. $en_all_6186[$in_ln['ln_status_source_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Tree Link Type: '.$en_all_4486[$in_ln['ln_type_source_id']]['m_name'].'">'. $en_all_4486[$in_ln['ln_type_source_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Tree Transaction Status: '.$en_all_6186[$in_ln['ln_status_source_id']]['m_name'].'">'. $en_all_6186[$in_ln['ln_status_source_id']]['m_icon'] . '</span>';
 
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Note Type: '.$en_all_7585[$in_ln['in_type_source_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_source_id']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Note Status: '.$en_all_4737[$in_ln['in_status_source_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_source_id']]['m_icon']. '</span>';
-        $ui .= '<a href="/source/admin_panel/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this note"><u>' .   echo_in_title($in_ln, false) . '</u></a>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Tree Type: '.$en_all_7585[$in_ln['in_type_source_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_source_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Tree Status: '.$en_all_4737[$in_ln['in_status_source_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_source_id']]['m_icon']. '</span>';
+        $ui .= '<a href="/source/admin_panel/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this tree"><u>' .   echo_in_title($in_ln, false) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_source_id'] == 4228 && in_array($parent_in_type_source_id , $CI->config->item('en_ids_6193') /* OR Notes */ )) || ($in_ln['ln_type_source_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_source_id'] == 4228 && in_array($parent_in_type_source_id , $CI->config->item('en_ids_6193') /* OR Trees */ )) || ($in_ln['ln_type_source_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
 
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$in_ln['in_id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
@@ -1589,16 +1589,16 @@ function in_is_author($in_id, $session_en = array()){
         return false;
     }
 
-    //Always have power to edit notes from anyone:
+    //Always have power to edit trees from anyone:
     if(superpower_active(10985, true)){
         return true;
     }
 
-    //Check if source is a note author:
+    //Check if source is a tree author:
     return count($CI->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id' => 4983,
-            'ln_next_note_id' => $in_id,
+            'ln_next_tree_id' => $in_id,
             'ln_parent_source_id' => $session_en['en_id'],
         )));
 }
@@ -1606,7 +1606,7 @@ function in_is_author($in_id, $session_en = array()){
 function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
 
     $CI =& get_instance();
-    $en_all_7302 = $CI->config->item('en_all_7302'); //Note Stats
+    $en_all_7302 = $CI->config->item('en_all_7302'); //Tree Stats
 
     $ui =  '<table class="table table-sm table-striped stats-table mini-stats-table ">';
 
@@ -1617,15 +1617,15 @@ function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
     foreach ($CI->config->item('en_all_'.$in_setting_en_id) as $type_en_id => $in_type) {
 
         //Count this sub-type from the database:
-        $note_count = $CI->NOTE_model->in_fetch(array(
+        $tree_count = $CI->TREE_model->in_fetch(array(
             $in_field_name => $type_en_id,
-            'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+            'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
         ), 0, 0, array(), 'COUNT(in_id) as total_public_ins');
 
         //$ui .= this as the main title:
         $ui .= '<tr>';
         $ui .= '<td style="text-align: left;"><span class="icon-block">'.$in_type['m_icon'].'</span><a href="/source/'.$type_en_id.'">'.$in_type['m_name'].'</a></td>';
-        $ui .= '<td style="text-align: right;"><a href="/ledger?ln_type_source_id=4250&in_status_source_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($note_count[0]['total_public_ins'], 0).' Note'.echo__s($note_count[0]['total_public_ins']).'">'.number_format($note_count[0]['total_public_ins']/$addup_total_count*100, 1).'%</a></td>';
+        $ui .= '<td style="text-align: right;"><a href="/ledger?ln_type_source_id=4250&in_status_source_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($tree_count[0]['total_public_ins'], 0).' Tree'.echo__s($tree_count[0]['total_public_ins']).'">'.number_format($tree_count[0]['total_public_ins']/$addup_total_count*100, 1).'%</a></td>';
         $ui .= '</tr>';
 
     }
@@ -1733,7 +1733,7 @@ function echo_2level_sources($main_obj, $all_link_types, $link_types_counts, $al
             $rows .= '<td style="text-align: right;" class="'.( $show_in_advance_only ? superpower_active(10967) : '' ).'">';
             if($focus_field=='total_count'){
 
-                $rows .= '<a href="/ledger?ln_status_source_id='.join(',', $CI->config->item('en_ids_7359')) /* Transaction Status Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Note'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
+                $rows .= '<a href="/ledger?ln_status_source_id='.join(',', $CI->config->item('en_ids_7359')) /* Transaction Status Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Tree'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
 
             } elseif($focus_field=='totals'){
 
@@ -1771,7 +1771,7 @@ function echo_2level_sources($main_obj, $all_link_types, $link_types_counts, $al
 
     if($focus_field=='total_count'){
 
-        echo '<a href="/ledger?ln_status_source_id='.join(',', $CI->config->item('en_ids_7359')) /* Transaction Status Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Note'.echo__s($total_sum).'">'.number_format($total_sum/$addup_total_count*100, 1).'%</a>';
+        echo '<a href="/ledger?ln_status_source_id='.join(',', $CI->config->item('en_ids_7359')) /* Transaction Status Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Tree'.echo__s($total_sum).'">'.number_format($total_sum/$addup_total_count*100, 1).'%</a>';
 
     } elseif($focus_field=='totals'){
 
@@ -1806,7 +1806,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $CI =& get_instance();
 
     $en_all_6186 = $CI->config->item('en_all_6186');
-    $en_all_4737 = $CI->config->item('en_all_4737'); //NOTE STATUS
+    $en_all_4737 = $CI->config->item('en_all_4737'); //TREE STATUS
     $en_all_7585 = $CI->config->item('en_all_7585');
     $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_4486 = $CI->config->item('en_all_4486');
@@ -1822,9 +1822,9 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $is_published = in_array($in['in_status_source_id'], $CI->config->item('en_ids_7355'));
     $is_link_published = in_array($in['ln_status_source_id'], $CI->config->item('en_ids_7359'));
     $is_in_link = in_array($in['ln_type_source_id'], $CI->config->item('en_ids_4486'));
-    $is_author = ( !$is_in_link ? false : $is_author ); //Disable Edits on Note List Page
+    $is_author = ( !$is_in_link ? false : $is_author ); //Disable Edits on Tree List Page
 
-    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" note-id="' . $in['in_id'] . '" parent-note-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemnote notes_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-note ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
+    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" tree-id="' . $in['in_id'] . '" parent-tree-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemtree trees_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-tree ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1833,14 +1833,14 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
         $ui .= '<div class="block">';
-            //NOTE ICON:
-            $ui .= '<span class="icon-block"><a href="/note/'.$in['in_id'].'" title="Weight: '.number_format($in['in_weight'], 0).'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
+            //TREE ICON:
+            $ui .= '<span class="icon-block"><a href="/tree/'.$in['in_id'].'" title="Weight: '.number_format($in['in_weight'], 0).'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
 
-            //NOTE TITLE
+            //TREE TITLE
             if($is_in_link && superpower_active(10984, true)){
                 $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], $is_author, (($in['ln_order']*100)+1));
             } else {
-                $ui .= '<a href="/note/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in) . '</a>';
+                $ui .= '<a href="/tree/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in) . '</a>';
             }
         $ui .= '</div>';
 
@@ -1857,44 +1857,44 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         $ui .= '<span class="icon-block ln_status_source_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_source_id']]['m_name'].' @'.$in['ln_status_source_id'].': '.$en_all_6186[$in['ln_status_source_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_source_id']]['m_icon'] . ' </span></span>';
 
 
-        //NOTE IF NOT PUBLISHED:
+        //TREE IF NOT PUBLISHED:
         if(!superpower_active(10984, true) && !$is_published){
-            //Show them Note status in this case:
+            //Show them Tree status in this case:
             $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_source_id'], null, $is_author, false, $in['in_id']) . ' </div>';
         }
 
 
-        //Note Brush
+        //Tree Brush
         $ui .= '<div class="inline-block ' . superpower_active(10984) . '">';
 
-            //NOTE STATUS
+            //TREE STATUS
             $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_source_id'], null, $is_author, false, $in['in_id']) . ' </div>';
 
-            //NOTE TYPE
+            //TREE TYPE
             $ui .= echo_in_dropdown(7585, $in['in_type_source_id'], null, $is_author, false, $in['in_id']);
 
-            //NOTE READ TIME
+            //TREE READ TIME
             $ui .= echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
 
 
-            //PREVIOUS & NEXT NOTES
+            //PREVIOUS & NEXT TREES
             $previous_ins = $CI->READ_model->ln_fetch(array(
-                'ln_next_note_id' => $in['in_id'],
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
+                'ln_next_tree_id' => $in['in_id'],
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
             $next_ins = $CI->READ_model->ln_fetch(array(
-                'ln_previous_note_id' => $in['in_id'],
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
+                'ln_previous_tree_id' => $in['in_id'],
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
 
 
-            //Previous note:
-            $ui .= '<span class="montserrat note note-previous">' . ( $previous_ins[0]['total_ins'] >= 2 ? $previous_ins[0]['total_ins'] . $en_all_12413[11019]['m_icon'] : '&nbsp;') . '</span>';
+            //Previous tree:
+            $ui .= '<span class="montserrat tree tree-previous">' . ( $previous_ins[0]['total_ins'] >= 2 ? $previous_ins[0]['total_ins'] . $en_all_12413[11019]['m_icon'] : '&nbsp;') . '</span>';
 
-            //Next Notes:
-            $ui .= '<span class="montserrat note note-next">' . ( $next_ins[0]['total_ins'] > 0 ? $en_all_12413[11020]['m_icon'] . $next_ins[0]['total_ins']: '&nbsp;' ) . '</span>';
+            //Next Trees:
+            $ui .= '<span class="montserrat tree tree-next">' . ( $next_ins[0]['total_ins'] > 0 ? $en_all_12413[11020]['m_icon'] . $next_ins[0]['total_ins']: '&nbsp;' ) . '</span>';
 
 
         $ui .= '</div>';
@@ -1905,7 +1905,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
 
-        //Note Wand
+        //Tree Wand
         $ui .= '<div class="inline-block ' . superpower_active(10985) . '">';
             //LINK TYPE
             $ui .= echo_in_dropdown(4486, $in['ln_type_source_id'], null, $is_author, false, $in['in_id'], $in['ln_id']);
@@ -1960,16 +1960,16 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         if($is_author || !$is_parent){
 
             if($is_author && !$is_parent){
-                $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars black note-sort-handle"></i></span>';
+                $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars black tree-sort-handle"></i></span>';
             }
 
             //Unlink:
-            $ui .= '<span title="Unlink Note" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-times black"></i></a></span>';
+            $ui .= '<span title="Unlink Tree" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-times black"></i></a></span>';
 
         } elseif(!$is_author) {
 
             //Indicate if NOT an author:
-            $ui .= '<span data-toggle="tooltip" title="You are not yet an author of this note" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
+            $ui .= '<span data-toggle="tooltip" title="You are not yet an author of this tree" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
 
         }
     }
@@ -2145,12 +2145,12 @@ function echo_in_read_previous($in_id, $recipient_en){
     //Now fetch the parent of the current
     $ui = null;
     $CI =& get_instance();
-    $en_all_4737 = $CI->config->item('en_all_4737'); // Note Status
+    $en_all_4737 = $CI->config->item('en_all_4737'); // Tree Status
     $en_all_2738 = $CI->config->item('en_all_2738');
 
     //READ LIST
     $player_read_ids = $CI->READ_model->read_ids($recipient_en['en_id']);
-    $recursive_parents = $CI->NOTE_model->in_fetch_recursive_parents($in_id, true, true);
+    $recursive_parents = $CI->TREE_model->in_fetch_recursive_parents($in_id, true, true);
 
     foreach ($recursive_parents as $grand_parent_ids) {
         foreach(array_intersect($grand_parent_ids, $player_read_ids) as $intersect) {
@@ -2164,7 +2164,7 @@ function echo_in_read_previous($in_id, $recipient_en){
 
             foreach ($grand_parent_ids as $parent_in_id) {
 
-                $ins_this = $CI->NOTE_model->in_fetch(array(
+                $ins_this = $CI->TREE_model->in_fetch(array(
                     'in_id' => $parent_in_id,
                 ));
 
@@ -2384,7 +2384,7 @@ function echo_en($en, $is_parent = false)
 
 
 
-    //NOTE
+    //TREE
     $in_ui = '<td class="MENCHcolumn3 source">';
 
     //RIGHT EDITING:
@@ -2439,7 +2439,7 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tab
 
     //Determine ICON
     if($is_in_title_lg){
-        //NOTE COIN:
+        //TREE COIN:
         $icon = '<span class="icon-block title-icon">'.$en_all_12112[4535]['m_icon'].'</span>';
     } elseif(in_array($cache_en_id, $CI->config->item('en_ids_12420'))){
         $icon = '<span class="icon-block">'.$en_all_12112[$cache_en_id]['m_icon'].'</span>';

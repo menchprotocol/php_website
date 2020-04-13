@@ -218,8 +218,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
     <div id="message-frame" class="fixed-box hidden" source-id="">
 
         <h5 class="badge badge-h" data-toggle="tooltip"
-            title="Message management can only be done using Notes. Source messages are listed below for view-only"
-            data-placement="bottom"><i class="fas fa-comment-plus"></i> Source References within Note Pads
+            title="Message management can only be done using Trees. Source messages are listed below for view-only"
+            data-placement="bottom"><i class="fas fa-comment-plus"></i> Source References within Tree Pads
         </h5>
         <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
             <a href="#" onclick="modify_cancel()"><i class="fas fa-times-circle"></i></a>
@@ -496,10 +496,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
         } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
 
-            //Note Pads
+            //Tree Pads
             $in_pads_filters = array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
                 'ln_type_source_id' => $en_id,
                 '(ln_creator_source_id='.$source['en_id'].' OR ln_child_source_id='.$source['en_id'].' OR ln_parent_source_id='.$source['en_id'].')' => null,
             );
@@ -544,15 +544,15 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
             $player_reads = $this->READ_model->ln_fetch(array(
                 'ln_creator_source_id' => $source['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Note Set
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Tree Set
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             ), array('in_parent'), 1, 0, array(), 'COUNT(ln_id) as totals');
             $counter = $player_reads[0]['totals'];
 
         } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
 
-            //SOURCE COINS (READ & NOTE)
+            //SOURCE COINS (READ & TREE)
 
             $join_objects = array();
             $match_columns = array(
@@ -561,9 +561,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
             );
 
             if($en_id == 12273){
-                //Note Coins
+                //Tree Coins
                 $match_columns['ln_parent_source_id'] = $source['en_id'];
-                $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Note Status Public
+                $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Tree Status Public
                 $join_objects = array('in_child');
             } elseif($en_id == 6255){
                 //Read Coins:

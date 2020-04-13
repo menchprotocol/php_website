@@ -25,8 +25,8 @@ class Read extends CI_Controller
             //Fetch reading list:
             $player_reads = $this->READ_model->ln_fetch(array(
                 'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Note Set
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Tree Set
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
             if(!count($player_reads)){
@@ -68,14 +68,14 @@ class Read extends CI_Controller
             return redirect_message('/source/sign/'.$in_id);
         }
 
-        //Add this Note to their READING LIST:
+        //Add this Tree to their READING LIST:
         if(!$this->READ_model->read_start($session_en['en_id'], $in_id)){
             //Failed to add to reading list:
-            return redirect_message('/read', '<div class="alert alert-danger" role="alert">Failed to add note to your reading list.</div>');
+            return redirect_message('/read', '<div class="alert alert-danger" role="alert">Failed to add tree to your reading list.</div>');
         }
 
         //Find Next & go:
-        $ins = $this->NOTE_model->in_fetch(array(
+        $ins = $this->TREE_model->in_fetch(array(
             'in_id' => $in_id,
         ));
         $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
@@ -92,8 +92,8 @@ class Read extends CI_Controller
 
         if($in_id > 0){
 
-            //Fetch Note:
-            $ins = $this->NOTE_model->in_fetch(array(
+            //Fetch Tree:
+            $ins = $this->TREE_model->in_fetch(array(
                 'in_id' => $in_id,
             ));
 
@@ -111,21 +111,21 @@ class Read extends CI_Controller
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                     'ln_creator_source_id' => $session_en['en_id'],
-                    'ln_previous_note_id' => $ins[0]['in_id'],
+                    'ln_previous_tree_id' => $ins[0]['in_id'],
                 ));
 
                 if(!count($read_completes)){
                     $this->READ_model->read_is_complete($ins[0], array(
                         'ln_type_source_id' => 4559, //READ MESSAGES
                         'ln_creator_source_id' => $session_en['en_id'],
-                        'ln_previous_note_id' => $ins[0]['in_id'],
+                        'ln_previous_tree_id' => $ins[0]['in_id'],
                     ));
                 }
 
             }
 
 
-            //Find next Note based on source's reading list:
+            //Find next Tree based on source's reading list:
             $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
             if($next_in_id > 0){
                 return redirect_message('/' . $next_in_id.$append_url);
@@ -140,7 +140,7 @@ class Read extends CI_Controller
 
         } else {
 
-            //Find the next note in the READING LIST to skip:
+            //Find the next tree in the READING LIST to skip:
             $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false);
             if($next_in_id > 0){
                 return redirect_message('/' . $next_in_id);
@@ -166,7 +166,7 @@ class Read extends CI_Controller
 
         /*
          *
-         * Enables a Player to READ a NOTE
+         * Enables a Player to READ a TREE
          * on the public web
          *
          * */
@@ -175,26 +175,26 @@ class Read extends CI_Controller
         $session_en = superpower_assigned();
 
         if(!$in_id){
-            //Load the Starting Note:
+            //Load the Starting Tree:
             $in_id = config_var(12156);
         }
 
         //Fetch data:
-        $ins = $this->NOTE_model->in_fetch(array(
+        $ins = $this->TREE_model->in_fetch(array(
             'in_id' => $in_id,
         ));
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return redirect_message('/', '<div class="alert alert-danger" role="alert">Note #' . $in_id . ' not found</div>');
-        } elseif(!in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7355') /* Note Status Public */)){
+            return redirect_message('/', '<div class="alert alert-danger" role="alert">Tree #' . $in_id . ' not found</div>');
+        } elseif(!in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7355') /* Tree Status Public */)){
 
             if(superpower_assigned(10939)){
-                //Give them note access:
-                return redirect_message('/note/' . $in_id);
+                //Give them tree access:
+                return redirect_message('/tree/' . $in_id);
             } else {
                 //Inform them not published:
-                return redirect_message('/', '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>Cannot read this note because it\'s not published yet.</div>');
+                return redirect_message('/', '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>Cannot read this tree because it\'s not published yet.</div>');
             }
 
         }
@@ -204,7 +204,7 @@ class Read extends CI_Controller
             'in' => $ins[0],
         ));
 
-        //Load specific view based on Note Level:
+        //Load specific view based on Tree Level:
         $this->load->view('read/read_coin', array(
             'in' => $ins[0],
             'session_en' => $session_en,
@@ -234,7 +234,7 @@ class Read extends CI_Controller
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing NOTE',
+                'message' => 'Missing TREE',
             ));
 
         } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
@@ -260,15 +260,15 @@ class Read extends CI_Controller
 
         }
 
-        //Validate Note:
-        $ins = $this->NOTE_model->in_fetch(array(
+        //Validate Tree:
+        $ins = $this->TREE_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
         ));
         if(count($ins)<1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Note ID',
+                'message' => 'Invalid Tree ID',
             ));
         }
 
@@ -297,7 +297,7 @@ class Read extends CI_Controller
         foreach($this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-            'ln_previous_note_id' => $ins[0]['in_id'],
+            'ln_previous_tree_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
         )) as $read_progress){
             $this->READ_model->ln_update($read_progress['ln_id'], array(
@@ -309,7 +309,7 @@ class Read extends CI_Controller
         $new_message = '@'.$cdn_status['cdn_en']['en_id'];
         $this->READ_model->read_is_complete($ins[0], array(
             'ln_type_source_id' => 12117,
-            'ln_previous_note_id' => $ins[0]['in_id'],
+            'ln_previous_tree_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_content' => $new_message,
             'ln_parent_source_id' => $cdn_status['cdn_en']['en_id'],
@@ -337,7 +337,7 @@ class Read extends CI_Controller
         } elseif (!isset($_POST['in_id']) || !intval($_POST['in_id'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing note ID.',
+                'message' => 'Missing tree ID.',
             ));
         } elseif (!isset($_POST['read_text_answer']) || !strlen($_POST['read_text_answer'])) {
             return echo_json(array(
@@ -346,15 +346,15 @@ class Read extends CI_Controller
             ));
         }
 
-        //Validate/Fetch note:
-        $ins = $this->NOTE_model->in_fetch(array(
+        //Validate/Fetch tree:
+        $ins = $this->TREE_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
         ));
         if(count($ins) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Note not published.',
+                'message' => 'Tree not published.',
             ));
         }
 
@@ -362,7 +362,7 @@ class Read extends CI_Controller
         foreach($this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-            'ln_previous_note_id' => $ins[0]['in_id'],
+            'ln_previous_tree_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
         )) as $read_progress){
             $this->READ_model->ln_update($read_progress['ln_id'], array(
@@ -373,7 +373,7 @@ class Read extends CI_Controller
         //Save new answer:
         $this->READ_model->read_is_complete($ins[0], array(
             'ln_type_source_id' => 6144,
-            'ln_previous_note_id' => $ins[0]['in_id'],
+            'ln_previous_tree_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_content' => $_POST['read_text_answer'],
         ));
@@ -398,7 +398,7 @@ class Read extends CI_Controller
         } elseif (!isset($_POST['in_loaded_id'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing note id.',
+                'message' => 'Missing tree id.',
             ));
         } elseif (!isset($_POST['answered_ins']) || !is_array($_POST['answered_ins']) || !count($_POST['answered_ins'])) {
             return echo_json(array(
@@ -419,12 +419,12 @@ class Read extends CI_Controller
     function read_stats(){
 
 
-        //Notes
+        //Trees
 
-        $en_all_7302 = $this->config->item('en_all_7302'); //Note Stats
+        $en_all_7302 = $this->config->item('en_all_7302'); //Tree Stats
 
 
-        //Note Status:
+        //Tree Status:
         echo '<table class="table table-sm table-striped stats-table mini-stats-table in_statuses">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</td>';
@@ -432,7 +432,7 @@ class Read extends CI_Controller
         foreach ($this->config->item('en_all_4737') as $en_id => $m) {
 
             //Count this status:
-            $objects_count = $this->NOTE_model->in_fetch(array(
+            $objects_count = $this->TREE_model->in_fetch(array(
                 'in_status_source_id' => $en_id
             ), 0, 0, array(), 'COUNT(in_id) as totals');
 
@@ -451,9 +451,9 @@ class Read extends CI_Controller
 
 
 
-        //Count all Note Subtypes:
-        $in_types_counts = $this->NOTE_model->in_fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+        //Count all Tree Subtypes:
+        $in_types_counts = $this->TREE_model->in_fetch(array(
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
         ), 0, 0, array(), 'COUNT(in_type_source_id) as total_count, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
         //Count totals:
@@ -704,8 +704,8 @@ class Read extends CI_Controller
         /*
          *
          * When users indicate they want to stop
-         * a NOTE this function saves the changes
-         * necessary and remove the note from their
+         * a TREE this function saves the changes
+         * necessary and remove the tree from their
          * 🔴 READING LIST.
          *
          * */
@@ -719,7 +719,7 @@ class Read extends CI_Controller
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing note ID',
+                'message' => 'Missing tree ID',
             ));
         }
 
@@ -770,7 +770,7 @@ class Read extends CI_Controller
     {
         /*
          *
-         * Saves the order of 🔴 READING LIST notes based on
+         * Saves the order of 🔴 READING LIST trees based on
          * user preferences.
          *
          * */
@@ -783,7 +783,7 @@ class Read extends CI_Controller
         } elseif (!isset($_POST['new_actionplan_order']) || !is_array($_POST['new_actionplan_order']) || count($_POST['new_actionplan_order']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing sorting notes',
+                'message' => 'Missing sorting trees',
             ));
         }
 
@@ -794,14 +794,14 @@ class Read extends CI_Controller
                 //Update order of this link:
                 $results[$ln_order] = $this->READ_model->ln_update(intval($ln_id), array(
                     'ln_order' => $ln_order,
-                ), $_POST['js_pl_id'], 6132 /* Notes Ordered by User */);
+                ), $_POST['js_pl_id'], 6132 /* Trees Ordered by User */);
             }
         }
 
         //All good:
         return echo_json(array(
             'status' => 1,
-            'message' => count($_POST['new_actionplan_order']).' Notes Sorted',
+            'message' => count($_POST['new_actionplan_order']).' Trees Sorted',
         ));
     }
 
@@ -817,19 +817,19 @@ class Read extends CI_Controller
         }
 
 
-        $ins = $this->NOTE_model->in_fetch(array(
+        $ins = $this->TREE_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
         ));
 
         if(count($ins) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Public Note not found',
+                'message' => 'Public Tree not found',
             ));
         }
 
-        //List the note:
+        //List the tree:
         return echo_json(array(
             'in_user' => array(
                 'next_in_id' => $this->READ_model->read_next_find($session_en['en_id'], $ins[0]),
@@ -837,8 +837,8 @@ class Read extends CI_Controller
                 'marks' => $this->READ_model->read__completion_marks($session_en['en_id'], $ins[0]),
             ),
             'in_general' => array(
-                'recursive_parents' => $this->NOTE_model->in_fetch_recursive_parents($ins[0]['in_id']),
-                'common_base' => $this->NOTE_model->in_metadata_common_base($ins[0]),
+                'recursive_parents' => $this->TREE_model->in_fetch_recursive_parents($ins[0]['in_id']),
+                'common_base' => $this->TREE_model->in_metadata_common_base($ins[0]),
             ),
         ));
 

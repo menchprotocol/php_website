@@ -3,7 +3,7 @@
 echo '<div class="container">';
 
 //Define all moderation functions:
-$en_all_4737 = $this->config->item('en_all_4737'); // Note Status
+$en_all_4737 = $this->config->item('en_all_4737'); // Tree Status
 $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
 $en_all_4463 = $this->config->item('en_all_4463'); //GLOSSARY
 
@@ -11,17 +11,17 @@ $moderation_tools = array(
 
     //Moderator Tools
     '/source/admin_panel/link_coins_words_stats' => 'Coin Stats',
-    '/source/admin_panel/orphan_ins' => 'List Orphan Notes',
+    '/source/admin_panel/orphan_ins' => 'List Orphan Trees',
     '/source/admin_panel/orphan_sources' => 'List Orphan Sources',
-    '/source/admin_panel/in_replace_outcomes' => 'Note Title Search & Replace',
+    '/source/admin_panel/in_replace_outcomes' => 'Tree Title Search & Replace',
     '/source/admin_panel/en_replace_name' => 'Source Name Search & Replace',
-    '/source/admin_panel/in_invalid_outcomes' => 'Note Invalid Titles',
-    '/source/admin_panel/identical_in_outcomes' => 'Identical Note Titles',
+    '/source/admin_panel/in_invalid_outcomes' => 'Tree Invalid Titles',
+    '/source/admin_panel/identical_in_outcomes' => 'Identical Tree Titles',
     '/source/admin_panel/identical_source_names' => 'Identical Source Names',
     '/source/admin_panel/actionplan_debugger' => 'My READING LIST Debugger',
     '/source/admin_panel/en_icon_search' => 'Source Icon Search',
     '/source/admin_panel/source_links' => 'Source Sync Link Types',
-    '/source/admin_panel/or__children' => 'List OR Notes + Answers',
+    '/source/admin_panel/or__children' => 'List OR Trees + Answers',
     '/source/admin_panel/assessment_marks_list_all' => 'Completion Marks List All',
     '/source/admin_panel/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
     '/source/admin_panel/compose_test_message' => 'Compose Test Message',
@@ -29,17 +29,17 @@ $moderation_tools = array(
     '/source/admin_panel/analyze_url' => 'Analyze URL',
 
     //Hope to get zero:
-    '/source/admin_panel/source_in_statuses' => 'Analyze & Fix Play & Note Statuses',
+    '/source/admin_panel/source_in_statuses' => 'Analyze & Fix Play & Tree Statuses',
     '/source/admin_panel/analyze_source' => 'Analyze & Fix Source Links',
-    '/source/admin_panel/in_crossovers' => 'Analyze & Fix Note Crossover Parent/Children',
-    '/source/admin_panel/analyze_in_authors' => 'Analyze & Fix Note Authors',
+    '/source/admin_panel/in_crossovers' => 'Analyze & Fix Tree Crossover Parent/Children',
+    '/source/admin_panel/analyze_in_authors' => 'Analyze & Fix Tree Authors',
 );
 
 $jobs = array(
     '/cron/common_base' => 'Sync Common Base Metadata',
     '/cron/extra_insights' => 'Sync Extra Insights Metadata',
-    '/cron/weights' => 'Sync Note & Source Weights',
-    '/cron/weights/in' => 'Sync Note Weights',
+    '/cron/weights' => 'Sync Tree & Source Weights',
+    '/cron/weights/in' => 'Sync Tree Weights',
     '/cron/weights/en' => 'Sync Source Weights',
     '/cron/algolia' => 'Sync Algolia Index [Limited calls!]',
     '/cron/gephi' => 'Sync Gephi Graph Index',
@@ -161,7 +161,7 @@ if(!$action) {
 
     echo '<div class="mini-header">URL:</div>';
     echo '<input type="url" class="form-control border maxout" name="url_to_analyze" value="'.@$_GET['url_to_analyze'].'"><br />';
-    echo '<input type="submit" class="btn btn-note" value="Analyze">';
+    echo '<input type="submit" class="btn btn-tree" value="Analyze">';
 
 
     if(isset($_GET['url_to_analyze']) && strlen($_GET['url_to_analyze'])>0){
@@ -217,7 +217,7 @@ if(!$action) {
 } elseif($action=='analyze_in_authors') {
 
     $stats = array(
-        'notes' => 0,
+        'trees' => 0,
         'author_missing' => 0,
         'is_archived' => 0,
         'creator_missing' => 0,
@@ -226,9 +226,9 @@ if(!$action) {
     );
 
     //FInd and remove duplicate authors:
-    foreach($this->NOTE_model->in_fetch() as $in) {
+    foreach($this->TREE_model->in_fetch() as $in) {
 
-        $stats['notes']++;
+        $stats['trees']++;
 
         $is_archived = !in_array($in['in_status_source_id'], $this->config->item('en_ids_7356'));
 
@@ -236,20 +236,20 @@ if(!$action) {
         $in_sources = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id' => 4983,
-            'ln_next_note_id' => $in['in_id'],
+            'ln_next_tree_id' => $in['in_id'],
         ));
         $in_creators = $this->READ_model->ln_fetch(array(
-            'ln_type_source_id' => 4250, //New Note Created
-            'ln_next_note_id' => $in['in_id'],
+            'ln_type_source_id' => 4250, //New Tree Created
+            'ln_next_tree_id' => $in['in_id'],
         ));
 
         if(!count($in_creators)) {
             $stats['creator_missing']++;
             $this->READ_model->ln_create(array(
                 'ln_creator_source_id' => 1,
-                'ln_next_note_id' => $in['in_id'],
+                'ln_next_tree_id' => $in['in_id'],
                 'ln_content' => $in['in_title'],
-                'ln_type_source_id' => 4250, //New Note Created
+                'ln_type_source_id' => 4250, //New Tree Created
             ));
         }
 
@@ -264,7 +264,7 @@ if(!$action) {
                     'ln_creator_source_id' => $in_creators[0]['ln_creator_source_id'],
                     'ln_parent_source_id' => $in_creators[0]['ln_creator_source_id'],
                     'ln_content' => '@'.$in_creators[0]['ln_creator_source_id'],
-                    'ln_next_note_id' => $in['in_id'],
+                    'ln_next_tree_id' => $in['in_id'],
                 ));
             }
 
@@ -343,10 +343,10 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/source/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/source/admin_panel/'.$action].'</b></li></ul>';
 
-    $orphan_ins = $this->NOTE_model->in_fetch(array(
-        ' NOT EXISTS (SELECT 1 FROM mench_ledger WHERE in_id=ln_next_note_id AND ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_source_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Transaction Status Active */.')) ' => null,
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
-        'in_id !=' => config_var(12156), //Not the Starting Note
+    $orphan_ins = $this->TREE_model->in_fetch(array(
+        ' NOT EXISTS (SELECT 1 FROM mench_ledger WHERE in_id=ln_next_tree_id AND ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_source_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Transaction Status Active */.')) ' => null,
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+        'in_id !=' => config_var(12156), //Not the Starting Tree
     ));
 
     if(count($orphan_ins) > 0){
@@ -354,26 +354,26 @@ if(!$action) {
         //List orphans:
         foreach ($orphan_ins as $count => $orphan_in) {
 
-            //Show note:
-            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_source_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_source_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_source_id']]['m_icon'] . '</span> <a href="/note/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_title'].'</b></a>';
+            //Show tree:
+            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_source_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_source_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_source_id']]['m_icon'] . '</span> <a href="/tree/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_title'].'</b></a>';
 
             //Do we need to remove?
             if($command1=='remove_all'){
 
-                //Remove note links:
-                $links_removed = $this->NOTE_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
+                //Remove tree links:
+                $links_removed = $this->TREE_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
 
-                //Remove note:
-                $this->NOTE_model->in_update($orphan_in['in_id'], array(
-                    'in_status_source_id' => 6182, /* Note Removed */
+                //Remove tree:
+                $this->TREE_model->in_update($orphan_in['in_id'], array(
+                    'in_status_source_id' => 6182, /* Tree Removed */
                 ), true, $session_en['en_id']);
 
                 //Show confirmation:
-                echo ' [Note + '.$links_removed.' links Removed]';
+                echo ' [Tree + '.$links_removed.' links Removed]';
 
             }
 
-            //Done showing the note:
+            //Done showing the tree:
             echo '</div>';
         }
 
@@ -381,7 +381,7 @@ if(!$action) {
         if($command1!='remove_all'){
             echo '<br />';
             echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
-            echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All notes and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing note.<br /><br /></div>';
+            echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All trees and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing tree.<br /><br /></div>';
             echo '<a class="remove-all hidden maxout" href="/source/admin_panel/orphan_ins/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
         }
 
@@ -480,7 +480,7 @@ if(!$action) {
 
     echo '<div class="mini-header">Search For:</div>';
     echo '<input type="text" class="form-control border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
-    echo '<input type="submit" class="btn btn-note" value="Search">';
+    echo '<input type="submit" class="btn btn-tree" value="Search">';
 
 
     if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
@@ -533,7 +533,7 @@ if(!$action) {
 
         echo '<div class="mini-header">Replace With:</div>';
         echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
-        echo '<input type="submit" name="do_replace" class="btn btn-note" value="Replace">';
+        echo '<input type="submit" name="do_replace" class="btn btn-tree" value="Replace">';
     }
 
 
@@ -543,14 +543,14 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/source/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/source/admin_panel/'.$action].'</b></li></ul>';
 
-    //List this users 🔴 READING LIST notes so they can choose:
-    echo '<div>Choose one of your 🔴 READING LIST notes to debug:</div><br />';
+    //List this users 🔴 READING LIST trees so they can choose:
+    echo '<div>Choose one of your 🔴 READING LIST trees to debug:</div><br />';
 
     $player_reads = $this->READ_model->ln_fetch(array(
         'ln_creator_source_id' => $session_en['en_id'],
-        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Note Set
+        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Tree Set
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
     ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
     foreach ($player_reads as $priority => $ln) {
@@ -559,15 +559,15 @@ if(!$action) {
 
 } elseif($action=='in_crossovers') {
 
-    $active_ins = $this->NOTE_model->in_fetch(array(
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+    $active_ins = $this->TREE_model->in_fetch(array(
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
     ), ( isset($_GET['limit']) ? $_GET['limit'] : 0 ));
     $found = 0;
     foreach($active_ins as $count=>$in){
 
-        $recursive_children = $this->NOTE_model->in_recursive_child_ids($in['in_id'], false);
+        $recursive_children = $this->TREE_model->in_recursive_child_ids($in['in_id'], false);
         if(count($recursive_children) > 0){
-            $recursive_parents = $this->NOTE_model->in_fetch_recursive_parents($in['in_id']);
+            $recursive_parents = $this->TREE_model->in_fetch_recursive_parents($in['in_id']);
             foreach ($recursive_parents as $grand_parent_ids) {
                 $crossovers = array_intersect($recursive_children, $grand_parent_ids);
                 if(count($crossovers) > 0){
@@ -585,12 +585,12 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/source/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/source/admin_panel/'.$action].'</b></li></ul>';
 
-    $active_ins = $this->NOTE_model->in_fetch(array(
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+    $active_ins = $this->TREE_model->in_fetch(array(
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
     ));
 
     //Give an overview:
-    echo '<p>When the validation criteria change within the in_titlevalidate() function, this page lists all the notes that no longer have a valid outcome.</p>';
+    echo '<p>When the validation criteria change within the in_titlevalidate() function, this page lists all the trees that no longer have a valid outcome.</p>';
 
 
     //List the matching search:
@@ -605,16 +605,16 @@ if(!$action) {
     $invalid_outcomes = 0;
     foreach($active_ins as $count=>$in){
 
-        $in_titlevalidation = $this->NOTE_model->in_titlevalidate($in['in_title']);
+        $in_titlevalidation = $this->TREE_model->in_titlevalidate($in['in_title']);
 
         if(!$in_titlevalidation['status']){
 
             $invalid_outcomes++;
 
-            //Update note:
+            //Update tree:
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.$invalid_outcomes.'</td>';
-            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Note Status */, $in['in_status_source_id'], true, 'right').' <a href="/note/'.$in['in_id'].'">'.echo_in_title($in).'</a></td>';
+            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Tree Status */, $in['in_status_source_id'], true, 'right').' <a href="/tree/'.$in['in_id'].'">'.echo_in_title($in).'</a></td>';
             echo '</tr>';
 
         }
@@ -679,7 +679,7 @@ if(!$action) {
                     $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$en['en_name']).$append_text;
 
                     if($replace_with_is_confirmed){
-                        //Update note:
+                        //Update tree:
                         $this->SOURCE_model->en_update($en['en_id'], array(
                             'en_name' => $new_outcome,
                         ), true, $session_en['en_id']);
@@ -727,7 +727,7 @@ if(!$action) {
     }
 
 
-    echo '<input type="submit" class="btn btn-note" value="Go">';
+    echo '<input type="submit" class="btn btn-tree" value="Go">';
     echo '</form>';
 
 
@@ -750,8 +750,8 @@ if(!$action) {
 
     if($search_for_is_set){
 
-        $matching_results = $this->NOTE_model->in_fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+        $matching_results = $this->TREE_model->in_fetch(array(
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
             'LOWER(in_title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
         ));
 
@@ -788,7 +788,7 @@ if(!$action) {
                     //Do replacement:
                     $append_text = @$_GET['append_text'];
                     $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_title']).$append_text;
-                    $in_titlevalidation = $this->NOTE_model->in_titlevalidate($new_outcome);
+                    $in_titlevalidation = $this->TREE_model->in_titlevalidate($new_outcome);
 
                     if($in_titlevalidation['status']){
                         $qualifying_replacements++;
@@ -796,15 +796,15 @@ if(!$action) {
                 }
 
                 if($replace_with_is_confirmed && $in_titlevalidation['status']){
-                    //Update note:
-                    $this->NOTE_model->in_update($in['in_id'], array(
+                    //Update tree:
+                    $this->TREE_model->in_update($in['in_id'], array(
                         'in_title' => $in_titlevalidation['in_cleaned_outcome'],
                     ), true, $session_en['en_id']);
                 }
 
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
-                echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Note Status */, $in['in_status_source_id'], true, 'right').' <a href="/note/'.$in['in_id'].'">'.$in['in_title'].'</a></td>';
+                echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Tree Status */, $in['in_status_source_id'], true, 'right').' <a href="/tree/'.$in['in_id'].'">'.$in['in_title'].'</a></td>';
 
                 if($replace_with_is_set){
 
@@ -816,14 +816,14 @@ if(!$action) {
 
 
                     //Loop through parents:
-                    $en_all_7585 = $this->config->item('en_all_7585'); // Note Subtypes
+                    $en_all_7585 = $this->config->item('en_all_7585'); // Tree Subtypes
                     foreach ($this->READ_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
-                        'ln_next_note_id' => $in['in_id'],
+                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
+                        'ln_next_tree_id' => $in['in_id'],
                     ), array('in_parent')) as $in_parent) {
-                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/note/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_title'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_type_source_id']]['m_icon'] . '</a> &nbsp;</span>';
+                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/tree/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_title'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_type_source_id']]['m_icon'] . '</a> &nbsp;</span>';
                     }
 
                     echo '</td>';
@@ -861,7 +861,7 @@ if(!$action) {
     }
 
 
-    echo '<input type="submit" class="btn btn-note" value="Go">';
+    echo '<input type="submit" class="btn btn-tree" value="Go">';
     echo '</form>';
 
 
@@ -869,8 +869,8 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/source/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/source/admin_panel/'.$action].'</b></li></ul>';
 
-    //Do a query to detect Notes with the exact same title:
-    $q = $this->db->query('select in1.* from mench_notes in1 where (select count(*) from mench_notes in2 where in2.in_title = in1.in_title AND in2.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_title ASC');
+    //Do a query to detect Trees with the exact same title:
+    $q = $this->db->query('select in1.* from mench_trees in1 where (select count(*) from mench_trees in2 where in2.in_title = in1.in_title AND in2.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_title ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
@@ -882,7 +882,7 @@ if(!$action) {
                 $prev_title = $in['in_title'];
             }
 
-            echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].': '.$en_all_4737[$in['in_status_source_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span> <a href="/note/' . $in['in_id'] . '"><b>' . $in['in_title'] . '</b></a> #' . $in['in_id'] . '</div>';
+            echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].': '.$en_all_4737[$in['in_status_source_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span> <a href="/tree/' . $in['in_id'] . '"><b>' . $in['in_title'] . '</b></a> #' . $in['in_id'] . '</div>';
         }
 
     } else {
@@ -916,7 +916,7 @@ if(!$action) {
 } elseif($action=='source_in_statuses') {
 
     //Sync ALL and echo results:
-    echo 'IDAE: '.nl2br(print_r($this->NOTE_model->in_check_creation($session_en['en_id']), true)).'<hr />';
+    echo 'IDAE: '.nl2br(print_r($this->TREE_model->in_check_creation($session_en['en_id']), true)).'<hr />';
     echo 'SOURCE: '.nl2br(print_r($this->SOURCE_model->en_check_creation($session_en['en_id']), true)).'<hr />';
 
 } elseif($action=='fix_read_coins') {
@@ -933,20 +933,20 @@ if(!$action) {
         //Anything set here would be updated:
         $update_columns = array();
 
-        if($ln['ln_next_note_id'] > 0 && $ln['ln_type_source_id'] == 6157){ //ONE ANSWER
+        if($ln['ln_next_tree_id'] > 0 && $ln['ln_type_source_id'] == 6157){ //ONE ANSWER
 
             //Create separate answer:
             $total_added++;
             $this->READ_model->ln_create(array(
                 'ln_type_source_id' => 12336,
                 'ln_creator_source_id' => $ln['ln_creator_source_id'],
-                'ln_previous_note_id' => $ln['ln_previous_note_id'],
-                'ln_next_note_id' => $ln['ln_next_note_id'],
+                'ln_previous_tree_id' => $ln['ln_previous_tree_id'],
+                'ln_next_tree_id' => $ln['ln_next_tree_id'],
                 'ln_parent_transaction_id' => $ln['ln_id'],
             ));
 
             //Move answer away:
-            $update_columns['ln_next_note_id'] = 0;
+            $update_columns['ln_next_tree_id'] = 0;
 
         }
 
@@ -960,37 +960,37 @@ if(!$action) {
 
 } elseif($action=='or__children') {
 
-    echo '<br /><p>Active <a href="/source/6914">Note Answer Types</a> are listed below.</p><br />';
+    echo '<br /><p>Active <a href="/source/6914">Tree Answer Types</a> are listed below.</p><br />';
 
     $all_steps = 0;
     $all_children = 0;
     $updated = 0;
 
-    foreach ($this->NOTE_model->in_fetch(array(
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+    foreach ($this->TREE_model->in_fetch(array(
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
         'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
     ), 0, 0, array('in_id' => 'DESC')) as $count => $in) {
 
-        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Note Status */, $in['in_status_source_id']).' '.echo_en_cache('en_all_6193' /* OR Notes */, $in['in_type_source_id']).' <b><a href="https://mench.com/note/'.$in['in_id'].'">'.echo_in_title($in).'</a></b></div>';
+        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Tree Status */, $in['in_status_source_id']).' '.echo_en_cache('en_all_6193' /* OR Trees */, $in['in_type_source_id']).' <b><a href="https://mench.com/tree/'.$in['in_id'].'">'.echo_in_title($in).'</a></b></div>';
 
         echo '<ul>';
         //Fetch all children for this OR:
         foreach($this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
-            'ln_type_source_id' => 4228, //Note Link Regular Read
-            'ln_previous_note_id' => $in['in_id'],
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+            'ln_type_source_id' => 4228, //Tree Link Regular Read
+            'ln_previous_tree_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
             $user_steps = $this->READ_model->ln_fetch(array(
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-                'ln_previous_note_id' => $child_or['in_id'],
+                'ln_previous_tree_id' => $child_or['in_id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             ), array(), 0);
             $all_steps += count($user_steps);
 
             $all_children++;
-            echo '<li>'.echo_en_cache('en_all_6186' /* Transaction Status */, $child_or['ln_status_source_id']).' '.echo_en_cache('en_all_4737' /* Note Status */, $child_or['in_status_source_id']).' '.echo_en_cache('en_all_7585', $child_or['in_type_source_id']).' <a href="https://mench.com/note/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_title($child_or).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
+            echo '<li>'.echo_en_cache('en_all_6186' /* Transaction Status */, $child_or['ln_status_source_id']).' '.echo_en_cache('en_all_4737' /* Tree Status */, $child_or['in_status_source_id']).' '.echo_en_cache('en_all_7585', $child_or['in_type_source_id']).' <a href="https://mench.com/tree/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_title($child_or).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
         }
         echo '</ul>';
         echo '<hr />';
@@ -1016,8 +1016,8 @@ if(!$action) {
     $total_count = 0;
     foreach ($this->READ_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
-        'ln_type_source_id' => 4229, //Note Link Locked Read
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+        'ln_type_source_id' => 4229, //Tree Link Locked Read
         'LENGTH(ln_metadata) > 0' => null,
     ), array('in_child'), 0, 0) as $in_ln) {
         //Echo HTML format of this message:
@@ -1025,9 +1025,9 @@ if(!$action) {
         $mark = echo_in_marks($in_ln);
         if($mark){
 
-            //Fetch parent Note:
-            $parent_ins = $this->NOTE_model->in_fetch(array(
-                'in_id' => $in_ln['ln_previous_note_id'],
+            //Fetch parent Tree:
+            $parent_ins = $this->TREE_model->in_fetch(array(
+                'in_id' => $in_ln['ln_previous_tree_id'],
             ));
 
             $counter++;
@@ -1039,20 +1039,20 @@ if(!$action) {
 
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_source_id']]['m_icon'].'</span>';
-            echo '<a href="/note/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
+            echo '<a href="/tree/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
             echo '</div>';
 
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_source_id']]['m_icon'].'</span>';
-            echo '<a href="/note/'.$in_ln['in_id'].'">'.$in_ln['in_title'].' [child]</a>';
+            echo '<a href="/tree/'.$in_ln['in_id'].'">'.$in_ln['in_title'].' [child]</a>';
             echo '</div>';
 
             if(count($this->READ_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
                     'in_type_source_id NOT IN (6907,6914)' => null, //NOT AND/OR Lock
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
-                    'ln_next_note_id' => $in_ln['in_id'],
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
+                    'ln_next_tree_id' => $in_ln['in_id'],
                 ), array('in_parent'))) > 1 || $in_ln['in_type_source_id'] != 6677){
 
                 echo '<div>';
@@ -1064,7 +1064,7 @@ if(!$action) {
                 //Update user progression link type:
                 $user_steps = $this->READ_model->ln_fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-                    'ln_previous_note_id' => $in_ln['in_id'],
+                    'ln_previous_tree_id' => $in_ln['in_id'],
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 ), array(), 0);
 
@@ -1096,8 +1096,8 @@ if(!$action) {
         $counter = 0;
         foreach ($this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
-            'ln_type_source_id' => 4228, //Note Link Regular Read
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+            'ln_type_source_id' => 4228, //Tree Link Regular Read
             'LENGTH(ln_metadata) > 0' => null,
         ), array('in_child'), 0, 0) as $in_ln) {
             //Echo HTML format of this message:
@@ -1105,9 +1105,9 @@ if(!$action) {
             $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
             if($tr__assessment_points!=0){
 
-                //Fetch parent Note:
-                $parent_ins = $this->NOTE_model->in_fetch(array(
-                    'in_id' => $in_ln['ln_previous_note_id'],
+                //Fetch parent Tree:
+                $parent_ins = $this->TREE_model->in_fetch(array(
+                    'in_id' => $in_ln['ln_previous_tree_id'],
                 ));
 
                 $counter++;
@@ -1118,12 +1118,12 @@ if(!$action) {
                 echo '<td style="text-align: left;">';
                 echo '<div>';
                 echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_source_id']]['m_icon'].'</span>';
-                echo '<a href="/note/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
+                echo '<a href="/tree/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
                 echo '</div>';
 
                 echo '<div>';
                 echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_source_id']]['m_icon'].'</span>';
-                echo '<a href="/note/'.$in_ln['in_id'].'">'.$in_ln['in_title'].'</a>';
+                echo '<a href="/tree/'.$in_ln['in_id'].'">'.$in_ln['in_title'].'</a>';
                 echo '</div>';
                 echo '</td>';
                 echo '</tr>';
@@ -1155,7 +1155,7 @@ if(!$action) {
                     <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300; border-left: 1px solid #AAAAAA; border-right:0px solid #FFF;"> levels deep.</span>
                 </div>
             </div>
-            <input type="submit" class="btn btn-note" value="Go" style="display: inline-block; margin-top: -41px;" />
+            <input type="submit" class="btn btn-tree" value="Go" style="display: inline-block; margin-top: -41px;" />
         </div>';
 
     echo '</form>';
@@ -1168,7 +1168,7 @@ $(document).ready(function () {
 //Show spinner:
 $(\'#in_report_conditional_steps\').html(\'<span><i class="far fa-yin-yang fa-spin"></i> \' + echo_loading_notify() +  \'</span>\').hide().fadeIn();
 //Load report based on input fields:
-$.post("/note/in_report_conditional_steps", {
+$.post("/tree/in_report_conditional_steps", {
     starting_in: parseInt($(\'#starting_in\').val()),
     depth_levels: parseInt($(\'#depth_levels\').val()),
 }, function (data) {
@@ -1232,7 +1232,7 @@ $.post("/note/in_report_conditional_steps", {
         echo '<input type="number" class="form-control border" name="push_message" value="1"><br /><br />';
 
 
-        echo '<input type="submit" class="btn btn-note" value="Compose Test Message">';
+        echo '<input type="submit" class="btn btn-tree" value="Compose Test Message">';
         echo '</form>';
 
     }

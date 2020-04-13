@@ -413,12 +413,12 @@ img.no-radius {
 
 /* MENCH Colors */
 .source, .source .fas, .source .far, .source .fal, .source .fad, .color4536, .info-item i.source:hover, .info-item a.source:hover  { color:#007AFD !important; }
-.note, .note .fas, .note .far, .note .fal, .note .fad, .color4535, .info-item i.note:hover, .info-item a.note:hover  { color:#ffc500 !important; }
+.tree, .tree .fas, .tree .far, .tree .fal, .tree .fad, .color4535, .info-item i.tree:hover, .info-item a.tree:hover  { color:#ffc500 !important; }
 .read, .read .fas, .read .far, .read .fal, .read .fad, .color6205, .info-item i.read:hover, .info-item a.read:hover, .isred, .isred a, .fas.redalert  { color:#FC1B44 !important; }
 .grey, .grey i { color:#AAAAAA !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
-.btn-source i, .btn-read i, .btn-note i { color: #000000 !important; }
+.btn-source i, .btn-read i, .btn-tree i { color: #000000 !important; }
 
 .progress-bg{
     margin: -10px 0 10px 0;
@@ -766,7 +766,7 @@ td.MENCHcolumn3{ width: 13%; }
 
 .mench_coin.source:hover, .mench_coin.source.focustab  { border-color:#007AFD; }
 .mench_coin.read:hover, .mench_coin.read.focustab  { border-color:#FC1B44; }
-.mench_coin.note:hover, .mench_coin.note.focustab  { border-color:#ffc500; }
+.mench_coin.tree:hover, .mench_coin.tree.focustab  { border-color:#ffc500; }
 .mench_coin{
     text-decoration: none;
     line-height: 110%;
@@ -776,7 +776,7 @@ td.MENCHcolumn3{ width: 13%; }
 
 #MENCHmenu a.source:hover, #MENCHmenu a.source.focustab  { border-color:#007AFD; }
 #MENCHmenu a.read:hover, #MENCHmenu a.read.focustab  { border-color:#FC1B44; }
-#MENCHmenu a.note:hover, #MENCHmenu a.note.focustab  { border-color:#ffc500; }
+#MENCHmenu a.tree:hover, #MENCHmenu a.tree.focustab  { border-color:#ffc500; }
 
 #MENCHmenu a{
     padding:7px 0 5px;
@@ -1032,7 +1032,7 @@ label {
     padding-left: 0 !important;
 }
 
-.btn-superpower .fas, .btn-superpower .far, .btn-superpower .fal, .btn-superpower .fad, .btn-superpower:not(.active) .source, .btn-superpower:not(.active) .note, .btn-superpower:not(.active) .read {
+.btn-superpower .fas, .btn-superpower .far, .btn-superpower .fal, .btn-superpower .fad, .btn-superpower:not(.active) .source, .btn-superpower:not(.active) .tree, .btn-superpower:not(.active) .read {
     color: #DCDCDC !important;
 }
 
@@ -1043,7 +1043,7 @@ label {
 .btn-superpower.active .fas.source, .btn-superpower.active .far.source, .btn-superpower.active .fal.source, .btn-superpower.active .fad.source {
     color:#007AFD !important;
 }
-.btn-superpower.active .fas.note, .btn-superpower.active .far.note, .btn-superpower.active .fal.note, .btn-superpower.active .fad.note {
+.btn-superpower.active .fas.tree, .btn-superpower.active .far.tree, .btn-superpower.active .fal.tree, .btn-superpower.active .fad.tree {
     color:#ffc500 !important;
 }
 .btn-superpower.active .fas.read, .btn-superpower.active .far.read, .btn-superpower.active .fal.read, .btn-superpower.active .fad.read {
@@ -1073,12 +1073,12 @@ label {
 
 .btn-read .fas,.btn-read .far,.btn-read .fal ,.btn-read .fad { color: #000000 !important; }
 
-.btn.btn-note, .btn.btn-note:hover, .btn.btn-note:focus, .btn.btn-note:active, .btn.btn-note.active, .btn.btn-note:active:focus, .btn.btn-note:active:hover, .btn.btn-note.active:focus, .btn.btn-note.active:hover, .open > .btn.btn-note.dropdown-toggle, .open > .btn.btn-note.dropdown-toggle:focus, .open > .btn.btn-note.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-note, .navbar .navbar-nav > li > a.btn.btn-note:hover, .navbar .navbar-nav > li > a.btn.btn-note:focus, .navbar .navbar-nav > li > a.btn.btn-note:active, .navbar .navbar-nav > li > a.btn.btn-note.active, .navbar .navbar-nav > li > a.btn.btn-note:active:focus, .navbar .navbar-nav > li > a.btn.btn-note:active:hover, .navbar .navbar-nav > li > a.btn.btn-note.active:focus, .navbar .navbar-nav > li > a.btn.btn-note.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-note.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-note.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-note.dropdown-toggle:hover {
+.btn.btn-tree, .btn.btn-tree:hover, .btn.btn-tree:focus, .btn.btn-tree:active, .btn.btn-tree.active, .btn.btn-tree:active:focus, .btn.btn-tree:active:hover, .btn.btn-tree.active:focus, .btn.btn-tree.active:hover, .open > .btn.btn-tree.dropdown-toggle, .open > .btn.btn-tree.dropdown-toggle:focus, .open > .btn.btn-tree.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-tree, .navbar .navbar-nav > li > a.btn.btn-tree:hover, .navbar .navbar-nav > li > a.btn.btn-tree:focus, .navbar .navbar-nav > li > a.btn.btn-tree:active, .navbar .navbar-nav > li > a.btn.btn-tree.active, .navbar .navbar-nav > li > a.btn.btn-tree:active:focus, .navbar .navbar-nav > li > a.btn.btn-tree:active:hover, .navbar .navbar-nav > li > a.btn.btn-tree.active:focus, .navbar .navbar-nav > li > a.btn.btn-tree.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-tree.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-tree.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-tree.dropdown-toggle:hover {
     background-color: #ffc500;
     color: #000000;
 }
 
-.btn-note .fas,.btn-note .far,.btn-note .fal,.btn-note .fad { color: #000000 !important; }
+.btn-tree .fas,.btn-tree .far,.btn-tree .fal,.btn-tree .fad { color: #000000 !important; }
 
 
 
@@ -1146,23 +1146,23 @@ label {
 .inputfile + label * {
     pointer-events: none;
 }
-.note-url{
+.tree-url{
     margin:0;
     line-height: 110%;
 }
-.note-info, .note-footer {
+.tree-info, .tree-footer {
     margin:5px 0 0;
 }
 
-.note-info, .note-info i {
+.tree-info, .tree-info i {
     color:#AAAAAA !important;
 }
 
-.note-desc{
+.tree-desc{
     padding: 10px 0 5px;
 }
 
-.note-desc .icon-block{
+.tree-desc .icon-block{
     display: none;
 }
 .btn-block {
@@ -1220,7 +1220,7 @@ label {
     margin-top: 4px;
 }
 
-.note-left {
+.tree-left {
     display: block;
     float: left;
     /* Accomodate Right Follow Links */
@@ -1233,7 +1233,7 @@ label {
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
 }
-.texttype_4736_lg, #newNoteTitle, .add_pads_form, .note-info, .block-one, .pads-textarea.edit-on {
+.texttype_4736_lg, #newTreeTitle, .add_pads_form, .tree-info, .block-one, .pads-textarea.edit-on {
     width: -webkit-calc(100% - 33px) !important;
     width:    -moz-calc(100% - 33px) !important;
     width:         calc(100% - 33px) !important;
@@ -1333,30 +1333,30 @@ label {
     .show-max{display: none !important;}
 }
 
-.itemnote.list-group-item {
+.itemtree.list-group-item {
     padding:5px 0;
 }
 
-.notes_sortable.itemnote {
+.trees_sortable.itemtree {
     padding: 10px 0;
 }
 .sequal-topic{
     padding: 20px 0 5px;
 }
 
-.note-previous{
+.tree-previous{
     padding-right: 5px;
     min-width: 50px;
     display: inline-block;
     text-align: right;
 }
-.note-next{
+.tree-next{
     min-width:50px;
     display: inline-block;
 }
 
 @media (min-width:767px) {
-    .itemnote:hover {
+    .itemtree:hover {
         background-color:#fff4b5 !important;
     }
     .itemsource:hover {

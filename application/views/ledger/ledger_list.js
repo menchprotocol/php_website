@@ -5,7 +5,7 @@ $(document).ready(function () {
 
     check_in_en_status_source_id();
 
-    //Watch for Note status change:
+    //Watch for Tree status change:
     $("#ln_type_source_id").change(function () {
         check_in_en_status_source_id();
     });
@@ -17,8 +17,8 @@ $(document).ready(function () {
 
 
 function check_in_en_status_source_id(){
-    //Checks to see if the Note/Player status filter should be visible
-    //Would only make visible if Link type is Created Note/Player
+    //Checks to see if the Tree/Player status filter should be visible
+    //Would only make visible if Link type is Created Tree/Player
 
     //Hide both in/en status:
     $(".filter-statuses").addClass('hidden');

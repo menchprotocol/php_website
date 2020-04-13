@@ -154,7 +154,7 @@ if(!isset($hide_header)){
                             $nav_controller = array(
                                 6205 => 12648, //READ
                                 4536 => 12646, //SOURCE
-                                4535 => 12647, //NOTE
+                                4535 => 12647, //TREE
                             );
 
                             //Show Mench Menu:
@@ -167,10 +167,10 @@ if(!isset($hide_header)){
                                 $primary_url = 'href="/' . $this_mench['x_name'].'"';
 
 
-                                if (!$is_current_mench && isset($in) && in_array($this_mench['x_name'], array('read', 'note'))) {
-                                    if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'note' && $in['in_id']!=config_var(12156) ) {
-                                        $primary_url = 'href="/note/' . $in['in_id'].'"';
-                                    } elseif ($current_mench['x_name'] == 'note' && $this_mench['x_name'] == 'read') {
+                                if (!$is_current_mench && isset($in) && in_array($this_mench['x_name'], array('read', 'tree'))) {
+                                    if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'tree' && $in['in_id']!=config_var(12156) ) {
+                                        $primary_url = 'href="/tree/' . $in['in_id'].'"';
+                                    } elseif ($current_mench['x_name'] == 'tree' && $this_mench['x_name'] == 'read') {
                                         $primary_url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
                                     }
                                 }

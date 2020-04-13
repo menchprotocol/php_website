@@ -31,8 +31,6 @@ class Cron extends CI_Controller
 
         boost_power();
 
-        die('Idle for now');
-
     }
 
 
@@ -51,9 +49,9 @@ class Cron extends CI_Controller
 
         if(!$obj || $obj=='in'){
 
-            //Update the weights for notes and sources
-            foreach($this->NOTE_model->in_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+            //Update the weights for trees and sources
+            foreach($this->TREE_model->in_fetch(array(
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
             )) as $in) {
 
                 $stats['in_scanned']++;
@@ -64,20 +62,20 @@ class Cron extends CI_Controller
                 //Should we update?
                 if($weight != $in['in_weight']){
                     $stats['in_updated']++;
-                    $this->NOTE_model->in_update($in['in_id'], array(
+                    $this->TREE_model->in_update($in['in_id'], array(
                         'in_weight' => $weight,
                     ));
                 }
             }
 
             //Now Update Main Tree:
-            $stats['in_weight'] = $this->NOTE_model->in_weight(config_var(12156));
+            $stats['in_weight'] = $this->TREE_model->in_weight(config_var(12156));
 
         }
 
 
         if(!$obj || $obj=='en'){
-            //Update the weights for notes and sources
+            //Update the weights for trees and sources
             foreach($this->SOURCE_model->en_fetch(array(
                 'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
             )) as $en) {
@@ -119,19 +117,19 @@ class Cron extends CI_Controller
         $last_week_start = date(config_var(12355), $last_week_start_timestamp);
         $last_week_end = date(config_var(12355), mktime(23, 59, 59, date("n"), date("j")-1, date("Y")));
 
-        //NOTE
-        $note_coins_new_last_week = $this->READ_model->ln_fetch(array(
+        //TREE
+        $tree_coins_new_last_week = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4250, //UNIQUE NOTES
+            'ln_type_source_id' => 4250, //UNIQUE TREES
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $note_coins_last_week = $this->READ_model->ln_fetch(array(
+        $tree_coins_last_week = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4250, //UNIQUE NOTES
+            'ln_type_source_id' => 4250, //UNIQUE TREES
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $note_coins_growth_rate = format_percentage(($note_coins_last_week[0]['totals'] / ( $note_coins_last_week[0]['totals'] - $note_coins_new_last_week[0]['totals'] ) * 100) - 100);
+        $tree_coins_growth_rate = format_percentage(($tree_coins_last_week[0]['totals'] / ( $tree_coins_last_week[0]['totals'] - $tree_coins_new_last_week[0]['totals'] ) * 100) - 100);
 
 
         //READ
@@ -191,7 +189,7 @@ class Cron extends CI_Controller
 
         $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔴</b><b style="min-width:55px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($read_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #AAAAAA;">'.echo_number($read_coins_last_week[0]['totals']).'</span></span><a href="https://mench.com" target="_blank" style="color: #FC1B44; font-weight:bold; text-decoration:none;">READ &raquo;</a></div>';
 
-        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🟡</b><b style="min-width:55px; display: inline-block;">'.( $note_coins_growth_rate >= 0 ? '+' : '-' ).$note_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($note_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #AAAAAA;">'.echo_number($note_coins_last_week[0]['totals']).'</span></span><a href="https://mench.com/note" target="_blank" style="color: #ffc500; font-weight:bold; text-decoration:none;">NOTE &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🟡</b><b style="min-width:55px; display: inline-block;">'.( $tree_coins_growth_rate >= 0 ? '+' : '-' ).$tree_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($tree_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #AAAAAA;">'.echo_number($tree_coins_last_week[0]['totals']).'</span></span><a href="https://mench.com/tree" target="_blank" style="color: #ffc500; font-weight:bold; text-decoration:none;">TREE &raquo;</a></div>';
 
         $html_message .= '<br /><br />';
         $html_message .= '<div>Cheers,</div>';
@@ -246,7 +244,7 @@ class Cron extends CI_Controller
 
         /*
          *
-         * Updates common base metadata for published notes
+         * Updates common base metadata for published trees
          *
          * */
 
@@ -257,19 +255,19 @@ class Cron extends CI_Controller
 
         $start_time = time();
         $filters = array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
         );
         if($in_id > 0){
             $filters['in_id'] = $in_id;
         }
 
-        $published_ins = $this->NOTE_model->in_fetch($filters);
+        $published_ins = $this->TREE_model->in_fetch($filters);
         foreach($published_ins as $published_in){
-            $tree = $this->NOTE_model->in_metadata_common_base($published_in);
+            $tree = $this->TREE_model->in_metadata_common_base($published_in);
         }
 
         $total_time = time() - $start_time;
-        $success_message = 'Common Base Metadata updated for '.count($published_ins).' published note'.echo__s(count($published_ins)).'.';
+        $success_message = 'Common Base Metadata updated for '.count($published_ins).' published tree'.echo__s(count($published_ins)).'.';
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
             $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . $success_message . '</div>');
@@ -311,20 +309,20 @@ class Cron extends CI_Controller
             $update_count++;
 
             //Start with common base:
-            foreach($this->NOTE_model->in_fetch(array('in_id' => $in_id)) as $published_in){
-                $this->NOTE_model->in_metadata_common_base($published_in);
+            foreach($this->TREE_model->in_fetch(array('in_id' => $in_id)) as $published_in){
+                $this->TREE_model->in_metadata_common_base($published_in);
             }
 
             //Update extra insights:
-            $tree = $this->NOTE_model->in_metadata_extra_insights($in_id);
+            $tree = $this->TREE_model->in_metadata_extra_insights($in_id);
 
         } else {
 
-            //Update all Recommended Notes and their tree:
-            foreach ($this->NOTE_model->in_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+            //Update all Recommended Trees and their tree:
+            foreach ($this->TREE_model->in_fetch(array(
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
             )) as $published_in) {
-                $tree = $this->NOTE_model->in_metadata_extra_insights($published_in['in_id']);
+                $tree = $this->TREE_model->in_metadata_extra_insights($published_in['in_id']);
                 if($tree){
                     $update_count++;
                 }
@@ -335,7 +333,7 @@ class Cron extends CI_Controller
 
 
         $end_time = time() - $start_time;
-        $success_message = 'Extra Insights Metadata updated for '.$update_count.' note'.echo__s($update_count).'.';
+        $success_message = 'Extra Insights Metadata updated for '.$update_count.' tree'.echo__s($update_count).'.';
 
         //Show json:
         echo_json(array(
@@ -382,10 +380,10 @@ class Cron extends CI_Controller
         $this->db->query("TRUNCATE TABLE public.gephi_edges CONTINUE IDENTITY RESTRICT;");
         $this->db->query("TRUNCATE TABLE public.gephi_nodes CONTINUE IDENTITY RESTRICT;");
 
-        //Load Note-to-Note Links:
+        //Load Tree-to-Tree Links:
         $en_all_4593 = $this->config->item('en_all_4593');
 
-        //To make sure Note/source IDs are unique:
+        //To make sure Tree/source IDs are unique:
         $id_prefix = array(
             'in' => 100,
             'en' => 200,
@@ -398,36 +396,36 @@ class Cron extends CI_Controller
             'msg' => 1,
         );
 
-        //Add Notes:
-        $ins = $this->NOTE_model->in_fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+        //Add Trees:
+        $ins = $this->TREE_model->in_fetch(array(
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
         ));
         foreach($ins as $in){
 
             //Prep metadata:
             $in_metadata = ( strlen($in['in_metadata']) > 0 ? unserialize($in['in_metadata']) : array());
 
-            //Add Note node:
+            //Add Tree node:
             $this->db->insert('gephi_nodes', array(
                 'id' => $id_prefix['in'].$in['in_id'],
                 'label' => $in['in_title'],
                 //'size' => ( isset($in_metadata['in__metadata_max_seconds']) ? round(($in_metadata['in__metadata_max_seconds']/3600),0) : 0 ), //Max time
                 'size' => $node_size['in'],
-                'node_type' => 1, //Note
+                'node_type' => 1, //Tree
                 'node_status' => $in['in_status_source_id'],
             ));
 
             //Fetch children:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Note-to-Note Links
-                'ln_previous_note_id' => $in['in_id'],
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
+                'ln_previous_tree_id' => $in['in_id'],
             ), array('in_child'), 0, 0) as $child_in){
 
                 $this->db->insert('gephi_edges', array(
-                    'source' => $id_prefix['in'].$child_in['ln_previous_note_id'],
-                    'target' => $id_prefix['in'].$child_in['ln_next_note_id'],
+                    'source' => $id_prefix['in'].$child_in['ln_previous_tree_id'],
+                    'target' => $id_prefix['in'].$child_in['ln_next_tree_id'],
                     'label' => $en_all_4593[$child_in['ln_type_source_id']]['m_name'], //TODO maybe give visibility to condition here?
                     'weight' => 1,
                     'edge_type_en_id' => $child_in['ln_type_source_id'],
@@ -476,8 +474,8 @@ class Cron extends CI_Controller
         //Add messages:
         $messages = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Note Pads
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Tree Pads
         ), array('in_child'), 0, 0);
         foreach($messages as $message) {
 
@@ -490,20 +488,20 @@ class Cron extends CI_Controller
                 'node_status' => $message['ln_status_source_id'],
             ));
 
-            //Add child note link:
+            //Add child tree link:
             $this->db->insert('gephi_edges', array(
                 'source' => $message['ln_id'],
-                'target' => $id_prefix['in'].$message['ln_next_note_id'],
-                'label' => 'Child Note',
+                'target' => $id_prefix['in'].$message['ln_next_tree_id'],
+                'label' => 'Child Tree',
                 'weight' => 1,
             ));
 
-            //Add parent note link?
-            if ($message['ln_previous_note_id'] > 0) {
+            //Add parent tree link?
+            if ($message['ln_previous_tree_id'] > 0) {
                 $this->db->insert('gephi_edges', array(
-                    'source' => $id_prefix['in'].$message['ln_previous_note_id'],
+                    'source' => $id_prefix['in'].$message['ln_previous_tree_id'],
                     'target' => $message['ln_id'],
-                    'label' => 'Parent Note',
+                    'label' => 'Parent Tree',
                     'weight' => 1,
                 ));
             }
@@ -520,7 +518,7 @@ class Cron extends CI_Controller
 
         }
 
-        echo count($ins).' notes & '.count($ens).' sources & '.count($messages).' messages synced.';
+        echo count($ins).' trees & '.count($ens).' sources & '.count($messages).' messages synced.';
     }
 
 
@@ -561,8 +559,8 @@ class Cron extends CI_Controller
         //Now let's start the cleanup process...
         $invalid_variables = array();
 
-        //Note Metadata
-        foreach($this->NOTE_model->in_fetch(array()) as $in){
+        //Tree Metadata
+        foreach($this->TREE_model->in_fetch(array()) as $in){
 
             if(strlen($in['in_metadata']) < 1){
                 continue;
@@ -615,7 +613,7 @@ class Cron extends CI_Controller
         if(count($invalid_variables) > 0){
             //Did we have anything to remove? Report with system bug:
             $this->READ_model->ln_create(array(
-                'ln_content' => 'metadatas() removed '.count($invalid_variables).' unknown variables from note/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
+                'ln_content' => 'metadatas() removed '.count($invalid_variables).' unknown variables from tree/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_parent_source_id' => 6232, //Variables Names
                 'ln_metadata' => $ln_metadata,
@@ -640,8 +638,8 @@ class Cron extends CI_Controller
          * 1) Media received from users
          * 2) Media sent from Mench Trainers via Facebook Chat Inbox
          *
-         * Alert: It would not store media that is sent from note
-         * notes since those are already stored.
+         * Alert: It would not store media that is sent from tree
+         * trees since those are already stored.
          *
          * */
 

@@ -114,9 +114,9 @@ class Source extends CI_Controller
 
         //Create FILTERS:
         $filters_in = array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //Note COIN
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //Tree COIN
         );
         $filters_read = array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -170,14 +170,14 @@ class Source extends CI_Controller
 
 
 
-            //NOTE
-            echo '<td class="note fixedColumns MENCHcolumn3">'.
+            //TREE
+            echo '<td class="tree fixedColumns MENCHcolumn3">'.
 
                 ( $session_en
 
-                    ? '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_12273')).'&ln_parent_source_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : '' ).'" class="montserrat note"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['totals']).'</a>'
+                    ? '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_12273')).'&ln_parent_source_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : '' ).'" class="montserrat tree"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['totals']).'</a>'
 
-                    : '<span class="montserrat note"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['totals']).'</span>'
+                    : '<span class="montserrat tree"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['totals']).'</span>'
 
                 )
 
@@ -222,7 +222,7 @@ class Source extends CI_Controller
             }
         }
 
-        //Update focus note session:
+        //Update focus tree session:
         if($in_id > 0){
             //Set in session:
             $this->session->set_userdata(array(
@@ -771,11 +771,11 @@ class Source extends CI_Controller
 
 
 
-            //Count source references in Note Pads:
+            //Count source references in Tree Pads:
             $messages = $this->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Note Pads
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Tree Pads
                 'ln_parent_source_id' => $_POST['en_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -787,7 +787,7 @@ class Source extends CI_Controller
 
                 //Yes, validate this source:
 
-                //Validate the input for updating linked Note:
+                //Validate the input for updating linked Tree:
                 $merger_en_id = 0;
                 if (substr($_POST['en_merge'], 0, 1) == '@') {
                     $parts = explode(' ', $_POST['en_merge']);
@@ -826,10 +826,10 @@ class Source extends CI_Controller
 
             } elseif(count($messages) > 0){
 
-                //Cannot delete this source until Note references are removed:
+                //Cannot delete this source until Tree references are removed:
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'You can remove source after removing all its note pads references',
+                    'message' => 'You can remove source after removing all its tree pads references',
                 ));
 
             }
@@ -1035,7 +1035,7 @@ class Source extends CI_Controller
 
 
     function en_review_metadata($en_id){
-        //Fetch Note:
+        //Fetch Tree:
         $ens = $this->SOURCE_model->en_fetch(array(
             'en_id' => $en_id,
         ));
@@ -1141,7 +1141,7 @@ class Source extends CI_Controller
         } elseif (!isset($_POST['referrer_in_id'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing note referrer',
+                'message' => 'Missing tree referrer',
             ));
         }
 
@@ -1188,9 +1188,9 @@ class Source extends CI_Controller
 
         //All good...
 
-        //Was there a Note to read?
+        //Was there a Tree to read?
         if(intval($_POST['referrer_in_id']) > 0){
-            //Add this Note to their READING LIST:
+            //Add this Tree to their READING LIST:
             $this->READ_model->read_start($ens[0]['en_id'], $_POST['referrer_in_id']);
         }
 
@@ -1308,7 +1308,7 @@ class Source extends CI_Controller
             //Log them in:
             $ens[0] = $this->SOURCE_model->en_activate_session($ens[0]);
 
-            //Their next Note in line:
+            //Their next Tree in line:
             return echo_json(array(
                 'status' => 1,
                 'login_url' => '/read/next',
@@ -1427,17 +1427,17 @@ class Source extends CI_Controller
         ));
 
 
-        //Fetch referral Note, if any:
+        //Fetch referral Tree, if any:
         if(intval($_POST['referrer_in_id']) > 0){
 
-            //Fetch the Note:
-            $referrer_ins = $this->NOTE_model->in_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+            //Fetch the Tree:
+            $referrer_ins = $this->TREE_model->in_fetch(array(
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
                 'in_id' => $_POST['referrer_in_id'],
             ));
 
             if(count($referrer_ins) > 0){
-                //Add this Note to their READING LIST:
+                //Add this Tree to their READING LIST:
                 $this->READ_model->read_start($user_en['en']['en_id'], $_POST['referrer_in_id']);
             } else {
                 //Cannot be added, likely because its not published:
@@ -1454,7 +1454,7 @@ class Source extends CI_Controller
         $subject = 'Hi, '.$name_parts[0].'! 👋';
 
         ##Email Body
-        $html_message = '<div>Just wanted to welcome you to Mench. You can create your first note here:</div>';
+        $html_message = '<div>Just wanted to welcome you to Mench. You can create your first tree here:</div>';
         $html_message .= '<br /><br />';
         $html_message .= '<div>Cheers,</div><br />';
         $html_message .= '<div>Team MENCH</div>';
@@ -1467,7 +1467,7 @@ class Source extends CI_Controller
         $invite_link = $this->READ_model->ln_create(array(
             'ln_type_source_id' => 7562, //User Signin Joined Mench
             'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_previous_note_id' => intval($_POST['referrer_in_id']),
+            'ln_previous_tree_id' => intval($_POST['referrer_in_id']),
             'ln_metadata' => array(
                 'email_log' => $email_log,
             ),
@@ -1530,7 +1530,7 @@ class Source extends CI_Controller
             'ln_type_source_id' => 7563, //User Signin Magic Link Email
             'ln_content' => $_POST['input_email'],
             'ln_creator_source_id' => $user_emails[0]['en_id'], //User making request
-            'ln_previous_note_id' => intval($_POST['referrer_in_id']),
+            'ln_previous_tree_id' => intval($_POST['referrer_in_id']),
         ));
 
         //This is a new email, send invitation to join:
@@ -1564,7 +1564,7 @@ class Source extends CI_Controller
 
         //Validate email:
         if(superpower_assigned(10939)){
-            return redirect_message('/note');
+            return redirect_message('/tree');
         } elseif(superpower_assigned()){
             return redirect_message('/read/next');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
@@ -1622,9 +1622,9 @@ class Source extends CI_Controller
 
 
         if(intval($_POST['referrer_in_id']) > 0){
-            //Fetch the note:
-            $referrer_ins = $this->NOTE_model->in_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+            //Fetch the tree:
+            $referrer_ins = $this->TREE_model->in_fetch(array(
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
                 'in_id' => $_POST['referrer_in_id'],
             ));
         } else {
@@ -2142,9 +2142,9 @@ class Source extends CI_Controller
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $note_coins = $this->READ_model->ln_fetch(array(
+        $tree_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4250, //UNIQUE NOTES
+            'ln_type_source_id' => 4250, //UNIQUE TREES
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $source_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -2159,7 +2159,7 @@ class Source extends CI_Controller
         echo '$config[\'cache_timestamp\'] = '.$cache_timestamp.';<br />';
         echo '$config[\'cache_count_transaction\'] = '.$transactions[0]['totals'].';<br />';
         echo '$config[\'cache_count_read\'] = '.$read_coins[0]['totals'].';<br />';
-        echo '$config[\'cache_count_note\'] = '.$note_coins[0]['totals'].';<br />';
+        echo '$config[\'cache_count_tree\'] = '.$tree_coins[0]['totals'].';<br />';
         echo '$config[\'cache_count_source\'] = '.$source_coins[0]['totals'].';<br />';
         echo '<br /><br />';
 

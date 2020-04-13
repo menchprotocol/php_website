@@ -112,7 +112,7 @@ class Messenger extends CI_Controller
                         array(
                             'title' => '🟡 '.$en_all_2738[4535]['m_name'],
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/note',
+                            'url' => 'https://mench.com/tree',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
@@ -235,7 +235,7 @@ class Messenger extends CI_Controller
                     $is_quick_reply = (isset($im['message']['quick_reply']['payload']));
 
                     //Set more variables:
-                    $matching_types = array(); //Defines the supported Note Subtypes
+                    $matching_types = array(); //Defines the supported Tree Subtypes
 
                     unset($ln_data); //Reset everything in case its set from the previous loop!
                     $ln_data = array(
@@ -476,7 +476,7 @@ class Messenger extends CI_Controller
                         $pending_matches = array();
                         $pending_mismatches = array();
 
-                        //TODO Yes, see if we have a pending note that requires answer 6144:
+                        //TODO Yes, see if we have a pending tree that requires answer 6144:
 
                         //Did we find any matching or mismatching requirement submissions?
                         if(count($pending_matches) > 0 && 0){
@@ -493,7 +493,7 @@ class Messenger extends CI_Controller
                                 'ln_type_source_id' => 6144, //🔴 READING LIST Submit Requirements
                                 'ln_creator_source_id' => $en['en_id'], //for this user
                                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Transaction Status Incomplete
-                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
                             ), array('in_parent'));
 
 

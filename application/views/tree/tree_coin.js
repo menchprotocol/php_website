@@ -1,7 +1,7 @@
 /*
 *
-* Functions related to modifying notes
-* and managing Note Pads.
+* Functions related to modifying trees
+* and managing Tree Pads.
 *
 * */
 
@@ -19,7 +19,7 @@ function in_update_text(this_handler){
     //Grey background to indicate saving...
     $(handler).addClass('dynamic_saving');
 
-    $.post("/note/in_update_text", {
+    $.post("/tree/in_update_text", {
 
         in_ln__id: $(this_handler).attr('in_ln__id'),
         cache_en_id: $(this_handler).attr('cache_en_id'),
@@ -78,14 +78,14 @@ $(document).ready(function () {
     autosize($('.text__4736_'+in_loaded_id));
 
     $('#expand_ins .expand_all').click(function (e) {
-        $(".next_ins .notes_sortable").each(function () {
+        $(".next_ins .trees_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 1);
         });
     });
 
-    //Load top/bottom note searches:
-    in_load_search(".noteadder-level-2-parent",1, 'q', 'link_in');
-    in_load_search(".noteadder-level-2-child",0, 'w', 'link_in');
+    //Load top/bottom tree searches:
+    in_load_search(".treeadder-level-2-parent",1, 'q', 'link_in');
+    in_load_search(".treeadder-level-2-child",0, 'w', 'link_in');
 
     //Expand selections:
     prep_search_pad();
@@ -95,23 +95,23 @@ $(document).ready(function () {
 
     //Watch the expand/close all buttons:
     $('#expand_ins .expand_all').click(function (e) {
-        $(".next_ins .notes_sortable").each(function () {
+        $(".next_ins .trees_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 1);
         });
     });
     $('#expand_ins .close_all').click(function (e) {
-        $(".next_ins .notes_sortable").each(function () {
+        $(".next_ins .trees_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 0);
         });
     });
 
 
-    //Loop through all new note inboxes:
+    //Loop through all new tree inboxes:
     $(".new-pads").each(function () {
 
         var focus_ln_type_source_id = parseInt($(this).attr('pads-type-id'));
 
-        //Initiate @ search for all note text areas:
+        //Initiate @ search for all tree text areas:
         in_message_inline_en_search($(this));
 
         //Watch for focus:
@@ -183,11 +183,11 @@ $(document).ready(function () {
 
 function read_preview(){
     if(parseInt($('.dropi_4737_'+in_loaded_id+'_0.active').attr('new-en-id')) in js_en_all_7355){
-        //Note is public, go to preview:
+        //Tree is public, go to preview:
         window.location = '/' + in_loaded_id;
     } else {
         //Inform them that they cannot read yet:
-        alert('Publish note before reading it.');
+        alert('Publish tree before reading it.');
     }
 }
 
@@ -216,7 +216,7 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
     var is_in_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
     if(is_in_delete){
         //Seems to be deleting, confirm:
-        var r = confirm("Archive this note AND remove all its links to other notes?");
+        var r = confirm("Archive this tree AND remove all its links to other trees?");
         if (r == false) {
             return false;
         }
@@ -228,7 +228,7 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
     var data_object = eval('js_en_all_'+element_id);
     $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
 
-    $.post("/note/in_update_dropdown", {
+    $.post("/tree/in_update_dropdown", {
 
         in_id: in_id,
         ln_id: ln_id,
@@ -247,10 +247,10 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
             $('.dropd_'+element_id+'_'+in_id+'_'+ln_id).attr('selected-val' , new_en_id);
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
-                //Go to main note page:
+                //Go to main tree page:
                 window.location = data.deletion_redirect;
             } else if( data.remove_element && data.remove_element.length > 0 ){
-                //Go to main note page:
+                //Go to main tree page:
                 setTimeout(function () {
                     //Restore background:
                     $( data.remove_element ).fadeOut();
@@ -286,8 +286,8 @@ function in_unlink(in_id, ln_id){
     var r = confirm("Unlink ["+$('.in_ln__id_'+in_id).val()+"]?");
     if (r == true) {
 
-        //Fetch Note Data to load modify widget:
-        $.post("/note/in_unlink", {
+        //Fetch Tree Data to load modify widget:
+        $.post("/tree/in_unlink", {
             in_id: in_id,
             ln_id: ln_id,
         }, function (data) {
@@ -300,8 +300,8 @@ function in_unlink(in_id, ln_id){
 
 function in_ui_remove(in_id,ln_id){
 
-    //Fetch parent note before removing element from DOM:
-    var parent_in_id = parseInt($('.in_line_' + in_id).attr('parent-note-id'));
+    //Fetch parent tree before removing element from DOM:
+    var parent_in_id = parseInt($('.in_line_' + in_id).attr('parent-tree-id'));
 
     //Remove from UI:
     $('.in__tr_' + ln_id).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i></span>');
@@ -318,7 +318,7 @@ function in_ui_remove(in_id,ln_id){
         //Hide editing box:
         $('#modifybox').addClass('hidden');
 
-        //Re-sort sibling notes:
+        //Re-sort sibling trees:
         in_sort_save(parent_in_id);
 
     }, 610);
@@ -332,7 +332,7 @@ function in_ui_remove(in_id,ln_id){
 
 /*
 *
-* Note Pads
+* Tree Pads
 *
 * */
 
@@ -355,9 +355,9 @@ function in_new_pads_count(focus_ln_type_source_id) {
 
     //Only show counter if getting close to limit:
     if(len > ( js_en_all_6404[11073]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
-        $('#notePadsNewCount' + focus_ln_type_source_id).removeClass('hidden');
+        $('#treePadsNewCount' + focus_ln_type_source_id).removeClass('hidden');
     } else {
-        $('#notePadsNewCount' + focus_ln_type_source_id).addClass('hidden');
+        $('#treePadsNewCount' + focus_ln_type_source_id).addClass('hidden');
     }
 
 }
@@ -398,9 +398,9 @@ function in_edit_pads_count(ln_id) {
 
     //Only show counter if getting close to limit:
     if(len > ( js_en_all_6404[11073]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
-        $('#notePadsCount' + ln_id).removeClass('hidden');
+        $('#treePadsCount' + ln_id).removeClass('hidden');
     } else {
-        $('#notePadsCount' + ln_id).addClass('hidden');
+        $('#treePadsCount' + ln_id).addClass('hidden');
     }
 }
 
@@ -477,7 +477,7 @@ function in_pads_sort_apply(focus_ln_type_source_id) {
 
     //Update backend if any:
     if(sort_rank > 0){
-        $.post("/note/in_pads_sort", {new_ln_orders: new_ln_orders}, function (data) {
+        $.post("/tree/in_pads_sort", {new_ln_orders: new_ln_orders}, function (data) {
             //Only show message if there was an error:
             if (!data.status) {
                 //Show error:
@@ -567,7 +567,7 @@ function in_pads_modify_save(ln_id, focus_ln_type_source_id) {
     };
 
     //Update message:
-    $.post("/note/in_pads_modify_save", modify_data, function (data) {
+    $.post("/tree/in_pads_modify_save", modify_data, function (data) {
 
         if (data.status) {
 
@@ -691,7 +691,7 @@ function in_pads_create_upload(droppedFiles, uploadType, focus_ln_type_source_id
         ajaxData.append('focus_ln_type_source_id', focus_ln_type_source_id);
 
         $.ajax({
-            url: '/note/in_pads_create_upload',
+            url: '/tree/in_pads_create_upload',
             type: $('.box' + focus_ln_type_source_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -727,7 +727,7 @@ function in_pads_add(focus_ln_type_source_id) {
     in_message_form_lock(focus_ln_type_source_id);
 
     //Update backend:
-    $.post("/note/in_pads_create_text", {
+    $.post("/tree/in_pads_create_text", {
 
         in_id: in_loaded_id, //Synonymous
         ln_content: $('#ln_content' + focus_ln_type_source_id).val(),
@@ -783,13 +783,13 @@ function in_pads_add(focus_ln_type_source_id) {
 function prep_search_pad(){
 
     //All level 2s:
-    $('.noteadder-level-2-parent').focus(function() {
+    $('.treeadder-level-2-parent').focus(function() {
         $('.in_pad_top' ).removeClass('hidden');
     }).focusout(function() {
         $('.in_pad_top' ).addClass('hidden');
     });
 
-    $('.noteadder-level-2-child').focus(function() {
+    $('.treeadder-level-2-child').focus(function() {
         $('.in_pad_bottom' ).removeClass('hidden');
     }).focusout(function() {
         $('.in_pad_bottom' ).addClass('hidden');
@@ -802,9 +802,9 @@ function in_sort_save(in_id) {
     var new_ln_orders = [];
     var sort_rank = 0;
 
-    $("#list-in-" + in_loaded_id + "-0 .notes_sortable").each(function () {
-        //Fetch variables for this note:
-        var in_id = parseInt($(this).attr('note-id'));
+    $("#list-in-" + in_loaded_id + "-0 .trees_sortable").each(function () {
+        //Fetch variables for this tree:
+        var in_id = parseInt($(this).attr('tree-id'));
         var ln_id = parseInt($(this).attr('in-link-id'));
 
         sort_rank++;
@@ -816,7 +816,7 @@ function in_sort_save(in_id) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0 && in_id) {
         //Update backend:
-        $.post("/note/in_sort_save", {in_id: in_id, new_ln_orders: new_ln_orders}, function (data) {
+        $.post("/tree/in_sort_save", {in_id: in_id, new_ln_orders: new_ln_orders}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -833,14 +833,14 @@ function in_sort_load(in_id) {
     var element_key = null;
     var theobject = document.getElementById("list-in-" + in_loaded_id + "-0");
     if (!theobject) {
-        //due to duplicate notes belonging in this tree:
+        //due to duplicate trees belonging in this tree:
         return false;
     }
 
     var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        draggable: ".notes_sortable", // Specifies which items inside the element should be sortable
-        handle: ".note-sort-handle", // Restricts sort start click/touch to the specified element
+        draggable: ".trees_sortable", // Specifies which items inside the element should be sortable
+        handle: ".tree-sort-handle", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             in_sort_save(in_id);
         }
@@ -853,16 +853,16 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
     /*
      *
-     * Either creates an NOTE link between in_linked_id & in_link_child_id
-     * OR will create a new note based on input text and then link it
+     * Either creates an TREE link between in_linked_id & in_link_child_id
+     * OR will create a new tree based on input text and then link it
      * to in_linked_id (In this case in_link_child_id=0)
      *
      * */
 
 
-    var sort_handler = ".notes_sortable";
+    var sort_handler = ".trees_sortable";
     var sort_list_id = "list-in-" + in_loaded_id + '-' + is_parent;
-    var input_field = $('#addnote-c-' + in_linked_id + '-' + is_parent);
+    var input_field = $('#addtree-c-' + in_linked_id + '-' + is_parent);
     var in_name = input_field.val();
 
 
@@ -880,7 +880,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
 
 
-    //We either need the note name (to create a new note) or the in_link_child_id>0 to create an NOTE link:
+    //We either need the tree name (to create a new tree) or the in_link_child_id>0 to create an TREE link:
     if (!in_link_child_id && in_name.length < 1) {
         alert('Alert: Enter something');
         input_field.focus();
@@ -888,10 +888,10 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
     }
 
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="note montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin note"></i></span>' + echo_saving_notify() +  '</div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="tree montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin tree"></i></span>' + echo_saving_notify() +  '</div>');
 
     //Update backend:
-    $.post("/note/in_link_or_create", {
+    $.post("/tree/in_link_or_create", {
         in_linked_id: in_linked_id,
         is_parent:is_parent,
         in_title: in_name,
@@ -906,7 +906,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
             //Add new
             add_to_list(sort_list_id, sort_handler, data.in_child_html);
 
-            //Reload sorting to enable sorting for the newly added note:
+            //Reload sorting to enable sorting for the newly added tree:
             in_sort_load(in_linked_id);
 
             //Lookout for textinput updates
