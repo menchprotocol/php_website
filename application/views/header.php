@@ -164,12 +164,12 @@ if(!isset($hide_header)){
 
 
                                 $url_extension = null;
-                                $is_current = ($current_mench['x_id'] == $en_id);
+                                $is_current_mench = ($current_mench['x_id'] == $en_id);
                                 $this_mench = current_mench(strtolower($m['m_name']));
                                 $primary_url = 'href="/' . $this_mench['x_name'].'"';
 
 
-                                if (!$is_current && isset($in) && in_array($this_mench['x_name'], array('read', 'note'))) {
+                                if (!$is_current_mench && isset($in) && in_array($this_mench['x_name'], array('read', 'note'))) {
                                     if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'note' && $in['in_id']!=config_var(12156) ) {
                                         $primary_url = 'href="/note/' . $in['in_id'].'"';
                                     } elseif ($current_mench['x_name'] == 'note' && $this_mench['x_name'] == 'read') {
@@ -179,7 +179,7 @@ if(!isset($hide_header)){
 
 
                                 /*
-                                echo '<a class="mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current ? ' focustab ' : '') .'" ' . $primary_url . '>';
+                                echo '<a class="mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current_mench ? ' focustab ' : '') .'" ' . $primary_url . '>';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $this_mench['x_class'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
                                 echo '<span class="montserrat" title="'.$player_stats[$this_mench['x_name'].'_count'].'">'.echo_number($player_stats[$this_mench['x_name'].'_count']).'</span>';
@@ -200,7 +200,7 @@ if(!isset($hide_header)){
                                         continue;
                                     }
 
-                                    $count = 0;
+                                    $count = null;
                                     $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m2['m_parents']);
 
                                     if(in_array($en_id2, $this->config->item('en_ids_12655'))){
@@ -280,7 +280,7 @@ if(!isset($hide_header)){
 
                                         $nav_url = $en_all_10876[$en_id2]['m_desc'];
                                         $nav_url_parts = explode('/', one_two_explode('mench.com/','',$nav_url));
-                                        $is_active = ( $first_segment==$nav_url_parts[0] && ( !$second_segment || $second_segment==$nav_url_parts[1] ) );
+                                        $is_active = ( $first_segment==$nav_url_parts[0] && ( !$second_segment || (isset($nav_url_parts[1]) && $second_segment==$nav_url_parts[1]) ) );
 
                                     } elseif($en_id2==12581) {
 
@@ -296,11 +296,11 @@ if(!isset($hide_header)){
                                     }
 
                                     //Determine Primary:
-                                    if($is_active){
-                                        $primary_button = '<a href="'.$nav_url.'" class="btn"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</a>';
+                                    if(($is_current_mench && $is_active) || (!$is_current_mench && in_array($en_id2, $this->config->item('en_ids_12654')))){
+                                        $primary_button = '<a href="'.$nav_url.'" class="btn '.$this_mench['x_class'].'"><span class="icon-block">'.$m2['m_icon'].'</span><span class="show-max">'.$m2['m_name'].'</span></a>';
                                     }
 
-                                    $nav_ui .= '<a href="'.$nav_url.'" class="dropdown-item montserrat doupper '.( $is_active ? ' active ' : '' ).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.( in_array($en_id2, $this->config->item('en_ids_10876')) ? $count.' ' : '' ).$m2['m_name'].'</a>';
+                                    $nav_ui .= '<a href="'.$nav_url.'" class="dropdown-item montserrat doupper '.( $is_active ? ' active ' : '' ).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.( !is_null($count) ? $count.' ' : '' ).$m2['m_name'].'</a>';
 
                                 }
 
