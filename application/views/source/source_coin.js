@@ -758,6 +758,7 @@ function account_update_avatar_icon(type_css, icon_css){
         $('.avatar-item.avatar-name-'+icon_css).addClass('active');
     }
 
+    $('.en_ui_icon_'+js_pl_id).html('<i class="far fa-yin-yang fa-spin"></i>');
 
     //Update via call:
     $.post("/source/account_update_avatar_icon", {
@@ -835,6 +836,10 @@ function account_update_name(){
 
     //Show spinner:
     $('.save_full_name').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
+
+    $('.en_name_first_'+js_pl_id).text('<i class="far fa-yin-yang fa-spin"></i>');
+    $('.en_name_full_'+js_pl_id).text('<i class="far fa-yin-yang fa-spin"></i>');
+
 
     //Save the rest of the content:
     var en_name_new = $('#en_name').val().toUpperCase();
