@@ -72,9 +72,11 @@ if(count($current_sign_in_attempt) == 0){
 
     <div class="sign-logo text-center"><img src="/img/mench.png" class="mench-spin mench-large" /></div>
 
-    <h1 class="text-center"><?= $en_all_11035[4269]['m_name'] ?></h1>
+    <h1 class="text-center"><?= $en_all_11035[4269]['m_name'] ?> [FREE]</h1>
+
 
     <?php
+    /*
     if($referrer_in_id > 0){
         $ins = $this->TREE_model->in_fetch(array(
             'in_id' => $referrer_in_id,
@@ -88,6 +90,7 @@ if(count($current_sign_in_attempt) == 0){
     } else {
         echo '<p class="text-center montserrat">TO GET STARTED FOR FREE</p>';
     }
+    */
     ?>
 
     <div class="login-content" style="margin-top:50px;">
