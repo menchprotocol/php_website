@@ -45,9 +45,10 @@ if(!$session_en){
 
 
         //Give option to delete all:
-        echo '<a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="btn btn-read '.superpower_active(10984).'">'.$en_all_11035[6415]['m_icon'].'</a>';
+        echo '<a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="btn btn-read '.( isset($_GET['clear']) ? '' : superpower_active(10984) ).'">'.$en_all_11035[6415]['m_icon'].'</a>';
+
         echo '<div class="clear-reading-list hidden" style="padding:34px 0;">';
-        echo '<p><span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><b class="read montserrat">WARNING:</b> You are about to clear you entire reading list. You will lose all your <span class="icon-block">🔴</span><b class="montserrat read">READ COINS</b> but can earn them back by reading again.</p>';
+        echo '<p><span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><b class="read montserrat">WARNING:</b> You are about to clear you entire reading list. You will lose all your <span class="icon-block"><i class="fas fa-circle read"></i></span><b class="montserrat read">READ COINS</b> but can earn them back by reading again.</p>';
         echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="clear_all_reads()" class="btn btn-read"><i class="far fa-trash-alt"></i> CLEAR ALL READS</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
         echo '</div>';
 
