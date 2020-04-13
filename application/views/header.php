@@ -324,12 +324,10 @@ if(!isset($hide_header)){
                                 echo $primary_button;
 
                                 //Show expanded Menu:
-                                if($is_current_mench){
-                                    echo '<button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
-                                    echo '<div class="dropdown-menu">';
-                                    echo $nav_ui;
-                                    echo '</div>';
-                                }
+                                echo '<button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
+                                echo '<div class="dropdown-menu">';
+                                echo $nav_ui;
+                                echo '</div>';
 
                                 echo '</div>';
 
