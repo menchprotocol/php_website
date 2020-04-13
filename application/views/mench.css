@@ -360,14 +360,14 @@ img.no-radius {
 
 .featured-frame{
     text-align: center;
-    width: 144px;
+    width: 89px;
     margin-left:5px;
 }
 .table-sm td .featured-frame{
     margin-right:10px;
 }
 .featured-image {
-    max-width: 144px;
+    max-width: 89px;
     max-height: 144px;
     overflow: hidden;
     display: block;
@@ -1325,8 +1325,6 @@ label {
     .container {
         max-width: none;
     }
-    .featured-frame{ width:89px; }
-    .featured-image { max-width:89px; max-height:89px; }
     .content-image{ max-height:144px; }
     .show-on-hover { display:inline-block !important; }
     .form-control-thick { padding-left: 26px; }
