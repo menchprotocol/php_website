@@ -30,7 +30,7 @@ class Ledger extends CI_Controller
         $this->load->view('header', array(
             'title' => $en_all_11035[4341]['m_name'],
         ));
-        $this->load->view('read/ledger_list');
+        $this->load->view('ledger/ledger_list');
         $this->load->view('footer');
     }
 

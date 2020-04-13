@@ -150,8 +150,6 @@ if(!isset($hide_header)){
                         echo '<div class="main_nav mench_nav">';
                         if(isset($session_en['en_id'])){
 
-                            $en_all_10876 = $this->config->item('en_all_10876'); //MENCH WEBSITE
-
                             //Navigation Controller:
                             $nav_controller = array(
                                 6205 => 12648, //READ
@@ -185,7 +183,7 @@ if(!isset($hide_header)){
 
 
                                 //Primary Button:
-                                echo '<a class=btn "mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current_mench ? ' focustab ' : '') .'" ' . $primary_url . '>';
+                                echo '<a class="mench_coin btn ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current_mench ? ' focustab ' : '') .'" ' . $primary_url . '>';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $this_mench['x_class'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
                                 //echo '<span class="montserrat" title="'.$player_stats[$this_mench['x_name'].'_count'].'">'.echo_number($player_stats[$this_mench['x_name'].'_count']).'</span>';
