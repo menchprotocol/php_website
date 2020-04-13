@@ -16,16 +16,7 @@ class Source extends CI_Controller
 
     function index()
     {
-        //Redirect based on session:
-        $session_en = superpower_assigned(null);
-        return redirect_message($session_en ? '/source/'.$session_en['en_id'] : '/source/leaderboard' );
-    }
-
-
-    function leaderboard()
-    {
-
-        //Authenticate user:
+        //Leaderboard:
         $session_en = superpower_assigned(null);
 
         //Log View:
@@ -44,9 +35,7 @@ class Source extends CI_Controller
             'session_en' => $session_en,
         ));
         $this->load->view('footer');
-
     }
-
 
 
 

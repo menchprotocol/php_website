@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-12 22:00:23 PST
+//Generated 2020-04-13 06:48:01 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1586754023;
-$config['cache_count_transaction'] = 1116324;
-$config['cache_count_read'] = 121035;
+$config['cache_timestamp'] = 1586785681;
+$config['cache_count_transaction'] = 1116472;
+$config['cache_count_read'] = 121038;
 $config['cache_count_note'] = 3830;
-$config['cache_count_source'] = 9215;
+$config['cache_count_source'] = 9216;
 
 
 $config['cache_count_12640'] = 645; //EXPERT SOURCES
@@ -38,7 +38,7 @@ $config['en_all_12500'] = array(
         'm_icon' => '<i class="fad fa-user-circle source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12500,10876,11035),
+        'm_parents' => array(12500,11035),
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-user-shield source" aria-hidden="true"></i>',
@@ -702,7 +702,7 @@ $config['en_all_12413'] = array(
 );
 
 //MENCH LINKS:
-$config['en_ids_10876'] = array(4341,6182,10573,10984,12273,10939,10985,7347,6255,10964,10989,10988,6287,12274,10986,10983,12437,7291,12205,10967);
+$config['en_ids_10876'] = array(4341,6182,10573,10984,12273,10939,10985,7347,6255,10964,10989,10988,6287,12274,10986,10983,12437,7291,10967);
 $config['en_all_10876'] = array(
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
@@ -803,19 +803,13 @@ $config['en_all_10876'] = array(
     12437 => array(
         'm_icon' => '<i class="fad fa-trophy source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LEADERBOARD',
-        'm_desc' => 'https://mench.com/source/leaderboard',
+        'm_desc' => 'https://mench.com/source',
         'm_parents' => array(12654,10876,12646,4536,12489,11035,11986),
     ),
     7291 => array(
         'm_icon' => '<i class="fad fa-power-off source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LOGOUT',
         'm_desc' => 'https://mench.com/source/signout',
-        'm_parents' => array(12500,10876,11035),
-    ),
-    12205 => array(
-        'm_icon' => '<i class="fad fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE PROFILE',
-        'm_desc' => 'https://mench.com/source',
         'm_parents' => array(12500,10876,11035),
     ),
     10967 => array(
@@ -4246,7 +4240,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fad fa-user-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12500,10876,11035),
+        'm_parents' => array(12500,11035),
     ),
     10957 => array(
         'm_icon' => '<i class="fad fa-bolt source" aria-hidden="true"></i>',

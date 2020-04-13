@@ -2554,36 +2554,13 @@ function echo_navigation_menu($cache_en_id){
         }
 
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-
-        //Determine URL:
-        if(in_array($en_id, $CI->config->item('en_ids_10876'))){
-
-            $href = 'href="'.$en_all_10876[$en_id]['m_desc'].'"';
-
-        } elseif(in_array($en_id, $CI->config->item('en_ids_12502'))){
-
-            $href = 'href="javascript:void();" onclick="'.$en_all_12502[$en_id]['m_desc'].'"';
-
-        } elseif($en_id==12205){
-
-            $session_en = superpower_assigned();
-
-            if($session_en){
-                $href = 'href="/source/'.$session_en['en_id'].'"';
-            } else {
-                continue;
-            }
-
-        } else {
-
-            //No Link Structure:
-            $href = 'href="javascript:void();"';
-            //continue;
-
+        $page_url = url_ln_type($en_id);
+        if(!$page_url){
+            continue;
         }
 
         //Navigation
-        $ui .= '<a '.$href.' class="dropdown-item montserrat doupper '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+        $ui .= '<a href="'.$page_url.'" class="dropdown-item montserrat doupper '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
 
     }
 

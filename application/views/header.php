@@ -178,164 +178,53 @@ if(!isset($hide_header)){
                                 }
 
 
-                                /*
-                                echo '<a class="mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current_mench ? ' focustab ' : '') .'" ' . $primary_url . '>';
+
+
+                                echo '<div class="btn-group">';
+
+
+
+                                //Primary Button:
+                                echo '<a class=btn "mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current_mench ? ' focustab ' : '') .'" ' . $primary_url . '>';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $this_mench['x_class'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
-                                echo '<span class="montserrat" title="'.$player_stats[$this_mench['x_name'].'_count'].'">'.echo_number($player_stats[$this_mench['x_name'].'_count']).'</span>';
+                                //echo '<span class="montserrat" title="'.$player_stats[$this_mench['x_name'].'_count'].'">'.echo_number($player_stats[$this_mench['x_name'].'_count']).'</span>';
                                 echo '</a>';
-                                */
 
 
-                                $nav_ui = '';
-                                $primary_button = '';
-
-                                foreach ($this->config->item('en_all_'.$nav_controller[$en_id]) as $en_id2 => $m2) {
-
-                                    //Skip superpowers if not assigned
-                                    if($en_id2==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
-                                        continue;
-                                    } elseif($en_id2==7291 && intval($this->session->userdata('session_6196_sign'))){
-                                        //Messenger sign in does not allow Signout:
-                                        continue;
-                                    }
-
-                                    $count = null;
-                                    $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m2['m_parents']);
-
-                                    if(in_array($en_id2, $this->config->item('en_ids_12655'))){
-
-                                        //We need to count this:
-                                        if($en_id2==12274){
-
-                                            $source_coins = $this->READ_model->ln_fetch(array(
-                                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
-                                                'ln_creator_source_id' => $session_en['en_id'],
-                                            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-                                            $count = $source_coins[0]['totals'];
-
-                                        } elseif($en_id2==12273){
-
-                                            $note_coins = $this->READ_model->ln_fetch(array(
-                                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
-                                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //NOTE COIN
-                                                'ln_parent_source_id' => $session_en['en_id'],
-                                            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
-                                            $count = $note_coins[0]['totals'];
-
-                                        } elseif($en_id2==6255){
-
-                                            $read_coins = $this->READ_model->ln_fetch(array(
-                                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-                                                'ln_creator_source_id' => $session_en['en_id'],
-                                            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-                                            $count = $read_coins[0]['totals'];
-
-                                        } elseif($en_id2==10573){
-
-                                            $note_bookmarks = $this->READ_model->ln_fetch(array(
-                                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
-                                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                                                'ln_type_source_id' => 10573, //Note Pads Bookmarks
-                                                'ln_parent_source_id' => $session_en['en_id'], //For this trainer
-                                            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
-                                            $count = $note_bookmarks[0]['totals'];
-
-                                        } elseif($en_id2==7347){
-
-                                            $read_bookmarks = $this->READ_model->ln_fetch(array(
-                                                'ln_creator_source_id' => $session_en['en_id'],
-                                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Note Set
-                                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
-                                            ), array('in_parent'), 0, 0, array(), 'COUNT(ln_id) as totals');
-                                            $count = $read_bookmarks[0]['totals'];
-
-                                        } elseif($en_id2==6182){
-
-                                            $note_archived = $this->READ_model->ln_fetch(array(
-                                                'in_status_source_id' => 6182, //Note Archived
-                                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //NOTE COIN
-                                                'ln_parent_source_id' => $session_en['en_id'],
-                                            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
-                                            $count = $note_archived[0]['totals'];
-
-                                        }
-
-                                    }
-
-
-                                    //Skip if they don't have it:
-                                    if(in_array($en_id2, $this->config->item('en_ids_12656')) && !$count){
-                                        continue;
-                                    }
-
-
-                                    //Fetch URL:
-                                    if(in_array($en_id2, $this->config->item('en_ids_10876'))){
-
-                                        $nav_url = $en_all_10876[$en_id2]['m_desc'];
-                                        $nav_url_parts = explode('/', one_two_explode('mench.com/','',$nav_url));
-
-                                        $is_active = ( $first_segment==$nav_url_parts[0] && (
-                                                (!$second_segment && !isset($nav_url_parts[1])) ||
-                                                (isset($nav_url_parts[1]) && $second_segment==$nav_url_parts[1]) ||
-                                                (is_numeric($second_segment) && !isset($nav_url_parts[1]))
-                                            ));
-
-                                    } elseif($en_id2==12581) {
-
-                                        //Home page has no URL (As it's not allowed based on current URL policy)
-                                        $nav_url = '/';
-                                        $is_active = ( !$first_segment );
-
-                                    } else {
-
-                                        //Don't know URL structure:
-                                        continue;
-
-                                    }
-
-                                    $full_name = ( !is_null($count) ? '<span title="'.number_format($count, 0).'">'.echo_number($count).'</span> ' : '' ).$m2['m_name'];
-
-                                    //Determine Primary:
-                                    if($is_current_mench){
-
-                                        if($is_active){
-                                            $primary_button = '<button class="btn '.$this_mench['x_class'].'"><span class="icon-block">'.$m2['m_icon'].'</span><span class="show-max">'.$full_name.'</span></button>';
-                                        } else {
-                                            $primary_button = '<a href="'.$nav_url.'" class="btn '.$this_mench['x_class'].'"><span class="icon-block">'.$m['m_icon'].'</span><span class="show-max">'.$m['m_name'].'</span></a>';
-                                        }
-
-                                    } elseif(!$is_current_mench && in_array($en_id2, $this->config->item('en_ids_12654'))){
-
-                                        $primary_button = '<a href="'.$nav_url.'" class="btn '.$this_mench['x_class'].'"><span class="icon-block">'.$m2['m_icon'].'</span><span class="show-max">'.$full_name.'</span></a>';
-
-                                    }
-
-                                    $nav_ui .= '<a href="'.$nav_url.'" class="dropdown-item montserrat doupper '.extract_icon_color($m2['m_icon']).( $is_active ? ' active ' : '' ).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.$full_name.'</a>';
-
-                                }
-
-
-
-                                //Show Split Menu:
-                                echo '<div class="btn-group">';
-                                echo $primary_button;
-
-
-                                if(0){
-                                    //Show expanded Menu:
+                                //Expanded Menu:
+                                if(superpower_active(10985, true)){
                                     echo '<button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
                                     echo '<div class="dropdown-menu">';
-                                    echo $nav_ui;
+                                    foreach ($this->config->item('en_all_'.$nav_controller[$en_id]) as $en_id2 => $m2) {
+
+                                        //Skip superpowers if not assigned
+                                        if($en_id2==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
+                                            continue;
+                                        } elseif($en_id2==7291 && intval($this->session->userdata('session_6196_sign'))){
+                                            //Messenger sign in does not allow Signout:
+                                            continue;
+                                        }
+
+                                        $count = null;
+                                        $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m2['m_parents']);
+                                        $page_url = url_ln_type($en_id2);
+
+                                        if(in_array($en_id2, $this->config->item('en_ids_12655'))){
+                                            $count = count_ln_type($en_id2);
+                                        }
+
+                                        //Skip if they don't have it:
+                                        if(!$page_url || (in_array($en_id2, $this->config->item('en_ids_12656')) && !$count)){
+                                            continue;
+                                        }
+
+                                        echo '<a href="'.$page_url.'" class="dropdown-item montserrat doupper '.extract_icon_color($m2['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.( !is_null($count) ? '<span title="'.number_format($count, 0).'">'.echo_number($count).'</span> ' : '' ).$m2['m_name'].'</a>';
+
+
+                                    }
                                     echo '</div>';
                                 }
-
 
                                 echo '</div>';
 

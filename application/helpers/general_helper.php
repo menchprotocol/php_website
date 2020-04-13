@@ -703,6 +703,106 @@ function current_mench($part1 = null){
 
 }
 
+function url_ln_type($en_id){
+
+    $CI =& get_instance();
+    $session_en = superpower_assigned();
+
+    //Fetch URL:
+    if(in_array($en_id, $CI->config->item('en_ids_10876'))){
+
+        $en_all_10876 = $CI->config->item('en_all_10876'); //Mench Website
+        return $en_all_10876[$en_id]['m_desc'];
+
+    } elseif($en_id==12581) {
+
+        //Home page:
+        return '/';
+
+    } elseif($en_id==12205 && $session_en) {
+
+        //Profile Page:
+        return '/source/'.$session_en['en_id'];
+
+    } else {
+
+        return fasle;
+
+    }
+}
+
+function count_ln_type($en_id){
+
+    $session_en = superpower_assigned();
+    $CI =& get_instance();
+    if($session_en){
+
+
+        //We need to count this:
+        if($en_id==12274){
+
+            $source_coins = $CI->READ_model->ln_fetch(array(
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
+                'ln_creator_source_id' => $session_en['en_id'],
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+            return $source_coins[0]['totals'];
+
+        } elseif($en_id==12273){
+
+            $note_coins = $CI->READ_model->ln_fetch(array(
+                'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //NOTE COIN
+                'ln_parent_source_id' => $session_en['en_id'],
+            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
+            return $note_coins[0]['totals'];
+
+        } elseif($en_id==6255){
+
+            $read_coins = $CI->READ_model->ln_fetch(array(
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
+                'ln_creator_source_id' => $session_en['en_id'],
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+            return $read_coins[0]['totals'];
+
+        } elseif($en_id==10573){
+
+            $note_bookmarks = $CI->READ_model->ln_fetch(array(
+                'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_type_source_id' => 10573, //Note Pads Bookmarks
+                'ln_parent_source_id' => $session_en['en_id'], //For this trainer
+            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
+            return $note_bookmarks[0]['totals'];
+
+        } elseif($en_id==7347){
+
+            $read_bookmarks = $CI->READ_model->ln_fetch(array(
+                'ln_creator_source_id' => $session_en['en_id'],
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Note Set
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+            ), array('in_parent'), 0, 0, array(), 'COUNT(ln_id) as totals');
+            return $read_bookmarks[0]['totals'];
+
+        } elseif($en_id==6182){
+
+            $note_archived = $CI->READ_model->ln_fetch(array(
+                'in_status_source_id' => 6182, //Note Archived
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //NOTE COIN
+                'ln_parent_source_id' => $session_en['en_id'],
+            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
+            return $note_archived[0]['totals'];
+
+        }
+    }
+
+    return null;
+}
+
 function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
 {
 
