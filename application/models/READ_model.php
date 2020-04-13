@@ -504,14 +504,14 @@ class READ_model extends CI_Model
                     } elseif (in_array(4367 , $m['m_parents'])) {
 
                         //READ
-                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="https://mench.com/read/transaction_json/' . $insert_columns[$en_all_6232[$en_id]['m_desc']] . '" target="_parent">'.$insert_columns[$en_all_6232[$en_id]['m_desc']].'</a></div>';
+                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="https://mench.com/ledger/json/' . $insert_columns[$en_all_6232[$en_id]['m_desc']] . '" target="_parent">'.$insert_columns[$en_all_6232[$en_id]['m_desc']].'</a></div>';
 
                     }
 
                 }
 
                 //Finally append READ ID:
-                $html_message .= '<div>READ ID: <a href="https://mench.com/read/transaction_json/' . $insert_columns['ln_id'] . '">' . $insert_columns['ln_id'] . '</a></div>';
+                $html_message .= '<div>READ ID: <a href="https://mench.com/ledger/json/' . $insert_columns['ln_id'] . '">' . $insert_columns['ln_id'] . '</a></div>';
 
                 //Inform how to change settings:
                 $html_message .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/source/5967" target="_blank">@5967</a></div>';
@@ -1061,7 +1061,7 @@ class READ_model extends CI_Model
 
     }
 
-    function read_add($en_id, $in_id, $recommender_in_id = 0){
+    function read_start($en_id, $in_id, $recommender_in_id = 0){
 
         //Validate Note ID:
         $ins = $this->NOTE_model->in_fetch(array(
@@ -1602,7 +1602,7 @@ class READ_model extends CI_Model
                     echo '<div id="readScroll">&nbsp;</div>';
 
                     //Redirect to login page:
-                    echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="/read/'.$ins[0]['in_id'].'">START HERE <i class="fad fa-step-forward"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="/read/start/'.$ins[0]['in_id'].'">START HERE <i class="fad fa-step-forward"></i></a></div>';
 
                 }
 
@@ -1820,7 +1820,7 @@ class READ_model extends CI_Model
             } else {
 
                 //JS Redirect asap:
-                echo "<script> $(document).ready(function () { window.location = '/' + in_loaded_id + '/next'; }); </script>";
+                echo "<script> $(document).ready(function () { window.location = '/read/next/' + in_loaded_id; }); </script>";
 
             }
         }
@@ -4098,7 +4098,7 @@ class READ_model extends CI_Model
             $recommended_in_id = $in_ids[1];
 
             //Add this item to the tio of the 🔴 READING LIST:
-            $this->READ_model->read_add($en['en_id'], $recommended_in_id, $recommender_in_id);
+            $this->READ_model->read_start($en['en_id'], $recommended_in_id, $recommender_in_id);
 
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-CONFIRM_') == 1) {
 
@@ -4106,7 +4106,7 @@ class READ_model extends CI_Model
             $in_id = intval(one_two_explode('SUBSCRIBE-CONFIRM_', '', $quick_reply_payload));
 
             //Add to 🔴 READING LIST:
-            $this->READ_model->read_add($en['en_id'], $in_id);
+            $this->READ_model->read_start($en['en_id'], $in_id);
 
         } elseif (substr_count($quick_reply_payload, 'SKIP-ACTIONPLAN_') == 1) {
 

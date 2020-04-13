@@ -14,613 +14,40 @@ class Source extends CI_Controller
     }
 
 
-    function add_11158(){
+    function index()
+    {
+        //Redirect based on session:
+        $session_en = superpower_assigned(null);
+        return redirect_message($session_en ? '/source/'.$session_en['en_id'] : '/source/leaderboard' );
+    }
 
-        //A function that goes through Medium topics @11097 and fetches all the top Publishers @11158 within that topic
-        $ln_creator_source_id = 1; //Shervin as Developer for logging all READS
 
-        //Fetch URL:
-        $medium_urls = $this->READ_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-            'ln_parent_source_id' => 1326, //Domain Names
-            'ln_child_source_id' => 3311, //Medium URL
+    function leaderboard()
+    {
+
+        //Authenticate user:
+        $session_en = superpower_assigned(null);
+
+        //Log View:
+        if($session_en){
+            $this->READ_model->ln_create(array(
+                'ln_type_source_id' => 12489, //Opened Leaderboard
+                'ln_creator_source_id' => $session_en['en_id'],
+            ));
+        }
+
+        $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
+        $this->load->view('header', array(
+            'title' => $en_all_2738[4536]['m_name'],
         ));
+        $this->load->view('source/source_home', array(
+            'session_en' => $session_en,
+        ));
+        $this->load->view('footer');
 
-
-        $topic_count = 0;
-        foreach ($this->READ_model->ln_fetch(array(
-            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-            'ln_parent_source_id' => 11097, //Medium Topic
-        ), array('en_child')) as $medium_topic){
-
-            $topic_count++;
-
-            //Fetch this page:
-            foreach ($this->READ_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id' => 4256, //URL
-                'ln_parent_source_id' => 3311, //Medium Link
-                'ln_child_source_id' => $medium_topic['en_id'],
-            )) as $medium_topic_link){
-
-                //Fetch Publishers within this topic:
-                $url_content = @file_get_contents($medium_topic_link['ln_content']);
-
-                if(!$url_content){
-                    echo '<div>FAILED to fetch ['.$medium_topic_link['ln_content'].']</div>';
-                    continue;
-                }
-
-                //Fetch UNIQUE author URLs:
-                $unique_authors = array();
-                foreach(explode('"/@', $url_content) as $index => $author_string){
-
-                    if(!$index){
-                        continue; //Do not check the first one
-                    }
-
-                    $author_url_path = one_two_explode('', '"', $author_string);
-
-                    if(substr_count($author_url_path, '/')){
-                        $author_handler = one_two_explode('', '/', $author_url_path);
-                    } elseif(substr_count($author_url_path, '?')){
-                        $author_handler = one_two_explode('', '?', $author_url_path);
-                    } else {
-                        $author_handler = $author_url_path;
-                    }
-
-                    if(!in_array($author_handler, $unique_authors)){
-                        array_push($unique_authors, $author_handler);
-                    }
-
-                }
-
-                //Now sync authors in Database:
-                $newly_added = 0;
-
-                foreach($unique_authors as $author_handler){
-
-                    $full_url = rtrim($medium_urls[0]['ln_content'], '/') . '/@' . $author_handler;
-
-                    $already_added = $this->READ_model->ln_fetch(array(
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                        'ln_type_source_id' => 4256, //Generic URL
-                        'ln_parent_source_id' => 3311, //Medium URL
-                        'ln_content' => $full_url,
-                    ));
-
-                    //Add to DB IF not already there:
-                    if(!count($already_added)){
-
-                        $newly_added++;
-
-                        //Create new Player:
-                        $added_en = $this->SOURCE_model->en_verify_create($author_handler, $ln_creator_source_id, 6181, random_source_avatar());
-
-                        //Create relevant READS:
-
-                        $this->READ_model->ln_create(array(
-                            'ln_type_source_id' => 4256, //Generic URL
-                            'ln_creator_source_id' => $ln_creator_source_id,
-                            'ln_parent_source_id' => 3311, //Medium URL
-                            'ln_child_source_id' => $added_en['en']['en_id'],
-                            'ln_content' => $full_url,
-                        ));
-
-                        $this->READ_model->ln_create(array(
-                            'ln_type_source_id' => 4230, //Raw link
-                            'ln_creator_source_id' => $ln_creator_source_id,
-                            'ln_parent_source_id' => 1278, //People
-                            'ln_child_source_id' => $added_en['en']['en_id'],
-                        ));
-
-                        $this->READ_model->ln_create(array(
-                            'ln_type_source_id' => 4230, //Raw link
-                            'ln_creator_source_id' => $ln_creator_source_id,
-                            'ln_parent_source_id' => 11158, //Medium Publisher
-                            'ln_child_source_id' => $added_en['en']['en_id'],
-                        ));
-
-                        //Medium Topic
-                        $this->READ_model->ln_create(array(
-                            'ln_type_source_id' => 4230, //Raw link
-                            'ln_creator_source_id' => $ln_creator_source_id,
-                            'ln_parent_source_id' => $medium_topic['en_id'],
-                            'ln_child_source_id' => $added_en['en']['en_id'],
-                        ));
-
-                    }
-                }
-
-                //Count total authors:
-                echo '<div>'.$topic_count.') Added '.$newly_added.' Authors in ['.$medium_topic_link['ln_content'].'] from the full list ['.join(', ',$unique_authors).']</div>';
-
-            }
-        }
     }
 
 
-    function echo_post(){
-        print_r($_POST);
-    }
-
-    function bot(){
-
-        $url = 'https://medium.com/_/graphql';
-        $topic = 'books';
-        $custom_header = array(
-            'medium-frontend-app: lite/master-20191021-212205-4df9cf54be',
-            'medium-frontend-route: topic',
-            'sec-fetch-mode: cors',
-            'sec-fetch-site: same-origin',
-            'apollographql-client-name: lite',
-            'apollographql-client-version: master-20191021-212205-4df9cf54be',
-
-            'accept: */*',
-            'accept-encoding: gzip, deflate, br',
-            'accept-language: en-GB,en-US;q=0.9,en;q=0.8',
-            'content-length: 6731',
-            'graphql-operation: TopicHandler',
-            'content-type: application/json',
-            'origin: https://medium.com',
-            'referer: https://medium.com/topic/'.$topic,
-
-            'cookie: __cfduid=db6eef3c324dc50d96ef21938b6f00edc1559329362; _ga=GA1.2.2055208362.1565325511; lightstep_session_id=7e05aed248707e2e; lightstep_guid/medium-web=93bf19db9151b98a; tz=420; pr=2; lightstep_guid/lite-web=58f426d9268501ac; _gid=GA1.2.1980711924.1571614565; optimizelyEndUserId=lo_e8082354b03e; uid=lo_e8082354b03e; sid=1:/xbfZQ7E3E7EPoIIifaIKj/DmNhQCAKcI9h6hfo+EFoV1Vicr75acNYhuyD26dd9; __cfruid=119da54070c31f79db03af372b90931f3f9aa260-1571694671; _parsely_session={%22sid%22:38%2C%22surl%22:%22https://medium.com/%22%2C%22sref%22:%22%22%2C%22sts%22:1571694672029%2C%22slts%22:1571688510366}; _parsely_visitor={%22id%22:%22pid=acaaa24a25423adbd91231b52e769418%22%2C%22session_count%22:38%2C%22last_session_ts%22:1571694672029}; sz=1652',
-        );
-
-        if(0){
-            if(!isset($_POST['custom_head'])){
-                $_POST['custom_head'] = join("\n", $custom_header);
-            }
-
-
-            echo count(explode("\n", $_POST['custom_head']));
-
-            ?>
-            <form action="" method="post">
-                <input type="submit" name="GO">
-                <textarea style="width: 800px; height: 500px;" name="custom_head"><?= $_POST['custom_head'] ?></textarea>
-            </form>
-            <?php
-        }
-
-
-
-
-        $data = array(
-            'operationName' => 'TopicHandler',
-            'variables' => array(
-                'feedPagingOptions' => array(
-                    'limit' => 25,
-                    'to' => '1571614526950',
-                ),
-                'sidebarPagingOptions' => array(
-                    'limit' => 5,
-                ),
-                'topicSlug' => $topic,
-            ),
-            'query' => 'query TopicHandler($topicSlug: ID!, $feedPagingOptions: PagingOptions, $sidebarPagingOptions: PagingOptions) {
-  topic(slug: $topicSlug) {
-    canonicalSlug
-    ...TopicScreen_topic
-    __typename
-  }
-}
-
-fragment PostListingItemFeed_postPreview on PostPreview {
-  post {
-    ...PostListingItemPreview_post
-    ...PostListingItemByline_post
-    ...PostListingItemImage_post
-    ...PostPresentationTracker_post
-    __typename
-  }
-  __typename
-}
-
-fragment PostListingItemPreview_post on Post {
-  id
-  mediumUrl
-  title
-  previewContent {
-    subtitle
-    isFullContent
-    __typename
-  }
-  isPublished
-  creator {
-    id
-    __typename
-  }
-  __typename
-}
-
-fragment PostListingItemByline_post on Post {
-  id
-  creator {
-    id
-    username
-    name
-    __typename
-  }
-  isLocked
-  readingTime
-  ...BookmarkButton_post
-  firstPublishedAt
-  statusForCollection
-  collection {
-    id
-    name
-    ...collectionUrl_collection
-    __typename
-  }
-  __typename
-}
-
-fragment BookmarkButton_post on Post {
-  ...SusiClickable_post
-  ...WithSetReadingList_post
-  __typename
-}
-
-fragment SusiClickable_post on Post {
-  id
-  mediumUrl
-  ...SusiContainer_post
-  __typename
-}
-
-fragment SusiContainer_post on Post {
-  id
-  __typename
-}
-
-fragment WithSetReadingList_post on Post {
-  ...ReadingList_post
-  __typename
-}
-
-fragment ReadingList_post on Post {
-  id
-  readingList
-  __typename
-}
-
-fragment collectionUrl_collection on Collection {
-  id
-  domain
-  slug
-  __typename
-}
-
-fragment PostListingItemImage_post on Post {
-  id
-  mediumUrl
-  previewImage {
-    id
-    focusPercentX
-    focusPercentY
-    __typename
-  }
-  __typename
-}
-
-fragment PostPresentationTracker_post on Post {
-  id
-  visibility
-  previewContent {
-    isFullContent
-    __typename
-  }
-  collection {
-    id
-    __typename
-  }
-  __typename
-}
-
-fragment TopicScreen_topic on Topic {
-  id
-  ...TopicMetadata_topic
-  ...TopicLandingHeader_topic
-  ...TopicFeaturedAndLatest_topic
-  ...TopicLandingRelatedTopics_topic
-  ...TopicLandingPopular_posts
-  __typename
-}
-
-fragment TopicMetadata_topic on Topic {
-  name
-  description
-  image {
-    id
-    __typename
-  }
-  __typename
-}
-
-fragment TopicLandingHeader_topic on Topic {
-  name
-  description
-  visibility
-  ...TopicFollowButtonSignedIn_topic
-  ...TopicFollowButtonSignedOut_topic
-  __typename
-}
-
-fragment TopicFollowButtonSignedIn_topic on Topic {
-  slug
-  isFollowing
-  __typename
-}
-
-fragment TopicFollowButtonSignedOut_topic on Topic {
-  id
-  slug
-  ...SusiClickable_topic
-  __typename
-}
-
-fragment SusiClickable_topic on Topic {
-  ...SusiContainer_topic
-  __typename
-}
-
-fragment SusiContainer_topic on Topic {
-  ...SignInContainer_topic
-  ...SignUpOptions_topic
-  __typename
-}
-
-fragment SignInContainer_topic on Topic {
-  ...SignInOptions_topic
-  __typename
-}
-
-fragment SignInOptions_topic on Topic {
-  id
-  name
-  __typename
-}
-
-fragment SignUpOptions_topic on Topic {
-  id
-  name
-  __typename
-}
-
-fragment TopicFeaturedAndLatest_topic on Topic {
-  featuredPosts {
-    postPreviews {
-      post {
-        id
-        ...TopicLandingFeaturedStory_post
-        __typename
-      }
-      __typename
-    }
-    __typename
-  }
-  featuredTopicWriters(limit: 1) {
-    ...FeaturedWriter_featuredTopicWriter
-    __typename
-  }
-  latestPosts(paging: $feedPagingOptions) {
-    postPreviews {
-      post {
-        id
-        __typename
-      }
-      ...PostListingItemFeed_postPreview
-      __typename
-    }
-    pagingInfo {
-      next {
-        limit
-        to
-        __typename
-      }
-      __typename
-    }
-    __typename
-  }
-  __typename
-}
-
-fragment TopicLandingFeaturedStory_post on Post {
-  ...FeaturedPostPreview_post
-  ...PostListingItemPreview_post
-  ...PostListingItemBylineWithAvatar_post
-  ...PostListingItemImage_post
-  ...PostPresentationTracker_post
-  __typename
-}
-
-fragment FeaturedPostPreview_post on Post {
-  id
-  title
-  mediumUrl
-  previewContent {
-    subtitle
-    isFullContent
-    __typename
-  }
-  __typename
-}
-
-fragment PostListingItemBylineWithAvatar_post on Post {
-  creator {
-    username
-    name
-    id
-    imageId
-    mediumMemberAt
-    __typename
-  }
-  isLocked
-  readingTime
-  updatedAt
-  statusForCollection
-  collection {
-    id
-    name
-    ...collectionUrl_collection
-    __typename
-  }
-  __typename
-}
-
-fragment FeaturedWriter_featuredTopicWriter on FeaturedTopicWriter {
-  user {
-    id
-    username
-    name
-    bio
-    ...UserAvatar_user
-    ...UserFollowButton_user
-    __typename
-  }
-  posts {
-    postPreviews {
-      ...PostListingItemFeaturedWriter_postPreview
-      __typename
-    }
-    __typename
-  }
-  __typename
-}
-
-fragment UserAvatar_user on User {
-  username
-  id
-  name
-  imageId
-  mediumMemberAt
-  __typename
-}
-
-fragment UserFollowButton_user on User {
-  ...UserFollowButtonSignedIn_user
-  ...UserFollowButtonSignedOut_user
-  __typename
-}
-
-fragment UserFollowButtonSignedIn_user on User {
-  id
-  isFollowing
-  __typename
-}
-
-fragment UserFollowButtonSignedOut_user on User {
-  id
-  ...SusiClickable_user
-  __typename
-}
-
-fragment SusiClickable_user on User {
-  ...SusiContainer_user
-  __typename
-}
-
-fragment SusiContainer_user on User {
-  ...SignInContainer_user
-  ...SignUpOptions_user
-  __typename
-}
-
-fragment SignInContainer_user on User {
-  ...SignInOptions_user
-  __typename
-}
-
-fragment SignInOptions_user on User {
-  id
-  name
-  __typename
-}
-
-fragment SignUpOptions_user on User {
-  id
-  name
-  __typename
-}
-
-fragment PostListingItemFeaturedWriter_postPreview on PostPreview {
-  postId
-  post {
-    readingTime
-    id
-    mediumUrl
-    title
-    ...PostListingItemImage_post
-    ...PostPresentationTracker_post
-    __typename
-  }
-  __typename
-}
-
-fragment TopicLandingRelatedTopics_topic on Topic {
-  relatedTopics {
-    topic {
-      name
-      slug
-      __typename
-    }
-    __typename
-  }
-  __typename
-}
-
-fragment TopicLandingPopular_posts on Topic {
-  name
-  popularPosts(paging: $sidebarPagingOptions) {
-    postPreviews {
-      post {
-        ...PostListingItemSidebar_post
-        __typename
-      }
-      __typename
-    }
-    __typename
-  }
-  __typename
-}
-
-fragment PostListingItemSidebar_post on Post {
-  id
-  mediumUrl
-  title
-  readingTime
-  ...PostListingItemImage_post
-  ...PostPresentationTracker_post
-  __typename
-}',
-        );
-
-
-        for($i=0;$i<count($custom_header);$i++){
-
-            echo $custom_header[$i].'<br />';
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36');
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array($custom_header[$i]));
-            $server_output = curl_exec ($ch);
-            curl_close ($ch);
-
-            echo '<div style="font-weight: bold; color:#FF0000;">'.$server_output.'</div>';
-            echo '<hr />';
-
-        }
-
-    }
 
 
     //Lists sources
@@ -814,7 +241,7 @@ fragment PostListingItemSidebar_post on Post {
             ));
 
             //Redirect to basic login URL (So Facebook OAuth can validate)
-            return redirect_message('/sign');
+            return redirect_message('/source/sign');
         }
 
 
@@ -1704,61 +1131,6 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function cron__inherit_icons()
-    {
-
-        /*
-         *
-         * Cronjob to sync icons where granchildren of source 12523 will inherit their parent icon (child of 12523)
-         *
-         * */
-
-        $updated = 0;
-        foreach($this->config->item('en_all_12523') as $en_id => $m) {
-
-            //Update All Child Icons that are not the same:
-            foreach($this->READ_model->ln_fetch(array(
-                'ln_parent_source_id' => $en_id,
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-                '(LENGTH(en_icon) < 1 OR en_icon IS NULL)' => null, //Missing Icon
-            ), array('en_child'), 0) as $en) {
-                $updated++;
-                $this->SOURCE_model->en_update($en['en_id'], array(
-                    'en_icon' => $m['m_icon'],
-                ), true);
-            }
-
-        }
-
-        echo $updated.' Icons updated across '.count($this->config->item('en_all_12523')).' sources.';
-
-    }
-
-    function facebook_deauthorize(){
-        //When a user removes us:
-        $this->READ_model->ln_create(array(
-            'ln_content' => 'facebook_deauthorize() Just Called',
-            'ln_type_source_id' => 4246, //Platform Bug Reports
-            'ln_metadata' => array(
-                'POST' => $_POST,
-                'GET' => $_GET,
-            ),
-        ));
-    }
-
-    function auth0(){
-        //Just Log
-        $this->READ_model->ln_create(array(
-            'ln_content' => 'auth0() Callback',
-            'ln_type_source_id' => 4246, //Platform Bug Reports
-            'ln_metadata' => array(
-                'POST' => $_POST,
-                'GET' => $_GET,
-            ),
-        ));
-    }
 
     function singin_check_password(){
 
@@ -1830,7 +1202,7 @@ fragment PostListingItemSidebar_post on Post {
         //Was there a Note to read?
         if(intval($_POST['referrer_in_id']) > 0){
             //Add this Note to their READING LIST:
-            $this->READ_model->read_add($ens[0]['en_id'], $_POST['referrer_in_id']);
+            $this->READ_model->read_start($ens[0]['en_id'], $_POST['referrer_in_id']);
         }
 
 
@@ -2077,7 +1449,7 @@ fragment PostListingItemSidebar_post on Post {
 
             if(count($referrer_ins) > 0){
                 //Add this Note to their READING LIST:
-                $this->READ_model->read_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
+                $this->READ_model->read_start($user_en['en']['en_id'], $_POST['referrer_in_id']);
             } else {
                 //Cannot be added, likely because its not published:
                 $_POST['referrer_in_id'] = 0;
@@ -2208,7 +1580,7 @@ fragment PostListingItemSidebar_post on Post {
             return redirect_message('/read/next');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/sign', '<div class="alert alert-danger" role="alert">Missing Email</div>');
+            return redirect_message('/source/sign', '<div class="alert alert-danger" role="alert">Missing Email</div>');
         }
 
         //Validate READ ID and matching email:
@@ -2219,10 +1591,10 @@ fragment PostListingItemSidebar_post on Post {
         )); //The user making the request
         if(count($validate_links) < 1){
             //Probably already completed the reset password:
-            return redirect_message('/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid data source</div>');
+            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid data source</div>');
         } elseif(strtotime($validate_links[0]['ln_timestamp']) + config_var(11065) < time()){
             //Probably already completed the reset password:
-            return redirect_message('/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
+            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
         }
 
         //Fetch source:
@@ -2230,14 +1602,14 @@ fragment PostListingItemSidebar_post on Post {
             'en_id' => $validate_links[0]['ln_creator_source_id'],
         ));
         if(count($ens) < 1){
-            return redirect_message('/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
+            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
         }
 
         //Log them in:
         $ens[0] = $this->SOURCE_model->en_activate_session($ens[0]);
 
         //Take them to their account:
-        return redirect_message( '/source/account?open_en_id=3286' , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in. You can set a new password below.</div>');
+        return redirect_message( '/source/account' , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in. You can set a new password below.</div>');
 
     }
 
@@ -2412,54 +1784,9 @@ fragment PostListingItemSidebar_post on Post {
         ));
     }
 
-    function account(){
 
-        //Authenticate user:
-        $session_en = superpower_assigned(null);
 
-        //Log View:
-        if($session_en){
-            $this->READ_model->ln_create(array(
-                'ln_type_source_id' => 4282, //Opened Account
-                'ln_creator_source_id' => $session_en['en_id'],
-            ));
-        }
 
-        $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
-        $this->load->view('header', array(
-            'title' => $en_all_2738[4536]['m_name'],
-        ));
-        $this->load->view('source/source_account', array(
-            'session_en' => $session_en,
-        ));
-        $this->load->view('footer');
-
-    }
-
-    function source_home()
-    {
-
-        //Authenticate user:
-        $session_en = superpower_assigned(null);
-
-        //Log View:
-        if($session_en){
-            $this->READ_model->ln_create(array(
-                'ln_type_source_id' => 12489, //Opened Leaderboard
-                'ln_creator_source_id' => $session_en['en_id'],
-            ));
-        }
-
-        $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
-        $this->load->view('header', array(
-            'title' => $en_all_2738[4536]['m_name'],
-        ));
-        $this->load->view('source/source_home', array(
-            'session_en' => $session_en,
-        ));
-        $this->load->view('footer');
-
-    }
 
 
     function signout()
@@ -2921,7 +2248,6 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-
     function admin_panel($action = null, $command1 = null, $command2 = null)
     {
 
@@ -2945,6 +2271,8 @@ fragment PostListingItemSidebar_post on Post {
         $this->load->view('footer');
 
     }
+
+
 
 
 }

@@ -12,6 +12,7 @@ class Note extends CI_Controller {
         date_default_timezone_set(config_var(11079));
     }
 
+
     function in_create(){
 
         $en_all_6201 = $this->config->item('en_all_6201'); //Note Table
@@ -61,14 +62,15 @@ class Note extends CI_Controller {
 
     }
 
-    function note_home(){
+    function index(){
+        //Note Bookmarks
         $session_en = superpower_assigned(null, true);
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
         $this->load->view('header', array(
             'title' => $en_all_2738[4535]['m_name'],
             'session_en' => $session_en,
         ));
-        $this->load->view('note/note_home');
+        $this->load->view('note/note_bookmarks');
         $this->load->view('footer');
     }
 
@@ -129,26 +131,6 @@ class Note extends CI_Controller {
 
     }
 
-
-
-    //Loaded as default function of the default controller:
-    function index()
-    {
-
-        $session_en = superpower_assigned();
-
-        if ((isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'mench.co')) {
-
-            //Go to mench.com for now:
-            return redirect_message('https://mench.com');
-
-        } else {
-
-            //Go to focus Note
-            return redirect_message('/read/next');
-
-        }
-    }
 
 
     function in_report_conditional_steps(){
@@ -776,7 +758,7 @@ class Note extends CI_Controller {
             $item_ui .= ( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->READ_model->dispatch_message($apu['ln_content']).'</div>' : '' );
             $item_ui .= '</td>';
 
-            $item_ui .= '<td style="text-align:left;"><a href="/read/transaction_json/'.$apu['ln_id'].'">'.echo_en_cache('en_all_6255' /* User Reads Progress */, $apu['ln_type_source_id']).'</a></td>';
+            $item_ui .= '<td style="text-align:left;"><a href="/ledger/json/'.$apu['ln_id'].'">'.echo_en_cache('en_all_6255' /* User Reads Progress */, $apu['ln_type_source_id']).'</a></td>';
             $item_ui .= '<td style="text-align:left;">'.echo_number($count_progression[0]['totals']).'</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
             $item_ui .= '<td style="text-align:left;">';
@@ -1273,113 +1255,5 @@ class Note extends CI_Controller {
     }
 
 
-
-
-    function cron__sync_common_base($in_id = 0)
-    {
-
-        /*
-         *
-         * Updates common base metadata for published notes
-         *
-         * */
-
-        if($in_id < 0){
-            //Gateway URL to give option to run...
-            die('<a href="/note/cron__sync_common_base">Click here</a> to start running this function.');
-        }
-
-        boost_power();
-        $start_time = time();
-        $filters = array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
-        );
-        if($in_id > 0){
-            $filters['in_id'] = $in_id;
-        }
-
-        $published_ins = $this->NOTE_model->in_fetch($filters);
-        foreach($published_ins as $published_in){
-            $tree = $this->NOTE_model->in_metadata_common_base($published_in);
-        }
-
-        $total_time = time() - $start_time;
-        $success_message = 'Common Base Metadata updated for '.count($published_ins).' published note'.echo__s(count($published_ins)).'.';
-        if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
-            //Now redirect;
-            $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . $success_message . '</div>');
-            header('Location: ' . $_GET['redirect']);
-        } else {
-            //Show json:
-            echo_json(array(
-                'message' => $success_message,
-                'total_time' => echo_time_minutes($total_time),
-                'item_time' => round(($total_time/count($published_ins)),1).' Seconds',
-                'last_tree' => $tree,
-            ));
-        }
-    }
-
-
-    function cron__sync_extra_insights($in_id = 0)
-    {
-
-        /*
-         *
-         * Updates tree insights (like min/max reads, time & cost)
-         * based on its common and expansion tree.
-         *
-         * */
-
-
-        if($in_id < 0){
-            //Gateway URL to give option to run...
-            die('<a href="/note/cron__sync_extra_insights">Click here</a> to start running this function.');
-        }
-
-        boost_power();
-        $start_time = time();
-        $update_count = 0;
-
-        if($in_id > 0){
-
-            //Increment count by 1:
-            $update_count++;
-
-            //Start with common base:
-            foreach($this->NOTE_model->in_fetch(array('in_id' => $in_id)) as $published_in){
-                $this->NOTE_model->in_metadata_common_base($published_in);
-            }
-
-            //Update extra insights:
-            $tree = $this->NOTE_model->in_metadata_extra_insights($in_id);
-
-        } else {
-
-            //Update all Recommended Notes and their tree:
-            foreach ($this->NOTE_model->in_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
-            )) as $published_in) {
-                $tree = $this->NOTE_model->in_metadata_extra_insights($published_in['in_id']);
-                if($tree){
-                    $update_count++;
-                }
-            }
-
-        }
-
-
-
-        $end_time = time() - $start_time;
-        $success_message = 'Extra Insights Metadata updated for '.$update_count.' note'.echo__s($update_count).'.';
-
-        //Show json:
-        echo_json(array(
-            'message' => $success_message,
-            'total_time' => echo_time_minutes($end_time),
-            'item_time' => round(($end_time/$update_count),1).' Seconds',
-            'last_tree' => $tree,
-        ));
-    }
 
 }

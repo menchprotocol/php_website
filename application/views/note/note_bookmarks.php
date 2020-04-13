@@ -1,5 +1,5 @@
 
-<script src="/application/views/note/note_home.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/note/note_bookmarks.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 <script src="/application/views/note/note_shared.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
@@ -11,7 +11,7 @@
 
     if(!$session_en){
 
-        echo '<div style="padding:10px 0;"><a href="/sign?url=/note" class="btn btn-note montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start noteting.</div>';
+        echo '<div style="padding:10px 0;"><a href="/source/sign?url=/note" class="btn btn-note montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to start noteting.</div>';
 
     } else {
 

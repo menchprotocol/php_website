@@ -513,7 +513,7 @@ function echo_ln($ln, $is_inner = false)
 
         //Metadata
         if(strlen($ln['ln_metadata']) > 0){
-            $ui .= '<div class="simple-line"><a href="/read/transaction_json/' . $ln['ln_id'] . '" class="montserrat"><span class="icon-block">'.$en_all_4341[6103]['m_icon']. '</span>'.$en_all_4341[6103]['m_name']. '</a></div>';
+            $ui .= '<div class="simple-line"><a href="/ledger/json/' . $ln['ln_id'] . '" class="montserrat"><span class="icon-block">'.$en_all_4341[6103]['m_icon']. '</span>'.$en_all_4341[6103]['m_name']. '</a></div>';
         }
 
         //External ID
@@ -2132,7 +2132,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
                 <table>
                     <tr>
                         <td>&nbsp;</td>
-                        <td class="read"><a class="mench_coin read border-read" href="/'.$in_id.'/next">NEXT <i class="fad fa-step-forward"></i></a></td>
+                        <td class="read"><a class="mench_coin read border-read" href="/read/next/'.$in_id.'">NEXT <i class="fad fa-step-forward"></i></a></td>
                     </tr>
                 </table>
             </div>
@@ -2145,7 +2145,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
 
         //NEXT:
         $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH  NAVIGATION
-        echo '<div class="inline-block margin-top-down previous_reads"><a class="btn btn-read" href="/'.$in_id.'/next">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a></div>';
+        echo '<div class="inline-block margin-top-down previous_reads"><a class="btn btn-read" href="/read/next/'.$in_id.'">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a></div>';
 
     }
 
@@ -2351,7 +2351,7 @@ function echo_en($en, $is_parent = false)
             //External ID
             if($en['ln_parent_source_id']==6196){
                 //Give trainers the ability to ping Messenger profiles:
-                $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/read/messenger_fetch_profile/'.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
+                $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/fetch_profile/'.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
             } else {
                 $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i>&nbsp;</span>';
             }
@@ -2524,76 +2524,6 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
     $ui .= '</div>';
 
     return $ui;
-}
-
-
-
-function echo_navigation_menu($cache_en_id){
-
-    $CI =& get_instance();
-
-    $en_all_this = $CI->config->item('en_all_'.$cache_en_id);
-    $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Memory
-    $en_all_10876 = $CI->config->item('en_all_10876'); //Mench Website
-    $en_all_12502 = $CI->config->item('en_all_12502'); //JS Functions
-
-
-    $ui = '<div class="dropdown inline-block">';
-    $ui .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-    $ui .= '<span class="icon-block">' .$en_all_4527[$cache_en_id]['m_icon'].'</span>';
-    $ui .= '</button>';
-
-    $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$cache_en_id.'">';
-
-    foreach ($en_all_this as $en_id => $m) {
-
-        //Skip superpowers if not assigned
-        if($en_id==10957 && !count($CI->session->userdata('session_superpowers_assigned'))){
-            continue;
-        } elseif($en_id==7291 && intval($CI->session->userdata('session_6196_sign'))){
-            //Messenger sign in does not allow Signout:
-            continue;
-        }
-
-        $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-
-        //Determine URL:
-        if(in_array($en_id, $CI->config->item('en_ids_10876'))){
-
-            $href = 'href="'.$en_all_10876[$en_id]['m_desc'].'"';
-
-        } elseif(in_array($en_id, $CI->config->item('en_ids_12502'))){
-
-            $href = 'href="javascript:void();" onclick="'.$en_all_12502[$en_id]['m_desc'].'"';
-
-        } elseif($en_id==12205){
-
-            $session_en = superpower_assigned();
-
-            if($session_en){
-                $href = 'href="/source/'.$session_en['en_id'].'"';
-            } else {
-                continue;
-            }
-
-        } else {
-
-            //No Link Structure:
-            $href = 'href="javascript:void();"';
-            //continue;
-
-        }
-
-        //Navigation
-        $ui .= '<a '.$href.' class="dropdown-item montserrat doupper '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
-
-    }
-
-    $ui .= '</div>';
-    $ui .= '</div>';
-
-    return $ui;
-
 }
 
 

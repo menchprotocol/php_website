@@ -736,7 +736,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
         if($has_session){
             $goto_url = '/source/'.$session_en['en_id'];
         } else {
-            $goto_url = '/sign?url=' . urlencode($_SERVER['REQUEST_URI']);
+            $goto_url = '/source/sign?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
 
         //Now redirect:
@@ -1069,7 +1069,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
         if(is_dev_environment()){
             //Do a call on live as this does not work on local due to security limitations:
-            return json_decode(@file_get_contents("https://mench.com/read/cron__sync_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
+            return json_decode(@file_get_contents("https://mench.com/cron/sync_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
         }
 
         //Load Algolia Index

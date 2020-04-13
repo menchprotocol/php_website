@@ -38,7 +38,7 @@ function load_ledger(link_filters, link_join_by, page_num){
     $('#link_page_'+page_num).html('<div class="montserrat"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + echo_loading_notify() +  '</div>').hide().fadeIn();
 
     //Load report based on input fields:
-    $.post("/read/load_ledger", {
+    $.post("/ledger/load_ledger", {
         link_filters: link_filters,
         link_join_by: link_join_by,
         ln_content_search:ln_content_search,

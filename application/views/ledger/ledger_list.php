@@ -218,7 +218,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
     var ln_content_search = '<?= ( isset($_GET['ln_content_search']) && strlen($_GET['ln_content_search']) > 0 ? $_GET['ln_content_search'] : '' ) ?>';
     var ln_content_replace = '<?= ( isset($_GET['ln_content_replace']) && strlen($_GET['ln_content_replace']) > 0 ? $_GET['ln_content_replace'] : '' ) ?>';
 </script>
-<script src="/application/views/read/read_ledger.js?v=v<?= config_var(11060) ?>"
+<script src="/application/views/read/ledger_list.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <?php

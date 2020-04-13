@@ -13,7 +13,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
     <?= ( count($player_reads) >= 2 ? '$(document).ready(function () {load_read_sort()});' : '' ) ?>
 
 </script>
-<script src="/application/views/read/read_home.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/read/read_bookmarks.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
 <?php
@@ -22,7 +22,7 @@ echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[7347]['m_
 
 if(!$session_en){
 
-    echo '<div style="padding:10px 0 20px;"><a href="/sign?url=/read" class="btn btn-read montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to get started.</div>';
+    echo '<div style="padding:10px 0 20px;"><a href="/source/sign?url=/read" class="btn btn-read montserrat">'.$en_all_11035[4269]['m_name'].'<span class="icon-block">'.$en_all_11035[4269]['m_icon'].'</span></a> to get started.</div>';
 
 } else {
 

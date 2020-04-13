@@ -36,15 +36,15 @@ $moderation_tools = array(
 );
 
 $cron_jobs = array(
-    '/note/cron__sync_common_base' => 'Sync Common Base Metadata',
-    '/note/cron__sync_extra_insights' => 'Sync Extra Insights Metadata',
-    '/read/cron__weights' => 'Sync Note & Source Weights',
-    '/read/cron__weights/in' => 'Sync Note Weights',
-    '/read/cron__weights/en' => 'Sync Source Weights',
-    '/read/cron__sync_algolia' => 'Sync Algolia Index [Limited calls!]',
-    '/read/cron__sync_gephi' => 'Sync Gephi Graph Index',
-    '/read/cron__clean_metadatas' => 'Clean Unused Metadata Variables',
-    '/source/cron__inherit_icons' => 'Inherit Parent Icons',
+    '/cron/sync_common_base' => 'Sync Common Base Metadata',
+    '/cron/sync_extra_insights' => 'Sync Extra Insights Metadata',
+    '/cron/weights' => 'Sync Note & Source Weights',
+    '/cron/weights/in' => 'Sync Note Weights',
+    '/cron/weights/en' => 'Sync Source Weights',
+    '/cron/sync_algolia' => 'Sync Algolia Index [Limited calls!]',
+    '/cron/sync_gephi' => 'Sync Gephi Graph Index',
+    '/cron/clean_metadatas' => 'Clean Unused Metadata Variables',
+    '/cron/inherit_icons' => 'Inherit Parent Icons',
 );
 
 

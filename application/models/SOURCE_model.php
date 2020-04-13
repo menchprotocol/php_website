@@ -195,13 +195,13 @@ class SOURCE_model extends CI_Model
         $this->db->update('mench_sources', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
-        if($affected_rows > 0 && $external_sync){
-            //Sync algolia:
-            $algolia_sync = update_algolia('en', $id);
-        }
-
         //Do we need to do any additional work?
         if ($affected_rows > 0 && $ln_creator_source_id > 0) {
+
+            if($external_sync){
+                //Sync algolia:
+                $algolia_sync = update_algolia('en', $id);
+            }
 
             //Log modification link for every field changed:
             foreach ($update_columns as $key => $value) {

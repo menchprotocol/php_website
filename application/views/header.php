@@ -2,6 +2,7 @@
 $session_en = superpower_assigned();
 $current_mench = current_mench();
 $first_segment = $this->uri->segment(1);
+$second_segment = $this->uri->segment(2);
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 $en_all_2738 = $this->config->item('en_all_2738');
 
@@ -145,31 +146,11 @@ if(!isset($hide_header)){
                     <td>
 
                         <?php
+
                         echo '<div class="main_nav mench_nav">';
                         if(isset($session_en['en_id'])){
 
-                            //Count Player Coins:
-                            $source_coins = $this->READ_model->ln_fetch(array(
-                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
-                                'ln_creator_source_id' => $session_en['en_id'],
-                            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-                            $note_coins = $this->READ_model->ln_fetch(array(
-                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
-                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //NOTE COIN
-                                'ln_parent_source_id' => $session_en['en_id'],
-                            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
-                            $read_coins = $this->READ_model->ln_fetch(array(
-                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-                                'ln_creator_source_id' => $session_en['en_id'],
-                            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-                            $player_stats = array(
-                                'source_count' => $source_coins[0]['totals'],
-                                'note_count' => $note_coins[0]['totals'],
-                                'read_count' => $read_coins[0]['totals']
-                            );
+                            $en_all_10876 = $this->config->item('en_all_10876'); //MENCH WEBSITE
 
                             //Navigation Controller:
                             $nav_controller = array(
@@ -181,28 +162,158 @@ if(!isset($hide_header)){
                             //Show Mench Menu:
                             foreach ($en_all_2738_mench as $en_id => $m) {
 
+
                                 $url_extension = null;
                                 $is_current = ($current_mench['x_id'] == $en_id);
                                 $this_mench = current_mench(strtolower($m['m_name']));
-                                $url = 'href="/' . $this_mench['x_name'].'"';
+                                $primary_url = 'href="/' . $this_mench['x_name'].'"';
+
 
                                 if (!$is_current && isset($in) && in_array($this_mench['x_name'], array('read', 'note'))) {
                                     if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'note' && $in['in_id']!=config_var(12156) ) {
-                                        $url = 'href="/note/' . $in['in_id'].'"';
+                                        $primary_url = 'href="/note/' . $in['in_id'].'"';
                                     } elseif ($current_mench['x_name'] == 'note' && $this_mench['x_name'] == 'read') {
-                                        $url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
+                                        $primary_url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
                                     }
                                 }
 
-                                echo echo_navigation_menu($nav_controller[$en_id]);
 
                                 /*
-                                echo '<a class="mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current ? ' focustab ' : '') .'" ' . $url . '>';
+                                echo '<a class="mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current ? ' focustab ' : '') .'" ' . $primary_url . '>';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $this_mench['x_class'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
                                 echo '<span class="montserrat" title="'.$player_stats[$this_mench['x_name'].'_count'].'">'.echo_number($player_stats[$this_mench['x_name'].'_count']).'</span>';
                                 echo '</a>';
                                 */
+
+
+                                $nav_ui = '';
+                                $primary_button = '';
+
+                                foreach ($this->config->item('en_all_'.$nav_controller[$en_id]) as $en_id2 => $m2) {
+
+                                    //Skip superpowers if not assigned
+                                    if($en_id2==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
+                                        continue;
+                                    } elseif($en_id2==7291 && intval($this->session->userdata('session_6196_sign'))){
+                                        //Messenger sign in does not allow Signout:
+                                        continue;
+                                    }
+
+                                    $count = 0;
+                                    $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m2['m_parents']);
+
+                                    if(in_array($en_id2, $this->config->item('en_ids_12655'))){
+
+                                        //We need to count this:
+                                        if($en_id2==12274){
+
+                                            $source_coins = $this->READ_model->ln_fetch(array(
+                                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
+                                                'ln_creator_source_id' => $session_en['en_id'],
+                                            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+                                            $count = $source_coins[0]['totals'];
+
+                                        } elseif($en_id2==12273){
+
+                                            $note_coins = $this->READ_model->ln_fetch(array(
+                                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+                                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //NOTE COIN
+                                                'ln_parent_source_id' => $session_en['en_id'],
+                                            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
+                                            $count = $note_coins[0]['totals'];
+
+                                        } elseif($en_id2==6255){
+
+                                            $read_coins = $this->READ_model->ln_fetch(array(
+                                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+                                                'ln_creator_source_id' => $session_en['en_id'],
+                                            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+                                            $count = $read_coins[0]['totals'];
+
+                                        } elseif($en_id2==10573){
+
+                                            $note_bookmarks = $this->READ_model->ln_fetch(array(
+                                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Note Status Active
+                                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                                                'ln_type_source_id' => 10573, //Note Pads Bookmarks
+                                                'ln_parent_source_id' => $session_en['en_id'], //For this trainer
+                                            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
+                                            $count = $note_bookmarks[0]['totals'];
+
+                                        } elseif($en_id2==7347){
+
+                                            $read_bookmarks = $this->READ_model->ln_fetch(array(
+                                                'ln_creator_source_id' => $session_en['en_id'],
+                                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Note Set
+                                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Note Status Public
+                                            ), array('in_parent'), 0, 0, array(), 'COUNT(ln_id) as totals');
+                                            $count = $read_bookmarks[0]['totals'];
+
+                                        } elseif($en_id2==6182){
+
+                                            $note_archived = $this->READ_model->ln_fetch(array(
+                                                'in_status_source_id' => 6182, //Note Archived
+                                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                                                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //NOTE COIN
+                                                'ln_parent_source_id' => $session_en['en_id'],
+                                            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
+                                            $count = $note_archived[0]['totals'];
+
+                                        }
+
+                                    }
+
+
+                                    //Skip if they don't have it:
+                                    if(in_array($en_id2, $this->config->item('en_ids_12656')) && !$count){
+                                        continue;
+                                    }
+
+
+                                    //Fetch URL:
+                                    if(in_array($en_id2, $this->config->item('en_ids_10876'))){
+
+                                        $nav_url = $en_all_10876[$en_id2]['m_desc'];
+                                        $nav_url_parts = explode('/', one_two_explode('mench.com/','',$nav_url));
+                                        $is_active = ( $first_segment==$nav_url_parts[0] && ( !$second_segment || $second_segment==$nav_url_parts[1] ) );
+
+                                    } elseif($en_id2==12581) {
+
+                                        //Home page has no URL (As it's not allowed based on current URL policy)
+                                        $nav_url = '/';
+                                        $is_active = ( !$first_segment );
+
+                                    } else {
+
+                                        //Don't know URL structure:
+                                        continue;
+
+                                    }
+
+                                    //Determine Primary:
+                                    if($is_active){
+                                        $primary_button = '<a href="'.$nav_url.'" class="btn"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</a>';
+                                    }
+
+                                    $nav_ui .= '<a href="'.$nav_url.'" class="dropdown-item montserrat doupper '.( $is_active ? ' active ' : '' ).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.( in_array($en_id2, $this->config->item('en_ids_10876')) ? $count.' ' : '' ).$m2['m_name'].'</a>';
+
+                                }
+
+
+
+                                //Show Split Menu:
+                                echo '<div class="btn-group">';
+                                echo $primary_button;
+                                echo '<button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
+                                echo '<div class="dropdown-menu">';
+                                echo $nav_ui;
+                                echo '</div>';
+                                echo '</div>';
 
                             }
                         }
@@ -236,22 +347,12 @@ if(!isset($hide_header)){
                     <td class="block-link <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="javascript:void(0);" onclick="toggle_search()"><span class="search_icon"><?= $en_all_11035[7256]['m_icon'] ?></span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>
 
                     <?php
-
-                    if (isset($session_en['en_id'])) {
-
-                        $en_all_11035 = $this->config->item('en_all_11035');
-
-                        //Player Menu
-                        echo '<td class="block-menu">'.echo_navigation_menu(12500).'</td>';
-
-                    } else {
-
+                    if (!isset($session_en['en_id'])) {
                         //Sign In/Up
-                        echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/sign" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
-
+                        echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/source/sign" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
                     }
-
                     ?>
+
                 </tr>
             </table>
         </div>

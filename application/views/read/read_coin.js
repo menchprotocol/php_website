@@ -175,7 +175,7 @@ function read_text_answer(){
             $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
             setTimeout(function () {
                 //Go to redirect message:
-                window.location = '/'+in_loaded_id+'/next';
+                window.location = '/read/next/'+in_loaded_id;
             }, 987);
         } else {
             $('.text_saving_result').html('<span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><span class="montserrat read">Alert: '+data.message+'</span>');
@@ -203,7 +203,7 @@ function read_answer(){
             $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
             setTimeout(function () {
                 //Go to redirect message:
-                window.location = '/'+in_loaded_id+'/next';
+                window.location = '/read/next/'+in_loaded_id;
             }, 987);
         } else {
             $('.result-update').html('<span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><span class="montserrat read">Alert: '+data.message+'</span>');
