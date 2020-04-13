@@ -40,7 +40,7 @@ foreach ($in__parents as $parent_in) {
     $in_previous .= echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
 }
 if( $is_author && $is_active && $in['in_id']!=config_var(12156)){
-    $in_previous .= '<div class="list-group-item itemtree '.superpower_active(10939).'" style="padding:5px 0;">
+    $in_previous .= '<div class="list-group-item itemtree '.superpower_active(10984).'" style="padding:5px 0;">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
