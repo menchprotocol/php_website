@@ -20,7 +20,7 @@ $moderation_tools = array(
     '/source/admin_panel/identical_source_names' => 'Identical Source Names',
     '/source/admin_panel/actionplan_debugger' => 'My READING LIST Debugger',
     '/source/admin_panel/en_icon_search' => 'Source Icon Search',
-    '/source/admin_panel/sync_source_links' => 'Source Sync Link Types',
+    '/source/admin_panel/source_links' => 'Source Sync Link Types',
     '/source/admin_panel/or__children' => 'List OR Notes + Answers',
     '/source/admin_panel/assessment_marks_list_all' => 'Completion Marks List All',
     '/source/admin_panel/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
@@ -29,22 +29,22 @@ $moderation_tools = array(
     '/source/admin_panel/analyze_url' => 'Analyze URL',
 
     //Hope to get zero:
-    '/source/admin_panel/sync_source_in_statuses' => 'Analyze & Fix Play & Note Statuses',
+    '/source/admin_panel/source_in_statuses' => 'Analyze & Fix Play & Note Statuses',
     '/source/admin_panel/analyze_source' => 'Analyze & Fix Source Links',
     '/source/admin_panel/in_crossovers' => 'Analyze & Fix Note Crossover Parent/Children',
     '/source/admin_panel/analyze_in_authors' => 'Analyze & Fix Note Authors',
 );
 
-$cron_jobs = array(
-    '/cron/sync_common_base' => 'Sync Common Base Metadata',
-    '/cron/sync_extra_insights' => 'Sync Extra Insights Metadata',
+$jobs = array(
+    '/cron/common_base' => 'Sync Common Base Metadata',
+    '/cron/extra_insights' => 'Sync Extra Insights Metadata',
     '/cron/weights' => 'Sync Note & Source Weights',
     '/cron/weights/in' => 'Sync Note Weights',
     '/cron/weights/en' => 'Sync Source Weights',
-    '/cron/sync_algolia' => 'Sync Algolia Index [Limited calls!]',
-    '/cron/sync_gephi' => 'Sync Gephi Graph Index',
-    '/cron/clean_metadatas' => 'Clean Unused Metadata Variables',
-    '/cron/inherit_icons' => 'Inherit Parent Icons',
+    '/cron/algolia' => 'Sync Algolia Index [Limited calls!]',
+    '/cron/gephi' => 'Sync Gephi Graph Index',
+    '/cron/metadatas' => 'Clean Unused Metadata Variables',
+    '/cron/icons' => 'Inherit Parent Icons',
 );
 
 
@@ -91,7 +91,7 @@ if(!$action) {
 
     echo '<h1>Automated Cron Jobs</h1>';
     echo '<div class="list-group maxout">';
-    foreach ($cron_jobs as $tool_key => $tool_name) {
+    foreach ($jobs as $tool_key => $tool_name) {
         echo '<a href="' . $tool_key . '" class="list-group-item">';
         echo '<span class="pull-right">';
         echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-external-link"></i></span>';
@@ -170,7 +170,7 @@ if(!$action) {
         echo '<hr />'.nl2br(str_replace(' ','&nbsp;', print_r(array(
             'analyze_domain' => analyze_domain($_GET['url_to_analyze']),
             'echo_url_embed' => echo_url_embed($_GET['url_to_analyze'], null, true),
-            'en_sync_url' => $this->SOURCE_model->en_sync_url($_GET['url_to_analyze']),
+            'en_url' => $this->SOURCE_model->en_url($_GET['url_to_analyze']),
         ), true))).'<hr />';
 
         echo 'Embed Code:<hr />'.echo_url_embed($_GET['url_to_analyze']);
@@ -389,7 +389,7 @@ if(!$action) {
         echo '<div class="alert alert-success maxout"><span class="icon-block"><i class="fas fa-check-circle"></i></span>No orphans found!</div>';
     }
 
-} elseif($action=='sync_source_links') {
+} elseif($action=='source_links') {
 
     $scanned = 0;
     $skipped = 0;
@@ -913,11 +913,11 @@ if(!$action) {
         echo '<div class="alert alert-success maxout"><span class="icon-block"><i class="fas fa-check-circle"></i></span>No duplicates found!</div>';
     }
 
-} elseif($action=='sync_source_in_statuses') {
+} elseif($action=='source_in_statuses') {
 
     //Sync ALL and echo results:
-    echo 'IDAE: '.nl2br(print_r($this->NOTE_model->in_sync_creation($session_en['en_id']), true)).'<hr />';
-    echo 'SOURCE: '.nl2br(print_r($this->SOURCE_model->en_sync_creation($session_en['en_id']), true)).'<hr />';
+    echo 'IDAE: '.nl2br(print_r($this->NOTE_model->in_check_creation($session_en['en_id']), true)).'<hr />';
+    echo 'SOURCE: '.nl2br(print_r($this->SOURCE_model->en_check_creation($session_en['en_id']), true)).'<hr />';
 
 } elseif($action=='fix_read_coins') {
 

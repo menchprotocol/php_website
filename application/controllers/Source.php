@@ -275,7 +275,7 @@ class Source extends CI_Controller
         }
 
         //All seems good, fetch URL:
-        $url_source = $this->SOURCE_model->en_sync_url($_POST['input_url']);
+        $url_source = $this->SOURCE_model->en_url($_POST['input_url']);
 
         if (!$url_source['status']) {
             //Oooopsi, we had some error:
@@ -492,7 +492,7 @@ class Source extends CI_Controller
             if (filter_var($_POST['en_new_string'], FILTER_VALIDATE_URL)) {
 
                 //Digest URL to see what type it is and if we have any errors:
-                $url_source = $this->SOURCE_model->en_sync_url($_POST['en_new_string']);
+                $url_source = $this->SOURCE_model->en_url($_POST['en_new_string']);
                 if (!$url_source['status']) {
                     return echo_json($url_source);
                 }
@@ -509,7 +509,7 @@ class Source extends CI_Controller
                 } else {
 
                     //Let's first find/add the domain:
-                    $domain_source = $this->SOURCE_model->en_sync_domain($_POST['en_new_string'], $session_en['en_id']);
+                    $domain_source = $this->SOURCE_model->en_domain($_POST['en_new_string'], $session_en['en_id']);
 
                     //Link to this source:
                     $source_new = $domain_source['en_domain'];
@@ -1076,7 +1076,7 @@ class Source extends CI_Controller
         }
 
         //Fetch URL:
-        $url_source = $this->SOURCE_model->en_sync_url($_POST['search_url']);
+        $url_source = $this->SOURCE_model->en_url($_POST['search_url']);
 
         if($url_source['url_already_existed']){
             return echo_json(array(

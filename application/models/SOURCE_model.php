@@ -388,7 +388,7 @@ class SOURCE_model extends CI_Model
         return $adjusted_count;
     }
 
-    function en_sync_domain($url, $ln_creator_source_id = 0, $page_title = null)
+    function en_domain($url, $ln_creator_source_id = 0, $page_title = null)
     {
         /*
          *
@@ -455,7 +455,7 @@ class SOURCE_model extends CI_Model
 
     }
 
-    function en_sync_creation($ln_creator_source_id, $query= array()){
+    function en_check_creation($ln_creator_source_id, $query= array()){
 
         //STATS
         $stats = array(
@@ -508,7 +508,7 @@ class SOURCE_model extends CI_Model
         return $stats;
     }
 
-    function en_sync_url($url, $ln_creator_source_id = 0, $link_parent_en_ids = array(), $add_to_child_en_id = 0, $page_title = null)
+    function en_url($url, $ln_creator_source_id = 0, $link_parent_en_ids = array(), $add_to_child_en_id = 0, $page_title = null)
     {
 
         /*
@@ -596,7 +596,7 @@ class SOURCE_model extends CI_Model
                 if(!$detected_extension){
                     //Log error to notify admin:
                     $this->READ_model->ln_create(array(
-                        'ln_content' => 'en_sync_url() detected unknown file extension ['.$domain_analysis['url_file_extension'].'] that needs to be added to @11080',
+                        'ln_content' => 'en_url() detected unknown file extension ['.$domain_analysis['url_file_extension'].'] that needs to be added to @11080',
                         'ln_type_source_id' => 4246, //Platform Bug Reports
                         'ln_parent_source_id' => 11080,
                         'ln_metadata' => $domain_analysis,
@@ -678,7 +678,7 @@ class SOURCE_model extends CI_Model
 
         //Fetch/Create domain source:
         $page_title = ( $domain_analysis['url_is_root'] && $name_was_passed ? $page_title : null );
-        $domain_source = $this->SOURCE_model->en_sync_domain($url, $ln_creator_source_id, $page_title);
+        $domain_source = $this->SOURCE_model->en_domain($url, $ln_creator_source_id, $page_title);
         if(!$domain_source['status']){
             //We had an issue:
             return $domain_source;
@@ -741,7 +741,7 @@ class SOURCE_model extends CI_Model
                 } else {
                     //Log error:
                     $this->READ_model->ln_create(array(
-                        'ln_content' => 'en_sync_url['.$url.'] FAILED to en_verify_create['.$page_title.'] with message: '.$added_en['message'],
+                        'ln_content' => 'en_url['.$url.'] FAILED to en_verify_create['.$page_title.'] with message: '.$added_en['message'],
                         'ln_type_source_id' => 4246, //Platform Bug Reports
                         'ln_creator_source_id' => $ln_creator_source_id,
                         'ln_parent_source_id' => $domain_source['en_domain']['en_id'],

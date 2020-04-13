@@ -5,17 +5,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  *
 
-* * * * * /usr/bin/php /var/www/platform/index.php cron sync_common_base
-0,30 * * * * /usr/bin/php /var/www/platform/index.php cron sync_extra_insights
-
-10,30,50 * * * * /usr/bin/php /var/www/platform/index.php cron inherit_icons
-
-45 1 19 * * /usr/bin/php /var/www/platform/index.php cron sync_algolia
-45 3 * * * /usr/bin/php /var/www/platform/index.php cron sync_gephi
-45 6 * * * /usr/bin/php /var/www/platform/index.php cron clean_metadatas
-45 9 * * * /usr/bin/php /var/www/platform/index.php cron weights
-10 8 * * 1 /usr/bin/php /var/www/platform/index.php cron weekly_coins
-
+* * * * *       /usr/bin/php /var/www/platform/index.php cron common_base
+45 1 19 * *     /usr/bin/php /var/www/platform/index.php cron algolia
+10,40 * * * *   /usr/bin/php /var/www/platform/index.php cron extra_insights
+20,50 * * * *   /usr/bin/php /var/www/platform/index.php cron icons
+45 3 * * *      /usr/bin/php /var/www/platform/index.php cron gephi
+45 6 * * *      /usr/bin/php /var/www/platform/index.php cron metadatas
+45 9 * * *      /usr/bin/php /var/www/platform/index.php cron weights
+10 8 * * 1      /usr/bin/php /var/www/platform/index.php cron weekly_coins
 
  * */
 
@@ -242,7 +239,7 @@ class Cron extends CI_Controller
 
 
 
-    function sync_common_base($in_id = 0)
+    function common_base($in_id = 0)
     {
 
         /*
@@ -253,7 +250,7 @@ class Cron extends CI_Controller
 
         if($in_id < 0){
             //Gateway URL to give option to run...
-            die('<a href="/cron/sync_common_base">Click here</a> to start running this function.');
+            die('<a href="/cron/common_base">Click here</a> to start running this function.');
         }
 
         $start_time = time();
@@ -287,7 +284,7 @@ class Cron extends CI_Controller
     }
 
 
-    function sync_extra_insights($in_id = 0)
+    function extra_insights($in_id = 0)
     {
 
         /*
@@ -300,7 +297,7 @@ class Cron extends CI_Controller
 
         if($in_id < 0){
             //Gateway URL to give option to run...
-            die('<a href="/cron/sync_extra_insights">Click here</a> to start running this function.');
+            die('<a href="/cron/extra_insights">Click here</a> to start running this function.');
         }
 
         $start_time = time();
@@ -352,11 +349,11 @@ class Cron extends CI_Controller
 
 
 
-    function sync_algolia($input_obj_type = null, $input_obj_id = null){
+    function algolia($input_obj_type = null, $input_obj_id = null){
 
         if($input_obj_type < 0){
             //Gateway URL to give option to run...
-            die('<a href="/cron/sync_algolia">Click here</a> to start running this function.');
+            die('<a href="/cron/algolia">Click here</a> to start running this function.');
         }
 
         //Call the update function and passon possible values:
@@ -364,7 +361,7 @@ class Cron extends CI_Controller
     }
 
 
-    function sync_gephi($affirmation = null){
+    function gephi($affirmation = null){
 
         /*
          *
@@ -375,7 +372,7 @@ class Cron extends CI_Controller
 
         if($affirmation < 0){
             //Gateway URL to give option to run...
-            die('<a href="/cron/sync_gephi">Click here</a> to start running this function.');
+            die('<a href="/cron/gephi">Click here</a> to start running this function.');
         }
 
 
@@ -527,7 +524,7 @@ class Cron extends CI_Controller
 
 
 
-    function clean_metadatas($affirmation = null){
+    function metadatas($affirmation = null){
 
         /*
          *
@@ -543,7 +540,7 @@ class Cron extends CI_Controller
 
         if($affirmation < 0){
             //Gateway URL to give option to run...
-            die('<a href="/cron/clean_metadatas">Click here</a> to start running this function.');
+            die('<a href="/cron/metadatas">Click here</a> to start running this function.');
         }
 
 
@@ -616,7 +613,7 @@ class Cron extends CI_Controller
         if(count($invalid_variables) > 0){
             //Did we have anything to remove? Report with system bug:
             $this->READ_model->ln_create(array(
-                'ln_content' => 'clean_metadatas() removed '.count($invalid_variables).' unknown variables from note/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
+                'ln_content' => 'metadatas() removed '.count($invalid_variables).' unknown variables from note/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_parent_source_id' => 6232, //Variables Names
                 'ln_metadata' => $ln_metadata,
@@ -678,7 +675,7 @@ class Cron extends CI_Controller
 
 
 
-    function sync_attachments()
+    function attachments()
     {
 
         /*
@@ -753,7 +750,7 @@ class Cron extends CI_Controller
                 $this->READ_model->ln_create(array(
                     'ln_type_source_id' => 4246, //Platform Bug Reports
                     'ln_parent_transaction_id' => $ln['ln_id'],
-                    'ln_content' => 'sync_attachments() Failed to sync attachment to Facebook API: ' . (isset($result['ln_metadata']['result']['error']['message']) ? $result['ln_metadata']['result']['error']['message'] : 'Unknown Error'),
+                    'ln_content' => 'attachments() Failed to sync attachment to Facebook API: ' . (isset($result['ln_metadata']['result']['error']['message']) ? $result['ln_metadata']['result']['error']['message'] : 'Unknown Error'),
                     'ln_metadata' => array(
                         'payload' => $payload,
                         'result' => $result,
@@ -783,7 +780,7 @@ class Cron extends CI_Controller
 
 
 
-    function inherit_icons()
+    function icons()
     {
 
         /*

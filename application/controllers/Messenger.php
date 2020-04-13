@@ -58,7 +58,7 @@ class Messenger extends CI_Controller
     }
 
 
-    function sync_menu()
+    function update_menu()
     {
 
         /*

@@ -292,7 +292,7 @@ class READ_model extends CI_Model
             } elseif($insert_columns['ln_parent_source_id'] > 0){
                 $en_id = $insert_columns['ln_parent_source_id'];
             }
-            $this->SOURCE_model->en_sync_creation($insert_columns['ln_creator_source_id'], array(
+            $this->SOURCE_model->en_check_creation($insert_columns['ln_creator_source_id'], array(
                 'en_id' => $en_id,
             ));
         }
@@ -304,7 +304,7 @@ class READ_model extends CI_Model
             } elseif($insert_columns['ln_previous_note_id'] > 0){
                 $in_id = $insert_columns['ln_previous_note_id'];
             }
-            $this->NOTE_model->in_sync_creation($insert_columns['ln_creator_source_id'], array(
+            $this->NOTE_model->in_check_creation($insert_columns['ln_creator_source_id'], array(
                 'in_id' => $in_id,
             ));
         }
@@ -3074,7 +3074,7 @@ class READ_model extends CI_Model
 
             //BUGGY
             //No source linked, but we have a URL that we should turn into an source if not already:
-            $url_source = $this->SOURCE_model->en_sync_url($string_references['ref_urls'][0], ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ), ( isset($recipient_en['en_id']) ? array($recipient_en['en_id']) : array() ));
+            $url_source = $this->SOURCE_model->en_url($string_references['ref_urls'][0], ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ), ( isset($recipient_en['en_id']) ? array($recipient_en['en_id']) : array() ));
 
             //Did we have an error?
             if (!$url_source['status'] || !isset($url_source['en_url']['en_id']) || intval($url_source['en_url']['en_id']) < 1) {

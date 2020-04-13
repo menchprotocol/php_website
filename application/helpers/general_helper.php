@@ -250,7 +250,7 @@ function ln_detect_type($string)
 
         //It's a URL, see what type (this could fail if duplicate, etc...):
         $CI =& get_instance();
-        return $CI->SOURCE_model->en_sync_url($string);
+        return $CI->SOURCE_model->en_url($string);
 
     } elseif (strlen($string) > 9 && (is_valid_date($string) || strtotime($string) > 0)) {
 
@@ -880,7 +880,7 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
             }
 
             //Create and link new source to CDN and uploader:
-            $url_source = $CI->SOURCE_model->en_sync_url($cdn_new_url, $ln_creator_source_id, array($ln_creator_source_id), 0, $page_title);
+            $url_source = $CI->SOURCE_model->en_url($cdn_new_url, $ln_creator_source_id, array($ln_creator_source_id), 0, $page_title);
 
             if(isset($url_source['en_url']['en_id']) && $url_source['en_url']['en_id'] > 0){
 
@@ -1069,7 +1069,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
         if(is_dev_environment()){
             //Do a call on live as this does not work on local due to security limitations:
-            return json_decode(@file_get_contents("https://mench.com/cron/sync_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
+            return json_decode(@file_get_contents("https://mench.com/cron/algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
         }
 
         //Load Algolia Index

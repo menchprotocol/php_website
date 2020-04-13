@@ -253,7 +253,7 @@ class NOTE_model extends CI_Model
         return $links_removed;
     }
 
-    function in_sync_creation($ln_creator_source_id, $query= array()){
+    function in_check_creation($ln_creator_source_id, $query= array()){
 
         //STATS
         $stats = array(
