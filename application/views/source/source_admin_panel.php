@@ -893,7 +893,7 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/source/admin_panel">Trainer Tools</a></li><li><b>'.$moderation_tools['/source/admin_panel/'.$action].'</b></li></ul>';
 
-    $q = $this->db->query('select en1.* from mench_sources en1 where (select count(*) from mench_sources en2 where en2.en_name = en1.en_name AND en2.en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')) > 1 AND en1.en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ') ORDER BY en1.en_name ASC');
+    $q = $this->db->query('select en1.* from mench_source en1 where (select count(*) from mench_source en2 where en2.en_name = en1.en_name AND en2.en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')) > 1 AND en1.en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ') ORDER BY en1.en_name ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){

@@ -163,13 +163,13 @@ class READ_model extends CI_Model
 
         //Any source joins?
         if (in_array('en_parent', $join_objects)) {
-            $this->db->join('mench_sources', 'ln_parent_source_id=en_id','left');
+            $this->db->join('mench_source', 'ln_parent_source_id=en_id','left');
         } elseif (in_array('en_child', $join_objects)) {
-            $this->db->join('mench_sources', 'ln_child_source_id=en_id','left');
+            $this->db->join('mench_source', 'ln_child_source_id=en_id','left');
         } elseif (in_array('en_type', $join_objects)) {
-            $this->db->join('mench_sources', 'ln_type_source_id=en_id','left');
+            $this->db->join('mench_source', 'ln_type_source_id=en_id','left');
         } elseif (in_array('en_owner', $join_objects)) {
-            $this->db->join('mench_sources', 'ln_creator_source_id=en_id','left');
+            $this->db->join('mench_source', 'ln_creator_source_id=en_id','left');
         }
 
         foreach ($match_columns as $key => $value) {
