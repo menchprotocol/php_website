@@ -366,7 +366,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
                 } elseif ($acc_en_id == 6197 /* Name */) {
 
-                    $this_tab .= '<span class="white-wrapper"><input type="text" id="en_name" class="form-control border source doupper montserrat dotransparent" value="' . $session_en['en_name'] . '" /></span>
+                    $this_tab .= '<span class="white-wrapper"><input type="text" id="en_setting_name" class="form-control border source doupper montserrat dotransparent" value="' . $session_en['en_name'] . '" /></span>
                 <a href="javascript:void(0)" onclick="account_update_name()" class="btn btn-source">Save</a>
                 <span class="saving-account save_full_name"></span>';
 

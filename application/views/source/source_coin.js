@@ -14,8 +14,8 @@ $(document).ready(function () {
     //Setup auto focus:
     $('#openEn6197').on('show.bs.collapse', function () {
         //call a service here
-        var original_val = $('#en_name').val();
-        setTimeout(function() { $('#en_name').focus().val('').val(original_val); }, 144);
+        var original_val = $('#en_setting_name').val();
+        setTimeout(function() { $('#en_setting_name').focus().val('').val(original_val); }, 144);
     });
 
     $('#openEn3288').on('show.bs.collapse', function () {
@@ -842,7 +842,7 @@ function account_update_name(){
 
 
     //Save the rest of the content:
-    var en_name_new = $('#en_name').val().toUpperCase();
+    var en_name_new = $('#en_setting_name').val().toUpperCase();
     $.post("/source/account_update_name", {
         en_name: en_name_new,
     }, function (data) {
