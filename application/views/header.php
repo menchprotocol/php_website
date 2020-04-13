@@ -303,9 +303,13 @@ if(!isset($hide_header)){
                                     $full_name = ( !is_null($count) ? '<span title="'.number_format($count, 0).'">'.echo_number($count).'</span> ' : '' ).$m2['m_name'];
 
                                     //Determine Primary:
-                                    if($is_current_mench && $is_active){
+                                    if($is_current_mench){
 
-                                        $primary_button = '<button class="btn '.$this_mench['x_class'].'"><span class="icon-block">'.$m2['m_icon'].'</span><span class="show-max">'.$full_name.'</span></button>';
+                                        if($is_active){
+                                            $primary_button = '<button class="btn '.$this_mench['x_class'].'"><span class="icon-block">'.$m2['m_icon'].'</span><span class="show-max">'.$full_name.'</span></button>';
+                                        } else {
+                                            $primary_button = '<a href="'.$nav_url.'" class="btn '.$this_mench['x_class'].'"><span class="icon-block">'.$m['m_icon'].'</span><span class="show-max">'.$m['m_name'].'</span></a>';
+                                        }
 
                                     } elseif(!$is_current_mench && in_array($en_id2, $this->config->item('en_ids_12654'))){
 
