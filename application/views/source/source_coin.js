@@ -217,6 +217,46 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 
 
 
+function toggle_superpower(superpower_id){
+
+    superpower_id = parseInt(superpower_id);
+
+    var superpower_icon = $('.superpower-frame-'+superpower_id).html();
+    $('.superpower-frame-'+superpower_id).html('<i class="far fa-yin-yang fa-spin"></i>');
+
+    //Save session variable to save the state of advance setting:
+    $.post("/source/toggle_superpower/"+superpower_id, {}, function (data) {
+
+        //Change top menu icon:
+        $('.superpower-frame-'+superpower_id).html(superpower_icon);
+
+        if(!data.status){
+
+            alert('Alert: ' + data.message);
+
+        } else {
+
+            //Toggle UI elements:
+            $('.superpower-'+superpower_id).toggleClass('hidden');
+
+            //Change top menu icon:
+            $('.superpower-frame-'+superpower_id).toggleClass('active');
+
+            //TOGGLE:
+            var index = js_session_superpowers_assigned.indexOf(superpower_id);
+            if (index > -1) {
+                //Remove it:
+                js_session_superpowers_assigned.splice(index, 1);
+            } else {
+                //Not there, add it:
+                js_session_superpowers_assigned.push(superpower_id);
+            }
+        }
+    });
+
+}
+
+
 
 //Adds OR links sources to sources
 function en_add_or_link(en_existing_id, is_parent) {
@@ -398,7 +438,7 @@ function en_modify_load(en_id, ln_id) {
     $(".highlight_en_"+en_id).addClass('en_highlight');
 
 
-    var en_full_name = $(".en_name_" + en_id + ":first").text();
+    var en_full_name = $(".en_name_full_" + en_id + ":first").text();
     $('#en_name').val(en_full_name.toUpperCase()).focus();
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
     $('#en_status_source_id').val($(".en___" + en_id + ":first").attr('en-status'));
@@ -624,7 +664,7 @@ function en_modify_save() {
 
                 //Reflect changed:
                 //Update variables:
-                $(".en_name_" + modify_data['en_id']).text(modify_data['en_name']);
+                $(".en_name_full_" + modify_data['en_id']).text(modify_data['en_name']);
 
 
                 //Player Status:
@@ -733,7 +773,7 @@ function account_update_avatar_icon(type_css, icon_css){
         } else {
 
             //Remove message:
-            $('.icon_en_'+js_pl_id).html(data.new_avatar);
+            $('.en_ui_icon_'+js_pl_id).html(data.new_avatar);
 
         }
     });

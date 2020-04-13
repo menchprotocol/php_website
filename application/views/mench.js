@@ -651,45 +651,6 @@ function ms_toggle(ln_id, new_state) {
 }
 
 
-function toggle_superpower(superpower_id){
-
-    superpower_id = parseInt(superpower_id);
-
-    var superpower_icon = $('.superpower-frame-'+superpower_id).html();
-    $('.superpower-frame-'+superpower_id).html('<i class="far fa-yin-yang fa-spin"></i>');
-
-    //Save session variable to save the state of advance setting:
-    $.post("/source/toggle_superpower/"+superpower_id, {}, function (data) {
-
-        //Change top menu icon:
-        $('.superpower-frame-'+superpower_id).html(superpower_icon);
-
-        if(!data.status){
-
-            alert('Alert: ' + data.message);
-
-        } else {
-
-            //Toggle UI elements:
-            $('.superpower-'+superpower_id).toggleClass('hidden');
-
-            //Change top menu icon:
-            $('.superpower-frame-'+superpower_id).toggleClass('active');
-
-            //TOGGLE:
-            var index = js_session_superpowers_assigned.indexOf(superpower_id);
-            if (index > -1) {
-                //Remove it:
-                js_session_superpowers_assigned.splice(index, 1);
-            } else {
-                //Not there, add it:
-                js_session_superpowers_assigned.push(superpower_id);
-            }
-        }
-    });
-
-}
-
 
 function ln_content_word_count(el_textarea, el_counter) {
     var len = $(el_textarea).val().length;

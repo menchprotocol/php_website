@@ -166,7 +166,7 @@ class Source extends CI_Controller
 
 
             //SOURCE
-            echo '<td class="source fixedColumns MENCHcolumn12"><span class="icon-block icon_en_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.'<a href="/source/'.$ln['en_id'].'" class="montserrat source title-block title-no-right en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
+            echo '<td class="source fixedColumns MENCHcolumn12"><span class="icon-block en_ui_icon_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.'<a href="/source/'.$ln['en_id'].'" class="montserrat source title-block title-no-right en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
 
 
 
