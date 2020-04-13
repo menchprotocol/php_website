@@ -2526,6 +2526,73 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
     return $ui;
 }
 
+function echo_navigation_menu($cache_en_id){
+
+    $CI =& get_instance();
+
+    $en_all_this = $CI->config->item('en_all_'.$cache_en_id);
+    $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Memory
+    $en_all_10876 = $CI->config->item('en_all_10876'); //Mench Website
+    $en_all_12502 = $CI->config->item('en_all_12502'); //JS Functions
+
+
+    $ui = '<div class="dropdown inline-block">';
+    $ui .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+    $ui .= '<span class="icon-block">' .$en_all_4527[$cache_en_id]['m_icon'].'</span>';
+    $ui .= '</button>';
+
+    $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$cache_en_id.'">';
+
+    foreach ($en_all_this as $en_id => $m) {
+
+        //Skip superpowers if not assigned
+        if($en_id==10957 && !count($CI->session->userdata('session_superpowers_assigned'))){
+            continue;
+        } elseif($en_id==7291 && intval($CI->session->userdata('session_6196_sign'))){
+            //Messenger sign in does not allow Signout:
+            continue;
+        }
+
+        $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
+
+        //Determine URL:
+        if(in_array($en_id, $CI->config->item('en_ids_10876'))){
+
+            $href = 'href="'.$en_all_10876[$en_id]['m_desc'].'"';
+
+        } elseif(in_array($en_id, $CI->config->item('en_ids_12502'))){
+
+            $href = 'href="javascript:void();" onclick="'.$en_all_12502[$en_id]['m_desc'].'"';
+
+        } elseif($en_id==12205){
+
+            $session_en = superpower_assigned();
+
+            if($session_en){
+                $href = 'href="/source/'.$session_en['en_id'].'"';
+            } else {
+                continue;
+            }
+
+        } else {
+
+            //No Link Structure:
+            $href = 'href="javascript:void();"';
+            //continue;
+
+        }
+
+        //Navigation
+        $ui .= '<a '.$href.' class="dropdown-item montserrat doupper '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+
+    }
+
+    $ui .= '</div>';
+    $ui .= '</div>';
+
+    return $ui;
+
+}
 
 function echo_json($array)
 {

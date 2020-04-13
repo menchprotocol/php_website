@@ -309,7 +309,7 @@ if(!isset($hide_header)){
 
                                     } elseif(!$is_current_mench && in_array($en_id2, $this->config->item('en_ids_12654'))){
 
-                                        $primary_button = '<a href="'.$nav_url.'" class="btn '.$this_mench['x_class'].'"><span class="icon-block">'.$m['m_icon'].'</span><span class="show-max">'.$m['m_name'].'</span></a>';
+                                        $primary_button = '<a href="'.$nav_url.'" class="btn '.$this_mench['x_class'].'"><span class="icon-block">'.$m2['m_icon'].'</span><span class="show-max">'.$full_name.'</span></a>';
 
                                     }
 
@@ -323,11 +323,15 @@ if(!isset($hide_header)){
                                 echo '<div class="btn-group">';
                                 echo $primary_button;
 
-                                //Show expanded Menu:
-                                echo '<button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
-                                echo '<div class="dropdown-menu">';
-                                echo $nav_ui;
-                                echo '</div>';
+
+                                if(0){
+                                    //Show expanded Menu:
+                                    echo '<button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
+                                    echo '<div class="dropdown-menu">';
+                                    echo $nav_ui;
+                                    echo '</div>';
+                                }
+
 
                                 echo '</div>';
 
@@ -363,9 +367,16 @@ if(!isset($hide_header)){
                     <td class="block-link <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="javascript:void(0);" onclick="toggle_search()"><span class="search_icon"><?= $en_all_11035[7256]['m_icon'] ?></span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>
 
                     <?php
-                    if (!isset($session_en['en_id'])) {
+                    if (isset($session_en['en_id'])) {
+
+                        //Player Menu
+                        echo '<td class="block-menu">'.echo_navigation_menu(12500).'</td>';
+
+                    } else {
+
                         //Sign In/Up
                         echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/source/sign" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
+
                     }
                     ?>
 
