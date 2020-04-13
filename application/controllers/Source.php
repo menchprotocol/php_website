@@ -2165,21 +2165,6 @@ class Source extends CI_Controller
         echo '<br /><br />';
 
 
-        //Custom cache:
-        foreach($this->config->item('en_all_12639') as $en_id => $m){
-
-            $child_links = $this->READ_model->ln_fetch(array(
-                'ln_parent_source_id' => $en_id,
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-            ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
-
-            echo '$config[\'cache_count_'.$en_id.'\'] = '.$child_links[0]['totals'].'; //'.$m['m_name'].'<br />';
-
-        }
-
-
         //CONFIG VARS
         foreach($config_ens as $en){
 
