@@ -1855,7 +1855,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'Session expired',
             ));
-        } elseif (!isset($_POST['en_name']) || strlen($_POST['en_name']) < config_var(12232)) {
+        } elseif (!isset($_POST['en_name']) || strlen(trim($_POST['en_name'])) < config_var(12232)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Name must be at-least '.config_var(12232).' characters long',
