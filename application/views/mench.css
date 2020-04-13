@@ -1041,7 +1041,7 @@ label {
     cursor: help;
 }
 
-.btn-superpower .fas, .btn-superpower .far, .btn-superpower .fal, .btn-superpower .fad, .btn-superpower .source, .btn-superpower .note, .btn-superpower .read {
+.btn-superpower .fas, .btn-superpower .far, .btn-superpower .fal, .btn-superpower .fad, .btn-superpower:not(.active) .source, .btn-superpower:not(.active) .note, .btn-superpower:not(.active) .read {
     color: #DCDCDC !important;
 }
 
