@@ -336,7 +336,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
                         $has_training_url = ( strlen($en_all_10876[$superpower_en_id]['m_desc']) ? $en_all_10876[$superpower_en_id]['m_desc'] : false );
                         $extract_icon_color = extract_icon_color($m3['m_icon']);
 
-                        if($has_training_url && ($is_unlocked || $is_available)){
+                        if($is_unlocked || $is_available){
 
                             //Superpower Available
                             $this_tab .= '<div class="list-group-item itemsetting">';
@@ -346,8 +346,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
                             $this_tab .= '<td class="MENCHcolumn12"><a class="btn-superpower superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m3['m_name'].' '.$m3['m_desc'].' @'.$superpower_en_id.'"><span class="icon-block '.$extract_icon_color.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a></td>';
 
                             //Give option to Unlock:
-                            if(!$is_unlocked && $is_available){
-                                $this_tab .= '<td class="MENCHcolumn3"><a href="'.$has_training_url.'"><span class="icon-block">'.( $is_unlocked ? '<i class="fas fa-unlock-alt"></i>' : '<i class="fas fa-lock"></i>' ).'</span><span class="icon-block '.$extract_icon_color.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a></td>';
+                            if(!$is_unlocked && $is_available && $has_training_url){
+                                $this_tab .= '<td class="MENCHcolumn3"><a href="'.$has_training_url.'"><span class="icon-block"><i class="fas fa-unlock-alt"></i></span></a></td>';
                             }
 
                             $this_tab .= '</tr></table>';

@@ -837,9 +837,6 @@ function account_update_name(){
     //Show spinner:
     $('.save_full_name').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
 
-    $('.en_name_first_'+js_pl_id).text('Updating...');
-    $('.en_name_full_'+js_pl_id).text('Updating...');
-
     //Save the rest of the content:
     var en_name_new = $('#en_setting_name').val().toUpperCase();
     $.post("/source/account_update_name", {
