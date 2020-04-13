@@ -236,6 +236,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
     <?php
     //Print Play Layout
+    $disable_content_loading = true;
+
     foreach ($this->config->item('en_all_11089') as $en_id => $m){
 
         //Don't show empty tabs:
@@ -246,6 +248,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
         $this_tab = null;
         $counter = 0;
+        $auto_expand_tab = in_array($en_id, $this->config->item('en_ids_12571'));
+
 
         //SOURCE
         if($en_id==12412){
@@ -260,7 +264,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
                 continue;
             }
 
-            $counter = 0;
 
             //My Account Header
             $this_tab .= '<div class="read-topic"><span class="icon-block">'.$en_all_11035[6225]['m_icon'].'</span>'.$en_all_11035[6225]['m_name'].'</div>';
@@ -273,6 +276,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
                 //Keep all closed for now:
                 $expand_by_default = false;
+                $counter++;
 
                 //Print header:
                 $this_tab .= '<div class="card">
@@ -513,7 +517,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
             $counter = $item_counters[0]['totals'];
 
             //SHOW LASTEST 100
-            if($counter>0){
+            if($counter>0 && (!$disable_content_loading || $auto_expand_tab)){
 
                 $this_tab .= '<div class="list-group">';
                 foreach ($this->READ_model->ln_fetch($in_pads_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC')) as $in_pads) {
@@ -539,7 +543,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
             } else {
 
-                $this_tab .= '<div class="alert alert-warning">No notes yet.</div>';
+                //TODO Remove message:
+                $this_tab .= '<div class="alert alert-warning">To be developed soon...</div>';
 
             }
 
@@ -578,7 +583,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
             $counter = $item_counters[0]['totals'];
 
-            if($counter > 0){
+            if($counter > 0 && (!$disable_content_loading || $auto_expand_tab)){
 
                 //Dynamic Loading when clicked:
                 $read_history_ui = $this->READ_model->read_history_ui($en_id, 0, $source['en_id']);
@@ -729,7 +734,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
             continue;
         }
 
-        $auto_expand_tab = in_array($en_id, $this->config->item('en_ids_12571'));
 
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';

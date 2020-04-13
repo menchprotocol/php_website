@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-13 08:11:19 PST
+//Generated 2020-04-13 08:25:16 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1586790679;
-$config['cache_count_transaction'] = 1116614;
+$config['cache_timestamp'] = 1586791516;
+$config['cache_count_transaction'] = 1116622;
 $config['cache_count_read'] = 121012;
 $config['cache_count_note'] = 3830;
 $config['cache_count_source'] = 9215;
@@ -342,8 +342,14 @@ $config['en_all_12577'] = array(
 );
 
 //LAYOUT SHOW EVEN IF ZERO:
-$config['en_ids_12574'] = array(4997,11029,11030);
+$config['en_ids_12574'] = array(6225,4997,11029,11030);
 $config['en_all_12574'] = array(
+    6225 => array(
+        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_name' => 'ACCOUNT SETTINGS',
+        'm_desc' => '',
+        'm_parents' => array(12574,11089,12205,11035,4527),
+    ),
     4997 => array(
         'm_icon' => '<i class="fad fa-edit source" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO EDITOR',
@@ -3247,10 +3253,10 @@ $config['en_all_11089'] = array(
         'm_parents' => array(11089),
     ),
     6225 => array(
-        'm_icon' => '<i class="fad fa-user-cog source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'ACCOUNT SETTINGS',
         'm_desc' => '',
-        'm_parents' => array(11089,12205,11035,4527),
+        'm_parents' => array(12574,11089,12205,11035,4527),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-id-badge source" aria-hidden="true"></i>',
@@ -4047,10 +4053,10 @@ $config['en_all_11047'] = array(
 $config['en_ids_11035'] = array(6225,11068,12467,4341,12211,10573,4430,7347,6415,12581,7256,4269,6287,12437,7291,12275,12205,10957,7540);
 $config['en_all_11035'] = array(
     6225 => array(
-        'm_icon' => '<i class="fad fa-user-cog source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'ACCOUNT SETTINGS',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
-        'm_parents' => array(11089,12205,11035,4527),
+        'm_parents' => array(12574,11089,12205,11035,4527),
     ),
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -4788,10 +4794,10 @@ $config['en_all_10692'] = array(
 $config['en_ids_4527'] = array(6225,12588,6150,10627,12359,10717,12571,12574,11080,2738,12105,12467,4341,10876,11035,12524,11059,11058,12647,12648,12646,12501,12589,3000,4535,11047,6192,12365,12273,12079,11018,11021,4229,6193,4485,12012,10990,4983,7302,4737,7356,12138,7355,12400,6201,12112,12420,4486,12413,7585,10602,12330,12324,7309,7712,7751,6404,4527,11054,6232,12500,4997,12577,4755,6205,11081,7704,7347,6255,12229,6345,4280,4277,6102,12446,6146,12326,10692,12227,5967,7304,7360,7364,7359,10593,12228,12141,12327,10658,4269,6204,4536,6287,10956,12279,12274,12410,6194,3290,6827,12421,11089,4592,12403,4426,7555,4986,7551,11028,4537,6177,7358,12575,7357,12401,6206,3289,10957,12523,12322,12321,6805,6103,6186,4593,12655,12654,12645);
 $config['en_all_4527'] = array(
     6225 => array(
-        'm_icon' => '<i class="fad fa-user-cog source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'ACCOUNT SETTINGS',
         'm_desc' => '',
-        'm_parents' => array(11089,12205,11035,4527),
+        'm_parents' => array(12574,11089,12205,11035,4527),
     ),
     12588 => array(
         'm_icon' => '',
