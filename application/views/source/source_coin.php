@@ -344,7 +344,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
                             $this_tab .= '<table style="width:100%; padding:0; margin:0;"><tr>';
 
-                            $this_tab .= '<td class="MENCHcolumn12"><a class="btn btn-sm btn-superpower superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].' @'.$superpower_en_id.'"><span class="icon-block '.$extract_icon_color.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a></td>';
+                            $this_tab .= '<td class="MENCHcolumn12"><a class="btn-superpower superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].' @'.$superpower_en_id.'"><span class="icon-block '.$extract_icon_color.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a></td>';
 
                             //Give option to Unlock:
                             if(!$is_unlocked && $is_available){
