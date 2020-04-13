@@ -156,6 +156,11 @@ if(!isset($hide_header)){
                                 4536 => 12646, //SOURCE
                                 4535 => 12647, //TREE
                             );
+                            $count_controller = array(
+                                6205 => 6255, //READ
+                                4536 => 12274, //SOURCE
+                                4535 => 12273, //TREE
+                            );
 
                             //Show Mench Menu:
                             foreach ($en_all_2738_mench as $en_id => $m) {
@@ -165,6 +170,7 @@ if(!isset($hide_header)){
                                 $is_current_mench = ($current_mench['x_id'] == $en_id);
                                 $this_mench = current_mench(strtolower($m['m_name']));
                                 $primary_url = 'href="/' . $this_mench['x_name'].'"';
+                                $item_count = count_ln_type($count_controller[$en_id]);
 
 
                                 if (!$is_current_mench && isset($in) && in_array($this_mench['x_name'], array('read', 'tree'))) {
@@ -182,7 +188,7 @@ if(!isset($hide_header)){
                                 echo '<a class="btn ' . $this_mench['x_class'] . '" ' . $primary_url . '>';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $this_mench['x_class'] . '_name '.( $is_current_mench ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;</span>';
-                                //echo '<span class="montserrat" title="'.$player_stats[$this_mench['x_name'].'_count'].'">'.echo_number($player_stats[$this_mench['x_name'].'_count']).'</span>';
+                                echo '<span class="montserrat" title="'.$item_count.'">'.echo_number($item_count).'</span>';
                                 echo '</a>';
 
 

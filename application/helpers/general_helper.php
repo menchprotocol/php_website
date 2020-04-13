@@ -731,12 +731,12 @@ function url_ln_type($en_id){
     }
 }
 
+
 function count_ln_type($en_id){
 
     $session_en = superpower_assigned();
     $CI =& get_instance();
     if($session_en){
-
 
         //We need to count this:
         if($en_id==12274){
