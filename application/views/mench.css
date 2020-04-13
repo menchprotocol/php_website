@@ -769,12 +769,9 @@ td.MENCHcolumn3{ width: 13%; }
 .mench_coin.read:hover, .mench_coin.read.focustab  { border-color:#FC1B44; }
 .mench_coin.note:hover, .mench_coin.note.focustab  { border-color:#ffc500; }
 .mench_coin{
-    padding:10px 0;
-    display:inline-block;
     text-decoration: none;
     line-height: 110%;
     border-top: 5px solid #f4f5f7;
-    padding-right: 8px;
 }
 
 

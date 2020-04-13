@@ -2125,21 +2125,6 @@ function echo_in_next($in_id, $recipient_en, $push_message){
 
     } else {
 
-        /*
-        ?>
-        <div class="container fixed-bottom" style="padding-bottom: 0 !important;">
-            <div class="row">
-                <table>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td class="read"><a class="mench_coin read border-read" href="/read/next/'.$in_id.'">NEXT <i class="fad fa-step-forward"></i></a></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <?php
-        */
-
         //PREVIOUS:
         echo echo_in_read_previous($in_id, $recipient_en);
 

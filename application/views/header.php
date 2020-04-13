@@ -178,12 +178,10 @@ if(!isset($hide_header)){
 
 
 
-                                echo '<div class="btn-group">';
-
-
+                                echo '<div class="btn-group mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'].'">';
 
                                 //Primary Button:
-                                echo '<a class="mench_coin btn ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'] . ($is_current_mench ? ' focustab ' : '') .'" ' . $primary_url . '>';
+                                echo '<a class="btn ' . ($is_current_mench ? ' focustab ' : '') .'" ' . $primary_url . '>';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $this_mench['x_class'] . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
                                 //echo '<span class="montserrat" title="'.$player_stats[$this_mench['x_name'].'_count'].'">'.echo_number($player_stats[$this_mench['x_name'].'_count']).'</span>';
