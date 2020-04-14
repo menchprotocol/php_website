@@ -2098,6 +2098,11 @@ class READ_model extends CI_Model
                 //Save/Upload & Next:
                 echo '<div class="margin-top-down inline-block previous_reads"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">SAVE & NEXT <i class="fad fa-step-forward"></i></a>&nbsp;&nbsp;</div>';
 
+                if($previous_answers){
+                    //Next Reads:
+                    echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true, false);
+                }
+
                 echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); $(\'#read_text_answer\').focus(); }); </script>';
 
 
