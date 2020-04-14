@@ -166,7 +166,7 @@ class Source extends CI_Controller
 
 
             //SOURCE
-            echo '<td class="source fixedColumns MENCHcolumn12"><span class="icon-block en_ui_icon_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.'<a href="/source/'.$ln['en_id'].'" class="montserrat source title-block title-no-right en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
+            echo '<td class="source fixedColumns MENCHcolumn1"><span class="icon-block en_ui_icon_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.'<a href="/source/'.$ln['en_id'].'" class="montserrat source title-block title-no-right en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
 
 
 
@@ -186,13 +186,11 @@ class Source extends CI_Controller
 
 
             //READ
-            /*
             echo '<td class="read fixedColumns MENCHcolumn2">';
             if($read_coins[0]['totals'] > 0){
                 echo ( $session_en ? '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_6255')).'&ln_creator_source_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['totals']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['totals']).'</span>' );
             }
             echo '</td>';
-            */
 
 
             echo '</tr>';
