@@ -182,7 +182,7 @@ if(!isset($hide_header)){
                                 }
 
 
-                                echo '<div class="mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'].($is_current_mench ? ' focustab ' : '').'">';
+                                echo '<div class="btn-group mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'].($is_current_mench ? ' focustab ' : '').'">';
                                 echo '<a class="btn ' . $this_mench['x_class'] . '" ' . $primary_url . '>';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $this_mench['x_class'] . '_name '.( $is_current_mench ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;</span>';
