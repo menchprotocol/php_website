@@ -22,13 +22,13 @@
 
             if($count==$show_max){
 
-                echo '<div class="list-group-item see_more_who montserrat source"><span class="icon-block"><i class="far fa-search-plus source"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
+                echo '<div class="list-group-item see_more_sources montserrat source"><span class="icon-block"><i class="far fa-search-plus source"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_sources\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
 
-                echo '<div class="list-group-item see_more_who"></div>';
+                echo '<div class="list-group-item see_more_sources"></div>';
 
             }
 
-            echo echo_en($my_en,false, ( $count<$show_max ? '' : 'see_more_who hidden'));
+            echo echo_en($my_en,false, ( $count<$show_max ? '' : 'see_more_sources hidden'));
 
         }
         echo '</div>';
