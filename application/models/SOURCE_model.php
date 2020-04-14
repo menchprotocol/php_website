@@ -1047,8 +1047,14 @@ class SOURCE_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 5003 && ($action_command1=='*' || $en['en_status_source_id']==$action_command1) && in_array($action_command2, $this->config->item('en_ids_6177'))) { //Update Matching Player Status
+            } elseif ($action_en_id == 5003 && ($action_command1=='*' || $en['en_status_source_id']==$action_command1) && in_array($action_command2, $this->config->item('en_ids_6177'))) {
 
+                //Being removed? Unlink as well if that's the case:
+                if(!in_array($action_command2, $this->config->item('en_ids_7358'))){
+                    $this->SOURCE_model->en_unlink($en['en_id'], $ln_creator_source_id);
+                }
+
+                //Update Matching Player Status:
                 $this->SOURCE_model->en_update($en['en_id'], array(
                     'en_status_source_id' => $action_command2,
                 ), true, $ln_creator_source_id);
