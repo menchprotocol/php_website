@@ -1895,7 +1895,7 @@ class READ_model extends CI_Model
 
                     if($push_message){
 
-                        echo_in_list($ins[0], $read_answers, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR PREVIOUS ANSWER:');
+                        echo_in_list($ins[0], $read_answers, $recipient_en, $push_message, '<span class="icon-block-sm">&nbsp;</span>YOUR PREVIOUS ANSWER:');
 
                     } else {
 
@@ -1904,7 +1904,7 @@ class READ_model extends CI_Model
                         echo '<div class="selected_before">';
 
                         //List answers:
-                        echo_in_list($ins[0], $read_answers, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-history"></i></span>YOU ANSWERED:');
+                        echo_in_list($ins[0], $read_answers, $recipient_en, $push_message, '<span class="icon-block-sm">&nbsp;</span>YOU ANSWERED:');
 
                         //Allow to edit:
                         echo '<div class="inline-block margin-top-down previous_reads">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>EDIT ANSWER</u></a></div>';
@@ -2077,10 +2077,12 @@ class READ_model extends CI_Model
 
         } else {
 
-
             if ($ins[0]['in_type_source_id'] == 6677) {
 
-                //READ ONLY, nothing to do here...
+                //READ ONLY
+
+                //Next Reads:
+                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
 
             } elseif ($ins[0]['in_type_source_id'] == 6683) {
 
@@ -2105,6 +2107,9 @@ class READ_model extends CI_Model
 
                 echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); $(\'#read_text_answer\').focus(); }); </script>';
 
+                //Next Reads:
+                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
+
             } elseif (in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7751'))) {
 
                 //FILE UPLOAD
@@ -2119,47 +2124,27 @@ class READ_model extends CI_Model
                 echo '</form>';
                 echo '</div>';
 
-                //Show Previous Button:
-                echo echo_in_read_previous($ins[0]['in_id'], $recipient_en);
+                if(!count($read_completes)) {
 
-                echo '<label class="btn btn-read inline-block" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD FILE</label>';
+                    //Show Previous Button:
+                    echo echo_in_read_previous($ins[0]['in_id'], $recipient_en);
 
-                ?>
+                    echo '<label class="btn btn-read inline-block" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD</label>';
 
-                <script>
-                    $(document).ready(function () {
+                    //Show next here but keep hidden until file is uploaded:
+                    echo '<div class="go_next_upload hidden inline-block">';
+                    echo_in_next($ins[0]['in_id'], $recipient_en, $push_message);
+                    echo '</div>';
 
-                        //Watchout for file uplods:
-                        $('.boxUpload').find('input[type="file"]').change(function () {
-                            read_file_upload(droppedFiles, 'file');
-                        });
+                } else {
 
-                        //Should we auto start?
-                        if (isAdvancedUpload) {
+                    //File Replace:
+                    echo '<label class="btn btn-read inline-block" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> REPLACE</label>';
 
-                            $('.boxUpload').addClass('has-advanced-upload');
-                            var droppedFiles = false;
+                    //Next Reads:
+                    echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
 
-                            $('.boxboxUpload').on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                            })
-                                .on('dragover dragenter', function () {
-                                    $('.readerUploader').addClass('is-working');
-                                })
-                                .on('dragleave dragend drop', function () {
-                                    $('.readerUploader').removeClass('is-working');
-                                })
-                                .on('drop', function (e) {
-                                    droppedFiles = e.originalEvent.dataTransfer.files;
-                                    e.preventDefault();
-                                    read_file_upload(droppedFiles, 'drop');
-                                });
-                        }
-                    });
-                </script>
-
-                <?php
+                }
 
             } else {
 
@@ -2170,24 +2155,6 @@ class READ_model extends CI_Model
                     'ln_content' => 'step_echo() unknown idea type source ID ['.$ins[0]['in_type_source_id'].'] that could not be rendered',
                     'ln_previous_idea_id' => $in_id,
                 ));
-
-            }
-
-
-
-            if(count($read_completes) || $ins[0]['in_type_source_id']==6677){
-
-                //Always show the next list:
-                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
-
-            } elseif (in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7751'))) {
-
-                //Show next here:
-                echo '<div class="go_next_upload hidden inline-block">';
-
-                echo_in_next($ins[0]['in_id'], $recipient_en, $push_message);
-
-                echo '</div>';
 
             }
 

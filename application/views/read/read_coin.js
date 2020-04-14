@@ -2,6 +2,9 @@
 
 $(document).ready(function () {
 
+
+
+
     autosize($('#read_text_answer'));
 
 
@@ -74,6 +77,36 @@ $(document).ready(function () {
             ln_order: section_en_id + '__' + in_loaded_id,
         });
     });
+
+
+
+    //Watchout for file uplods:
+    $('.boxUpload').find('input[type="file"]').change(function () {
+        read_file_upload(droppedFiles, 'file');
+    });
+
+    //Should we auto start?
+    if (isAdvancedUpload) {
+
+        $('.boxUpload').addClass('has-advanced-upload');
+        var droppedFiles = false;
+
+        $('.boxboxUpload').on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        })
+            .on('dragover dragenter', function () {
+                $('.readerUploader').addClass('is-working');
+            })
+            .on('dragleave dragend drop', function () {
+                $('.readerUploader').removeClass('is-working');
+            })
+            .on('drop', function (e) {
+                droppedFiles = e.originalEvent.dataTransfer.files;
+                e.preventDefault();
+                read_file_upload(droppedFiles, 'drop');
+            });
+    }
 
 
 });

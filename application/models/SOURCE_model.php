@@ -540,6 +540,8 @@ class SOURCE_model extends CI_Model
 
         //Remember if source name was passed:
         $name_was_passed = ( $page_title ? true : false );
+        $en_all_4537 = $this->config->item('en_all_4537');
+        $en_all_4592 = $this->config->item('en_all_4592');
 
         //Initially assume Generic URL unless we can prove otherwise:
         $ln_type_source_id = 4256; //Generic URL
@@ -649,7 +651,7 @@ class SOURCE_model extends CI_Model
                 }
             }
 
-            //Trip title:
+            //Trim title:
             $page_title = trim($page_title);
 
             if (strlen($page_title) > 0) {
@@ -668,8 +670,7 @@ class SOURCE_model extends CI_Model
             } else {
 
                 //did not find a <title> tag, so let's use URL Type & identifier as its name:
-                $en_all_4537 = $this->config->item('en_all_4537');
-                $page_title = $en_all_4537[$ln_type_source_id]['m_name'] . ' ' . $url_identified;
+                $page_title = $url_identified;
 
             }
 
@@ -716,11 +717,13 @@ class SOURCE_model extends CI_Model
 
             } elseif($ln_creator_source_id) {
 
-                $en_all_4592 = $this->config->item('en_all_4592');
                 if(!$page_title){
                     //Assign a generic source name:
-                    $page_title = $en_all_4592[$ln_type_source_id]['m_name'].' '.substr(md5($url), 0, 16);
+                    $page_title = substr(md5($url), 0, 8);
                 }
+
+                //Prefix type in name:
+                $page_title = $en_all_4592[$ln_type_source_id]['m_name'].' '.$page_title;
 
                 //Create a new source for this URL ONLY If trainer source is provided...
                 $added_en = $this->SOURCE_model->en_verify_create($page_title, $ln_creator_source_id, 6181, $en_all_4592[$ln_type_source_id]['m_icon']);
