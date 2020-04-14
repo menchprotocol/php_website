@@ -182,51 +182,11 @@ if(!isset($hide_header)){
                                 }
 
 
-                                echo '<div class="btn-group mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'].($is_current_mench ? ' focustab ' : '').'">';
-
-                                //Primary Button:
-                                echo '<a class="btn ' . $this_mench['x_class'] . '" ' . $primary_url . '>';
+                                echo '<a class="btn ' . $this_mench['x_class'] . ' mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'].($is_current_mench ? ' focustab ' : '').'" ' . $primary_url . '>';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $this_mench['x_class'] . '_name '.( $is_current_mench ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;</span>';
                                 echo '<span class="montserrat" title="'.$item_count.'">'.echo_number($item_count).'</span>';
                                 echo '</a>';
-
-
-                                //Expanded Menu:
-                                if(superpower_active(10985, true)){
-                                    echo '<button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
-                                    echo '<div class="dropdown-menu">';
-                                    foreach ($this->config->item('en_all_'.$nav_controller[$en_id]) as $en_id2 => $m2) {
-
-                                        //Skip superpowers if not assigned
-                                        if($en_id2==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
-                                            continue;
-                                        } elseif($en_id2==7291 && intval($this->session->userdata('session_6196_sign'))){
-                                            //Messenger sign in does not allow Signout:
-                                            continue;
-                                        }
-
-                                        $count = null;
-                                        $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m2['m_parents']);
-                                        $page_url = url_ln_type($en_id2);
-
-                                        if(in_array($en_id2, $this->config->item('en_ids_12655'))){
-                                            $count = count_ln_type($en_id2);
-                                        }
-
-                                        //Skip if they don't have it:
-                                        if(!$page_url){
-                                            continue;
-                                        }
-
-                                        echo '<a href="'.$page_url.'" class="dropdown-item montserrat doupper '.extract_icon_color($m2['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.( !is_null($count) ? '<span title="'.number_format($count, 0).'">'.echo_number($count).'</span> ' : '' ).$m2['m_name'].'</a>';
-
-
-                                    }
-                                    echo '</div>';
-                                }
-
-                                echo '</div>';
 
                             }
                         } else {
