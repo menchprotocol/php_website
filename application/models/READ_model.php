@@ -2087,21 +2087,27 @@ class READ_model extends CI_Model
             } elseif ($ins[0]['in_type_source_id'] == 6683) {
 
                 //TEXT RESPONSE
-                echo '<div class="edit-text '.($previous_answers ? '' : ' hidden ').'">';
-                echo '<div class="read-topic"><span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR PREVIOUS ANSWER:</div>';
-                echo $previous_answers;
-                echo '<div><a href="javascript:void(0)" onclick="$(\'.edit-text\').toggleClass(\'hidden\');$(\'#read_text_answer\').focus();"><span class="icon-block-sm"><i class="fas fa-pen-square"></i></span>UPDATE</a></div>';
+
+                echo '<div class="previous_reads">';
+
+                    echo '<div class="edit-text '.($previous_answers ? '' : ' hidden ').'">';
+                        echo '<div class="read-topic"><span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR PREVIOUS ANSWER:</div>';
+                        echo $previous_answers;
+                        echo '<div><a href="javascript:void(0)" onclick="$(\'.edit-text\').toggleClass(\'hidden\');$(\'#read_text_answer\').focus();"><span class="icon-block-sm"><i class="fas fa-pen-square"></i></span>UPDATE</a></div>';
+                    echo '</div>';
+
+
+                    echo '<div class="edit-text '.($previous_answers ? ' hidden ' : '').'"><textarea class="border i_content padded read_input" placeholder="Your Answer Here..." id="read_text_answer">'.( $previous_answers ? $read_completes[0]['ln_content'] : '' ).'</textarea></div>';
+
                 echo '</div>';
 
-                echo '<div class="edit-text '.($previous_answers ? ' hidden ' : '').'">';
-                echo '<textarea class="border i_content padded read_input" placeholder="Your Answer Here..." id="read_text_answer">'.( $previous_answers ? $read_completes[0]['ln_content'] : '' ).'</textarea>';
 
                 //Show Previous Button:
                 echo echo_in_read_previous($ins[0]['in_id'], $recipient_en);
 
-                echo '<div class="margin-top-down inline-block"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">'.( $previous_answers ? 'UPDATE' : 'ANSWER' ).' & NEXT <i class="fad fa-step-forward"></i></a>&nbsp;&nbsp;</div>';
+                echo '<div class="margin-top-down inline-block previous_reads"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">'.( $previous_answers ? 'UPDATE' : 'ANSWER' ).' & NEXT <i class="fad fa-step-forward"></i></a>&nbsp;&nbsp;</div>';
 
-                echo '<div class="text_saving_result margin-top-down inline-block"></div>';
+                echo '<div class="text_saving_result margin-top-down inline-block previous_reads"></div>';
 
                 echo '</div>';
 
@@ -2109,6 +2115,8 @@ class READ_model extends CI_Model
 
                 //Next Reads:
                 echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
+
+
 
             } elseif (in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7751'))) {
 
