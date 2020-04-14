@@ -703,33 +703,6 @@ function current_mench($part1 = null){
 
 }
 
-function url_ln_type($en_id){
-
-    $CI =& get_instance();
-    $session_en = superpower_assigned();
-
-    //Fetch URL:
-    if(in_array($en_id, $CI->config->item('en_ids_10876'))){
-
-        $en_all_10876 = $CI->config->item('en_all_10876'); //Mench Website
-        return $en_all_10876[$en_id]['m_desc'];
-
-    } elseif($en_id==12581) {
-
-        //Home page:
-        return '/';
-
-    } elseif($en_id==12205 && $session_en) {
-
-        //Profile Page:
-        return '/source/'.$session_en['en_id'];
-
-    } else {
-
-        return fasle;
-
-    }
-}
 
 
 function count_ln_type($en_id){
