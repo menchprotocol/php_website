@@ -678,8 +678,7 @@ class SOURCE_model extends CI_Model
 
 
         //Fetch/Create domain source:
-        $page_title = ( $domain_analysis['url_is_root'] && $name_was_passed ? $page_title : null );
-        $domain_source = $this->SOURCE_model->en_domain($url, $ln_creator_source_id, $page_title);
+        $domain_source = $this->SOURCE_model->en_domain($url, $ln_creator_source_id, ( $domain_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
         if(!$domain_source['status']){
             //We had an issue:
             return $domain_source;
