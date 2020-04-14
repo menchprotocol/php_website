@@ -8,4 +8,4 @@ $route['default_controller']        = "read/read_coin";
 
 $route['(:num)']                    = "read/read_coin/$1";
 $route['source/(:num)']             = "source/source_coin/$1";
-$route['tree/(:num)']               = "tree/tree_coin/$1";
+$route['idea/(:num)']               = "idea/idea_coin/$1";

@@ -154,12 +154,12 @@ if(!isset($hide_header)){
                             $nav_controller = array(
                                 6205 => 12648, //READ
                                 4536 => 12646, //SOURCE
-                                4535 => 12647, //TREE
+                                4535 => 12647, //IDEA
                             );
                             $count_controller = array(
                                 6205 => 6255, //READ
                                 4536 => 12274, //SOURCE
-                                4535 => 12273, //TREE
+                                4535 => 12273, //IDEA
                             );
 
                             //Show Mench Menu:
@@ -173,10 +173,10 @@ if(!isset($hide_header)){
                                 $item_count = count_ln_type($count_controller[$en_id]);
 
 
-                                if (!$is_current_mench && isset($in) && in_array($this_mench['x_name'], array('read', 'tree'))) {
-                                    if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'tree' && $in['in_id']!=config_var(12156) && superpower_active(10985, true) ) {
-                                        $primary_url = 'href="/tree/' . $in['in_id'].'"';
-                                    } elseif ($current_mench['x_name'] == 'tree' && $this_mench['x_name'] == 'read') {
+                                if (!$is_current_mench && isset($in) && in_array($this_mench['x_name'], array('read', 'idea'))) {
+                                    if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'idea' && $in['in_id']!=config_var(12156) && superpower_active(10985, true) ) {
+                                        $primary_url = 'href="/idea/' . $in['in_id'].'"';
+                                    } elseif ($current_mench['x_name'] == 'idea' && $this_mench['x_name'] == 'read') {
                                         $primary_url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
                                     }
                                 }

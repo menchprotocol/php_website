@@ -5,7 +5,7 @@ $(document).ready(function () {
     autosize($('#read_text_answer'));
 
 
-    //Lookout for tree link type changes:
+    //Lookout for idea link type changes:
     $('.js-ln-create-overview-link').click(function () {
         //Only log engagement if opening:
         if($(this).hasClass('collapsed')){
@@ -15,11 +15,11 @@ $(document).ready(function () {
             //Log this section:
             js_ln_create({
                 ln_creator_source_id: js_pl_id, //If we have a user we log here
-                ln_type_source_id: 7611, //Tree User Engage
+                ln_type_source_id: 7611, //Idea User Engage
                 ln_parent_source_id: section_en_id, //The section this user engaged with
-                ln_previous_tree_id: in_loaded_id,
-                ln_next_tree_id: 0, //Since they just opened the heading, not a sub-section of Reads Overview
-                ln_order: '7611_' + section_en_id + '_' + in_loaded_id, //The section for this tree
+                ln_previous_idea_id: in_loaded_id,
+                ln_next_idea_id: 0, //Since they just opened the heading, not a sub-section of Reads Overview
+                ln_order: '7611_' + section_en_id + '_' + in_loaded_id, //The section for this idea
             });
         }
     });
@@ -30,15 +30,15 @@ $(document).ready(function () {
         if($(this).attr('aria-expanded')=='false'){
 
             var section_en_id = 7613; //Reads Overview
-            var child_in_id = parseInt($(this).attr('tree-id'));
+            var child_in_id = parseInt($(this).attr('idea-id'));
 
             //Log this section:
             js_ln_create({
                 ln_creator_source_id: js_pl_id, //If we have a user we log here
-                ln_type_source_id: 7611, //Tree User Engage
+                ln_type_source_id: 7611, //Idea User Engage
                 ln_parent_source_id: section_en_id, //The section this user engaged with
-                ln_previous_tree_id: in_loaded_id,
-                ln_next_tree_id: child_in_id,
+                ln_previous_idea_id: in_loaded_id,
+                ln_next_idea_id: child_in_id,
                 ln_order: section_en_id + '_' + child_in_id + '__' + in_loaded_id,
             });
         }
@@ -46,15 +46,15 @@ $(document).ready(function () {
 
     $('.js-ln-create-expert-full-list').click(function () {
         //Only log engagement if opening:
-        var section_en_id = 7616; //Tree Engage Experts Full List
+        var section_en_id = 7616; //Idea Engage Experts Full List
 
         //Log this section:
         js_ln_create({
             ln_creator_source_id: js_pl_id, //If we have a user we log here
-            ln_type_source_id: 7611, //Tree User Engage
+            ln_type_source_id: 7611, //Idea User Engage
             ln_parent_source_id: 7614, //Expert Overview
             ln_child_source_id: section_en_id, //The section this user engaged with
-            ln_previous_tree_id: in_loaded_id,
+            ln_previous_idea_id: in_loaded_id,
             ln_order: section_en_id + '__' + in_loaded_id,
         });
     });
@@ -67,10 +67,10 @@ $(document).ready(function () {
         //Log this section:
         js_ln_create({
             ln_creator_source_id: js_pl_id, //If we have a user we log here
-            ln_type_source_id: 7611, //Tree User Engage
+            ln_type_source_id: 7611, //Idea User Engage
             ln_parent_source_id: 7614, //Expert Overview
             ln_child_source_id: section_en_id, //The section this user engaged with
-            ln_previous_tree_id: in_loaded_id,
+            ln_previous_idea_id: in_loaded_id,
             ln_order: section_en_id + '__' + in_loaded_id,
         });
     });

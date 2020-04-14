@@ -5,7 +5,7 @@ $(document).ready(function () {
 
     check_in_en_status_source_id();
 
-    //Watch for Tree status change:
+    //Watch for Idea status change:
     $("#ln_type_source_id").change(function () {
         check_in_en_status_source_id();
     });
@@ -17,8 +17,8 @@ $(document).ready(function () {
 
 
 function check_in_en_status_source_id(){
-    //Checks to see if the Tree/Player status filter should be visible
-    //Would only make visible if Link type is Created Tree/Player
+    //Checks to see if the Idea/Player status filter should be visible
+    //Would only make visible if Link type is Created Idea/Player
 
     //Hide both in/en status:
     $(".filter-statuses").addClass('hidden');

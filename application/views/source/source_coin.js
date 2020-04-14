@@ -41,7 +41,7 @@ $(document).ready(function () {
         update_demo_icon();
     });
 
-    //Lookout for tree link related changes:
+    //Lookout for idea link related changes:
     $('#ln_status_source_id').change(function () {
         if (parseInt($('#ln_status_source_id').find(":selected").val()) == 6173 /* Link Removed */ ) {
             //About to delete? Notify them:
@@ -389,7 +389,7 @@ function en_ln_type_preview() {
     $('#en_type_link_id').html('<i class="far fa-yin-yang fa-spin"></i>');
 
 
-    //Fetch Tree Data to load modify widget:
+    //Fetch Idea Data to load modify widget:
     $.post("/source/en_ln_type_preview", {
         ln_content: $('#ln_content').val(),
         ln_id: parseInt($('#modifybox').attr('source-link-id')),
@@ -462,7 +462,7 @@ function en_modify_load(en_id, ln_id) {
         $('#en_link_count').val('0');
 
 
-        //Make the UI link and the trees in the edit box:
+        //Make the UI link and the ideas in the edit box:
         $('.unlink-source, .en-has-tr').removeClass('hidden');
 
         //Assign value:
@@ -608,7 +608,7 @@ function en_modify_save() {
         }
     }
 
-    //Prepare data to be modified for this tree:
+    //Prepare data to be modified for this idea:
     var modify_data = {
         en_focus_id: en_focus_id, //Determines if we need to change location upon removing...
         en_id: parseInt($('#modifybox').attr('source-id')),
@@ -633,10 +633,10 @@ function en_modify_save() {
             if(data.remove_from_ui){
 
                 //need to remove this source:
-                //Tree has been either removed OR unlinked:
+                //Idea has been either removed OR unlinked:
                 if (data.remove_redirect_url) {
 
-                    //move up 1 level as this was the focus tree:
+                    //move up 1 level as this was the focus idea:
                     window.location = data.remove_redirect_url;
 
                 } else {
@@ -683,10 +683,10 @@ function en_modify_save() {
                 $('.en_child_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
 
 
-                //Did we have trees to update?
+                //Did we have ideas to update?
                 if (modify_data['ln_id'] > 0) {
 
-                    //Yes, update the trees:
+                    //Yes, update the ideas:
                     $(".ln_content_" + modify_data['ln_id']).html(data.ln_content);
                     $(".ln_content_val_" + modify_data['ln_id']).text(data.ln_content_final);
 

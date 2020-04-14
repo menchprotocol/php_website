@@ -1,7 +1,7 @@
 
 <?php
-$en_all_6201 = $this->config->item('en_all_6201'); //Tree Table
-$en_all_4485 = $this->config->item('en_all_4485'); //Tree Pads
+$en_all_6201 = $this->config->item('en_all_6201'); //Idea Table
+$en_all_4485 = $this->config->item('en_all_4485'); //Idea Pads
 $en_all_2738 = $this->config->item('en_all_2738');
 
 $is_author = in_is_author($in['in_id']);
@@ -18,8 +18,8 @@ $is_active = in_array($in['in_status_source_id'], $this->config->item('en_ids_73
     //Include some cached sources:
     var in_loaded_id = <?= $in['in_id'] ?>;
 </script>
-<script src="/application/views/tree/tree_coin.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
-<script src="/application/views/tree/tree_shared.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/idea/idea_coin.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/idea/idea_shared.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <?php
 
@@ -28,28 +28,28 @@ $source_focus_found = false; //Used to determine the first tab to be opened
 
 
 
-//TREE PREVIOUS
+//IDEA PREVIOUS
 $in__parents = $this->READ_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
-    'ln_next_tree_id' => $in['in_id'],
+    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+    'ln_next_idea_id' => $in['in_id'],
 ), array('in_parent'), 0);
 $in_previous = '<div id="list-in-' . $in['in_id'] . '-1" class="list-group previous_ins">';
 foreach ($in__parents as $parent_in) {
     $in_previous .= echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
 }
 if( $is_author && $is_active && $in['in_id']!=config_var(12156)){
-    $in_previous .= '<div class="list-group-item itemtree '.superpower_active(10984).'" style="padding:5px 0;">
+    $in_previous .= '<div class="list-group-item itemidea '.superpower_active(10984).'" style="padding:5px 0;">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control treeadder-level-2-parent form-control-thick algolia_search dotransparent"
+                           class="form-control ideaadder-level-2-parent form-control-thick algolia_search dotransparent"
                            maxlength="' . config_var(11071) . '"
-                           tree-id="' . $in['in_id'] . '"
-                           id="addtree-c-' . $in['in_id'] . '-1"
+                           idea-id="' . $in['in_id'] . '"
+                           id="addidea-c-' . $in['in_id'] . '-1"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="PREVIOUS TREE">
+                           placeholder="PREVIOUS IDEA">
                 </div><div class="algolia_pad_search hidden in_pad_top"></div></div>';
 }
 $in_previous .= '</div>';
@@ -63,7 +63,7 @@ echo '<div class="container" style="padding-bottom:42px;">';
 
 
 if(!$is_author){
-    echo '<div class="alert alert-warning no-margin"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>You are not an author of this tree, yet. <a href="/tree/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10985).'">&nbsp;or <a href="/tree/in_become_author/'.$in['in_id'].'" class="montserrat">BECOME AUTHOR</a></span></div>';
+    echo '<div class="alert alert-warning no-margin"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>You are not an author of this idea, yet. <a href="/idea/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10985).'">&nbsp;or <a href="/idea/in_become_author/'.$in['in_id'].'" class="montserrat">BECOME AUTHOR</a></span></div>';
 }
 
 foreach ($this->config->item('en_all_11021') as $en_id => $m){
@@ -75,13 +75,13 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
     if($en_id==12365){
 
-        //TREE BODY
+        //IDEA BODY
 
-        //TREE PREVIOUS
+        //IDEA PREVIOUS
         echo $in_previous;
 
-        //TREE TITLE
-        echo '<div class="itemtree">';
+        //IDEA TITLE
+        echo '<div class="itemidea">';
         echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && $is_active), 0, true);
         echo '<div class="title_counter hidden grey montserrat doupper" style="text-align: right;"><span id="charTitleNum">0</span>/'.config_var(11071).' CHARACTERS</div>';
         echo '</div>';
@@ -89,15 +89,15 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
     } elseif($en_id==11018){
 
-        //TREE CONTROLLER
+        //IDEA CONTROLLER
 
-        //TREE STATUS
-        echo '<div class="inline-block both-margin left-margin">'.echo_in_dropdown(4737, $in['in_status_source_id'], 'btn-tree', $is_author, true, $in['in_id']).'</div>';
+        //IDEA STATUS
+        echo '<div class="inline-block both-margin left-margin">'.echo_in_dropdown(4737, $in['in_status_source_id'], 'btn-idea', $is_author, true, $in['in_id']).'</div>';
 
-        //TREE TYPE
-        echo '<span class="inline-block both-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_source_id'], 'btn-tree', $is_author && $is_active, true, $in['in_id']).'</span>';
+        //IDEA TYPE
+        echo '<span class="inline-block both-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_source_id'], 'btn-idea', $is_author && $is_active, true, $in['in_id']).'</span>';
 
-        //TREE TIME
+        //IDEA TIME
         echo '<div class="inline-block both-margin left-half-margin '.superpower_active(10984).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
 
     }
@@ -118,7 +118,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         $this_tab = '';
 
 
-        //TREE
+        //IDEA
         if($en_id2==11019 && 0){
 
             $this_tab .= $in_previous;
@@ -126,18 +126,18 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
         } elseif($en_id2==11020){
 
-            //TREE NEXT
+            //IDEA NEXT
             $in__children = $this->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
-                'ln_previous_tree_id' => $in['in_id'],
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                'ln_previous_idea_id' => $in['in_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
             $counter = count($in__children);
             $tab_is_active = true;
 
-            //List child trees:
+            //List child ideas:
             //$this_tab .= '<div class="read-topic"><span class="icon-block">&nbsp;</span>NEXT:</div>';
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group next_ins">';
             foreach ($in__children as $child_in) {
@@ -145,32 +145,32 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             }
 
             if($is_author && $is_active){
-                $this_tab .= '<div class="list-group-item itemtree '.superpower_active(10939).'" style="padding:5px 0;">
+                $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10939).'" style="padding:5px 0;">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control treeadder-level-2-child form-control-thick algolia_search dotransparent"
+                           class="form-control ideaadder-level-2-child form-control-thick algolia_search dotransparent"
                            maxlength="' . config_var(11071) . '"
-                           tree-id="' . $in['in_id'] . '"
-                           id="addtree-c-' . $in['in_id'] . '-0"
+                           idea-id="' . $in['in_id'] . '"
+                           id="addidea-c-' . $in['in_id'] . '-0"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="NEXT TREE">
+                           placeholder="NEXT IDEA">
                 </div><div class="algolia_pad_search hidden in_pad_bottom"></div></div>';
             }
 
         } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
 
-            //TREE PADS
+            //IDEA PADS
             $in_pads = $this->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'ln_type_source_id' => $en_id2,
-                'ln_next_tree_id' => $in['in_id'],
+                'ln_next_idea_id' => $in['in_id'],
             ), array(), 0, 0, array('ln_order' => 'ASC'));
 
             $counter = count($in_pads);
 
             if($en_id2==4231){
-                $tab_is_active = true; //TREE MESSAGES
+                $tab_is_active = true; //IDEA MESSAGES
             }
 
 
@@ -183,7 +183,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             }
 
             //ADD NEW Alert:
-            $this_tab .= '<div class="list-group-item itemtree add_pads_' . $en_id2 . ( $is_author && $is_active ? '' : ' hidden ' ).'">';
+            $this_tab .= '<div class="list-group-item itemidea add_pads_' . $en_id2 . ( $is_author && $is_active ? '' : ' hidden ' ).'">';
             $this_tab .= '<div class="add_pads_form">';
             $this_tab .= '<form class="box box' . $en_id2 . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
 
@@ -196,10 +196,10 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<table class="table table-condensed hidden" id="pads_control_'.$en_id2.'"><tr>';
 
             //Save button:
-            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_pads_add('.$en_id2.');" class="btn btn-tree save_pads_'.$en_id2.'">ADD</a></td>';
+            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_pads_add('.$en_id2.');" class="btn btn-idea save_pads_'.$en_id2.'">ADD</a></td>';
 
             //File counter:
-            $this_tab .= '<td class="remove_loading" class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="treePadsNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
+            $this_tab .= '<td class="remove_loading" class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaPadsNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
 
             //First Name:
             $this_tab .= '<td class="remove_loading '.superpower_active(10967).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_pads_insert_string('.$en_id2.', \'/firstname \');" data-toggle="tooltip" title="Mention readers first name" data-placement="top"><span class="icon-block"><i class="far fa-fingerprint"></i></span></a></td>';
@@ -213,8 +213,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //Upload File:
             if(in_array(12359, $en_all_4485[$en_id2]['m_parents'])){
                 $this_tab .= '<td class="remove_loading" style="width:36px; padding: 10px 0 0 0;">';
-                $this_tab .= '<input class="inputfile hidden" type="file" name="file" id="fileTreeType'.$en_id2.'" />';
-                $this_tab .= '<label class="file_label_'.$en_id2.'" for="fileTreeType'.$en_id2.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
+                $this_tab .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$en_id2.'" />';
+                $this_tab .= '<label class="file_label_'.$en_id2.'" for="fileIdeaType'.$en_id2.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
                 $this_tab .= '</td>';
             }
 
@@ -238,7 +238,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $item_counters = $this->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
-                'ln_previous_tree_id' => $in['in_id'],
+                'ln_previous_idea_id' => $in['in_id'],
             ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 
             $counter = $item_counters[0]['totals'];
@@ -286,17 +286,17 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
                 } elseif(in_array($action_en_id, array(12611, 12612))){
 
-                    //Tree search box:
+                    //Idea search box:
 
                     //String command:
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search Trees..." class="form-control algolia_search in_quick_search border montserrat '.$is_upper.'">';
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search Ideas..." class="form-control algolia_search in_quick_search border montserrat '.$is_upper.'">';
 
                     //We don't need the second value field here:
                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
 
                 } elseif(in_array($action_en_id, array(12611, 12612))){
 
-                    $input_options .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>Trees will be archived.</div>';
+                    $input_options .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>Ideas will be archived.</div>';
 
                     //No values for this:
                     $input_options .= '<input type="hidden" name="mass_value1_'.$action_en_id.'" value="" />';
@@ -318,7 +318,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             $this_tab .= $input_options;
 
-            $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-tree inline-block"></div>';
+            $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-idea inline-block"></div>';
 
             $this_tab .= '</div>';
             $this_tab .= '</form>';

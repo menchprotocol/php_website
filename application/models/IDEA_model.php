@@ -5,7 +5,7 @@ class IDEA_model extends CI_Model
 
     /*
      *
-     * Tree related database functions
+     * Idea related database functions
      *
      * */
 
@@ -18,7 +18,7 @@ class IDEA_model extends CI_Model
     function in_create($insert_columns, $external_sync = false, $ln_creator_source_id = 0)
     {
 
-        //What is required to create a new Tree?
+        //What is required to create a new Idea?
         if (detect_missing_columns($insert_columns, array('in_title', 'in_type_source_id', 'in_status_source_id'), $ln_creator_source_id)) {
             return false;
         }
@@ -28,7 +28,7 @@ class IDEA_model extends CI_Model
         }
 
         //Lets now add:
-        $this->db->insert('mench_tree', $insert_columns);
+        $this->db->insert('mench_idea', $insert_columns);
 
         //Fetch inserted id:
         if (!isset($insert_columns['in_id'])) {
@@ -44,12 +44,12 @@ class IDEA_model extends CI_Model
 
             if ($ln_creator_source_id > 0) {
 
-                //Log link new Tree:
+                //Log link new Idea:
                 $this->READ_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
-                    'ln_next_tree_id' => $insert_columns['in_id'],
+                    'ln_next_idea_id' => $insert_columns['in_id'],
                     'ln_content' => $insert_columns['in_title'],
-                    'ln_type_source_id' => 4250, //New Tree Created
+                    'ln_type_source_id' => 4250, //New Idea Created
                     'ln_status_source_id' => 6175, //Drafting
                 ));
 
@@ -59,11 +59,11 @@ class IDEA_model extends CI_Model
                     'ln_parent_source_id' => $ln_creator_source_id,
                     'ln_type_source_id' => 4983,
                     'ln_content' => '@'.$ln_creator_source_id,
-                    'ln_next_tree_id' => $insert_columns['in_id'],
+                    'ln_next_idea_id' => $insert_columns['in_id'],
                 ), $external_sync);
 
                 //Fetch to return the complete source data:
-                $ins = $this->TREE_model->in_fetch(array(
+                $ins = $this->IDEA_model->in_fetch(array(
                     'in_id' => $insert_columns['in_id'],
                 ));
 
@@ -80,7 +80,7 @@ class IDEA_model extends CI_Model
 
             //Ooopsi, something went wrong!
             $this->READ_model->ln_create(array(
-                'ln_content' => 'in_create() failed to create a new tree',
+                'ln_content' => 'in_create() failed to create a new idea',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $ln_creator_source_id,
                 'ln_metadata' => $insert_columns,
@@ -93,9 +93,9 @@ class IDEA_model extends CI_Model
     function in_fetch($match_columns = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
     {
 
-        //The basic fetcher for Trees
+        //The basic fetcher for Ideas
         $this->db->select($select);
-        $this->db->from('mench_tree');
+        $this->db->from('mench_idea');
 
         foreach ($match_columns as $key => $value) {
             $this->db->where($key, $value);
@@ -123,9 +123,9 @@ class IDEA_model extends CI_Model
             return false;
         }
 
-        //Fetch current Tree filed values so we can compare later on after we've updated it:
+        //Fetch current Idea filed values so we can compare later on after we've updated it:
         if($ln_creator_source_id > 0){
-            $before_data = $this->TREE_model->in_fetch(array('in_id' => $id));
+            $before_data = $this->IDEA_model->in_fetch(array('in_id' => $id));
         }
 
         //Cleanup metadata if needed:
@@ -135,7 +135,7 @@ class IDEA_model extends CI_Model
 
         //Update:
         $this->db->where('in_id', $id);
-        $this->db->update('mench_tree', $update_columns);
+        $this->db->update('mench_idea', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
@@ -157,32 +157,32 @@ class IDEA_model extends CI_Model
 
                 if($key=='in_title') {
 
-                    $ln_type_source_id = 10644; //Tree Iterated Outcome
+                    $ln_type_source_id = 10644; //Idea Iterated Outcome
                     $ln_content = update_description($before_data[0][$key], $value);
 
                 } elseif($key=='in_status_source_id'){
 
-                    if(in_array($value, $this->config->item('en_ids_7356') /* Tree Status Active */)){
-                        $ln_type_source_id = 10648; //Tree Iterated Status
+                    if(in_array($value, $this->config->item('en_ids_7356') /* Idea Status Active */)){
+                        $ln_type_source_id = 10648; //Idea Iterated Status
                     } else {
-                        $ln_type_source_id = 6182; //Tree Archived
+                        $ln_type_source_id = 6182; //Idea Archived
                     }
-                    $en_all_4737 = $this->config->item('en_all_4737'); //Tree Status
+                    $en_all_4737 = $this->config->item('en_all_4737'); //Idea Status
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_4737[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4737[$value]['m_name'] . ']';
                     $ln_parent_source_id = $value;
                     $ln_child_source_id = $before_data[0][$key];
 
                 } elseif($key=='in_type_source_id'){
 
-                    $ln_type_source_id = 10651; //Tree Iterated Subtype
-                    $en_all_7585 = $this->config->item('en_all_7585'); //Tree Subtypes
+                    $ln_type_source_id = 10651; //Idea Iterated Subtype
+                    $en_all_7585 = $this->config->item('en_all_7585'); //Idea Subtypes
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_7585[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_7585[$value]['m_name'] . ']';
                     $ln_parent_source_id = $value;
                     $ln_child_source_id = $before_data[0][$key];
 
                 } elseif($key=='in_read_time') {
 
-                    $ln_type_source_id = 10650; //Tree Iterated Completion Time
+                    $ln_type_source_id = 10650; //Idea Iterated Completion Time
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
@@ -197,7 +197,7 @@ class IDEA_model extends CI_Model
                 $this->READ_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_type_source_id' => $ln_type_source_id,
-                    'ln_next_tree_id' => $id,
+                    'ln_next_idea_id' => $id,
                     'ln_child_source_id' => $ln_child_source_id,
                     'ln_parent_source_id' => $ln_parent_source_id,
                     'ln_content' => $ln_content,
@@ -220,7 +220,7 @@ class IDEA_model extends CI_Model
 
             //This should not happen:
             $this->READ_model->ln_create(array(
-                'ln_next_tree_id' => $id,
+                'ln_next_idea_id' => $id,
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $ln_creator_source_id,
                 'ln_content' => 'in_update() Failed to update',
@@ -236,17 +236,17 @@ class IDEA_model extends CI_Model
 
     function in_unlink($in_id, $ln_creator_source_id = 0){
 
-        //Remove tree relations:
+        //Remove idea relations:
         $links_removed = 0;
-        foreach($this->READ_model->ln_fetch(array( //Tree Links
+        foreach($this->READ_model->ln_fetch(array( //Idea Links
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
-            '(ln_next_tree_id = '.$in_id.' OR ln_previous_tree_id = '.$in_id.')' => null,
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            '(ln_next_idea_id = '.$in_id.' OR ln_previous_idea_id = '.$in_id.')' => null,
         ), array(), 0) as $ln){
             //Remove this link:
             $links_removed += $this->READ_model->ln_update($ln['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Removed
-            ), $ln_creator_source_id, 10686 /* Tree Link Unlinked */);
+            ), $ln_creator_source_id, 10686 /* Idea Link Unlinked */);
         }
 
         //Return links removed:
@@ -257,27 +257,27 @@ class IDEA_model extends CI_Model
 
         //STATS
         $stats = array(
-            'ln_type_source_id' => 4250, //Tree Created
+            'ln_type_source_id' => 4250, //Idea Created
             'scanned' => 0,
             'missing_creation_fix' => 0,
             'status_sync' => 0,
         );
 
-        //TREES
+        //IDEAS
         $status_converter = array(
-            12137 => 12399, //TREE FEATURE => READ FEATURE
-            6184 => 6176, //TREE PUBLISH => READ PUBLISH
-            6183 => 6175, //TREE DRAFT => READ DRAFT
-            6182 => 6173, //TREE ARCHIVE => READ ARCHIVE
+            12137 => 12399, //IDEA FEATURE => READ FEATURE
+            6184 => 6176, //IDEA PUBLISH => READ PUBLISH
+            6183 => 6175, //IDEA DRAFT => READ DRAFT
+            6182 => 6173, //IDEA ARCHIVE => READ ARCHIVE
         );
-        foreach($this->TREE_model->in_fetch($query) as $in){
+        foreach($this->IDEA_model->in_fetch($query) as $in){
 
             $stats['scanned']++;
 
             //Find creation read:
             $reads = $this->READ_model->ln_fetch(array(
                 'ln_type_source_id' => $stats['ln_type_source_id'],
-                'ln_next_tree_id' => $in['in_id'],
+                'ln_next_idea_id' => $in['in_id'],
             ));
 
             if(!count($reads)){
@@ -286,7 +286,7 @@ class IDEA_model extends CI_Model
 
                 $this->READ_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
-                    'ln_next_tree_id' => $in['in_id'],
+                    'ln_next_idea_id' => $in['in_id'],
                     'ln_content' => $in['in_title'],
                     'ln_type_source_id' => $stats['ln_type_source_id'],
                     'ln_status_source_id' => $status_converter[$in['in_status_source_id']],
@@ -306,37 +306,37 @@ class IDEA_model extends CI_Model
         return $stats;
     }
 
-    function in_link_or_create($in_title, $ln_creator_source_id, $link_to_in_id = 0, $is_parent = false, $new_in_status = 6184, $in_type_source_id = 6677 /* Tree Read-Only */, $link_in_id = 0)
+    function in_link_or_create($in_title, $ln_creator_source_id, $link_to_in_id = 0, $is_parent = false, $new_in_status = 6184, $in_type_source_id = 6677 /* Idea Read-Only */, $link_in_id = 0)
     {
 
         /*
          *
-         * The main tree creation function that would create
-         * appropriate links and return the tree view.
+         * The main idea creation function that would create
+         * appropriate links and return the idea view.
          *
-         * Either creates an TREE link between $link_to_in_id & $link_in_id
-         * (IF $link_in_id>0) OR will create a new tree with outcome $in_title
+         * Either creates an IDEA link between $link_to_in_id & $link_in_id
+         * (IF $link_in_id>0) OR will create a new idea with outcome $in_title
          * and link it to $link_to_in_id (In this case $link_in_id will be 0)
          *
-         * p.s. Inputs have already been validated via trees/in_link_or_create() function
+         * p.s. Inputs have already been validated via ideas/in_link_or_create() function
          *
          * */
 
-        //Validate Original tree:
+        //Validate Original idea:
         if($link_to_in_id > 0){
-            $linked_ins = $this->TREE_model->in_fetch(array(
+            $linked_ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => intval($link_to_in_id),
             ));
 
             if (count($linked_ins) < 1) {
                 return array(
                     'status' => 0,
-                    'message' => 'Invalid Tree ID',
+                    'message' => 'Invalid Idea ID',
                 );
-            } elseif (!in_array($linked_ins[0]['in_status_source_id'], $this->config->item('en_ids_7356')) /* Tree Status Active */) {
+            } elseif (!in_array($linked_ins[0]['in_status_source_id'], $this->config->item('en_ids_7356')) /* Idea Status Active */) {
                 return array(
                     'status' => 0,
-                    'message' => 'You can only link to active trees. This tree is not active.',
+                    'message' => 'You can only link to active ideas. This idea is not active.',
                 );
             }
         }
@@ -344,14 +344,14 @@ class IDEA_model extends CI_Model
 
         if ($link_in_id > 0) {
 
-            //We are linking to $link_in_id, We are NOT creating any new trees...
+            //We are linking to $link_in_id, We are NOT creating any new ideas...
 
-            //Fetch more details on the child tree we're about to link:
-            $ins = $this->TREE_model->in_fetch(array(
+            //Fetch more details on the child idea we're about to link:
+            $ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => $link_in_id,
             ));
 
-            //Determine which is parent Tree, and which is child
+            //Determine which is parent Idea, and which is child
             if($is_parent){
 
                 $parent_in = $ins[0];
@@ -359,11 +359,11 @@ class IDEA_model extends CI_Model
 
                 /*
                 //Prevent child duplicates:
-                $recursive_children = $this->TREE_model->in_recursive_child_ids($child_in['in_id'], false);
+                $recursive_children = $this->IDEA_model->in_recursive_child_ids($child_in['in_id'], false);
                 if (in_array($parent_in['in_id'], $recursive_children)) {
                     return array(
                         'status' => 0,
-                        'message' => 'Tree already set as child, so it cannot be added as parent',
+                        'message' => 'Idea already set as child, so it cannot be added as parent',
                     );
                 }
                 */
@@ -374,12 +374,12 @@ class IDEA_model extends CI_Model
                 $child_in = $ins[0];
 
                 //Prevent parent duplicate:
-                $recursive_parents = $this->TREE_model->in_fetch_recursive_parents($parent_in['in_id']);
+                $recursive_parents = $this->IDEA_model->in_fetch_recursive_parents($parent_in['in_id']);
                 foreach ($recursive_parents as $grand_parent_ids) {
                     if (in_array($child_in['in_id'], $grand_parent_ids)) {
                         return array(
                             'status' => 0,
-                            'message' => 'Tree already set as parent, so it cannot be added as child',
+                            'message' => 'Idea already set as parent, so it cannot be added as child',
                         );
                     }
                 }
@@ -389,23 +389,23 @@ class IDEA_model extends CI_Model
             if (count($ins) < 1) {
                 return array(
                     'status' => 0,
-                    'message' => 'Invalid Linked Tree ID',
+                    'message' => 'Invalid Linked Idea ID',
                 );
-            } elseif (!in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7356') /* Tree Status Active */)) {
+            } elseif (!in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7356') /* Idea Status Active */)) {
                 return array(
                     'status' => 0,
-                    'message' => 'You can only link to active trees. This tree is not active.',
+                    'message' => 'You can only link to active ideas. This idea is not active.',
                 );
             }
 
             //All good so far, continue with linking:
             $in_new = $ins[0];
 
-            //Make sure this is not a duplicate Tree for its parent:
+            //Make sure this is not a duplicate Idea for its parent:
             $dup_links = $this->READ_model->ln_fetch(array(
-                'ln_previous_tree_id' => $parent_in['in_id'],
-                'ln_next_tree_id' => $child_in['in_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
+                'ln_previous_idea_id' => $parent_in['in_id'],
+                'ln_next_idea_id' => $child_in['in_id'],
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             ));
 
@@ -430,18 +430,18 @@ class IDEA_model extends CI_Model
 
         } else {
 
-            //We are NOT linking to an existing Tree, but instead, we're creating a new Tree
+            //We are NOT linking to an existing Idea, but instead, we're creating a new Idea
 
-            //Validate Tree Outcome:
-            $in_titlevalidation = $this->TREE_model->in_titlevalidate($in_title);
+            //Validate Idea Outcome:
+            $in_titlevalidation = $this->IDEA_model->in_titlevalidate($in_title);
             if(!$in_titlevalidation['status']){
                 //We had an error, return it:
                 return $in_titlevalidation;
             }
 
 
-            //Create new Tree:
-            $in_new = $this->TREE_model->in_create(array(
+            //Create new Idea:
+            $in_new = $this->IDEA_model->in_create(array(
                 'in_title' => $in_titlevalidation['in_cleaned_outcome'],
                 'in_type_source_id' => $in_type_source_id,
                 'in_status_source_id' => $new_in_status,
@@ -450,28 +450,28 @@ class IDEA_model extends CI_Model
         }
 
 
-        //Create Tree Link:
+        //Create Idea Link:
         if($link_to_in_id > 0){
 
             $relation = $this->READ_model->ln_create(array(
                 'ln_creator_source_id' => $ln_creator_source_id,
-                'ln_type_source_id' => 4228, //Tree Link Regular Read
-                ( $is_parent ? 'ln_next_tree_id' : 'ln_previous_tree_id' ) => $link_to_in_id,
-                ( $is_parent ? 'ln_previous_tree_id' : 'ln_next_tree_id' ) => $in_new['in_id'],
+                'ln_type_source_id' => 4228, //Idea Link Regular Read
+                ( $is_parent ? 'ln_next_idea_id' : 'ln_previous_idea_id' ) => $link_to_in_id,
+                ( $is_parent ? 'ln_previous_idea_id' : 'ln_next_idea_id' ) => $in_new['in_id'],
                 'ln_order' => 1 + $this->READ_model->ln_max_order(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
-                        'ln_previous_tree_id' => ( $is_parent ? $in_new['in_id'] : $link_to_in_id ),
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                        'ln_previous_idea_id' => ( $is_parent ? $in_new['in_id'] : $link_to_in_id ),
                     )),
             ), true);
 
             //Fetch and return full data to be properly shown on the UI using the echo_in() function
             $new_ins = $this->READ_model->ln_fetch(array(
-                ( $is_parent ? 'ln_next_tree_id' : 'ln_previous_tree_id' ) => $link_to_in_id,
-                ( $is_parent ? 'ln_previous_tree_id' : 'ln_next_tree_id' ) => $in_new['in_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
+                ( $is_parent ? 'ln_next_idea_id' : 'ln_previous_idea_id' ) => $link_to_in_id,
+                ( $is_parent ? 'ln_previous_idea_id' : 'ln_next_idea_id' ) => $in_new['in_id'],
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
             ), array(($is_parent ? 'in_parent' : 'in_child')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
@@ -501,8 +501,8 @@ class IDEA_model extends CI_Model
         foreach($this->READ_model->ln_fetch(array(
             'in_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7355' : 'en_ids_7356' ))) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7359' : 'en_ids_7360' ))) . ')' => null,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
-            'ln_next_tree_id' => $in_id,
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            'ln_next_idea_id' => $in_id,
         ), array('in_parent')) as $in_parent){
 
             //Prep ID:
@@ -515,7 +515,7 @@ class IDEA_model extends CI_Model
 
 
             //Fetch parents of parents:
-            $recursive_parents = $this->TREE_model->in_fetch_recursive_parents($p_id, false);
+            $recursive_parents = $this->IDEA_model->in_fetch_recursive_parents($p_id, false);
             if(count($recursive_parents) > 0){
                 if($first_level){
                     array_push($grand_parents, array_merge(array($p_id), $recursive_parents));
@@ -538,16 +538,16 @@ class IDEA_model extends CI_Model
 
         //Fetch parents:
         foreach($this->READ_model->ln_fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
-            'ln_previous_tree_id' => $in_id,
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            'ln_previous_idea_id' => $in_id,
         ), array('in_child')) as $child_in){
 
             array_push($child_ids, intval($child_in['in_id']));
 
             //Fetch parents of parents:
-            $recursive_children = $this->TREE_model->in_recursive_child_ids($child_in['in_id'], false);
+            $recursive_children = $this->IDEA_model->in_recursive_child_ids($child_in['in_id'], false);
 
             //Add to current array if we found anything:
             if(count($recursive_children) > 0){
@@ -567,25 +567,25 @@ class IDEA_model extends CI_Model
     function in_metadata_common_base($focus_in){
 
         //Set variables:
-        $is_first_in = ( !isset($focus_in['ln_id']) ); //First tree does not have a link, just the tree
-        $has_or_parent = in_array($focus_in['in_type_source_id'] , $this->config->item('en_ids_6193') /* OR Trees */ );
-        $or_children = array(); //To be populated only if $focus_in is an OR tree
+        $is_first_in = ( !isset($focus_in['ln_id']) ); //First idea does not have a link, just the idea
+        $has_or_parent = in_array($focus_in['in_type_source_id'] , $this->config->item('en_ids_6193') /* OR Ideas */ );
+        $or_children = array(); //To be populated only if $focus_in is an OR idea
         $conditional_steps = array(); //To be populated only for Conditional Reads
         $metadata_this = array(
-            '__in__metadata_common_steps' => array(), //The tree structure that would be shared with all users regardless of their quick replies (OR Tree Answers)
-            '__in__metadata_expansion_steps' => array(), //Trees that may exist as a link to expand an 🔴 READING LIST tree by answering OR trees
-            '__in__metadata_expansion_conditional' => array(), //Trees that may exist as a link to expand an 🔴 READING LIST tree via Conditional Read links
+            '__in__metadata_common_steps' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
+            '__in__metadata_expansion_steps' => array(), //Ideas that may exist as a link to expand an 🔴 READING LIST idea by answering OR ideas
+            '__in__metadata_expansion_conditional' => array(), //Ideas that may exist as a link to expand an 🔴 READING LIST idea via Conditional Read links
         );
 
         //Fetch children:
         foreach($this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
-            'ln_previous_tree_id' => $focus_in['in_id'],
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            'ln_previous_idea_id' => $focus_in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_in){
 
-            //Determine action based on parent tree type:
+            //Determine action based on parent idea type:
             if($child_in['ln_type_source_id']==4229){
 
                 //Conditional Read Link:
@@ -593,16 +593,16 @@ class IDEA_model extends CI_Model
 
             } elseif($has_or_parent){
 
-                //OR parent Tree with Fixed Read Link:
+                //OR parent Idea with Fixed Read Link:
                 array_push($or_children, intval($child_in['in_id']));
 
             } else {
 
-                //AND parent Tree with Fixed Read Link:
+                //AND parent Idea with Fixed Read Link:
                 array_push($metadata_this['__in__metadata_common_steps'], intval($child_in['in_id']));
 
                 //Go recursively down:
-                $child_recursion = $this->TREE_model->in_metadata_common_base($child_in);
+                $child_recursion = $this->IDEA_model->in_metadata_common_base($child_in);
 
 
                 //Aggregate recursion data:
@@ -642,7 +642,7 @@ class IDEA_model extends CI_Model
         //Save common base:
         if($is_first_in){
 
-            //Make sure to add main tree to common tree:
+            //Make sure to add main idea to common idea:
             if(count($metadata_this['__in__metadata_common_steps']) > 0){
                 $metadata_this['__in__metadata_common_steps'] = array_merge( array(intval($focus_in['in_id'])) , array($metadata_this['__in__metadata_common_steps']));
             } else {
@@ -695,9 +695,9 @@ class IDEA_model extends CI_Model
 
         $in__children = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
-            'ln_type_source_id' => 4228, //Tree Link Regular Read
-            'ln_previous_tree_id' => $in_id,
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+            'ln_type_source_id' => 4228, //Idea Link Regular Read
+            'ln_previous_idea_id' => $in_id,
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
 
@@ -713,7 +713,7 @@ class IDEA_model extends CI_Model
                 $in_has_sources = $this->READ_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                     'ln_type_source_id' => 4983,
-                    'ln_next_tree_id' => $in['in_id'],
+                    'ln_next_idea_id' => $in['in_id'],
                     'ln_parent_source_id' => $parent_en_id,
                 ));
 
@@ -725,7 +725,7 @@ class IDEA_model extends CI_Model
                         'ln_parent_source_id' => $parent_en_id,
                         'ln_type_source_id' => 4983,
                         'ln_content' => '@'.$parent_en_id,
-                        'ln_next_tree_id' => $in['in_id'],
+                        'ln_next_idea_id' => $in['in_id'],
                     ), true);
 
                     $applied_success++;
@@ -735,7 +735,7 @@ class IDEA_model extends CI_Model
                     //Has and must be removed:
                     $this->READ_model->ln_update($in_has_sources[0]['ln_id'], array(
                         'ln_status_source_id' => 6173,
-                    ), $ln_creator_source_id, 10678 /* Tree Pads Unlinked */);
+                    ), $ln_creator_source_id, 10678 /* Idea Pads Unlinked */);
 
                     $applied_success++;
 
@@ -748,7 +748,7 @@ class IDEA_model extends CI_Model
                 $in_has_parents = $this->READ_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                     'ln_type_source_id' => 4983,
-                    'ln_next_tree_id' => $in['in_id'],
+                    'ln_next_idea_id' => $in['in_id'],
                     'ln_parent_source_id' => $parent_en_id,
                 ));
 
@@ -760,7 +760,7 @@ class IDEA_model extends CI_Model
                         'ln_parent_source_id' => $parent_en_id,
                         'ln_type_source_id' => 4983,
                         'ln_content' => '@'.$parent_en_id,
-                        'ln_next_tree_id' => $in['in_id'],
+                        'ln_next_idea_id' => $in['in_id'],
                     ), true);
 
                     $applied_success++;
@@ -770,7 +770,7 @@ class IDEA_model extends CI_Model
                     //Has and must be removed:
                     $this->READ_model->ln_update($in_has_sources[0]['ln_id'], array(
                         'ln_status_source_id' => 6173,
-                    ), $ln_creator_source_id, 10678 /* Tree Pads Unlinked */);
+                    ), $ln_creator_source_id, 10678 /* Idea Pads Unlinked */);
 
                     $applied_success++;
 
@@ -785,11 +785,11 @@ class IDEA_model extends CI_Model
         $this->READ_model->ln_create(array(
             'ln_creator_source_id' => $ln_creator_source_id,
             'ln_type_source_id' => $action_en_id,
-            'ln_next_tree_id' => $in_id,
+            'ln_next_idea_id' => $in_id,
             'ln_metadata' => array(
                 'payload' => $_POST,
-                'trees_total' => count($in__children),
-                'trees_updated' => $applied_success,
+                'ideas_total' => count($in__children),
+                'ideas_updated' => $applied_success,
                 'command1' => $action_command1,
                 'command2' => $action_command2,
             ),
@@ -798,7 +798,7 @@ class IDEA_model extends CI_Model
         //Return results:
         return array(
             'status' => 1,
-            'message' => '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$applied_success . '/' . count($in__children) . ' trees updated</div>',
+            'message' => '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$applied_success . '/' . count($in__children) . ' ideas updated</div>',
         );
 
     }
@@ -818,16 +818,16 @@ class IDEA_model extends CI_Model
 
         foreach($this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
-            'ln_type_source_id' => 4228, //Fixed Tree Link
-            'ln_previous_tree_id' => $in_id,
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_type_source_id' => 4228, //Fixed Idea Link
+            'ln_previous_idea_id' => $in_id,
         ), array('in_child'), 0, 0, array(), 'in_id, in_weight') as $in_child){
-            $total_child_weights += $in_child['in_weight'] + $this->TREE_model->in_weight($in_child['in_id']);
+            $total_child_weights += $in_child['in_weight'] + $this->IDEA_model->in_weight($in_child['in_id']);
         }
 
         //Update This Level:
         if($total_child_weights > 0){
-            $this->db->query("UPDATE mench_tree SET in_weight=in_weight+".$total_child_weights." WHERE in_id=".$in_id.";");
+            $this->db->query("UPDATE mench_idea SET in_weight=in_weight+".$total_child_weights." WHERE in_id=".$in_id.";");
         }
 
         //Return data:
@@ -842,14 +842,14 @@ class IDEA_model extends CI_Model
          *
          * Generates additional insights like
          * min/max steps, time, cost and
-         * referenced sources in Tree Pads.
+         * referenced sources in Idea Pads.
          *
          * */
 
-        //Fetch this tree:
-        $ins = $this->TREE_model->in_fetch(array(
+        //Fetch this idea:
+        $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
         ));
         if(count($ins) < 1){
             return false;
@@ -860,15 +860,15 @@ class IDEA_model extends CI_Model
             return false;
         }
 
-        //Fetch common base and expansion paths from tree metadata:
+        //Fetch common base and expansion paths from idea metadata:
         $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
         $expansion_steps = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
         $locked_steps = ( isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0 ? $in_metadata['in__metadata_expansion_conditional'] : array() );
 
-        //Fetch totals for published common step trees:
-        $common_totals = $this->TREE_model->in_fetch(array(
+        //Fetch totals for published common step ideas:
+        $common_totals = $this->IDEA_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
         ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_read_time) as total_seconds');
 
         $common_base_resources = array(
@@ -878,15 +878,15 @@ class IDEA_model extends CI_Model
 
         $metadata_this = array(
 
-            //Required steps/trees range to complete tree:
+            //Required steps/ideas range to complete idea:
             '__in__metadata_min_steps' => $common_base_resources['steps'],
             '__in__metadata_max_steps' => $common_base_resources['steps'],
 
-            //Required time range to complete tree:
+            //Required time range to complete idea:
             '__in__metadata_min_seconds' => $common_base_resources['seconds'],
             '__in__metadata_max_seconds' => $common_base_resources['seconds'],
 
-            //Player references within Tree Pads:
+            //Player references within Idea Pads:
             '__in__metadata_experts' => array(),
             '__in__metadata_sources' => array(),
 
@@ -894,17 +894,17 @@ class IDEA_model extends CI_Model
 
 
 
-        //Add-up Tree Pads References:
+        //Add-up Idea Pads References:
         //The sources we need to check and see if they are industry experts:
         foreach ($this->READ_model->ln_fetch(array(
             'ln_parent_source_id >' => 0,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')).')' => null, //Tree Pads
-            '(ln_next_tree_id = ' . $in_id . ( count($flat_common_steps) > 0 ? ' OR ln_next_tree_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')).')' => null, //Idea Pads
+            '(ln_next_idea_id = ' . $in_id . ( count($flat_common_steps) > 0 ? ' OR ln_next_idea_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
         ), array('en_parent'), 0) as $pads_en) {
 
-            //Referenced source in Tree Pads... Fetch parents:
+            //Referenced source in Idea Pads... Fetch parents:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_child_source_id' => $pads_en['ln_parent_source_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Source Links
@@ -968,7 +968,7 @@ class IDEA_model extends CI_Model
 
             foreach($expansion_group as $expansion_in_id){
 
-                $metadata_recursion = $this->TREE_model->in_metadata_extra_insights($expansion_in_id, false);
+                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id, false);
 
                 if(!$metadata_recursion){
                     continue;
@@ -1059,7 +1059,7 @@ class IDEA_model extends CI_Model
          * */
 
 
-        //Validate this locked tree:
+        //Validate this locked idea:
         if(!in_is_unlockable($in)){
             return array();
         }
@@ -1070,9 +1070,9 @@ class IDEA_model extends CI_Model
         //Read 1: Is there an OR parent that we can simply answer and unlock?
         foreach($this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
-            'ln_type_source_id' => 4228, //Tree Link Regular Read
-            'ln_next_tree_id' => $in['in_id'],
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_type_source_id' => 4228, //Idea Link Regular Read
+            'ln_next_idea_id' => $in['in_id'],
             'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
         ), array('in_parent'), 0) as $in_or_parent){
             if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $in_or_parent['in_id'])) {
@@ -1084,13 +1084,13 @@ class IDEA_model extends CI_Model
         //Read 2: Are there any locked link parents that the user might be able to unlock?
         foreach($this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
-            'ln_type_source_id' => 4229, //Tree Link Locked Read
-            'ln_next_tree_id' => $in['in_id'],
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_type_source_id' => 4229, //Idea Link Locked Read
+            'ln_next_idea_id' => $in['in_id'],
         ), array('in_parent'), 0) as $in_locked_parent){
             if(in_is_unlockable($in_locked_parent)){
                 //Need to check recursively:
-                foreach($this->TREE_model->in_unlock_paths($in_locked_parent) as $locked_path){
+                foreach($this->IDEA_model->in_unlock_paths($in_locked_parent) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $locked_path['in_id'])) {
                         array_push($child_unlock_paths, $locked_path);
                     }
@@ -1103,7 +1103,7 @@ class IDEA_model extends CI_Model
 
         //Return if we have options for step 1 OR step 2:
         if(count($child_unlock_paths) > 0){
-            //Return OR parents for unlocking this tree:
+            //Return OR parents for unlocking this idea:
             return $child_unlock_paths;
         }
 
@@ -1111,9 +1111,9 @@ class IDEA_model extends CI_Model
         //Read 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
         $in__children = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Tree Status Public
-            'ln_type_source_id' => 4228, //Tree Link Regular Read
-            'ln_previous_tree_id' => $in['in_id'],
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_type_source_id' => 4228, //Idea Link Regular Read
+            'ln_previous_idea_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
         if(count($in__children) < 1){
             //No children, no path:
@@ -1125,7 +1125,7 @@ class IDEA_model extends CI_Model
             if(in_is_unlockable($child_in)){
 
                 //Need to check recursively:
-                foreach($this->TREE_model->in_unlock_paths($child_in) as $locked_path){
+                foreach($this->IDEA_model->in_unlock_paths($child_in) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $locked_path['in_id'])) {
                         array_push($child_unlock_paths, $locked_path);
                     }

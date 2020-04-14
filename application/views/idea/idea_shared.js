@@ -3,7 +3,7 @@
 function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
 
 
-    //Loads the tree search bar only once for the add tree inputs
+    //Loads the idea search bar only once for the add idea inputs
     if($(element_focus).hasClass('search-bar-loaded')){
         //Already loaded:
         return false;
@@ -14,10 +14,10 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
     $(element_focus).addClass('search-bar-loaded').on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if(is_add_mode=='link_in'){
-            in_link_or_create($(this).attr('tree-id'), is_in_parent, suggestion.alg_obj_id);
+            in_link_or_create($(this).attr('idea-id'), is_in_parent, suggestion.alg_obj_id);
         } else {
-            //Go to tree:
-            window.location = '/tree/' + suggestion.alg_obj_id;
+            //Go to idea:
+            window.location = '/idea/' + suggestion.alg_obj_id;
             return true;
         }
 
@@ -53,17 +53,17 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
             },
             header: function (data) {
                 if (is_add_mode=='link_in' && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('tree-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle tree add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 } else if(is_add_mode=='link_my_in'){
-                    return '<a href="javascript:in_create()" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle tree add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_create()" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
                 if(is_add_mode=='link_in'){
                     if($(element_focus).val().charAt(0)=='#'){
-                        return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('tree-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
+                        return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
                     } else {
-                        return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('tree-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle tree add-plus"></i></span><b>' + data.query + '</b></a>';
+                        return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                     }
                 }
             },
@@ -72,7 +72,7 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             if(is_add_mode=='link_in') {
-                return in_link_or_create($(this).attr('tree-id'), is_in_parent, 0);
+                return in_link_or_create($(this).attr('idea-id'), is_in_parent, 0);
             } else if(is_add_mode=='link_my_in') {
                 return in_create();
             }
