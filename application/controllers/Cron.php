@@ -6,13 +6,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
 
 * * * * *       /usr/bin/php /var/www/platform/index.php cron common_base
-45 1 19 * *     /usr/bin/php /var/www/platform/index.php cron algolia
 10,40 * * * *   /usr/bin/php /var/www/platform/index.php cron extra_insights
+10 8 * * 1      /usr/bin/php /var/www/platform/index.php cron weekly_coins
 20,50 * * * *   /usr/bin/php /var/www/platform/index.php cron icons
+45 9 * * *      /usr/bin/php /var/www/platform/index.php cron weights
+
 45 3 * * *      /usr/bin/php /var/www/platform/index.php cron gephi
 45 6 * * *      /usr/bin/php /var/www/platform/index.php cron metadatas
-45 9 * * *      /usr/bin/php /var/www/platform/index.php cron weights
-10 8 * * 1      /usr/bin/php /var/www/platform/index.php cron weekly_coins
+45 1 19 * *     /usr/bin/php /var/www/platform/index.php cron algolia
+
 
  * */
 

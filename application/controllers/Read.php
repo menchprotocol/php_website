@@ -82,7 +82,7 @@ class Read extends CI_Controller
     function next($in_id = 0){
 
         $session_en = superpower_assigned();
-        if(!isset($session_en['en_id']) || !$session_en['en_id']){
+        if(!$session_en){
             return redirect_message('/source/sign');
         }
 
