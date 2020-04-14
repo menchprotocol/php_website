@@ -444,11 +444,15 @@ $source__parents = $this->READ_model->ln_fetch(array(
             }
 
 
-            //Show Children by default if not parents:
-            $auto_expand_tab = !count($source__parents);
 
+            if(!$child_links[0]['totals']){
 
-            if($child_links[0]['totals']){
+                $source__children = array();
+
+            } else {
+
+                //Show Children by default if not parents:
+                $auto_expand_tab = !count($source__parents);
 
                 //Child List
                 $source__children = $this->READ_model->ln_fetch(array(
@@ -506,12 +510,8 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
             //Input to add new child:
             $this_tab .= '<div id="new-children" class="list-group-item itemsource no-side-padding '.superpower_active(10967).'">
-
-
         <div class="form-group is-empty"><input type="text" class="form-control new-source-input form-control-thick algolia_search dotransparent" data-lpignore="true" placeholder="+ SOURCE"></div>
         <div class="algolia_pad_search hidden"></div>
-        
-        
 </div>';
             $this_tab .= '</div>';
 
