@@ -1825,7 +1825,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-    $ui .= '<td class="'.( $session_en ? 'MENCHcolumn1' : 'MENCHcolumnFull' ).'">';
+    $ui .= '<td class="'.( superpower_active(10984, true) ? 'MENCHcolumnFull' : 'MENCHcolumn1' ).' fixedColumns">';
 
 
         $ui .= '<div class="block">';
@@ -1936,7 +1936,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     //READ
     $echo_in_stat_read = echo_in_stat_read($in);
-    $ui .= '<td class="MENCHcolumn2 read '.( !$echo_in_stat_read ? 'show-max' : '' ).'">';
+    $ui .= '<td class="MENCHcolumn2 fixedColumns read '.( !$echo_in_stat_read ? 'show-max' : '' ).'">';
     $ui .= $echo_in_stat_read;
     $ui .= '</td>';
 
@@ -1944,11 +1944,11 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
     //SOURCE
-    $ui .= '<td class="MENCHcolumn3 source">';
+    $ui .= '<td class="MENCHcolumn3 fixedColumns source">';
 
     //RIGHT EDITING:
     $ui .= '<div class="pull-right inline-block">';
-    $ui .= '<div class="pads-edit edit-off '.superpower_active(10939).'">';
+    $ui .= '<div class="pads-edit edit-off">';
 
     $ui .= '<span class="show-on-hover">';
 
