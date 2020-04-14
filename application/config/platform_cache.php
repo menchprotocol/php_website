@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-13 12:40:02 PST
+//Generated 2020-04-13 18:00:03 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1586806802;
-$config['cache_count_transaction'] = 1124474;
-$config['cache_count_read'] = 121012;
-$config['cache_count_tree'] = 3830;
-$config['cache_count_source'] = 9208;
+$config['cache_timestamp'] = 1586826003;
+$config['cache_count_transaction'] = 1124960;
+$config['cache_count_read'] = 120962;
+$config['cache_count_tree'] = 3833;
+$config['cache_count_source'] = 9211;
 
 
 
@@ -3830,7 +3830,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.33',
+        'm_desc' => '1.34',
         'm_parents' => array(6404),
     ),
     12363 => array(
@@ -6969,25 +6969,25 @@ $config['en_all_4737'] = array(
     12137 => array(
         'm_icon' => '<i class="fas fa-star tree" aria-hidden="true"></i>',
         'm_name' => 'FEATURED',
-        'm_desc' => '',
+        'm_desc' => 'Searchable & Browsable',
         'm_parents' => array(10648,12138,7356,7355,4737),
     ),
     6184 => array(
         'm_icon' => '<i class="fas fa-globe tree" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
-        'm_desc' => '',
+        'm_desc' => 'Readable',
         'm_parents' => array(10648,7355,7356,4737),
     ),
     6183 => array(
         'm_icon' => '<i class="far fa-spinner fa-spin tree" aria-hidden="true"></i>',
         'm_name' => 'DRAFTING',
-        'm_desc' => '',
+        'm_desc' => 'Not Yet Published',
         'm_parents' => array(10648,7356,4737),
     ),
     6182 => array(
         'm_icon' => '<i class="fad fa-trash-alt tree" aria-hidden="true"></i>',
         'm_name' => 'ARCHIVED',
-        'm_desc' => '',
+        'm_desc' => 'Removed',
         'm_parents' => array(10876,12655,12400,4593,12647,4737),
     ),
 );

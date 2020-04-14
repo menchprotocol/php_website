@@ -23,6 +23,7 @@ window['_fs_namespace'] = 'FS';
 
 
 //Facebook Messenger Auto-Login
+/*
 if(js_pl_id < 1){
 
     (function (d, s, id) {
@@ -59,7 +60,7 @@ if(js_pl_id < 1){
     };
 
 }
-
+*/
 
 //JS READ Creator:
 function js_ln_create(new_ln_data){
