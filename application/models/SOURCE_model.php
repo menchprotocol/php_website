@@ -629,7 +629,7 @@ class SOURCE_model extends CI_Model
         if (!$name_was_passed) {
 
             //Define unique URL identifier string:
-            $url_identified = substr(md5($url), 0, 16);
+            $url_identified = substr(md5($url), 0, 8);
 
             //Attempt to fetch from page if we have content:
             if($url_content){
@@ -716,14 +716,14 @@ class SOURCE_model extends CI_Model
 
             } elseif($ln_creator_source_id) {
 
+                $en_all_4592 = $this->config->item('en_all_4592');
                 if(!$page_title){
                     //Assign a generic source name:
-                    $en_all_4592 = $this->config->item('en_all_4592');
                     $page_title = $en_all_4592[$ln_type_source_id]['m_name'].' '.substr(md5($url), 0, 16);
                 }
 
                 //Create a new source for this URL ONLY If trainer source is provided...
-                $added_en = $this->SOURCE_model->en_verify_create($page_title, $ln_creator_source_id, 6181);
+                $added_en = $this->SOURCE_model->en_verify_create($page_title, $ln_creator_source_id, 6181, $en_all_4592[$ln_type_source_id]['m_icon']);
                 if($added_en['status']){
 
                     //All good:
@@ -736,6 +736,14 @@ class SOURCE_model extends CI_Model
                         'ln_parent_source_id' => $domain_source['en_domain']['en_id'],
                         'ln_child_source_id' => $en_url['en_id'],
                         'ln_content' => $url,
+                    ));
+
+                    //Also map to source type:
+                    $this->READ_model->ln_create(array(
+                        'ln_type_source_id' => 4230, //Raw Source Link
+                        'ln_creator_source_id' => $ln_creator_source_id,
+                        'ln_parent_source_id' => $ln_type_source_id,
+                        'ln_child_source_id' => $en_url['en_id'],
                     ));
 
                 } else {
