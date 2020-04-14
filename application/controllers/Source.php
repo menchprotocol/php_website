@@ -31,7 +31,7 @@ class Source extends CI_Controller
         $this->load->view('header', array(
             'title' => $en_all_2738[4536]['m_name'],
         ));
-        $this->load->view('source/source_leaderboard', array(
+        $this->load->view('source/source_home', array(
             'session_en' => $session_en,
         ));
         $this->load->view('footer');
