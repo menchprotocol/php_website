@@ -1129,38 +1129,34 @@ function echo_in_stat_read($in = array(), $en = array()){
     $CI =& get_instance();
     $ui = null;
 
-    if(superpower_active(10964, true)){
+    if(count($in)){
+        $item = $in;
+        $coin_filter = array(
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
+            'ln_previous_idea_id' => $in['in_id'],
+        );
+    } elseif(count($en)){
+        $item = $en;
+        $coin_filter = array(
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
+            'ln_creator_source_id' => $en['en_id'],
+        );
+    }
 
-        if(count($in)){
-            $item = $in;
-            $coin_filter = array(
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
-                'ln_previous_idea_id' => $in['in_id'],
-            );
-        } elseif(count($en)){
-            $item = $en;
-            $coin_filter = array(
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
-                'ln_creator_source_id' => $en['en_id'],
-            );
+    $read_coins = $CI->READ_model->ln_fetch($coin_filter, array(), 1, 0, array(), 'COUNT(ln_id) as totals');
+    if($read_coins[0]['totals'] > 0){
+
+        $ui .= '<span class="montserrat read"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($read_coins[0]['totals']).'</span>';
+
+        //If Progress Type then show progress here....
+        if(isset($item['ln_type_source_id']) && in_array($item['ln_type_source_id'], $CI->config->item('en_ids_12227'))){
+            $en_all_12227 = $CI->config->item('en_all_12227');
+            $ui .= '<div class="space-content">';
+            $ui .= '<span>' . $en_all_12227[$item['ln_type_source_id']]['m_icon'] . '&nbsp;</span>';
+            $ui .= '</div>';
         }
-
-        $read_coins = $CI->READ_model->ln_fetch($coin_filter, array(), 1, 0, array(), 'COUNT(ln_id) as totals');
-        if($read_coins[0]['totals'] > 0){
-
-            $ui .= '<span class="montserrat read '.superpower_active(10964).'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($read_coins[0]['totals']).'</span>';
-
-            //If Progress Type then show progress here....
-            if(isset($item['ln_type_source_id']) && in_array($item['ln_type_source_id'], $CI->config->item('en_ids_12227'))){
-                $en_all_12227 = $CI->config->item('en_all_12227');
-                $ui .= '<div class="space-content">';
-                $ui .= '<span class="' . superpower_active(10964).'">' . $en_all_12227[$item['ln_type_source_id']]['m_icon'] . '&nbsp;</span>';
-                $ui .= '</div>';
-            }
-        }
-
     }
 
     return $ui;
@@ -2157,7 +2153,7 @@ function echo_in_read_previous($in_id, $recipient_en){
 
             //Show the breadcrumb since it's connected:
             $ui .= '<div class="previous_reads hidden">';
-            $ui .= '<div class="read-topic"><span class="icon-block"><i class="fas fa-step-backward"></i></span>SELECT PREVIOUS:</div>';
+            $ui .= '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT PREVIOUS:</div>';
             $ui .= '<div class="list-group bottom-read-line">';
 
             $breadcrumb_items = array();
@@ -2271,7 +2267,7 @@ function echo_en($en, $is_parent = false, $extra_class = null)
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-    $ui .= '<td class="MENCHcolumn1">';
+    $ui .= '<td class="MENCHcolumn1 fixedColumns">';
 
 
 
@@ -2375,7 +2371,7 @@ function echo_en($en, $is_parent = false, $extra_class = null)
 
 
     //READ
-    $read_ui = '<td class="MENCHcolumn2 read">';
+    $read_ui = '<td class="MENCHcolumn2 fixedColumns read">';
     $read_ui .= echo_in_stat_read(array(), $en);
     $read_ui .= '</td>';
 
@@ -2385,7 +2381,7 @@ function echo_en($en, $is_parent = false, $extra_class = null)
 
 
     //IDEA
-    $in_ui = '<td class="MENCHcolumn3 source">';
+    $in_ui = '<td class="MENCHcolumn3 fixedColumns source">';
 
     //RIGHT EDITING:
     $in_ui .= '<div class="pull-right inline-block">';

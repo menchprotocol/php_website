@@ -196,6 +196,14 @@ class Source extends CI_Controller
             echo '</tr>';
 
         }
+
+        //Show Cached Totals:
+        echo '<tr>';
+        echo '<td class="source fixedColumns MENCHcolumn1" title="TOTAL '.$en_all_2738[4536]['m_icon'].'S: '.number_format($this->config->item('cache_count_source'), 0).'"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_source')).'</td>';
+        echo '<td class="source fixedColumns MENCHcolumn2" title="TOTAL '.$en_all_2738[4535]['m_icon'].'S: '.number_format($this->config->item('cache_count_idea'), 0).'"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_idea')).'</td>';
+        echo '<td class="source fixedColumns MENCHcolumn3" title="TOTAL '.$en_all_2738[6205]['m_icon'].'S: '.number_format($this->config->item('cache_count_read'), 0).'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_read')).'</td>';
+        echo '</tr>';
+
         echo '</table>';
     }
 
