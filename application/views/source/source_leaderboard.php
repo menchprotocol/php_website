@@ -15,7 +15,7 @@
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
             'ln_creator_source_id' => $session_en['en_id'],
-        ), array(), config_var(11064), 0, array(), 'COUNT(ln_id) as totals') as $my_en){
+        ), array('en_child')) as $my_en){
             echo echo_en($my_en,false);
         }
         echo '</div>';
