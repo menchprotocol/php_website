@@ -2114,7 +2114,7 @@ class READ_model extends CI_Model
 
                 //FILE UPLOAD
 
-                echo '<div class="readerUploader">';
+                echo '<div class="readerUploader previous_read">';
                 echo '<form class="box boxUpload" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
                 echo '<div class="file_saving_result">'.($previous_answers ? '<div class="read-topic"><span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR UPLOAD:</div>'.$previous_answers : '' ).'</div>';
@@ -2129,10 +2129,10 @@ class READ_model extends CI_Model
                     //Show Previous Button:
                     echo echo_in_read_previous($ins[0]['in_id'], $recipient_en);
 
-                    echo '<label class="btn btn-read inline-block" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD</label>';
+                    echo '<label class="btn btn-read inline-block previous_read" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD</label>';
 
                     //Show next here but keep hidden until file is uploaded:
-                    echo '<div class="go_next_upload hidden inline-block">';
+                    echo '<div class="go_next_upload hidden inline-block previous_read">';
                     echo_in_next($ins[0]['in_id'], $recipient_en, $push_message);
                     echo '</div>';
 
@@ -2142,7 +2142,7 @@ class READ_model extends CI_Model
                     echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
 
                     //File Replace:
-                    echo '<label class="btn btn-read inline-block" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> REPLACE</label>';
+                    echo '<label class="btn btn-read inline-block previous_read" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> REPLACE</label>';
 
                 }
 
