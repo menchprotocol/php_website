@@ -24,10 +24,9 @@
 
                 echo '<div class="list-group-item montserrat source"><span class="icon-block"><i class="far fa-search-plus source"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
 
-                echo '<tr class="see_more_who"></tr>';
-
             }
-            echo '<div class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">'.echo_en($my_en,false).'</div>';
+
+            echo echo_en($my_en,false, ( $count<$show_max ? '' : 'see_more_who hidden'));
 
         }
         echo '</div>';
