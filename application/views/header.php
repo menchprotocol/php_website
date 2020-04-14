@@ -230,7 +230,7 @@ if(!isset($hide_header)){
 
                             }
                         } else {
-                            echo '<b class="montserrat">MENCH</b>';
+                            echo '<b class="montserrat text-logo">MENCH</b>';
                         }
                         echo '</div>';
                         ?>
