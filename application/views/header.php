@@ -182,11 +182,13 @@ if(!isset($hide_header)){
                                 }
 
 
-                                echo '<a class="btn ' . $this_mench['x_class'] . ' mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'].($is_current_mench ? ' focustab ' : '').'" ' . $primary_url . '>';
+                                echo '<div class="mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'].($is_current_mench ? ' focustab ' : '').'">';
+                                echo '<a class="btn ' . $this_mench['x_class'] . '" ' . $primary_url . '>';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $this_mench['x_class'] . '_name '.( $is_current_mench ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;</span>';
                                 echo '<span class="montserrat" title="'.$item_count.'">'.echo_number($item_count).'</span>';
                                 echo '</a>';
+                                echo '</div>';
 
                             }
                         } else {
