@@ -138,7 +138,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $tab_is_active = true;
 
             //List child trees:
-            //$this_tab .= '<div class="read-topic"><span class="icon-block"><i class="fad fa-step-forward"></i></span>NEXT:</div>';
+            //$this_tab .= '<div class="read-topic"><span class="icon-block">&nbsp;</span>NEXT:</div>';
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group next_ins">';
             foreach ($in__children as $child_in) {
                 $this_tab .= echo_in($child_in, $in['in_id'], false, $is_author);

@@ -1964,11 +1964,11 @@ class READ_model extends CI_Model
                     //HTML:
                     if ($ins[0]['in_type_source_id'] == 6684) {
 
-                        echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE:</div>';
+                        echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
 
                     } elseif ($ins[0]['in_type_source_id'] == 7231) {
 
-                        echo '<div class="read-topic"><span class="icon-block"><i class="fas fa-hand-pointer"></i></span>SELECT ONE OR MORE:</div>';
+                        echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</div>';
 
                     }
 
