@@ -229,6 +229,8 @@ if(!isset($hide_header)){
                                 echo '</div>';
 
                             }
+                        } else {
+                            echo '<b class="montserrat">MENCH</b>';
                         }
                         echo '</div>';
                         ?>
