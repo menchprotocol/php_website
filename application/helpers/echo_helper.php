@@ -1166,32 +1166,28 @@ function echo_in_stat_source($in_id = 0, $en_id = 0){
 
     $CI =& get_instance();
 
-    if(superpower_active(10983, true) || $en_id){
+    if($in_id){
+        $mench = 'source';
+        $join_objects = array();
+        $coin_filter = array(
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+            'ln_next_idea_id' => $in_id,
+        );
+    } elseif($en_id){
+        $mench = 'idea';
+        $join_objects = array('in_child');
+        $coin_filter = array(
+            'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+            'ln_parent_source_id' => $en_id,
+        );
+    }
 
-        if($in_id){
-            $mench = 'source';
-            $join_objects = array();
-            $coin_filter = array(
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-                'ln_next_idea_id' => $in_id,
-            );
-        } elseif($en_id){
-            $mench = 'idea';
-            $join_objects = array('in_child');
-            $coin_filter = array(
-                'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-                'ln_parent_source_id' => $en_id,
-            );
-        }
-
-        $source_coins = $CI->READ_model->ln_fetch($coin_filter, $join_objects, 0, 0, array(), 'COUNT(ln_id) as totals');
-        if($source_coins[0]['totals'] > 0){
-            return '<span class="montserrat '.$mench.' '.( $in_id ? superpower_active(10983) : '' ).'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($source_coins[0]['totals']).'</span>';
-        }
-
+    $source_coins = $CI->READ_model->ln_fetch($coin_filter, $join_objects, 0, 0, array(), 'COUNT(ln_id) as totals');
+    if($source_coins[0]['totals'] > 0){
+        return '<span class="montserrat '.$mench.'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($source_coins[0]['totals']).'</span>';
     }
 
     return null;
