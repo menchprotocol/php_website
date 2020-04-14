@@ -736,16 +736,12 @@ textarea.pads-textarea{
 }
 .ln_content img, .i_content img { max-width: 100%; }
 
-td.MENCHcolumnFull{ width: 100%; }
-td.MENCHcolumn1{ width: 74%; }
-td.MENCHcolumn2{ width: 13%; }
-td.MENCHcolumn12{ width:87%; }
-td.MENCHcolumn3{ width: 13%; }
 
-.equal-columns td.MENCHcolumn1{ width: 33.3%; }
-.equal-columns td.MENCHcolumn2{ width: 33.3%; }
-.equal-columns td.MENCHcolumn12{ width: 66.6%; }
-.equal-columns td.MENCHcolumn3{ width: 33.3%; }
+td.MENCHcolumn12 { width: 87%; }
+td.MENCHcolumn1  { width: 74%; }
+td.MENCHcolumn2  { width: 13%; }
+td.MENCHcolumn3  { width: 13%; }
+
 
 .tablepadded td{
     padding:10px 0 !important;
@@ -1329,12 +1325,11 @@ label {
     .avatar-item { width:110px !important; padding:10px 0 !important; }
     .avatar-item .avatar-icon { font-size: 2.4em; }
 
-    td.MENCHcolumn1:not(.fixedColumns), td.MENCHcolumn2:not(.fixedColumns), td.MENCHcolumn3:not(.fixedColumns){ width: 100%; display: block; }
+    td.MENCHcolumn12 { width: 79%; }
+    td.MENCHcolumn1  { width: 58%; }
+    td.MENCHcolumn2  { width: 21%; }
+    td.MENCHcolumn3  { width: 21%; }
 
-    td.MENCHcolumn1{ width: 58%; }
-    td.MENCHcolumn2{ width: 21%; }
-    td.MENCHcolumn12{ width:79%; }
-    td.MENCHcolumn3{ width: 21%; }
 
     .ln_content { max-width: 100%; }
     .texttype_4736_sm {

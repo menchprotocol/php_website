@@ -1821,7 +1821,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-    $ui .= '<td class="'.( superpower_active(10984, true) ? 'MENCHcolumnFull' : 'MENCHcolumn1' ).' fixedColumns">';
+    $ui .= '<td class="MENCHcolumn1">';
 
 
         $ui .= '<div class="block">';
@@ -1931,21 +1931,19 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
 
     //READ
-    $echo_in_stat_read = echo_in_stat_read($in);
-    $ui .= '<td class="MENCHcolumn2 fixedColumns read '.( !$echo_in_stat_read ? 'show-max' : '' ).'">';
-    $ui .= $echo_in_stat_read;
+    $ui .= '<td class="MENCHcolumn2 read">';
+    $ui .= echo_in_stat_read($in);
     $ui .= '</td>';
 
 
 
 
     //SOURCE
-    $ui .= '<td class="MENCHcolumn3 fixedColumns source">';
+    $ui .= '<td class="MENCHcolumn3 source">';
 
     //RIGHT EDITING:
-    $ui .= '<div class="pull-right inline-block">';
+    $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
     $ui .= '<div class="pads-edit edit-off">';
-
     $ui .= '<span class="show-on-hover">';
 
     if($is_in_link){
@@ -2265,7 +2263,7 @@ function echo_en($en, $is_parent = false, $extra_class = null)
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-    $ui .= '<td class="MENCHcolumn1 fixedColumns">';
+    $ui .= '<td class="MENCHcolumn1">';
 
 
 
@@ -2369,7 +2367,7 @@ function echo_en($en, $is_parent = false, $extra_class = null)
 
 
     //READ
-    $read_ui = '<td class="MENCHcolumn2 fixedColumns read">';
+    $read_ui = '<td class="MENCHcolumn2 read">';
     $read_ui .= echo_in_stat_read(array(), $en);
     $read_ui .= '</td>';
 
@@ -2379,7 +2377,7 @@ function echo_en($en, $is_parent = false, $extra_class = null)
 
 
     //IDEA
-    $in_ui = '<td class="MENCHcolumn3 fixedColumns source">';
+    $in_ui = '<td class="MENCHcolumn3 source">';
 
     //RIGHT EDITING:
     $in_ui .= '<div class="pull-right inline-block">';
@@ -2546,8 +2544,6 @@ function echo_navigation_menu($cache_en_id){
 
             //Profile Page:
             $page_url = '/source/'.$session_en['en_id'];
-            $m['m_icon'] = $session_en['en_icon'];
-            $m['m_name'] = $session_en['en_name'];
 
         } else {
 

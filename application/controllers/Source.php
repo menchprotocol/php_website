@@ -166,12 +166,12 @@ class Source extends CI_Controller
 
 
             //SOURCE
-            echo '<td class="source fixedColumns MENCHcolumn1"><span class="icon-block en_ui_icon_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.'<a href="/source/'.$ln['en_id'].'" class="montserrat source title-block title-no-right en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
+            echo '<td class="source MENCHcolumn1"><span class="icon-block en_ui_icon_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.'<a href="/source/'.$ln['en_id'].'" class="montserrat source title-block title-no-right en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
 
 
 
             //IDEA
-            echo '<td class="idea fixedColumns MENCHcolumn3">'.
+            echo '<td class="idea MENCHcolumn3">'.
 
                 ( $session_en
 
@@ -186,7 +186,7 @@ class Source extends CI_Controller
 
 
             //READ
-            echo '<td class="read fixedColumns MENCHcolumn2">';
+            echo '<td class="read MENCHcolumn2">';
             if($read_coins[0]['totals'] > 0){
                 echo ( $session_en ? '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_6255')).'&ln_creator_source_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['totals']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['totals']).'</span>' );
             }
@@ -201,9 +201,9 @@ class Source extends CI_Controller
         echo '<tr></tr>';
 
         echo '<tr>';
-        echo '<td class="source fixedColumns MENCHcolumn1 montserrat" title="'.number_format($this->config->item('cache_count_source'), 0).'"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_source')).'<span class="coin-type">'.$en_all_2738[4536]['m_name'].'S</span></td>';
-        echo '<td class="idea fixedColumns MENCHcolumn2 montserrat" title="'.number_format($this->config->item('cache_count_idea'), 0).'"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_idea')).'<span class="coin-type">'.$en_all_2738[4535]['m_name'].'S</span></td>';
-        echo '<td class="read fixedColumns MENCHcolumn3 montserrat" title="'.number_format($this->config->item('cache_count_read'), 0).'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_read')).'<span class="coin-type">'.$en_all_2738[6205]['m_name'].'S</span></td>';
+        echo '<td class="source MENCHcolumn1 montserrat" title="'.number_format($this->config->item('cache_count_source'), 0).'"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_source')).'<span class="coin-type">'.$en_all_2738[4536]['m_name'].'S</span></td>';
+        echo '<td class="idea MENCHcolumn2 montserrat" title="'.number_format($this->config->item('cache_count_idea'), 0).'"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_idea')).'<span class="coin-type">'.$en_all_2738[4535]['m_name'].'S</span></td>';
+        echo '<td class="read MENCHcolumn3 montserrat" title="'.number_format($this->config->item('cache_count_read'), 0).'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_read')).'<span class="coin-type">'.$en_all_2738[6205]['m_name'].'S</span></td>';
         echo '</tr>';
 
         echo '</table>';

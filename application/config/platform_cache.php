@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-13 21:44:37 PST
+//Generated 2020-04-14 15:48:41 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1586839477;
-$config['cache_count_transaction'] = 1125715;
-$config['cache_count_read'] = 120963;
-$config['cache_count_idea'] = 3831;
-$config['cache_count_source'] = 9210;
+$config['cache_timestamp'] = 1586904521;
+$config['cache_count_transaction'] = 1126557;
+$config['cache_count_read'] = 120993;
+$config['cache_count_idea'] = 3832;
+$config['cache_count_source'] = 9211;
 
 
 
@@ -3806,7 +3806,7 @@ $config['en_all_6404'] = array(
     11064 => array(
         'm_icon' => '',
         'm_name' => 'ITEMS PER PAGE',
-        'm_desc' => '50',
+        'm_desc' => '100',
         'm_parents' => array(6404),
     ),
     11065 => array(
