@@ -1750,17 +1750,16 @@ class READ_model extends CI_Model
                 $metadata = unserialize($ins[0]['in_metadata']);
                 $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
-                //IDEA TITLE
-                echo '<div class="previous_reads">';
-
-
-
+                //READ PROGRESS
                 if($completion_rate['completion_percentage']>0){
                     echo '<div class="progress-bg no-horizonal-margin" title="You are '.$completion_rate['completion_percentage'].'% done as you have read '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($ins[0], true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
                 }
 
-
+                //READ TITLE
                 echo '<div style="padding-top:6px;"><span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span><h1 class="inline-block block-one">' . echo_in_title($ins[0]) . '</h1></div>';
+
+
+                echo '<div class="previous_reads">';
 
 
                 if(count($read_completes) > 0){
