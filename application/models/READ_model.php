@@ -2090,7 +2090,7 @@ class READ_model extends CI_Model
 
                 echo '<div class="previous_reads"><textarea class="border i_content padded read_input" placeholder="Your Answer Here..." id="read_text_answer">'.( $previous_answers ? $read_completes[0]['ln_content'] : '' ).'</textarea></div>';
 
-                echo '<div class="text_saving_result margin-top-down previous_reads"></div>'
+                echo '<div class="text_saving_result margin-top-down previous_reads"></div>';
 
                 //Show Previous Button:
                 echo echo_in_read_previous($ins[0]['in_id'], $recipient_en);
@@ -2140,8 +2140,6 @@ class READ_model extends CI_Model
                     echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
 
                 }
-
-
 
             } else {
 
