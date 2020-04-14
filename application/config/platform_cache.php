@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-13 19:53:03 PST
+//Generated 2020-04-13 19:54:18 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1586832783;
-$config['cache_count_transaction'] = 1125263;
+$config['cache_timestamp'] = 1586832858;
+$config['cache_count_transaction'] = 1125272;
 $config['cache_count_read'] = 120962;
 $config['cache_count_tree'] = 3831;
 $config['cache_count_source'] = 9210;
@@ -196,7 +196,7 @@ $config['en_all_12012'] = array(
         'm_parents' => array(12012,10686,10678,10673,6186),
     ),
     6176 => array(
-        'm_icon' => '<i class="fad fa-globe" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(12012,7360,7359,6186),
@@ -3959,7 +3959,7 @@ $config['en_all_11054'] = array(
         'm_parents' => array(11054,6204,5003,6160,6232,6194,6206,4527),
     ),
     7357 => array(
-        'm_icon' => '<i class="fad fa-globe" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe" aria-hidden="true"></i>',
         'm_name' => 'SOURCE STATUS PUBLIC',
         'm_desc' => '',
         'm_parents' => array(12572,11054,4527),
@@ -5268,7 +5268,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,12572),
     ),
     7357 => array(
-        'm_icon' => '<i class="fad fa-globe" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe" aria-hidden="true"></i>',
         'm_name' => 'SOURCE STATUS PUBLIC',
         'm_desc' => '',
         'm_parents' => array(12572,11054,4527),
@@ -6587,7 +6587,7 @@ $config['en_all_7360'] = array(
         'm_parents' => array(7360,7359,6186),
     ),
     6176 => array(
-        'm_icon' => '<i class="fad fa-globe" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(12012,7360,7359,6186),
@@ -6604,7 +6604,7 @@ $config['en_all_7359'] = array(
         'm_parents' => array(7360,7359,6186),
     ),
     6176 => array(
-        'm_icon' => '<i class="fad fa-globe" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(12012,7360,7359,6186),
@@ -6627,7 +6627,7 @@ $config['en_all_7358'] = array(
         'm_parents' => array(12575,10654,7358,7357,6177),
     ),
     6181 => array(
-        'm_icon' => '<i class="fad fa-globe source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe source" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(10654,7358,7357,6177),
@@ -6644,7 +6644,7 @@ $config['en_all_7357'] = array(
         'm_parents' => array(12575,10654,7358,7357,6177),
     ),
     6181 => array(
-        'm_icon' => '<i class="fad fa-globe source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe source" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(10654,7358,7357,6177),
@@ -6667,7 +6667,7 @@ $config['en_all_7356'] = array(
         'm_parents' => array(10648,12138,7356,7355,4737),
     ),
     6184 => array(
-        'm_icon' => '<i class="fad fa-globe tree" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe tree" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(10648,7355,7356,4737),
@@ -6684,7 +6684,7 @@ $config['en_all_7355'] = array(
         'm_parents' => array(10648,12138,7356,7355,4737),
     ),
     6184 => array(
-        'm_icon' => '<i class="fad fa-globe tree" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe tree" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(10648,7355,7356,4737),
@@ -6729,7 +6729,7 @@ $config['en_all_6186'] = array(
         'm_parents' => array(7360,7359,6186),
     ),
     6176 => array(
-        'm_icon' => '<i class="fad fa-globe" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(12012,7360,7359,6186),
@@ -6973,7 +6973,7 @@ $config['en_all_4737'] = array(
         'm_parents' => array(10648,12138,7356,7355,4737),
     ),
     6184 => array(
-        'm_icon' => '<i class="fad fa-globe tree" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe tree" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => 'Readable',
         'm_parents' => array(10648,7355,7356,4737),
@@ -7002,7 +7002,7 @@ $config['en_all_6177'] = array(
         'm_parents' => array(12575,10654,7358,7357,6177),
     ),
     6181 => array(
-        'm_icon' => '<i class="fad fa-globe source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe source" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
         'm_desc' => '',
         'm_parents' => array(10654,7358,7357,6177),
