@@ -2117,12 +2117,15 @@ class READ_model extends CI_Model
                 echo '<div class="readerUploader previous_read">';
                 echo '<form class="box boxUpload" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-                echo '<div class="file_saving_result">'.($previous_answers ? '<div class="read-topic"><span class="icon-block-sm"><i class="fas fa-history"></i></span>YOUR UPLOAD:</div>'.$previous_answers : '' ).'</div>';
+                echo '<div class="file_saving_result">'.($previous_answers ? '<div class="read-topic"><span class="icon-block-sm">&nbsp;</span>YOUR UPLOAD:</div>'.$previous_answers : '' ).'</div>';
 
                 echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_source_id'].'" />';
 
                 echo '</form>';
                 echo '</div>';
+
+
+
 
                 if(!count($read_completes)) {
 
@@ -2145,6 +2148,8 @@ class READ_model extends CI_Model
                     echo '<label class="btn btn-read inline-block previous_read" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> REPLACE</label>';
 
                 }
+
+
 
             } else {
 
