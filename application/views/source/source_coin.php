@@ -430,6 +430,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
             ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
             $counter = $child_links[0]['totals'];
 
+            if(!$counter && !superpower_active(10967, true)){
+                continue;
+            }
+
 
             $source__children = $this->READ_model->ln_fetch(array(
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
@@ -440,34 +444,37 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
 
 
 
-            //Fetch current count for each status from DB:
-            $source_count = $this->SOURCE_model->en_child_count($source['en_id'], $this->config->item('en_ids_7358') /* Source Status Active */);
-            $child_en_filters = $this->READ_model->ln_fetch(array(
-                'ln_parent_source_id' => $source['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-            ), array('en_child'), 0, 0, array('en_status_source_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_source_id', 'en_status_source_id');
+            //Source Status Filters:
+            if($counter && superpower_active(10986, true)){
+                $source_count = $this->SOURCE_model->en_child_count($source['en_id'], $this->config->item('en_ids_7358') /* Source Status Active */);
+                $child_en_filters = $this->READ_model->ln_fetch(array(
+                    'ln_parent_source_id' => $source['en_id'],
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                ), array('en_child'), 0, 0, array('en_status_source_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_source_id', 'en_status_source_id');
 
-            //Only show filtering UI if we find child sources with different Status (Otherwise no need to filter):
-            if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $source_count) {
+                //Only show filtering UI if we find child sources with different Status (Otherwise no need to filter):
+                if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $source_count) {
 
-                //Load status definitions:
-                $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
+                    //Load status definitions:
+                    $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
 
-                //Add 2nd Navigation to UI
-                $this_tab .= '<div class="nav nav-pills nav-sm '.superpower_active(10986).'">';
+                    //Add 2nd Navigation to UI
+                    $this_tab .= '<div class="nav nav-pills nav-sm '.superpower_active(10986).'">';
 
-                //Show fixed All button:
-                $this_tab .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk"></i><span class="show-max"> All</span> <span class="counter-11029">' . $source_count . '</span></a></li>';
+                    //Show fixed All button:
+                    $this_tab .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk"></i><span class="show-max"> All</span> <span class="counter-11029">' . $source_count . '</span></a></li>';
 
-                //Show each specific filter based on DB counts:
-                foreach ($child_en_filters as $c_c) {
-                    $st = $en_all_6177[$c_c['en_status_source_id']];
-                    $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_source_id'] . '" onclick="en_filter_status(' . $c_c['en_status_source_id'] . ')" class="nav-link u-status-filter u-status-' . $c_c['en_status_source_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="show-max"> ' . $st['m_name'] . '</span> <span class="count-u-status-' . $c_c['en_status_source_id'] . '">' . $c_c['totals'] . '</span></a></li>';
+                    //Show each specific filter based on DB counts:
+                    foreach ($child_en_filters as $c_c) {
+                        $st = $en_all_6177[$c_c['en_status_source_id']];
+                        $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_source_id'] . '" onclick="en_filter_status(' . $c_c['en_status_source_id'] . ')" class="nav-link u-status-filter u-status-' . $c_c['en_status_source_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="show-max"> ' . $st['m_name'] . '</span> <span class="count-u-status-' . $c_c['en_status_source_id'] . '">' . $c_c['totals'] . '</span></a></li>';
+                    }
+
+                    $this_tab .= '</div>';
+
                 }
-
-                $this_tab .= '</div>';
 
             }
 
