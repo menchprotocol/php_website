@@ -19,7 +19,7 @@ class Ledger extends CI_Controller
         /*
          *
          * List all Links on reverse chronological order
-         * and Display Status for trees, sources and
+         * and Display Status for ideas, sources and
          * links.
          *
          * */

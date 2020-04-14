@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class TREE_model extends CI_Model
+class IDEA_model extends CI_Model
 {
 
     /*

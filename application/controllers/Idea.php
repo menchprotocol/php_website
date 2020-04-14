@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Tree extends CI_Controller {
+class Idea extends CI_Controller {
 
     function __construct()
     {
@@ -15,7 +15,7 @@ class Tree extends CI_Controller {
 
     function in_create(){
 
-        $en_all_6201 = $this->config->item('en_all_6201'); //Tree Table
+        $en_all_6201 = $this->config->item('en_all_6201'); //Idea Table
         $session_en = superpower_assigned(10939);
         if (!$session_en) {
 
@@ -24,7 +24,7 @@ class Tree extends CI_Controller {
                 'message' => 'Expired Session or Missing Superpower',
             ));
 
-        } elseif (!isset($_POST['newTreeTitle'])) {
+        } elseif (!isset($_POST['newIdeaTitle'])) {
 
             //Do not treat this case as error as it could happen in moving Messages between types:
             return echo_json(array(
@@ -35,21 +35,21 @@ class Tree extends CI_Controller {
         }
 
         //Validate Title:
-        $in_titlevalidation = $this->TREE_model->in_titlevalidate($_POST['newTreeTitle']);
+        $in_titlevalidation = $this->IDEA_model->in_titlevalidate($_POST['newIdeaTitle']);
         if(!$in_titlevalidation['status']){
             //We had an error, return it:
             return echo_json($in_titlevalidation);
         }
 
 
-        //Create Tree:
-        $in = $this->TREE_model->in_link_or_create($in_titlevalidation['in_cleaned_outcome'], $session_en['en_id']);
+        //Create Idea:
+        $in = $this->IDEA_model->in_link_or_create($in_titlevalidation['in_cleaned_outcome'], $session_en['en_id']);
 
         //Also add to bookmarks:
         $this->READ_model->ln_create(array(
-            'ln_type_source_id' => 10573, //Tree Bookmarks
+            'ln_type_source_id' => 10573, //Idea Bookmarks
             'ln_creator_source_id' => $session_en['en_id'],
-            'ln_next_tree_id' => $in['new_in_id'],
+            'ln_next_idea_id' => $in['new_in_id'],
             'ln_parent_source_id' => $session_en['en_id'],
             'ln_content' => '@'.$session_en['en_id'],
         ), true);
@@ -63,25 +63,25 @@ class Tree extends CI_Controller {
     }
 
     function index(){
-        //Tree Bookmarks
+        //Idea Bookmarks
         $session_en = superpower_assigned(null, true);
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
         $this->load->view('header', array(
             'title' => $en_all_2738[4535]['m_name'],
             'session_en' => $session_en,
         ));
-        $this->load->view('tree/tree_bookmarks');
+        $this->load->view('idea/idea_bookmarks');
         $this->load->view('footer');
     }
 
-    function tree_coin($in_id){
+    function idea_coin($in_id){
 
-        //Validate/fetch Tree:
-        $ins = $this->TREE_model->in_fetch(array(
+        //Validate/fetch Idea:
+        $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $in_id,
         ));
         if ( count($ins) < 1) {
-            return redirect_message('/', '<div class="alert alert-danger" role="alert">TREE #' . $in_id . ' Not Found</div>');
+            return redirect_message('/', '<div class="alert alert-danger" role="alert">IDEA #' . $in_id . ' Not Found</div>');
         }
 
         //Make sure user is logged in
@@ -95,7 +95,7 @@ class Tree extends CI_Controller {
         if (superpower_assigned(10985) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
 
             //Process mass action:
-            $process_mass_action = $this->TREE_model->in_mass_update($in_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
+            $process_mass_action = $this->IDEA_model->in_mass_update($in_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
 
             //Pass-on results to UI:
             $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-success' : 'alert-danger' ).'" role="alert">'.$process_mass_action['message'].'</div>';
@@ -108,8 +108,8 @@ class Tree extends CI_Controller {
             $this->session->set_userdata('session_page_count', $new_order);
             $this->READ_model->ln_create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id' => 4993, //Trainer Opened Tree
-                'ln_next_tree_id' => $in_id,
+                'ln_type_source_id' => 4993, //Trainer Opened Idea
+                'ln_next_idea_id' => $in_id,
                 'ln_order' => $new_order,
             ));
 
@@ -119,11 +119,11 @@ class Tree extends CI_Controller {
 
         //Load views:
         $this->load->view('header', array(
-            'title' => $ins[0]['in_title'].' | TREE',
+            'title' => $ins[0]['in_title'].' | IDEA',
             'in' => $ins[0],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
-        $this->load->view('tree/tree_coin', array(
+        $this->load->view('idea/idea_coin', array(
             'in' => $ins[0],
             'session_en' => $session_en,
         ));
@@ -146,7 +146,7 @@ class Tree extends CI_Controller {
         } elseif (!isset($_POST['starting_in']) || intval($_POST['starting_in']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Starting Tree',
+                'message' => 'Missing Starting Idea',
             ));
         } elseif (!isset($_POST['depth_levels']) || intval($_POST['depth_levels']) < 1) {
             return echo_json(array(
@@ -155,22 +155,22 @@ class Tree extends CI_Controller {
             ));
         }
 
-        //Fetch/Validate tree:
-        $ins = $this->TREE_model->in_fetch(array(
+        //Fetch/Validate idea:
+        $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $_POST['starting_in'],
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
         ));
         if(count($ins) != 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Could not find tree #'.$_POST['starting_in'],
+                'message' => 'Could not find idea #'.$_POST['starting_in'],
             ));
         }
 
 
-        //Load AND/OR Trees:
-        $en_all_7585 = $this->config->item('en_all_7585'); // Tree Subtypes
-        $en_all_4737 = $this->config->item('en_all_4737'); // Tree Status
+        //Load AND/OR Ideas:
+        $en_all_7585 = $this->config->item('en_all_7585'); // Idea Subtypes
+        $en_all_4737 = $this->config->item('en_all_4737'); // Idea Status
 
 
         //Return report:
@@ -190,9 +190,9 @@ class Tree extends CI_Controller {
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id' => 12450,
             'ln_creator_source_id' => $session_en['en_id'],
-            'ln_next_tree_id' => $in_id,
+            'ln_next_idea_id' => $in_id,
         )))){
-            return redirect_message('/tree/'.$in_id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>You have already requested to join this tree. No further action is necessary.</div>');
+            return redirect_message('/idea/'.$in_id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>You have already requested to join this idea. No further action is necessary.</div>');
 
         }
 
@@ -200,11 +200,11 @@ class Tree extends CI_Controller {
         $this->READ_model->ln_create(array(
             'ln_type_source_id' => 12450,
             'ln_creator_source_id' => $session_en['en_id'],
-            'ln_next_tree_id' => $in_id,
+            'ln_next_idea_id' => $in_id,
         ));
 
-        //Go back to tree:
-        return redirect_message('/tree/'.$in_id, '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-thumbs-up"></i></span>Successfully submitted your request to join as an author of this tree. You will receive a confirmation once your request has been reviewed.</div>');
+        //Go back to idea:
+        return redirect_message('/idea/'.$in_id, '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-thumbs-up"></i></span>Successfully submitted your request to join as an author of this idea. You will receive a confirmation once your request has been reviewed.</div>');
 
     }
 
@@ -213,17 +213,17 @@ class Tree extends CI_Controller {
         //Make sure it's a logged in trainer:
         $session_en = superpower_assigned(10985, true);
 
-        //Tree Author:
+        //Idea Author:
         $this->READ_model->ln_create(array(
             'ln_type_source_id' => 4983,
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_parent_source_id' => $session_en['en_id'],
             'ln_content' => '@'.$session_en['en_id'],
-            'ln_next_tree_id' => $in_id,
+            'ln_next_idea_id' => $in_id,
         ));
 
-        //Go back to tree:
-        return redirect_message('/tree/'.$in_id, '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-thumbs-up"></i></span>SUCCESSFULLY JOINED</div>');
+        //Go back to idea:
+        return redirect_message('/idea/'.$in_id, '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-thumbs-up"></i></span>SUCCESSFULLY JOINED</div>');
 
     }
 
@@ -250,22 +250,22 @@ class Tree extends CI_Controller {
                 'original_val' => '',
             ));
 
-        } elseif($_POST['cache_en_id']==4736 /* TREE TITLE */){
+        } elseif($_POST['cache_en_id']==4736 /* IDEA TITLE */){
 
-            $ins = $this->TREE_model->in_fetch(array(
+            $ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => $_POST['in_ln__id'],
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
             ));
             if(!count($ins)){
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Tree ID.',
+                    'message' => 'Invalid Idea ID.',
                     'original_val' => '',
                 ));
             }
 
-            //Validate Tree Outcome:
-            $in_titlevalidation = $this->TREE_model->in_titlevalidate($_POST['field_value']);
+            //Validate Idea Outcome:
+            $in_titlevalidation = $this->IDEA_model->in_titlevalidate($_POST['field_value']);
             if(!$in_titlevalidation['status']){
                 //We had an error, return it:
                 return echo_json(array_merge($in_titlevalidation, array(
@@ -274,7 +274,7 @@ class Tree extends CI_Controller {
             } else {
 
                 //All good, go ahead and update:
-                $this->TREE_model->in_update($_POST['in_ln__id'], array(
+                $this->IDEA_model->in_update($_POST['in_ln__id'], array(
                     'in_title' => trim($_POST['field_value']),
                 ), true, $session_en['en_id']);
 
@@ -286,16 +286,16 @@ class Tree extends CI_Controller {
 
         } elseif($_POST['cache_en_id']==4356 /* READ TIME */){
 
-            $ins = $this->TREE_model->in_fetch(array(
+            $ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => $_POST['in_ln__id'],
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
             ));
 
             if(!count($ins)){
 
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Tree ID.',
+                    'message' => 'Invalid Idea ID.',
                     'original_val' => '',
                 ));
 
@@ -312,7 +312,7 @@ class Tree extends CI_Controller {
                 $hours = rtrim(number_format((config_var(12113)/3600), 1), '.0');
                 return echo_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be less than '.$hours.' Hour'.echo__s($hours).', or '.config_var(12113).' Seconds long. You can break down your tree into smaller trees.',
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be less than '.$hours.' Hour'.echo__s($hours).', or '.config_var(12113).' Seconds long. You can break down your idea into smaller ideas.',
                     'original_val' => $ins[0]['in_read_time'],
                 ));
 
@@ -320,14 +320,14 @@ class Tree extends CI_Controller {
 
                 return echo_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to read trees ;)',
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to read ideas ;)',
                     'original_val' => $ins[0]['in_read_time'],
                 ));
 
             } else {
 
                 //All good, go ahead and update:
-                $this->TREE_model->in_update($_POST['in_ln__id'], array(
+                $this->IDEA_model->in_update($_POST['in_ln__id'], array(
                     'in_read_time' => $_POST['field_value'],
                 ), true, $session_en['en_id']);
 
@@ -343,7 +343,7 @@ class Tree extends CI_Controller {
             $lns = $this->READ_model->ln_fetch(array(
                 'ln_id' => $_POST['in_ln__id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             ));
             $ln_metadata = unserialize($lns[0]['ln_metadata']);
 
@@ -370,7 +370,7 @@ class Tree extends CI_Controller {
                     'ln_metadata' => array_merge($ln_metadata, array(
                         'tr__assessment_points' => intval($_POST['field_value']),
                     )),
-                ), $session_en['en_id'], 10663 /* Tree Link Iterated Marks */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' iterated'.( isset($ln_metadata['tr__assessment_points']) ? ' from [' . $ln_metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
+                ), $session_en['en_id'], 10663 /* Idea Link Iterated Marks */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' iterated'.( isset($ln_metadata['tr__assessment_points']) ? ' from [' . $ln_metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
 
                 return echo_json(array(
                     'status' => 1,
@@ -384,7 +384,7 @@ class Tree extends CI_Controller {
             $lns = $this->READ_model->ln_fetch(array(
                 'ln_id' => $_POST['in_ln__id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             ));
             $ln_metadata = unserialize($lns[0]['ln_metadata']);
             $field_name = ( $_POST['cache_en_id']==4735 ? 'tr__conditional_score_min' : 'tr__conditional_score_max' );
@@ -412,7 +412,7 @@ class Tree extends CI_Controller {
                     'ln_metadata' => array_merge($ln_metadata, array(
                         $field_name => intval($_POST['field_value']),
                     )),
-                ), $session_en['en_id'], 10664 /* Tree Link Iterated Score */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' iterated'.( isset($ln_metadata[$field_name]) ? ' from [' . $ln_metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
+                ), $session_en['en_id'], 10664 /* Idea Link Iterated Score */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' iterated'.( isset($ln_metadata[$field_name]) ? ' from [' . $ln_metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
 
                 return echo_json(array(
                     'status' => 1,
@@ -433,7 +433,7 @@ class Tree extends CI_Controller {
 
     function in_update_dropdown(){
 
-        //Maintain a manual index as a hack for the Tree/Source tables for now:
+        //Maintain a manual index as a hack for the Idea/Source tables for now:
         $en_all_6232 = $this->config->item('en_all_6232'); //PLATFORM VARIABLES
         $deletion_redirect = null;
         $remove_element = null;
@@ -448,12 +448,12 @@ class Tree extends CI_Controller {
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Target Tree ID',
+                'message' => 'Missing Target Idea ID',
             ));
         } elseif (!isset($_POST['in_loaded_id']) || intval($_POST['in_loaded_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Loaded Tree ID',
+                'message' => 'Missing Loaded Idea ID',
             ));
         } elseif (!isset($_POST['ln_id'])) {
             return echo_json(array(
@@ -500,19 +500,19 @@ class Tree extends CI_Controller {
         } else {
 
 
-            //See if Tree is being removed:
+            //See if Idea is being removed:
             if($_POST['element_id']==4737){
 
-                //Remove all tree links?
+                //Remove all idea links?
                 if(!in_array($_POST['new_en_id'], $this->config->item('en_ids_7356'))){
 
                     //Determine what to do after removed:
                     if($_POST['in_id'] == $_POST['in_loaded_id']){
 
-                        //Since we're removing the FOCUS TREE we need to move to the first parent tree:
-                        foreach ($this->TREE_model->in_fetch_recursive_parents($_POST['in_id'], true, false) as $grand_parent_ids) {
+                        //Since we're removing the FOCUS IDEA we need to move to the first parent idea:
+                        foreach ($this->IDEA_model->in_fetch_recursive_parents($_POST['in_id'], true, false) as $grand_parent_ids) {
                             foreach ($grand_parent_ids as $parent_in_id) {
-                                $deletion_redirect = '/tree/'.$parent_in_id; //First parent in first branch of parents
+                                $deletion_redirect = '/idea/'.$parent_in_id; //First parent in first branch of parents
                                 break;
                             }
                         }
@@ -520,7 +520,7 @@ class Tree extends CI_Controller {
                         //Go to main page if no parent found:
                         if(!$deletion_redirect){
 
-                            $deletion_redirect = '/tree';
+                            $deletion_redirect = '/idea';
 
                         }
 
@@ -536,28 +536,28 @@ class Tree extends CI_Controller {
                     }
 
                     //Remove all links:
-                    $this->TREE_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
+                    $this->IDEA_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
 
                 //Notify moderators of Feature request? Only if they don't have the powers themselves:
                 } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !superpower_assigned(10985) && !count($this->READ_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                        'ln_type_source_id' => 12453, //Tree Feature Request
+                        'ln_type_source_id' => 12453, //Idea Feature Request
                         'ln_creator_source_id' => $session_en['en_id'],
-                        'ln_next_tree_id' => $_POST['in_id'],
+                        'ln_next_idea_id' => $_POST['in_id'],
                     )))){
 
                     $this->READ_model->ln_create(array(
-                        'ln_type_source_id' => 12453, //Tree Feature Request
+                        'ln_type_source_id' => 12453, //Idea Feature Request
                         'ln_creator_source_id' => $session_en['en_id'],
-                        'ln_next_tree_id' => $_POST['in_id'],
+                        'ln_next_idea_id' => $_POST['in_id'],
                     ));
 
                 }
 
             }
 
-            //Update Tree:
-            $this->TREE_model->in_update($_POST['in_id'], array(
+            //Update Idea:
+            $this->IDEA_model->in_update($_POST['in_id'], array(
                 $en_all_6232[$_POST['element_id']]['m_desc'] => $_POST['new_en_id'],
             ), true, $session_en['en_id']);
 
@@ -584,7 +584,7 @@ class Tree extends CI_Controller {
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Tree ID',
+                'message' => 'Missing Idea ID',
             ));
         } elseif (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1) {
             return echo_json(array(
@@ -596,7 +596,7 @@ class Tree extends CI_Controller {
         //Remove this link:
         $this->READ_model->ln_update($_POST['ln_id'], array(
             'ln_status_source_id' => 6173, //Link Removed
-        ), $session_en['en_id'], 10686 /* Tree Link Unlinked */);
+        ), $session_en['en_id'], 10686 /* Idea Link Unlinked */);
 
         return echo_json(array(
             'status' => 1,
@@ -611,8 +611,8 @@ class Tree extends CI_Controller {
 
         /*
          *
-         * Either creates a TREE link between in_linked_id & in_link_child_id
-         * OR will create a new tree with outcome in_title and then link it
+         * Either creates a IDEA link between in_linked_id & in_link_child_id
+         * OR will create a new idea with outcome in_title and then link it
          * to in_linked_id (In this case in_link_child_id=0)
          *
          * */
@@ -627,7 +627,7 @@ class Tree extends CI_Controller {
         } elseif (!isset($_POST['in_linked_id']) || intval($_POST['in_linked_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Parent Tree ID',
+                'message' => 'Missing Parent Idea ID',
             ));
         } elseif (!isset($_POST['is_parent']) || !in_array(intval($_POST['is_parent']), array(0,1))) {
             return echo_json(array(
@@ -637,12 +637,12 @@ class Tree extends CI_Controller {
         } elseif (!isset($_POST['in_title']) || !isset($_POST['in_link_child_id']) || ( strlen($_POST['in_title']) < 1 && intval($_POST['in_link_child_id']) < 1)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing either Tree Outcome OR Child Tree ID',
+                'message' => 'Missing either Idea Outcome OR Child Idea ID',
             ));
         } elseif (strlen($_POST['in_title']) > config_var(11071)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Tree outcome cannot be longer than '.config_var(11071).' characters',
+                'message' => 'Idea outcome cannot be longer than '.config_var(11071).' characters',
             ));
         } elseif($_POST['in_link_child_id'] >= 2147483647){
             return echo_json(array(
@@ -652,22 +652,22 @@ class Tree extends CI_Controller {
         }
 
 
-        $new_in_type = 6677; //Tree Read-Only
+        $new_in_type = 6677; //Idea Read-Only
         $linked_ins = array();
 
         if($_POST['in_link_child_id'] > 0){
 
-            //Fetch link tree to determine tree type:
-            $linked_ins = $this->TREE_model->in_fetch(array(
+            //Fetch link idea to determine idea type:
+            $linked_ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => intval($_POST['in_link_child_id']),
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
             ));
 
             if(count($linked_ins)==0){
-                //validate linked Tree:
+                //validate linked Idea:
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Tree #'.$_POST['in_link_child_id'].' is not active',
+                    'message' => 'Idea #'.$_POST['in_link_child_id'].' is not active',
                 ));
             }
 
@@ -676,8 +676,8 @@ class Tree extends CI_Controller {
             }
         }
 
-        //All seems good, go ahead and try creating the Tree:
-        return echo_json($this->TREE_model->in_link_or_create(trim($_POST['in_title']), $session_en['en_id'], $_POST['in_linked_id'], intval($_POST['is_parent']), 6184, $new_in_type, $_POST['in_link_child_id']));
+        //All seems good, go ahead and try creating the Idea:
+        return echo_json($this->IDEA_model->in_link_or_create(trim($_POST['in_title']), $session_en['en_id'], $_POST['in_linked_id'], intval($_POST['is_parent']), 6184, $new_in_type, $_POST['in_link_child_id']));
 
     }
 
@@ -695,23 +695,23 @@ class Tree extends CI_Controller {
         } elseif (!isset($_POST['in_loaded_id']) || intval($_POST['in_loaded_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Focus Tree ID',
+                'message' => 'Invalid Focus Idea ID',
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Tree ID',
+                'message' => 'Invalid Idea ID',
             ));
         }
 
-        //Validate Tree:
-        $ins = $this->TREE_model->in_fetch(array(
+        //Validate Idea:
+        $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
         ));
         if(count($ins) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Tree not found',
+                'message' => 'Idea not found',
             ));
         }
 
@@ -719,14 +719,14 @@ class Tree extends CI_Controller {
         //Fetch READING LIST users:
         $actionplan_users = $this->READ_model->ln_fetch(array(
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-            'ln_previous_tree_id' => $ins[0]['in_id'],
+            'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
         ), array('en_owner'), 500);
         if(count($actionplan_users) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => '<i class="fad fa-exclamation-triangle"></i> Nobody has completed this tree yet',
+                'message' => '<i class="fad fa-exclamation-triangle"></i> Nobody has completed this idea yet',
             ));
         }
 
@@ -763,7 +763,7 @@ class Tree extends CI_Controller {
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
             $item_ui .= '<td style="text-align:left;">';
 
-            $item_ui .= '<a href="/tree/'.$_POST['in_loaded_id'].'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
+            $item_ui .= '<a href="/idea/'.$_POST['in_loaded_id'].'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
             $item_ui .= '&nbsp;<a href="/source/'.$apu['en_id'].'"><i class="fas fa-at"></i></a>';
 
             $item_ui .= '&nbsp;<a href="/ledger?ln_creator_source_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
@@ -802,14 +802,14 @@ class Tree extends CI_Controller {
 
 
     function in_review_metadata($in_id){
-        //Fetch Tree:
-        $ins = $this->TREE_model->in_fetch(array(
+        //Fetch Idea:
+        $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $in_id,
         ));
         if(count($ins) > 0){
             echo_json(unserialize($ins[0]['in_metadata']));
         } else {
-            echo 'Tree #'.$in_id.' not found!';
+            echo 'Idea #'.$in_id.' not found!';
         }
     }
 
@@ -835,8 +835,8 @@ class Tree extends CI_Controller {
             ));
         } else {
 
-            //Validate Parent Tree:
-            $parent_ins = $this->TREE_model->in_fetch(array(
+            //Validate Parent Idea:
+            $parent_ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => intval($_POST['in_id']),
             ));
             if (count($parent_ins) < 1) {
@@ -848,8 +848,8 @@ class Tree extends CI_Controller {
 
                 //Fetch for the record:
                 $children_before = $this->READ_model->ln_fetch(array(
-                    'ln_previous_tree_id' => intval($_POST['in_id']),
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
+                    'ln_previous_idea_id' => intval($_POST['in_id']),
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -857,13 +857,13 @@ class Tree extends CI_Controller {
                 foreach ($_POST['new_ln_orders'] as $rank => $ln_id) {
                     $this->READ_model->ln_update(intval($ln_id), array(
                         'ln_order' => intval($rank),
-                    ), $session_en['en_id'], 10675 /* Trees Ordered by Trainer */);
+                    ), $session_en['en_id'], 10675 /* Ideas Ordered by Trainer */);
                 }
 
                 //Fetch again for the record:
                 $children_after = $this->READ_model->ln_fetch(array(
-                    'ln_previous_tree_id' => intval($_POST['in_id']),
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Tree-to-Tree Links
+                    'ln_previous_idea_id' => intval($_POST['in_id']),
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -894,7 +894,7 @@ class Tree extends CI_Controller {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Tree ID',
+                'message' => 'Invalid Idea ID',
             ));
 
         } elseif (!isset($_POST['focus_ln_type_source_id']) || intval($_POST['focus_ln_type_source_id']) < 1) {
@@ -907,15 +907,15 @@ class Tree extends CI_Controller {
         }
 
 
-        //Fetch/Validate the tree:
-        $ins = $this->TREE_model->in_fetch(array(
+        //Fetch/Validate the idea:
+        $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Tree Status Active
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
         ));
         if(count($ins)<1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Tree',
+                'message' => 'Invalid Idea',
             ));
         }
 
@@ -933,13 +933,13 @@ class Tree extends CI_Controller {
             'ln_order' => 1 + $this->READ_model->ln_max_order(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                     'ln_type_source_id' => intval($_POST['focus_ln_type_source_id']),
-                    'ln_next_tree_id' => intval($_POST['in_id']),
+                    'ln_next_idea_id' => intval($_POST['in_id']),
                 )),
             //Referencing attributes:
             'ln_type_source_id' => intval($_POST['focus_ln_type_source_id']),
             'ln_parent_source_id' => $msg_validation['ln_parent_source_id'],
-            'ln_previous_tree_id' => $msg_validation['ln_previous_tree_id'],
-            'ln_next_tree_id' => intval($_POST['in_id']),
+            'ln_previous_idea_id' => $msg_validation['ln_previous_idea_id'],
+            'ln_next_idea_id' => intval($_POST['in_id']),
             'ln_content' => $msg_validation['input_message'],
         ), true);
 
@@ -971,7 +971,7 @@ class Tree extends CI_Controller {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing TREE',
+                'message' => 'Missing IDEA',
             ));
 
         } elseif (!isset($_POST['focus_ln_type_source_id'])) {
@@ -1004,14 +1004,14 @@ class Tree extends CI_Controller {
 
         }
 
-        //Validate Tree:
-        $ins = $this->TREE_model->in_fetch(array(
+        //Validate Idea:
+        $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
         ));
         if(count($ins)<1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Tree ID',
+                'message' => 'Invalid Idea ID',
             ));
         }
 
@@ -1043,11 +1043,11 @@ class Tree extends CI_Controller {
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_type_source_id' => $_POST['focus_ln_type_source_id'],
             'ln_parent_source_id' => $cdn_status['cdn_en']['en_id'],
-            'ln_next_tree_id' => intval($_POST['in_id']),
+            'ln_next_idea_id' => intval($_POST['in_id']),
             'ln_content' => '@' . $cdn_status['cdn_en']['en_id'],
             'ln_order' => 1 + $this->READ_model->ln_max_order(array(
                     'ln_type_source_id' => $_POST['focus_ln_type_source_id'],
-                    'ln_next_tree_id' => $_POST['in_id'],
+                    'ln_next_idea_id' => $_POST['in_id'],
                 )),
         ));
 
@@ -1099,7 +1099,7 @@ class Tree extends CI_Controller {
                 //Log update and give credit to the session Trainer:
                 $this->READ_model->ln_update($ln_id, array(
                     'ln_order' => intval($ln_order),
-                ), $session_en['en_id'], 10676 /* Tree Pads Ordered */);
+                ), $session_en['en_id'], 10676 /* Idea Pads Ordered */);
             }
         }
 
@@ -1138,18 +1138,18 @@ class Tree extends CI_Controller {
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Tree ID',
+                'message' => 'Invalid Idea ID',
             ));
         }
 
-        //Validate Tree:
-        $ins = $this->TREE_model->in_fetch(array(
+        //Validate Idea:
+        $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
         ));
         if (count($ins) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Tree Not Found',
+                'message' => 'Idea Not Found',
             ));
         }
 
@@ -1178,8 +1178,8 @@ class Tree extends CI_Controller {
             $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                 'ln_content' => $msg_validation['input_message'],
                 'ln_parent_source_id' => $msg_validation['ln_parent_source_id'],
-                'ln_previous_tree_id' => $msg_validation['ln_previous_tree_id'],
-            ), $session_en['en_id'], 10679 /* Tree Pads Iterated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
+                'ln_previous_idea_id' => $msg_validation['ln_previous_idea_id'],
+            ), $session_en['en_id'], 10679 /* Idea Pads Iterated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
 
         }
 
@@ -1215,14 +1215,14 @@ class Tree extends CI_Controller {
                 //yes, do so and return results:
                 $affected_rows = $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_source_id' => $_POST['message_ln_status_source_id'],
-                ), $session_en['en_id'], 10677 /* Tree Pads Iterated Status */);
+                ), $session_en['en_id'], 10677 /* Idea Pads Iterated Status */);
 
             } else {
 
-                //New status is no longer active, so remove the tree pads:
+                //New status is no longer active, so remove the idea pads:
                 $affected_rows = $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_source_id' => $_POST['message_ln_status_source_id'],
-                ), $session_en['en_id'], 10678 /* Tree Pads Unlinked */);
+                ), $session_en['en_id'], 10678 /* Idea Pads Unlinked */);
 
                 //Return success:
                 if($affected_rows > 0){
