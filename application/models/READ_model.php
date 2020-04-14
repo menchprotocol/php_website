@@ -2138,11 +2138,11 @@ class READ_model extends CI_Model
 
                 } else {
 
-                    //File Replace:
-                    echo '<label class="btn btn-read inline-block" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> REPLACE</label>';
-
                     //Next Reads:
                     echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
+
+                    //File Replace:
+                    echo '<label class="btn btn-read inline-block" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> REPLACE</label>';
 
                 }
 
