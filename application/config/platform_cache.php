@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-13 18:52:57 PST
+//Generated 2020-04-13 18:59:42 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1586829177;
-$config['cache_count_transaction'] = 1125060;
+$config['cache_timestamp'] = 1586829582;
+$config['cache_count_transaction'] = 1125080;
 $config['cache_count_read'] = 120962;
 $config['cache_count_tree'] = 3831;
-$config['cache_count_source'] = 0;
+$config['cache_count_source'] = 9211;
 
 
 
@@ -3747,7 +3747,7 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12355,11077,11074,12124,11076,12587,11075,11064,11986,11065,11063,12156,11079,11060,12363,11073,11066,11057,11056,12331,12113,12427,12088,11072,12232,11162,11163,12176,11071,12565,12568);
+$config['en_ids_6404'] = array(12355,11077,11074,12124,11076,12587,11075,11064,11065,11063,12156,11079,11060,12363,11073,11066,11057,11056,12331,12113,12427,12088,11986,11072,12232,11162,11163,12176,11071,12565,12568);
 $config['en_all_6404'] = array(
     12355 => array(
         'm_icon' => '',
@@ -3794,13 +3794,7 @@ $config['en_all_6404'] = array(
     11064 => array(
         'm_icon' => '',
         'm_name' => 'ITEMS PER PAGE',
-        'm_desc' => '25',
-        'm_parents' => array(6404),
-    ),
-    11986 => array(
-        'm_icon' => '',
-        'm_name' => 'LEADERBOARD VISIBLE',
-        'm_desc' => '10',
+        'm_desc' => '50',
         'm_parents' => array(6404),
     ),
     11065 => array(
@@ -3885,6 +3879,12 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'SHOW TEXT COUNTER THRESHOLD',
         'm_desc' => '0.8',
+        'm_parents' => array(6404),
+    ),
+    11986 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE LIST VISIBLE',
+        'm_desc' => '10',
         'm_parents' => array(6404),
     ),
     11072 => array(
