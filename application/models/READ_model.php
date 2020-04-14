@@ -2101,21 +2101,19 @@ class READ_model extends CI_Model
 
                 echo '</div>';
 
+                echo '<div class="text_saving_result margin-top-down previous_reads"></div>';
+
 
                 //Show Previous Button:
                 echo echo_in_read_previous($ins[0]['in_id'], $recipient_en);
 
+                //Save/Upload & Next:
                 echo '<div class="margin-top-down inline-block previous_reads"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">'.( $previous_answers ? 'UPDATE' : 'ANSWER' ).' & NEXT <i class="fad fa-step-forward"></i></a>&nbsp;&nbsp;</div>';
 
-                echo '<div class="text_saving_result margin-top-down inline-block previous_reads"></div>';
-
-                echo '</div>';
+                //List Children:
+                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true, false);
 
                 echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); $(\'#read_text_answer\').focus(); }); </script>';
-
-                //Next Reads:
-                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
-
 
 
             } elseif (in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7751'))) {

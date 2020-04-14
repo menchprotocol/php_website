@@ -2009,11 +2009,11 @@ function echo_caret($en_id, $m, $url_append){
 }
 
 
-function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null, $in_reads = true){
+function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null, $in_reads = true, $show_next = true){
 
     //If no list just return the next step:
     if(!count($in__children)){
-        return echo_in_next($in['in_id'], $recipient_en, $push_message);
+        return ( $show_next ? echo_in_next($in['in_id'], $recipient_en, $push_message) : false );
     }
 
     $CI =& get_instance();
@@ -2091,7 +2091,9 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
         echo '</div>';
     }
 
-    echo_in_next($in['in_id'], $recipient_en, $push_message);
+    if($show_next){
+        echo_in_next($in['in_id'], $recipient_en, $push_message);
+    }
 
 }
 
