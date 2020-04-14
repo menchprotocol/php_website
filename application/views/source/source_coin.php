@@ -413,15 +413,15 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
         } elseif($en_id==11030){
 
-
+            //SOURCE PARENT
             $counter = count($source__parents);
-
-            //SOURCE CHILD
             if(!$counter && !superpower_active(10967, true)){
                 continue;
             }
 
-            //SOURCE PARENT
+            //Auto expand Parents IF not children:
+            $auto_expand_tab = !$child_links[0]['totals'];
+
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
             foreach ($source__parents as $en) {
@@ -439,20 +439,17 @@ $source__parents = $this->READ_model->ln_fetch(array(
         } elseif($en_id==11029){
 
             //SOURCE CHILD
-            if(!$child_links[0]['totals'] && !superpower_active(10967, true)){
+            $counter = $child_links[0]['totals'];
+            if(!$counter && !superpower_active(10967, true)){
                 continue;
             }
 
+            if(!$counter){
 
-
-            if(!$child_links[0]['totals']){
-
+                //No results to fetch:
                 $source__children = array();
 
             } else {
-
-                //Show Children by default if not parents:
-                $auto_expand_tab = !count($source__parents);
 
                 //Child List
                 $source__children = $this->READ_model->ln_fetch(array(
