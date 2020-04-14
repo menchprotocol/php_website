@@ -823,6 +823,10 @@ td.MENCHcolumn3{ width: 13%; }
     background-color:#FFFFFF;
     color:#000000 !important;
 }
+.coin-type{
+    display: block;
+    padding-left: 8px;
+}
 .text-logo{
     font-size: 1.4em;
     padding-top: 13px;
