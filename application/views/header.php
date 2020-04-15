@@ -174,7 +174,7 @@ if(!isset($hide_header)){
 
 
                                 if (!$is_current_mench && isset($in) && in_array($this_mench['x_name'], array('read', 'idea'))) {
-                                    if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'idea' && $in['in_id']!=config_var(12156) && superpower_active(10985, true) ) {
+                                    if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'idea' && $in['in_id']!=config_var(12156) && superpower_active(12674, true) ) {
                                         $primary_url = 'href="/idea/' . $in['in_id'].'"';
                                     } elseif ($current_mench['x_name'] == 'idea' && $this_mench['x_name'] == 'read') {
                                         $primary_url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';

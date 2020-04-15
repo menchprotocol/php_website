@@ -1582,7 +1582,7 @@ function in_is_author($in_id, $session_en = array()){
     }
 
     //Always have power to edit ideas from anyone:
-    if(superpower_active(10985, true)){
+    if(superpower_active(12674, true)){
         return true;
     }
 
@@ -1829,7 +1829,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
             $ui .= '<span class="icon-block"><a href="/idea/'.$in['in_id'].'" title="Weight: '.number_format($in['in_weight'], 0).'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
 
             //IDEA TITLE
-            if($is_in_link && superpower_active(10984, true)){
+            if($is_in_link && superpower_active(12673, true)){
                 $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], $is_author, (($in['ln_order']*100)+1));
             } else {
                 $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in) . '</a>';
@@ -1849,15 +1849,9 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         $ui .= '<span class="icon-block ln_status_source_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_source_id']]['m_name'].' @'.$in['ln_status_source_id'].': '.$en_all_6186[$in['ln_status_source_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_source_id']]['m_icon'] . ' </span></span>';
 
 
-        //IDEA IF NOT PUBLISHED:
-        if(!superpower_active(10984, true) && !$is_published){
-            //Show them Idea status in this case:
-            $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_source_id'], null, $is_author, false, $in['in_id']) . ' </div>';
-        }
 
-
-        //Idea Brush
-        $ui .= '<div class="inline-block ' . superpower_active(10984) . '">';
+        //Idea Toolbar
+        $ui .= '<div class="inline-block ' . superpower_active(12673) . '">';
 
             //IDEA STATUS
             $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_source_id'], null, $is_author, false, $in['in_id']) . ' </div>';

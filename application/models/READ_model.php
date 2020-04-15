@@ -2816,13 +2816,6 @@ class READ_model extends CI_Model
                     'message' => 'Message can include a maximum of 1 source reference',
                 );
 
-            } elseif (!$push_message && count($string_references['ref_ins']) > 1) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Message can include a maximum of 1 idea reference',
-                );
-
             } elseif (!$push_message && count($string_references['ref_sources']) > 0 && count($string_references['ref_urls']) > 0) {
 
                 return array(
@@ -2863,16 +2856,6 @@ class READ_model extends CI_Model
 
             //See if this message type has specific input requirements:
             $en_all_4485 = $this->config->item('en_all_4485');
-
-            //Now check for idea referencing settings:
-            if(!in_array(4985 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_ins']) > 0){
-
-                return array(
-                    'status' => 0,
-                    'message' => $en_all_4485[$message_type_en_id]['m_name'].' do not support idea referencing.',
-                );
-
-            }
 
             //Now check for source referencing settings:
             if(!in_array(4986 , $en_all_4485[$message_type_en_id]['m_parents']) && !in_array(7551 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_sources']) > 0){
@@ -3298,85 +3281,6 @@ class READ_model extends CI_Model
             }
         }
 
-        //Do we have an IDEA up-vote?
-        if (!$push_message && count($string_references['ref_ins']) > 0 && $message_in_id > 0) {
-
-            $referenced_ins = $this->IDEA_model->in_fetch(array(
-                'in_id' => $string_references['ref_ins'][0], //Alert: We will only have a single reference per message
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-            ));
-            if (count($referenced_ins) < 1) {
-                return array(
-                    'status' => 0,
-                    'message' => 'The referenced parent idea #' . $string_references['ref_ins'][0] . ' not found',
-                );
-            }
-
-
-            if(isset($string_references['ref_sources'][0])){
-
-                //Fetch the referenced idea:
-                $upvote_child_ins = $this->IDEA_model->in_fetch(array(
-                    'in_id' => $message_in_id,
-                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-                ));
-                if (count($upvote_child_ins) < 1) {
-                    return array(
-                        'status' => 0,
-                        'message' => 'The referenced child idea #' . $message_in_id . ' not found',
-                    );
-                }
-
-                //Check up-voting/author restrictions:
-                if($is_being_modified){
-
-                    //Player reference must be either the trainer themselves or an expert source:
-                    $session_en = superpower_assigned();
-                    if($string_references['ref_sources'][0] != $session_en['en_id']){
-
-                        //Reference is not the logged-in trainer, let's check to make sure it's an expert source
-                        if(!count($this->READ_model->ln_fetch(array(
-                            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                            'ln_child_source_id' => $string_references['ref_sources'][0],
-                            'ln_parent_source_id IN ('.join(',' , $this->config->item('en_ids_4983')).')' => null,
-                            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                        )))){
-                            return array(
-                                'status' => 0,
-                                'message' => 'Invalid Source Reference. See @4983 for a list of valid references.',
-                            );
-                        }
-                    }
-                }
-
-
-                //Currently idea references are not displayed on the landing page (Only Messages are) OR messenger format
-
-                //Remove idea reference from anywhere in the message:
-                $output_body_message = trim(str_replace('#' . $referenced_ins[0]['in_id'], '', $output_body_message));
-
-
-                //Add Idea up-vote to beginning:
-                $output_body_message = '<div style="margin-bottom:5px;" class="'.superpower_active(10984).'"><span class="icon-block"><i class="far fa-thumbs-up read"></i></span><a href="/idea/' . $referenced_ins[0]['in_id'] . '" target="_parent" class="montserrat">' . echo_in_title($referenced_ins[0], false) . '</a></div>' . $output_body_message;
-
-            } else {
-
-                //Idea referencing without an source referencing, show simply the idea:
-
-                //Remove idea reference from anywhere in the message:
-                $output_body_message = trim(str_replace('#' . $referenced_ins[0]['in_id'], '', $output_body_message));
-
-                //Add Idea up-vote to beginning:
-                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;"><a href="/idea/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_title($referenced_ins[0], false) . '</a></div>' . $output_body_message;
-
-            }
-
-
-
-
-
-        }
-
 
 
 
@@ -3558,7 +3462,6 @@ class READ_model extends CI_Model
             'output_messages' => $output_messages,
             'user_chat_channel' => $user_chat_channel,
             'ln_parent_source_id' => (count($string_references['ref_sources']) > 0 ? $string_references['ref_sources'][0] : 0),
-            'ln_previous_idea_id' => (count($string_references['ref_ins']) > 0 ? $string_references['ref_ins'][0] : 0),
         );
 
     }

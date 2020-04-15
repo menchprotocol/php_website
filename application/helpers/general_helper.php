@@ -120,7 +120,6 @@ function extract_references($ln_content)
     $string_references = array(
         'ref_urls' => array(),
         'ref_sources' => array(),
-        'ref_ins' => array(),
         'ref_commands' => array(),
         'ref_custom' => array(),
     );
@@ -145,10 +144,6 @@ function extract_references($ln_content)
         } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1)) && intval(substr($word, 1)) > 0) {
 
             array_push($string_references['ref_sources'], intval(substr($word, 1)));
-
-        } elseif (substr($word, 0, 1) == '#' && is_numeric(substr($word, 1)) && intval(substr($word, 1)) > 0) {
-
-            array_push($string_references['ref_ins'], intval(substr($word, 1)));
 
         }
     }

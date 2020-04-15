@@ -211,7 +211,7 @@ class Idea extends CI_Controller {
     function in_become_author($in_id){
 
         //Make sure it's a logged in trainer:
-        $session_en = superpower_assigned(10985, true);
+        $session_en = superpower_assigned(12674, true);
 
         //Idea Author:
         $this->READ_model->ln_create(array(
@@ -231,7 +231,7 @@ class Idea extends CI_Controller {
     function in_update_text(){
 
         //Authenticate Trainer:
-        $session_en = superpower_assigned(10984);
+        $session_en = superpower_assigned();
         $en_all_12112 = $this->config->item('en_all_12112');
 
         if (!$session_en) {
@@ -539,7 +539,7 @@ class Idea extends CI_Controller {
                     $this->IDEA_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
 
                 //Notify moderators of Feature request? Only if they don't have the powers themselves:
-                } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !superpower_assigned(10985) && !count($this->READ_model->ln_fetch(array(
+                } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !superpower_assigned(12674) && !count($this->READ_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                         'ln_type_source_id' => 12453, //Idea Feature Request
                         'ln_creator_source_id' => $session_en['en_id'],

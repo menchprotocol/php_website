@@ -360,7 +360,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
                         if($is_unlocked || $is_available){
 
                             //Superpower Available
-                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? 'active' : '' ).'" '.($should_unlock ? 'href="'.$has_training_url.'"' : 'href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m3['m_name'].' '.$m3['m_desc'].' @'.$superpower_en_id.'"').'><span class="icon-block '.$extract_icon_color.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].( $should_unlock ? '<span class="icon-block black"><i class="fas fa-lock"></i></span>' : '' ).'</a>';
+                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" '.($should_unlock ? 'href="'.$has_training_url.'"' : 'href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m3['m_name'].' '.$m3['m_desc'].' @'.$superpower_en_id.'"').'><span class="icon-block '.$extract_icon_color.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].( $should_unlock ? '<span class="icon-block black"><i class="fas fa-lock"></i></span>' : '' ).'</a>';
 
                         } else {
 

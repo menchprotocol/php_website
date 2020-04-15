@@ -1303,7 +1303,7 @@ label {
     color: #000000;
 }
 .btn-five{ margin-left:5px; }
-
+.btn-superpower.active {background: inherit !important;}
 
 /* RESPONSIVE */
 @media (max-width:767px) {
