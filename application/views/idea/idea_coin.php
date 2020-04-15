@@ -117,7 +117,7 @@ echo '<div class="inline-block both-margin left-half-margin '.superpower_active(
 $tab_group = 1;
 $tab_content = '';
 echo '<ul class="nav nav-tabs nav-sm">';
-foreach ($this->config->item('en_all_11021') as $en_id => $m){
+foreach ($this->config->item('en_all_11018') as $en_id => $m){
 
 
     //Is this a caret menu?
