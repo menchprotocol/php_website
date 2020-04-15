@@ -70,7 +70,7 @@ class Idea extends CI_Controller {
             'title' => $en_all_2738[4535]['m_name'],
             'session_en' => $session_en,
         ));
-        $this->load->view('idea/idea_bookmarks');
+        $this->load->view('idea/idea_home');
         $this->load->view('footer');
     }
 

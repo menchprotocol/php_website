@@ -1,7 +1,4 @@
-
 <?php
-$en_all_6201 = $this->config->item('en_all_6201'); //Idea Table
-$en_all_4485 = $this->config->item('en_all_4485'); //Idea Pads
 $en_all_2738 = $this->config->item('en_all_2738');
 
 $is_author = in_is_author($in['in_id']);
@@ -13,13 +10,11 @@ $is_active = in_array($in['in_status_source_id'], $this->config->item('en_ids_73
     <?= ( !$is_author ? '.pads-edit {display:none;}' : '' ) ?>
 </style>
 
-
 <script>
     //Include some cached sources:
     var in_loaded_id = <?= $in['in_id'] ?>;
 </script>
 <script src="/application/views/idea/idea_coin.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
-<script src="/application/views/idea/idea_shared.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <?php
 
@@ -33,6 +28,7 @@ $in__children = $this->READ_model->ln_fetch(array(
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
     'ln_previous_idea_id' => $in['in_id'],
 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+
 
 //IDEA PREVIOUS
 $in__parents = $this->READ_model->ln_fetch(array(

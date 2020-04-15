@@ -13,7 +13,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
     <?= ( count($player_reads) >= 2 ? '$(document).ready(function () {load_read_sort()});' : '' ) ?>
 
 </script>
-<script src="/application/views/read/read_bookmarks.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/read/read_home.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
 <?php
