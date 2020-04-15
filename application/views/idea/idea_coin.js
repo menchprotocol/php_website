@@ -432,30 +432,6 @@ function in_message_inline_en_search(obj) {
                 return ' @' + hit.alg_obj_id + ' ';
             }
         },
-        {
-            match: /(^|\s)#(\w*(?:\s*\w*))$/,
-            search: function (query, callback) {
-                algolia_index.search(query, {
-                    hitsPerPage: 5,
-                    filters: 'alg_obj_is_in=1',
-                })
-                    .then(function searchSuccess(content) {
-                        if (content.query === query) {
-                            callback(content.hits);
-                        }
-                    })
-                    .catch(function searchFailure(err) {
-                        console.error(err);
-                    });
-            },
-            template: function (hit) {
-                // Returns the highlighted version of the name attribute
-                return '<span class="inline34">#' + hit.alg_obj_id + '</span> ' + hit._highlightResult.alg_obj_name.value;
-            },
-            replace: function (hit) {
-                return ' #' + hit.alg_obj_id + ' ';
-            }
-        },
     ]);
 }
 

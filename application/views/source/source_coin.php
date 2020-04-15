@@ -353,7 +353,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
                         $superpower_actives3 = array_intersect($this->config->item('en_ids_10957'), $m3['m_parents']);
                         $is_available = (!count($superpower_actives3) || superpower_assigned(end($superpower_actives3)));
                         $is_unlocked = ($is_available && superpower_assigned($superpower_en_id));
-                        $has_training_url = ( strlen($en_all_10876[$superpower_en_id]['m_desc']) ? $en_all_10876[$superpower_en_id]['m_desc'] : false );
+                        $has_training_url = ( isset($en_all_10876[$superpower_en_id]['m_desc']) && strlen($en_all_10876[$superpower_en_id]['m_desc']) ? $en_all_10876[$superpower_en_id]['m_desc'] : false );
                         $extract_icon_color = extract_icon_color($m3['m_icon']);
                         $should_unlock = (!$is_unlocked && $is_available && $has_training_url);
 
