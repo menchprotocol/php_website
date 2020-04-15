@@ -398,7 +398,7 @@ img.no-radius {
 }
 
 .info-item a, .info-item i {
-    color:#AAAAAA !important;
+    color:#999999 !important;
 }
 .info-item a {
     text-decoration: underline;
@@ -406,7 +406,7 @@ img.no-radius {
 
 .transaction-ref{
     margin-left: 24px;
-    border-top: 1px solid #AAAAAA;
+    border-top: 1px solid #999999;
     margin-top: 21px;
 }
 
@@ -415,7 +415,7 @@ img.no-radius {
 .source, .source .fas, .source .far, .source .fal, .source .fad, .color4536, .info-item i.source:hover, .info-item a.source:hover  { color:#007AFD !important; }
 .idea, .idea .fas, .idea .far, .idea .fal, .idea .fad, .color4535, .info-item i.idea:hover, .info-item a.idea:hover  { color:#ffc500 !important; }
 .read, .read .fas, .read .far, .read .fal, .read .fad, .color6205, .info-item i.read:hover, .info-item a.read:hover, .isred, .isred a, .fas.redalert  { color:#FC1B44 !important; }
-.grey, .grey i { color:#AAAAAA !important; }
+.grey, .grey i { color:#999999 !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
 .btn-source i, .btn-read i, .btn-idea i { color: #000000 !important; }
@@ -899,7 +899,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 
 .dynamic_saving{
-    background-color: #AAAAAA !important;
+    background-color: #999999 !important;
 }
 
 .itemsource{
@@ -1116,7 +1116,7 @@ label {
 
 
 .is-working {
-    background-color: #AAAAAA !important;
+    background-color: #999999 !important;
 }
 
 .inputfile {
@@ -1162,7 +1162,7 @@ label {
 }
 
 .idea-info, .idea-info i {
-    color:#AAAAAA !important;
+    color:#999999 !important;
 }
 
 .idea-desc{
@@ -1276,7 +1276,7 @@ label {
     font-weight: bold;
 }
 .form-control::placeholder{
-    color: #AAAAAA;
+    color: #999999;
 }
 .texttype_4736_sm{
     width:calc(100% - 33px); /* Used to be 377px */
@@ -1289,11 +1289,11 @@ label {
     padding: 10px 0;
 }
 .read-topic, .read-topic a {
-    color: #AAAAAA !important;
+    color: #999999 !important;
     text-transform: uppercase;
 }
 .read-topic i {
-    color: #AAAAAA !important;
+    color: #999999 !important;
 }
 .read-info-topic{
     margin: -10px 0 30px;

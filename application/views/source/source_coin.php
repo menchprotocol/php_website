@@ -556,7 +556,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
             } else {
 
                 //TODO Remove message:
-                $this_tab .= '<div class="alert alert-warning"><span class="icon-block">&nbsp;</span>This UI View is Under Development...</div>';
+                $this_tab .= '<div class="alert alert-warning"><span class="icon-block">&nbsp;</span>This Section is Under Development...</div>';
 
             }
 
