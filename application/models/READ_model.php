@@ -1765,7 +1765,7 @@ class READ_model extends CI_Model
                 if(count($read_completes) > 0){
 
                     //Show More Information:
-                    echo '<div class="read-topic read-info-topic '.superpower_active(10964).'">';
+                    echo '<div class="read-topic read-info-topic">';
                     echo '<span class="info-item inline-block">';
                     echo '<div class="icon-block">&nbsp;</div>';
 

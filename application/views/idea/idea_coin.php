@@ -26,7 +26,13 @@ $is_active = in_array($in['in_status_source_id'], $this->config->item('en_ids_73
 $source_focus_found = false; //Used to determine the first tab to be opened
 
 
-
+//IDEA NEXT
+$in__children = $this->READ_model->ln_fetch(array(
+    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+    'ln_previous_idea_id' => $in['in_id'],
+), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
 //IDEA PREVIOUS
 $in__parents = $this->READ_model->ln_fetch(array(
@@ -125,14 +131,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $counter = count($in__parents);
 
         } elseif($en_id2==11020){
-
-            //IDEA NEXT
-            $in__children = $this->READ_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-                'ln_previous_idea_id' => $in['in_id'],
-            ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
             $counter = count($in__children);
             $tab_is_active = true;
@@ -350,8 +348,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     }
 
 
-    if($show_tab_menu_count > 0){
-        echo '<ul class="nav nav-tabs nav-sm '.superpower_active(10984).'">';
+    if($show_tab_menu_count > 1){
+        echo '<ul class="nav nav-tabs nav-sm">';
         echo $show_tab_ui;
         echo '</ul>';
     }
