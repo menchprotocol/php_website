@@ -139,8 +139,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
         //CHILD IDEAS
         $counter = count($in__children);
 
-        //List child ideas:
-        //$this_tab .= '<div class="read-topic"><span class="icon-block">&nbsp;</span>NEXT:</div>';
+
         $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group next_ins">';
         foreach ($in__children as $child_in) {
             $this_tab .= echo_in($child_in, $in['in_id'], false, $is_author);
@@ -159,6 +158,8 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
                            placeholder="NEXT IDEA">
                 </div><div class="algolia_pad_search hidden in_pad_bottom"></div></div>';
         }
+
+        $this_tab .= '</div>';
 
     } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
 
@@ -269,6 +270,8 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
         continue;
 
     }
+
+
 
     if(!$counter && in_array($en_id, $this->config->item('en_ids_12677'))){
         //Hide since Zero:
