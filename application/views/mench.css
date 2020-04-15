@@ -985,7 +985,7 @@ label {
 .itemsetting{
     color: #000000;
     text-decoration: none;
-    padding: 12px 0 !important;
+    padding: 10px 0 !important;
 }
 
 .dropdown-item:focus, .dropdown-item:hover {
@@ -1009,12 +1009,6 @@ label {
 
 .list-group-item .montserrat, .list-group-item{
     text-decoration: none;
-}
-
-.itemsetting.active, .itemsetting:hover {
-    background-color: #b2defd !important;
-    color: #000000 !important;
-    cursor: pointer !important;
 }
 
 .panel-collapse {
@@ -1303,7 +1297,6 @@ label {
     color: #000000;
 }
 .btn-five{ margin-left:5px; }
-.btn-superpower.active {background: inherit !important;}
 
 /* RESPONSIVE */
 @media (max-width:767px) {
