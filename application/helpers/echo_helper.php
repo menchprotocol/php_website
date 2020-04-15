@@ -2200,7 +2200,7 @@ function echo_idea_pad_body($pad_type_en_id, $in_pads, $is_author){
     $ui .= '<form class="box box' . $pad_type_en_id . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
 
 
-    $ui .= '<textarea onkeyup="in_new_pads_count('.$pad_type_en_id.')" class="form-control msg pads-textarea algolia_search new-pads" pads-type-id="' . $pad_type_en_id . '" id="ln_content' . $pad_type_en_id . '" placeholder="WRITE'.( in_array($pad_type_en_id, $this->config->item('en_ids_7551')) || in_array($pad_type_en_id, $this->config->item('en_ids_4986')) ? ', PASTE URL' : '' ).( in_array($pad_type_en_id, $this->config->item('en_ids_12359')) ? ', DRAG FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+    $ui .= '<textarea onkeyup="in_new_pads_count('.$pad_type_en_id.')" class="form-control msg pads-textarea algolia_search new-pads" pads-type-id="' . $pad_type_en_id . '" id="ln_content' . $pad_type_en_id . '" placeholder="WRITE'.( in_array($pad_type_en_id, $CI->config->item('en_ids_7551')) || in_array($pad_type_en_id, $CI->config->item('en_ids_4986')) ? ', PASTE URL' : '' ).( in_array($pad_type_en_id, $CI->config->item('en_ids_12359')) ? ', DRAG FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
