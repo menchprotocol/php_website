@@ -1842,16 +1842,8 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         //SECOND STATS ROW
         $ui .= '<div class="doclear">&nbsp;</div>';
 
-        $ui .= '<div class="space-content">';
-
-
-        //LINK STATUS (IF NOT PUBLISHED, SHOULD NOT HAPPEN!)
-        $ui .= '<span class="icon-block ln_status_source_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_source_id']]['m_name'].' @'.$in['ln_status_source_id'].': '.$en_all_6186[$in['ln_status_source_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_source_id']]['m_icon'] . ' </span></span>';
-
-
-
         //Idea Toolbar
-        $ui .= '<div class="inline-block ' . superpower_active(12673) . '">';
+        $ui .= '<div class="space-content ' . superpower_active(12673) . '">';
 
             //IDEA STATUS
             $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_source_id'], null, $is_author, false, $in['in_id']) . ' </div>';
@@ -1883,37 +1875,26 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
             $ui .= '<span class="montserrat idea idea-next">' . ( $next_ins[0]['total_ins'] > 0 ? $en_all_12413[11020]['m_icon'] . $next_ins[0]['total_ins']: '&nbsp;' ) . '</span>';
 
 
-        $ui .= '</div>';
+
+            //Idea Wand
+            $ui .= '<div class="inline-block ' . superpower_active(10985) . '">';
+                //LINK TYPE
+                $ui .= echo_in_dropdown(4486, $in['ln_type_source_id'], null, $is_author, false, $in['in_id'], $in['ln_id']);
+
+                //LINK MARKS
+                $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_source_id']==4228 ? : 'hidden' ).'">';
+                $ui .= echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+2 );
+                $ui .='</span>';
 
 
-
-
-
-
-
-        //Idea Wand
-        $ui .= '<div class="inline-block ' . superpower_active(10985) . '">';
-            //LINK TYPE
-            $ui .= echo_in_dropdown(4486, $in['ln_type_source_id'], null, $is_author, false, $in['in_id'], $in['ln_id']);
-
-            //LINK MARKS
-            $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_source_id']==4228 ? : 'hidden' ).'">';
-            $ui .= echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+2 );
-            $ui .='</span>';
-
-
-            //LINK CONDIITONAL RANGE
-            $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_source_id']==4229 ? : 'hidden' ).'">';
-            //MIN
-            $ui .= echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+3);
-            //MAX
-            $ui .= echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+4);
-            $ui .= '</span>';
-        $ui .= '</div>';
-
-
-
-
+                //LINK CONDIITONAL RANGE
+                $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_source_id']==4229 ? : 'hidden' ).'">';
+                //MIN
+                $ui .= echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+3);
+                //MAX
+                $ui .= echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+4);
+                $ui .= '</span>';
+            $ui .= '</div>';
 
 
 
