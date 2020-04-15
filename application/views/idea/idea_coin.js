@@ -84,7 +84,7 @@ $(document).ready(function () {
     });
 
     //Load top/bottom idea searches:
-    in_load_search(".ideaadder-level-2-parent",1, 'q', 'link_in');
+    in_load_search(".IdeaAddPrevious",1, 'q', 'link_in');
     in_load_search(".ideaadder-level-2-child",0, 'w', 'link_in');
 
     //Expand selections:
@@ -759,7 +759,7 @@ function in_pads_add(focus_ln_type_source_id) {
 function prep_search_pad(){
 
     //All level 2s:
-    $('.ideaadder-level-2-parent').focus(function() {
+    $('.IdeaAddPrevious').focus(function() {
         $('.in_pad_top' ).removeClass('hidden');
     }).focusout(function() {
         $('.in_pad_top' ).addClass('hidden');

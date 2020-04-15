@@ -2181,8 +2181,35 @@ function echo_message($message, $is_error, $recipient_en, $push_message){
 
 }
 
+function echo_idea_pad_source($in_id, $pad_type_en_id, $in_pads, $is_author){
 
-function echo_idea_pad_body($pad_type_en_id, $in_pads, $is_author){
+    $CI =& get_instance();
+    $en_all_11018 = $CI->config->item('en_all_11018');
+
+    $ui = '<div class="list-group">';
+    foreach ($in_pads as $en) {
+        $ui .= echo_en($en, false, null, true);
+    }
+
+    if( $is_author ){
+        $ui .= '<div class="list-group-item itemsource '.superpower_active(10939).'" style="padding:5px 0;">
+                <div class="input-group border">
+                    <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_11018[$pad_type_en_id]['m_icon'].'</span></span>
+                    <input type="text"
+                           class="form-control IdeaAddPrevious form-control-thick algolia_search dotransparent"
+                           maxlength="' . config_var(11072) . '"
+                           idea-id="' . $in_id . '"
+                           id="add-source-idea-' . $in_id . '"
+                           style="margin-bottom: 0; padding: 5px 0;"
+                           placeholder="'.$en_all_11018[$pad_type_en_id]['m_name'].'">
+                </div><div class="algolia_pad_search hidden in_pad_top"></div></div>';
+    }
+    $ui .= '</div>';
+
+    return $ui;
+}
+
+function echo_idea_pad_mix($pad_type_en_id, $in_pads, $is_author){
 
     $CI =& get_instance();
     $en_all_4485 = $CI->config->item('en_all_4485'); //Idea Pads
@@ -2245,7 +2272,7 @@ function echo_idea_pad_body($pad_type_en_id, $in_pads, $is_author){
     return $ui;
 }
 
-function echo_en($en, $is_parent = false, $extra_class = null)
+function echo_en($en, $is_parent = false, $extra_class = null, $pad_controller = false)
 {
 
     $CI =& get_instance();

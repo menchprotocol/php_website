@@ -46,10 +46,8 @@ echo '<div class="container" style="padding-bottom:42px;">';
 
 
 if(!$is_author){
-    echo '<div class="alert alert-warning no-margin"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>You are not an author of this idea, yet. <a href="/idea/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(12674).'">&nbsp;or <a href="/idea/in_become_author/'.$in['in_id'].'" class="montserrat">BECOME AUTHOR</a></span></div>';
+    echo '<div class="alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-circle grey"></i></span>You are not a source for this idea, yet. <a href="/idea/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(12674).'">&nbsp;or <a href="/idea/in_become_source/'.$in['in_id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
 }
-
-
 
 
 
@@ -63,7 +61,7 @@ if( $is_author && $is_active && $in['in_id']!=config_var(12156)){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control ideaadder-level-2-parent form-control-thick algolia_search dotransparent"
+                           class="form-control IdeaAddPrevious form-control-thick algolia_search dotransparent"
                            maxlength="' . config_var(11071) . '"
                            idea-id="' . $in['in_id'] . '"
                            id="addidea-c-' . $in['in_id'] . '-1"
@@ -87,7 +85,7 @@ echo '</div>';
 
 
 //IDEA MESSAGES:
-echo echo_idea_pad_body(4231, $this->READ_model->ln_fetch(array(
+echo echo_idea_pad_mix(4231, $this->READ_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'ln_type_source_id' => 4231,
     'ln_next_idea_id' => $in['in_id'],
@@ -171,7 +169,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         $counter = count($in_pads);
-        $this_tab .= echo_idea_pad_body($en_id, $in_pads, ($is_author && $is_active));
+        $this_tab .= echo_idea_pad_mix($en_id, $in_pads, ($is_author && $is_active));
 
     } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
 

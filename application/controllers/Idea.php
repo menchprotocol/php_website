@@ -208,7 +208,7 @@ class Idea extends CI_Controller {
 
     }
 
-    function in_become_author($in_id){
+    function in_become_source($in_id){
 
         //Make sure it's a logged in trainer:
         $session_en = superpower_assigned(12674, true);
