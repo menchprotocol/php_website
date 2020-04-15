@@ -2182,6 +2182,69 @@ function echo_message($message, $is_error, $recipient_en, $push_message){
 }
 
 
+function echo_idea_pad_body($pad_type_en_id, $in_pads, $is_author){
+
+    $CI =& get_instance();
+    $en_all_4485 = $CI->config->item('en_all_4485'); //Idea Pads
+
+    //Show no-Message notifications for each message type:
+    $ui = '<div id="in_pads_list_'.$pad_type_en_id.'" class="list-group">';
+
+    foreach ($in_pads as $in_pads) {
+        $ui .= echo_in_pads($in_pads);
+    }
+
+    //ADD NEW Alert:
+    $ui .= '<div class="list-group-item itemidea add_pads_' . $pad_type_en_id . ( $is_author ? '' : ' hidden ' ).'">';
+    $ui .= '<div class="add_pads_form">';
+    $ui .= '<form class="box box' . $pad_type_en_id . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
+
+
+    $ui .= '<textarea onkeyup="in_new_pads_count('.$pad_type_en_id.')" class="form-control msg pads-textarea algolia_search new-pads" pads-type-id="' . $pad_type_en_id . '" id="ln_content' . $pad_type_en_id . '" placeholder="WRITE'.( in_array($pad_type_en_id, $this->config->item('en_ids_7551')) || in_array($pad_type_en_id, $this->config->item('en_ids_4986')) ? ', PASTE URL' : '' ).( in_array($pad_type_en_id, $this->config->item('en_ids_12359')) ? ', DRAG FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+
+
+
+    $ui .= '<table class="table table-condensed hidden" id="pads_control_'.$pad_type_en_id.'"><tr>';
+
+    //Save button:
+    $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_pads_add('.$pad_type_en_id.');" class="btn btn-idea save_pads_'.$pad_type_en_id.'">ADD</a></td>';
+
+    //File counter:
+    $ui .= '<td class="remove_loading" class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaPadsNewCount' . $pad_type_en_id . '" class="hidden"><span id="charNum' . $pad_type_en_id . '">0</span>/' . config_var(11073).'</span></td>';
+
+    //First Name:
+    $ui .= '<td class="remove_loading '.superpower_active(10967).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_pads_insert_string('.$pad_type_en_id.', \'/firstname \');" data-toggle="tooltip" title="Mention readers first name" data-placement="top"><span class="icon-block"><i class="far fa-fingerprint"></i></span></a></td>';
+
+    //YouTube Embed
+    $ui .= '<td class="remove_loading '.superpower_active(10984).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_pads_insert_string('.$pad_type_en_id.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=&end=\');" data-toggle="tooltip" title="YouTube Clip with Start & End Seconds" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
+
+    //Reference Player
+    $ui .= '<td class="remove_loading '.superpower_active(10983).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_pads_insert_string('.$pad_type_en_id.', \'@\');" data-toggle="tooltip" title="Reference SOURCE" data-placement="top"><span class="icon-block"><i class="far fa-at"></i></span></a></td>';
+
+    //Upload File:
+    if(in_array(12359, $en_all_4485[$pad_type_en_id]['m_parents'])){
+        $ui .= '<td class="remove_loading" style="width:36px; padding: 10px 0 0 0;">';
+        $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$pad_type_en_id.'" />';
+        $ui .= '<label class="file_label_'.$pad_type_en_id.'" for="fileIdeaType'.$pad_type_en_id.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
+        $ui .= '</td>';
+    }
+
+
+    $ui .= '</tr></table>';
+
+
+    //Response result:
+    $ui .= '<div class="pads_error_'.$pad_type_en_id.'"></div>';
+
+
+    $ui .= '</form>';
+    $ui .= '</div>';
+    $ui .= '</div>';
+    $ui .= '</div>';
+
+    return $ui;
+}
+
 function echo_en($en, $is_parent = false, $extra_class = null)
 {
 
