@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-15 06:25:13 PST
+//Generated 2020-04-15 08:35:13 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1586957113;
-$config['cache_count_transaction'] = 1127189;
+$config['cache_timestamp'] = 1586964913;
+$config['cache_count_transaction'] = 1137978;
 $config['cache_count_read'] = 120993;
 $config['cache_count_idea'] = 3832;
-$config['cache_count_source'] = 9211;
+$config['cache_count_source'] = 5146;
 
 
 
@@ -4727,7 +4727,7 @@ $config['en_all_2738'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
         'm_desc' => '',
-        'm_parents' => array(12499,4527,5008,12155,2738),
+        'm_parents' => array(12499,4527,12155,2738),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -4739,7 +4739,7 @@ $config['en_all_2738'] = array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ',
         'm_desc' => '',
-        'm_parents' => array(12499,4527,5008,12155,2738),
+        'm_parents' => array(12499,4527,12155,2738),
     ),
 );
 
@@ -5181,7 +5181,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ',
         'm_desc' => '',
-        'm_parents' => array(12499,4527,5008,12155,2738),
+        'm_parents' => array(12499,4527,12155,2738),
     ),
     11081 => array(
         'm_icon' => '<i class="far fa-bezier-curve read"></i>',
@@ -5343,7 +5343,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
         'm_desc' => '',
-        'm_parents' => array(12499,4527,5008,12155,2738),
+        'm_parents' => array(12499,4527,12155,2738),
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-user-shield source" aria-hidden="true"></i>',
