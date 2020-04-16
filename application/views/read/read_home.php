@@ -48,7 +48,7 @@ if(!$session_en){
         echo '<a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="pull-right grey"><span class="icon-block-sm" style="margin-top: 9px;">'.$en_all_11035[6415]['m_icon'].'</span></a>';
 
         echo '<div class="clear-reading-list hidden" style="padding:34px 0;">';
-        echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><b class="read montserrat">DELETE ALL<span class="icon-block"><i class="fas fa-circle read"></i></span><b class="montserrat read">READ COINS</b>?</b><br />Action cannot be undone.<br />You may read again to earn them back.</div>';
+        echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><b class="read montserrat">DELETE ALL<span class="icon-block"><i class="fas fa-circle read"></i></span><b class="montserrat read">READ COINS</b>?</b><br /><span class="icon-block">&nbsp;</span>Action cannot be undone.<br /><span class="icon-block">&nbsp;</span>You may read again to earn them back.</div>';
 
         echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="clear_all_reads()" class="btn btn-read"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
         echo '</div>';
