@@ -276,12 +276,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
 
         //SOURCE
-        if($en_id==12412){
-
-            //Play Header Skip as already printed above:
-            continue;
-
-        } elseif($en_id==6225){
+        if($en_id==6225){
 
             //Account Setting
             if(!$session_en || $session_en['en_id']!=$source['en_id']){
