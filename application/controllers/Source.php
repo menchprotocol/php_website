@@ -139,19 +139,21 @@ class Source extends CI_Controller
 
 
         //Start with top Players:
+        echo '<div class="list-group">';
         foreach ($in_source_coins as $count=>$en) {
 
             if($count==$show_max){
 
-                echo '<tr class="see_more_who"><td colspan="3"><span class="icon-block"><i class="far fa-search-plus source"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat source" style="text-decoration: none !important;">SEE TOP '.$load_max.'</b></a></td></tr>';
+                echo '<div class="list-group-item"><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')" class="block"><span class="icon-block"><i class="far fa-search-plus source"></i></span><b class="montserrat source" style="text-decoration: none !important;">SEE TOP '.$load_max.'</b></a></div>';
 
-                echo '<tr class="see_more_who"></tr>';
+                echo '<div class="list-group-item"></div>';
 
             }
 
             echo echo_en($en, false, ( $count<$show_max ? '' : 'see_more_who hidden'));
 
         }
+        echo '</div>';
 
     }
 
