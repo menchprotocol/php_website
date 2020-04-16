@@ -90,7 +90,7 @@ function load_editor(){
         mass_action_ui();
     });
 
-    if(parseInt(js_en_all_6404[778882]['m_desc'])){
+    if(parseInt(js_en_all_6404[12678]['m_desc'])){
         $('.en_quick_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
@@ -313,7 +313,7 @@ $(document).ready(function () {
 
     //Load Algolia on Focus:
     $(".algolia_search").focus(function () {
-        if(!algolia_index && parseInt(js_en_all_6404[778882]['m_desc'])){
+        if(!algolia_index && parseInt(js_en_all_6404[12678]['m_desc'])){
             //Loadup Algolia once:
             client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
             algolia_index = client.initIndex('alg_index');
@@ -350,7 +350,7 @@ $(document).ready(function () {
     });
 
 
-    if(parseInt(js_en_all_6404[778882]['m_desc'])){
+    if(parseInt(js_en_all_6404[12678]['m_desc'])){
 
         $("#mench_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 

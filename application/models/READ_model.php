@@ -4250,7 +4250,7 @@ class READ_model extends CI_Model
             $quick_replies = array();
 
 
-            if(intval(config_var(778882))){
+            if(intval(config_var(12678))){
 
                 $search_index = load_algolia('alg_index');
                 $res = $search_index->search($master_command, [

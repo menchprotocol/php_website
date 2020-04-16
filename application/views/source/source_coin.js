@@ -180,7 +180,7 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 
     });
 
-    if(parseInt(js_en_all_6404[778882]['m_desc'])){
+    if(parseInt(js_en_all_6404[12678]['m_desc'])){
 
             $(element_focus + ' .new-source-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 

@@ -353,7 +353,7 @@ class Cron extends CI_Controller
 
     function algolia($input_obj_type = null, $input_obj_id = null){
 
-        if(!intval(config_var(778882))){
+        if(!intval(config_var(12678))){
             die('Algolia is currently disabled');
         }
 

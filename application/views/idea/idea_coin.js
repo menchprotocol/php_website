@@ -407,7 +407,7 @@ function in_edit_pads_count(ln_id) {
 
 function in_message_inline_en_search(obj) {
 
-    if(parseInt(js_en_all_6404[778882]['m_desc'])){
+    if(parseInt(js_en_all_6404[12678]['m_desc'])){
         obj.textcomplete([
             {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,

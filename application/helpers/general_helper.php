@@ -1104,7 +1104,7 @@ function objectToArray($object)
 function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_only = false)
 {
 
-    if(!intval(config_var(778882))){
+    if(!intval(config_var(12678))){
         return false;
     }
 
