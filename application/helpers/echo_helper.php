@@ -2429,47 +2429,38 @@ function echo_en($en, $is_parent = false, $extra_class = null, $pad_controller =
 
 
 
+    //IDEA
+    $ui .= '<td class="MENCHcolumn3 source">';
+
+    //RIGHT EDITING:
+    $ui .= '<div class="pull-right inline-block">';
+    $ui .= '<div class="pads-edit edit-off">';
+    $ui .= '<span class="show-on-hover">';
+
+    if($pad_controller){
+        //Option to Remove:
+
+    }
+
+    $ui .= '<span title="Modify Source" data-toggle="tooltip" data-placement="left" class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog black"></i></a></span>';
+
+    $ui .= '</span>';
+    $ui .= '</div>';
+    $ui .= '</div>';
+
+    $ui .= echo_in_stat_source(0, $en['en_id']);
+    $ui .= '</td>';
+
+
 
 
     //READ
-    $read_ui = '<td class="MENCHcolumn2 read">';
-    $read_ui .= echo_in_stat_read(array(), $en);
-    $read_ui .= '</td>';
+    $ui .= '<td class="MENCHcolumn2 read">';
+    $ui .= echo_in_stat_read(array(), $en);
+    $ui .= '</td>';
 
 
 
-
-
-
-    //IDEA
-    $in_ui = '<td class="MENCHcolumn3 source">';
-
-    //RIGHT EDITING:
-    $in_ui .= '<div class="pull-right inline-block">';
-    $in_ui .= '<div class="pads-edit edit-off '.superpower_active(10967).'">';
-    $in_ui .= '<span class="show-on-hover">';
-    $in_ui .= '<span title="Modify Source" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog black"></i></a></span>';
-    $in_ui .= '</span>';
-    $in_ui .= '</div>';
-    $in_ui .= '</div>';
-
-    $in_ui .= echo_in_stat_source(0, $en['en_id']);
-    $in_ui .= '</td>';
-
-
-
-
-
-    //Set order based on view mode:
-    if($is_read_progress){
-
-        $ui .= $read_ui.$in_ui;
-
-    } else {
-
-        $ui .= $in_ui.$read_ui;
-
-    }
 
 
     $ui .= '</tr></table>';
