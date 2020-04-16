@@ -1191,7 +1191,6 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 
 
     $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor );
-    $in_thumbnail = ( $can_click ?  echo_in_thumbnail($in['in_id']) : false );
 
 
     $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'actionplan_sort' : '' ).' itemread '.$extra_class.'">';
@@ -1207,16 +1206,8 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 
     //READ ICON
     $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-lock read"></i>' ).'</span>';
-    $ui .= '<b class="montserrat idea-url title-block '.( $in_thumbnail ? 'title-no-right' : '' ).'">'.echo_in_title($in, false, $common_prefix).'</b>';
+    $ui .= '<b class="montserrat idea-url title-block">'.echo_in_title($in, false, $common_prefix).'</b>';
 
-
-    //Description:
-    if($can_click){
-        $in_description = echo_in_description($in['in_id']);
-        if($in_description){
-            $ui .= '<div class="idea-desc"><span class="icon-block">&nbsp;</span>'.$in_description.'</div>';
-        }
-    }
 
     if($infobar_details){
         $ui .= '<div class="idea-footer"><span class="icon-block">&nbsp;</span>' . $infobar_details . '</div>';
@@ -1225,21 +1216,18 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
     $ui .= '</td>';
 
     //Search for Idea Image:
-    if($in_thumbnail || $show_editor){
+    if($show_editor){
 
         $ui .= '<td class="featured-frame" '.( $show_editor ? ' style="padding-right:25px;" ' : '' ).'>';
-        $ui .= $in_thumbnail;
 
-        if($show_editor){
-            $ui .= '<div class="pads-edit edit-off"><span class="show-on-hover">';
+        $ui .= '<div class="pads-edit edit-off"><span class="show-on-hover">';
 
-            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
+        $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
 
-            //Remove:
-            $ui .= '<span title="Remove from list" data-toggle="tooltip" data-placement="left"><span class="actionplan_remove" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
+        //Remove:
+        $ui .= '<span title="Remove from list" data-toggle="tooltip" data-placement="left"><span class="actionplan_remove" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
 
-            $ui .= '</span></div>';
-        }
+        $ui .= '</span></div>';
 
         $ui .= '</td>';
 
@@ -1252,90 +1240,6 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
     $ui .= '</div>';
 
     return $ui;
-}
-
-function echo_in_description($in_id){
-
-    $CI =& get_instance();
-
-    foreach ($CI->READ_model->ln_fetch(array(
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        'ln_type_source_id' => 4231, //Idea Pads Messages
-        'ln_next_idea_id' => $in_id,
-    ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
-
-        //See if Text Message:
-        if($ln['ln_parent_source_id'] > 0){
-            $ln_content = trim(str_replace('@'.$ln['ln_parent_source_id'],'',$ln['ln_content']));
-        } else {
-            $ln_content = $ln['ln_content'];
-        }
-
-        if(strlen($ln_content) > 0){
-            //This is the first text message:
-            if(strlen($ln_content) < config_var(12363)){
-                //Qualifies as feature message:
-                return $CI->READ_model->dispatch_message($ln['ln_content']);
-            }
-
-            //Break either way:
-            break;
-        }
-    }
-
-    return null;
-
-}
-
-function echo_in_thumbnail($in_id){
-
-    $CI =& get_instance();
-    $embed_code = null;
-    $relevant_pads = $CI->READ_model->ln_fetch(array(
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        'ln_type_source_id IN (4231,4983)' => null, //Idea Pads Messages & Sources
-        'ln_next_idea_id' => $in_id,
-        'ln_parent_source_id >' => 0, //Reference a source
-    ), array(), 0, 0, array('ln_order' => 'ASC'));
-
-
-    //Look for images first
-    foreach ($relevant_pads as $ln) {
-        foreach($CI->READ_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4260, //Images
-            'ln_child_source_id' => $ln['ln_parent_source_id'],
-        )) as $embed_image){
-            $embed_code .= '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="'.$embed_image['ln_content'].'" /></span></div>';
-        }
-        if($embed_code){
-            break;
-        }
-    }
-
-    //if not found, then look for embed videos which we can extract a cover image:
-    if(!$embed_code){
-        foreach ($relevant_pads as $ln) {
-            foreach($CI->READ_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id' => 4257, //Embed Videos
-                'ln_child_source_id' => $ln['ln_parent_source_id'],
-            )) as $embed_video){
-                $youtube_id = extract_youtube_id($embed_video['ln_content']);
-                if(strlen($youtube_id) > 0){
-                    $embed_code .= '<div class="inline-block featured-frame pull-right"><span class="featured-image"><img src="https://i3.ytimg.com/vi/'.$youtube_id.'/maxresdefault.jpg" /></span></div>';
-                    break;
-                }
-            }
-            if($embed_code){
-                break;
-            }
-        }
-    }
-
-    //Return results:
-    return $embed_code;
-
 }
 
 

@@ -2018,8 +2018,6 @@ class READ_model extends CI_Model
                         echo '<b class="montserrat idea-url" style="margin-left:0;">'.echo_in_title($child_in, false, $common_prefix).'</b>';
                         echo '</td>';
 
-                        echo '<td class="featured-frame">' . echo_in_thumbnail($child_in['in_id']) . '</td>';
-
                         echo '</tr></table>';
 
 

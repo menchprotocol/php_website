@@ -116,8 +116,8 @@ class Cron extends CI_Controller
 
         //Calculates the weekly coins issued:
         $last_week_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-7, date("Y"));
-        $last_week_start = date(config_var(12355), $last_week_start_timestamp);
-        $last_week_end = date(config_var(12355), mktime(23, 59, 59, date("n"), date("j")-1, date("Y")));
+        $last_week_start = date("D M j G:i:s T Y", $last_week_start_timestamp);
+        $last_week_end = date("D M j G:i:s T Y", mktime(23, 59, 59, date("n"), date("j")-1, date("Y")));
 
         //IDEA
         $idea_coins_new_last_week = $this->READ_model->ln_fetch(array(
