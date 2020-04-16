@@ -64,7 +64,7 @@ class Read extends CI_Controller
         $session_en = superpower_assigned();
 
         //Check to see if added to READING LIST for logged-in users:
-        if(!isset($session_en['en_id'])){
+        if(!$session_en){
             return redirect_message('/source/sign/'.$in_id);
         }
 
@@ -805,7 +805,7 @@ class Read extends CI_Controller
     function debug($in_id){
 
         $session_en = superpower_assigned();
-        if(!isset($session_en['en_id'])){
+        if(!$session_en){
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Expired Session or Missing Superpower',

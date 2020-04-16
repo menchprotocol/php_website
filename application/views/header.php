@@ -210,7 +210,7 @@ if(!isset($hide_header)){
                     }
 
                     //Account
-                    if (isset($session_en['en_id'])) {
+                    if ($session_en) {
 
                         //Player Menu
                         echo '<td class="block-menu">'.echo_navigation_menu(12500).'</td>';

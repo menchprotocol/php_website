@@ -1454,12 +1454,12 @@ function in_is_source($in_id, $session_en = array()){
 
     $CI =& get_instance();
 
-    if(!isset($session_en['en_id'])){
+    if(!$session_en){
         //Fetch from session:
         $session_en = superpower_assigned();
     }
 
-    if(!isset($session_en['en_id']) || $in_id < 1){
+    if(!$session_en || $in_id < 1){
         return false;
     }
 
@@ -2167,6 +2167,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $pad_controller =
         ));
         return false;
     }
+
     $session_en = superpower_assigned();
     $en_all_6177 = $CI->config->item('en_all_6177'); //Source Status
     $en_all_4527 = $CI->config->item('en_all_4527');
@@ -2193,7 +2194,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $pad_controller =
     ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
 
     $is_published = in_array($en['en_status_source_id'], $CI->config->item('en_ids_7357'));
-    $is_link_published = ( $ln_id > 0 && in_array($en['ln_status_source_id'], $CI->config->item('en_ids_7359')));
+    $is_link_published = ( !$ln_id || in_array($en['ln_status_source_id'], $CI->config->item('en_ids_7359')));
     $is_hidden = filter_array($en__parents, 'en_id', '4755');
 
     if(!$session_en && ($is_hidden || !$is_published || !$is_link_published)){

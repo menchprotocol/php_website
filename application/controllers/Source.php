@@ -161,7 +161,7 @@ class Source extends CI_Controller
 
         //Check to see if they are already logged in?
         $session_en = superpower_assigned();
-        if (isset($session_en['en_id'])) {
+        if ($session_en) {
             //Lead trainer and above, go to console:
             if($in_id > 0){
                 return redirect_message('/' . $in_id);
