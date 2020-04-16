@@ -831,11 +831,11 @@ td.MENCHcolumn3  { width: 13%; }
     padding-left: 3px;
 }
 .mench-navigation .block-logo {
-    width: 44px !important;
+    width:160px !important;
 }
 .mench-navigation .block-logo a {
     display: block;
-    text-align: center;
+    text-align: left;
     margin-left: 0;
     padding:0;
 }
@@ -872,7 +872,7 @@ td.MENCHcolumn3  { width: 13%; }
     margin-right: 4px !important;
     margin-bottom: 0 !important;
     margin-top: 2px !important;
-    display: block;
+    display: inline-block;
 }
 
 .link_marks{
