@@ -61,7 +61,7 @@ if( $is_source && $is_active && $in['in_id']!=config_var(12156)){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control IdeaAddPrevious form-control-thick algolia_search dotransparent"
+                           class="form-control IdeaAddPrevious form-control-thick montserrat algolia_search dotransparent"
                            maxlength="' . config_var(11071) . '"
                            idea-id="' . $in['in_id'] . '"
                            id="addidea-c-' . $in['in_id'] . '-1"
@@ -148,7 +148,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control ideaadder-level-2-child form-control-thick algolia_search dotransparent"
+                           class="form-control ideaadder-level-2-child form-control-thick montserrat algolia_search dotransparent"
                            maxlength="' . config_var(11071) . '"
                            idea-id="' . $in['in_id'] . '"
                            id="addidea-c-' . $in['in_id'] . '-0"

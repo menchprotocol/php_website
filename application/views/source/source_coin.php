@@ -430,7 +430,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
             //Input to add new parents:
             $this_tab .= '<div id="new-parent" class="list-group-item itemsource no-side-padding '.superpower_active(10967).'">
-                <div class="form-group is-empty"><input type="text" class="form-control new-source-input algolia_search form-control-thick dotransparent" data-lpignore="true" placeholder="+ SOURCE"></div>
+                <div class="form-group is-empty"><input type="text" class="form-control new-source-input algolia_search form-control-thick montserrat dotransparent" data-lpignore="true" placeholder="+ SOURCE"></div>
                 <div class="algolia_pad_search hidden"></div>
         </div>';
 
@@ -507,7 +507,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
             //Input to add new child:
             $this_tab .= '<div id="new-children" class="list-group-item itemsource no-side-padding '.superpower_active(10967).'">
-        <div class="form-group is-empty"><input type="text" class="form-control new-source-input form-control-thick algolia_search dotransparent" data-lpignore="true" placeholder="+ SOURCE"></div>
+        <div class="form-group is-empty"><input type="text" class="form-control new-source-input form-control-thick montserrat algolia_search dotransparent" data-lpignore="true" placeholder="+ SOURCE"></div>
         <div class="algolia_pad_search hidden"></div>
 </div>';
             $this_tab .= '</div>';

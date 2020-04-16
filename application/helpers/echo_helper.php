@@ -2174,7 +2174,7 @@ function echo_idea_pad_source($in_id, $pad_type_en_id, $in_pads, $is_source){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_11018[$pad_type_en_id]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control IdeaAddPrevious form-control-thick algolia_search dotransparent"
+                           class="form-control IdeaAddPrevious form-control-thick montserrat algolia_search dotransparent"
                            maxlength="' . config_var(11072) . '"
                            idea-id="' . $in_id . '"
                            id="add-source-idea-' . $in_id . '"

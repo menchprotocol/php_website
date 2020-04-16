@@ -27,7 +27,7 @@
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control form-control-thick algolia_search dotransparent"
+                           class="form-control form-control-thick montserrat algolia_search dotransparent"
                            maxlength="' . config_var(11071) . '"
                            id="newIdeaTitle"
                            style="margin-bottom: 0; padding: 5px 0;"
