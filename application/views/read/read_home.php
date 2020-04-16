@@ -24,11 +24,22 @@ if(!$session_en){
 
 } else {
 
+    //We'll see if we can prove the opposite:
+    $all_completed = true;
+    $any_completed = false;
 
     //List Reads:
     echo '<div id="actionplan_steps" class="list-group no-side-padding">';
-    foreach ($player_reads as $priority => $ln) {
-        echo echo_in_read($ln, false, null, null, null, true);
+    foreach ($player_reads as $priority => $in) {
+        $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
+        echo echo_in_read($in, false, null, null, null, true, $completion_rate);
+
+        if($completion_rate['completion_percentage']>0 && !$any_completed){
+            $any_completed = true;
+        }
+        if($completion_rate['completion_percentage']!=100 && $all_completed){
+            $all_completed = false;
+        }
     }
     echo '</div>';
 
@@ -36,22 +47,30 @@ if(!$session_en){
     //Call to Actions:
     echo '<div style="margin-top: 10px;">';
 
-        //Add New Read:
-        echo '<a href="/" class="btn btn-read" title="'.$en_all_11035[12581]['m_name'].'">'.$en_all_11035[12581]['m_icon'].'</a>&nbsp;&nbsp;';
+
+        //READ HOME
+        echo '<a href="/" class="btn btn-read" title="'.$en_all_11035[12581]['m_name'].'">'.$en_all_11035[12581]['m_icon'].'</a>&nbsp;';
 
 
-        //Next Read:
-        echo '<a href="/read/next" class="btn btn-read">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a>&nbsp;&nbsp;';
+        //READ HISTORY
+        if($any_completed){
+            echo '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_6255')).'&ln_creator_source_id='.$session_en['en_id'].'" class="btn btn-read" title="'.$en_all_11035[12681]['m_name'].'">'.$en_all_11035[12681]['m_icon'].'</a>&nbsp;';
+        }
 
 
-        //Give option to delete all:
+        //READ NEXT
+        if(!$all_completed){
+            echo '<a href="/read/next" class="btn btn-read">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a>&nbsp;';
+        }
+
+
+        //READ DELETE ALL
         echo '<a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="pull-right grey"><span class="icon-block-sm" style="margin-top: 9px;">'.$en_all_11035[6415]['m_icon'].'</span></a>';
-
         echo '<div class="clear-reading-list hidden" style="padding:34px 0;">';
         echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><b class="read montserrat">DELETE ALL READ COINS?</b><br /><span class="icon-block">&nbsp;</span>Action cannot be undone.</div>';
-
         echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="clear_all_reads()" class="btn btn-read"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
         echo '</div>';
+
 
 
     echo '</div>';

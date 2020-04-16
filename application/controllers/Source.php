@@ -137,7 +137,6 @@ class Source extends CI_Controller
         $in_source_coins = $this->READ_model->ln_fetch($filters_in, array('en_parent','in_child'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight');
 
 
-
         //Start with top Players:
         echo '<div class="list-group">';
         foreach ($in_source_coins as $count=>$en) {

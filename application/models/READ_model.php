@@ -2062,7 +2062,7 @@ class READ_model extends CI_Model
 
                     echo '<div class="result-update margin-top-down"></div>';
 
-                    echo echo_in_read_previous($in_id, $recipient_en);
+                    echo echo_in_previous_read($in_id, $recipient_en);
 
                     //Button to submit selection:
                     echo '<div class="inline-block margin-top-down previous_reads"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($read_answers)>0 ? 'UPDATE' : 'SELECT' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($read_answers)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL</u></a></span>' : '' ).'</div>';
@@ -2090,7 +2090,7 @@ class READ_model extends CI_Model
                 echo '<div class="text_saving_result margin-top-down previous_reads"></div>';
 
                 //Show Previous Button:
-                echo echo_in_read_previous($ins[0]['in_id'], $recipient_en);
+                echo echo_in_previous_read($ins[0]['in_id'], $recipient_en);
 
                 //Save/Upload & Next:
                 echo '<div class="margin-top-down inline-block previous_reads"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">SAVE & NEXT <i class="fad fa-step-forward"></i></a>&nbsp;&nbsp;</div>';
@@ -2123,7 +2123,7 @@ class READ_model extends CI_Model
                 if(!count($read_completes)) {
 
                     //Show Previous Button:
-                    echo echo_in_read_previous($ins[0]['in_id'], $recipient_en);
+                    echo echo_in_previous_read($ins[0]['in_id'], $recipient_en);
 
                     echo '<label class="btn btn-read inline-block previous_reads" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD</label>';
 

@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-16 12:07:56 PST
+//Generated 2020-04-16 12:41:08 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587064076;
-$config['cache_count_transaction'] = 1139140;
+$config['cache_timestamp'] = 1587066068;
+$config['cache_count_transaction'] = 1139162;
 $config['cache_count_read'] = 120971;
 $config['cache_count_idea'] = 3831;
-$config['cache_count_source'] = 5144;
+$config['cache_count_source'] = 5145;
 
 
 
@@ -3959,7 +3959,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION MENU:
-$config['en_ids_11035'] = array(6225,10573,11068,12467,4341,12211,4430,10957,7347,6415,12581,7256,4269,6287,12437,7291,12275,12205,7540);
+$config['en_ids_11035'] = array(6225,10573,11068,12467,4341,12211,4430,10957,7347,6415,12681,12581,7256,4269,6287,12437,7291,12275,12205,7540);
 $config['en_all_11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -4020,6 +4020,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'READ CLEAR ALL',
         'm_desc' => '',
         'm_parents' => array(6205,11035,4755,6418,4593,6414),
+    ),
+    12681 => array(
+        'm_icon' => '<i class="fas fa-history read"></i>',
+        'm_name' => 'READ HISOTRY',
+        'm_desc' => '',
+        'm_parents' => array(11035),
     ),
     12581 => array(
         'm_icon' => '<i class="fad fa-home read" aria-hidden="true"></i>',

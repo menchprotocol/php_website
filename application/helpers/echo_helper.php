@@ -1182,7 +1182,7 @@ function echo_in_coins_source($in_id = 0, $en_id = 0){
 
 
 
-function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $common_prefix = null, $extra_class = null, $show_editor = false)
+function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $common_prefix = null, $extra_class = null, $show_editor = false, $completion_rate = null)
 {
 
     //See if user is logged-in:
@@ -1192,12 +1192,14 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
     $metadata = unserialize($in['in_metadata']);
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
-    if($session_en){
-        $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
-    } else {
-        $completion_rate['completion_percentage'] = 0;
-    }
 
+    if(!$completion_rate){
+        if($session_en){
+            $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
+        } else {
+            $completion_rate['completion_percentage'] = 0;
+        }
+    }
 
     $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor );
 
@@ -1984,7 +1986,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
     } else {
 
         //PREVIOUS:
-        echo echo_in_read_previous($in_id, $recipient_en);
+        echo echo_in_previous_read($in_id, $recipient_en);
 
         //NEXT:
         $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH  NAVIGATION
@@ -1994,7 +1996,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
 
 }
 
-function echo_in_read_previous($in_id, $recipient_en){
+function echo_in_previous_read($in_id, $recipient_en){
 
     if(!$recipient_en || $recipient_en['en_id'] < 1){
         return null;
