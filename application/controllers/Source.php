@@ -209,14 +209,6 @@ class Source extends CI_Controller
         echo '</table>';
     }
 
-    function stats(){
-        $this->load->view('header', array(
-            'title' => 'Source Stats',
-        ));
-        $this->load->view('source/source_stats');
-        $this->load->view('footer');
-    }
-
     function sign($in_id = 0){
 
         //Check to see if they are already logged in?
@@ -2229,7 +2221,7 @@ class Source extends CI_Controller
 
 
 
-    function admin_panel($action = null, $command1 = null, $command2 = null)
+    function admin($action = null, $command1 = null, $command2 = null)
     {
 
         boost_power();
@@ -2242,7 +2234,7 @@ class Source extends CI_Controller
             'title' => 'Moderation Tools',
         ));
 
-        $this->load->view('source/source_admin_panel' , array(
+        $this->load->view('source/source_admin' , array(
             'action' => $action,
             'command1' => $command1,
             'command2' => $command2,
