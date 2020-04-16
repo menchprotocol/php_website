@@ -938,7 +938,6 @@ class Idea extends CI_Controller {
             //Referencing attributes:
             'ln_type_source_id' => intval($_POST['focus_ln_type_source_id']),
             'ln_parent_source_id' => $msg_validation['ln_parent_source_id'],
-            'ln_previous_idea_id' => $msg_validation['ln_previous_idea_id'],
             'ln_next_idea_id' => intval($_POST['in_id']),
             'ln_content' => $msg_validation['input_message'],
         ), true);
@@ -1178,7 +1177,6 @@ class Idea extends CI_Controller {
             $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                 'ln_content' => $msg_validation['input_message'],
                 'ln_parent_source_id' => $msg_validation['ln_parent_source_id'],
-                'ln_previous_idea_id' => $msg_validation['ln_previous_idea_id'],
             ), $session_en['en_id'], 10679 /* Idea Pads Iterated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
 
         }
