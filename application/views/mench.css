@@ -33,7 +33,10 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     max-width:767px;
 }
 .padded {
-    margin: 0 33px 20px 33px;
+    margin: 0 33px 15px 33px;
+}
+.edit-off.padded, .edit-on.padded {
+    margin-bottom: 0;
 }
 .margin-top-down{
     margin:30px 0;
