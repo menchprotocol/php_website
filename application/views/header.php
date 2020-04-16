@@ -195,20 +195,21 @@ if(!isset($hide_header)){
                             }
                         }
                         echo '</div>';
-
-                        if(intval(config_var(12678))){
-                            echo '<div class="main_nav search_nav hidden"><form id="searchFrontForm" style="margin-top:5px;"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$en_all_11035[7256]['m_name'].'"></form></div>';
-                        }
                         ?>
 
 
-
+                        <div class="main_nav search_nav hidden"><form id="searchFrontForm" style="margin-top:5px;"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
                     </td>
 
-                    <td class="block-link <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a href="javascript:void(0);" onclick="toggle_search()"><span class="search_icon"><?= $en_all_11035[7256]['m_icon'] ?></span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>
-
                     <?php
+
+                    //Search
+                    if(intval(config_var(12678))){
+                        echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()"><span class="search_icon">'.$en_all_11035[7256]['m_icon'].'</span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>';
+                    }
+
+                    //Account
                     if (isset($session_en['en_id'])) {
 
                         //Player Menu
