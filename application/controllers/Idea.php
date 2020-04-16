@@ -877,7 +877,7 @@ class Idea extends CI_Controller {
     }
 
 
-    function in_pads_create_text()
+    function in_notes_create_text()
     {
 
         //Authenticate Trainer:
@@ -945,14 +945,14 @@ class Idea extends CI_Controller {
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
-            'message' => echo_in_pads(array_merge($ln, array(
+            'message' => echo_in_notes(array_merge($ln, array(
                 'ln_child_source_id' => $session_en['en_id'],
             ))),
         ));
     }
 
 
-    function in_pads_create_upload()
+    function in_notes_create_upload()
     {
 
         //TODO: MERGE WITH FUNCTION read_file_upload()
@@ -1059,7 +1059,7 @@ class Idea extends CI_Controller {
         //Echo message:
         echo_json(array(
             'status' => 1,
-            'message' => echo_in_pads(array_merge($new_messages[0], array(
+            'message' => echo_in_notes(array_merge($new_messages[0], array(
                 'ln_child_source_id' => $session_en['en_id'],
             ))),
         ));
@@ -1068,7 +1068,7 @@ class Idea extends CI_Controller {
 
 
 
-    function in_pads_sort()
+    function in_notes_sort()
     {
 
         //Authenticate Trainer:
@@ -1109,7 +1109,7 @@ class Idea extends CI_Controller {
         ));
     }
 
-    function in_pads_modify_save()
+    function in_notes_modify_save()
     {
 
         //Authenticate Trainer:

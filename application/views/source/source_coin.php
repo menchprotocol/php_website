@@ -517,7 +517,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
         } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
 
             //Idea Pads
-            $in_pads_filters = array(
+            $in_notes_filters = array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
                 'ln_type_source_id' => $en_id,
@@ -525,29 +525,29 @@ $source__parents = $this->READ_model->ln_fetch(array(
             );
 
             //COUNT ONLY
-            $item_counters = $this->READ_model->ln_fetch($in_pads_filters, array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
+            $item_counters = $this->READ_model->ln_fetch($in_notes_filters, array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
             $counter = $item_counters[0]['totals'];
 
             //SHOW LASTEST 100
             if($counter>0 && (!$disable_content_loading || $auto_expand_tab)){
 
                 $this_tab .= '<div class="list-group">';
-                foreach ($this->READ_model->ln_fetch($in_pads_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC')) as $in_pads) {
+                foreach ($this->READ_model->ln_fetch($in_notes_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC')) as $in_notes) {
                     if(in_array($en_id, $this->config->item('en_ids_12321'))){
 
-                        $this_tab .= echo_in_read($in_pads);
+                        $this_tab .= echo_in_read($in_notes);
 
                     } elseif(in_array($en_id, $this->config->item('en_ids_12322'))){
 
                         //Include the message:
                         $infobar_details = null;
-                        if($in_pads['ln_content']){
+                        if($in_notes['ln_content']){
                             $infobar_details .= '<div class="message_content">';
-                            $infobar_details .= $this->READ_model->dispatch_message($in_pads['ln_content']);
+                            $infobar_details .= $this->READ_model->dispatch_message($in_notes['ln_content']);
                             $infobar_details .= '</div>';
                         }
 
-                        $this_tab .= echo_in_read($in_pads, false, $infobar_details);
+                        $this_tab .= echo_in_read($in_notes, false, $infobar_details);
 
                     }
                 }

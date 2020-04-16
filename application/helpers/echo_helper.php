@@ -219,7 +219,7 @@ function echo_in_title($in, $push_message = false, $common_prefix = null){
 }
 
 
-function echo_in_pads($ln)
+function echo_in_notes($ln)
 {
 
     /*
@@ -254,17 +254,17 @@ function echo_in_pads($ln)
 
         //Sort:
         if(in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents'])){
-            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars '.( in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents']) ? 'in_pads_sorting' : '' ).'"></i></span>';
+            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars '.( in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents']) ? 'in_notes_sorting' : '' ).'"></i></span>';
         }
 
         //Modify:
-        $ui .= '<span title="Modify Message" data-toggle="tooltip" data-placement="left"><a href="javascript:in_pads_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
+        $ui .= '<span title="Modify Message" data-toggle="tooltip" data-placement="left"><a href="javascript:in_notes_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
 
     $ui .= '</span></div>';
 
 
     //Text editing:
-    $ui .= '<textarea onkeyup="in_edit_pads_count(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg pads-textarea algolia_search" placeholder="'.stripslashes($ln['ln_content']).'">' . $ln['ln_content'] . '</textarea>';
+    $ui .= '<textarea onkeyup="in_edit_notes_count(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg pads-textarea algolia_search" placeholder="'.stripslashes($ln['ln_content']).'">' . $ln['ln_content'] . '</textarea>';
 
 
     //Editing menu:
@@ -274,10 +274,10 @@ function echo_in_pads($ln)
     $ui .= '<li class="edit-on hidden"><span id="ideaPadsCount' . $ln['ln_id'] . '"><span id="charEditingNum' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</span></li>';
 
     //Save Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:in_pads_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_source_id'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:in_notes_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_source_id'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
 
     //Cancel Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:in_pads_modify_cancel(' . $ln['ln_id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:in_notes_modify_cancel(' . $ln['ln_id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
 
     //Show drop down for message link status:
     $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 0 0 0; display: block;">';
@@ -1695,27 +1695,27 @@ function echo_in_previous_read($in_id, $recipient_en){
     return $ui;
 }
 
-function echo_in_pad_source($in_id, $pad_type_en_id, $in_pads, $is_source){
+function echo_in_note_source($in_id, $note_type_en_id, $in_notes, $is_source){
 
     $CI =& get_instance();
     $en_all_11018 = $CI->config->item('en_all_11018');
 
     $ui = '<div class="list-group">';
-    foreach ($in_pads as $en) {
+    foreach ($in_notes as $en) {
         $ui .= echo_en($en, false, null, true);
     }
 
     if( $is_source ){
         $ui .= '<div class="list-group-item itemsource '.superpower_active(10939).'" style="padding:5px 0;">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_11018[$pad_type_en_id]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_11018[$note_type_en_id]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control IdeaAddPrevious form-control-thick montserrat algolia_search dotransparent"
                            maxlength="' . config_var(11072) . '"
                            idea-id="' . $in_id . '"
                            id="add-source-idea-' . $in_id . '"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="'.$en_all_11018[$pad_type_en_id]['m_name'].'">
+                           placeholder="'.$en_all_11018[$note_type_en_id]['m_name'].'">
                 </div><div class="algolia_pad_search hidden in_pad_top"></div></div>';
     }
     $ui .= '</div>';
@@ -1723,50 +1723,50 @@ function echo_in_pad_source($in_id, $pad_type_en_id, $in_pads, $is_source){
     return $ui;
 }
 
-function echo_in_pad_mix($pad_type_en_id, $in_pads, $is_source){
+function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
 
     $CI =& get_instance();
     $en_all_4485 = $CI->config->item('en_all_4485'); //Idea Pads
 
     //Show no-Message notifications for each message type:
-    $ui = '<div id="in_pads_list_'.$pad_type_en_id.'" class="list-group">';
+    $ui = '<div id="in_notes_list_'.$note_type_en_id.'" class="list-group">';
 
-    foreach ($in_pads as $in_pads) {
-        $ui .= echo_in_pads($in_pads);
+    foreach ($in_notes as $in_notes) {
+        $ui .= echo_in_notes($in_notes);
     }
 
     //ADD NEW Alert:
-    $ui .= '<div class="list-group-item itemidea add_pads_' . $pad_type_en_id . ( $is_source ? '' : ' hidden ' ).'">';
-    $ui .= '<div class="add_pads_form">';
-    $ui .= '<form class="box box' . $pad_type_en_id . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
+    $ui .= '<div class="list-group-item itemidea add_notes_' . $note_type_en_id . ( $is_source ? '' : ' hidden ' ).'">';
+    $ui .= '<div class="add_notes_form">';
+    $ui .= '<form class="box box' . $note_type_en_id . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
 
 
-    $ui .= '<textarea onkeyup="in_new_pads_count('.$pad_type_en_id.')" class="form-control msg pads-textarea algolia_search new-pads" pads-type-id="' . $pad_type_en_id . '" id="ln_content' . $pad_type_en_id . '" placeholder="WRITE'.( in_array($pad_type_en_id, $CI->config->item('en_ids_7551')) || in_array($pad_type_en_id, $CI->config->item('en_ids_4986')) ? ', PASTE URL' : '' ).( in_array($pad_type_en_id, $CI->config->item('en_ids_12359')) ? ', DRAG FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+    $ui .= '<textarea onkeyup="in_new_notes_count('.$note_type_en_id.')" class="form-control msg pads-textarea algolia_search new-pads" pads-type-id="' . $note_type_en_id . '" id="ln_content' . $note_type_en_id . '" placeholder="WRITE'.( in_array($note_type_en_id, $CI->config->item('en_ids_7551')) || in_array($note_type_en_id, $CI->config->item('en_ids_4986')) ? ', PASTE URL' : '' ).( in_array($note_type_en_id, $CI->config->item('en_ids_12359')) ? ', DRAG FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
-    $ui .= '<table class="table table-condensed hidden" id="pads_control_'.$pad_type_en_id.'"><tr>';
+    $ui .= '<table class="table table-condensed hidden" id="pads_control_'.$note_type_en_id.'"><tr>';
 
     //Save button:
-    $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_pads_add('.$pad_type_en_id.');" class="btn btn-idea save_pads_'.$pad_type_en_id.'">ADD</a></td>';
+    $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_notes_add('.$note_type_en_id.');" class="btn btn-idea save_notes_'.$note_type_en_id.'">ADD</a></td>';
 
     //File counter:
-    $ui .= '<td class="remove_loading" class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaPadsNewCount' . $pad_type_en_id . '" class="hidden"><span id="charNum' . $pad_type_en_id . '">0</span>/' . config_var(11073).'</span></td>';
+    $ui .= '<td class="remove_loading" class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaPadsNewCount' . $note_type_en_id . '" class="hidden"><span id="charNum' . $note_type_en_id . '">0</span>/' . config_var(11073).'</span></td>';
 
     //First Name:
-    $ui .= '<td class="remove_loading '.superpower_active(10967).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_pads_insert_string('.$pad_type_en_id.', \'/firstname \');" data-toggle="tooltip" title="Mention readers first name" data-placement="top"><span class="icon-block"><i class="far fa-fingerprint"></i></span></a></td>';
+    $ui .= '<td class="remove_loading '.superpower_active(10967).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'/firstname \');" data-toggle="tooltip" title="Mention readers first name" data-placement="top"><span class="icon-block"><i class="far fa-fingerprint"></i></span></a></td>';
 
     //YouTube Embed
-    $ui .= '<td class="remove_loading '.superpower_active(10984).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_pads_insert_string('.$pad_type_en_id.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=&end=\');" data-toggle="tooltip" title="YouTube Clip with Start & End Seconds" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
+    $ui .= '<td class="remove_loading '.superpower_active(10984).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=&end=\');" data-toggle="tooltip" title="YouTube Clip with Start & End Seconds" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
 
     //Reference Player
-    $ui .= '<td class="remove_loading '.superpower_active(10983).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_pads_insert_string('.$pad_type_en_id.', \'@\');" data-toggle="tooltip" title="Reference SOURCE" data-placement="top"><span class="icon-block"><i class="far fa-at"></i></span></a></td>';
+    $ui .= '<td class="remove_loading '.superpower_active(10983).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'@\');" data-toggle="tooltip" title="Reference SOURCE" data-placement="top"><span class="icon-block"><i class="far fa-at"></i></span></a></td>';
 
     //Upload File:
-    if(in_array(12359, $en_all_4485[$pad_type_en_id]['m_parents'])){
+    if(in_array(12359, $en_all_4485[$note_type_en_id]['m_parents'])){
         $ui .= '<td class="remove_loading" style="width:36px; padding: 10px 0 0 0;">';
-        $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$pad_type_en_id.'" />';
-        $ui .= '<label class="file_label_'.$pad_type_en_id.'" for="fileIdeaType'.$pad_type_en_id.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
+        $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$note_type_en_id.'" />';
+        $ui .= '<label class="file_label_'.$note_type_en_id.'" for="fileIdeaType'.$note_type_en_id.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
         $ui .= '</td>';
     }
 
@@ -1775,7 +1775,7 @@ function echo_in_pad_mix($pad_type_en_id, $in_pads, $is_source){
 
 
     //Response result:
-    $ui .= '<div class="pads_error_'.$pad_type_en_id.'"></div>';
+    $ui .= '<div class="pads_error_'.$note_type_en_id.'"></div>';
 
 
     $ui .= '</form>';
@@ -1786,7 +1786,7 @@ function echo_in_pad_mix($pad_type_en_id, $in_pads, $is_source){
     return $ui;
 }
 
-function echo_en($en, $is_parent = false, $extra_class = null, $pad_controller = false)
+function echo_en($en, $is_parent = false, $extra_class = null, $note_controller = false)
 {
 
     $CI =& get_instance();
@@ -1951,7 +1951,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $pad_controller =
     $ui .= '<div class="pads-edit edit-off">';
     $ui .= '<span class="show-on-hover">';
 
-    if($pad_controller){
+    if($note_controller){
         //Option to Remove:
 
     }

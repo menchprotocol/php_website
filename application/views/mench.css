@@ -600,7 +600,7 @@ img.no-radius {
 }
 
 
-.add_pads_form{
+.add_notes_form{
     margin-left: 33px;
 }
 
@@ -1243,7 +1243,7 @@ label {
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
 }
-.texttype_4736_lg, #newIdeaTitle, .add_pads_form, .idea-info, .block-one, .pads-textarea.edit-on {
+.texttype_4736_lg, #newIdeaTitle, .add_notes_form, .idea-info, .block-one, .pads-textarea.edit-on {
     width: -webkit-calc(100% - 33px) !important;
     width:    -moz-calc(100% - 33px) !important;
     width:         calc(100% - 33px) !important;

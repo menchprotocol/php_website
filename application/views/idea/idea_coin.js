@@ -71,7 +71,7 @@ $(document).ready(function () {
     in_update_text_start();
 
     //Put focus on messages if no message:
-    if(!$('#in_pads_list_4231 .pads_sortable').length){
+    if(!$('#in_notes_list_4231 .pads_sortable').length){
         $('#ln_content4231').focus();
     }
 
@@ -124,7 +124,7 @@ $(document).ready(function () {
         autosize($(this));
 
         //Activate sorting:
-        in_pads_sort_load(focus_ln_type_source_id);
+        in_notes_sort_load(focus_ln_type_source_id);
 
         var showFiles = function (files) {
             if(typeof files[0] !== 'undefined'){
@@ -144,13 +144,13 @@ $(document).ready(function () {
         //Watch for message creation:
         $('#ln_content' + focus_ln_type_source_id).keydown(function (e) {
             if (e.ctrlKey && e.keyCode == 13) {
-                in_pads_add(focus_ln_type_source_id);
+                in_notes_add(focus_ln_type_source_id);
             }
         });
 
         //Watchout for file uplods:
         $('.box' + focus_ln_type_source_id).find('input[type="file"]').change(function () {
-            in_pads_create_upload(droppedFiles, 'file', focus_ln_type_source_id);
+            in_notes_create_upload(droppedFiles, 'file', focus_ln_type_source_id);
         });
 
 
@@ -165,15 +165,15 @@ $(document).ready(function () {
                 e.stopPropagation();
             })
                 .on('dragover dragenter', function () {
-                    $('.add_pads_' + focus_ln_type_source_id).addClass('is-working');
+                    $('.add_notes_' + focus_ln_type_source_id).addClass('is-working');
                 })
                 .on('dragleave dragend drop', function () {
-                    $('.add_pads_' + focus_ln_type_source_id).removeClass('is-working');
+                    $('.add_notes_' + focus_ln_type_source_id).removeClass('is-working');
                 })
                 .on('drop', function (e) {
                     droppedFiles = e.originalEvent.dataTransfer.files;
                     e.preventDefault();
-                    in_pads_create_upload(droppedFiles, 'drop', focus_ln_type_source_id);
+                    in_notes_create_upload(droppedFiles, 'drop', focus_ln_type_source_id);
                 });
         }
 
@@ -336,14 +336,14 @@ function in_ui_remove(in_id,ln_id){
 *
 * */
 
-function in_pads_insert_string(focus_ln_type_source_id, add_string) {
+function in_notes_insert_string(focus_ln_type_source_id, add_string) {
     $('#ln_content' + focus_ln_type_source_id).insertAtCaret(add_string);
-    in_new_pads_count(focus_ln_type_source_id);
+    in_new_notes_count(focus_ln_type_source_id);
 }
 
 
 //Count text area characters:
-function in_new_pads_count(focus_ln_type_source_id) {
+function in_new_notes_count(focus_ln_type_source_id) {
 
     //Update count:
     var len = $('#ln_content' + focus_ln_type_source_id).val().length;
@@ -383,7 +383,7 @@ function in_title_count() {
     }
 }
 
-function in_edit_pads_count(ln_id) {
+function in_edit_notes_count(ln_id) {
     //See if this is a valid text message editing:
     if (!($('#charEditingNum' + ln_id).length)) {
         return false;
@@ -439,7 +439,7 @@ function in_message_inline_en_search(obj) {
 
 
 
-function in_pads_sort_apply(focus_ln_type_source_id) {
+function in_notes_sort_apply(focus_ln_type_source_id) {
 
     var new_ln_orders = [];
     var sort_rank = 0;
@@ -455,7 +455,7 @@ function in_pads_sort_apply(focus_ln_type_source_id) {
 
     //Update backend if any:
     if(sort_rank > 0){
-        $.post("/idea/in_pads_sort", {new_ln_orders: new_ln_orders}, function (data) {
+        $.post("/idea/in_notes_sort", {new_ln_orders: new_ln_orders}, function (data) {
             //Only show message if there was an error:
             if (!data.status) {
                 //Show error:
@@ -465,17 +465,17 @@ function in_pads_sort_apply(focus_ln_type_source_id) {
     }
 }
 
-function in_pads_sort_load(focus_ln_type_source_id) {
+function in_notes_sort_load(focus_ln_type_source_id) {
 
     var inner_content = null;
 
-    var sort_msg = Sortable.create( document.getElementById("in_pads_list_" + focus_ln_type_source_id) , {
+    var sort_msg = Sortable.create( document.getElementById("in_notes_list_" + focus_ln_type_source_id) , {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        handle: ".in_pads_sorting", // Restricts sort start click/touch to the specified element
+        handle: ".in_notes_sorting", // Restricts sort start click/touch to the specified element
         draggable: ".pads_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
-            in_pads_sort_apply(focus_ln_type_source_id);
+            in_notes_sort_apply(focus_ln_type_source_id);
         },
         //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
         onChoose: function (evt/**Event*/) {
@@ -498,7 +498,7 @@ function in_pads_sort_load(focus_ln_type_source_id) {
 
 }
 
-function in_pads_modify_start(ln_id) {
+function in_notes_modify_start(ln_id) {
 
     //Start editing:
     $("#ul-nav-" + ln_id).addClass('in-editing');
@@ -516,11 +516,11 @@ function in_pads_modify_start(ln_id) {
     in_message_inline_en_search(textinput);
 
     //Try to initiate the editor, which only applies to text messages:
-    in_edit_pads_count(ln_id);
+    in_edit_notes_count(ln_id);
 
 }
 
-function in_pads_modify_cancel(ln_id) {
+function in_notes_modify_cancel(ln_id) {
     //Revert editing:
     $("#ul-nav-" + ln_id).removeClass('in-editing');
     $("#ul-nav-" + ln_id + " .edit-off").removeClass('hidden');
@@ -528,13 +528,13 @@ function in_pads_modify_cancel(ln_id) {
     $("#ul-nav-" + ln_id + ">div").css('width', 'inherit');
 }
 
-function in_pads_modify_save(ln_id, focus_ln_type_source_id) {
+function in_notes_modify_save(ln_id, focus_ln_type_source_id) {
 
     //Show loader:
     $("#ul-nav-" + ln_id + " .edit-updates").html('<div><i class="far fa-yin-yang fa-spin"></i></div>');
 
     //Revert View:
-    in_pads_modify_cancel(ln_id);
+    in_notes_modify_cancel(ln_id);
 
 
     var modify_data = {
@@ -545,7 +545,7 @@ function in_pads_modify_save(ln_id, focus_ln_type_source_id) {
     };
 
     //Update message:
-    $.post("/idea/in_pads_modify_save", modify_data, function (data) {
+    $.post("/idea/in_notes_modify_save", modify_data, function (data) {
 
         if (data.status) {
 
@@ -566,7 +566,7 @@ function in_pads_modify_save(ln_id, focus_ln_type_source_id) {
                         $("#ul-nav-" + ln_id).remove();
 
                         //Adjust sort for this message type:
-                        in_pads_sort_apply(focus_ln_type_source_id);
+                        in_notes_sort_apply(focus_ln_type_source_id);
 
                     }, 610);
                 }, 610);
@@ -604,8 +604,8 @@ function in_pads_modify_save(ln_id, focus_ln_type_source_id) {
 
 
 function in_message_form_lock(focus_ln_type_source_id) {
-    $('.save_pads_' + focus_ln_type_source_id).html('<span class="icon-block-lg"><i class="far fa-yin-yang fa-spin"></i></span>').attr('href', '#');
-    $('.add_pads_' + focus_ln_type_source_id).addClass('is-working');
+    $('.save_notes_' + focus_ln_type_source_id).html('<span class="icon-block-lg"><i class="far fa-yin-yang fa-spin"></i></span>').attr('href', '#');
+    $('.add_notes_' + focus_ln_type_source_id).addClass('is-working');
     $('#ln_content' + focus_ln_type_source_id).prop("disabled", true);
     $('.remove_loading').hide();
 }
@@ -614,8 +614,8 @@ function in_message_form_lock(focus_ln_type_source_id) {
 function in_message_form_unlock(result, focus_ln_type_source_id) {
 
     //Update UI to unlock:
-    $('.save_pads_' + focus_ln_type_source_id).html('SAVE').attr('href', 'javascript:in_pads_add('+focus_ln_type_source_id+');');
-    $('.add_pads_' + focus_ln_type_source_id).removeClass('is-working');
+    $('.save_notes_' + focus_ln_type_source_id).html('SAVE').attr('href', 'javascript:in_notes_add('+focus_ln_type_source_id+');');
+    $('.add_notes_' + focus_ln_type_source_id).removeClass('is-working');
     $("#ln_content" + focus_ln_type_source_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
     $( '#pads_control_'+focus_ln_type_source_id ).addClass('hidden');
@@ -624,7 +624,7 @@ function in_message_form_unlock(result, focus_ln_type_source_id) {
     if (result.status) {
 
         //Append data:
-        $(result.message).insertBefore( ".add_pads_" + focus_ln_type_source_id );
+        $(result.message).insertBefore( ".add_notes_" + focus_ln_type_source_id );
 
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();
@@ -641,7 +641,7 @@ function in_message_form_unlock(result, focus_ln_type_source_id) {
     }
 }
 
-function in_pads_create_upload(droppedFiles, uploadType, focus_ln_type_source_id) {
+function in_notes_create_upload(droppedFiles, uploadType, focus_ln_type_source_id) {
 
     //Prevent multiple concurrent uploads:
     if ($('.box' + focus_ln_type_source_id).hasClass('is-uploading')) {
@@ -669,7 +669,7 @@ function in_pads_create_upload(droppedFiles, uploadType, focus_ln_type_source_id
         ajaxData.append('focus_ln_type_source_id', focus_ln_type_source_id);
 
         $.ajax({
-            url: '/idea/in_pads_create_upload',
+            url: '/idea/in_notes_create_upload',
             type: $('.box' + focus_ln_type_source_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -699,13 +699,13 @@ function in_pads_create_upload(droppedFiles, uploadType, focus_ln_type_source_id
     }
 }
 
-function in_pads_add(focus_ln_type_source_id) {
+function in_notes_add(focus_ln_type_source_id) {
 
     //Lock message:
     in_message_form_lock(focus_ln_type_source_id);
 
     //Update backend:
-    $.post("/idea/in_pads_create_text", {
+    $.post("/idea/in_notes_create_text", {
 
         in_id: in_loaded_id, //Synonymous
         ln_content: $('#ln_content' + focus_ln_type_source_id).val(),
@@ -718,7 +718,7 @@ function in_pads_add(focus_ln_type_source_id) {
 
             //Reset input field:
             $("#ln_content" + focus_ln_type_source_id).val("");
-            in_new_pads_count(focus_ln_type_source_id);
+            in_new_notes_count(focus_ln_type_source_id);
 
         }
 

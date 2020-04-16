@@ -215,7 +215,7 @@ class Read extends CI_Controller
     function read_file_upload()
     {
 
-        //TODO: MERGE WITH FUNCTION in_pads_create_upload()
+        //TODO: MERGE WITH FUNCTION in_notes_create_upload()
 
         //Authenticate Trainer:
         $session_en = superpower_assigned();
