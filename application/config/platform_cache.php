@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-16 00:48:57 PST
+//Generated 2020-04-16 12:07:56 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587023337;
-$config['cache_count_transaction'] = 1138968;
-$config['cache_count_read'] = 120967;
+$config['cache_timestamp'] = 1587064076;
+$config['cache_count_transaction'] = 1139140;
+$config['cache_count_read'] = 120971;
 $config['cache_count_idea'] = 3831;
 $config['cache_count_source'] = 5144;
 
@@ -3678,8 +3678,8 @@ $config['en_ids_6404'] = array(12678,11077,11074,12124,11076,12587,11075,12176,1
 $config['en_all_6404'] = array(
     12678 => array(
         'm_icon' => '',
-        'm_name' => 'ALGOLIA ENABLED',
-        'm_desc' => '0',
+        'm_name' => 'ALGOLIA SEARCH ENABLED (0 OR 1)',
+        'm_desc' => '1',
         'm_parents' => array(6404),
     ),
     11077 => array(
@@ -3763,7 +3763,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.3431',
+        'm_desc' => '1.343',
         'm_parents' => array(6404),
     ),
     11073 => array(

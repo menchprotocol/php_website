@@ -835,7 +835,7 @@ class IDEA_model extends CI_Model
 
     }
 
-    function in_metadata_extra_insights($in_id, $update_db = true)
+    function in_metadata_source_insights($in_id, $update_db = true)
     {
 
         /*
@@ -968,7 +968,7 @@ class IDEA_model extends CI_Model
 
             foreach($expansion_group as $expansion_in_id){
 
-                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id, false);
+                $metadata_recursion = $this->IDEA_model->in_metadata_source_insights($expansion_in_id, false);
 
                 if(!$metadata_recursion){
                     continue;

@@ -5,16 +5,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  *
 
+# ESSENTIALS:
 * * * * *       /usr/bin/php /var/www/platform/index.php cron common_base
-10,40 * * * *   /usr/bin/php /var/www/platform/index.php cron extra_insights
-10 8 * * 1      /usr/bin/php /var/www/platform/index.php cron weekly_coins
-20,50 * * * *   /usr/bin/php /var/www/platform/index.php cron icons
-45 9 * * *      /usr/bin/php /var/www/platform/index.php cron weights
+10 * * * *      /usr/bin/php /var/www/platform/index.php cron source_insights
+20 * * * *      /usr/bin/php /var/www/platform/index.php cron icons
+30 * * * *      /usr/bin/php /var/www/platform/index.php cron weights
+01 7 * * 1      /usr/bin/php /var/www/platform/index.php cron report
 
-45 3 * * *      /usr/bin/php /var/www/platform/index.php cron gephi
-45 6 * * *      /usr/bin/php /var/www/platform/index.php cron metadatas
-45 1 19 * *     /usr/bin/php /var/www/platform/index.php cron algolia
+# NICE-TO-HAVES:
+40 3 * * *      /usr/bin/php /var/www/platform/index.php cron gephi
+50 6 * * *      /usr/bin/php /var/www/platform/index.php cron metadatas
 
+# INACTIVE:
+# 45 1 19 * *     /usr/bin/php /var/www/platform/index.php cron algolia
 
  * */
 
@@ -112,7 +115,7 @@ class Cron extends CI_Controller
 
 
 
-    function weekly_coins(){
+    function report(){
 
         //Calculates the weekly coins issued:
         $last_week_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-7, date("Y"));
@@ -178,23 +181,23 @@ class Cron extends CI_Controller
 
 
         //Email Subject
-        $subject = 'MENCH Weekly Growth Report';
+        $subject = 'MENCH 🟡'.( $idea_coins_growth_rate > 0 ? '+' : ( $idea_coins_growth_rate < 0 ? '-' : '' ) ).$idea_coins_growth_rate.'% for the week of '.date("M jS", $last_week_start_timestamp);
 
         //Email Body
         $html_message = '<br />';
-        $html_message .= '<div>MENCH growth for the <span title="'.$last_week_start.' to '.$last_week_end.' '.config_var(11079).' Timezone" style="border-bottom:1px dotted #999999;">week of '.date("M jS", $last_week_start_timestamp).'</span>:</div>';
+        $html_message .= '<div>Growth rates from '.$last_week_start.' to '.$last_week_end.' '.config_var(11079).':</div>';
         $html_message .= '<br />';
 
         $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:55px; display: inline-block;">'.( $ledger_transactions_growth_rate >= 0 ? '+' : '-' ).$ledger_transactions_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($ledger_transactions_last_week[0]['totals'], 0).' Transactions" style="border-bottom:1px dotted #999999;">'.echo_number($ledger_transactions_last_week[0]['totals']).'</span></span><a href="https://mench.com/ledger" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">TRANSACTIONS &raquo;</a></div>';
 
-        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔵</b><b style="min-width:55px; display: inline-block;">'.( $source_coins_growth_rate >= 0 ? '+' : '-' ).$source_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($source_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($source_coins_last_week[0]['totals']).'</span></span><a href="https://mench.com/source" target="_blank" style="color: #007AFD; font-weight:bold; text-decoration:none;">SOURCE &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔵</b><b style="min-width:55px; display: inline-block;">'.( $source_coins_growth_rate >= 0 ? '+' : '-' ).$source_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($source_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($source_coins_last_week[0]['totals']).'</span></span><a href="https://mench.com/source" target="_blank" style="color: #007AFD; font-weight:bold; text-decoration:none;">SOURCES &raquo;</a></div>';
 
-        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔴</b><b style="min-width:55px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($read_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($read_coins_last_week[0]['totals']).'</span></span><a href="https://mench.com" target="_blank" style="color: #FC1B44; font-weight:bold; text-decoration:none;">READ &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔴</b><b style="min-width:55px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($read_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($read_coins_last_week[0]['totals']).'</span></span><a href="https://mench.com" target="_blank" style="color: #FC1B44; font-weight:bold; text-decoration:none;">READS &raquo;</a></div>';
 
-        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🟡</b><b style="min-width:55px; display: inline-block;">'.( $idea_coins_growth_rate >= 0 ? '+' : '-' ).$idea_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($idea_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($idea_coins_last_week[0]['totals']).'</span></span><a href="https://mench.com/idea" target="_blank" style="color: #ffc500; font-weight:bold; text-decoration:none;">IDEA &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🟡</b><b style="min-width:55px; display: inline-block;">'.( $idea_coins_growth_rate >= 0 ? '+' : '-' ).$idea_coins_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($idea_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($idea_coins_last_week[0]['totals']).'</span></span><a href="https://mench.com/idea" target="_blank" style="color: #ffc500; font-weight:bold; text-decoration:none;">IDEAS &raquo;</a></div>';
 
         $html_message .= '<br /><br />';
-        $html_message .= '<div>Cheers,</div>';
+        $html_message .= '<div>'.echo_random_message('email_yours_truly_line').'</div>';
         $html_message .= '<div>MENCH</div>';
 
         $subscriber_filters = array(
@@ -286,7 +289,7 @@ class Cron extends CI_Controller
     }
 
 
-    function extra_insights($in_id = 0)
+    function source_insights($in_id = 0)
     {
 
         /*
@@ -299,7 +302,7 @@ class Cron extends CI_Controller
 
         if($in_id < 0){
             //Gateway URL to give option to run...
-            die('<a href="/cron/extra_insights">Click here</a> to start running this function.');
+            die('<a href="/cron/source_insights">Click here</a> to start running this function.');
         }
 
         $start_time = time();
@@ -316,7 +319,7 @@ class Cron extends CI_Controller
             }
 
             //Update extra insights:
-            $idea = $this->IDEA_model->in_metadata_extra_insights($in_id);
+            $idea = $this->IDEA_model->in_metadata_source_insights($in_id);
 
         } else {
 
@@ -324,7 +327,7 @@ class Cron extends CI_Controller
             foreach ($this->IDEA_model->in_fetch(array(
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             )) as $published_in) {
-                $idea = $this->IDEA_model->in_metadata_extra_insights($published_in['in_id']);
+                $idea = $this->IDEA_model->in_metadata_source_insights($published_in['in_id']);
                 if($idea){
                     $update_count++;
                 }

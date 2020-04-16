@@ -37,7 +37,7 @@ $moderation_tools = array(
 
 $jobs = array(
     '/cron/common_base' => 'Sync Common Base Metadata',
-    '/cron/extra_insights' => 'Sync Extra Insights Metadata',
+    '/cron/source_insights' => 'Sync Extra Insights Metadata',
     '/cron/weights' => 'Sync Idea & Source Weights',
     '/cron/weights/in' => 'Sync Idea Weights',
     '/cron/weights/en' => 'Sync Source Weights',

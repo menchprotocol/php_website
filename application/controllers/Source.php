@@ -1404,8 +1404,8 @@ class Source extends CI_Controller
         ##Email Body
         $html_message = '<div>Just wanted to welcome you to Mench. You can create your first idea here:</div>';
         $html_message .= '<br /><br />';
-        $html_message .= '<div>Cheers,</div><br />';
-        $html_message .= '<div>Team MENCH</div>';
+        $html_message .= '<div>'.echo_random_message('email_yours_truly_line').'</div><br />';
+        $html_message .= '<div>MENCH</div>';
 
         //Send Welcome Email:
         $email_log = $this->READ_model->dispatch_emails(array($_POST['input_email']), $subject, $html_message);
@@ -1496,7 +1496,7 @@ class Source extends CI_Controller
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
         $html_message .= '<br /><br />';
-        $html_message .= '<div>Cheers,</div>';
+        $html_message .= '<div>'.echo_random_message('email_yours_truly_line').'</div>';
         $html_message .= '<div>MENCH</div>';
 
         //Send email:

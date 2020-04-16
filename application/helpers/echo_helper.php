@@ -638,6 +638,15 @@ function echo_random_message($message_key, $return_all = false){
      * */
 
     $rotation_index = array(
+        'email_yours_truly_line' => array(
+            'Cheers,',
+            'Have an Awesome Day,',
+            'Have a Blast,',
+            'All The Best,',
+            'Enjoy,',
+            'Have Fun,',
+            'Many Thanks,',
+        ),
         'next_in_is' => array(
             'Next: ',
             'Next idea is: ',
