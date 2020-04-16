@@ -105,21 +105,19 @@ class Source extends CI_Controller
 
     function load_leaderboard(){
 
-        //Fetch top users per each direction
+        //Fetch top sources
+
         $session_en = superpower_assigned();
         $load_max = config_var(11064);
         $show_max = config_var(11986);
-        $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
-        $en_all_4463 = $this->config->item('en_all_4463'); //GLOSSARY
-
-        //Create FILTERS:
         $filters_in = array(
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //Idea COIN
         );
-
         $start_date = null;
+
+
         /*
         if(1){ //Weekly
 
@@ -139,7 +137,6 @@ class Source extends CI_Controller
         $in_source_coins = $this->READ_model->ln_fetch($filters_in, array('en_parent','in_child'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight');
 
 
-        echo '<table id="leaderboard" class="table table-sm table-striped tablepadded" style="margin-bottom: 0;">';
 
         //Start with top Players:
         foreach ($in_source_coins as $count=>$en) {
@@ -155,17 +152,6 @@ class Source extends CI_Controller
             echo echo_en($en, false, ( $count<$show_max ? '' : 'see_more_who hidden'));
 
         }
-
-        //Show Cached Totals:
-        echo '<tr></tr>';
-
-        echo '<tr>';
-        echo '<td class="source MENCHcolumn1 montserrat" title="'.number_format($this->config->item('cache_count_source'), 0).'"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_source')).'<span class="coin-type">'.$en_all_2738[4536]['m_name'].'S</span></td>';
-        echo '<td class="idea MENCHcolumn2 montserrat" title="'.number_format($this->config->item('cache_count_idea'), 0).'"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_idea')).'<span class="coin-type">'.$en_all_2738[4535]['m_name'].'S</span></td>';
-        echo '<td class="read MENCHcolumn3 montserrat" title="'.number_format($this->config->item('cache_count_read'), 0).'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_read')).'<span class="coin-type">'.$en_all_2738[6205]['m_name'].'S</span></td>';
-        echo '</tr>';
-
-        echo '</table>';
 
     }
 
