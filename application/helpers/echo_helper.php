@@ -592,7 +592,7 @@ function echo_ln($ln, $is_inner = false)
     }
 
     if($coin_type){
-        $ui .= '<div class="simple-line"><span class="icon-block"><i class="fad fa-award"></i></span><span class="montserrat doupper '.$coin_type.'"><span class="icon-block"><i class="fas fa-circle '.$coin_type.'"></i></span>'.$coin_type.' coin awarded</span></div>';
+        $ui .= '<div class="simple-line"><span class="icon-block"><i class="fad fa-award"></i></span><span class="montserrat doupper '.$coin_type.'"><i class="fas fa-circle '.$coin_type.'"></i> '.$coin_type.' coin awarded</span></div>';
     }
 
 
