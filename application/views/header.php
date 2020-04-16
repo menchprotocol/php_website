@@ -140,7 +140,9 @@ if(!isset($hide_header)){
 
                     <?php
                     //MENCH LOGO
-                    if (!isset($session_en['en_id'])) { echo '<td class="block-link block-logo"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /></a></td>'; }
+                    if (!$session_en) {
+                        echo '<td class="block-link block-logo"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></td>';
+                    }
                     ?>
 
                     <td>
@@ -148,7 +150,7 @@ if(!isset($hide_header)){
                         <?php
 
                         echo '<div class="main_nav mench_nav">';
-                        if(isset($session_en['en_id'])){
+                        if($session_en){
 
                             //Navigation Controller:
                             $nav_controller = array(
@@ -191,8 +193,6 @@ if(!isset($hide_header)){
                                 echo '</div>';
 
                             }
-                        } else {
-                            echo '<b class="montserrat text-logo">MENCH</b>';
                         }
                         echo '</div>';
                         ?>
