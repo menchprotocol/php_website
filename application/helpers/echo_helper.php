@@ -541,19 +541,19 @@ function echo_ln($ln, $is_inner = false)
             $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4370]['m_name']. '"><span class="icon-block">'.$en_all_4341[4370]['m_icon']. '</span>'.echo_ordinal_number($ln['ln_order']).'</span></div>';
         }
 
+
+        //Message
+        if(strlen($ln['ln_content']) > 0 && $ln['ln_content']!='@'.$ln['ln_parent_source_id']){
+            //$CI->READ_model->dispatch_message($ln['ln_content'])
+            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.htmlentities($ln['ln_content']).'</div></div>';
+        }
+
         //Creator
         if($ln['ln_creator_source_id'] > 0){
             $trainer_ens = $CI->SOURCE_model->en_fetch(array(
                 'en_id' => $ln['ln_creator_source_id'],
             ));
             $ui .= '<div class="simple-line"><a href="/source/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($trainer_ens[0]['en_icon']).'">' . ( $ln['ln_creator_source_id']==$ln['ln_parent_source_id'] || (!$ln['ln_parent_source_id'] && $ln['ln_creator_source_id']==$ln['ln_child_source_id']) ? '' : '<span class="img-block">'.echo_en_icon($trainer_ens[0]['en_icon']) . '</span> ' . $trainer_ens[0]['en_name'] ) . '</span></a></div>';
-        }
-
-
-        //Message
-        if(strlen($ln['ln_content']) > 0 && $ln['ln_content']!='@'.$ln['ln_parent_source_id']){
-            //$CI->READ_model->dispatch_message($ln['ln_content'])
-            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.htmlentities($ln['ln_content']).'</div></div>';
         }
 
     }
