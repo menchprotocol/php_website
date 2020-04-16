@@ -580,6 +580,22 @@ function echo_ln($ln, $is_inner = false)
         $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.htmlentities($ln['ln_content']).'</div></div>';
     }
 
+    //COINS AWARDED?
+    if(in_array($ln['ln_type_source_id'], $this->config->item('en_ids_12141'))){
+
+        //Yes, Display type:
+        if(in_array($ln['ln_type_source_id'], $this->config->item('en_ids_6255'))){
+            $coin_type = 'read';
+        } elseif(in_array($ln['ln_type_source_id'], $this->config->item('en_ids_12274'))){
+            $coin_type = 'source';
+        } elseif(in_array($ln['ln_type_source_id'], $this->config->item('en_ids_12273'))){
+            $coin_type = 'idea';
+        }
+
+        $ui .= '<div class="simple-line"><span class="icon-block"><i class="fad fa-award"></i></span><span class="montserrat doupper '.$coin_type.'"><span class="icon-block"><i class="fas fa-circle '.$coin_type.'"></i></span>'.$coin_type.' coin awarded</span></div>';
+
+    }
+
 
 
     $ui .= '</div>';
