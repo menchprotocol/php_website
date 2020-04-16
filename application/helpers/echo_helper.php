@@ -1124,45 +1124,23 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 
 
 
-function echo_in_stat_read($in = array(), $en = array()){
+function echo_in_coins_read($in = array(), $en = array()){
 
     $CI =& get_instance();
-    $ui = null;
+    $read_coins = $CI->READ_model->ln_fetch(array(
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
+        'ln_previous_idea_id' => ( count($in) ? $in['in_id'] : $en['en_id'] ),
+    ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 
-    if(count($in)){
-        $item = $in;
-        $coin_filter = array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
-            'ln_previous_idea_id' => $in['in_id'],
-        );
-    } elseif(count($en)){
-        $item = $en;
-        $coin_filter = array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
-            'ln_creator_source_id' => $en['en_id'],
-        );
-    }
-
-    $read_coins = $CI->READ_model->ln_fetch($coin_filter, array(), 1, 0, array(), 'COUNT(ln_id) as totals');
     if($read_coins[0]['totals'] > 0){
-
-        $ui .= '<span class="montserrat read"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($read_coins[0]['totals']).'</span>';
-
-        //If Progress Type then show progress here....
-        if(isset($item['ln_type_source_id']) && in_array($item['ln_type_source_id'], $CI->config->item('en_ids_12227'))){
-            $en_all_12227 = $CI->config->item('en_all_12227');
-            $ui .= '<div class="space-content">';
-            $ui .= '<span>' . $en_all_12227[$item['ln_type_source_id']]['m_icon'] . '&nbsp;</span>';
-            $ui .= '</div>';
-        }
+        return '<span class="montserrat read"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($read_coins[0]['totals']).'</span>';
     }
 
-    return $ui;
+    return false;
 }
 
-function echo_in_stat_source($in_id = 0, $en_id = 0){
+function echo_in_coins_source($in_id = 0, $en_id = 0){
 
     $CI =& get_instance();
 
@@ -1907,7 +1885,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
 
     //READ
     $ui .= '<td class="MENCHcolumn2 read">';
-    $ui .= echo_in_stat_read($in);
+    $ui .= echo_in_coins_read($in);
     $ui .= '</td>';
 
 
@@ -1945,7 +1923,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
 
 
     //SOURCE STATS
-    $ui .= echo_in_stat_source($in['in_id'], 0);
+    $ui .= echo_in_coins_source($in['in_id'], 0);
 
     $ui .= '</td>';
 
@@ -2399,7 +2377,6 @@ function echo_en($en, $is_parent = false, $extra_class = null, $pad_controller =
             }
 
         }
-
     }
 
 
@@ -2448,7 +2425,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $pad_controller =
     $ui .= '</div>';
     $ui .= '</div>';
 
-    $ui .= echo_in_stat_source(0, $en['en_id']);
+    $ui .= echo_in_coins_source(0, $en['en_id']);
     $ui .= '</td>';
 
 
@@ -2456,7 +2433,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $pad_controller =
 
     //READ
     $ui .= '<td class="MENCHcolumn2 read">';
-    $ui .= echo_in_stat_read(array(), $en);
+    $ui .= echo_in_coins_read(array(), $en);
     $ui .= '</td>';
 
 
