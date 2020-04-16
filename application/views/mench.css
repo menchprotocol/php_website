@@ -35,7 +35,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .padded {
     margin: 0 33px 15px 33px;
 }
-.edit-off.padded, .edit-on.padded {
+.edit-off .padded, .edit-on .padded {
     margin-bottom: 0;
 }
 .margin-top-down{
