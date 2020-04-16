@@ -638,11 +638,10 @@ function count_ln_type($en_id){
         } elseif($en_id==12273){
 
             $idea_coins = $CI->READ_model->ln_fetch(array(
-                'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDAE COIN
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                 'ln_parent_source_id' => $session_en['en_id'],
-            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             return $idea_coins[0]['totals'];
 
         } elseif($en_id==6255){
@@ -657,11 +656,10 @@ function count_ln_type($en_id){
         } elseif($en_id==10573){
 
             $idea_bookmarks = $CI->READ_model->ln_fetch(array(
-                'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id' => 10573, //Idea Pads Bookmarks
+                'ln_type_source_id' => 10573, //Idea Notes Bookmarks
                 'ln_parent_source_id' => $session_en['en_id'], //For this trainer
-            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             return $idea_bookmarks[0]['totals'];
 
         } elseif($en_id==7347){
@@ -673,16 +671,6 @@ function count_ln_type($en_id){
                 'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             ), array('in_parent'), 0, 0, array(), 'COUNT(ln_id) as totals');
             return $read_bookmarks[0]['totals'];
-
-        } elseif($en_id==6182){
-
-            $idea_archived = $CI->READ_model->ln_fetch(array(
-                'in_status_source_id' => 6182, //Idea Archived
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDAE COIN
-                'ln_parent_source_id' => $session_en['en_id'],
-            ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
-            return $idea_archived[0]['totals'];
 
         }
     }
@@ -1020,7 +1008,7 @@ function in_is_source($in_id, $session_en = array()){
     //Check if Idea Source:
     return count($CI->READ_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        'ln_type_source_id' => 4983,
+        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
         'ln_next_idea_id' => $in_id,
         'ln_parent_source_id' => $session_en['en_id'],
     )));
@@ -1251,7 +1239,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_keywords'] = '';
                 foreach ($CI->READ_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Idea Pads
+                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
                     'ln_next_idea_id' => $db_row['in_id'],
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
                     $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
@@ -1259,10 +1247,10 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
 
 
-                //If trainer has up-voted then give them access to manage idea
+                //Is SOURCE for any IDEA?
                 foreach($CI->READ_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_type_source_id' => 4983,
+                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                     'ln_next_idea_id' => $db_row['in_id'],
                     'ln_parent_source_id >' => 0, //Where the source is stored
                 ), array(), 0) as $source){

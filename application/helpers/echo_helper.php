@@ -232,7 +232,7 @@ function echo_in_notes($ln)
 
     $CI =& get_instance();
     $session_en = superpower_assigned();
-    $en_all_4485 = $CI->config->item('en_all_4485'); //Idea Pads
+    $en_all_4485 = $CI->config->item('en_all_4485'); //Idea Notes
 
 
     //Transaction Status
@@ -1100,24 +1100,21 @@ function echo_in_coins_source($in_id = 0, $en_id = 0){
 
     if($in_id){
         $mench = 'source';
-        $join_objects = array();
         $coin_filter = array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDAE COIN
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_next_idea_id' => $in_id,
         );
     } elseif($en_id){
         $mench = 'idea';
-        $join_objects = array('in_child');
         $coin_filter = array(
-            'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDAE COIN
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_parent_source_id' => $en_id,
         );
     }
 
-    $source_coins = $CI->READ_model->ln_fetch($coin_filter, $join_objects, 0, 0, array(), 'COUNT(ln_id) as totals');
+    $source_coins = $CI->READ_model->ln_fetch($coin_filter, array(), 0, 0, array(), 'COUNT(ln_id) as totals');
     if($source_coins[0]['totals'] > 0){
         return '<span class="montserrat '.$mench.'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($source_coins[0]['totals']).'</span>';
     }
@@ -1230,7 +1227,7 @@ function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_leve
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         $messages = $CI->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'ln_type_source_id' => 4231, //Idea Pads Messages
+            'ln_type_source_id' => 4231, //Idea Notes Messages
             'ln_next_idea_id' => $in_ln['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1726,7 +1723,7 @@ function echo_in_note_source($in_id, $note_type_en_id, $in_notes, $is_source){
 function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
 
     $CI =& get_instance();
-    $en_all_4485 = $CI->config->item('en_all_4485'); //Idea Pads
+    $en_all_4485 = $CI->config->item('en_all_4485'); //Idea Notes
 
     //Show no-Message notifications for each message type:
     $ui = '<div id="in_notes_list_'.$note_type_en_id.'" class="list-group">';
@@ -1736,7 +1733,7 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
     }
 
     //ADD NEW Alert:
-    $ui .= '<div class="list-group-item itemidea add_notes_' . $note_type_en_id . ( $is_source ? '' : ' hidden ' ).'">';
+    $ui .= '<div class="list-group-item itemidea space-left add_notes_' . $note_type_en_id . ( $is_source ? '' : ' hidden ' ).'">';
     $ui .= '<div class="add_notes_form">';
     $ui .= '<form class="box box' . $note_type_en_id . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
 
@@ -2001,7 +1998,7 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_source, $tab
 
     //Determine ICON
     if($is_in_title_lg){
-        //IDAE COIN:
+        //IDEA COIN:
         $icon = '<span class="icon-block title-icon">'.$en_all_12112[4535]['m_icon'].'</span>';
     } elseif(in_array($cache_en_id, $CI->config->item('en_ids_12420'))){
         $icon = '<span class="icon-block">'.$en_all_12112[$cache_en_id]['m_icon'].'</span>';

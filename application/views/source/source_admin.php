@@ -220,6 +220,7 @@ if(!$action) {
     $stats = array(
         'ideas' => 0,
         'source_missing' => 0,
+        'note_removed' => 0,
         'is_archived' => 0,
         'creator_missing' => 0,
         'creator_fixed' => 0,
@@ -236,13 +237,18 @@ if(!$action) {
         //Scan sources:
         $in_sources = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4983,
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_next_idea_id' => $in['in_id'],
         ));
         $in_creators = $this->READ_model->ln_fetch(array(
             'ln_type_source_id' => 4250, //New Idea Created
             'ln_next_idea_id' => $in['in_id'],
         ));
+        $in_notes = $this->READ_model->ln_fetch(array( //Idea Links
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
+            'ln_next_idea_id' => $in['in_id'],
+        ), array(), 0);
 
         if(!count($in_creators)) {
             $stats['creator_missing']++;
@@ -255,18 +261,30 @@ if(!$action) {
         }
 
 
-        if(!count($in_sources)){
+        if(!$is_archived && !count($in_sources)){
+
+            //Missing SOURCE
 
             $stats['source_missing']++;
 
             if(count($in_creators)){
                 $this->READ_model->ln_create(array(
-                    'ln_type_source_id' => 4983,
+                    'ln_type_source_id' => 4983, //IDEA COIN
                     'ln_creator_source_id' => $in_creators[0]['ln_creator_source_id'],
                     'ln_parent_source_id' => $in_creators[0]['ln_creator_source_id'],
                     'ln_content' => '@'.$in_creators[0]['ln_creator_source_id'],
                     'ln_next_idea_id' => $in['in_id'],
                 ));
+            }
+
+        } elseif($is_archived && count($in_notes)){
+
+            //Extra SOURCES
+            foreach($in_notes as $in_note){
+                //Remove this link:
+                $stats['note_removed'] += $this->READ_model->ln_update($in_note['ln_id'], array(
+                    'ln_status_source_id' => 6173, //Link Removed
+                ), $session_en['en_id'], 10686 /* Idea Link Unlinked */);
             }
 
         } elseif(count($in_sources) >= 2){
@@ -286,6 +304,7 @@ if(!$action) {
             if($found_duplicate){
                 $stats['source_duplicate']++;
             }
+
         }
     }
 
@@ -917,7 +936,7 @@ if(!$action) {
 } elseif($action=='source_in_statuses') {
 
     //Sync ALL and echo results:
-    echo 'IDAE: '.nl2br(print_r($this->IDEA_model->in_match_ln_status($session_en['en_id']), true)).'<hr />';
+    echo 'IDEA: '.nl2br(print_r($this->IDEA_model->in_match_ln_status($session_en['en_id']), true)).'<hr />';
     echo 'SOURCE: '.nl2br(print_r($this->SOURCE_model->en_match_ln_status($session_en['en_id']), true)).'<hr />';
 
 } elseif($action=='fix_read_coins') {

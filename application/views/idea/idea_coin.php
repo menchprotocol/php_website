@@ -161,7 +161,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
 
     } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
 
-        //IDEA PADS
+        //Idea NoteS
         $in_notes = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id' => $en_id,
@@ -219,16 +219,6 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
 
                 //String command:
                 $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search Sources..." class="form-control algolia_search en_quick_search border montserrat '.$is_upper.'">';
-
-                //We don't need the second value field here:
-                $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
-
-            } elseif(in_array($action_en_id, array(12611, 12612))){
-
-                //Idea search box:
-
-                //String command:
-                $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search Ideas..." class="form-control algolia_search in_quick_search border montserrat '.$is_upper.'">';
 
                 //We don't need the second value field here:
                 $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';

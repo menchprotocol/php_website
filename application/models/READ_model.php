@@ -1501,7 +1501,7 @@ class READ_model extends CI_Model
         //Fetch Messages
         $in__messages = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4231, //Idea Pads Messages
+            'ln_type_source_id' => 4231, //Idea Notes Messages
             'ln_next_idea_id' => $ins[0]['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
@@ -2685,7 +2685,7 @@ class READ_model extends CI_Model
 
         } elseif($owner_en_id > 0){
 
-            if($tab_group_id == 12273 /* IDAE COIN */){
+            if($tab_group_id == 12273 /* IDEA COIN */){
 
                 $order_columns = array('in_weight' => 'DESC');
                 $list_class = 'itemread';
@@ -2745,7 +2745,7 @@ class READ_model extends CI_Model
 
         /*
          *
-         * This function is used to validate Idea Pads.
+         * This function is used to validate Idea Notes.
          *
          * See dispatch_message() for more information on input variables.
          *
@@ -3648,7 +3648,7 @@ class READ_model extends CI_Model
             );
         }
 
-        //Issue READ/IDAE COIN:
+        //Issue READ/IDEA COIN:
         $this->READ_model->read_is_complete($ins[0], array(
             'ln_type_source_id' => $ln_type_source_id,
             'ln_creator_source_id' => $en_id,

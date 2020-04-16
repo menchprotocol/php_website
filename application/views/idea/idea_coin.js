@@ -1,7 +1,7 @@
 /*
 *
 * Functions related to modifying ideas
-* and managing Idea Pads.
+* and managing Idea Notes.
 *
 * */
 
@@ -332,7 +332,7 @@ function in_ui_remove(in_id,ln_id){
 
 /*
 *
-* Idea Pads
+* Idea Notes
 *
 * */
 

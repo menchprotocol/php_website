@@ -215,7 +215,7 @@ class Idea extends CI_Controller {
 
         //Idea Source:
         $this->READ_model->ln_create(array(
-            'ln_type_source_id' => 4983,
+            'ln_type_source_id' => 4983, //IDEA COIN
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_parent_source_id' => $session_en['en_id'],
             'ln_content' => '@'.$session_en['en_id'],
@@ -1098,7 +1098,7 @@ class Idea extends CI_Controller {
                 //Log update and give credit to the session Trainer:
                 $this->READ_model->ln_update($ln_id, array(
                     'ln_order' => intval($ln_order),
-                ), $session_en['en_id'], 10676 /* Idea Pads Ordered */);
+                ), $session_en['en_id'], 10676 /* Idea Notes Ordered */);
             }
         }
 
@@ -1177,7 +1177,7 @@ class Idea extends CI_Controller {
             $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                 'ln_content' => $msg_validation['input_message'],
                 'ln_parent_source_id' => $msg_validation['ln_parent_source_id'],
-            ), $session_en['en_id'], 10679 /* Idea Pads Iterated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
+            ), $session_en['en_id'], 10679 /* Idea Notes Iterated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
 
         }
 
@@ -1213,14 +1213,14 @@ class Idea extends CI_Controller {
                 //yes, do so and return results:
                 $affected_rows = $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_source_id' => $_POST['message_ln_status_source_id'],
-                ), $session_en['en_id'], 10677 /* Idea Pads Iterated Status */);
+                ), $session_en['en_id'], 10677 /* Idea Notes Iterated Status */);
 
             } else {
 
-                //New status is no longer active, so remove the idea pads:
+                //New status is no longer active, so remove the Idea Notes:
                 $affected_rows = $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_source_id' => $_POST['message_ln_status_source_id'],
-                ), $session_en['en_id'], 10678 /* Idea Pads Unlinked */);
+                ), $session_en['en_id'], 10678 /* Idea Notes Unlinked */);
 
                 //Return success:
                 if($affected_rows > 0){

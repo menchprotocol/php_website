@@ -243,7 +243,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
         <h5 class="badge badge-h" data-toggle="tooltip"
             title="Message management can only be done using Ideas. Source messages are listed below for view-only"
-            data-placement="bottom"><i class="fas fa-comment-plus"></i> Source References within Idea Pads
+            data-placement="bottom"><i class="fas fa-comment-plus"></i> Source References within Idea Notes
         </h5>
         <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
             <a href="#" onclick="modify_cancel()"><i class="fas fa-times-circle"></i></a>
@@ -511,7 +511,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
         } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
 
-            //Idea Pads
+            //Idea Notes
             $in_notes_filters = array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
@@ -576,7 +576,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
             );
 
             if($en_id == 12273){
-                //IDAE COIN
+                //IDEA COIN
                 $match_columns['ln_parent_source_id'] = $source['en_id'];
                 $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Idea Status Public
                 $join_objects = array('in_child');

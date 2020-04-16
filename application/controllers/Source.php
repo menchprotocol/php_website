@@ -110,13 +110,11 @@ class Source extends CI_Controller
         $session_en = superpower_assigned();
         $load_max = config_var(11064);
         $show_max = config_var(11986);
+        $start_date = null; //All-Time
         $filters_in = array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDAE COIN
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
         );
-        $start_date = null;
-
 
         /*
         if(1){ //Weekly
@@ -134,7 +132,7 @@ class Source extends CI_Controller
 
 
         //Fetch leaderboard:
-        $in_source_coins = $this->READ_model->ln_fetch($filters_in, array('en_parent','in_child'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight');
+        $in_source_coins = $this->READ_model->ln_fetch($filters_in, array('en_parent'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight');
 
 
         //Start with top Players:
@@ -718,11 +716,11 @@ class Source extends CI_Controller
 
 
 
-            //Count source references in Idea Pads:
+            //Count source references in Idea Notes:
             $messages = $this->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Pads
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
                 'ln_parent_source_id' => $_POST['en_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -776,7 +774,7 @@ class Source extends CI_Controller
                 //Cannot delete this source until Idea references are removed:
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'You can remove source after removing all its idea pads references',
+                    'message' => 'You can remove source after removing all its Idea Notes references',
                 ));
 
             }
@@ -2091,7 +2089,7 @@ class Source extends CI_Controller
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $idea_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDAE COIN
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $source_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public

@@ -343,11 +343,11 @@ class SOURCE_model extends CI_Model
         //Fetch all source links:
         $adjusted_count = 0;
         foreach(array_merge(
-                //Player references within Idea Pads:
+                //Player references within Idea Notes:
                     $this->READ_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Pads
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
                         'ln_parent_source_id' => $en_id,
                     ), array('in_child'), 0, 0, array('ln_order' => 'ASC')),
                     //Player links:
@@ -367,7 +367,7 @@ class SOURCE_model extends CI_Model
                     $target_field => $merger_en_id,
                 );
 
-                //Also update possible source references within Idea Pads content:
+                //Also update possible source references within Idea Notes content:
                 if(substr_count($adjust_tr['ln_content'], '@'.$adjust_tr[$target_field]) == 1){
                     $updating_fields['ln_content'] = str_replace('@'.$adjust_tr[$target_field],'@'.$merger_en_id, $adjust_tr['ln_content']);
                 }

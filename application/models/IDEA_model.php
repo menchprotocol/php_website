@@ -56,7 +56,7 @@ class IDEA_model extends CI_Model
                 $this->READ_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_parent_source_id' => $ln_creator_source_id,
-                    'ln_type_source_id' => 4983, //Idea Source (Awards Coin)
+                    'ln_type_source_id' => 4983, //IDEA COIN
                     'ln_content' => '@'.$ln_creator_source_id,
                     'ln_next_idea_id' => $insert_columns['in_id'],
                 ), $external_sync);
@@ -235,7 +235,7 @@ class IDEA_model extends CI_Model
 
     function in_unlink($in_id, $ln_creator_source_id = 0){
 
-        //Remove idea relations:
+        //REMOVE IDEA LINKS
         $links_removed = 0;
         foreach($this->READ_model->ln_fetch(array( //Idea Links
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
@@ -247,6 +247,21 @@ class IDEA_model extends CI_Model
                 'ln_status_source_id' => 6173, //Link Removed
             ), $ln_creator_source_id, 10686 /* Idea Link Unlinked */);
         }
+
+
+        //REMOVE NOTES:
+        $in_notes = $this->READ_model->ln_fetch(array( //Idea Links
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
+            'ln_next_idea_id' => $in_id,
+        ), array(), 0);
+        foreach($in_notes as $in_note){
+            //Remove this link:
+            $links_removed += $this->READ_model->ln_update($in_note['ln_id'], array(
+                'ln_status_source_id' => 6173, //Link Removed
+            ), $ln_creator_source_id, 10686 /* Idea Link Unlinked */);
+        }
+
 
         //Return links removed:
         return $links_removed;
@@ -710,8 +725,8 @@ class IDEA_model extends CI_Model
                 //Check if it hs this item:
                 $parent_en_id = intval(one_two_explode('@',' ',$action_command1));
                 $in_has_sources = $this->READ_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                    'ln_type_source_id' => 4983,
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                     'ln_next_idea_id' => $in['in_id'],
                     'ln_parent_source_id' => $parent_en_id,
                 ));
@@ -722,7 +737,7 @@ class IDEA_model extends CI_Model
                     $this->READ_model->ln_create(array(
                         'ln_creator_source_id' => $ln_creator_source_id,
                         'ln_parent_source_id' => $parent_en_id,
-                        'ln_type_source_id' => 4983,
+                        'ln_type_source_id' => 4983, //IDEA COIN
                         'ln_content' => '@'.$parent_en_id,
                         'ln_next_idea_id' => $in['in_id'],
                     ), true);
@@ -734,7 +749,7 @@ class IDEA_model extends CI_Model
                     //Has and must be removed:
                     $this->READ_model->ln_update($in_has_sources[0]['ln_id'], array(
                         'ln_status_source_id' => 6173,
-                    ), $ln_creator_source_id, 10678 /* Idea Pads Unlinked */);
+                    ), $ln_creator_source_id, 10678 /* Idea Notes Unlinked */);
 
                     $applied_success++;
 
@@ -742,38 +757,7 @@ class IDEA_model extends CI_Model
 
             } elseif(in_array($action_en_id , array(12611, 12612))){
 
-                //Check if it hs this item:
-                $parent_in_id = intval(one_two_explode('#',' ',$action_command1));
-                $in_has_parents = $this->READ_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                    'ln_type_source_id' => 4983,
-                    'ln_next_idea_id' => $in['in_id'],
-                    'ln_parent_source_id' => $parent_en_id,
-                ));
-
-                if($action_en_id==12591 && !count($in_has_sources)){
-
-                    //Missing & Must be Added:
-                    $this->READ_model->ln_create(array(
-                        'ln_creator_source_id' => $ln_creator_source_id,
-                        'ln_parent_source_id' => $parent_en_id,
-                        'ln_type_source_id' => 4983,
-                        'ln_content' => '@'.$parent_en_id,
-                        'ln_next_idea_id' => $in['in_id'],
-                    ), true);
-
-                    $applied_success++;
-
-                } elseif($action_en_id==12592 && count($in_has_sources)){
-
-                    //Has and must be removed:
-                    $this->READ_model->ln_update($in_has_sources[0]['ln_id'], array(
-                        'ln_status_source_id' => 6173,
-                    ), $ln_creator_source_id, 10678 /* Idea Pads Unlinked */);
-
-                    $applied_success++;
-
-                }
+                //TODO here
 
             }
 
@@ -841,7 +825,7 @@ class IDEA_model extends CI_Model
          *
          * Generates additional insights like
          * min/max steps, time, cost and
-         * referenced sources in Idea Pads.
+         * referenced sources in Idea Notes.
          *
          * */
 
@@ -885,7 +869,7 @@ class IDEA_model extends CI_Model
             '__in__metadata_min_seconds' => $common_base_resources['seconds'],
             '__in__metadata_max_seconds' => $common_base_resources['seconds'],
 
-            //Player references within Idea Pads:
+            //Player references within Idea Notes:
             '__in__metadata_experts' => array(),
             '__in__metadata_sources' => array(),
 
@@ -893,17 +877,17 @@ class IDEA_model extends CI_Model
 
 
 
-        //Add-up Idea Pads References:
+        //Add-up Idea Notes References:
         //The sources we need to check and see if they are industry experts:
         foreach ($this->READ_model->ln_fetch(array(
             'ln_parent_source_id >' => 0,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')).')' => null, //Idea Pads
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')).')' => null, //Idea Notes
             '(ln_next_idea_id = ' . $in_id . ( count($flat_common_steps) > 0 ? ' OR ln_next_idea_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
         ), array('en_parent'), 0) as $pads_en) {
 
-            //Referenced source in Idea Pads... Fetch parents:
+            //Referenced source in Idea Notes... Fetch parents:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_child_source_id' => $pads_en['ln_parent_source_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Source Links

@@ -712,7 +712,9 @@ textarea.pads-textarea{
 #MENCHmenu td{
     padding: 0 !important;
 }
-
+.space-left{
+    padding-left: 33px;
+}
 .space-content{
     padding-left:33px;
     padding-right:33px;
