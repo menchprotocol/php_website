@@ -47,14 +47,13 @@ class Ledger extends CI_Controller
         $join_by = unserialize($_POST['link_join_by']);
         $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
         $next_page = ($page_num+1);
-        $item_per_page = (is_dev_environment() ? 20 : config_var(11064));
-        $query_offset = (($page_num-1)*$item_per_page);
+        $query_offset = (($page_num-1)*config_var(11064));
         $session_en = superpower_assigned();
 
         $message = '';
 
         //Fetch links and total link counts:
-        $lns = $this->READ_model->ln_fetch($filters, $join_by, $item_per_page, $query_offset);
+        $lns = $this->READ_model->ln_fetch($filters, $join_by, config_var(11064), $query_offset);
         $lns_count = $this->READ_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as total_count');
         $total_items_loaded = ($query_offset+count($lns));
         $has_more_links = ($lns_count[0]['total_count'] > 0 && $total_items_loaded < $lns_count[0]['total_count']);

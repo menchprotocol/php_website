@@ -266,7 +266,7 @@ class Source extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'html_ui' => '<a href="/source/' . $detected_ln_type['ln_type_source_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $en_all_4592[$detected_ln_type['ln_type_source_id']]['m_desc'] . '">' . $en_all_4592[$detected_ln_type['ln_type_source_id']]['m_icon'] . ' ' . $en_all_4592[$detected_ln_type['ln_type_source_id']]['m_name'] . '</a>',
-            'en_link_preview' => echo_url_type_4537($_POST['ln_content'], $detected_ln_type['ln_type_source_id']),
+            'en_link_preview' => echo_url_types($_POST['ln_content'], $detected_ln_type['ln_type_source_id']),
         ));
     }
 
@@ -1341,7 +1341,7 @@ class Source extends CI_Controller
 
 
         //All good, create new source:
-        $user_en = $this->SOURCE_model->en_verify_create(trim($_POST['input_name']), 0, 6181, random_source_avatar());
+        $user_en = $this->SOURCE_model->en_verify_create(trim($_POST['input_name']), 0, 6181, random_player_avatar());
         if(!$user_en['status']){
             //We had an error, return it:
             return echo_json($user_en);

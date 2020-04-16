@@ -226,12 +226,12 @@ class SOURCE_model extends CI_Model
                         $ln_type_source_id = 6178; //Source Archived
                     }
                     $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
-                    $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_6177[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6177[$value]['m_name'] . ']';
+                    $ln_content = echo_db_field($key) . ' iterated from [' . $en_all_6177[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6177[$value]['m_name'] . ']';
 
                 } elseif($key=='en_icon') {
 
                     $ln_type_source_id = 10653; //Player Iterated Icon
-                    $ln_content = echo_clean_db_name($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']';
+                    $ln_content = echo_db_field($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
 
@@ -1259,7 +1259,7 @@ class SOURCE_model extends CI_Model
              * */
 
             //Create user source:
-            $added_en = $this->SOURCE_model->en_verify_create('User '.rand(100000000, 999999999), 0, 6181, random_source_avatar());
+            $added_en = $this->SOURCE_model->en_verify_create('User '.rand(100000000, 999999999), 0, 6181, random_player_avatar());
 
         } else {
 
@@ -1267,7 +1267,7 @@ class SOURCE_model extends CI_Model
             $fb_profile = $graph_fetch['ln_metadata']['result'];
 
             //Create user source with their Facebook Graph name:
-            $added_en = $this->SOURCE_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, 6181, random_source_avatar());
+            $added_en = $this->SOURCE_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, 6181, random_player_avatar());
 
 
             //See if we could fetch FULL profile data:

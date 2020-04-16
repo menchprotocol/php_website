@@ -85,7 +85,7 @@ echo '</div>';
 
 
 //IDEA MESSAGES:
-echo echo_idea_pad_mix(4231, $this->READ_model->ln_fetch(array(
+echo echo_in_pad_mix(4231, $this->READ_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'ln_type_source_id' => 4231,
     'ln_next_idea_id' => $in['in_id'],
@@ -169,7 +169,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         $counter = count($in_pads);
-        $this_tab .= echo_idea_pad_mix($en_id, $in_pads, ($is_source && $is_active));
+        $this_tab .= echo_in_pad_mix($en_id, $in_pads, ($is_source && $is_active));
 
     } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
 

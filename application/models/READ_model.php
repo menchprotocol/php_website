@@ -68,12 +68,12 @@ class READ_model extends CI_Model
                         if($key=='ln_status_source_id'){
 
                             $en_all_6186 = $this->config->item('en_all_6186'); //Transaction Status
-                            $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $en_all_6186[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6186[$value]['m_name'] . ']'."\n";
+                            $ln_content .= echo_db_field($key) . ' iterated from [' . $en_all_6186[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6186[$value]['m_name'] . ']'."\n";
 
                         } elseif($key=='ln_type_source_id'){
 
                             $en_all_4593 = $this->config->item('en_all_4593'); //Link Types
-                            $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $en_all_4593[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4593[$value]['m_name'] . ']'."\n";
+                            $ln_content .= echo_db_field($key) . ' iterated from [' . $en_all_4593[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4593[$value]['m_name'] . ']'."\n";
 
                         } elseif(in_array($key, array('ln_parent_source_id', 'ln_child_source_id'))) {
 
@@ -85,7 +85,7 @@ class READ_model extends CI_Model
                                 'en_id' => $value,
                             ));
 
-                            $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $before_ens[0]['en_name'] . '] to [' . $after_ens[0]['en_name'] . ']' . "\n";
+                            $ln_content .= echo_db_field($key) . ' iterated from [' . $before_ens[0]['en_name'] . '] to [' . $after_ens[0]['en_name'] . ']' . "\n";
 
                         } elseif(in_array($key, array('ln_previous_idea_id', 'ln_next_idea_id'))) {
 
@@ -97,11 +97,11 @@ class READ_model extends CI_Model
                                 'in_id' => $value,
                             ));
 
-                            $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $before_ins[0]['in_title'] . '] to [' . $after_ins[0]['in_title'] . ']' . "\n";
+                            $ln_content .= echo_db_field($key) . ' iterated from [' . $before_ins[0]['in_title'] . '] to [' . $after_ins[0]['in_title'] . ']' . "\n";
 
                         } elseif(in_array($key, array('ln_content', 'ln_order'))){
 
-                            $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
+                            $ln_content .= echo_db_field($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
 
                         } else {
 
@@ -1438,7 +1438,18 @@ class READ_model extends CI_Model
                 'ln_content' => 'step_echo() invalid idea ID',
                 'ln_previous_idea_id' => $in_id,
             ));
-            echo_message('Invalid Idea ID', true, $recipient_en, $push_message);
+
+            if($push_message){
+                $this->READ_model->dispatch_message(
+                    'Alert: Invalid Idea ID',
+                    $recipient_en,
+                    true
+                );
+            } else {
+                //HTML:
+
+                echo '<div class="alert alert-danger"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>Invalid Idea ID</div>';
+            }
             return false;
         }
 
@@ -1581,7 +1592,7 @@ class READ_model extends CI_Model
                 }
 
                 //OVERVIEW STATS
-                //echo echo_sources($ins[0]);
+                //echo echo_in_tree_sources($ins[0]);
 
                 $is_or = in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_6193'));
 
@@ -3226,7 +3237,7 @@ class READ_model extends CI_Model
 
                     } else {
 
-                        $source_appendix .= '<div class="source-appendix">' . echo_url_type_4537($parent_en['ln_content'], $parent_en['ln_type_source_id']) . '</div>';
+                        $source_appendix .= '<div class="source-appendix">' . echo_url_types($parent_en['ln_content'], $parent_en['ln_type_source_id']) . '</div>';
 
                     }
                 }

@@ -17,7 +17,7 @@ function echo_en_load_more($page, $limit, $en__child_count)
     return $ui;
 }
 
-function echo_clean_db_name($field_name){
+function echo_db_field($field_name){
     //Takes a database field name and returns a clean version of it:
     if(substr($field_name, 0, 3) == 'ln_'){
         //Link field:
@@ -48,7 +48,7 @@ function echo_time_minutes($sec_int)
     return ( $min ? $min . ' Min.' : ( $sec ? $sec . ' Sec.' : false ) );
 }
 
-function echo_url_type_4537($url, $en_type_link_id)
+function echo_url_types($url, $en_type_link_id)
 {
 
     /*
@@ -440,7 +440,7 @@ function echo_ln_urls($ln_content, $ln_type_source_id){
     if (in_array($ln_type_source_id, $CI->config->item('en_ids_4537'))) {
 
         //Player URL Links
-        return echo_url_type_4537($ln_content, $ln_type_source_id);
+        return echo_url_types($ln_content, $ln_type_source_id);
 
     } elseif($ln_type_source_id==10669) {
 
@@ -581,14 +581,14 @@ function echo_ln($ln, $is_inner = false)
     }
 
     //COINS AWARDED?
-    if(in_array($ln['ln_type_source_id'], $this->config->item('en_ids_12141'))){
+    if(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12141'))){
 
         //Yes, Display type:
-        if(in_array($ln['ln_type_source_id'], $this->config->item('en_ids_6255'))){
+        if(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_6255'))){
             $coin_type = 'read';
-        } elseif(in_array($ln['ln_type_source_id'], $this->config->item('en_ids_12274'))){
+        } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12274'))){
             $coin_type = 'source';
-        } elseif(in_array($ln['ln_type_source_id'], $this->config->item('en_ids_12273'))){
+        } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12273'))){
             $coin_type = 'idea';
         }
 
@@ -774,7 +774,7 @@ function echo_time_hours($seconds, $micro = false)
 
 
 
-function echo_sources($in, $push_message = false, $autoexpand = false)
+function echo_in_tree_sources($in, $push_message = false, $autoexpand = false)
 {
 
     /*
@@ -938,27 +938,6 @@ function echo_sources($in, $push_message = false, $autoexpand = false)
     }
 }
 
-function echo_step_range($in, $educational_mode = false){
-
-    $metadata = unserialize($in['in_metadata']);
-    if (!isset($metadata['in__metadata_min_steps']) || !isset($metadata['in__metadata_max_steps']) || $metadata['in__metadata_max_steps'] < 1) {
-        return ( $educational_mode ? 'Unknown number of steps' : false );
-    }
-
-    //Is this a range or a single read value?
-    if($metadata['in__metadata_min_steps'] != $metadata['in__metadata_max_steps']){
-
-        //It's a range:
-        return 'Between '.$metadata['in__metadata_min_steps'].' - '.$metadata['in__metadata_max_steps'].' Steps' . ( $educational_mode ? ' (depending on your answers to my questions)' : '' );
-
-    } else {
-
-        //A single read value, nothing to educate about here:
-        return $metadata['in__metadata_max_steps']. ' Step'.echo__s($metadata['in__metadata_max_steps']);
-
-    }
-}
-
 
 function echo_time_range($in, $micro = false, $hide_zero = false)
 {
@@ -1065,17 +1044,6 @@ function echo_time_difference($t, $second_time = null)
 
         return $numberOfUnits . ' ' . $period . (($numberOfUnits > 1) ? 's' : '');
     }
-}
-
-
-function echo_time_date($t, $date_only = false)
-{
-    if (!$t) {
-        return 'NOW';
-    }
-    $timestamp = (is_numeric($t) ? $t : strtotime(substr($t, 0, 19)));
-    $year = (date("Y") == date("Y", $timestamp));
-    return date(($year ? "D M j " : "j M Y") . ($date_only ? "" : " H:i:s"), $timestamp);
 }
 
 
@@ -1232,21 +1200,6 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 }
 
 
-function echo_in_dashboard($in)
-{
-    $CI =& get_instance();
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Idea Subtypes
-    $ui = '<div class="list-group-item itemidea">';
-
-    //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-idea" href="/idea/' . $in['in_id']. '"><i class="fad fa-step-forward"></i></a></div>';
-    $ui .= '<span class="icon-block">'.$en_all_7585[$in['in_type_source_id']]['m_icon'].'</span>';
-    $ui .= '<b class="montserrat">'.echo_in_title($in, false).'</b>';
-    $ui .= '</div>';
-    return $ui;
-
-}
-
 function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_levels, $parent_in_type_source_id){
 
     if($depth_levels<=0){
@@ -1367,65 +1320,6 @@ function echo_in_marks($in_ln){
     //Return mark:
     return ( $in_ln['ln_type_source_id'] == 4228 ? ( !isset($ln_metadata['tr__assessment_points']) || $ln_metadata['tr__assessment_points'] == 0 ? '' : '<span class="score-range">[<span style="'.( $ln_metadata['tr__assessment_points']>0 ? 'font-weight:bold;' : ( $ln_metadata['tr__assessment_points'] < 0 ? 'font-weight:bold;' : '' )).'">' . ( $ln_metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $ln_metadata['tr__assessment_points'].'</span>]</span>' ) : '<span class="score-range">['.$ln_metadata['tr__conditional_score_min'] . ( $ln_metadata['tr__conditional_score_min']==$ln_metadata['tr__conditional_score_max'] ? '' : '-'.$ln_metadata['tr__conditional_score_max'] ).'%]</span>' );
 
-}
-
-function in_is_source($in_id, $session_en = array()){
-
-    $CI =& get_instance();
-
-    if(!$session_en){
-        //Fetch from session:
-        $session_en = superpower_assigned();
-    }
-
-    if(!$session_en || $in_id < 1){
-        return false;
-    }
-
-    //Always have power to edit ideas from anyone:
-    if(superpower_active(12674, true)){
-        return true;
-    }
-
-    //Check if Idea Source:
-    return count($CI->READ_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4983,
-            'ln_next_idea_id' => $in_id,
-            'ln_parent_source_id' => $session_en['en_id'],
-        )));
-}
-
-function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
-
-    $CI =& get_instance();
-    $en_all_7302 = $CI->config->item('en_all_7302'); //Idea Stats
-
-    $ui =  '<table class="table table-sm table-striped stats-table mini-stats-table ">';
-
-    $ui .= '<tr class="panel-title down-border">';
-    $ui .= '<td style="text-align: left;" colspan="2">'.$en_all_7302[$in_setting_en_id]['m_name'].echo__s(count($CI->config->item('en_all_'.$in_setting_en_id))).'</td>';
-    $ui .= '</tr>';
-
-    foreach ($CI->config->item('en_all_'.$in_setting_en_id) as $type_en_id => $in_type) {
-
-        //Count this sub-type from the database:
-        $idea_count = $CI->IDEA_model->in_fetch(array(
-            $in_field_name => $type_en_id,
-            'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ), 0, 0, array(), 'COUNT(in_id) as total_public_ins');
-
-        //$ui .= this as the main title:
-        $ui .= '<tr>';
-        $ui .= '<td style="text-align: left;"><span class="icon-block">'.$in_type['m_icon'].'</span><a href="/source/'.$type_en_id.'">'.$in_type['m_name'].'</a></td>';
-        $ui .= '<td style="text-align: right;"><a href="/ledger?ln_type_source_id=4250&in_status_source_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($idea_count[0]['total_public_ins'], 0).' Idea'.echo__s($idea_count[0]['total_public_ins']).'">'.number_format($idea_count[0]['total_public_ins']/$addup_total_count*100, 1).'%</a></td>';
-        $ui .= '</tr>';
-
-    }
-
-    $ui .= '</table>';
-
-    return $ui;
 }
 
 
@@ -1801,24 +1695,8 @@ function echo_in_previous_read($in_id, $recipient_en){
 
     return $ui;
 }
-function echo_message($message, $is_error, $recipient_en, $push_message){
 
-    //A function to display warning/success messages to users:
-    if($push_message){
-        $CI =& get_instance();
-        $CI->READ_model->dispatch_message(
-            'Alert: ' . $message,
-            $recipient_en,
-            true
-        );
-    } else {
-        //HTML:
-        echo '<div class="alert '.( $is_error ? 'alert-danger' : 'alert-info' ).'">'.( $is_error ? '<i class="fad fa-exclamation-triangle"></i> ' : '<i class="fas fa-info-circle"></i> ' ).$message.' </div>';
-    }
-
-}
-
-function echo_idea_pad_source($in_id, $pad_type_en_id, $in_pads, $is_source){
+function echo_in_pad_source($in_id, $pad_type_en_id, $in_pads, $is_source){
 
     $CI =& get_instance();
     $en_all_11018 = $CI->config->item('en_all_11018');
@@ -1846,7 +1724,7 @@ function echo_idea_pad_source($in_id, $pad_type_en_id, $in_pads, $is_source){
     return $ui;
 }
 
-function echo_idea_pad_mix($pad_type_en_id, $in_pads, $is_source){
+function echo_in_pad_mix($pad_type_en_id, $in_pads, $is_source){
 
     $CI =& get_instance();
     $en_all_4485 = $CI->config->item('en_all_4485'); //Idea Pads
@@ -2143,22 +2021,6 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_source, $tab
     }
 }
 
-
-function echo_menu($menu_id, $btn_class){
-
-    $CI =& get_instance();
-
-    $active_id = 0;
-    foreach($CI->config->item('en_all_'.$menu_id) as $en_id => $m){
-        if($CI->uri->segment(1) == ltrim($m['m_desc'], '/')){
-            $active_id = $en_id;
-            break;
-        }
-    }
-
-    return '<div class="inline-block">'.echo_in_dropdown($menu_id, $active_id, $btn_class, true, false ).'</div>';
-
-}
 
 function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_source, $show_full_name, $in_id = 0, $ln_id = 0){
 

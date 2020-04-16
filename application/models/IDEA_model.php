@@ -168,7 +168,7 @@ class IDEA_model extends CI_Model
                         $ln_type_source_id = 6182; //Idea Archived
                     }
                     $en_all_4737 = $this->config->item('en_all_4737'); //Idea Status
-                    $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_4737[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4737[$value]['m_name'] . ']';
+                    $ln_content = echo_db_field($key) . ' iterated from [' . $en_all_4737[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4737[$value]['m_name'] . ']';
                     $ln_parent_source_id = $value;
                     $ln_child_source_id = $before_data[0][$key];
 
@@ -176,14 +176,14 @@ class IDEA_model extends CI_Model
 
                     $ln_type_source_id = 10651; //Idea Iterated Subtype
                     $en_all_7585 = $this->config->item('en_all_7585'); //Idea Subtypes
-                    $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_7585[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_7585[$value]['m_name'] . ']';
+                    $ln_content = echo_db_field($key) . ' iterated from [' . $en_all_7585[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_7585[$value]['m_name'] . ']';
                     $ln_parent_source_id = $value;
                     $ln_child_source_id = $before_data[0][$key];
 
                 } elseif($key=='in_read_time') {
 
                     $ln_type_source_id = 10650; //Idea Iterated Completion Time
-                    $ln_content = echo_clean_db_name($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']';
+                    $ln_content = echo_db_field($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
 

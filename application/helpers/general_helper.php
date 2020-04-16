@@ -151,18 +151,6 @@ function extract_references($ln_content)
 }
 
 
-function webhook_curl_post($curl_url, $in_id, $en_id){
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $curl_url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,"in_id=".$in_id."&en_id=".$en_id);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $server_output = curl_exec ($ch);
-    curl_close ($ch);
-    return objectToArray(json_decode($server_output));
-}
-
-
 function is_valid_date($string)
 {
     //Determines if the input $string is a valid date
@@ -389,56 +377,6 @@ function en_count_references($en_input_id){
 }
 
 
-function curl_get_file_size( $url ) {
-
-    /**
-     * Returns the size of a file without downloading it, or -1 if the file
-     * size could not be determined.
-     *
-     * @param $url - The location of the remote file to download. Cannot
-     * be null or empty.
-     *
-     * @return The size of the file referenced by $url, or -1 if the size
-     * could not be determined.
-     */
-
-    // Assume failure.
-    $result = -1;
-
-    $curl = curl_init( $url );
-
-    // Issue a HEAD request and follow any redirects.
-    curl_setopt( $curl, CURLOPT_NOBODY, true );
-    curl_setopt( $curl, CURLOPT_HEADER, true );
-    curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-    curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, true );
-    curl_setopt( $curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Linux; Android 6.0.1; SM-G935S Build/MMB29K; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/55.0.2883.91 Mobile Safari/537.36" );
-
-    $data = curl_exec( $curl );
-    curl_close( $curl );
-
-    if( $data ) {
-        $content_length = "unknown";
-        $status = "unknown";
-
-        if( preg_match( "/^HTTP\/1\.[01] (\d\d\d)/", $data, $matches ) ) {
-            $status = (int)$matches[1];
-        }
-
-        if( preg_match( "/Content-Length: (\d+)/", $data, $matches ) ) {
-            $content_length = (int)$matches[1];
-        }
-
-        // http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
-        if( $status == 200 || ($status > 300 && $status <= 308) ) {
-            $result = $content_length;
-        }
-    }
-
-    return $result;
-}
-
-
 
 function in_weight_calculator($in){
 
@@ -550,17 +488,7 @@ function update_description($before_string, $after_string){
 }
 
 
-function ISO8601ToSeconds($ISO8601){
-    $interval = new \DateInterval($ISO8601);
-
-    return ($interval->d * 24 * 60 * 60) +
-        ($interval->h * 60 * 60) +
-        ($interval->i * 60) +
-        $interval->s;
-}
-
-
-function random_source_avatar(){
+function random_player_avatar(){
     $CI =& get_instance();
     $en_all_10956 = $CI->config->item('en_all_10956');
     return $en_all_10956[array_rand($en_all_10956)]['m_icon'];
@@ -568,15 +496,6 @@ function random_source_avatar(){
 
 function format_percentage($percent){
     return number_format($percent, ( $percent < 10 ? 1 : 0 ));
-}
-
-function addup_array($array, $match_key)
-{
-    $total = 0;
-    foreach ($array as $item) {
-        $total += $item[$match_key];
-    }
-    return $total;
 }
 
 function filter_array($array, $match_key, $match_value, $return_all = false)
@@ -1076,6 +995,35 @@ function analyze_domain($full_url){
         'url_file_extension' => $url_file_extension,
     );
 
+}
+
+
+
+function in_is_source($in_id, $session_en = array()){
+
+    $CI =& get_instance();
+
+    if(!$session_en){
+        //Fetch from session:
+        $session_en = superpower_assigned();
+    }
+
+    if(!$session_en || $in_id < 1){
+        return false;
+    }
+
+    //Always have power to edit ideas from anyone:
+    if(superpower_active(12674, true)){
+        return true;
+    }
+
+    //Check if Idea Source:
+    return count($CI->READ_model->ln_fetch(array(
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+        'ln_type_source_id' => 4983,
+        'ln_next_idea_id' => $in_id,
+        'ln_parent_source_id' => $session_en['en_id'],
+    )));
 }
 
 

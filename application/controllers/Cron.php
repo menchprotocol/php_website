@@ -909,7 +909,7 @@ class Cron extends CI_Controller
                         $newly_added++;
 
                         //Create new Player:
-                        $added_en = $this->SOURCE_model->en_verify_create($source_handler, $ln_creator_source_id, 6181, random_source_avatar());
+                        $added_en = $this->SOURCE_model->en_verify_create($source_handler, $ln_creator_source_id, 6181, random_player_avatar());
 
                         //Create relevant READS:
 
