@@ -31,7 +31,7 @@ if(!$session_en){
     //List Reads:
     echo '<div id="actionplan_steps" class="list-group no-side-padding">';
     foreach ($player_reads as $priority => $in) {
-        $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
+        $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $in);
         echo echo_in_read($in, false, null, null, null, true, $completion_rate);
 
         if($completion_rate['completion_percentage']>0 && !$any_completed){
