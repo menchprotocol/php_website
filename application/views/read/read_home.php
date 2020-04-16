@@ -45,7 +45,7 @@ if(!$session_en){
 
 
         //Give option to delete all:
-        echo '<a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="pull-right grey"><span class="icon-block">'.$en_all_11035[6415]['m_icon'].'</span></a>';
+        echo '<a href="javascript:void(0)" onclick="$(\'.clear-reading-list\').toggleClass(\'hidden\')" class="pull-right grey"><span class="icon-block-sm" style="margin-top: 9px;">'.$en_all_11035[6415]['m_icon'].'</span></a>';
 
         echo '<div class="clear-reading-list hidden" style="padding:34px 0;">';
         echo '<p><span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><b class="read montserrat">WARNING:</b> You are about to clear you entire reading list. You will lose all your <span class="icon-block"><i class="fas fa-circle read"></i></span><b class="montserrat read">READ COINS</b> but can earn them back by reading again.</p>';
