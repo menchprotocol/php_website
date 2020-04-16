@@ -2685,7 +2685,7 @@ class READ_model extends CI_Model
 
         } elseif($owner_en_id > 0){
 
-            if($tab_group_id == 12273 /* IDEA COIN */){
+            if($tab_group_id == 12273 /* IDAE COIN */){
 
                 $order_columns = array('in_weight' => 'DESC');
                 $list_class = 'itemread';
@@ -3648,7 +3648,7 @@ class READ_model extends CI_Model
             );
         }
 
-        //Issue READ/IDEA coin:
+        //Issue READ/IDAE COIN:
         $this->READ_model->read_is_complete($ins[0], array(
             'ln_type_source_id' => $ln_type_source_id,
             'ln_creator_source_id' => $en_id,

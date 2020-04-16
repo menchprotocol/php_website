@@ -640,7 +640,7 @@ function count_ln_type($en_id){
             $idea_coins = $CI->READ_model->ln_fetch(array(
                 'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDAE COIN
                 'ln_parent_source_id' => $session_en['en_id'],
             ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
             return $idea_coins[0]['totals'];
@@ -679,7 +679,7 @@ function count_ln_type($en_id){
             $idea_archived = $CI->READ_model->ln_fetch(array(
                 'in_status_source_id' => 6182, //Idea Archived
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDAE COIN
                 'ln_parent_source_id' => $session_en['en_id'],
             ), array('in_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
             return $idea_archived[0]['totals'];

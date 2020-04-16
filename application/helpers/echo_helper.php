@@ -1103,7 +1103,7 @@ function echo_in_coins_source($in_id = 0, $en_id = 0){
         $join_objects = array();
         $coin_filter = array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDAE COIN
             'ln_next_idea_id' => $in_id,
         );
     } elseif($en_id){
@@ -1112,7 +1112,7 @@ function echo_in_coins_source($in_id = 0, $en_id = 0){
         $coin_filter = array(
             'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDAE COIN
             'ln_parent_source_id' => $en_id,
         );
     }
@@ -2001,7 +2001,7 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_source, $tab
 
     //Determine ICON
     if($is_in_title_lg){
-        //IDEA COIN:
+        //IDAE COIN:
         $icon = '<span class="icon-block title-icon">'.$en_all_12112[4535]['m_icon'].'</span>';
     } elseif(in_array($cache_en_id, $CI->config->item('en_ids_12420'))){
         $icon = '<span class="icon-block">'.$en_all_12112[$cache_en_id]['m_icon'].'</span>';

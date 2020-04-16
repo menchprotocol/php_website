@@ -119,8 +119,10 @@ class Cron extends CI_Controller
 
         //Calculates the weekly coins issued:
         $last_week_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-7, date("Y"));
-        $last_week_start = date("l M jS G:i:s", $last_week_start_timestamp);
-        $last_week_end = date("l M jS G:i:s", mktime(23, 59, 59, date("n"), date("j")-1, date("Y")));
+        $last_week_end_timestamp = mktime(23, 59, 59, date("n"), date("j")-1, date("Y"));
+
+        $last_week_start = date("Y-m-d H:i:s", $last_week_start_timestamp);
+        $last_week_end = date("Y-m-d H:i:s", $last_week_end_timestamp);
 
         //IDEA
         $idea_coins_new_last_week = $this->READ_model->ln_fetch(array(
@@ -185,7 +187,7 @@ class Cron extends CI_Controller
 
         //Email Body
         $html_message = '<br />';
-        $html_message .= '<div>Here is what happened from '.$last_week_start.' to '.$last_week_end.' '.config_var(11079).':</div>';
+        $html_message .= '<div>Growth rates from '.date("l M jS G:i:s", $last_week_start_timestamp).' to '.date("l M jS G:i:s", $last_week_end_timestamp).' '.config_var(11079).':</div>';
         $html_message .= '<br />';
 
         $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:55px; display: inline-block;">'.( $ledger_transactions_growth_rate >= 0 ? '+' : '-' ).$ledger_transactions_growth_rate.'%</b>to <span style="min-width:47px; display: inline-block;"><span title="'.number_format($ledger_transactions_last_week[0]['totals'], 0).' Transactions" style="border-bottom:1px dotted #999999;">'.echo_number($ledger_transactions_last_week[0]['totals']).'</span></span><a href="https://mench.com/ledger" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">TRANSACTIONS &raquo;</a></div>';
@@ -909,7 +911,7 @@ class Cron extends CI_Controller
                         $newly_added++;
 
                         //Create new Player:
-                        $added_en = $this->SOURCE_model->en_verify_create($source_handler, $ln_creator_source_id, 6181, random_player_avatar());
+                        $added_en = $this->SOURCE_model->en_verify_create($source_handler, $ln_creator_source_id, 6181, random_source_avatar());
 
                         //Create relevant READS:
 

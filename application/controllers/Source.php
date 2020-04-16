@@ -113,7 +113,7 @@ class Source extends CI_Controller
         $filters_in = array(
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //Idea COIN
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDAE COIN
         );
         $start_date = null;
 
@@ -2091,7 +2091,7 @@ class Source extends CI_Controller
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $idea_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDAE COIN
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $source_coins = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public

@@ -581,12 +581,12 @@ $source__parents = $this->READ_model->ln_fetch(array(
             );
 
             if($en_id == 12273){
-                //Idea Coins
+                //IDAE COIN
                 $match_columns['ln_parent_source_id'] = $source['en_id'];
                 $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Idea Status Public
                 $join_objects = array('in_child');
             } elseif($en_id == 6255){
-                //Read Coins:
+                //READ COIN
                 $match_columns['ln_creator_source_id'] = $source['en_id'];
             }
 
