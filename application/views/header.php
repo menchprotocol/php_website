@@ -1,4 +1,5 @@
 <?php
+
 $session_en = superpower_assigned();
 $current_mench = current_mench();
 $first_segment = $this->uri->segment(1);
@@ -153,6 +154,7 @@ if(!isset($hide_header)){
                         if($session_en){
 
                             //Navigation Controller:
+                            $coin_counts = array();
                             $nav_controller = array(
                                 6205 => 12648, //READ
                                 4536 => 12646, //SOURCE
@@ -172,7 +174,7 @@ if(!isset($hide_header)){
                                 $is_current_mench = ($current_mench['x_id'] == $en_id);
                                 $this_mench = current_mench(strtolower($m['m_name']));
                                 $primary_url = 'href="/' . $this_mench['x_name'].'"';
-                                $item_count = count_ln_type($count_controller[$en_id]);
+                                $coin_counts[$en_id] = count_ln_type($count_controller[$en_id]);
 
 
                                 if (!$is_current_mench && isset($in) && in_array($this_mench['x_name'], array('read', 'idea'))) {
@@ -188,7 +190,7 @@ if(!isset($hide_header)){
                                 echo '<a class="btn ' . $this_mench['x_class'] . '" ' . $primary_url . '>';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $this_mench['x_class'] . '_name '.( $is_current_mench ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;</span>';
-                                echo '<span class="montserrat" title="'.$item_count.'">'.echo_number($item_count).'</span>';
+                                echo '<span class="montserrat" title="'.$coin_counts[$en_id].'">'.echo_number($coin_counts[$en_id]).'</span>';
                                 echo '</a>';
                                 echo '</div>';
 
@@ -213,7 +215,83 @@ if(!isset($hide_header)){
                     if ($session_en) {
 
                         //Player Menu
-                        echo '<td class="block-menu">'.echo_navigation_menu(12500).'</td>';
+                        $en_all_this = $this->config->item('en_all_12500');
+                        $en_all_4527 = $this->config->item('en_all_4527'); //Platform Memory
+                        $en_all_10876 = $this->config->item('en_all_10876'); //Mench Website
+
+                        echo '<td class="block-menu">';
+                        echo '<div class="dropdown inline-block">';
+                        echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton12500" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                        echo '<span class="icon-block">' .$en_all_4527[12500]['m_icon'].'</span>';
+                        echo '</button>';
+
+                        echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton12500">';
+
+                        foreach ($en_all_this as $en_id => $m) {
+
+                            //Skip superpowers if not assigned
+                            if($en_id==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
+                                continue;
+                            } elseif($en_id==7291 && intval($this->session->userdata('session_6196_sign'))){
+                                //Messenger sign in does not allow Signout:
+                                continue;
+                            }
+
+                            $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
+
+
+                            //Fetch URL:
+                            if(in_array($en_id, $this->config->item('en_ids_10876'))){
+
+                                $en_all_10876 = $this->config->item('en_all_10876'); //Mench Website
+                                $page_url = $en_all_10876[$en_id]['m_desc'];
+
+                            } elseif($en_id==12205) {
+
+                                //Profile Page:
+                                $page_url = '/source/'.$session_en['en_id'];
+
+                            } elseif(in_array($en_id, $this->config->item('en_ids_12467'))) {
+
+                                //HACK FOR MENCH COIN MENU
+                                if($en_id==12273){
+                                    //IDEA
+                                    $counts = $coin_counts[4535];
+                                    $source_field = 'ln_parent_source_id';
+                                } elseif($en_id==6255){
+                                    //READ
+                                    $counts = $coin_counts[6205];
+                                    $source_field = 'ln_creator_source_id';
+                                } elseif($en_id==12274){
+                                    //SOURCE
+                                    $counts = $coin_counts[4536];
+                                    $source_field = 'ln_creator_source_id';
+                                }
+
+                                if(!$counts){
+                                    continue;
+                                }
+
+                                //MENCH COIN
+                                $page_url = '/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_'.$en_id)).'&'.$source_field.'='.$session_en['en_id'];
+
+                                //APPEND COUNT:
+                                $m['m_name'] = echo_number($counts).' '.$m['m_name'];
+
+                            } else {
+
+                                continue;
+
+                            }
+
+                            //Navigation
+                            echo '<a href="'.$page_url.'" class="dropdown-item montserrat doupper '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+
+                        }
+
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</td>';
 
                     } else {
 

@@ -463,7 +463,6 @@ function echo_ln($ln, $is_inner = false)
 
     $CI =& get_instance();
     $en_all_4593 = $CI->config->item('en_all_4593'); //Link Type
-    $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_4341 = $CI->config->item('en_all_4341'); //Link Table
     $en_all_2738 = $CI->config->item('en_all_2738');
     $en_all_6186 = $CI->config->item('en_all_6186'); //Transaction Status
@@ -1325,7 +1324,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
     $en_all_6186 = $CI->config->item('en_all_6186');
     $en_all_4737 = $CI->config->item('en_all_4737'); //IDEA STATUS
     $en_all_7585 = $CI->config->item('en_all_7585');
-    $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_4486 = $CI->config->item('en_all_4486');
     $en_all_2738 = $CI->config->item('en_all_2738');
     $en_all_12413 = $CI->config->item('en_all_12413');
@@ -1797,7 +1795,6 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
     $session_en = superpower_assigned();
     $en_all_6177 = $CI->config->item('en_all_6177'); //Source Status
-    $en_all_4527 = $CI->config->item('en_all_4527');
     $en_all_2738 = $CI->config->item('en_all_2738');
     $en_all_11028 = $CI->config->item('en_all_11028'); //SOURCEERS LINKS DIRECTION
 
@@ -2050,67 +2047,6 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_source,
     $ui .= '</div>';
 
     return $ui;
-}
-
-function echo_navigation_menu($cache_en_id){
-
-    $CI =& get_instance();
-
-    $en_all_this = $CI->config->item('en_all_'.$cache_en_id);
-    $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Memory
-    $en_all_10876 = $CI->config->item('en_all_10876'); //Mench Website
-    $en_all_12502 = $CI->config->item('en_all_12502'); //JS Functions
-    $session_en = superpower_assigned();
-
-
-    $ui = '<div class="dropdown inline-block">';
-    $ui .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-    $ui .= '<span class="icon-block">' .$en_all_4527[$cache_en_id]['m_icon'].'</span>';
-    $ui .= '</button>';
-
-    $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$cache_en_id.'">';
-
-    foreach ($en_all_this as $en_id => $m) {
-
-        //Skip superpowers if not assigned
-        if($en_id==10957 && !count($CI->session->userdata('session_superpowers_assigned'))){
-            continue;
-        } elseif($en_id==7291 && intval($CI->session->userdata('session_6196_sign'))){
-            //Messenger sign in does not allow Signout:
-            continue;
-        }
-
-        $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-
-
-        //Fetch URL:
-        if(in_array($en_id, $CI->config->item('en_ids_10876'))){
-
-            $en_all_10876 = $CI->config->item('en_all_10876'); //Mench Website
-            $page_url = $en_all_10876[$en_id]['m_desc'];
-
-        } elseif($en_id==12205 && $session_en) {
-
-            //Profile Page:
-            $page_url = '/source/'.$session_en['en_id'];
-
-        } else {
-
-            continue;
-
-        }
-
-
-        //Navigation
-        $ui .= '<a href="'.$page_url.'" class="dropdown-item montserrat doupper '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
-
-    }
-
-    $ui .= '</div>';
-    $ui .= '</div>';
-
-    return $ui;
-
 }
 
 function echo_json($array)
