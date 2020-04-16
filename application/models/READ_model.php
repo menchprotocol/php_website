@@ -2178,7 +2178,6 @@ class READ_model extends CI_Model
 
             //Did we have any steps unlocked?
             if(count($unlocked_steps) > 0){
-                //Yes! Show them only if exists. OLD: echo echo_actionplan_step_child($recipient_en['en_id'], $unlocked_step, true);
                 echo_in_list($ins[0], $unlocked_steps, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-lock-open"></i></span>UNLOCKED:');
             }
 
