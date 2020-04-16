@@ -223,7 +223,7 @@ class SOURCE_model extends CI_Model
                     if(in_array($value, $this->config->item('en_ids_7358') /* Source Status Active */)){
                         $ln_type_source_id = 10654; //Source Iterated Status
                     } else {
-                        $ln_type_source_id = 6178; //Source Archived
+                        $ln_type_source_id = 6178; //Source Deleted
                     }
                     $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
                     $ln_content = echo_db_field($key) . ' iterated from [' . $en_all_6177[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6177[$value]['m_name'] . ']';
@@ -283,7 +283,7 @@ class SOURCE_model extends CI_Model
          *
          *  $en_parent_bucket_id is the parent of the drop down
          *  $ln_creator_source_id is the user source ID that one of the children of $en_parent_bucket_id should be assigned (like a drop down)
-         *  $set_en_child_id is the new value to be assigned, which could also be null (meaning just remove all current values)
+         *  $set_en_child_id is the new value to be assigned, which could also be null (meaning just delete all current values)
          *
          * This function is helpful to manage things like User communication levels
          *
@@ -300,7 +300,7 @@ class SOURCE_model extends CI_Model
             return false;
         }
 
-        //First remove existing parent/child links for this drop down:
+        //First delete existing parent/child links for this drop down:
         $already_assigned = ($set_en_child_id < 1);
         $updated_ln_id = 0;
         foreach ($this->READ_model->ln_fetch(array(
@@ -312,19 +312,19 @@ class SOURCE_model extends CI_Model
             if (!$already_assigned && $ln['ln_parent_source_id'] == $set_en_child_id) {
                 $already_assigned = true;
             } else {
-                //Remove assignment:
+                //Delete assignment:
                 $updated_ln_id = $ln['ln_id'];
 
                 //Do not log update link here as we would log it further below:
                 $this->READ_model->ln_update($ln['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Link Removed
+                    'ln_status_source_id' => 6173, //Link Deleted
                 ), $ln_creator_source_id, 6224 /* User Account Updated */);
             }
 
         }
 
 
-        //Make sure $set_en_child_id belongs to parent if set (Could be null which means remove all)
+        //Make sure $set_en_child_id belongs to parent if set (Could be null which means delete all)
         if (!$already_assigned) {
             //Let's go ahead and add desired source as parent:
             $this->READ_model->ln_create(array(
@@ -377,9 +377,9 @@ class SOURCE_model extends CI_Model
 
             } else {
 
-                //Remove this link:
+                //Delete this link:
                 $adjusted_count += $this->READ_model->ln_update($adjust_tr['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Link Removed
+                    'ln_status_source_id' => 6173, //Link Deleted
                 ), $ln_creator_source_id, 10673 /* Player Link Unlinked */);
 
             }
@@ -470,7 +470,7 @@ class SOURCE_model extends CI_Model
             12563 => 12399, //SOURCE FEATURED => TRANSACTION FEATURED
             6181 => 6176, //SOURCE PUBLISH => TRANSACTION PUBLISH
             6180 => 6175, //SOURCE DRAFT => TRANSACTION DRAFT
-            6178 => 6173, //SOURCE ARCHIVE => TRANSACTION ARCHIVE
+            6178 => 6173, //SOURCE DELETE => TRANSACTION DELETE
         );
         foreach($this->SOURCE_model->en_fetch($query) as $en){
 
@@ -642,7 +642,7 @@ class SOURCE_model extends CI_Model
                         $parts = explode($keyword, $page_title);
                         $last_peace = $parts[(count($parts) - 1)];
 
-                        //Should we remove the last part if not too long?
+                        //Should we delete the last part if not too long?
                         if (substr($last_peace, 0, 1) == ' ' && strlen($last_peace) < 16) {
                             $page_title = str_replace($keyword . $last_peace, '', $page_title);
                             break; //Only a single extension, so break the loop
@@ -948,7 +948,7 @@ class SOURCE_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif (in_array($action_en_id, array(5981, 5982, 11956))) { //Add/Remove parent source
+            } elseif (in_array($action_en_id, array(5981, 5982, 11956))) { //Add/Delete parent source
 
                 //What trainer searched for:
                 $parent_en_id = intval(one_two_explode('@',' ',$action_command1));
@@ -980,10 +980,10 @@ class SOURCE_model extends CI_Model
                     if($action_en_id==5982){
 
                         //Parent Player Removal
-                        foreach($child_parent_ens as $remove_tr){
+                        foreach($child_parent_ens as $delete_tr){
 
-                            $this->READ_model->ln_update($remove_tr['ln_id'], array(
-                                'ln_status_source_id' => 6173, //Link Removed
+                            $this->READ_model->ln_update($delete_tr['ln_id'], array(
+                                'ln_status_source_id' => 6173, //Link Deleted
                             ), $ln_creator_source_id, 10673 /* Player Link Unlinked  */);
 
                             $applied_success++;
@@ -1049,7 +1049,7 @@ class SOURCE_model extends CI_Model
 
             } elseif ($action_en_id == 5003 && ($action_command1=='*' || $en['en_status_source_id']==$action_command1) && in_array($action_command2, $this->config->item('en_ids_6177'))) {
 
-                //Being removed? Unlink as well if that's the case:
+                //Being deleted? Unlink as well if that's the case:
                 if(!in_array($action_command2, $this->config->item('en_ids_7358'))){
                     $this->SOURCE_model->en_unlink($en['en_id'], $ln_creator_source_id);
                 }

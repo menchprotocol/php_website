@@ -326,7 +326,7 @@ class Source extends CI_Controller
         $filters = array(
             'ln_parent_source_id' => $parent_en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-            'en_status_source_id IN (' . join(',', ( $en_focus_filter<0 /* Remove Filters*/ ? $this->config->item('en_ids_7358') /* Source Status Active */ : array($en_focus_filter) /* This specific filter*/ )) . ')' => null,
+            'en_status_source_id IN (' . join(',', ( $en_focus_filter<0 /* Delete Filters*/ ? $this->config->item('en_ids_7358') /* Source Status Active */ : array($en_focus_filter) /* This specific filter*/ )) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         );
 
@@ -533,7 +533,7 @@ class Source extends CI_Controller
 
     }
 
-    function en_count_to_be_removed_links()
+    function en_count_to_be_deleted_links()
     {
 
         if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
@@ -681,8 +681,8 @@ class Source extends CI_Controller
             ));
         }
 
-        $remove_redirect_url = null;
-        $remove_from_ui = 0;
+        $delete_redirect_url = null;
+        $delete_from_ui = 0;
         $js_ln_type_source_id = 0; //Detect link type based on content
 
         //Prepare data to be updated:
@@ -692,7 +692,7 @@ class Source extends CI_Controller
             'en_status_source_id' => intval($_POST['en_status_source_id']),
         );
 
-        //Is this being removed?
+        //Is this being deleted?
         if (!in_array($en_update['en_status_source_id'], $this->config->item('en_ids_7358') /* Source Status Active */) && !($en_update['en_status_source_id'] == $ens[0]['en_status_source_id'])) {
 
 
@@ -703,7 +703,7 @@ class Source extends CI_Controller
                 $en_all_6194 = $this->config->item('en_all_6194');
 
                 //Construct the message:
-                $error_message = 'Cannot be removed because source is referenced as ';
+                $error_message = 'Cannot be deleted because source is referenced as ';
                 foreach($en_count_references as $en_id=>$en_count){
                     $error_message .= $en_all_6194[$en_id]['m_name'].' '.echo_number($en_count).' times ';
                 }
@@ -771,17 +771,17 @@ class Source extends CI_Controller
 
             } elseif(count($messages) > 0){
 
-                //Cannot delete this source until Idea references are removed:
+                //Cannot delete this source until Idea references are deleted:
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'You can remove source after removing all its Idea Notes references',
+                    'message' => 'You can delete source after removing all its Idea Notes references',
                 ));
 
             }
 
-            //Remove/merge source links:
-            $_POST['ln_id'] = 0; //Do not consider the link as the source is being Removed
-            $remove_from_ui = 1; //Removing source
+            //Delete/merge source links:
+            $_POST['ln_id'] = 0; //Do not consider the link as the source is being Deleted
+            $delete_from_ui = 1; //Removing source
             $merger_en_id = (count($merged_ens) > 0 ? $merged_ens[0]['en_id'] : 0);
             $links_adjusted = $this->SOURCE_model->en_unlink($_POST['en_id'], $session_en['en_id'], $merger_en_id);
 
@@ -789,11 +789,11 @@ class Source extends CI_Controller
             if ($merger_en_id > 0) {
 
                 if($_POST['en_id'] == $_POST['en_focus_id'] || $merged_ens[0]['en_id'] == $_POST['en_focus_id']){
-                    //Player is being Removed and merged into another source:
-                    $remove_redirect_url = '/source/' . $merged_ens[0]['en_id'];
+                    //Player is being Deleted and merged into another source:
+                    $delete_redirect_url = '/source/' . $merged_ens[0]['en_id'];
                 }
 
-                $success_message = 'Source removed and merged its ' . $links_adjusted . ' links here';
+                $success_message = 'Source deleted and merged its ' . $links_adjusted . ' links here';
 
             } else {
 
@@ -806,11 +806,11 @@ class Source extends CI_Controller
                         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
                     ), array('en_parent'), 1);
 
-                    $remove_redirect_url = '/source/' . ( count($en__parents) ? $en__parents[0]['en_id'] : $session_en['en_id'] );
+                    $delete_redirect_url = '/source/' . ( count($en__parents) ? $en__parents[0]['en_id'] : $session_en['en_id'] );
                 }
 
                 //Display proper message:
-                $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Source removed & its ' . $links_adjusted . ' links have been unlinked.</div>';
+                $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Source deleted & its ' . $links_adjusted . ' links have been unlinked.</div>';
 
             }
 
@@ -838,7 +838,7 @@ class Source extends CI_Controller
                 if (in_array($_POST['ln_status_source_id'], $this->config->item('en_ids_7360') /* Transaction Status Active */)) {
                     $ln_status_source_id = 10656; //Player Link Iterated Status
                 } else {
-                    $remove_from_ui = 1;
+                    $delete_from_ui = 1;
                     $ln_status_source_id = 10673; //Player Link Unlinked
                 }
 
@@ -944,7 +944,7 @@ class Source extends CI_Controller
         }
 
 
-        if ($remove_redirect_url) {
+        if ($delete_redirect_url) {
             //Page will be refresh, set flash message to be shown after restart:
             $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . $success_message . '</div>');
         }
@@ -953,8 +953,8 @@ class Source extends CI_Controller
         $return_array = array(
             'status' => 1,
             'message' => '<i class="fas fa-check"></i> ' . $success_message,
-            'remove_from_ui' => $remove_from_ui,
-            'remove_redirect_url' => $remove_redirect_url,
+            'delete_from_ui' => $delete_from_ui,
+            'delete_redirect_url' => $delete_redirect_url,
             'js_ln_type_source_id' => intval($js_ln_type_source_id),
         );
 
@@ -1653,7 +1653,7 @@ class Source extends CI_Controller
 
 
         if(!$_POST['enable_mulitiselect'] || $_POST['was_already_selected']){
-            //Since this is not a multi-select we want to remove all existing options...
+            //Since this is not a multi-select we want to delete all existing options...
 
             //Fetch all possible answers based on parent source:
             $filters = array(
@@ -1664,7 +1664,7 @@ class Source extends CI_Controller
             );
 
             if($_POST['enable_mulitiselect'] && $_POST['was_already_selected']){
-                //Just remove this single item, not the other ones:
+                //Just delete this single item, not the other ones:
                 $filters['ln_child_source_id'] = $_POST['selected_en_id'];
             }
 
@@ -1674,16 +1674,16 @@ class Source extends CI_Controller
                 array_push($possible_answers, $answer_en['en_id']);
             }
 
-            //Remove selected options for this trainer:
+            //Delete selected options for this trainer:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_parent_source_id IN (' . join(',', $possible_answers) . ')' => null,
                 'ln_child_source_id' => $session_en['en_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            )) as $remove_en){
-                //Should usually remove a single option:
-                $this->READ_model->ln_update($remove_en['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Link Removed
+            )) as $delete_en){
+                //Should usually delete a single option:
+                $this->READ_model->ln_update($delete_en['ln_id'], array(
+                    'ln_status_source_id' => 6173, //Link Deleted
                 ), $session_en['en_id'], 6224 /* User Account Updated */);
             }
 
@@ -1705,7 +1705,7 @@ class Source extends CI_Controller
         $this->READ_model->ln_create(array(
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_type_source_id' => 6224, //My Account Iterated
-            'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_already_selected'] ? 'Removed' : 'Added' ),
+            'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_already_selected'] ? 'Deleted' : 'Added' ),
             'ln_metadata' => $_POST,
             'ln_parent_source_id' => $_POST['parent_en_id'],
             'ln_child_source_id' => $_POST['selected_en_id'],
@@ -1886,14 +1886,14 @@ class Source extends CI_Controller
 
             if (strlen($_POST['en_email']) == 0) {
 
-                //Remove email:
+                //Delete email:
                 $this->READ_model->ln_update($user_emails[0]['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Link Removed
+                    'ln_status_source_id' => 6173, //Link Deleted
                 ), $session_en['en_id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
-                    'message' => 'Email removed',
+                    'message' => 'Email deleted',
                 );
 
             } elseif ($user_emails[0]['ln_content'] != $_POST['en_email']) {

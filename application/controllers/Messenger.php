@@ -46,7 +46,7 @@ class Messenger extends CI_Controller
 
 
     function deauthorize(){
-        //When a user removes us:
+        //When a user deletes us:
         $this->READ_model->ln_create(array(
             'ln_content' => 'facebook_deauthorize() Just Called',
             'ln_type_source_id' => 4246, //Platform Bug Reports
@@ -682,7 +682,7 @@ class Messenger extends CI_Controller
 
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
 
-                    //This is when we message them and they accept to chat because they had Removed Messenger or something...
+                    //This is when we message them and they accept to chat because they had Deleted Messenger or something...
                     $en = $this->SOURCE_model->en_messenger_auth($im['sender']['id']);
 
                     //Log link:

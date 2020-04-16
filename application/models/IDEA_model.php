@@ -164,7 +164,7 @@ class IDEA_model extends CI_Model
                     if(in_array($value, $this->config->item('en_ids_7356') /* Idea Status Active */)){
                         $ln_type_source_id = 10648; //Idea Iterated Status
                     } else {
-                        $ln_type_source_id = 6182; //Idea Archived
+                        $ln_type_source_id = 6182; //Idea Deleted
                     }
                     $en_all_4737 = $this->config->item('en_all_4737'); //Idea Status
                     $ln_content = echo_db_field($key) . ' iterated from [' . $en_all_4737[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4737[$value]['m_name'] . ']';
@@ -236,15 +236,15 @@ class IDEA_model extends CI_Model
     function in_unlink($in_id, $ln_creator_source_id = 0){
 
         //REMOVE IDEA LINKS
-        $links_removed = 0;
+        $links_deleted = 0;
         foreach($this->READ_model->ln_fetch(array( //Idea Links
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             '(ln_next_idea_id = '.$in_id.' OR ln_previous_idea_id = '.$in_id.')' => null,
         ), array(), 0) as $ln){
-            //Remove this link:
-            $links_removed += $this->READ_model->ln_update($ln['ln_id'], array(
-                'ln_status_source_id' => 6173, //Link Removed
+            //Delete this link:
+            $links_deleted += $this->READ_model->ln_update($ln['ln_id'], array(
+                'ln_status_source_id' => 6173, //Link Deleted
             ), $ln_creator_source_id, 10686 /* Idea Link Unlinked */);
         }
 
@@ -256,15 +256,15 @@ class IDEA_model extends CI_Model
             'ln_next_idea_id' => $in_id,
         ), array(), 0);
         foreach($in_notes as $in_note){
-            //Remove this link:
-            $links_removed += $this->READ_model->ln_update($in_note['ln_id'], array(
-                'ln_status_source_id' => 6173, //Link Removed
+            //Delete this link:
+            $links_deleted += $this->READ_model->ln_update($in_note['ln_id'], array(
+                'ln_status_source_id' => 6173, //Link Deleted
             ), $ln_creator_source_id, 10686 /* Idea Link Unlinked */);
         }
 
 
-        //Return links removed:
-        return $links_removed;
+        //Return links deleted:
+        return $links_deleted;
     }
 
     function in_match_ln_status($ln_creator_source_id, $query= array()){
@@ -282,7 +282,7 @@ class IDEA_model extends CI_Model
             12137 => 12399, //IDEA FEATURE => READ FEATURE
             6184 => 6176, //IDEA PUBLISH => READ PUBLISH
             6183 => 6175, //IDEA DRAFT => READ DRAFT
-            6182 => 6173, //IDEA ARCHIVE => READ ARCHIVE
+            6182 => 6173, //IDEA DELETE => READ DELETE
         );
         foreach($this->IDEA_model->in_fetch($query) as $in){
 
@@ -746,7 +746,7 @@ class IDEA_model extends CI_Model
 
                 } elseif($action_en_id==12592 && count($in_has_sources)){
 
-                    //Has and must be removed:
+                    //Has and must be deleted:
                     $this->READ_model->ln_update($in_has_sources[0]['ln_id'], array(
                         'ln_status_source_id' => 6173,
                     ), $ln_creator_source_id, 10678 /* Idea Notes Unlinked */);

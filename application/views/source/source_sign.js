@@ -78,7 +78,7 @@ function select_channel(en_chosen, referrer_in_id){
 
     if(parseInt(en_chosen) == 6196 /* Mench on Messenger */ ){
 
-        //Remove button:
+        //Delete button:
         $('#step1button').html('<div style="font-size: 1.2em; padding-top:10px;"><i class="far fa-yin-yang fa-spin"></i> Loading Messenger...</div>');
 
         //Log link:
@@ -109,7 +109,7 @@ function search_email(){
     $('#email_check_next').html('<i class="far fa-yin-yang fa-spin"></i>');
     $('#input_email').prop('disabled', true).css('background-color','#f4f5f7');
     $('#password_errors').html('');
-    $('#custom_message').html(''); //Remove previous errors, if any
+    $('#custom_message').html(''); //Delete previous errors, if any
 
     //Check email and validate:
     $.post("/source/singin_check_email", {

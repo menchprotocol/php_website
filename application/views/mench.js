@@ -556,7 +556,7 @@ function add_feedback(){
 
 function modify_cancel(){
     $('.fixed-box').addClass('hidden');
-    remove_all_highlights();
+    delete_all_highlights();
     $("input").blur();
     if(history.pushState) {
         history.pushState(null, null, '#');
@@ -581,7 +581,7 @@ function en_fetch_canonical_url(query_string, not_found){
 }
 
 
-function remove_all_highlights(){
+function delete_all_highlights(){
     $('.object_highlight').removeClass('en_highlight');
 }
 

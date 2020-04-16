@@ -541,7 +541,7 @@ class Cron extends CI_Controller
         /*
          *
          * A function that would run through all
-         * object metadata variables and remove
+         * object metadata variables and delete
          * all variables that are not indexed
          * as part of Variables Names source @6232
          *
@@ -580,7 +580,7 @@ class Cron extends CI_Controller
 
             foreach(unserialize($in['in_metadata']) as $key => $value){
                 if(!in_array($key, $valid_variables)){
-                    //Remove this:
+                    //Delete this:
                     update_metadata('in', $in['in_id'], array(
                         $key => null,
                     ));
@@ -603,7 +603,7 @@ class Cron extends CI_Controller
 
             foreach(unserialize($en['en_metadata']) as $key => $value){
                 if(!in_array($key, $valid_variables)){
-                    //Remove this:
+                    //Delete this:
                     update_metadata('en', $en['en_id'], array(
                         $key => null,
                     ));
@@ -623,9 +623,9 @@ class Cron extends CI_Controller
         );
 
         if(count($invalid_variables) > 0){
-            //Did we have anything to remove? Report with system bug:
+            //Did we have anything to delete? Report with system bug:
             $this->READ_model->ln_create(array(
-                'ln_content' => 'metadatas() removed '.count($invalid_variables).' unknown variables from idea/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
+                'ln_content' => 'metadatas() deleted '.count($invalid_variables).' unknown variables from idea/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_parent_source_id' => 6232, //Variables Names
                 'ln_metadata' => $ln_metadata,

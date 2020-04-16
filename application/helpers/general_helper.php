@@ -449,15 +449,15 @@ function config_var($config_en_id){
 
 function update_description($before_string, $after_string){
 
-    //See whats added, what's removed:
+    //See whats added, what's deleted:
     $before_words = explode(' ', $before_string);
     $after_words = explode(' ', $after_string);
     $new_words = array();
-    $removed_words = array();
+    $deleted_words = array();
 
     foreach($before_words as $before_word){
         if(strlen(trim($before_word))>0 && !in_array($before_word, $after_words)){
-            array_push($removed_words, $before_word);
+            array_push($deleted_words, $before_word);
         }
     }
 
@@ -468,17 +468,17 @@ function update_description($before_string, $after_string){
     }
 
     $ln_content = '';
-    if(count($removed_words)>0){
-        $ln_content .= 'Removed['.join('][',$removed_words).']'; //All removed count as 1 (No space)
+    if(count($deleted_words)>0){
+        $ln_content .= 'Deleted['.join('][',$deleted_words).']'; //All deleted count as 1 (No space)
     }
     if(count($new_words)>0){
-        if(count($removed_words)>0){
+        if(count($deleted_words)>0){
             $ln_content .= ' ';
         }
         $ln_content .= 'Added['.join('] [',$new_words).']'; //Each added word counts as 1 word (because of the space)
     }
 
-    //Was anything added/removed?
+    //Was anything added/deleted?
     if(strlen($ln_content)==0){
         //Nope, so probably outcome words just got rearranged, make sure NO SPACE to treat this as one word:
         $ln_content .= 'Rearranged['.join('->',$before_words).']to['.join('->',$after_words).']';
@@ -840,7 +840,7 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
 
         if (isset($result['ObjectURL']) && strlen($result['ObjectURL']) > 10) {
 
-            //Remove local file:
+            //Delete local file:
             @unlink(($is_local ? $file_url : $file_path . $file_name));
 
             //Define new URL:
@@ -955,7 +955,7 @@ function analyze_domain($full_url){
         }
     }
 
-    //Remove the TLD:
+    //Delete the TLD:
     $tld = null;
     foreach ($second_level_tlds as $second_level_tld){
         if(substr_count($analyze['host'], $second_level_tld)==1){
@@ -1111,7 +1111,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
     $synced_count = 0;
     foreach($fetch_objects as $loop_obj){
 
-        //Remove any limits:
+        //Delete any limits:
         unset($limits);
 
         //Fetch item(s) for updates including their parents:
@@ -1166,7 +1166,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Clear possible metadata algolia ID's that have been cached:
                 update_metadata($loop_obj, $db_row[$loop_obj.'_id'], array(
-                    $loop_obj . '__algolia_id' => null, //Since all objects have been mass removed!
+                    $loop_obj . '__algolia_id' => null, //Since all objects have been mass deleted!
                 ));
 
             }
@@ -1287,19 +1287,19 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
-        //What's the status? Is it active or should it be removed?
-        if (in_array($all_db_rows[0][$input_obj_type . '_status_source_id'], array(6178 /* Player Removed */, 6182 /* Idea Removed */))) {
+        //What's the status? Is it active or should it be deleted?
+        if (in_array($all_db_rows[0][$input_obj_type . '_status_source_id'], array(6178 /* Player Deleted */, 6182 /* Idea Deleted */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
-                //Object is removed locally but still indexed remotely on Algolia, so let's remove it from Algolia:
+                //Object is deleted locally but still indexed remotely on Algolia, so let's delete it from Algolia:
 
-                //Remove from algolia:
+                //Delete from algolia:
                 $algolia_results = $search_index->deleteObject($all_export_rows[0]['objectID']);
 
                 //also set its algolia_id to 0 locally:
                 update_metadata($input_obj_type, $all_db_rows[0][$input_obj_type.'_id'], array(
-                    $input_obj_type . '__algolia_id' => null, //Since this item has been removed!
+                    $input_obj_type . '__algolia_id' => null, //Since this item has been deleted!
                 ));
 
                 $synced_count += 1;
@@ -1342,7 +1342,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
          *
          * This is a mass update request.
          *
-         * All remote objects have already been removed from the Algolia
+         * All remote objects have already been deleted from the Algolia
          * index & metadata algolia_ids have all been set to zero!
          *
          * We're ready to create new items and update local
@@ -1394,7 +1394,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
      *                          We're looking for the $obj ID and METADATA
      *
      * $new_fields:             The new array of metadata fields to be Set,
-     *                          Updated or Removed (If set to null)
+     *                          Updated or Deleted (If set to null)
      *
      * */
 
@@ -1440,7 +1440,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
         //We are doing an absolute adjustment if needed:
         if (is_null($metadata_value) && isset($metadata[$metadata_key])) {
 
-            //User asked to remove this value:
+            //User asked to delete this value:
             unset($metadata[$metadata_key]);
 
         } elseif (!is_null($metadata_value) && (!isset($metadata[$metadata_key]) || $metadata[$metadata_key] != $metadata_value)) {

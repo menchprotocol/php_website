@@ -1175,8 +1175,8 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 
         $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
 
-        //Remove:
-        $ui .= '<span title="Remove from list" data-toggle="tooltip" data-placement="left"><span class="actionplan_remove" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
+        //Delete:
+        $ui .= '<span title="Delete from list" data-toggle="tooltip" data-placement="left"><span class="actionplandelete _delete" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
 
         $ui .= '</span></div>';
 
@@ -1671,12 +1671,12 @@ function echo_in_previous_read($in_id, $recipient_en){
             $ui .= '</div>';
             $ui .= '</div>';
 
-            break; //TODO Remove later and allow multiple parent links
+            break; //TODO Delete later and allow multiple parent links
 
         }
 
         if($ui){
-            break; //TODO Remove later and allow multiple parent links
+            break; //TODO Delete later and allow multiple parent links
         }
     }
 
@@ -1746,20 +1746,20 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
     $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_notes_add('.$note_type_en_id.');" class="btn btn-idea save_notes_'.$note_type_en_id.'">ADD</a></td>';
 
     //File counter:
-    $ui .= '<td class="remove_loading" class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaPadsNewCount' . $note_type_en_id . '" class="hidden"><span id="charNum' . $note_type_en_id . '">0</span>/' . config_var(11073).'</span></td>';
+    $ui .= '<td class="delete_loading" class="delete_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaPadsNewCount' . $note_type_en_id . '" class="hidden"><span id="charNum' . $note_type_en_id . '">0</span>/' . config_var(11073).'</span></td>';
 
     //First Name:
-    $ui .= '<td class="remove_loading '.superpower_active(10967).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'/firstname \');" data-toggle="tooltip" title="Mention readers first name" data-placement="top"><span class="icon-block"><i class="far fa-fingerprint"></i></span></a></td>';
+    $ui .= '<td class="delete_loading '.superpower_active(10967).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'/firstname \');" data-toggle="tooltip" title="Mention readers first name" data-placement="top"><span class="icon-block"><i class="far fa-fingerprint"></i></span></a></td>';
 
     //YouTube Embed
-    $ui .= '<td class="remove_loading '.superpower_active(10984).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=&end=\');" data-toggle="tooltip" title="YouTube Clip with Start & End Seconds" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
+    $ui .= '<td class="delete_loading '.superpower_active(10984).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=&end=\');" data-toggle="tooltip" title="YouTube Clip with Start & End Seconds" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
 
     //Reference Player
-    $ui .= '<td class="remove_loading '.superpower_active(10983).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'@\');" data-toggle="tooltip" title="Reference SOURCE" data-placement="top"><span class="icon-block"><i class="far fa-at"></i></span></a></td>';
+    $ui .= '<td class="delete_loading '.superpower_active(10983).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'@\');" data-toggle="tooltip" title="Reference SOURCE" data-placement="top"><span class="icon-block"><i class="far fa-at"></i></span></a></td>';
 
     //Upload File:
     if(in_array(12359, $en_all_4485[$note_type_en_id]['m_parents'])){
-        $ui .= '<td class="remove_loading" style="width:36px; padding: 10px 0 0 0;">';
+        $ui .= '<td class="delete_loading" style="width:36px; padding: 10px 0 0 0;">';
         $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$note_type_en_id.'" />';
         $ui .= '<label class="file_label_'.$note_type_en_id.'" for="fileIdeaType'.$note_type_en_id.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
         $ui .= '</td>';
@@ -1947,7 +1947,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
     $ui .= '<span class="show-on-hover">';
 
     if($note_controller){
-        //Option to Remove:
+        //Option to Delete:
 
     }
 

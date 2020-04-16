@@ -38,10 +38,10 @@ function clear_all_reads(){
 $(document).ready(function () {
 
     //Watch for READING LIST removal click:
-    $('.actionplan_remove').on('click', function(e) {
+    $('.actionplandelete _delete').on('click', function(e) {
 
         var in_id = $(this).attr('in-id');
-        var r = confirm("Remove ["+$('.text__4736_'+in_id).text()+"] from your reading list?");
+        var r = confirm("Delete ["+$('.text__4736_'+in_id).text()+"] from your reading list?");
         if (r == true) {
             //Save changes:
             $.post("/read/actionplan_stop_save", { js_pl_id:js_pl_id ,in_id:in_id }, function (data) {
@@ -58,7 +58,7 @@ $(document).ready(function () {
 
                     setTimeout(function () {
 
-                        //Remove from body:
+                        //Delete from body:
                         $('#ap_in_'+in_id).remove();
 
                         //Re-sort:

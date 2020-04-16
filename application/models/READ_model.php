@@ -328,7 +328,7 @@ class READ_model extends CI_Model
                     //Generate stats:
                     $links_added = 0;
                     $links_edited = 0;
-                    $links_removed = 0;
+                    $links_deleted = 0;
 
 
                     //Assign tag if parent/child link NOT already assigned:
@@ -367,11 +367,11 @@ class READ_model extends CI_Model
 
                     } else {
 
-                        //See if we need to remove single selectable links:
+                        //See if we need to delete single selectable links:
                         foreach($this->config->item('en_ids_6204') as $single_select_en_id){
                             $single_selectable = $this->config->item('en_ids_'.$single_select_en_id);
                             if(is_array($single_selectable) && count($single_selectable) && in_array($ln_tag['ln_parent_source_id'], $single_selectable)){
-                                //Remove other siblings, if any:
+                                //Delete other siblings, if any:
                                 foreach($this->READ_model->ln_fetch(array(
                                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
@@ -379,8 +379,8 @@ class READ_model extends CI_Model
                                     'ln_parent_source_id !=' => $ln_tag['ln_parent_source_id'],
                                     'ln_child_source_id' => $insert_columns['ln_creator_source_id'],
                                 )) as $single_selectable_siblings_preset){
-                                    $links_removed += $this->READ_model->ln_update($single_selectable_siblings_preset['ln_id'], array(
-                                        'ln_status_source_id' => 6173, //Link Removed
+                                    $links_deleted += $this->READ_model->ln_update($single_selectable_siblings_preset['ln_id'], array(
+                                        'ln_status_source_id' => 6173, //Link Deleted
                                     ), $insert_columns['ln_creator_source_id'], 10673 /* Player Link Unlinked */);
                                 }
                             }
@@ -405,10 +405,10 @@ class READ_model extends CI_Model
                         'ln_parent_source_id' => $ln_tag['ln_parent_source_id'],
                         'ln_child_source_id' => $insert_columns['ln_creator_source_id'],
                         'ln_previous_idea_id' => $insert_columns['ln_previous_idea_id'],
-                        'ln_content' => $links_added.' added, '.$links_edited.' edited & '.$links_removed.' removed with new content ['.$insert_columns['ln_content'].']',
+                        'ln_content' => $links_added.' added, '.$links_edited.' edited & '.$links_deleted.' deleted with new content ['.$insert_columns['ln_content'].']',
                     ));
 
-                    if($links_added>0 || $links_edited>0 || $links_removed>0){
+                    if($links_added>0 || $links_edited>0 || $links_deleted>0){
                         //See if Session needs to be updated:
                         $session_en = superpower_assigned();
                         if($session_en && $session_en['en_id']==$insert_columns['ln_creator_source_id']){
@@ -936,7 +936,7 @@ class READ_model extends CI_Model
         //Add 🔴 READING LIST Skipped Read Progression Links:
         foreach($flat_common_steps as $common_in_id){
 
-            //Archive current progression links:
+            //Delete current progression links:
             $current_progress = $this->READ_model->ln_fetch(array(
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                 'ln_creator_source_id' => $en_id,
@@ -956,7 +956,7 @@ class READ_model extends CI_Model
             foreach($current_progress as $ln){
                 $this->READ_model->ln_update($ln['ln_id'], array(
                     'ln_parent_transaction_id' => $new_progression_link['ln_id'],
-                    'ln_status_source_id' => 6173, //Link Removed
+                    'ln_status_source_id' => 6173, //Link Deleted
                 ), $en_id, 12328);
             }
 
@@ -1021,7 +1021,7 @@ class READ_model extends CI_Model
             );
         }
 
-        //Validate idea to be removed:
+        //Validate idea to be deleted:
         $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $in_id,
         ));
@@ -1032,7 +1032,7 @@ class READ_model extends CI_Model
             );
         }
 
-        //Go ahead and remove from 🔴 READING LIST:
+        //Go ahead and delete from 🔴 READING LIST:
         $player_reads = $this->READ_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
@@ -1046,11 +1046,11 @@ class READ_model extends CI_Model
             );
         }
 
-        //Remove Bookmark:
+        //Delete Bookmark:
         foreach($player_reads as $ln){
             $this->READ_model->ln_update($ln['ln_id'], array(
                 'ln_content' => $stop_feedback,
-                'ln_status_source_id' => 6173, //ARCHIVED
+                'ln_status_source_id' => 6173, //DELETED
             ), $en_id, $stop_method_id);
         }
 
@@ -3047,7 +3047,7 @@ class READ_model extends CI_Model
                 //This is the only valid modification we can do to $input_message before storing it in the DB:
                 $input_message = str_replace($string_references['ref_urls'][0], '@' . $string_references['ref_sources'][0], $input_message);
 
-                //Remove URL:
+                //Delete URL:
                 unset($string_references['ref_urls'][0]);
 
             }
@@ -3115,7 +3115,7 @@ class READ_model extends CI_Model
                 $fb_button_title = $link_anchor;
                 $fb_button_url = $link_url;
 
-                //Remove command from input message:
+                //Delete command from input message:
                 $output_body_message = str_replace('/link:' . $link_anchor . ':' . $link_url, '', $output_body_message);
 
             } else {
@@ -3615,7 +3615,7 @@ class READ_model extends CI_Model
 
         }
 
-        //Remove ALL previous answers:
+        //Delete ALL previous answers:
         foreach ($this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //READ ANSWERED
@@ -3623,8 +3623,8 @@ class READ_model extends CI_Model
             'ln_previous_idea_id' => $ins[0]['in_id'],
         )) as $read_progress){
             $this->READ_model->ln_update($read_progress['ln_id'], array(
-                'ln_status_source_id' => 6173, //Link Removed
-            ), $en_id, 12129 /* READ ANSWER ARCHIVED */);
+                'ln_status_source_id' => 6173, //Link Deleted
+            ), $en_id, 12129 /* READ ANSWER DELETED */);
         }
 
         //Add New Answers
@@ -3716,15 +3716,15 @@ class READ_model extends CI_Model
             } elseif ($action_unsubscribe == 'ALL') {
 
                 //User wants to completely unsubscribe from Mench:
-                $removed_ins = 0;
+                $deleted_ins = 0;
                 foreach ($this->READ_model->ln_fetch(array(
                     'ln_creator_source_id' => $en['en_id'],
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 )) as $ln) {
-                    $removed_ins++;
+                    $deleted_ins++;
                     $this->READ_model->ln_update($ln['ln_id'], array(
-                        'ln_status_source_id' => 6173, //Link Removed
+                        'ln_status_source_id' => 6173, //Link Deleted
                     ), $en['en_id'], 6155 /* User Idea Cancelled */);
                 }
 
@@ -3732,14 +3732,14 @@ class READ_model extends CI_Model
 
                 //Let them know about these changes:
                 $this->READ_model->dispatch_message(
-                    'Confirmed, I removed ' . $removed_ins . ' idea' . echo__s($removed_ins) . ' from your 🔴 READING LIST. This is the final message you will receive from me unless you message me again. I hope you take good care of yourself 😘',
+                    'Confirmed, I deleted ' . $deleted_ins . ' idea' . echo__s($deleted_ins) . ' from your 🔴 READING LIST. This is the final message you will receive from me unless you message me again. I hope you take good care of yourself 😘',
                     $en,
                     true
                 );
 
             } elseif (is_numeric($action_unsubscribe)) {
 
-                //User wants to Remove a specific 🔴 READING LIST, validate it:
+                //User wants to Delete a specific 🔴 READING LIST, validate it:
                 $player_reads = $this->READ_model->ln_fetch(array(
                     'ln_creator_source_id' => $en['en_id'],
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
@@ -3757,7 +3757,7 @@ class READ_model extends CI_Model
 
                 //Update status for this single 🔴 READING LIST:
                 $this->READ_model->ln_update($player_reads[0]['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Link Removed
+                    'ln_status_source_id' => 6173, //Link Deleted
                 ), $en['en_id'], 6155 /* User Idea Cancelled */);
 
                 //Re-sort remaining 🔴 READING LIST ideas:
@@ -3773,7 +3773,7 @@ class READ_model extends CI_Model
 
                 //Show success message to user:
                 $this->READ_model->dispatch_message(
-                    'I have successfully removed [' . $player_reads[0]['in_title'] . '] from your 🔴 READING LIST.',
+                    'I have successfully deleted [' . $player_reads[0]['in_title'] . '] from your 🔴 READING LIST.',
                     $en,
                     true,
                     array(
@@ -4175,7 +4175,7 @@ class READ_model extends CI_Model
             //Do they have anything in their 🔴 READING LIST?
             if (count($player_reads) > 0) {
 
-                //Give them options to remove specific 🔴 READING LISTs:
+                //Give them options to delete specific 🔴 READING LISTs:
                 $quick_replies = array();
                 $message = 'Choose one of the following options:';
                 $increment = 1;
@@ -4193,7 +4193,7 @@ class READ_model extends CI_Model
                 if (count($player_reads) >= 2) {
                     //Give option to skip all and unsubscribe:
                     $increment++;
-                    $message .= "\n\n" . ($counter + $increment) . '. Remove all ideas and unsubscribe';
+                    $message .= "\n\n" . ($counter + $increment) . '. Delete all ideas and unsubscribe';
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => ($counter + $increment),

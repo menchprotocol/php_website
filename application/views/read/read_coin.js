@@ -127,7 +127,7 @@ function select_answer(in_id){
 
     if(current_status==1){
 
-        //Already Selected, remove selection:
+        //Already Selected, delete selection:
         if(in_type_source_id == 7231){
             //Multi Selection
             $('.ln_answer_'+in_id).attr('is-selected', 0);
@@ -136,7 +136,7 @@ function select_answer(in_id){
 
     } else if(current_status==0){
 
-        //Already Selected, remove selection:
+        //Already Selected, delete selection:
         $('.ln_answer_'+in_id).attr('is-selected', 1);
         $('.ln_answer_'+in_id+' .check-icon i').removeClass('far').addClass('fas');
 

@@ -43,7 +43,7 @@ $(document).ready(function () {
 
     //Lookout for idea link related changes:
     $('#ln_status_source_id').change(function () {
-        if (parseInt($('#ln_status_source_id').find(":selected").val()) == 6173 /* Link Removed */ ) {
+        if (parseInt($('#ln_status_source_id').find(":selected").val()) == 6173 /* Link Deleted */ ) {
             //About to delete? Notify them:
             $('.notify_unlink_en').removeClass('hidden');
         } else {
@@ -53,17 +53,17 @@ $(document).ready(function () {
 
     $('#en_status_source_id').change(function () {
 
-        if (parseInt($('#en_status_source_id').find(":selected").val()) == 6178 /* Player Removed */) {
+        if (parseInt($('#en_status_source_id').find(":selected").val()) == 6178 /* Player Deleted */) {
 
             //Notify Trainer:
-            $('.notify_en_remove').removeClass('hidden');
-            $('.source_remove_stats').html('<i class="far fa-yin-yang fa-spin"></i>');
+            $('.notify_endelete _delete').removeClass('hidden');
+            $('.sourcedelete _delete_stats').html('<i class="far fa-yin-yang fa-spin"></i>');
 
             //About to delete... Fetch total links:
-            $.post("/source/en_count_to_be_removed_links", { en_id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
+            $.post("/source/en_count_to_be_deleted_links", { en_id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
 
                 if(data.status){
-                    $('.source_remove_stats').html('<b>'+data.en_link_count+'</b>');
+                    $('.sourcedelete _delete_stats').html('<b>'+data.en_link_count+'</b>');
                     $('#en_link_count').val(data.en_link_count); //This would require a confirmation upon saving...
                 }
 
@@ -71,8 +71,8 @@ $(document).ready(function () {
 
         } else {
 
-            $('.notify_en_remove').addClass('hidden');
-            $('.source_remove_stats').html('');
+            $('.notify_endelete _delete').addClass('hidden');
+            $('.sourcedelete _delete_stats').html('');
             $('#en_link_count').val('0');
 
         }
@@ -250,7 +250,7 @@ function toggle_superpower(superpower_id){
             //TOGGLE:
             var index = js_session_superpowers_assigned.indexOf(superpower_id);
             if (index > -1) {
-                //Remove it:
+                //Delete it:
                 js_session_superpowers_assigned.splice(index, 1);
             } else {
                 //Not there, add it:
@@ -328,7 +328,7 @@ function en_add_or_link(en_existing_id, is_parent) {
 
 
 function en_filter_status(new_val) {
-    //Remove active class:
+    //Delete active class:
     $('.u-status-filter').removeClass('active');
     //We do have a filter:
     en_focus_filter = parseInt(new_val);
@@ -352,7 +352,7 @@ function en_load_next_page(page, load_new_filter) {
     if (load_new_filter) {
         //Replace load more with spinner:
         var append_div = $('#new-children').html();
-        //The padding-bottom would remove the scrolling effect on the left side!
+        //The padding-bottom would delete the scrolling effect on the left side!
         $('#list-children').html('<span class="load-more" style="padding-bottom:500px;"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
     } else {
         //Replace load more with spinner:
@@ -435,11 +435,11 @@ function en_modify_load(en_id, ln_id) {
     $('#modifybox').attr('source-link-id', ln_id);
     $('#modifybox').attr('source-id', en_id);
 
-    //Cannot be removed OR unlinked as this would not load, so remove them:
-    $('.notify_en_remove, .notify_unlink_en').addClass('hidden');
+    //Cannot be deleted OR unlinked as this would not load, so delete them:
+    $('.notify_endelete _delete, .notify_unlink_en').addClass('hidden');
 
     //Set opacity:
-    remove_all_highlights();
+    delete_all_highlights();
     $(".highlight_en_"+en_id).addClass('en_highlight');
 
 
@@ -448,7 +448,7 @@ function en_modify_load(en_id, ln_id) {
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
     $('#en_status_source_id').val($(".en___" + en_id + ":first").attr('en-status'));
     $('.save_source_changes').html('');
-    $('.source_remove_stats').html('');
+    $('.sourcedelete _delete_stats').html('');
 
     if (parseInt($('.en__icon_' + en_id).attr('en-is-set')) > 0) {
         $('#en_icon').val($('.en__icon_' + en_id).html());
@@ -523,7 +523,7 @@ function en_save_file_upload(droppedFiles, uploadType) {
     var current_value = $('#ln_content').val();
     if(current_value.length > 0){
         //There is something in the input field, notify the user:
-        var r = confirm("Current link content [" + current_value + "] will be removed. Continue?");
+        var r = confirm("Current link content [" + current_value + "] will be deleted. Continue?");
         if (r == false) {
             return false;
         }
@@ -598,13 +598,13 @@ function en_modify_save() {
         return false;
     }
 
-    //Are we about to remove an source with a lot of links?
+    //Are we about to delete an source with a lot of links?
     var link_count= parseInt($('#en_link_count').val());
-    var action_verb = ( $('#en_merge').val().length > 0 ? 'merge' : 'remove' );
+    var action_verb = ( $('#en_merge').val().length > 0 ? 'merge' : 'delete' );
     var confirm_string = action_verb + " " + link_count;
     if(link_count >= 3){
         //Yes, confirm before doing so:
-        var confirm_removal = prompt("You are about to remove this source and "+action_verb+" all its "+link_count+" links. Type \""+confirm_string+"\" to confirm and "+action_verb+" source with all its links.", "");
+        var confirm_removal = prompt("You are about to delete this source and "+action_verb+" all its "+link_count+" links. Type \""+confirm_string+"\" to confirm and "+action_verb+" source with all its links.", "");
 
         if (!(confirm_removal == confirm_string)) {
             //Abandon process:
@@ -635,22 +635,22 @@ function en_modify_save() {
 
         if (data.status) {
 
-            if(data.remove_from_ui){
+            if(data.delete_from_ui){
 
-                //need to remove this source:
-                //Idea has been either removed OR unlinked:
-                if (data.remove_redirect_url) {
+                //need to delete this source:
+                //Idea has been either deleted OR unlinked:
+                if (data.delete_redirect_url) {
 
                     //move up 1 level as this was the focus idea:
-                    window.location = data.remove_redirect_url;
+                    window.location = data.delete_redirect_url;
 
                 } else {
 
                     //Reset opacity:
-                    remove_all_highlights();
+                    delete_all_highlights();
 
-                    //Remove from UI:
-                    $('.tr_' + modify_data['ln_id']).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i> Removed</span>').fadeOut();
+                    //Delete from UI:
+                    $('.tr_' + modify_data['ln_id']).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i> Deleted</span>').fadeOut();
 
                     //Disappear in a while:
                     setTimeout(function () {
@@ -778,7 +778,7 @@ function account_update_avatar_icon(type_css, icon_css){
 
         } else {
 
-            //Remove message:
+            //Delete message:
             $('.en_ui_icon_'+js_pl_id).html(data.new_avatar);
 
         }
@@ -828,7 +828,7 @@ function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect)
 
         } else {
 
-            //Remove message:
+            //Delete message:
             $(notify_el).html('');
 
         }

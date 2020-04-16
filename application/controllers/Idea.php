@@ -436,7 +436,7 @@ class Idea extends CI_Controller {
         //Maintain a manual index as a hack for the Idea/Source tables for now:
         $en_all_6232 = $this->config->item('en_all_6232'); //PLATFORM VARIABLES
         $deletion_redirect = null;
-        $remove_element = null;
+        $delete_element = null;
 
         //Authenticate Trainer:
         $session_en = superpower_assigned();
@@ -500,13 +500,13 @@ class Idea extends CI_Controller {
         } else {
 
 
-            //See if Idea is being removed:
+            //See if Idea is being deleted:
             if($_POST['element_id']==4737){
 
-                //Remove all idea links?
+                //Delete all idea links?
                 if(!in_array($_POST['new_en_id'], $this->config->item('en_ids_7356'))){
 
-                    //Determine what to do after removed:
+                    //Determine what to do after deleted:
                     if($_POST['in_id'] == $_POST['in_loaded_id']){
 
                         //Since we're removing the FOCUS IDEA we need to move to the first parent idea:
@@ -526,16 +526,16 @@ class Idea extends CI_Controller {
 
                     } else {
 
-                        if(!$remove_element){
+                        if(!$delete_element){
 
-                            //Just remove from UI using JS:
-                            $remove_element = '.in_line_' . $_POST['in_id'];
+                            //Just delete from UI using JS:
+                            $delete_element = '.in_line_' . $_POST['in_id'];
 
                         }
 
                     }
 
-                    //Remove all links:
+                    //Delete all links:
                     $this->IDEA_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
 
                 //Notify moderators of Feature request? Only if they don't have the powers themselves:
@@ -567,7 +567,7 @@ class Idea extends CI_Controller {
         return echo_json(array(
             'status' => 1,
             'deletion_redirect' => $deletion_redirect,
-            'remove_element' => $remove_element,
+            'delete_element' => $delete_element,
         ));
 
     }
@@ -593,9 +593,9 @@ class Idea extends CI_Controller {
             ));
         }
 
-        //Remove this link:
+        //Delete this link:
         $this->READ_model->ln_update($_POST['ln_id'], array(
-            'ln_status_source_id' => 6173, //Link Removed
+            'ln_status_source_id' => 6173, //Link Deleted
         ), $session_en['en_id'], 10686 /* Idea Link Unlinked */);
 
         return echo_json(array(
@@ -1217,7 +1217,7 @@ class Idea extends CI_Controller {
 
             } else {
 
-                //New status is no longer active, so remove the Idea Notes:
+                //New status is no longer active, so delete the Idea Notes:
                 $affected_rows = $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_source_id' => $_POST['message_ln_status_source_id'],
                 ), $session_en['en_id'], 10678 /* Idea Notes Unlinked */);
@@ -1226,13 +1226,13 @@ class Idea extends CI_Controller {
                 if($affected_rows > 0){
                     return echo_json(array(
                         'status' => 1,
-                        'remove_from_ui' => 1,
+                        'delete_from_ui' => 1,
                         'message' => echo_random_message('saving_notify'),
                     ));
                 } else {
                     return echo_json(array(
                         'status' => 0,
-                        'message' => 'Error trying to remove message',
+                        'message' => 'Error trying to delete message',
                     ));
                 }
             }
@@ -1244,7 +1244,7 @@ class Idea extends CI_Controller {
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
-            'remove_from_ui' => 0,
+            'delete_from_ui' => 0,
             'message' => $this->READ_model->dispatch_message($msg_validation['input_message'], $session_en, false, array(), $_POST['in_id']),
             'message_new_status_icon' => '<span title="' . $en_all_6186[$_POST['message_ln_status_source_id']]['m_name'] . ': ' . $en_all_6186[$_POST['message_ln_status_source_id']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $en_all_6186[$_POST['message_ln_status_source_id']]['m_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',

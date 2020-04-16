@@ -297,8 +297,8 @@ class Read extends CI_Controller
             'ln_creator_source_id' => $session_en['en_id'],
         )) as $read_progress){
             $this->READ_model->ln_update($read_progress['ln_id'], array(
-                'ln_status_source_id' => 6173, //Link Removed
-            ), $session_en['en_id'], 12129 /* READ ANSWER ARCHIVED */);
+                'ln_status_source_id' => 6173, //Link Deleted
+            ), $session_en['en_id'], 12129 /* READ ANSWER DELETED */);
         }
 
         //Save new answer:
@@ -362,8 +362,8 @@ class Read extends CI_Controller
             'ln_creator_source_id' => $session_en['en_id'],
         )) as $read_progress){
             $this->READ_model->ln_update($read_progress['ln_id'], array(
-                'ln_status_source_id' => 6173, //Link Removed
-            ), $session_en['en_id'], 12129 /* READ ANSWER ARCHIVED */);
+                'ln_status_source_id' => 6173, //Link Deleted
+            ), $session_en['en_id'], 12129 /* READ ANSWER DELETED */);
         }
 
         //Save new answer:
@@ -445,7 +445,7 @@ class Read extends CI_Controller
         if(count($progress_links) > 0){
 
             //Yes they did have some:
-            $message = 'Removed '.count($progress_links).' read'.echo__s(count($progress_links)).' from your list.';
+            $message = 'Deleted '.count($progress_links).' read'.echo__s(count($progress_links)).' from your list.';
 
             //Log link:
             $clear_all_link = $this->READ_model->ln_create(array(
@@ -454,11 +454,11 @@ class Read extends CI_Controller
                 'ln_creator_source_id' => $en_id,
             ));
 
-            //Remove all progressions:
+            //Delete all progressions:
             foreach($progress_links as $progress_link){
                 $this->READ_model->ln_update($progress_link['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Link Removed
-                    'ln_parent_transaction_id' => $clear_all_link['ln_id'], //To indicate when it was removed
+                    'ln_status_source_id' => 6173, //Link Deleted
+                    'ln_parent_transaction_id' => $clear_all_link['ln_id'], //To indicate when it was deleted
                 ), $en_id, 6415 /* User Cleared 🔴 READING LIST */);
             }
 
@@ -481,7 +481,7 @@ class Read extends CI_Controller
          *
          * When users indicate they want to stop
          * a IDEA this function saves the changes
-         * necessary and remove the idea from their
+         * necessary and delete the idea from their
          * 🔴 READING LIST.
          *
          * */
@@ -499,7 +499,7 @@ class Read extends CI_Controller
             ));
         }
 
-        //Call function to remove form 🔴 READING LIST:
+        //Call function to delete form 🔴 READING LIST:
         $delete_result = $this->READ_model->read_delete($_POST['js_pl_id'], $_POST['in_id'], 6155); //READER REMOVED BOOKMARK
 
         if(!$delete_result['status']){

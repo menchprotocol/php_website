@@ -220,19 +220,19 @@ if(!$action) {
     $stats = array(
         'ideas' => 0,
         'source_missing' => 0,
-        'note_removed' => 0,
-        'is_archived' => 0,
+        'note_deleted' => 0,
+        'is_deleted' => 0,
         'creator_missing' => 0,
         'creator_fixed' => 0,
         'source_duplicate' => 0,
     );
 
-    //FInd and remove duplicate sources:
+    //FInd and delete duplicate sources:
     foreach($this->IDEA_model->in_fetch() as $in) {
 
         $stats['ideas']++;
 
-        $is_archived = !in_array($in['in_status_source_id'], $this->config->item('en_ids_7356'));
+        $is_deleted = !in_array($in['in_status_source_id'], $this->config->item('en_ids_7356'));
 
         //Scan sources:
         $in_sources = $this->READ_model->ln_fetch(array(
@@ -261,7 +261,7 @@ if(!$action) {
         }
 
 
-        if(!$is_archived && !count($in_sources)){
+        if(!$is_deleted && !count($in_sources)){
 
             //Missing SOURCE
 
@@ -275,13 +275,13 @@ if(!$action) {
                 'ln_next_idea_id' => $in['in_id'],
             ));
 
-        } elseif($is_archived && count($in_notes)){
+        } elseif($is_deleted && count($in_notes)){
 
             //Extra SOURCES
             foreach($in_notes as $in_note){
-                //Remove this link:
-                $stats['note_removed'] += $this->READ_model->ln_update($in_note['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Link Removed
+                //Delete this link:
+                $stats['note_deleted'] += $this->READ_model->ln_update($in_note['ln_id'], array(
+                    'ln_status_source_id' => 6173, //Link Deleted
                 ), $session_en['en_id'], 10686 /* Idea Link Unlinked */);
             }
 
@@ -375,19 +375,19 @@ if(!$action) {
             //Show idea:
             echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_source_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_source_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_source_id']]['m_icon'] . '</span> <a href="/idea/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_title'].'</b></a>';
 
-            //Do we need to remove?
-            if($command1=='remove_all'){
+            //Do we need to delete?
+            if($command1=='delete_all'){
 
-                //Remove idea links:
-                $links_removed = $this->IDEA_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
+                //Delete idea links:
+                $links_deleted = $this->IDEA_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
 
-                //Remove idea:
+                //Delete idea:
                 $this->IDEA_model->in_update($orphan_in['in_id'], array(
-                    'in_status_source_id' => 6182, /* Idea Removed */
+                    'in_status_source_id' => 6182, /* Idea Deleted */
                 ), true, $session_en['en_id']);
 
                 //Show confirmation:
-                echo ' [Idea + '.$links_removed.' links Removed]';
+                echo ' [Idea + '.$links_deleted.' links Deleted]';
 
             }
 
@@ -395,12 +395,12 @@ if(!$action) {
             echo '</div>';
         }
 
-        //Show option to remove all:
-        if($command1!='remove_all'){
+        //Show option to delete all:
+        if($command1!='delete_all'){
             echo '<br />';
-            echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
-            echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All ideas and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing idea.<br /><br /></div>';
-            echo '<a class="remove-all hidden maxout" href="/source/admin/orphan_ins/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
+            echo '<a class="delete-all" href="javascript:void(0);" onclick="$(\'.delete-all\').toggleClass(\'hidden\')">Delete All</a>';
+            echo '<div class="delete-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All ideas and all their links will be deleted. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing idea.<br /><br /></div>';
+            echo '<a class="delete-all hidden maxout" href="/source/admin/orphan_ins/delete_all" onclick="">Confirm: <b>Delete All</b> &raquo;</a>';
         }
 
     } else {
@@ -456,19 +456,19 @@ if(!$action) {
             //Show source:
             echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$orphan_en['en_status_source_id']]['m_name'].': '.$en_all_6177[$orphan_en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$orphan_en['en_status_source_id']]['m_icon'] . '</span> <a href="/source/'.$orphan_en['en_id'].'"><b>'.$orphan_en['en_name'].'</b></a>';
 
-            //Do we need to remove?
-            if($command1=='remove_all'){
+            //Do we need to delete?
+            if($command1=='delete_all'){
 
-                //Remove links:
-                $links_removed = $this->SOURCE_model->en_unlink($orphan_en['en_id'], $session_en['en_id']);
+                //Delete links:
+                $links_deleted = $this->SOURCE_model->en_unlink($orphan_en['en_id'], $session_en['en_id']);
 
-                //Remove source:
+                //Delete source:
                 $this->SOURCE_model->en_update($orphan_en['en_id'], array(
-                    'en_status_source_id' => 6178, /* Player Removed */
+                    'en_status_source_id' => 6178, /* Player Deleted */
                 ), true, $session_en['en_id']);
 
                 //Show confirmation:
-                echo ' [Source + '.$links_removed.' links Removed]';
+                echo ' [Source + '.$links_deleted.' links Deleted]';
 
             }
 
@@ -476,12 +476,12 @@ if(!$action) {
 
         }
 
-        //Show option to remove all:
-        if($command1!='remove_all'){
+        //Show option to delete all:
+        if($command1!='delete_all'){
             echo '<br />';
-            echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
-            echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All sources and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing source.<br /><br /></div>';
-            echo '<a class="remove-all hidden maxout" href="/source/admin/orphan_sources/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
+            echo '<a class="delete-all" href="javascript:void(0);" onclick="$(\'.delete-all\').toggleClass(\'hidden\')">Delete All</a>';
+            echo '<div class="delete-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All sources and all their links will be deleted. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing source.<br /><br /></div>';
+            echo '<a class="delete-all hidden maxout" href="/source/admin/orphan_sources/delete_all" onclick="">Confirm: <b>Delete All</b> &raquo;</a>';
         }
 
     } else {
