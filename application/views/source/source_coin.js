@@ -161,16 +161,28 @@ $(document).ready(function () {
 
 
 function en_load_search(element_focus, is_en_parent, shortcut) {
+
+    $(element_focus + ' .new-source-input').focus(function() {
+
+        $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');
+
+    }).focusout(function() {
+
+        $(element_focus + ' .algolia_pad_search' ).addClass('hidden');
+
+    }).keypress(function (e) {
+
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code == 13) || (e.ctrlKey && code == 13)) {
+            en_add_or_link(0, is_en_parent);
+            return true;
+        }
+
+    });
+
     if(parseInt(js_en_all_6404[778882]['m_desc'])){
-        $(element_focus + ' .new-source-input')
 
-            .focus(function() {
-                $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');
-            }).focusout(function() {
-            $(element_focus + ' .algolia_pad_search' ).addClass('hidden');
-        })
-
-            .on('autocomplete:selected', function (event, suggestion, dataset) {
+            $(element_focus + ' .new-source-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
                 en_add_or_link(suggestion.alg_obj_id, is_en_parent);
 
@@ -202,15 +214,7 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
                     return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
                 },
             }
-        }]).keypress(function (e) {
-
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if ((code == 13) || (e.ctrlKey && code == 13)) {
-                en_add_or_link(0, is_en_parent);
-                return true;
-            }
-
-        });
+        }]);
     }
 }
 

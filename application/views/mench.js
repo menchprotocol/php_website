@@ -669,14 +669,31 @@ function ln_content_word_count(el_textarea, el_counter) {
 function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
 
     //Loads the idea search bar only once for the add idea inputs
-    if(!algolia_index || $(element_focus).hasClass('search-bar-loaded')){
+    if($(element_focus).hasClass('search-bar-loaded')){
         //Already loaded:
         return false;
     }
 
+    $(element_focus).addClass('search-bar-loaded');
+    $(element_focus).keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code == 13) || (e.ctrlKey && code == 13)) {
+            if(is_add_mode=='link_in') {
+                return in_link_or_create($(this).attr('idea-id'), is_in_parent, 0);
+            } else if(is_add_mode=='link_my_in') {
+                return in_create();
+            }
+            e.preventDefault();
+        }
+    });
+
+    if(!algolia_index){
+        //Already loaded:
+        return false;
+    }
 
     //Not yet loaded, continue with loading it:
-    $(element_focus).addClass('search-bar-loaded').on('autocomplete:selected', function (event, suggestion, dataset) {
+    $(element_focus).on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if(is_add_mode=='link_in'){
             in_link_or_create($(this).attr('idea-id'), is_in_parent, suggestion.alg_obj_id);
@@ -733,16 +750,6 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
                 }
             },
         }
-    }]).keypress(function (e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
-            if(is_add_mode=='link_in') {
-                return in_link_or_create($(this).attr('idea-id'), is_in_parent, 0);
-            } else if(is_add_mode=='link_my_in') {
-                return in_create();
-            }
-            e.preventDefault();
-        }
-    });
+    }]);
 
 }
