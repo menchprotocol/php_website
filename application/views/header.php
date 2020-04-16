@@ -285,7 +285,7 @@ if(!isset($hide_header)){
                             }
 
                             //Navigation
-                            echo '<a href="'.$page_url.'" class="dropdown-item montserrat doupper '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+                            echo '<a href="'.$page_url.'" class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
 
                         }
 
