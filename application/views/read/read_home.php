@@ -49,12 +49,12 @@ if(!$session_en){
 
 
         //READ HOME
-        echo '<a href="/" class="btn btn-read" title="'.$en_all_11035[12581]['m_name'].'">'.$en_all_11035[12581]['m_icon'].'</a>&nbsp;';
+        echo '<a href="/" class="btn btn-read" title="'.$en_all_11035[12581]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$en_all_11035[12581]['m_icon'].'</a>&nbsp;';
 
 
         //READ HISTORY
         if($any_completed){
-            echo '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_6255')).'&ln_creator_source_id='.$session_en['en_id'].'" class="btn btn-read" title="'.$en_all_11035[12681]['m_name'].'">'.$en_all_11035[12681]['m_icon'].'</a>&nbsp;';
+            echo '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_6255')).'&ln_creator_source_id='.$session_en['en_id'].'" class="btn btn-read" title="'.$en_all_11035[12681]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$en_all_11035[12681]['m_icon'].'</a>&nbsp;';
         }
 
 
