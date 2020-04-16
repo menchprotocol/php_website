@@ -826,9 +826,9 @@ td.MENCHcolumn3  { width: 13%; }
 }
 .text-logo{
     font-size: 1.4em;
+    display: block;
+    float: left;
     padding-top: 13px;
-    display: inline-block;
-    padding-left: 3px;
 }
 .mench-navigation .block-logo {
     width:160px !important;
@@ -872,7 +872,8 @@ td.MENCHcolumn3  { width: 13%; }
     margin-right: 4px !important;
     margin-bottom: 0 !important;
     margin-top: 2px !important;
-    display: inline-block;
+    display: block;
+    float: left;
 }
 
 .link_marks{
