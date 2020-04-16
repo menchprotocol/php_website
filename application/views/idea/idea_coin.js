@@ -292,13 +292,13 @@ function in_unlink(in_id, ln_id){
             ln_id: ln_id,
         }, function (data) {
             if (data.status) {
-                in_uidelete _delete(in_id,ln_id);
+                in_ui_delete(in_id,ln_id);
             }
         });
     }
 }
 
-function in_uidelete _delete(in_id,ln_id){
+function in_ui_delete(in_id,ln_id){
 
     //Fetch parent idea before removing element from DOM:
     var parent_in_id = parseInt($('.in_line_' + in_id).attr('parent-idea-id'));
@@ -607,7 +607,7 @@ function in_message_form_lock(focus_ln_type_source_id) {
     $('.save_notes_' + focus_ln_type_source_id).html('<span class="icon-block-lg"><i class="far fa-yin-yang fa-spin"></i></span>').attr('href', '#');
     $('.add_notes_' + focus_ln_type_source_id).addClass('is-working');
     $('#ln_content' + focus_ln_type_source_id).prop("disabled", true);
-    $('.delete_loading').hide();
+    $('.remove_loading').hide();
 }
 
 
@@ -617,7 +617,7 @@ function in_message_form_unlock(result, focus_ln_type_source_id) {
     $('.save_notes_' + focus_ln_type_source_id).html('SAVE').attr('href', 'javascript:in_notes_add('+focus_ln_type_source_id+');');
     $('.add_notes_' + focus_ln_type_source_id).removeClass('is-working');
     $("#ln_content" + focus_ln_type_source_id).prop("disabled", false).focus();
-    $('.delete_loading').fadeIn();
+    $('.remove_loading').fadeIn();
     $( '#pads_control_'+focus_ln_type_source_id ).addClass('hidden');
 
     //What was the result?

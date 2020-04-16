@@ -38,7 +38,7 @@ function clear_all_reads(){
 $(document).ready(function () {
 
     //Watch for READING LIST removal click:
-    $('.actionplandelete _delete').on('click', function(e) {
+    $('.actionplan_delete').on('click', function(e) {
 
         var in_id = $(this).attr('in-id');
         var r = confirm("Delete ["+$('.text__4736_'+in_id).text()+"] from your reading list?");

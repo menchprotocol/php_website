@@ -56,14 +56,14 @@ $(document).ready(function () {
         if (parseInt($('#en_status_source_id').find(":selected").val()) == 6178 /* Player Deleted */) {
 
             //Notify Trainer:
-            $('.notify_endelete _delete').removeClass('hidden');
-            $('.sourcedelete _delete_stats').html('<i class="far fa-yin-yang fa-spin"></i>');
+            $('.notify_en_delete').removeClass('hidden');
+            $('.source_delete_stats').html('<i class="far fa-yin-yang fa-spin"></i>');
 
             //About to delete... Fetch total links:
             $.post("/source/en_count_to_be_deleted_links", { en_id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
 
                 if(data.status){
-                    $('.sourcedelete _delete_stats').html('<b>'+data.en_link_count+'</b>');
+                    $('.source_delete_stats').html('<b>'+data.en_link_count+'</b>');
                     $('#en_link_count').val(data.en_link_count); //This would require a confirmation upon saving...
                 }
 
@@ -71,8 +71,8 @@ $(document).ready(function () {
 
         } else {
 
-            $('.notify_endelete _delete').addClass('hidden');
-            $('.sourcedelete _delete_stats').html('');
+            $('.notify_en_delete').addClass('hidden');
+            $('.source_delete_stats').html('');
             $('#en_link_count').val('0');
 
         }
@@ -436,7 +436,7 @@ function en_modify_load(en_id, ln_id) {
     $('#modifybox').attr('source-id', en_id);
 
     //Cannot be deleted OR unlinked as this would not load, so delete them:
-    $('.notify_endelete _delete, .notify_unlink_en').addClass('hidden');
+    $('.notify_en_delete, .notify_unlink_en').addClass('hidden');
 
     //Set opacity:
     delete_all_highlights();
@@ -448,7 +448,7 @@ function en_modify_load(en_id, ln_id) {
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
     $('#en_status_source_id').val($(".en___" + en_id + ":first").attr('en-status'));
     $('.save_source_changes').html('');
-    $('.sourcedelete _delete_stats').html('');
+    $('.source_delete_stats').html('');
 
     if (parseInt($('.en__icon_' + en_id).attr('en-is-set')) > 0) {
         $('#en_icon').val($('.en__icon_' + en_id).html());

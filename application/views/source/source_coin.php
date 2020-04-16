@@ -129,7 +129,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
                             <input type="hidden" id="en_link_count" value="0" />
                             <div class="alert alert-danger" style="margin:5px 0px; padding:7px;">
                                 <i class="fad fa-exclamation-triangle"></i>
-                                Saving will delete this source and UNLINK ALL <span class="sourcedelete _delete_stats" style="display:inline-block; padding: 0;"></span> links
+                                Saving will delete this source and UNLINK ALL <span class="source_delete_stats" style="display:inline-block; padding: 0;"></span> links
                             </div>
 
                             <span class="mini-header"><span class="tr_in_link_title"></span> Merge Source Into:</span>

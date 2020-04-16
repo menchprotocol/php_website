@@ -1176,7 +1176,7 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
         $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
 
         //Delete:
-        $ui .= '<span title="Delete from list" data-toggle="tooltip" data-placement="left"><span class="actionplandelete _delete" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
+        $ui .= '<span title="Delete from list" data-toggle="tooltip" data-placement="left"><span class="actionplan_delete" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
 
         $ui .= '</span></div>';
 
