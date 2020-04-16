@@ -187,7 +187,7 @@ class Cron extends CI_Controller
 
         //Email Body
         $html_message = '<br />';
-        $html_message .= '<div>Here is what happened from '.date("l M jS G:i:s", $last_week_start_timestamp).' to '.date("l M jS G:i:s", $last_week_end_timestamp).' '.config_var(11079).' Time:</div>';
+        $html_message .= '<div>Here is the growth report from '.date("l M jS G:i:s", $last_week_start_timestamp).' to '.date("l M jS G:i:s", $last_week_end_timestamp).' '.config_var(11079).' Time:</div>';
         $html_message .= '<br />';
 
         $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:55px; display: inline-block;">'.( $ledger_transactions_growth_rate >= 0 ? '+' : '-' ).$ledger_transactions_growth_rate.'%</b><span style="min-width:47px; display: inline-block;">(<span title="'.number_format($ledger_transactions_last_week[0]['totals'], 0).' Transactions" style="border-bottom:1px dotted #999999;">'.echo_number($ledger_transactions_last_week[0]['totals']).'</span>)</span><a href="https://mench.com/ledger" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">TRANSACTIONS &raquo;</a></div>';
