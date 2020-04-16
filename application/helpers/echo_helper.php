@@ -503,6 +503,21 @@ function echo_ln($ln, $is_inner = false)
     $ui .= '<div class="simple-line"><a href="/source/'.$ln['ln_type_source_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4593]['m_name'].( strlen($en_all_4593[$ln['ln_type_source_id']]['m_desc']) ? ': '.$en_all_4593[$ln['ln_type_source_id']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$en_all_4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($en_all_4593[$ln['ln_type_source_id']]['m_icon']).'">'. $en_all_4593[$ln['ln_type_source_id']]['m_icon']. ' '. $en_all_4593[$ln['ln_type_source_id']]['m_name'] . '</span></a></div>';
 
 
+    //COINS AWARDED?
+    if(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_6255'))){
+        $coin_type = 'read';
+    } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12274'))){
+        $coin_type = 'source';
+    } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12273'))){
+        $coin_type = 'idea';
+    } else {
+        $coin_type = null;
+    }
+    if($coin_type){
+        $ui .= '<div class="simple-line"><span class="icon-block"><i class="fad fa-award"></i></span><span class="montserrat doupper '.$coin_type.'"><i class="fas fa-circle '.$coin_type.'"></i> '.$coin_type.' coin awarded</span></div>';
+    }
+
+
     //Hide Sensitive Details?
     if(in_array($ln['ln_type_source_id'] , $CI->config->item('en_ids_4755')) && !superpower_active(10985, true)){
 
@@ -578,21 +593,6 @@ function echo_ln($ln, $is_inner = false)
     if(strlen($ln['ln_content']) > 0 && $ln['ln_content']!='@'.$ln['ln_parent_source_id']){
         //$CI->READ_model->dispatch_message($ln['ln_content'])
         $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.htmlentities($ln['ln_content']).'</div></div>';
-    }
-
-    //COINS AWARDED?
-    if(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_6255'))){
-        $coin_type = 'read';
-    } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12274'))){
-        $coin_type = 'source';
-    } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12273'))){
-        $coin_type = 'idea';
-    } else {
-        $coin_type = null;
-    }
-
-    if($coin_type){
-        $ui .= '<div class="simple-line"><span class="icon-block"><i class="fad fa-award"></i></span><span class="montserrat doupper '.$coin_type.'"><i class="fas fa-circle '.$coin_type.'"></i> '.$coin_type.' coin awarded</span></div>';
     }
 
 
