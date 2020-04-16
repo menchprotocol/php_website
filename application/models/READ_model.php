@@ -292,7 +292,7 @@ class READ_model extends CI_Model
             } elseif($insert_columns['ln_parent_source_id'] > 0){
                 $en_id = $insert_columns['ln_parent_source_id'];
             }
-            $this->SOURCE_model->en_check_creation($insert_columns['ln_creator_source_id'], array(
+            $this->SOURCE_model->en_match_ln_status($insert_columns['ln_creator_source_id'], array(
                 'en_id' => $en_id,
             ));
         }
@@ -304,7 +304,7 @@ class READ_model extends CI_Model
             } elseif($insert_columns['ln_previous_idea_id'] > 0){
                 $in_id = $insert_columns['ln_previous_idea_id'];
             }
-            $this->IDEA_model->in_check_creation($insert_columns['ln_creator_source_id'], array(
+            $this->IDEA_model->in_match_ln_status($insert_columns['ln_creator_source_id'], array(
                 'in_id' => $in_id,
             ));
         }

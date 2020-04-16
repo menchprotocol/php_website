@@ -455,7 +455,7 @@ class SOURCE_model extends CI_Model
 
     }
 
-    function en_check_creation($ln_creator_source_id, $query= array()){
+    function en_match_ln_status($ln_creator_source_id, $query= array()){
 
         //STATS
         $stats = array(
@@ -465,7 +465,7 @@ class SOURCE_model extends CI_Model
             'status_sync' => 0,
         );
 
-        //SOURCE STATUS
+        //SOURCE
         $status_converter = array(
             12563 => 12399, //SOURCE FEATURED => TRANSACTION FEATURED
             6181 => 6176, //SOURCE PUBLISH => TRANSACTION PUBLISH

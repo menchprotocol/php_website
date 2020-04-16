@@ -50,14 +50,13 @@ class IDEA_model extends CI_Model
                     'ln_next_idea_id' => $insert_columns['in_id'],
                     'ln_content' => $insert_columns['in_title'],
                     'ln_type_source_id' => 4250, //New Idea Created
-                    'ln_status_source_id' => 6175, //Drafting
                 ));
 
                 //Also add as source:
                 $this->READ_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_parent_source_id' => $ln_creator_source_id,
-                    'ln_type_source_id' => 4983, //Idea Source
+                    'ln_type_source_id' => 4983, //Idea Source (Awards Coin)
                     'ln_content' => '@'.$ln_creator_source_id,
                     'ln_next_idea_id' => $insert_columns['in_id'],
                 ), $external_sync);
@@ -253,7 +252,7 @@ class IDEA_model extends CI_Model
         return $links_removed;
     }
 
-    function in_check_creation($ln_creator_source_id, $query= array()){
+    function in_match_ln_status($ln_creator_source_id, $query= array()){
 
         //STATS
         $stats = array(

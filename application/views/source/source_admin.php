@@ -36,6 +36,7 @@ $moderation_tools = array(
 );
 
 $jobs = array(
+    '/cron/report?notify_source_id='.$session_en['en_id'] => 'Email Me a 7-Day Growth Report',
     '/cron/common_base' => 'Sync Common Base Metadata',
     '/cron/source_insights' => 'Sync Extra Insights Metadata',
     '/cron/weights' => 'Sync Idea & Source Weights',
@@ -916,8 +917,8 @@ if(!$action) {
 } elseif($action=='source_in_statuses') {
 
     //Sync ALL and echo results:
-    echo 'IDAE: '.nl2br(print_r($this->IDEA_model->in_check_creation($session_en['en_id']), true)).'<hr />';
-    echo 'SOURCE: '.nl2br(print_r($this->SOURCE_model->en_check_creation($session_en['en_id']), true)).'<hr />';
+    echo 'IDAE: '.nl2br(print_r($this->IDEA_model->in_match_ln_status($session_en['en_id']), true)).'<hr />';
+    echo 'SOURCE: '.nl2br(print_r($this->SOURCE_model->en_match_ln_status($session_en['en_id']), true)).'<hr />';
 
 } elseif($action=='fix_read_coins') {
 

@@ -581,19 +581,18 @@ function echo_ln($ln, $is_inner = false)
     }
 
     //COINS AWARDED?
-    if(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12141'))){
+    if(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_6255'))){
+        $coin_type = 'read';
+    } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12274'))){
+        $coin_type = 'source';
+    } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12273'))){
+        $coin_type = 'idea';
+    } else {
+        $coin_type = null;
+    }
 
-        //Yes, Display type:
-        if(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_6255'))){
-            $coin_type = 'read';
-        } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12274'))){
-            $coin_type = 'source';
-        } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12273'))){
-            $coin_type = 'idea';
-        }
-
+    if($coin_type){
         $ui .= '<div class="simple-line"><span class="icon-block"><i class="fad fa-award"></i></span><span class="montserrat doupper '.$coin_type.'"><span class="icon-block"><i class="fas fa-circle '.$coin_type.'"></i></span>'.$coin_type.' coin awarded</span></div>';
-
     }
 
 
