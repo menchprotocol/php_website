@@ -118,10 +118,6 @@ class Source extends CI_Controller
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //Idea COIN
         );
-        $filters_read = array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-        );
 
         $start_date = null;
         /*
@@ -138,6 +134,7 @@ class Source extends CI_Controller
         }
         */
 
+
         //Fetch leaderboard:
         $in_source_coins = $this->READ_model->ln_fetch($filters_in, array('en_parent','in_child'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
@@ -145,55 +142,17 @@ class Source extends CI_Controller
         echo '<table id="leaderboard" class="table table-sm table-striped tablepadded" style="margin-bottom: 0;">';
 
         //Start with top Players:
-        foreach ($in_source_coins as $count=>$ln) {
+        foreach ($in_source_coins as $count=>$en) {
 
             if($count==$show_max){
 
-                echo '<tr class="see_more_who"><td colspan="3"><span class="icon-block"><i class="far fa-search-plus source"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat source" style="text-decoration: none !important;">TOP '.$load_max.' SOURCES</b></a></td></tr>';
+                echo '<tr class="see_more_who"><td colspan="3"><span class="icon-block"><i class="far fa-search-plus source"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat source" style="text-decoration: none !important;">SEE TOP '.$load_max.'</b></a></td></tr>';
 
                 echo '<tr class="see_more_who"></tr>';
 
             }
 
-            //COUNT this PLAYERS total READ COINS:
-            $read_coins = $this->READ_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-                'ln_creator_source_id' => $ln['en_id'],
-            ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
-
-            echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
-
-
-            //SOURCE
-            echo '<td class="source MENCHcolumn1"><span class="icon-block en_ui_icon_'.$ln['en_id'].'">'.echo_en_icon($ln['en_icon']).'</span>'.'<a href="/source/'.$ln['en_id'].'" class="montserrat source title-block title-no-right en_name_full_'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
-
-
-
-            //IDEA
-            echo '<td class="idea MENCHcolumn3">'.
-
-                ( $session_en
-
-                    ? '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_12273')).'&ln_parent_source_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : '' ).'" class="montserrat idea"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['totals']).'</a>'
-
-                    : '<span class="montserrat idea"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['totals']).'</span>'
-
-                )
-
-                . '</td>';
-
-
-
-            //READ
-            echo '<td class="read MENCHcolumn2">';
-            if($read_coins[0]['totals'] > 0){
-                echo ( $session_en ? '<a href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_6255')).'&ln_creator_source_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['totals']).'</a>' : '<span class="montserrat read"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['totals']).'</span>' );
-            }
-            echo '</td>';
-
-
-            echo '</tr>';
+            echo echo_en($en, false, ( $count<$show_max ? '' : 'see_more_who hidden'));
 
         }
 
@@ -207,6 +166,7 @@ class Source extends CI_Controller
         echo '</tr>';
 
         echo '</table>';
+
     }
 
     function sign($in_id = 0){
