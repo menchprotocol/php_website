@@ -1,13 +1,13 @@
 <?php
 $en_all_2738 = $this->config->item('en_all_2738');
 
-$is_author = in_is_author($in['in_id']);
+$is_source = in_is_source($in['in_id']);
 $is_active = in_array($in['in_status_source_id'], $this->config->item('en_ids_7356'));
 ?>
 
 <style>
     .in_child_icon_<?= $in['in_id'] ?> { display:none; }
-    <?= ( !$is_author ? '.pads-edit {display:none;}' : '' ) ?>
+    <?= ( !$is_source ? '.pads-edit {display:none;}' : '' ) ?>
 </style>
 
 <script>
@@ -45,7 +45,7 @@ echo '<div class="container" style="padding-bottom:42px;">';
 
 
 
-if(!$is_author){
+if(!$is_source){
     echo '<div class="alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/idea/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(12674).'">&nbsp;or <a href="/idea/in_become_source/'.$in['in_id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
 }
 
@@ -54,9 +54,9 @@ if(!$is_author){
 //IDEA PREVIOUS
 echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group previous_ins">';
 foreach ($in__parents as $parent_in) {
-    echo echo_in($parent_in, 0, true, in_is_author($parent_in['in_id']));
+    echo echo_in($parent_in, 0, true, in_is_source($parent_in['in_id']));
 }
-if( $is_author && $is_active && $in['in_id']!=config_var(12156)){
+if( $is_source && $is_active && $in['in_id']!=config_var(12156)){
     echo '<div class="list-group-item itemidea '.superpower_active(10984).'" style="padding:5px 0;">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
@@ -77,7 +77,7 @@ echo '</div>';
 
 //IDEA TITLE
 echo '<div class="itemidea">';
-echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_author && $is_active), 0, true);
+echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_source && $is_active), 0, true);
 echo '<div class="title_counter hidden grey montserrat doupper" style="text-align: right;"><span id="charTitleNum">0</span>/'.config_var(11071).' CHARACTERS</div>';
 echo '</div>';
 
@@ -89,18 +89,18 @@ echo echo_idea_pad_mix(4231, $this->READ_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'ln_type_source_id' => 4231,
     'ln_next_idea_id' => $in['in_id'],
-), array(), 0, 0, array('ln_order' => 'ASC')), ($is_author && $is_active));
+), array(), 0, 0, array('ln_order' => 'ASC')), ($is_source && $is_active));
 
 
 
 //IDEA STATUS
-echo '<div class="inline-block both-margin left-margin">'.echo_in_dropdown(4737, $in['in_status_source_id'], 'btn-idea', $is_author, true, $in['in_id']).'</div>';
+echo '<div class="inline-block both-margin left-margin">'.echo_in_dropdown(4737, $in['in_status_source_id'], 'btn-idea', $is_source, true, $in['in_id']).'</div>';
 
 //IDEA TYPE
-echo '<span class="inline-block both-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_source_id'], 'btn-idea', $is_author && $is_active, true, $in['in_id']).'</span>';
+echo '<span class="inline-block both-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_source_id'], 'btn-idea', $is_source && $is_active, true, $in['in_id']).'</span>';
 
 //IDEA TIME
-echo '<div class="inline-block both-margin left-half-margin '.superpower_active(10984).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author && $is_active, 0).'</div>';
+echo '<div class="inline-block both-margin left-half-margin '.superpower_active(10984).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_source && $is_active, 0).'</div>';
 
 
 
@@ -140,10 +140,10 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
 
         $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group next_ins">';
         foreach ($in__children as $child_in) {
-            $this_tab .= echo_in($child_in, $in['in_id'], false, $is_author);
+            $this_tab .= echo_in($child_in, $in['in_id'], false, $is_source);
         }
 
-        if($is_author && $is_active){
+        if($is_source && $is_active){
             $this_tab .= '<div class="list-group-item itemidea '.superpower_active(10939).'" style="padding:5px 0;">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
@@ -169,7 +169,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         $counter = count($in_pads);
-        $this_tab .= echo_idea_pad_mix($en_id, $in_pads, ($is_author && $is_active));
+        $this_tab .= echo_idea_pad_mix($en_id, $in_pads, ($is_source && $is_active));
 
     } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
 

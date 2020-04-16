@@ -204,7 +204,7 @@ class Idea extends CI_Controller {
         ));
 
         //Go back to idea:
-        return redirect_message('/idea/'.$in_id, '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-thumbs-up"></i></span>Successfully submitted your request to join as an author of this idea. You will receive a confirmation once your request has been reviewed.</div>');
+        return redirect_message('/idea/'.$in_id, '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-thumbs-up"></i></span>Successfully submitted your request to become a source for this idea. You will receive a confirmation once your request has been reviewed.</div>');
 
     }
 
@@ -213,7 +213,7 @@ class Idea extends CI_Controller {
         //Make sure it's a logged in trainer:
         $session_en = superpower_assigned(12674, true);
 
-        //Idea Author:
+        //Idea Source:
         $this->READ_model->ln_create(array(
             'ln_type_source_id' => 4983,
             'ln_creator_source_id' => $session_en['en_id'],

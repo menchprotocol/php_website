@@ -32,7 +32,7 @@ $moderation_tools = array(
     '/source/admin_panel/source_in_statuses' => 'Analyze & Fix Play & Idea Statuses',
     '/source/admin_panel/analyze_source' => 'Analyze & Fix Source Links',
     '/source/admin_panel/in_crossovers' => 'Analyze & Fix Idea Crossover Parent/Children',
-    '/source/admin_panel/analyze_in_authors' => 'Analyze & Fix Idea Authors',
+    '/source/admin_panel/analyze_in_sources' => 'Analyze & Fix Idea Sources',
 );
 
 $jobs = array(
@@ -214,25 +214,25 @@ if(!$action) {
         echo '<span class="icon-block">'.random_source_avatar().'</span>';
     }
 
-} elseif($action=='analyze_in_authors') {
+} elseif($action=='analyze_in_sources') {
 
     $stats = array(
         'ideas' => 0,
-        'author_missing' => 0,
+        'source_missing' => 0,
         'is_archived' => 0,
         'creator_missing' => 0,
         'creator_fixed' => 0,
-        'author_duplicate' => 0,
+        'source_duplicate' => 0,
     );
 
-    //FInd and remove duplicate authors:
+    //FInd and remove duplicate sources:
     foreach($this->IDEA_model->in_fetch() as $in) {
 
         $stats['ideas']++;
 
         $is_archived = !in_array($in['in_status_source_id'], $this->config->item('en_ids_7356'));
 
-        //Scan authors:
+        //Scan sources:
         $in_sources = $this->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id' => 4983,
@@ -256,7 +256,7 @@ if(!$action) {
 
         if(!count($in_sources)){
 
-            $stats['author_missing']++;
+            $stats['source_missing']++;
 
             if(count($in_creators)){
                 $this->READ_model->ln_create(array(
@@ -272,10 +272,10 @@ if(!$action) {
 
             //See if duplicates:
             $found_duplicate = false;
-            $authors = array();
+            $sources = array();
             foreach($in_sources as $in_source){
-                if(!in_array($in_source['ln_parent_source_id'], $authors)){
-                    array_push($authors, $in_source['ln_parent_source_id']);
+                if(!in_array($in_source['ln_parent_source_id'], $sources)){
+                    array_push($sources, $in_source['ln_parent_source_id']);
                 } else {
                     $found_duplicate = true;
                     break;
@@ -283,7 +283,7 @@ if(!$action) {
             }
 
             if($found_duplicate){
-                $stats['author_duplicate']++;
+                $stats['source_duplicate']++;
             }
         }
     }

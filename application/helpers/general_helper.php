@@ -1312,9 +1312,9 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id' => 4983,
                     'ln_next_idea_id' => $db_row['in_id'],
-                    'ln_parent_source_id >' => 0, //Where the author source is stored
-                ), array(), 0) as $author){
-                    array_push($export_row['_tags'], 'alg_author_' . $author['ln_parent_source_id']);
+                    'ln_parent_source_id >' => 0, //Where the source is stored
+                ), array(), 0) as $source){
+                    array_push($export_row['_tags'], 'alg_author_' . $source['ln_parent_source_id']);
                 }
 
             }

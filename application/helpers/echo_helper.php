@@ -1568,7 +1568,7 @@ function echo_in_marks($in_ln){
 
 }
 
-function in_is_author($in_id, $session_en = array()){
+function in_is_source($in_id, $session_en = array()){
 
     $CI =& get_instance();
 
@@ -1586,7 +1586,7 @@ function in_is_author($in_id, $session_en = array()){
         return true;
     }
 
-    //Check if source is a idea author:
+    //Check if Idea Source:
     return count($CI->READ_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id' => 4983,
@@ -1792,7 +1792,7 @@ function echo_2level_sources($main_obj, $all_link_types, $link_types_counts, $al
 
 
 
-function echo_in($in, $in_linked_id, $is_parent, $is_author)
+function echo_in($in, $in_linked_id, $is_parent, $is_source)
 {
 
     $CI =& get_instance();
@@ -1814,7 +1814,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $is_published = in_array($in['in_status_source_id'], $CI->config->item('en_ids_7355'));
     $is_link_published = in_array($in['ln_status_source_id'], $CI->config->item('en_ids_7359'));
     $is_in_link = in_array($in['ln_type_source_id'], $CI->config->item('en_ids_4486'));
-    $is_author = ( !$is_in_link ? false : $is_author ); //Disable Edits on Idea List Page
+    $is_source = ( !$is_in_link ? false : $is_source ); //Disable Edits on Idea List Page
 
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
 
@@ -1830,7 +1830,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
 
             //IDEA TITLE
             if($is_in_link && superpower_active(12673, true)){
-                $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], $is_author, (($in['ln_order']*100)+1));
+                $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
             } else {
                 $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in) . '</a>';
             }
@@ -1846,13 +1846,13 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
         $ui .= '<div class="space-content ' . superpower_active(12673) . '">';
 
             //IDEA STATUS
-            $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_source_id'], null, $is_author, false, $in['in_id']) . ' </div>';
+            $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
 
             //IDEA TYPE
-            $ui .= echo_in_dropdown(7585, $in['in_type_source_id'], null, $is_author, false, $in['in_id']);
+            $ui .= echo_in_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']);
 
             //IDEA READ TIME
-            $ui .= echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_author, ($in['ln_order']*10)+1);
+            $ui .= echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_source, ($in['ln_order']*10)+1);
 
 
             //PREVIOUS & NEXT IDEAS
@@ -1879,20 +1879,20 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
             //Idea Wand
             $ui .= '<div class="inline-block ' . superpower_active(10985) . '">';
                 //LINK TYPE
-                $ui .= echo_in_dropdown(4486, $in['ln_type_source_id'], null, $is_author, false, $in['in_id'], $in['ln_id']);
+                $ui .= echo_in_dropdown(4486, $in['ln_type_source_id'], null, $is_source, false, $in['in_id'], $in['ln_id']);
 
                 //LINK MARKS
                 $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_source_id']==4228 ? : 'hidden' ).'">';
-                $ui .= echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+2 );
+                $ui .= echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+2 );
                 $ui .='</span>';
 
 
                 //LINK CONDIITONAL RANGE
                 $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_source_id']==4229 ? : 'hidden' ).'">';
                 //MIN
-                $ui .= echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+3);
+                $ui .= echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+3);
                 //MAX
-                $ui .= echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_author, ($in['ln_order']*10)+4);
+                $ui .= echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+4);
                 $ui .= '</span>';
             $ui .= '</div>';
 
@@ -1922,19 +1922,19 @@ function echo_in($in, $in_linked_id, $is_parent, $is_author)
     $ui .= '<span class="show-on-hover">';
 
     if($is_in_link){
-        if($is_author || !$is_parent){
+        if($is_source || !$is_parent){
 
-            if($is_author && !$is_parent){
+            if($is_source && !$is_parent){
                 $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars black idea-sort-handle"></i></span>';
             }
 
             //Unlink:
             $ui .= '<span title="Unlink Idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-times black"></i></a></span>';
 
-        } elseif(!$is_author) {
+        } elseif(!$is_source) {
 
-            //Indicate if NOT an author:
-            $ui .= '<span data-toggle="tooltip" title="You are not yet an author of this idea" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
+            //Indicate if NOT a Source:
+            $ui .= '<span data-toggle="tooltip" title="You are not yet a source of this idea" data-placement="bottom"><i class="fas fa-user-minus read"></i></span>';
 
         }
     }
@@ -2181,7 +2181,7 @@ function echo_message($message, $is_error, $recipient_en, $push_message){
 
 }
 
-function echo_idea_pad_source($in_id, $pad_type_en_id, $in_pads, $is_author){
+function echo_idea_pad_source($in_id, $pad_type_en_id, $in_pads, $is_source){
 
     $CI =& get_instance();
     $en_all_11018 = $CI->config->item('en_all_11018');
@@ -2191,7 +2191,7 @@ function echo_idea_pad_source($in_id, $pad_type_en_id, $in_pads, $is_author){
         $ui .= echo_en($en, false, null, true);
     }
 
-    if( $is_author ){
+    if( $is_source ){
         $ui .= '<div class="list-group-item itemsource '.superpower_active(10939).'" style="padding:5px 0;">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_11018[$pad_type_en_id]['m_icon'].'</span></span>
@@ -2209,7 +2209,7 @@ function echo_idea_pad_source($in_id, $pad_type_en_id, $in_pads, $is_author){
     return $ui;
 }
 
-function echo_idea_pad_mix($pad_type_en_id, $in_pads, $is_author){
+function echo_idea_pad_mix($pad_type_en_id, $in_pads, $is_source){
 
     $CI =& get_instance();
     $en_all_4485 = $CI->config->item('en_all_4485'); //Idea Pads
@@ -2222,7 +2222,7 @@ function echo_idea_pad_mix($pad_type_en_id, $in_pads, $is_author){
     }
 
     //ADD NEW Alert:
-    $ui .= '<div class="list-group-item itemidea add_pads_' . $pad_type_en_id . ( $is_author ? '' : ' hidden ' ).'">';
+    $ui .= '<div class="list-group-item itemidea add_pads_' . $pad_type_en_id . ( $is_source ? '' : ' hidden ' ).'">';
     $ui .= '<div class="add_pads_form">';
     $ui .= '<form class="box box' . $pad_type_en_id . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
 
@@ -2292,7 +2292,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $pad_controller =
     $en_all_11028 = $CI->config->item('en_all_11028'); //SOURCEERS LINKS DIRECTION
 
     $ln_id = (isset($en['ln_id']) ? $en['ln_id'] : 0);
-    $is_source_link = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_4592')));
+    $is_link_source = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_4592')));
     $is_read_progress = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_12227')));
     $ui = null;
 
@@ -2348,7 +2348,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $pad_controller =
 
     //Does this source also include a link?
     if ($ln_id > 0) {
-        if($is_source_link && (strlen($en['ln_content']) || superpower_assigned(10983))){
+        if($is_link_source && (strlen($en['ln_content']) || superpower_assigned(10983))){
 
             //SOURCE LINKS:
             $ui .= '<div class="doclear">&nbsp;</div>';
@@ -2388,7 +2388,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $pad_controller =
         $ui .= '<span class="ln_status_source_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_source_id']]['m_name'].' @'.$en['ln_status_source_id'].': '.$en_all_6186[$en['ln_status_source_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
 
         //Show link index
-        if($is_source_link && $en['ln_external_id'] > 0){
+        if($is_link_source && $en['ln_external_id'] > 0){
 
             //External ID
             if($en['ln_parent_source_id']==6196){
@@ -2406,7 +2406,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $pad_controller =
 
     $ui .= '<span class="'. superpower_active(10986) .'">';
 
-    if($is_source_link){
+    if($is_link_source){
         //Link Type
         $en_all_4592 = $CI->config->item('en_all_4592');
         $ui .= '<span class="icon-block-img ln_type_' . $ln_id . superpower_active(10986).'" data-toggle="tooltip" data-placement="bottom" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'">' . $en_all_4592[$en['ln_type_source_id']]['m_icon'] . '</span> ';
@@ -2480,17 +2480,17 @@ function echo_en($en, $is_parent = false, $extra_class = null, $pad_controller =
 }
 
 
-function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_author, $tabindex = 0, $is_in_title_lg = false){
+function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_source, $tabindex = 0, $is_in_title_lg = false){
 
     $CI =& get_instance();
     $en_all_12112 = $CI->config->item('en_all_12112');
     $current_value = htmlentities($current_value);
 
     //Define element attributes:
-    $attributes = ( $is_author ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' in_ln__id_'.$in_ln__id.' texttype_'.$cache_en_id.($is_in_title_lg?'_lg':'_sm').'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" ';
+    $attributes = ( $is_source ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' in_ln__id_'.$in_ln__id.' texttype_'.$cache_en_id.($is_in_title_lg?'_lg':'_sm').'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" ';
 
 
-    $tooltip_span_start = '<span class="'.( !$is_author ? 'edit-locked' : '' ).'" '.( !$is_in_title_lg || !$is_author ? 'data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12112[$cache_en_id]['m_name'].'"' : '').'>';
+    $tooltip_span_start = '<span class="'.( !$is_source ? 'edit-locked' : '' ).'" '.( !$is_in_title_lg || !$is_source ? 'data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12112[$cache_en_id]['m_name'].'"' : '').'>';
     $tooltip_span_end = '</span>';
 
 
@@ -2532,7 +2532,7 @@ function echo_menu($menu_id, $btn_class){
 
 }
 
-function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author, $show_full_name, $in_id = 0, $ln_id = 0){
+function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_source, $show_full_name, $in_id = 0, $ln_id = 0){
 
     $CI =& get_instance();
     $en_all_this = $CI->config->item('en_all_'.$cache_en_id);
@@ -2546,7 +2546,7 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_author,
 
     //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
     $ui = '<div class="dropdown inline-block dropd_'.$cache_en_id.'_'.$in_id.'_'.$ln_id.' '.( !$show_full_name ? ' icon-block ' : '' ).'" selected-val="'.$selected_en_id.'">';
-    $ui .= '<button type="button" '.( $is_author ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' '.$btn_class.'" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked  '.$btn_class.'"' ).' >';
+    $ui .= '<button type="button" '.( $is_source ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' '.$btn_class.'" id="dropdownMenuButton'.$cache_en_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked  '.$btn_class.'"' ).' >';
     $ui .= '<span title="'.$en_all_12079[$cache_en_id]['m_name'].'" data-toggle="tooltip" data-placement="right">';
     $ui .= '<span class="icon-block">' .$en_all_this[$selected_en_id]['m_icon'].'</span><span class="show-max">'.( $show_full_name ?  $en_all_this[$selected_en_id]['m_name'] : '' ).'</span>';
     $ui .= '</span>';

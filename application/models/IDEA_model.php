@@ -53,11 +53,11 @@ class IDEA_model extends CI_Model
                     'ln_status_source_id' => 6175, //Drafting
                 ));
 
-                //Also add as author:
+                //Also add as source:
                 $this->READ_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_parent_source_id' => $ln_creator_source_id,
-                    'ln_type_source_id' => 4983,
+                    'ln_type_source_id' => 4983, //Idea Source
                     'ln_content' => '@'.$ln_creator_source_id,
                     'ln_next_idea_id' => $insert_columns['in_id'],
                 ), $external_sync);

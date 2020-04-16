@@ -858,36 +858,36 @@ class Cron extends CI_Controller
                     continue;
                 }
 
-                //Fetch UNIQUE author URLs:
-                $unique_authors = array();
-                foreach(explode('"/@', $url_content) as $index => $author_string){
+                //Fetch UNIQUE source URLs:
+                $unique_sources = array();
+                foreach(explode('"/@', $url_content) as $index => $source_string){
 
                     if(!$index){
                         continue; //Do not check the first one
                     }
 
-                    $author_url_path = one_two_explode('', '"', $author_string);
+                    $source_url_path = one_two_explode('', '"', $source_string);
 
-                    if(substr_count($author_url_path, '/')){
-                        $author_handler = one_two_explode('', '/', $author_url_path);
-                    } elseif(substr_count($author_url_path, '?')){
-                        $author_handler = one_two_explode('', '?', $author_url_path);
+                    if(substr_count($source_url_path, '/')){
+                        $source_handler = one_two_explode('', '/', $source_url_path);
+                    } elseif(substr_count($source_url_path, '?')){
+                        $source_handler = one_two_explode('', '?', $source_url_path);
                     } else {
-                        $author_handler = $author_url_path;
+                        $source_handler = $source_url_path;
                     }
 
-                    if(!in_array($author_handler, $unique_authors)){
-                        array_push($unique_authors, $author_handler);
+                    if(!in_array($source_handler, $unique_sources)){
+                        array_push($unique_sources, $source_handler);
                     }
 
                 }
 
-                //Now sync authors in Database:
+                //Now sync Sources in Database:
                 $newly_added = 0;
 
-                foreach($unique_authors as $author_handler){
+                foreach($unique_sources as $source_handler){
 
-                    $full_url = rtrim($medium_urls[0]['ln_content'], '/') . '/@' . $author_handler;
+                    $full_url = rtrim($medium_urls[0]['ln_content'], '/') . '/@' . $source_handler;
 
                     $already_added = $this->READ_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
@@ -902,7 +902,7 @@ class Cron extends CI_Controller
                         $newly_added++;
 
                         //Create new Player:
-                        $added_en = $this->SOURCE_model->en_verify_create($author_handler, $ln_creator_source_id, 6181, random_source_avatar());
+                        $added_en = $this->SOURCE_model->en_verify_create($source_handler, $ln_creator_source_id, 6181, random_source_avatar());
 
                         //Create relevant READS:
 
@@ -939,8 +939,8 @@ class Cron extends CI_Controller
                     }
                 }
 
-                //Count total authors:
-                echo '<div>'.$topic_count.') Added '.$newly_added.' Authors in ['.$medium_topic_link['ln_content'].'] from the full list ['.join(', ',$unique_authors).']</div>';
+                //Count total Sources:
+                echo '<div>'.$topic_count.') Added '.$newly_added.' Sources in ['.$medium_topic_link['ln_content'].'] from the full list ['.join(', ',$unique_sources).']</div>';
 
             }
         }
