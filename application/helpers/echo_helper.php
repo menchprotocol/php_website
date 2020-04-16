@@ -1130,7 +1130,7 @@ function echo_in_coins_read($in = array(), $en = array()){
     $read_coins = $CI->READ_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
-        'ln_previous_idea_id' => ( count($in) ? $in['in_id'] : $en['en_id'] ),
+        ( count($in) ? 'ln_previous_idea_id' : 'ln_creator_source_id' ) => ( count($in) ? $in['in_id'] : $en['en_id'] ),
     ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 
     if($read_coins[0]['totals'] > 0){
