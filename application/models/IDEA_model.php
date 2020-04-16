@@ -39,7 +39,7 @@ class IDEA_model extends CI_Model
 
             if($external_sync){
                 //Update Algolia:
-                $algolia_sync = update_algolia('in', $insert_columns['in_id']);
+                update_algolia('in', $insert_columns['in_id']);
             }
 
             if ($ln_creator_source_id > 0) {

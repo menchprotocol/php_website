@@ -407,32 +407,34 @@ function in_edit_pads_count(ln_id) {
 
 function in_message_inline_en_search(obj) {
 
-    obj.textcomplete([
-        {
-            match: /(^|\s)@(\w*(?:\s*\w*))$/,
-            search: function (query, callback) {
-                algolia_index.search(query, {
-                    hitsPerPage: 5,
-                    filters: 'alg_obj_is_in=0',
-                })
-                    .then(function searchSuccess(content) {
-                        if (content.query === query) {
-                            callback(content.hits);
-                        }
+    if(parseInt(js_en_all_6404[778882]['m_desc'])){
+        obj.textcomplete([
+            {
+                match: /(^|\s)@(\w*(?:\s*\w*))$/,
+                search: function (query, callback) {
+                    algolia_index.search(query, {
+                        hitsPerPage: 5,
+                        filters: 'alg_obj_is_in=0',
                     })
-                    .catch(function searchFailure(err) {
-                        console.error(err);
-                    });
+                        .then(function searchSuccess(content) {
+                            if (content.query === query) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (hit) {
+                    // Returns the highlighted version of the name attribute
+                    return '<span class="inline34">@' + hit.alg_obj_id + '</span> ' + hit._highlightResult.alg_obj_name.value;
+                },
+                replace: function (hit) {
+                    return ' @' + hit.alg_obj_id + ' ';
+                }
             },
-            template: function (hit) {
-                // Returns the highlighted version of the name attribute
-                return '<span class="inline34">@' + hit.alg_obj_id + '</span> ' + hit._highlightResult.alg_obj_name.value;
-            },
-            replace: function (hit) {
-                return ' @' + hit.alg_obj_id + ' ';
-            }
-        },
-    ]);
+        ]);
+    }
 }
 
 

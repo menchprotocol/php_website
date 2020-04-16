@@ -3700,6 +3700,12 @@ $config['en_all_11058'] = array(
 //PLATFORM CONFIG VARIABLES:
 $config['en_ids_6404'] = array(12355,11077,11074,12124,11076,12587,11075,12176,11071,11064,11065,11063,12156,11079,11060,12363,11073,11066,11057,11056,12331,12113,12427,12088,11986,11072,12232,11162,11163,12565,12568);
 $config['en_all_6404'] = array(
+    778882 => array(
+        'm_icon' => '',
+        'm_name' => 'ALGOLIA ENABLED',
+        'm_desc' => '0',
+        'm_parents' => array(6404),
+    ),
     12355 => array(
         'm_icon' => '',
         'm_name' => 'DATE FORMAT FULL & WEEKDAY',

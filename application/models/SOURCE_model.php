@@ -108,7 +108,7 @@ class SOURCE_model extends CI_Model
 
             if($external_sync){
                 //Update Algolia:
-                $algolia_sync = update_algolia('en', $insert_columns['en_id']);
+                update_algolia('en', $insert_columns['en_id']);
             }
 
             //Log link new source:
@@ -200,7 +200,7 @@ class SOURCE_model extends CI_Model
 
             if($external_sync){
                 //Sync algolia:
-                $algolia_sync = update_algolia('en', $id);
+                update_algolia('en', $id);
             }
 
             //Log modification link for every field changed:

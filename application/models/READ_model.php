@@ -268,19 +268,19 @@ class READ_model extends CI_Model
         //Sync algolia?
         if ($external_sync) {
             if ($insert_columns['ln_parent_source_id'] > 0) {
-                $algolia_sync = update_algolia('en', $insert_columns['ln_parent_source_id']);
+                update_algolia('en', $insert_columns['ln_parent_source_id']);
             }
 
             if ($insert_columns['ln_child_source_id'] > 0) {
-                $algolia_sync = update_algolia('en', $insert_columns['ln_child_source_id']);
+                update_algolia('en', $insert_columns['ln_child_source_id']);
             }
 
             if ($insert_columns['ln_previous_idea_id'] > 0) {
-                $algolia_sync = update_algolia('in', $insert_columns['ln_previous_idea_id']);
+                update_algolia('in', $insert_columns['ln_previous_idea_id']);
             }
 
             if ($insert_columns['ln_next_idea_id'] > 0) {
-                $algolia_sync = update_algolia('in', $insert_columns['ln_next_idea_id']);
+                update_algolia('in', $insert_columns['ln_next_idea_id']);
             }
         }
 
@@ -4246,68 +4246,73 @@ class READ_model extends CI_Model
             }
 
 
-
-            $search_index = load_algolia('alg_index');
-            $res = $search_index->search($master_command, [
-                'hitsPerPage' => 6, //Max results
-                'filters' => 'alg_obj_is_in=1 AND _tags:is_featured',
-            ]);
-            $search_results = $res['hits'];
-
-
-
-            //Show options for the User to add to their 🔴 READING LIST:
             $new_idea_count = 0;
             $quick_replies = array();
 
-            foreach ($search_results as $alg) {
 
-                //Fetch metadata:
-                $ins = $this->IDEA_model->in_fetch(array(
-                    'in_id' => $alg['alg_obj_id'],
-                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            if(intval(config_var(778882))){
+
+                $search_index = load_algolia('alg_index');
+                $res = $search_index->search($master_command, [
+                    'hitsPerPage' => 6, //Max results
+                    'filters' => 'alg_obj_is_in=1 AND _tags:is_featured',
+                ]);
+                $search_results = $res['hits'];
+
+
+
+                //Show options for the User to add to their 🔴 READING LIST:
+
+                foreach ($search_results as $alg) {
+
+                    //Fetch metadata:
+                    $ins = $this->IDEA_model->in_fetch(array(
+                        'in_id' => $alg['alg_obj_id'],
+                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                    ));
+                    if(count($ins) < 1){
+                        continue;
+                    }
+
+                    //Make sure not already in 🔴 READING LIST:
+                    if(count($this->READ_model->ln_fetch(array(
+                            'ln_creator_source_id' => $en['en_id'],
+                            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+                            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                            'ln_previous_idea_id' => $alg['alg_obj_id'],
+                        ))) > 0){
+                        continue;
+                    }
+
+                    $new_idea_count++;
+
+                    if($new_idea_count==1){
+                        $message = 'I found these ideas for "'.$master_command.'":';
+                    }
+
+                    //List Idea:
+                    $message .= "\n\n" . $new_idea_count . '. ' . $ins[0]['in_title'];
+                    array_push($quick_replies, array(
+                        'content_type' => 'text',
+                        'title' => $new_idea_count,
+                        'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'], //'SUBSCRIBE-INITIATE_' . $ins[0]['in_id']
+                    ));
+                }
+
+
+                //Log idea search:
+                $this->READ_model->ln_create(array(
+                    'ln_content' => ( $new_idea_count > 0 ? $message : 'Found ' . $new_idea_count . ' idea' . echo__s($new_idea_count) . ' matching [' . $master_command . ']' ),
+                    'ln_metadata' => array(
+                        'new_idea_count' => $new_idea_count,
+                        'input_data' => $master_command,
+                        'output' => $search_results,
+                    ),
+                    'ln_creator_source_id' => $en['en_id'], //user who searched
+                    'ln_type_source_id' => 4275, //User Text Command Search for
                 ));
-                if(count($ins) < 1){
-                    continue;
-                }
 
-                //Make sure not already in 🔴 READING LIST:
-                if(count($this->READ_model->ln_fetch(array(
-                        'ln_creator_source_id' => $en['en_id'],
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                        'ln_previous_idea_id' => $alg['alg_obj_id'],
-                    ))) > 0){
-                    continue;
-                }
-
-                $new_idea_count++;
-
-                if($new_idea_count==1){
-                    $message = 'I found these ideas for "'.$master_command.'":';
-                }
-
-                //List Idea:
-                $message .= "\n\n" . $new_idea_count . '. ' . $ins[0]['in_title'];
-                array_push($quick_replies, array(
-                    'content_type' => 'text',
-                    'title' => $new_idea_count,
-                    'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'], //'SUBSCRIBE-INITIATE_' . $ins[0]['in_id']
-                ));
             }
-
-
-            //Log idea search:
-            $this->READ_model->ln_create(array(
-                'ln_content' => ( $new_idea_count > 0 ? $message : 'Found ' . $new_idea_count . ' idea' . echo__s($new_idea_count) . ' matching [' . $master_command . ']' ),
-                'ln_metadata' => array(
-                    'new_idea_count' => $new_idea_count,
-                    'input_data' => $master_command,
-                    'output' => $search_results,
-                ),
-                'ln_creator_source_id' => $en['en_id'], //user who searched
-                'ln_type_source_id' => 4275, //User Text Command Search for
-            ));
 
 
             if($new_idea_count > 0){
