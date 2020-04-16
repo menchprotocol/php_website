@@ -253,7 +253,7 @@ if(!$action) {
         if(!count($in_creators)) {
             $stats['creator_missing']++;
             $this->READ_model->ln_create(array(
-                'ln_creator_source_id' => 1,
+                'ln_creator_source_id' => $session_en['en_id'],
                 'ln_next_idea_id' => $in['in_id'],
                 'ln_content' => $in['in_title'],
                 'ln_type_source_id' => 4250, //New Idea Created
@@ -266,16 +266,14 @@ if(!$action) {
             //Missing SOURCE
 
             $stats['source_missing']++;
-
-            if(count($in_creators)){
-                $this->READ_model->ln_create(array(
-                    'ln_type_source_id' => 4983, //IDEA COIN
-                    'ln_creator_source_id' => $in_creators[0]['ln_creator_source_id'],
-                    'ln_parent_source_id' => $in_creators[0]['ln_creator_source_id'],
-                    'ln_content' => '@'.$in_creators[0]['ln_creator_source_id'],
-                    'ln_next_idea_id' => $in['in_id'],
-                ));
-            }
+            $creator_id = ( count($in_creators) ? $in_creators[0]['ln_creator_source_id'] : $session_en['en_id'] );
+            $this->READ_model->ln_create(array(
+                'ln_type_source_id' => 4983, //IDEA COIN
+                'ln_creator_source_id' => $creator_id,
+                'ln_parent_source_id' => $creator_id,
+                'ln_content' => '@'.$creator_id,
+                'ln_next_idea_id' => $in['in_id'],
+            ));
 
         } elseif($is_archived && count($in_notes)){
 
