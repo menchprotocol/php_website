@@ -195,10 +195,14 @@ if(!isset($hide_header)){
                             }
                         }
                         echo '</div>';
+
+                        if(intval(config_var(12678))){
+                            echo '<div class="main_nav search_nav hidden"><form id="searchFrontForm" style="margin-top:5px;"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$en_all_11035[7256]['m_name'].'"></form></div>';
+                        }
                         ?>
 
 
-                        <div class="main_nav search_nav hidden"><form id="searchFrontForm" style="margin-top:5px;"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
+
 
                     </td>
 
