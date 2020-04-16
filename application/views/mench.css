@@ -859,6 +859,10 @@ td.MENCHcolumn3  { width: 13%; }
     padding-top:0 !important;
     padding-bottom:0 !important;
 }
+.no-height{
+    height: 0px;
+    padding: 0;
+}
 .ledger-msg .padded{
     margin-left:0 !important;
     margin-right:0 !important;
