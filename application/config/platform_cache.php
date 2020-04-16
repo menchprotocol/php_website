@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-15 21:27:42 PST
+//Generated 2020-04-15 23:30:20 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587011262;
-$config['cache_count_transaction'] = 1138664;
+$config['cache_timestamp'] = 1587018620;
+$config['cache_count_transaction'] = 1138840;
 $config['cache_count_read'] = 120967;
 $config['cache_count_idea'] = 3831;
-$config['cache_count_source'] = 5146;
+$config['cache_count_source'] = 5144;
 
 
 
@@ -3698,18 +3698,12 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12678,12355,11077,11074,12124,11076,12587,11075,12176,11071,11064,11065,11063,12156,11079,11060,12363,11073,11066,11057,11056,12331,12113,12427,12088,11986,11072,12232,11162,11163,12565,12568);
+$config['en_ids_6404'] = array(12678,11077,11074,12124,11076,12587,11075,12176,11071,11064,11065,11063,12156,11079,11060,11073,11066,11057,11056,12331,12113,12427,12088,11986,11072,12232,11162,11163,12565,12568);
 $config['en_all_6404'] = array(
     12678 => array(
         'm_icon' => '',
         'm_name' => 'ALGOLIA ENABLED',
         'm_desc' => '0',
-        'm_parents' => array(6404),
-    ),
-    12355 => array(
-        'm_icon' => '',
-        'm_name' => 'DATE FORMAT FULL & WEEKDAY',
-        'm_desc' => 'D M j G:i:s T Y',
         'm_parents' => array(6404),
     ),
     11077 => array(
@@ -3739,7 +3733,7 @@ $config['en_all_6404'] = array(
     12587 => array(
         'm_icon' => '',
         'm_name' => 'FACEBOOK MENCH PAGE HANDLER',
-        'm_desc' => 'menchdotcom',
+        'm_desc' => 'menchcoins',
         'm_parents' => array(6404),
     ),
     11075 => array(
@@ -3793,13 +3787,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.341',
-        'm_parents' => array(6404),
-    ),
-    12363 => array(
-        'm_icon' => '',
-        'm_name' => 'MESSAGE FEATURED MAX LENGTH',
-        'm_desc' => '233',
+        'm_desc' => '1.343',
         'm_parents' => array(6404),
     ),
     11073 => array(
