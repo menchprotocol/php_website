@@ -546,7 +546,14 @@ function echo_ln($ln, $is_inner = false)
             $trainer_ens = $CI->SOURCE_model->en_fetch(array(
                 'en_id' => $ln['ln_creator_source_id'],
             ));
-            $ui .= '<div class="simple-line"><a href="/source/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($trainer_ens[0]['en_icon']).'">' . ( $ln['ln_creator_source_id']==$ln['ln_parent_source_id'] || (!$ln['ln_parent_source_id'] && $ln['ln_creator_source_id']==$ln['ln_child_source_id']) ? '' : echo_en_icon($trainer_ens[0]['en_icon']) . ' ' . $trainer_ens[0]['en_name'] ) . '</span></a></div>';
+            $ui .= '<div class="simple-line"><a href="/source/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($trainer_ens[0]['en_icon']).'">' . ( $ln['ln_creator_source_id']==$ln['ln_parent_source_id'] || (!$ln['ln_parent_source_id'] && $ln['ln_creator_source_id']==$ln['ln_child_source_id']) ? '' : '<span class="img-block">'.echo_en_icon($trainer_ens[0]['en_icon']) . '</span> ' . $trainer_ens[0]['en_name'] ) . '</span></a></div>';
+        }
+
+
+        //Message
+        if(strlen($ln['ln_content']) > 0 && $ln['ln_content']!='@'.$ln['ln_parent_source_id']){
+            //$CI->READ_model->dispatch_message($ln['ln_content'])
+            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.htmlentities($ln['ln_content']).'</div></div>';
         }
 
     }
@@ -568,7 +575,7 @@ function echo_ln($ln, $is_inner = false)
                 //SOURCE
                 $ens = $CI->SOURCE_model->en_fetch(array('en_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/source/'.$ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span><span class="'.extract_icon_color($ens[0]['en_icon']).'">'.echo_en_icon($ens[0]['en_icon']). ' '.$ens[0]['en_name'].'</span></a></div>';
+                $ui .= '<div class="simple-line"><a href="/source/'.$ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span><span class="'.extract_icon_color($ens[0]['en_icon']).' img-block">'.echo_en_icon($ens[0]['en_icon']). ' '.$ens[0]['en_name'].'</span></a></div>';
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
@@ -586,15 +593,6 @@ function echo_ln($ln, $is_inner = false)
             }
         }
     }
-
-
-
-    //Message
-    if(strlen($ln['ln_content']) > 0 && $ln['ln_content']!='@'.$ln['ln_parent_source_id']){
-        //$CI->READ_model->dispatch_message($ln['ln_content'])
-        $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.htmlentities($ln['ln_content']).'</div></div>';
-    }
-
 
 
     $ui .= '</div>';
