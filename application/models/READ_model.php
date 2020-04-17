@@ -68,12 +68,12 @@ class READ_model extends CI_Model
                         if($key=='ln_status_source_id'){
 
                             $en_all_6186 = $this->config->item('en_all_6186'); //Transaction Status
-                            $ln_content .= echo_db_field($key) . ' iterated from [' . $en_all_6186[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6186[$value]['m_name'] . ']'."\n";
+                            $ln_content .= echo_db_field($key) . ' updated from [' . $en_all_6186[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6186[$value]['m_name'] . ']'."\n";
 
                         } elseif($key=='ln_type_source_id'){
 
                             $en_all_4593 = $this->config->item('en_all_4593'); //Link Types
-                            $ln_content .= echo_db_field($key) . ' iterated from [' . $en_all_4593[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4593[$value]['m_name'] . ']'."\n";
+                            $ln_content .= echo_db_field($key) . ' updated from [' . $en_all_4593[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4593[$value]['m_name'] . ']'."\n";
 
                         } elseif(in_array($key, array('ln_parent_source_id', 'ln_child_source_id'))) {
 
@@ -85,7 +85,7 @@ class READ_model extends CI_Model
                                 'en_id' => $value,
                             ));
 
-                            $ln_content .= echo_db_field($key) . ' iterated from [' . $before_ens[0]['en_name'] . '] to [' . $after_ens[0]['en_name'] . ']' . "\n";
+                            $ln_content .= echo_db_field($key) . ' updated from [' . $before_ens[0]['en_name'] . '] to [' . $after_ens[0]['en_name'] . ']' . "\n";
 
                         } elseif(in_array($key, array('ln_previous_idea_id', 'ln_next_idea_id'))) {
 
@@ -97,11 +97,11 @@ class READ_model extends CI_Model
                                 'in_id' => $value,
                             ));
 
-                            $ln_content .= echo_db_field($key) . ' iterated from [' . $before_ins[0]['in_title'] . '] to [' . $after_ins[0]['in_title'] . ']' . "\n";
+                            $ln_content .= echo_db_field($key) . ' updated from [' . $before_ins[0]['in_title'] . '] to [' . $after_ins[0]['in_title'] . ']' . "\n";
 
                         } elseif(in_array($key, array('ln_content', 'ln_order'))){
 
-                            $ln_content .= echo_db_field($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
+                            $ln_content .= echo_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
 
                         } else {
 
@@ -354,13 +354,13 @@ class READ_model extends CI_Model
                             //Content value has changed, update the link:
                             $this->READ_model->ln_update($existing_links[0]['ln_id'], array(
                                 'ln_content' => $insert_columns['ln_content'],
-                            ), $insert_columns['ln_creator_source_id'], 10657 /* Player Link Iterated Content  */);
+                            ), $insert_columns['ln_creator_source_id'], 10657 /* Player Link Updated Content  */);
 
                             //Also, did the link type change based on the content change?
                             if($existing_links[0]['ln_type_source_id'] != $detected_ln_type['ln_type_source_id']){
                                 $this->READ_model->ln_update($existing_links[0]['ln_id'], array(
                                     'ln_type_source_id' => $detected_ln_type['ln_type_source_id'],
-                                ), $insert_columns['ln_creator_source_id'], 10659 /* Player Link Iterated Type */);
+                                ), $insert_columns['ln_creator_source_id'], 10659 /* Player Link Updated Type */);
                             }
 
                         }
@@ -1378,7 +1378,7 @@ class READ_model extends CI_Model
 
             } else {
 
-                //2nd iteration onwards, by now we must have a base:
+                //2nd Update onwards, by now we must have a base:
                 if($requires_all_children){
 
                     //Update list of qualified users:
@@ -1749,17 +1749,15 @@ class READ_model extends CI_Model
 
 
         //Define communication variables:
-        $previous_answers = '';
-        $next_step_quick_replies = array();
-
         if(!$next_step_only){
 
-            if(!$push_message){
+            // % DONE
+            $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
+            $metadata = unserialize($ins[0]['in_metadata']);
+            $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
-                // % DONE
-                $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
-                $metadata = unserialize($ins[0]['in_metadata']);
-                $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+
+            if(!$push_message){
 
                 //READ PROGRESS
                 if($completion_rate['completion_percentage']>0){
@@ -1768,34 +1766,6 @@ class READ_model extends CI_Model
 
                 //READ TITLE
                 echo '<div style="padding-top:6px;"><span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span><h1 class="inline-block block-one">' . echo_in_title($ins[0]) . '</h1></div>';
-
-
-                echo '<div class="previous_reads">';
-
-
-                if(count($read_completes) > 0){
-
-                    //Show More Information:
-                    echo '<div class="read-topic read-info-topic">';
-                    echo '<span class="info-item inline-block">';
-                    echo '<div class="icon-block">&nbsp;</div>';
-
-                    //Show all completions:
-                    $en_all_12229 = $this->config->item('en_all_12229');
-                    foreach($read_completes as $read_ledger){
-
-                        echo '<span data-toggle="tooltip" data-placement="bottom" title="READ COIN '.( in_array($read_ledger['ln_type_source_id'], $this->config->item('en_ids_6255')) ? 'AWARDED' : 'NOT AWARDED' ).' ID '.$read_ledger['ln_id'].' ['.$en_all_12229[$read_ledger['ln_type_source_id']]['m_name'].'] ['.$read_ledger['ln_timestamp'].']"><span class="icon-block-sm">'.$en_all_12229[$read_ledger['ln_type_source_id']]['m_icon'].'</span></span>';
-
-                        $previous_answers .= ( strlen($read_ledger['ln_content']) ? '<div class="previous_answer">'.$this->READ_model->dispatch_message($read_ledger['ln_content']).'</div>' : '' );
-
-                    }
-
-                    echo '</span>';
-                    echo '</div>';
-
-                }
-
-                echo '</div>';
 
             } else {
 
@@ -1850,7 +1820,7 @@ class READ_model extends CI_Model
             }
 
             //List Children if any:
-            echo_in_list($ins[0], $in__children, $recipient_en, $push_message);
+            echo_in_list($ins[0], $in__children, $recipient_en, $push_message,  null, true, ( $completion_rate['completion_percentage'] < 100 ));
 
 
         } elseif (in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7712'))){
@@ -2096,7 +2066,7 @@ class READ_model extends CI_Model
 
                 //TEXT RESPONSE
 
-                echo '<div class="previous_reads"><textarea class="border i_content padded read_input" placeholder="Your Answer Here..." id="read_text_answer">'.( $previous_answers ? $read_completes[0]['ln_content'] : '' ).'</textarea></div>';
+                echo '<div class="previous_reads"><textarea class="border i_content padded read_input" placeholder="Your Answer Here..." id="read_text_answer">'.( count($read_completes) ? trim($read_completes[0]['ln_content']) : '' ).'</textarea></div>';
 
                 echo '<div class="text_saving_result margin-top-down previous_reads"></div>';
 
@@ -2106,7 +2076,7 @@ class READ_model extends CI_Model
                 //Save/Upload & Next:
                 echo '<div class="margin-top-down inline-block previous_reads"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">SAVE & NEXT <i class="fad fa-step-forward"></i></a>&nbsp;&nbsp;</div>';
 
-                if($previous_answers){
+                if(count($read_completes)){
                     //Next Reads:
                     echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true, false);
                 }
@@ -2121,7 +2091,7 @@ class READ_model extends CI_Model
                 echo '<div class="readerUploader previous_reads">';
                 echo '<form class="box boxUpload" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-                echo '<div class="file_saving_result">'.($previous_answers ? '<div class="read-topic"><span class="icon-block-sm">&nbsp;</span>YOUR UPLOAD:</div>'.$previous_answers : '' ).'</div>';
+                echo '<div class="file_saving_result">'.( count($read_completes) ? '<div class="read-topic"><span class="icon-block-sm">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->READ_model->dispatch_message($read_completes[0]['ln_content']).'</div>' : '' ).'</div>';
 
                 echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_source_id'].'" />';
 
@@ -2195,28 +2165,6 @@ class READ_model extends CI_Model
         }
 
 
-
-
-
-
-        //SKIP?
-        if(0) {
-            //Give option to skip:
-            if($push_message){
-
-                //Give option to skip User Idea:
-                array_push($next_step_quick_replies, array(
-                    'content_type' => 'text',
-                    'title' => 'Skip',
-                    'payload' => 'SKIP-ACTIONPLAN_skip-initiate_' . $ins[0]['in_id'],
-                ));
-
-            } else {
-
-                echo '<div style="font-size: 0.7em; margin-top: 10px;">Or <a href="javascript:void(0);" onclick="in_skip(' . $recipient_en['en_id'] . ', ' . $ins[0]['in_id'] . ')"><u>Skip</u></a>.</div>';
-
-            }
-        }
 
     }
 

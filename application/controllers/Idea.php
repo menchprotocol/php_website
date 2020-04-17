@@ -370,7 +370,7 @@ class Idea extends CI_Controller {
                     'ln_metadata' => array_merge($ln_metadata, array(
                         'tr__assessment_points' => intval($_POST['field_value']),
                     )),
-                ), $session_en['en_id'], 10663 /* Idea Link Iterated Marks */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' iterated'.( isset($ln_metadata['tr__assessment_points']) ? ' from [' . $ln_metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
+                ), $session_en['en_id'], 10663 /* Idea Link updated Marks */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' updated'.( isset($ln_metadata['tr__assessment_points']) ? ' from [' . $ln_metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
 
                 return echo_json(array(
                     'status' => 1,
@@ -412,7 +412,7 @@ class Idea extends CI_Controller {
                     'ln_metadata' => array_merge($ln_metadata, array(
                         $field_name => intval($_POST['field_value']),
                     )),
-                ), $session_en['en_id'], 10664 /* Idea Link Iterated Score */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' iterated'.( isset($ln_metadata[$field_name]) ? ' from [' . $ln_metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
+                ), $session_en['en_id'], 10664 /* Idea Link updated Score */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' updated'.( isset($ln_metadata[$field_name]) ? ' from [' . $ln_metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
 
                 return echo_json(array(
                     'status' => 1,
@@ -1177,7 +1177,7 @@ class Idea extends CI_Controller {
             $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                 'ln_content' => $msg_validation['input_message'],
                 'ln_parent_source_id' => $msg_validation['ln_parent_source_id'],
-            ), $session_en['en_id'], 10679 /* Idea Notes Iterated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
+            ), $session_en['en_id'], 10679 /* Idea Notes updated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
 
         }
 
@@ -1213,7 +1213,7 @@ class Idea extends CI_Controller {
                 //yes, do so and return results:
                 $affected_rows = $this->READ_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_source_id' => $_POST['message_ln_status_source_id'],
-                ), $session_en['en_id'], 10677 /* Idea Notes Iterated Status */);
+                ), $session_en['en_id'], 10677 /* Idea Notes updated Status */);
 
             } else {
 

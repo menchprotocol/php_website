@@ -780,6 +780,19 @@ class Source extends CI_Controller
             }
 
             //Delete/merge source links:
+            if($_POST['en_id'] == $_POST['en_focus_id']){
+
+                //Fetch parents to redirect to:
+                $en__parents = $this->READ_model->ln_fetch(array(
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                    'ln_child_source_id' => $_POST['en_id'],
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                ), array('en_parent'), 1);
+
+            }
+
+
             $_POST['ln_id'] = 0; //Do not consider the link as the source is being Deleted
             $delete_from_ui = 1; //Removing source
             $merger_en_id = (count($merged_ens) > 0 ? $merged_ens[0]['en_id'] : 0);
@@ -793,19 +806,11 @@ class Source extends CI_Controller
                     $delete_redirect_url = '/source/' . $merged_ens[0]['en_id'];
                 }
 
-                $success_message = 'Source deleted and merged its ' . $links_adjusted . ' links here';
+                $success_message = 'Source deleted & merged its ' . $links_adjusted . ' links here';
 
             } else {
 
                 if($_POST['en_id'] == $_POST['en_focus_id']){
-                    //Fetch parents to redirect to:
-                    $en__parents = $this->READ_model->ln_fetch(array(
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                        'ln_child_source_id' => $_POST['en_id'],
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-                    ), array('en_parent'), 1);
-
                     $delete_redirect_url = '/source/' . ( count($en__parents) ? $en__parents[0]['en_id'] : $session_en['en_id'] );
                 }
 
@@ -836,7 +841,7 @@ class Source extends CI_Controller
             if($en_lns[0]['ln_status_source_id']!=$_POST['ln_status_source_id']){
 
                 if (in_array($_POST['ln_status_source_id'], $this->config->item('en_ids_7360') /* Transaction Status Active */)) {
-                    $ln_status_source_id = 10656; //Player Link Iterated Status
+                    $ln_status_source_id = 10656; //Player Link updated Status
                 } else {
                     $delete_from_ui = 1;
                     $ln_status_source_id = 10673; //Player Link Unlinked
@@ -921,14 +926,14 @@ class Source extends CI_Controller
 
                 $this->READ_model->ln_update($_POST['ln_id'], array(
                     'ln_content' => $ln_content,
-                ), $session_en['en_id'], 10657 /* Player Link Iterated Content */);
+                ), $session_en['en_id'], 10657 /* Player Link updated Content */);
 
 
                 //Also, did the link type change based on the content change?
                 if($js_ln_type_source_id!=$en_lns[0]['ln_type_source_id']){
                     $this->READ_model->ln_update($_POST['ln_id'], array(
                         'ln_type_source_id' => $js_ln_type_source_id,
-                    ), $session_en['en_id'], 10659 /* Player Link Iterated Type */);
+                    ), $session_en['en_id'], 10659 /* Player Link updated Type */);
                 }
             }
         }
@@ -1226,7 +1231,7 @@ class Source extends CI_Controller
                 $this->READ_model->ln_update($user_passwords[0]['ln_id'], array(
                     'ln_content' => $password_hash,
                     'ln_type_source_id' => $detected_ln_type['ln_type_source_id'],
-                ), $ens[0]['en_id'], 7578 /* User Iterated Password */);
+                ), $ens[0]['en_id'], 7578 /* User updated Password */);
 
             } else {
 
@@ -1245,7 +1250,7 @@ class Source extends CI_Controller
             //Log password reset:
             $this->READ_model->ln_create(array(
                 'ln_creator_source_id' => $ens[0]['en_id'],
-                'ln_type_source_id' => 7578, //User Iterated Password
+                'ln_type_source_id' => 7578, //User updated Password
                 'ln_content' => $password_hash, //A copy of their password set at this time
             ));
 
@@ -1700,11 +1705,11 @@ class Source extends CI_Controller
         }
 
 
-        //Log Account iteration link type:
+        //Log Account Update link type:
         $_POST['account_update_function'] = 'account_update_radio'; //Add this variable to indicate which My Account function created this link
         $this->READ_model->ln_create(array(
             'ln_creator_source_id' => $session_en['en_id'],
-            'ln_type_source_id' => 6224, //My Account Iterated
+            'ln_type_source_id' => 6224, //My Account updated
             'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_already_selected'] ? 'Deleted' : 'Added' ),
             'ln_metadata' => $_POST,
             'ln_parent_source_id' => $_POST['parent_en_id'],
@@ -1944,11 +1949,11 @@ class Source extends CI_Controller
 
 
         if($return['status']){
-            //Log Account iteration link type:
+            //Log Account Update link type:
             $_POST['account_update_function'] = 'account_update_email'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->ln_create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id' => 6224, //My Account Iterated
+                'ln_type_source_id' => 6224, //My Account updated
                 'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_email']) > 0 ? ': '.$_POST['en_email'] : ''),
                 'ln_metadata' => $_POST,
             ));
@@ -2004,7 +2009,7 @@ class Source extends CI_Controller
                 //Update password:
                 $this->READ_model->ln_update($user_passwords[0]['ln_id'], array(
                     'ln_content' => $hashed_password,
-                ), $session_en['en_id'], 7578 /* User Iterated Password  */);
+                ), $session_en['en_id'], 7578 /* User Updated Password  */);
 
                 $return = array(
                     'status' => 1,
@@ -2032,12 +2037,12 @@ class Source extends CI_Controller
         }
 
 
-        //Log Account iteration link type:
+        //Log Account Update link type:
         if($return['status']){
             $_POST['account_update_function'] = 'account_update_password'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->ln_create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id' => 6224, //My Account Iterated
+                'ln_type_source_id' => 6224, //My Account Updated
                 'ln_content' => 'My Account '.$return['message'],
                 'ln_metadata' => $_POST,
             ));

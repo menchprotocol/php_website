@@ -200,10 +200,10 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
 
                             <form class="drag-box" method="post" enctype="multipart/form-data">
-                                <span class="mini-header" style="margin-top: 20px;"><?= $en_all_4341[4372]['m_icon'].' '.$en_all_4341[4372]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charln_contentNum">0</span>/<?= config_var(11073) ?></span>]</span>
+                                <span class="mini-header" style="margin-top: 20px;"><?= $en_all_4341[4372]['m_icon'].' '.$en_all_4341[4372]['m_name'] ?></span>
                                 <span class="white-wrapper">
                                     <textarea class="form-control text-edit border" id="ln_content"
-                                              maxlength="<?= config_var(11073) ?>" data-lpignore="true"
+                                              data-lpignore="true"
                                               placeholder="Write, Drop a File or Paste URL"
                                               style="height:126px; min-height:126px;">
                                     </textarea>

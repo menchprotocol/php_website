@@ -156,33 +156,33 @@ class IDEA_model extends CI_Model
 
                 if($key=='in_title') {
 
-                    $ln_type_source_id = 10644; //Idea Iterated Outcome
+                    $ln_type_source_id = 10644; //Idea updated Outcome
                     $ln_content = update_description($before_data[0][$key], $value);
 
                 } elseif($key=='in_status_source_id'){
 
                     if(in_array($value, $this->config->item('en_ids_7356') /* Idea Status Active */)){
-                        $ln_type_source_id = 10648; //Idea Iterated Status
+                        $ln_type_source_id = 10648; //Idea updated Status
                     } else {
                         $ln_type_source_id = 6182; //Idea Deleted
                     }
                     $en_all_4737 = $this->config->item('en_all_4737'); //Idea Status
-                    $ln_content = echo_db_field($key) . ' iterated from [' . $en_all_4737[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4737[$value]['m_name'] . ']';
+                    $ln_content = echo_db_field($key) . ' updated from [' . $en_all_4737[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4737[$value]['m_name'] . ']';
                     $ln_parent_source_id = $value;
                     $ln_child_source_id = $before_data[0][$key];
 
                 } elseif($key=='in_type_source_id'){
 
-                    $ln_type_source_id = 10651; //Idea Iterated Subtype
+                    $ln_type_source_id = 10651; //Idea updated Subtype
                     $en_all_7585 = $this->config->item('en_all_7585'); //Idea Subtypes
-                    $ln_content = echo_db_field($key) . ' iterated from [' . $en_all_7585[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_7585[$value]['m_name'] . ']';
+                    $ln_content = echo_db_field($key) . ' updated from [' . $en_all_7585[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_7585[$value]['m_name'] . ']';
                     $ln_parent_source_id = $value;
                     $ln_child_source_id = $before_data[0][$key];
 
                 } elseif($key=='in_read_time') {
 
-                    $ln_type_source_id = 10650; //Idea Iterated Completion Time
-                    $ln_content = echo_db_field($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']';
+                    $ln_type_source_id = 10650; //Idea updated Completion Time
+                    $ln_content = echo_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
 

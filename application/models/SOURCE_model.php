@@ -215,23 +215,23 @@ class SOURCE_model extends CI_Model
 
                 if($key=='en_name') {
 
-                    $ln_type_source_id = 10646; //Player Iterated Name
+                    $ln_type_source_id = 10646; //Player Updated Name
                     $ln_content = update_description($before_data[0][$key], $value);
 
                 } elseif($key=='en_status_source_id') {
 
                     if(in_array($value, $this->config->item('en_ids_7358') /* Source Status Active */)){
-                        $ln_type_source_id = 10654; //Source Iterated Status
+                        $ln_type_source_id = 10654; //Source Updated Status
                     } else {
                         $ln_type_source_id = 6178; //Source Deleted
                     }
                     $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
-                    $ln_content = echo_db_field($key) . ' iterated from [' . $en_all_6177[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6177[$value]['m_name'] . ']';
+                    $ln_content = echo_db_field($key) . ' updated from [' . $en_all_6177[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6177[$value]['m_name'] . ']';
 
                 } elseif($key=='en_icon') {
 
-                    $ln_type_source_id = 10653; //Player Iterated Icon
-                    $ln_content = echo_db_field($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']';
+                    $ln_type_source_id = 10653; //Player Updated Icon
+                    $ln_content = echo_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
 
@@ -1043,7 +1043,7 @@ class SOURCE_model extends CI_Model
 
                 $this->READ_model->ln_update($en['ln_id'], array(
                     'ln_content' => str_replace($action_command1, $action_command2, $en['ln_content']),
-                ), $ln_creator_source_id, 10657 /* Player Link Iterated Content  */);
+                ), $ln_creator_source_id, 10657 /* Player Link Updated Content  */);
 
                 $applied_success++;
 
@@ -1065,7 +1065,7 @@ class SOURCE_model extends CI_Model
 
                 $this->READ_model->ln_update($en['ln_id'], array(
                     'ln_status_source_id' => $action_command2,
-                ), $ln_creator_source_id, ( in_array($action_command2, $this->config->item('en_ids_7360') /* Transaction Status Active */) ? 10656 /* Player Link Iterated Status */ : 10673 /* Player Link Unlinked */ ));
+                ), $ln_creator_source_id, ( in_array($action_command2, $this->config->item('en_ids_7360') /* Transaction Status Active */) ? 10656 /* Player Link Updated Status */ : 10673 /* Player Link Unlinked */ ));
 
                 $applied_success++;
 

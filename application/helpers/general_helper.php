@@ -201,14 +201,7 @@ function ln_detect_type($string)
     $string = trim($string);
     $CI =& get_instance();
 
-    if(strlen($string) > config_var(11073)){
-
-        return array(
-            'status' => 0,
-            'message' => 'String is ['.(strlen($string) - config_var(11073)).'] characters longer than the allowed length of '.config_var(11073).' characters.',
-        );
-
-    } elseif (is_null($string) || !strlen($string)) {
+    if (is_null($string) || !strlen($string)) {
 
         return array(
             'status' => 1,
@@ -445,48 +438,9 @@ function config_var($config_en_id){
     return $en_all_6404[$config_en_id]['m_desc'];
 }
 
-
-
 function update_description($before_string, $after_string){
-
-    //See whats added, what's deleted:
-    $before_words = explode(' ', $before_string);
-    $after_words = explode(' ', $after_string);
-    $new_words = array();
-    $deleted_words = array();
-
-    foreach($before_words as $before_word){
-        if(strlen(trim($before_word))>0 && !in_array($before_word, $after_words)){
-            array_push($deleted_words, $before_word);
-        }
-    }
-
-    foreach($after_words as $after_word){
-        if(strlen(trim($after_word))>0 && !in_array($after_word, $before_words)){
-            array_push($new_words, $after_word);
-        }
-    }
-
-    $ln_content = '';
-    if(count($deleted_words)>0){
-        $ln_content .= 'Deleted['.join('][',$deleted_words).']'; //All deleted count as 1 (No space)
-    }
-    if(count($new_words)>0){
-        if(count($deleted_words)>0){
-            $ln_content .= ' ';
-        }
-        $ln_content .= 'Added['.join('] [',$new_words).']'; //Each added word counts as 1 word (because of the space)
-    }
-
-    //Was anything added/deleted?
-    if(strlen($ln_content)==0){
-        //Nope, so probably outcome words just got rearranged, make sure NO SPACE to treat this as one word:
-        $ln_content .= 'Rearranged['.join('->',$before_words).']to['.join('->',$after_words).']';
-    }
-
-    return $ln_content;
+    return 'Updated from ['.$before_string.'] to ['.$after_string.']';
 }
-
 
 function random_player_avatar(){
     $CI =& get_instance();

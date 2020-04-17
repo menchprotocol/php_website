@@ -618,7 +618,7 @@ function echo_random_message($message_key, $return_all = false){
      * */
 
     $rotation_index = array(
-        'email_yours_truly_line' => array(
+        'email_yours_truly_line' => array( //12691
             'Cheers,',
             'Have an Awesome Day,',
             'Have a Blast,',
@@ -627,19 +627,19 @@ function echo_random_message($message_key, $return_all = false){
             'Have Fun,',
             'Many Thanks,',
         ),
-        'next_in_is' => array(
+        'next_in_is' => array( //12692
             'Next: ',
             'Next idea is: ',
             'The next idea is: ',
             'Ok moving on to the next idea: ',
             'Moving to the next idea: ',
         ),
-        'one_way_only' => array(
+        'one_way_only' => array( //12693
             'I am not designed to respond to custom messages. I can understand you only when you choose one of the options that I recommend to you.',
             'I cannot understand if you send me an out-of-context message. I would only understand if you choose one of the options that I recommend to you.',
             'I cannot respond to your custom messages and can only understand if you select one of the options that I recommend to you.',
         ),
-        'loading_notify' => array(
+        'loading_notify' => array(  //12694
             "Are you having a good day today?",
             "Be gentle with yourself today.",
             "Congratulate yourself for the great job you're doing",
@@ -701,18 +701,15 @@ function echo_random_message($message_key, $return_all = false){
             "🙌: take a second to adjust your posture",
             "😎🌈💕"
         ),
-        'saving_notify' => array(
+        'saving_notify' => array( //12695
             "Learning everyday 😎",
             "Growing with you 🌸",
             "Getting smarter ^~^",
         ),
-        'command_me' => array(
+        'command_me' => array( //12696
             'You can search for new ideas by sending me a message starting with "Search for", for example: "Search for assess my back-end skills" or "Search for recruit top talent"',
         ),
-        'goto_next' => array(
-            'Say next to continue',
-        ),
-        'read_recommendation' => array(
+        'read_recommendation' => array( //12697
             'What would you like to read next? Start a sentence with "Search for ..." or:  /link:BROWSE READS:https://mench.com/read',
         ),
 
@@ -1789,6 +1786,13 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
     $ui .= '</div>';
 
     return $ui;
+}
+
+function echo_platform_message($en_id){
+    $CI =& get_instance();
+    $en_all_12687 = $CI->config->item('en_all_12687');
+    $line_messages = explode("\n", $en_all_12687[$en_id]['m_desc']);
+    return $line_messages[array_rand($line_messages)];
 }
 
 function echo_en($en, $is_parent = false, $extra_class = null, $note_controller = false)

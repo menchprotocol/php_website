@@ -74,26 +74,8 @@ if(count($current_sign_in_attempt) == 0){
 
     <h1 class="text-center"><?= $en_all_11035[4269]['m_name'] ?> [FREE]</h1>
 
-
-    <?php
-    /*
-    if($referrer_in_id > 0){
-        $ins = $this->IDEA_model->in_fetch(array(
-            'in_id' => $referrer_in_id,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ));
-        if(count($ins) > 0){
-            echo '<p class="text-center montserrat">TO READ <a href="/'.$referrer_in_id.'"><u>'.echo_in_title($ins[0]).'</u></a> FOR FREE</p>';
-        }
-    } elseif(isset($_GET['url']) && strlen($_GET['url']) > 0){
-        echo '<p class="text-center montserrat">TO '.strtoupper(trim(urldecode($_GET['url']), '/')).' FOR FREE</p>';
-    } else {
-        echo '<p class="text-center montserrat">TO GET STARTED FOR FREE</p>';
-    }
-    */
-    ?>
-
     <div class="login-content" style="margin-top:50px;">
+
 
         <!-- Step 1: Choose Channel -->
         <div id="step1" class="signup-steps hidden">
@@ -111,28 +93,17 @@ if(count($current_sign_in_attempt) == 0){
             }
             ?>
 
-
             <div class="row center" style="padding-top:20px;">
                 <a href="javascript:void(0);" onclick="$('.help_me_choose').toggleClass('hidden')" class="help_me_choose"><span class="icon-block"><i class="fas fa-question-circle"></i></span>Help me Choose</a>
-                <a href="javascript:void(0);" onclick="$('.vote-platforms').toggleClass('hidden')" class="vote-platforms hidden"><span class="icon-block"><i class="fas fa-vote-yea"></i></span>Vote for Upcoming Platforms</a>
             </div>
 
-
-            <?php
-
-            echo '<div class="vote-platforms vote-results hidden">';
-            echo '<p style="padding-top: 30px;">Cast your vote for one of these upcoming platforms:</p>';
-            foreach ($this->config->item('en_all_12105') as $en_id => $m) {
-                echo '<div style="padding:5px 0; width: 100%;"><a href="javascript:void(0);" onclick="vote_channel('.$en_id.')"><span class="icon-block"><i class="fas fa-vote-yea"></i></span><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . '</a></div>';
-            }
-            echo '</div>';
-
-            ?>
         </div>
+
 
 
         <!-- Step 2: Enter Email -->
         <div id="step2" class="signup-steps hidden">
+            <p><?= echo_platform_message(12688) ?></p>
             <span class="medium-header"><?= $en_all_4269[3288]['m_icon'].' '.$en_all_4269[3288]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="read margin-top-down"></div>
@@ -145,10 +116,37 @@ if(count($current_sign_in_attempt) == 0){
 
 
 
+
+
+        <!-- Step 3: Enter Password -->
+        <div id="step3" class="signup-steps hidden">
+
+            <!-- To be updated to >0 IF email was found -->
+            <input type="hidden" id="login_en_id" value="0" />
+
+            <span class="medium-header"><?= $en_all_4269[3286]['m_icon'].' '.$en_all_4269[3286]['m_name'] ?></span>
+            <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
+            <div id="password_errors" class="read margin-top-down"></div>
+            <span id="step3buttons">
+                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-source transparent pass btn-raised btn-round"><i class="fad fa-step-backward"></i></a>
+                <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-source pass btn-raised btn-round">NEXT <i class="fad fa-step-forward"></i></a>
+            </span>
+
+            <span style="padding-left:5px; font-size:0.9em !important;">OR EMAIL <a href="javascript:void(0)" onclick="magicemail()" class="dounderline"><?= $en_all_11035[11068]['m_name'] ?></a> <?= $en_all_11035[11068]['m_icon'] ?></span>
+
+        </div>
+
+
+
+
+
+
+
         <!-- Step 4: Create New Account -->
         <div id="step4" class="signup-steps hidden">
 
             <div class="read-topic"><span class="icon-block-sm"><i class="fas fa-user-plus"></i></span>NEW ACCOUNT</div>
+            <p><?= echo_platform_message(12690) ?></p>
 
             <!-- pre-set Email -->
             <div class="margin-top-down">
@@ -180,23 +178,7 @@ if(count($current_sign_in_attempt) == 0){
         </div>
 
 
-        <!-- Step 3: Enter Password -->
-        <div id="step3" class="signup-steps hidden">
 
-            <!-- To be updated to >0 IF email was found -->
-            <input type="hidden" id="login_en_id" value="0" />
-
-            <span class="medium-header"><?= $en_all_4269[3286]['m_icon'].' '.$en_all_4269[3286]['m_name'] ?></span>
-            <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
-            <div id="password_errors" class="read margin-top-down"></div>
-            <span id="step3buttons">
-                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-source transparent pass btn-raised btn-round"><i class="fad fa-step-backward"></i></a>
-                <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-source pass btn-raised btn-round">NEXT <i class="fad fa-step-forward"></i></a>
-            </span>
-
-            <span style="padding-left:5px; font-size:0.9em !important;">OR EMAIL <a href="javascript:void(0)" onclick="magicemail()" class="dounderline"><?= $en_all_11035[11068]['m_name'] ?></a> <?= $en_all_11035[11068]['m_icon'] ?></span>
-
-        </div>
 
         <!-- Step 5: Check your email -->
         <div id="step5" class="signup-steps hidden">
@@ -205,43 +187,6 @@ if(count($current_sign_in_attempt) == 0){
         </div>
 
 
-        <?php /*
-
-        <fb:login-button
-                scope="public_profile,email"
-                onlogin="checkLoginState();">
-        </fb:login-button>
-
-        <script>
-
-            window.fbAsyncInit = function() {
-                FB.init({
-                    appId      : js_en_all_6404[11076]['m_desc'],
-                    cookie     : true,
-                    xfbml      : true,
-                    version    : js_en_all_6404[11077]['m_desc']
-                });
-                FB.AppEvents.logPageView();
-            };
-
-            function checkLoginState(){
-                FB.getLoginStatus(function(response) {
-                    console.log(response);
-                });
-            }
-
-
-            (function(d, s, id){
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) {return;}
-                js = d.createElement(s); js.id = id;
-                js.src = "https://connect.facebook.net/en_US/sdk.js";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-
-        </script>
-
-        */ ?>
 
     </div>
 </div>

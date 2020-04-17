@@ -137,9 +137,6 @@ $(document).ready(function () {
     //Listen for keystroke events
     textInput.onkeyup = function (e) {
 
-        //Instantly update count:
-        ln_content_word_count('#ln_content','#charln_contentNum');
-
         // Clear the timeout if it has already been set.
         // This will prevent the previous step from executing
         // if it has been less than <MILLISECONDS>
@@ -473,8 +470,6 @@ function en_modify_load(en_id, ln_id) {
         //Assign value:
         $('#ln_content').val($(".ln_content_val_" + ln_id + ":first").text());
 
-        //Update count:
-        ln_content_word_count('#ln_content','#charln_contentNum');
         //Also update type:
         en_ln_type_preview();
 
@@ -565,9 +560,6 @@ function en_save_file_upload(droppedFiles, uploadType) {
 
                     //Add URL to input:
                     $('#ln_content').val( data.cdn_url );
-
-                    //Update count:
-                    ln_content_word_count('#ln_content','#charln_contentNum');
 
                     //Also update type:
                     en_ln_type_preview();

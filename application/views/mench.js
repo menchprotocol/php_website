@@ -654,18 +654,6 @@ function ms_toggle(ln_id, new_state) {
 
 
 
-function ln_content_word_count(el_textarea, el_counter) {
-    var len = $(el_textarea).val().length;
-    if (len > js_en_all_6404[11073]['m_desc']) {
-        $(el_counter).addClass('overload').text(len);
-    } else {
-        $(el_counter).removeClass('overload').text(len);
-    }
-}
-
-
-
-
 function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
 
     //Loads the idea search bar only once for the add idea inputs
