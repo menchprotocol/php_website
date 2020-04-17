@@ -227,6 +227,7 @@ if(!isset($hide_header)){
 
                         echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton12500">';
 
+                        $coin_breaker = false;
                         foreach ($en_all_this as $en_id => $m) {
 
                             //Skip superpowers if not assigned
@@ -270,6 +271,11 @@ if(!isset($hide_header)){
 
                                 if(!$counts){
                                     continue;
+                                }
+
+                                if(!$coin_breaker){
+                                    $coin_breaker = true;
+                                    echo '<div class="dropdown-divider"></div>';
                                 }
 
                                 //MENCH COIN

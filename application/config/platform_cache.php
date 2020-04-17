@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-16 16:43:04 PST
+//Generated 2020-04-16 17:02:07 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587080584;
-$config['cache_count_transaction'] = 1141658;
+$config['cache_timestamp'] = 1587081727;
+$config['cache_count_transaction'] = 1141685;
 $config['cache_count_read'] = 120971;
 $config['cache_count_idea'] = 4844;
-$config['cache_count_source'] = 5146;
+$config['cache_count_source'] = 5145;
 
 
 
@@ -54,13 +54,25 @@ $config['en_all_12677'] = array(
 );
 
 //PLAYER MENU:
-$config['en_ids_12500'] = array(12205,12274,12273,6255,6287,7291);
+$config['en_ids_12500'] = array(12205,6287,7291,12274,12273,6255);
 $config['en_all_12500'] = array(
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
         'm_name' => 'MY SOURCE',
         'm_desc' => '',
         'm_parents' => array(12500,11035),
+    ),
+    6287 => array(
+        'm_icon' => '<i class="fad fa-user-shield source" aria-hidden="true"></i>',
+        'm_name' => 'ADMIN PANEL',
+        'm_desc' => '',
+        'm_parents' => array(12500,10985,10876,11035,4527),
+    ),
+    7291 => array(
+        'm_icon' => '<i class="fad fa-power-off source" aria-hidden="true"></i>',
+        'm_name' => 'LOGOUT',
+        'm_desc' => '',
+        'm_parents' => array(12500,10876,11035),
     ),
     12274 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -79,18 +91,6 @@ $config['en_all_12500'] = array(
         'm_name' => 'READ COINS',
         'm_desc' => '',
         'm_parents' => array(12500,12677,10939,11018,12655,12648,12467,11089,12410,6771,12228,4527),
-    ),
-    6287 => array(
-        'm_icon' => '<i class="fad fa-user-shield source" aria-hidden="true"></i>',
-        'm_name' => 'ADMIN PANEL',
-        'm_desc' => '',
-        'm_parents' => array(12500,10985,10876,11035,4527),
-    ),
-    7291 => array(
-        'm_icon' => '<i class="fad fa-power-off source" aria-hidden="true"></i>',
-        'm_name' => 'LOGOUT',
-        'm_desc' => '',
-        'm_parents' => array(12500,10876,11035),
     ),
 );
 
@@ -3989,7 +3989,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION MENU:
-$config['en_ids_11035'] = array(6225,6287,10573,11068,7291,12467,4341,12205,12211,4430,10957,7347,6415,12681,12581,7256,4269,12437,12275,7540);
+$config['en_ids_11035'] = array(6225,6287,10573,11068,7291,12467,4341,12205,12211,4430,10957,7347,6415,12581,7256,4269,12437,12275,7540);
 $config['en_all_11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -4068,12 +4068,6 @@ $config['en_all_11035'] = array(
         'm_name' => 'READ DELETE ALL',
         'm_desc' => '',
         'm_parents' => array(6205,11035,4755,6418,4593,6414),
-    ),
-    12681 => array(
-        'm_icon' => '<i class="fas fa-history read"></i>',
-        'm_name' => 'READ HISOTRY',
-        'm_desc' => '',
-        'm_parents' => array(11035),
     ),
     12581 => array(
         'm_icon' => '<i class="fad fa-home read" aria-hidden="true"></i>',
