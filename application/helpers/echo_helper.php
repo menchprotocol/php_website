@@ -458,7 +458,7 @@ function echo_ln_urls($ln_content, $ln_type_source_id){
 }
 
 
-function echo_ln($ln, $is_inner = false)
+function echo_ln($ln, $is_parent_tr = false)
 {
 
     $CI =& get_instance();
@@ -564,7 +564,7 @@ function echo_ln($ln, $is_inner = false)
 
 
     //5x Relations:
-    if(!$is_inner){
+    if(!$is_parent_tr){
 
         $en_all_6232 = $CI->config->item('en_all_6232'); //PLATFORM VARIABLES
         foreach ($CI->config->item('en_all_10692') as $en_id => $m) {
@@ -590,9 +590,10 @@ function echo_ln($ln, $is_inner = false)
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
-                //READ
+                //PARENT TRANSACTION
                 $lns = $CI->READ_model->ln_fetch(array('ln_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
-                $ui .= '<div class="transaction-ref">'.echo_ln($lns[0], true).'</div>';
+
+                $ui .= '<div class="simple-line"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span><div class="transaction-ref">'.echo_ln($lns[0], true).'</div></div>';
 
             }
         }
