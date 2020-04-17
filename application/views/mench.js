@@ -250,6 +250,10 @@ $(document).ready(function () {
         //Watch for action keys:
         if (e.keyCode === 27) { //ESC
             modify_cancel();
+
+            if(search_is_on){
+                toggle_search();
+            }
         }
     });
 
