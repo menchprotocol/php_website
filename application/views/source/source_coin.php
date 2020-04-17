@@ -481,7 +481,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
                         foreach ($child_en_filters as $c_c) {
                             $st = $en_all_6177[$c_c['en_status_source_id']];
                             $mench_type = extract_icon_color($st['m_icon']);
-                            $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_source_id'] . '" onclick="en_filter_status(' . $c_c['en_status_source_id'] . ')" class="nav-link u-status-filter u-status-' . $c_c['en_status_source_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="show-max '.$mench_type.'">&nbsp;' . $st['m_name'] . '</span><span class="count-en-status-' . $c_c['en_status_source_id'] . $mench_type . '">&nbsp;' . $c_c['totals'] . '</span></a></li>';
+                            $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_source_id'] . '" onclick="en_filter_status(' . $c_c['en_status_source_id'] . ')" class="nav-link u-status-filter u-status-' . $c_c['en_status_source_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="count-en-status-' . $c_c['en_status_source_id'] . $mench_type . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$mench_type.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
                         }
 
                         $this_tab .= '</div>';
