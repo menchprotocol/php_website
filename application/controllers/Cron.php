@@ -648,7 +648,7 @@ class Cron extends CI_Controller
          * Stores these media in Mench CDN:
          *
          * 1) Media received from users
-         * 2) Media sent from Mench Trainers via Facebook Chat Inbox
+         * 2) Media sent from Mench Players via Facebook Chat Inbox
          *
          * Alert: It would not store media that is sent from idea
          * ideas since those are already stored.

@@ -217,7 +217,7 @@ class Read extends CI_Controller
 
         //TODO: MERGE WITH FUNCTION in_notes_create_upload()
 
-        //Authenticate Trainer:
+        //Authenticate Player:
         $session_en = superpower_assigned();
         if (!$session_en) {
 
@@ -490,7 +490,7 @@ class Read extends CI_Controller
         if (!isset($_POST['js_pl_id']) || intval($_POST['js_pl_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid trainer ID',
+                'message' => 'Invalid player ID',
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
@@ -554,7 +554,7 @@ class Read extends CI_Controller
         if (!isset($_POST['js_pl_id']) || intval($_POST['js_pl_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid trainer ID',
+                'message' => 'Invalid player ID',
             ));
         } elseif (!isset($_POST['new_actionplan_order']) || !is_array($_POST['new_actionplan_order']) || count($_POST['new_actionplan_order']) < 1) {
             return echo_json(array(

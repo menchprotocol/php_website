@@ -658,7 +658,7 @@ function count_ln_type($en_id){
             $idea_bookmarks = $CI->READ_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id' => 10573, //Idea Notes Bookmarks
-                'ln_parent_source_id' => $session_en['en_id'], //For this trainer
+                'ln_parent_source_id' => $session_en['en_id'], //For this player
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             return $idea_bookmarks[0]['totals'];
 

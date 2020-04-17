@@ -140,7 +140,7 @@ class IDEA_model extends CI_Model
         //Do we need to do any additional work?
         if ($affected_rows > 0 && $ln_creator_source_id > 0) {
 
-            //Unlike source modification, we require a trainer source ID to log the modification link:
+            //Unlike source modification, we require a player source ID to log the modification link:
             //Log modification link for every field changed:
             foreach ($update_columns as $key => $value) {
 

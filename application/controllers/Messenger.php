@@ -268,7 +268,7 @@ class Messenger extends CI_Controller
                         $quick_reply_results = $this->READ_model->digest_received_payload($en, $im['message']['quick_reply']['payload']);
 
                         if(!$quick_reply_results['status']){
-                            //There was an error, inform Trainer:
+                            //There was an error, inform Player:
                             $this->READ_model->ln_create(array(
                                 'ln_content' => 'digest_received_payload() for message returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
@@ -524,7 +524,7 @@ class Messenger extends CI_Controller
 
                                 //Confirm with user:
                                 $this->READ_model->dispatch_message(
-                                    'Unable to accept your response. My trainers have already been notified.',
+                                    'Unable to accept your response. My players have already been notified.',
                                     $en,
                                     true
                                 );
@@ -634,7 +634,7 @@ class Messenger extends CI_Controller
                     if ($quick_reply_payload) {
                         $quick_reply_results = $this->READ_model->digest_received_payload($en, $quick_reply_payload);
                         if(!$quick_reply_results['status']){
-                            //There was an error, inform Trainer:
+                            //There was an error, inform Player:
                             $this->READ_model->ln_create(array(
                                 'ln_content' => 'digest_received_payload() for postback/referral returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,

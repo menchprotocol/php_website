@@ -108,7 +108,7 @@ class Idea extends CI_Controller {
             $this->session->set_userdata('session_page_count', $new_order);
             $this->READ_model->ln_create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id' => 4993, //Trainer Opened Idea
+                'ln_type_source_id' => 4993, //Player Opened Idea
                 'ln_next_idea_id' => $in_id,
                 'ln_order' => $new_order,
             ));
@@ -135,7 +135,7 @@ class Idea extends CI_Controller {
 
     function in_report_conditional_steps(){
 
-        //Authenticate Trainer:
+        //Authenticate Player:
         $session_en = superpower_assigned(10985);
 
         if (!$session_en) {
@@ -183,7 +183,7 @@ class Idea extends CI_Controller {
 
     function in_request_invite($in_id){
 
-        //Make sure it's a logged in trainer:
+        //Make sure it's a logged in player:
         $session_en = superpower_assigned(null, true);
 
         if(count($this->READ_model->ln_fetch(array(
@@ -210,7 +210,7 @@ class Idea extends CI_Controller {
 
     function in_become_source($in_id){
 
-        //Make sure it's a logged in trainer:
+        //Make sure it's a logged in player:
         $session_en = superpower_assigned(12674, true);
 
         //Idea Source:
@@ -230,7 +230,7 @@ class Idea extends CI_Controller {
 
     function in_update_text(){
 
-        //Authenticate Trainer:
+        //Authenticate Player:
         $session_en = superpower_assigned();
         $en_all_12112 = $this->config->item('en_all_12112');
 
@@ -438,7 +438,7 @@ class Idea extends CI_Controller {
         $deletion_redirect = null;
         $delete_element = null;
 
-        //Authenticate Trainer:
+        //Authenticate Player:
         $session_en = superpower_assigned();
         if (!$session_en) {
             return echo_json(array(
@@ -574,7 +574,7 @@ class Idea extends CI_Controller {
 
     function in_unlink(){
 
-        //Authenticate Trainer:
+        //Authenticate Player:
         $session_en = superpower_assigned();
         if (!$session_en) {
             return echo_json(array(
@@ -617,7 +617,7 @@ class Idea extends CI_Controller {
          *
          * */
 
-        //Authenticate Trainer:
+        //Authenticate Player:
         $session_en = superpower_assigned();
         if (!$session_en) {
             return echo_json(array(
@@ -816,7 +816,7 @@ class Idea extends CI_Controller {
     function in_sort_save()
     {
 
-        //Authenticate Trainer:
+        //Authenticate Player:
         $session_en = superpower_assigned();
         if (!$session_en) {
             echo_json(array(
@@ -857,7 +857,7 @@ class Idea extends CI_Controller {
                 foreach ($_POST['new_ln_orders'] as $rank => $ln_id) {
                     $this->READ_model->ln_update(intval($ln_id), array(
                         'ln_order' => intval($rank),
-                    ), $session_en['en_id'], 10675 /* Ideas Ordered by Trainer */);
+                    ), $session_en['en_id'], 10675 /* Ideas Ordered by Player */);
                 }
 
                 //Fetch again for the record:
@@ -880,7 +880,7 @@ class Idea extends CI_Controller {
     function in_notes_create_text()
     {
 
-        //Authenticate Trainer:
+        //Authenticate Player:
         $session_en = superpower_assigned();
 
         if (!$session_en) {
@@ -957,7 +957,7 @@ class Idea extends CI_Controller {
 
         //TODO: MERGE WITH FUNCTION read_file_upload()
 
-        //Authenticate Trainer:
+        //Authenticate Player:
         $session_en = superpower_assigned();
         if (!$session_en) {
 
@@ -1071,7 +1071,7 @@ class Idea extends CI_Controller {
     function in_notes_sort()
     {
 
-        //Authenticate Trainer:
+        //Authenticate Player:
         $session_en = superpower_assigned();
         if (!$session_en) {
 
@@ -1095,7 +1095,7 @@ class Idea extends CI_Controller {
         foreach ($_POST['new_ln_orders'] as $ln_order => $ln_id) {
             if (intval($ln_id) > 0) {
                 $sort_count++;
-                //Log update and give credit to the session Trainer:
+                //Log update and give credit to the session Player:
                 $this->READ_model->ln_update($ln_id, array(
                     'ln_order' => intval($ln_order),
                 ), $session_en['en_id'], 10676 /* Idea Notes Ordered */);
@@ -1112,7 +1112,7 @@ class Idea extends CI_Controller {
     function in_notes_modify_save()
     {
 
-        //Authenticate Trainer:
+        //Authenticate Player:
         $session_en = superpower_assigned();
         if (!$session_en) {
             return echo_json(array(

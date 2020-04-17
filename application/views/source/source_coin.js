@@ -55,7 +55,7 @@ $(document).ready(function () {
 
         if (parseInt($('#en_status_source_id').find(":selected").val()) == 6178 /* Player Deleted */) {
 
-            //Notify Trainer:
+            //Notify Player:
             $('.notify_en_delete').removeClass('hidden');
             $('.source_delete_stats').html('<i class="far fa-yin-yang fa-spin"></i>');
 

@@ -317,7 +317,7 @@ class READ_model extends CI_Model
 
             if ($detected_ln_type['status']) {
 
-                //See if completed intent has any entity tags to be assigned:
+                //Any sources to append to profile?
                 foreach($this->READ_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id' => 7545, //ENTITY TAGGING
@@ -459,23 +459,23 @@ class READ_model extends CI_Model
 
                 if($insert_columns['ln_creator_source_id'] > 0){
 
-                    //Fetch trainer details:
-                    $trainer_ens = $this->SOURCE_model->en_fetch(array(
+                    //Fetch player details:
+                    $player_ens = $this->SOURCE_model->en_fetch(array(
                         'en_id' => $insert_columns['ln_creator_source_id'],
                     ));
 
-                    $trainer_name = $trainer_ens[0]['en_name'];
+                    $player_name = $player_ens[0]['en_name'];
 
                 } else {
 
-                    //No trainer:
-                    $trainer_name = 'MENCH';
+                    //No player:
+                    $player_name = 'MENCH';
 
                 }
 
 
                 //Email Subject:
-                $subject = 'Notification: '  . $trainer_name . ' ' . $en_all_5967[$insert_columns['ln_type_source_id']]['m_name'];
+                $subject = 'Notification: '  . $player_name . ' ' . $en_all_5967[$insert_columns['ln_type_source_id']]['m_name'];
 
                 //Compose email body, start with link content:
                 $html_message = '<div>' . ( strlen($insert_columns['ln_content']) > 0 ? $insert_columns['ln_content'] : '<i>No link content</i>') . '</div><br />';
@@ -2539,7 +2539,7 @@ class READ_model extends CI_Model
          * - $push_message:         If TRUE this function will prepare a message to be
          *                          delivered to use using either Messenger or Chrome. If FALSE, it
          *                          would prepare a message for immediate HTML view. The HTML
-         *                          format will consider if a Trainer is logged in or not,
+         *                          format will consider if a Player is logged in or not,
          *                          which will alter the HTML format.
          *
          *
@@ -4397,7 +4397,7 @@ class READ_model extends CI_Model
 
                             if(!$quick_reply_results['status']){
 
-                                //There was an error, inform Trainer:
+                                //There was an error, inform Player:
                                 $this->READ_model->ln_create(array(
                                     'ln_content' => 'digest_received_payload() for custom response ['.$fb_received_message.'] returned error ['.$quick_reply_results['message'].']',
                                     'ln_metadata' => $ln_metadata,
@@ -4428,7 +4428,7 @@ class READ_model extends CI_Model
 
 
 
-            //Let's check to see if a Mench Trainer has not started a manual conversation with them via Facebook Inbox Chat:
+            //Let's check to see if a Mench Player has not started a manual conversation with them via Facebook Inbox Chat:
             if (count($this->READ_model->ln_fetch(array(
                     'ln_order' => 1, //A HACK to identify messages sent from us via Facebook Page Inbox
                     'ln_creator_source_id' => $en['en_id'],
@@ -4436,7 +4436,7 @@ class READ_model extends CI_Model
                     'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
                 ), array(), 1)) > 0) {
 
-                //Yes, this user is talking to an Trainer so do not interrupt their conversation:
+                //Yes, this user is talking to an Player so do not interrupt their conversation:
                 return false;
 
             }

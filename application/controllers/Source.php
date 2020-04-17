@@ -64,7 +64,7 @@ class Source extends CI_Controller
             $this->session->set_userdata('session_page_count', $new_order);
             $this->READ_model->ln_create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id' => 4994, //Trainer Opened Player
+                'ln_type_source_id' => 4994, //Player Opened Player
                 'ln_child_source_id' => $en_id,
                 'ln_order' => $new_order,
             ));
@@ -159,7 +159,7 @@ class Source extends CI_Controller
         //Check to see if they are already logged in?
         $session_en = superpower_assigned();
         if ($session_en) {
-            //Lead trainer and above, go to console:
+            //Lead player and above, go to console:
             if($in_id > 0){
                 return redirect_message('/' . $in_id);
             } else {
@@ -272,7 +272,7 @@ class Source extends CI_Controller
     function en_save_file_upload()
     {
 
-        //Authenticate Trainer:
+        //Authenticate Player:
         $session_en = superpower_assigned(10967);
         if (!$session_en) {
             return echo_json(array(
@@ -562,7 +562,7 @@ class Source extends CI_Controller
 
     function toggle_superpower($superpower_en_id){
 
-        //Toggles the advance session variable for the trainer on/off for logged-in trainers:
+        //Toggles the advance session variable for the player on/off for logged-in players:
         $session_en = superpower_assigned();
         $superpower_en_id = intval($superpower_en_id);
         $en_all_10957 = $this->config->item('en_all_10957');
@@ -607,7 +607,7 @@ class Source extends CI_Controller
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_type_source_id' => 5007, //TOGGLE SUPERPOWER
             'ln_parent_source_id' => $superpower_en_id,
-            'ln_content' => 'SUPERPOWER '.$toggled_setting, //To be used when trainer logs in again
+            'ln_content' => 'SUPERPOWER '.$toggled_setting, //To be used when player logs in again
         ));
 
         //Return to JS function:
@@ -1674,7 +1674,7 @@ class Source extends CI_Controller
                 array_push($possible_answers, $answer_en['en_id']);
             }
 
-            //Delete selected options for this trainer:
+            //Delete selected options for this player:
             foreach($this->READ_model->ln_fetch(array(
                 'ln_parent_source_id IN (' . join(',', $possible_answers) . ')' => null,
                 'ln_child_source_id' => $session_en['en_id'],
@@ -2171,7 +2171,7 @@ class Source extends CI_Controller
 
         boost_power();
 
-        //Validate trainer:
+        //Validate player:
         $session_en = superpower_assigned(10985, true);
 
         //Load tools:

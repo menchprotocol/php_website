@@ -7879,7 +7879,7 @@ $config['en_all_4593'] = array(
     4983 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
-        'm_desc' => 'References track intent correlations referenced within expert sources, and represent a core building block of intelligence. References are among the most precious transaction types because they indicate that IF you do A, you will likely accomplish B. As trainers add more sources from more experts, certain intent correlations will receive more references than others, thus gaining more credibility.',
+        'm_desc' => 'References track intent correlations referenced within expert sources, and represent a core building block of intelligence. References are among the most precious transaction types because they indicate that IF you do A, you will likely accomplish B. As players add more sources from more experts, certain intent correlations will receive more references than others, thus gaining more credibility.',
         'm_parents' => array(12141,10939,11018,12450,12273,12228,4535,10593,4527,7551,4593,4485),
     ),
     10662 => array(
@@ -7903,7 +7903,7 @@ $config['en_all_4593'] = array(
     10644 => array(
         'm_icon' => '<i class="fad fa-bullseye-arrow idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA UPDATE TITLE',
-        'm_desc' => 'Logged when trainers update the intent outcome',
+        'm_desc' => 'Logged when players update the intent outcome',
         'm_parents' => array(4535,10593,4593),
     ),
     10651 => array(
@@ -8077,7 +8077,7 @@ $config['en_all_4593'] = array(
     6415 => array(
         'm_icon' => '<i class="fad fa-trash-alt read" aria-hidden="true"></i>',
         'm_name' => 'READ DELETE ALL',
-        'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for trainers.',
+        'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for players.',
         'm_parents' => array(6205,11035,4755,6418,4593,6414),
     ),
     7611 => array(

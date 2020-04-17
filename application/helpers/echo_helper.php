@@ -548,12 +548,16 @@ function echo_ln($ln, $is_inner = false)
             $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.htmlentities($ln['ln_content']).'</div></div>';
         }
 
-        //Creator
-        if($ln['ln_creator_source_id'] > 0){
-            $trainer_ens = $CI->SOURCE_model->en_fetch(array(
+
+        //Creator (Do not repeat)
+        if($ln['ln_creator_source_id'] > 0 && $ln['ln_creator_source_id']!=$ln['ln_parent_source_id'] && $ln['ln_creator_source_id']!=$ln['ln_child_source_id']){
+
+            $player_ens = $CI->SOURCE_model->en_fetch(array(
                 'en_id' => $ln['ln_creator_source_id'],
             ));
-            $ui .= '<div class="simple-line"><a href="/source/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($trainer_ens[0]['en_icon']).'">' . ( $ln['ln_creator_source_id']==$ln['ln_parent_source_id'] || (!$ln['ln_parent_source_id'] && $ln['ln_creator_source_id']==$ln['ln_child_source_id']) ? '' : '<span class="img-block">'.echo_en_icon($trainer_ens[0]['en_icon']) . '</span> ' . $trainer_ens[0]['en_name'] ) . '</span></a></div>';
+
+            $ui .= '<div class="simple-line"><a href="/source/'.$player_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($player_ens[0]['en_icon']).'"><span class="img-block">'.echo_en_icon($player_ens[0]['en_icon']) . '</span> ' . $player_ens[0]['en_name'] . '</span></a></div>';
+
         }
 
     }
@@ -1900,7 +1904,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
             //External ID
             if($en['ln_parent_source_id']==6196){
-                //Give trainers the ability to ping Messenger profiles:
+                //Give players the ability to ping Messenger profiles:
                 $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/fetch_profile/'.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
             } else {
                 $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i>&nbsp;</span>';

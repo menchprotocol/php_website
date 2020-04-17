@@ -517,10 +517,10 @@ class SOURCE_model extends CI_Model
          * Input legend:
          *
          * - $url:                  Input URL
-         * - $ln_creator_source_id:       IF > 0 will save URL (if not already there) and give credit to this source as the trainer
+         * - $ln_creator_source_id:       IF > 0 will save URL (if not already there) and give credit to this source as the player
          * - $link_parent_en_ids:  IF array includes source IDs that will be added as parent source of this URL
          * - $add_to_child_en_id:   IF > 0 Will also add URL to this child if present
-         * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable trainers to edit auto generated title)
+         * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable players to edit auto generated title)
          *
          * */
 
@@ -724,7 +724,7 @@ class SOURCE_model extends CI_Model
                 //Prefix type in name:
                 $page_title = $en_all_4592[$ln_type_source_id]['m_name'].' '.$page_title;
 
-                //Create a new source for this URL ONLY If trainer source is provided...
+                //Create a new source for this URL ONLY If player source is provided...
                 $added_en = $this->SOURCE_model->en_verify_create($page_title, $ln_creator_source_id, 6181, $en_all_4592[$ln_type_source_id]['m_icon']);
                 if($added_en['status']){
 
@@ -766,7 +766,7 @@ class SOURCE_model extends CI_Model
                 }
 
             } else {
-                //URL not found and no trainer source provided to create the URL:
+                //URL not found and no player source provided to create the URL:
                 $en_url = array();
             }
         }
@@ -852,7 +852,7 @@ class SOURCE_model extends CI_Model
 
         } else {
 
-            //Ooooopsi, this value did not exist! Notify the Trainer so we can look into this:
+            //Ooooopsi, this value did not exist! Notify the Player so we can look into this:
             $this->READ_model->ln_create(array(
                 'ln_content' => 'en_search_match() found [' . count($matching_sources) . '] results as the children of en_id=[' . $en_parent_id . '] that had the value of [' . $value . '].',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
@@ -950,7 +950,7 @@ class SOURCE_model extends CI_Model
 
             } elseif (in_array($action_en_id, array(5981, 5982, 11956))) { //Add/Delete parent source
 
-                //What trainer searched for:
+                //What player searched for:
                 $parent_en_id = intval(one_two_explode('@',' ',$action_command1));
 
                 //See if child source has searched parent source:
@@ -1195,10 +1195,10 @@ class SOURCE_model extends CI_Model
 
 
         if(count($duplicate_ens) > 0){
-            //Log a link to inform Trainer of this:
+            //Log a link to inform Player of this:
             $this->READ_model->ln_create(array(
                 'ln_content' => 'Duplicate source names detected for ['.$duplicate_ens[0]['en_name'].']',
-                'ln_type_source_id' => 7504, //Trainer Review Required
+                'ln_type_source_id' => 7504, //Player Review Required
                 'ln_child_source_id' => $source_new['en_id'],
                 'ln_parent_source_id' => $duplicate_ens[0]['en_id'],
                 'ln_creator_source_id' => $ln_creator_source_id,
@@ -1290,7 +1290,7 @@ class SOURCE_model extends CI_Model
                         //Create new link:
                         $this->READ_model->ln_create(array(
                             'ln_type_source_id' => 4230, //Raw link
-                            'ln_creator_source_id' => $added_en['en']['en_id'], //User gets credit as trainer
+                            'ln_creator_source_id' => $added_en['en']['en_id'], //User gets credit as player
                             'ln_parent_source_id' => $ln_parent_source_id,
                             'ln_child_source_id' => $added_en['en']['en_id'],
                         ));
