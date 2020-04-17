@@ -866,7 +866,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
     }
 
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="idea montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>' + echo_saving_notify() +  '</div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="idea montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>' + js_echo_platform_message(12695) +  '</div>');
 
     //Update backend:
     $.post("/idea/in_link_or_create", {

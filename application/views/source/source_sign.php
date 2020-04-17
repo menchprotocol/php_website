@@ -1,7 +1,7 @@
 <?php
 $en_all_4269 = $this->config->item('en_all_4269');
 $en_all_7555 = $this->config->item('en_all_7555');
-$en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 
 //See if we have a session assigned:
 $referrer_in_id = intval($this->session->userdata('sign_in_id'));
@@ -64,7 +64,7 @@ if(count($current_sign_in_attempt) == 0){
         ln_parent_transaction_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
 </script>
-<script src="/application/views/source/source_sign.js?v=v<?= config_var(11060) ?>"
+<script src="/application/views/source/source_sign.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 

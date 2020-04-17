@@ -14,7 +14,7 @@ $is_active = in_array($in['in_status_source_id'], $this->config->item('en_ids_73
     //Include some cached sources:
     var in_loaded_id = <?= $in['in_id'] ?>;
 </script>
-<script src="/application/views/idea/idea_coin.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/idea/idea_coin.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <?php
 

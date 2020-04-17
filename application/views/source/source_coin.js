@@ -200,7 +200,7 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
             templates: {
                 suggestion: function (suggestion) {
                     //If clicked, would trigger the autocomplete:selected above which will trigger the en_add_or_link() function
-                    return echo_js_suggestion(suggestion);
+                    return echo_search_result(suggestion);
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
@@ -618,7 +618,7 @@ function en_modify_save() {
     };
 
     //Show spinner:
-    $('.save_source_changes').html('<span><i class="far fa-yin-yang fa-spin"></i></span> ' + echo_saving_notify() +  '').hide().fadeIn();
+    $('.save_source_changes').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_echo_platform_message(12695) +  '').hide().fadeIn();
 
 
     $.post("/source/en_modify_save", modify_data, function (data) {
@@ -830,7 +830,7 @@ function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect)
 function account_update_name(){
 
     //Show spinner:
-    $('.save_full_name').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
+    $('.save_full_name').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_echo_platform_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     var en_name_new = $('#en_setting_name').val().toUpperCase();
@@ -867,7 +867,7 @@ function account_update_name(){
 function account_update_email(){
 
     //Show spinner:
-    $('.save_email').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
+    $('.save_email').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_echo_platform_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/source/account_update_email", {
@@ -898,7 +898,7 @@ function account_update_email(){
 function account_update_password(){
 
     //Show spinner:
-    $('.save_password').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
+    $('.save_password').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_echo_platform_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/source/account_update_password", {

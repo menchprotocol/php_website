@@ -136,7 +136,7 @@ class Read extends CI_Controller
 
         } else {
 
-            //Find the next idea in the READING LIST to skip:
+            //Find the next idea in the READING LIST:
             $next_in_id = $this->READ_model->read_next_go($session_en['en_id'], false);
             if($next_in_id > 0){
                 return redirect_message('/' . $next_in_id);
@@ -511,36 +511,6 @@ class Read extends CI_Controller
         }
     }
 
-
-    function actionplan_skip_preview($en_id, $in_id)
-    {
-
-        //Just give them an overview of what they are about to skip:
-        return echo_json(array(
-            'skip_step_preview' => 'WARNING: '.$this->READ_model->read_skip_initiate($en_id, $in_id, false).' Are you sure you want to skip?',
-        ));
-
-    }
-
-    function actionplan_skip_apply($en_id, $in_id)
-    {
-
-        //Actually go ahead and skip
-        $this->READ_model->read_skip_apply($en_id, $in_id, false);
-        //Assume its all good!
-
-        //We actually skipped, draft message:
-        $message = '<div class="alert alert-danger" role="alert">I successfully skipped selected steps.</div>';
-
-        //Find the next item to navigate them to:
-        $next_in_id = $this->READ_model->read_next_go($en_id, false);
-        if ($next_in_id > 0) {
-            return redirect_message('/' . $next_in_id, $message);
-        } else {
-            return redirect_message('/read', $message);
-        }
-
-    }
 
     function actionplan_sort_save()
     {

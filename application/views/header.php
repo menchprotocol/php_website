@@ -1,13 +1,14 @@
 <?php
 
 $session_en = superpower_assigned();
-$current_mench = current_mench();
 $first_segment = $this->uri->segment(1);
 $second_segment = $this->uri->segment(2);
-$en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
-$en_all_2738 = $this->config->item('en_all_2738');
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 
-//Arrange based on current mench:
+
+//DETECT CURRENT MENCH
+$en_all_2738 = $this->config->item('en_all_2738');
+$current_mench = current_mench();
 $en_all_2738_mench = array();
 $did_find = false;
 $found_at = 1; //1 or 2 or 3
@@ -50,54 +51,41 @@ if($found_at > 1){
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= ( isset($title) ? $title . ' | ' : '' ) ?>MENCH</title>
 
-    <?php
-    echo '<script type="text/javascript">';
 
+    <script type="text/javascript">
+    <?php
+    //PLAYER VARIABLES
     echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_en && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
     echo ' var js_pl_id = ' . ( $session_en ? $session_en['en_id'] : 0 ) . '; ';
     echo ' var js_pl_name = \'' . ( $session_en ? $session_en['en_name'] : 'Unknown' ) . '\'; ';
 
-    //LOAD JS CACHE:
+    //JAVASCRIPT PLATFORM MEMORY
     foreach($this->config->item('en_all_11054') as $en_id => $m){
         if(count($this->config->item('en_all_'.$en_id))){
             echo ' var js_en_all_'.$en_id.' = ' . json_encode($this->config->item('en_all_'.$en_id)) . '; ';
         }
     }
-
-
-    //Random Messages:
-    echo ' var random_loading_message = ' . json_encode(echo_random_message('loading_notify', true)) . '; ';
-    echo ' var random_saving_message = ' . json_encode(echo_random_message('saving_notify', true)) . '; ';
-
-    echo '</script>';
     ?>
+    </script>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/fbf7f3ae67.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/typeit@6.1.1/dist/typeit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.5/jquery.textcomplete.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.37.0/autocomplete.jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/algoliasearch/3.35.1/algoliasearch.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.1/Sortable.min.js" type="text/javascript"></script>
-    <script src="/application/views/mench.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+    <script src="/application/views/mench.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
+
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:800&display=swap" rel="stylesheet">
+    <link href="/application/views/mench.css?v=<?= config_var(11060) ?>" rel="stylesheet"/>
 
-
-    <link href="/application/views/mench.css?v=v<?= config_var(11060) ?>" rel="stylesheet"/>
-    <script type="text/javascript">
-        if(js_pl_id>0){
-            //https://help.fullstory.com/hc/en-us/articles/360020623294-FS-setUserVars-Recording-custom-user-data
-            FS.identify(js_pl_id, {
-                displayName: js_pl_name,
-                uid: js_pl_id,
-                profileURL: 'https://mench.com/source/'+js_pl_id
-            });
-        }
-    </script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92774608-1"></script>
     <script type="text/javascript">
@@ -106,6 +94,7 @@ if($found_at > 1){
         gtag('js', new Date());
         gtag('config', 'UA-92774608-1');
     </script>
+
 </head>
 
 <body class="<?= 'to'.$current_mench['x_class'] ?>">
@@ -126,12 +115,9 @@ if(strlen($flash_message) > 0) {
 }
 
 
-if(isset($custom_header)){
-    echo $custom_header;
-}
-
 
 if(!isset($hide_header)){
+    //Do not show for /sign view
     ?>
 
     <!-- MENCH LINE -->

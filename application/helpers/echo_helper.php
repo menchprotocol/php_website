@@ -18,19 +18,34 @@ function echo_en_load_more($page, $limit, $en__child_count)
 }
 
 function echo_db_field($field_name){
-    //Takes a database field name and returns a clean version of it:
-    if(substr($field_name, 0, 3) == 'ln_'){
-        //Link field:
-        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('_source_id', '', str_replace('ln_', 'Transaction ', $field_name)))));
-    } elseif(substr($field_name, 0, 3) == 'in_'){
-        //Idea field:
-        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('_source_id', '', str_replace('in_', 'Idea ', $field_name)))));
-    } elseif(substr($field_name, 0, 3) == 'en_'){
-        //Player field:
-        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('_source_id', '', str_replace('en_', 'Source ', $field_name)))));
+
+    //Takes a database field name and returns a human-friendly version
+
+    $prefix = substr($field_name, 0, 3);
+
+    if($prefix == 'ln_'){
+        $name = 'Transaction';
+    } elseif($prefix == 'in_'){
+        $name = 'Idea';
+    } elseif($prefix == 'en_'){
+        $name = 'Source';
     } else {
         return false;
     }
+
+    return ucwords(
+        str_replace('_', ' ',
+            str_replace('_id', '',
+                str_replace('_source_id', '',
+                    str_replace('_idea_id', '',
+                        //Start here:
+                        str_replace($prefix, $name.' ', $field_name)
+                    )
+                )
+            )
+        )
+    );
+
 }
 
 
@@ -605,140 +620,6 @@ function echo_ln($ln, $is_parent_tr = false)
     return $ui;
 }
 
-
-function echo_random_message($message_key, $return_all = false){
-
-    /*
-     *
-     * To make Mench personal assistant feel more natural,
-     * this function sends varying messages to communicate
-     * specific things about Mench or about the user's
-     * progress towards their 🔴 READING LIST.
-     *
-     * */
-
-
-    $rotation_index = array(
-
-        'email_yours_truly_line' => array( //12691
-            'Cheers,',
-            'Have an Awesome Day,',
-            'Have a Blast,',
-            'All The Best,',
-            'Enjoy,',
-            'Have Fun,',
-            'Many Thanks,',
-        ),
-        'next_in_is' => array( //12692
-            'Next: ',
-            'Next idea is: ',
-            'The next idea is: ',
-            'Ok moving on to the next idea: ',
-            'Moving to the next idea: ',
-        ),
-        'one_way_only' => array( //12693
-            'I am not designed to respond to custom messages. I can understand you only when you choose one of the options that I recommend to you.',
-            'I cannot understand if you send me an out-of-context message. I would only understand if you choose one of the options that I recommend to you.',
-            'I cannot respond to your custom messages and can only understand if you select one of the options that I recommend to you.',
-        ),
-        'loading_notify' => array(  //12694
-            "Are you having a good day today?",
-            "Be gentle with yourself today.",
-            "Congratulate yourself for the great job you're doing",
-            "Crunching the latest data, just for you. Hang tight...",
-            "Have a glass of water nearby? Time for a sip!",
-            "Offer hugs. Someone probably needs them.",
-            "You are unique!",
-            "Get a drink of water. Stay hydrated!",
-            "Have you danced today?",
-            "Have you listened to your favourite song recently? 🎵",
-            "Have you stretched recently?",
-            "Have you recently told someone you're proud of them?",
-            "Help is out there. Don't be afraid to ask.",
-            "Hey! Life is tough, but so are you! 💪",
-            "Hey, jump up for a sec and stretch, yeah? 👐",
-            "I know it's cheesey but I hope you have a grate day!",
-            "Is there a window you can look through? The world is beautiful. 🌆",
-            "Is your seat comfortable? Can you adjust your chair properly?",
-            "It can be hard to get started, can't it? That's okay, you got this.",
-            "It's so great to have you here today",
-            "Keep growing, keep learning, keep moving forward!",
-            "Learning new things is important - open your eyes to the world around you!",
-            "Making things awesome...",
-            "Novel, new, silly, & unusual activities can help lift your mood.",
-            "Play for a few minutes. Doodle, learn solitaire, fold a paper airplane, do something fun.",
-            "Don't take yourself for granted. You're important.",
-            "Rest your eyes for a moment. Look at something in the distance and count to five! 🌳",
-            "Self care is important, look after and love yourself, you're amazing!",
-            "Set aside time for a hobby. Gardening, drone building, knitting, do something for the pure pleasure of it.",
-            "So often our power lies not in ourselves, but in how we help others find their own strength",
-            "Sometimes doing something nice for somebody else is the best way to feel good about yourself! 👭",
-            "Stop. Breathe. Be here now.",
-            "Stop. Take three slow deep breaths.",
-            "Take 5 minutes to straighten the space around you. Set a timer.",
-            "Take a break before you need it. It will make it easier to prevent burnout.",
-            "Take a moment to send a message to someone you love 😻",
-            "Take care of yourself. We need you.",
-            "Technology is a tool. Use it wisely.",
-            "The impact you leave on the universe can never be erased.",
-            "There are no impostors here",
-            "There's someone who is so so grateful that you exist together.",
-            "Today is a great day to let a friend know how much you appreciate them.",
-            "Water is good for you year round. If you're thirsty, you're dehydrated.",
-            "We all have superpowers. You included. I hope you are using yours to make your life a joyful one.",
-            "When's the last time you treated yourself?",
-            "With the dawning of a new day comes a clean slate and lots of opportunity.",
-            "You are fantastic",
-            "You are loved. <3",
-            "You are so very important 💛💛💕",
-            "You can do this!",
-            "You cannot compare your successes to the apparent achievements of others. 🌄",
-            "You deserve to be safe and to have nice things happen to you.",
-            "You have the power to change the world.",
-            "You're allowed to start small. 🐞",
-            "have you hugged anyone lately?",
-            "it's time to check your thirst level, human.",
-            "💗: don't forget to take a little bit of time to say hi to a friend",
-            "🌸: remember to let your eyes rest, maybe by looking at a plant...",
-            "🙌: take a second to adjust your posture",
-            "😎🌈💕"
-        ),
-        'saving_notify' => array( //12695
-            "Learning everyday 😎",
-            "Growing with you 🌸",
-            "Getting smarter ^~^",
-        ),
-        'command_me' => array( //12696
-            'You can search for new ideas by sending me a message starting with "Search for", for example: "Search for assess my back-end skills" or "Search for recruit top talent"',
-        ),
-        'read_recommendation' => array( //12697
-            'What would you like to read next? Start a sentence with "Search for ..." or:  /link:BROWSE READS:https://mench.com/read',
-        ),
-
-    );
-
-    if(!array_key_exists($message_key, $rotation_index)){
-
-        //Oooopsi, this should never happen:
-        $CI =& get_instance();
-        $CI->READ_model->ln_create(array(
-            'ln_content' => 'echo_random_message() failed to locate message type ['.$message_key.']',
-            'ln_type_source_id' => 4246, //Platform Bug Reports
-        ));
-        return false;
-
-    } else {
-
-        if($return_all){
-            //Return all options:
-            return $rotation_index[$message_key];
-        } else {
-            //Return a random message:
-            return $rotation_index[$message_key][rand(0, (count($rotation_index[$message_key]) - 1))];
-        }
-    }
-
-}
 
 function echo_url_clean($url)
 {
@@ -1627,7 +1508,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
         echo echo_in_previous_read($in_id, $recipient_en);
 
         //NEXT:
-        $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH  NAVIGATION
+        $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
         echo '<div class="inline-block margin-top-down previous_reads"><a class="btn btn-read" href="/read/next/'.$in_id.'">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a></div>';
 
     }

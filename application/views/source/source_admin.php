@@ -61,7 +61,7 @@ $developer_tools = array(
 if(!$action) {
 
     //Admin Panel Header
-    $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
+    $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
     echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[6287]['m_icon'].'</span>'.$en_all_11035[6287]['m_name'].'</div>';
 
     echo '<div class="list-group maxout">';
@@ -152,11 +152,7 @@ if(!$action) {
 } elseif($action=='review_echo_platform_message'){
 
     foreach($this->config->item('en_all_12687') as $en_id => $m){
-        echo '<div class="montserrat">'.$m['m_name'].'</div>';
-        foreach(echo_platform_message($en_id, true) as $message){
-            echo '<p style="border-bottom:1px solid #999999; padding: 5px;">'.$message.'</p>';
-        }
-        echo '<hr />RANDOM: '.echo_platform_message($en_id).'<hr />';
+        echo '<p style="border-bottom:1px solid #999999; padding: 5px;"><b class="montserrat">'.$m['m_name'].'</b> '.echo_platform_message($en_id).'</p>';
     }
 
 } elseif($action=='analyze_url'){
@@ -1161,7 +1157,7 @@ if(!$action) {
 
 $(document).ready(function () {
 //Show spinner:
-$(\'#in_report_conditional_steps\').html(\'<span><i class="far fa-yin-yang fa-spin"></i> \' + echo_loading_notify() +  \'</span>\').hide().fadeIn();
+$(\'#in_report_conditional_steps\').html(\'<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>\' + js_echo_platform_message(12694)).hide().fadeIn();
 //Load report based on input fields:
 $.post("/idea/in_report_conditional_steps", {
     starting_in: parseInt($(\'#starting_in\').val()),

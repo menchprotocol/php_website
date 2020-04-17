@@ -811,7 +811,7 @@ class READ_model extends CI_Model
                     ));
 
                     $this->READ_model->dispatch_message(
-                        echo_random_message('next_in_is') . $next_step_ins[0]['in_title'],
+                        echo_platform_message(12692) . $next_step_ins[0]['in_title'],
                         array('en_id' => $en_id),
                         true
                     );
@@ -845,130 +845,6 @@ class READ_model extends CI_Model
 
     }
 
-    function read_skip_initiate($en_id, $in_id, $push_message = true){
-
-        //Fetch this Idea:
-        $ins = $this->IDEA_model->in_fetch(array(
-            'in_id' => $in_id,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ));
-        if(count($ins) < 1){
-            $this->READ_model->ln_create(array(
-                'ln_next_idea_id' => $in_id,
-                'ln_content' => 'step_skip_initiate() did not locate the published idea',
-                'ln_type_source_id' => 4246, //Platform Bug Reports
-                'ln_creator_source_id' => $en_id,
-            ));
-            return false;
-        }
-
-        $metadata = unserialize($ins[0]['in_metadata']);
-        if (isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps'] >= 3) {
-            $skip_message = 'Are you sure you want to skip all '.$metadata['in__metadata_max_steps'].' steps?';
-        } else {
-            $skip_message = 'Are you sure you want to skip?';
-        }
-
-
-        if(!$push_message){
-
-            //Just return the message for HTML format:
-            return $skip_message;
-
-        } else {
-
-            //Send over messenger:
-            $this->READ_model->dispatch_message(
-                $skip_message,
-                array('en_id' => $en_id),
-                true,
-                array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Yes',
-                        'payload' => 'SKIP-ACTIONPLAN_skip-confirm_'.$in_id, //Confirm and skip
-                    ),
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'No',
-                        'payload' => 'SKIP-ACTIONPLAN_skip-cancel_'.$in_id, //Cancel skipping
-                    ),
-                )
-            );
-
-        }
-    }
-
-    function read_skip_apply($en_id, $in_id, $push_message)
-    {
-
-        //Fetch idea common steps:
-        $ins = $this->IDEA_model->in_fetch(array(
-            'in_id' => $in_id,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ));
-        if(count($ins) < 1){
-            $this->READ_model->ln_create(array(
-                'ln_content' => 'step_skip_apply() failed to locate published idea',
-                'ln_type_source_id' => 4246, //Platform Bug Reports
-                'ln_creator_source_id' => $en_id,
-                'ln_previous_idea_id' => $in_id,
-            ));
-            return 0;
-        }
-
-
-        $in_metadata = unserialize( $ins[0]['in_metadata'] );
-
-        if(!isset($in_metadata['in__metadata_common_steps'])){
-            $this->READ_model->ln_create(array(
-                'ln_content' => 'step_skip_apply() failed to locate metadata common steps',
-                'ln_type_source_id' => 4246, //Platform Bug Reports
-                'ln_creator_source_id' => $en_id,
-                'ln_previous_idea_id' => $in_id,
-            ));
-            return 0;
-        }
-
-        //Fetch common base and expansion paths from idea metadata:
-        $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
-
-        //Add 🔴 READING LIST Skipped Read Progression Links:
-        foreach($flat_common_steps as $common_in_id){
-
-            //Delete current progression links:
-            $current_progress = $this->READ_model->ln_fetch(array(
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
-                'ln_creator_source_id' => $en_id,
-                'ln_previous_idea_id' => $common_in_id,
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            ));
-
-
-            //Add skip link:
-            $new_progression_link = $this->READ_model->ln_create(array(
-                'ln_type_source_id' => 6143, //🔴 READING LIST Skipped Read
-                'ln_creator_source_id' => $en_id,
-                'ln_previous_idea_id' => $common_in_id,
-            ));
-
-
-            foreach($current_progress as $ln){
-                $this->READ_model->ln_update($ln['ln_id'], array(
-                    'ln_parent_transaction_id' => $new_progression_link['ln_id'],
-                    'ln_status_source_id' => 6173, //Link Deleted
-                ), $en_id, 12328);
-            }
-
-        }
-
-        //Process on-complete automations:
-        $this->READ_model->read__completion_recursive_up($en_id, $ins[0]);
-
-        //Return number of skipped steps:
-        return count($flat_common_steps);
-
-    }
 
     function read_focus($en_id){
 
@@ -3699,7 +3575,7 @@ class READ_model extends CI_Model
                 if (count($player_reads) < 1) {
                     return array(
                         'status' => 0,
-                        'message' => 'UNSUBSCRIBE_ Failed to skip an IDEA from the master 🔴 READING LIST',
+                        'message' => 'UNSUBSCRIBE_ Failed to delete IDEA from 🔴 READING LIST',
                     );
                 }
 
@@ -3807,7 +3683,7 @@ class READ_model extends CI_Model
 
             //Affirm and educate:
             $this->READ_model->dispatch_message(
-                'Got it. '.echo_random_message('command_me'),
+                echo_platform_message(12697),
                 $en,
                 true
             //Do not give next option and listen for their idea command...
@@ -3933,66 +3809,6 @@ class READ_model extends CI_Model
             //Add to 🔴 READING LIST:
             $this->READ_model->read_start($en['en_id'], $in_id);
 
-        } elseif (substr_count($quick_reply_payload, 'SKIP-ACTIONPLAN_') == 1) {
-
-            //Extract variables from REF:
-            $input_parts = explode('_', one_two_explode('SKIP-ACTIONPLAN_', '', $quick_reply_payload));
-            $skip_action = trim($input_parts[0]); //It would be initial set to DRAFTING and then would change to REMOVED if skip was cancelled, PUBLISHED if skip was confirmed.
-            $in_id = intval($input_parts[1]); //Idea to Skip
-
-            //Validate inputs:
-            if ($in_id < 1) {
-                return array(
-                    'status' => 0,
-                    'message' => 'SKIP-ACTIONPLAN_ received invalid idea ID',
-                );
-            }
-
-
-            //Was this initiating?
-            if ($skip_action == 'skip-initiate') {
-
-                //User has indicated they want to skip this idea and move on to the next item in-line:
-                //Lets confirm the implications of this SKIP to ensure they are aware:
-                $this->READ_model->read_skip_initiate($en['en_id'], $in_id);
-
-            } else {
-
-                //They have either confirmed or cancelled the skip:
-                if ($skip_action == 'skip-cancel') {
-
-                    //user changed their mind and does not want to skip anymore
-                    $message = 'I\'m glad you changed your mind! Let\'s continue...';
-
-                } elseif ($skip_action == 'skip-confirm') {
-
-                    //Actually skip and see if we've finished this 🔴 READING LIST:
-                    $this->READ_model->read_skip_apply($en['en_id'], $in_id, true);
-
-                    //Confirm the skip:
-                    $message = 'Got it! I successfully skipped selected steps';
-
-                }
-
-                //Inform User of Skip status:
-                $this->READ_model->dispatch_message(
-                    $message,
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT_',
-                        )
-                    )
-                );
-
-                //Communicate next step:
-                $this->READ_model->read_next_go($en['en_id'], true, true);
-
-            }
-
         } elseif (substr_count($quick_reply_payload, 'ANSWERQUESTION_') == 1) {
 
             /*
@@ -4072,40 +3888,6 @@ class READ_model extends CI_Model
             $this->READ_model->ln_create(array(
                 'ln_creator_source_id' => $en['en_id'],
                 'ln_type_source_id' => 6559, //User Commanded Next
-                'ln_previous_idea_id' => $next_in_id,
-            ));
-
-        } elseif ($fb_received_message == 'skip') {
-
-            //Find the next idea in the 🔴 READING LIST to skip:
-            $next_in_id = $this->READ_model->read_next_go($en['en_id'], false);
-
-            if($next_in_id > 0){
-
-                //Initiate skip request:
-                $this->READ_model->read_skip_initiate($en['en_id'], $next_in_id);
-
-            } else {
-
-                $this->READ_model->dispatch_message(
-                    'I could not find any ideas in your 🔴 READING LIST to skip.',
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT_',
-                        )
-                    )
-                );
-
-            }
-
-            //Log command trigger:
-            $this->READ_model->ln_create(array(
-                'ln_creator_source_id' => $en['en_id'],
-                'ln_type_source_id' => 6560, //User Commanded Skip
                 'ln_previous_idea_id' => $next_in_id,
             ));
 

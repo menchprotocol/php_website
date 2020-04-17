@@ -179,7 +179,7 @@ class Source extends CI_Controller
         }
 
 
-        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
+        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
             'hide_header' => 1,
             'title' => $en_all_11035[4269]['m_name'],
@@ -1486,7 +1486,7 @@ class Source extends CI_Controller
         //This is a new email, send invitation to join:
 
         ##Email Subject
-        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
+        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
         $subject = 'MENCH '.$en_all_11035[11068]['m_name'];
 
         ##Email Body

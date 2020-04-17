@@ -1,7 +1,7 @@
 <script>
     var in_loaded_id = <?= $in['in_id'] ?>;
 </script>
-<script src="/application/views/read/read_coin.js?v=v<?= config_var(11060) ?>"
+<script src="/application/views/read/read_coin.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 

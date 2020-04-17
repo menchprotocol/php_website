@@ -208,7 +208,7 @@ if(isset($_GET['ln_type_source_id'])){
 $has_filters = ( count($_GET) > 0 );
 
 $en_all_2738 = $this->config->item('en_all_2738');
-$en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 
 ?>
 
@@ -218,7 +218,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
     var ln_content_search = '<?= ( isset($_GET['ln_content_search']) && strlen($_GET['ln_content_search']) > 0 ? $_GET['ln_content_search'] : '' ) ?>';
     var ln_content_replace = '<?= ( isset($_GET['ln_content_replace']) && strlen($_GET['ln_content_replace']) > 0 ? $_GET['ln_content_replace'] : '' ) ?>';
 </script>
-<script src="/application/views/ledger/ledger_list.js?v=v<?= config_var(11060) ?>"
+<script src="/application/views/ledger/ledger_list.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <?php

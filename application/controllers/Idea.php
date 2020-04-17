@@ -1227,7 +1227,7 @@ class Idea extends CI_Controller {
                     return echo_json(array(
                         'status' => 1,
                         'delete_from_ui' => 1,
-                        'message' => echo_random_message('saving_notify'),
+                        'message' => echo_platform_message(12695),
                     ));
                 } else {
                     return echo_json(array(

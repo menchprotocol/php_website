@@ -5,7 +5,7 @@ $en_all_6206 = $this->config->item('en_all_6206'); //Player Table
 $en_all_4341 = $this->config->item('en_all_4341'); //Link Table
 $en_all_2738 = $this->config->item('en_all_2738');
 $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
-$en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 
 
 
@@ -47,7 +47,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
 </script>
 
 
-<script src="/application/views/source/source_coin.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/source/source_coin.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
 

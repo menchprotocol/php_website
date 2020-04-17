@@ -1,13 +1,9 @@
-<script>
-    $(document).ready(function () {
-        load_leaderboard();
-    });
-</script>
+
+<script src="/application/views/source/source_home.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
 
     <?php
-
 
     //My Sources:
     if($session_en){
@@ -33,7 +29,6 @@
         }
         echo '</div>';
     }
-
 
 
 

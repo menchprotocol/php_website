@@ -25,7 +25,7 @@ class Ledger extends CI_Controller
          * */
 
         //Load header:
-        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH  NAVIGATION
+        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 
         $this->load->view('header', array(
             'title' => $en_all_11035[4341]['m_name'],

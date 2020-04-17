@@ -8,20 +8,62 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-17 07:05:22 PST
+//Generated 2020-04-17 09:19:26 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587132322;
-$config['cache_count_transaction'] = 1140777;
+$config['cache_timestamp'] = 1587140366;
+$config['cache_count_transaction'] = 1140891;
 $config['cache_count_read'] = 120988;
 $config['cache_count_idea'] = 4844;
-$config['cache_count_source'] = 5143;
+$config['cache_count_source'] = 5149;
 
 
 
 //PLATFORM MESSAGES:
-$config['en_ids_12687'] = array(12690,12688);
+$config['en_ids_12687'] = array(12693,12691,12694,12697,12696,12692,12695,12690,12688);
 $config['en_all_12687'] = array(
+    12693 => array(
+        'm_icon' => '',
+        'm_name' => 'DOES NOT SUPPORT TEXT COMMANDS',
+        'm_desc' => 'I am not designed to respond to custom messages. I can understand you only when you choose one of the options that I recommend to you. | I cannot understand if you send me an out-of-context message. I would only understand if you choose one of the options that I recommend to you. | I cannot respond to your custom messages and can only understand if you select one of the options that I recommend to you.',
+        'm_parents' => array(12687),
+    ),
+    12691 => array(
+        'm_icon' => '',
+        'm_name' => 'EMAIL YOURS TRULY LINE',
+        'm_desc' => 'Cheers, | Have an Awesome Day, | Have a Blast, | All The Best, | Enjoy, | Have Fun, | Many Thanks,',
+        'm_parents' => array(12687),
+    ),
+    12694 => array(
+        'm_icon' => '',
+        'm_name' => 'LOADING MESSAGE',
+        'm_desc' => 'Are you having a good day today? | Be gentle with yourself today. | Congratulate yourself for the great job you\'re doing | Crunching the latest data, just for you. Hang tight... | Have a glass of water nearby? Time for a sip! | Offer hugs. Someone probably needs them. | You are unique! | Get a drink of water. Stay hydrated! | Have you danced today? | Have you listened to your favourite song recently? 🎵 | Have you stretched recently? | Have you recently told someone you\'re proud of them? | Help is out there. Don\'t be afraid to ask. | Hey! Life is tough, but so are you! 💪 | Hey, jump up for a sec and stretch, yeah? 👐 | I know it\'s cheesey but I hope you have a grate day! | Is there a window you can look through? The world is beautiful. 🌆 | Is your seat comfortable? Can you adjust your chair properly? | It can be hard to get started, can\'t it? That\'s okay, you got this. | It\'s so great to have you here today | Keep growing, keep learning, keep moving forward! | Learning new things is important - open your eyes to the world around you! | Making things awesome... | Novel, new, silly, & unusual activities can help lift your mood. | Play for a few minutes. Doodle, learn solitaire, fold a paper airplane, do something fun. | Don\'t take yourself for granted. You\'re important. | Rest your eyes for a moment. Look at something in the distance and count to five! 🌳 | Self care is important, look after and love yourself, you\'re amazing! | Set aside time for a hobby. Gardening, drone building, knitting, do something for the pure pleasure of it. | So often our power lies not in ourselves, but in how we help others find their own strength | Sometimes doing something nice for somebody else is the best way to feel good about yourself! 👭 | Stop. Breathe. Be here now. | Stop. Take three slow deep breaths. | Take 5 minutes to straighten the space around you. Set a timer. | Take a break before you need it. It will make it easier to prevent burnout. | Take a moment to send a message to someone you love 😻 | Take care of yourself. We need you. | Technology is a tool. Use it wisely. | The impact you leave on the universe can never be erased. | There are no impostors here | There\'s someone who is so so grateful that you exist together. | Today is a great day to let a friend know how much you appreciate them. | Water is good for you year round. If you\'re thirsty, you\'re dehydrated. | We all have superpowers. You included. I hope you are using yours to make your life a joyful one. | When\'s the last time you treated yourself? | With the dawning of a new day comes a clean slate and lots of opportunity. | You are fantastic | You are loved. <3 | You are so very important 💛💛💕 | You can do this! | You cannot compare your successes to the apparent achievements of others. 🌄 | You deserve to be safe and to have nice things happen to you. | You have the power to change the world. | You\'re allowed to start small. 🐞 | have you hugged anyone lately? | it\'s time to check your thirst level, human. | 💗: don\'t forget to take a little bit of time to say hi to a friend | 🌸: remember to let your eyes rest, maybe by looking at a plant... | 🙌: take a second to adjust your posture | 😎🌈💕',
+        'm_parents' => array(12687),
+    ),
+    12697 => array(
+        'm_icon' => '',
+        'm_name' => 'MESSENGER FIND NEXT READ',
+        'm_desc' => 'What would you like to read next? Start a sentence with "Search for ..." or: /link:BROWSE READS:https://mench.com/read',
+        'm_parents' => array(12687),
+    ),
+    12696 => array(
+        'm_icon' => '',
+        'm_name' => 'MESSENGER SEARCH FOR IDEAS',
+        'm_desc' => 'You can search for new ideas by sending me a message starting with "Search for", for example: "Search for assess my back-end skills" or "Search for recruit top talent"',
+        'm_parents' => array(12687),
+    ),
+    12692 => array(
+        'm_icon' => '',
+        'm_name' => 'NEXT IDEA IS',
+        'm_desc' => 'Next: | Next idea is: | The next idea is: | Ok moving on to the next idea: | Moving to the next idea:',
+        'm_parents' => array(12687),
+    ),
+    12695 => array(
+        'm_icon' => '',
+        'm_name' => 'SAVING MESSAGE',
+        'm_desc' => 'Learning everyday 😎 | Growing with you 🌸 | Getting smarter ^~^',
+        'm_parents' => array(12687),
+    ),
     12690 => array(
         'm_icon' => '',
         'm_name' => 'SIGNIN CREATE ACCOUNT MESSAGE',
@@ -1126,7 +1168,7 @@ $config['en_all_4535'] = array(
         'm_icon' => '<i class="fas fa-table idea" aria-hidden="true"></i>',
         'm_name' => 'MENCH IDEAS',
         'm_desc' => '',
-        'm_parents' => array(11054,4527,7735,4535),
+        'm_parents' => array(4527,7735,4535),
     ),
     12647 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -3147,19 +3189,19 @@ $config['en_all_12079'] = array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA STATUS',
         'm_desc' => '',
-        'm_parents' => array(10990,12079,11054,6204,6226,6160,6232,7302,6194,6201,4527),
+        'm_parents' => array(10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
     ),
     4486 => array(
         'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA-TO-IDEA LINKS',
         'm_desc' => '',
-        'm_parents' => array(6232,12079,11054,10984,10662,4527),
+        'm_parents' => array(6232,12079,10984,10662,4527),
     ),
     7585 => array(
         'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA TYPE',
         'm_desc' => '',
-        'm_parents' => array(12079,11054,6204,10651,6160,6194,6232,4527,6201),
+        'm_parents' => array(12079,6204,10651,6160,6194,6232,4527,6201),
     ),
 );
 
@@ -3425,7 +3467,7 @@ $config['en_all_6232'] = array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA STATUS',
         'm_desc' => 'in_status_source_id',
-        'm_parents' => array(10990,12079,11054,6204,6226,6160,6232,7302,6194,6201,4527),
+        'm_parents' => array(10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
     ),
     4736 => array(
         'm_icon' => '<i class="fas fa-h1 idea" aria-hidden="true"></i>',
@@ -3437,13 +3479,13 @@ $config['en_all_6232'] = array(
         'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA-TO-IDEA LINKS',
         'm_desc' => 'ln_type_source_id',
-        'm_parents' => array(6232,12079,11054,10984,10662,4527),
+        'm_parents' => array(6232,12079,10984,10662,4527),
     ),
     7585 => array(
         'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA TYPE',
         'm_desc' => 'in_type_source_id',
-        'm_parents' => array(12079,11054,6204,10651,6160,6194,6232,4527,6201),
+        'm_parents' => array(12079,6204,10651,6160,6194,6232,4527,6201),
     ),
     4358 => array(
         'm_icon' => '<i class="fad fa-comment-alt-check" aria-hidden="true"></i>',
@@ -3673,7 +3715,7 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12678,11077,11074,12124,11076,12587,11075,12176,11071,11064,11065,11063,12156,11079,11060,11073,11066,11057,11056,12331,12113,12427,12088,11986,11072,12232,11162,11163,12565,12568);
+$config['en_ids_6404'] = array(12678,11077,11074,12124,11076,12587,11075,12176,11073,11071,11064,11065,11063,12156,11079,11060,11066,11057,11056,12331,12113,12427,12088,11986,11072,12232,11162,11163,12565,12568);
 $config['en_all_6404'] = array(
     12678 => array(
         'm_icon' => '',
@@ -3723,6 +3765,12 @@ $config['en_all_6404'] = array(
         'm_desc' => '30',
         'm_parents' => array(6404),
     ),
+    11073 => array(
+        'm_icon' => '',
+        'm_name' => 'IDEA NOTES MAX LENGTH',
+        'm_desc' => '1000',
+        'm_parents' => array(6404),
+    ),
     11071 => array(
         'm_icon' => '<i class="fad fa-ruler-horizontal idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA TITLE MAX LENGTH',
@@ -3762,13 +3810,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.343',
-        'm_parents' => array(6404),
-    ),
-    11073 => array(
-        'm_icon' => '',
-        'm_name' => 'MESSAGE MAX LENGTH',
-        'm_desc' => '1000',
+        'm_desc' => 'v1.344',
         'm_parents' => array(6404),
     ),
     11066 => array(
@@ -3858,14 +3900,8 @@ $config['en_all_6404'] = array(
 );
 
 //PLATFORM MEMORY JAVASCRIPT:
-$config['en_ids_11054'] = array(4737,7356,7355,4486,7585,2738,6201,6404,6177,7357,6186);
+$config['en_ids_11054'] = array(7356,7355,2738,6404,12687,6177,7357,6186);
 $config['en_all_11054'] = array(
-    4737 => array(
-        'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA STATUS',
-        'm_desc' => '',
-        'm_parents' => array(10990,12079,11054,6204,6226,6160,6232,7302,6194,6201,4527),
-    ),
     7356 => array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
         'm_name' => 'IDEA STATUS ACTIVE',
@@ -3878,35 +3914,23 @@ $config['en_all_11054'] = array(
         'm_desc' => '',
         'm_parents' => array(11054,10891,4527),
     ),
-    4486 => array(
-        'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA-TO-IDEA LINKS',
-        'm_desc' => '',
-        'm_parents' => array(6232,12079,11054,10984,10662,4527),
-    ),
-    7585 => array(
-        'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA TYPE',
-        'm_desc' => '',
-        'm_parents' => array(12079,11054,6204,10651,6160,6194,6232,4527,6201),
-    ),
     2738 => array(
         'm_icon' => '<img src="/img/mench.png" class="mench-spin no-radius">',
         'm_name' => 'MENCH',
         'm_desc' => '',
         'm_parents' => array(12497,11054,12041,3303,7524,3325,3326,3324,4527,1,7312,2750),
     ),
-    6201 => array(
-        'm_icon' => '<i class="fas fa-table idea" aria-hidden="true"></i>',
-        'm_name' => 'MENCH IDEAS',
-        'm_desc' => '',
-        'm_parents' => array(11054,4527,7735,4535),
-    ),
     6404 => array(
         'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
         'm_name' => 'PLATFORM CONFIG VARIABLES',
         'm_desc' => '',
         'm_parents' => array(11054,4527,7254,6403),
+    ),
+    12687 => array(
+        'm_icon' => '<i class="fad fa-comments-alt"></i>',
+        'm_name' => 'PLATFORM MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,7254),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
@@ -4183,7 +4207,7 @@ $config['en_all_10990'] = array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
         'm_name' => 'STATUS',
         'm_desc' => '',
-        'm_parents' => array(10990,12079,11054,6204,6226,6160,6232,7302,6194,6201,4527),
+        'm_parents' => array(10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
     ),
     4736 => array(
         'm_icon' => '<i class="fas fa-h1 idea" aria-hidden="true"></i>',
@@ -4898,7 +4922,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA STATUS',
         'm_desc' => '',
-        'm_parents' => array(10990,12079,11054,6204,6226,6160,6232,7302,6194,6201,4527),
+        'm_parents' => array(10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
     ),
     7356 => array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
@@ -4940,13 +4964,13 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA-TO-IDEA LINKS',
         'm_desc' => '',
-        'm_parents' => array(6232,12079,11054,10984,10662,4527),
+        'm_parents' => array(6232,12079,10984,10662,4527),
     ),
     7585 => array(
         'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA TYPE',
         'm_desc' => '',
-        'm_parents' => array(12079,11054,6204,10651,6160,6194,6232,4527,6201),
+        'm_parents' => array(12079,6204,10651,6160,6194,6232,4527,6201),
     ),
     10602 => array(
         'm_icon' => '<i class="far fa-puzzle-piece idea" aria-hidden="true"></i>',
@@ -5024,7 +5048,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-table idea" aria-hidden="true"></i>',
         'm_name' => 'MENCH IDEAS',
         'm_desc' => '',
-        'm_parents' => array(11054,4527,7735,4535),
+        'm_parents' => array(4527,7735,4535),
     ),
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
@@ -5108,19 +5132,19 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
         'm_name' => 'PLATFORM MEMORY',
         'm_desc' => '',
-        'm_parents' => array(4527,7258,7254),
+        'm_parents' => array(4527,7254),
     ),
     11054 => array(
         'm_icon' => '<i class="fal fa-memory" aria-hidden="true"></i>',
         'm_name' => 'PLATFORM MEMORY JAVASCRIPT',
         'm_desc' => '',
-        'm_parents' => array(4527,7258,7254),
+        'm_parents' => array(4527,7254),
     ),
     12687 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fad fa-comments-alt"></i>',
         'm_name' => 'PLATFORM MESSAGES',
         'm_desc' => '',
-        'm_parents' => array(4527,7254),
+        'm_parents' => array(11054,4527,7254),
     ),
     6232 => array(
         'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
@@ -6194,7 +6218,7 @@ $config['en_all_6201'] = array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
         'm_name' => 'STATUS',
         'm_desc' => '',
-        'm_parents' => array(10990,12079,11054,6204,6226,6160,6232,7302,6194,6201,4527),
+        'm_parents' => array(10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
     ),
     4736 => array(
         'm_icon' => '<i class="fas fa-h1 idea" aria-hidden="true"></i>',
@@ -6206,7 +6230,7 @@ $config['en_all_6201'] = array(
         'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
         'm_name' => 'TYPE',
         'm_desc' => '',
-        'm_parents' => array(12079,11054,6204,10651,6160,6194,6232,4527,6201),
+        'm_parents' => array(12079,6204,10651,6160,6194,6232,4527,6201),
     ),
 );
 
@@ -6217,13 +6241,13 @@ $config['en_all_6204'] = array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA STATUS',
         'm_desc' => '',
-        'm_parents' => array(10990,12079,11054,6204,6226,6160,6232,7302,6194,6201,4527),
+        'm_parents' => array(10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
     ),
     7585 => array(
         'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA TYPE',
         'm_desc' => '',
-        'm_parents' => array(12079,11054,6204,10651,6160,6194,6232,4527,6201),
+        'm_parents' => array(12079,6204,10651,6160,6194,6232,4527,6201),
     ),
     10602 => array(
         'm_icon' => '<i class="far fa-puzzle-piece idea" aria-hidden="true"></i>',
@@ -6507,17 +6531,11 @@ $config['en_all_7309'] = array(
 );
 
 //ADMIN PANEL:
-$config['en_ids_6287'] = array(7257,7258,7274);
+$config['en_ids_6287'] = array(7257,7274);
 $config['en_all_6287'] = array(
     7257 => array(
         'm_icon' => '<i class="fab fa-app-store-ios"></i>',
         'm_name' => 'MENCH MODERATION APPS',
-        'm_desc' => '',
-        'm_parents' => array(6287),
-    ),
-    7258 => array(
-        'm_icon' => '<i class="far fa-bookmark"></i>',
-        'm_name' => 'MENCH PLATFORM BOOKMARKS',
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
@@ -6667,7 +6685,7 @@ $config['en_all_7302'] = array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
         'm_name' => 'STATUS',
         'm_desc' => '',
-        'm_parents' => array(10990,12079,11054,6204,6226,6160,6232,7302,6194,6201,4527),
+        'm_parents' => array(10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
     ),
     10602 => array(
         'm_icon' => '<i class="far fa-puzzle-piece idea" aria-hidden="true"></i>',
@@ -6724,13 +6742,13 @@ $config['en_all_6194'] = array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA STATUS',
         'm_desc' => 'SELECT count(in_id) as totals FROM mench_idea WHERE in_status_source_id=',
-        'm_parents' => array(10990,12079,11054,6204,6226,6160,6232,7302,6194,6201,4527),
+        'm_parents' => array(10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
     ),
     7585 => array(
         'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA TYPE',
         'm_desc' => 'SELECT count(in_id) as totals FROM mench_idea WHERE in_status_source_id IN (6183,6184) AND in_type_source_id=',
-        'm_parents' => array(12079,11054,6204,10651,6160,6194,6232,4527,6201),
+        'm_parents' => array(12079,6204,10651,6160,6194,6232,4527,6201),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
