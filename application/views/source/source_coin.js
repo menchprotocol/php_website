@@ -186,7 +186,7 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 
                 en_add_or_link(suggestion.alg_obj_id, is_en_parent);
 
-            }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [shortcut]}, [{
+            }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_en_parent ? 't' : 'a' )]}, [{
 
             source: function (q, cb) {
                 algolia_index.search(q, {

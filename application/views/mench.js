@@ -702,8 +702,7 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
             window.location = '/idea/' + suggestion.alg_obj_id;
             return true;
         }
-
-    }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [shortcut]}, [{
+    }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_in_parent ? 't' : 'a' )]}, [{
 
         source: function (q, cb) {
 

@@ -475,7 +475,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
                         $this_tab .= '<div class="nav nav-pills nav-sm '.superpower_active(10986).'">';
 
                         //Show fixed All button:
-                        $this_tab .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="counter-11029 source">&nbsp;' . $source_count . '</span><span class="show-max source">&nbsp;All</span></a></li>';
+                        $this_tab .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="counter-11029 source">&nbsp;' . $source_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
 
                         //Show each specific filter based on DB counts:
                         foreach ($child_en_filters as $c_c) {
