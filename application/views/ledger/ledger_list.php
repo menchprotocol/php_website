@@ -409,7 +409,7 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
     echo '<input type="submit" class="btn btn-read" value="Apply" />';
 
     if($has_filters){
-        echo ' &nbsp;<a href="/ledger" style="font-size: 0.8em;">Delete Filters</a>';
+        echo ' &nbsp;<a href="/ledger" style="font-size: 0.8em;">Remove Filters</a>';
     }
 
     echo '</form>';

@@ -151,7 +151,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
 
                 //Inform User that this is a sliced video
                 if ($start_sec || $end_sec) {
-                    $embed_html_code .= '<div class="read-topic"><i class="fad fa-play-circle"></i>&nbsp;' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'">WATCH THIS ' . echo_time_minutes(($end_sec - $start_sec)) . ' CLIP</b>' : '<b>WATCH FROM ' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
+                    $embed_html_code .= '<div class="read-topic">' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'">WATCH THIS ' . echo_time_minutes(($end_sec - $start_sec)) . ' CLIP</b>' : '<b>WATCH FROM ' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
                 }
 
                 $embed_html_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
@@ -1127,24 +1127,27 @@ function echo_in_coins_source($in_id = 0, $en_id = 0){
 
 
 
-function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $common_prefix = null, $extra_class = null, $show_editor = false, $completion_rate = null)
+function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $common_prefix = null, $extra_class = null, $show_editor = false, $completion_rate = null, $recipient_en = false)
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
-    $session_en = superpower_assigned();
+    if(!$recipient_en){
+        $recipient_en = superpower_assigned();
+    }
 
     $metadata = unserialize($in['in_metadata']);
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
 
     if(!$completion_rate){
-        if($session_en){
-            $completion_rate = $CI->READ_model->read__completion_progress($session_en['en_id'], $in);
+        if($recipient_en){
+            $completion_rate = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $in);
         } else {
             $completion_rate['completion_percentage'] = 0;
         }
     }
+
 
     $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor );
 
@@ -1647,7 +1650,7 @@ function echo_in_previous_read($in_id, $recipient_en){
     //READ LIST
     $player_read_ids = $CI->READ_model->read_ids($recipient_en['en_id']);
     $recursive_parents = $CI->IDEA_model->in_fetch_recursive_parents($in_id, true, true);
-
+    $top_progress = 0;
     foreach ($recursive_parents as $grand_parent_ids) {
         foreach(array_intersect($grand_parent_ids, $player_read_ids) as $intersect) {
 
@@ -1664,9 +1667,11 @@ function echo_in_previous_read($in_id, $recipient_en){
                     'in_id' => $parent_in_id,
                 ));
 
-                array_push($breadcrumb_items, echo_in_read($ins_this[0]));
+                $completion_rate = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $ins_this[0]);
+                array_push($breadcrumb_items, echo_in_read($ins_this[0], false, null, null, null, false, $completion_rate, $recipient_en));
 
                 if ($parent_in_id == $intersect) {
+                    $top_progress = $completion_rate['completion_percentage'];
                     break;
                 }
             }
@@ -1688,7 +1693,7 @@ function echo_in_previous_read($in_id, $recipient_en){
     //Did We Find It?
     if($ui){
         //Previous
-        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;</div>';
+        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;<b class="montserrat grey">'.$top_progress.'%</b>&nbsp;</div>';
     }
 
     return $ui;

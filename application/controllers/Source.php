@@ -326,7 +326,7 @@ class Source extends CI_Controller
         $filters = array(
             'ln_parent_source_id' => $parent_en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-            'en_status_source_id IN (' . join(',', ( $en_focus_filter<0 /* Delete Filters*/ ? $this->config->item('en_ids_7358') /* Source Status Active */ : array($en_focus_filter) /* This specific filter*/ )) . ')' => null,
+            'en_status_source_id IN (' . join(',', ( $en_focus_filter<0 /* Remove Filters */ ? $this->config->item('en_ids_7358') /* Source Status Active */ : array($en_focus_filter) /* This specific filter*/ )) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         );
 
