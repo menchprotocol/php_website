@@ -466,6 +466,7 @@ function echo_ln($ln, $is_inner = false)
     $en_all_4341 = $CI->config->item('en_all_4341'); //Link Table
     $en_all_2738 = $CI->config->item('en_all_2738');
     $en_all_6186 = $CI->config->item('en_all_6186'); //Transaction Status
+    $session_en = superpower_assigned();
 
 
 
@@ -518,7 +519,7 @@ function echo_ln($ln, $is_inner = false)
 
 
     //Hide Sensitive Details?
-    if(in_array($ln['ln_type_source_id'] , $CI->config->item('en_ids_4755')) && !superpower_active(10985, true)){
+    if(in_array($ln['ln_type_source_id'] , $CI->config->item('en_ids_4755')) && (!$session_en || $ln['ln_creator_source_id']!=$session_en['en_id']) && !superpower_active(10985, true)){
 
         //Hide Information:
         $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
