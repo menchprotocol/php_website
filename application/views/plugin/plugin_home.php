@@ -10,30 +10,30 @@ $en_all_4463 = $this->config->item('en_all_4463'); //GLOSSARY
 $moderation_tools = array(
 
     //Moderator Tools
-    '/source/admin/link_coins_words_stats' => 'Coin Stats',
-    '/source/admin/orphan_ins' => 'List Orphan Ideas',
-    '/source/admin/orphan_sources' => 'List Orphan Sources',
-    '/source/admin/in_replace_outcomes' => 'Idea Title Search & Replace',
-    '/source/admin/en_replace_name' => 'Source Name Search & Replace',
-    '/source/admin/in_invalid_outcomes' => 'Idea Invalid Titles',
-    '/source/admin/identical_in_outcomes' => 'Identical Idea Titles',
-    '/source/admin/identical_source_names' => 'Identical Source Names',
-    '/source/admin/actionplan_debugger' => 'My READING LIST Debugger',
-    '/source/admin/en_icon_search' => 'Source Icon Search',
-    '/source/admin/source_links' => 'Source Sync Link Types',
-    '/source/admin/or__children' => 'List OR Ideas + Answers',
-    '/source/admin/assessment_marks_list_all' => 'Completion Marks List All',
-    '/source/admin/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
-    '/source/admin/compose_test_message' => 'Compose Test Message',
-    '/source/admin/random_player_avatar' => 'Random User Icons',
-    '/source/admin/analyze_url' => 'Analyze URL',
-    '/source/admin/12687' => 'List All Platform Messages',
+    '/source/app/link_coins_words_stats' => 'Coin Stats',
+    '/source/app/orphan_ins' => 'List Orphan Ideas',
+    '/source/app/orphan_sources' => 'List Orphan Sources',
+    '/source/app/in_replace_outcomes' => 'Idea Title Search & Replace',
+    '/source/app/en_replace_name' => 'Source Name Search & Replace',
+    '/source/app/in_invalid_outcomes' => 'Idea Invalid Titles',
+    '/source/app/identical_in_outcomes' => 'Identical Idea Titles',
+    '/source/app/identical_source_names' => 'Identical Source Names',
+    '/source/app/actionplan_debugger' => 'My READING LIST Debugger',
+    '/source/app/en_icon_search' => 'Source Icon Search',
+    '/source/app/source_links' => 'Source Sync Link Types',
+    '/source/app/or__children' => 'List OR Ideas + Answers',
+    '/source/app/assessment_marks_list_all' => 'Completion Marks List All',
+    '/source/app/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
+    '/source/app/compose_test_message' => 'Compose Test Message',
+    '/source/app/random_player_avatar' => 'Random User Icons',
+    '/source/app/analyze_url' => 'Analyze URL',
+    '/source/app/12687' => 'List All Platform Messages',
 
     //Hope to get zero:
-    '/source/admin/source_in_statuses' => 'Analyze & Fix Play & Idea Statuses',
-    '/source/admin/analyze_source' => 'Analyze & Fix Source Links',
-    '/source/admin/in_crossovers' => 'Analyze & Fix Idea Crossover Parent/Children',
-    '/source/admin/analyze_in_sources' => 'Analyze & Fix Idea Sources',
+    '/source/app/source_in_statuses' => 'Analyze & Fix Play & Idea Statuses',
+    '/source/app/analyze_source' => 'Analyze & Fix Source Links',
+    '/source/app/in_crossovers' => 'Analyze & Fix Idea Crossover Parent/Children',
+    '/source/app/analyze_in_sources' => 'Analyze & Fix Idea Sources',
 );
 
 $jobs = array(
@@ -149,13 +149,6 @@ if(!$action) {
 
     echo '</table>';
 
-} elseif($action==12687){
-
-    echo '<div class="margin-top-down"><a href="/source/12687" class="montserrat source">MANAGE MESSAGES</a></div>';
-
-    foreach($this->config->item('en_all_12687') as $en_id => $m){
-        echo '<p style="border-bottom:1px solid #999999; padding: 5px;"><b class="montserrat">'.$m['m_name'].'</b> '.echo_platform_message($en_id).'</p>';
-    }
 
 } elseif($action=='analyze_url'){
 
@@ -315,7 +308,7 @@ if(!$action) {
         'ledger' => 0,
         'ledger_not_source_count' => 0,
         'source_not_ledger_count' => 0,
-        'source_not_ledger_list' => array(),
+        'source_not_ledger_home' => array(),
     );
 
     foreach($this->SOURCE_model->en_fetch() as $en) {
@@ -340,7 +333,7 @@ if(!$action) {
         }
         if($is_player && !$is_ledger){
             $stats['source_not_ledger_count']++;
-            array_push($stats['source_not_ledger_list'], $en);
+            array_push($stats['source_not_ledger_home'], $en);
         }
         if($is_ledger && !$is_player){
             $stats['ledger_not_source_count']++;
@@ -397,7 +390,7 @@ if(!$action) {
             echo '<br />';
             echo '<a class="delete-all" href="javascript:void(0);" onclick="$(\'.delete-all\').toggleClass(\'hidden\')">Delete All</a>';
             echo '<div class="delete-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All ideas and all their links will be deleted. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing idea.<br /><br /></div>';
-            echo '<a class="delete-all hidden maxout" href="/source/admin/orphan_ins/delete_all" onclick="">Confirm: <b>Delete All</b> &raquo;</a>';
+            echo '<a class="delete-all hidden maxout" href="/source/app/orphan_ins/delete_all" onclick="">Confirm: <b>Delete All</b> &raquo;</a>';
         }
 
     } else {
@@ -476,7 +469,7 @@ if(!$action) {
             echo '<br />';
             echo '<a class="delete-all" href="javascript:void(0);" onclick="$(\'.delete-all\').toggleClass(\'hidden\')">Delete All</a>';
             echo '<div class="delete-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All sources and all their links will be deleted. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing source.<br /><br /></div>';
-            echo '<a class="delete-all hidden maxout" href="/source/admin/orphan_sources/delete_all" onclick="">Confirm: <b>Delete All</b> &raquo;</a>';
+            echo '<a class="delete-all hidden maxout" href="/source/app/orphan_sources/delete_all" onclick="">Confirm: <b>Delete All</b> &raquo;</a>';
         }
 
     } else {

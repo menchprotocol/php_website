@@ -857,7 +857,6 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
 
 
-
     //We either need the idea name (to create a new idea) or the in_link_child_id>0 to create an IDEA link:
     if (!in_link_child_id && in_name.length < 1) {
         alert('Alert: Enter something');
@@ -865,8 +864,10 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
         return false;
     }
 
+
     //Set processing status:
     add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="idea montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>' + js_echo_platform_message(12695) +  '</div>');
+
 
     //Update backend:
     $.post("/idea/in_link_or_create", {

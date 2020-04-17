@@ -1613,15 +1613,6 @@ class Source extends CI_Controller
 
 
 
-    function source_404(){
-        $this->load->view('header', array(
-            'title' => 'Page not found',
-        ));
-        $this->load->view('source/source_404');
-        $this->load->view('footer');
-    }
-
-
 
     function account_update_radio()
     {
@@ -2168,33 +2159,6 @@ class Source extends CI_Controller
             echo ');<br />';
         }
     }
-
-
-
-    function admin($action = null, $command1 = null, $command2 = null)
-    {
-
-        boost_power();
-
-        //Validate player:
-        $session_en = superpower_assigned(10985, true);
-
-        //Load tools:
-        $this->load->view('header', array(
-            'title' => 'Moderation Tools',
-        ));
-
-        $this->load->view('source/source_admin' , array(
-            'action' => $action,
-            'command1' => $command1,
-            'command2' => $command2,
-            'session_en' => $session_en,
-        ));
-
-        $this->load->view('footer');
-
-    }
-
 
 
 

@@ -30,7 +30,16 @@ class Ledger extends CI_Controller
         $this->load->view('header', array(
             'title' => $en_all_11035[4341]['m_name'],
         ));
-        $this->load->view('ledger/ledger_list');
+        $this->load->view('ledger/ledger_home');
+        $this->load->view('footer');
+    }
+
+
+    function ledger_404(){
+        $this->load->view('header', array(
+            'title' => 'Page Not Found',
+        ));
+        $this->load->view('ledger/ledger_404');
         $this->load->view('footer');
     }
 

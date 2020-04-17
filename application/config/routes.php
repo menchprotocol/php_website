@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $route['translate_uri_dashes']      = FALSE;
-$route['404_override']              = 'source/source_404';
+$route['404_override']              = 'ledger/ledger_404';
 
 $route['default_controller']        = "read/read_coin";
 

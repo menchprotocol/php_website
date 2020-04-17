@@ -103,7 +103,6 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 2: Enter Email -->
         <div id="step2" class="signup-steps hidden">
-            <p><?= echo_platform_message(12688) ?></p>
             <span class="medium-header"><?= $en_all_4269[3288]['m_icon'].' '.$en_all_4269[3288]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="read margin-top-down"></div>
@@ -146,7 +145,6 @@ if(count($current_sign_in_attempt) == 0){
         <div id="step4" class="signup-steps hidden">
 
             <div class="read-topic"><span class="icon-block-sm"><i class="fas fa-user-plus"></i></span>NEW ACCOUNT</div>
-            <p><?= echo_platform_message(12690) ?></p>
 
             <!-- pre-set Email -->
             <div class="margin-top-down">
