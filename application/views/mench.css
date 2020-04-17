@@ -423,7 +423,7 @@ img.no-radius {
 
 .btn-source i, .btn-read i, .btn-idea i { color: #000000 !important; }
 
-.nav-link.active .source i {
+.nav-link.active i {
     color: #000000 !important;
 }
 
