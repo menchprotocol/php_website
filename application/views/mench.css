@@ -411,6 +411,9 @@ img.no-radius {
     margin-left: 24px;
     margin-top: -43px;
 }
+.transaction-ref .ledger-list{
+    background-color:transparent !important;
+}
 
 
 /* MENCH Colors */
