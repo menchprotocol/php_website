@@ -260,7 +260,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
     <?php
     //Print Play Layout
-    $disable_content_loading = true;
+    $disable_content_loading = !isset($_GET['load']);
 
     foreach ($this->config->item('en_all_11089') as $en_id => $m){
 
