@@ -579,14 +579,14 @@ function echo_ln($ln, $is_inner = false)
                 //SOURCE
                 $ens = $CI->SOURCE_model->en_fetch(array('en_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/source/'.$ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span><span class="'.extract_icon_color($ens[0]['en_icon']).' img-block">'.echo_en_icon($ens[0]['en_icon']). ' '.$ens[0]['en_name'].'</span></a></div>';
+                $ui .= '<div class="simple-line"><a href="/source/'.$ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span>'.( $ln[$en_all_6232[$en_id]['m_desc']]==$ln['ln_creator_source_id'] ? $en_all_4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($ens[0]['en_icon']).' img-block">'.echo_en_icon($ens[0]['en_icon']). '&nbsp;'.$ens[0]['en_name'].'</span></a></div>';
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
                 //IDEA
                 $ins = $CI->IDEA_model->in_fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/idea/'.$ins[0]['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span>'.$en_all_2738[4535]['m_icon']. ' '.echo_in_title($ins[0]).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/idea/'.$ins[0]['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span>'.$en_all_2738[4535]['m_icon']. '&nbsp;'.echo_in_title($ins[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
