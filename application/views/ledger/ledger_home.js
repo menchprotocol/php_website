@@ -32,8 +32,8 @@ function check_in_en_status_source_id(){
 }
 
 
-
 function load_ledger(link_filters, link_join_by, page_num){
+
     //Show spinner:
     $('#link_page_'+page_num).html('<div class="montserrat"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_echo_platform_message(12694) +  '</div>').hide().fadeIn();
 
@@ -54,4 +54,5 @@ function load_ledger(link_filters, link_join_by, page_num){
             $('[data-toggle="tooltip"]').tooltip();
         }
     });
+
 }
