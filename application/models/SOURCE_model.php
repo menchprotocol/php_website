@@ -1336,7 +1336,7 @@ class SOURCE_model extends CI_Model
         if(!$fetch_result){
             //Let them know to complete their profile:
             $this->READ_model->dispatch_message(
-                'Hi! I just added you as a new source. You can update your account at any time. 🤗 /link:Update My Account:https://mench.com/source/account',
+                'Hi! I just added you as a new source. You can update your account at any time. 🤗 /link:Update My Account:https://mench.com/source/'.$added_en['en'],
                 $added_en['en'],
                 true
             );

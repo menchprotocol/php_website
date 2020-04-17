@@ -1513,10 +1513,8 @@ class Source extends CI_Controller
     function magic($ln_id){
 
         //Validate email:
-        if(superpower_assigned(10939)){
-            return redirect_message('/idea');
-        } elseif(superpower_assigned()){
-            return redirect_message('/read/next');
+        if(superpower_assigned()){
+            return redirect_message('/');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
             return redirect_message('/source/sign', '<div class="alert alert-danger" role="alert">Missing Email</div>');
@@ -1547,8 +1545,8 @@ class Source extends CI_Controller
         //Log them in:
         $ens[0] = $this->SOURCE_model->en_activate_session($ens[0]);
 
-        //Take them to their account:
-        return redirect_message( '/source/account' , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in. You can set a new password below.</div>');
+        //Take them to READ HOME
+        return redirect_message( '/read' , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
 
     }
 
