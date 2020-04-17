@@ -216,7 +216,7 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
     var is_in_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
     if(is_in_delete){
         //Seems to be deleting, confirm:
-        var r = confirm("Delete this idea AND delete all its links to other ideas?");
+        var r = confirm("Delete this idea AND unlink all its links to other ideas?");
         if (r == false) {
             return false;
         }
