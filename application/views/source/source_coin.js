@@ -600,15 +600,13 @@ function en_modify_save() {
 
     //Are we about to delete an source with a lot of links?
     var link_count= parseInt($('#en_link_count').val());
-    var action_verb = ( $('#en_merge').val().length > 0 ? 'merge' : 'unlink' );
-    var confirm_string = action_verb + " " + link_count;
     if(link_count >= 3){
         //Yes, confirm before doing so:
-        var confirm_removal = prompt("You are about to delete this source and "+action_verb+" its "+link_count+" links. Type \""+confirm_string+"\" to confirm.", "");
+        var confirm_removal = prompt("Delete source & "+( $('#en_merge').val().length > 0 ? 'merge' : 'unlink' )+" "+link_count+" links?! Type \"delete\" to confirm.", "");
 
-        if (!(confirm_removal == confirm_string)) {
+        if (!(confirm_removal == 'delete')) {
             //Abandon process:
-            alert('Source will not be '+action_verb+'d.');
+            alert('Source will not be deleted.');
             return false;
         }
     }
