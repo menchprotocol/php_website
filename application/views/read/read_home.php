@@ -26,17 +26,12 @@ if(!$session_en){
 
     //We'll see if we can prove the opposite:
     $all_completed = true;
-    $any_completed = false;
 
     //List Reads:
     echo '<div id="actionplan_steps" class="list-group no-side-padding">';
     foreach ($player_reads as $priority => $in) {
         $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $in);
         echo echo_in_read($in, false, null, null, null, true, $completion_rate);
-
-        if($completion_rate['completion_percentage']>0 && !$any_completed){
-            $any_completed = true;
-        }
         if($completion_rate['completion_percentage']!=100 && $all_completed){
             $all_completed = false;
         }

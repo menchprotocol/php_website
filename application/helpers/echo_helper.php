@@ -21,13 +21,13 @@ function echo_db_field($field_name){
     //Takes a database field name and returns a clean version of it:
     if(substr($field_name, 0, 3) == 'ln_'){
         //Link field:
-        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('ln_', 'Transaction ', $field_name))));
+        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('_source_id', '', str_replace('ln_', 'Transaction ', $field_name)))));
     } elseif(substr($field_name, 0, 3) == 'in_'){
         //Idea field:
-        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('in_', 'Idea ', $field_name))));
+        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('_source_id', '', str_replace('in_', 'Idea ', $field_name)))));
     } elseif(substr($field_name, 0, 3) == 'en_'){
         //Player field:
-        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('en_', 'Source ', $field_name))));
+        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('_source_id', '', str_replace('en_', 'Source ', $field_name)))));
     } else {
         return false;
     }
@@ -258,7 +258,7 @@ function echo_in_notes($ln)
         }
 
         //Modify:
-        $ui .= '<span title="Modify" data-toggle="tooltip" data-placement="left"><a href="javascript:in_notes_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
+        $ui .= '<span><a href="javascript:in_notes_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
 
     $ui .= '</span></div>';
 
@@ -1960,7 +1960,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
     }
 
-    $ui .= '<span title="Modify" data-toggle="tooltip" data-placement="left" class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-pen-square black"></i></a></span>';
+    $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-pen-square black"></i></a></span>';
 
     $ui .= '</span>';
     $ui .= '</div>';
