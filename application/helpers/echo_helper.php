@@ -258,7 +258,7 @@ function echo_in_notes($ln)
         }
 
         //Modify:
-        $ui .= '<span title="Modify Message" data-toggle="tooltip" data-placement="left"><a href="javascript:in_notes_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
+        $ui .= '<span title="Modify" data-toggle="tooltip" data-placement="left"><a href="javascript:in_notes_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
 
     $ui .= '</span></div>';
 
@@ -1650,7 +1650,7 @@ function echo_in_previous_read($in_id, $recipient_en){
     //READ LIST
     $player_read_ids = $CI->READ_model->read_ids($recipient_en['en_id']);
     $recursive_parents = $CI->IDEA_model->in_fetch_recursive_parents($in_id, true, true);
-    $top_progress = 0;
+    $top_progress = null;
     foreach ($recursive_parents as $grand_parent_ids) {
         foreach(array_intersect($grand_parent_ids, $player_read_ids) as $intersect) {
 
@@ -1671,7 +1671,7 @@ function echo_in_previous_read($in_id, $recipient_en){
                 array_push($breadcrumb_items, echo_in_read($ins_this[0], false, null, null, null, false, $completion_rate, $recipient_en));
 
                 if ($parent_in_id == $intersect) {
-                    $top_progress = $completion_rate['completion_percentage'];
+                    $top_progress = '<a href="/'.$ins_this[0]['in_id'].'" class="montserrat grey" data-toggle="tooltip" data-placement="top" title="'.$ins_this[0]['in_title'].'" class="underdot">'.$completion_rate['completion_percentage'].'%</a>&nbsp;';
                     break;
                 }
             }
@@ -1693,7 +1693,7 @@ function echo_in_previous_read($in_id, $recipient_en){
     //Did We Find It?
     if($ui){
         //Previous
-        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;<b class="montserrat grey">'.$top_progress.'%</b>&nbsp;</div>';
+        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;'.$top_progress.'</div>';
     }
 
     return $ui;
@@ -1959,7 +1959,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
     }
 
-    $ui .= '<span title="Modify Source" data-toggle="tooltip" data-placement="left" class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog black"></i></a></span>';
+    $ui .= '<span title="Modify" data-toggle="tooltip" data-placement="left" class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-pen-square black"></i></a></span>';
 
     $ui .= '</span>';
     $ui .= '</div>';

@@ -414,7 +414,11 @@ img.no-radius {
 .transaction-ref .ledger-list{
     background-color:transparent !important;
 }
-
+.underdot{
+    border-bottom: 1px dotted #999999;
+    padding-bottom: 2px;
+    cursor: help;
+}
 
 /* MENCH Colors */
 .source, .source .fas, .source .far, .source .fal, .source .fad, .color4536, .info-item i.source:hover, .info-item a.source:hover  { color:#007AFD !important; }
