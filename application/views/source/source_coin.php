@@ -475,13 +475,13 @@ $source__parents = $this->READ_model->ln_fetch(array(
                         $this_tab .= '<div class="nav nav-pills nav-sm '.superpower_active(10986).'">';
 
                         //Show fixed All button:
-                        $this_tab .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="counter-11029 source">&nbsp;' . $source_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
+                        $this_tab .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link en-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="counter-11029 source">&nbsp;' . $source_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
 
                         //Show each specific filter based on DB counts:
                         foreach ($child_en_filters as $c_c) {
                             $st = $en_all_6177[$c_c['en_status_source_id']];
                             $mench_type = extract_icon_color($st['m_icon']);
-                            $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_source_id'] . '" onclick="en_filter_status(' . $c_c['en_status_source_id'] . ')" class="nav-link u-status-filter u-status-' . $c_c['en_status_source_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="count-en-status-' . $c_c['en_status_source_id'] . $mench_type . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$mench_type.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
+                            $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_source_id'] . '" onclick="en_filter_status(' . $c_c['en_status_source_id'] . ')" class="nav-link en-status-filter u-status-' . $c_c['en_status_source_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="count-en-status-' . $c_c['en_status_source_id'] . $mench_type . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$mench_type.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
                         }
 
                         $this_tab .= '</div>';

@@ -329,7 +329,7 @@ function en_add_or_link(en_existing_id, is_parent) {
 
 function en_filter_status(new_val) {
     //Delete active class:
-    $('.u-status-filter').removeClass('active');
+    $('.en-status-filter').removeClass('active');
     //We do have a filter:
     en_focus_filter = parseInt(new_val);
     $('.u-status-' + new_val).addClass('active');
