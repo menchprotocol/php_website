@@ -579,7 +579,7 @@ class Source extends CI_Controller
             //Access not authorized:
             return echo_json(array(
                 'status' => 0,
-                'message' => 'You are not assigned to the superpowers of '.$en_all_10957[$superpower_en_id]['m_name'],
+                'message' => 'You have not yet unlocked the superpower of '.$en_all_10957[$superpower_en_id]['m_name'],
             ));
 
         }
