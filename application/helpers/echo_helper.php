@@ -1671,7 +1671,7 @@ function echo_in_previous_read($in_id, $recipient_en){
                 array_push($breadcrumb_items, echo_in_read($ins_this[0], false, null, null, null, false, $completion_rate, $recipient_en));
 
                 if ($parent_in_id == $intersect) {
-                    $top_progress = '<a href="/'.$ins_this[0]['in_id'].'" class="montserrat grey" data-toggle="tooltip" data-placement="top" title="'.$ins_this[0]['in_title'].'" class="underdot">'.$completion_rate['completion_percentage'].'%</a>&nbsp;';
+                    $top_progress = $completion_rate['completion_percentage'];
                     break;
                 }
             }
@@ -1693,7 +1693,8 @@ function echo_in_previous_read($in_id, $recipient_en){
     //Did We Find It?
     if($ui){
         //Previous
-        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><span class="previous_reads"><i class="fad fa-step-backward"></i></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;'.$top_progress.'</div>';
+        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.previous_reads\').toggleClass(\'hidden\');"><span class="previous_reads"><i class="fad fa-step-backward"></i>&nbsp;<b class="montserrat">'.$top_progress.'%</b></span><span class="previous_reads hidden"><i class="fas fa-times"></i></span></a>&nbsp;</div>';
+
     }
 
     return $ui;
