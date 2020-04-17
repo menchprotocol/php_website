@@ -617,7 +617,9 @@ function echo_random_message($message_key, $return_all = false){
      *
      * */
 
+
     $rotation_index = array(
+
         'email_yours_truly_line' => array( //12691
             'Cheers,',
             'Have an Awesome Day,',
@@ -1791,8 +1793,14 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
 function echo_platform_message($en_id){
     $CI =& get_instance();
     $en_all_12687 = $CI->config->item('en_all_12687');
-    $line_messages = explode("\n", $en_all_12687[$en_id]['m_desc']);
-    return $line_messages[array_rand($line_messages)];
+    if(!substr_count($en_all_12687[$en_id]['m_desc'], " | ")){
+        //Single message:
+        return $en_all_12687[$en_id]['m_desc'];
+    } else {
+        //Random message:
+        $line_messages = explode(" | ", $en_all_12687[$en_id]['m_desc']);
+        return $line_messages[rand(0, (count($line_messages) - 1))];
+    }
 }
 
 function echo_en($en, $is_parent = false, $extra_class = null, $note_controller = false)

@@ -258,6 +258,11 @@ function ordinal_suffix_of(i) {
     return i + "th";
 }
 
+function js_echo_platform_message(){
+    var res = str.split(" ");
+    return random_loading_message[Math.floor(Math.random()*random_loading_message.length)];
+}
+
 function echo_loading_notify(){
     return random_loading_message[Math.floor(Math.random()*random_loading_message.length)];
 }

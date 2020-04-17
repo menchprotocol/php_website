@@ -559,7 +559,7 @@ class Messenger extends CI_Controller
 
                             //Let them know that we did not understand them:
                             $this->READ_model->dispatch_message(
-                                echo_random_message('one_way_only'),
+                                echo_platform_message(12693),
                                 $en,
                                 true,
                                 array(

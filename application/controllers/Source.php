@@ -1406,7 +1406,7 @@ class Source extends CI_Controller
         ##Email Body
         $html_message = '<div>Just wanted to welcome you to Mench. You can create your first idea here:</div>';
         $html_message .= '<br /><br />';
-        $html_message .= '<div>'.echo_random_message('email_yours_truly_line').'</div><br />';
+        $html_message .= '<div>'.echo_platform_message(12691).'</div><br />';
         $html_message .= '<div>MENCH</div>';
 
         //Send Welcome Email:
@@ -1498,7 +1498,7 @@ class Source extends CI_Controller
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
         $html_message .= '<br /><br />';
-        $html_message .= '<div>'.echo_random_message('email_yours_truly_line').'</div>';
+        $html_message .= '<div>'.echo_platform_message(12691).'</div>';
         $html_message .= '<div>MENCH</div>';
 
         //Send email:

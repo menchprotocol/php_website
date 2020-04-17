@@ -763,7 +763,7 @@ class READ_model extends CI_Model
 
                 //READ RECOMMENDATIONS
                 $this->READ_model->dispatch_message(
-                    echo_random_message('read_recommendation'),
+                    echo_platform_message(12697),
                     array('en_id' => $en_id),
                     true
                 );
@@ -832,7 +832,7 @@ class READ_model extends CI_Model
 
                 //READ RECOMMENDATIONS
                 $this->READ_model->dispatch_message(
-                    echo_random_message('read_recommendation'),
+                    echo_platform_message(12697),
                     array('en_id' => $en_id),
                     true
                 );
@@ -3746,7 +3746,7 @@ class READ_model extends CI_Model
 
             //READ RECOMMENDATIONS
             $this->READ_model->dispatch_message(
-                echo_random_message('read_recommendation'),
+                echo_platform_message(12697),
                 $en,
                 true
             );
@@ -4299,7 +4299,7 @@ class READ_model extends CI_Model
 
                 //READ RECOMMENDATIONS
                 $this->READ_model->dispatch_message(
-                    echo_random_message('read_recommendation'),
+                    echo_platform_message(12697),
                     $en,
                     true
                 );
@@ -4395,7 +4395,7 @@ class READ_model extends CI_Model
 
             //Inform User of Mench's one-way communication limitation & that Mench did not understand their message:
             $this->READ_model->dispatch_message(
-                echo_random_message('one_way_only'),
+                echo_platform_message(12693),
                 $en,
                 true
             );
@@ -4430,7 +4430,7 @@ class READ_model extends CI_Model
 
                 //READ RECOMMENDATIONS
                 $this->READ_model->dispatch_message(
-                    echo_random_message('read_recommendation'),
+                    echo_platform_message(12697),
                     $en,
                     true
                 );

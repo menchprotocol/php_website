@@ -200,7 +200,7 @@ class Cron extends CI_Controller
 
 
         $html_message .= '<br />';
-        $html_message .= '<div>'.echo_random_message('email_yours_truly_line').'</div>';
+        $html_message .= '<div>'.echo_platform_message(12691).'</div>';
         $html_message .= '<div>MENCH</div>';
 
         $subscriber_filters = array(

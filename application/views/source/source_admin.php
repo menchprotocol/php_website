@@ -27,6 +27,7 @@ $moderation_tools = array(
     '/source/admin/compose_test_message' => 'Compose Test Message',
     '/source/admin/random_player_avatar' => 'Random User Icons',
     '/source/admin/analyze_url' => 'Analyze URL',
+    '/source/admin/review_echo_platform_message' => 'List All Platform Messages',
 
     //Hope to get zero:
     '/source/admin/source_in_statuses' => 'Analyze & Fix Play & Idea Statuses',
@@ -106,11 +107,6 @@ if(!$action) {
 } elseif($action=='link_coins_words_stats') {
 
 
-
-    //Show breadcrumb:
-    echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
-
-
     echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
     echo '<tr class="panel-title down-border">';
@@ -153,9 +149,17 @@ if(!$action) {
 
     echo '</table>';
 
-} elseif($action=='analyze_url'){
+} elseif($action=='review_echo_platform_message'){
 
-    echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
+    foreach($this->config->item('en_all_12687') as $en_id => $m){
+        echo '<div class="montserrat">'.$m['m_name'].'</div>';
+        foreach(echo_platform_message($en_id, true) as $message){
+            echo '<p style="border-bottom:1px solid #999999; padding: 5px;">'.$message.'</p>';
+        }
+        echo '<hr />RANDOM: '.echo_platform_message($en_id).'<hr />';
+    }
+
+} elseif($action=='analyze_url'){
 
     //UI to compose a test message:
     echo '<form method="GET" action="">';
@@ -185,9 +189,6 @@ if(!$action) {
     echo '</form>';
 
 } elseif($action=='random_player_avatar'){
-
-    //Show breadcrumb:
-    echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
 
     if(isset($_GET['update_user_icons'])){
 
@@ -359,8 +360,6 @@ if(!$action) {
 
 } elseif($action=='orphan_ins') {
 
-    echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
-
     $orphan_ins = $this->IDEA_model->in_fetch(array(
         ' NOT EXISTS (SELECT 1 FROM mench_ledger WHERE in_id=ln_next_idea_id AND ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_source_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Transaction Status Active */.')) ' => null,
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
@@ -441,8 +440,6 @@ if(!$action) {
 
 } elseif($action=='orphan_sources') {
 
-    echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
-
     $orphan_ens = $this->SOURCE_model->en_fetch(array(
         ' NOT EXISTS (SELECT 1 FROM mench_ledger WHERE en_id=ln_child_source_id AND ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status_source_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Transaction Status Active */.')) ' => null,
         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
@@ -490,8 +487,6 @@ if(!$action) {
     
 
 } elseif($action=='en_icon_search') {
-
-    echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
 
     //UI to compose a test message:
     echo '<form method="GET" action="">';
@@ -559,8 +554,6 @@ if(!$action) {
 
 } elseif($action=='actionplan_debugger') {
 
-    echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
-
     //List this users 🔴 READING LIST ideas so they can choose:
     echo '<div>Choose one of your 🔴 READING LIST ideas to debug:</div><br />';
 
@@ -601,8 +594,6 @@ if(!$action) {
 
 } elseif($action=='in_invalid_outcomes') {
 
-    echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
-
     $active_ins = $this->IDEA_model->in_fetch(array(
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
     ));
@@ -641,8 +632,6 @@ if(!$action) {
     echo '</table>';
 
 } elseif($action=='en_replace_name') {
-
-    echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
 
     //UI to compose a test message:
     echo '<form method="GET" action="">';
@@ -750,8 +739,6 @@ if(!$action) {
 
 
 } elseif($action=='in_replace_outcomes') {
-
-    echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
 
     //UI to compose a test message:
     echo '<form method="GET" action="">';
@@ -885,8 +872,6 @@ if(!$action) {
 
 } elseif($action=='identical_in_outcomes') {
 
-    echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
-
     //Do a query to detect Ideas with the exact same title:
     $q = $this->db->query('select in1.* from mench_idea in1 where (select count(*) from mench_idea in2 where in2.in_title = in1.in_title AND in2.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_title ASC');
     $duplicates = $q->result_array();
@@ -908,8 +893,6 @@ if(!$action) {
     }
 
 } elseif($action=='identical_source_names') {
-
-    echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
 
     $q = $this->db->query('select en1.* from mench_source en1 where (select count(*) from mench_source en2 where en2.en_name = en1.en_name AND en2.en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')) > 1 AND en1.en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ') ORDER BY en1.en_name ASC');
     $duplicates = $q->result_array();
@@ -1017,9 +1000,6 @@ if(!$action) {
     echo 'All Steps Taken: '.$all_steps.( $updated > 0 ? ' ('.$updated.' updated)' : '' ).' across '.$all_children.' answers';
 
 } elseif($action=='assessment_marks_list_all') {
-
-
-    echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
 
     echo '<p>Below are all the Conditional Step Links:</p>';
     echo '<table class="table table-sm table-striped maxout" style="text-align: left;">';
@@ -1157,9 +1137,6 @@ if(!$action) {
     //Give an overview of the point links in a hierchial format to enable players to overview:
     $_GET['depth_levels']   = ( isset($_GET['depth_levels']) && intval($_GET['depth_levels']) > 0 ? $_GET['depth_levels'] : 3 );
 
-    echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
-
-
     echo '<form method="GET" action="">';
 
     echo '<div class="score_range_box">
@@ -1209,8 +1186,6 @@ $.post("/idea/in_report_conditional_steps", {
 
     if(isset($_POST['test_message'])){
 
-        echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><a href="/source/admin/'.$action.'">'.$moderation_tools['/source/admin/'.$action].'</a></li><li><b>Review Message</b></li></ul>';
-
         if(intval($_POST['push_message']) && intval($_POST['recipient_en'])){
 
             //Send to Facebook Messenger:
@@ -1234,8 +1209,6 @@ $.post("/idea/in_report_conditional_steps", {
         print_r($msg_validation);
 
     } else {
-
-        echo '<ul class="breadcrumb"><li><a href="/source/admin">Admin Panel</a></li><li><b>'.$moderation_tools['/source/admin/'.$action].'</b></li></ul>';
 
         //UI to compose a test message:
         echo '<form method="POST" action="" class="maxout">';
