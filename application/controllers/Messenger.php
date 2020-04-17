@@ -18,7 +18,7 @@ class Messenger extends CI_Controller
     function fetch_profile($psid)
     {
 
-        if (!superpower_assigned(10986)) {
+        if (!superpower_assigned(12701)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing superpower',

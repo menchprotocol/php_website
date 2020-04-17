@@ -46,7 +46,7 @@ class Source extends CI_Controller
         $session_en = superpower_assigned();
 
         //Do we have any mass action to process here?
-        if (superpower_assigned(10967) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
+        if (superpower_assigned(12703) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
 
             //Process mass action:
             $process_mass_action = $this->SOURCE_model->en_mass_update($en_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
@@ -273,7 +273,7 @@ class Source extends CI_Controller
     {
 
         //Authenticate Player:
-        $session_en = superpower_assigned(10967);
+        $session_en = superpower_assigned(10939);
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -355,7 +355,7 @@ class Source extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $session_en = superpower_assigned(10967);
+        $session_en = superpower_assigned(10939);
 
         if (!$session_en) {
             return echo_json(array(
@@ -624,7 +624,7 @@ class Source extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $session_en = superpower_assigned(10967);
+        $session_en = superpower_assigned(10939);
         $success_message = 'Saved'; //Default, might change based on what we do...
         $is_valid_icon = is_valid_icon($_POST['en_icon']);
 

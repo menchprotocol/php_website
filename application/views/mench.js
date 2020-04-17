@@ -213,10 +213,12 @@ $(document).ready(function () {
 
     //For the S shortcut to load search:
     $("#mench_search").focus(function() {
-        if(current_nav!='search_nav'){
-            toggle_nav('search_nav');
+        if(!search_is_on){
+            toggle_search();
         }
     });
+
+
 
     $('#topnav li a').click(function (e) {
 
@@ -301,7 +303,7 @@ $(document).ready(function () {
                             //For Players:
                             if(search_only_source || search_only_in){
 
-                                if(search_only_source && js_session_superpowers_assigned.includes(10967)){
+                                if(search_only_source && js_session_superpowers_assigned.includes(12701)){
 
                                     //Can view ALL Players:
                                     search_filters += ' ( alg_obj_is_in = 0 ) ';
@@ -314,7 +316,7 @@ $(document).ready(function () {
 
                             } else {
 
-                                if(js_session_superpowers_assigned.includes(10967)){
+                                if(js_session_superpowers_assigned.includes(12701)){
 
                                     //no filter
 
@@ -410,29 +412,29 @@ var isAdvancedUpload = function () {
 }();
 
 //Main navigation
-var default_nav = 'mench_nav';
-var current_nav = default_nav;
-function toggle_nav(load_tab){
-
-    if(load_tab=='search_nav'){
-        $('.block-logo').toggleClass('hidden');
-    }
-
-    if(current_nav==load_tab){
-        load_tab = default_nav;
-    }
-    current_nav = load_tab;
+var search_is_on = false;
+function toggle_search(){
 
     $('.main_nav').addClass('hidden');
-    $('.'+load_tab).removeClass('hidden');
-}
-
-
-function toggle_search(){
-    toggle_nav('search_nav');
-    $('#mench_search').focus();
     $('.search_icon').toggleClass('hidden');
+
+    if(search_is_on){
+
+        //Switch to Menu:
+        search_is_on = false; //Reverse
+        $('.mench_nav').removeClass('hidden');
+
+    } else {
+
+        //Turn Search On:
+        search_is_on = true; //Reverse
+        $('#mench_search').focus();
+        $('.search_nav').removeClass('hidden');
+
+    }
 }
+
+
 
 
 function modify_cancel(){

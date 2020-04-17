@@ -227,7 +227,7 @@ echo '<div class="container">';
 
     echo '<h1 class="'.extract_icon_color($en_all_11035[4341]['m_icon']).' inline-block"><span class="icon-block">'.$en_all_11035[4341]['m_icon'].'</span>'.$en_all_11035[4341]['m_name'].'</h1>';
 
-    echo '<div class="inline-block '.superpower_active(10988).'" style="padding-left:7px;"><i class="far fa-filter"></i><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="montserrat">FILTER</a></div>';
+    echo '<div class="inline-block '.superpower_active(12701).'" style="padding-left:7px;">'.$en_all_11035[12707]['m_icon'].'<a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="montserrat">'.$en_all_11035[12707]['m_name'].'</a></div>';
 
 
     echo '<div class="inline-box show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';
@@ -311,7 +311,7 @@ echo '<div class="container">';
 
     if(isset($_GET['ln_content_search']) && strlen($_GET['ln_content_search']) > 0){
         //Give Option to Replace:
-        echo '<td class="' . superpower_active(10985) . '"><div style="padding-right:5px;">';
+        echo '<td class="' . superpower_active(12705) . '"><div style="padding-right:5px;">';
         echo '<span class="mini-header">READ CONTENT REPLACE:</span>';
         echo '<input type="text" name="ln_content_replace" value="' . ((isset($_GET['ln_content_replace'])) ? $_GET['ln_content_replace'] : '') . '" class="form-control border">';
         echo '</div></td>';

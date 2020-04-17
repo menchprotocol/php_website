@@ -63,9 +63,10 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
 
     //RIGHT
-    echo '<div class="pull-right inline-block '.superpower_active(10967).'">';
+    echo '<div class="pull-right inline-block">';
 
         //REFERENCES
+        echo '<div class="inline-block '.superpower_active(12701).'">';
         $en_count_references = en_count_references($source['en_id']);
         if(count($en_count_references) > 0){
             $en_all_6194 = $this->config->item('en_all_6194');
@@ -76,9 +77,11 @@ $source__parents = $this->READ_model->ln_fetch(array(
                 $ref_count++;
             }
         }
+        echo '</div>';
+
 
         //Modify
-        echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $source['en_id'] . ',0)" class="btn btn-source btn-five icon-block-lg" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
+        echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $source['en_id'] . ',0)" class="btn btn-source btn-five icon-block-lg '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
 
     echo '</div>';
 
@@ -455,7 +458,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
                 ), array('en_child'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
                 //Source Status Filters:
-                if(superpower_active(10986, true)){
+                if(superpower_active(12703, true)){
 
                     $source_count = $this->SOURCE_model->en_child_count($source['en_id'], $this->config->item('en_ids_7358') /* Source Status Active */);
                     $child_en_filters = $this->READ_model->ln_fetch(array(
@@ -472,7 +475,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
                         $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
 
                         //Add 2nd Navigation to UI
-                        $this_tab .= '<div class="nav nav-pills nav-sm '.superpower_active(10986).'">';
+                        $this_tab .= '<div class="nav nav-pills nav-sm">';
 
                         //Show fixed All button:
                         $this_tab .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link en-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="counter-11029 source">&nbsp;' . $source_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';

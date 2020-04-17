@@ -92,7 +92,7 @@ class Idea extends CI_Controller {
 
 
 
-        if (superpower_assigned(10985) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
+        if (superpower_assigned(12702) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
 
             //Process mass action:
             $process_mass_action = $this->IDEA_model->in_mass_update($in_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
@@ -136,7 +136,7 @@ class Idea extends CI_Controller {
     function in_report_conditional_steps(){
 
         //Authenticate Player:
-        $session_en = superpower_assigned(10985);
+        $session_en = superpower_assigned(12700);
 
         if (!$session_en) {
             return echo_json(array(
@@ -211,7 +211,7 @@ class Idea extends CI_Controller {
     function in_become_source($in_id){
 
         //Make sure it's a logged in player:
-        $session_en = superpower_assigned(12674, true);
+        $session_en = superpower_assigned(10984, true);
 
         //Idea Source:
         $this->READ_model->ln_create(array(
@@ -539,7 +539,7 @@ class Idea extends CI_Controller {
                     $this->IDEA_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
 
                 //Notify moderators of Feature request? Only if they don't have the powers themselves:
-                } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !superpower_assigned(12674) && !count($this->READ_model->ln_fetch(array(
+                } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !superpower_assigned(10984) && !count($this->READ_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                         'ln_type_source_id' => 12453, //Idea Feature Request
                         'ln_creator_source_id' => $session_en['en_id'],

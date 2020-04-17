@@ -136,7 +136,7 @@ class Ledger extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid READ ID',
             ));
-        } elseif(!superpower_assigned(10985)) {
+        } elseif(!superpower_assigned(12701)) {
 
             return echo_json(array(
                 'status' => 0,

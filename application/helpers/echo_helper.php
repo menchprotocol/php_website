@@ -534,7 +534,7 @@ function echo_ln($ln, $is_parent_tr = false)
 
 
     //Hide Sensitive Details?
-    if(in_array($ln['ln_type_source_id'] , $CI->config->item('en_ids_4755')) && (!$session_en || $ln['ln_creator_source_id']!=$session_en['en_id']) && !superpower_active(10985, true)){
+    if(in_array($ln['ln_type_source_id'] , $CI->config->item('en_ids_4755')) && (!$session_en || $ln['ln_creator_source_id']!=$session_en['en_id']) && !superpower_active(12701, true)){
 
         //Hide Information:
         $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
@@ -1289,7 +1289,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
 
 
             //Idea Wand
-            $ui .= '<div class="inline-block ' . superpower_active(10985) . '">';
+            $ui .= '<div class="inline-block ' . superpower_active(12700) . '">';
                 //LINK TYPE
                 $ui .= echo_in_dropdown(4486, $in['ln_type_source_id'], null, $is_source, false, $in['in_id'], $in['ln_id']);
 
@@ -1636,20 +1636,20 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
     $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_notes_add('.$note_type_en_id.');" class="btn btn-idea save_notes_'.$note_type_en_id.'">ADD</a></td>';
 
     //File counter:
-    $ui .= '<td class="delete_loading" class="delete_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaPadsNewCount' . $note_type_en_id . '" class="hidden"><span id="charNum' . $note_type_en_id . '">0</span>/' . config_var(11073).'</span></td>';
+    $ui .= '<td style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaPadsNewCount' . $note_type_en_id . '" class="hidden"><span id="charNum' . $note_type_en_id . '">0</span>/' . config_var(11073).'</span></td>';
 
     //First Name:
-    $ui .= '<td class="delete_loading '.superpower_active(10967).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'/firstname \');" data-toggle="tooltip" title="Mention readers first name" data-placement="top"><span class="icon-block"><i class="far fa-fingerprint"></i></span></a></td>';
+    $ui .= '<td class="'.superpower_active(10967).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'/firstname \');" data-toggle="tooltip" title="Insert Player Nickname" data-placement="top"><span class="icon-block"><i class="far fa-fingerprint"></i></span></a></td>';
 
-    //YouTube Embed
-    $ui .= '<td class="delete_loading '.superpower_active(10984).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=&end=\');" data-toggle="tooltip" title="YouTube Clip with Start & End Seconds" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
+    //YouTube Clip
+    $ui .= '<td style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=SECOND_HERE&end=SECOND_HERE\');" data-toggle="tooltip" title="Insert YouTube Clip URL" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
 
     //Reference Player
-    $ui .= '<td class="delete_loading '.superpower_active(10983).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'@\');" data-toggle="tooltip" title="Reference SOURCE" data-placement="top"><span class="icon-block"><i class="far fa-at"></i></span></a></td>';
+    $ui .= '<td style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'@\');" data-toggle="tooltip" title="Reference Source @SOURCE_ID" data-placement="top"><span class="icon-block"><i class="far fa-at"></i></span></a></td>';
 
     //Upload File:
     if(in_array(12359, $en_all_4485[$note_type_en_id]['m_parents'])){
-        $ui .= '<td class="delete_loading" style="width:36px; padding: 10px 0 0 0;">';
+        $ui .= '<td style="width:36px; padding: 10px 0 0 0;">';
         $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$note_type_en_id.'" />';
         $ui .= '<label class="file_label_'.$note_type_en_id.'" for="fileIdeaType'.$note_type_en_id.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
         $ui .= '</td>';
@@ -1729,13 +1729,13 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
     if(!$session_en && ($is_hidden || !$is_published || !$is_link_published)){
         //Not logged in, so should only see published:
         return false;
-    } elseif($is_hidden && !superpower_active(10986, true)){
+    } elseif($is_hidden && !superpower_active(12701, true)){
         //They don't have the needed superpower:
         return false;
     }
 
     //ROW
-    $ui .= '<div class="list-group-item no-side-padding itemsource en-item object_highlight '.( $is_hidden ? superpower_active(10986) : '' ).' highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $en['en_id'] . '" en-status="' . $en['en_status_source_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_source_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
+    $ui .= '<div class="list-group-item no-side-padding itemsource en-item object_highlight highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $en['en_id'] . '" en-status="' . $en['en_status_source_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_source_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1751,7 +1751,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
     $ui .= '<a href="/source/'.$en['en_id'] . '"><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
 
     //SOURCE NAME
-    $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'"><span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>'.($child_links[0]['totals'] > 0 ? '<span class="'.superpower_active(10983).'" title="'.number_format($child_links[0]['totals'], 0).'">&nbsp;'.echo_number($child_links[0]['totals']).'</span>' : '').'</a>';
+    $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'"><span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>'.($child_links[0]['totals'] > 0 ? '<span class="'.superpower_active(12703).'" title="'.number_format($child_links[0]['totals'], 0).'">&nbsp;'.echo_number($child_links[0]['totals']).'</span>' : '').'</a>';
 
     $ui .= '</div>';
 
@@ -1760,12 +1760,12 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
     //Does this source also include a link?
     if ($ln_id > 0) {
-        if($is_link_source && (strlen($en['ln_content']) || superpower_assigned(10983))){
+        if($is_link_source){
 
             //SOURCE LINKS:
             $ui .= '<div class="doclear">&nbsp;</div>';
 
-            $ui .= '<span class="message_content ln_content ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_source_id']) . '</span>';
+            $ui .= '<span class="message_content ln_content hideIfEmpty ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_source_id']) . '</span>';
 
             //For JS editing only (HACK):
             $ui .= '<div class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</div>';
@@ -1805,9 +1805,9 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
             //External ID
             if($en['ln_parent_source_id']==6196){
                 //Give players the ability to ping Messenger profiles:
-                $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/fetch_profile/'.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
+                $ui .= '<span class="'.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/fetch_profile/'.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
             } else {
-                $ui .= '<span class="'.superpower_active(10986).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i>&nbsp;</span>';
+                $ui .= '<span class="'.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i>&nbsp;</span>';
             }
 
         }
@@ -1815,12 +1815,12 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
 
 
-    $ui .= '<span class="'. superpower_active(10986) .'">';
+    $ui .= '<span class="'. superpower_active(12706) .'">';
 
     if($is_link_source){
         //Link Type
         $en_all_4592 = $CI->config->item('en_all_4592');
-        $ui .= '<span class="icon-block-img ln_type_' . $ln_id . superpower_active(10986).'" data-toggle="tooltip" data-placement="bottom" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'">' . $en_all_4592[$en['ln_type_source_id']]['m_icon'] . '</span> ';
+        $ui .= '<span class="icon-block-img ln_type_' . $ln_id .'" data-toggle="tooltip" data-placement="bottom" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'">' . $en_all_4592[$en['ln_type_source_id']]['m_icon'] . '</span> ';
     }
 
     foreach ($en__parents as $en_parent) {

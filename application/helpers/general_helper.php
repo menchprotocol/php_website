@@ -955,7 +955,7 @@ function in_is_source($in_id, $session_en = array()){
     }
 
     //Always have power to edit ideas from anyone:
-    if(superpower_active(12674, true)){
+    if(superpower_active(10984, true)){
         return true;
     }
 

@@ -125,28 +125,20 @@ if(!isset($hide_header)){
         <div class="row">
             <table class="mench-navigation">
                 <tr>
-
-                    <?php
-                    //MENCH LOGO
-                    if (!$session_en) {
-                        echo '<td class="block-link block-logo"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></td>';
-                    }
-                    ?>
-
                     <td>
-
                         <?php
 
+                        //MAIN NAVIGATION
                         echo '<div class="main_nav mench_nav">';
-                        if($session_en){
+                        if(!$session_en){
 
-                            //Navigation Controller:
+                            //LOGO ONLY
+                            echo '<a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a>';
+
+                        } else {
+
+                            //MENCH NAVIGATION
                             $coin_counts = array();
-                            $nav_controller = array(
-                                6205 => 12648, //READ
-                                4536 => 12646, //SOURCE
-                                4535 => 12647, //IDEA
-                            );
                             $count_controller = array(
                                 6205 => 6255, //READ
                                 4536 => 12274, //SOURCE
@@ -184,11 +176,12 @@ if(!isset($hide_header)){
                             }
                         }
                         echo '</div>';
+
+
+                        //Search Bar
+                        echo '<div class="main_nav search_nav hidden"><form id="searchFrontForm" style="margin-top:5px;"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$en_all_11035[7256]['m_name'].'"></form></div>';
+
                         ?>
-
-
-                        <div class="main_nav search_nav hidden"><form id="searchFrontForm" style="margin-top:5px;"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
-
                     </td>
 
                     <?php

@@ -844,18 +844,6 @@ td.MENCHcolumn3  { width: 13%; }
     float: left;
     padding-top: 13px;
 }
-.mench-navigation .block-logo {
-    width:160px !important;
-}
-.mench-navigation .block-logo a {
-    display: block;
-    text-align: left;
-    margin-left: 0;
-    padding:0;
-}
-.mench-navigation .block-logo a:hover {
-    background-color: transparent;
-}
 .ledger-list {
     padding:21px 0;
 }
@@ -959,6 +947,9 @@ td.MENCHcolumn3  { width: 13%; }
     max-width: 100%;
     overflow: hidden;
     display: inline-block;
+}
+.hideIfEmpty:empty {
+    display: none;
 }
 
 

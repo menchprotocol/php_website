@@ -46,7 +46,7 @@ echo '<div class="container" style="padding-bottom:42px;">';
 
 
 if(!$is_source){
-    echo '<div class="alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/idea/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(12674).'">&nbsp;or <a href="/idea/in_become_source/'.$in['in_id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
+    echo '<div class="alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/idea/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/idea/in_become_source/'.$in['in_id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
 }
 
 
@@ -100,7 +100,7 @@ echo '<div class="inline-block both-margin left-margin">'.echo_in_dropdown(4737,
 echo '<span class="inline-block both-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_source_id'], 'btn-idea', $is_source && $is_active, true, $in['in_id']).'</span>';
 
 //IDEA TIME
-echo '<div class="inline-block both-margin left-half-margin '.superpower_active(10984).'">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_source && $is_active, 0).'</div>';
+echo '<div class="inline-block both-margin left-half-margin">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_source && $is_active, 0).'</div>';
 
 
 
