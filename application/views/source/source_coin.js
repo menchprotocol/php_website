@@ -313,7 +313,7 @@ function en_add_or_link(en_existing_id, is_parent) {
 
             //Adjust counters:
             $(counter_class).text((parseInt($(counter_class + ':first').text()) + 1));
-            $('.count-u-status-' + data.en_new_status).text((parseInt($('.count-u-status-' + data.en_new_status).text()) + 1));
+            $('.count-en-status-' + data.en_new_status).text((parseInt($('.count-en-status-' + data.en_new_status).text()) + 1));
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();

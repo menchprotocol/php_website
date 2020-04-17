@@ -423,6 +423,10 @@ img.no-radius {
 
 .btn-source i, .btn-read i, .btn-idea i { color: #000000 !important; }
 
+.nav-link.active .source i {
+    color: #000000 !important;
+}
+
 .progress-bg{
     margin: -10px 0 10px 0;
     width: 100% !important;
