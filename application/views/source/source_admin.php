@@ -27,7 +27,7 @@ $moderation_tools = array(
     '/source/admin/compose_test_message' => 'Compose Test Message',
     '/source/admin/random_player_avatar' => 'Random User Icons',
     '/source/admin/analyze_url' => 'Analyze URL',
-    '/source/admin/review_echo_platform_message' => 'List All Platform Messages',
+    '/source/admin/12687' => 'List All Platform Messages',
 
     //Hope to get zero:
     '/source/admin/source_in_statuses' => 'Analyze & Fix Play & Idea Statuses',
@@ -149,7 +149,7 @@ if(!$action) {
 
     echo '</table>';
 
-} elseif($action=='review_echo_platform_message'){
+} elseif($action==12687){
 
     echo '<div class="margin-top-down"><a href="/source/12687" class="montserrat source">MANAGE MESSAGES</a></div>';
 
