@@ -157,7 +157,7 @@ function echo_search_result(alg_obj){
 
 
 function js_echo_platform_message(en_id){
-    var messages = js_en_all_6404[en_id]['m_desc'].split(" | ");
+    var messages = js_en_all_12687[en_id]['m_desc'].split(" | ");
     if(messages.length == 1){
         //Return message:
         return messages[0];
