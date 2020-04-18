@@ -243,11 +243,11 @@ if(!isset($hide_header)){
                                     $source_field = 'ln_creator_source_id';
                                 } elseif($en_id==12274){
                                     //SOURCE
+                                    $counts = $coin_counts[4536];
                                     if($counts < 2){
                                         //If 1 then only themselves, which is covered with @12205
                                         continue;
                                     }
-                                    $counts = $coin_counts[4536];
                                     $source_field = 'ln_creator_source_id';
                                 }
 
