@@ -1690,7 +1690,7 @@ function echo_unauthorized_message($superpower_en_id = 0, $push_message = false)
     if(!$session_en){
 
         //Missing Session
-        return 'ERROR: Session Expired, login & try again.';
+        return 'ERROR: Login to continue.';
 
     } elseif($superpower_en_id>0) {
 
