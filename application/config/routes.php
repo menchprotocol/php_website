@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $route['translate_uri_dashes']      = FALSE;
-$route['404_override']              = 'plugin/plugin_load/12708';
+$route['404_override']              = 'plugin/plugin_load';
 
 $route['default_controller']        = "read/read_coin";
 

@@ -13,31 +13,24 @@ class Plugin extends CI_Controller
         date_default_timezone_set(config_var(11079));
     }
 
-    function plugin_load($plugin_en_id){
+    function plugin_load($plugin_en_id = 12708 /* Page Not Found */){
 
         $en_all_6287 = $this->config->item('en_all_6287'); //MENCH PLUGINS
 
-        if(!$plugin_en_id){
+        $this->load->view('header', array(
+            'title' => ( strlen($en_all_6287[$plugin_en_id]['m_icon']) && !string_contains_html($en_all_6287[$plugin_en_id]['m_icon']) ? $en_all_6287[$plugin_en_id]['m_icon'].' ' : '' ).$en_all_6287[$plugin_en_id]['m_name'],
+        ));
 
-            die('Enter plugin ID');
+        $this->load->view('plugin/plugin_header');
+        $this->load->view('plugin/'.$plugin_en_id.'/index' , array(
+            'session_en' => superpower_assigned(),
+        ));
 
-        } else {
-
-            $this->load->view('header', array(
-                'title' => ( strlen($en_all_6287[$plugin_en_id]['m_icon']) && !string_contains_html($en_all_6287[$plugin_en_id]['m_icon']) ? $en_all_6287[$plugin_en_id]['m_icon'].' ' : '' ).$en_all_6287[$plugin_en_id]['m_name'],
-            ));
-            $this->load->view('plugin/plugin_header');
-            $this->load->view('plugin/'.$plugin_en_id.'/index' , array(
-                'session_en' => superpower_assigned(),
-            ));
-
-            $this->load->view('footer');
-
-        }
+        $this->load->view('footer');
 
     }
 
-    function older($action = null, $command1 = null, $command2 = null)
+    function plugin_home($action = null, $command1 = null, $command2 = null)
     {
 
         boost_power();
