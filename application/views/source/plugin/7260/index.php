@@ -18,7 +18,7 @@ if(count($orphan_ins) > 0){
         echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_source_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_source_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_source_id']]['m_icon'] . '</span> <a href="/idea/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_title'].'</b></a>';
 
         //Do we need to delete?
-        if($_GET['take_action']=='delete_all'){
+        if(isset($_GET['take_action']) && $_GET['take_action']=='delete_all'){
 
             //Delete idea links:
             $links_deleted = $this->IDEA_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
@@ -38,7 +38,7 @@ if(count($orphan_ins) > 0){
     }
 
     //Show option to delete all:
-    if($_GET['take_action']!='delete_all'){
+    if(!isset($_GET['take_action']) || $_GET['take_action']!='delete_all'){
         echo '<br />';
         echo '<a class="delete-all" href="javascript:void(0);" onclick="$(\'.delete-all\').toggleClass(\'hidden\')">Delete All</a>';
         echo '<div class="delete-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All ideas and all their links will be deleted. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing idea.<br /><br /></div>';

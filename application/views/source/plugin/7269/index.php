@@ -16,7 +16,7 @@ if(count($orphan_ens) > 0){
         echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$orphan_en['en_status_source_id']]['m_name'].': '.$en_all_6177[$orphan_en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$orphan_en['en_status_source_id']]['m_icon'] . '</span> <a href="/source/'.$orphan_en['en_id'].'"><b>'.$orphan_en['en_name'].'</b></a>';
 
         //Do we need to delete?
-        if($_GET['take_action']=='delete_all'){
+        if(isset($_GET['take_action']) && $_GET['take_action']=='delete_all'){
 
             //Delete links:
             $links_deleted = $this->SOURCE_model->en_unlink($orphan_en['en_id'], $session_en['en_id']);
@@ -36,7 +36,7 @@ if(count($orphan_ens) > 0){
     }
 
     //Show option to delete all:
-    if($_GET['take_action']!='delete_all'){
+    if(!isset($_GET['take_action']) || $_GET['take_action']!='delete_all'){
         echo '<br />';
         echo '<a class="delete-all" href="javascript:void(0);" onclick="$(\'.delete-all\').toggleClass(\'hidden\')">Delete All</a>';
         echo '<div class="delete-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All sources and all their links will be deleted. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing source.<br /><br /></div>';

@@ -15,7 +15,6 @@ echo '<div class="container">';
         echo '<p>'.$en_all_6287[$plugin_en_id]['m_desc'].'</p>';
     }
 
-
     //Load Plugin:
     $this->load->view('source/plugin/'.$plugin_en_id.'/index', array(
         'plugin_en_id' => $plugin_en_id,
