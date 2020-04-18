@@ -13,7 +13,7 @@ class Plugin extends CI_Controller
         date_default_timezone_set(config_var(11079));
     }
 
-    function index($plugin_en_id = 0){
+    function plugin_load($plugin_en_id){
 
         $en_all_6287 = $this->config->item('en_all_6287'); //MENCH PLUGINS
 
