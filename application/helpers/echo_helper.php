@@ -1683,7 +1683,8 @@ function echo_platform_message($en_id){
 
 function echo_unauthorized_message($superpower_en_id = 0, $push_message = false){
 
-    $en_all_10957 = $this->config->item('en_all_10957');
+    $CI =& get_instance();
+    $en_all_10957 = $CI->config->item('en_all_10957');
     $session_en = superpower_assigned();
 
     if(!$session_en){
@@ -1916,7 +1917,7 @@ function echo_basic_list_link($m, $url){
     //Needs extra superpowers?
     $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
     foreach($superpower_actives as $needed_superpower_en_id){
-        $ui .= '<span title="Requires Superpower ['.$en_all_10957[$needed_superpower_en_id]['m_name'].']" data-toggle="tooltip" data-placement="top">&nbsp;'.$en_all_10957[$needed_superpower_en_id]['m_icon'].'</span>';
+        $ui .= '<span title="Requires '.$en_all_10957[$needed_superpower_en_id]['m_name'].'" data-toggle="tooltip" data-placement="top">&nbsp;'.$en_all_10957[$needed_superpower_en_id]['m_icon'].'</span>';
     }
 
 
