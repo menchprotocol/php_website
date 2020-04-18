@@ -1,4 +1,3 @@
-
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -9,16 +8,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-18 12:03:32 PST
+//Generated 2020-04-18 12:08:28 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587236612;
-$config['cache_count_transaction'] = 1142889;
+$config['cache_timestamp'] = 1587236908;
+$config['cache_count_transaction'] = 1142900;
 $config['cache_count_read'] = 120965;
 $config['cache_count_idea'] = 4846;
-$config['cache_count_source'] = 5169;
+$config['cache_count_source'] = 5170;
 
 
+
+//PLUGIN EXCLUDE MENCH UI:
+$config['en_ids_12741'] = array(4527,12709);
+$config['en_all_12741'] = array(
+    4527 => array(
+        'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
+        'm_name' => 'MENCH MEMORY',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287,4527,7254),
+    ),
+    12709 => array(
+        'm_icon' => 'ℹ️',
+        'm_name' => 'PHP INFO',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
+    ),
+);
 
 //CONTROL CRON:
 $config['en_ids_7274'] = array(7275,7276,12114,7277,7278,12523,12569);
@@ -4791,7 +4807,7 @@ $config['en_all_10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['en_ids_4527'] = array(6225,12588,6150,3000,7274,10627,12359,4535,11047,6192,12273,12413,12079,11018,12675,12677,4229,12589,4485,12012,6193,10990,4983,7302,4737,7356,12138,7355,12400,12112,12420,4486,7585,10602,12330,12324,7309,7712,7751,10717,12571,12574,11080,2738,12467,6404,6201,4341,10876,4527,11054,12687,11035,6206,6194,6232,12524,11059,11058,12647,12648,12646,12501,12500,7555,6287,12577,4755,6205,11081,7704,7347,6255,12229,4280,4277,6102,12446,12326,6146,10692,12227,5967,7304,7360,7364,7359,12327,10658,4269,6204,4536,10956,12279,12274,12410,3290,11089,4592,12403,4997,4426,4986,7551,11028,4537,6177,7358,12575,7357,10957,12401,3289,12683,12523,12322,12321,6805,6103,6186,4593,10593,12141,12228,12655,12654,12645);
+$config['en_ids_4527'] = array(6225,12588,6150,3000,7274,10627,12359,4535,11047,6192,12273,12413,12079,11018,12675,12677,4229,12589,4485,12012,6193,10990,4983,7302,4737,7356,12138,7355,12400,12112,12420,4486,7585,10602,12330,12324,7309,7712,7751,10717,12571,12574,11080,2738,12467,6404,6201,4341,10876,4527,11054,12687,11035,6206,6194,6232,12524,11059,11058,12647,12648,12646,12501,12500,7555,12741,6287,12577,4755,6205,11081,7704,7347,6255,12229,4280,4277,6102,12446,12326,6146,10692,12227,5967,7304,7360,7364,7359,12327,10658,4269,6204,4536,10956,12279,12274,12410,3290,11089,4592,12403,4997,4426,4986,7551,11028,4537,6177,7358,12575,7357,10957,12401,3289,12683,12523,12322,12321,6805,6103,6186,4593,10593,12141,12228,12655,12654,12645);
 $config['en_all_4527'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -5091,7 +5107,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
         'm_name' => 'MENCH MEMORY',
         'm_desc' => '',
-        'm_parents' => array(6287,4527,7254),
+        'm_parents' => array(12741,6287,4527,7254),
     ),
     11054 => array(
         'm_icon' => '<i class="fal fa-memory" aria-hidden="true"></i>',
@@ -5182,6 +5198,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'PLAYER READING CHANNELS',
         'm_desc' => '',
         'm_parents' => array(7305,4527),
+    ),
+    12741 => array(
+        'm_icon' => '',
+        'm_name' => 'PLUGIN EXCLUDE MENCH UI',
+        'm_desc' => '',
+        'm_parents' => array(4527,7254),
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
@@ -6604,7 +6626,7 @@ $config['en_all_6287'] = array(
         'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
         'm_name' => 'MENCH MEMORY',
         'm_desc' => '',
-        'm_parents' => array(6287,4527,7254),
+        'm_parents' => array(12741,6287,4527,7254),
     ),
     12710 => array(
         'm_icon' => '👤',
@@ -6622,7 +6644,7 @@ $config['en_all_6287'] = array(
         'm_icon' => 'ℹ️',
         'm_name' => 'PHP INFO',
         'm_desc' => '',
-        'm_parents' => array(6287),
+        'm_parents' => array(12741,6287),
     ),
     12729 => array(
         'm_icon' => '',

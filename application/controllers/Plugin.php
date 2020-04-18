@@ -51,15 +51,28 @@ class Plugin extends CI_Controller
             die(echo_unauthorized_message(end($superpower_actives)));
         }
 
-        //Load Plugin:
-        $this->load->view('header', array(
-            'title' => strip_tags($en_all_6287[$plugin_en_id]['m_icon']).$en_all_6287[$plugin_en_id]['m_name'].' | PLUGIN',
-        ));
-        $this->load->view('source/source_plugin_load' , array(
-            'plugin_en_id' => $plugin_en_id,
-            'session_en' => $this->session_en,
-        ));
-        $this->load->view('footer');
+        if(in_array($plugin_en_id, $this->config->item('en_ids_12741'))){
+
+            //Raw UI:
+            $this->load->view('source/plugin/'.$plugin_en_id.'/index', array(
+                'plugin_en_id' => $plugin_en_id,
+                'session_en' => $this->session_en,
+            ));
+
+        } else {
+
+            //Regular UI:
+            //Load Plugin:
+            $this->load->view('header', array(
+                'title' => strip_tags($en_all_6287[$plugin_en_id]['m_icon']).$en_all_6287[$plugin_en_id]['m_name'].' | PLUGIN',
+            ));
+            $this->load->view('source/source_plugin_load' , array(
+                'plugin_en_id' => $plugin_en_id,
+                'session_en' => $this->session_en,
+            ));
+            $this->load->view('footer');
+
+        }
 
     }
 
