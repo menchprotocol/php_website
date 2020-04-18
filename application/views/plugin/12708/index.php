@@ -6,7 +6,7 @@
 
     echo '<h1 style="padding-top:5px;"><span class="icon-block">'.echo_en_icon($en_all_6287[12708]['m_icon']).'</span>'.$en_all_6287[12708]['m_name'].'</h1>';
 
-    echo '<p>I could not find the page you\'re looking for.</p>';
+    echo '<p>'.echo_platform_message(12694).'</p>';
 
     ?>
 

@@ -20,8 +20,6 @@ class Plugin extends CI_Controller
         $this->load->view('header', array(
             'title' => ( strlen($en_all_6287[$plugin_en_id]['m_icon']) && !string_contains_html($en_all_6287[$plugin_en_id]['m_icon']) ? $en_all_6287[$plugin_en_id]['m_icon'].' ' : '' ).$en_all_6287[$plugin_en_id]['m_name'],
         ));
-
-        $this->load->view('plugin/plugin_header');
         $this->load->view('plugin/'.$plugin_en_id.'/index' , array(
             'session_en' => superpower_assigned(),
         ));
