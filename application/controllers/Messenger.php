@@ -21,7 +21,7 @@ class Messenger extends CI_Controller
         if (!superpower_assigned(12701)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing superpower',
+                'message' => echo_unauthorized_message(12701),
             ));
         }
 
@@ -368,7 +368,7 @@ class Messenger extends CI_Controller
 
                                 $ln_data['ln_type_source_id'] = $att_media_types[$att['type']][($sent_by_mench ? 'sent' : 'received')];
                                 $ln_data['ln_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
-                                $ln_data['ln_status_source_id'] = 6175; //Link Drafting, since URL needs to be uploaded to Mench CDN via save_chat_media()
+                                $ln_data['ln_status_source_id'] = 6175; //Link Drafting, since URL needs to be uploaded to Mench CDN via cron__7281()
                                 if(!$sent_by_mench){
                                     $matching_types = $att_media_types[$att['type']]['matching_types'];
                                 }

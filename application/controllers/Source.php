@@ -93,15 +93,6 @@ class Source extends CI_Controller
 
     }
 
-    function php_info(){
-        echo phpinfo();
-    }
-
-    function my_session()
-    {
-        echo_json($this->session->all_userdata());
-    }
-
 
     function load_leaderboard(){
 
@@ -154,41 +145,6 @@ class Source extends CI_Controller
 
     }
 
-    function sign($in_id = 0){
-
-        //Check to see if they are already logged in?
-        $session_en = superpower_assigned();
-        if ($session_en) {
-            //Lead player and above, go to console:
-            if($in_id > 0){
-                return redirect_message('/' . $in_id);
-            } else {
-                return redirect_message('/read');
-            }
-        }
-
-        //Update focus idea session:
-        if($in_id > 0){
-            //Set in session:
-            $this->session->set_userdata(array(
-                'sign_in_id' => $in_id,
-            ));
-
-            //Redirect to basic login URL (So Facebook OAuth can validate)
-            return redirect_message('/source/sign');
-        }
-
-
-        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
-        $this->load->view('header', array(
-            'hide_header' => 1,
-            'title' => $en_all_11035[4269]['m_name'],
-        ));
-        $this->load->view('source/source_sign');
-        $this->load->view('footer');
-
-    }
-
 
     function en_add_source_paste_url()
     {
@@ -203,7 +159,7 @@ class Source extends CI_Controller
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(),
                 'url_source' => array(),
             ));
         }
@@ -277,7 +233,7 @@ class Source extends CI_Controller
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(10939),
             ));
         } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
             return echo_json(array(
@@ -360,7 +316,7 @@ class Source extends CI_Controller
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(10939),
             ));
         } elseif (intval($_POST['en_id']) < 1) {
             return echo_json(array(
@@ -533,7 +489,7 @@ class Source extends CI_Controller
 
     }
 
-    function en_count_to_be_deleted_links()
+    function en_count_delete_links()
     {
 
         if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
@@ -560,10 +516,10 @@ class Source extends CI_Controller
 
 
 
-    function toggle_superpower($superpower_en_id){
+    function account_toggle_superpower($superpower_en_id){
 
         //Toggles the advance session variable for the player on/off for logged-in players:
-        $session_en = superpower_assigned();
+        $session_en = superpower_assigned(10939);
         $superpower_en_id = intval($superpower_en_id);
         $en_all_10957 = $this->config->item('en_all_10957');
 
@@ -571,7 +527,7 @@ class Source extends CI_Controller
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(10939),
             ));
 
         } elseif(!superpower_assigned($superpower_en_id)){
@@ -636,7 +592,7 @@ class Source extends CI_Controller
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(10939),
             ));
         } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || !(count($ens) == 1)) {
             return echo_json(array(
@@ -982,20 +938,6 @@ class Source extends CI_Controller
     }
 
 
-
-
-    function en_review_metadata($en_id){
-        //Fetch Idea:
-        $ens = $this->SOURCE_model->en_fetch(array(
-            'en_id' => $en_id,
-        ));
-        if(count($ens) > 0){
-            echo_json(unserialize($ens[0]['en_metadata']));
-        } else {
-            echo 'Source @'.$en_id.' not found!';
-        }
-    }
-
     function en_fetch_canonical_url(){
 
         //Auth user and check required variables:
@@ -1004,7 +946,7 @@ class Source extends CI_Controller
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(),
             ));
         } elseif (!isset($_POST['search_url']) || !filter_var($_POST['search_url'], FILTER_VALIDATE_URL)) {
             //This string was incorrectly detected as a URL by JS, return not found:
@@ -1030,6 +972,674 @@ class Source extends CI_Controller
             ));
         }
     }
+
+
+
+
+    function account_update_radio()
+    {
+        /*
+         *
+         * Saves the radio selection of some account fields
+         * that are displayed using echo_radio_sources()
+         *
+         * */
+
+        $session_en = superpower_assigned();
+
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => echo_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['parent_en_id']) || intval($_POST['parent_en_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing parent source',
+            ));
+        } elseif (!isset($_POST['selected_en_id']) || intval($_POST['selected_en_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing selected source',
+            ));
+        } elseif (!isset($_POST['enable_mulitiselect']) || !isset($_POST['was_already_selected'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing multi-select setting',
+            ));
+        }
+
+
+        if(!$_POST['enable_mulitiselect'] || $_POST['was_already_selected']){
+            //Since this is not a multi-select we want to delete all existing options...
+
+            //Fetch all possible answers based on parent source:
+            $filters = array(
+                'ln_parent_source_id' => $_POST['parent_en_id'],
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+            );
+
+            if($_POST['enable_mulitiselect'] && $_POST['was_already_selected']){
+                //Just delete this single item, not the other ones:
+                $filters['ln_child_source_id'] = $_POST['selected_en_id'];
+            }
+
+            //List all possible answers:
+            $possible_answers = array();
+            foreach($this->READ_model->ln_fetch($filters, array('en_child'), 0, 0) as $answer_en){
+                array_push($possible_answers, $answer_en['en_id']);
+            }
+
+            //Delete selected options for this player:
+            foreach($this->READ_model->ln_fetch(array(
+                'ln_parent_source_id IN (' . join(',', $possible_answers) . ')' => null,
+                'ln_child_source_id' => $session_en['en_id'],
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            )) as $delete_en){
+                //Should usually delete a single option:
+                $this->READ_model->ln_update($delete_en['ln_id'], array(
+                    'ln_status_source_id' => 6173, //Link Deleted
+                ), $session_en['en_id'], 6224 /* User Account Updated */);
+            }
+
+        }
+
+        //Add new option if not already there:
+        if(!$_POST['enable_mulitiselect'] || !$_POST['was_already_selected']){
+            $this->READ_model->ln_create(array(
+                'ln_parent_source_id' => $_POST['selected_en_id'],
+                'ln_child_source_id' => $session_en['en_id'],
+                'ln_creator_source_id' => $session_en['en_id'],
+                'ln_type_source_id' => 4230, //Raw
+            ));
+        }
+
+
+        //Log Account Update link type:
+        $_POST['account_update_function'] = 'account_update_radio'; //Add this variable to indicate which My Account function created this link
+        $this->READ_model->ln_create(array(
+            'ln_creator_source_id' => $session_en['en_id'],
+            'ln_type_source_id' => 6224, //My Account updated
+            'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_already_selected'] ? 'Deleted' : 'Added' ),
+            'ln_metadata' => $_POST,
+            'ln_parent_source_id' => $_POST['parent_en_id'],
+            'ln_child_source_id' => $_POST['selected_en_id'],
+        ));
+
+        //All good:
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Updated', //Alert: NOT shown in UI
+        ));
+    }
+
+
+
+
+
+
+    function account_update_avatar_icon()
+    {
+
+        $session_en = superpower_assigned();
+
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => echo_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['type_css'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing type_css',
+            ));
+        } elseif (!isset($_POST['icon_css'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing icon_css',
+            ));
+        }
+
+        //Validate:
+        $icon_new_css = $_POST['type_css'].' '.$_POST['icon_css'].' source';
+        $validated = false;
+        foreach ($this->config->item('en_all_12279') as $en_id => $m) {
+            if(substr_count($m['m_icon'], $icon_new_css) == 1){
+                $validated = true;
+                break;
+            }
+        }
+        if(!$validated){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid icon',
+            ));
+        }
+
+
+        //Update icon:
+        $new_avatar = '<i class="'.$icon_new_css.'"></i>';
+        $this->SOURCE_model->en_update($session_en['en_id'], array(
+            'en_icon' => $new_avatar,
+        ), true, $session_en['en_id']);
+
+
+        //Update Session:
+        $session_en['en_icon'] = $new_avatar;
+        $this->SOURCE_model->en_activate_session($session_en, true);
+
+
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Name updated',
+            'new_avatar' => $new_avatar,
+        ));
+    }
+
+
+    function account_update_name()
+    {
+
+        $session_en = superpower_assigned();
+
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => echo_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['en_name']) || strlen(trim($_POST['en_name'])) < config_var(12232)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Name must be at-least '.config_var(12232).' characters long',
+            ));
+        } elseif (strlen($_POST['en_name']) > config_var(11072)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Name is longer than the allowed ' . config_var(11072) . ' characters.',
+            ));
+        }
+
+        //Cleanup:
+        $_POST['en_name'] = trim($_POST['en_name']);
+
+        //Update name:
+        $this->SOURCE_model->en_update($session_en['en_id'], array(
+            'en_name' => $_POST['en_name'],
+        ), true, $session_en['en_id']);
+
+
+        //Update Session:
+        $session_en['en_name'] = $_POST['en_name'];
+        $this->SOURCE_model->en_activate_session($session_en, true);
+
+
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Name updated',
+            'first__name' => one_two_explode('',' ', $_POST['en_name']),
+        ));
+    }
+
+
+    function account_update_email()
+    {
+
+        $session_en = superpower_assigned();
+
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => echo_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['en_email']) || !filter_var($_POST['en_email'], FILTER_VALIDATE_EMAIL)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Email',
+            ));
+        }
+
+
+        if (strlen($_POST['en_email']) > 0) {
+
+            //Cleanup:
+            $_POST['en_email'] = trim(strtolower($_POST['en_email']));
+
+            //Check to make sure not duplicate:
+            $duplicates = $this->READ_model->ln_fetch(array(
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                'ln_type_source_id' => 4255, //Emails are of type Text
+                'ln_parent_source_id' => 3288, //Mench Email
+                'ln_child_source_id !=' => $session_en['en_id'],
+                'LOWER(ln_content)' => $_POST['en_email'],
+            ));
+            if (count($duplicates) > 0) {
+                //This is a duplicate, disallow:
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Email already in-use. Use another email or contact support for assistance.',
+                ));
+            }
+        }
+
+
+        //Fetch existing email:
+        $user_emails = $this->READ_model->ln_fetch(array(
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_child_source_id' => $session_en['en_id'],
+            'ln_type_source_id' => 4255, //Emails are of type Text
+            'ln_parent_source_id' => 3288, //Mench Email
+        ));
+        if (count($user_emails) > 0) {
+
+            if (strlen($_POST['en_email']) == 0) {
+
+                //Delete email:
+                $this->READ_model->ln_update($user_emails[0]['ln_id'], array(
+                    'ln_status_source_id' => 6173, //Link Deleted
+                ), $session_en['en_id'], 6224 /* User Account Updated */);
+
+                $return = array(
+                    'status' => 1,
+                    'message' => 'Email deleted',
+                );
+
+            } elseif ($user_emails[0]['ln_content'] != $_POST['en_email']) {
+
+                //Update if not duplicate:
+                $this->READ_model->ln_update($user_emails[0]['ln_id'], array(
+                    'ln_content' => $_POST['en_email'],
+                ), $session_en['en_id'], 6224 /* User Account Updated */);
+
+                $return = array(
+                    'status' => 1,
+                    'message' => 'Email updated',
+                );
+
+            } else {
+
+                $return = array(
+                    'status' => 0,
+                    'message' => 'Email unchanged',
+                );
+
+            }
+
+        } elseif (strlen($_POST['en_email']) > 0) {
+
+            //Create new link:
+            $this->READ_model->ln_create(array(
+                'ln_creator_source_id' => $session_en['en_id'],
+                'ln_child_source_id' => $session_en['en_id'],
+                'ln_type_source_id' => 4255, //Emails are of type Text
+                'ln_parent_source_id' => 3288, //Mench Email
+                'ln_content' => $_POST['en_email'],
+            ), true);
+
+            $return = array(
+                'status' => 1,
+                'message' => 'Email added',
+            );
+
+        } else {
+
+            $return = array(
+                'status' => 0,
+                'message' => 'Email unchanged',
+            );
+
+        }
+
+
+        if($return['status']){
+            //Log Account Update link type:
+            $_POST['account_update_function'] = 'account_update_email'; //Add this variable to indicate which My Account function created this link
+            $this->READ_model->ln_create(array(
+                'ln_creator_source_id' => $session_en['en_id'],
+                'ln_type_source_id' => 6224, //My Account updated
+                'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_email']) > 0 ? ': '.$_POST['en_email'] : ''),
+                'ln_metadata' => $_POST,
+            ));
+        }
+
+
+        //Return results:
+        return echo_json($return);
+
+
+    }
+
+
+    function account_update_password()
+    {
+
+        $session_en = superpower_assigned();
+
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => echo_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < config_var(11066)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'New password must be '.config_var(11066).' characters or more',
+            ));
+        }
+
+        //Fetch existing password:
+        $user_passwords = $this->READ_model->ln_fetch(array(
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_type_source_id' => 4255, //Passwords are of type Text
+            'ln_parent_source_id' => 3286, //Password
+            'ln_child_source_id' => $session_en['en_id'],
+        ));
+
+        $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $session_en['en_id']));
+
+
+        if (count($user_passwords) > 0) {
+
+            if ($hashed_password == $user_passwords[0]['ln_content']) {
+
+                $return = array(
+                    'status' => 0,
+                    'message' => 'Password Unchanged',
+                );
+
+            } else {
+
+                //Update password:
+                $this->READ_model->ln_update($user_passwords[0]['ln_id'], array(
+                    'ln_content' => $hashed_password,
+                ), $session_en['en_id'], 7578 /* User Updated Password  */);
+
+                $return = array(
+                    'status' => 1,
+                    'message' => 'Password Updated',
+                );
+
+            }
+
+        } else {
+
+            //Create new link:
+            $this->READ_model->ln_create(array(
+                'ln_type_source_id' => 4255, //Passwords are of type Text
+                'ln_parent_source_id' => 3286, //Password
+                'ln_creator_source_id' => $session_en['en_id'],
+                'ln_child_source_id' => $session_en['en_id'],
+                'ln_content' => $hashed_password,
+            ), true);
+
+            $return = array(
+                'status' => 1,
+                'message' => 'Password Added',
+            );
+
+        }
+
+
+        //Log Account Update link type:
+        if($return['status']){
+            $_POST['account_update_function'] = 'account_update_password'; //Add this variable to indicate which My Account function created this link
+            $this->READ_model->ln_create(array(
+                'ln_creator_source_id' => $session_en['en_id'],
+                'ln_type_source_id' => 6224, //My Account Updated
+                'ln_content' => 'My Account '.$return['message'],
+                'ln_metadata' => $_POST,
+            ));
+        }
+
+
+        //Return results:
+        return echo_json($return);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /*
+     *
+     * SIGN FUNCTIONS
+     *
+     *
+     * */
+
+
+
+
+    function sign($in_id = 0){
+
+        //Check to see if they are already logged in?
+        $session_en = superpower_assigned();
+        if ($session_en) {
+            //Lead player and above, go to console:
+            if($in_id > 0){
+                return redirect_message('/' . $in_id);
+            } else {
+                return redirect_message('/read');
+            }
+        }
+
+        //Update focus idea session:
+        if($in_id > 0){
+            //Set in session:
+            $this->session->set_userdata(array(
+                'sign_in_id' => $in_id,
+            ));
+
+            //Redirect to basic login URL (So Facebook OAuth can validate)
+            return redirect_message('/source/sign');
+        }
+
+
+        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
+        $this->load->view('header', array(
+            'hide_header' => 1,
+            'title' => $en_all_11035[4269]['m_name'],
+        ));
+        $this->load->view('source/source_sign');
+        $this->load->view('footer');
+
+    }
+
+
+    function signout()
+    {
+        //Destroys Session
+        $this->session->sess_destroy();
+        header('Location: /');
+    }
+
+
+
+    function sign_create_account(){
+
+        if (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_url'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing core data',
+            ));
+        } elseif (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Email',
+            ));
+        } elseif (!isset($_POST['input_name']) || strlen($_POST['input_name'])<1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing name',
+                'focus_input_field' => 'input_name',
+            ));
+        }
+
+        //Prep inputs & validate further:
+        $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
+        $_POST['input_name'] = trim($_POST['input_name']);
+        $name_parts = explode(' ', trim($_POST['input_name']));
+        if (strlen($_POST['input_name']) < config_var(12232)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Name must longer than '.config_var(12232).' characters',
+                'focus_input_field' => 'input_name',
+            ));
+        } elseif (strlen($_POST['input_name']) > config_var(11072)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Name must be less than '.config_var(11072).' characters',
+                'focus_input_field' => 'input_name',
+            ));
+
+            /*
+            } elseif (!isset($name_parts[1])) {
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'There must be a space between your your first and last name',
+                    'focus_input_field' => 'input_name',
+                ));
+            } elseif (strlen($name_parts[1])<2) {
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Last name must be 2 characters or longer',
+                    'focus_input_field' => 'input_name',
+                ));
+            } elseif (strlen($name_parts[0])<2) {
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'First name must be 2 characters or longer',
+                    'focus_input_field' => 'input_name',
+                ));
+            */
+
+        } elseif (!isset($_POST['new_password']) || strlen($_POST['new_password'])<1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing password',
+                'focus_input_field' => 'new_password',
+            ));
+        } elseif (strlen($_POST['new_password']) < config_var(11066)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'New password must be '.config_var(11066).' characters or longer',
+                'focus_input_field' => 'new_password',
+            ));
+        }
+
+
+
+        //All good, create new source:
+        $user_en = $this->SOURCE_model->en_verify_create(trim($_POST['input_name']), 0, 6181, random_player_avatar());
+        if(!$user_en['status']){
+            //We had an error, return it:
+            return echo_json($user_en);
+        }
+
+
+        //Add Player
+        $this->SOURCE_model->en_create_player($user_en['en']['en_id']);
+
+
+        $this->READ_model->ln_create(array(
+            'ln_type_source_id' => 4230, //Raw link
+            'ln_parent_source_id' => 12221, //Notify on EMAIL
+            'ln_creator_source_id' => $user_en['en']['en_id'],
+            'ln_child_source_id' => $user_en['en']['en_id'],
+        ));
+        $this->READ_model->ln_create(array(
+            'ln_type_source_id' => 4255, //Text link
+            'ln_content' => trim(strtolower($_POST['input_email'])),
+            'ln_parent_source_id' => 3288, //Mench Email
+            'ln_creator_source_id' => $user_en['en']['en_id'],
+            'ln_child_source_id' => $user_en['en']['en_id'],
+        ));
+        $this->READ_model->ln_create(array(
+            'ln_type_source_id' => 4255, //Text link
+            'ln_content' => strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $user_en['en']['en_id'])),
+            'ln_parent_source_id' => 3286, //Mench Password
+            'ln_creator_source_id' => $user_en['en']['en_id'],
+            'ln_child_source_id' => $user_en['en']['en_id'],
+        ));
+
+
+        //Fetch referral Idea, if any:
+        if(intval($_POST['referrer_in_id']) > 0){
+
+            //Fetch the Idea:
+            $referrer_ins = $this->IDEA_model->in_fetch(array(
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'in_id' => $_POST['referrer_in_id'],
+            ));
+
+            if(count($referrer_ins) > 0){
+                //Add this Idea to their READING LIST:
+                $this->READ_model->read_start($user_en['en']['en_id'], $_POST['referrer_in_id']);
+            } else {
+                //Cannot be added, likely because its not published:
+                $_POST['referrer_in_id'] = 0;
+            }
+
+        } else {
+            $referrer_ins = array();
+        }
+
+
+
+        ##Email Subject
+        $subject = 'Hi, '.$name_parts[0].'! 👋';
+
+        ##Email Body
+        $html_message = '<div>Just wanted to welcome you to Mench. You can create your first idea here:</div>';
+        $html_message .= '<br /><br />';
+        $html_message .= '<div>'.echo_platform_message(12691).'</div><br />';
+        $html_message .= '<div>MENCH</div>';
+
+        //Send Welcome Email:
+        $email_log = $this->READ_model->dispatch_emails(array($_POST['input_email']), $subject, $html_message);
+
+
+        //Log User Signin Joined Mench
+        $invite_link = $this->READ_model->ln_create(array(
+            'ln_type_source_id' => 7562, //User Signin Joined Mench
+            'ln_creator_source_id' => $user_en['en']['en_id'],
+            'ln_previous_idea_id' => intval($_POST['referrer_in_id']),
+            'ln_metadata' => array(
+                'email_log' => $email_log,
+            ),
+        ));
+
+        //Assign session & log login link:
+        $this->SOURCE_model->en_activate_session($user_en['en']);
+
+
+        if (strlen($_POST['referrer_url']) > 0) {
+            $login_url = urldecode($_POST['referrer_url']);
+        } elseif(intval($_POST['referrer_in_id']) > 0) {
+            $login_url = '/'.$_POST['referrer_in_id'];
+        } else {
+            //Go to home page and let them continue from there:
+            $login_url = '/source';
+        }
+
+        return echo_json(array(
+            'status' => 1,
+            'login_url' => $login_url,
+        ));
+
+
+
+    }
+
 
 
     function singin_check_psid($psid){
@@ -1269,181 +1879,7 @@ class Source extends CI_Controller
     }
 
 
-    function sign_create_account(){
 
-        if (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_url'])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing core data',
-            ));
-        } elseif (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Email',
-            ));
-        } elseif (!isset($_POST['input_name']) || strlen($_POST['input_name'])<1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing name',
-                'focus_input_field' => 'input_name',
-            ));
-        }
-
-        //Prep inputs & validate further:
-        $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
-        $_POST['input_name'] = trim($_POST['input_name']);
-        $name_parts = explode(' ', trim($_POST['input_name']));
-        if (strlen($_POST['input_name']) < config_var(12232)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Name must longer than '.config_var(12232).' characters',
-                'focus_input_field' => 'input_name',
-            ));
-        } elseif (strlen($_POST['input_name']) > config_var(11072)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Name must be less than '.config_var(11072).' characters',
-                'focus_input_field' => 'input_name',
-            ));
-
-        /*
-        } elseif (!isset($name_parts[1])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'There must be a space between your your first and last name',
-                'focus_input_field' => 'input_name',
-            ));
-        } elseif (strlen($name_parts[1])<2) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Last name must be 2 characters or longer',
-                'focus_input_field' => 'input_name',
-            ));
-        } elseif (strlen($name_parts[0])<2) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'First name must be 2 characters or longer',
-                'focus_input_field' => 'input_name',
-            ));
-        */
-
-        } elseif (!isset($_POST['new_password']) || strlen($_POST['new_password'])<1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing password',
-                'focus_input_field' => 'new_password',
-            ));
-        } elseif (strlen($_POST['new_password']) < config_var(11066)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'New password must be '.config_var(11066).' characters or longer',
-                'focus_input_field' => 'new_password',
-            ));
-        }
-
-
-
-        //All good, create new source:
-        $user_en = $this->SOURCE_model->en_verify_create(trim($_POST['input_name']), 0, 6181, random_player_avatar());
-        if(!$user_en['status']){
-            //We had an error, return it:
-            return echo_json($user_en);
-        }
-
-
-        //Add Player
-        $this->SOURCE_model->en_create_player($user_en['en']['en_id']);
-
-
-        $this->READ_model->ln_create(array(
-            'ln_type_source_id' => 4230, //Raw link
-            'ln_parent_source_id' => 12221, //Notify on EMAIL
-            'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_child_source_id' => $user_en['en']['en_id'],
-        ));
-        $this->READ_model->ln_create(array(
-            'ln_type_source_id' => 4255, //Text link
-            'ln_content' => trim(strtolower($_POST['input_email'])),
-            'ln_parent_source_id' => 3288, //Mench Email
-            'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_child_source_id' => $user_en['en']['en_id'],
-        ));
-        $this->READ_model->ln_create(array(
-            'ln_type_source_id' => 4255, //Text link
-            'ln_content' => strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $user_en['en']['en_id'])),
-            'ln_parent_source_id' => 3286, //Mench Password
-            'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_child_source_id' => $user_en['en']['en_id'],
-        ));
-
-
-        //Fetch referral Idea, if any:
-        if(intval($_POST['referrer_in_id']) > 0){
-
-            //Fetch the Idea:
-            $referrer_ins = $this->IDEA_model->in_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                'in_id' => $_POST['referrer_in_id'],
-            ));
-
-            if(count($referrer_ins) > 0){
-                //Add this Idea to their READING LIST:
-                $this->READ_model->read_start($user_en['en']['en_id'], $_POST['referrer_in_id']);
-            } else {
-                //Cannot be added, likely because its not published:
-                $_POST['referrer_in_id'] = 0;
-            }
-
-        } else {
-            $referrer_ins = array();
-        }
-
-
-
-        ##Email Subject
-        $subject = 'Hi, '.$name_parts[0].'! 👋';
-
-        ##Email Body
-        $html_message = '<div>Just wanted to welcome you to Mench. You can create your first idea here:</div>';
-        $html_message .= '<br /><br />';
-        $html_message .= '<div>'.echo_platform_message(12691).'</div><br />';
-        $html_message .= '<div>MENCH</div>';
-
-        //Send Welcome Email:
-        $email_log = $this->READ_model->dispatch_emails(array($_POST['input_email']), $subject, $html_message);
-
-
-        //Log User Signin Joined Mench
-        $invite_link = $this->READ_model->ln_create(array(
-            'ln_type_source_id' => 7562, //User Signin Joined Mench
-            'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_previous_idea_id' => intval($_POST['referrer_in_id']),
-            'ln_metadata' => array(
-                'email_log' => $email_log,
-            ),
-        ));
-
-        //Assign session & log login link:
-        $this->SOURCE_model->en_activate_session($user_en['en']);
-
-
-        if (strlen($_POST['referrer_url']) > 0) {
-            $login_url = urldecode($_POST['referrer_url']);
-        } elseif(intval($_POST['referrer_in_id']) > 0) {
-            $login_url = '/'.$_POST['referrer_in_id'];
-        } else {
-            //Go to home page and let them continue from there:
-            $login_url = '/source';
-        }
-
-        return echo_json(array(
-            'status' => 1,
-            'login_url' => $login_url,
-        ));
-
-
-
-    }
 
     function magicemail(){
 
@@ -1608,556 +2044,6 @@ class Source extends CI_Controller
 
         }
     }
-
-
-
-
-    function account_update_radio()
-    {
-        /*
-         *
-         * Saves the radio selection of some account fields
-         * that are displayed using echo_radio_sources()
-         *
-         * */
-
-        $session_en = superpower_assigned();
-
-        if (!$session_en) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Session expired',
-            ));
-        } elseif (!isset($_POST['parent_en_id']) || intval($_POST['parent_en_id']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing parent source',
-            ));
-        } elseif (!isset($_POST['selected_en_id']) || intval($_POST['selected_en_id']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing selected source',
-            ));
-        } elseif (!isset($_POST['enable_mulitiselect']) || !isset($_POST['was_already_selected'])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing multi-select setting',
-            ));
-        }
-
-
-        if(!$_POST['enable_mulitiselect'] || $_POST['was_already_selected']){
-            //Since this is not a multi-select we want to delete all existing options...
-
-            //Fetch all possible answers based on parent source:
-            $filters = array(
-                'ln_parent_source_id' => $_POST['parent_en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-            );
-
-            if($_POST['enable_mulitiselect'] && $_POST['was_already_selected']){
-                //Just delete this single item, not the other ones:
-                $filters['ln_child_source_id'] = $_POST['selected_en_id'];
-            }
-
-            //List all possible answers:
-            $possible_answers = array();
-            foreach($this->READ_model->ln_fetch($filters, array('en_child'), 0, 0) as $answer_en){
-                array_push($possible_answers, $answer_en['en_id']);
-            }
-
-            //Delete selected options for this player:
-            foreach($this->READ_model->ln_fetch(array(
-                'ln_parent_source_id IN (' . join(',', $possible_answers) . ')' => null,
-                'ln_child_source_id' => $session_en['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            )) as $delete_en){
-                //Should usually delete a single option:
-                $this->READ_model->ln_update($delete_en['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Link Deleted
-                ), $session_en['en_id'], 6224 /* User Account Updated */);
-            }
-
-        }
-
-        //Add new option if not already there:
-        if(!$_POST['enable_mulitiselect'] || !$_POST['was_already_selected']){
-            $this->READ_model->ln_create(array(
-                'ln_parent_source_id' => $_POST['selected_en_id'],
-                'ln_child_source_id' => $session_en['en_id'],
-                'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id' => 4230, //Raw
-            ));
-        }
-
-
-        //Log Account Update link type:
-        $_POST['account_update_function'] = 'account_update_radio'; //Add this variable to indicate which My Account function created this link
-        $this->READ_model->ln_create(array(
-            'ln_creator_source_id' => $session_en['en_id'],
-            'ln_type_source_id' => 6224, //My Account updated
-            'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_already_selected'] ? 'Deleted' : 'Added' ),
-            'ln_metadata' => $_POST,
-            'ln_parent_source_id' => $_POST['parent_en_id'],
-            'ln_child_source_id' => $_POST['selected_en_id'],
-        ));
-
-        //All good:
-        return echo_json(array(
-            'status' => 1,
-            'message' => 'Updated', //Alert: NOT shown in UI
-        ));
-    }
-
-
-
-
-
-
-    function signout()
-    {
-        //Destroys Session
-        $this->session->sess_destroy();
-        header('Location: /');
-    }
-
-
-    function account_update_avatar_icon()
-    {
-
-        $session_en = superpower_assigned();
-
-        if (!$session_en) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Session expired',
-            ));
-        } elseif (!isset($_POST['type_css'])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing type_css',
-            ));
-        } elseif (!isset($_POST['icon_css'])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing icon_css',
-            ));
-        }
-
-        //Validate:
-        $icon_new_css = $_POST['type_css'].' '.$_POST['icon_css'].' source';
-        $validated = false;
-        foreach ($this->config->item('en_all_12279') as $en_id => $m) {
-            if(substr_count($m['m_icon'], $icon_new_css) == 1){
-                $validated = true;
-                break;
-            }
-        }
-        if(!$validated){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid icon',
-            ));
-        }
-
-
-        //Update icon:
-        $new_avatar = '<i class="'.$icon_new_css.'"></i>';
-        $this->SOURCE_model->en_update($session_en['en_id'], array(
-            'en_icon' => $new_avatar,
-        ), true, $session_en['en_id']);
-
-
-        //Update Session:
-        $session_en['en_icon'] = $new_avatar;
-        $this->SOURCE_model->en_activate_session($session_en, true);
-
-
-        return echo_json(array(
-            'status' => 1,
-            'message' => 'Name updated',
-            'new_avatar' => $new_avatar,
-        ));
-    }
-
-
-    function account_update_name()
-    {
-
-        $session_en = superpower_assigned();
-
-        if (!$session_en) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Session expired',
-            ));
-        } elseif (!isset($_POST['en_name']) || strlen(trim($_POST['en_name'])) < config_var(12232)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Name must be at-least '.config_var(12232).' characters long',
-            ));
-        } elseif (strlen($_POST['en_name']) > config_var(11072)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Name is longer than the allowed ' . config_var(11072) . ' characters.',
-            ));
-        }
-
-        //Cleanup:
-        $_POST['en_name'] = trim($_POST['en_name']);
-
-        //Update name:
-        $this->SOURCE_model->en_update($session_en['en_id'], array(
-            'en_name' => $_POST['en_name'],
-        ), true, $session_en['en_id']);
-
-
-        //Update Session:
-        $session_en['en_name'] = $_POST['en_name'];
-        $this->SOURCE_model->en_activate_session($session_en, true);
-
-
-        return echo_json(array(
-            'status' => 1,
-            'message' => 'Name updated',
-            'first__name' => one_two_explode('',' ', $_POST['en_name']),
-        ));
-    }
-
-
-    function account_update_email()
-    {
-
-        $session_en = superpower_assigned();
-
-        if (!$session_en) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Session expired',
-            ));
-        } elseif (!isset($_POST['en_email']) || !filter_var($_POST['en_email'], FILTER_VALIDATE_EMAIL)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Email',
-            ));
-        }
-
-
-        if (strlen($_POST['en_email']) > 0) {
-
-            //Cleanup:
-            $_POST['en_email'] = trim(strtolower($_POST['en_email']));
-
-            //Check to make sure not duplicate:
-            $duplicates = $this->READ_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'ln_type_source_id' => 4255, //Emails are of type Text
-                'ln_parent_source_id' => 3288, //Mench Email
-                'ln_child_source_id !=' => $session_en['en_id'],
-                'LOWER(ln_content)' => $_POST['en_email'],
-            ));
-            if (count($duplicates) > 0) {
-                //This is a duplicate, disallow:
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => 'Email already in-use. Use another email or contact support for assistance.',
-                ));
-            }
-        }
-
-
-        //Fetch existing email:
-        $user_emails = $this->READ_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_child_source_id' => $session_en['en_id'],
-            'ln_type_source_id' => 4255, //Emails are of type Text
-            'ln_parent_source_id' => 3288, //Mench Email
-        ));
-        if (count($user_emails) > 0) {
-
-            if (strlen($_POST['en_email']) == 0) {
-
-                //Delete email:
-                $this->READ_model->ln_update($user_emails[0]['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Link Deleted
-                ), $session_en['en_id'], 6224 /* User Account Updated */);
-
-                $return = array(
-                    'status' => 1,
-                    'message' => 'Email deleted',
-                );
-
-            } elseif ($user_emails[0]['ln_content'] != $_POST['en_email']) {
-
-                //Update if not duplicate:
-                $this->READ_model->ln_update($user_emails[0]['ln_id'], array(
-                    'ln_content' => $_POST['en_email'],
-                ), $session_en['en_id'], 6224 /* User Account Updated */);
-
-                $return = array(
-                    'status' => 1,
-                    'message' => 'Email updated',
-                );
-
-            } else {
-
-                $return = array(
-                    'status' => 0,
-                    'message' => 'Email unchanged',
-                );
-
-            }
-
-        } elseif (strlen($_POST['en_email']) > 0) {
-
-            //Create new link:
-            $this->READ_model->ln_create(array(
-                'ln_creator_source_id' => $session_en['en_id'],
-                'ln_child_source_id' => $session_en['en_id'],
-                'ln_type_source_id' => 4255, //Emails are of type Text
-                'ln_parent_source_id' => 3288, //Mench Email
-                'ln_content' => $_POST['en_email'],
-            ), true);
-
-            $return = array(
-                'status' => 1,
-                'message' => 'Email added',
-            );
-
-        } else {
-
-            $return = array(
-                'status' => 0,
-                'message' => 'Email unchanged',
-            );
-
-        }
-
-
-        if($return['status']){
-            //Log Account Update link type:
-            $_POST['account_update_function'] = 'account_update_email'; //Add this variable to indicate which My Account function created this link
-            $this->READ_model->ln_create(array(
-                'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id' => 6224, //My Account updated
-                'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_email']) > 0 ? ': '.$_POST['en_email'] : ''),
-                'ln_metadata' => $_POST,
-            ));
-        }
-
-
-        //Return results:
-        return echo_json($return);
-
-
-    }
-
-
-    function account_update_password()
-    {
-
-        $session_en = superpower_assigned();
-
-        if (!$session_en) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Session Expired',
-            ));
-        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < config_var(11066)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'New password must be '.config_var(11066).' characters or more',
-            ));
-        }
-
-        //Fetch existing password:
-        $user_passwords = $this->READ_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4255, //Passwords are of type Text
-            'ln_parent_source_id' => 3286, //Password
-            'ln_child_source_id' => $session_en['en_id'],
-        ));
-
-        $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $session_en['en_id']));
-
-
-        if (count($user_passwords) > 0) {
-
-            if ($hashed_password == $user_passwords[0]['ln_content']) {
-
-                $return = array(
-                    'status' => 0,
-                    'message' => 'Password Unchanged',
-                );
-
-            } else {
-
-                //Update password:
-                $this->READ_model->ln_update($user_passwords[0]['ln_id'], array(
-                    'ln_content' => $hashed_password,
-                ), $session_en['en_id'], 7578 /* User Updated Password  */);
-
-                $return = array(
-                    'status' => 1,
-                    'message' => 'Password Updated',
-                );
-
-            }
-
-        } else {
-
-            //Create new link:
-            $this->READ_model->ln_create(array(
-                'ln_type_source_id' => 4255, //Passwords are of type Text
-                'ln_parent_source_id' => 3286, //Password
-                'ln_creator_source_id' => $session_en['en_id'],
-                'ln_child_source_id' => $session_en['en_id'],
-                'ln_content' => $hashed_password,
-            ), true);
-
-            $return = array(
-                'status' => 1,
-                'message' => 'Password Added',
-            );
-
-        }
-
-
-        //Log Account Update link type:
-        if($return['status']){
-            $_POST['account_update_function'] = 'account_update_password'; //Add this variable to indicate which My Account function created this link
-            $this->READ_model->ln_create(array(
-                'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id' => 6224, //My Account Updated
-                'ln_content' => 'My Account '.$return['message'],
-                'ln_metadata' => $_POST,
-            ));
-        }
-
-
-        //Return results:
-        return echo_json($return);
-
-    }
-
-
-
-    function platform_cache(){
-
-        /*
-         *
-         * This function prepares a PHP-friendly text to be copied to platform_cache.php
-         * (which is auto loaded) to provide a cache image of some sources in
-         * the idea for faster application processing.
-         *
-         * */
-
-        //First first all sources that have Cache in PHP Config @4527 as their parent:
-        $config_ens = $this->READ_model->ln_fetch(array(
-            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-            'ln_parent_source_id' => 4527,
-        ), array('en_child'), 0);
-
-        echo htmlentities('<?php').'<br /><br />';
-        echo 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'.'<br /><br />';
-
-        echo '/*<br />
- * Keep a cache of certain parts of the idea for faster processing<br />
- * See here for more details: https://mench.com/source/4527<br />
- *<br />
- */<br /><br />';
-
-
-
-        //PLATFORM STATS
-        $cache_timestamp = time();
-        $transactions = $this->READ_model->ln_fetch(array(), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $read_coins = $this->READ_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $idea_coins = $this->READ_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $source_coins = $this->READ_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-
-
-        echo '//Generated '.date("Y-m-d H:i:s", $cache_timestamp).' PST<br />';
-
-        //Append more data:
-        echo '<br />//PLATFORM STATS:<br />';
-        echo '$config[\'cache_timestamp\'] = '.$cache_timestamp.';<br />';
-        echo '$config[\'cache_count_transaction\'] = '.$transactions[0]['totals'].';<br />';
-        echo '$config[\'cache_count_read\'] = '.$read_coins[0]['totals'].';<br />';
-        echo '$config[\'cache_count_idea\'] = '.$idea_coins[0]['totals'].';<br />';
-        echo '$config[\'cache_count_source\'] = '.$source_coins[0]['totals'].';<br />';
-        echo '<br /><br />';
-
-
-        //CONFIG VARS
-        foreach($config_ens as $en){
-
-            //Now fetch all its children:
-            $children = $this->READ_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-                'ln_parent_source_id' => $en['ln_child_source_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-            ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
-
-
-            //Find common base, if allowed:
-            $common_prefix = ( in_array($en['ln_child_source_id'], $this->config->item('en_ids_12588')) ? null : common_prefix($children, 'en_name') );
-
-            //Generate raw IDs:
-            $child_ids = array();
-            foreach($children as $child){
-                array_push($child_ids , $child['en_id']);
-            }
-
-            echo '<br />//'.$en['en_name'].':<br />';
-            echo '$config[\'en_ids_'.$en['ln_child_source_id'].'\'] = array('.join(',',$child_ids).');<br />';
-            echo '$config[\'en_all_'.$en['ln_child_source_id'].'\'] = array(<br />';
-            foreach($children as $child){
-
-                //Do we have an omit command?
-                if(strlen($common_prefix) > 0){
-                    $child['en_name'] = trim(substr($child['en_name'], strlen($common_prefix)));
-                }
-
-                //Fetch all parents for this child:
-                $child_parent_ids = array(); //To be populated soon
-                $child_parents = $this->READ_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-                    'ln_child_source_id' => $child['en_id'],
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                ), array('en_parent'), 0);
-                foreach($child_parents as $cp_en){
-                    array_push($child_parent_ids, intval($cp_en['en_id']));
-                }
-
-                echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['en_id'].' => array(<br />';
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_icon\' => \''.htmlentities($child['en_icon']).'\',<br />';
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_name\' => \''.htmlentities(str_replace('\'','\\\'',$child['en_name'])).'\',<br />';
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_desc\' => \''.htmlentities(str_replace('\'','\\\'',$child['ln_content'])).'\',<br />';
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_parents\' => array('.join(',',$child_parent_ids).'),<br />';
-                echo '&nbsp;&nbsp;&nbsp;&nbsp; ),<br />';
-
-            }
-            echo ');<br />';
-        }
-    }
-
 
 
 }

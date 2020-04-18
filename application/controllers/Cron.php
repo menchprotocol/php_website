@@ -2,28 +2,28 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
- *
- *
 
-# ESSENTIALS:
-* * * * *       /usr/bin/php /var/www/platform/index.php cron common_base
-10 * * * *      /usr/bin/php /var/www/platform/index.php cron source_insights
-20 * * * *      /usr/bin/php /var/www/platform/index.php cron icons
-30 * * * *      /usr/bin/php /var/www/platform/index.php cron weights
-01 7 * * 1      /usr/bin/php /var/www/platform/index.php cron report
-
-# NICE-TO-HAVES:
-40 3 * * *      /usr/bin/php /var/www/platform/index.php cron gephi
-50 6 * * *      /usr/bin/php /var/www/platform/index.php cron metadatas
+# ACTIVE:
+* * * * *       /usr/bin/php /var/www/platform/index.php cron cron__7275  # Common Base
+10 * * * *      /usr/bin/php /var/www/platform/index.php cron cron__7276  # Extra Insights
+20 * * * *      /usr/bin/php /var/www/platform/index.php cron cron__12523 # Icon Sync
+30 * * * *      /usr/bin/php /var/www/platform/index.php cron cron__12569 # Weight Sync
+01 7 * * 1      /usr/bin/php /var/www/platform/index.php cron cron__12114 # Growth Report Email
+40 3 * * *      /usr/bin/php /var/www/platform/index.php cron cron__7278  # Gephi Sync
+50 6 * * *      /usr/bin/php /var/www/platform/index.php cron cron__7277  # Metadata Cleanup
 
 # INACTIVE:
-# 45 1 19 * *     /usr/bin/php /var/www/platform/index.php cron algolia
+# 45 1 19 * *   /usr/bin/php /var/www/platform/index.php cron cron__7279  # Algolia Search SYNC
+# * * * * *     /usr/bin/php /var/www/platform/index.php cron cron__7281  # Messenger Chat Media
+# 0 * * * *     /usr/bin/php /var/www/platform/index.php cron cron__7282  # Messenger Sync Attachments
 
- * */
+*/
 
 class Cron extends CI_Controller
 {
 
+    var $is_player_request;
+    var $session_id;
 
     function __construct()
     {
@@ -36,12 +36,27 @@ class Cron extends CI_Controller
 
         boost_power();
 
+        //Running from browser? If so, authenticate:
+        $this->is_player_request = isset($_ENV['SSH_CLIENT']);
+        if($this->is_player_request){
+            $this->session_en = superpower_assigned(12728, true);
+        }
+
     }
 
+    function index(){
 
+        //List Crons:
+        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
+        $this->load->view('header', array(
+            'title' => $en_all_11035[7274]['m_name'],
+        ));
+        $this->load->view('source/source_crons');
+        $this->load->view('footer');
 
+    }
 
-    function weights($obj = null){
+    function cron__12569($obj = null /* Can be in or en */){
 
         $stats = array(
             'start_time' => time(),
@@ -115,7 +130,7 @@ class Cron extends CI_Controller
 
 
 
-    function report(){
+    function cron__12114(){
 
         //Calculates the weekly coins issued:
         $last_week_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-7, date("Y"));
@@ -190,13 +205,13 @@ class Cron extends CI_Controller
         $html_message .= '<div>Growth report from '.date("l F jS G:i:s", $last_week_start_timestamp).' to '.date("l F jS G:i:s", $last_week_end_timestamp).' ('.config_var(11079).'):</div>';
         $html_message .= '<br />';
 
-        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🟡</b><b style="min-width:47px; display: inline-block;">'.( $idea_coins_growth_rate >= 0 ? '+' : '-' ).$idea_coins_growth_rate.'%</b><span style="min-width:47px; display: inline-block;">(<span title="'.number_format($idea_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($idea_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com/idea" target="_blank" style="color: #ffc500; font-weight:bold; text-decoration:none;">IDEAS &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🟡</b><b style="min-width:55px; display: inline-block;">'.( $idea_coins_growth_rate >= 0 ? '+' : '-' ).$idea_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($idea_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($idea_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com/idea" target="_blank" style="color: #ffc500; font-weight:bold; text-decoration:none;">IDEA &raquo;</a></div>';
 
-        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔴</b><b style="min-width:47px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</b><span style="min-width:47px; display: inline-block;">(<span title="'.number_format($read_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($read_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com" target="_blank" style="color: #FC1B44; font-weight:bold; text-decoration:none;">READS &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔴</b><b style="min-width:55px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($read_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($read_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com" target="_blank" style="color: #FC1B44; font-weight:bold; text-decoration:none;">READ &raquo;</a></div>';
 
-        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔵</b><b style="min-width:47px; display: inline-block;">'.( $source_coins_growth_rate >= 0 ? '+' : '-' ).$source_coins_growth_rate.'%</b><span style="min-width:47px; display: inline-block;">(<span title="'.number_format($source_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($source_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com/source" target="_blank" style="color: #007AFD; font-weight:bold; text-decoration:none;">SOURCES &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔵</b><b style="min-width:55px; display: inline-block;">'.( $source_coins_growth_rate >= 0 ? '+' : '-' ).$source_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($source_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($source_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com/source" target="_blank" style="color: #007AFD; font-weight:bold; text-decoration:none;">SOURCE &raquo;</a></div>';
 
-        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:47px; display: inline-block;">'.( $ledger_transactions_growth_rate >= 0 ? '+' : '-' ).$ledger_transactions_growth_rate.'%</b><span style="min-width:47px; display: inline-block;">(<span title="'.number_format($ledger_transactions_last_week[0]['totals'], 0).' Transactions" style="border-bottom:1px dotted #999999;">'.echo_number($ledger_transactions_last_week[0]['totals']).'</span>)</span><a href="https://mench.com/ledger" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">TRANSACTIONS &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:55px; display: inline-block;">'.( $ledger_transactions_growth_rate >= 0 ? '+' : '-' ).$ledger_transactions_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($ledger_transactions_last_week[0]['totals'], 0).' Transactions" style="border-bottom:1px dotted #999999;">'.echo_number($ledger_transactions_last_week[0]['totals']).'</span>)</span><a href="https://mench.com/ledger" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">LEDGER &raquo;</a></div>';
 
 
         $html_message .= '<br />';
@@ -211,13 +226,8 @@ class Cron extends CI_Controller
         );
 
         //Should we limit the scope?
-        if(isset($_GET['notify_source_id']) && intval($_GET['notify_source_id']) > 0){
-            $subscriber_filters['ln_child_source_id'] = $_GET['notify_source_id'];
-        } else {
-            $session_en = superpower_assigned();
-            if($session_en){
-                $subscriber_filters['ln_child_source_id'] = $session_en['en_id'];
-            }
+        if($this->is_player_request){
+            $subscriber_filters['ln_child_source_id'] = $this->session_en['en_id'];
         }
 
 
@@ -247,7 +257,7 @@ class Cron extends CI_Controller
 
 
 
-    function common_base($in_id = 0)
+    function cron__7275($in_id = 0)
     {
 
         /*
@@ -255,11 +265,6 @@ class Cron extends CI_Controller
          * Updates common base metadata for published ideas
          *
          * */
-
-        if($in_id < 0){
-            //Gateway URL to give option to run...
-            die('<a href="/cron/common_base">Click here</a> to start running this function.');
-        }
 
         $start_time = time();
         $filters = array(
@@ -292,7 +297,7 @@ class Cron extends CI_Controller
     }
 
 
-    function source_insights($in_id = 0)
+    function cron__7276($in_id = 0)
     {
 
         /*
@@ -301,12 +306,6 @@ class Cron extends CI_Controller
          * based on its common and expansion idea.
          *
          * */
-
-
-        if($in_id < 0){
-            //Gateway URL to give option to run...
-            die('<a href="/cron/source_insights">Click here</a> to start running this function.');
-        }
 
         $start_time = time();
         $update_count = 0;
@@ -357,15 +356,10 @@ class Cron extends CI_Controller
 
 
 
-    function algolia($input_obj_type = null, $input_obj_id = null){
+    function cron__7279($input_obj_type = null, $input_obj_id = null){
 
         if(!intval(config_var(12678))){
             die('Algolia is currently disabled');
-        }
-
-        if($input_obj_type < 0){
-            //Gateway URL to give option to run...
-            die('<a href="/cron/algolia">Click here</a> to start running this function.');
         }
 
         //Call the update function and passon possible values:
@@ -373,7 +367,7 @@ class Cron extends CI_Controller
     }
 
 
-    function gephi($affirmation = null){
+    function cron__7278(){
 
         /*
          *
@@ -381,12 +375,6 @@ class Cron extends CI_Controller
          * Gephi https://gephi.org network visualizer
          *
          * */
-
-        if($affirmation < 0){
-            //Gateway URL to give option to run...
-            die('<a href="/cron/gephi">Click here</a> to start running this function.');
-        }
-
 
         //Empty both tables:
         $this->db->query("TRUNCATE TABLE public.gephi_edges CONTINUE IDENTITY RESTRICT;");
@@ -536,7 +524,7 @@ class Cron extends CI_Controller
 
 
 
-    function metadatas($affirmation = null){
+    function cron__7277(){
 
         /*
          *
@@ -549,11 +537,6 @@ class Cron extends CI_Controller
          *
          *
          * */
-
-        if($affirmation < 0){
-            //Gateway URL to give option to run...
-            die('<a href="/cron/metadatas">Click here</a> to start running this function.');
-        }
 
 
         //Fetch all valid variable names:
@@ -625,7 +608,7 @@ class Cron extends CI_Controller
         if(count($invalid_variables) > 0){
             //Did we have anything to delete? Report with system bug:
             $this->READ_model->ln_create(array(
-                'ln_content' => 'metadatas() deleted '.count($invalid_variables).' unknown variables from idea/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
+                'ln_content' => 'cron__7277() deleted '.count($invalid_variables).' unknown variables from idea/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_parent_source_id' => 6232, //Variables Names
                 'ln_metadata' => $ln_metadata,
@@ -640,7 +623,7 @@ class Cron extends CI_Controller
 
 
 
-    function save_chat_media()
+    function cron__7281()
     {
 
         /*
@@ -687,7 +670,7 @@ class Cron extends CI_Controller
 
 
 
-    function attachments()
+    function cron__7282()
     {
 
         /*
@@ -792,7 +775,7 @@ class Cron extends CI_Controller
 
 
 
-    function icons()
+    function cron__12523()
     {
 
         /*
@@ -826,4 +809,4 @@ class Cron extends CI_Controller
 
 
 }
-?>
+

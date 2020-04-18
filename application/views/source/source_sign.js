@@ -231,7 +231,7 @@ function singin_check_password(){
 }
 
 function magicemail(){
-    var r = confirm("I will email you a link to "+$('#input_email').val()+" so you can easily login.");
+    var r = confirm("Email login URL to "+$('#input_email').val()+"?");
     if (r == true) {
 
         //Update UI:

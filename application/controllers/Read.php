@@ -11,38 +11,36 @@ class Read extends CI_Controller
         $this->output->enable_profiler(FALSE);
 
         date_default_timezone_set(config_var(11079));
+
     }
 
 
     function index(){
 
         //My Bookmarks Reading List
+        $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
         $session_en = superpower_assigned(null, true);
-        $player_reads = array();
 
 
-        if($session_en){
-            //Fetch reading list:
-            $player_reads = $this->READ_model->ln_fetch(array(
-                'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
-            if(!count($player_reads)){
-                //Nothing in their reading list:
-                return redirect_message('/');
-            }
-
-            //Log 🔴 READING LIST View:
-            $this->READ_model->ln_create(array(
-                'ln_type_source_id' => 4283, //Opened 🔴 READING LIST
-                'ln_creator_source_id' => $session_en['en_id'],
-            ));
+        //Fetch reading list:
+        $player_reads = $this->READ_model->ln_fetch(array(
+            'ln_creator_source_id' => $session_en['en_id'],
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+        ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
+        if(!count($player_reads)){
+            //Nothing in their reading list:
+            return redirect_message('/');
         }
 
+        //Log 🔴 READING LIST View:
+        $this->READ_model->ln_create(array(
+            'ln_type_source_id' => 4283, //Opened 🔴 READING LIST
+            'ln_creator_source_id' => $session_en['en_id'],
+        ));
 
-        $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
+
         $this->load->view('header', array(
             'title' => $en_all_2738[6205]['m_name'],
         ));
@@ -223,7 +221,7 @@ class Read extends CI_Controller
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(),
             ));
 
         } elseif (!isset($_POST['in_id'])) {
@@ -328,7 +326,7 @@ class Read extends CI_Controller
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session, login and try again',
+                'message' => echo_unauthorized_message(),
             ));
         } elseif (!isset($_POST['in_id']) || !intval($_POST['in_id'])) {
             return echo_json(array(
@@ -389,7 +387,7 @@ class Read extends CI_Controller
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session, login and try again',
+                'message' => echo_unauthorized_message(),
             ));
         } elseif (!isset($_POST['in_loaded_id'])) {
             return echo_json(array(
@@ -551,43 +549,5 @@ class Read extends CI_Controller
         ));
     }
 
-
-    function debug($in_id){
-
-        $session_en = superpower_assigned();
-        if(!$session_en){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
-            ));
-        }
-
-
-        $ins = $this->IDEA_model->in_fetch(array(
-            'in_id' => $in_id,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ));
-
-        if(count($ins) < 1){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Public Idea not found',
-            ));
-        }
-
-        //List the idea:
-        return echo_json(array(
-            'in_user' => array(
-                'next_in_id' => $this->READ_model->read_next_find($session_en['en_id'], $ins[0]),
-                'progress' => $this->READ_model->read__completion_progress($session_en['en_id'], $ins[0]),
-                'marks' => $this->READ_model->read__completion_marks($session_en['en_id'], $ins[0]),
-            ),
-            'in_general' => array(
-                'recursive_parents' => $this->IDEA_model->in_fetch_recursive_parents($ins[0]['in_id']),
-                'common_base' => $this->IDEA_model->in_metadata_common_base($ins[0]),
-            ),
-        ));
-
-    }
 
 }

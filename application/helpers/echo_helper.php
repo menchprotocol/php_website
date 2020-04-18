@@ -543,7 +543,7 @@ function echo_ln($ln, $is_parent_tr = false)
 
         //Metadata
         if(strlen($ln['ln_metadata']) > 0){
-            $ui .= '<div class="simple-line"><a href="/ledger/json/' . $ln['ln_id'] . '" class="montserrat"><span class="icon-block">'.$en_all_4341[6103]['m_icon']. '</span>'.$en_all_4341[6103]['m_name']. '</a></div>';
+            $ui .= '<div class="simple-line"><a href="/plugin/12722?ln_id=' . $ln['ln_id'] . '" class="montserrat"><span class="icon-block">'.$en_all_4341[6103]['m_icon']. '</span>'.$en_all_4341[6103]['m_name']. '</a></div>';
         }
 
         //External ID
@@ -1124,7 +1124,7 @@ function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_leve
 
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$en_all_7585[$in_ln['in_type_source_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_source_id']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$en_all_4737[$in_ln['in_status_source_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_source_id']]['m_icon']. '</span>';
-        $ui .= '<a href="/source/app/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   echo_in_title($in_ln, false) . '</u></a>';
+        $ui .= '<a href="?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   echo_in_title($in_ln, false) . '</u></a>';
 
         $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_source_id'] == 4228 && in_array($parent_in_type_source_id , $CI->config->item('en_ids_6193') /* OR Ideas */ )) || ($in_ln['ln_type_source_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
 
@@ -1638,9 +1638,6 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
     //File counter:
     $ui .= '<td style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaPadsNewCount' . $note_type_en_id . '" class="hidden"><span id="charNum' . $note_type_en_id . '">0</span>/' . config_var(11073).'</span></td>';
 
-    //First Name:
-    $ui .= '<td class="'.superpower_active(10967).'" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'/firstname \');" data-toggle="tooltip" title="Insert Player Nickname" data-placement="top"><span class="icon-block"><i class="far fa-fingerprint"></i></span></a></td>';
-
     //YouTube Clip
     $ui .= '<td style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=SECOND_HERE&end=SECOND_HERE\');" data-toggle="tooltip" title="Insert YouTube Clip URL" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
 
@@ -1682,6 +1679,27 @@ function echo_platform_message($en_id){
         $line_messages = explode(" | ", $en_all_12687[$en_id]['m_desc']);
         return $line_messages[rand(0, (count($line_messages) - 1))];
     }
+}
+
+function echo_unauthorized_message($superpower_en_id = 0, $push_message = false){
+
+    $en_all_10957 = $this->config->item('en_all_10957');
+    $session_en = superpower_assigned();
+
+    if(!$session_en){
+
+        //Missing Session
+        return 'ERROR: Session Expired, login & try again.';
+
+    } elseif($superpower_en_id>0) {
+
+        //Missing Superpower:
+        return 'ERROR: You are missing the required supowerpower of '.( $push_message ? $en_all_10957[$superpower_en_id]['m_name'] : '<b class="montserrat '.extract_icon_color($en_all_10957[$superpower_en_id]['m_icon']).'">'.$en_all_10957[$superpower_en_id]['m_icon'].' '.$en_all_10957[$superpower_en_id]['m_name'].'</b>' ).'';
+
+    }
+
+    return null;
+
 }
 
 function echo_en($en, $is_parent = false, $extra_class = null, $note_controller = false)
@@ -1751,7 +1769,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
     $ui .= '<a href="/source/'.$en['en_id'] . '"><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
 
     //SOURCE NAME
-    $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'"><span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>'.($child_links[0]['totals'] > 0 ? '<span class="'.superpower_active(12703).'" title="'.number_format($child_links[0]['totals'], 0).'">&nbsp;'.echo_number($child_links[0]['totals']).'</span>' : '').'</a>';
+    $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'"><span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>'.($child_links[0]['totals'] > 0 ? '<span class="'.superpower_active(12701).'" title="'.number_format($child_links[0]['totals'], 0).'">&nbsp;'.echo_number($child_links[0]['totals']).'</span>' : '').'</a>';
 
     $ui .= '</div>';
 

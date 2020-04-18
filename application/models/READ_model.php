@@ -504,14 +504,14 @@ class READ_model extends CI_Model
                     } elseif (in_array(4367 , $m['m_parents'])) {
 
                         //READ
-                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="https://mench.com/ledger/json/' . $insert_columns[$en_all_6232[$en_id]['m_desc']] . '" target="_parent">'.$insert_columns[$en_all_6232[$en_id]['m_desc']].'</a></div>';
+                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="https://mench.com/plugin/12722?ln_id=' . $insert_columns[$en_all_6232[$en_id]['m_desc']] . '" target="_parent">'.$insert_columns[$en_all_6232[$en_id]['m_desc']].'</a></div>';
 
                     }
 
                 }
 
                 //Finally append READ ID:
-                $html_message .= '<div>READ ID: <a href="https://mench.com/ledger/json/' . $insert_columns['ln_id'] . '">' . $insert_columns['ln_id'] . '</a></div>';
+                $html_message .= '<div>READ ID: <a href="https://mench.com/plugin/12722?ln_id=' . $insert_columns['ln_id'] . '">' . $insert_columns['ln_id'] . '</a></div>';
 
                 //Inform how to change settings:
                 $html_message .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/source/5967" target="_blank">@5967</a></div>';
@@ -2345,8 +2345,7 @@ class READ_model extends CI_Model
          *
          *
          * - $input_message:        The message text which may include source
-         *                          references like "@123" or commands like
-         *                          "/firstname". This may NOT include direct
+         *                          references like "@123". This may NOT include
          *                          URLs as they must be first turned into an
          *                          source and then referenced within a message.
          *
@@ -2720,29 +2719,6 @@ class READ_model extends CI_Model
          *
          * */
 
-        if(isset($recipient_en['en_id']) && in_array('/firstname', $string_references['ref_commands']) && !isset($recipient_en['en_name'])){
-
-            //Fetch full source data:
-            $ens = $this->SOURCE_model->en_fetch(array(
-                'en_id' => $recipient_en['en_id'],
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-            ));
-
-            if (count($ens) < 1) {
-                //Ooops, invalid source ID provided
-                return array(
-                    'status' => 0,
-                    'message' => 'Invalid Source ID provided',
-                );
-
-            } else {
-                //Assign data:
-                $recipient_en = $ens[0];
-            }
-
-        }
-
-
 
 
 
@@ -2887,19 +2863,6 @@ class READ_model extends CI_Model
 
         //Start building the Output message body based on format:
         $output_body_message = ( $push_message ? $input_message : htmlentities($input_message) );
-
-        if (in_array('/firstname', $string_references['ref_commands'])) {
-
-            //We sometimes may need to set a default recipient source name IF /firstname command used without any recipient source passed:
-            if (!isset($recipient_en['en_name'])) {
-                //This is a guest User, so use the default:
-                $recipient_en['en_name'] = 'Stranger';
-            }
-
-            //Replace name with command:
-            $output_body_message = str_replace('/firstname', one_two_explode('', ' ', $recipient_en['en_name']), $output_body_message);
-
-        }
 
 
         if (in_array('/count:', $string_references['ref_commands'])) {

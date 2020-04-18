@@ -131,7 +131,7 @@ function extract_references($ln_content)
         if(substr($word, 0, 1) == '/') {
 
             //Check maybe it's a command?
-            $command = includes_any($word, array('/firstname', '/link:', '/setyourpassword', '/count:'));
+            $command = includes_any($word, array('/link:', '/setyourpassword', '/count:'));
             if ($command) {
                 //Yes!
                 array_push($string_references['ref_commands'], $command);
@@ -195,7 +195,7 @@ function ln_detect_type($string)
 
     /*
      * Detect what type of Source URL type should we create
-     * based on options listed in this idea: https://mench.com/source/4227
+     * based on options listed in this idea: /source/4227
      * */
 
     $string = trim($string);
@@ -417,11 +417,6 @@ function en_weight_calculator($en){
 
 }
 
-function string_contains_html($string)
-{
-    return preg_match("/<[^<]+>/",$string,$m) != 0;
-}
-
 function filter_cache_group($search_en_id, $cache_en_id){
 
     //Determines which category an source belongs to
@@ -552,7 +547,7 @@ function current_mench($part1 = null){
     }
 
 
-    if($part1=='source'){
+    if($part1=='source' || $part1=='plugin' || $part1=='cron'){
         return array(
             'x_id' => 4536,
             'x_class' => 'source',
@@ -672,7 +667,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
         }
 
         //Now redirect:
-        return redirect_message($goto_url);
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span>'.echo_unauthorized_message($superpower_en_id).'</div>');
     }
 
 }
@@ -1034,7 +1029,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
         if(is_dev_environment()){
             //Do a call on live as this does not work on local due to security limitations:
-            return json_decode(@file_get_contents("https://mench.com/cron/algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
+            return json_decode(@file_get_contents("https://mench.com/cron/cron__7279/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
         }
 
         //Load Algolia Index

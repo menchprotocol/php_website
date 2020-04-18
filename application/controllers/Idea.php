@@ -21,7 +21,7 @@ class Idea extends CI_Controller {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(10939),
             ));
 
         } elseif (!isset($_POST['newIdeaTitle'])) {
@@ -132,55 +132,6 @@ class Idea extends CI_Controller {
     }
 
 
-
-    function in_report_conditional_steps(){
-
-        //Authenticate Player:
-        $session_en = superpower_assigned(12700);
-
-        if (!$session_en) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
-            ));
-        } elseif (!isset($_POST['starting_in']) || intval($_POST['starting_in']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Starting Idea',
-            ));
-        } elseif (!isset($_POST['depth_levels']) || intval($_POST['depth_levels']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Depth',
-            ));
-        }
-
-        //Fetch/Validate idea:
-        $ins = $this->IDEA_model->in_fetch(array(
-            'in_id' => $_POST['starting_in'],
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-        ));
-        if(count($ins) != 1){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Could not find idea #'.$_POST['starting_in'],
-            ));
-        }
-
-
-        //Load AND/OR Ideas:
-        $en_all_7585 = $this->config->item('en_all_7585'); // Idea Subtypes
-        $en_all_4737 = $this->config->item('en_all_4737'); // Idea Status
-
-
-        //Return report:
-        return echo_json(array(
-            'status' => 1,
-            'message' => '<h3>'.$en_all_7585[$ins[0]['in_type_source_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_source_id']]['m_icon'].' '.echo_in_title($ins[0], false).'</h3>'.echo_in_scores_answer($_POST['starting_in'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_source_id']),
-        ));
-
-    }
-
     function in_request_invite($in_id){
 
         //Make sure it's a logged in player:
@@ -238,7 +189,7 @@ class Idea extends CI_Controller {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(),
                 'original_val' => '',
             ));
 
@@ -443,7 +394,7 @@ class Idea extends CI_Controller {
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(),
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
@@ -579,7 +530,7 @@ class Idea extends CI_Controller {
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(),
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
@@ -618,11 +569,11 @@ class Idea extends CI_Controller {
          * */
 
         //Authenticate Player:
-        $session_en = superpower_assigned();
+        $session_en = superpower_assigned(10939);
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(10939),
             ));
         } elseif (!isset($_POST['in_linked_id']) || intval($_POST['in_linked_id']) < 1) {
             return echo_json(array(
@@ -690,7 +641,7 @@ class Idea extends CI_Controller {
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(),
             ));
         } elseif (!isset($_POST['in_loaded_id']) || intval($_POST['in_loaded_id']) < 1) {
             return echo_json(array(
@@ -758,7 +709,7 @@ class Idea extends CI_Controller {
             $item_ui .= ( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->READ_model->dispatch_message($apu['ln_content']).'</div>' : '' );
             $item_ui .= '</td>';
 
-            $item_ui .= '<td style="text-align:left;"><a href="/ledger/json/'.$apu['ln_id'].'">'.echo_en_cache('en_all_6255' /* User Reads Progress */, $apu['ln_type_source_id']).'</a></td>';
+            $item_ui .= '<td style="text-align:left;"><a href="/plugin/12722?ln_id='.$apu['ln_id'].'">'.echo_en_cache('en_all_6255' /* User Reads Progress */, $apu['ln_type_source_id']).'</a></td>';
             $item_ui .= '<td style="text-align:left;">'.echo_number($count_progression[0]['totals']).'</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
             $item_ui .= '<td style="text-align:left;">';
@@ -817,11 +768,11 @@ class Idea extends CI_Controller {
     {
 
         //Authenticate Player:
-        $session_en = superpower_assigned();
+        $session_en = superpower_assigned(10939);
         if (!$session_en) {
             echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(10939),
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             echo_json(array(
@@ -881,13 +832,13 @@ class Idea extends CI_Controller {
     {
 
         //Authenticate Player:
-        $session_en = superpower_assigned();
+        $session_en = superpower_assigned(10939);
 
         if (!$session_en) {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(10939),
             ));
 
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
@@ -958,12 +909,12 @@ class Idea extends CI_Controller {
         //TODO: MERGE WITH FUNCTION read_file_upload()
 
         //Authenticate Player:
-        $session_en = superpower_assigned();
+        $session_en = superpower_assigned(10939);
         if (!$session_en) {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(10939),
             ));
 
         } elseif (!isset($_POST['in_id'])) {
@@ -1072,12 +1023,12 @@ class Idea extends CI_Controller {
     {
 
         //Authenticate Player:
-        $session_en = superpower_assigned();
+        $session_en = superpower_assigned(10939);
         if (!$session_en) {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(10939),
             ));
 
         } elseif (!isset($_POST['new_ln_orders']) || !is_array($_POST['new_ln_orders']) || count($_POST['new_ln_orders']) < 1) {
@@ -1113,11 +1064,11 @@ class Idea extends CI_Controller {
     {
 
         //Authenticate Player:
-        $session_en = superpower_assigned();
+        $session_en = superpower_assigned(10939);
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => echo_unauthorized_message(10939),
             ));
         } elseif (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1) {
             return echo_json(array(

@@ -356,7 +356,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
                             //Allow Toggle
                             $is_active = in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated'));
-                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_en_id.' '.( $is_active ? ' active ' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_en_id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
+                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_en_id.' '.( $is_active ? ' active ' : '' ).'" href="javascript:void();" onclick="account_toggle_superpower('.$superpower_en_id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_en_id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
 
                         } elseif($has_req_powers && $has_read_url){
 
@@ -456,7 +456,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
                 ), array('en_child'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
                 //Source Status Filters:
-                if(superpower_active(12703, true)){
+                if(superpower_active(12701, true)){
 
                     $source_count = $this->SOURCE_model->en_child_count($source['en_id'], $this->config->item('en_ids_7358') /* Source Status Active */);
                     $child_en_filters = $this->READ_model->ln_fetch(array(
@@ -503,7 +503,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
             }
 
             //Input to add new child:
-            $this_tab .= '<div id="new-children" class="list-group-item itemsource no-side-padding '.superpower_active(10967).'">
+            $this_tab .= '<div id="new-children" style="padding-top:2px;" class="list-group-item itemsource no-side-padding '.superpower_active(10967).'">
         <div class="form-group is-empty"><input type="text" class="form-control new-source-input form-control-thick montserrat algolia_search dotransparent" data-lpignore="true" placeholder="+ SOURCE"></div>
         <div class="algolia_pad_search hidden"></div>
 </div>';
@@ -746,7 +746,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
-        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$en_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.($counter>0 ? '<span title="'.number_format($counter, 0).'">'.echo_number($counter).'&nbsp;</span>' : '').$m['m_name'].'</a></div>';
+        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$en_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.$m['m_name'].($counter>0 ? '<span title="'.number_format($counter, 0).'" class="'.superpower_assigned(12701).'">&nbsp;'.echo_number($counter).'</span>' : '').'</a></div>';
 
         //BODY
         echo '<div class="contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';

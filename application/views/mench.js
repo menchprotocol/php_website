@@ -543,13 +543,7 @@ function ms_toggle(ln_id, new_state) {
 
 function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
 
-    //Loads the idea search bar only once for the add idea inputs
-    if($(element_focus).hasClass('search-bar-loaded')){
-        //Already loaded:
-        return false;
-    }
-
-    $(element_focus).addClass('search-bar-loaded');
+    //Idea Search
     $(element_focus).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
@@ -577,7 +571,7 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
             window.location = '/idea/' + suggestion.alg_obj_id;
             return true;
         }
-    }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_in_parent ? 't' : 'a' )]}, [{
+    }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_in_parent ? 'q' : 'a' )]}, [{
 
         source: function (q, cb) {
 

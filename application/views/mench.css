@@ -738,7 +738,7 @@ textarea.pads-textarea{
     padding-left: 33px;
     padding-right:33px;
     margin-top: -17px !important;
-    margin-bottom: 5px;
+    margin-bottom:0;
 }
 .title-no-right {
     padding-right:5px !important;
@@ -892,7 +892,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 
 .link_marks .form-control{
-    width: 34px;
+    width: 33px;
     display: inline-block;
     padding: 2px;
     text-align: center;
@@ -1016,7 +1016,7 @@ label {
 }
 
 .form-control-thick{
-    padding:7px 10px 7px 34px;
+    padding:7px 10px 7px 33px;
     font-weight: bold;
     color: #000000 !important;
 }

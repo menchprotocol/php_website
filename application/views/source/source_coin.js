@@ -60,7 +60,7 @@ $(document).ready(function () {
             $('.source_delete_stats').html('<i class="far fa-yin-yang fa-spin"></i>');
 
             //About to delete... Fetch total links:
-            $.post("/source/en_count_to_be_deleted_links", { en_id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
+            $.post("/source/en_count_delete_links", { en_id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
 
                 if(data.status){
                     $('.source_delete_stats').html('<b>'+data.en_link_count+'</b>');
@@ -183,7 +183,7 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 
                 en_add_or_link(suggestion.alg_obj_id, is_en_parent);
 
-            }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_en_parent ? 't' : 'a' )]}, [{
+            }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_en_parent ? 'q' : 'a' )]}, [{
 
             source: function (q, cb) {
                 algolia_index.search(q, {
@@ -219,7 +219,7 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 
 
 
-function toggle_superpower(superpower_id){
+function account_toggle_superpower(superpower_id){
 
     superpower_id = parseInt(superpower_id);
 
@@ -227,7 +227,7 @@ function toggle_superpower(superpower_id){
     $('.superpower-frame-'+superpower_id).html('<i class="far fa-yin-yang fa-spin"></i>');
 
     //Save session variable to save the state of advance setting:
-    $.post("/source/toggle_superpower/"+superpower_id, {}, function (data) {
+    $.post("/source/account_toggle_superpower/"+superpower_id, {}, function (data) {
 
         //Change top menu icon:
         $('.superpower-frame-'+superpower_id).html(superpower_icon);

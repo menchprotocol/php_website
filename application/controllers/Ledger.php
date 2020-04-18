@@ -15,7 +15,7 @@ class Ledger extends CI_Controller
 
 
 
-    function index(){
+    function ledger_home(){
 
         /*
          *
@@ -31,13 +31,13 @@ class Ledger extends CI_Controller
         $this->load->view('header', array(
             'title' => $en_all_11035[4341]['m_name'],
         ));
-        $this->load->view('ledger/ledger_home');
+        $this->load->view('read/read_ledger');
         $this->load->view('footer');
 
     }
 
 
-    function load_ledger(){
+    function ledger_load(){
 
         /*
          * Loads the list of links based on the
@@ -91,7 +91,7 @@ class Ledger extends CI_Controller
 
             //Do we have more to show?
             if($has_more_links){
-                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="load_ledger(link_filters, link_join_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
+                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="ledger_load(link_filters, link_join_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
                 $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$lns_count[0]['total_count'].' link'.echo__s($lns_count[0]['total_count']).' have been loaded</div>';
@@ -116,42 +116,5 @@ class Ledger extends CI_Controller
 
 
 
-    function json($ln_id)
-    {
-
-        //Fetch link metadata and display it:
-        $lns = $this->READ_model->ln_fetch(array(
-            'ln_id' => $ln_id,
-        ));
-
-        if (count($lns) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid READ ID',
-            ));
-        } elseif(!superpower_assigned(12701)) {
-
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing superpower or session expired',
-            ));
-
-        } else {
-
-            //unserialize metadata if needed:
-            if(strlen($lns[0]['ln_metadata']) > 0){
-                $lns[0]['ln_metadata'] = unserialize($lns[0]['ln_metadata']);
-            }
-
-            //Print on scree:
-            echo_json($lns[0]);
-
-        }
-
-    }
-
-
-
 
 }
-?>

@@ -285,4 +285,3 @@ echo $tab_content;
 
 echo '</div>';
 
-?>

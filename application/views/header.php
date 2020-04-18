@@ -4,10 +4,10 @@ $session_en = superpower_assigned();
 $first_segment = $this->uri->segment(1);
 $second_segment = $this->uri->segment(2);
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
+$en_all_2738 = $this->config->item('en_all_2738');
 
 
 //DETECT CURRENT MENCH
-$en_all_2738 = $this->config->item('en_all_2738');
 $current_mench = current_mench();
 $en_all_2738_mench = array();
 $did_find = false;
@@ -49,7 +49,7 @@ if($found_at > 1){
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" href="/img/<?= $current_mench['x_class'] ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?= ( isset($title) ? $title : '' ) ?></title>
+    <title><?= ( isset($title) ? $title.' | ' : '' ) ?>MENCH</title>
 
 
     <script type="text/javascript">
@@ -195,7 +195,6 @@ if(!isset($hide_header)){
                     if ($session_en) {
 
                         //Player Menu
-                        $en_all_this = $this->config->item('en_all_12500');
                         $en_all_4527 = $this->config->item('en_all_4527'); //Platform Memory
                         $en_all_10876 = $this->config->item('en_all_10876'); //Mench Website
 
@@ -207,7 +206,7 @@ if(!isset($hide_header)){
 
                         echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton12500">';
 
-                        foreach ($en_all_this as $en_id => $m) {
+                        foreach ($this->config->item('en_all_12500') as $en_id => $m) {
 
                             //Skip superpowers if not assigned
                             if($en_id==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
@@ -244,6 +243,10 @@ if(!isset($hide_header)){
                                     $source_field = 'ln_creator_source_id';
                                 } elseif($en_id==12274){
                                     //SOURCE
+                                    if($counts < 2){
+                                        //If 1 then only themselves, which is covered with @12205
+                                        continue;
+                                    }
                                     $counts = $coin_counts[4536];
                                     $source_field = 'ln_creator_source_id';
                                 }

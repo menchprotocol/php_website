@@ -8,16 +8,63 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-17 20:25:57 PST
+//Generated 2020-04-18 11:32:09 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587180357;
-$config['cache_count_transaction'] = 1141907;
-$config['cache_count_read'] = 120990;
-$config['cache_count_idea'] = 4845;
-$config['cache_count_source'] = 5163;
+$config['cache_timestamp'] = 1587234729;
+$config['cache_count_transaction'] = 1142870;
+$config['cache_count_read'] = 120965;
+$config['cache_count_idea'] = 4846;
+$config['cache_count_source'] = 5169;
 
 
+
+//CONTROL CRON:
+$config['en_ids_7274'] = array(7275,7276,12114,7277,7278,12523,12569);
+$config['en_all_7274'] = array(
+    7275 => array(
+        'm_icon' => '',
+        'm_name' => 'IDEA METADATA SYNC COMMON BASE',
+        'm_desc' => '',
+        'm_parents' => array(6418,7286,7274),
+    ),
+    7276 => array(
+        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_name' => 'IDEA METADATA SYNC EXTRA INSIGHTS',
+        'm_desc' => '',
+        'm_parents' => array(11048,6418,7286,7274),
+    ),
+    12114 => array(
+        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
+        'm_name' => 'MENCH WEEKLY GROWTH REPORT',
+        'm_desc' => '',
+        'm_parents' => array(12701,7274,7569),
+    ),
+    7277 => array(
+        'm_icon' => '',
+        'm_name' => 'METADATA CLEAN VARIABLES',
+        'm_desc' => '',
+        'm_parents' => array(6418,7287,7274),
+    ),
+    7278 => array(
+        'm_icon' => '',
+        'm_name' => 'SYNC GEPHI INDEX',
+        'm_desc' => '',
+        'm_parents' => array(7311,6418,7287,7274),
+    ),
+    12523 => array(
+        'm_icon' => '<i class="fad fa-portrait source" aria-hidden="true"></i>',
+        'm_name' => 'SYNC ICONS',
+        'm_desc' => '',
+        'm_parents' => array(7274,4527,4758),
+    ),
+    12569 => array(
+        'm_icon' => '<i class="fad fa-weight"></i>',
+        'm_name' => 'WEIGHT ALGORITHM',
+        'm_desc' => '',
+        'm_parents' => array(7274),
+    ),
+);
 
 //MENCH MESSAGES:
 $config['en_ids_12687'] = array(12693,12691,12694,12697,12696,12692,12695);
@@ -112,7 +159,7 @@ $config['en_all_12677'] = array(
 );
 
 //PLAYER MENU:
-$config['en_ids_12500'] = array(12205,12274,12273,6255,6287,7291);
+$config['en_ids_12500'] = array(12205,12274,12273,6255,6287,7274,7291);
 $config['en_all_12500'] = array(
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
@@ -140,9 +187,15 @@ $config['en_all_12500'] = array(
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
-        'm_name' => 'MENCH PLUGINS',
+        'm_name' => 'PLUGINS',
         'm_desc' => '',
         'm_parents' => array(12699,12500,10876,11035,4527),
+    ),
+    7274 => array(
+        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_name' => 'CONTROL CRON',
+        'm_desc' => '',
+        'm_parents' => array(11035,12728,12500,10876,4527,6405),
     ),
     7291 => array(
         'm_icon' => '<i class="fad fa-power-off" aria-hidden="true"></i>',
@@ -630,41 +683,12 @@ $config['en_all_12446'] = array(
     ),
 );
 
-//SOURCE ICON DROPDOWN:
-$config['en_ids_12421'] = array(12426,12422,12424,12423);
-$config['en_all_12421'] = array(
-    12426 => array(
-        'm_icon' => '<i class="far fa-link" aria-hidden="true"></i>',
-        'm_name' => 'IMAGE URL',
-        'm_desc' => 'Paste image URL',
-        'm_parents' => array(12421),
-    ),
-    12422 => array(
-        'm_icon' => '<i class="far fa-trash-alt read" aria-hidden="true"></i>',
-        'm_name' => 'REMOVE',
-        'm_desc' => 'Remove current icon',
-        'm_parents' => array(12421),
-    ),
-    12424 => array(
-        'm_icon' => '<i class="far fa-search" aria-hidden="true"></i>',
-        'm_name' => 'SEARCH',
-        'm_desc' => 'Search emojis & icon library',
-        'm_parents' => array(12421),
-    ),
-    12423 => array(
-        'm_icon' => '<i class="far fa-upload" aria-hidden="true"></i>',
-        'm_name' => 'UPLOAD',
-        'm_desc' => 'Upload image',
-        'm_parents' => array(12421),
-    ),
-);
-
 //IDEA TEXT INPUT SHOW ICON:
 $config['en_ids_12420'] = array(4356,4358,4739,4735);
 $config['en_all_12420'] = array(
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA READ TIME',
+        'm_name' => 'IDEA READ TIME (SECONDS)',
         'm_desc' => '',
         'm_parents' => array(12112,12420,10888,10650,6232,6201),
     ),
@@ -706,8 +730,14 @@ $config['en_all_12413'] = array(
 );
 
 //MENCH LINKS:
-$config['en_ids_10876'] = array(10939,7291,4341,6287);
+$config['en_ids_10876'] = array(7274,10939,7291,4341,6287);
 $config['en_all_10876'] = array(
+    7274 => array(
+        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_name' => 'CONTROL CRON',
+        'm_desc' => 'https://mench.com/cron',
+        'm_parents' => array(11035,12728,12500,10876,4527,6405),
+    ),
     10939 => array(
         'm_icon' => '<i class="fad fa-pen idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA PEN',
@@ -728,7 +758,7 @@ $config['en_all_10876'] = array(
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
-        'm_name' => 'MENCH PLUGINS',
+        'm_name' => 'PLUGINS',
         'm_desc' => 'https://mench.com/plugin',
         'm_parents' => array(12699,12500,10876,11035,4527),
     ),
@@ -1351,7 +1381,7 @@ $config['en_all_6205'] = array(
     ),
     12024 => array(
         'm_icon' => '<i class="fas fa-flag read" aria-hidden="true"></i>',
-        'm_name' => 'MENCH MILESTONES',
+        'm_name' => 'MENCH PROJECT MILESTONES',
         'm_desc' => '',
         'm_parents' => array(1,6205),
     ),
@@ -3080,7 +3110,7 @@ $config['en_all_12112'] = array(
     ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA READ TIME',
+        'm_name' => 'IDEA READ TIME (SECONDS)',
         'm_desc' => '',
         'm_parents' => array(12112,12420,10888,10650,6232,6201),
     ),
@@ -3387,7 +3417,7 @@ $config['en_all_6232'] = array(
     ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA READ TIME',
+        'm_name' => 'IDEA READ TIME (SECONDS)',
         'm_desc' => 'in_read_time',
         'm_parents' => array(12112,12420,10888,10650,6232,6201),
     ),
@@ -3643,7 +3673,7 @@ $config['en_all_11058'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12678,11077,11074,12124,11076,12587,11075,12176,11073,11071,11064,11065,11063,12156,11079,11060,11066,11057,11056,12331,12113,12427,12088,11986,11072,12232,11162,11163,12565,12568);
+$config['en_ids_6404'] = array(12678,11077,11074,12124,11076,12587,11075,12176,11073,11071,11064,11065,11063,12156,11060,11079,11066,11057,11056,12331,12113,12427,12088,11986,11072,12232,11162,11163,12565,12568);
 $config['en_all_6404'] = array(
     12678 => array(
         'm_icon' => '',
@@ -3729,16 +3759,16 @@ $config['en_all_6404'] = array(
         'm_desc' => '7766',
         'm_parents' => array(6404),
     ),
+    11060 => array(
+        'm_icon' => '',
+        'm_name' => 'MENCH PLATFORM VERSION',
+        'm_desc' => 'v1.345',
+        'm_parents' => array(6404),
+    ),
     11079 => array(
         'm_icon' => '',
         'm_name' => 'MENCH TIMEZONE',
         'm_desc' => 'America/Los_Angeles',
-        'm_parents' => array(6404),
-    ),
-    11060 => array(
-        'm_icon' => '',
-        'm_name' => 'MENCH VERSION',
-        'm_desc' => 'v1.344',
         'm_parents' => array(6404),
     ),
     11066 => array(
@@ -3923,7 +3953,7 @@ $config['en_all_11047'] = array(
         'm_icon' => '<img src="https://partners.algolia.com/images/logos/algolia-logo-badge.svg">',
         'm_name' => 'UPDATE ALGOLIA',
         'm_desc' => '/cron/algolia/in/',
-        'm_parents' => array(7279,11047),
+        'm_parents' => array(11047),
     ),
     11048 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
@@ -3934,13 +3964,19 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION MENU:
-$config['en_ids_11035'] = array(6225,12707,10573,11068,7291,12467,4341,6287,12205,12211,4430,7347,6415,12581,7256,4269,12437,12275,10957,7540);
+$config['en_ids_11035'] = array(6225,7274,12707,10573,11068,7291,12467,4341,12205,12211,4430,6287,7347,6415,12581,7256,4269,12437,12275,10957,7540);
 $config['en_all_11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'ACCOUNT SETTINGS',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(12574,11089,12205,11035,4527),
+    ),
+    7274 => array(
+        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_name' => 'CONTROL CRON',
+        'm_desc' => '',
+        'm_parents' => array(11035,12728,12500,10876,4527,6405),
     ),
     12707 => array(
         'm_icon' => '<i class="far fa-filter" aria-hidden="true"></i>',
@@ -3978,12 +4014,6 @@ $config['en_all_11035'] = array(
         'm_desc' => '',
         'm_parents' => array(12707,10876,12588,11035,4527,7735,6205),
     ),
-    6287 => array(
-        'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
-        'm_name' => 'MENCH PLUGINS',
-        'm_desc' => '',
-        'm_parents' => array(12699,12500,10876,11035,4527),
-    ),
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
         'm_name' => 'MY SOURCE',
@@ -4001,6 +4031,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'PLAYERS',
         'm_desc' => '',
         'm_parents' => array(11035,10573,4426),
+    ),
+    6287 => array(
+        'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
+        'm_name' => 'PLUGINS',
+        'm_desc' => '',
+        'm_parents' => array(12699,12500,10876,11035,4527),
     ),
     7347 => array(
         'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
@@ -4176,7 +4212,7 @@ $config['en_all_10990'] = array(
 );
 
 //SOURCE SUPERPOWERS:
-$config['en_ids_10957'] = array(12700,12702,10939,10986,12673,10984,12699,12701,12705,10967,12703,12706);
+$config['en_ids_10957'] = array(12700,12702,10939,10986,12673,10984,12701,12705,12728,10967,12703,12699,12706);
 $config['en_all_10957'] = array(
     12700 => array(
         'm_icon' => '<i class="fad fa-link idea" aria-hidden="true"></i>',
@@ -4214,12 +4250,6 @@ $config['en_all_10957'] = array(
         'm_desc' => 'Collaborative Publishing Powers',
         'm_parents' => array(10957),
     ),
-    12699 => array(
-        'm_icon' => '<i class="fad fa-plug black" aria-hidden="true"></i>',
-        'm_name' => 'MENCH PLUG',
-        'm_desc' => 'Access Mench Plugins',
-        'm_parents' => array(10957),
-    ),
     12701 => array(
         'm_icon' => '<i class="fad fa-glasses read" aria-hidden="true"></i>',
         'm_name' => 'READ GLASSES',
@@ -4230,6 +4260,12 @@ $config['en_all_10957'] = array(
         'm_icon' => '<i class="fad fa-list read" aria-hidden="true"></i>',
         'm_name' => 'READ LIST EDIT',
         'm_desc' => 'Mass Edit Ledger Transactions',
+        'm_parents' => array(10957),
+    ),
+    12728 => array(
+        'm_icon' => '<i class="fad fa-alarm-plus source"></i>',
+        'm_name' => 'SOURCE CRON',
+        'm_desc' => 'Manage Cron Jobs',
         'm_parents' => array(10957),
     ),
     10967 => array(
@@ -4244,11 +4280,17 @@ $config['en_all_10957'] = array(
         'm_desc' => 'Mass Source Edit',
         'm_parents' => array(10957),
     ),
+    12699 => array(
+        'm_icon' => '<i class="fad fa-plug source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE PLUG',
+        'm_desc' => 'Access Mench Plugins',
+        'm_parents' => array(10957),
+    ),
     12706 => array(
         'm_icon' => '<i class="fad fa-rectangle-wide source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE TOOLBAR',
         'm_desc' => 'List Parent Sources',
-        'm_parents' => array(1,10957),
+        'm_parents' => array(10957),
     ),
 );
 
@@ -4748,7 +4790,7 @@ $config['en_all_10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['en_ids_4527'] = array(6225,12588,6150,3000,10627,12359,4535,11047,6192,12273,12413,12079,11018,12675,12677,4229,12589,4485,12012,6193,10990,4983,7302,4737,7356,12138,7355,12400,12112,12420,4486,7585,10602,12330,12324,7309,7712,7751,10717,12571,12574,11080,2738,12467,6404,6201,4341,10876,4527,11054,12687,11035,6287,6206,6194,6232,12524,11059,11058,12647,12648,12646,12501,12500,7555,12577,4755,6205,11081,7704,7347,6255,12229,4280,4277,6102,12446,12326,6146,10692,12227,5967,7304,7360,7364,7359,12327,10658,4269,6204,4536,10956,12279,12274,12410,3290,12421,11089,4592,12403,4997,4426,4986,7551,11028,4537,6177,7358,12575,7357,10957,12401,3289,12683,12523,12322,12321,6805,6103,6186,4593,10593,12141,12228,12655,12654,12645);
+$config['en_ids_4527'] = array(6225,12588,6150,3000,7274,10627,12359,4535,11047,6192,12273,12413,12079,11018,12675,12677,4229,12589,4485,12012,6193,10990,4983,7302,4737,7356,12138,7355,12400,12112,12420,4486,7585,10602,12330,12324,7309,7712,7751,10717,12571,12574,11080,2738,12467,6404,6201,4341,10876,4527,11054,12687,11035,6206,6194,6232,12524,11059,11058,12647,12648,12646,12501,12500,7555,6287,12577,4755,6205,11081,7704,7347,6255,12229,4280,4277,6102,12446,12326,6146,10692,12227,5967,7304,7360,7364,7359,12327,10658,4269,6204,4536,10956,12279,12274,12410,3290,11089,4592,12403,4997,4426,4986,7551,11028,4537,6177,7358,12575,7357,10957,12401,3289,12683,12523,12322,12321,6805,6103,6186,4593,10593,12141,12228,12655,12654,12645);
 $config['en_all_4527'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -4773,6 +4815,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'CONTENT CHANNELS',
         'm_desc' => '',
         'm_parents' => array(4536,4527),
+    ),
+    7274 => array(
+        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_name' => 'CONTROL CRON',
+        'm_desc' => '',
+        'm_parents' => array(11035,12728,12500,10876,4527,6405),
     ),
     10627 => array(
         'm_icon' => '<i class="far fa-paperclip"></i>',
@@ -4916,7 +4964,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fad fa-sync idea"></i>',
         'm_name' => 'IDEA SYNC STATUS',
         'm_desc' => '',
-        'm_parents' => array(4527,6768),
+        'm_parents' => array(12732,4527,6768),
     ),
     12112 => array(
         'm_icon' => '<i class="fas fa-text" aria-hidden="true"></i>',
@@ -4970,7 +5018,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="far fa-question-circle" aria-hidden="true"></i>',
         'm_name' => 'IDEA TYPE SELECT',
         'm_desc' => '',
-        'm_parents' => array(10893,4527),
+        'm_parents' => array(6287,10893,4527),
     ),
     7751 => array(
         'm_icon' => '<i class="far fa-upload" aria-hidden="true"></i>',
@@ -5042,7 +5090,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
         'm_name' => 'MENCH MEMORY',
         'm_desc' => '',
-        'm_parents' => array(4527,7254),
+        'm_parents' => array(6287,4527,7254),
     ),
     11054 => array(
         'm_icon' => '<i class="fal fa-memory" aria-hidden="true"></i>',
@@ -5061,12 +5109,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'MENCH NAVIGATION MENU',
         'm_desc' => '',
         'm_parents' => array(4527,7305),
-    ),
-    6287 => array(
-        'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
-        'm_name' => 'MENCH PLUGINS',
-        'm_desc' => '',
-        'm_parents' => array(12699,12500,10876,11035,4527),
     ),
     6206 => array(
         'm_icon' => '<i class="fas fa-table source" aria-hidden="true"></i>',
@@ -5139,6 +5181,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'PLAYER READING CHANNELS',
         'm_desc' => '',
         'm_parents' => array(7305,4527),
+    ),
+    6287 => array(
+        'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
+        'm_name' => 'PLUGINS',
+        'm_desc' => '',
+        'm_parents' => array(12699,12500,10876,11035,4527),
     ),
     12577 => array(
         'm_icon' => '<i class="fad fa-text" aria-hidden="true"></i>',
@@ -5326,12 +5374,6 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6204),
     ),
-    12421 => array(
-        'm_icon' => '<i class="fas fa-icons"></i>',
-        'm_name' => 'SOURCE ICON DROPDOWN',
-        'm_desc' => '',
-        'm_parents' => array(3303,4428,4527,4758),
-    ),
     11089 => array(
         'm_icon' => '<i class="fad fa-crop-alt source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LAYOUT',
@@ -5420,7 +5462,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fad fa-sync source"></i>',
         'm_name' => 'SOURCE SYNC STATUS',
         'm_desc' => '',
-        'm_parents' => array(4527,4758),
+        'm_parents' => array(12732,4527,4758),
     ),
     3289 => array(
         'm_icon' => '<i class="fas fa-map-marked source" aria-hidden="true"></i>',
@@ -6180,7 +6222,7 @@ $config['en_all_6201'] = array(
     ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
-        'm_name' => 'READ TIME',
+        'm_name' => 'READ TIME (SECONDS)',
         'm_desc' => '',
         'm_parents' => array(12112,12420,10888,10650,6232,6201),
     ),
@@ -6500,48 +6542,72 @@ $config['en_all_7309'] = array(
     ),
 );
 
-//MENCH PLUGINS:
-$config['en_ids_6287'] = array(7263,7261,7260,7264,7262,7259,7265,12708,7267,7266,7268,7269,7270);
+//PLUGINS:
+$config['en_ids_6287'] = array(7261,12731,12734,7260,7264,7263,7259,12735,7712,4527,12710,12708,12709,12729,12733,7267,12732,12712,7268,7269,12730,12738,7270,12737,12736,12739,12722);
 $config['en_all_6287'] = array(
-    7263 => array(
-        'm_icon' => '',
-        'm_name' => 'IDEA LIST COMPLETION MARKS',
-        'm_desc' => '',
-        'm_parents' => array(6287),
-    ),
     7261 => array(
         'm_icon' => '',
         'm_name' => 'IDEA LIST DUPLICATES',
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
-    7260 => array(
+    12731 => array(
         'm_icon' => '',
-        'm_name' => 'IDEA LIST ORPHANS',
+        'm_name' => 'IDEA LIST INVALID TITLES',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12734 => array(
+        'm_icon' => '',
+        'm_name' => 'IDEA LIST NEXT/PREVIOUS CROSSOVERS',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    7260 => array(
+        'm_icon' => '👶',
+        'm_name' => 'IDEA LIST ORPHANED',
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
     7264 => array(
         'm_icon' => '',
-        'm_name' => 'IDEA NAVIGATE COMPLETION MARKS',
+        'm_name' => 'IDEA MARKS BIRDS EYE',
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
-    7262 => array(
+    7263 => array(
         'm_icon' => '',
-        'm_name' => 'IDEA NOTES MODERATOR',
+        'm_name' => 'IDEA MARKS LIST ALL',
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
     7259 => array(
         'm_icon' => '',
-        'm_name' => 'IDEA OUTCOME MASS MODIFY',
+        'm_name' => 'IDEA SEARCH & REPLACE',
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
-    7265 => array(
+    12735 => array(
         'm_icon' => '',
-        'm_name' => 'IDEA SYNC VERBS',
+        'm_name' => 'IDEA SYNC & FIX SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    7712 => array(
+        'm_icon' => '<i class="far fa-question-circle" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TYPE SELECT',
+        'm_desc' => '',
+        'm_parents' => array(6287,10893,4527),
+    ),
+    4527 => array(
+        'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
+        'm_name' => 'MENCH MEMORY',
+        'm_desc' => '',
+        'm_parents' => array(6287,4527,7254),
+    ),
+    12710 => array(
+        'm_icon' => '👤',
+        'm_name' => 'MY SESSION VARIABLES',
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
@@ -6551,16 +6617,40 @@ $config['en_all_6287'] = array(
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
-    7267 => array(
+    12709 => array(
+        'm_icon' => 'ℹ️',
+        'm_name' => 'PHP INFO',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12729 => array(
         'm_icon' => '',
+        'm_name' => 'PLATFORM COIN STATS',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12733 => array(
+        'm_icon' => '',
+        'm_name' => 'READ LIST DEBUG',
+        'm_desc' => '',
+        'm_parents' => array(12701,6287),
+    ),
+    7267 => array(
+        'm_icon' => '🔍',
         'm_name' => 'SOURCE ICON SEARCH',
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
-    7266 => array(
+    12732 => array(
         'm_icon' => '',
-        'm_name' => 'SOURCE/IDEA SYNC CREATION LINKS',
+        'm_name' => 'SOURCE/IDEA SYNC STATUSES',
         'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12712 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE JSON REVIEW',
+        'm_desc' => '?en_id=',
         'm_parents' => array(6287),
     ),
     7268 => array(
@@ -6570,8 +6660,20 @@ $config['en_all_6287'] = array(
         'm_parents' => array(6287),
     ),
     7269 => array(
+        'm_icon' => '👶',
+        'm_name' => 'SOURCE LIST ORPHANED',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12730 => array(
         'm_icon' => '',
-        'm_name' => 'SOURCE LIST ORPHANS',
+        'm_name' => 'SOURCE NAME SEARCH & REPLACE',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12738 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE PLAYER RANDOM AVATARS',
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
@@ -6579,6 +6681,30 @@ $config['en_all_6287'] = array(
         'm_icon' => '',
         'm_name' => 'SOURCE SEND TEST MESSAGE',
         'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12737 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE SYNC & FIX LINK TRANSACTIONS',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12736 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE SYNC & FIX PLAYERS',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12739 => array(
+        'm_icon' => '',
+        'm_name' => 'TRANSACTION ANALYZE URLS',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12722 => array(
+        'm_icon' => '',
+        'm_name' => 'TRANSACTION JSON REVIEW',
+        'm_desc' => '?ln_id=',
         'm_parents' => array(6287),
     ),
 );
