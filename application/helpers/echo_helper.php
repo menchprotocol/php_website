@@ -1899,6 +1899,39 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
 }
 
+function echo_basic_list_link($m, $url){
+
+    $CI =& get_instance();
+    $en_all_6287 = $CI->config->item('en_all_6287'); //MENCH PLUGIN
+    $en_all_10957 = $CI->config->item('en_all_10957');
+
+    $ui = '<a href="'.$url.'" class="list-group-item no-side-padding">';
+
+
+    //Icon
+    $ui .= '<span class="icon-block">' . echo_en_icon($m['m_icon']) . '</span>';
+
+
+    //Needs extra superpowers?
+    $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
+    foreach($superpower_actives as $needed_superpower_en_id){
+        $ui .= '<span title="Requires Superpower ['.$en_all_10957[$needed_superpower_en_id]['m_name'].']" data-toggle="tooltip" data-placement="top">&nbsp;'.$en_all_10957[$needed_superpower_en_id]['m_icon'].'</span>';
+    }
+
+
+    //Title
+    $ui .= '<b class="montserrat '.extract_icon_color($m['m_icon']).'">'.$m['m_name'].'</b>';
+
+
+    //Description
+    $ui .= ( strlen($m['m_desc']) ? '&nbsp;'.$m['m_desc'] : '' );
+
+
+    $ui .= '</a>';
+
+    return $ui;
+
+}
 
 function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_source, $tabindex = 0, $is_in_title_lg = false){
 

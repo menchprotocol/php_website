@@ -481,8 +481,8 @@ $source__parents = $this->READ_model->ln_fetch(array(
                         //Show each specific filter based on DB counts:
                         foreach ($child_en_filters as $c_c) {
                             $st = $en_all_6177[$c_c['en_status_source_id']];
-                            $mench_type = extract_icon_color($st['m_icon']);
-                            $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_source_id'] . '" onclick="en_filter_status(' . $c_c['en_status_source_id'] . ')" class="nav-link en-status-filter u-status-' . $c_c['en_status_source_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="count-en-status-' . $c_c['en_status_source_id'] . $mench_type . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$mench_type.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
+                            $extract_icon_color = extract_icon_color($st['m_icon']);
+                            $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_source_id'] . '" onclick="en_filter_status(' . $c_c['en_status_source_id'] . ')" class="nav-link en-status-filter u-status-' . $c_c['en_status_source_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="count-en-status-' . $c_c['en_status_source_id'] . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
                         }
 
                         $this_tab .= '</div>';
@@ -746,6 +746,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
+
         echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$en_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.$m['m_name'].($counter>0 ? '<span title="'.number_format($counter, 0).'" class="'.superpower_assigned(12701).'">&nbsp;'.echo_number($counter).'</span>' : '').'</a></div>';
 
         //BODY
