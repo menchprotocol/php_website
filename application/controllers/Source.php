@@ -82,7 +82,7 @@ class Source extends CI_Controller
 
         //Load views:
         $this->load->view('header', array(
-            'title' => $ens[0]['en_name'] . ' | SOURCE',
+            'title' => $ens[0]['en_name'],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
         $this->load->view('source/source_coin', array(

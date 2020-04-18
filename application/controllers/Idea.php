@@ -119,7 +119,7 @@ class Idea extends CI_Controller {
 
         //Load views:
         $this->load->view('header', array(
-            'title' => $ins[0]['in_title'].' | IDEA',
+            'title' => $ins[0]['in_title'],
             'in' => $ins[0],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));

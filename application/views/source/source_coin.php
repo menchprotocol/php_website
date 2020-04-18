@@ -346,23 +346,22 @@ $source__parents = $this->READ_model->ln_fetch(array(
                     //List avatars:
                     foreach($this->config->item('en_all_10957') as $superpower_en_id => $m3){
 
-                        //What is the superpower requirement?
-                        $superpower_actives3 = array_intersect($this->config->item('en_ids_10957'), $m3['m_parents']);
-                        $is_available = (!count($superpower_actives3) || superpower_assigned(end($superpower_actives3)));
-                        $is_unlocked = ($is_available && superpower_assigned($superpower_en_id));
-                        $has_training_url = ( isset($en_all_10876[$superpower_en_id]['m_desc']) && strlen($en_all_10876[$superpower_en_id]['m_desc']) ? $en_all_10876[$superpower_en_id]['m_desc'] : false );
                         $extract_icon_color = extract_icon_color($m3['m_icon']);
-                        $should_unlock = (!$is_unlocked && $is_available && $has_training_url);
+                        $superpower_actives3 = array_intersect($this->config->item('en_ids_10957'), $m3['m_parents']);
+                        $has_req_powers = (!count($superpower_actives3) || superpower_assigned(end($superpower_actives3)));
+                        $has_read_url = ( isset($en_all_10876[$superpower_en_id]['m_desc']) && strlen($en_all_10876[$superpower_en_id]['m_desc']) ? $en_all_10876[$superpower_en_id]['m_desc'] : false );
 
-                        if($is_unlocked || $is_available){
+                        //What is the superpower requirement?
+                        if(superpower_assigned($superpower_en_id)){
 
-                            //Superpower Available
-                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" '.($should_unlock ? 'href="'.$has_training_url.'"' : 'href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m3['m_name'].' '.$m3['m_desc'].' @'.$superpower_en_id.'"').'><span class="icon-block '.$extract_icon_color.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].( $should_unlock ? '<span class="icon-block black"><i class="fas fa-lock"></i></span>' : '' ).'</a>';
+                            //Allow Toggle
+                            $is_active = in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated'));
+                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_en_id.' '.( $is_active ? ' active ' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_en_id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
 
-                        } else {
+                        } elseif($has_req_powers && $has_read_url){
 
-                            //Locked
-                            //$this_tab .= '<div class="list-group-item"><span class="icon-block '.$extract_icon_color.'">'.$m['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m['m_name'].'</b> '.$m['m_desc'].'<span class="icon-block pull-right"><i class="fas fa-lock"></i></span></div>';
+                            //Does not have it, but can get it:
+                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower" href="'.$has_read_url.'"><span class="icon-block '.$extract_icon_color.'"><i class="fas fa-lock-open black"></i>&nbsp;'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
 
                         }
                     }

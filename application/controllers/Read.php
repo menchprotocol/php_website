@@ -196,7 +196,7 @@ class Read extends CI_Controller
         }
 
         $this->load->view('header', array(
-            'title' => echo_in_title($ins[0], true).' | READ',
+            'title' => echo_in_title($ins[0], true),
             'in' => $ins[0],
         ));
 

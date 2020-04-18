@@ -16,6 +16,7 @@ class Ledger extends CI_Controller
 
 
     function index(){
+
         /*
          *
          * List all Links on reverse chronological order
@@ -32,15 +33,7 @@ class Ledger extends CI_Controller
         ));
         $this->load->view('ledger/ledger_home');
         $this->load->view('footer');
-    }
 
-
-    function ledger_404(){
-        $this->load->view('header', array(
-            'title' => 'Page Not Found',
-        ));
-        $this->load->view('ledger/ledger_404');
-        $this->load->view('footer');
     }
 
 

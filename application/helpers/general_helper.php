@@ -417,7 +417,10 @@ function en_weight_calculator($en){
 
 }
 
-
+function string_contains_html($string)
+{
+    return preg_match("/<[^<]+>/",$string,$m) != 0;
+}
 
 function filter_cache_group($search_en_id, $cache_en_id){
 
