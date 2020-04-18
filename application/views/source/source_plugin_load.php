@@ -1,11 +1,20 @@
 <?php
 
+$en_all_6287 = $this->config->item('en_all_6287'); //MENCH PLUGIN
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
+
+
 echo '<div class="container">';
 
     //Plugins, Header & Source Link:
-    //echo '<h1 class="'.extract_icon_color($source['en_icon']).' pull-left inline-block" style="padding-top:5px;"><span class="icon-block en_ui_icon_'.$source['en_id'].'">'.echo_en_icon($source['en_icon']).'</span><span class="icon-block en_status_source_id_' . $source['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$source['en_status_source_id']]['m_name'].': '.$en_all_6177[$source['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$source['en_status_source_id']]['m_icon'] . '</span></span><span class="en_name_full_'.$source['en_id'].'">'.$source['en_name'].'</span></h1>';
+    echo '<h1 style="padding-top:5px;"><a href="/plugin"><span class="icon-block">'.echo_en_icon($en_all_11035[6287]['m_icon']).'</span>'.$en_all_11035[6287]['m_name'].'</a> &raquo; <a href="/source/'.$plugin_en_id.'"><span class="icon-block">'.echo_en_icon($en_all_6287[$plugin_en_id]['m_icon']).'</span>'.$en_all_6287[$plugin_en_id]['m_name'].'</a></h1>';
 
-    echo 'HEAD';
+
+    //Optional Description:
+    if(strlen($en_all_6287[$plugin_en_id]['m_desc']) > 0){
+        echo '<p>'.$en_all_6287[$plugin_en_id]['m_desc'].'</p>';
+    }
+
 
     //Load Plugin:
     $this->load->view('source/plugin/'.$plugin_en_id.'/index', array(
