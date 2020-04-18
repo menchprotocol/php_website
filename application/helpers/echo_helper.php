@@ -1910,6 +1910,7 @@ function echo_basic_list_link($m, $url){
 
     //Icon
     $ui .= '<span class="icon-block">' . echo_en_icon($m['m_icon']) . '</span>';
+    $ui .= '<b class="montserrat '.extract_icon_color($m['m_icon']).'">'.$m['m_name'].'</b>';
 
 
     //Needs extra superpowers?
@@ -1917,10 +1918,6 @@ function echo_basic_list_link($m, $url){
     foreach($superpower_actives as $needed_superpower_en_id){
         $ui .= '<span title="Requires Superpower ['.$en_all_10957[$needed_superpower_en_id]['m_name'].']" data-toggle="tooltip" data-placement="top">&nbsp;'.$en_all_10957[$needed_superpower_en_id]['m_icon'].'</span>';
     }
-
-
-    //Title
-    $ui .= '<b class="montserrat '.extract_icon_color($m['m_icon']).'">'.$m['m_name'].'</b>';
 
 
     //Description
