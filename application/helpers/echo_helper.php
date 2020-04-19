@@ -1535,8 +1535,9 @@ function echo_in_previous_read($in_id, $recipient_en){
         foreach(array_intersect($grand_parent_ids, $player_read_ids) as $intersect) {
 
             //Show the breadcrumb since it's connected:
+            $ui .= '<div id="previous_start_position">';
             $ui .= '<div class="previous_reads hidden">';
-            $ui .= '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT PREVIOUS:</div>';
+            //$ui .= '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT PREVIOUS:</div>';
             $ui .= '<div class="list-group bottom-read-line">';
 
             $breadcrumb_items = array();
@@ -1559,14 +1560,16 @@ function echo_in_previous_read($in_id, $recipient_en){
             $ui .= join('', array_reverse($breadcrumb_items));
             $ui .= '</div>';
             $ui .= '</div>';
+            $ui .= '</div>';
 
-            break; //TODO Delete later and allow multiple parent links
+            break;
 
         }
 
         if($ui){
-            break; //TODO Delete later and allow multiple parent links
+            break;
         }
+
     }
 
 
@@ -1784,7 +1787,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
             //SOURCE LINKS:
             $ui .= '<div class="doclear">&nbsp;</div>';
 
-            $ui .= '<span class="message_content ln_content hideIfEmpty ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_source_id']) . '</span>';
+            $ui .= '<span class="message_content ln_content ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_source_id']) . '</span>';
 
             //For JS editing only (HACK):
             $ui .= '<div class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</div>';

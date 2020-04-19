@@ -13,6 +13,15 @@ class Source extends CI_Controller
         date_default_timezone_set(config_var(11079));
     }
 
+    function source_404()
+    {
+        $this->load->view('header', array(
+            'title' => 'Page Not Found',
+        ));
+        $this->load->view('source/source_404');
+        $this->load->view('footer');
+    }
+
 
     function index()
     {

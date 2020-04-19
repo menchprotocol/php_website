@@ -948,9 +948,6 @@ td.MENCHcolumn3  { width: 13%; }
     overflow: hidden;
     display: inline-block;
 }
-.hideIfEmpty:empty {
-    display: none;
-}
 
 
 
@@ -1379,4 +1376,8 @@ label {
     .itemread:hover {
         background-color:#fbc4ce !important;
     }
+}
+
+div:empty, span:empty, i:empty, li:empty, a:empty {
+    display: none !important;
 }

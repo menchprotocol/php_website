@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-18 22:10:32 PST
+//Generated 2020-04-19 09:30:38 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587273032;
-$config['cache_count_transaction'] = 1143820;
-$config['cache_count_read'] = 120965;
+$config['cache_timestamp'] = 1587313838;
+$config['cache_count_transaction'] = 1144111;
+$config['cache_count_read'] = 120968;
 $config['cache_count_idea'] = 4845;
 $config['cache_count_source'] = 5172;
 
@@ -25,7 +25,7 @@ $config['en_all_12744'] = array(
     7274 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
         'm_name' => 'CRON JOBS',
-        'm_desc' => '/cron/',
+        'm_desc' => '/cron/cron__',
         'm_parents' => array(12744,6194,11035,12728,12500,10876,4527,6405),
     ),
     6287 => array(
@@ -37,7 +37,7 @@ $config['en_all_12744'] = array(
 );
 
 //PLUGIN EXCLUDE MENCH UI:
-$config['en_ids_12741'] = array(12733,4527,12709);
+$config['en_ids_12741'] = array(12733,4527,12710,12709,12712,12722);
 $config['en_all_12741'] = array(
     12733 => array(
         'm_icon' => '',
@@ -51,9 +51,27 @@ $config['en_all_12741'] = array(
         'm_desc' => '',
         'm_parents' => array(12741,6287,4527,7254),
     ),
+    12710 => array(
+        'm_icon' => '👤',
+        'm_name' => 'MY SESSION VARIABLES',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
+    ),
     12709 => array(
         'm_icon' => 'ℹ️',
         'm_name' => 'PHP INFO',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
+    ),
+    12712 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE JSON REVIEW',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
+    ),
+    12722 => array(
+        'm_icon' => '',
+        'm_name' => 'TRANSACTION JSON REVIEW',
         'm_desc' => '',
         'm_parents' => array(12741,6287),
     ),
@@ -366,13 +384,13 @@ $config['en_all_12648'] = array(
     ),
     7347 => array(
         'm_icon' => '<i class="fas fa-bookmark read" aria-hidden="true"></i>',
-        'm_name' => 'BOOKMARKS',
+        'm_name' => 'DISCOVER BOOKMARKS',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'COINS',
+        'm_name' => 'DISCOVER COINS',
         'm_desc' => '',
         'm_parents' => array(12500,12677,10939,11018,12655,12648,12467,11089,12410,6771,12228,4527),
     ),
@@ -4021,7 +4039,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION MENU:
-$config['en_ids_11035'] = array(6225,7274,7347,6415,12581,12707,12211,10573,11068,7291,12467,4341,12205,4430,6287,7256,4269,12437,12275,10957,7540);
+$config['en_ids_11035'] = array(6225,7274,7347,6415,12707,12211,12581,10573,11068,7291,12467,4341,12205,4430,6287,7256,4269,12437,12275,10957,7540);
 $config['en_all_11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -4047,12 +4065,6 @@ $config['en_all_11035'] = array(
         'm_desc' => '',
         'm_parents' => array(6205,11035,4755,6418,4593,6414),
     ),
-    12581 => array(
-        'm_icon' => '<i class="fad fa-home read" aria-hidden="true"></i>',
-        'm_name' => 'DISCOVER HOME',
-        'm_desc' => '',
-        'm_parents' => array(12648,11035),
-    ),
     12707 => array(
         'm_icon' => '<i class="far fa-filter" aria-hidden="true"></i>',
         'm_name' => 'FILTER TRANSACTIONS',
@@ -4061,9 +4073,15 @@ $config['en_all_11035'] = array(
     ),
     12211 => array(
         'm_icon' => '<i class="fad fa-step-forward read" aria-hidden="true"></i>',
-        'm_name' => 'GO NEXT',
+        'm_name' => 'GOT IT. NEXT',
         'm_desc' => '',
         'm_parents' => array(11035),
+    ),
+    12581 => array(
+        'm_icon' => '<i class="fad fa-home read" aria-hidden="true"></i>',
+        'm_name' => 'HOME',
+        'm_desc' => '',
+        'm_parents' => array(12648,11035),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
@@ -6636,7 +6654,7 @@ $config['en_all_7309'] = array(
 );
 
 //PLUGINS:
-$config['en_ids_6287'] = array(12733,7261,12731,12734,7260,7264,7263,7259,12735,7712,4527,12710,12708,12709,12729,7267,12732,12712,7268,7269,12730,12738,7270,12737,12736,12739,12722);
+$config['en_ids_6287'] = array(12733,7261,12731,12734,7260,7264,7263,7259,12735,7712,4527,12710,12709,12729,7267,12732,12712,7268,7269,12730,12738,7270,12737,12736,12739,12722);
 $config['en_all_6287'] = array(
     12733 => array(
         'm_icon' => '',
@@ -6708,13 +6726,7 @@ $config['en_all_6287'] = array(
         'm_icon' => '👤',
         'm_name' => 'MY SESSION VARIABLES',
         'm_desc' => '',
-        'm_parents' => array(6287),
-    ),
-    12708 => array(
-        'm_icon' => '🙈',
-        'm_name' => 'PAGE NOT FOUND',
-        'm_desc' => '',
-        'm_parents' => array(6287),
+        'm_parents' => array(12741,6287),
     ),
     12709 => array(
         'm_icon' => 'ℹ️',
@@ -6744,7 +6756,7 @@ $config['en_all_6287'] = array(
         'm_icon' => '',
         'm_name' => 'SOURCE JSON REVIEW',
         'm_desc' => '?en_id=',
-        'm_parents' => array(6287),
+        'm_parents' => array(12741,6287),
     ),
     7268 => array(
         'm_icon' => '',
@@ -6798,7 +6810,7 @@ $config['en_all_6287'] = array(
         'm_icon' => '',
         'm_name' => 'TRANSACTION JSON REVIEW',
         'm_desc' => '?ln_id=',
-        'm_parents' => array(6287),
+        'm_parents' => array(12741,6287),
     ),
 );
 

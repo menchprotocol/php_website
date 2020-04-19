@@ -37,7 +37,7 @@ class Plugin extends CI_Controller
 
     }
 
-    function plugin_load($plugin_en_id = 12708 /* Page Not Found */){
+    function plugin_load($plugin_en_id){
 
         //Valud Plugin?
         if(!in_array($plugin_en_id, $this->config->item('en_ids_6287'))){

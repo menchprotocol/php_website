@@ -1635,6 +1635,10 @@ class READ_model extends CI_Model
 
             if(!$push_message){
 
+                //READ PREVIOUS (To be moved here using Javascript)
+                echo '<div id="previous_final_position"></div>';
+
+
                 //READ PROGRESS
                 if($completion_rate['completion_percentage']>0){
                     echo '<div class="progress-bg no-horizonal-margin" title="You are '.$completion_rate['completion_percentage'].'% done as you have read '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($ins[0], true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
