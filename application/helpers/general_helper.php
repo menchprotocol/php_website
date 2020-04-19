@@ -359,23 +359,23 @@ function en_count_db_references($en_id, $return_html = true){
     $CI =& get_instance();
     $en_all_6194 = $CI->config->item('en_all_6194');
 
-
     foreach(array(
-    4737 => 'SELECT count(in_id) as totals FROM mench_idea WHERE in_status_source_id=',
-    7585 => 'SELECT count(in_id) as totals FROM mench_idea WHERE in_status_source_id IN ('.join(',', $CI->config->item('en_ids_7355')).') AND in_type_source_id=',
-    6177 => 'SELECT count(en_id) as totals FROM mench_source WHERE en_status_source_id=',
-    4364 => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ') AND ln_creator_source_id=',
-    6186 => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id=',
-    4593 => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ') AND ln_type_source_id=',
-            ) as $en_app_id => $query){
+        4737 => 'SELECT count(in_id) as totals FROM mench_idea WHERE in_status_source_id=',
+        7585 => 'SELECT count(in_id) as totals FROM mench_idea WHERE in_status_source_id IN ('.join(',', $CI->config->item('en_ids_7355')).') AND in_type_source_id=',
+        6177 => 'SELECT count(en_id) as totals FROM mench_source WHERE en_status_source_id=',
+        4364 => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ') AND ln_creator_source_id=',
+        6186 => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id=',
+        4593 => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ') AND ln_type_source_id=',
+    ) as $en_app_id => $query){
 
         $query = $CI->db->query( $query . $en_id );
         foreach ($query->result() as $row)
         {
             if($row->totals > 0){
-                $en_count_db_references[$en_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($en_all_6194[$en_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$en_all_6194[$en_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$en_all_6194[$en_id]['m_icon'] . ' '. echo_number($row->totals).'</span>&nbsp;' : $row->totals );
+                $en_count_db_references[$en_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($en_all_6194[$en_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$en_all_6194[$en_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$en_all_6194[$en_app_id]['m_icon'] . ' '. echo_number($row->totals).'</span>&nbsp;' : $row->totals );
             }
         }
+
     }
 
     //Check other Source Apps:
