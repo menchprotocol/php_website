@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-19 10:55:09 PST
+//Generated 2020-04-19 11:14:07 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587318909;
-$config['cache_count_transaction'] = 1144191;
-$config['cache_count_read'] = 120970;
+$config['cache_timestamp'] = 1587320047;
+$config['cache_count_transaction'] = 1144226;
+$config['cache_count_read'] = 120971;
 $config['cache_count_idea'] = 4845;
 $config['cache_count_source'] = 5171;
 
@@ -41,7 +41,7 @@ $config['en_ids_12741'] = array(12733,11049,12712,12722,4527,12710,12709);
 $config['en_all_12741'] = array(
     12733 => array(
         'm_icon' => '',
-        'm_name' => 'DISCOVER LIST DEBUG',
+        'm_name' => 'JSON REVIEW DISCOVER',
         'm_desc' => '',
         'm_parents' => array(12741,12701,6287),
     ),
@@ -6660,14 +6660,8 @@ $config['en_all_7309'] = array(
 );
 
 //PLUGINS:
-$config['en_ids_6287'] = array(12733,7261,12731,12734,7260,7264,7263,7259,12735,7712,11049,12712,12722,4527,12710,12709,12729,7267,12732,7268,7269,12730,12738,7270,12737,12736,12739);
+$config['en_ids_6287'] = array(7261,12731,12734,7260,7264,7263,7259,12735,7712,12733,11049,12712,12722,4527,12710,12709,12729,7267,12732,7268,7269,12730,12738,7270,12737,12736,12739);
 $config['en_all_6287'] = array(
-    12733 => array(
-        'm_icon' => '',
-        'm_name' => 'DISCOVER LIST DEBUG',
-        'm_desc' => '',
-        'm_parents' => array(12741,12701,6287),
-    ),
     7261 => array(
         'm_icon' => '',
         'm_name' => 'IDEA LIST DUPLICATES',
@@ -6721,6 +6715,12 @@ $config['en_all_6287'] = array(
         'm_name' => 'IDEA TYPE SELECT',
         'm_desc' => '',
         'm_parents' => array(6287,10893,4527),
+    ),
+    12733 => array(
+        'm_icon' => '',
+        'm_name' => 'JSON REVIEW DISCOVER',
+        'm_desc' => '?in_id=',
+        'm_parents' => array(12741,12701,6287),
     ),
     11049 => array(
         'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',

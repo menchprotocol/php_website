@@ -4,7 +4,7 @@ if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
     $_GET['en_id'] = $session_en['en_id'];
 }
 
-if(isset($_GET['in_id']) && intval($_GET['in_id'])) {
+if(!isset($_GET['in_id']) || !intval($_GET['in_id'])) {
 
     //List this users 🔴 READING LIST ideas so they can choose:
     echo '<div>Choose one of your 🔴 READING LIST ideas to debug:</div><br />';
@@ -34,7 +34,7 @@ if(isset($_GET['in_id']) && intval($_GET['in_id'])) {
     } else {
 
         //List the idea:
-        return echo_json(array(
+        echo_json(array(
             'in_user' => array(
                 'next_in_id' => $this->READ_model->read_next_find($_GET['en_id'], $ins[0]),
                 'progress' => $this->READ_model->read__completion_progress($_GET['en_id'], $ins[0]),
