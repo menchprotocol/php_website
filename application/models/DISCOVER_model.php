@@ -2215,7 +2215,7 @@ class DISCOVER_model extends CI_Model
         $common_totals = $this->IDEA_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_discover_time) as total_seconds');
+        ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_time_seconds) as total_seconds');
 
 
         //Count completed for user:
@@ -2225,7 +2225,7 @@ class DISCOVER_model extends CI_Model
             'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ), array('in_parent'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_discover_time) as completed_seconds');
+        ), array('in_parent'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_time_seconds) as completed_seconds');
 
 
         //Calculate common steps and expansion steps recursively for this user:
@@ -3946,18 +3946,9 @@ class DISCOVER_model extends CI_Model
                 'ln_metadata' => $quick_replies,
             ));
 
-        } elseif (substr($fb_received_message, 0, 11) == 'Search for ' || substr($fb_received_message, 0, 6) == 'learn ') {
+        } elseif (substr($fb_received_message, 0, 11) == 'Discover ') {
 
-
-            if(substr($fb_received_message, 0, 6) == 'learn '){
-                //learn
-                $master_command = trim(substr(trim($fb_received_message), 6));
-            } else {
-                //Search for
-                $master_command = trim(substr(trim($fb_received_message), 11));
-            }
-
-
+            $master_command = ltrim($fb_received_message, 'Discover ');
             $new_idea_count = 0;
             $quick_replies = array();
 
@@ -4021,7 +4012,7 @@ class DISCOVER_model extends CI_Model
                         'output' => $search_results,
                     ),
                     'ln_creator_source_id' => $en['en_id'], //user who searched
-                    'ln_type_source_id' => 4275, //User Text Command Search for
+                    'ln_type_source_id' => 4275, //User Text Command Discover
                 ));
 
             }

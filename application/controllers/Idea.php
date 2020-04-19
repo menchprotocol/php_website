@@ -255,7 +255,7 @@ class Idea extends CI_Controller {
                 return echo_json(array(
                     'status' => 0,
                     'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be a number greater than zero.',
-                    'original_val' => $ins[0]['in_discover_time'],
+                    'original_val' => $ins[0]['in_time_seconds'],
                 ));
 
             } elseif($_POST['field_value'] > config_var(12113)){
@@ -264,7 +264,7 @@ class Idea extends CI_Controller {
                 return echo_json(array(
                     'status' => 0,
                     'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be less than '.$hours.' Hour'.echo__s($hours).', or '.config_var(12113).' Seconds long. You can break down your idea into smaller ideas.',
-                    'original_val' => $ins[0]['in_discover_time'],
+                    'original_val' => $ins[0]['in_time_seconds'],
                 ));
 
             } elseif($_POST['field_value'] < config_var(12427)){
@@ -272,14 +272,14 @@ class Idea extends CI_Controller {
                 return echo_json(array(
                     'status' => 0,
                     'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to discover ideas ;)',
-                    'original_val' => $ins[0]['in_discover_time'],
+                    'original_val' => $ins[0]['in_time_seconds'],
                 ));
 
             } else {
 
                 //All good, go ahead and update:
                 $this->IDEA_model->in_update($_POST['in_ln__id'], array(
-                    'in_discover_time' => $_POST['field_value'],
+                    'in_time_seconds' => $_POST['field_value'],
                 ), true, $session_en['en_id']);
 
                 return echo_json(array(

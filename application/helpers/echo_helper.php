@@ -1291,7 +1291,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
             $ui .= echo_in_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']);
 
             //IDEA DISCOVER TIME
-            $ui .= echo_in_text(4356, $in['in_discover_time'], $in['in_id'], $is_source, ($in['ln_order']*10)+1);
+            $ui .= echo_in_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source, ($in['ln_order']*10)+1);
 
 
             //PREVIOUS & NEXT IDEAS

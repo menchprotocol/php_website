@@ -23,8 +23,8 @@ class IDEA_model extends CI_Model
             return false;
         }
 
-        if(!isset($insert_columns['in_discover_time']) || $insert_columns['in_discover_time'] < 0){
-            $insert_columns['in_discover_time'] = config_var(12176);
+        if(!isset($insert_columns['in_time_seconds']) || $insert_columns['in_time_seconds'] < 0){
+            $insert_columns['in_time_seconds'] = config_var(12176);
         }
 
         //Lets now add:
@@ -179,7 +179,7 @@ class IDEA_model extends CI_Model
                     $ln_parent_source_id = $value;
                     $ln_child_source_id = $before_data[0][$key];
 
-                } elseif($key=='in_discover_time') {
+                } elseif($key=='in_time_seconds') {
 
                     $ln_type_source_id = 10650; //Idea updated Completion Time
                     $ln_content = echo_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
@@ -852,7 +852,7 @@ class IDEA_model extends CI_Model
         $common_totals = $this->IDEA_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_discover_time) as total_seconds');
+        ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_time_seconds) as total_seconds');
 
         $common_base_resources = array(
             'steps' => $common_totals[0]['total_steps'],

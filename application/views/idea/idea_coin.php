@@ -100,7 +100,7 @@ echo '<div class="inline-block both-margin left-margin">'.echo_in_dropdown(4737,
 echo '<span class="inline-block both-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_source_id'], 'btn-idea', $is_source && $is_active, true, $in['in_id']).'</span>';
 
 //IDEA TIME
-echo '<div class="inline-block both-margin left-half-margin">'.echo_in_text(4356, $in['in_discover_time'], $in['in_id'], $is_source && $is_active, 0).'</div>';
+echo '<div class="inline-block both-margin left-half-margin">'.echo_in_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source && $is_active, 0).'</div>';
 
 
 

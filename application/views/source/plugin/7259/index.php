@@ -4,7 +4,7 @@
 
 echo '<form method="GET" action="">';
 
-echo '<div class="mini-header">Search For:</div>';
+echo '<div class="mini-header">Search String:</div>';
 echo '<input type="text" class="form-control border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
 
 
