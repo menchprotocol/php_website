@@ -1060,13 +1060,13 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 
         $ui .= '<td class="featured-frame" '.( $show_editor ? ' style="padding-right:25px;" ' : '' ).'>';
 
-        $ui .= '<span class="show-on-hover">';
+        $ui .= '<div><span class="show-on-hover">';
 
         $ui .= '<span class="discover-sorter" title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
 
         $ui .= '<span title="Delete from discovery list" data-toggle="tooltip" data-placement="left"><span class="actionplan_delete" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
 
-        $ui .= '</span>';
+        $ui .= '</span></div>';
 
         $ui .= '</td>';
 
