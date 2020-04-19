@@ -1159,7 +1159,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 $export_row['alg_obj_is_in'] = 0;
                 $export_row['alg_obj_id'] = intval($db_row['en_id']);
-                $export_row['alg_obj_url'] = '/source/' . $db_row['in_id'];
+                $export_row['alg_obj_url'] = '/source/' . $db_row['en_id'];
                 $export_row['alg_obj_status'] = intval($db_row['en_status_source_id']);
                 $export_row['alg_obj_icon'] = echo_en_icon($db_row['en_icon']);
                 $export_row['alg_obj_name'] = $db_row['en_name'];
