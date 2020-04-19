@@ -653,14 +653,14 @@ class Source extends CI_Controller
 
 
             //Make sure source is not referenced in key DB reference fields:
-            $en_count_references = en_count_references($_POST['en_id']);
-            if(count($en_count_references) > 0){
+            $en_count_db_references = en_count_db_references($_POST['en_id'], false);
+            if(count($en_count_db_references) > 0){
 
                 $en_all_6194 = $this->config->item('en_all_6194');
 
                 //Construct the message:
                 $error_message = 'Cannot be deleted because source is referenced as ';
-                foreach($en_count_references as $en_id=>$en_count){
+                foreach($en_count_db_references as $en_id=>$en_count){
                     $error_message .= $en_all_6194[$en_id]['m_name'].' '.echo_number($en_count).' times ';
                 }
 
@@ -668,6 +668,7 @@ class Source extends CI_Controller
                     'status' => 0,
                     'message' => $error_message,
                 ));
+
             }
 
 

@@ -245,6 +245,7 @@ $(document).ready(function () {
         }
     });
 
+
     //General ESC cancel
     $(document).keyup(function (e) {
         //Watch for action keys:
@@ -276,6 +277,8 @@ $(document).ready(function () {
         $("#mench_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
             $('#mench_search').prop("disabled", true).val('Loading...').css('background-color','#f4f5f7').css('font-size','0.8em');
+
+            //window.location = suggestion.alg_obj_url;
 
             if (parseInt(suggestion.alg_obj_is_in)==1) {
                 window.location = "/" + ( js_session_superpowers_assigned.includes(10939) ? 'idea/' : '' ) + suggestion.alg_obj_id;
@@ -569,6 +572,7 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
         } else {
             //Go to idea:
             window.location = '/idea/' + suggestion.alg_obj_id;
+            //window.location = suggestion.alg_obj_url;
             return true;
         }
     }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_in_parent ? 'q' : 'a' )]}, [{

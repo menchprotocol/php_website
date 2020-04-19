@@ -692,7 +692,7 @@ function en_modify_save() {
 
 
                     //Link Icon:
-                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + en_all_4592[data.js_ln_type_source_id]["m_name"] + ': ' + en_all_4592[data.js_ln_type_source_id]["m_desc"] + '">' + en_all_4592[data.js_ln_type_source_id]["m_icon"] + '</span>');
+                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_4592[data.js_ln_type_source_id]["m_name"] + ': ' + js_en_all_4592[data.js_ln_type_source_id]["m_desc"] + '">' + js_en_all_4592[data.js_ln_type_source_id]["m_icon"] + '</span>');
 
                     //Transaction Status:
                     $(".en___" + modify_data['en_id']).attr('ln-status', modify_data['ln_status_source_id'])

@@ -349,24 +349,44 @@ function is_valid_icon($string){
 
 }
 
-function en_count_references($en_input_id){
 
+function en_count_db_references($en_id, $return_html = true){
 
-    $connectors_found = array();
+    //NOTE HERE
+
+    //Checks where in the database/platform a source might be referenced
+    $en_count_db_references = array(); //Holds return values
     $CI =& get_instance();
+    $en_all_6194 = $CI->config->item('en_all_6194');
 
-    foreach($CI->config->item('en_all_6194') /* Player Database References */ as $en_id => $m){
-        //Count rows:
-        $query = $CI->db->query( $m['m_desc'] . $en_input_id );
+
+    foreach(array(
+    4737 => 'SELECT count(in_id) as totals FROM mench_idea WHERE in_status_source_id=',
+    7585 => 'SELECT count(in_id) as totals FROM mench_idea WHERE in_status_source_id IN ('.join(',', $CI->config->item('en_ids_7355')).') AND in_type_source_id=',
+    6177 => 'SELECT count(en_id) as totals FROM mench_source WHERE en_status_source_id=',
+    4364 => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ') AND ln_creator_source_id=',
+    6186 => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id=',
+    4593 => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ') AND ln_type_source_id=',
+            ) as $en_app_id => $query){
+
+        $query = $CI->db->query( $query . $en_id );
         foreach ($query->result() as $row)
         {
             if($row->totals > 0){
-                $connectors_found[$en_id] = $row->totals;
+                $en_count_db_references[$en_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($en_all_6194[$en_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$en_all_6194[$en_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$en_all_6194[$en_id]['m_icon'] . ' '. echo_number($row->totals).'</span>&nbsp;' : $row->totals );
             }
         }
     }
 
-    return $connectors_found;
+    //Check other Source Apps:
+    foreach($CI->config->item('en_all_12744') as $en_app_id => $m){
+        if(in_array($en_id, $CI->config->item('en_ids_'.$en_app_id))){
+            $en_count_db_references[$en_app_id] = ( $return_html ? '<a href="'.$m['m_desc'].$en_id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$m['m_name'].'">'.$m['m_icon'].'</a>' : 1 );
+        }
+    }
+
+
+    return $en_count_db_references;
 }
 
 
@@ -1139,6 +1159,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 $export_row['alg_obj_is_in'] = 0;
                 $export_row['alg_obj_id'] = intval($db_row['en_id']);
+                $export_row['alg_obj_url'] = '/source/' . $db_row['in_id'];
                 $export_row['alg_obj_status'] = intval($db_row['en_status_source_id']);
                 $export_row['alg_obj_icon'] = echo_en_icon($db_row['en_icon']);
                 $export_row['alg_obj_name'] = $db_row['en_name'];
@@ -1178,6 +1199,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 $export_row['alg_obj_is_in'] = 1; //This is an IDEA
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
+                $export_row['alg_obj_url'] = '/idea/' . $db_row['in_id'];
                 $export_row['alg_obj_status'] = intval($db_row['in_status_source_id']);
                 $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_source_id']]['m_icon']; //Player type icon
                 $export_row['alg_obj_name'] = $db_row['in_title'];

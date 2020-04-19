@@ -7,8 +7,6 @@ $en_all_2738 = $this->config->item('en_all_2738');
 $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 
-
-
 //Fetch general data in advance:
 
 //COUNT TOTAL CHILD
@@ -32,19 +30,16 @@ $source__parents = $this->READ_model->ln_fetch(array(
 ?>
 
 
-
 <style>
+    /* For a cleaner UI hide the current focused source parent */
     .en_child_icon_<?= $source['en_id'] ?>{ display:none; }
 </style>
-
 
 <script>
     //Set global variables:
     var en_focus_filter = -1; //No filter, show all
     var en_focus_id = <?= $source['en_id'] ?>;
-    var en_all_4592 = <?= json_encode($this->config->item('en_all_4592')) ?>;
 </script>
-
 
 <script src="/application/views/source/source_coin.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
@@ -65,19 +60,9 @@ $source__parents = $this->READ_model->ln_fetch(array(
     echo '<div class="pull-right inline-block">';
 
         //REFERENCES
-        echo '<div class="inline-block '.superpower_active(12701).'">';
-        $en_count_references = en_count_references($source['en_id']);
-        if(count($en_count_references) > 0){
-            $en_all_6194 = $this->config->item('en_all_6194');
-            //Show this sources connections:
-            $ref_count = 0;
-            foreach($en_count_references as $en_id=>$en_count){
-                echo '<span class="montserrat doupper '.extract_icon_color($en_all_6194[$en_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$en_all_6194[$en_id]['m_name'].' '.number_format($en_count, 0).' times">'.$en_all_6194[$en_id]['m_icon'] . ' '. echo_number($en_count).'</span>&nbsp;';
-                $ref_count++;
-            }
+        if(superpower_active(12701, true)){
+            echo '<div class="inline-block '.superpower_active(12701).'">'.join('',en_count_db_references($source['en_id'])).'</div>';
         }
-        echo '</div>';
-
 
         //Modify
         echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $source['en_id'] . ',0)" class="btn btn-source btn-five icon-block-lg '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
@@ -86,8 +71,6 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
 
     echo '<div class="doclear">&nbsp;</div>';
-
-
 
 
     ?>
