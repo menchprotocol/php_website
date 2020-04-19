@@ -1506,7 +1506,7 @@ class DISCOVER_model extends CI_Model
                 if(!$all_child_featured){
 
                     //Redirect to login page:
-                    echo '<div class="inline-block margin-top-down discover-add"><a class="btn btn-discover" href="/discover/start/'.$ins[0]['in_id'].'">START HERE <i class="fad fa-step-forward"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down discover-add"><a class="btn btn-discover" href="/discover/start/'.$ins[0]['in_id'].'">START <i class="fad fa-step-forward"></i></a></div>';
 
                     //Any Sub Topics?
                     if(count($in__children) > 0){
