@@ -1485,33 +1485,39 @@ class DISCOVER_model extends CI_Model
                 }
 
 
-                if(!$all_child_featured){
-                    echo '<div id="discoverScroll">&nbsp;</div>';
 
-                    //Redirect to login page:
-                    echo '<div class="inline-block margin-top-down discover-add"><a class="btn btn-discover" href="/discover/start/'.$ins[0]['in_id'].'">START HERE <i class="fad fa-step-forward"></i></a></div>';
-
-                }
 
                 //Any Sub Topics?
                 if(count($in__children) > 0){
 
-                    if(!$all_child_featured){
-
-                        //Give option to review:
-                        echo '<div class="inline-block margin-top-down discover-add">&nbsp;or&nbsp;<a class="btn btn-discover" href="javascript:void();" onclick="toggle_discover()"><i class="fad fa-search-plus discover_topics"></i><i class="fad fa-search-minus discover_topics hidden"></i> LIST '.count($in__children).' TOPIC'.echo__s(count($in__children)).'</a></div>';
-
-                    }
-
                     //List Children:
+                    echo '<div id="discoverScroll no-height">&nbsp;</div>';
                     $common_prefix = common_prefix($in__children, 'in_title');
-                    echo '<div class="list-group '.( !$all_child_featured ? 'discover_topics hidden' : '' ).'">';
+
+                    echo '<div class="'.( !$all_child_featured ? ' discover_topics hidden ' : '' ).' list-group">';
                     foreach($in__children as $key => $child_in){
                         echo echo_in_discover($child_in, $is_or, null, $common_prefix);
                     }
                     echo '</div>';
 
                 }
+
+
+                if(!$all_child_featured){
+
+                    //Redirect to login page:
+                    echo '<div class="inline-block margin-top-down discover-add"><a class="btn btn-discover" href="/discover/start/'.$ins[0]['in_id'].'">START HERE <i class="fad fa-step-forward"></i></a></div>';
+
+                    //Any Sub Topics?
+                    if(count($in__children) > 0){
+
+                        //Give option to review:
+                        echo '<div class="inline-block margin-top-down discover-add discover_topics">&nbsp;or&nbsp;<a class="btn btn-discover" href="javascript:void();" onclick="toggle_discover()"><i class="fad fa-search-plus discover_topics"></i><i class="fad fa-search-minus discover_topics hidden"></i> LIST '.count($in__children).' TOPIC'.echo__s(count($in__children)).'</a></div>';
+
+                    }
+
+                }
+
 
 
             }
