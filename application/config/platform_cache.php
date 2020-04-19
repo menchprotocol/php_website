@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-19 16:15:47 PST
+//Generated 2020-04-19 16:26:10 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587338147;
-$config['cache_count_transaction'] = 1144509;
+$config['cache_timestamp'] = 1587338770;
+$config['cache_count_transaction'] = 1144528;
 $config['cache_count_discover'] = 120980;
 $config['cache_count_idea'] = 4845;
 $config['cache_count_source'] = 5171;
@@ -758,7 +758,7 @@ $config['en_all_12420'] = array(
     ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA DISCOVER TIME (SECONDS)',
+        'm_name' => 'IDEA READ TIME (IN SECONDS)',
         'm_desc' => '',
         'm_parents' => array(12112,12420,10888,10650,6232,6201),
     ),
@@ -3191,7 +3191,7 @@ $config['en_all_12112'] = array(
     ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA DISCOVER TIME (SECONDS)',
+        'm_name' => 'IDEA READ TIME (IN SECONDS)',
         'm_desc' => '',
         'm_parents' => array(12112,12420,10888,10650,6232,6201),
     ),
@@ -3410,7 +3410,7 @@ $config['en_all_11081'] = array(
 );
 
 //MENCH VARIABLES:
-$config['en_ids_6232'] = array(4358,6203,4356,6202,4486,6159,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,4737,4736,7585,6198,6160,6172,6207,6197,6177,4364,7694,4367,4372,6103,4369,4429,4368,4366,4370,4371,6186,4362,4593,4739,4735);
+$config['en_ids_6232'] = array(4358,6203,6202,4486,6159,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,4356,4737,4736,7585,6198,6160,6172,6207,6197,6177,4364,7694,4367,4372,6103,4369,4429,4368,4366,4370,4371,6186,4362,4593,4739,4735);
 $config['en_all_6232'] = array(
     4358 => array(
         'm_icon' => '<i class="fad fa-comment-alt-check" aria-hidden="true"></i>',
@@ -3423,12 +3423,6 @@ $config['en_all_6232'] = array(
         'm_name' => 'FACEBOOK ATTACHMENT ID',
         'm_desc' => 'fb_att_id',
         'm_parents' => array(6232,6215,2793,6103),
-    ),
-    4356 => array(
-        'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA DISCOVER TIME (SECONDS)',
-        'm_desc' => 'in_read_time',
-        'm_parents' => array(12112,12420,10888,10650,6232,6201),
     ),
     6202 => array(
         'm_icon' => '<i class="fas fa-hashtag idea" aria-hidden="true"></i>',
@@ -3507,6 +3501,12 @@ $config['en_all_6232'] = array(
         'm_name' => 'IDEA METADATA SOURCES',
         'm_desc' => 'in__metadata_sources',
         'm_parents' => array(6232,6214,6159),
+    ),
+    4356 => array(
+        'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA READ TIME (IN SECONDS)',
+        'm_desc' => 'in_time_seconds',
+        'm_parents' => array(12112,12420,10888,10650,6232,6201),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
@@ -6082,13 +6082,13 @@ $config['en_all_10602'] = array(
     6192 => array(
         'm_icon' => '<i class="fad fa-sitemap" aria-hidden="true"></i>',
         'm_name' => 'AND',
-        'm_desc' => 'Reader complete by reading all next',
+        'm_desc' => 'Idea complete when ALL next ideas are completed',
         'm_parents' => array(4527,10602),
     ),
     6193 => array(
         'm_icon' => '<i class="fad fa-code-branch rotate180 " aria-hidden="true"></i>',
         'm_name' => 'OR',
-        'm_desc' => 'Reader complete by reading any of next',
+        'm_desc' => 'Idea complete when ANY of the next ideas are completed',
         'm_parents' => array(10602,4527),
     ),
 );
@@ -6311,14 +6311,8 @@ $config['en_all_6206'] = array(
 );
 
 //MENCH IDEA:
-$config['en_ids_6201'] = array(4356,6202,6159,4737,4736,7585);
+$config['en_ids_6201'] = array(6202,6159,4356,4737,4736,7585);
 $config['en_all_6201'] = array(
-    4356 => array(
-        'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
-        'm_name' => 'DISCOVER TIME (SECONDS)',
-        'm_desc' => '',
-        'm_parents' => array(12112,12420,10888,10650,6232,6201),
-    ),
     6202 => array(
         'm_icon' => '<i class="fas fa-hashtag idea" aria-hidden="true"></i>',
         'm_name' => 'ID',
@@ -6330,6 +6324,12 @@ $config['en_all_6201'] = array(
         'm_name' => 'METADATA',
         'm_desc' => '',
         'm_parents' => array(11049,6232,6201,6195),
+    ),
+    4356 => array(
+        'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
+        'm_name' => 'READ TIME (IN SECONDS)',
+        'm_desc' => '',
+        'm_parents' => array(12112,12420,10888,10650,6232,6201),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
@@ -6532,7 +6532,7 @@ $config['en_all_7585'] = array(
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes idea" aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ALL',
-        'm_desc' => 'Complete by reading all next ideas',
+        'm_desc' => 'Complete by discovering all next ideas',
         'm_parents' => array(12700,12330,7486,7485,6140,6192,7585,7309,6997),
     ),
     6684 => array(
@@ -6550,7 +6550,7 @@ $config['en_all_7585'] = array(
     6907 => array(
         'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ANY',
-        'm_desc' => 'Complete by reading a next idea',
+        'm_desc' => 'Complete by discovering one of the next ideas',
         'm_parents' => array(12700,12330,7486,7485,6140,7585,7309,6997,6193),
     ),
 );
@@ -7242,7 +7242,7 @@ $config['en_all_4737'] = array(
     6184 => array(
         'm_icon' => '<i class="far fa-globe idea" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
-        'm_desc' => 'Readable',
+        'm_desc' => 'Available for Discovery',
         'm_parents' => array(10648,7355,7356,4737),
     ),
     6183 => array(
