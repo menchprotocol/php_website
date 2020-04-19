@@ -1378,6 +1378,6 @@ label {
     }
 }
 
-.hideIfEmpty {
+.hideIfEmpty:empty {
     display: none !important;
 }
