@@ -1064,7 +1064,7 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 
     //SOURCE
     $ui .= '<td class="MENCHcolumn2 source">';
-    
+
     $ui .= '</td>';
 
 
@@ -1072,7 +1072,7 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 
     //IDEA
     $ui .= '<td class="MENCHcolumn3 idea">';
-    $ui .= echo_coins_count_read(array(), $en['en_id']);
+    $ui .= echo_coins_count_read(0, $en['en_id']);
     $ui .= '</td>';
 
 
@@ -1918,7 +1918,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
     //READ
     $ui .= '<td class="MENCHcolumn2 read">';
-    $ui .= echo_coins_count_read(array(), $en['en_id']);
+    $ui .= echo_coins_count_read(0, $en['en_id']);
     $ui .= '</td>';
 
 
