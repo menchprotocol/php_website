@@ -8,19 +8,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-18 12:08:28 PST
+//Generated 2020-04-18 18:16:30 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587236908;
-$config['cache_count_transaction'] = 1142900;
+$config['cache_timestamp'] = 1587258990;
+$config['cache_count_transaction'] = 1143063;
 $config['cache_count_read'] = 120965;
-$config['cache_count_idea'] = 4846;
-$config['cache_count_source'] = 5170;
+$config['cache_count_idea'] = 4847;
+$config['cache_count_source'] = 5173;
 
 
 
 //PLUGIN EXCLUDE MENCH UI:
-$config['en_ids_12741'] = array(4527,12709);
+$config['en_ids_12741'] = array(4527,12709,12733);
 $config['en_all_12741'] = array(
     4527 => array(
         'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
@@ -34,9 +34,15 @@ $config['en_all_12741'] = array(
         'm_desc' => '',
         'm_parents' => array(12741,6287),
     ),
+    12733 => array(
+        'm_icon' => '',
+        'm_name' => 'READ LIST DEBUG',
+        'm_desc' => '',
+        'm_parents' => array(12741,12701,6287),
+    ),
 );
 
-//CONTROL CRON:
+//CRON JOBS:
 $config['en_ids_7274'] = array(7275,7276,12114,7277,7278,12523,12569);
 $config['en_all_7274'] = array(
     7275 => array(
@@ -210,7 +216,7 @@ $config['en_all_12500'] = array(
     ),
     7274 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
-        'm_name' => 'CONTROL CRON',
+        'm_name' => 'CRON JOBS',
         'm_desc' => '',
         'm_parents' => array(11035,12728,12500,10876,4527,6405),
     ),
@@ -751,7 +757,7 @@ $config['en_ids_10876'] = array(7274,10939,7291,4341,6287);
 $config['en_all_10876'] = array(
     7274 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
-        'm_name' => 'CONTROL CRON',
+        'm_name' => 'CRON JOBS',
         'm_desc' => 'https://mench.com/cron',
         'm_parents' => array(11035,12728,12500,10876,4527,6405),
     ),
@@ -2838,6 +2844,23 @@ $config['en_all_12227'] = array(
     ),
 );
 
+//SOURCE NOTIFICATION CHANNEL:
+$config['en_ids_12220'] = array(12221,12222);
+$config['en_all_12220'] = array(
+    12221 => array(
+        'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
+        'm_name' => 'EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(12220),
+    ),
+    12222 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger" aria-hidden="true"></i>',
+        'm_name' => 'MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(12220),
+    ),
+);
+
 //SOURCE TIMEZONE:
 $config['en_ids_3289'] = array(3486,3487,3485,3488,3484,3483,3489,3482,3490,3481,3491,3480,3492,3479,3493,3478,3494,3495,3477,3496,3476,3475,3497,3498,3474,3499,3473,3500,3501);
 $config['en_all_3289'] = array(
@@ -3673,19 +3696,19 @@ $config['en_all_11058'] = array(
         'm_icon' => '<i class="far fa-volume-mute source" aria-hidden="true"></i>',
         'm_name' => 'DISABLED',
         'm_desc' => 'NO_PUSH',
-        'm_parents' => array(11058),
+        'm_parents' => array(11058,4454),
     ),
     4456 => array(
         'm_icon' => '<i class="far fa-volume-up source" aria-hidden="true"></i>',
         'm_name' => 'REGULAR',
         'm_desc' => 'REGULAR',
-        'm_parents' => array(11058),
+        'm_parents' => array(11058,4454),
     ),
     4457 => array(
         'm_icon' => '<i class="far fa-volume-down source" aria-hidden="true"></i>',
         'm_name' => 'SILENT',
         'm_desc' => 'SILENT_PUSH',
-        'm_parents' => array(11058),
+        'm_parents' => array(11058,4454),
     ),
 );
 
@@ -3991,7 +4014,7 @@ $config['en_all_11035'] = array(
     ),
     7274 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
-        'm_name' => 'CONTROL CRON',
+        'm_name' => 'CRON JOBS',
         'm_desc' => '',
         'm_parents' => array(11035,12728,12500,10876,4527,6405),
     ),
@@ -4807,7 +4830,7 @@ $config['en_all_10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['en_ids_4527'] = array(6225,12588,6150,3000,7274,10627,12359,4535,11047,6192,12273,12413,12079,11018,12675,12677,4229,12589,4485,12012,6193,10990,4983,7302,4737,7356,12138,7355,12400,12112,12420,4486,7585,10602,12330,12324,7309,7712,7751,10717,12571,12574,11080,2738,12467,6404,6201,4341,10876,4527,11054,12687,11035,6206,6194,6232,12524,11059,11058,12647,12648,12646,12501,12500,7555,12741,6287,12577,4755,6205,11081,7704,7347,6255,12229,4280,4277,6102,12446,12326,6146,10692,12227,5967,7304,7360,7364,7359,12327,10658,4269,6204,4536,10956,12279,12274,12410,3290,11089,4592,12403,4997,4426,4986,7551,11028,4537,6177,7358,12575,7357,10957,12401,3289,12683,12523,12322,12321,6805,6103,6186,4593,10593,12141,12228,12655,12654,12645);
+$config['en_ids_4527'] = array(6225,12588,6150,3000,7274,10627,12359,4535,11047,6192,12273,12413,12079,11018,12675,12677,4229,12589,4485,12012,6193,10990,4983,7302,4737,7356,12138,7355,12400,12112,12420,4486,7585,10602,12330,12324,7309,7712,7751,10717,12571,12574,11080,2738,12467,6404,6201,4341,10876,4527,11054,12687,11035,6206,6194,6232,12524,11059,11058,12647,12648,12646,12501,12500,7555,12741,6287,12577,4755,6205,11081,7704,7347,6255,12229,4280,4277,6102,12446,12326,6146,10692,12227,5967,7304,7360,7364,7359,12327,10658,4269,6204,4536,10956,12279,12274,12410,3290,11089,4592,12403,4997,4426,4454,12220,4986,7551,11028,4537,6177,7358,12575,7357,10957,12401,3289,12683,12523,12322,12321,6805,6103,6186,4593,10593,12141,12228,12655,12654,12645);
 $config['en_all_4527'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -4835,7 +4858,7 @@ $config['en_all_4527'] = array(
     ),
     7274 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
-        'm_name' => 'CONTROL CRON',
+        'm_name' => 'CRON JOBS',
         'm_desc' => '',
         'm_parents' => array(11035,12728,12500,10876,4527,6405),
     ),
@@ -5426,6 +5449,18 @@ $config['en_all_4527'] = array(
         'm_name' => 'SOURCE LOCK',
         'm_desc' => '',
         'm_parents' => array(4758,3303,4426,4527),
+    ),
+    4454 => array(
+        'm_icon' => '<i class="fad fa-volume source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE MESSENGER NOTIFICATIONS',
+        'm_desc' => '',
+        'm_parents' => array(6196,6204,4527),
+    ),
+    12220 => array(
+        'm_icon' => '<i class="fad fa-flag source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE NOTIFICATION CHANNEL',
+        'm_desc' => '',
+        'm_parents' => array(6196,6204,4527),
     ),
     4986 => array(
         'm_icon' => '<i class="fal fa-at" aria-hidden="true"></i>',
@@ -6270,7 +6305,7 @@ $config['en_all_6201'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['en_ids_6204'] = array(4737,7585,10602,3290,6177,3289,6186,4593);
+$config['en_ids_6204'] = array(4737,7585,10602,3290,4454,12220,6177,3289,6186,4593);
 $config['en_all_6204'] = array(
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
@@ -6295,6 +6330,18 @@ $config['en_all_6204'] = array(
         'm_name' => 'SOURCE GENDER',
         'm_desc' => '',
         'm_parents' => array(4527,6204),
+    ),
+    4454 => array(
+        'm_icon' => '<i class="fad fa-volume source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE MESSENGER NOTIFICATIONS',
+        'm_desc' => '',
+        'm_parents' => array(6196,6204,4527),
+    ),
+    12220 => array(
+        'm_icon' => '<i class="fad fa-flag source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE NOTIFICATION CHANNEL',
+        'm_desc' => '',
+        'm_parents' => array(6196,6204,4527),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
@@ -6656,7 +6703,7 @@ $config['en_all_6287'] = array(
         'm_icon' => '',
         'm_name' => 'READ LIST DEBUG',
         'm_desc' => '',
-        'm_parents' => array(12701,6287),
+        'm_parents' => array(12741,12701,6287),
     ),
     7267 => array(
         'm_icon' => '🔍',
@@ -8808,6 +8855,29 @@ $config['en_all_4592'] = array(
         'm_name' => 'WIDGET',
         'm_desc' => '',
         'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
+    ),
+);
+
+//SOURCE MESSENGER NOTIFICATIONS:
+$config['en_ids_4454'] = array(4456,4457,4458);
+$config['en_all_4454'] = array(
+    4456 => array(
+        'm_icon' => '<i class="far fa-volume-up source" aria-hidden="true"></i>',
+        'm_name' => 'REGULAR',
+        'm_desc' => 'User is connected and will be notified by sound & vibration for new Mench messages',
+        'm_parents' => array(11058,4454),
+    ),
+    4457 => array(
+        'm_icon' => '<i class="far fa-volume-down source" aria-hidden="true"></i>',
+        'm_name' => 'SILENT',
+        'm_desc' => 'User is connected and will be notified by on-screen notification only for new Mench messages',
+        'm_parents' => array(11058,4454),
+    ),
+    4458 => array(
+        'm_icon' => '<i class="far fa-volume-mute source" aria-hidden="true"></i>',
+        'm_name' => 'DISABLED',
+        'm_desc' => 'User is connected but will not be notified for new Mench messages except the red icon indicator on the Messenger app which would indicate the total number of new messages they have',
+        'm_parents' => array(11058,4454),
     ),
 );
 
