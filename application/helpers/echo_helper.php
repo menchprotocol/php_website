@@ -1044,7 +1044,7 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-    $ui .= '<td class="MENCHcolumn1">';
+    $ui .= '<td class="hideIfEmpty MENCHcolumn1">';
 
 
     //READ ICON
@@ -1063,7 +1063,7 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 
 
     //SOURCE
-    $ui .= '<td class="MENCHcolumn2 source">';
+    $ui .= '<td class="hideIfEmpty MENCHcolumn2 source">';
 
         //Count Sources of Idea Tree:
 
@@ -1073,7 +1073,7 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 
 
     //IDEA
-    $ui .= '<td class="MENCHcolumn3 idea">';
+    $ui .= '<td class="hideIfEmpty MENCHcolumn3 idea">';
 
         //Search for Idea Image:
         if($show_editor){
@@ -1260,7 +1260,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-    $ui .= '<td class="MENCHcolumn1">';
+    $ui .= '<td class="hideIfEmpty MENCHcolumn1">';
 
 
         $ui .= '<div class="block">';
@@ -1345,7 +1345,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
 
 
     //READ
-    $ui .= '<td class="MENCHcolumn2 read">';
+    $ui .= '<td class="hideIfEmpty MENCHcolumn2 read">';
     $ui .= echo_coins_count_read($in['in_id']);
     $ui .= '</td>';
 
@@ -1353,7 +1353,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
 
 
     //SOURCE
-    $ui .= '<td class="MENCHcolumn3 source">';
+    $ui .= '<td class="hideIfEmpty MENCHcolumn3 source">';
 
     //RIGHT EDITING:
     $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
@@ -1790,7 +1790,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-    $ui .= '<td class="MENCHcolumn1">';
+    $ui .= '<td class="hideIfEmpty MENCHcolumn1">';
 
 
 
@@ -1891,7 +1891,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
 
     //IDEA
-    $ui .= '<td class="MENCHcolumn3 source">';
+    $ui .= '<td class="hideIfEmpty MENCHcolumn3 source">';
     $ui .= echo_coins_count_source(0, $en['en_id']);
     $ui .= '</td>';
 
@@ -1899,7 +1899,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
 
     //READ
-    $ui .= '<td class="MENCHcolumn2 read">';
+    $ui .= '<td class="hideIfEmpty MENCHcolumn2 read">';
 
     //RIGHT EDITING:
     $ui .= '<div class="pull-right inline-block">';
@@ -1907,11 +1907,9 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
     $ui .= '<span class="show-on-hover">';
 
     if($note_controller){
-        //Option to Delete:
-
+        //Option to Manage:
+        $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-pen-square black"></i></a></span>';
     }
-
-    $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-pen-square black"></i></a></span>';
 
     $ui .= '</span>';
     $ui .= '</div>';

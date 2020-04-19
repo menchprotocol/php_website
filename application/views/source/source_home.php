@@ -47,9 +47,9 @@
     echo '<table id="leaderboard" class="table table-sm table-striped tablepadded" style="margin-bottom: 0;">';
     echo '<tr></tr>'; //Skip white
     echo '<tr>';
-    echo '<td class="source MENCHcolumn1 montserrat" title="'.number_format($this->config->item('cache_count_source'), 0).'"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_source')).'<span class="coin-type">'.$en_all_2738[4536]['m_name'].'S</span></td>';
-    echo '<td class="idea MENCHcolumn2 montserrat" title="'.number_format($this->config->item('cache_count_idea'), 0).'"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_idea')).'<span class="coin-type">'.$en_all_2738[4535]['m_name'].'S</span></td>';
-    echo '<td class="read MENCHcolumn3 montserrat" title="'.number_format($this->config->item('cache_count_read'), 0).'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_read')).'<span class="coin-type">'.$en_all_2738[6205]['m_name'].'S</span></td>';
+    echo '<td class="hideIfEmpty MENCHcolumn1 source montserrat" title="'.number_format($this->config->item('cache_count_source'), 0).'"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_source')).'<span class="coin-type">'.$en_all_2738[4536]['m_name'].'S</span></td>';
+    echo '<td class="hideIfEmpty MENCHcolumn2 idea montserrat" title="'.number_format($this->config->item('cache_count_idea'), 0).'"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_idea')).'<span class="coin-type">'.$en_all_2738[4535]['m_name'].'S</span></td>';
+    echo '<td class="hideIfEmpty MENCHcolumn3 read montserrat" title="'.number_format($this->config->item('cache_count_read'), 0).'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_read')).'<span class="coin-type">'.$en_all_2738[6205]['m_name'].'S</span></td>';
     echo '</tr>';
     echo '</table>';
 
