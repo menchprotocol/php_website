@@ -708,7 +708,7 @@ class READ_model extends CI_Model
         if($first_step){
             $player_read_ids = $this->READ_model->read_ids($en_id);
             if(!in_array($in['in_id'], $player_read_ids)){
-                foreach ($this->IDEA_model->in_fetch_recursive_parents($in['in_id']) as $grand_parent_ids) {
+                foreach ($this->IDEA_model->in_recursive_parents($in['in_id']) as $grand_parent_ids) {
                     if (array_intersect($grand_parent_ids, $player_read_ids)) {
                         foreach($grand_parent_ids as $parent_in_id){
                             $ins = $this->IDEA_model->in_fetch(array(
@@ -1140,7 +1140,7 @@ class READ_model extends CI_Model
             $parents_checked = array();
 
             //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-            foreach ($this->IDEA_model->in_fetch_recursive_parents($in['in_id']) as $grand_parent_ids) {
+            foreach ($this->IDEA_model->in_recursive_parents($in['in_id']) as $grand_parent_ids) {
 
                 //Does this parent and its grandparents have an intersection with the user ideas?
                 if(!array_intersect($grand_parent_ids, $player_read_ids)){
@@ -1410,7 +1410,7 @@ class READ_model extends CI_Model
             } else {
 
                 //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-                foreach ($this->IDEA_model->in_fetch_recursive_parents($ins[0]['in_id']) as $grand_parent_ids) {
+                foreach ($this->IDEA_model->in_recursive_parents($ins[0]['in_id']) as $grand_parent_ids) {
 
                     //Does this parent and its grandparents have an intersection with the user ideas?
                     if (array_intersect($grand_parent_ids, $player_read_ids)) {
@@ -1642,6 +1642,9 @@ class READ_model extends CI_Model
                 //READ PROGRESS
                 if($completion_rate['completion_percentage']>0){
                     echo '<div class="progress-bg no-horizonal-margin" title="You are '.$completion_rate['completion_percentage'].'% done as you have read '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($ins[0], true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+                } else {
+                    //Replace with empty space:
+                    echo '<div class="high5x">&nbsp;</div>';
                 }
 
                 //READ TITLE

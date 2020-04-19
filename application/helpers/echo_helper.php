@@ -708,7 +708,7 @@ function echo_in_tree_sources($in, $push_message = false, $autoexpand = false)
 
             } else {
 
-                $source_info .= ' <span class="show_type_' . $type_id . '"><a href="javascript:void(0);" class="js-ln-create-expert-sources" source-type-en-id="'.$type_id.'" onclick="$(\'.show_type_' . $type_id . '\').toggle()" style="text-decoration:underline; display:inline-block;">' . $cat_contribution . '</a></span><span class="show_type_' . $type_id . '" style="display:none;">';
+                $source_info .= ' <span class="show_type_' . $type_id . '"><a href="javascript:void(0);" source-type-en-id="'.$type_id.'" onclick="$(\'.show_type_' . $type_id . '\').toggle()" style="text-decoration:underline; display:inline-block;">' . $cat_contribution . '</a></span><span class="show_type_' . $type_id . '" style="display:none;">';
 
                 //We only show details on our website's HTML landing pages:
                 $count = 0;
@@ -1556,7 +1556,7 @@ function echo_in_previous_read($in_id, $recipient_en){
 
     //READ LIST
     $player_read_ids = $CI->READ_model->read_ids($recipient_en['en_id']);
-    $recursive_parents = $CI->IDEA_model->in_fetch_recursive_parents($in_id, true, true);
+    $recursive_parents = $CI->IDEA_model->in_recursive_parents($in_id, true, true);
     $top_progress = null;
     foreach ($recursive_parents as $grand_parent_ids) {
         foreach(array_intersect($grand_parent_ids, $player_read_ids) as $intersect) {

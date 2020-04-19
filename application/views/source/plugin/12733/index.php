@@ -41,7 +41,7 @@ if(!isset($_GET['in_id']) || !intval($_GET['in_id'])) {
                 'marks' => $this->READ_model->read__completion_marks($_GET['en_id'], $ins[0]),
             ),
             'in_general' => array(
-                'recursive_parents' => $this->IDEA_model->in_fetch_recursive_parents($ins[0]['in_id']),
+                'recursive_parents' => $this->IDEA_model->in_recursive_parents($ins[0]['in_id']),
                 'common_base' => $this->IDEA_model->in_metadata_common_base($ins[0]),
             ),
         ));

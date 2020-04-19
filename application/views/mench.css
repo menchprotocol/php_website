@@ -433,6 +433,14 @@ img.no-radius {
     color: #000000 !important;
 }
 
+.table-condense{
+    margin-bottom: 5px;
+}
+.high5x{
+    height: 5px;
+    margin: 0;
+    padding: 0;
+}
 .progress-bg{
     margin: -10px 0 5px 0;
     width: 100% !important;

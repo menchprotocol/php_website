@@ -388,7 +388,7 @@ class IDEA_model extends CI_Model
                 $child_in = $ins[0];
 
                 //Prevent parent duplicate:
-                $recursive_parents = $this->IDEA_model->in_fetch_recursive_parents($parent_in['in_id']);
+                $recursive_parents = $this->IDEA_model->in_recursive_parents($parent_in['in_id']);
                 foreach ($recursive_parents as $grand_parent_ids) {
                     if (in_array($child_in['in_id'], $grand_parent_ids)) {
                         return array(
@@ -507,7 +507,7 @@ class IDEA_model extends CI_Model
     }
 
 
-    function in_fetch_recursive_parents($in_id, $first_level = true, $public_only = true){
+    function in_recursive_parents($in_id, $first_level = true, $public_only = true){
 
         $grand_parents = array();
 
@@ -529,7 +529,7 @@ class IDEA_model extends CI_Model
 
 
             //Fetch parents of parents:
-            $recursive_parents = $this->IDEA_model->in_fetch_recursive_parents($p_id, false);
+            $recursive_parents = $this->IDEA_model->in_recursive_parents($p_id, false);
             if(count($recursive_parents) > 0){
                 if($first_level){
                     array_push($grand_parents, array_merge(array($p_id), $recursive_parents));
