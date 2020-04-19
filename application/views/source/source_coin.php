@@ -403,7 +403,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
             foreach ($source__parents as $en) {
-                $this_tab .= echo_en($en,true);
+                $this_tab .= echo_en($en,true, null, true);
             }
 
             //Input to add new parents:
@@ -478,7 +478,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
             $this_tab .= '<div id="list-children" class="list-group">';
 
             foreach ($source__children as $en) {
-                $this_tab .= echo_en($en,false);
+                $this_tab .= echo_en($en,false, null, true);
             }
             if ($counter > count($source__children)) {
                 $this_tab .= echo_en_load_more(1, config_var(11064), $counter);
