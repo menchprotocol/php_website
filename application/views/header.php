@@ -78,13 +78,13 @@ if($found_at > 1){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.37.0/autocomplete.jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/algoliasearch/3.35.1/algoliasearch.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.1/Sortable.min.js" type="text/javascript"></script>
-    <script src="/application/application/views/mench.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
+    <script src="/application/views/mench.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:800&display=swap" rel="stylesheet">
     <link href="/application/libraries/fa/all.min.css?v=5.13.0" rel="stylesheet"/>
-    <link href="/views/mench.css?v=<?= config_var(11060) ?>" rel="stylesheet"/>
+    <link href="/application/views/mench.css?v=<?= config_var(11060) ?>" rel="stylesheet"/>
 
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92774608-1"></script>
