@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-19 10:47:46 PST
+//Generated 2020-04-19 10:52:21 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587318466;
-$config['cache_count_transaction'] = 1144176;
+$config['cache_timestamp'] = 1587318741;
+$config['cache_count_transaction'] = 1144182;
 $config['cache_count_read'] = 120970;
 $config['cache_count_idea'] = 4845;
 $config['cache_count_source'] = 5171;
@@ -37,13 +37,19 @@ $config['en_all_12744'] = array(
 );
 
 //PLUGIN EXCLUDE MENCH UI:
-$config['en_ids_12741'] = array(12733,4527,12710,12709,12712,12722);
+$config['en_ids_12741'] = array(12733,11049,4527,12710,12709,12712,12722);
 $config['en_all_12741'] = array(
     12733 => array(
         'm_icon' => '',
         'm_name' => 'DISCOVER LIST DEBUG',
         'm_desc' => '',
         'm_parents' => array(12741,12701,6287),
+    ),
+    11049 => array(
+        'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
+        'm_name' => 'IDEA REVIEW METADATA',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287,11047),
     ),
     4527 => array(
         'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
@@ -4028,7 +4034,7 @@ $config['en_all_11047'] = array(
         'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
         'm_name' => 'IDEA REVIEW METADATA',
         'm_desc' => '/idea/in_review_metadata/',
-        'm_parents' => array(6287,11047),
+        'm_parents' => array(12741,6287,11047),
     ),
     11048 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
@@ -6702,7 +6708,7 @@ $config['en_all_6287'] = array(
         'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
         'm_name' => 'IDEA REVIEW METADATA',
         'm_desc' => '',
-        'm_parents' => array(6287,11047),
+        'm_parents' => array(12741,6287,11047),
     ),
     7259 => array(
         'm_icon' => '',
