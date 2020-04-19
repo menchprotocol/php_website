@@ -435,8 +435,11 @@ function toggle_search(){
 
         //Turn Search On:
         search_is_on = true; //Reverse
-        $('#mench_search').focus();
         $('.search_nav').removeClass('hidden');
+
+        setTimeout(function () {
+            $('#mench_search').focus();
+        }, 144);
 
     }
 }
