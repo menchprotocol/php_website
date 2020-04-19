@@ -1378,6 +1378,6 @@ label {
     }
 }
 
-div:empty, span:empty, i:empty, li:empty, a:empty {
+div:empty, span:empty, li:empty, a:empty {
     display: none !important;
 }
