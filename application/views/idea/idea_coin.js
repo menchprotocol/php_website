@@ -283,7 +283,8 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
 
 
 function in_unlink(in_id, ln_id){
-    var r = confirm("Unlink ["+$('.in_ln__id_'+ln_id).val()+"]?");
+    var in_title = $('.text__4736_'+in_id).val();
+    var r = confirm("Unlink ["+in_title+"]?");
     if (r == true) {
 
         //Fetch Idea Data to load modify widget:

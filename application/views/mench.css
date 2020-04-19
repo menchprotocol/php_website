@@ -735,8 +735,8 @@ textarea.pads-textarea{
 }
 .title-block{
     display: block;
-    padding-left: 33px;
-    padding-right:33px;
+    padding-left: 32px;
+    padding-right:32px;
     margin-top: -17px !important;
     margin-bottom:0;
 }
