@@ -1048,7 +1048,7 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 
 
     //READ ICON
-    $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-lock read"></i>' ).'</span>';
+    $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-circle read"></i>' ).'</span>';
     $ui .= '<b class="montserrat idea-url title-block">'.echo_in_title($in, false, $common_prefix).'</b>';
 
 
