@@ -1893,6 +1893,14 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
     //IDEA
     $ui .= '<td class="MENCHcolumn3 source">';
+    $ui .= echo_coins_count_source(0, $en['en_id']);
+    $ui .= '</td>';
+
+
+
+
+    //READ
+    $ui .= '<td class="MENCHcolumn2 read">';
 
     //RIGHT EDITING:
     $ui .= '<div class="pull-right inline-block">';
@@ -1910,14 +1918,6 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
     $ui .= '</div>';
     $ui .= '</div>';
 
-    $ui .= echo_coins_count_source(0, $en['en_id']);
-    $ui .= '</td>';
-
-
-
-
-    //READ
-    $ui .= '<td class="MENCHcolumn2 read">';
     $ui .= echo_coins_count_read(0, $en['en_id']);
     $ui .= '</td>';
 
