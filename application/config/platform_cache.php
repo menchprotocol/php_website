@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-19 09:30:38 PST
+//Generated 2020-04-19 10:47:46 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587313838;
-$config['cache_count_transaction'] = 1144111;
-$config['cache_count_read'] = 120968;
+$config['cache_timestamp'] = 1587318466;
+$config['cache_count_transaction'] = 1144176;
+$config['cache_count_read'] = 120970;
 $config['cache_count_idea'] = 4845;
-$config['cache_count_source'] = 5172;
+$config['cache_count_source'] = 5171;
 
 
 
@@ -4028,7 +4028,7 @@ $config['en_all_11047'] = array(
         'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
         'm_name' => 'IDEA REVIEW METADATA',
         'm_desc' => '/idea/in_review_metadata/',
-        'm_parents' => array(11047),
+        'm_parents' => array(6287,11047),
     ),
     11048 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
@@ -4073,7 +4073,7 @@ $config['en_all_11035'] = array(
     ),
     12211 => array(
         'm_icon' => '<i class="fad fa-step-forward read" aria-hidden="true"></i>',
-        'm_name' => 'GOT IT. NEXT',
+        'm_name' => 'GO NEXT',
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
@@ -6654,7 +6654,7 @@ $config['en_all_7309'] = array(
 );
 
 //PLUGINS:
-$config['en_ids_6287'] = array(12733,7261,12731,12734,7260,7264,7263,7259,12735,7712,4527,12710,12709,12729,7267,12732,12712,7268,7269,12730,12738,7270,12737,12736,12739,12722);
+$config['en_ids_6287'] = array(12733,7261,12731,12734,7260,7264,7263,11049,7259,12735,7712,4527,12710,12709,12729,7267,12732,12712,7268,7269,12730,12738,7270,12737,12736,12739,12722);
 $config['en_all_6287'] = array(
     12733 => array(
         'm_icon' => '',
@@ -6697,6 +6697,12 @@ $config['en_all_6287'] = array(
         'm_name' => 'IDEA MARKS LIST ALL',
         'm_desc' => '',
         'm_parents' => array(6287),
+    ),
+    11049 => array(
+        'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
+        'm_name' => 'IDEA REVIEW METADATA',
+        'm_desc' => '',
+        'm_parents' => array(6287,11047),
     ),
     7259 => array(
         'm_icon' => '',

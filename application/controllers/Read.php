@@ -312,7 +312,7 @@ class Read extends CI_Controller
         //All good:
         return echo_json(array(
             'status' => 1,
-            'message' => '<div class="read-topic"><span class="icon-block-sm">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->READ_model->dispatch_message($new_message).'</div>',
+            'message' => '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->READ_model->dispatch_message($new_message).'</div>',
         ));
 
     }

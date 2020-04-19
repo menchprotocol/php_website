@@ -6,7 +6,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 ?>
 
 <style>
-    <?= ( count($player_reads) < 2 ? '.discover-sorter {display:none;}' : '' ) ?>
+    <?= ( count($player_reads) < 2 ? '.discover-sorter {display:none;}' : '' ) //Need 2 or more to sort ?>
 </style>
 <script>
     //Include some cached sources:
@@ -45,6 +45,8 @@ echo '<div class="margin-top-down">';
 
 //HOME
 echo '<a href="/" class="btn btn-read">'.$en_all_11035[12581]['m_icon'].' '.$en_all_11035[12581]['m_name'].'</a>&nbsp;';
+
+
 
 //READ NEXT
 if(!$all_completed){

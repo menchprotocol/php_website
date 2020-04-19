@@ -1755,7 +1755,7 @@ class READ_model extends CI_Model
 
                     if($push_message){
 
-                        echo_in_list($ins[0], $read_answers, $recipient_en, $push_message, '<span class="icon-block-sm">&nbsp;</span>YOUR PREVIOUS ANSWER:');
+                        echo_in_list($ins[0], $read_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOUR PREVIOUS ANSWER:');
 
                     } else {
 
@@ -1764,7 +1764,7 @@ class READ_model extends CI_Model
                         echo '<div class="selected_before">';
 
                         //List answers:
-                        echo_in_list($ins[0], $read_answers, $recipient_en, $push_message, '<span class="icon-block-sm">&nbsp;</span>YOU ANSWERED:');
+                        echo_in_list($ins[0], $read_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:');
 
                         //Allow to edit:
                         echo '<div class="inline-block margin-top-down previous_reads">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>EDIT ANSWER</u></a></div>';
@@ -1971,7 +1971,7 @@ class READ_model extends CI_Model
                 echo '<div class="readerUploader previous_reads">';
                 echo '<form class="box boxUpload" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-                echo '<div class="file_saving_result">'.( count($read_completes) ? '<div class="read-topic"><span class="icon-block-sm">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->READ_model->dispatch_message($read_completes[0]['ln_content']).'</div>' : '' ).'</div>';
+                echo '<div class="file_saving_result">'.( count($read_completes) ? '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->READ_model->dispatch_message($read_completes[0]['ln_content']).'</div>' : '' ).'</div>';
 
                 echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_source_id'].'" />';
 

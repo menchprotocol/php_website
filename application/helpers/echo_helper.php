@@ -961,23 +961,24 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 
 
 
-function echo_in_coins_read($in = array(), $en = array()){
+function echo_coins_count_read($in_id = 0, $en_id = 0){
 
     $CI =& get_instance();
     $read_coins = $CI->READ_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
-        ( count($in) ? 'ln_previous_idea_id' : 'ln_creator_source_id' ) => ( count($in) ? $in['in_id'] : $en['en_id'] ),
+        ( $in_id > 0 ? 'ln_previous_idea_id' : 'ln_creator_source_id' ) => ( $in_id > 0 ? $in_id : $en_id ),
     ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 
     if($read_coins[0]['totals'] > 0){
         return '<span class="montserrat read"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($read_coins[0]['totals']).'</span>';
+    } else {
+        return false;
     }
 
-    return false;
 }
 
-function echo_in_coins_source($in_id = 0, $en_id = 0){
+function echo_coins_count_source($in_id = 0, $en_id = 0){
 
     $CI =& get_instance();
 
@@ -1035,12 +1036,15 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
     $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'actionplan_sort' : '' ).' itemread '.$extra_class.'">';
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
 
+
+
     if($can_click && $completion_rate['completion_percentage']>0){
         $ui .= '<div class="progress-bg" title="You are '.$completion_rate['completion_percentage'].'% done as you have read '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($in, true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
+
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-    $ui .= '<td>';
+    $ui .= '<td class="MENCHcolumn1">';
 
 
     //READ ICON
@@ -1055,22 +1059,45 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
     $ui .= '</td>';
 
 
+
+
+
+    //SOURCE
+    $ui .= '<td class="MENCHcolumn2 source">';
+    
+    $ui .= '</td>';
+
+
+
+
+    //IDEA
+    $ui .= '<td class="MENCHcolumn3 idea">';
+    $ui .= echo_coins_count_read(array(), $en['en_id']);
+    $ui .= '</td>';
+
+
+
+
+
+
     //Search for Idea Image:
     if($show_editor){
 
         $ui .= '<td class="featured-frame" '.( $show_editor ? ' style="padding-right:25px;" ' : '' ).'>';
 
-        $ui .= '<div><span class="show-on-hover">';
+        $ui .= '<span class="show-on-hover">';
 
         $ui .= '<span class="discover-sorter" title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
 
         $ui .= '<span title="Delete from discovery list" data-toggle="tooltip" data-placement="left"><span class="actionplan_delete" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
 
-        $ui .= '</span></div>';
+        $ui .= '</span>';
 
         $ui .= '</td>';
 
     }
+
+
 
 
     $ui .= '</tr></table>';
@@ -1320,7 +1347,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
 
     //READ
     $ui .= '<td class="MENCHcolumn2 read">';
-    $ui .= echo_in_coins_read($in);
+    $ui .= echo_coins_count_read($in['in_id']);
     $ui .= '</td>';
 
 
@@ -1358,7 +1385,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
 
 
     //SOURCE STATS
-    $ui .= echo_in_coins_source($in['in_id'], 0);
+    $ui .= echo_coins_count_source($in['in_id'], 0);
 
     $ui .= '</td>';
 
@@ -1883,7 +1910,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
     $ui .= '</div>';
     $ui .= '</div>';
 
-    $ui .= echo_in_coins_source(0, $en['en_id']);
+    $ui .= echo_coins_count_source(0, $en['en_id']);
     $ui .= '</td>';
 
 
@@ -1891,7 +1918,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
     //READ
     $ui .= '<td class="MENCHcolumn2 read">';
-    $ui .= echo_in_coins_read(array(), $en);
+    $ui .= echo_coins_count_read(array(), $en['en_id']);
     $ui .= '</td>';
 
 
