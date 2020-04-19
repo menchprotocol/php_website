@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-19 12:45:23 PST
+//Generated 2020-04-19 16:15:47 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587325523;
-$config['cache_count_transaction'] = 1144436;
-$config['cache_count_discover'] = 120974;
+$config['cache_timestamp'] = 1587338147;
+$config['cache_count_transaction'] = 1144509;
+$config['cache_count_discover'] = 120980;
 $config['cache_count_idea'] = 4845;
 $config['cache_count_source'] = 5171;
 
@@ -154,7 +154,7 @@ $config['en_all_12687'] = array(
     12697 => array(
         'm_icon' => '',
         'm_name' => 'MESSENGER FIND NEXT',
-        'm_desc' => 'What would you like to read next? Start a sentence with "Search for ..." or: /link:BROWSE READS:https://mench.com/read',
+        'm_desc' => 'What would you like to discover next? Start a sentence with "Discover" or /link:BROWSE IDEAS:https://mench.com',
         'm_parents' => array(12687),
     ),
     12696 => array(
@@ -2719,19 +2719,19 @@ $config['en_all_12228'] = array(
     7347 => array(
         'm_icon' => '<i class="fas fa-bookmark discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER BOOKMARKS',
-        'm_desc' => 'The top of reading list where readers start their reading experience',
+        'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER COINS',
-        'm_desc' => 'Read coin generated for a successful read',
+        'm_desc' => '',
         'm_parents' => array(12500,12677,10939,11018,12655,12648,12467,11089,12410,6771,12228,4527),
     ),
     12229 => array(
         'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER COMPLETION',
-        'm_desc' => 'Either complete or incomplete',
+        'm_desc' => '',
         'm_parents' => array(4527,12228),
     ),
     12326 => array(
@@ -2743,13 +2743,13 @@ $config['en_all_12228'] = array(
     6146 => array(
         'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER INCOMPLETES',
-        'm_desc' => 'Read was skipped or failed to complete',
+        'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
     ),
     12227 => array(
         'm_icon' => '<i class="fas fa-walking discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER PROGRESS',
-        'm_desc' => 'Complete, Incomplete or Start',
+        'm_desc' => '',
         'm_parents' => array(12228,4527),
     ),
     12327 => array(

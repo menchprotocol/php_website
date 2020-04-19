@@ -302,7 +302,7 @@ class Source extends CI_Controller
         ));
 
         foreach ($child_sources as $en) {
-            echo echo_en($en,false);
+            echo echo_en($en,false, null, true);
         }
 
         //Count total children:
@@ -493,7 +493,7 @@ class Source extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'en_new_status' => $ens_latest[0]['en_status_source_id'],
-            'en_new_echo' => echo_en(array_merge($ens_latest[0], $ur2), $_POST['is_parent']),
+            'en_new_echo' => echo_en(array_merge($ens_latest[0], $ur2), $_POST['is_parent'], null, true),
         ));
 
     }

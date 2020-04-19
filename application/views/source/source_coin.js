@@ -329,7 +329,7 @@ function en_filter_status(new_val) {
     $('.en-status-filter').removeClass('active');
     //We do have a filter:
     en_focus_filter = parseInt(new_val);
-    $('.u-status-' + new_val).addClass('active');
+    $('.en-status-' + new_val).addClass('active');
     en_load_next_page(0, 1);
 }
 
