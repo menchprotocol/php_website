@@ -260,12 +260,12 @@ function echo_in_notes($ln)
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
-    $ui .= '<div class="text_message" id="msgbody_' . $ln['ln_id'] . '">';
+    $ui .= '<div class="text_message edit-off" id="msgbody_' . $ln['ln_id'] . '">';
     $ui .= $CI->DISCOVER_model->dispatch_message($ln['ln_content'], $session_en, false, array(), $ln['ln_next_idea_id']);
     $ui .= '</div>';
 
     //Editing menu:
-    $ui .= '<div class="pads-editor '.superpower_active(10939).'"><span class="show-on-hover">';
+    $ui .= '<div class="pads-editor edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
 
         //Sort:
         if(in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents'])){
@@ -1044,7 +1044,7 @@ function echo_in_discover($in, $parent_is_or = false, $infobar_details = null, $
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-    $ui .= '<td class="hideIfEmpty MENCHcolumn1">';
+    $ui .= '<td class="MENCHcolumn1">';
 
 
     //DISCOVER ICON
@@ -1063,7 +1063,7 @@ function echo_in_discover($in, $parent_is_or = false, $infobar_details = null, $
 
 
     //SOURCE
-    $ui .= '<td class="hideIfEmpty MENCHcolumn2 source">';
+    $ui .= '<td class="MENCHcolumn2 source">';
 
         //Count Sources of Idea Tree:
 
@@ -1073,10 +1073,12 @@ function echo_in_discover($in, $parent_is_or = false, $infobar_details = null, $
 
 
     //IDEA
-    $ui .= '<td class="hideIfEmpty MENCHcolumn3 idea">';
+    $ui .= '<td class="MENCHcolumn3 idea">';
 
         //Search for Idea Image:
         if($show_editor){
+
+            $ui .= '<div class="pads-edior edit-off">';
 
             $ui .= '<span class="show-on-hover">';
 
@@ -1085,6 +1087,7 @@ function echo_in_discover($in, $parent_is_or = false, $infobar_details = null, $
             $ui .= '<span title="Delete from discovery list" data-toggle="tooltip" data-placement="left"><span class="actionplan_delete" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
 
             $ui .= '</span>';
+            $ui .= '</div>';
 
         }
 
@@ -1260,7 +1263,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-    $ui .= '<td class="hideIfEmpty MENCHcolumn1">';
+    $ui .= '<td class="MENCHcolumn1">';
 
 
         $ui .= '<div class="block">';
@@ -1345,7 +1348,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
 
 
     //DISCOVER
-    $ui .= '<td class="hideIfEmpty MENCHcolumn2 discover">';
+    $ui .= '<td class="MENCHcolumn2 discover">';
     $ui .= echo_coins_count_discover($in['in_id']);
     $ui .= '</td>';
 
@@ -1353,11 +1356,11 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
 
 
     //SOURCE
-    $ui .= '<td class="hideIfEmpty MENCHcolumn3 source">';
+    $ui .= '<td class="MENCHcolumn3 source">';
 
     //RIGHT EDITING:
     $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
-    $ui .= '<div class="pads-editor">';
+    $ui .= '<div class="pads-editor edit-off">';
     $ui .= '<span class="show-on-hover">';
 
     if($is_in_link){
@@ -1790,7 +1793,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-    $ui .= '<td class="hideIfEmpty MENCHcolumn1">';
+    $ui .= '<td class="MENCHcolumn1">';
 
 
 
@@ -1891,7 +1894,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
 
     //IDEA
-    $ui .= '<td class="hideIfEmpty MENCHcolumn3 source">';
+    $ui .= '<td class="MENCHcolumn3 source">';
     $ui .= echo_coins_count_source(0, $en['en_id']);
     $ui .= '</td>';
 
@@ -1899,11 +1902,11 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
 
     //DISCOVER
-    $ui .= '<td class="hideIfEmpty MENCHcolumn2 discover">';
+    $ui .= '<td class="MENCHcolumn2 discover">';
 
     //RIGHT EDITING:
     $ui .= '<div class="pull-right inline-block">';
-    $ui .= '<div class="source-editor">';
+    $ui .= '<div class="pads-editor edit-off">';
     $ui .= '<span class="show-on-hover">';
 
     if($note_controller){

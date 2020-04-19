@@ -3963,7 +3963,6 @@ class DISCOVER_model extends CI_Model
                 $search_results = $res['hits'];
 
 
-
                 //Show options for the User to add to their DISCOVER LIST:
 
                 foreach ($search_results as $alg) {

@@ -609,7 +609,7 @@ img.no-radius {
     border-radius: 0 !important;
 }
 
-.pads-edit{
+.pads-editor{
     line-height: 100%;
     width: 20px;
     text-align: center;
@@ -647,7 +647,7 @@ textarea.pads-textarea{
     margin:5px 0;
 }
 
-.pads-edit>span{
+.pads-editor>span{
     display: block;
     padding:3px 0 0;
 }
