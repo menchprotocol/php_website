@@ -43,7 +43,7 @@ echo '</div>';
 echo '<div class="margin-top-down">';
 
 
-//READ HOME
+//HOME
 echo '<a href="/" class="btn btn-read">'.$en_all_11035[12581]['m_icon'].' '.$en_all_11035[12581]['m_name'].'</a>&nbsp;';
 
 //READ NEXT
