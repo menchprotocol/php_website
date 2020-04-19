@@ -1681,7 +1681,7 @@ function echo_platform_message($en_id){
     }
 }
 
-function echo_unauthorized_message($superpower_en_id = 0, $push_message = false){
+function echo_unauthorized_message($superpower_en_id = 0, $push_message = true){
 
     $CI =& get_instance();
     $en_all_10957 = $CI->config->item('en_all_10957');

@@ -824,7 +824,7 @@ class IDEA_model extends CI_Model
         /*
          *
          * Generates additional insights like
-         * min/max steps, time, cost and
+         * min/max ideas, time and
          * referenced sources in Idea Notes.
          *
          * */

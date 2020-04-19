@@ -23,7 +23,7 @@ class Cron extends CI_Controller
 {
 
     var $is_player_request;
-    var $session_id;
+    var $session_en;
 
     function __construct()
     {
@@ -44,8 +44,8 @@ class Cron extends CI_Controller
 
     }
 
-    function index(){
-
+    function index()
+    {
         //List Crons:
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
@@ -307,48 +307,27 @@ class Cron extends CI_Controller
          *
          * */
 
-        $start_time = time();
-        $update_count = 0;
 
-        if($in_id > 0){
 
-            //Increment count by 1:
-            $update_count++;
+        $in_id = ( $in_id>0 ? $in_id : config_var(12156) );
 
-            //Start with common base:
-            foreach($this->IDEA_model->in_fetch(array('in_id' => $in_id)) as $published_in){
-                $this->IDEA_model->in_metadata_common_base($published_in);
-            }
+        //Increment count by 1:
 
-            //Update extra insights:
-            $idea = $this->IDEA_model->in_metadata_source_insights($in_id);
-
-        } else {
-
-            //Update all Recommended Ideas and their idea:
-            foreach ($this->IDEA_model->in_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            )) as $published_in) {
-                $idea = $this->IDEA_model->in_metadata_source_insights($published_in['in_id']);
-                if($idea){
-                    $update_count++;
-                }
-            }
-
+        //Start with common base:
+        foreach($this->IDEA_model->in_fetch(array('in_id' => $in_id)) as $published_in){
+            $this->IDEA_model->in_metadata_common_base($published_in);
         }
 
+        //Update extra insights:
+        $idea = $this->IDEA_model->in_metadata_source_insights($in_id);
 
-
-        $end_time = time() - $start_time;
-        $success_message = 'Extra Insights Metadata updated for '.$update_count.' idea'.echo__s($update_count).'.';
+        $success_message = 'Extra Insights Metadata updated.';
 
         //Show json:
         echo_json(array(
             'message' => $success_message,
-            'total_time' => echo_time_minutes($end_time),
-            'item_time' => round(($end_time/$update_count),1).' Seconds',
-            'last_item' => $idea,
         ));
+
     }
 
 

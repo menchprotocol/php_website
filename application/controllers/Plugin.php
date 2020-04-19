@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Plugin extends CI_Controller
 {
 
-    var $session_id;
+    var $session_en;
 
     function __construct()
     {
