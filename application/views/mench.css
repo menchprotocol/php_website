@@ -1378,6 +1378,6 @@ label {
     }
 }
 
-div:empty, span:empty, li:empty, a:empty {
+.hideIfEmpty {
     display: none !important;
 }
