@@ -15,7 +15,7 @@ class Ledger extends CI_Controller
 
 
 
-    function ledger_home(){
+    function index(){
 
         /*
          *
