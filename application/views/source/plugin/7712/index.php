@@ -13,15 +13,15 @@ foreach ($this->IDEA_model->in_fetch(array(
 
     echo '<ul>';
     //Fetch all children for this OR:
-    foreach($this->READ_model->ln_fetch(array(
+    foreach($this->DISCOVER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-        'ln_type_source_id' => 4228, //Idea Link Regular Read
+        'ln_type_source_id' => 4228, //Idea Link Regular Discovery
         'ln_previous_idea_id' => $in['in_id'],
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
-        $user_steps = $this->READ_model->ln_fetch(array(
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+        $user_steps = $this->DISCOVER_model->ln_fetch(array(
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
             'ln_previous_idea_id' => $child_or['in_id'],
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
         ), array(), 0);
@@ -34,5 +34,5 @@ foreach ($this->IDEA_model->in_fetch(array(
     echo '<hr />';
 }
 
-echo 'READ: '.$all_steps.( $updated > 0 ? ' ('.$updated.' updated)' : '' ).' across '.$all_children.' answers';
+echo 'DISCOVER: '.$all_steps.( $updated > 0 ? ' ('.$updated.' updated)' : '' ).' across '.$all_children.' answers';
 

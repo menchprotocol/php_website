@@ -22,7 +22,7 @@ $source_focus_found = false; //Used to determine the first tab to be opened
 
 
 //IDEA NEXT
-$in__children = $this->READ_model->ln_fetch(array(
+$in__children = $this->DISCOVER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
@@ -31,7 +31,7 @@ $in__children = $this->READ_model->ln_fetch(array(
 
 
 //IDEA PREVIOUS
-$in__parents = $this->READ_model->ln_fetch(array(
+$in__parents = $this->DISCOVER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
@@ -85,7 +85,7 @@ echo '</div>';
 
 
 //IDEA MESSAGES:
-echo echo_in_note_mix(4231, $this->READ_model->ln_fetch(array(
+echo echo_in_note_mix(4231, $this->DISCOVER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'ln_type_source_id' => 4231,
     'ln_next_idea_id' => $in['in_id'],
@@ -100,7 +100,7 @@ echo '<div class="inline-block both-margin left-margin">'.echo_in_dropdown(4737,
 echo '<span class="inline-block both-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_source_id'], 'btn-idea', $is_source && $is_active, true, $in['in_id']).'</span>';
 
 //IDEA TIME
-echo '<div class="inline-block both-margin left-half-margin">'.echo_in_text(4356, $in['in_read_time'], $in['in_id'], $is_source && $is_active, 0).'</div>';
+echo '<div class="inline-block both-margin left-half-margin">'.echo_in_text(4356, $in['in_discover_time'], $in['in_id'], $is_source && $is_active, 0).'</div>';
 
 
 
@@ -162,7 +162,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
     } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
 
         //Idea NoteS
-        $in_notes = $this->READ_model->ln_fetch(array(
+        $in_notes = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id' => $en_id,
             'ln_next_idea_id' => $in['in_id'],
@@ -173,8 +173,8 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
 
     } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
 
-        //READER READS & BOOKMARKS
-        $item_counters = $this->READ_model->ln_fetch(array(
+        //DISCOVER & BOOKMARKS
+        $item_counters = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_'.$en_id)) . ')' => null,
             'ln_previous_idea_id' => $in['in_id'],
@@ -185,7 +185,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
         if($counter > 0){
 
             //Dynamic Loading when clicked:
-            $this_tab .= '<div class="dynamic-reads"></div>';
+            $this_tab .= '<div class="dynamic-discoveries"></div>';
 
         } else {
 

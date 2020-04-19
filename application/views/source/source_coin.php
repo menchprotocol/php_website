@@ -10,7 +10,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 //Fetch general data in advance:
 
 //COUNT TOTAL CHILD
-$child_links = $this->READ_model->ln_fetch(array(
+$child_links = $this->DISCOVER_model->ln_fetch(array(
     'ln_parent_source_id' => $source['en_id'],
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
@@ -19,7 +19,7 @@ $child_links = $this->READ_model->ln_fetch(array(
 $counter = $child_links[0]['totals'];
 
 //FETCH ALL PARENTS
-$source__parents = $this->READ_model->ln_fetch(array(
+$source__parents = $this->DISCOVER_model->ln_fetch(array(
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
@@ -331,7 +331,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
                         $extract_icon_color = extract_icon_color($m3['m_icon']);
                         $superpower_actives3 = array_intersect($this->config->item('en_ids_10957'), $m3['m_parents']);
                         $has_req_powers = (!count($superpower_actives3) || superpower_assigned(end($superpower_actives3)));
-                        $has_read_url = ( isset($en_all_10876[$superpower_en_id]['m_desc']) && strlen($en_all_10876[$superpower_en_id]['m_desc']) ? $en_all_10876[$superpower_en_id]['m_desc'] : false );
+                        $has_discover_url = ( isset($en_all_10876[$superpower_en_id]['m_desc']) && strlen($en_all_10876[$superpower_en_id]['m_desc']) ? $en_all_10876[$superpower_en_id]['m_desc'] : false );
 
                         //What is the superpower requirement?
                         if(superpower_assigned($superpower_en_id)){
@@ -340,10 +340,10 @@ $source__parents = $this->READ_model->ln_fetch(array(
                             $is_active = in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated'));
                             $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_en_id.' '.( $is_active ? ' active ' : '' ).'" href="javascript:void();" onclick="account_toggle_superpower('.$superpower_en_id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_en_id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
 
-                        } elseif($has_req_powers && $has_read_url){
+                        } elseif($has_req_powers && $has_discover_url){
 
                             //Does not have it, but can get it:
-                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower" href="'.$has_read_url.'"><span class="icon-block '.$extract_icon_color.'"><i class="fas fa-lock-open black"></i>&nbsp;'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
+                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower" href="'.$has_discover_url.'"><span class="icon-block '.$extract_icon_color.'"><i class="fas fa-lock-open black"></i>&nbsp;'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
 
                         }
                     }
@@ -358,7 +358,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
                 } elseif ($acc_en_id == 3288 /* Email */) {
 
-                    $user_emails = $this->READ_model->ln_fetch(array(
+                    $user_emails = $this->DISCOVER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                         'ln_child_source_id' => $session_en['en_id'],
                         'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
@@ -430,7 +430,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
             } else {
 
                 //Child List
-                $source__children = $this->READ_model->ln_fetch(array(
+                $source__children = $this->DISCOVER_model->ln_fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
@@ -441,7 +441,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
                 if(superpower_active(12701, true)){
 
                     $source_count = $this->SOURCE_model->en_child_count($source['en_id'], $this->config->item('en_ids_7358') /* Source Status Active */);
-                    $child_en_filters = $this->READ_model->ln_fetch(array(
+                    $child_en_filters = $this->DISCOVER_model->ln_fetch(array(
                         'ln_parent_source_id' => $source['en_id'],
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
@@ -504,17 +504,17 @@ $source__parents = $this->READ_model->ln_fetch(array(
             );
 
             //COUNT ONLY
-            $item_counters = $this->READ_model->ln_fetch($in_notes_filters, array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
+            $item_counters = $this->DISCOVER_model->ln_fetch($in_notes_filters, array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
             $counter = $item_counters[0]['totals'];
 
             //SHOW LASTEST 100
             if($counter>0 && (!$disable_content_loading || $auto_expand_tab)){
 
                 $this_tab .= '<div class="list-group">';
-                foreach ($this->READ_model->ln_fetch($in_notes_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC')) as $in_notes) {
+                foreach ($this->DISCOVER_model->ln_fetch($in_notes_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC')) as $in_notes) {
                     if(in_array($en_id, $this->config->item('en_ids_12321'))){
 
-                        $this_tab .= echo_in_read($in_notes);
+                        $this_tab .= echo_in_discover($in_notes);
 
                     } elseif(in_array($en_id, $this->config->item('en_ids_12322'))){
 
@@ -522,11 +522,11 @@ $source__parents = $this->READ_model->ln_fetch(array(
                         $infobar_details = null;
                         if($in_notes['ln_content']){
                             $infobar_details .= '<div class="message_content">';
-                            $infobar_details .= $this->READ_model->dispatch_message($in_notes['ln_content']);
+                            $infobar_details .= $this->DISCOVER_model->dispatch_message($in_notes['ln_content']);
                             $infobar_details .= '</div>';
                         }
 
-                        $this_tab .= echo_in_read($in_notes, false, $infobar_details);
+                        $this_tab .= echo_in_discover($in_notes, false, $infobar_details);
 
                     }
                 }
@@ -539,19 +539,19 @@ $source__parents = $this->READ_model->ln_fetch(array(
 
             }
 
-        } elseif($en_id == 7347 /* READ LIST */){
+        } elseif($en_id == 7347 /* DISCOVER LIST */){
 
-            $player_reads = $this->READ_model->ln_fetch(array(
+            $player_discoveries = $this->DISCOVER_model->ln_fetch(array(
                 'ln_creator_source_id' => $source['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             ), array('in_parent'), 1, 0, array(), 'COUNT(ln_id) as totals');
-            $counter = $player_reads[0]['totals'];
+            $counter = $player_discoveries[0]['totals'];
 
         } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
 
-            //SOURCE COINS (READ & IDEA)
+            //SOURCE COINS (DISCOVER & IDEA)
 
             $join_objects = array();
             $match_columns = array(
@@ -565,21 +565,21 @@ $source__parents = $this->READ_model->ln_fetch(array(
                 $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Idea Status Public
                 $join_objects = array('in_child');
             } elseif($en_id == 6255){
-                //READ COIN
+                //DISCOVER COIN
                 $match_columns['ln_creator_source_id'] = $source['en_id'];
             }
 
-            //READER READS & BOOKMARKS
-            $item_counters = $this->READ_model->ln_fetch($match_columns, $join_objects, 1, 0, array(), 'COUNT(ln_id) as totals');
+            //DISCOVER & BOOKMARKS
+            $item_counters = $this->DISCOVER_model->ln_fetch($match_columns, $join_objects, 1, 0, array(), 'COUNT(ln_id) as totals');
 
             $counter = $item_counters[0]['totals'];
 
             if($counter > 0 && (!$disable_content_loading || $auto_expand_tab)){
 
                 //Dynamic Loading when clicked:
-                $read_history_ui = $this->READ_model->read_history_ui($en_id, 0, $source['en_id']);
-                if($read_history_ui['status']){
-                    $this_tab .= $read_history_ui['message'];
+                $discover_history_ui = $this->DISCOVER_model->discover_history_ui($en_id, 0, $source['en_id']);
+                if($discover_history_ui['status']){
+                    $this_tab .= $discover_history_ui['message'];
                 }
 
             }
@@ -729,7 +729,7 @@ $source__parents = $this->READ_model->ln_fetch(array(
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$en_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.$m['m_name'].( $counter>0 ? '<span title="'.number_format($counter, 0).'" class="'.superpower_active(12701).'">&nbsp;'.echo_number($counter).'</span>' : '').'</a></div>';
+        echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$en_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.$m['m_name'].( $counter>0 ? '<span title="'.number_format($counter, 0).'" class="'.superpower_active(12701).'">&nbsp;'.echo_number($counter).'</span>' : '').'</a></div>';
 
         //BODY
         echo '<div class="contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';

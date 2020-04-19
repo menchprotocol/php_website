@@ -2,11 +2,11 @@
 
 $(document).ready(function () {
 
-    autosize($('#read_text_answer'));
+    autosize($('#discover_text_answer'));
 
     //Watchout for file uplods:
     $('.boxUpload').find('input[type="file"]').change(function () {
-        read_file_upload(droppedFiles, 'file');
+        discover_file_upload(droppedFiles, 'file');
     });
 
     //Move Previous Discoveries Up:
@@ -25,15 +25,15 @@ $(document).ready(function () {
             e.stopPropagation();
         })
             .on('dragover dragenter', function () {
-                $('.readerUploader').addClass('is-working');
+                $('.playerUploader').addClass('is-working');
             })
             .on('dragleave dragend drop', function () {
-                $('.readerUploader').removeClass('is-working');
+                $('.playerUploader').removeClass('is-working');
             })
             .on('drop', function (e) {
                 droppedFiles = e.originalEvent.dataTransfer.files;
                 e.preventDefault();
-                read_file_upload(droppedFiles, 'drop');
+                discover_file_upload(droppedFiles, 'drop');
             });
     }
 
@@ -56,7 +56,7 @@ function select_answer(in_id){
 
     if(current_status==1){
 
-        //Already Selected, delete selection:
+        //Previously Selected, delete selection:
         if(in_type_source_id == 7231){
             //Multi Selection
             $('.ln_answer_'+in_id).attr('is-selected', 0);
@@ -65,7 +65,7 @@ function select_answer(in_id){
 
     } else if(current_status==0){
 
-        //Already Selected, delete selection:
+        //Previously Selected, delete selection:
         $('.ln_answer_'+in_id).attr('is-selected', 1);
         $('.ln_answer_'+in_id+' .check-icon i').removeClass('far').addClass('fas');
 
@@ -74,7 +74,7 @@ function select_answer(in_id){
 }
 
 
-function read_file_upload(droppedFiles, uploadType) {
+function discover_file_upload(droppedFiles, uploadType) {
 
     //Prevent multiple concurrent uploads:
     if ($('.boxUpload').hasClass('is-uploading')) {
@@ -100,7 +100,7 @@ function read_file_upload(droppedFiles, uploadType) {
         ajaxData.append('in_id', in_loaded_id);
 
         $.ajax({
-            url: '/read/read_file_upload',
+            url: '/discover/discover_file_upload',
             type: $('.boxUpload').attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -126,26 +126,26 @@ function read_file_upload(droppedFiles, uploadType) {
 }
 
 
-function read_text_answer(){
+function discover_text_answer(){
     //Show Loading:
     $('.text_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
-    $.post("/read/read_text_answer", {
+    $.post("/discover/discover_text_answer", {
         in_id:in_loaded_id,
-        read_text_answer:$('#read_text_answer').val(),
+        discover_text_answer:$('#discover_text_answer').val(),
     }, function (data) {
         if (data.status) {
             $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
             setTimeout(function () {
                 //Go to redirect message:
-                window.location = '/read/next/'+in_loaded_id;
+                window.location = '/discover/next/'+in_loaded_id;
             }, 987);
         } else {
-            $('.text_saving_result').html('<span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><span class="montserrat read">Alert: '+data.message+'</span>');
+            $('.text_saving_result').html('<span class="icon-block"><i class="fad fa-exclamation-triangle discover"></i></span><span class="montserrat discover">Alert: '+data.message+'</span>');
         }
     });
 }
 
-function read_answer(){
+function discover_answer(){
 
     //Check
     var answered_ins = [];
@@ -157,7 +157,7 @@ function read_answer(){
 
     //Show Loading:
     $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
-    $.post("/read/read_answer", {
+    $.post("/discover/discover_answer", {
         in_loaded_id:in_loaded_id,
         answered_ins:answered_ins
     }, function (data) {
@@ -165,10 +165,10 @@ function read_answer(){
             $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
             setTimeout(function () {
                 //Go to redirect message:
-                window.location = '/read/next/'+in_loaded_id;
+                window.location = '/discover/next/'+in_loaded_id;
             }, 987);
         } else {
-            $('.result-update').html('<span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span><span class="montserrat read">Alert: '+data.message+'</span>');
+            $('.result-update').html('<span class="icon-block"><i class="fad fa-exclamation-triangle discover"></i></span><span class="montserrat discover">Alert: '+data.message+'</span>');
         }
     });
 }

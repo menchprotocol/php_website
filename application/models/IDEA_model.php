@@ -23,8 +23,8 @@ class IDEA_model extends CI_Model
             return false;
         }
 
-        if(!isset($insert_columns['in_read_time']) || $insert_columns['in_read_time'] < 0){
-            $insert_columns['in_read_time'] = config_var(12176);
+        if(!isset($insert_columns['in_discover_time']) || $insert_columns['in_discover_time'] < 0){
+            $insert_columns['in_discover_time'] = config_var(12176);
         }
 
         //Lets now add:
@@ -45,7 +45,7 @@ class IDEA_model extends CI_Model
             if ($ln_creator_source_id > 0) {
 
                 //Log link new Idea:
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_next_idea_id' => $insert_columns['in_id'],
                     'ln_content' => $insert_columns['in_title'],
@@ -53,7 +53,7 @@ class IDEA_model extends CI_Model
                 ));
 
                 //Also add as source:
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_parent_source_id' => $ln_creator_source_id,
                     'ln_type_source_id' => 4983, //IDEA COIN
@@ -78,7 +78,7 @@ class IDEA_model extends CI_Model
         } else {
 
             //Ooopsi, something went wrong!
-            $this->READ_model->ln_create(array(
+            $this->DISCOVER_model->ln_create(array(
                 'ln_content' => 'in_create() failed to create a new idea',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $ln_creator_source_id,
@@ -179,7 +179,7 @@ class IDEA_model extends CI_Model
                     $ln_parent_source_id = $value;
                     $ln_child_source_id = $before_data[0][$key];
 
-                } elseif($key=='in_read_time') {
+                } elseif($key=='in_discover_time') {
 
                     $ln_type_source_id = 10650; //Idea updated Completion Time
                     $ln_content = echo_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
@@ -193,7 +193,7 @@ class IDEA_model extends CI_Model
 
 
                 //Value has changed, log link:
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_type_source_id' => $ln_type_source_id,
                     'ln_next_idea_id' => $id,
@@ -218,7 +218,7 @@ class IDEA_model extends CI_Model
         } elseif($affected_rows < 1){
 
             //This should not happen:
-            $this->READ_model->ln_create(array(
+            $this->DISCOVER_model->ln_create(array(
                 'ln_next_idea_id' => $id,
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $ln_creator_source_id,
@@ -237,27 +237,27 @@ class IDEA_model extends CI_Model
 
         //REMOVE IDEA LINKS
         $links_deleted = 0;
-        foreach($this->READ_model->ln_fetch(array( //Idea Links
+        foreach($this->DISCOVER_model->ln_fetch(array( //Idea Links
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             '(ln_next_idea_id = '.$in_id.' OR ln_previous_idea_id = '.$in_id.')' => null,
         ), array(), 0) as $ln){
             //Delete this link:
-            $links_deleted += $this->READ_model->ln_update($ln['ln_id'], array(
+            $links_deleted += $this->DISCOVER_model->ln_update($ln['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Deleted
             ), $ln_creator_source_id, 10686 /* Idea Link Unlinked */);
         }
 
 
         //REMOVE NOTES:
-        $in_notes = $this->READ_model->ln_fetch(array( //Idea Links
+        $in_notes = $this->DISCOVER_model->ln_fetch(array( //Idea Links
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
             'ln_next_idea_id' => $in_id,
         ), array(), 0);
         foreach($in_notes as $in_note){
             //Delete this link:
-            $links_deleted += $this->READ_model->ln_update($in_note['ln_id'], array(
+            $links_deleted += $this->DISCOVER_model->ln_update($in_note['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Deleted
             ), $ln_creator_source_id, 10686 /* Idea Link Unlinked */);
         }
@@ -279,26 +279,26 @@ class IDEA_model extends CI_Model
 
         //IDEAS
         $status_converter = array(
-            12137 => 12399, //IDEA FEATURE => READ FEATURE
-            6184 => 6176, //IDEA PUBLISH => READ PUBLISH
-            6183 => 6175, //IDEA DRAFT => READ DRAFT
-            6182 => 6173, //IDEA DELETE => READ DELETE
+            12137 => 12399, //IDEA FEATURE => DISCOVER FEATURE
+            6184 => 6176, //IDEA PUBLISH => DISCOVER PUBLISH
+            6183 => 6175, //IDEA DRAFT => DISCOVER DRAFT
+            6182 => 6173, //IDEA DELETE => DISCOVER DELETE
         );
         foreach($this->IDEA_model->in_fetch($query) as $in){
 
             $stats['scanned']++;
 
-            //Find creation read:
-            $reads = $this->READ_model->ln_fetch(array(
+            //Find creation discover:
+            $discoveries = $this->DISCOVER_model->ln_fetch(array(
                 'ln_type_source_id' => $stats['ln_type_source_id'],
                 'ln_next_idea_id' => $in['in_id'],
             ));
 
-            if(!count($reads)){
+            if(!count($discoveries)){
 
                 $stats['missing_creation_fix']++;
 
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_next_idea_id' => $in['in_id'],
                     'ln_content' => $in['in_title'],
@@ -306,10 +306,10 @@ class IDEA_model extends CI_Model
                     'ln_status_source_id' => $status_converter[$in['in_status_source_id']],
                 ));
 
-            } elseif($reads[0]['ln_status_source_id'] != $status_converter[$in['in_status_source_id']]){
+            } elseif($discoveries[0]['ln_status_source_id'] != $status_converter[$in['in_status_source_id']]){
 
                 $stats['status_sync']++;
-                $this->READ_model->ln_update($reads[0]['ln_id'], array(
+                $this->DISCOVER_model->ln_update($discoveries[0]['ln_id'], array(
                     'ln_status_source_id' => $status_converter[$in['in_status_source_id']],
                 ));
 
@@ -332,7 +332,7 @@ class IDEA_model extends CI_Model
          * (IF $link_in_id>0) OR will create a new idea with outcome $in_title
          * and link it to $link_to_in_id (In this case $link_in_id will be 0)
          *
-         * p.s. Inputs have already been validated via ideas/in_link_or_create() function
+         * p.s. Inputs have previously been validated via ideas/in_link_or_create() function
          *
          * */
 
@@ -377,7 +377,7 @@ class IDEA_model extends CI_Model
                 if (in_array($parent_in['in_id'], $recursive_children)) {
                     return array(
                         'status' => 0,
-                        'message' => 'Idea already set as child, so it cannot be added as parent',
+                        'message' => 'Idea previously set as child, so it cannot be added as parent',
                     );
                 }
                 */
@@ -393,7 +393,7 @@ class IDEA_model extends CI_Model
                     if (in_array($child_in['in_id'], $grand_parent_ids)) {
                         return array(
                             'status' => 0,
-                            'message' => 'Idea already set as parent, so it cannot be added as child',
+                            'message' => 'Idea previously set as parent, so it cannot be added as child',
                         );
                     }
                 }
@@ -416,7 +416,7 @@ class IDEA_model extends CI_Model
             $in_new = $ins[0];
 
             //Make sure this is not a duplicate Idea for its parent:
-            $dup_links = $this->READ_model->ln_fetch(array(
+            $dup_links = $this->DISCOVER_model->ln_fetch(array(
                 'ln_previous_idea_id' => $parent_in['in_id'],
                 'ln_next_idea_id' => $child_in['in_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
@@ -429,7 +429,7 @@ class IDEA_model extends CI_Model
                 //Ooopsi, this is a duplicate!
                 return array(
                     'status' => 0,
-                    'message' => '[' . $in_new['in_title'] . '] is already linked here.',
+                    'message' => '[' . $in_new['in_title'] . '] is previously linked here.',
                 );
 
             } elseif ($link_to_in_id > 0 && $link_in_id == $link_to_in_id) {
@@ -467,12 +467,12 @@ class IDEA_model extends CI_Model
         //Create Idea Link:
         if($link_to_in_id > 0){
 
-            $relation = $this->READ_model->ln_create(array(
+            $relation = $this->DISCOVER_model->ln_create(array(
                 'ln_creator_source_id' => $ln_creator_source_id,
-                'ln_type_source_id' => 4228, //Idea Link Regular Read
+                'ln_type_source_id' => 4228, //Idea Link Regular Discovery
                 ( $is_parent ? 'ln_next_idea_id' : 'ln_previous_idea_id' ) => $link_to_in_id,
                 ( $is_parent ? 'ln_previous_idea_id' : 'ln_next_idea_id' ) => $in_new['in_id'],
-                'ln_order' => 1 + $this->READ_model->ln_max_order(array(
+                'ln_order' => 1 + $this->DISCOVER_model->ln_max_order(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                         'ln_previous_idea_id' => ( $is_parent ? $in_new['in_id'] : $link_to_in_id ),
@@ -480,7 +480,7 @@ class IDEA_model extends CI_Model
             ), true);
 
             //Fetch and return full data to be properly shown on the UI using the echo_in() function
-            $new_ins = $this->READ_model->ln_fetch(array(
+            $new_ins = $this->DISCOVER_model->ln_fetch(array(
                 ( $is_parent ? 'ln_next_idea_id' : 'ln_previous_idea_id' ) => $link_to_in_id,
                 ( $is_parent ? 'ln_previous_idea_id' : 'ln_next_idea_id' ) => $in_new['in_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
@@ -512,7 +512,7 @@ class IDEA_model extends CI_Model
         $grand_parents = array();
 
         //Fetch parents:
-        foreach($this->READ_model->ln_fetch(array(
+        foreach($this->DISCOVER_model->ln_fetch(array(
             'in_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7355' : 'en_ids_7356' ))) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7359' : 'en_ids_7360' ))) . ')' => null,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
@@ -551,7 +551,7 @@ class IDEA_model extends CI_Model
         $child_ids = array();
 
         //Fetch parents:
-        foreach($this->READ_model->ln_fetch(array(
+        foreach($this->DISCOVER_model->ln_fetch(array(
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
@@ -584,15 +584,15 @@ class IDEA_model extends CI_Model
         $is_first_in = ( !isset($focus_in['ln_id']) ); //First idea does not have a link, just the idea
         $has_or_parent = in_array($focus_in['in_type_source_id'] , $this->config->item('en_ids_6193') /* OR Ideas */ );
         $or_children = array(); //To be populated only if $focus_in is an OR idea
-        $conditional_steps = array(); //To be populated only for Conditional Reads
+        $conditional_steps = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
             '__in__metadata_common_steps' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
-            '__in__metadata_expansion_steps' => array(), //Ideas that may exist as a link to expand an 🔴 READING LIST idea by answering OR ideas
-            '__in__metadata_expansion_conditional' => array(), //Ideas that may exist as a link to expand an 🔴 READING LIST idea via Conditional Read links
+            '__in__metadata_expansion_steps' => array(), //Ideas that may exist as a link to expand an DISCOVER LIST idea by answering OR ideas
+            '__in__metadata_expansion_conditional' => array(), //Ideas that may exist as a link to expand an DISCOVER LIST idea via Conditional Idea links
         );
 
         //Fetch children:
-        foreach($this->READ_model->ln_fetch(array(
+        foreach($this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
@@ -602,17 +602,17 @@ class IDEA_model extends CI_Model
             //Determine action based on parent idea type:
             if($child_in['ln_type_source_id']==4229){
 
-                //Conditional Read Link:
+                //Conditional Idea Link:
                 array_push($conditional_steps, intval($child_in['in_id']));
 
             } elseif($has_or_parent){
 
-                //OR parent Idea with Fixed Read Link:
+                //OR parent Idea with Fixed Idea Link:
                 array_push($or_children, intval($child_in['in_id']));
 
             } else {
 
-                //AND parent Idea with Fixed Read Link:
+                //AND parent Idea with Fixed Idea Link:
                 array_push($metadata_this['__in__metadata_common_steps'], intval($child_in['in_id']));
 
                 //Go recursively down:
@@ -707,10 +707,10 @@ class IDEA_model extends CI_Model
         //Fetch all children:
         $applied_success = 0; //To be populated...
 
-        $in__children = $this->READ_model->ln_fetch(array(
+        $in__children = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-            'ln_type_source_id' => 4228, //Idea Link Regular Read
+            'ln_type_source_id' => 4228, //Idea Link Regular Discovery
             'ln_previous_idea_id' => $in_id,
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -724,7 +724,7 @@ class IDEA_model extends CI_Model
 
                 //Check if it hs this item:
                 $parent_en_id = intval(one_two_explode('@',' ',$action_command1));
-                $in_has_sources = $this->READ_model->ln_fetch(array(
+                $in_has_sources = $this->DISCOVER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                     'ln_next_idea_id' => $in['in_id'],
@@ -734,7 +734,7 @@ class IDEA_model extends CI_Model
                 if($action_en_id==12591 && !count($in_has_sources)){
 
                     //Missing & Must be Added:
-                    $this->READ_model->ln_create(array(
+                    $this->DISCOVER_model->ln_create(array(
                         'ln_creator_source_id' => $ln_creator_source_id,
                         'ln_parent_source_id' => $parent_en_id,
                         'ln_type_source_id' => 4983, //IDEA COIN
@@ -747,7 +747,7 @@ class IDEA_model extends CI_Model
                 } elseif($action_en_id==12592 && count($in_has_sources)){
 
                     //Has and must be deleted:
-                    $this->READ_model->ln_update($in_has_sources[0]['ln_id'], array(
+                    $this->DISCOVER_model->ln_update($in_has_sources[0]['ln_id'], array(
                         'ln_status_source_id' => 6173,
                     ), $ln_creator_source_id, 10678 /* Idea Notes Unlinked */);
 
@@ -765,7 +765,7 @@ class IDEA_model extends CI_Model
 
 
         //Log mass source edit link:
-        $this->READ_model->ln_create(array(
+        $this->DISCOVER_model->ln_create(array(
             'ln_creator_source_id' => $ln_creator_source_id,
             'ln_type_source_id' => $action_en_id,
             'ln_next_idea_id' => $in_id,
@@ -799,7 +799,7 @@ class IDEA_model extends CI_Model
 
         $total_child_weights = 0;
 
-        foreach($this->READ_model->ln_fetch(array(
+        foreach($this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_type_source_id' => 4228, //Fixed Idea Link
@@ -852,7 +852,7 @@ class IDEA_model extends CI_Model
         $common_totals = $this->IDEA_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_read_time) as total_seconds');
+        ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_discover_time) as total_seconds');
 
         $common_base_resources = array(
             'steps' => $common_totals[0]['total_steps'],
@@ -879,7 +879,7 @@ class IDEA_model extends CI_Model
 
         //Add-up Idea Notes References:
         //The sources we need to check and see if they are industry experts:
-        foreach ($this->READ_model->ln_fetch(array(
+        foreach ($this->DISCOVER_model->ln_fetch(array(
             'ln_parent_source_id >' => 0,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')).')' => null, //Idea Notes
             '(ln_next_idea_id = ' . $in_id . ( count($flat_common_steps) > 0 ? ' OR ln_next_idea_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
@@ -888,7 +888,7 @@ class IDEA_model extends CI_Model
         ), array('en_parent'), 0) as $pads_en) {
 
             //Referenced source in Idea Notes... Fetch parents:
-            foreach($this->READ_model->ln_fetch(array(
+            foreach($this->DISCOVER_model->ln_fetch(array(
                 'ln_child_source_id' => $pads_en['ln_parent_source_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Source Links
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -912,7 +912,7 @@ class IDEA_model extends CI_Model
                 } else {
 
                     //Industry Expert?
-                    $expert_parents = $this->READ_model->ln_fetch(array(
+                    $expert_parents = $this->DISCOVER_model->ln_fetch(array(
                         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Source Links
@@ -1050,11 +1050,11 @@ class IDEA_model extends CI_Model
         $child_unlock_paths = array();
 
 
-        //Read 1: Is there an OR parent that we can simply answer and unlock?
-        foreach($this->READ_model->ln_fetch(array(
+        //Discovery 1: Is there an OR parent that we can simply answer and unlock?
+        foreach($this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            'ln_type_source_id' => 4228, //Idea Link Regular Read
+            'ln_type_source_id' => 4228, //Idea Link Regular Discovery
             'ln_next_idea_id' => $in['in_id'],
             'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
         ), array('in_parent'), 0) as $in_or_parent){
@@ -1064,11 +1064,11 @@ class IDEA_model extends CI_Model
         }
 
 
-        //Read 2: Are there any locked link parents that the user might be able to unlock?
-        foreach($this->READ_model->ln_fetch(array(
+        //Discovery 2: Are there any locked link parents that the user might be able to unlock?
+        foreach($this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            'ln_type_source_id' => 4229, //Idea Link Locked Read
+            'ln_type_source_id' => 4229, //Idea Link Locked Discovery
             'ln_next_idea_id' => $in['in_id'],
         ), array('in_parent'), 0) as $in_locked_parent){
             if(in_is_unlockable($in_locked_parent)){
@@ -1091,11 +1091,11 @@ class IDEA_model extends CI_Model
         }
 
 
-        //Read 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
-        $in__children = $this->READ_model->ln_fetch(array(
+        //Discovery 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
+        $in__children = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            'ln_type_source_id' => 4228, //Idea Link Regular Read
+            'ln_type_source_id' => 4228, //Idea Link Regular Discovery
             'ln_previous_idea_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
         if(count($in__children) < 1){

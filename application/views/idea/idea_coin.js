@@ -181,13 +181,13 @@ $(document).ready(function () {
 
 });
 
-function read_preview(){
+function discover_preview(){
     if(parseInt($('.dropi_4737_'+in_loaded_id+'_0.active').attr('new-en-id')) in js_en_all_7355){
         //Idea is public, go to preview:
         window.location = '/' + in_loaded_id;
     } else {
-        //Inform them that they cannot read yet:
-        alert('Publish idea before reading it.');
+        //Inform them that they cannot discover yet:
+        alert('You must publish idea before discovering it.');
     }
 }
 
@@ -637,7 +637,7 @@ function in_message_form_unlock(result, focus_ln_type_source_id) {
 
     } else {
 
-        $(".pads_error_"+focus_ln_type_source_id).html('<span class="read">Alert: '+result.message+'</span>');
+        $(".pads_error_"+focus_ln_type_source_id).html('<span class="discover">Alert: '+result.message+'</span>');
 
     }
 }

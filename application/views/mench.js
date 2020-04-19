@@ -31,19 +31,19 @@ if(js_pl_id>0){
 }
 
 
-//JS READ Creator:
+//JS DISCOVER Creator:
 function js_ln_create(new_ln_data){
-    return $.post("/read/js_ln_create", new_ln_data, function (data) {
+    return $.post("/discover/js_ln_create", new_ln_data, function (data) {
         return data;
     });
 }
 
-function toggle_read(){
+function toggle_discover(){
 
-    $('.read_topics').toggleClass('hidden');
+    $('.discover_topics').toggleClass('hidden');
 
     $([document.documentElement, document.body]).animate({
-        scrollTop: $("#readScroll").offset().top
+        scrollTop: $("#discoverScroll").offset().top
     }, 500);
 
 }
@@ -125,19 +125,19 @@ function load_editor(){
 }
 
 
-function go_to_read(in_id){
+function go_to_discover(in_id){
     //Is It published?
     if( parseInt($('.dropd_4737_'+in_id+'_0').attr('selected-val')) in js_en_all_7355 ){
 
-        //Yes, go to read:
+        //Yes, go to discover:
         window.location = '/'+in_id;
 
     } else {
 
         //No, give them option:
-        var r = confirm("You can only read this idea once its published. Navigate to reading list?");
+        var r = confirm("You can only discover this idea once its published. Navigate to discovery list?");
         if (r == true) {
-            window.location = '/read';
+            window.location = '/discover';
         }
 
     }
@@ -148,7 +148,7 @@ function echo_search_result(alg_obj){
     //Determine object type:
     var obj_type = ( parseInt(alg_obj.alg_obj_is_in) ? 'idea' : 'source' );
     var is_published = ( parseInt(alg_obj.alg_obj_status) in ( parseInt(alg_obj.alg_obj_is_in) ? js_en_all_7355 : js_en_all_7357 ));
-    var obj_icon = ( parseInt(alg_obj.alg_obj_is_in) ? '<i class="fas fa-circle '+( js_session_superpowers_assigned.includes(10939) ? 'idea' : 'read' )+'"></i>' : alg_obj.alg_obj_icon );
+    var obj_icon = ( parseInt(alg_obj.alg_obj_is_in) ? '<i class="fas fa-circle '+( js_session_superpowers_assigned.includes(10939) ? 'idea' : 'discover' )+'"></i>' : alg_obj.alg_obj_icon );
     var obj_full_name = ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name );
 
     return '<span class="icon-block-sm">'+ obj_icon +'</span>' + ( is_published ? '' : '<span class="icon-block-sm"><i class="far fa-spinner fa-spin"></i></span>' ) + obj_full_name;
@@ -168,13 +168,13 @@ function js_echo_platform_message(en_id){
 }
 
 
-function read_in_history(tab_group_id, pads_in_id, owner_en_id, last_loaded_ln_id){
+function discover_in_history(tab_group_id, pads_in_id, owner_en_id, last_loaded_ln_id){
 
-    var load_class = '.tab-data-'+tab_group_id+' .dynamic-reads';
+    var load_class = '.tab-data-'+tab_group_id+' .dynamic-discoveries';
     $(load_class).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">LOADING...</b>');
 
     //Yes, we need to load dynamically:
-    $.post("/read/read_in_history/"+tab_group_id+"/"+pads_in_id+"/"+owner_en_id+"/"+last_loaded_ln_id, { }, function (data) {
+    $.post("/discover/discover_in_history/"+tab_group_id+"/"+pads_in_id+"/"+owner_en_id+"/"+last_loaded_ln_id, { }, function (data) {
         if (data.status) {
             $(load_class).html(data.message);
         } else {
@@ -198,9 +198,9 @@ function loadtab(tab_group_id, tab_data_id, pads_in_id, owner_en_id){
     $('.tab-nav-'+tab_group_id+'.tab-head-'+tab_data_id).addClass('active');
 
     //Need to dynamically load data?
-    if($('.tab-data-'+tab_data_id).find('div.dynamic-reads').length > 0){
+    if($('.tab-data-'+tab_data_id).find('div.dynamic-discoveries').length > 0){
         //Load First Page:
-        read_in_history(tab_data_id, pads_in_id, owner_en_id, 0);
+        discover_in_history(tab_data_id, pads_in_id, owner_en_id, 0);
     } else {
         //Do we need to focus on input field?
         $('#ln_content'+tab_data_id).focus();
@@ -462,7 +462,7 @@ function en_fetch_canonical_url(query_string, not_found){
 
     //Do a call to PHP to fetch canonical URL and see if that exists:
     $.post("/source/en_fetch_canonical_url", { search_url:query_string }, function (searchdata) {
-        if(searchdata.status && searchdata.url_already_existed){
+        if(searchdata.status && searchdata.url_previously_existed){
             //URL was detected via PHP, update the search results:
             $('.add-source-suggest').remove();
             $('.not-found').html('<a href="/source/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_search_result(searchdata.algolia_object)+'</a>');
@@ -490,7 +490,7 @@ function validURL(str) {
 
 
 function add_to_list(sort_list_id, sort_handler, html_content) {
-    //See if we already have a list in place?
+    //See if we previously have a list in place?
     if ($("#" + sort_list_id + " " + sort_handler).length > 0) {
         //yes we do! add this:
         $("#" + sort_list_id + " " + sort_handler + ":last").after(html_content);
@@ -562,8 +562,8 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
         }
     });
 
-    if(!algolia_index){
-        //Already loaded:
+    if(!parseInt(js_en_all_6404[12678]['m_desc'])){
+        //Previously loaded:
         return false;
     }
 

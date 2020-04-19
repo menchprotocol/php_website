@@ -10,7 +10,7 @@
 
         $show_max = config_var(11986);
         echo '<div class="list-group" style="padding-bottom: 34px;">';
-        foreach($this->READ_model->ln_fetch(array(
+        foreach($this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
             'ln_creator_source_id' => $session_en['en_id'],
@@ -34,7 +34,7 @@
 
     //Top Players
     $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
-    echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[12437]['m_icon'].'</span>'.$en_all_11035[12437]['m_name'].'</div>';
+    echo '<div class="discover-topic"><span class="icon-block">'.$en_all_11035[12437]['m_icon'].'</span>'.$en_all_11035[12437]['m_name'].'</div>';
     echo '<div id="load_leaderboard"></div>';
 
 
@@ -49,7 +49,7 @@
     echo '<tr>';
     echo '<td class="hideIfEmpty MENCHcolumn1 source montserrat" title="'.number_format($this->config->item('cache_count_source'), 0).'"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_source')).'<span class="coin-type">'.$en_all_2738[4536]['m_name'].'S</span></td>';
     echo '<td class="hideIfEmpty MENCHcolumn2 idea montserrat" title="'.number_format($this->config->item('cache_count_idea'), 0).'"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_idea')).'<span class="coin-type">'.$en_all_2738[4535]['m_name'].'S</span></td>';
-    echo '<td class="hideIfEmpty MENCHcolumn3 read montserrat" title="'.number_format($this->config->item('cache_count_read'), 0).'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_read')).'<span class="coin-type">'.$en_all_2738[6205]['m_name'].'S</span></td>';
+    echo '<td class="hideIfEmpty MENCHcolumn3 discover montserrat" title="'.number_format($this->config->item('cache_count_discover'), 0).'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_discover')).'<span class="coin-type">'.$en_all_2738[6205]['m_name'].'S</span></td>';
     echo '</tr>';
     echo '</table>';
 

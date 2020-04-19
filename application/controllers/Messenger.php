@@ -26,7 +26,7 @@ class Messenger extends CI_Controller
         }
 
         //Validate messenger ID:
-        $user_messenger = $this->READ_model->ln_fetch(array(
+        $user_messenger = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_parent_source_id' => 6196, //Mench Messenger
@@ -40,14 +40,14 @@ class Messenger extends CI_Controller
         }
 
         //Fetch results and show:
-        return echo_json($this->READ_model->facebook_graph('GET', '/' . $user_messenger[0]['ln_external_id'], array()));
+        return echo_json($this->DISCOVER_model->facebook_graph('GET', '/' . $user_messenger[0]['ln_external_id'], array()));
 
     }
 
 
     function deauthorize(){
         //When a user deletes us:
-        $this->READ_model->ln_create(array(
+        $this->DISCOVER_model->ln_create(array(
             'ln_content' => 'facebook_deauthorize() Just Called',
             'ln_type_source_id' => 4246, //Platform Bug Reports
             'ln_metadata' => array(
@@ -69,7 +69,7 @@ class Messenger extends CI_Controller
 
         //Let's first give permission to our pages to do so:
         $res = array();
-        array_push($res, $this->READ_model->facebook_graph('POST', '/me/messenger_profile', array(
+        array_push($res, $this->DISCOVER_model->facebook_graph('POST', '/me/messenger_profile', array(
             'get_started' => array(
                 'payload' => 'GET_STARTED',
             ),
@@ -86,7 +86,7 @@ class Messenger extends CI_Controller
         //Now let's update the menu:
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
-        array_push($res, $this->READ_model->facebook_graph('POST', '/me/messenger_profile', array(
+        array_push($res, $this->DISCOVER_model->facebook_graph('POST', '/me/messenger_profile', array(
             'persistent_menu' => array(
                 array(
                     'locale' => 'default',
@@ -104,7 +104,7 @@ class Messenger extends CI_Controller
                         array(
                             'title' => '🔴 '.$en_all_2738[6205]['m_name'],
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/read',
+                            'url' => 'https://mench.com/discover',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
@@ -160,7 +160,7 @@ class Messenger extends CI_Controller
             //Likely loaded the URL in browser:
             return print_r('missing');
         } elseif ($ln_metadata['object'] != 'page') {
-            $this->READ_model->ln_create(array(
+            $this->DISCOVER_model->ln_create(array(
                 'ln_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
                 'ln_metadata' => $ln_metadata,
                 'ln_type_source_id' => 4246, //Platform Bug Reports
@@ -176,7 +176,7 @@ class Messenger extends CI_Controller
                 //This can happen for the older webhook that we offered to other FB pages:
                 continue;
             } elseif (!isset($entry['messaging'])) {
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_content' => 'facebook_webhook() call missing messaging Array().',
                     'ln_metadata' => $ln_metadata,
                     'ln_type_source_id' => 4246, //Platform Bug Reports
@@ -187,24 +187,24 @@ class Messenger extends CI_Controller
             //loop though the messages:
             foreach ($entry['messaging'] as $im) {
 
-                if (isset($im['read']) || isset($im['delivery'])) {
+                if (isset($im['discover']) || isset($im['delivery'])) {
 
-                    //Message read OR delivered
+                    //Message discover OR delivered
                     $ln_type_source_id = (isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */);
 
                     //Authenticate User:
                     $en = $this->SOURCE_model->en_messenger_auth($im['sender']['id']);
 
                     //Log Link Only IF last delivery link was 3+ minutes ago (Since Facebook sends many of these):
-                    $last_links_logged = $this->READ_model->ln_fetch(array(
+                    $last_links_logged = $this->DISCOVER_model->ln_fetch(array(
                         'ln_type_source_id' => $ln_type_source_id,
                         'ln_creator_source_id' => $en['en_id'],
-                        'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (60))), //READ logged less than 1 minutes ago
+                        'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (60))), //DISCOVER logged less than 1 minutes ago
                     ), array(), 1);
 
                     if (count($last_links_logged) == 0) {
                         //We had no recent links of this kind, so go ahead and log:
-                        $this->READ_model->ln_create(array(
+                        $this->DISCOVER_model->ln_create(array(
                             'ln_metadata' => $ln_metadata,
                             'ln_type_source_id' => $ln_type_source_id,
                             'ln_creator_source_id' => $en['en_id'],
@@ -220,11 +220,11 @@ class Messenger extends CI_Controller
                      *
                      * */
 
-                    //Is this a non loggable message? If so, this has already been logged by Mench:
+                    //Is this a non loggable message? If so, this has previously been logged by Mench:
                     if (isset($im['message']['metadata']) && $im['message']['metadata'] == 'system_logged') {
 
-                        //This is already logged! No need to take further action!
-                        return print_r('already logged');
+                        //This is previously logged! No need to take further action!
+                        return print_r('previously logged');
 
                     }
 
@@ -265,11 +265,11 @@ class Messenger extends CI_Controller
                         $ln_data['ln_content'] = $im['message']['text']; //Quick reply always has a text
 
                         //Digest quick reply:
-                        $quick_reply_results = $this->READ_model->digest_received_payload($en, $im['message']['quick_reply']['payload']);
+                        $quick_reply_results = $this->DISCOVER_model->digest_received_payload($en, $im['message']['quick_reply']['payload']);
 
                         if(!$quick_reply_results['status']){
                             //There was an error, inform Player:
-                            $this->READ_model->ln_create(array(
+                            $this->DISCOVER_model->ln_create(array(
                                 'ln_content' => 'digest_received_payload() for message returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
                                 'ln_type_source_id' => 4246, //Platform Bug Reports
@@ -412,7 +412,7 @@ class Messenger extends CI_Controller
                                  *
                                  * */
 
-                                $this->READ_model->ln_create(array(
+                                $this->DISCOVER_model->ln_create(array(
                                     'ln_content' => 'api_webhook() received a message type that is not yet implemented: ['.$att['type'].']',
                                     'ln_type_source_id' => 4246, //Platform Bug Reports
                                     'ln_creator_source_id' => $en['en_id'],
@@ -435,7 +435,7 @@ class Messenger extends CI_Controller
                                  *
                                  * */
 
-                                $this->READ_model->ln_create(array(
+                                $this->DISCOVER_model->ln_create(array(
                                     'ln_content' => 'api_webhook() received a message type that is not yet implemented: ['.$att['type'].']',
                                     'ln_type_source_id' => 4246, //Platform Bug Reports
                                     'ln_creator_source_id' => $en['en_id'],
@@ -454,7 +454,7 @@ class Messenger extends CI_Controller
                     if (!isset($ln_data['ln_type_source_id']) || !isset($ln_data['ln_creator_source_id'])) {
 
                         //Ooooopsi, this seems to be an unknown message type:
-                        $this->READ_model->ln_create(array(
+                        $this->DISCOVER_model->ln_create(array(
                             'ln_type_source_id' => 4246, //Platform Bug Reports
                             'ln_creator_source_id' => $en['en_id'],
                             'ln_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
@@ -467,7 +467,7 @@ class Messenger extends CI_Controller
 
 
                     //We're all good, log this message:
-                    $new_message = $this->READ_model->ln_create($ln_data);
+                    $new_message = $this->DISCOVER_model->ln_create($ln_data);
 
 
                     //Did we have a pending response?
@@ -486,11 +486,11 @@ class Messenger extends CI_Controller
 
                             //Accept their answer:
 
-                            //Validate 🔴 READING LIST read:
-                            $pending_req_submission = $this->READ_model->ln_fetch(array(
+                            //Validate DISCOVER LIST idea:
+                            $pending_req_submission = $this->DISCOVER_model->ln_fetch(array(
                                 'ln_id' => $first_chioce['ln_id'],
                                 //Also validate other requirements:
-                                'ln_type_source_id' => 6144, //🔴 READING LIST Submit Requirements
+                                'ln_type_source_id' => 6144, //DISCOVER LIST Submit Requirements
                                 'ln_creator_source_id' => $en['en_id'], //for this user
                                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Transaction Status Incomplete
                                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
@@ -503,19 +503,19 @@ class Messenger extends CI_Controller
 
                                 //TODO RREMOVE THIS LOGIC AND CREATE A NEW LINK WHEN ADDED
 
-                                $this->READ_model->ln_update($pending_req_submission[0]['ln_id'], array(
+                                $this->DISCOVER_model->ln_update($pending_req_submission[0]['ln_id'], array(
                                     'ln_content' => $new_message['ln_content'],
                                     'ln_status_source_id' => 6176, //Link Published
                                     'ln_parent_transaction_id' => $new_message['ln_id'],
                                 ));
 
                                 //Process on-complete automations:
-                                $this->READ_model->read__completion_recursive_up($en['en_id'], $pending_req_submission[0]);
+                                $this->DISCOVER_model->discover__completion_recursive_up($en['en_id'], $pending_req_submission[0]);
 
                             } else {
 
                                 //Opppsi:
-                                $this->READ_model->ln_create(array(
+                                $this->DISCOVER_model->ln_create(array(
                                     'ln_parent_transaction_id' => $first_chioce['ln_id'],
                                     'ln_content' => 'messenger/webhook() failed to validate user response original step',
                                     'ln_type_source_id' => 4246, //Platform Bug Reports
@@ -523,8 +523,8 @@ class Messenger extends CI_Controller
                                 ));
 
                                 //Confirm with user:
-                                $this->READ_model->dispatch_message(
-                                    'Unable to accept your response. My players have already been notified.',
+                                $this->DISCOVER_model->dispatch_message(
+                                    'Unable to accept your response. My players have previously been notified.',
                                     $en,
                                     true
                                 );
@@ -533,7 +533,7 @@ class Messenger extends CI_Controller
 
 
                             //Load next option:
-                            $this->READ_model->read_next_go($en['en_id'], true, true);
+                            $this->DISCOVER_model->discover_next_go($en['en_id'], true, true);
 
 
                         } elseif(count($pending_mismatches) > 0){
@@ -544,7 +544,7 @@ class Messenger extends CI_Controller
                             $en_all_7585 = $this->config->item('en_all_7585');
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
-                            $this->READ_model->dispatch_message(
+                            $this->DISCOVER_model->dispatch_message(
                                 'Alert: You should '.$en_all_7585[$mismatch_focus['in_type_source_id']]['m_name'].' to complete this step.',
                                 $en,
                                 true
@@ -553,12 +553,12 @@ class Messenger extends CI_Controller
                         } elseif($ln_data['ln_type_source_id']==4547){
 
                             //No requirement submissions for this text message... Digest text message & try to make sense of it:
-                            $this->READ_model->digest_received_text($en, $im['message']['text']);
+                            $this->DISCOVER_model->digest_received_text($en, $im['message']['text']);
 
                         } else {
 
                             //Let them know that we did not understand them:
-                            $this->READ_model->dispatch_message(
+                            $this->DISCOVER_model->dispatch_message(
                                 echo_platform_message(12693),
                                 $en,
                                 true,
@@ -623,7 +623,7 @@ class Messenger extends CI_Controller
                     $en = $this->SOURCE_model->en_messenger_auth($im['sender']['id'], $quick_reply_payload);
 
                     //Log primary link:
-                    $this->READ_model->ln_create(array(
+                    $this->DISCOVER_model->ln_create(array(
                         'ln_type_source_id' => $ln_type_source_id,
                         'ln_metadata' => $ln_metadata,
                         'ln_content' => $quick_reply_payload,
@@ -632,10 +632,10 @@ class Messenger extends CI_Controller
 
                     //Digest quick reply Payload if any:
                     if ($quick_reply_payload) {
-                        $quick_reply_results = $this->READ_model->digest_received_payload($en, $quick_reply_payload);
+                        $quick_reply_results = $this->DISCOVER_model->digest_received_payload($en, $quick_reply_payload);
                         if(!$quick_reply_results['status']){
                             //There was an error, inform Player:
-                            $this->READ_model->ln_create(array(
+                            $this->DISCOVER_model->ln_create(array(
                                 'ln_content' => 'digest_received_payload() for postback/referral returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
                                 'ln_type_source_id' => 4246, //Platform Bug Reports
@@ -674,7 +674,7 @@ class Messenger extends CI_Controller
                     $en = $this->SOURCE_model->en_messenger_auth($im['sender']['id']);
 
                     //Log link:
-                    $this->READ_model->ln_create(array(
+                    $this->DISCOVER_model->ln_create(array(
                         'ln_metadata' => $ln_metadata,
                         'ln_type_source_id' => 4266, //Messenger Optin
                         'ln_creator_source_id' => $en['en_id'],
@@ -686,7 +686,7 @@ class Messenger extends CI_Controller
                     $en = $this->SOURCE_model->en_messenger_auth($im['sender']['id']);
 
                     //Log link:
-                    $this->READ_model->ln_create(array(
+                    $this->DISCOVER_model->ln_create(array(
                         'ln_metadata' => $ln_metadata,
                         'ln_type_source_id' => 4577, //Message Request Accepted
                         'ln_creator_source_id' => $en['en_id'],
@@ -695,7 +695,7 @@ class Messenger extends CI_Controller
                 } else {
 
                     //This should really not happen!
-                    $this->READ_model->ln_create(array(
+                    $this->DISCOVER_model->ln_create(array(
                         'ln_content' => 'facebook_webhook() received unrecognized webhook call',
                         'ln_metadata' => $ln_metadata,
                         'ln_type_source_id' => 4246, //Platform Bug Reports

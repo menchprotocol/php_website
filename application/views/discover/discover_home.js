@@ -11,9 +11,9 @@ function actionplan_sort_save() {
         }
     });
 
-    //Update READING LIST order:
+    //Update DISCOVER LIST order:
     if(sort_rank > 0){
-        $.post("/read/actionplan_sort_save", {js_pl_id: js_pl_id, new_actionplan_order: new_actionplan_order}, function (data) {
+        $.post("/discover/actionplan_sort_save", {js_pl_id: js_pl_id, new_actionplan_order: new_actionplan_order}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -23,12 +23,12 @@ function actionplan_sort_save() {
     }
 }
 
-function clear_all_reads(){
+function clear_all_discoveries(){
 
-    $('.clear-reading-list').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">REMOVING ALL READS...</b>');
+    $('.clear-discovery-list').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">REMOVING ALL DISCOVR COINS...</b>');
 
     //Redirect:
-    window.location = clear_read_url;
+    window.location = clear_discover_url;
 
 }
 
@@ -37,14 +37,14 @@ function clear_all_reads(){
 
 $(document).ready(function () {
 
-    //Watch for READING LIST removal click:
+    //Watch for DISCOVER LIST removal click:
     $('.actionplan_delete').on('click', function(e) {
 
         var in_id = $(this).attr('in-id');
-        var r = confirm("Delete ["+$('.text__4736_'+in_id).text()+"] from your reading list?");
+        var r = confirm("Delete ["+$('.text__4736_'+in_id).text()+"] from your discovery list?");
         if (r == true) {
             //Save changes:
-            $.post("/read/actionplan_stop_save", { js_pl_id:js_pl_id ,in_id:in_id }, function (data) {
+            $.post("/discover/actionplan_stop_save", { js_pl_id:js_pl_id ,in_id:in_id }, function (data) {
                 //Update UI to confirm with user:
                 if (!data.status) {
 
@@ -77,7 +77,7 @@ $(document).ready(function () {
 
 });
 
-function load_read_sort(){
+function load_discover_sort(){
     //Load sorter:
     var sort = Sortable.create(document.getElementById('actionplan_steps'), {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation

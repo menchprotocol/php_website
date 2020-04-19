@@ -139,7 +139,7 @@ if(!isset($hide_header)){
                             //MENCH NAVIGATION
                             $coin_counts = array();
                             $count_controller = array(
-                                6205 => 6255, //READ
+                                6205 => 6255, //DISCOVER
                                 4536 => 12274, //SOURCE
                                 4535 => 12273, //IDEA
                             );
@@ -155,11 +155,11 @@ if(!isset($hide_header)){
                                 $coin_counts[$en_id] = count_ln_type($count_controller[$en_id]);
 
 
-                                if (!$is_current_mench && isset($in) && in_array($this_mench['x_name'], array('read', 'idea'))) {
-                                    if ($current_mench['x_name'] == 'read' && $this_mench['x_name'] == 'idea' && $in['in_id']!=config_var(12156) && superpower_active(12674, true) ) {
+                                if (!$is_current_mench && isset($in) && in_array($this_mench['x_name'], array('discover', 'idea'))) {
+                                    if ($current_mench['x_name'] == 'discover' && $this_mench['x_name'] == 'idea' && $in['in_id']!=config_var(12156) && superpower_active(12674, true) ) {
                                         $primary_url = 'href="/idea/' . $in['in_id'].'"';
-                                    } elseif ($current_mench['x_name'] == 'idea' && $this_mench['x_name'] == 'read') {
-                                        $primary_url = 'href="javascript:void(0);" onclick="go_to_read('.$in['in_id'].')"';
+                                    } elseif ($current_mench['x_name'] == 'idea' && $this_mench['x_name'] == 'discover') {
+                                        $primary_url = 'href="javascript:void(0);" onclick="go_to_discover('.$in['in_id'].')"';
                                     }
                                 }
 
@@ -237,7 +237,7 @@ if(!isset($hide_header)){
                                     $counts = $coin_counts[4535];
                                     $source_field = 'ln_parent_source_id';
                                 } elseif($en_id==6255){
-                                    //READ
+                                    //DISCOVER
                                     $counts = $coin_counts[6205];
                                     $source_field = 'ln_creator_source_id';
                                 } elseif($en_id==12274){

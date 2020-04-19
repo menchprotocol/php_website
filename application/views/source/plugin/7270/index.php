@@ -5,7 +5,7 @@ if(isset($_POST['test_message'])){
     if(intval($_POST['push_message']) && intval($_POST['recipient_en'])){
 
         //Send to Facebook Messenger:
-        $msg_validation = $this->READ_model->dispatch_message(
+        $msg_validation = $this->DISCOVER_model->dispatch_message(
             $_POST['test_message'],
             array('en_id' => intval($_POST['recipient_en'])),
             true
@@ -13,7 +13,7 @@ if(isset($_POST['test_message'])){
 
     } elseif(intval($_POST['recipient_en']) > 0) {
 
-        $msg_validation = $this->READ_model->dispatch_validate_message($_POST['test_message'], array('en_id' => $_POST['recipient_en']), $_POST['push_message']);
+        $msg_validation = $this->DISCOVER_model->dispatch_validate_message($_POST['test_message'], array('en_id' => $_POST['recipient_en']), $_POST['push_message']);
 
     } else {
 

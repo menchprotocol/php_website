@@ -137,7 +137,7 @@ $(document).ready(function () {
     //Listen for keystroke events
     textInput.onkeyup = function (e) {
 
-        // Clear the timeout if it has already been set.
+        // Clear the timeout if it has previously been set.
         // This will prevent the previous step from executing
         // if it has been less than <MILLISECONDS>
         clearTimeout(timeout);
@@ -302,7 +302,7 @@ function en_add_or_link(en_existing_id, is_parent) {
 
         if (data.status) {
 
-            //Raw input to make it ready for next URL:
+            //Raw input to make it discovery for next URL:
             input.focus();
 
             //Add new object to list:
@@ -779,10 +779,10 @@ function account_update_avatar_icon(type_css, icon_css){
 
 function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect){
 
-    var was_already_selected = ( $('.radio-'+parent_en_id+' .item-'+selected_en_id).hasClass('active') ? 1 : 0 );
+    var was_previously_selected = ( $('.radio-'+parent_en_id+' .item-'+selected_en_id).hasClass('active') ? 1 : 0 );
 
     //Save the rest of the content:
-    if(!enable_mulitiselect && was_already_selected){
+    if(!enable_mulitiselect && was_previously_selected){
         //Nothing to do here:
         return false;
     }
@@ -798,7 +798,7 @@ function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect)
     }
 
     //Enable currently selected:
-    if(enable_mulitiselect && was_already_selected){
+    if(enable_mulitiselect && was_previously_selected){
         $('.radio-'+parent_en_id+' .item-'+selected_en_id).removeClass('active');
     } else {
         $('.radio-'+parent_en_id+' .item-'+selected_en_id).addClass('active');
@@ -808,7 +808,7 @@ function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect)
         parent_en_id: parent_en_id,
         selected_en_id: selected_en_id,
         enable_mulitiselect: enable_mulitiselect,
-        was_already_selected: was_already_selected,
+        was_previously_selected: was_previously_selected,
     }, function (data) {
 
         if (!data.status) {

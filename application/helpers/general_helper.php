@@ -34,7 +34,7 @@ function detect_missing_columns($insert_columns, $required_columns, $ln_creator_
         if (!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field]) == 0) {
             //Ooops, we're missing this required field:
             $CI =& get_instance();
-            $CI->READ_model->ln_create(array(
+            $CI->DISCOVER_model->ln_create(array(
                 'ln_content' => 'Missing required field [' . $req_field . '] for inserting new DB row',
                 'ln_metadata' => array(
                     'insert_columns' => $insert_columns,
@@ -396,13 +396,13 @@ function in_weight_calculator($in){
     //TRANSACTIONS
     $CI =& get_instance();
 
-    $count_transactions = $CI->READ_model->ln_fetch(array(
+    $count_transactions = $CI->DISCOVER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         '(ln_next_idea_id='.$in['in_id'].' OR ln_previous_idea_id='.$in['in_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     //IDEAS
-    $counts = $CI->READ_model->ln_fetch(array(
+    $counts = $CI->DISCOVER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
         '(ln_next_idea_id='.$in['in_id'].' OR ln_previous_idea_id='.$in['in_id'].')' => null,
@@ -419,13 +419,13 @@ function en_weight_calculator($en){
     //TRANSACTIONS
     $CI =& get_instance();
 
-    $count_transactions = $CI->READ_model->ln_fetch(array(
+    $count_transactions = $CI->DISCOVER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         '(ln_child_source_id='.$en['en_id'].' OR ln_parent_source_id='.$en['en_id'].' OR ln_creator_source_id='.$en['en_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     //IDEAS
-    $counts = $CI->READ_model->ln_fetch(array(
+    $counts = $CI->DISCOVER_model->ln_fetch(array(
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         '(ln_child_source_id='.$en['en_id'].' OR ln_parent_source_id='.$en['en_id'].')' => null,
@@ -547,8 +547,8 @@ function superpower_active($superpower_en_id, $boolean_only = false){
 }
 
 function extract_icon_color($en_icon){
-    if(substr_count($en_icon, 'read')>0){
-        return ' read ';
+    if(substr_count($en_icon, 'discover')>0){
+        return ' discover ';
     } elseif(substr_count($en_icon, 'idea')>0){
         return ' idea ';
     } elseif(substr_count($en_icon, 'source')>0){
@@ -582,8 +582,8 @@ function current_mench($part1 = null){
     } else {
         return array(
             'x_id' => 6205,
-            'x_class' => 'read',
-            'x_name' => 'read',
+            'x_class' => 'discover',
+            'x_name' => 'discover',
         );
     }
 
@@ -600,7 +600,7 @@ function count_ln_type($en_id){
         //We need to count this:
         if($en_id==12274){
 
-            $source_coins = $CI->READ_model->ln_fetch(array(
+            $source_coins = $CI->DISCOVER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
                 'ln_creator_source_id' => $session_en['en_id'],
@@ -609,7 +609,7 @@ function count_ln_type($en_id){
 
         } elseif($en_id==12273){
 
-            $idea_coins = $CI->READ_model->ln_fetch(array(
+            $idea_coins = $CI->DISCOVER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                 'ln_parent_source_id' => $session_en['en_id'],
@@ -618,16 +618,16 @@ function count_ln_type($en_id){
 
         } elseif($en_id==6255){
 
-            $read_coins = $CI->READ_model->ln_fetch(array(
+            $discover_coins = $CI->DISCOVER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
                 'ln_creator_source_id' => $session_en['en_id'],
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            return $read_coins[0]['totals'];
+            return $discover_coins[0]['totals'];
 
         } elseif($en_id==10573){
 
-            $idea_bookmarks = $CI->READ_model->ln_fetch(array(
+            $idea_bookmarks = $CI->DISCOVER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id' => 10573, //Idea Notes Bookmarks
                 'ln_parent_source_id' => $session_en['en_id'], //For this player
@@ -636,13 +636,13 @@ function count_ln_type($en_id){
 
         } elseif($en_id==7347){
 
-            $read_bookmarks = $CI->READ_model->ln_fetch(array(
+            $discover_bookmarks = $CI->DISCOVER_model->ln_fetch(array(
                 'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             ), array('in_parent'), 0, 0, array(), 'COUNT(ln_id) as totals');
-            return $read_bookmarks[0]['totals'];
+            return $discover_bookmarks[0]['totals'];
 
         }
     }
@@ -687,7 +687,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle read"></i></span>'.echo_unauthorized_message($superpower_en_id).'</div>');
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle discover"></i></span>'.echo_unauthorized_message($superpower_en_id).'</div>');
     }
 
 }
@@ -840,7 +840,7 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
 
             } else {
 
-                $CI->READ_model->ln_create(array(
+                $CI->DISCOVER_model->ln_create(array(
                     'ln_type_source_id' => 4246, //Platform Bug Reports
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_content' => 'upload_to_cdn() Failed to create new source from CDN file',
@@ -859,7 +859,7 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
 
         } else {
 
-            $CI->READ_model->ln_create(array(
+            $CI->DISCOVER_model->ln_create(array(
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $ln_creator_source_id,
                 'ln_content' => 'upload_to_cdn() Failed to upload file to Mench CDN',
@@ -880,7 +880,7 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
     } else {
 
         //Log error:
-        $CI->READ_model->ln_create(array(
+        $CI->DISCOVER_model->ln_create(array(
             'ln_type_source_id' => 4246, //Platform Bug Reports
             'ln_creator_source_id' => $ln_creator_source_id,
             'ln_content' => 'upload_to_cdn() Failed to load AWS S3 module',
@@ -978,7 +978,7 @@ function in_is_source($in_id, $session_en = array()){
     }
 
     //Check if Idea Source:
-    return count($CI->READ_model->ln_fetch(array(
+    return count($CI->DISCOVER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
         'ln_next_idea_id' => $in_id,
@@ -1150,7 +1150,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             if ($loop_obj == 'en') {
 
                 //Count published children:
-                $published_child_count = $CI->READ_model->ln_fetch(array(
+                $published_child_count = $CI->DISCOVER_model->ln_fetch(array(
                     'ln_parent_source_id' => $db_row['en_id'],
                     'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -1173,7 +1173,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Add keywords:
                 $export_row['alg_obj_keywords'] = '';
-                foreach ($CI->READ_model->ln_fetch(array(
+                foreach ($CI->DISCOVER_model->ln_fetch(array(
                     'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
                     'ln_child_source_id' => $db_row['en_id'], //This child source
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
@@ -1211,7 +1211,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Add keywords:
                 $export_row['alg_obj_keywords'] = '';
-                foreach ($CI->READ_model->ln_fetch(array(
+                foreach ($CI->DISCOVER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                     'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
                     'ln_next_idea_id' => $db_row['in_id'],
@@ -1222,7 +1222,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 
                 //Is SOURCE for any IDEA?
-                foreach($CI->READ_model->ln_fetch(array(
+                foreach($CI->DISCOVER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                     'ln_next_idea_id' => $db_row['in_id'],
@@ -1316,10 +1316,10 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
          *
          * This is a mass update request.
          *
-         * All remote objects have already been deleted from the Algolia
+         * All remote objects have previously been deleted from the Algolia
          * index & metadata algolia_ids have all been set to zero!
          *
-         * We're ready to create new items and update local
+         * Create new items and update local
          *
          * */
 
@@ -1391,7 +1391,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
 
     } elseif ($obj_type == 'ln') {
 
-        $db_objects = $CI->READ_model->ln_fetch(array(
+        $db_objects = $CI->DISCOVER_model->ln_fetch(array(
             $obj_type . '_id' => $obj_id,
         ));
 
@@ -1440,7 +1440,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
 
     } elseif ($obj_type == 'ln') {
 
-        $affected_rows = $CI->READ_model->ln_update($obj_id, array(
+        $affected_rows = $CI->DISCOVER_model->ln_update($obj_id, array(
             'ln_metadata' => $metadata,
         ));
 

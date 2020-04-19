@@ -140,13 +140,13 @@ class Cron extends CI_Controller
         $last_week_end = date("Y-m-d H:i:s", $last_week_end_timestamp);
 
         //IDEA
-        $idea_coins_new_last_week = $this->READ_model->ln_fetch(array(
+        $idea_coins_new_last_week = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $idea_coins_last_week = $this->READ_model->ln_fetch(array(
+        $idea_coins_last_week = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_timestamp <=' => $last_week_end,
@@ -154,30 +154,30 @@ class Cron extends CI_Controller
         $idea_coins_growth_rate = format_percentage(($idea_coins_last_week[0]['totals'] / ( $idea_coins_last_week[0]['totals'] - $idea_coins_new_last_week[0]['totals'] ) * 100) - 100);
 
 
-        //READ
-        $read_coins_new_last_week = $this->READ_model->ln_fetch(array(
+        //DISCOVER
+        $discover_coins_new_last_week = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $read_coins_last_week = $this->READ_model->ln_fetch(array(
+        $discover_coins_last_week = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $read_coins_growth_rate = format_percentage(( $read_coins_last_week[0]['totals'] / ( $read_coins_last_week[0]['totals'] - $read_coins_new_last_week[0]['totals'] ) * 100)-100);
+        $discover_coins_growth_rate = format_percentage(( $discover_coins_last_week[0]['totals'] / ( $discover_coins_last_week[0]['totals'] - $discover_coins_new_last_week[0]['totals'] ) * 100)-100);
 
 
 
         //SOURCE
-        $source_coins_new_last_week = $this->READ_model->ln_fetch(array(
+        $source_coins_new_last_week = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $source_coins_last_week = $this->READ_model->ln_fetch(array(
+        $source_coins_last_week = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
             'ln_timestamp <=' => $last_week_end,
@@ -186,11 +186,11 @@ class Cron extends CI_Controller
 
 
         //ledger
-        $ledger_transactions_new_last_week = $this->READ_model->ln_fetch(array(
+        $ledger_transactions_new_last_week = $this->DISCOVER_model->ln_fetch(array(
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $ledger_transactions_last_week = $this->READ_model->ln_fetch(array(
+        $ledger_transactions_last_week = $this->DISCOVER_model->ln_fetch(array(
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $ledger_transactions_growth_rate = format_percentage(($ledger_transactions_last_week[0]['totals'] / ( $ledger_transactions_last_week[0]['totals'] - $ledger_transactions_new_last_week[0]['totals'] ) * 100)-100);
@@ -207,7 +207,7 @@ class Cron extends CI_Controller
 
         $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🟡</b><b style="min-width:55px; display: inline-block;">'.( $idea_coins_growth_rate >= 0 ? '+' : '-' ).$idea_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($idea_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($idea_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com/idea" target="_blank" style="color: #ffc500; font-weight:bold; text-decoration:none;">IDEA &raquo;</a></div>';
 
-        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔴</b><b style="min-width:55px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($read_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($read_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com" target="_blank" style="color: #FC1B44; font-weight:bold; text-decoration:none;">READ &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔴</b><b style="min-width:55px; display: inline-block;">'.( $discover_coins_growth_rate >= 0 ? '+' : '-' ).$discover_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($discover_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($discover_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com" target="_blank" style="color: #FC1B44; font-weight:bold; text-decoration:none;">DISCOVER &raquo;</a></div>';
 
         $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔵</b><b style="min-width:55px; display: inline-block;">'.( $source_coins_growth_rate >= 0 ? '+' : '-' ).$source_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($source_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($source_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com/source" target="_blank" style="color: #007AFD; font-weight:bold; text-decoration:none;">SOURCE &raquo;</a></div>';
 
@@ -233,9 +233,9 @@ class Cron extends CI_Controller
 
         $email_recipients = 0;
         //Send email to all subscribers:
-        foreach($this->READ_model->ln_fetch($subscriber_filters, array('en_child')) as $subscribed_player){
+        foreach($this->DISCOVER_model->ln_fetch($subscriber_filters, array('en_child')) as $subscribed_player){
             //Try fetching subscribers email:
-            foreach($this->READ_model->ln_fetch(array(
+            foreach($this->DISCOVER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
                 'ln_parent_source_id' => 3288, //Mench Email
@@ -243,7 +243,7 @@ class Cron extends CI_Controller
             )) as $en_email){
                 if(filter_var($en_email['ln_content'], FILTER_VALIDATE_EMAIL)){
                     //Send Email
-                    $this->READ_model->dispatch_emails(array($en_email['ln_content']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['en_name']).' 👋</div>'.$html_message);
+                    $this->DISCOVER_model->dispatch_emails(array($en_email['ln_content']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['en_name']).' 👋</div>'.$html_message);
                     $email_recipients++;
                 }
             }
@@ -302,7 +302,7 @@ class Cron extends CI_Controller
 
         /*
          *
-         * Updates idea insights (like min/max reads, time & cost)
+         * Updates idea insights (like min/max ideas, time & cost)
          * based on its common and expansion idea.
          *
          * */
@@ -395,7 +395,7 @@ class Cron extends CI_Controller
             ));
 
             //Fetch children:
-            foreach($this->READ_model->ln_fetch(array(
+            foreach($this->DISCOVER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
@@ -431,7 +431,7 @@ class Cron extends CI_Controller
             ));
 
             //Fetch children:
-            foreach($this->READ_model->ln_fetch(array(
+            foreach($this->DISCOVER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
@@ -451,7 +451,7 @@ class Cron extends CI_Controller
         }
 
         //Add messages:
-        $messages = $this->READ_model->ln_fetch(array(
+        $messages = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
@@ -520,7 +520,7 @@ class Cron extends CI_Controller
 
         //Fetch all valid variable names:
         $valid_variables = array();
-        foreach($this->READ_model->ln_fetch(array(
+        foreach($this->DISCOVER_model->ln_fetch(array(
             'ln_parent_source_id' => 6232, //Variables Names
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -586,7 +586,7 @@ class Cron extends CI_Controller
 
         if(count($invalid_variables) > 0){
             //Did we have anything to delete? Report with system bug:
-            $this->READ_model->ln_create(array(
+            $this->DISCOVER_model->ln_create(array(
                 'ln_content' => 'cron__7277() deleted '.count($invalid_variables).' unknown variables from idea/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_parent_source_id' => 6232, //Variables Names
@@ -613,11 +613,11 @@ class Cron extends CI_Controller
          * 2) Media sent from Mench Players via Facebook Chat Inbox
          *
          * Alert: It would not store media that is sent from idea
-         * ideas since those are already stored.
+         * ideas since those are previously stored.
          *
          * */
 
-        $ln_pending = $this->READ_model->ln_fetch(array(
+        $ln_pending = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id' => 6175, //Link Drafting
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //User Sent/Received Media Links
         ), array(), 10);
@@ -632,7 +632,7 @@ class Cron extends CI_Controller
             }
 
             //Update link:
-            $this->READ_model->ln_update($ln['ln_id'], array(
+            $this->DISCOVER_model->ln_update($ln['ln_id'], array(
                 'ln_content' => $cdn_status['cdn_url'], //CDN URL
                 'ln_child_source_id' => $cdn_status['cdn_en']['en_id'], //New URL Player
                 'ln_status_source_id' => 6176, //Link Published
@@ -669,7 +669,7 @@ class Cron extends CI_Controller
 
 
         //Let's fetch all Media files without a Facebook attachment ID:
-        $ln_pending = $this->READ_model->ln_fetch(array(
+        $ln_pending = $this->DISCOVER_model->ln_fetch(array(
             'ln_type_source_id IN (' . join(',', array_keys($en_all_11059)) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_metadata' => null, //Missing Facebook Attachment ID [Alert: Must make sure ln_metadata is not used for anything else for these link types]
@@ -702,7 +702,7 @@ class Cron extends CI_Controller
             );
 
             //Attempt to sync Media to Facebook:
-            $result = $this->READ_model->facebook_graph('POST', '/me/message_attachments', $payload);
+            $result = $this->DISCOVER_model->facebook_graph('POST', '/me/message_attachments', $payload);
 
             if (isset($result['ln_metadata']['result']['attachment_id']) && $result['status']) {
 
@@ -721,7 +721,7 @@ class Cron extends CI_Controller
             } else {
 
                 //Log error:
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_type_source_id' => 4246, //Platform Bug Reports
                     'ln_parent_transaction_id' => $ln['ln_id'],
                     'ln_content' => 'attachments() Failed to sync attachment to Facebook API: ' . (isset($result['ln_metadata']['result']['error']['message']) ? $result['ln_metadata']['result']['error']['message'] : 'Unknown Error'),
@@ -767,7 +767,7 @@ class Cron extends CI_Controller
         foreach($this->config->item('en_all_12523') as $en_id => $m) {
 
             //Update All Child Icons that are not the same:
-            foreach($this->READ_model->ln_fetch(array(
+            foreach($this->DISCOVER_model->ln_fetch(array(
                 'ln_parent_source_id' => $en_id,
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active

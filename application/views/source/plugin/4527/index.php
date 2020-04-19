@@ -8,7 +8,7 @@
  * */
 
 //First first all sources that have Cache in PHP Config @4527 as their parent:
-$config_ens = $this->READ_model->ln_fetch(array(
+$config_ens = $this->DISCOVER_model->ln_fetch(array(
     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
@@ -28,16 +28,16 @@ echo '/*<br />
 
 //PLATFORM STATS
 $cache_timestamp = time();
-$transactions = $this->READ_model->ln_fetch(array(), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$read_coins = $this->READ_model->ln_fetch(array(
+$transactions = $this->DISCOVER_model->ln_fetch(array(), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+$discover_coins = $this->DISCOVER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$idea_coins = $this->READ_model->ln_fetch(array(
+$idea_coins = $this->DISCOVER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$source_coins = $this->READ_model->ln_fetch(array(
+$source_coins = $this->DISCOVER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -49,7 +49,7 @@ echo '//Generated '.date("Y-m-d H:i:s", $cache_timestamp).' PST<br />';
 echo '<br />//PLATFORM STATS:<br />';
 echo '$config[\'cache_timestamp\'] = '.$cache_timestamp.';<br />';
 echo '$config[\'cache_count_transaction\'] = '.$transactions[0]['totals'].';<br />';
-echo '$config[\'cache_count_read\'] = '.$read_coins[0]['totals'].';<br />';
+echo '$config[\'cache_count_discover\'] = '.$discover_coins[0]['totals'].';<br />';
 echo '$config[\'cache_count_idea\'] = '.$idea_coins[0]['totals'].';<br />';
 echo '$config[\'cache_count_source\'] = '.$source_coins[0]['totals'].';<br />';
 echo '<br /><br />';
@@ -59,7 +59,7 @@ echo '<br /><br />';
 foreach($config_ens as $en){
 
     //Now fetch all its children:
-    $children = $this->READ_model->ln_fetch(array(
+    $children = $this->DISCOVER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
         'ln_parent_source_id' => $en['ln_child_source_id'],
@@ -88,7 +88,7 @@ foreach($config_ens as $en){
 
         //Fetch all parents for this child:
         $child_parent_ids = array(); //To be populated soon
-        $child_parents = $this->READ_model->ln_fetch(array(
+        $child_parents = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
             'ln_child_source_id' => $child['en_id'],

@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class READ_model extends CI_Model
+class DISCOVER_model extends CI_Model
 {
 
     /*
@@ -25,7 +25,7 @@ class READ_model extends CI_Model
 
         if($ln_creator_source_id > 0){
             //Fetch link before updating:
-            $before_data = $this->READ_model->ln_fetch(array(
+            $before_data = $this->DISCOVER_model->ln_fetch(array(
                 'ln_id' => $id,
             ));
         }
@@ -127,7 +127,7 @@ class READ_model extends CI_Model
 
             if(strlen($ln_content) > 0 && count($fields_changed) > 0){
                 //Value has changed, log link:
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_parent_transaction_id' => $id, //Link Reference
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_type_source_id' => $ln_type_source_id,
@@ -253,7 +253,7 @@ class READ_model extends CI_Model
         if ($insert_columns['ln_id'] < 1) {
 
             //This should not happen:
-            $this->READ_model->ln_create(array(
+            $this->DISCOVER_model->ln_create(array(
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
                 'ln_content' => 'ln_create() Failed to create',
@@ -309,7 +309,7 @@ class READ_model extends CI_Model
             ));
         }
 
-        //Do we need to check for entity tagging after read success?
+        //Do we need to check for entity tagging after discover success?
         if(in_array($insert_columns['ln_type_source_id'] , $this->config->item('en_ids_6255')) && in_array($insert_columns['ln_status_source_id'] , $this->config->item('en_ids_7359')) && $insert_columns['ln_previous_idea_id'] > 0 && $insert_columns['ln_creator_source_id'] > 0){
 
             //See what this is:
@@ -318,7 +318,7 @@ class READ_model extends CI_Model
             if ($detected_ln_type['status']) {
 
                 //Any sources to append to profile?
-                foreach($this->READ_model->ln_fetch(array(
+                foreach($this->DISCOVER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id' => 7545, //ENTITY TAGGING
                     'ln_next_idea_id' => $insert_columns['ln_previous_idea_id'],
@@ -331,8 +331,8 @@ class READ_model extends CI_Model
                     $links_deleted = 0;
 
 
-                    //Assign tag if parent/child link NOT already assigned:
-                    $existing_links = $this->READ_model->ln_fetch(array(
+                    //Assign tag if parent/child link NOT previously assigned:
+                    $existing_links = $this->DISCOVER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                         'ln_parent_source_id' => $ln_tag['ln_parent_source_id'],
@@ -341,7 +341,7 @@ class READ_model extends CI_Model
 
                     if(count($existing_links)){
 
-                        //Link already exists, see if content value is the same:
+                        //Link previously exists, see if content value is the same:
                         if($existing_links[0]['ln_content'] == $insert_columns['ln_content'] && $existing_links[0]['ln_type_source_id'] == $detected_ln_type['ln_type_source_id']){
 
                             //Everything is the same, nothing to do here:
@@ -352,13 +352,13 @@ class READ_model extends CI_Model
                             $links_edited++;
 
                             //Content value has changed, update the link:
-                            $this->READ_model->ln_update($existing_links[0]['ln_id'], array(
+                            $this->DISCOVER_model->ln_update($existing_links[0]['ln_id'], array(
                                 'ln_content' => $insert_columns['ln_content'],
                             ), $insert_columns['ln_creator_source_id'], 10657 /* Player Link Updated Content  */);
 
                             //Also, did the link type change based on the content change?
                             if($existing_links[0]['ln_type_source_id'] != $detected_ln_type['ln_type_source_id']){
-                                $this->READ_model->ln_update($existing_links[0]['ln_id'], array(
+                                $this->DISCOVER_model->ln_update($existing_links[0]['ln_id'], array(
                                     'ln_type_source_id' => $detected_ln_type['ln_type_source_id'],
                                 ), $insert_columns['ln_creator_source_id'], 10659 /* Player Link Updated Type */);
                             }
@@ -372,14 +372,14 @@ class READ_model extends CI_Model
                             $single_selectable = $this->config->item('en_ids_'.$single_select_en_id);
                             if(is_array($single_selectable) && count($single_selectable) && in_array($ln_tag['ln_parent_source_id'], $single_selectable)){
                                 //Delete other siblings, if any:
-                                foreach($this->READ_model->ln_fetch(array(
+                                foreach($this->DISCOVER_model->ln_fetch(array(
                                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                                     'ln_parent_source_id IN (' . join(',', $single_selectable) . ')' => null,
                                     'ln_parent_source_id !=' => $ln_tag['ln_parent_source_id'],
                                     'ln_child_source_id' => $insert_columns['ln_creator_source_id'],
                                 )) as $single_selectable_siblings_preset){
-                                    $links_deleted += $this->READ_model->ln_update($single_selectable_siblings_preset['ln_id'], array(
+                                    $links_deleted += $this->DISCOVER_model->ln_update($single_selectable_siblings_preset['ln_id'], array(
                                         'ln_status_source_id' => 6173, //Link Deleted
                                     ), $insert_columns['ln_creator_source_id'], 10673 /* Player Link Unlinked */);
                                 }
@@ -388,7 +388,7 @@ class READ_model extends CI_Model
 
                         //Create link:
                         $links_added++;
-                        $this->READ_model->ln_create(array(
+                        $this->DISCOVER_model->ln_create(array(
                             'ln_type_source_id' => $detected_ln_type['ln_type_source_id'],
                             'ln_content' => $insert_columns['ln_content'],
                             'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
@@ -399,7 +399,7 @@ class READ_model extends CI_Model
                     }
 
                     //Track Tag:
-                    $this->READ_model->ln_create(array(
+                    $this->DISCOVER_model->ln_create(array(
                         'ln_type_source_id' => 12197, //Tag Player
                         'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
                         'ln_parent_source_id' => $ln_tag['ln_parent_source_id'],
@@ -436,7 +436,7 @@ class READ_model extends CI_Model
                 }
 
                 //Try fetching subscribers email:
-                foreach($this->READ_model->ln_fetch(array(
+                foreach($this->DISCOVER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
                     'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
@@ -503,25 +503,25 @@ class READ_model extends CI_Model
 
                     } elseif (in_array(4367 , $m['m_parents'])) {
 
-                        //READ
+                        //DISCOVER
                         $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="https://mench.com/plugin/12722?ln_id=' . $insert_columns[$en_all_6232[$en_id]['m_desc']] . '" target="_parent">'.$insert_columns[$en_all_6232[$en_id]['m_desc']].'</a></div>';
 
                     }
 
                 }
 
-                //Finally append READ ID:
-                $html_message .= '<div>READ ID: <a href="https://mench.com/plugin/12722?ln_id=' . $insert_columns['ln_id'] . '">' . $insert_columns['ln_id'] . '</a></div>';
+                //Finally append DISCOVER ID:
+                $html_message .= '<div>TRANSACTION ID: <a href="https://mench.com/plugin/12722?ln_id=' . $insert_columns['ln_id'] . '">' . $insert_columns['ln_id'] . '</a></div>';
 
                 //Inform how to change settings:
                 $html_message .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/source/5967" target="_blank">@5967</a></div>';
 
                 //Send email:
-                $dispatched_email = $this->READ_model->dispatch_emails($sub_emails, $subject, $html_message);
+                $dispatched_email = $this->DISCOVER_model->dispatch_emails($sub_emails, $subject, $html_message);
 
                 //Log emails sent:
                 foreach($sub_en_ids as $to_en_id){
-                    $this->READ_model->ln_create(array(
+                    $this->DISCOVER_model->ln_create(array(
                         'ln_type_source_id' => 5967, //Link Carbon Copy Email
                         'ln_creator_source_id' => $to_en_id, //Sent to this user
                         'ln_metadata' => $dispatched_email, //Save a copy of email
@@ -582,11 +582,11 @@ class READ_model extends CI_Model
 
 
 
-    function read_next_find($en_id, $in, $first_step = true){
+    function discover_next_find($en_id, $in, $first_step = true){
 
         /*
          *
-         * Searches within a user 🔴 READING LIST to find
+         * Searches within a user DISCOVER LIST to find
          * first incomplete step.
          *
          * */
@@ -602,7 +602,7 @@ class READ_model extends CI_Model
         if(count($in_metadata['in__metadata_expansion_conditional']) > 0){
             $check_termination_answers = array_merge($check_termination_answers , array_flatten($in_metadata['in__metadata_expansion_conditional']));
         }
-        if(count($check_termination_answers) > 0 && count($this->READ_model->ln_fetch(array(
+        if(count($check_termination_answers) > 0 && count($this->DISCOVER_model->ln_fetch(array(
                 'ln_type_source_id' => 7492, //TERMINATE
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',' , $check_termination_answers) . ')' => null, //All possible answers that might terminate...
@@ -624,17 +624,17 @@ class READ_model extends CI_Model
 
                 //First fetch all possible answers based on correct order:
                 $found_expansion = 0;
-                foreach ($this->READ_model->ln_fetch(array(
+                foreach ($this->DISCOVER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                    'ln_type_source_id' => 4228, //Idea Link Regular Read
+                    'ln_type_source_id' => 4228, //Idea Link Regular Discovery
                     'ln_previous_idea_id' => $common_step_in_id,
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $ln){
 
                     //See if this answer was selected:
-                    if(count($this->READ_model->ln_fetch(array(
+                    if(count($this->DISCOVER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINK
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINK
                         'ln_previous_idea_id' => $common_step_in_id,
                         'ln_next_idea_id' => $ln['in_id'],
                         'ln_creator_source_id' => $en_id, //Belongs to this User
@@ -643,9 +643,9 @@ class READ_model extends CI_Model
                         $found_expansion++;
 
                         //Yes was answered, see if it's completed:
-                        if(!count($this->READ_model->ln_fetch(array(
+                        if(!count($this->DISCOVER_model->ln_fetch(array(
                             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                            'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+                            'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                             'ln_creator_source_id' => $en_id, //Belongs to this User
                             'ln_previous_idea_id' => $ln['in_id'],
                         )))){
@@ -655,8 +655,8 @@ class READ_model extends CI_Model
 
                         } else {
 
-                            //Answer already completed, see if there is anyting else:
-                            $found_in_id = $this->READ_model->read_next_find($en_id, $ln, false);
+                            //Answer previously completed, see if there is anyting else:
+                            $found_in_id = $this->DISCOVER_model->discover_next_find($en_id, $ln, false);
                             if($found_in_id != 0){
                                 return $found_in_id;
                             }
@@ -672,8 +672,8 @@ class READ_model extends CI_Model
             } elseif($is_condition){
 
                 //See which path they got unlocked, if any:
-                foreach($this->READ_model->ln_fetch(array(
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
+                foreach($this->DISCOVER_model->ln_fetch(array(
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                     'ln_creator_source_id' => $en_id, //Belongs to this User
                     'ln_previous_idea_id' => $common_step_in_id,
                     'ln_next_idea_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]) . ')' => null,
@@ -681,7 +681,7 @@ class READ_model extends CI_Model
                 ), array('in_child')) as $unlocked_condition){
 
                     //Completed step that has OR expansions, check recursively to see if next step within here:
-                    $found_in_id = $this->READ_model->read_next_find($en_id, $unlocked_condition, false);
+                    $found_in_id = $this->DISCOVER_model->discover_next_find($en_id, $unlocked_condition, false);
 
                     if($found_in_id != 0){
                         return $found_in_id;
@@ -689,9 +689,9 @@ class READ_model extends CI_Model
 
                 }
 
-            } elseif(!count($this->READ_model->ln_fetch(array(
+            } elseif(!count($this->DISCOVER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+                    'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                     'ln_creator_source_id' => $en_id, //Belongs to this User
                     'ln_previous_idea_id' => $common_step_in_id,
                 )))){
@@ -704,19 +704,19 @@ class READ_model extends CI_Model
         }
 
 
-        //If not part of the reading list, go to reading idea
+        //If not part of the discovery list, go to discovery idea
         if($first_step){
-            $player_read_ids = $this->READ_model->read_ids($en_id);
-            if(!in_array($in['in_id'], $player_read_ids)){
+            $player_discover_ids = $this->DISCOVER_model->discover_ids($en_id);
+            if(!in_array($in['in_id'], $player_discover_ids)){
                 foreach ($this->IDEA_model->in_recursive_parents($in['in_id']) as $grand_parent_ids) {
-                    if (array_intersect($grand_parent_ids, $player_read_ids)) {
+                    if (array_intersect($grand_parent_ids, $player_discover_ids)) {
                         foreach($grand_parent_ids as $parent_in_id){
                             $ins = $this->IDEA_model->in_fetch(array(
                                 'in_id' => $parent_in_id,
                                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                             ));
                             if(count($ins)){
-                                $found_in_id = $this->READ_model->read_next_find($en_id, $ins[0], false);
+                                $found_in_id = $this->DISCOVER_model->discover_next_find($en_id, $ins[0], false);
                                 if($found_in_id != 0){
                                     return $found_in_id;
                                 }
@@ -734,35 +734,35 @@ class READ_model extends CI_Model
 
     }
 
-    function read_next_go($en_id, $advance_step, $send_title_message = false)
+    function discover_next_go($en_id, $advance_step, $send_title_message = false)
     {
 
         /*
          *
-         * Searches for the next 🔴 READING LIST step
+         * Searches for the next DISCOVER LIST step
          * and advance it IF $advance_step = TRUE
          *
          * */
 
-        $player_reads = $this->READ_model->ln_fetch(array(
+        $player_discoveries = $this->DISCOVER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
-        if(count($player_reads) == 0){
+        if(count($player_discoveries) == 0){
 
             if($advance_step){
 
-                $this->READ_model->dispatch_message(
-                    'You have no ideas in your reading list yet.',
+                $this->DISCOVER_model->dispatch_message(
+                    'You have no ideas in your discovery list yet.',
                     array('en_id' => $en_id),
                     true
                 );
 
-                //READ RECOMMENDATIONS
-                $this->READ_model->dispatch_message(
+                //DISCOVER RECOMMENDATIONS
+                $this->DISCOVER_model->dispatch_message(
                     echo_platform_message(12697),
                     array('en_id' => $en_id),
                     true
@@ -770,22 +770,22 @@ class READ_model extends CI_Model
 
             }
 
-            //No 🔴 READING LISTs found!
+            //No DISCOVER LISTs found!
             return 0;
 
         }
 
 
-        //Loop through 🔴 READING LIST Ideas and see what's next:
-        foreach($player_reads as $user_in){
+        //Loop through DISCOVER LIST Ideas and see what's next:
+        foreach($player_discoveries as $user_in){
 
-            //Find first incomplete step for this 🔴 READING LIST Idea:
-            $next_in_id = $this->READ_model->read_next_find($en_id, $user_in);
+            //Find first incomplete step for this DISCOVER LIST Idea:
+            $next_in_id = $this->DISCOVER_model->discover_next_find($en_id, $user_in);
 
             if($next_in_id < 0){
 
                 //We need to terminate this:
-                $this->READ_model->read_delete($en_id, $user_in['in_id'], 7757); //MENCH REMOVED BOOKMARK
+                $this->DISCOVER_model->discover_delete($en_id, $user_in['in_id'], 7757); //MENCH REMOVED BOOKMARK
                 break;
 
             } elseif($next_in_id > 0){
@@ -810,7 +810,7 @@ class READ_model extends CI_Model
                         'in_id' => $next_in_id,
                     ));
 
-                    $this->READ_model->dispatch_message(
+                    $this->DISCOVER_model->dispatch_message(
                         echo_platform_message(12692) . $next_step_ins[0]['in_title'],
                         array('en_id' => $en_id),
                         true
@@ -819,19 +819,19 @@ class READ_model extends CI_Model
                 }
 
                 //Yes, communicate it:
-                $this->READ_model->read_echo($next_in_id, array('en_id' => $en_id), true);
+                $this->DISCOVER_model->discover_echo($next_in_id, array('en_id' => $en_id), true);
 
             } else {
 
                 //Inform user that they are now complete with all steps:
-                $this->READ_model->dispatch_message(
-                    'You completed reading your entire 🔴 READING LIST',
+                $this->DISCOVER_model->dispatch_message(
+                    'You completed your entire DISCOVERY LIST',
                     array('en_id' => $en_id),
                     true
                 );
 
-                //READ RECOMMENDATIONS
-                $this->READ_model->dispatch_message(
+                //DISCOVER RECOMMENDATIONS
+                $this->DISCOVER_model->dispatch_message(
                     echo_platform_message(12697),
                     array('en_id' => $en_id),
                     true
@@ -846,26 +846,26 @@ class READ_model extends CI_Model
     }
 
 
-    function read_focus($en_id){
+    function discover_focus($en_id){
 
         /*
          *
-         * A function that goes through the 🔴 READING LIST
+         * A function that goes through the DISCOVER LIST
          * and finds the top-priority that the user
          * is currently working on.
          *
          * */
 
         $top_priority_in = false;
-        foreach($this->READ_model->ln_fetch(array(
+        foreach($this->DISCOVER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
 
             //See progress rate so far:
-            $completion_rate = $this->READ_model->read__completion_progress($en_id, $actionplan_in);
+            $completion_rate = $this->DISCOVER_model->discover__completion_progress($en_id, $actionplan_in);
 
             if($completion_rate['completion_percentage'] < 100){
                 //This is the top priority now:
@@ -887,10 +887,10 @@ class READ_model extends CI_Model
 
     }
 
-    function read_delete($en_id, $in_id, $stop_method_id, $stop_feedback = null){
+    function discover_delete($en_id, $in_id, $stop_method_id, $stop_feedback = null){
 
 
-        if(!in_array($stop_method_id, $this->config->item('en_ids_6150') /* 🔴 READING LIST Idea Completed */)){
+        if(!in_array($stop_method_id, $this->config->item('en_ids_6150') /* DISCOVER LIST Idea Completed */)){
             return array(
                 'status' => 0,
                 'message' => 'Invalid stop method',
@@ -908,23 +908,23 @@ class READ_model extends CI_Model
             );
         }
 
-        //Go ahead and delete from 🔴 READING LIST:
-        $player_reads = $this->READ_model->ln_fetch(array(
+        //Go ahead and delete from DISCOVER LIST:
+        $player_discoveries = $this->DISCOVER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_previous_idea_id' => $in_id,
         ));
-        if(count($player_reads) < 1){
+        if(count($player_discoveries) < 1){
             return array(
                 'status' => 0,
-                'message' => 'Could not locate 🔴 READING LIST',
+                'message' => 'Could not locate DISCOVER LIST',
             );
         }
 
         //Delete Bookmark:
-        foreach($player_reads as $ln){
-            $this->READ_model->ln_update($ln['ln_id'], array(
+        foreach($player_discoveries as $ln){
+            $this->DISCOVER_model->ln_update($ln['ln_id'], array(
                 'ln_content' => $stop_feedback,
                 'ln_status_source_id' => 6173, //DELETED
             ), $en_id, $stop_method_id);
@@ -937,7 +937,7 @@ class READ_model extends CI_Model
 
     }
 
-    function read_start($en_id, $in_id, $recommender_in_id = 0){
+    function discover_start($en_id, $in_id, $recommender_in_id = 0){
 
         //Validate Idea ID:
         $ins = $this->IDEA_model->in_fetch(array(
@@ -949,37 +949,37 @@ class READ_model extends CI_Model
         }
 
 
-        //Make sure not already added to this User's 🔴 READING LIST:
-        if(!count($this->READ_model->ln_fetch(array(
+        //Make sure not previously added to this User's DISCOVER LIST:
+        if(!count($this->DISCOVER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $in_id,
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             )))){
 
-            //Not added to their reading list so far, let's go ahead and add it:
+            //Not added to their discovery list so far, let's go ahead and add it:
             $in_rank = 1;
-            $actionplan = $this->READ_model->ln_create(array(
+            $actionplan = $this->DISCOVER_model->ln_create(array(
                 'ln_type_source_id' => ( $recommender_in_id > 0 ? 7495 /* User Idea Recommended */ : 4235 /* User Idea Set */ ),
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id' => $ins[0]['in_id'], //The Idea they are adding
                 'ln_next_idea_id' => $recommender_in_id, //Store the recommended idea
-                'ln_order' => $in_rank, //Always place at the top of their reading list
+                'ln_order' => $in_rank, //Always place at the top of their discovery list
             ));
 
-            //Mark as read if possible:
+            //Mark as discovered if possible:
             if($ins[0]['in_type_source_id']==6677){
-                $this->READ_model->read_is_complete($ins[0], array(
-                    'ln_type_source_id' => 4559, //READ MESSAGES
+                $this->DISCOVER_model->discover_is_complete($ins[0], array(
+                    'ln_type_source_id' => 4559, //DISCOVER MESSAGES
                     'ln_creator_source_id' => $en_id,
                     'ln_previous_idea_id' => $ins[0]['in_id'],
                 ));
             }
 
-            //Move other ideas down in the reading list:
-            foreach($this->READ_model->ln_fetch(array(
+            //Move other ideas down in the discovery list:
+            foreach($this->DISCOVER_model->ln_fetch(array(
                 'ln_id !=' => $actionplan['ln_id'], //Not the newly added idea
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_creator_source_id' => $en_id, //Belongs to this User
             ), array(''), 0, 0, array('ln_order' => 'ASC')) as $current_ins){
@@ -988,7 +988,7 @@ class READ_model extends CI_Model
                 $in_rank++;
 
                 //Update order:
-                $this->READ_model->ln_update($current_ins['ln_id'], array(
+                $this->DISCOVER_model->ln_update($current_ins['ln_id'], array(
                     'ln_order' => $in_rank,
                 ), $en_id, 10681 /* Ideas Ordered Automatically  */);
             }
@@ -1002,7 +1002,7 @@ class READ_model extends CI_Model
 
 
 
-    function read__completion_recursive_up($en_id, $in, $is_bottom_level = true){
+    function discover__completion_recursive_up($en_id, $in, $is_bottom_level = true){
 
         /*
          *
@@ -1014,7 +1014,7 @@ class READ_model extends CI_Model
 
 
         //First let's make sure this entire Idea completed by the user:
-        $completion_rate = $this->READ_model->read__completion_progress($en_id, $in);
+        $completion_rate = $this->DISCOVER_model->discover__completion_progress($en_id, $in);
 
 
         if($completion_rate['completion_percentage'] < 100){
@@ -1023,21 +1023,21 @@ class READ_model extends CI_Model
         }
 
 
-        //Look at Conditional Reads ONLY at this level:
+        //Look at Conditional Idea Links ONLY at this level:
         $in_metadata = unserialize($in['in_metadata']);
         if(isset($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) && count($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) > 0){
 
             //Make sure previous link unlocks have NOT happened before:
-            $existing_expansions = $this->READ_model->ln_fetch(array(
+            $existing_expansions = $this->DISCOVER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id' => 6140, //READ UNLOCK LINK
+                'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $in['in_id'],
                 'ln_next_idea_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
             ));
             if(count($existing_expansions) > 0){
 
-                //Oh we do have an expansion that already happened! So skip this:
+                //Oh we do have an expansion that previously happened! So skip this:
                 /*
                  * This was being triggered but I am not sure if its normal or not!
                  * For now will comment out so no errors are logged
@@ -1045,7 +1045,7 @@ class READ_model extends CI_Model
                  * if we would ever try to process a conditional step twice? If it
                  * happens, is it an error or not, and should simply be ignored?
                  *
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_previous_idea_id' => $in['in_id'],
                     'ln_next_idea_id' => $existing_expansions[0]['ln_next_idea_id'],
                     'ln_content' => 'completion_recursive_up() detected duplicate Label Expansion entries',
@@ -1060,7 +1060,7 @@ class READ_model extends CI_Model
 
 
             //Yes, Let's calculate user's score for this idea:
-            $user_marks = $this->READ_model->read__completion_marks($en_id, $in);
+            $user_marks = $this->DISCOVER_model->discover__completion_marks($en_id, $in);
 
 
 
@@ -1068,10 +1068,10 @@ class READ_model extends CI_Model
 
             //Detect potential conditional steps to be Unlocked:
             $found_match = 0;
-            $locked_links = $this->READ_model->ln_fetch(array(
+            $locked_links = $this->DISCOVER_model->ln_fetch(array(
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id' => 4229, //Idea Link Locked Read
+                'ln_type_source_id' => 4229, //Idea Link Locked Discovery
                 'ln_previous_idea_id' => $in['in_id'],
                 'ln_next_idea_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
             ), array('in_child'), 0, 0);
@@ -1096,9 +1096,9 @@ class READ_model extends CI_Model
                     //Found a match:
                     $found_match++;
 
-                    //Unlock 🔴 READING LIST:
-                    $this->READ_model->ln_create(array(
-                        'ln_type_source_id' => 6140, //READ UNLOCK LINK
+                    //Unlock DISCOVER LIST:
+                    $this->DISCOVER_model->ln_create(array(
+                        'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
                         'ln_creator_source_id' => $en_id,
                         'ln_previous_idea_id' => $in['in_id'],
                         'ln_next_idea_id' => $locked_link['in_id'],
@@ -1114,7 +1114,7 @@ class READ_model extends CI_Model
 
             //We must have exactly 1 match by now:
             if($found_match != 1){
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_content' => 'completion_recursive_up() found ['.$found_match.'] routing logic matches!',
                     'ln_type_source_id' => 4246, //Platform Bug Reports
                     'ln_creator_source_id' => $en_id,
@@ -1134,7 +1134,7 @@ class READ_model extends CI_Model
         if($is_bottom_level){
 
             //Fetch user ideas:
-            $player_read_ids = $this->READ_model->read_ids($en_id);
+            $player_discover_ids = $this->DISCOVER_model->discover_ids($en_id);
 
             //Prevent duplicate processes even if on multiple parent ideas:
             $parents_checked = array();
@@ -1143,8 +1143,8 @@ class READ_model extends CI_Model
             foreach ($this->IDEA_model->in_recursive_parents($in['in_id']) as $grand_parent_ids) {
 
                 //Does this parent and its grandparents have an intersection with the user ideas?
-                if(!array_intersect($grand_parent_ids, $player_read_ids)){
-                    //Parent idea is NOT part of their 🔴 READING LIST:
+                if(!array_intersect($grand_parent_ids, $player_discover_ids)){
+                    //Parent idea is NOT part of their DISCOVER LIST:
                     continue;
                 }
 
@@ -1168,12 +1168,12 @@ class READ_model extends CI_Model
                     if(count($parent_ins) > 0){
 
                         //Fetch parent completion:
-                        $this->READ_model->read__completion_recursive_up($en_id, $parent_ins[0], false);
+                        $this->DISCOVER_model->discover__completion_recursive_up($en_id, $parent_ins[0], false);
 
                     }
 
-                    //Terminate if we reached the 🔴 READING LIST idea level:
-                    if(in_array($p_id , $player_read_ids)){
+                    //Terminate if we reached the DISCOVER LIST idea level:
+                    if(in_array($p_id , $player_discover_ids)){
                         break;
                     }
                 }
@@ -1185,7 +1185,7 @@ class READ_model extends CI_Model
     }
 
 
-    function read__unlock_locked_step($en_id, $in){
+    function discover__unlock_locked_step($en_id, $in){
 
         /*
          * A function that starts from a locked idea and checks:
@@ -1203,10 +1203,10 @@ class READ_model extends CI_Model
         }
 
 
-        $in__children = $this->READ_model->ln_fetch(array(
+        $in__children = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            'ln_type_source_id' => 4228, //Idea Link Regular Read
+            'ln_type_source_id' => 4228, //Idea Link Regular Discovery
             'ln_previous_idea_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
         if(count($in__children) < 1){
@@ -1241,9 +1241,9 @@ class READ_model extends CI_Model
             if($count==0){
 
                 //Always add all the first users to the full list:
-                $qualified_completed_users = $this->READ_model->ln_fetch(array(
+                $qualified_completed_users = $this->DISCOVER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
                     'ln_previous_idea_id' => $child_in['in_id'],
                 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -1258,9 +1258,9 @@ class READ_model extends CI_Model
                 if($requires_all_children){
 
                     //Update list of qualified users:
-                    $qualified_completed_users = $this->READ_model->ln_fetch(array(
+                    $qualified_completed_users = $this->DISCOVER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
                         'ln_previous_idea_id' => $child_in['in_id'],
                     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -1280,22 +1280,22 @@ class READ_model extends CI_Model
 
 
 
-    function read_is_complete($in, $insert_columns){
+    function discover_is_complete($in, $insert_columns){
 
         //Log completion link:
-        $new_link = $this->READ_model->ln_create($insert_columns);
+        $new_link = $this->DISCOVER_model->ln_create($insert_columns);
 
         //Process completion automations:
-        $this->READ_model->read__completion_recursive_up($insert_columns['ln_creator_source_id'], $in);
+        $this->DISCOVER_model->discover__completion_recursive_up($insert_columns['ln_creator_source_id'], $in);
 
         return $new_link;
 
     }
 
-    function read_echo($in_id, $recipient_en, $push_message = false, $next_step_only = false){
+    function discover_echo($in_id, $recipient_en, $push_message = false, $next_step_only = false){
 
         /*
-         * Function to read a Idea, it's messages,
+         * Function to discover na Idea, it's messages,
          * and necessary inputs to complete it.
          *
          */
@@ -1308,7 +1308,7 @@ class READ_model extends CI_Model
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
         ));
         if (count($ins) < 1) {
-            $this->READ_model->ln_create(array(
+            $this->DISCOVER_model->ln_create(array(
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ),
                 'ln_content' => 'step_echo() invalid idea ID',
@@ -1316,7 +1316,7 @@ class READ_model extends CI_Model
             ));
 
             if($push_message){
-                $this->READ_model->dispatch_message(
+                $this->DISCOVER_model->dispatch_message(
                     'Alert: Invalid Idea ID',
                     $recipient_en,
                     true
@@ -1336,9 +1336,9 @@ class READ_model extends CI_Model
             if($push_message){
 
                 //We cannot have a guest user on Messenger:
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_type_source_id' => 4246, //Platform Bug Reports
-                    'ln_content' => 'read_coin() found guest user on Messenger',
+                    'ln_content' => 'discover_coin() found guest user on Messenger',
                     'ln_previous_idea_id' => $in_id,
                 ));
                 return false;
@@ -1362,9 +1362,9 @@ class READ_model extends CI_Model
             if(count($ens)){
                 $recipient_en = $ens[0];
             } else {
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_type_source_id' => 4246, //Platform Bug Reports
-                    'ln_content' => 'read_coin() could not locate source',
+                    'ln_content' => 'discover_coin() could not locate source',
                     'ln_previous_idea_id' => $in_id,
                 ));
                 return false;
@@ -1375,23 +1375,23 @@ class READ_model extends CI_Model
 
 
         //Fetch Messages
-        $in__messages = $this->READ_model->ln_fetch(array(
+        $in__messages = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id' => 4231, //Idea Notes Messages
             'ln_next_idea_id' => $ins[0]['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         //Fetch Children:
-        $in__children = $this->READ_model->ln_fetch(array(
+        $in__children = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            'ln_type_source_id' => 4228, //Idea Link Regular Read
+            'ln_type_source_id' => 4228, //Idea Link Regular Discovery
             'ln_previous_idea_id' => $ins[0]['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
 
         //Log View:
-        $this->READ_model->ln_create(array(
+        $this->DISCOVER_model->ln_create(array(
             'ln_creator_source_id' => $recipient_en['en_id'],
             'ln_type_source_id' => 7610, //Idea Viewed by User
             'ln_previous_idea_id' => $ins[0]['in_id'],
@@ -1399,23 +1399,23 @@ class READ_model extends CI_Model
         ));
 
 
-        $in_reading_list = false;
+        $in_discovery_list = false;
         if($recipient_en['en_id'] > 0){
 
-            //Fetch entire reading list:
-            $player_read_ids = $this->READ_model->read_ids($recipient_en['en_id']);
+            //Fetch entire discovery list:
+            $player_discover_ids = $this->DISCOVER_model->discover_ids($recipient_en['en_id']);
 
-            if(in_array($ins[0]['in_id'], $player_read_ids)){
-                $in_reading_list = true;
+            if(in_array($ins[0]['in_id'], $player_discover_ids)){
+                $in_discovery_list = true;
             } else {
 
                 //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
                 foreach ($this->IDEA_model->in_recursive_parents($ins[0]['in_id']) as $grand_parent_ids) {
 
                     //Does this parent and its grandparents have an intersection with the user ideas?
-                    if (array_intersect($grand_parent_ids, $player_read_ids)) {
-                        //Idea is part of their 🔴 READING LIST:
-                        $in_reading_list = true;
+                    if (array_intersect($grand_parent_ids, $player_discover_ids)) {
+                        //Idea is part of their DISCOVER LIST:
+                        $in_discovery_list = true;
                         break;
                     }
                 }
@@ -1425,15 +1425,15 @@ class READ_model extends CI_Model
 
         /*
          *
-         * Determine next Read
+         * Determine next Discovery
          *
          */
-        if(!$in_reading_list){
+        if(!$in_discovery_list){
 
             if($push_message){
 
-                $this->READ_model->dispatch_message(
-                    'Interested to read ' . $ins[0]['in_title'] . '?',
+                $this->DISCOVER_model->dispatch_message(
+                    'Interested to discover ' . $ins[0]['in_title'] . '?',
                     $recipient_en,
                     $push_message,
                     array(
@@ -1456,11 +1456,11 @@ class READ_model extends CI_Model
             } else {
 
                 //IDEA TITLE
-                echo '<div style="padding-top:6px;">'.( $recipient_en['en_id']>0 || 1 ? '<span class="icon-block top-icon"><i class="fas fa-circle read"></i></span>' : '<span class="icon-block">&nbsp;</span>' ).'<h1 class="inline-block block-one">' . echo_in_title($ins[0]) . '</h1></div>';
+                echo '<div style="padding-top:6px;">'.( $recipient_en['en_id']>0 || 1 ? '<span class="icon-block top-icon"><i class="fas fa-circle discover"></i></span>' : '<span class="icon-block">&nbsp;</span>' ).'<h1 class="inline-block block-one">' . echo_in_title($ins[0]) . '</h1></div>';
 
 
                 foreach ($in__messages as $message_ln) {
-                    echo $this->READ_model->dispatch_message(
+                    echo $this->DISCOVER_model->dispatch_message(
                         $message_ln['ln_content'],
                         $recipient_en,
                         $push_message
@@ -1486,10 +1486,10 @@ class READ_model extends CI_Model
 
 
                 if(!$all_child_featured){
-                    echo '<div id="readScroll">&nbsp;</div>';
+                    echo '<div id="discoverScroll">&nbsp;</div>';
 
                     //Redirect to login page:
-                    echo '<div class="inline-block margin-top-down read-add"><a class="btn btn-read" href="/read/start/'.$ins[0]['in_id'].'">START HERE <i class="fad fa-step-forward"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down discover-add"><a class="btn btn-discover" href="/discover/start/'.$ins[0]['in_id'].'">START HERE <i class="fad fa-step-forward"></i></a></div>';
 
                 }
 
@@ -1499,15 +1499,15 @@ class READ_model extends CI_Model
                     if(!$all_child_featured){
 
                         //Give option to review:
-                        echo '<div class="inline-block margin-top-down read-add">&nbsp;or&nbsp;<a class="btn btn-read" href="javascript:void();" onclick="toggle_read()"><i class="fad fa-search-plus read_topics"></i><i class="fad fa-search-minus read_topics hidden"></i> LIST '.count($in__children).' TOPIC'.echo__s(count($in__children)).'</a></div>';
+                        echo '<div class="inline-block margin-top-down discover-add">&nbsp;or&nbsp;<a class="btn btn-discover" href="javascript:void();" onclick="toggle_discover()"><i class="fad fa-search-plus discover_topics"></i><i class="fad fa-search-minus discover_topics hidden"></i> LIST '.count($in__children).' TOPIC'.echo__s(count($in__children)).'</a></div>';
 
                     }
 
                     //List Children:
                     $common_prefix = common_prefix($in__children, 'in_title');
-                    echo '<div class="list-group '.( !$all_child_featured ? 'read_topics hidden' : '' ).'">';
+                    echo '<div class="list-group '.( !$all_child_featured ? 'discover_topics hidden' : '' ).'">';
                     foreach($in__children as $key => $child_in){
-                        echo echo_in_read($child_in, $is_or, null, $common_prefix);
+                        echo echo_in_discover($child_in, $is_or, null, $common_prefix);
                     }
                     echo '</div>';
 
@@ -1522,7 +1522,7 @@ class READ_model extends CI_Model
 
 
         /*
-         * Already in source's reading list...
+         * Previously in source's discovery list...
          *
          */
 
@@ -1531,9 +1531,9 @@ class READ_model extends CI_Model
 
 
         //Fetch progress history:
-        $read_completes = $this->READ_model->ln_fetch(array(
+        $discover_completes = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
             'ln_creator_source_id' => $recipient_en['en_id'],
             'ln_previous_idea_id' => $ins[0]['in_id'],
         ));
@@ -1542,49 +1542,49 @@ class READ_model extends CI_Model
 
 
         //Is it incomplete & can it be instantly marked as complete?
-        if (!count($read_completes) && in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_12330'))) {
+        if (!count($discover_completes) && in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_12330'))) {
 
             //We might be able to complete it now:
             //It can, let's process it accordingly for each type within @12330
             if ($ins[0]['in_type_source_id'] == 6677 && $qualify_for_autocomplete) {
 
-                //They should read and then complete...
-                array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
-                    'ln_type_source_id' => 4559, //READ MESSAGES
+                //They should discover and then complete...
+                array_push($discover_completes, $this->DISCOVER_model->discover_is_complete($ins[0], array(
+                    'ln_type_source_id' => 4559, //DISCOVER MESSAGES
                     'ln_creator_source_id' => $recipient_en['en_id'],
                     'ln_previous_idea_id' => $ins[0]['in_id'],
                 )));
 
             } elseif (in_array($ins[0]['in_type_source_id'], array(6914,6907))) {
 
-                //Reverse check answers to see if they have already unlocked a path:
-                $unlocked_connections = $this->READ_model->ln_fetch(array(
+                //Reverse check answers to see if they have previously unlocked a path:
+                $unlocked_connections = $this->DISCOVER_model->ln_fetch(array(
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                     'ln_next_idea_id' => $ins[0]['in_id'],
                     'ln_creator_source_id' => $recipient_en['en_id'],
                 ), array('in_parent'), 1);
 
                 if(count($unlocked_connections) > 0){
 
-                    //They already have unlocked a path here!
+                    //They previously have unlocked a path here!
 
-                    //Determine READ COIN type based on it's connection type's parents that will hold the appropriate read coin.
-                    $read_completion_type_id = 0;
-                    foreach($this->config->item('en_all_12327') /* READ UNLOCKS */ as $en_id => $m){
+                    //Determine DISCOVER COIN type based on it's connection type's parents that will hold the appropriate discover coin.
+                    $discover_completion_type_id = 0;
+                    foreach($this->config->item('en_all_12327') /* DISCOVER UNLOCKS */ as $en_id => $m){
                         if(in_array($unlocked_connections[0]['ln_type_source_id'], $m['m_parents'])){
-                            $read_completion_type_id = $en_id;
+                            $discover_completion_type_id = $en_id;
                             break;
                         }
                     }
 
                     //Could we determine the coin type?
-                    if($read_completion_type_id > 0){
+                    if($discover_completion_type_id > 0){
 
                         //Yes, Issue coin:
-                        array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
-                            'ln_type_source_id' => $read_completion_type_id,
+                        array_push($discover_completes, $this->DISCOVER_model->discover_is_complete($ins[0], array(
+                            'ln_type_source_id' => $discover_completion_type_id,
                             'ln_creator_source_id' => $recipient_en['en_id'],
                             'ln_previous_idea_id' => $ins[0]['in_id'],
                         )));
@@ -1592,10 +1592,10 @@ class READ_model extends CI_Model
                     } else {
 
                         //Oooops, we could not find it, report bug:
-                        $this->READ_model->ln_create(array(
+                        $this->DISCOVER_model->ln_create(array(
                             'ln_type_source_id' => 4246, //Platform Bug Reports
                             'ln_creator_source_id' => $recipient_en['en_id'],
-                            'ln_content' => 'read_coin() found idea connector ['.$unlocked_connections[0]['ln_type_source_id'].'] without a valid unlock method @12327',
+                            'ln_content' => 'discover_coin() found idea connector ['.$unlocked_connections[0]['ln_type_source_id'].'] without a valid unlock method @12327',
                             'ln_previous_idea_id' => $ins[0]['in_id'],
                             'ln_parent_transaction_id' => $unlocked_connections[0]['ln_id'],
                         ));
@@ -1611,7 +1611,7 @@ class READ_model extends CI_Model
                     if(!count($unlock_paths)){
 
                         //No path found:
-                        array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
+                        array_push($discover_completes, $this->DISCOVER_model->discover_is_complete($ins[0], array(
                             'ln_type_source_id' => 7492, //TERMINATE
                             'ln_creator_source_id' => $recipient_en['en_id'],
                             'ln_previous_idea_id' => $ins[0]['in_id'],
@@ -1628,41 +1628,41 @@ class READ_model extends CI_Model
         if(!$next_step_only){
 
             // % DONE
-            $completion_rate = $this->READ_model->read__completion_progress($recipient_en['en_id'], $ins[0]);
+            $completion_rate = $this->DISCOVER_model->discover__completion_progress($recipient_en['en_id'], $ins[0]);
             $metadata = unserialize($ins[0]['in_metadata']);
             $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
 
             if(!$push_message){
 
-                //READ PREVIOUS (To be moved here using Javascript)
+                //DISCOVER PREVIOUS (To be moved here using Javascript)
                 echo '<div id="previous_final_position"></div>';
 
 
-                //READ PROGRESS
+                //DISCOVER PROGRESS
                 if($completion_rate['completion_percentage']>0){
-                    echo '<div class="progress-bg no-horizonal-margin" title="You are '.$completion_rate['completion_percentage'].'% done as you have read '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($ins[0], true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+                    echo '<div class="progress-bg no-horizonal-margin" title="You are '.$completion_rate['completion_percentage'].'% done as you have discover '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($ins[0], true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
                 } else {
                     //Replace with empty space:
                     echo '<div class="high5x">&nbsp;</div>';
                 }
 
-                //READ TITLE
-                echo '<div style="padding-top:1px;"><span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span><h1 class="inline-block block-one">' . echo_in_title($ins[0]) . '</h1></div>';
+                //DISCOVER TITLE
+                echo '<div style="padding-top:1px;"><span class="icon-block top-icon"><i class="fas fa-circle discover" aria-hidden="true"></i></span><h1 class="inline-block block-one">' . echo_in_title($ins[0]) . '</h1></div>';
 
             } else {
 
-                $this->READ_model->dispatch_message(
-                    'You are reading: '.$ins[0]['in_title'],
+                $this->DISCOVER_model->dispatch_message(
+                    'You are discovering: '.$ins[0]['in_title'],
                     $recipient_en,
                     $push_message
                 );
 
             }
 
-            echo '<div class="previous_reads">';
+            echo '<div class="previous_discoveries">';
             foreach ($in__messages as $message_ln) {
-                echo $this->READ_model->dispatch_message(
+                echo $this->DISCOVER_model->dispatch_message(
                     $message_ln['ln_content'],
                     $recipient_en,
                     $push_message
@@ -1674,7 +1674,7 @@ class READ_model extends CI_Model
 
 
 
-        if(count($read_completes) && $qualify_for_autocomplete){
+        if(count($discover_completes) && $qualify_for_autocomplete){
             //Move to the next one as there is nothing to do here:
             if($push_message){
 
@@ -1683,7 +1683,7 @@ class READ_model extends CI_Model
             } else {
 
                 //JS Redirect asap:
-                echo "<script> $(document).ready(function () { window.location = '/read/next/' + in_loaded_id; }); </script>";
+                echo "<script> $(document).ready(function () { window.location = '/discover/next/' + in_loaded_id; }); </script>";
 
             }
         }
@@ -1695,10 +1695,10 @@ class READ_model extends CI_Model
 
 
             //Requirement lock
-            if(!count($read_completes) && !count($unlocked_connections) && count($unlock_paths)){
+            if(!count($discover_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
                 //List Unlock paths:
-                echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>SUGGESTED READS:');
+                echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>SUGGESTED IDEAS:');
 
             }
 
@@ -1714,15 +1714,15 @@ class READ_model extends CI_Model
             if(!count($in__children)){
 
                 //Mark this as complete since there is no child to choose from:
-                if(!count($this->READ_model->ln_fetch(array(
+                if(!count($this->DISCOVER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+                    'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                     'ln_creator_source_id' => $recipient_en['en_id'],
                     'ln_previous_idea_id' => $ins[0]['in_id'],
                 )))){
 
-                    array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
-                        'ln_type_source_id' => 4559, //READ MESSAGES
+                    array_push($discover_completes, $this->DISCOVER_model->discover_is_complete($ins[0], array(
+                        'ln_type_source_id' => 4559, //DISCOVER MESSAGES
                         'ln_creator_source_id' => $recipient_en['en_id'],
                         'ln_previous_idea_id' => $ins[0]['in_id'],
                     )));
@@ -1735,30 +1735,30 @@ class READ_model extends CI_Model
             } else {
 
                 //First fetch answers based on correct order:
-                $read_answers = array();
-                foreach ($this->READ_model->ln_fetch(array(
+                $discover_answers = array();
+                foreach ($this->DISCOVER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                    'ln_type_source_id' => 4228, //Idea Link Regular Read
+                    'ln_type_source_id' => 4228, //Idea Link Regular Discovery
                     'ln_previous_idea_id' => $ins[0]['in_id'],
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $ln){
                     //See if this answer was seleted:
-                    if(count($this->READ_model->ln_fetch(array(
+                    if(count($this->DISCOVER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINK
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINK
                         'ln_previous_idea_id' => $ins[0]['in_id'],
                         'ln_next_idea_id' => $ln['in_id'],
                         'ln_creator_source_id' => $recipient_en['en_id'],
                     )))){
-                        array_push($read_answers, $ln);
+                        array_push($discover_answers, $ln);
                     }
                 }
 
-                if(count($read_answers) > 0){
+                if(count($discover_answers) > 0){
 
                     if($push_message){
 
-                        echo_in_list($ins[0], $read_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOUR PREVIOUS ANSWER:');
+                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOUR PREVIOUS ANSWER:');
 
                     } else {
 
@@ -1767,10 +1767,10 @@ class READ_model extends CI_Model
                         echo '<div class="selected_before">';
 
                         //List answers:
-                        echo_in_list($ins[0], $read_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:');
+                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:');
 
                         //Allow to edit:
-                        echo '<div class="inline-block margin-top-down previous_reads">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>EDIT ANSWER</u></a></div>';
+                        echo '<div class="inline-block margin-top-down previous_discoveries">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>EDIT ANSWER</u></a></div>';
 
                         echo '</div>';
 
@@ -1821,17 +1821,17 @@ class READ_model extends CI_Model
 
                 } else {
 
-                    echo '<div class="selected_before '.( count($read_answers)>0 ? 'hidden' : '' ).'">';
-                    echo '<div class="previous_reads">';
+                    echo '<div class="selected_before '.( count($discover_answers)>0 ? 'hidden' : '' ).'">';
+                    echo '<div class="previous_discoveries">';
 
                     //HTML:
                     if ($ins[0]['in_type_source_id'] == 6684) {
 
-                        echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
+                        echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
 
                     } elseif ($ins[0]['in_type_source_id'] == 7231) {
 
-                        echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</div>';
+                        echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</div>';
 
                     }
 
@@ -1848,9 +1848,9 @@ class READ_model extends CI_Model
                 foreach ($in__children as $key => $child_in) {
 
                     //Has this been previously selected?
-                    $previously_selected = count($this->READ_model->ln_fetch(array(
+                    $previously_selected = count($this->DISCOVER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                         'ln_previous_idea_id' => $ins[0]['in_id'],
                         'ln_next_idea_id' => $child_in['in_id'],
                         'ln_creator_source_id' => $recipient_en['en_id'],
@@ -1872,11 +1872,11 @@ class READ_model extends CI_Model
 
                     } else {
 
-                        echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['in_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ins="'.$child_in['in_id'].'" class="ln_answer_'.$child_in['in_id'].' answer-item list-group-item itemread no-left-padding">';
+                        echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['in_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ins="'.$child_in['in_id'].'" class="ln_answer_'.$child_in['in_id'].' answer-item list-group-item itemdiscover no-left-padding">';
 
 
                         echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-                        echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
+                        echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle discover"></i></td>';
 
                         echo '<td style="width: 100%; padding: 0 !important;">';
                         echo '<b class="montserrat idea-url" style="margin-left:0;">'.echo_in_title($child_in, false, $common_prefix).'</b>';
@@ -1911,7 +1911,7 @@ class READ_model extends CI_Model
                         }
                     }
 
-                    $this->READ_model->dispatch_message(
+                    $this->DISCOVER_model->dispatch_message(
                         $message_content,
                         $recipient_en,
                         $push_message,
@@ -1926,10 +1926,10 @@ class READ_model extends CI_Model
 
                     echo '<div class="result-update margin-top-down"></div>';
 
-                    echo echo_in_previous_read($in_id, $recipient_en);
+                    echo echo_in_previous_discover($in_id, $recipient_en);
 
                     //Button to submit selection:
-                    echo '<div class="inline-block margin-top-down previous_reads"><a class="btn btn-read" href="javascript:void(0)" onclick="read_answer()">'.( count($read_answers)>0 ? 'UPDATE' : 'SELECT' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($read_answers)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL</u></a></span>' : '' ).'</div>';
+                    echo '<div class="inline-block margin-top-down previous_discoveries"><a class="btn btn-discover" href="javascript:void(0)" onclick="discover_answer()">'.( count($discover_answers)>0 ? 'UPDATE' : 'SELECT' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($discover_answers)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL</u></a></span>' : '' ).'</div>';
 
                     echo '</div>';
 
@@ -1940,41 +1940,41 @@ class READ_model extends CI_Model
 
             if ($ins[0]['in_type_source_id'] == 6677) {
 
-                //READ ONLY
+                //DISCOVER ONLY
 
-                //Next Reads:
+                //Next Ideas:
                 echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
 
             } elseif ($ins[0]['in_type_source_id'] == 6683) {
 
                 //TEXT RESPONSE
 
-                echo '<div class="previous_reads"><textarea class="border i_content padded read_input" placeholder="Your Answer Here..." id="read_text_answer">'.( count($read_completes) ? trim($read_completes[0]['ln_content']) : '' ).'</textarea></div>';
+                echo '<div class="previous_discoveries"><textarea class="border i_content padded discover_input" placeholder="Your Answer Here..." id="discover_text_answer">'.( count($discover_completes) ? trim($discover_completes[0]['ln_content']) : '' ).'</textarea></div>';
 
-                echo '<div class="text_saving_result margin-top-down previous_reads"></div>';
+                echo '<div class="text_saving_result margin-top-down previous_discoveries"></div>';
 
                 //Show Previous Button:
-                echo echo_in_previous_read($ins[0]['in_id'], $recipient_en);
+                echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
 
                 //Save/Upload & Next:
-                echo '<div class="margin-top-down inline-block previous_reads"><a class="btn btn-read" href="javascript:void(0);" onclick="read_text_answer()">SAVE & NEXT <i class="fad fa-step-forward"></i></a>&nbsp;&nbsp;</div>';
+                echo '<div class="margin-top-down inline-block previous_discoveries"><a class="btn btn-discover" href="javascript:void(0);" onclick="discover_text_answer()">SAVE & NEXT <i class="fad fa-step-forward"></i></a>&nbsp;&nbsp;</div>';
 
-                if(count($read_completes)){
-                    //Next Reads:
+                if(count($discover_completes)){
+                    //Next Ideas:
                     echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true, false);
                 }
 
-                echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); $(\'#read_text_answer\').focus(); }); </script>';
+                echo '<script> $(document).ready(function () { autosize($(\'#discover_text_answer\')); $(\'#discover_text_answer\').focus(); }); </script>';
 
 
             } elseif (in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7751'))) {
 
                 //FILE UPLOAD
 
-                echo '<div class="readerUploader previous_reads">';
+                echo '<div class="playerUploader previous_discoveries">';
                 echo '<form class="box boxUpload" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-                echo '<div class="file_saving_result">'.( count($read_completes) ? '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->READ_model->dispatch_message($read_completes[0]['ln_content']).'</div>' : '' ).'</div>';
+                echo '<div class="file_saving_result">'.( count($discover_completes) ? '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->DISCOVER_model->dispatch_message($discover_completes[0]['ln_content']).'</div>' : '' ).'</div>';
 
                 echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_source_id'].'" />';
 
@@ -1984,25 +1984,25 @@ class READ_model extends CI_Model
 
 
 
-                if(!count($read_completes)) {
+                if(!count($discover_completes)) {
 
                     //Show Previous Button:
-                    echo echo_in_previous_read($ins[0]['in_id'], $recipient_en);
+                    echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
 
-                    echo '<label class="btn btn-read inline-block previous_reads" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD</label>';
+                    echo '<label class="btn btn-discover inline-block previous_discoveries" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD</label>';
 
                     //Show next here but keep hidden until file is uploaded:
-                    echo '<div class="go_next_upload hidden inline-block previous_reads">';
+                    echo '<div class="go_next_upload hidden inline-block previous_discoveries">';
                     echo_in_next($ins[0]['in_id'], $recipient_en, $push_message);
                     echo '</div>';
 
                 } else {
 
-                    //Next Reads:
+                    //Next Ideas:
                     echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
 
                     //File Replace:
-                    echo '<label class="btn btn-read inline-block previous_reads" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> REPLACE</label>';
+                    echo '<label class="btn btn-discover inline-block previous_discoveries" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> REPLACE</label>';
 
 
                 }
@@ -2010,7 +2010,7 @@ class READ_model extends CI_Model
             } else {
 
                 //UNKNOWN IDEA TYPE
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_type_source_id' => 4246, //Platform Bug Reports
                     'ln_creator_source_id' => $recipient_en['en_id'],
                     'ln_content' => 'step_echo() unknown idea type source ID ['.$ins[0]['in_type_source_id'].'] that could not be rendered',
@@ -2027,15 +2027,15 @@ class READ_model extends CI_Model
         /*
          *
          * List Conditional Links that are
-         * already unlocked (HTML ONLY)
+         * previously unlocked (HTML ONLY)
          *
          * */
         if(!$push_message){
 
-            $unlocked_steps = $this->READ_model->ln_fetch(array(
+            $unlocked_steps = $this->DISCOVER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                'ln_type_source_id' => 6140, //READ UNLOCK LINK
+                'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
                 'ln_creator_source_id' => $recipient_en['en_id'],
                 'ln_previous_idea_id' => $ins[0]['in_id'],
             ), array('in_child'), 0);
@@ -2051,16 +2051,16 @@ class READ_model extends CI_Model
 
     }
 
-    function read__completion_marks($en_id, $in, $top_level = true)
+    function discover__completion_marks($en_id, $in, $top_level = true)
     {
 
-        //Fetch/validate 🔴 READING LIST Common Reads:
+        //Fetch/validate DISCOVER LIST Common Ideas:
         $in_metadata = unserialize($in['in_metadata']);
         if(!isset($in_metadata['in__metadata_common_steps'])){
 
             //Should not happen, log error:
-            $this->READ_model->ln_create(array(
-                'ln_content' => 'completion_marks() Detected user 🔴 READING LIST without in__metadata_common_steps value!',
+            $this->DISCOVER_model->ln_create(array(
+                'ln_content' => 'completion_marks() Detected user DISCOVER LIST without in__metadata_common_steps value!',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $in['in_id'],
@@ -2106,10 +2106,10 @@ class READ_model extends CI_Model
                 $local_max = null;
 
                 //Calculate min/max points for this based on answers:
-                foreach($this->READ_model->ln_fetch(array(
+                foreach($this->DISCOVER_model->ln_fetch(array(
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_type_source_id' => 4228, //Idea Link Regular Read
+                    'ln_type_source_id' => 4228, //Idea Link Regular Discovery
                     'ln_previous_idea_id' => $question_in_id,
                     'ln_next_idea_id IN (' . join(',', $answers_in_ids) . ')' => null, //Limit to cached answers
                 ), array('in_child')) as $in_answer){
@@ -2141,9 +2141,9 @@ class READ_model extends CI_Model
 
 
             //Now let's check user answers to see what they have done:
-            $total_completion = $this->READ_model->ln_fetch(array(
+            $total_completion = $this->DISCOVER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en_id, //Belongs to this User
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             ), array(), 0, 0, array(), 'COUNT(ln_id) as total_completions');
@@ -2152,16 +2152,16 @@ class READ_model extends CI_Model
             $metadata_this['steps_answered_count'] += $total_completion[0]['total_completions'];
 
             //Go through answers:
-            foreach($this->READ_model->ln_fetch(array(
+            foreach($this->DISCOVER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en_id, //Belongs to this User
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             ), array('in_child'), 500) as $answer_in) {
 
                 //Fetch recursively:
-                $recursive_stats = $this->READ_model->read__completion_marks($en_id, $answer_in, false);
+                $recursive_stats = $this->DISCOVER_model->discover__completion_marks($en_id, $answer_in, false);
 
                 $metadata_this['steps_answered_count'] += $recursive_stats['steps_answered_count'];
                 $metadata_this['steps_answered_marks'] += $answer_marks_index[$answer_in['in_id']] + $recursive_stats['steps_answered_marks'];
@@ -2192,14 +2192,14 @@ class READ_model extends CI_Model
 
 
 
-    function read__completion_progress($en_id, $in, $top_level = true)
+    function discover__completion_progress($en_id, $in, $top_level = true)
     {
 
         if(!isset($in['in_metadata'])){
             return false;
         }
 
-        //Fetch/validate 🔴 READING LIST Common Reads:
+        //Fetch/validate DISCOVER LIST Common Ideas:
         $in_metadata = unserialize($in['in_metadata']);
         if(!isset($in_metadata['in__metadata_common_steps'])){
             //Since it's not there yet we assume the idea it self only!
@@ -2215,17 +2215,17 @@ class READ_model extends CI_Model
         $common_totals = $this->IDEA_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_read_time) as total_seconds');
+        ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_discover_time) as total_seconds');
 
 
         //Count completed for user:
-        $common_completed = $this->READ_model->ln_fetch(array(
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+        $common_completed = $this->DISCOVER_model->ln_fetch(array(
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
             'ln_creator_source_id' => $en_id, //Belongs to this User
             'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ), array('in_parent'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_read_time) as completed_seconds');
+        ), array('in_parent'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_discover_time) as completed_seconds');
 
 
         //Calculate common steps and expansion steps recursively for this user:
@@ -2237,12 +2237,12 @@ class READ_model extends CI_Model
         );
 
 
-        //Expansion Reads Recursive
+        //Expansion Ideas Recursive
         if(isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0){
 
             //Now let's check user answers to see what they have done:
-            foreach($this->READ_model->ln_fetch(array(
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
+            foreach($this->DISCOVER_model->ln_fetch(array(
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_next_idea_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
@@ -2251,7 +2251,7 @@ class READ_model extends CI_Model
             ), array('in_child')) as $expansion_in) {
 
                 //Fetch recursive:
-                $recursive_stats = $this->READ_model->read__completion_progress($en_id, $expansion_in, false);
+                $recursive_stats = $this->DISCOVER_model->discover__completion_progress($en_id, $expansion_in, false);
 
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
@@ -2266,8 +2266,8 @@ class READ_model extends CI_Model
         if(isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0){
 
             //Now let's check if user has unlocked any Miletones:
-            foreach($this->READ_model->ln_fetch(array(
-                'ln_type_source_id' => 6140, //READ UNLOCK LINK
+            foreach($this->DISCOVER_model->ln_fetch(array(
+                'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_next_idea_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_conditional'])) . ')' => null,
@@ -2276,7 +2276,7 @@ class READ_model extends CI_Model
             ), array('in_child')) as $expansion_in) {
 
                 //Fetch recursive:
-                $recursive_stats = $this->READ_model->read__completion_progress($en_id, $expansion_in, false);
+                $recursive_stats = $this->DISCOVER_model->discover__completion_progress($en_id, $expansion_in, false);
 
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
@@ -2292,7 +2292,7 @@ class READ_model extends CI_Model
 
             /*
              *
-             * Completing an 🔴 READING LIST depends on two factors:
+             * Completing an DISCOVER LIST depends on two factors:
              *
              * 1) number of steps (some may have 0 time estimate)
              * 2) estimated seconds (usual ly accurate)
@@ -2328,18 +2328,18 @@ class READ_model extends CI_Model
     }
 
 
-    function read_ids($en_id){
-        //Simply returns all the idea IDs for a user's 🔴 READING LIST:
-        $player_read_ids = array();
-        foreach($this->READ_model->ln_fetch(array(
+    function discover_ids($en_id){
+        //Simply returns all the idea IDs for a user's DISCOVER LIST:
+        $player_discover_ids = array();
+        foreach($this->DISCOVER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
         ), array('in_parent'), 0) as $user_in){
-            array_push($player_read_ids, intval($user_in['in_id']));
+            array_push($player_discover_ids, intval($user_in['in_id']));
         }
-        return $player_read_ids;
+        return $player_discover_ids;
     }
 
 
@@ -2389,14 +2389,14 @@ class READ_model extends CI_Model
         }
 
         //Validate message:
-        $msg_dispatching = $this->READ_model->dispatch_validate_message($input_message, $recipient_en, $push_message, $quick_replies, 0, $message_in_id, false);
+        $msg_dispatching = $this->DISCOVER_model->dispatch_validate_message($input_message, $recipient_en, $push_message, $quick_replies, 0, $message_in_id, false);
 
 
         //Did we have ane error in message validation?
         if (!$msg_dispatching['status'] || !isset($msg_dispatching['output_messages'])) {
 
             //Log Error Link:
-            $this->READ_model->ln_create(array(
+            $this->DISCOVER_model->ln_create(array(
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                 'ln_content' => 'dispatch_validate_message() returned error [' . $msg_dispatching['message'] . '] for input message [' . $input_message . ']',
@@ -2424,13 +2424,13 @@ class READ_model extends CI_Model
                 if($msg_dispatching['user_chat_channel']==6196 /* Mench on Messenger */){
 
                     //Attempt to dispatch message via Facebook Graph API:
-                    $fb_graph_process = $this->READ_model->facebook_graph('POST', '/me/messages', $output_message['message_body']);
+                    $fb_graph_process = $this->DISCOVER_model->facebook_graph('POST', '/me/messages', $output_message['message_body']);
 
                     //Did we have an Error from the Facebook API side?
                     if (!$fb_graph_process['status']) {
 
                         //Ooopsi, we did! Log error Transcation:
-                        $this->READ_model->ln_create(array(
+                        $this->DISCOVER_model->ln_create(array(
                             'ln_type_source_id' => 4246, //Platform Bug Reports
                             'ln_creator_source_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                             'ln_content' => 'dispatch_message() failed to send message via Facebook Graph API. See Metadata log for more details.',
@@ -2463,7 +2463,7 @@ class READ_model extends CI_Model
 
             //Log successful Link for message delivery:
             if(isset($recipient_en['en_id']) && $push_message){
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_content' => $msg_dispatching['input_message'],
                     'ln_type_source_id' => $output_message['message_type_en_id'],
                     'ln_creator_source_id' => $recipient_en['en_id'],
@@ -2484,7 +2484,7 @@ class READ_model extends CI_Model
     }
 
 
-    function read_history_ui($tab_group_id, $pads_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
+    function discover_history_ui($tab_group_id, $pads_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
 
         if (!$pads_in_id && !$owner_en_id) {
 
@@ -2493,11 +2493,11 @@ class READ_model extends CI_Model
                 'message' => 'Require either Idea or Play ID',
             );
 
-        } elseif (!in_array($tab_group_id, $this->config->item('en_ids_12410') /* IDEA & READ COIN */) || !count($this->config->item('en_ids_'.$tab_group_id))) {
+        } elseif (!in_array($tab_group_id, $this->config->item('en_ids_12410') /* IDEA & DISCOVER COIN */) || !count($this->config->item('en_ids_'.$tab_group_id))) {
 
             return array(
                 'status' => 0,
-                'message' => 'Invalid Read Type Group ID',
+                'message' => 'Invalid Discovery Type Group ID',
             );
 
         }
@@ -2522,12 +2522,12 @@ class READ_model extends CI_Model
             if($tab_group_id == 12273 /* IDEA COIN */){
 
                 $order_columns = array('in_weight' => 'DESC');
-                $list_class = 'itemread';
+                $list_class = 'itemdiscover';
                 $join_objects = array('in_child');
                 $match_columns['ln_parent_source_id'] = $owner_en_id;
                 $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null;
 
-            } elseif($tab_group_id == 6255 /* READ COIN */){
+            } elseif($tab_group_id == 6255 /* DISCOVER COIN */){
 
                 $order_columns = array('in_weight' => 'DESC');
                 $list_class = 'itemsource';
@@ -2540,23 +2540,23 @@ class READ_model extends CI_Model
         }
 
 
-        //List Read History:
-        $ui = '<div class="list-group dynamic-reads">';
-        foreach($this->READ_model->ln_fetch($match_columns, $join_objects, config_var(11064), 0, $order_columns) as $in_read){
+        //List Discovery History:
+        $ui = '<div class="list-group dynamic-discoveries">';
+        foreach($this->DISCOVER_model->ln_fetch($match_columns, $join_objects, config_var(11064), 0, $order_columns) as $in_discover){
             if($pads_in_id > 0){
 
-                $ui .= echo_en($in_read);
+                $ui .= echo_en($in_discover);
 
             } elseif($owner_en_id > 0){
 
                 $infobar_details = null;
-                if(strlen($in_read['ln_content'])){
+                if(strlen($in_discover['ln_content'])){
                     $infobar_details .= '<div class="message_content">';
-                    $infobar_details .= $this->READ_model->dispatch_message($in_read['ln_content']);
+                    $infobar_details .= $this->DISCOVER_model->dispatch_message($in_discover['ln_content']);
                     $infobar_details .= '</div>';
                 }
 
-                $ui .= echo_in($in_read, 0, false, false);
+                $ui .= echo_in($in_discover, 0, false, false);
 
             }
         }
@@ -2736,7 +2736,7 @@ class READ_model extends CI_Model
         //See if we have a valid way to connect to them if push:
         if ($push_message) {
 
-            $user_messenger = $this->READ_model->ln_fetch(array(
+            $user_messenger = $this->DISCOVER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                 'ln_parent_source_id' => 6196, //Mench Messenger
@@ -2752,7 +2752,7 @@ class READ_model extends CI_Model
             } else {
 
                 //See if they have an email:
-                $user_emails = $this->READ_model->ln_fetch(array(
+                $user_emails = $this->DISCOVER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_child_source_id' => $recipient_en['en_id'],
                     'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
@@ -2794,7 +2794,7 @@ class READ_model extends CI_Model
             $en_all_11058 = $this->config->item('en_all_11058');
 
             //Fetch recipient notification type:
-            $lns_comm_level = $this->READ_model->ln_fetch(array(
+            $lns_comm_level = $this->DISCOVER_model->ln_fetch(array(
                 'ln_parent_source_id IN (' . join(',', $this->config->item('en_ids_4454')) . ')' => null,
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                 'ln_child_source_id' => $recipient_en['en_id'],
@@ -2841,7 +2841,7 @@ class READ_model extends CI_Model
         if ($strict_validation && count($string_references['ref_urls']) > 0) {
 
             //BUGGY
-            //No source linked, but we have a URL that we should turn into an source if not already:
+            //No source linked, but we have a URL that we should turn into an source if not previously:
             $url_source = $this->SOURCE_model->en_url($string_references['ref_urls'][0], ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ), ( isset($recipient_en['en_id']) ? array($recipient_en['en_id']) : array() ));
 
             //Did we have an error?
@@ -2942,7 +2942,7 @@ class READ_model extends CI_Model
 
         //Where is this request being made from? Public landing pages will have some restrictions on what they displat:
         $is_landing_page = is_numeric(str_replace('_','', $this->uri->segment(1)));
-        $is_user_message = ($is_landing_page || $this->uri->segment(1)=='read');
+        $is_user_message = ($is_landing_page || $this->uri->segment(1)=='discover');
 
         if (count($string_references['ref_sources']) > 0) {
 
@@ -2983,7 +2983,7 @@ class READ_model extends CI_Model
             if(!($current_mench['x_name']=='source' && $this->uri->segment(2)==$string_references['ref_sources'][0])){
 
                 //Parents
-                foreach ($this->READ_model->ln_fetch(array(
+                foreach ($this->DISCOVER_model->ln_fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Source URL
                     'ln_child_source_id' => $string_references['ref_sources'][0], //This child source
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -3074,7 +3074,7 @@ class READ_model extends CI_Model
 
                     //Show source link with status:
                     $current_mench = current_mench();
-                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block '.( $message_visual_media > 0 ? superpower_active(10939) : '' ).'">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).$en_icon.( $current_mench['x_name']=='read' && !superpower_assigned(10939) ? '<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">' . $ens[0]['en_name']  . '</span>' : '<a class="montserrat doupper underline '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block '.( $message_visual_media > 0 ? superpower_active(10939) : '' ).'">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).$en_icon.( $current_mench['x_name']=='discover' && !superpower_assigned(10939) ? '<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">' . $ens[0]['en_name']  . '</span>' : '<a class="montserrat doupper underline '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
 
                 }
 
@@ -3171,7 +3171,7 @@ class READ_model extends CI_Model
             if (!$has_text && count($quick_replies) > 0) {
 
                 //This is an error:
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_content' => 'dispatch_validate_message() was given quick replies without a text message',
                     'ln_metadata' => array(
                         'input_message' => $input_message,
@@ -3338,8 +3338,8 @@ class READ_model extends CI_Model
         if (!$result) {
 
             //Failed to fetch this profile:
-            $message_error = 'READ_model->facebook_graph() failed to ' . $action . ' ' . $graph_url;
-            $this->READ_model->ln_create(array(
+            $message_error = 'DISCOVER_model->facebook_graph() failed to ' . $action . ' ' . $graph_url;
+            $this->DISCOVER_model->ln_create(array(
                 'ln_content' => $message_error,
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_metadata' => $ln_metadata,
@@ -3365,7 +3365,7 @@ class READ_model extends CI_Model
     }
 
 
-    function read_answer($en_id, $question_in_id, $answer_in_ids){
+    function discover_answer($en_id, $question_in_id, $answer_in_ids){
 
         $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $question_in_id,
@@ -3414,22 +3414,22 @@ class READ_model extends CI_Model
         }
 
         //Delete ALL previous answers:
-        foreach ($this->READ_model->ln_fetch(array(
+        foreach ($this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //READ ANSWERED
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //DISCOVER ANSWERED
             'ln_creator_source_id' => $en_id,
             'ln_previous_idea_id' => $ins[0]['in_id'],
-        )) as $read_progress){
-            $this->READ_model->ln_update($read_progress['ln_id'], array(
+        )) as $discover_progress){
+            $this->DISCOVER_model->ln_update($discover_progress['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Deleted
-            ), $en_id, 12129 /* READ ANSWER DELETED */);
+            ), $en_id, 12129 /* DISCOVER ANSWER DELETED */);
         }
 
         //Add New Answers
         $answers_newly_added = 0;
         foreach($answer_in_ids as $answer_in_id){
             $answers_newly_added++;
-            $this->READ_model->ln_create(array(
+            $this->DISCOVER_model->ln_create(array(
                 'ln_type_source_id' => $in_link_type_id,
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $ins[0]['in_id'],
@@ -3446,8 +3446,8 @@ class READ_model extends CI_Model
             );
         }
 
-        //Issue READ/IDEA COIN:
-        $this->READ_model->read_is_complete($ins[0], array(
+        //Issue DISCOVER/IDEA COIN:
+        $this->DISCOVER_model->discover_is_complete($ins[0], array(
             'ln_type_source_id' => $ln_type_source_id,
             'ln_creator_source_id' => $en_id,
             'ln_previous_idea_id' => $ins[0]['in_id'],
@@ -3498,7 +3498,7 @@ class READ_model extends CI_Model
             if ($action_unsubscribe == 'CANCEL') {
 
                 //User seems to have changed their mind, confirm with them:
-                $this->READ_model->dispatch_message(
+                $this->DISCOVER_model->dispatch_message(
                     'Awesome, I am excited to continue our work together.',
                     $en,
                     true,
@@ -3515,13 +3515,13 @@ class READ_model extends CI_Model
 
                 //User wants to completely unsubscribe from Mench:
                 $deleted_ins = 0;
-                foreach ($this->READ_model->ln_fetch(array(
+                foreach ($this->DISCOVER_model->ln_fetch(array(
                     'ln_creator_source_id' => $en['en_id'],
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 )) as $ln) {
                     $deleted_ins++;
-                    $this->READ_model->ln_update($ln['ln_id'], array(
+                    $this->DISCOVER_model->ln_update($ln['ln_id'], array(
                         'ln_status_source_id' => 6173, //Link Deleted
                     ), $en['en_id'], 6155 /* User Idea Cancelled */);
                 }
@@ -3529,49 +3529,49 @@ class READ_model extends CI_Model
                 //TODO DELETE THEIR ACCOUNT HERE
 
                 //Let them know about these changes:
-                $this->READ_model->dispatch_message(
-                    'Confirmed, I deleted ' . $deleted_ins . ' idea' . echo__s($deleted_ins) . ' from your 🔴 READING LIST. This is the final message you will receive from me unless you message me again. I hope you take good care of yourself 😘',
+                $this->DISCOVER_model->dispatch_message(
+                    'Confirmed, I deleted ' . $deleted_ins . ' idea' . echo__s($deleted_ins) . ' from your DISCOVER LIST. This is the final message you will receive from me unless you message me again. I hope you take good care of yourself 😘',
                     $en,
                     true
                 );
 
             } elseif (is_numeric($action_unsubscribe)) {
 
-                //User wants to Delete a specific 🔴 READING LIST, validate it:
-                $player_reads = $this->READ_model->ln_fetch(array(
+                //User wants to Delete a specific DISCOVER LIST, validate it:
+                $player_discoveries = $this->DISCOVER_model->ln_fetch(array(
                     'ln_creator_source_id' => $en['en_id'],
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_previous_idea_id' => $action_unsubscribe,
                 ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
                 //All good?
-                if (count($player_reads) < 1) {
+                if (count($player_discoveries) < 1) {
                     return array(
                         'status' => 0,
-                        'message' => 'UNSUBSCRIBE_ Failed to delete IDEA from 🔴 READING LIST',
+                        'message' => 'UNSUBSCRIBE_ Failed to delete IDEA from DISCOVER LIST',
                     );
                 }
 
-                //Update status for this single 🔴 READING LIST:
-                $this->READ_model->ln_update($player_reads[0]['ln_id'], array(
+                //Update status for this single DISCOVER LIST:
+                $this->DISCOVER_model->ln_update($player_discoveries[0]['ln_id'], array(
                     'ln_status_source_id' => 6173, //Link Deleted
                 ), $en['en_id'], 6155 /* User Idea Cancelled */);
 
-                //Re-sort remaining 🔴 READING LIST ideas:
-                foreach($this->READ_model->ln_fetch(array(
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+                //Re-sort remaining DISCOVER LIST ideas:
+                foreach($this->DISCOVER_model->ln_fetch(array(
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                     'ln_creator_source_id' => $en['en_id'], //Belongs to this User
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
-                    $this->READ_model->ln_update($ln['ln_id'], array(
+                    $this->DISCOVER_model->ln_update($ln['ln_id'], array(
                         'ln_order' => ($count+1),
                     ), $en['en_id'], 10681 /* Ideas Ordered Automatically */);
                 }
 
                 //Show success message to user:
-                $this->READ_model->dispatch_message(
-                    'I have successfully deleted [' . $player_reads[0]['in_title'] . '] from your 🔴 READING LIST.',
+                $this->DISCOVER_model->dispatch_message(
+                    'I have successfully deleted [' . $player_discoveries[0]['in_title'] . '] from your DISCOVER LIST.',
                     $en,
                     true,
                     array(
@@ -3588,14 +3588,14 @@ class READ_model extends CI_Model
         } elseif ($quick_reply_payload == 'SUBSCRIBE-REJECT') {
 
             //They rejected the offer... Acknowledge and give response:
-            $this->READ_model->dispatch_message(
+            $this->DISCOVER_model->dispatch_message(
                 'Ok, so how can I help you move forward?',
                 $en,
                 true
             );
 
-            //READ RECOMMENDATIONS
-            $this->READ_model->dispatch_message(
+            //DISCOVER RECOMMENDATIONS
+            $this->DISCOVER_model->dispatch_message(
                 echo_platform_message(12697),
                 $en,
                 true
@@ -3612,8 +3612,8 @@ class READ_model extends CI_Model
             if (count($ins) < 1) {
 
                 //Confirm if they are interested to subscribe to this idea:
-                $this->READ_model->dispatch_message(
-                    '❌ Alert: I cannot add this idea to your 🔴 READING LIST because its not yet published.',
+                $this->DISCOVER_model->dispatch_message(
+                    '❌ Alert: I cannot add this idea to your DISCOVER LIST because its not yet published.',
                     $en,
                     true,
                     array(
@@ -3632,7 +3632,7 @@ class READ_model extends CI_Model
             }
 
             //Confirm if they are interested to subscribe to this idea:
-            $this->READ_model->dispatch_message(
+            $this->DISCOVER_model->dispatch_message(
                 'Hi 👋 are you interested to ' . $ins[0]['in_title'] . '?',
                 $en,
                 true,
@@ -3656,7 +3656,7 @@ class READ_model extends CI_Model
         } elseif ($quick_reply_payload=='NOTINTERESTED') {
 
             //Affirm and educate:
-            $this->READ_model->dispatch_message(
+            $this->DISCOVER_model->dispatch_message(
                 echo_platform_message(12697),
                 $en,
                 true
@@ -3668,7 +3668,7 @@ class READ_model extends CI_Model
             //User has confirmed their desire to subscribe to an IDEA:
             $in_id = intval(one_two_explode('SUBSCRIBE-INITIATE_', '', $quick_reply_payload));
 
-            //Initiating an IDEA 🔴 READING LIST:
+            //Initiating an IDEA DISCOVER LIST:
             $ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => $in_id,
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
@@ -3681,23 +3681,23 @@ class READ_model extends CI_Model
                 );
             }
 
-            //Make sure idea has not already been added to user 🔴 READING LIST:
-            if (count($this->READ_model->ln_fetch(array(
+            //Make sure idea has not previously been added to user DISCOVER LIST:
+            if (count($this->DISCOVER_model->ln_fetch(array(
                     'ln_creator_source_id' => $en['en_id'],
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_previous_idea_id' => $ins[0]['in_id'],
                 ))) > 0) {
 
-                //Let User know that they have already subscribed to this idea:
-                $this->READ_model->dispatch_message(
-                    'The idea [' . $ins[0]['in_title'] . '] has already been added to your 🔴 READING LIST. /link:🔴 READING LIST:https://mench.com/' . $ins[0]['in_id'],
+                //Let User know that they have previously subscribed to this idea:
+                $this->DISCOVER_model->dispatch_message(
+                    'The idea [' . $ins[0]['in_title'] . '] has previously been added to your DISCOVER LIST. /link:DISCOVER LIST:https://mench.com/' . $ins[0]['in_id'],
                     $en,
                     true
                 );
 
                 //Give them option to go next:
-                $this->READ_model->dispatch_message(
+                $this->DISCOVER_model->dispatch_message(
                     'Say "Next" to continue...',
                     $en,
                     true,
@@ -3712,13 +3712,13 @@ class READ_model extends CI_Model
 
             } else {
 
-                //Do final confirmation by giving User more context on this idea before adding to their 🔴 READING LIST...
+                //Do final confirmation by giving User more context on this idea before adding to their DISCOVER LIST...
 
                 //See if we have an overview:
-                $overview_message = 'Should I add this idea to your 🔴 READING LIST?';
+                $overview_message = 'Should I add this idea to your DISCOVER LIST?';
 
                 //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this idea:
-                $this->READ_model->dispatch_message(
+                $this->DISCOVER_model->dispatch_message(
                     $overview_message,
                     $en,
                     true,
@@ -3736,10 +3736,10 @@ class READ_model extends CI_Model
                     )
                 );
 
-                //Log as 🔴 READING LIST Considered:
-                $this->READ_model->ln_create(array(
+                //Log as DISCOVER LIST Considered:
+                $this->DISCOVER_model->ln_create(array(
                     'ln_creator_source_id' => $en['en_id'],
-                    'ln_type_source_id' => 6149, //🔴 READING LIST Idea Considered
+                    'ln_type_source_id' => 6149, //DISCOVER LIST Idea Considered
                     'ln_previous_idea_id' => $ins[0]['in_id'],
                     'ln_content' => $overview_message, //A copy of their message
                 ));
@@ -3755,15 +3755,15 @@ class READ_model extends CI_Model
                 $ins = $this->IDEA_model->in_fetch(array(
                     'in_id' => $in_id,
                 ));
-                $next_in_id = $this->READ_model->read_next_find($en['en_id'], $ins[0]);
+                $next_in_id = $this->DISCOVER_model->discover_next_find($en['en_id'], $ins[0]);
             }
 
             if($next_in_id > 0){
                 //Yes, communicate it:
-                $this->READ_model->read_echo($next_in_id, $en, true);
+                $this->DISCOVER_model->discover_echo($next_in_id, $en, true);
             } else {
                 //Fetch and communicate next idea:
-                $this->READ_model->read_next_go($en['en_id'], true, true);
+                $this->DISCOVER_model->discover_next_go($en['en_id'], true, true);
             }
 
         } elseif (substr_count($quick_reply_payload, 'ADD_RECOMMENDED_') == 1) {
@@ -3772,16 +3772,16 @@ class READ_model extends CI_Model
             $recommender_in_id = $in_ids[0];
             $recommended_in_id = $in_ids[1];
 
-            //Add this item to the tio of the 🔴 READING LIST:
-            $this->READ_model->read_start($en['en_id'], $recommended_in_id, $recommender_in_id);
+            //Add this item to the tio of the DISCOVER LIST:
+            $this->DISCOVER_model->discover_start($en['en_id'], $recommended_in_id, $recommender_in_id);
 
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-CONFIRM_') == 1) {
 
-            //User has requested to add this idea to their 🔴 READING LIST:
+            //User has requested to add this idea to their DISCOVER LIST:
             $in_id = intval(one_two_explode('SUBSCRIBE-CONFIRM_', '', $quick_reply_payload));
 
-            //Add to 🔴 READING LIST:
-            $this->READ_model->read_start($en['en_id'], $in_id);
+            //Add to DISCOVER LIST:
+            $this->DISCOVER_model->discover_start($en['en_id'], $in_id);
 
         } elseif (substr_count($quick_reply_payload, 'ANSWERQUESTION_') == 1) {
 
@@ -3795,7 +3795,7 @@ class READ_model extends CI_Model
             $quickreply_parts = explode('_', one_two_explode('ANSWERQUESTION_', '', $quick_reply_payload));
 
             //Save the answer:
-            return $this->READ_model->read_answer($en['en_id'], $quickreply_parts[1], array($quickreply_parts[2]));
+            return $this->DISCOVER_model->discover_answer($en['en_id'], $quickreply_parts[1], array($quickreply_parts[2]));
 
         } else {
 
@@ -3855,11 +3855,11 @@ class READ_model extends CI_Model
 
         if (in_array($fb_received_message, array('next', 'continue', 'go'))) {
 
-            //Give them the next step of their 🔴 READING LIST:
-            $next_in_id = $this->READ_model->read_next_go($en['en_id'], true, true);
+            //Give them the next step of their DISCOVER LIST:
+            $next_in_id = $this->DISCOVER_model->discover_next_go($en['en_id'], true, true);
 
             //Log command trigger:
-            $this->READ_model->ln_create(array(
+            $this->DISCOVER_model->ln_create(array(
                 'ln_creator_source_id' => $en['en_id'],
                 'ln_type_source_id' => 6559, //User Commanded Next
                 'ln_previous_idea_id' => $next_in_id,
@@ -3867,24 +3867,24 @@ class READ_model extends CI_Model
 
         } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop', 'quit', 'resign', 'exit', 'cancel', 'abort'))) {
 
-            //List their 🔴 READING LIST ideas and let user choose which one to unsubscribe:
-            $player_reads = $this->READ_model->ln_fetch(array(
+            //List their DISCOVER LIST ideas and let user choose which one to unsubscribe:
+            $player_discoveries = $this->DISCOVER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             ), array('in_parent'), 10 /* Max quick replies allowed */, 0, array('ln_order' => 'ASC'));
 
 
-            //Do they have anything in their 🔴 READING LIST?
-            if (count($player_reads) > 0) {
+            //Do they have anything in their DISCOVER LIST?
+            if (count($player_discoveries) > 0) {
 
-                //Give them options to delete specific 🔴 READING LISTs:
+                //Give them options to delete specific DISCOVER LISTs:
                 $quick_replies = array();
                 $message = 'Choose one of the following options:';
                 $increment = 1;
 
-                foreach ($player_reads as $counter => $in) {
+                foreach ($player_discoveries as $counter => $in) {
                     //Construct unsubscribe confirmation body:
                     $message .= "\n\n" . ($counter + $increment) . '. Stop ' . $in['in_title'];
                     array_push($quick_replies, array(
@@ -3894,7 +3894,7 @@ class READ_model extends CI_Model
                     ));
                 }
 
-                if (count($player_reads) >= 2) {
+                if (count($player_discoveries) >= 2) {
                     //Give option to skip all and unsubscribe:
                     $increment++;
                     $message .= "\n\n" . ($counter + $increment) . '. Delete all ideas and unsubscribe';
@@ -3931,7 +3931,7 @@ class READ_model extends CI_Model
             }
 
             //Send out message and let them confirm:
-            $this->READ_model->dispatch_message(
+            $this->DISCOVER_model->dispatch_message(
                 $message,
                 $en,
                 true,
@@ -3939,7 +3939,7 @@ class READ_model extends CI_Model
             );
 
             //Log command trigger:
-            $this->READ_model->ln_create(array(
+            $this->DISCOVER_model->ln_create(array(
                 'ln_creator_source_id' => $en['en_id'],
                 'ln_type_source_id' => 6578, //User Text Commanded Stop
                 'ln_content' => $message,
@@ -3973,7 +3973,7 @@ class READ_model extends CI_Model
 
 
 
-                //Show options for the User to add to their 🔴 READING LIST:
+                //Show options for the User to add to their DISCOVER LIST:
 
                 foreach ($search_results as $alg) {
 
@@ -3986,10 +3986,10 @@ class READ_model extends CI_Model
                         continue;
                     }
 
-                    //Make sure not already in 🔴 READING LIST:
-                    if(count($this->READ_model->ln_fetch(array(
+                    //Make sure not previously in DISCOVER LIST:
+                    if(count($this->DISCOVER_model->ln_fetch(array(
                             'ln_creator_source_id' => $en['en_id'],
-                            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //🔴 READING LIST Idea Set
+                            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                             'ln_previous_idea_id' => $alg['alg_obj_id'],
                         ))) > 0){
@@ -4013,7 +4013,7 @@ class READ_model extends CI_Model
 
 
                 //Log idea search:
-                $this->READ_model->ln_create(array(
+                $this->DISCOVER_model->ln_create(array(
                     'ln_content' => ( $new_idea_count > 0 ? $message : 'Found ' . $new_idea_count . ' idea' . echo__s($new_idea_count) . ' matching [' . $master_command . ']' ),
                     'ln_metadata' => array(
                         'new_idea_count' => $new_idea_count,
@@ -4037,7 +4037,7 @@ class READ_model extends CI_Model
                 ));
 
                 //return what we found to the user to decide:
-                $this->READ_model->dispatch_message(
+                $this->DISCOVER_model->dispatch_message(
                     $message,
                     $en,
                     true,
@@ -4047,14 +4047,14 @@ class READ_model extends CI_Model
             } else {
 
                 //Respond to user:
-                $this->READ_model->dispatch_message(
+                $this->DISCOVER_model->dispatch_message(
                     'I did not find any ideas to "' . $master_command . '", but I have made a idea of this and will let you know as soon as I am trained on this.',
                     $en,
                     true
                 );
 
-                //READ RECOMMENDATIONS
-                $this->READ_model->dispatch_message(
+                //DISCOVER RECOMMENDATIONS
+                $this->DISCOVER_model->dispatch_message(
                     echo_platform_message(12697),
                     $en,
                     true
@@ -4078,7 +4078,7 @@ class READ_model extends CI_Model
             //Quick Reply Manual Response...
             //We could not match the user command to any other command...
             //Now try to fetch the last quick reply that the user received from us:
-            $last_quick_replies = $this->READ_model->ln_fetch(array(
+            $last_quick_replies = $this->DISCOVER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en['en_id'],
                 'ln_type_source_id' => 6563, //User Received Quick Reply
             ), array(), 1);
@@ -4097,12 +4097,12 @@ class READ_model extends CI_Model
                         if(substr($fb_received_message, 0, strlen($quick_reply['title'])) == strtolower($quick_reply['title'])){
 
                             //Yes! We found a match, trigger the payload:
-                            $quick_reply_results = $this->READ_model->digest_received_payload($en, $quick_reply['payload']);
+                            $quick_reply_results = $this->DISCOVER_model->digest_received_payload($en, $quick_reply['payload']);
 
                             if(!$quick_reply_results['status']){
 
                                 //There was an error, inform Player:
-                                $this->READ_model->ln_create(array(
+                                $this->DISCOVER_model->ln_create(array(
                                     'ln_content' => 'digest_received_payload() for custom response ['.$fb_received_message.'] returned error ['.$quick_reply_results['message'].']',
                                     'ln_metadata' => $ln_metadata,
                                     'ln_type_source_id' => 4246, //Platform Bug Reports
@@ -4113,7 +4113,7 @@ class READ_model extends CI_Model
                             } else {
 
                                 //All good, log link:
-                                $this->READ_model->ln_create(array(
+                                $this->DISCOVER_model->ln_create(array(
                                     'ln_creator_source_id' => $en['en_id'],
                                     'ln_type_source_id' => 4460, //User Sent Answer
                                     'ln_parent_transaction_id' => $last_quick_replies[0]['ln_id'],
@@ -4133,7 +4133,7 @@ class READ_model extends CI_Model
 
 
             //Let's check to see if a Mench Player has not started a manual conversation with them via Facebook Inbox Chat:
-            if (count($this->READ_model->ln_fetch(array(
+            if (count($this->DISCOVER_model->ln_fetch(array(
                     'ln_order' => 1, //A HACK to identify messages sent from us via Facebook Page Inbox
                     'ln_creator_source_id' => $en['en_id'],
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //User Received Messages with Messenger
@@ -4150,27 +4150,27 @@ class READ_model extends CI_Model
 
 
             //Inform User of Mench's one-way communication limitation & that Mench did not understand their message:
-            $this->READ_model->dispatch_message(
+            $this->DISCOVER_model->dispatch_message(
                 echo_platform_message(12693),
                 $en,
                 true
             );
 
             //Log link:
-            $this->READ_model->ln_create(array(
+            $this->DISCOVER_model->ln_create(array(
                 'ln_creator_source_id' => $en['en_id'], //User who initiated this message
                 'ln_content' => $fb_received_message,
                 'ln_type_source_id' => 4287, //Log Unrecognizable Message Received
             ));
 
-            //Call to Action: Does this user have any 🔴 READING LISTs?
-            $next_in_id = $this->READ_model->read_next_go($en['en_id'], false);
+            //Call to Action: Does this user have any DISCOVER LISTs?
+            $next_in_id = $this->DISCOVER_model->discover_next_go($en['en_id'], false);
 
             if($next_in_id > 0){
 
                 //Inform User of Mench's one-way communication limitation & that Mench did not understand their message:
-                $this->READ_model->dispatch_message(
-                    'You can continue with your 🔴 READING LIST by saying "Next"',
+                $this->DISCOVER_model->dispatch_message(
+                    'You can continue with your DISCOVER LIST by saying "Next"',
                     $en,
                     true,
                     array(
@@ -4184,8 +4184,8 @@ class READ_model extends CI_Model
 
             } else {
 
-                //READ RECOMMENDATIONS
-                $this->READ_model->dispatch_message(
+                //DISCOVER RECOMMENDATIONS
+                $this->DISCOVER_model->dispatch_message(
                     echo_platform_message(12697),
                     $en,
                     true

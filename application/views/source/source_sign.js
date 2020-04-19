@@ -26,7 +26,7 @@ $(document).ready(function () {
 
 function goto_step(this_step_count){
 
-    //Update read count:
+    //Update discover count:
     step_count = this_step_count;
 
     $('.signup-steps').addClass('hidden');
@@ -113,7 +113,7 @@ function search_email(){
 
         if (data.status) {
 
-            //Update source id IF existed already:
+            //Update source id IF existed previously:
             $('#login_en_id').val(data.login_en_id);
 
             //Update email:
@@ -121,8 +121,8 @@ function search_email(){
             $('.focus_email').html(data.clean_input_email);
             $('#email_errors').html('&nbsp;');
 
-            //Go to next read:
-            goto_step(( data.email_existed_already ? 3 /* To ask for password */ : 4 /* To check their email and create new account */ ));
+            //Go to next discovery:
+            goto_step(( data.email_existed_previously ? 3 /* To ask for password */ : 4 /* To check their email and create new account */ ));
 
         } else {
             //Show errors:
@@ -161,7 +161,7 @@ function add_account(){
             $('#new_account_errors').html('&nbsp;');
 
             setTimeout(function () {
-                //Redirect to next read:
+                //Redirect to next discovery:
                 window.location = data.login_url;
             }, 377);
 

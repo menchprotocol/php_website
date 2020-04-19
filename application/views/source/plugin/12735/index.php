@@ -18,16 +18,16 @@ foreach($this->IDEA_model->in_fetch() as $in) {
     $is_deleted = !in_array($in['in_status_source_id'], $this->config->item('en_ids_7356'));
 
     //Scan sources:
-    $in_sources = $this->READ_model->ln_fetch(array(
+    $in_sources = $this->DISCOVER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
         'ln_next_idea_id' => $in['in_id'],
     ));
-    $in_creators = $this->READ_model->ln_fetch(array(
+    $in_creators = $this->DISCOVER_model->ln_fetch(array(
         'ln_type_source_id' => 4250, //New Idea Created
         'ln_next_idea_id' => $in['in_id'],
     ));
-    $in_notes = $this->READ_model->ln_fetch(array( //Idea Links
+    $in_notes = $this->DISCOVER_model->ln_fetch(array( //Idea Links
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
         'ln_next_idea_id' => $in['in_id'],
@@ -35,7 +35,7 @@ foreach($this->IDEA_model->in_fetch() as $in) {
 
     if(!count($in_creators)) {
         $stats['creator_missing']++;
-        $this->READ_model->ln_create(array(
+        $this->DISCOVER_model->ln_create(array(
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_next_idea_id' => $in['in_id'],
             'ln_content' => $in['in_title'],
@@ -50,7 +50,7 @@ foreach($this->IDEA_model->in_fetch() as $in) {
 
         $stats['source_missing']++;
         $creator_id = ( count($in_creators) ? $in_creators[0]['ln_creator_source_id'] : $session_en['en_id'] );
-        $this->READ_model->ln_create(array(
+        $this->DISCOVER_model->ln_create(array(
             'ln_type_source_id' => 4983, //IDEA COIN
             'ln_creator_source_id' => $creator_id,
             'ln_parent_source_id' => $creator_id,
@@ -63,7 +63,7 @@ foreach($this->IDEA_model->in_fetch() as $in) {
         //Extra SOURCES
         foreach($in_notes as $in_note){
             //Delete this link:
-            $stats['note_deleted'] += $this->READ_model->ln_update($in_note['ln_id'], array(
+            $stats['note_deleted'] += $this->DISCOVER_model->ln_update($in_note['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Deleted
             ), $session_en['en_id'], 10686 /* Idea Link Unlinked */);
         }

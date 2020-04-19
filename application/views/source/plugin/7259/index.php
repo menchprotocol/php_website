@@ -83,7 +83,7 @@ if($search_for_is_set){
 
                 //Loop through parents:
                 $en_all_7585 = $this->config->item('en_all_7585'); // Idea Subtypes
-                foreach ($this->READ_model->ln_fetch(array(
+                foreach ($this->DISCOVER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
