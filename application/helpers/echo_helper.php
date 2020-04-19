@@ -1550,7 +1550,7 @@ function echo_in_previous_read($in_id, $recipient_en){
 
                 $completion_rate = $CI->READ_model->read__completion_progress($recipient_en['en_id'], $ins_this[0]);
 
-                array_push($breadcrumb_items, echo_in_read($ins_this[0], true, null, null, null, false, $completion_rate, $recipient_en));
+                array_push($breadcrumb_items, echo_in_read($ins_this[0], false, null, null, null, false, $completion_rate, $recipient_en));
 
                 if ($parent_in_id == $intersect) {
                     $top_progress = $completion_rate['completion_percentage'];

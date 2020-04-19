@@ -2203,14 +2203,17 @@ class READ_model extends CI_Model
             $in_metadata['in__metadata_common_steps'] = array($in['in_id']);
         }
 
+
         //Generate flat steps:
         $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
+
 
         //Count totals:
         $common_totals = $this->IDEA_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
         ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_read_time) as total_seconds');
+
 
         //Count completed for user:
         $common_completed = $this->READ_model->ln_fetch(array(
@@ -2220,6 +2223,7 @@ class READ_model extends CI_Model
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
         ), array('in_parent'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_read_time) as completed_seconds');
+
 
         //Calculate common steps and expansion steps recursively for this user:
         $metadata_this = array(
