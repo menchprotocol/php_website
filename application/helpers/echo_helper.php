@@ -260,12 +260,12 @@ function echo_in_notes($ln)
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
-    $ui .= '<div class="edit-off text_message" id="msgbody_' . $ln['ln_id'] . '">';
+    $ui .= '<div class="text_message" id="msgbody_' . $ln['ln_id'] . '">';
     $ui .= $CI->READ_model->dispatch_message($ln['ln_content'], $session_en, false, array(), $ln['ln_next_idea_id']);
     $ui .= '</div>';
 
     //Editing menu:
-    $ui .= '<div class="pads-edit edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
+    $ui .= '<div class="pads-editor '.superpower_active(10939).'"><span class="show-on-hover">';
 
         //Sort:
         if(in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents'])){
@@ -1054,22 +1054,24 @@ function echo_in_read($in, $parent_is_or = false, $infobar_details = null, $comm
 
     $ui .= '</td>';
 
+
     //Search for Idea Image:
     if($show_editor){
 
         $ui .= '<td class="featured-frame" '.( $show_editor ? ' style="padding-right:25px;" ' : '' ).'>';
 
-        $ui .= '<div class="pads-edit edit-off"><span class="show-on-hover">';
+        $ui .= '<span class="show-on-hover">';
 
-        $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
+        $ui .= '<span class="discover-sorter" title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
 
         $ui .= '<span title="Delete from discovery list" data-toggle="tooltip" data-placement="left"><span class="actionplan_delete" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
 
-        $ui .= '</span></div>';
+        $ui .= '</span>';
 
         $ui .= '</td>';
 
     }
+
 
     $ui .= '</tr></table>';
 
@@ -1329,7 +1331,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
 
     //RIGHT EDITING:
     $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
-    $ui .= '<div class="pads-edit edit-off">';
+    $ui .= '<div class="pads-editor">';
     $ui .= '<span class="show-on-hover">';
 
     if($is_in_link){
@@ -1867,7 +1869,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
     //RIGHT EDITING:
     $ui .= '<div class="pull-right inline-block">';
-    $ui .= '<div class="pads-edit edit-off">';
+    $ui .= '<div class="source-editor">';
     $ui .= '<span class="show-on-hover">';
 
     if($note_controller){

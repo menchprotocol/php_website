@@ -7,7 +7,7 @@ $is_active = in_array($in['in_status_source_id'], $this->config->item('en_ids_73
 
 <style>
     .in_child_icon_<?= $in['in_id'] ?> { display:none; }
-    <?= ( !$is_source ? '.pads-edit {display:none;}' : '' ) ?>
+    <?= ( !$is_source ? '.pads-editor {display:none;}' : '' ) ?>
 </style>
 
 <script>

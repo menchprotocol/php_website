@@ -6,7 +6,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 ?>
 
 <style>
-    <?= ( count($player_reads) < 2 ? '.pads-edit {display:none;}' : '' ) ?>
+    <?= ( count($player_reads) < 2 ? '.discover-sorter {display:none;}' : '' ) ?>
 </style>
 <script>
     //Include some cached sources:
