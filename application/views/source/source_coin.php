@@ -313,7 +313,9 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                         $avatar_type_match = ($source_icon_parts[0] == $avatar_icon_parts[0]);
                         $superpower_actives3 = array_intersect($this->config->item('en_ids_10957'), $m3['m_parents']);
 
-                        $this_tab .= '<span class="'.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'"><a href="javascript:void(0);" onclick="account_update_avatar_icon(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemsource avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $source_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m_icon'] . '</div></a></span>';
+                        $this_tab .= '<span class="'.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'">';
+                        $this_tab .= '<a href="javascript:void(0);" onclick="account_update_avatar_icon(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemsource avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $source_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m_icon'] . '</div></a>';
+                        $this_tab .= '</span>';
 
                     }
 
@@ -343,7 +345,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                         } elseif($has_req_powers && $has_discover_url){
 
                             //Does not have it, but can get it:
-                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower" href="'.$has_discover_url.'"><span class="icon-block '.$extract_icon_color.'"><i class="fas fa-lock-open black"></i>&nbsp;'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
+                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower" href="'.$has_discover_url.'"><span class="icon-block"><i class="fas fa-lock-open black"></i></span>'.$m3['m_icon'].'&nbsp;<b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
 
                         }
                     }
