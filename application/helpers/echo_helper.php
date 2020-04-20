@@ -1193,7 +1193,7 @@ function echo_in_marks($in_ln){
 }
 
 
-function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = null, $extra_class = null)
+function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = null, $extra_class = null, $control_enabled = true)
 {
 
     $CI =& get_instance();
@@ -1237,13 +1237,15 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
         $ui .= '</div>';
 
 
-
-
         //SECOND STATS ROW
         $ui .= '<div class="doclear">&nbsp;</div>';
 
-        //Idea Toolbar
-        $ui .= '<div class="space-content ' . superpower_active(12673) . '">';
+
+
+        if($control_enabled){
+
+            //Idea Toolbar
+            $ui .= '<div class="space-content ' . superpower_active(12673) . '">';
 
             //IDEA STATUS
             $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
@@ -1278,27 +1280,28 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
             //Idea Wand
             $ui .= '<div class="inline-block ' . superpower_active(12700) . '">';
-                //LINK TYPE
-                $ui .= echo_in_dropdown(4486, $in['ln_type_source_id'], null, $is_source, false, $in['in_id'], $in['ln_id']);
+            //LINK TYPE
+            $ui .= echo_in_dropdown(4486, $in['ln_type_source_id'], null, $is_source, false, $in['in_id'], $in['ln_id']);
 
-                //LINK MARKS
-                $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_source_id']==4228 ? : 'hidden' ).'">';
-                $ui .= echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+2 );
-                $ui .='</span>';
+            //LINK MARKS
+            $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_source_id']==4228 ? : 'hidden' ).'">';
+            $ui .= echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+2 );
+            $ui .='</span>';
 
 
-                //LINK CONDIITONAL RANGE
-                $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_source_id']==4229 ? : 'hidden' ).'">';
-                //MIN
-                $ui .= echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+3);
-                //MAX
-                $ui .= echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+4);
-                $ui .= '</span>';
+            //LINK CONDIITONAL RANGE
+            $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_source_id']==4229 ? : 'hidden' ).'">';
+            //MIN
+            $ui .= echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+3);
+            //MAX
+            $ui .= echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+4);
+            $ui .= '</span>';
             $ui .= '</div>';
 
 
 
-        $ui .= '</div>';
+            $ui .= '</div>';
+        }
 
     $ui .= '</td>';
 
@@ -1316,12 +1319,14 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
     //SOURCE
     $ui .= '<td class="MENCHcolumn3 source">';
 
-    //RIGHT EDITING:
-    $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
-    $ui .= '<div class="pads-editor edit-off">';
-    $ui .= '<span class="show-on-hover">';
 
-    if($is_in_link){
+    if($is_in_link && $control_enabled){
+
+        //RIGHT EDITING:
+        $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
+        $ui .= '<div class="pads-editor edit-off">';
+        $ui .= '<span class="show-on-hover">';
+
         if($is_source || !$is_parent){
 
             //Unlink:
@@ -1337,11 +1342,12 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
             $ui .= '<span data-toggle="tooltip" title="You are not yet a source of this idea" data-placement="bottom"><i class="fas fa-user-minus discover"></i></span>';
 
         }
-    }
 
-    $ui .= '</span>';
-    $ui .= '</div>';
-    $ui .= '</div>';
+        $ui .= '</span>';
+        $ui .= '</div>';
+        $ui .= '</div>';
+
+    }
 
 
     //SOURCE STATS
@@ -1718,7 +1724,7 @@ function echo_unauthorized_message($superpower_en_id = 0, $push_message = true){
 
 }
 
-function echo_en($en, $is_parent = false, $extra_class = null, $note_controller = false)
+function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled = false)
 {
 
     $CI =& get_instance();
@@ -1890,7 +1896,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
     $ui .= '<div class="pads-editor edit-off">';
     $ui .= '<span class="show-on-hover">';
 
-    if($note_controller){
+    if($control_enabled){
         //Option to Manage:
         $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-pen-square black"></i></a></span>';
     }
