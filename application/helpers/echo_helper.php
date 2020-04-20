@@ -1577,15 +1577,22 @@ function echo_in_previous_discover($in_id, $recipient_en){
         $ui .= '<div class="inline-block margin-top-down selected_before pull-left"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.previous_discoveries\').toggleClass(\'hidden\');"><span class="previous_discoveries"><i class="fad fa-step-backward"></i>&nbsp;<b class="montserrat">'.$top_progress.'%</b></span><span class="previous_discoveries hidden"><i class="fas fa-times"></i></span></a>&nbsp;</div>';
     }
 
-    //Append Edit Option:
-    if(superpower_active(10939, true)){
-        //Allow Edit:
-        $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
-        $ui .= '<div class="inline-block margin-top-down previous_discoveries pull-right"><a class="btn btn-idea" href="/idea/'.$in_id.'"><span class="show-max">'.$en_all_11035[12749]['m_name'].'&nbsp;</span>'.$en_all_11035[12749]['m_icon'].'</a></div>';
-    }
+    $ui .=echo_in_contribute_btn();
 
 
     return $ui;
+}
+
+function echo_in_contribute_btn(){
+    //Append Edit Option:
+    if(superpower_active(10939, true)){
+        //Allow Edit:
+        $CI =& get_instance();
+        $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
+        return '<div class="inline-block margin-top-down previous_discoveries pull-right"><a class="btn btn-idea" href="/idea/'.$in_id.'"><span class="show-max">'.$en_all_11035[12749]['m_name'].'&nbsp;</span>'.$en_all_11035[12749]['m_icon'].'</a></div>';
+    } else {
+        return null;
+    }
 }
 
 function echo_in_note_source($in_id, $note_type_en_id, $in_notes, $is_source){

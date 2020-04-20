@@ -1510,19 +1510,20 @@ class DISCOVER_model extends CI_Model
                 if(!$all_child_featured){
 
                     //Redirect to login page:
-                    echo '<div class="inline-block margin-top-down discover-add"><a class="btn btn-discover" href="/discover/start/'.$ins[0]['in_id'].'">START <i class="fad fa-step-forward"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down discover-add pull-left"><a class="btn btn-discover" href="/discover/start/'.$ins[0]['in_id'].'">START <i class="fad fa-step-forward"></i></a></div>';
 
                     //Any Sub Topics?
                     if(count($in__children) > 0){
 
                         //Give option to review:
-                        echo '<div class="inline-block margin-top-down discover-add discover_topics">&nbsp;or&nbsp;<a href="javascript:void();" onclick="toggle_discover()"><i class="fad fa-search-plus discover_topics"></i><i class="fad fa-search-minus discover_topics hidden"></i> <u>Review '.count($in__children).' Topic'.echo__s(count($in__children)).'</u></a></div>';
+                        echo '<div class="inline-block margin-top-down discover-add discover_topics pull-left">&nbsp;or&nbsp;<a href="javascript:void();" onclick="toggle_discover()"><i class="fad fa-search-plus discover_topics"></i><i class="fad fa-search-minus discover_topics hidden"></i> <u>Review '.count($in__children).' Topic'.echo__s(count($in__children)).'</u></a></div>';
 
                     }
 
                 }
 
-
+                echo echo_in_contribute_btn();
+                echo '<div class="doclear">&nbsp;</div>';
 
             }
 
