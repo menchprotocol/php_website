@@ -14,7 +14,15 @@ $(document).ready(function () {
 });
 
 
+var saving_idea = false;
 function in_create(){
+
+    if(saving_idea){
+        alert('Idea already being saved, Be patient...');
+        return false;
+    } else {
+        saving_idea = true;
+    }
 
     //Lockdown:
     $('#newIdeaTitle').prop('disabled', true);
@@ -40,6 +48,8 @@ function in_create(){
             $('#newIdeaTitle').prop('disabled', false).focus();
 
         }
+
+        saving_idea = false;
     });
 
 }
