@@ -85,7 +85,7 @@ echo '<div class="title_counter hidden grey montserrat doupper" style="text-alig
 echo '</div>';
 
 
-
+echo "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 
 //IDEA MESSAGES:
 echo echo_in_note_mix(4231, $this->DISCOVER_model->ln_fetch(array(
