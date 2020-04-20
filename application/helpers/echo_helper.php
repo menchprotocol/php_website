@@ -1502,7 +1502,9 @@ function echo_in_next($in_id, $recipient_en, $push_message){
 
         //NEXT:
         $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
-        echo '<div class="inline-block margin-top-down previous_discoveries"><a class="btn btn-discover" href="/discover/next/'.$in_id.'">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a></div>';
+        echo '<div class="inline-block margin-top-down previous_discoveries pull-left"><a class="btn btn-discover" href="/discover/next/'.$in_id.'">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a></div>';
+
+        echo '<div class="doclear">&nbsp;</div>';
 
     }
 
@@ -1570,13 +1572,13 @@ function echo_in_previous_discover($in_id, $recipient_en){
     //Did We Find It?
     if($ui){
         //Previous
-        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.previous_discoveries\').toggleClass(\'hidden\');"><span class="previous_discoveries"><i class="fad fa-step-backward"></i>&nbsp;<b class="montserrat">'.$top_progress.'%</b></span><span class="previous_discoveries hidden"><i class="fas fa-times"></i></span></a>&nbsp;</div>';
+        $ui .= '<div class="inline-block margin-top-down selected_before pull-left"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.previous_discoveries\').toggleClass(\'hidden\');"><span class="previous_discoveries"><i class="fad fa-step-backward"></i>&nbsp;<b class="montserrat">'.$top_progress.'%</b></span><span class="previous_discoveries hidden"><i class="fas fa-times"></i></span></a>&nbsp;</div>';
     }
 
     //Append Edit Option:
     if(superpower_active(10939, true)){
         //Allow Edit:
-        $ui .= '<div class="inline-block margin-top-down previous_discoveries"><a class="btn btn-idea" href="/idea/'.$in_id.'"><i class="fas fa-pen-square"></i></a>&nbsp;</div>';
+        $ui .= '<div class="inline-block margin-top-down previous_discoveries pull-right"><a class="btn btn-idea" href="/idea/'.$in_id.'"><i class="fas fa-pen-square"></i></a>&nbsp;</div>';
     }
 
 

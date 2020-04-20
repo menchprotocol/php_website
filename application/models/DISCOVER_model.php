@@ -1939,7 +1939,9 @@ class DISCOVER_model extends CI_Model
                     echo echo_in_previous_discover($in_id, $recipient_en);
 
                     //Button to submit selection:
-                    echo '<div class="inline-block margin-top-down previous_discoveries"><a class="btn btn-discover" href="javascript:void(0)" onclick="discover_answer()">'.( count($discover_answers)>0 ? 'UPDATE' : 'SELECT' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($discover_answers)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL</u></a></span>' : '' ).'</div>';
+                    echo '<div class="inline-block margin-top-down previous_discoveries pull-left"><a class="btn btn-discover" href="javascript:void(0)" onclick="discover_answer()">'.( count($discover_answers)>0 ? 'UPDATE' : 'SELECT' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($discover_answers)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL</u></a></span>' : '' ).'</div>';
+
+                    echo '<div class="doclear">&nbsp;</div>';
 
                     echo '</div>';
 
@@ -1967,7 +1969,10 @@ class DISCOVER_model extends CI_Model
                 echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
 
                 //Save/Upload & Next:
-                echo '<div class="margin-top-down inline-block previous_discoveries"><a class="btn btn-discover" href="javascript:void(0);" onclick="discover_text_answer()">SAVE & NEXT <i class="fad fa-step-forward"></i></a>&nbsp;&nbsp;</div>';
+                echo '<div class="margin-top-down inline-block previous_discoveries pull-left"><a class="btn btn-discover" href="javascript:void(0);" onclick="discover_text_answer()">SAVE & NEXT <i class="fad fa-step-forward"></i></a>&nbsp;&nbsp;</div>';
+
+                echo '<div class="doclear">&nbsp;</div>';
+
 
                 if(count($discover_completes)){
                     //Next Ideas:
@@ -1999,7 +2004,9 @@ class DISCOVER_model extends CI_Model
                     //Show Previous Button:
                     echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
 
-                    echo '<label class="btn btn-discover inline-block previous_discoveries" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD</label>';
+                    echo '<label class="btn btn-discover inline-block previous_discoveries pull-left" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD</label>';
+
+                    echo '<div class="doclear">&nbsp;</div>';
 
                     //Show next here but keep hidden until file is uploaded:
                     echo '<div class="go_next_upload hidden inline-block previous_discoveries">';
