@@ -1232,7 +1232,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
             if($is_in_link && superpower_active(12673, true)){
                 $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
             } else {
-                $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat '.( $bold_upto_weight && $bold_upto_weight>=$in['in_weight'] ? ' bold-title ' : '' ).'">' . echo_in_title($in) . '</a>';
+                $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat '.( $bold_upto_weight && $bold_upto_weight<$in['in_weight'] ? ' bold-title ' : '' ).'">' . echo_in_title($in) . '</a>';
             }
         $ui .= '</div>';
 
