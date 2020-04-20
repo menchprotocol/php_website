@@ -1680,7 +1680,7 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
     if($handles_uploads){
         $ui .= '<td style="width:36px; padding: 10px 0 0 0;">';
         $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$note_type_en_id.'" />';
-        $ui .= '<label class="file_label_'.$note_type_en_id.'" for="fileIdeaType'.$note_type_en_id.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB or upload elsewhere & paste URL)" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
+        $ui .= '<label class="file_label_'.$note_type_en_id.'" for="fileIdeaType'.$note_type_en_id.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB, or upload elsewhere & paste URL here" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
         $ui .= '</td>';
     }
 
