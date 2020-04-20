@@ -170,66 +170,6 @@ $(document).ready(function () {
 
 
 
-function en_load_search(element_focus, is_en_parent, shortcut) {
-
-    $(element_focus + ' .new-source-input').focus(function() {
-
-        $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');
-
-    }).focusout(function() {
-
-        $(element_focus + ' .algolia_pad_search' ).addClass('hidden');
-
-    }).keypress(function (e) {
-
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
-            en_add_or_link(0, is_en_parent);
-            return true;
-        }
-
-    });
-
-    if(parseInt(js_en_all_6404[12678]['m_desc'])){
-
-            $(element_focus + ' .new-source-input').on('autocomplete:selected', function (event, suggestion, dataset) {
-
-                en_add_or_link(suggestion.alg_obj_id, is_en_parent);
-
-            }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_en_parent ? 'q' : 'a' )]}, [{
-
-            source: function (q, cb) {
-                algolia_index.search(q, {
-                    filters: 'alg_obj_is_in=0',
-                    hitsPerPage: 7,
-                }, function (error, content) {
-                    if (error) {
-                        cb([]);
-                        return;
-                    }
-                    cb(content.hits, content);
-                });
-            },
-            templates: {
-                suggestion: function (suggestion) {
-                    //If clicked, would trigger the autocomplete:selected above which will trigger the en_add_or_link() function
-                    return echo_search_result(suggestion);
-                },
-                header: function (data) {
-                    if (!data.isEmpty) {
-                        return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
-                    }
-                },
-                empty: function (data) {
-                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b>' + data.query.toUpperCase() + '</b></a>';
-                },
-            }
-        }]);
-    }
-}
-
-
-
 
 
 function account_toggle_superpower(superpower_id){
