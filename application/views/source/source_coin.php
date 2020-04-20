@@ -417,7 +417,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                            maxlength="' . config_var(11071) . '"
                            id="newIdeaTitle"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="NEW SOURCE">
+                           placeholder="PROFILE SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $this_tab .= '</div>';
@@ -501,7 +501,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                            maxlength="' . config_var(11071) . '"
                            id="newIdeaTitle"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="NEW SOURCE">
+                           placeholder="PORTFOLIO SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $this_tab .= '</div>';
