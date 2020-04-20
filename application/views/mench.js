@@ -125,24 +125,6 @@ function load_editor(){
 }
 
 
-function go_to_discover(in_id){
-    //Is It published?
-    if( parseInt($('.dropd_4737_'+in_id+'_0').attr('selected-val')) in js_en_all_7355 ){
-
-        //Yes, go to discover:
-        window.location = '/'+in_id;
-
-    } else {
-
-        //No, give them option:
-        var r = confirm("You can only discover this idea once its published. Navigate to discovery list?");
-        if (r == true) {
-            window.location = '/discover';
-        }
-
-    }
-}
-
 function echo_search_result(alg_obj){
 
     //Determine object type:
