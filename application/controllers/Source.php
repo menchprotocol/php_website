@@ -1556,16 +1556,14 @@ class Source extends CI_Controller
         }
 
 
-        //Add Player
-        $this->SOURCE_model->en_create_player($user_en['en']['en_id']);
-
-
+        //Add Player:
         $this->DISCOVER_model->ln_create(array(
+            'ln_parent_source_id' => 4430, //MENCH PLAYERS
             'ln_type_source_id' => 4230, //Raw link
-            'ln_parent_source_id' => 12221, //Notify on EMAIL
             'ln_creator_source_id' => $user_en['en']['en_id'],
             'ln_child_source_id' => $user_en['en']['en_id'],
         ));
+
         $this->DISCOVER_model->ln_create(array(
             'ln_type_source_id' => 4255, //Text link
             'ln_content' => trim(strtolower($_POST['input_email'])),

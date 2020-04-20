@@ -14,7 +14,7 @@ foreach($this->SOURCE_model->en_fetch() as $en) {
     $stats['source']++;
 
     $is_player = count($this->DISCOVER_model->ln_fetch(array(
-        'ln_parent_source_id' => 4430, //Mench User
+        'ln_parent_source_id' => 4430, //MENCH PLAYERS
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
         'ln_child_source_id' => $en['en_id'],
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -37,7 +37,7 @@ foreach($this->SOURCE_model->en_fetch() as $en) {
         $stats['ledger_not_source_count']++;
         $this->DISCOVER_model->ln_create(array(
             'ln_type_source_id' => 4230, //Raw link
-            'ln_parent_source_id' => 4430, //Mench User
+            'ln_parent_source_id' => 4430, //MENCH PLAYERS
             'ln_creator_source_id' => $en['en_id'],
             'ln_child_source_id' => $en['en_id'],
         ));
