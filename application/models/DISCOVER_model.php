@@ -1494,10 +1494,14 @@ class DISCOVER_model extends CI_Model
                     echo '<div id="discoverScroll no-height">&nbsp;</div>';
                     $common_prefix = common_prefix($in__children, 'in_title');
 
-                    echo '<div class="'.( !$all_child_featured ? ' discover_topics hidden ' : '' ).' list-group">';
+                    echo '<div class="'.( !$all_child_featured ? ' discover_topics hidden ' : '' ).'">';
+
+                    echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>'.( !$all_child_featured ? 'REVIEW TOPICS:' : 'SELECT NEXT:' ).'</div>';
+                    echo '<div class="list-group">';
                     foreach($in__children as $key => $child_in){
                         echo echo_in_discover($child_in, $is_or, null, $common_prefix);
                     }
+                    echo '</div>';
                     echo '</div>';
 
                 }
