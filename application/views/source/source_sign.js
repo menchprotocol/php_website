@@ -66,7 +66,7 @@ function select_channel(en_chosen, referrer_in_id){
     if(parseInt(en_chosen) == 6196 /* Mench on Messenger */ ){
 
         //Delete button:
-        $('#step1button').html('<div style="font-size: 1.2em; padding-top:10px;"><i class="far fa-yin-yang fa-spin"></i> Loading Messenger...</div>');
+        $('#step1button').html('<div style="font-size: 1.2em; padding-top:10px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading Messenger...</div>');
 
         //Log link:
         sign_on_messenger(referrer_in_id);
@@ -93,7 +93,7 @@ function search_email(){
 
     //Lock fields:
     email_is_searching = true;
-    $('#email_check_next').html('<i class="far fa-yin-yang fa-spin"></i>');
+    $('#email_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
     $('#input_email').prop('disabled', true).css('background-color','#f4f5f7');
     $('#password_errors').html('');
     $('#custom_message').html(''); //Delete previous errors, if any
@@ -142,7 +142,7 @@ function add_account(){
 
     //Lock fields:
     account_is_adding = true;
-    $('#add_acount_next').html('<i class="far fa-yin-yang fa-spin"></i>');
+    $('#add_acount_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
     $('#input_name, #new_password').prop('disabled', true).css('background-color','#f4f5f7');
 
     //Check email and validate:
@@ -195,7 +195,7 @@ function singin_check_password(){
 
     //Lock fields:
     password_is_checking = true;
-    $('#password_check_next').html('<i class="far fa-yin-yang fa-spin"></i>');
+    $('#password_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
     $('#input_password').prop('disabled', true).css('background-color','#f4f5f7');
 
     //Check email and validate:
@@ -236,7 +236,7 @@ function magicemail(){
 
         //Update UI:
         goto_step(5); //To check their email and create new account
-        $('.magic_result').html('<div><i class="far fa-yin-yang fa-spin"></i> Sending email...</div>');
+        $('.magic_result').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Sending Email...</div>');
 
         //Check email and validate:
         $.post("/source/magicemail", {

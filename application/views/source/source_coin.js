@@ -57,7 +57,7 @@ $(document).ready(function () {
 
             //Notify Player:
             $('.notify_en_delete').removeClass('hidden');
-            $('.source_delete_stats').html('<i class="far fa-yin-yang fa-spin"></i>');
+            $('.source_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
             //About to delete... Fetch total links:
             $.post("/source/en_count_delete_links", { en_id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
@@ -224,7 +224,7 @@ function account_toggle_superpower(superpower_id){
     superpower_id = parseInt(superpower_id);
 
     var superpower_icon = $('.superpower-frame-'+superpower_id).html();
-    $('.superpower-frame-'+superpower_id).html('<i class="far fa-yin-yang fa-spin"></i>');
+    $('.superpower-frame-'+superpower_id).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     //Save session variable to save the state of advance setting:
     $.post("/source/account_toggle_superpower/"+superpower_id, {}, function (data) {
@@ -350,10 +350,10 @@ function en_load_next_page(page, load_new_filter) {
         //Replace load more with spinner:
         var append_div = $('#new-children').html();
         //The padding-bottom would delete the scrolling effect on the left side!
-        $('#list-children').html('<span class="load-more" style="padding-bottom:500px;"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
+        $('#list-children').html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     } else {
         //Replace load more with spinner:
-        $('.load-more').html('<span class="load-more"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
+        $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     }
 
     $.post("/source/en_load_next_page", {
@@ -388,7 +388,7 @@ function en_ln_type_preview() {
      *
      * */
 
-    $('#en_type_link_id').html('<i class="far fa-yin-yang fa-spin"></i>');
+    $('#en_type_link_id').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
 
     //Fetch Idea Data to load modify widget:
@@ -484,7 +484,7 @@ function en_modify_load(en_id, ln_id) {
 function source_link_form_lock(){
     $('#ln_content').prop("disabled", true).css('background-color','#999999');
 
-    $('.btn-save').addClass('grey').attr('href', '#').html('<i class="far fa-yin-yang fa-spin"></i> Uploading');
+    $('.btn-save').addClass('grey').attr('href', '#').html('<span class="icon-block">i class="far fa-yin-yang fa-spin"></i></span>Uploading');
 
 }
 
@@ -753,7 +753,7 @@ function account_update_avatar_icon(type_css, icon_css){
         $('.avatar-item.avatar-name-'+icon_css).addClass('active');
     }
 
-    $('.en_ui_icon_'+js_pl_id).html('<i class="far fa-yin-yang fa-spin"></i>');
+    $('.en_ui_icon_'+js_pl_id).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     //Update via call:
     $.post("/source/account_update_avatar_icon", {
@@ -789,7 +789,7 @@ function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect)
 
     //Show spinner on the notification element:
     var notify_el = '.radio-'+parent_en_id+' .item-'+selected_en_id+' .change-results';
-    $(notify_el).html('<i class="far fa-yin-yang fa-spin"></i>');
+    $(notify_el).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
 
     if(!enable_mulitiselect){

@@ -558,7 +558,7 @@ function in_notes_modify_cancel(ln_id) {
 function in_notes_modify_save(ln_id, focus_ln_type_source_id) {
 
     //Show loader:
-    $("#ul-nav-" + ln_id + " .edit-updates").html('<div><i class="far fa-yin-yang fa-spin"></i></div>');
+    $("#ul-nav-" + ln_id + " .edit-updates").html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></div>');
 
     //Revert View:
     in_notes_modify_cancel(ln_id);
