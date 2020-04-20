@@ -404,6 +404,9 @@ img.no-radius {
 .message_content{
     margin-left: 33px;
 }
+.idea-footer .message_content{
+    margin-left:0;
+}
 
 .info-item a, .info-item i {
     color:#999999 !important;
