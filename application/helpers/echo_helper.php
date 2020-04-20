@@ -1633,6 +1633,10 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
 
     $CI =& get_instance();
     $en_all_4485 = $CI->config->item('en_all_4485'); //Idea Notes
+    $handles_uploads = (in_array($note_type_en_id, $CI->config->item('en_ids_12359')));
+    $handles_url = (in_array($note_type_en_id, $CI->config->item('en_ids_7551')) || in_array($note_type_en_id, $CI->config->item('en_ids_4986')));
+
+
 
     //Show no-Message notifications for each message type:
     $ui = '<div id="in_notes_list_'.$note_type_en_id.'" class="list-group">';
@@ -1641,35 +1645,42 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
         $ui .= echo_in_notes($in_notes);
     }
 
+
+
+
     //ADD NEW Alert:
     $ui .= '<div class="list-group-item itemidea space-left add_notes_' . $note_type_en_id . ( $is_source ? '' : ' hidden ' ).'">';
     $ui .= '<div class="add_notes_form">';
     $ui .= '<form class="box box' . $note_type_en_id . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
 
 
-    $ui .= '<textarea onkeyup="in_new_notes_count('.$note_type_en_id.')" class="form-control msg pads-textarea algolia_search new-pads" pads-type-id="' . $note_type_en_id . '" id="ln_content' . $note_type_en_id . '" placeholder="WRITE'.( in_array($note_type_en_id, $CI->config->item('en_ids_7551')) || in_array($note_type_en_id, $CI->config->item('en_ids_4986')) ? ', PASTE URL' : '' ).( in_array($note_type_en_id, $CI->config->item('en_ids_12359')) ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+
+    $ui .= '<textarea onkeyup="in_new_notes_count('.$note_type_en_id.')" class="form-control msg pads-textarea algolia_search new-pads" pads-type-id="' . $note_type_en_id . '" id="ln_content' . $note_type_en_id . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
     $ui .= '<table class="table table-condensed hidden" id="pads_control_'.$note_type_en_id.'"><tr>';
 
+
     //Save button:
     $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_notes_add('.$note_type_en_id.');" class="btn btn-idea save_notes_'.$note_type_en_id.'">ADD</a></td>';
+
 
     //File counter:
     $ui .= '<td style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaPadsNewCount' . $note_type_en_id . '" class="hidden"><span id="charNum' . $note_type_en_id . '">0</span>/' . config_var(11073).'</span></td>';
 
-    //Reference Player
-    //$ui .= '<td style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'@\');" data-toggle="tooltip" title="Reference Source @SOURCE_ID" data-placement="top"><span class="icon-block"><i class="far fa-at"></i></span></a></td>';
 
-    //YouTube Clip
-    $ui .= '<td style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=SECOND_HERE&end=SECOND_HERE\');" data-toggle="tooltip" title="YOUTUBE CLIPPER: Slice a video using start & end time (IN SECONDS)" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
+    //YouTube Clip:
+    if($handles_url){
+        $ui .= '<td style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=SECOND_HERE&end=SECOND_HERE\');" data-toggle="tooltip" title="YOUTUBE CLIPPER: Slice a video using start & end time (IN SECONDS)" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
+    }
+
 
     //Upload File:
-    if(in_array(12359, $en_all_4485[$note_type_en_id]['m_parents'])){
+    if($handles_uploads){
         $ui .= '<td style="width:36px; padding: 10px 0 0 0;">';
         $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$note_type_en_id.'" />';
-        $ui .= '<label class="file_label_'.$note_type_en_id.'" for="fileIdeaType'.$note_type_en_id.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
+        $ui .= '<label class="file_label_'.$note_type_en_id.'" for="fileIdeaType'.$note_type_en_id.'" data-toggle="tooltip" title="Upload Files (' . config_var(11063) . 'MB Max, or upload elsewhere & paste URL here)" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
         $ui .= '</td>';
     }
 
