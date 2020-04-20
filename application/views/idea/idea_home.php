@@ -32,7 +32,7 @@
                            id="newIdeaTitle"
                            style="margin-bottom: 0; padding: 5px 0;"
                            placeholder="NEW IDEA">
-                </div><div class="algolia_pad_search hidden in_pad_new_in"></div></div>';
+                </div><div class="algolia_pad_search hidden in_note_new_in"></div></div>';
 
         echo '</div>';
 
