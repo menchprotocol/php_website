@@ -1581,7 +1581,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
     if(superpower_active(10939, true)){
         //Allow Edit:
         $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
-        $ui .= '<div class="inline-block margin-top-down previous_discoveries pull-right"><a class="btn btn-idea" href="/idea/'.$in_id.'"><span class="show-max">'.$en_all_11035[12750]['m_name'].'&nbsp;</span>'.$en_all_11035[12750]['m_icon'].'</a></div>';
+        $ui .= '<div class="inline-block margin-top-down previous_discoveries pull-right"><a class="btn btn-idea" href="/idea/'.$in_id.'"><span class="show-max">'.$en_all_11035[12749]['m_name'].'&nbsp;</span>'.$en_all_11035[12749]['m_icon'].'</a></div>';
     }
 
 
