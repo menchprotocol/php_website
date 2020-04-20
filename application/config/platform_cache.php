@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-20 11:42:37 PST
+//Generated 2020-04-20 11:50:55 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587408157;
-$config['cache_count_transaction'] = 1148884;
+$config['cache_timestamp'] = 1587408655;
+$config['cache_count_transaction'] = 1148895;
 $config['cache_count_discover'] = 121071;
 $config['cache_count_idea'] = 4833;
 $config['cache_count_source'] = 5192;
@@ -3999,14 +3999,8 @@ $config['en_all_11054'] = array(
 );
 
 //IDEA ADMIN MENU:
-$config['en_ids_11047'] = array(11051,7264,7276,11049,7279);
+$config['en_ids_11047'] = array(7264,7276,11051,11049,7279);
 $config['en_all_11047'] = array(
-    11051 => array(
-        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
-        'm_name' => 'IDEA HISTORY',
-        'm_desc' => '/ledger?any_in_id=',
-        'm_parents' => array(11047),
-    ),
     7264 => array(
         'm_icon' => '<i class="fad fa-eye"></i>',
         'm_name' => 'IDEA MARKS BIRDS EYE',
@@ -4018,6 +4012,12 @@ $config['en_all_11047'] = array(
         'm_name' => 'IDEA SYNC INSIGHTS',
         'm_desc' => '/cron/cron__7276/',
         'm_parents' => array(11047,7286,7274),
+    ),
+    11051 => array(
+        'm_icon' => '<i class="far fa-atlas" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TRANSACTION HISTORY',
+        'm_desc' => '/ledger?any_in_id=',
+        'm_parents' => array(11047),
     ),
     11049 => array(
         'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',

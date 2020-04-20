@@ -1384,7 +1384,7 @@ function echo_caret($en_id, $m, $url_append){
     $ui .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
     $ui .= '<div class="dropdown-menu">';
     foreach ($CI->config->item('en_all_'.$en_id) as $en_id2 => $m2){
-        $ui .= '<a class="dropdown-item" href="' . $m2['m_desc'] . $url_append . '"><span class="icon-block">'.$m2['m_icon'].'</span> '.$m2['m_name'].'</a>';
+        $ui .= '<a class="dropdown-item montserrat '.extract_icon_color($m2['m_icon']).'" href="' . $m2['m_desc'] . $url_append . '"><span class="icon-block">'.$m2['m_icon'].'</span> '.$m2['m_name'].'</a>';
     }
     $ui .= '</div>';
     $ui .= '</li>';
