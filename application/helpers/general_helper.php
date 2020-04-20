@@ -718,12 +718,14 @@ function in_calc_bold_up_to($child_list){
     foreach ($child_list as $count => $child_item) {
         if(is_null($previous_weight)){
             $previous_weight = $child_item['in_weight'];
-        } elseif($previous_weight<2000){
+        } elseif($previous_weight<1500){
             break;
         } elseif($previous_weight/$child_item['in_weight'] >= 2){
             $bold_up_to = ($count+1);
             break;
         }
+
+        $previous_weight = $child_item['in_weight'];
     }
     return $bold_up_to;
 }
