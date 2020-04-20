@@ -1348,23 +1348,24 @@ class SOURCE_model extends CI_Model
     }
 
 
-}
+    function en_create_player($en_id){
 
-function en_create_player($en_id){
+        //Add them to Users group:
+        $this->DISCOVER_model->ln_create(array(
+            'ln_parent_source_id' => 4430, //Mench User
+            'ln_type_source_id' => 4230, //Raw link
+            'ln_creator_source_id' => $en_id,
+            'ln_child_source_id' => $en_id,
+        ));
 
-    //Add them to Users group:
-    $this->DISCOVER_model->ln_create(array(
-        'ln_parent_source_id' => 4430, //Mench User
-        'ln_type_source_id' => 4230, //Raw link
-        'ln_creator_source_id' => $en_id,
-        'ln_child_source_id' => $en_id,
-    ));
+        $this->DISCOVER_model->ln_create(array(
+            'ln_type_source_id' => 4230, //Raw link
+            'ln_parent_source_id' => 1278, //People
+            'ln_creator_source_id' => $en_id,
+            'ln_child_source_id' => $en_id,
+        ));
 
-    $this->DISCOVER_model->ln_create(array(
-        'ln_type_source_id' => 4230, //Raw link
-        'ln_parent_source_id' => 1278, //People
-        'ln_creator_source_id' => $en_id,
-        'ln_child_source_id' => $en_id,
-    ));
+    }
+
 
 }
