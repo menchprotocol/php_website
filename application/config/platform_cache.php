@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-19 16:26:10 PST
+//Generated 2020-04-19 17:02:22 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587338770;
-$config['cache_count_transaction'] = 1144528;
+$config['cache_timestamp'] = 1587340942;
+$config['cache_count_transaction'] = 1144558;
 $config['cache_count_discover'] = 120980;
 $config['cache_count_idea'] = 4845;
-$config['cache_count_source'] = 5171;
+$config['cache_count_source'] = 5173;
 
 
 
@@ -492,7 +492,7 @@ $config['en_all_4269'] = array(
     ),
     6197 => array(
         'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
-        'm_name' => 'NICKNAME',
+        'm_name' => 'FULL NAME',
         'm_desc' => '',
         'm_parents' => array(4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
     ),
@@ -3410,7 +3410,7 @@ $config['en_all_11081'] = array(
 );
 
 //MENCH VARIABLES:
-$config['en_ids_6232'] = array(4358,6203,6202,4486,6159,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,4356,4737,4736,7585,6198,6160,6172,6207,6197,6177,4364,7694,4367,4372,6103,4369,4429,4368,4366,4370,4371,6186,4362,4593,4739,4735);
+$config['en_ids_6232'] = array(4358,6203,6202,4486,6159,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,4356,4737,4736,7585,6197,6198,6160,6172,6207,6177,4364,7694,4367,4372,6103,4369,4429,4368,4366,4370,4371,6186,4362,4593,4739,4735);
 $config['en_all_6232'] = array(
     4358 => array(
         'm_icon' => '<i class="fad fa-comment-alt-check" aria-hidden="true"></i>',
@@ -3526,6 +3526,12 @@ $config['en_all_6232'] = array(
         'm_desc' => 'in_type_source_id',
         'm_parents' => array(11054,12079,6204,10651,6160,6194,6232,4527,6201),
     ),
+    6197 => array(
+        'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE FULL NAME',
+        'm_desc' => 'en_name',
+        'm_parents' => array(4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
+    ),
     6198 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE ICON',
@@ -3549,12 +3555,6 @@ $config['en_all_6232'] = array(
         'm_name' => 'SOURCE METADATA ALGOLIA ID',
         'm_desc' => 'en__algolia_id',
         'm_parents' => array(6232,6215,6172),
-    ),
-    6197 => array(
-        'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE NICKNAME',
-        'm_desc' => 'en_name',
-        'm_parents' => array(4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
@@ -3867,7 +3867,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.3451',
+        'm_desc' => 'v1.345',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -6276,8 +6276,14 @@ $config['en_all_4341'] = array(
 );
 
 //MENCH SOURCE:
-$config['en_ids_6206'] = array(6198,6160,6172,6197,6177);
+$config['en_ids_6206'] = array(6197,6198,6160,6172,6177);
 $config['en_all_6206'] = array(
+    6197 => array(
+        'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
+        'm_name' => 'FULL NAME',
+        'm_desc' => '',
+        'm_parents' => array(4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
+    ),
     6198 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
         'm_name' => 'ICON',
@@ -6295,12 +6301,6 @@ $config['en_all_6206'] = array(
         'm_name' => 'METADATA',
         'm_desc' => '',
         'm_parents' => array(6232,3323,6206,6195),
-    ),
-    6197 => array(
-        'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
-        'm_name' => 'NICKNAME',
-        'm_desc' => '',
-        'm_parents' => array(4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
@@ -7200,7 +7200,7 @@ $config['en_ids_6225'] = array(6197,12289,10957,3288,3286);
 $config['en_all_6225'] = array(
     6197 => array(
         'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
-        'm_name' => 'NICKNAME',
+        'm_name' => 'FULL NAME',
         'm_desc' => '',
         'm_parents' => array(4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
     ),
