@@ -1056,7 +1056,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
         $ui .= '<span class="discover-sorter" title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
 
-        $ui .= '<span title="Delete from discovery list" data-toggle="tooltip" data-placement="left"><span class="actionplan_delete" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
+        $ui .= '<span title="REMOVE" data-toggle="tooltip" data-placement="left"><span class="actionplan_delete" in-id="'.$in['in_id'].'"><i class="fas fa-times"></i></span></span>';
 
         $ui .= '</span>';
         $ui .= '</div>';
