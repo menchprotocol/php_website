@@ -3547,7 +3547,7 @@ class DISCOVER_model extends CI_Model
 
                 //Let them know about these changes:
                 $this->DISCOVER_model->dispatch_message(
-                    'Confirmed, I deleted ' . $deleted_ins . ' idea' . echo__s($deleted_ins) . ' from your DISCOVER LIST. This is the final message you will receive from me unless you message me again. I hope you take good care of yourself 😘',
+                    'Confirmed, I removed ' . $deleted_ins . ' idea' . echo__s($deleted_ins) . ' from your list. This is the final message you will receive from me unless you message me again. I hope you take good care of yourself 😘',
                     $en,
                     true
                 );
@@ -3588,7 +3588,7 @@ class DISCOVER_model extends CI_Model
 
                 //Show success message to user:
                 $this->DISCOVER_model->dispatch_message(
-                    'I have successfully deleted [' . $player_discoveries[0]['in_title'] . '] from your DISCOVER LIST.',
+                    'I have successfully removed [' . $player_discoveries[0]['in_title'] . '] from your list.',
                     $en,
                     true,
                     array(

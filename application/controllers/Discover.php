@@ -443,7 +443,7 @@ class Discover extends CI_Controller
         if(count($progress_links) > 0){
 
             //Yes they did have some:
-            $message = 'Deleted '.count($progress_links).' idea'.echo__s(count($progress_links)).' from your discovery list.';
+            $message = 'Removed '.count($progress_links).' idea'.echo__s(count($progress_links)).' from your discovery list.';
 
             //Log link:
             $clear_all_link = $this->DISCOVER_model->ln_create(array(
