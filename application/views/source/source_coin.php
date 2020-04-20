@@ -584,9 +584,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
 
                 //Dynamic Loading when clicked:
                 $discover_history_ui = $this->DISCOVER_model->discover_history_ui($en_id, 0, $source['en_id']);
-                if($discover_history_ui['status']){
-                    $this_tab .= $discover_history_ui['message'];
-                }
+                $this_tab .= $discover_history_ui['message'];
 
             }
 

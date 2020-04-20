@@ -1226,7 +1226,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
         $ui .= '<div class="block">';
             //IDEA ICON:
-            $ui .= '<span class="icon-block"><a href="/idea/'.$in['in_id'].'" title="Weight: '.number_format($in['in_weight'], 0).'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
+            $ui .= '<span class="icon-block"><a href="/idea/'.$in['in_id'].'" title="Idea Weight: '.number_format($in['in_weight'], 0).'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
 
             //IDEA TITLE
             if($is_in_link && superpower_active(12673, true)){
