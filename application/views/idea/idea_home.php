@@ -23,7 +23,8 @@
         }
 
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
-        echo '<div class="list-group-item itemidea" style="padding:5px 0;">
+
+        echo '<div class="list-group-item list-adder itemidea">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"

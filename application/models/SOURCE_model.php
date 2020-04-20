@@ -615,7 +615,7 @@ class SOURCE_model extends CI_Model
             $url_content = @file_get_contents($url);
 
             //See if we have a canonical metadata on page?
-            if(!$domain_analysis['url_is_root'] && substr_count($url_content,'rel="canonical"') > 0){
+            if(0 && !$domain_analysis['url_is_root'] && substr_count($url_content,'rel="canonical"') > 0){
                 //We seem to have it:
                 $page_parts = explode('rel="canonical"',$url_content,2);
                 $canonical_url = one_two_explode('href="', '"', $page_parts[1]);
@@ -1193,17 +1193,6 @@ class SOURCE_model extends CI_Model
             'en_status_source_id' => $en_status_source_id,
         ), true, $ln_creator_source_id);
 
-
-        if(count($duplicate_ens) > 0){
-            //Log a link to inform Player of this:
-            $this->DISCOVER_model->ln_create(array(
-                'ln_content' => 'Duplicate source names detected for ['.$duplicate_ens[0]['en_name'].']',
-                'ln_type_source_id' => 7504, //Player Review Required
-                'ln_child_source_id' => $source_new['en_id'],
-                'ln_parent_source_id' => $duplicate_ens[0]['en_id'],
-                'ln_creator_source_id' => $ln_creator_source_id,
-            ));
-        }
 
         //Return success:
         return array(
