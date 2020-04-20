@@ -1,7 +1,7 @@
 <?php
 
 //SOURCE/IDEA SYNC STATUSES (Hope to get zero)
-$session_en = superpower_assigned();
+$session_en = superpower_assigned(null, true);
 $in_query = ( isset($_GET['in_id']) && intval($_GET['in_id']) ? array('in_id' => $_GET['in_id']) : array() );
 $en_query = ( isset($_GET['en_id']) && intval($_GET['en_id']) ? array('en_id' => $_GET['en_id']) : array() );
 
