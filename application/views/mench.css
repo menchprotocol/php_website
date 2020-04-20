@@ -1375,6 +1375,7 @@ label {
     padding: 20px 0 5px;
 }
 
+
 .idea-previous{
     padding-right: 5px;
     min-width: 50px;
@@ -1400,4 +1401,7 @@ label {
 
 .hideIfEmpty:empty {
     display: none !important;
+}
+.list-adder{
+    padding: 4px 0;
 }
