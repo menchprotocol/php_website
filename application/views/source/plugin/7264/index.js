@@ -7,7 +7,7 @@ $(document).ready(function () {
 
     //Load report based on input fields:
     $.post("/plugin/ajax_7264", {
-        starting_in: parseInt($('#starting_in').val()),
+        in_id: parseInt($('#in_id').val()),
         depth_levels: parseInt($('#depth_levels').val()),
     }, function (data) {
         if (!data.status) {

@@ -97,7 +97,7 @@ class Plugin extends CI_Controller
                 'status' => 0,
                 'message' => echo_unauthorized_message(12700),
             ));
-        } elseif (!isset($_POST['starting_in']) || intval($_POST['starting_in']) < 1) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Starting Idea',
@@ -111,13 +111,13 @@ class Plugin extends CI_Controller
 
         //Fetch/Validate idea:
         $ins = $this->IDEA_model->in_fetch(array(
-            'in_id' => $_POST['starting_in'],
+            'in_id' => $_POST['in_id'],
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
         ));
         if(count($ins) != 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Could not find idea #'.$_POST['starting_in'],
+                'message' => 'Could not find idea #'.$_POST['in_id'],
             ));
         }
 
@@ -130,7 +130,7 @@ class Plugin extends CI_Controller
         //Return report:
         return echo_json(array(
             'status' => 1,
-            'message' => '<h3>'.$en_all_7585[$ins[0]['in_type_source_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_source_id']]['m_icon'].' '.echo_in_title($ins[0], false).'</h3>'.echo_in_scores_answer($_POST['starting_in'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_source_id']),
+            'message' => '<h3>'.$en_all_7585[$ins[0]['in_type_source_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_source_id']]['m_icon'].' '.echo_in_title($ins[0], false).'</h3>'.echo_in_scores_answer($_POST['in_id'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_source_id']),
         ));
 
 

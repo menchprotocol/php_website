@@ -1070,7 +1070,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 }
 
 
-function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_levels, $parent_in_type_source_id){
+function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $parent_in_type_source_id){
 
     if($depth_levels<=0){
         //End recursion:
@@ -1090,7 +1090,7 @@ function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_leve
 
     $ui = null;
     foreach($CI->DISCOVER_model->ln_fetch(array(
-        'ln_previous_idea_id' => $starting_in,
+        'ln_previous_idea_id' => $in_id,
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
@@ -1112,7 +1112,7 @@ function echo_in_scores_answer($starting_in, $depth_levels, $original_depth_leve
 
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$en_all_7585[$in_ln['in_type_source_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_source_id']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$en_all_4737[$in_ln['in_status_source_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_source_id']]['m_icon']. '</span>';
-        $ui .= '<a href="?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   echo_in_title($in_ln, false) . '</u></a>';
+        $ui .= '<a href="?in_id='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   echo_in_title($in_ln, false) . '</u></a>';
 
         $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_source_id'] == 4228 && in_array($parent_in_type_source_id , $CI->config->item('en_ids_6193') /* OR Ideas */ )) || ($in_ln['ln_type_source_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
 
