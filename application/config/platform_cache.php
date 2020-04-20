@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-19 21:07:48 PST
+//Generated 2020-04-19 21:11:31 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587355668;
-$config['cache_count_transaction'] = 1147922;
+$config['cache_timestamp'] = 1587355891;
+$config['cache_count_transaction'] = 1147928;
 $config['cache_count_discover'] = 121028;
 $config['cache_count_idea'] = 4837;
 $config['cache_count_source'] = 5166;
@@ -221,7 +221,7 @@ $config['en_all_12677'] = array(
         'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-double-right discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA DISCOVERY',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
@@ -303,7 +303,7 @@ $config['en_all_12655'] = array(
         'm_parents' => array(12655,12400,4593,12647,4737),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-double-right discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA DISCOVERY',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
@@ -326,7 +326,7 @@ $config['en_all_12654'] = array(
         'm_parents' => array(10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-double-right discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA DISCOVERY',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
@@ -395,7 +395,7 @@ $config['en_all_12648'] = array(
         'm_parents' => array(12648,11035),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-double-right discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA DISCOVERY',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
@@ -1804,7 +1804,7 @@ $config['en_all_6205'] = array(
         'm_parents' => array(6205,12227,7347,5967,4755,4593),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-double-right discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA DISCOVERY',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
@@ -2759,7 +2759,7 @@ $config['en_all_12228'] = array(
         'm_parents' => array(10939,12500,12655,12647,12571,12467,12321,12410,11089,12228,4527,6768),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-double-right discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA DISCOVERY',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
@@ -3273,7 +3273,7 @@ $config['en_all_11089'] = array(
         'm_parents' => array(10984,11018,11089,4535,12322,4986,10593,4593,4485),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-double-right discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA DISCOVERY',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
@@ -4061,7 +4061,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-double-right discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA DISCOVERY',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
@@ -4197,7 +4197,7 @@ $config['en_all_11018'] = array(
         'm_parents' => array(12702,11018,4527,4535,12590),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-double-right discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA DISCOVERY',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
@@ -5013,7 +5013,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(10939,12500,12655,12647,12571,12467,12321,12410,11089,12228,4527,6768),
     ),
     7347 => array(
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-double-right discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA DISCOVERY',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
