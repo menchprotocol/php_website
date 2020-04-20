@@ -148,7 +148,7 @@ function echo_search_result(alg_obj){
     var obj_icon = ( parseInt(alg_obj.alg_obj_is_in) ? '<i class="fas fa-circle '+( js_session_superpowers_assigned.includes(10939) ? 'idea' : 'discover' )+'"></i>' : alg_obj.alg_obj_icon );
     var obj_full_name = ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name );
 
-    return '<span class="icon-block-sm">'+ obj_icon +'</span>' + ( is_public ? '' : '<span class="icon-block-sm"><i class="far fa-spinner fa-spin"></i></span>' ) + '<span class="'+ js_extract_icon_color(obj_icon) +'">' + obj_full_name + '</span>';
+    return '<span class="icon-block-sm">'+ obj_icon +'</span>' + ( is_public ? '' : '<span class="icon-block-sm"><i class="far fa-spinner fa-spin"></i></span>' ) + '<span class="'+ ( obj_type=='source' ? js_extract_icon_color(obj_icon) : '' ) +'">' + obj_full_name + '</span>';
 
 }
 
