@@ -1700,6 +1700,28 @@ class DISCOVER_model extends CI_Model
 
 
 
+
+        //PREVIOUSLY UNLOCKED:
+        if(!$push_message){
+
+            $unlocked_steps = $this->DISCOVER_model->ln_fetch(array(
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
+                'ln_creator_source_id' => $recipient_en['en_id'],
+                'ln_previous_idea_id' => $ins[0]['in_id'],
+            ), array('in_child'), 0);
+
+            //Did we have any steps unlocked?
+            if(count($unlocked_steps) > 0){
+                echo_in_list($ins[0], $unlocked_steps, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:');
+            }
+
+        }
+
+
+
+
         //LOCKED
         if (in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7309'))) {
 
@@ -2031,34 +2053,6 @@ class DISCOVER_model extends CI_Model
             }
 
         }
-
-
-
-
-        /*
-         *
-         * List Conditional Links that are
-         * previously unlocked (HTML ONLY)
-         *
-         * */
-        if(!$push_message){
-
-            $unlocked_steps = $this->DISCOVER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
-                'ln_creator_source_id' => $recipient_en['en_id'],
-                'ln_previous_idea_id' => $ins[0]['in_id'],
-            ), array('in_child'), 0);
-
-            //Did we have any steps unlocked?
-            if(count($unlocked_steps) > 0){
-                echo_in_list($ins[0], $unlocked_steps, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:');
-            }
-
-        }
-
-
 
     }
 
