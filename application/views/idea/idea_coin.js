@@ -212,15 +212,41 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
         return false;
     }
 
-    //Are we deleting a status?
-    var is_in_delete = (element_id==4737 && !(new_en_id in js_en_all_7356));
-    if(is_in_delete){
-        //Seems to be deleting, confirm:
-        var r = confirm("Delete this idea AND unlink all its links to other ideas?");
-        if (r == false) {
-            return false;
+    //Changing Idea Status?
+    if(element_id==4737){
+
+        var is_in_active = (new_en_id in js_en_all_7356);
+        var is_in_public = (new_en_id in js_en_all_7355);
+
+
+        //Deleting?
+        if(!is_in_active){
+            //Seems to be deleting, confirm:
+            var r = confirm("Delete this idea AND unlink all its links to other ideas?");
+            if (r == false) {
+                return false;
+            }
         }
+
+
+        //Discovery Setting:
+        if(is_in_public){
+
+            //Enable Discovery:
+            $('.idea-discover').removeClass('hidden');
+
+        } else {
+
+            //Disable Discovery:
+            $('.idea-discover').addClass('hidden');
+
+        }
+
     }
+
+
+
+    //Is Status Public?
 
 
 

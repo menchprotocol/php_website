@@ -147,25 +147,12 @@ if(!isset($hide_header)){
                             //Show Mench Menu:
                             foreach ($en_all_2738_mench as $en_id => $m) {
 
-
-                                $url_extension = null;
                                 $is_current_mench = ($current_mench['x_id'] == $en_id);
                                 $this_mench = current_mench(strtolower($m['m_name']));
-                                $primary_url = 'href="/' . $this_mench['x_name'].'"';
                                 $coin_counts[$en_id] = count_ln_type($count_controller[$en_id]);
 
-
-                                if (!$is_current_mench && isset($in) && in_array($this_mench['x_name'], array('discover', 'idea'))) {
-                                    if ($current_mench['x_name'] == 'discover' && $this_mench['x_name'] == 'idea' && $in['in_id']!=config_var(12156) && superpower_active(12674, true) ) {
-                                        $primary_url = 'href="/idea/' . $in['in_id'].'"';
-                                    } elseif ($current_mench['x_name'] == 'idea' && $this_mench['x_name'] == 'discover') {
-                                        $primary_url = 'href="javascript:void(0);" onclick="go_to_discover('.$in['in_id'].')"';
-                                    }
-                                }
-
-
                                 echo '<div class="btn-group mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'].($is_current_mench ? ' focustab ' : '').'">';
-                                echo '<a class="btn ' . $this_mench['x_class'] . '" ' . $primary_url . '>';
+                                echo '<a class="btn ' . $this_mench['x_class'] . '" href="/' . $this_mench['x_name'].'">';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $this_mench['x_class'] . '_name '.( $is_current_mench ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;</span>';
                                 echo '<span class="montserrat" title="'.$coin_counts[$en_id].'">'.echo_number($coin_counts[$en_id]).'</span>';
@@ -173,6 +160,7 @@ if(!isset($hide_header)){
                                 echo '</div>';
 
                             }
+
                         }
                         echo '</div>';
 

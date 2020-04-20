@@ -3,6 +3,8 @@ $en_all_2738 = $this->config->item('en_all_2738');
 
 $is_source = in_is_source($in['in_id']);
 $is_active = in_array($in['in_status_source_id'], $this->config->item('en_ids_7356'));
+$is_public = in_array($in['in_status_source_id'], $this->config->item('en_ids_7355'));
+
 ?>
 
 <style>
@@ -92,12 +94,14 @@ echo echo_in_note_mix(4231, $this->DISCOVER_model->ln_fetch(array(
 ), array(), 0, 0, array('ln_order' => 'ASC')), ($is_source && $is_active));
 
 
-
 //IDEA STATUS
 echo '<div class="inline-block both-margin left-margin">'.echo_in_dropdown(4737, $in['in_status_source_id'], 'btn-idea', $is_source, true, $in['in_id']).'</div>';
 
+//IDEA DISCOVER (IF PUBLIC)
+echo '<div class="inline-block both-margin left-half-margin idea-discover '.( $is_public ? '' : ' hidden ' ).'"><a class="btn btn-discover" href="/'.$in['in_id'].'"><i class="fas fa-eye"></i></a></div>';
+
 //IDEA TYPE
-echo '<span class="inline-block both-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_source_id'], 'btn-idea', $is_source && $is_active, true, $in['in_id']).'</span>';
+echo '<div class="inline-block both-margin left-half-margin">'.echo_in_dropdown(7585, $in['in_type_source_id'], 'btn-idea', $is_source && $is_active, true, $in['in_id']).'</div>';
 
 //IDEA TIME
 echo '<div class="inline-block both-margin left-half-margin">'.echo_in_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source && $is_active, 0).'</div>';
