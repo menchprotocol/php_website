@@ -1044,7 +1044,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
     //DISCOVER ICON
     $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle discover"></i>' : '<i class="far fa-lock discover"></i>' ).'</span>';
-    $ui .= '<b class="montserrat idea-url title-block" style="padding-right:10px;">'.echo_in_title($in, false, $common_prefix).'</b>';
+    $ui .= '<b class="montserrat idea-url title-block" style="padding-right:23px;">'.echo_in_title($in, false, $common_prefix).'</b>';
 
 
     //Search for Idea Image:
