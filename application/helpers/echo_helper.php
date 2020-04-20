@@ -1504,8 +1504,6 @@ function echo_in_next($in_id, $recipient_en, $push_message){
         $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
         echo '<div class="inline-block margin-top-down previous_discoveries pull-left"><a class="btn btn-discover" href="/discover/next/'.$in_id.'">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a></div>';
 
-        echo '<div class="doclear">&nbsp;</div>';
-
     }
 
 }
