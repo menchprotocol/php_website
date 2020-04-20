@@ -547,6 +547,9 @@ function superpower_active($superpower_en_id, $boolean_only = false){
 }
 
 function extract_icon_color($en_icon){
+
+    //NOTE: Has a twin JS function
+
     if(substr_count($en_icon, 'discover')>0){
         return ' discover ';
     } elseif(substr_count($en_icon, 'idea')>0){
