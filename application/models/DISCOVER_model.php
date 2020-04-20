@@ -2540,10 +2540,11 @@ class DISCOVER_model extends CI_Model
         $in_query = $this->DISCOVER_model->ln_fetch($match_columns, $join_objects, config_var(11064), 0, $order_columns);
         $previous_do_hide = true;
         $bold_upto_weight = in_calc_bold_upto_weight($in_query);
+        $show_max = config_var(11986);
 
         //List Discovery History:
         $ui = '<div class="list-group dynamic-discoveries">';
-        foreach($in_query as $in_discover){
+        foreach($in_query as $count => $in_discover){
             if($pads_in_id > 0){
 
                 $ui .= echo_en($in_discover);
@@ -2557,9 +2558,9 @@ class DISCOVER_model extends CI_Model
                     $infobar_details .= '</div>';
                 }
 
-                $do_hide = ($bold_upto_weight && $bold_upto_weight>=$in_discover['in_weight']);
+                $do_hide = (($bold_upto_weight && $bold_upto_weight>=$in_discover['in_weight']) || ($count > $show_max));
 
-                if($bold_upto_weight && !$previous_do_hide && $do_hide){
+                if(!$previous_do_hide && $do_hide){
                     $ui .= '<div class="list-group-item nonbold_hide no-side-padding montserrat"><span class="icon-block"><i class="far fa-search-plus idea"></i></span><a href="javascript:void(0);" onclick="$(\'.nonbold_hide\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
                     $ui .= '<div class="see_more_sources"></div>';
                 }
