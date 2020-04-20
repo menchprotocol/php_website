@@ -1,5 +1,5 @@
 
-<script src="/application/views/source/7264/index.js?v=1.0" type="text/javascript"></script>
+<script src="/application/views/source/plugin/7264/index.js?v=1.0" type="text/javascript"></script>
 
 <?php
 
