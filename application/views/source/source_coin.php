@@ -88,7 +88,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
 
         <h5 class="badge badge-h edit-header"><i class="fas fa-cog"></i> Modify</h5>
         <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
-            <a href="javascript:void(0);" onclick="modify_cancel()"><i class="fas fa-times-circle"></i></a>
+            <a href="javascript:void(0);" onclick="modify_cancel()"><i class="fas fa-times"></i></a>
         </div>
         <div class="grey-box">
 
@@ -230,7 +230,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
             data-placement="bottom"><i class="fas fa-comment-plus"></i> Source References within Idea Notes
         </h5>
         <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
-            <a href="#" onclick="modify_cancel()"><i class="fas fa-times-circle"></i></a>
+            <a href="#" onclick="modify_cancel()"><i class="fas fa-times"></i></a>
         </div>
         <div class="grey-box">
             <div id="loaded-messages"></div>

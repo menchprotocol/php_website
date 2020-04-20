@@ -1054,9 +1054,9 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
         $ui .= '<span class="show-on-hover">';
 
-        $ui .= '<span class="discover-sorter" title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
-
         $ui .= '<span title="REMOVE" data-toggle="tooltip" data-placement="left"><span class="actionplan_delete" in-id="'.$in['in_id'].'"><i class="fas fa-times"></i></span></span>';
+
+        $ui .= '<span class="discover-sorter" title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
 
         $ui .= '</span>';
         $ui .= '</div>';
@@ -1324,12 +1324,12 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
     if($is_in_link){
         if($is_source || !$is_parent){
 
+            //Unlink:
+            $ui .= '<span title="Unlink Idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-times black"></i></a></span>';
+
             if($is_source && !$is_parent){
                 $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars black idea-sort-handle"></i></span>';
             }
-
-            //Unlink:
-            $ui .= '<span title="Unlink Idea" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-times black"></i></a></span>';
 
         } elseif(!$is_source) {
 
