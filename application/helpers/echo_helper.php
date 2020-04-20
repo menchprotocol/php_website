@@ -1050,7 +1050,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
     //Search for Idea Image:
     if($show_editor){
 
-        $ui .= '<div class="pads-edior edit-off">';
+        $ui .= '<div class="pads-editor edit-off">';
 
         $ui .= '<span class="show-on-hover">';
 
