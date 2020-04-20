@@ -21,7 +21,7 @@ function in_create(){
     $('#tempLoader').remove();
 
     //Set processing status:
-    add_to_list('myIdeas', '.itemidealist', '<div id="tempLoader" class="list-group-item itemidea montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>Saving Idea...</div>');
+    add_to_list('myIdeas', '.itemidealist', '<div id="tempLoader" class="list-group-item montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>Saving Idea...</div>');
 
     //Process this:
     $.post("/idea/in_create", {

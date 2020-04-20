@@ -56,7 +56,7 @@ class Idea extends CI_Controller {
 
         return echo_json(array(
             'status' => 1,
-            'message' => '<div class="list-group-item itemidea montserrat"><span class="icon-block"><i class="fas fa-check-circle idea"></i></span>Success! Redirecting now...</div>',
+            'message' => '<span class="icon-block"><i class="fas fa-check-circle idea"></i></span>Success! Redirecting now...',
             'in_id' => $in['new_in_id'],
         ));
 
