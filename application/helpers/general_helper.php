@@ -712,22 +712,22 @@ function fetch_cookie_order($cookie_name){
     return $new_order_value;
 }
 
-function in_calc_bold_up_to($child_list){
-    $bold_up_to = 0;
+function in_calc_bold_upto_weight($child_list){
+    $bold_upto_weight = 0;
     $previous_weight = null;
     foreach ($child_list as $count => $child_item) {
         if(!is_null($previous_weight)){
             if($previous_weight<1000){
                 break;
             } elseif($previous_weight/$child_item['in_weight'] >= 2){
-                $bold_up_to = ($count+1);
+                $bold_upto_weight = $child_item['in_weight'];
                 break;
             }
         }
 
         $previous_weight = $child_item['in_weight'];
     }
-    return $bold_up_to;
+    return $bold_upto_weight;
 }
 
 function in_calc_common_prefix($child_list, $child_field, $in = null, $max_look = 0){

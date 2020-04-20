@@ -513,12 +513,9 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
             if($counter>0 && (!$disable_content_loading || $auto_expand_tab)){
 
                 $in_notes_query = $this->DISCOVER_model->ln_fetch($in_notes_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC'));
-
-                //Determine if any are BOLD:
-                $bold_up_to = in_calc_bold_up_to($in_notes_query);
+                $bold_upto_weight = in_calc_bold_upto_weight($in_notes_query);
 
 
-                $this_tab .= 'BOLD UP TO '.$bold_up_to.'';
                 $this_tab .= '<div class="list-group">';
                 foreach ($in_notes_query as $count => $in_notes) {
                     if(in_array($en_id, $this->config->item('en_ids_12321'))){
@@ -535,7 +532,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                             $infobar_details .= '</div>';
                         }
 
-                        $this_tab .= echo_in($in_notes, 0, false, false, $infobar_details, ( $bold_up_to && $count < $bold_up_to ));
+                        $this_tab .= echo_in($in_notes, 0, false, false, $infobar_details, $bold_upto_weight);
 
                     }
                 }
@@ -594,8 +591,6 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
             }
 
         } elseif($en_id==4997 /* SOURCE UPDATER */){
-
-
 
             $dropdown_options = '';
             $input_options = '';
