@@ -14,6 +14,7 @@ body {
     line-height: 110%;
 }
 
+
 /*
 
 h1, h2, h3, ul, p { padding: 0 5px; }
@@ -183,7 +184,11 @@ li a {
     padding: 2px 4px 0 0;
 }
 
-
+.form-control-thick{
+    padding:7px 10px 7px 33px;
+    font-weight: bold;
+    color: #000000 !important;
+}
 .bottom-discover-line{
     order-bottom: 1px solid #FC1B44;
     margin-bottom: 10px;
@@ -1032,11 +1037,7 @@ label {
     cursor: default !important;
 }
 
-.form-control-thick{
-    padding:7px 10px 7px 33px;
-    font-weight: bold;
-    color: #000000 !important;
-}
+
 
 .list-group-item .montserrat, .list-group-item{
     text-decoration: none;
