@@ -551,10 +551,10 @@ function extract_icon_color($en_icon){
         return ' discover ';
     } elseif(substr_count($en_icon, 'idea')>0){
         return ' idea ';
-    } elseif(substr_count($en_icon, 'source')>0){
+    } elseif(substr_count($en_icon, 'source')>0 || !$en_icon){
         return ' source ';
     } else {
-        return ' source ';
+        return '';
     }
 }
 
