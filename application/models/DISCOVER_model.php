@@ -1780,7 +1780,8 @@ class DISCOVER_model extends CI_Model
                         echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:');
 
                         //Allow to edit:
-                        echo '<div class="inline-block margin-top-down previous_discoveries pull-left extra-top-margin">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block-sm"><i class="fas fa-pen-square"></i></span><u class="show-max">EDIT ANSWER</u></a></div>';
+                        echo '<div class="inline-block margin-top-down previous_discoveries pull-left"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-pen-square"></i></a></div>';
+
 
                         echo '</div>';
 
