@@ -1790,7 +1790,7 @@ class DISCOVER_model extends CI_Model
 
                     if($push_message){
 
-                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOUR ANSWER:');
+
 
                     } else {
 
@@ -1799,11 +1799,7 @@ class DISCOVER_model extends CI_Model
                         echo '<div class="selected_before">';
 
                         //List answers:
-                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:');
-
-                        //Allow to edit:
-                        echo '<div class="inline-block margin-top-down previous_discoveries pull-left">&nbsp;<a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-pen-square"></i></a></div>';
-
+                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', true, true, '<div class="inline-block margin-top-down previous_discoveries pull-left">&nbsp;<a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-pen-square"></i></a></div>');
 
                         echo '</div>';
 
@@ -2032,11 +2028,7 @@ class DISCOVER_model extends CI_Model
                 } else {
 
                     //Next Ideas:
-                    echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
-
-                    //File Replace:
-                    echo '<label class="btn btn-discover inline-block previous_discoveries pull-left" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><span class="icon-block"><i class="fad fa-cloud-upload-alt"></i></span><span class="show-max">REPLACE</span></label>';
-
+                    echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true, true, '<label class="btn btn-discover inline-block previous_discoveries pull-left" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><span class="icon-block"><i class="fad fa-cloud-upload-alt"></i></span><span class="show-max">REPLACE</span></label>');
 
                 }
 
