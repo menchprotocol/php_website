@@ -2565,7 +2565,7 @@ class DISCOVER_model extends CI_Model
                     $ui .= '<div class="see_more_sources"></div>';
                 }
 
-                $ui .= echo_in($in_discover, 0, false, false, null, ( $do_hide ? ' nonbold_hide hidden ' : '' ));
+                $ui .= echo_in($in_discover, 0, false, false, null, ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
 
                 $previous_do_hide = $do_hide;
 
