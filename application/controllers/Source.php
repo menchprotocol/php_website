@@ -1636,7 +1636,7 @@ class Source extends CI_Controller
             $login_url = '/'.$_POST['referrer_in_id'];
         } else {
             //Go to home page and let them continue from there:
-            $login_url = '/source';
+            $login_url = '/';
         }
 
         return echo_json(array(
