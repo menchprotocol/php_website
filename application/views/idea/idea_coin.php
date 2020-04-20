@@ -106,7 +106,7 @@ echo '<div class="inline-block pull-left both-margin left-half-margin">'.echo_in
 //IDEA DISCOVER (IF PUBLIC)
 echo '<div class="inline-block pull-right both-margin left-half-margin idea-discover '.( $is_public ? '' : ' hidden ' ).'"><a class="btn btn-discover" href="/'.$in['in_id'].'"><i class="fas fa-eye"></i></a></div>';
 
-$ui .= '<div class="doclear">&nbsp;</div>';
+echo '<div class="doclear">&nbsp;</div>';
 
 
 
