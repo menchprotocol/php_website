@@ -267,13 +267,13 @@ function echo_in_notes($ln)
     //Editing menu:
     $ui .= '<div class="pads-editor edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
 
+        //Modify:
+        $ui .= '<span title="MODIFY" data-toggle="tooltip" data-placement="left"><a href="javascript:in_notes_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
+
         //Sort:
         if(in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents'])){
             $ui .= '<span title="SORT" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars '.( in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents']) ? 'in_notes_sorting' : '' ).'"></i></span>';
         }
-
-        //Modify:
-        $ui .= '<span><a href="javascript:in_notes_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
 
     $ui .= '</span></div>';
 
@@ -1942,7 +1942,7 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_source, $tab
     $attributes = ( $is_source ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' texttype_'.$cache_en_id.($is_in_title_lg?'_lg':'_sm').'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" ';
 
 
-    $tooltip_span_start = '<span class="span__'.$cache_en_id.' '.( !$is_source ? 'edit-locked' : '' ).'" '.( !$is_in_title_lg || !$is_source ? 'data-toggle="tooltip" data-placement="bottom" title="'.$en_all_12112[$cache_en_id]['m_name'].'"' : '').'>';
+    $tooltip_span_start = '<span class="span__'.$cache_en_id.' '.( !$is_source ? 'edit-locked' : '' ).'" '.( !$is_in_title_lg || !$is_source ? 'data-toggle="tooltip" data-placement="top" title="'.$en_all_12112[$cache_en_id]['m_name'].'"' : '').'>';
     $tooltip_span_end = '</span>';
 
 
