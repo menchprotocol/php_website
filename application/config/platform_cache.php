@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-20 09:02:04 PST
+//Generated 2020-04-20 11:42:37 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587398524;
-$config['cache_count_transaction'] = 1148534;
+$config['cache_timestamp'] = 1587408157;
+$config['cache_count_transaction'] = 1148884;
 $config['cache_count_discover'] = 121071;
-$config['cache_count_idea'] = 4837;
-$config['cache_count_source'] = 5195;
+$config['cache_count_idea'] = 4833;
+$config['cache_count_source'] = 5192;
 
 
 
@@ -90,19 +90,19 @@ $config['en_all_12741'] = array(
 );
 
 //CRON JOBS:
-$config['en_ids_7274'] = array(7275,7276,12114,7277,7279,7278,12523,12569);
+$config['en_ids_7274'] = array(7275,7276,12114,7277,7278,12523,7279,12569);
 $config['en_all_7274'] = array(
     7275 => array(
         'm_icon' => '',
         'm_name' => 'IDEA METADATA SYNC COMMON BASE',
         'm_desc' => '',
-        'm_parents' => array(6418,7286,7274),
+        'm_parents' => array(7286,7274),
     ),
     7276 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
-        'm_name' => 'IDEA METADATA SYNC EXTRA INSIGHTS',
+        'm_name' => 'IDEA SYNC INSIGHTS',
         'm_desc' => '',
-        'm_parents' => array(11048,6418,7286,7274),
+        'm_parents' => array(11047,7286,7274),
     ),
     12114 => array(
         'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
@@ -114,25 +114,25 @@ $config['en_all_7274'] = array(
         'm_icon' => '',
         'm_name' => 'METADATA CLEAN VARIABLES',
         'm_desc' => '',
-        'm_parents' => array(6418,7287,7274),
-    ),
-    7279 => array(
-        'm_icon' => '<img src="https://partners.algolia.com/images/logos/algolia-logo-badge.svg">',
-        'm_name' => 'SYNC ALGOLIA SEARCH INDEX',
-        'm_desc' => '',
-        'm_parents' => array(3323,6418,7287,7274),
+        'm_parents' => array(7287,7274),
     ),
     7278 => array(
         'm_icon' => '',
         'm_name' => 'SYNC GEPHI INDEX',
         'm_desc' => '',
-        'm_parents' => array(7311,6418,7287,7274),
+        'm_parents' => array(7311,7287,7274),
     ),
     12523 => array(
         'm_icon' => '<i class="fad fa-portrait source" aria-hidden="true"></i>',
         'm_name' => 'SYNC ICONS IF MISSING',
         'm_desc' => '',
         'm_parents' => array(7274,4527,4758),
+    ),
+    7279 => array(
+        'm_icon' => '<img src="https://partners.algolia.com/images/logos/algolia-logo-badge.svg">',
+        'm_name' => 'SYNC SEARCH INDEX',
+        'm_desc' => '',
+        'm_parents' => array(11047,3323,7287,7274),
     ),
     12569 => array(
         'm_icon' => '<i class="fad fa-weight"></i>',
@@ -817,7 +817,7 @@ $config['en_all_10876'] = array(
     10939 => array(
         'm_icon' => '<i class="fad fa-pen idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA PEN',
-        'm_desc' => 'https://mench.com/13440',
+        'm_desc' => 'https://mench.com/13467',
         'm_parents' => array(10876,10957),
     ),
     7291 => array(
@@ -1519,7 +1519,7 @@ $config['en_all_6205'] = array(
         'm_icon' => '<i class="fad fa-trash-alt discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER DELETE ALL',
         'm_desc' => '',
-        'm_parents' => array(6205,11035,4755,6418,4593,6414),
+        'm_parents' => array(6205,11035,4755,4593,6414),
     ),
     10683 => array(
         'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
@@ -3170,7 +3170,7 @@ $config['en_all_12112'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA',
         'm_desc' => '',
-        'm_parents' => array(11050,12499,12112,4527,12155,2738),
+        'm_parents' => array(12499,12112,4527,12155,2738),
     ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
@@ -3999,31 +3999,37 @@ $config['en_all_11054'] = array(
 );
 
 //IDEA ADMIN MENU:
-$config['en_ids_11047'] = array(11050,11051,11048,11049);
+$config['en_ids_11047'] = array(11051,7264,7276,11049,7279);
 $config['en_all_11047'] = array(
-    11050 => array(
-        'm_icon' => '<img src="https://partners.algolia.com/images/logos/algolia-logo-badge.svg">',
-        'm_name' => 'ALGOLIA UPDATE INDEX',
-        'm_desc' => '/cron/algolia/in/',
-        'm_parents' => array(7279,11047),
-    ),
     11051 => array(
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA HISTORY',
         'm_desc' => '/ledger?any_in_id=',
         'm_parents' => array(11047),
     ),
-    11048 => array(
+    7264 => array(
+        'm_icon' => '<i class="fad fa-eye"></i>',
+        'm_name' => 'IDEA MARKS BIRDS EYE',
+        'm_desc' => '/plugin/7264?in_id=',
+        'm_parents' => array(11047,6287),
+    ),
+    7276 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
-        'm_name' => 'IDEA UPDATE CACHE',
-        'm_desc' => '/cron/source_insights/',
-        'm_parents' => array(11047),
+        'm_name' => 'IDEA SYNC INSIGHTS',
+        'm_desc' => '/cron/cron__7276/',
+        'm_parents' => array(11047,7286,7274),
     ),
     11049 => array(
         'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
         'm_name' => 'JSON REVIEW IDEA',
-        'm_desc' => '/idea/in_review_metadata/',
+        'm_desc' => '/plugin/11049?in_id=',
         'm_parents' => array(12741,6287,11047),
+    ),
+    7279 => array(
+        'm_icon' => '<img src="https://partners.algolia.com/images/logos/algolia-logo-badge.svg">',
+        'm_name' => 'SYNC SEARCH INDEX',
+        'm_desc' => '/cron/cron__7279/in/',
+        'm_parents' => array(11047,3323,7287,7274),
     ),
 );
 
@@ -4052,7 +4058,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fad fa-trash-alt discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER DELETE ALL',
         'm_desc' => '',
-        'm_parents' => array(6205,11035,4755,6418,4593,6414),
+        'm_parents' => array(6205,11035,4755,4593,6414),
     ),
     7347 => array(
         'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
@@ -4808,13 +4814,13 @@ $config['en_all_2738'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
         'm_desc' => '',
-        'm_parents' => array(11050,12499,4527,12155,2738),
+        'm_parents' => array(12499,4527,12155,2738),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA',
         'm_desc' => '',
-        'm_parents' => array(11050,12499,12112,4527,12155,2738),
+        'm_parents' => array(12499,12112,4527,12155,2738),
     ),
     6205 => array(
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
@@ -5016,7 +5022,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA',
         'm_desc' => '',
-        'm_parents' => array(11050,12499,12112,4527,12155,2738),
+        'm_parents' => array(12499,12112,4527,12155,2738),
     ),
     11047 => array(
         'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
@@ -5412,7 +5418,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
         'm_desc' => '',
-        'm_parents' => array(11050,12499,4527,12155,2738),
+        'm_parents' => array(12499,4527,12155,2738),
     ),
     12744 => array(
         'm_icon' => '',
@@ -6658,10 +6664,10 @@ $config['en_all_6287'] = array(
         'm_parents' => array(6287),
     ),
     7264 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fad fa-eye"></i>',
         'm_name' => 'IDEA MARKS BIRDS EYE',
         'm_desc' => '',
-        'm_parents' => array(6287),
+        'm_parents' => array(11047,6287),
     ),
     7263 => array(
         'm_icon' => '',
@@ -7207,25 +7213,25 @@ $config['en_all_4737'] = array(
     12137 => array(
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
         'm_name' => 'FEATURED',
-        'm_desc' => 'Searchable & Browsable',
+        'm_desc' => 'Starting point idea, Searchable by all players',
         'm_parents' => array(10648,12138,7356,7355,4737),
     ),
     6184 => array(
         'm_icon' => '<i class="far fa-globe idea" aria-hidden="true"></i>',
         'm_name' => 'PUBLISHED',
-        'm_desc' => 'Available for Discovery',
+        'm_desc' => 'Continuation idea, accessible to anyone who has the URL',
         'm_parents' => array(10648,7355,7356,4737),
     ),
     6183 => array(
         'm_icon' => '<i class="far fa-spinner fa-spin idea" aria-hidden="true"></i>',
         'm_name' => 'DRAFTING',
-        'm_desc' => 'Not Yet Published',
+        'm_desc' => 'Undiscoverable idea until published live',
         'm_parents' => array(10648,7356,4737),
     ),
     6182 => array(
         'm_icon' => '<i class="fad fa-trash-alt idea" aria-hidden="true"></i>',
         'm_name' => 'DELETED',
-        'm_desc' => 'Removed',
+        'm_desc' => 'Archived idea',
         'm_parents' => array(12655,12400,4593,12647,4737),
     ),
 );
@@ -7584,7 +7590,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fad fa-trash-alt discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER DELETE ALL',
         'm_desc' => '',
-        'm_parents' => array(6205,11035,4755,6418,4593,6414),
+        'm_parents' => array(6205,11035,4755,4593,6414),
     ),
     4556 => array(
         'm_icon' => '<i class="discover fad fa-file-pdf"></i>',
@@ -8045,7 +8051,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fad fa-trash-alt discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER DELETE ALL',
         'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for trainers.',
-        'm_parents' => array(6205,11035,4755,6418,4593,6414),
+        'm_parents' => array(6205,11035,4755,4593,6414),
     ),
     10683 => array(
         'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',

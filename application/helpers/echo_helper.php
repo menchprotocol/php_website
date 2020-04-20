@@ -1647,7 +1647,7 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
     $ui .= '<form class="box box' . $note_type_en_id . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
 
 
-    $ui .= '<textarea onkeyup="in_new_notes_count('.$note_type_en_id.')" class="form-control msg pads-textarea algolia_search new-pads" pads-type-id="' . $note_type_en_id . '" id="ln_content' . $note_type_en_id . '" placeholder="WRITE'.( in_array($note_type_en_id, $CI->config->item('en_ids_7551')) || in_array($note_type_en_id, $CI->config->item('en_ids_4986')) ? ', PASTE URL' : '' ).( in_array($note_type_en_id, $CI->config->item('en_ids_12359')) ? ', DRAG FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+    $ui .= '<textarea onkeyup="in_new_notes_count('.$note_type_en_id.')" class="form-control msg pads-textarea algolia_search new-pads" pads-type-id="' . $note_type_en_id . '" id="ln_content' . $note_type_en_id . '" placeholder="WRITE'.( in_array($note_type_en_id, $CI->config->item('en_ids_7551')) || in_array($note_type_en_id, $CI->config->item('en_ids_4986')) ? ', PASTE URL' : '' ).( in_array($note_type_en_id, $CI->config->item('en_ids_12359')) ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
