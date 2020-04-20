@@ -74,6 +74,7 @@ class Idea extends CI_Controller {
         $this->load->view('footer');
     }
 
+
     function idea_coin($in_id){
 
         //Validate/fetch Idea:
@@ -84,15 +85,20 @@ class Idea extends CI_Controller {
             return redirect_message('/', '<div class="alert alert-danger" role="alert">IDEA #' . $in_id . ' Not Found</div>');
         }
 
-        //Make sure user is logged in
-        $session_en = superpower_assigned(null, (!in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7355'))));
+        //Determine Access Level:
+        $session_en = superpower_assigned(10939); //Idea Pen?
+        $is_public = in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7355'));
+
         if(!$session_en){
-            return redirect_message('/'.$in_id);
+            if($is_public){
+                return redirect_message('/'.$in_id);
+            } else {
+                return redirect_message('/', '<div class="alert alert-danger" role="alert">IDEA #' . $in_id . ' is not published yet.</div>');
+            }
         }
 
-
-
-        if (superpower_assigned(12702) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
+        //Mass Editing?
+        if (superpower_active(12702, true) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
 
             //Process mass action:
             $process_mass_action = $this->IDEA_model->in_mass_update($in_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
@@ -102,7 +108,7 @@ class Idea extends CI_Controller {
 
         } else {
 
-            //No mass action, just viewing...
+            //Just Viewing:
             $message = null;
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);

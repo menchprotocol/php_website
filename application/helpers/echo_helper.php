@@ -1253,7 +1253,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
     $in_metadata = unserialize($in['in_metadata']);
 
     $session_en = superpower_assigned();
-    $is_published = in_array($in['in_status_source_id'], $CI->config->item('en_ids_7355'));
+    $is_public = in_array($in['in_status_source_id'], $CI->config->item('en_ids_7355'));
     $is_link_published = in_array($in['ln_status_source_id'], $CI->config->item('en_ids_7359'));
     $is_in_link = in_array($in['ln_type_source_id'], $CI->config->item('en_ids_4486'));
     $is_source = ( !$is_in_link ? false : $is_source ); //Disable Edits on Idea List Page
@@ -1608,8 +1608,14 @@ function echo_in_previous_discover($in_id, $recipient_en){
     if($ui){
         //Previous
         $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.previous_discoveries\').toggleClass(\'hidden\');"><span class="previous_discoveries"><i class="fad fa-step-backward"></i>&nbsp;<b class="montserrat">'.$top_progress.'%</b></span><span class="previous_discoveries hidden"><i class="fas fa-times"></i></span></a>&nbsp;</div>';
-
     }
+
+    //Append Edit Option:
+    if(superpower_active(10939, true)){
+        //Allow Edit:
+        $ui .= '<div class="inline-block margin-top-down selected_before"><a class="btn btn-idea" href="/idea/'.$in_id.'"><i class="fas fa-pen-square"></i></a>&nbsp;</div>';
+    }
+
 
     return $ui;
 }
@@ -1775,11 +1781,11 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
         'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
     ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
 
-    $is_published = in_array($en['en_status_source_id'], $CI->config->item('en_ids_7357'));
+    $is_public = in_array($en['en_status_source_id'], $CI->config->item('en_ids_7357'));
     $is_link_published = ( !$ln_id || in_array($en['ln_status_source_id'], $CI->config->item('en_ids_7359')));
     $is_hidden = filter_array($en__parents, 'en_id', '4755');
 
-    if(!$session_en && ($is_hidden || !$is_published || !$is_link_published)){
+    if(!$session_en && ($is_hidden || !$is_public || !$is_link_published)){
         //Not logged in, so should only see published:
         return false;
     } elseif($is_hidden && !superpower_active(12701, true)){
@@ -1841,7 +1847,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $note_controller 
 
 
     //SOURCE STATUS
-    $ui .= '<span class="en_status_source_id_' . $en['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].': '.$en_all_6177[$en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
+    $ui .= '<span class="en_status_source_id_' . $en['en_id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].': '.$en_all_6177[$en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
 
     //LINK
     if ($ln_id > 0) {
