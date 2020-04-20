@@ -32,6 +32,19 @@ $(document).ready(function () {
 
 
 
+    $('#new-parent').focus(function() {
+        $('#new-parent .pad_expand').removeClass('hidden');
+    }).focusout(function() {
+        $('#new-parent .pad_expand').addClass('hidden');
+    });
+
+    $('#new-children').focus(function() {
+        $('#new-children .pad_expand').removeClass('hidden');
+    }).focusout(function() {
+        $('#new-children .pad_expand').addClass('hidden');
+    });
+
+
 
     //Load search for mass update function:
     load_editor();

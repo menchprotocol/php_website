@@ -413,12 +413,12 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control form-control-thick montserrat algolia_search dotransparent new-source-input"
+                           class="form-control source form-control-thick montserrat algolia_search dotransparent new-source-input"
                            maxlength="' . config_var(11071) . '"
                            id="newIdeaTitle"
                            style="margin-bottom: 0; padding: 5px 0;"
                            placeholder="NEW SOURCE">
-                </div><div class="algolia_pad_search hidden in_note_new_in"></div></div>';
+                </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $this_tab .= '</div>';
 
@@ -493,13 +493,18 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
             }
 
             //Input to add new child:
-            $this_tab .= '<div id="new-children" style="padding-top:2px;" class="list-group-item itemsource no-side-padding '.superpower_active(10967).'">
-        <div class="form-group is-empty"><input type="text" class="form-control new-source-input form-control-thick montserrat algolia_search dotransparent" data-lpignore="true" placeholder="+ SOURCE"></div>
-        <div class="algolia_pad_search hidden"></div>
-</div>';
+            $this_tab .= '<div id="new-children" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10967).'">
+                <div class="input-group border">
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
+                    <input type="text"
+                           class="form-control source form-control-thick montserrat algolia_search dotransparent new-source-input"
+                           maxlength="' . config_var(11071) . '"
+                           id="newIdeaTitle"
+                           style="margin-bottom: 0; padding: 5px 0;"
+                           placeholder="NEW SOURCE">
+                </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
+
             $this_tab .= '</div>';
-
-
 
         } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
 
