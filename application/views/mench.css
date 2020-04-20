@@ -950,6 +950,10 @@ td.MENCHcolumn3  { width: 13%; }
     font-size: 0.8em;
 }
 
+.extra-top-margin{
+    margin-top:39px;
+}
+
 .show-on-hover .fa-bars {
     margin-bottom:0;
 }
