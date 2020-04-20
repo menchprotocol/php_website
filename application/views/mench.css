@@ -309,6 +309,10 @@ img.no-radius {
 .fixed-top, .fixed-bottom {
     z-index: 9999999 !important;
 }
+.fixed-top {
+    height: 42px;
+    overflow: hidden;
+}
 
 .no-margin{
     margin:10px 0 0;
