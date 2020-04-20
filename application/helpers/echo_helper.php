@@ -1659,11 +1659,11 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
     //File counter:
     $ui .= '<td style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaPadsNewCount' . $note_type_en_id . '" class="hidden"><span id="charNum' . $note_type_en_id . '">0</span>/' . config_var(11073).'</span></td>';
 
+    //Reference Player
+    //$ui .= '<td style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'@\');" data-toggle="tooltip" title="Reference Source @SOURCE_ID" data-placement="top"><span class="icon-block"><i class="far fa-at"></i></span></a></td>';
+
     //YouTube Clip
     $ui .= '<td style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=SECOND_HERE&end=SECOND_HERE\');" data-toggle="tooltip" title="Insert YouTube Clip URL" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
-
-    //Reference Player
-    $ui .= '<td style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'@\');" data-toggle="tooltip" title="Reference Source @SOURCE_ID" data-placement="top"><span class="icon-block"><i class="far fa-at"></i></span></a></td>';
 
     //Upload File:
     if(in_array(12359, $en_all_4485[$note_type_en_id]['m_parents'])){
