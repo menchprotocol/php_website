@@ -2538,18 +2538,22 @@ class DISCOVER_model extends CI_Model
         }
 
         $in_query = $this->DISCOVER_model->ln_fetch($match_columns, $join_objects, config_var(11064), 0, $order_columns);
-        $previous_do_hide = true;
-        $bold_upto_weight = in_calc_bold_upto_weight($in_query);
-        $show_max = config_var(11986);
 
         //List Discovery History:
         $ui = '<div class="list-group dynamic-discoveries">';
-        foreach($in_query as $count => $in_discover){
-            if($pads_in_id > 0){
+        if($pads_in_id > 0){
 
+            foreach($in_query as $count => $in_discover){
                 $ui .= echo_en($in_discover);
+            }
 
-            } elseif($owner_en_id > 0){
+        } elseif($owner_en_id > 0){
+
+            $previous_do_hide = true;
+            $bold_upto_weight = in_calc_bold_upto_weight($in_query);
+            $show_max = config_var(11986);
+
+            foreach($in_query as $count => $in_discover){
 
                 $infobar_details = null;
                 if(strlen($in_discover['ln_content'])){
@@ -2571,8 +2575,8 @@ class DISCOVER_model extends CI_Model
 
             }
         }
-        $ui .= '</div>';
 
+        $ui .= '</div>';
 
 
         //Return success:

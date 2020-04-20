@@ -716,6 +716,7 @@ function in_calc_bold_upto_weight($child_list){
     $bold_upto_weight = 0;
     $previous_weight = null;
     foreach ($child_list as $count => $child_item) {
+
         if(!is_null($previous_weight)){
             if($previous_weight<1000){
                 break;
