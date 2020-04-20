@@ -1578,7 +1578,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
     //Append Edit Option:
     if(superpower_active(10939, true)){
         //Allow Edit:
-        $ui .= '<div class="inline-block margin-top-down previous_discoveries pull-right"><a class="btn btn-idea" href="/idea/'.$in_id.'"><i class="fas fa-pen-square"></i></a>&nbsp;</div>';
+        $ui .= '<div class="inline-block margin-top-down previous_discoveries pull-right"><a class="btn btn-idea" href="/idea/'.$in_id.'"><i class="fas fa-pen-square"></i></a></div>';
     }
 
 
