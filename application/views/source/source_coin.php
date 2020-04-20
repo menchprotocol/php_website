@@ -528,7 +528,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                             $infobar_details .= '</div>';
                         }
 
-                        $this_tab .= echo_in_discover($in_notes, false, $infobar_details);
+                        $this_tab .= echo_in($in_notes, 0, false, false, $infobar_details);
 
                     }
                 }

@@ -1008,7 +1008,7 @@ function echo_coins_count_source($in_id = 0, $en_id = 0){
 
 
 
-function echo_in_discover($in, $parent_is_or = false, $infobar_details = null, $common_prefix = null, $extra_class = null, $show_editor = false, $completion_rate = null, $recipient_en = false)
+function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $extra_class = null, $show_editor = false, $completion_rate = null, $recipient_en = false)
 {
 
     //See if user is logged-in:
@@ -1029,7 +1029,6 @@ function echo_in_discover($in, $parent_is_or = false, $infobar_details = null, $
         }
     }
 
-
     $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor );
 
 
@@ -1043,67 +1042,26 @@ function echo_in_discover($in, $parent_is_or = false, $infobar_details = null, $
     }
 
 
-    $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-    $ui .= '<td class="MENCHcolumn1">';
-
-
     //DISCOVER ICON
     $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle discover"></i>' : '<i class="far fa-lock discover"></i>' ).'</span>';
-    $ui .= '<b class="montserrat idea-url title-block">'.echo_in_title($in, false, $common_prefix).'</b>';
+    $ui .= '<b class="montserrat idea-url title-block" style="padding-right:10px;">'.echo_in_title($in, false, $common_prefix).'</b>';
 
 
-    if($infobar_details){
-        $ui .= '<div class="idea-footer"><span class="icon-block">&nbsp;</span>' . $infobar_details . '</div>';
+    //Search for Idea Image:
+    if($show_editor){
+
+        $ui .= '<div class="pads-edior edit-off">';
+
+        $ui .= '<span class="show-on-hover">';
+
+        $ui .= '<span class="discover-sorter" title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
+
+        $ui .= '<span title="Delete from discovery list" data-toggle="tooltip" data-placement="left"><span class="actionplan_delete" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
+
+        $ui .= '</span>';
+        $ui .= '</div>';
+
     }
-
-    $ui .= '</td>';
-
-
-
-
-
-    //SOURCE
-    $ui .= '<td class="MENCHcolumn2 source">';
-
-        //Count Sources of Idea Tree:
-
-    $ui .= '</td>';
-
-
-
-
-    //IDEA
-    $ui .= '<td class="MENCHcolumn3 idea">';
-
-        //Search for Idea Image:
-        if($show_editor){
-
-            $ui .= '<div class="pads-edior edit-off">';
-
-            $ui .= '<span class="show-on-hover">';
-
-            $ui .= '<span class="discover-sorter" title="Drag up/down to sort" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
-
-            $ui .= '<span title="Delete from discovery list" data-toggle="tooltip" data-placement="left"><span class="actionplan_delete" in-id="'.$in['in_id'].'"><i class="far fa-trash-alt"></i></span></span>';
-
-            $ui .= '</span>';
-            $ui .= '</div>';
-
-        }
-
-        //Count Ideas in Idea Tree:
-
-
-    $ui .= '</td>';
-
-
-
-
-
-
-
-    $ui .= '</tr></table>';
-
 
     $ui .= ( $can_click ? '</a>' : '' );
     $ui .= '</div>';
@@ -1235,7 +1193,7 @@ function echo_in_marks($in_ln){
 }
 
 
-function echo_in($in, $in_linked_id, $is_parent, $is_source)
+function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = null)
 {
 
     $CI =& get_instance();
@@ -1394,6 +1352,11 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source)
 
 
     $ui .= '</tr></table>';
+
+    if($infobar_details){
+        $ui .= '<div class="idea-footer"><span class="icon-block">&nbsp;</span>' . $infobar_details . '</div>';
+    }
+
     $ui .= '</div>';
 
 
@@ -1481,7 +1444,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
             } else {
 
-                echo echo_in_discover($child_in, false, null, $common_prefix);
+                echo echo_in_discover($child_in, false, $common_prefix);
 
             }
         }
@@ -1580,7 +1543,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
 
                 $completion_rate = $CI->DISCOVER_model->discover__completion_progress($recipient_en['en_id'], $ins_this[0]);
 
-                array_push($breadcrumb_items, echo_in_discover($ins_this[0], false, null, null, null, false, $completion_rate, $recipient_en));
+                array_push($breadcrumb_items, echo_in_discover($ins_this[0], false, null, null, false, $completion_rate, $recipient_en));
 
                 if ($parent_in_id == $intersect) {
                     $top_progress = $completion_rate['completion_percentage'];
