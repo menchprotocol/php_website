@@ -7,7 +7,7 @@
 
         //START PUBLISHING
         $en_all_10876 = $this->config->item('en_all_10876'); //MENCH WEBSITE
-        echo '<div style="padding:10px 0;"><a href="'.$en_all_10876[10939]['m_desc'].'" class="btn btn-idea montserrat">GET STARTED <i class="fad fa-step-forward"></i></a></div>';
+        echo '<div style="padding:10px 0;"><a href="'.$en_all_10876[10939]['m_desc'].'" class="btn btn-idea montserrat">START <i class="fad fa-step-forward"></i></a></div>';
 
     } else {
 

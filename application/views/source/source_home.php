@@ -39,7 +39,6 @@
 
 
 
-
     //MENCH COINS
     $en_all_12467 = $this->config->item('en_all_12467'); //MENCH
     echo '<table id="leaderboard" class="table table-sm table-striped tablepadded" style="margin-bottom: 0;">';
