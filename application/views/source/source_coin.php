@@ -411,7 +411,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
             //Input to add new parents:
             $this_tab .= '<div id="new-parent" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10967).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4534]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control form-control-thick montserrat algolia_search dotransparent new-source-input"
                            maxlength="' . config_var(11071) . '"
