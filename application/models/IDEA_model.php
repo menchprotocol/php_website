@@ -277,13 +277,14 @@ class IDEA_model extends CI_Model
             'status_sync' => 0,
         );
 
-        //IDEAS
         $status_converter = array(
-            12137 => 12399, //IDEA FEATURE => DISCOVER FEATURE
-            6184 => 6176, //IDEA PUBLISH => DISCOVER PUBLISH
-            6183 => 6175, //IDEA DRAFT => DISCOVER DRAFT
-            6182 => 6173, //IDEA DELETE => DISCOVER DELETE
+            12137 => 12399, //IDEA FEATURE  => TRANSACTION FEATURE
+            6184 => 6176,   //IDEA PUBLISH  => TRANSACTION PUBLISH
+            6183 => 6175,   //IDEA DRAFT    => TRANSACTION DRAFT
+            6182 => 6173,   //IDEA DELETE   => TRANSACTION DELETE
         );
+
+
         foreach($this->IDEA_model->in_fetch($query) as $in){
 
             $stats['scanned']++;
@@ -293,6 +294,8 @@ class IDEA_model extends CI_Model
                 'ln_type_source_id' => $stats['ln_type_source_id'],
                 'ln_next_idea_id' => $in['in_id'],
             ));
+
+            echo $discoveries[0]['ln_status_source_id'] .' === '. $status_converter[$in['in_status_source_id']].'<hr />';
 
             if(!count($discoveries)){
 
