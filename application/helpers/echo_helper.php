@@ -1387,7 +1387,7 @@ function echo_caret($en_id, $m, $url_append){
 }
 
 
-function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null, $in_discoveries = true, $show_next = true, $append_button = null){
+function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null, $show_next = true, $append_button = null){
 
     //If no list just return the next step:
     if(!count($in__children)){

@@ -1714,7 +1714,7 @@ class DISCOVER_model extends CI_Model
 
             //Did we have any steps unlocked?
             if(count($unlocked_steps) > 0){
-                echo_in_list($ins[0], $unlocked_steps, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:');
+                echo_in_list($ins[0], $unlocked_steps, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:', false);
             }
 
         }
@@ -1735,7 +1735,7 @@ class DISCOVER_model extends CI_Model
             }
 
             //List Children if any:
-            echo_in_list($ins[0], $in__children, $recipient_en, $push_message,  null, true, ( $completion_rate['completion_percentage'] < 100 ));
+            echo_in_list($ins[0], $in__children, $recipient_en, $push_message,  null, ( $completion_rate['completion_percentage'] < 100 ));
 
 
         } elseif (in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7712'))){
@@ -1799,7 +1799,7 @@ class DISCOVER_model extends CI_Model
                         echo '<div class="selected_before">';
 
                         //List answers:
-                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', true, true, '<div class="inline-block margin-top-down previous_discoveries pull-left">&nbsp;<a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-pen-square"></i></a></div>');
+                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', true, '<div class="inline-block margin-top-down previous_discoveries pull-left">&nbsp;<a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-pen-square"></i></a></div>');
 
                         echo '</div>';
 
@@ -1971,7 +1971,7 @@ class DISCOVER_model extends CI_Model
                 //DISCOVER ONLY
 
                 //Next Ideas:
-                echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
+                echo_in_list($ins[0], $in__children, $recipient_en, $push_message);
 
             } elseif ($ins[0]['in_type_source_id'] == 6683) {
 
@@ -1990,7 +1990,7 @@ class DISCOVER_model extends CI_Model
 
                 if(count($discover_completes)){
                     //Next Ideas:
-                    echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true, false);
+                    echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null,false);
                 }
 
                 echo '<script> $(document).ready(function () { autosize($(\'#discover_text_answer\')); $(\'#discover_text_answer\').focus(); }); </script>';
