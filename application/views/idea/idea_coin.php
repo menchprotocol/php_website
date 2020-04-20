@@ -85,8 +85,6 @@ echo '<div class="title_counter hidden grey montserrat doupper" style="text-alig
 echo '</div>';
 
 
-echo "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-
 //IDEA MESSAGES:
 echo echo_in_note_mix(4231, $this->DISCOVER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
@@ -165,9 +163,40 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
 
         $this_tab .= '</div>';
 
+    } elseif(in_array($en_id, $this->config->item('en_ids_7551'))){
+
+        //Reference Sources Only:
+        $in_notes = $this->DISCOVER_model->ln_fetch(array(
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'ln_type_source_id' => $en_id,
+            'ln_next_idea_id' => $in['in_id'],
+        ), array('en_parent'), 0, 0, array('ln_order' => 'ASC'));
+
+        $counter = count($in_notes);
+
+        $this_tab .= '<div id="add-source-' .$en_id . '" class="list-group source-adder">';
+
+        foreach ($in_notes as $in_note) {
+            $this_tab .= echo_en($in_note);
+        }
+
+        $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding">
+                <div class="input-group border">
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
+                    <input type="text"
+                           class="form-control source source-mapper source-map-'.$en_id.' form-control-thick montserrat algolia_search dotransparent new-source-input"
+                           maxlength="' . config_var(11072) . '"
+                           source-type-id="' . $en_id . '"
+                           style="margin-bottom: 0; padding: 5px 0;"
+                           placeholder="NEW SOURCE">
+                </div><div class="algolia_pad_search hidden pad_expand source-pad-'.$en_id.'"></div></div>';
+
+        $this_tab .= '</div>';
+
+
     } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
 
-        //Idea NoteS
+        //Idea Notes
         $in_notes = $this->DISCOVER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id' => $en_id,

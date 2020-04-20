@@ -83,6 +83,21 @@ $(document).ready(function () {
         });
     });
 
+    //Activate Source-Only Inputs:
+
+    $(".source-mapper").each(function () {
+
+        var type_en_id = $(this).attr('source-type-id');
+        en_load_search(".source-map-"+type_en_id, 0, 'w');
+
+        $(this).focus(function() {
+            $('.source-pad-'+type_en_id).removeClass('hidden');
+        }).focusout(function() {
+            $('.source-pad-'+type_en_id).addClass('hidden');
+        });
+
+    });
+
     //Load top/bottom idea searches:
     in_load_search(".IdeaAddPrevious",1, 'q', 'link_in');
     in_load_search(".ideaadder-level-2-child",0, 'w', 'link_in');

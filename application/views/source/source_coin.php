@@ -414,7 +414,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control source form-control-thick montserrat algolia_search dotransparent new-source-input"
-                           maxlength="' . config_var(11071) . '"
+                           maxlength="' . config_var(11072) . '"
                            id="newIdeaTitle"
                            style="margin-bottom: 0; padding: 5px 0;"
                            placeholder="PROFILE SOURCE">
@@ -478,7 +478,6 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                         $this_tab .= '</div>';
 
                     }
-
                 }
             }
 
@@ -498,7 +497,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control source form-control-thick montserrat algolia_search dotransparent new-source-input"
-                           maxlength="' . config_var(11071) . '"
+                           maxlength="' . config_var(11072) . '"
                            id="newIdeaTitle"
                            style="margin-bottom: 0; padding: 5px 0;"
                            placeholder="PORTFOLIO SOURCE">
