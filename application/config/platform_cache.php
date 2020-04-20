@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-20 07:28:29 PST
+//Generated 2020-04-20 09:02:04 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587392909;
-$config['cache_count_transaction'] = 1148396;
+$config['cache_timestamp'] = 1587398524;
+$config['cache_count_transaction'] = 1148534;
 $config['cache_count_discover'] = 121071;
 $config['cache_count_idea'] = 4837;
-$config['cache_count_source'] = 5168;
+$config['cache_count_source'] = 5195;
 
 
 
@@ -37,7 +37,7 @@ $config['en_all_12744'] = array(
 );
 
 //PLUGIN EXCLUDE MENCH UI:
-$config['en_ids_12741'] = array(12733,11049,12712,12722,4527,12710,12709);
+$config['en_ids_12741'] = array(12733,11049,12712,12722,4527,12710,12709,12732);
 $config['en_all_12741'] = array(
     12733 => array(
         'm_icon' => '',
@@ -78,6 +78,12 @@ $config['en_all_12741'] = array(
     12709 => array(
         'm_icon' => 'ℹ️',
         'm_name' => 'PHP INFO',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
+    ),
+    12732 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE/IDEA SYNC STATUSES',
         'm_desc' => '',
         'm_parents' => array(12741,6287),
     ),
@@ -6739,7 +6745,7 @@ $config['en_all_6287'] = array(
         'm_icon' => '',
         'm_name' => 'SOURCE/IDEA SYNC STATUSES',
         'm_desc' => '',
-        'm_parents' => array(6287),
+        'm_parents' => array(12741,6287),
     ),
     7268 => array(
         'm_icon' => '',

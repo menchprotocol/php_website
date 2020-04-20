@@ -1,8 +1,8 @@
 <?php
 
 //SOURCE/IDEA SYNC STATUSES (Hope to get zero)
-$in_query = (isset($_GET['in_id']) && intval($_GET['in_id']) ? array('in_id' => $_GET['in_id']) : array());
-$en_query = (isset($_GET['en_id']) && intval($_GET['en_id']) ? array('en_id' => $_GET['en_id']) : array());
+$in_query = ( isset($_GET['in_id']) && intval($_GET['in_id']) ? array('in_id' => $_GET['in_id']) : array() );
+$en_query = ( isset($_GET['en_id']) && intval($_GET['en_id']) ? array('en_id' => $_GET['en_id']) : array() );
 
 
 if(!count($en_query)){
