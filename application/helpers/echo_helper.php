@@ -1424,7 +1424,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
             if($has_content){
                 echo '<div class="discover-topic">'.trim($prefix_statement).'</div>';
             } else {
-                echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>TOPICS:</div>';
+                echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>PREVIEW TOPICS:</div>';
             }
             echo '<div class="list-group">';
 
@@ -1672,7 +1672,7 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
 
     //YouTube Clip:
     if($handles_url){
-        $ui .= '<td style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=SECOND_HERE&end=SECOND_HERE\');" data-toggle="tooltip" title="YOUTUBE CLIPPER: Slice a video using start & end time (IN SECONDS)" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
+        $ui .= '<td style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=SECOND_HERE&end=SECOND_HERE\');" data-toggle="tooltip" title="YOUTUBE CLIPPER: Slice a video using start & end time" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
     }
 
 
@@ -1680,7 +1680,7 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
     if($handles_uploads){
         $ui .= '<td style="width:36px; padding: 10px 0 0 0;">';
         $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$note_type_en_id.'" />';
-        $ui .= '<label class="file_label_'.$note_type_en_id.'" for="fileIdeaType'.$note_type_en_id.'" data-toggle="tooltip" title="Upload Files (' . config_var(11063) . 'MB Max, or upload elsewhere & paste URL here)" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
+        $ui .= '<label class="file_label_'.$note_type_en_id.'" for="fileIdeaType'.$note_type_en_id.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB or upload elsewhere & paste URL)" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
         $ui .= '</td>';
     }
 

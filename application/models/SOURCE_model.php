@@ -1259,7 +1259,7 @@ class SOURCE_model extends CI_Model
              * */
 
             //Create user source:
-            $added_en = $this->SOURCE_model->en_verify_create('User '.rand(100000000, 999999999), 0, 6181, random_player_avatar());
+            $added_en = $this->SOURCE_model->en_verify_create('User '.rand(100000000, 999899999), 0, 6181, random_player_avatar());
 
         } else {
 
