@@ -19,7 +19,7 @@
             'ln_type_source_id' => 10573, //Idea Notes Bookmarks
             'ln_parent_source_id' => $session_en['en_id'], //For this player
         ), array('in_child'), 0, 0, array('in_weight' => 'DESC')) as $bookmark_in){
-            echo echo_in($bookmark_in, 0, false, true, null, null, false);
+            echo echo_in($bookmark_in, 0, false, true);
         }
 
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
