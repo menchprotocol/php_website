@@ -3009,6 +3009,9 @@ class DISCOVER_model extends CI_Model
                         //Raw media file: Audio, Video, Image OR File...
                         $message_visual_media++;
                     } elseif($parent_en['ln_type_source_id'] == 4256 /* URL */){
+                        if($parent_en['ln_content']=="https://".$_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI]){
+                            continue;
+                        }
                         array_push($valid_url, $parent_en['ln_content']);
                     }
 
