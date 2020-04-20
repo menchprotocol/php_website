@@ -744,7 +744,7 @@ textarea.pads-textarea{
 .title-block{
     display: block;
     padding-left: 32px;
-    padding-right:32px;
+    padding-right:0;
     margin-top: -17px !important;
     margin-bottom:0;
 }

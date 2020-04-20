@@ -85,7 +85,16 @@ class Idea extends CI_Controller {
             return redirect_message('/', '<div class="alert alert-danger" role="alert">IDEA #' . $in_id . ' Not Found</div>');
         }
 
-        //Determine Access Level:
+
+
+        
+        /*
+         *
+         * The next section is very important as it
+         * manages the entire search traffic that
+         * comes through /idea/ID
+         *
+         * */
         $session_en = superpower_assigned(10939); //Idea Pen?
         $is_public = in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7355'));
 
@@ -96,6 +105,11 @@ class Idea extends CI_Controller {
                 return redirect_message('/', '<div class="alert alert-danger" role="alert">IDEA #' . $in_id . ' is not published yet.</div>');
             }
         }
+
+
+
+
+
 
         //Mass Editing?
         if (superpower_active(12702, true) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
