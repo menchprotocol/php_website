@@ -1418,7 +1418,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
             if($has_content){
                 echo '<div class="discover-topic">'.trim($prefix_statement).'</div>';
             } else {
-                echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>NEXT:</div>';
+                echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>TOPICS:</div>';
             }
             echo '<div class="list-group">';
 
