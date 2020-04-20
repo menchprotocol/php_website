@@ -483,6 +483,7 @@ img.no-radius {
 }
 .bold-title{
     font-size: 1.4em;
+    line-height: 120%;
 }
 .main_nav{
     width: 100% !important;
