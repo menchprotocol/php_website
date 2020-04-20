@@ -295,8 +295,6 @@ class IDEA_model extends CI_Model
                 'ln_next_idea_id' => $in['in_id'],
             ));
 
-            echo $discoveries[0]['ln_status_source_id'] .' === '. $status_converter[$in['in_status_source_id']].'<hr />';
-
             if(!count($discoveries)){
 
                 $stats['missing_creation_fix']++;
