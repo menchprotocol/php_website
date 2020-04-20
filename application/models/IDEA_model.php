@@ -267,7 +267,7 @@ class IDEA_model extends CI_Model
         return $links_deleted;
     }
 
-    function in_match_ln_status($ln_creator_source_id, $query= array()){
+    function in_match_ln_status($ln_creator_source_id, $query){
 
         //STATS
         $stats = array(
