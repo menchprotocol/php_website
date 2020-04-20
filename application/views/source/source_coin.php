@@ -512,8 +512,13 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
             //SHOW LASTEST 100
             if($counter>0 && (!$disable_content_loading || $auto_expand_tab)){
 
+                $in_notes_query = $this->DISCOVER_model->ln_fetch($in_notes_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC'));
+
+                //Determine if any are BOLD:
+                $bold_up_to = in_calc_bold_up_to($in_notes_query);
+
                 $this_tab .= '<div class="list-group">';
-                foreach ($this->DISCOVER_model->ln_fetch($in_notes_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC')) as $in_notes) {
+                foreach ($in_notes_query as $count => $in_notes) {
                     if(in_array($en_id, $this->config->item('en_ids_12321'))){
 
                         $this_tab .= echo_in_discover($in_notes);
@@ -528,7 +533,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                             $infobar_details .= '</div>';
                         }
 
-                        $this_tab .= echo_in($in_notes, 0, false, false, $infobar_details);
+                        $this_tab .= echo_in($in_notes, 0, false, false, $infobar_details, ( $bold_up_to > 0 && $count < $bold_up_to ));
 
                     }
                 }

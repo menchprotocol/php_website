@@ -712,8 +712,23 @@ function fetch_cookie_order($cookie_name){
     return $new_order_value;
 }
 
+function in_calc_bold_up_to($child_list){
+    $bold_up_to = 0;
+    $previous_weight = null;
+    foreach ($child_list as $count => $child_item) {
+        if(is_null($previous_weight)){
+            $previous_weight = $child_item['in_weight'];
+        } elseif($previous_weight<2000){
+            break;
+        } elseif($previous_weight/$child_item['in_weight'] >= 2){
+            $bold_up_to = ($count+1);
+            break;
+        }
+    }
+    return $bold_up_to;
+}
 
-function common_prefix($child_list, $child_field, $in = null, $max_look = 0){
+function in_calc_common_prefix($child_list, $child_field, $in = null, $max_look = 0){
 
     $CI =& get_instance();
 

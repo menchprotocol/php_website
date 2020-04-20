@@ -1492,11 +1492,11 @@ class DISCOVER_model extends CI_Model
 
                     //List Children:
                     echo '<div id="discoverScroll no-height">&nbsp;</div>';
-                    $common_prefix = common_prefix($in__children, 'in_title');
+                    $common_prefix = in_calc_common_prefix($in__children, 'in_title');
 
                     echo '<div class="'.( !$all_child_featured ? ' discover_topics hidden ' : '' ).'">';
 
-                    echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>'.( !$all_child_featured ? 'REVIEW TOPICS:' : 'SELECT ONE:' ).'</div>';
+                    echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>'.( !$all_child_featured ? 'PREVIEW TOPICS:' : 'SELECT ONE:' ).'</div>';
                     echo '<div class="list-group">';
                     foreach($in__children as $key => $child_in){
                         echo echo_in_discover($child_in, $is_or, $common_prefix);
@@ -1516,7 +1516,7 @@ class DISCOVER_model extends CI_Model
                     if(count($in__children) > 0){
 
                         //Give option to review:
-                        echo '<div class="inline-block margin-top-down discover-add discover_topics pull-left" style="margin-top: 39px;">&nbsp;or&nbsp;<a href="javascript:void();" onclick="toggle_discover()"><i class="fad fa-search-plus discover_topics"></i><i class="fad fa-search-minus discover_topics hidden"></i> <u>Review '.count($in__children).' Topic'.echo__s(count($in__children)).'</u></a></div>';
+                        echo '<div class="inline-block margin-top-down discover-add discover_topics pull-left" style="margin-top: 39px;">&nbsp;or&nbsp;<a href="javascript:void();" onclick="toggle_discover()"><i class="fad fa-search-plus discover_topics"></i><i class="fad fa-search-minus discover_topics hidden"></i> <u>Preview '.count($in__children).' Topic'.echo__s(count($in__children)).'</u></a></div>';
 
                     }
 
@@ -1870,7 +1870,7 @@ class DISCOVER_model extends CI_Model
                 }
 
                 //Determine Prefix:
-                $common_prefix = common_prefix($in__children, 'in_title');
+                $common_prefix = in_calc_common_prefix($in__children, 'in_title');
 
 
                 //List children to choose from:

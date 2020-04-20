@@ -1193,7 +1193,7 @@ function echo_in_marks($in_ln){
 }
 
 
-function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = null)
+function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = null, $bold_title = false)
 {
 
     $CI =& get_instance();
@@ -1232,7 +1232,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
             if($is_in_link && superpower_active(12673, true)){
                 $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
             } else {
-                $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in) . '</a>';
+                $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat '.( $bold_title ? ' bold-title ' : '' ).'">' . echo_in_title($in) . '</a>';
             }
         $ui .= '</div>';
 
@@ -1404,7 +1404,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
         //List children so they know what's ahead:
         $max_and_list = ( $push_message ? 5 : 0 );
-        $common_prefix = common_prefix($in__children, 'in_title', $in, $max_and_list);
+        $common_prefix = in_calc_common_prefix($in__children, 'in_title', $in, $max_and_list);
         $has_content = ($prefix_statement || strlen($common_prefix));
 
         if($push_message){

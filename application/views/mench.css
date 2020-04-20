@@ -481,6 +481,9 @@ img.no-radius {
     color: #FC1B44;
     font-weight: bold;
 }
+.bold-title{
+    font-size: 1.4em;
+}
 .main_nav{
     width: 100% !important;
     max-width: none !important;

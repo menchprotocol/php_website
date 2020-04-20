@@ -68,7 +68,7 @@ foreach($config_ens as $en){
 
 
     //Find common base, if allowed:
-    $common_prefix = ( in_array($en['ln_child_source_id'], $this->config->item('en_ids_12588')) ? null : common_prefix($children, 'en_name') );
+    $common_prefix = ( in_array($en['ln_child_source_id'], $this->config->item('en_ids_12588')) ? null : in_calc_common_prefix($children, 'en_name') );
 
     //Generate raw IDs:
     $child_ids = array();
