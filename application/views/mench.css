@@ -1401,8 +1401,3 @@ label {
 .hideIfEmpty:empty {
     display: none !important;
 }
-.bold-title{
-    font-size: 1.4em;
-    line-height: 110%;
-    margin-top: -20px !important;
-}

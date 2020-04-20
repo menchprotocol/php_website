@@ -2538,6 +2538,7 @@ class DISCOVER_model extends CI_Model
         }
 
         $in_query = $this->DISCOVER_model->ln_fetch($match_columns, $join_objects, config_var(11064), 0, $order_columns);
+        $previous_do_hide = true;
         $bold_upto_weight = in_calc_bold_upto_weight($in_query);
 
         //List Discovery History:
@@ -2556,7 +2557,16 @@ class DISCOVER_model extends CI_Model
                     $infobar_details .= '</div>';
                 }
 
-                $ui .= echo_in($in_discover, 0, false, false, null, $bold_upto_weight);
+                $do_hide = ($bold_upto_weight && $bold_upto_weight>=$in_discover['in_weight']);
+
+                if($bold_upto_weight && !$previous_do_hide && $do_hide){
+                    $ui .= '<div class="list-group-item nonbold_hide no-side-padding montserrat"><span class="icon-block"><i class="far fa-search-plus idea"></i></span><a href="javascript:void(0);" onclick="$(\'.nonbold_hide\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
+                    $ui .= '<div class="see_more_sources"></div>';
+                }
+
+                $ui .= echo_in($in_discover, 0, false, false, null, ( $do_hide ? ' nonbold_hide hidden ' : '' ));
+
+                $previous_do_hide = $do_hide;
 
             }
         }

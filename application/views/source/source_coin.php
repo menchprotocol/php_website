@@ -513,7 +513,6 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
             if($counter>0 && (!$disable_content_loading || $auto_expand_tab)){
 
                 $in_notes_query = $this->DISCOVER_model->ln_fetch($in_notes_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC'));
-                $bold_upto_weight = in_calc_bold_upto_weight($in_notes_query);
 
 
                 $this_tab .= '<div class="list-group">';
@@ -532,7 +531,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                             $infobar_details .= '</div>';
                         }
 
-                        $this_tab .= echo_in($in_notes, 0, false, false, $infobar_details, $bold_upto_weight);
+                        $this_tab .= echo_in($in_notes, 0, false, false, $infobar_details);
 
                     }
                 }

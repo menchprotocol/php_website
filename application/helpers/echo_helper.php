@@ -1193,7 +1193,7 @@ function echo_in_marks($in_ln){
 }
 
 
-function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = null, $bold_upto_weight = 0)
+function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = null, $extra_class = null)
 {
 
     $CI =& get_instance();
@@ -1216,7 +1216,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
     $is_in_link = in_array($in['ln_type_source_id'], $CI->config->item('en_ids_4486'));
     $is_source = ( !$is_in_link ? false : $is_source ); //Disable Edits on Idea List Page
 
-    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.'" style="padding-left:0;">';
+    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.' '.$extra_class.'" style="padding-left:0;">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1232,7 +1232,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
             if($is_in_link && superpower_active(12673, true)){
                 $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
             } else {
-                $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat '.( $bold_upto_weight && $bold_upto_weight<$in['in_weight'] ? ' bold-title ' : '' ).'">' . echo_in_title($in) . '</a>';
+                $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in) . '</a>';
             }
         $ui .= '</div>';
 
