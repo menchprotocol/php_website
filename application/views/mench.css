@@ -309,10 +309,6 @@ img.no-radius {
 .fixed-top, .fixed-bottom {
     z-index: 9999999 !important;
 }
-.fixed-top {
-    height: 42px;
-    overflow: hidden;
-}
 
 .no-margin{
     margin:10px 0 0;
@@ -488,6 +484,8 @@ img.no-radius {
 .main_nav{
     width: 100% !important;
     max-width: none !important;
+    height: 42px;
+    overflow: hidden;
 }
 .mench-spin {
     -webkit-animation: mench-spin 13s infinite linear;
