@@ -73,7 +73,7 @@ class Discover extends CI_Controller
         }
 
         //Go to this newly added idea:
-        return redirect_message('/'.$in_id, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-check-circle discover"></i></span>Added to your discovery list. Continue below...</div>');
+        return redirect_message('/'.$in_id, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Success! Continue Discovering Below...</div>');
 
     }
 
@@ -128,7 +128,7 @@ class Discover extends CI_Controller
                 if($next_in_id > 0){
                     return redirect_message('/' . $next_in_id.$append_url);
                 } else {
-                    return redirect_message('/', '<div class="alert alert-danger" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully discovered your entire discovery list.</div></div>');
+                    return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully discovered your entire list.</div></div>');
                 }
             }
 
@@ -139,7 +139,7 @@ class Discover extends CI_Controller
             if($next_in_id > 0){
                 return redirect_message('/' . $next_in_id);
             } else {
-                return redirect_message('/', '<div class="alert alert-danger" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully discovered your entire discovery list.</div></div>');
+                return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully discovered your entire list.</div></div>');
             }
 
         }
@@ -468,7 +468,7 @@ class Discover extends CI_Controller
         }
 
         //Show basic UI for now:
-        return redirect_message('/discover', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
+        return redirect_message('/discover', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
 
     }
 

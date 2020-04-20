@@ -82,7 +82,7 @@ class Ledger extends CI_Controller
                         'ln_content' => $new_content,
                     ), $session_en['en_id'], 12360, update_description($ln['ln_content'], $new_content));
 
-                    $message .= '<div class="alert alert-danger" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['ln_content_search'].'] with ['.trim($_POST['ln_content_replace']).']</div>';
+                    $message .= '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['ln_content_search'].'] with ['.trim($_POST['ln_content_replace']).']</div>';
 
                 }
 
