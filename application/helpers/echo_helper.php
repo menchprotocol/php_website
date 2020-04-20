@@ -1577,13 +1577,13 @@ function echo_in_previous_discover($in_id, $recipient_en){
         $ui .= '<div class="inline-block margin-top-down selected_before pull-left"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.previous_discoveries\').toggleClass(\'hidden\');"><span class="previous_discoveries"><i class="fad fa-step-backward"></i>&nbsp;<b class="montserrat">'.$top_progress.'%</b></span><span class="previous_discoveries hidden"><i class="fas fa-times"></i></span></a>&nbsp;</div>';
     }
 
-    $ui .=echo_in_contribute_btn();
+    $ui .=echo_in_contribute_btn($in_id);
 
 
     return $ui;
 }
 
-function echo_in_contribute_btn(){
+function echo_in_contribute_btn($in_id){
     //Append Edit Option:
     if(superpower_active(10939, true)){
         //Allow Edit:
