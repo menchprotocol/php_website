@@ -104,7 +104,7 @@ echo '<div class="inline-block pull-left both-margin left-half-margin">'.echo_in
 echo '<div class="inline-block pull-left both-margin left-half-margin">'.echo_in_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source && $is_active, 0).'</div>';
 
 //IDEA DISCOVER (IF PUBLIC)
-echo '<div class="inline-block pull-right both-margin left-half-margin idea-discover '.( $is_public ? '' : ' hidden ' ).'"><a class="btn btn-discover" href="/'.$in['in_id'].'"><i class="fas fa-arrow-right" title="Discover This Idea" data-toggle="tooltip" data-placement="top"></i></a></div>';
+echo '<div class="inline-block pull-right both-margin left-half-margin idea-discover '.( $is_public ? '' : ' hidden ' ).'"><a class="btn btn-discover" href="/'.$in['in_id'].'"><i class="fas fa-arrow-right" title="DISCOVER IDEA" data-toggle="tooltip" data-placement="top"></i></a></div>';
 
 echo '<div class="doclear">&nbsp;</div>';
 

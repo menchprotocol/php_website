@@ -1354,7 +1354,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
     $ui .= '</tr></table>';
 
     if($infobar_details){
-        $ui .= '<div class="idea-footer"><span class="icon-block">&nbsp;</span>' . $infobar_details . '</div>';
+        $ui .= '<div class="idea-footer">' . $infobar_details . '</div>';
     }
 
     $ui .= '</div>';
