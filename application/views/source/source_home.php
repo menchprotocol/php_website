@@ -32,7 +32,7 @@
 
 
 
-    //Top Players
+    //TOP PLAYERS
     $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
     echo '<div class="discover-topic"><span class="icon-block">'.$en_all_11035[12437]['m_icon'].'</span>'.$en_all_11035[12437]['m_name'].'</div>';
     echo '<div id="load_leaderboard"></div>';
@@ -40,18 +40,17 @@
 
 
 
-
-
-    //Total Coins:
-    $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
+    //MENCH COINS
+    $en_all_12467 = $this->config->item('en_all_12467'); //MENCH
     echo '<table id="leaderboard" class="table table-sm table-striped tablepadded" style="margin-bottom: 0;">';
     echo '<tr></tr>'; //Skip white
     echo '<tr>';
-    echo '<td class="MENCHcolumn1 source montserrat" title="'.number_format($this->config->item('cache_count_source'), 0).'"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_source')).'<span class="coin-type">'.$en_all_2738[4536]['m_name'].'S</span></td>';
-    echo '<td class="MENCHcolumn2 idea montserrat" title="'.number_format($this->config->item('cache_count_idea'), 0).'"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_idea')).'<span class="coin-type">'.$en_all_2738[4535]['m_name'].'S</span></td>';
-    echo '<td class="MENCHcolumn3 discover montserrat" title="'.number_format($this->config->item('cache_count_discover'), 0).'"><span class="icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_discover')).'<span class="coin-type">'.$en_all_2738[6205]['m_name'].'S</span></td>';
+    echo '<td class="MENCHcolumn1 source montserrat" title="'.number_format($this->config->item('cache_count_source'), 0).'"><span class="icon-block">'.$en_all_12467[12274]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_source')).'<span class="coin-type">'.$en_all_12467[12274]['m_name'].'S</span></td>';
+    echo '<td class="MENCHcolumn2 idea montserrat" title="'.number_format($this->config->item('cache_count_idea'), 0).'"><span class="icon-block">'.$en_all_12467[12273]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_idea')).'<span class="coin-type">'.$en_all_12467[12273]['m_name'].'S</span></td>';
+    echo '<td class="MENCHcolumn3 discover montserrat" title="'.number_format($this->config->item('cache_count_discover'), 0).'"><span class="icon-block">'.$en_all_12467[6255]['m_icon'].'</span>'.echo_number($this->config->item('cache_count_discover')).'<span class="coin-type">'.$en_all_12467[6255]['m_name'].'S</span></td>';
     echo '</tr>';
     echo '</table>';
+
 
 
     ?>

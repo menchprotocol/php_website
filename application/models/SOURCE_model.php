@@ -1313,13 +1313,6 @@ class SOURCE_model extends CI_Model
             'ln_external_id' => $psid,
         ));
 
-        $this->DISCOVER_model->ln_create(array(
-            'ln_type_source_id' => 4230, //Raw link
-            'ln_parent_source_id' => 12222, //Notify on MESSENGER
-            'ln_creator_source_id' => $added_en['en']['en_id'],
-            'ln_child_source_id' => $added_en['en']['en_id'],
-        ));
-
         //Add default Notification Level:
         $this->DISCOVER_model->ln_create(array(
             'ln_parent_source_id' => 4456, //Receive Regular Notifications (User can change later on...)
