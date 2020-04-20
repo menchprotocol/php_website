@@ -1708,7 +1708,7 @@ class DISCOVER_model extends CI_Model
             if(!count($discover_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
                 //List Unlock paths:
-                echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fad fa-step-forward"></i></span>SUGGESTED IDEAS:');
+                echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block"><i class="fad fa-step-forward"></i></span>SUGGESTED IDEAS:');
 
             }
 
@@ -1780,7 +1780,7 @@ class DISCOVER_model extends CI_Model
                         echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:');
 
                         //Allow to edit:
-                        echo '<div class="inline-block margin-top-down previous_discoveries">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>EDIT ANSWER</u></a></div>';
+                        echo '<div class="inline-block margin-top-down previous_discoveries pull-left">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-pen-square"></i></span><u>EDIT ANSWER</u></a></div>';
 
                         echo '</div>';
 
@@ -2019,7 +2019,7 @@ class DISCOVER_model extends CI_Model
                     echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true);
 
                     //File Replace:
-                    echo '<label class="btn btn-discover inline-block previous_discoveries" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> REPLACE</label>';
+                    echo '<label class="btn btn-discover inline-block previous_discoveries pull-left" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> REPLACE</label>';
 
 
                 }
@@ -2059,7 +2059,7 @@ class DISCOVER_model extends CI_Model
 
             //Did we have any steps unlocked?
             if(count($unlocked_steps) > 0){
-                echo_in_list($ins[0], $unlocked_steps, $recipient_en, $push_message, '<span class="icon-block-sm"><i class="fas fa-lock-open"></i></span>UNLOCKED:');
+                echo_in_list($ins[0], $unlocked_steps, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:');
             }
 
         }

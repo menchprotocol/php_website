@@ -360,7 +360,7 @@ $(document).ready(function () {
                             var search_body = $("#mench_search").val().substr(1);
                             if(!isNaN(search_body)){
                                 //Valid Integer, Give option to go there:
-                                return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/' : '/source/' ) + search_body + '" class="suggestion"><span class="icon-block-sm"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
+                                return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/idea/' : '/source/' ) + search_body + '" class="suggestion"><span class="icon-block-sm"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
                             }
 
                         }
