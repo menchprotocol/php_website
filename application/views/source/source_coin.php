@@ -518,7 +518,8 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                 $bold_up_to = in_calc_bold_up_to($in_notes_query);
 
 
-                $this_tab .= '<div class="list-group" title="BOLD UP TO '.$bold_up_to.'">';
+                $this_tab .= 'BOLD UP TO '.$bold_up_to.'';
+                $this_tab .= '<div class="list-group">';
                 foreach ($in_notes_query as $count => $in_notes) {
                     if(in_array($en_id, $this->config->item('en_ids_12321'))){
 
@@ -534,7 +535,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                             $infobar_details .= '</div>';
                         }
 
-                        $this_tab .= echo_in($in_notes, 0, false, false, $infobar_details, ( $bold_up_to > 0 && $count < $bold_up_to ));
+                        $this_tab .= echo_in($in_notes, 0, false, false, $infobar_details, ( $bold_up_to && $count < $bold_up_to ));
 
                     }
                 }
