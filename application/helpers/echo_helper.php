@@ -1580,7 +1580,8 @@ function echo_in_previous_discover($in_id, $recipient_en){
     //Append Edit Option:
     if(superpower_active(10939, true)){
         //Allow Edit:
-        $ui .= '<div class="inline-block margin-top-down previous_discoveries pull-right"><a class="btn btn-idea" href="/idea/'.$in_id.'"><i class="fas fa-pen-square"></i></a></div>';
+        $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
+        $ui .= '<div class="inline-block margin-top-down previous_discoveries pull-right"><a class="btn btn-idea" href="/idea/'.$in_id.'"><span class="show-max">'.$en_all_11035[12750]['m_name'].'&nbsp;</span>'.$en_all_11035[12750]['m_icon'].'</a></div>';
     }
 
 

@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-19 23:27:37 PST
+//Generated 2020-04-20 07:28:29 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587364057;
-$config['cache_count_transaction'] = 1148113;
-$config['cache_count_discover'] = 121047;
+$config['cache_timestamp'] = 1587392909;
+$config['cache_count_transaction'] = 1148396;
+$config['cache_count_discover'] = 121071;
 $config['cache_count_idea'] = 4837;
-$config['cache_count_source'] = 5166;
+$config['cache_count_source'] = 5168;
 
 
 
@@ -198,7 +198,7 @@ $config['en_all_12683'] = array(
 $config['en_ids_12675'] = array(11020);
 $config['en_all_12675'] = array(
     11020 => array(
-        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA NEXT',
         'm_desc' => '',
         'm_parents' => array(12675,12413,11018),
@@ -786,13 +786,13 @@ $config['en_all_12420'] = array(
 $config['en_ids_12413'] = array(11020,11019);
 $config['en_all_12413'] = array(
     11020 => array(
-        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'NEXT',
         'm_desc' => '',
         'm_parents' => array(12675,12413,11018),
     ),
     11019 => array(
-        'm_icon' => '<i class="fas fa-step-backward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-step-backward idea" aria-hidden="true"></i>',
         'm_name' => 'PREVIOUS',
         'm_desc' => '',
         'm_parents' => array(12413,10990),
@@ -1558,8 +1558,8 @@ $config['en_all_6205'] = array(
         'm_parents' => array(6205,6554,4755,4593),
     ),
     7610 => array(
-        'm_icon' => '<i class="discover fad fa-circle discover" aria-hidden="true"></i>',
-        'm_name' => 'DISCOVER IDEA STARTED',
+        'm_icon' => '<i class="fad fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA VIEW',
         'm_desc' => '',
         'm_parents' => array(6205,4755,4593),
     ),
@@ -4022,13 +4022,19 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION MENU:
-$config['en_ids_11035'] = array(6225,7274,6415,7347,12707,12581,10573,11068,7291,4341,4430,12205,12211,6287,7256,4269,12437,12275,10957,7540);
+$config['en_ids_11035'] = array(6225,12749,7274,6415,7347,12707,12581,10573,11068,7291,4341,4430,12205,12211,6287,12750,7256,4269,12437,12275,10957,7540);
 $config['en_all_11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'ACCOUNT SETTINGS',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(12574,11089,12205,11035,4527),
+    ),
+    12749 => array(
+        'm_icon' => '<i class="fad fa-pen-square idea"></i>',
+        'm_name' => 'CONTRIBUTE',
+        'm_desc' => '',
+        'm_parents' => array(11035),
     ),
     7274 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
@@ -4108,6 +4114,12 @@ $config['en_all_11035'] = array(
         'm_desc' => '',
         'm_parents' => array(12744,6194,12699,12500,10876,11035,4527),
     ),
+    12750 => array(
+        'm_icon' => '<i class="fad fa-step-forward discover"></i>',
+        'm_name' => 'PREVIEW',
+        'm_desc' => '',
+        'm_parents' => array(11035),
+    ),
     7256 => array(
         'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
         'm_name' => 'SEARCH MENCH',
@@ -4167,7 +4179,7 @@ $config['en_all_11028'] = array(
 $config['en_ids_11018'] = array(11020,4601,12419,10573,12589,7347,6255,6146,4983,12682,7545,11047);
 $config['en_all_11018'] = array(
     11020 => array(
-        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA NEXT',
         'm_desc' => '',
         'm_parents' => array(12675,12413,11018),
@@ -4244,7 +4256,7 @@ $config['en_all_11018'] = array(
 $config['en_ids_10990'] = array(11019,4737,4736);
 $config['en_all_10990'] = array(
     11019 => array(
-        'm_icon' => '<i class="fas fa-step-backward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-step-backward idea" aria-hidden="true"></i>',
         'm_name' => 'PREVIOUS',
         'm_desc' => '',
         'm_parents' => array(12413,10990),
@@ -7599,8 +7611,8 @@ $config['en_all_4755'] = array(
         'm_parents' => array(6205,6554,4755,4593),
     ),
     7610 => array(
-        'm_icon' => '<i class="discover fad fa-circle discover" aria-hidden="true"></i>',
-        'm_name' => 'DISCOVER IDEA STARTED',
+        'm_icon' => '<i class="fad fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA VIEW',
         'm_desc' => '',
         'm_parents' => array(6205,4755,4593),
     ),
@@ -8066,8 +8078,8 @@ $config['en_all_4593'] = array(
         'm_parents' => array(6205,6554,4755,4593),
     ),
     7610 => array(
-        'm_icon' => '<i class="discover fad fa-circle discover" aria-hidden="true"></i>',
-        'm_name' => 'DISCOVER IDEA STARTED',
+        'm_icon' => '<i class="fad fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA VIEW',
         'm_desc' => 'When a user viewes the public intent landing page.',
         'm_parents' => array(6205,4755,4593),
     ),
