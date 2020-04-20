@@ -1516,7 +1516,7 @@ class DISCOVER_model extends CI_Model
                     if(count($in__children) > 0){
 
                         //Give option to review:
-                        echo '<div class="inline-block margin-top-down discover-add discover_topics pull-left" style="margin-top: 39px;">&nbsp;or&nbsp;<a href="javascript:void();" onclick="toggle_discover()"><i class="fad fa-search-plus discover_topics"></i><i class="fad fa-search-minus discover_topics hidden"></i> <u>Preview '.count($in__children).' Topic'.echo__s(count($in__children)).'</u></a></div>';
+                        echo '<div class="inline-block margin-top-down discover-add discover_topics pull-left" style="margin-top: 39px;">&nbsp;or&nbsp;<a href="javascript:void();" onclick="toggle_discover()"><i class="far fa-plus-circle discover_topics"></i><i class="fad fa-search-minus discover_topics hidden"></i> <u>Preview '.count($in__children).' Topic'.echo__s(count($in__children)).'</u></a></div>';
 
                     }
 
@@ -2561,7 +2561,7 @@ class DISCOVER_model extends CI_Model
                 $do_hide = (($bold_upto_weight && $bold_upto_weight>=$in_discover['in_weight']) || ($count >= $show_max));
 
                 if(!$previous_do_hide && $do_hide){
-                    $ui .= '<div class="list-group-item nonbold_hide no-side-padding montserrat"><span class="icon-block"><i class="far fa-search-plus idea"></i></span><a href="javascript:void(0);" onclick="$(\'.nonbold_hide\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
+                    $ui .= '<div class="list-group-item nonbold_hide no-side-padding montserrat"><span class="icon-block"><i class="far fa-plus-circle idea"></i></span><a href="javascript:void(0);" onclick="$(\'.nonbold_hide\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
                     $ui .= '<div class="see_more_sources"></div>';
                 }
 

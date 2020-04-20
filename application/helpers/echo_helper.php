@@ -11,7 +11,7 @@ function echo_en_load_more($page, $limit, $en__child_count)
     //Regular section:
     $max_sources = (($page + 1) * $limit);
     $max_sources = ($max_sources > $en__child_count ? $en__child_count : $max_sources);
-    $ui .= '<span class="icon-block"><i class="far fa-search-plus"></i></span>LOAD MORE';
+    $ui .= '<span class="icon-block"><i class="far fa-plus-circle"></i></span>LOAD MORE';
     $ui .= '</a></div>';
 
     return $ui;
