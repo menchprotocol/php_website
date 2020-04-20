@@ -46,6 +46,11 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     max-width: calc(100% - 66px);
     max-height:377px;
 }
+.span__4356{
+    padding-top: 9px;
+    display: inline-block;
+}
+
 .yt-container{
     margin: 10px 0 0;
     position: relative;
