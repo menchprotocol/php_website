@@ -1938,7 +1938,7 @@ class DISCOVER_model extends CI_Model
                     echo echo_in_previous_discover($in_id, $recipient_en);
 
                     //Button to submit selection:
-                    echo '<div class="inline-block margin-top-down previous_discoveries pull-left"><a class="btn btn-discover" href="javascript:void(0)" onclick="discover_answer()">'.( count($discover_answers)>0 ? 'UPDATE' : 'SELECT' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($discover_answers)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u>CANCEL</u></a></span>' : '' ).'</div>';
+                    echo '<div class="inline-block margin-top-down previous_discoveries pull-left"><a class="btn btn-discover" href="javascript:void(0)" onclick="discover_answer()">'.( count($discover_answers)>0 ? 'UPDATE' : 'SELECT' ).' & NEXT <i class="fad fa-step-forward"></i></a>'.( count($discover_answers)>0 ? '<span class="inline-block margin-top-down">&nbsp;&nbsp;or <a href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-times-square"></i></span><u class="show-max">CANCEL</u></a></span>' : '' ).'</div>';
 
                     echo '</div>';
 
