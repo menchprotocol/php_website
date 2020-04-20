@@ -1614,7 +1614,7 @@ function echo_in_note_source($in_id, $note_type_en_id, $in_notes, $is_source){
     if( $is_source ){
         $ui .= '<div class="list-group-item itemsource '.superpower_active(10939).'" style="padding:5px 0;">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_11018[$note_type_en_id]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_11018[$note_type_en_id]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control IdeaAddPrevious form-control-thick montserrat algolia_search dotransparent"
                            maxlength="' . config_var(11072) . '"

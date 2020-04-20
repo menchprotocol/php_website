@@ -62,7 +62,7 @@ foreach ($in__parents as $parent_in) {
 if( $is_source && $is_active && $in['in_id']!=config_var(12156)){
     echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control IdeaAddPrevious form-control-thick montserrat algolia_search dotransparent"
                            maxlength="' . config_var(11071) . '"
@@ -152,7 +152,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
         if($is_source && $is_active){
             $this_tab .= '<div class="list-group-item list-adder itemidea '.superpower_active(10939).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean" style="margin-top: 6px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control ideaadder-level-2-child form-control-thick montserrat algolia_search dotransparent"
                            maxlength="' . config_var(11071) . '"
