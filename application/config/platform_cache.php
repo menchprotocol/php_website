@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-20 11:50:55 PST
+//Generated 2020-04-20 11:53:08 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587408655;
-$config['cache_count_transaction'] = 1148895;
+$config['cache_timestamp'] = 1587408788;
+$config['cache_count_transaction'] = 1148906;
 $config['cache_count_discover'] = 121071;
 $config['cache_count_idea'] = 4833;
-$config['cache_count_source'] = 5192;
+$config['cache_count_source'] = 5191;
 
 
 
@@ -37,19 +37,19 @@ $config['en_all_12744'] = array(
 );
 
 //PLUGIN EXCLUDE MENCH UI:
-$config['en_ids_12741'] = array(12733,11049,12712,12722,4527,12710,12709,12732);
+$config['en_ids_12741'] = array(11049,12733,12712,12722,4527,12710,12709,12732);
 $config['en_all_12741'] = array(
+    11049 => array(
+        'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
+        'm_name' => 'IDEA JSON REVIEW',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287,11047),
+    ),
     12733 => array(
         'm_icon' => '',
         'm_name' => 'JSON REVIEW DISCOVER',
         'm_desc' => '',
         'm_parents' => array(12741,12701,6287),
-    ),
-    11049 => array(
-        'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
-        'm_name' => 'JSON REVIEW IDEA',
-        'm_desc' => '',
-        'm_parents' => array(12741,6287,11047),
     ),
     12712 => array(
         'm_icon' => '',
@@ -489,7 +489,7 @@ $config['en_all_12588'] = array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '',
-        'm_parents' => array(12707,10876,12588,11035,4527,7735,6205),
+        'm_parents' => array(11047,12707,10876,12588,11035,4527,7735,6205),
     ),
 );
 
@@ -830,7 +830,7 @@ $config['en_all_10876'] = array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => 'https://mench.com/ledger',
-        'm_parents' => array(12707,10876,12588,11035,4527,7735,6205),
+        'm_parents' => array(11047,12707,10876,12588,11035,4527,7735,6205),
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
@@ -1819,7 +1819,7 @@ $config['en_all_6205'] = array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '',
-        'm_parents' => array(12707,10876,12588,11035,4527,7735,6205),
+        'm_parents' => array(11047,12707,10876,12588,11035,4527,7735,6205),
     ),
     12024 => array(
         'm_icon' => '<i class="fas fa-flag discover" aria-hidden="true"></i>',
@@ -3999,13 +3999,19 @@ $config['en_all_11054'] = array(
 );
 
 //IDEA ADMIN MENU:
-$config['en_ids_11047'] = array(7264,7276,11051,11049,7279);
+$config['en_ids_11047'] = array(7264,11049,7276,4341,7279);
 $config['en_all_11047'] = array(
     7264 => array(
         'm_icon' => '<i class="fad fa-eye"></i>',
-        'm_name' => 'IDEA MARKS BIRDS EYE',
+        'm_name' => 'IDEA BIRDS EYE MARKS',
         'm_desc' => '/plugin/7264?in_id=',
         'm_parents' => array(11047,6287),
+    ),
+    11049 => array(
+        'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
+        'm_name' => 'IDEA JSON REVIEW',
+        'm_desc' => '/plugin/11049?in_id=',
+        'm_parents' => array(12741,6287,11047),
     ),
     7276 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
@@ -4013,17 +4019,11 @@ $config['en_all_11047'] = array(
         'm_desc' => '/cron/cron__7276/',
         'm_parents' => array(11047,7286,7274),
     ),
-    11051 => array(
-        'm_icon' => '<i class="far fa-atlas" aria-hidden="true"></i>',
-        'm_name' => 'IDEA TRANSACTION HISTORY',
+    4341 => array(
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
+        'm_name' => 'MENCH LEDGER',
         'm_desc' => '/ledger?any_in_id=',
-        'm_parents' => array(11047),
-    ),
-    11049 => array(
-        'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
-        'm_name' => 'JSON REVIEW IDEA',
-        'm_desc' => '/plugin/11049?in_id=',
-        'm_parents' => array(12741,6287,11047),
+        'm_parents' => array(11047,12707,10876,12588,11035,4527,7735,6205),
     ),
     7279 => array(
         'm_icon' => '<img src="https://partners.algolia.com/images/logos/algolia-logo-badge.svg">',
@@ -4100,7 +4100,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '',
-        'm_parents' => array(12707,10876,12588,11035,4527,7735,6205),
+        'm_parents' => array(11047,12707,10876,12588,11035,4527,7735,6205),
     ),
     4430 => array(
         'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
@@ -5268,7 +5268,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '',
-        'm_parents' => array(12707,10876,12588,11035,4527,7735,6205),
+        'm_parents' => array(11047,12707,10876,12588,11035,4527,7735,6205),
     ),
     4527 => array(
         'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
@@ -6637,8 +6637,20 @@ $config['en_all_7309'] = array(
 );
 
 //PLUGINS:
-$config['en_ids_6287'] = array(7261,12731,12734,7260,7264,7263,7259,12735,7712,12733,11049,12712,12722,4527,12710,12709,12729,7267,12732,7268,7269,12730,12738,7270,12737,12736,12739);
+$config['en_ids_6287'] = array(7264,11049,7261,12731,12734,7260,7263,7259,12735,7712,12733,12712,12722,4527,12710,12709,12729,7267,12732,7268,7269,12730,12738,7270,12737,12736,12739);
 $config['en_all_6287'] = array(
+    7264 => array(
+        'm_icon' => '<i class="fad fa-eye"></i>',
+        'm_name' => 'IDEA BIRDS EYE MARKS',
+        'm_desc' => '',
+        'm_parents' => array(11047,6287),
+    ),
+    11049 => array(
+        'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
+        'm_name' => 'IDEA JSON REVIEW',
+        'm_desc' => '?in_id=',
+        'm_parents' => array(12741,6287,11047),
+    ),
     7261 => array(
         'm_icon' => '',
         'm_name' => 'IDEA LIST DUPLICATES',
@@ -6662,12 +6674,6 @@ $config['en_all_6287'] = array(
         'm_name' => 'IDEA LIST ORPHANED',
         'm_desc' => '',
         'm_parents' => array(6287),
-    ),
-    7264 => array(
-        'm_icon' => '<i class="fad fa-eye"></i>',
-        'm_name' => 'IDEA MARKS BIRDS EYE',
-        'm_desc' => '',
-        'm_parents' => array(11047,6287),
     ),
     7263 => array(
         'm_icon' => '',
@@ -6698,12 +6704,6 @@ $config['en_all_6287'] = array(
         'm_name' => 'JSON REVIEW DISCOVER',
         'm_desc' => '?in_id=',
         'm_parents' => array(12741,12701,6287),
-    ),
-    11049 => array(
-        'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
-        'm_name' => 'JSON REVIEW IDEA',
-        'm_desc' => '?in_id=',
-        'm_parents' => array(12741,6287,11047),
     ),
     12712 => array(
         'm_icon' => '',
