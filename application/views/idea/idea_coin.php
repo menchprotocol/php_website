@@ -180,13 +180,12 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
             $this_tab .= echo_en($in_note);
         }
 
-        $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding">
+        $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding source-mapper source-map-'.$en_id.'" source-type-id="' . $en_id . '">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control source source-mapper source-map-'.$en_id.' form-control-thick montserrat algolia_search dotransparent new-source-input"
-                           maxlength="' . config_var(11072) . '"
-                           source-type-id="' . $en_id . '"
+                           class="form-control source form-control-thick montserrat algolia_search dotransparent new-source-input"
+                           maxlength="' . config_var(11072) . '"                          
                            style="margin-bottom: 0; padding: 5px 0;"
                            placeholder="NEW SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand source-pad-'.$en_id.'"></div></div>';
