@@ -1,9 +1,25 @@
 <?php
+
+
+$ins = $this->IDEA_model->in_fetch(array(
+    'in_id' => @$_GET['in_id'],
+    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+));
+
+if(!isset($ins[0]['in_id'])){
+    die('Missing Idea ID (in_id) variable');
+}
+
+
+
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 $en_all_12762 = $this->config->item('en_all_12762'); //IDEA SOURCE CREATOR
 $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 ?>
 
+<script>
+    var in_loaded_id = <?= $ins[0]['in_id'] ?>;
+</script>
 <script src="/application/views/source/source_create.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
@@ -13,6 +29,10 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
     //SOURCE CREATOR TITLE
     echo '<h1 class="'.extract_icon_color($en_all_11035[12762]['m_icon']).'" style="padding-top:5px;"><span class="icon-block">'.echo_en_icon($en_all_11035[12762]['m_icon']).'</span>'.$en_all_11035[12762]['m_name'].'</h1>';
 
+
+
+    //IDEA REFERENCE
+    echo '<h2 style="margin-top: 21px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span><a href="/idea/'.$ins[0]['in_id'].'">'.echo_in_title($ins[0]).'</a></h2>';
 
 
     //Full Name
@@ -32,7 +52,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
 
     //Content Type
-    echo '<div class="content_type_only">';
+    echo '<div class="content_type_only hidden">';
 
     echo '<h2 style="margin-top: 21px;"><span class="icon-block">'.$en_all_11035[3000]['m_icon'].'</span>'.$en_all_11035[3000]['m_name'].'</h2>';
     echo echo_in_dropdown(3000, 3005, 'btn-source');
@@ -46,11 +66,16 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
                            class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
                            maxlength="' . config_var(11072) . '"
                            id="authorName"
-                           placeholder="AUTHOR NAME">
+                           placeholder="PERSON NAME">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
 
     echo '</div>';
+
+
+    //CREATE BUTTON:
+    echo '<div style="margin-top: 21px;"><a href="javascript:void();" onclick="create_process()" class="btn btn-source">CREATE</a></div>';
+
 
     ?>
 </div>

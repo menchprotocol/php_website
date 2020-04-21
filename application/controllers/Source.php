@@ -58,6 +58,25 @@ class Source extends CI_Controller
 
     }
 
+    function create_process(){
+
+        //The AJAX function for create() above
+        $session_en = superpower_assigned(10939);
+
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => echo_unauthorized_message(10939),
+            ));
+        } elseif (intval($_POST['en_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Parent Source',
+            ));
+        }
+
+    }
+
 
     //Lists sources
     function source_coin($en_id)
