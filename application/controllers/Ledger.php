@@ -55,8 +55,8 @@ class Ledger extends CI_Controller
         $message = '';
 
         //Fetch links and total link counts:
-        $lns = $this->DISCOVER_model->ln_fetch($filters, $join_by, config_var(11064), $query_offset);
-        $lns_count = $this->DISCOVER_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as total_count');
+        $lns = $this->LEDGER_model->ln_fetch($filters, $join_by, config_var(11064), $query_offset);
+        $lns_count = $this->LEDGER_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as total_count');
         $total_items_loaded = ($query_offset+count($lns));
         $has_more_links = ($lns_count[0]['total_count'] > 0 && $total_items_loaded < $lns_count[0]['total_count']);
 
@@ -78,7 +78,7 @@ class Ledger extends CI_Controller
 
                     $new_content = str_replace($_POST['ln_content_search'],trim($_POST['ln_content_replace']),$ln['ln_content']);
 
-                    $this->DISCOVER_model->ln_update($ln['ln_id'], array(
+                    $this->LEDGER_model->ln_update($ln['ln_id'], array(
                         'ln_content' => $new_content,
                     ), $session_en['en_id'], 12360, update_description($ln['ln_content'], $new_content));
 

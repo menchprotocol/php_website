@@ -46,11 +46,11 @@ class Idea extends CI_Controller {
         $in = $this->IDEA_model->in_link_or_create($in_titlevalidation['in_cleaned_outcome'], $session_en['en_id']);
 
         //Also add to bookmarks:
-        $this->DISCOVER_model->ln_create(array(
+        $this->LEDGER_model->ln_create(array(
             'ln_type_source_id' => 10573, //Idea Bookmarks
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_next_idea_id' => $in['new_in_id'],
-            'ln_parent_source_id' => $session_en['en_id'],
+            'ln_profile_source_id' => $session_en['en_id'],
             'ln_content' => '@'.$session_en['en_id'],
         ), true);
 
@@ -126,7 +126,7 @@ class Idea extends CI_Controller {
             $message = null;
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_type_source_id' => 4993, //Player Opened Idea
                 'ln_next_idea_id' => $in_id,
@@ -157,7 +157,7 @@ class Idea extends CI_Controller {
         //Make sure it's a logged in player:
         $session_en = superpower_assigned(null, true);
 
-        if(count($this->DISCOVER_model->ln_fetch(array(
+        if(count($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id' => 12450,
             'ln_creator_source_id' => $session_en['en_id'],
@@ -168,7 +168,7 @@ class Idea extends CI_Controller {
         }
 
         //Inform moderators:
-        $this->DISCOVER_model->ln_create(array(
+        $this->LEDGER_model->ln_create(array(
             'ln_type_source_id' => 12450,
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_next_idea_id' => $in_id,
@@ -185,10 +185,10 @@ class Idea extends CI_Controller {
         $session_en = superpower_assigned(10984, true);
 
         //Idea Source:
-        $this->DISCOVER_model->ln_create(array(
+        $this->LEDGER_model->ln_create(array(
             'ln_type_source_id' => 4983, //IDEA COIN
             'ln_creator_source_id' => $session_en['en_id'],
-            'ln_parent_source_id' => $session_en['en_id'],
+            'ln_profile_source_id' => $session_en['en_id'],
             'ln_content' => '@'.$session_en['en_id'],
             'ln_next_idea_id' => $in_id,
         ));
@@ -311,7 +311,7 @@ class Idea extends CI_Controller {
         } elseif($_POST['cache_en_id']==4358 /* DISCOVER MARKS */){
 
             //Fetch/Validate Link:
-            $lns = $this->DISCOVER_model->ln_fetch(array(
+            $lns = $this->LEDGER_model->ln_fetch(array(
                 'ln_id' => $_POST['in_ln__id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
@@ -337,7 +337,7 @@ class Idea extends CI_Controller {
             } else {
 
                 //All good, go ahead and update:
-                $this->DISCOVER_model->ln_update($_POST['in_ln__id'], array(
+                $this->LEDGER_model->ln_update($_POST['in_ln__id'], array(
                     'ln_metadata' => array_merge($ln_metadata, array(
                         'tr__assessment_points' => intval($_POST['field_value']),
                     )),
@@ -352,7 +352,7 @@ class Idea extends CI_Controller {
         } elseif($_POST['cache_en_id']==4735 /* UNLOCK MIN SCORE */ || $_POST['cache_en_id']==4739 /* UNLOCK MAX SCORE */){
 
             //Fetch/Validate Link:
-            $lns = $this->DISCOVER_model->ln_fetch(array(
+            $lns = $this->LEDGER_model->ln_fetch(array(
                 'ln_id' => $_POST['in_ln__id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
@@ -379,7 +379,7 @@ class Idea extends CI_Controller {
             } else {
 
                 //All good, go ahead and update:
-                $this->DISCOVER_model->ln_update($_POST['in_ln__id'], array(
+                $this->LEDGER_model->ln_update($_POST['in_ln__id'], array(
                     'ln_metadata' => array_merge($ln_metadata, array(
                         $field_name => intval($_POST['field_value']),
                     )),
@@ -464,7 +464,7 @@ class Idea extends CI_Controller {
             }
 
             //All good, Update Link:
-            $this->DISCOVER_model->ln_update($_POST['ln_id'], array(
+            $this->LEDGER_model->ln_update($_POST['ln_id'], array(
                 $en_all_6232[$_POST['element_id']]['m_desc'] => $_POST['new_en_id'],
             ), $session_en['en_id'], end($link_update_types));
 
@@ -510,14 +510,14 @@ class Idea extends CI_Controller {
                     $this->IDEA_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
 
                 //Notify moderators of Feature request? Only if they don't have the powers themselves:
-                } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !superpower_assigned(10984) && !count($this->DISCOVER_model->ln_fetch(array(
+                } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !superpower_assigned(10984) && !count($this->LEDGER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                         'ln_type_source_id' => 12453, //Idea Feature Request
                         'ln_creator_source_id' => $session_en['en_id'],
                         'ln_next_idea_id' => $_POST['in_id'],
                     )))){
 
-                    $this->DISCOVER_model->ln_create(array(
+                    $this->LEDGER_model->ln_create(array(
                         'ln_type_source_id' => 12453, //Idea Feature Request
                         'ln_creator_source_id' => $session_en['en_id'],
                         'ln_next_idea_id' => $_POST['in_id'],
@@ -565,7 +565,7 @@ class Idea extends CI_Controller {
         }
 
         //Delete this link:
-        $this->DISCOVER_model->ln_update($_POST['ln_id'], array(
+        $this->LEDGER_model->ln_update($_POST['ln_id'], array(
             'ln_status_source_id' => 6173, //Link Deleted
         ), $session_en['en_id'], 10686 /* Idea Link Unlinked */);
 
@@ -686,25 +686,25 @@ class Idea extends CI_Controller {
             } else {
 
                 //Fetch for the record:
-                $children_before = $this->DISCOVER_model->ln_fetch(array(
+                $children_before = $this->LEDGER_model->ln_fetch(array(
                     'ln_previous_idea_id' => intval($_POST['in_id']),
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+                ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
                 //Update them all:
                 foreach ($_POST['new_ln_orders'] as $rank => $ln_id) {
-                    $this->DISCOVER_model->ln_update(intval($ln_id), array(
+                    $this->LEDGER_model->ln_update(intval($ln_id), array(
                         'ln_order' => intval($rank),
                     ), $session_en['en_id'], 10675 /* Ideas Ordered by Player */);
                 }
 
                 //Fetch again for the record:
-                $children_after = $this->DISCOVER_model->ln_fetch(array(
+                $children_after = $this->LEDGER_model->ln_fetch(array(
                     'ln_previous_idea_id' => intval($_POST['in_id']),
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+                ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
                 //Display message:
                 echo_json(array(
@@ -759,7 +759,7 @@ class Idea extends CI_Controller {
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->DISCOVER_model->dispatch_validate_message($_POST['ln_content'], $session_en, false, array(), $_POST['focus_ln_type_source_id'], $_POST['in_id']);
+        $msg_validation = $this->COMMUNICATION_model->comm_validate_message($_POST['ln_content'], $session_en, false, array(), $_POST['focus_ln_type_source_id'], $_POST['in_id']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -767,16 +767,16 @@ class Idea extends CI_Controller {
         }
 
         //Create Message:
-        $ln = $this->DISCOVER_model->ln_create(array(
+        $ln = $this->LEDGER_model->ln_create(array(
             'ln_creator_source_id' => $session_en['en_id'],
-            'ln_order' => 1 + $this->DISCOVER_model->ln_max_order(array(
+            'ln_order' => 1 + $this->LEDGER_model->ln_max_order(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                     'ln_type_source_id' => intval($_POST['focus_ln_type_source_id']),
                     'ln_next_idea_id' => intval($_POST['in_id']),
                 )),
             //Referencing attributes:
             'ln_type_source_id' => intval($_POST['focus_ln_type_source_id']),
-            'ln_parent_source_id' => $msg_validation['ln_parent_source_id'],
+            'ln_profile_source_id' => $msg_validation['ln_profile_source_id'],
             'ln_next_idea_id' => intval($_POST['in_id']),
             'ln_content' => $msg_validation['input_message'],
         ), true);
@@ -785,7 +785,7 @@ class Idea extends CI_Controller {
         return echo_json(array(
             'status' => 1,
             'message' => echo_in_notes(array_merge($ln, array(
-                'ln_child_source_id' => $session_en['en_id'],
+                'ln_portfolio_source_id' => $session_en['en_id'],
             ))),
         ));
     }
@@ -877,13 +877,13 @@ class Idea extends CI_Controller {
 
 
         //Create message:
-        $ln = $this->DISCOVER_model->ln_create(array(
+        $ln = $this->LEDGER_model->ln_create(array(
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_type_source_id' => $_POST['focus_ln_type_source_id'],
-            'ln_parent_source_id' => $cdn_status['cdn_en']['en_id'],
+            'ln_profile_source_id' => $cdn_status['cdn_en']['en_id'],
             'ln_next_idea_id' => intval($_POST['in_id']),
             'ln_content' => '@' . $cdn_status['cdn_en']['en_id'],
-            'ln_order' => 1 + $this->DISCOVER_model->ln_max_order(array(
+            'ln_order' => 1 + $this->LEDGER_model->ln_max_order(array(
                     'ln_type_source_id' => $_POST['focus_ln_type_source_id'],
                     'ln_next_idea_id' => $_POST['in_id'],
                 )),
@@ -891,7 +891,7 @@ class Idea extends CI_Controller {
 
 
         //Fetch full message for proper UI display:
-        $new_messages = $this->DISCOVER_model->ln_fetch(array(
+        $new_messages = $this->LEDGER_model->ln_fetch(array(
             'ln_id' => $ln['ln_id'],
         ));
 
@@ -899,7 +899,7 @@ class Idea extends CI_Controller {
         echo_json(array(
             'status' => 1,
             'message' => echo_in_notes(array_merge($new_messages[0], array(
-                'ln_child_source_id' => $session_en['en_id'],
+                'ln_portfolio_source_id' => $session_en['en_id'],
             ))),
         ));
     }
@@ -935,7 +935,7 @@ class Idea extends CI_Controller {
             if (intval($ln_id) > 0) {
                 $sort_count++;
                 //Log update and give credit to the session Player:
-                $this->DISCOVER_model->ln_update($ln_id, array(
+                $this->LEDGER_model->ln_update($ln_id, array(
                     'ln_order' => intval($ln_order),
                 ), $session_en['en_id'], 10676 /* Idea Notes Ordered */);
             }
@@ -992,7 +992,7 @@ class Idea extends CI_Controller {
         }
 
         //Validate Message:
-        $messages = $this->DISCOVER_model->ln_fetch(array(
+        $messages = $this->LEDGER_model->ln_fetch(array(
             'ln_id' => intval($_POST['ln_id']),
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         ));
@@ -1004,7 +1004,7 @@ class Idea extends CI_Controller {
         }
 
         //Validate new message:
-        $msg_validation = $this->DISCOVER_model->dispatch_validate_message($_POST['ln_content'], $session_en, false, array(), $messages[0]['ln_type_source_id'], $_POST['in_id']);
+        $msg_validation = $this->COMMUNICATION_model->comm_validate_message($_POST['ln_content'], $session_en, false, array(), $messages[0]['ln_type_source_id'], $_POST['in_id']);
         if (!$msg_validation['status']) {
 
             //There was some sort of an error:
@@ -1013,9 +1013,9 @@ class Idea extends CI_Controller {
         } elseif($messages[0]['ln_content'] != $msg_validation['input_message']) {
 
             //Now update the DB:
-            $this->DISCOVER_model->ln_update(intval($_POST['ln_id']), array(
+            $this->LEDGER_model->ln_update(intval($_POST['ln_id']), array(
                 'ln_content' => $msg_validation['input_message'],
-                'ln_parent_source_id' => $msg_validation['ln_parent_source_id'],
+                'ln_profile_source_id' => $msg_validation['ln_profile_source_id'],
             ), $session_en['en_id'], 10679 /* Idea Notes updated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
 
         }
@@ -1050,14 +1050,14 @@ class Idea extends CI_Controller {
                 }
 
                 //yes, do so and return results:
-                $affected_rows = $this->DISCOVER_model->ln_update(intval($_POST['ln_id']), array(
+                $affected_rows = $this->LEDGER_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_source_id' => $_POST['message_ln_status_source_id'],
                 ), $session_en['en_id'], 10677 /* Idea Notes updated Status */);
 
             } else {
 
                 //New status is no longer active, so delete the Idea Notes:
-                $affected_rows = $this->DISCOVER_model->ln_update(intval($_POST['ln_id']), array(
+                $affected_rows = $this->LEDGER_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_source_id' => $_POST['message_ln_status_source_id'],
                 ), $session_en['en_id'], 10678 /* Idea Notes Unlinked */);
 
@@ -1084,7 +1084,7 @@ class Idea extends CI_Controller {
         return echo_json(array(
             'status' => 1,
             'delete_from_ui' => 0,
-            'message' => $this->DISCOVER_model->dispatch_message($msg_validation['input_message'], $session_en, false, array(), $_POST['in_id']),
+            'message' => $this->COMMUNICATION_model->comm_send_message($msg_validation['input_message'], $session_en, false, array(), $_POST['in_id']),
             'message_new_status_icon' => '<span title="' . $en_all_6186[$_POST['message_ln_status_source_id']]['m_name'] . ': ' . $en_all_6186[$_POST['message_ln_status_source_id']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $en_all_6186[$_POST['message_ln_status_source_id']]['m_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));

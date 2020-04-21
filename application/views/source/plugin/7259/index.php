@@ -83,12 +83,12 @@ if($search_for_is_set){
 
                 //Loop through parents:
                 $en_all_7585 = $this->config->item('en_all_7585'); // Idea Subtypes
-                foreach ($this->DISCOVER_model->ln_fetch(array(
+                foreach ($this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                     'ln_next_idea_id' => $in['in_id'],
-                ), array('in_parent')) as $in_parent) {
+                ), array('in_previous')) as $in_parent) {
                     echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/idea/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_title'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_type_source_id']]['m_icon'] . '</a> &nbsp;</span>';
                 }
 

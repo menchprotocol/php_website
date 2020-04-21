@@ -34,18 +34,18 @@ class SOURCE_model extends CI_Model
             $session_data['session_6196_sign'] = $session_6196_sign;
 
             //LOG
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $en['en_id'],
                 'ln_type_source_id' => 7564, //PLAYER Signin on Website Success
             ));
         }
 
-        foreach($this->DISCOVER_model->ln_fetch(array(
+        foreach($this->LEDGER_model->ln_fetch(array(
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-            'ln_child_source_id' => $en['en_id'], //This child source
+            'ln_portfolio_source_id' => $en['en_id'], //This child source
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-        ), array('en_parent')) as $en_parent){
+        ), array('en_proflie')) as $en_parent){
 
             //Push to parent IDs:
             array_push($session_data['session_parent_ids'], intval($en_parent['en_id']));
@@ -56,10 +56,10 @@ class SOURCE_model extends CI_Model
                 array_push($session_data['session_superpowers_assigned'], intval($en_parent['en_id']));
 
                 //Was the latest toggle to de-activate? If not, assume active:
-                $last_advance_settings = $this->DISCOVER_model->ln_fetch(array(
+                $last_advance_settings = $this->LEDGER_model->ln_fetch(array(
                     'ln_creator_source_id' => $en['en_id'],
                     'ln_type_source_id' => 5007, //TOGGLE SUPERPOWER
-                    'ln_parent_source_id' => $en_parent['en_id'],
+                    'ln_profile_source_id' => $en_parent['en_id'],
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 ), array(), 1); //Fetch the single most recent supoerpower toggle only
                 if(!count($last_advance_settings) || !substr_count($last_advance_settings[0]['ln_content'] , ' DEACTIVATED')){
@@ -112,9 +112,9 @@ class SOURCE_model extends CI_Model
             }
 
             //Log link new source:
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => ($ln_creator_source_id > 0 ? $ln_creator_source_id : $insert_columns['en_id']),
-                'ln_child_source_id' => $insert_columns['en_id'],
+                'ln_portfolio_source_id' => $insert_columns['en_id'],
                 'ln_type_source_id' => 4251, //New Source Created
                 'ln_content' => $insert_columns['en_name'],
             ));
@@ -129,8 +129,8 @@ class SOURCE_model extends CI_Model
         } else {
 
             //Ooopsi, something went wrong!
-            $this->DISCOVER_model->ln_create(array(
-                'ln_parent_source_id' => $ln_creator_source_id,
+            $this->LEDGER_model->ln_create(array(
+                'ln_profile_source_id' => $ln_creator_source_id,
                 'ln_content' => 'en_create() failed to create a new source',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $ln_creator_source_id,
@@ -241,10 +241,10 @@ class SOURCE_model extends CI_Model
                 }
 
                 //Value has changed, log link:
-                $this->DISCOVER_model->ln_create(array(
+                $this->LEDGER_model->ln_create(array(
                     'ln_creator_source_id' => ($ln_creator_source_id > 0 ? $ln_creator_source_id : $id),
                     'ln_type_source_id' => $ln_type_source_id,
-                    'ln_child_source_id' => $id,
+                    'ln_portfolio_source_id' => $id,
                     'ln_content' => $ln_content,
                     'ln_metadata' => array(
                         'en_id' => $id,
@@ -259,8 +259,8 @@ class SOURCE_model extends CI_Model
         } elseif($affected_rows < 1){
 
             //This should not happen:
-            $this->DISCOVER_model->ln_create(array(
-                'ln_child_source_id' => $id,
+            $this->LEDGER_model->ln_create(array(
+                'ln_portfolio_source_id' => $id,
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $ln_creator_source_id,
                 'ln_content' => 'en_update() Failed to update',
@@ -303,20 +303,20 @@ class SOURCE_model extends CI_Model
         //First delete existing parent/child links for this drop down:
         $previously_assigned = ($set_en_child_id < 1);
         $updated_ln_id = 0;
-        foreach ($this->DISCOVER_model->ln_fetch(array(
-            'ln_child_source_id' => $ln_creator_source_id,
-            'ln_parent_source_id IN (' . join(',', $children) . ')' => null, //Current children
+        foreach ($this->LEDGER_model->ln_fetch(array(
+            'ln_portfolio_source_id' => $ln_creator_source_id,
+            'ln_profile_source_id IN (' . join(',', $children) . ')' => null, //Current children
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         ), array(), config_var(11064)) as $ln) {
 
-            if (!$previously_assigned && $ln['ln_parent_source_id'] == $set_en_child_id) {
+            if (!$previously_assigned && $ln['ln_profile_source_id'] == $set_en_child_id) {
                 $previously_assigned = true;
             } else {
                 //Delete assignment:
                 $updated_ln_id = $ln['ln_id'];
 
                 //Do not log update link here as we would log it further below:
-                $this->DISCOVER_model->ln_update($ln['ln_id'], array(
+                $this->LEDGER_model->ln_update($ln['ln_id'], array(
                     'ln_status_source_id' => 6173, //Link Deleted
                 ), $ln_creator_source_id, 6224 /* User Account Updated */);
             }
@@ -327,10 +327,10 @@ class SOURCE_model extends CI_Model
         //Make sure $set_en_child_id belongs to parent if set (Could be null which means delete all)
         if (!$previously_assigned) {
             //Let's go ahead and add desired source as parent:
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $ln_creator_source_id,
-                'ln_child_source_id' => $ln_creator_source_id,
-                'ln_parent_source_id' => $set_en_child_id,
+                'ln_portfolio_source_id' => $ln_creator_source_id,
+                'ln_profile_source_id' => $set_en_child_id,
                 'ln_type_source_id' => 4230, //Raw link
                 'ln_parent_transaction_id' => $updated_ln_id,
             ));
@@ -344,25 +344,25 @@ class SOURCE_model extends CI_Model
         $adjusted_count = 0;
         foreach(array_merge(
                 //Player references within Idea Notes:
-                    $this->DISCOVER_model->ln_fetch(array(
+                    $this->LEDGER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
-                        'ln_parent_source_id' => $en_id,
-                    ), array('in_child'), 0, 0, array('ln_order' => 'ASC')),
+                        'ln_profile_source_id' => $en_id,
+                    ), array('in_next'), 0, 0, array('ln_order' => 'ASC')),
                     //Player links:
-                    $this->DISCOVER_model->ln_fetch(array(
+                    $this->LEDGER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                        '(ln_child_source_id = ' . $en_id . ' OR ln_parent_source_id = ' . $en_id . ')' => null,
+                        '(ln_portfolio_source_id = ' . $en_id . ' OR ln_profile_source_id = ' . $en_id . ')' => null,
                     ), array(), 0)
                 ) as $adjust_tr){
 
             //Merge only if merger ID provided and link not related to original link:
-            if($merger_en_id > 0 && $adjust_tr['ln_parent_source_id']!=$merger_en_id && $adjust_tr['ln_child_source_id']!=$merger_en_id){
+            if($merger_en_id > 0 && $adjust_tr['ln_profile_source_id']!=$merger_en_id && $adjust_tr['ln_portfolio_source_id']!=$merger_en_id){
 
                 //Update core field:
-                $target_field = ($adjust_tr['ln_child_source_id'] == $en_id ? 'ln_child_source_id' : 'ln_parent_source_id');
+                $target_field = ($adjust_tr['ln_portfolio_source_id'] == $en_id ? 'ln_portfolio_source_id' : 'ln_profile_source_id');
                 $updating_fields = array(
                     $target_field => $merger_en_id,
                 );
@@ -373,12 +373,12 @@ class SOURCE_model extends CI_Model
                 }
 
                 //Update Link:
-                $adjusted_count += $this->DISCOVER_model->ln_update($adjust_tr['ln_id'], $updating_fields, $ln_creator_source_id, 10689 /* Player Link Merged */);
+                $adjusted_count += $this->LEDGER_model->ln_update($adjust_tr['ln_id'], $updating_fields, $ln_creator_source_id, 10689 /* Player Link Merged */);
 
             } else {
 
                 //Delete this link:
-                $adjusted_count += $this->DISCOVER_model->ln_update($adjust_tr['ln_id'], array(
+                $adjusted_count += $this->LEDGER_model->ln_update($adjust_tr['ln_id'], array(
                     'ln_status_source_id' => 6173, //Link Deleted
                 ), $ln_creator_source_id, 10673 /* Player Link Unlinked */);
 
@@ -412,13 +412,13 @@ class SOURCE_model extends CI_Model
 
 
         //Check to see if we have domain linked previously:
-        $domain_links = $this->DISCOVER_model->ln_fetch(array(
+        $domain_links = $this->LEDGER_model->ln_fetch(array(
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
-            'ln_parent_source_id' => 1326, //Domain Player
+            'ln_profile_source_id' => 1326, //Domain Player
             'ln_content' => $domain_analysis['url_clean_domain'],
-        ), array('en_child'));
+        ), array('en_portfolio'));
 
 
         //Do we need to create an source for this domain?
@@ -434,11 +434,11 @@ class SOURCE_model extends CI_Model
             $en_domain = $added_en['en'];
 
             //And link source to the domains source:
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $ln_creator_source_id,
                 'ln_type_source_id' => 4256, //Generic URL (Domains are always generic)
-                'ln_parent_source_id' => 1326, //Domain Player
-                'ln_child_source_id' => $en_domain['en_id'],
+                'ln_profile_source_id' => 1326, //Domain Player
+                'ln_portfolio_source_id' => $en_domain['en_id'],
                 'ln_content' => $domain_analysis['url_clean_domain'],
             ));
 
@@ -477,18 +477,18 @@ class SOURCE_model extends CI_Model
             $stats['scanned']++;
 
             //Find creation discover:
-            $discoveries = $this->DISCOVER_model->ln_fetch(array(
+            $discoveries = $this->LEDGER_model->ln_fetch(array(
                 'ln_type_source_id' => $stats['ln_type_source_id'],
-                'ln_child_source_id' => $en['en_id'],
+                'ln_portfolio_source_id' => $en['en_id'],
             ));
 
             if(!count($discoveries)){
 
                 $stats['missing_creation_fix']++;
 
-                $this->DISCOVER_model->ln_create(array(
+                $this->LEDGER_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
-                    'ln_child_source_id' => $en['en_id'],
+                    'ln_portfolio_source_id' => $en['en_id'],
                     'ln_content' => $en['en_name'],
                     'ln_type_source_id' => $stats['ln_type_source_id'],
                     'ln_status_source_id' => $status_converter[$en['en_status_source_id']],
@@ -497,7 +497,7 @@ class SOURCE_model extends CI_Model
             } elseif($discoveries[0]['ln_status_source_id'] != $status_converter[$en['en_status_source_id']]){
 
                 $stats['status_sync']++;
-                $this->DISCOVER_model->ln_update($discoveries[0]['ln_id'], array(
+                $this->LEDGER_model->ln_update($discoveries[0]['ln_id'], array(
                     'ln_status_source_id' => $status_converter[$en['en_status_source_id']],
                 ));
 
@@ -597,10 +597,10 @@ class SOURCE_model extends CI_Model
 
                 if(!$detected_extension){
                     //Log error to notify admin:
-                    $this->DISCOVER_model->ln_create(array(
+                    $this->LEDGER_model->ln_create(array(
                         'ln_content' => 'en_url() detected unknown file extension ['.$domain_analysis['url_file_extension'].'] that needs to be added to @11080',
                         'ln_type_source_id' => 4246, //Platform Bug Reports
-                        'ln_parent_source_id' => 11080,
+                        'ln_profile_source_id' => 11080,
                         'ln_metadata' => $domain_analysis,
                     ));
                 }
@@ -699,12 +699,12 @@ class SOURCE_model extends CI_Model
         } else {
 
             //Check to see if URL previously exists:
-            $url_links = $this->DISCOVER_model->ln_fetch(array(
+            $url_links = $this->LEDGER_model->ln_fetch(array(
                 'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Player URL Links
                 'ln_content' => $url,
-            ), array('en_child'));
+            ), array('en_portfolio'));
 
 
             //Do we need to create an source for this URL?
@@ -732,29 +732,29 @@ class SOURCE_model extends CI_Model
                     $en_url = $added_en['en'];
 
                     //Always link URL to its parent domain:
-                    $this->DISCOVER_model->ln_create(array(
+                    $this->LEDGER_model->ln_create(array(
                         'ln_creator_source_id' => $ln_creator_source_id,
                         'ln_type_source_id' => $ln_type_source_id,
-                        'ln_parent_source_id' => $domain_source['en_domain']['en_id'],
-                        'ln_child_source_id' => $en_url['en_id'],
+                        'ln_profile_source_id' => $domain_source['en_domain']['en_id'],
+                        'ln_portfolio_source_id' => $en_url['en_id'],
                         'ln_content' => $url,
                     ));
 
                     //Also map to source type:
-                    $this->DISCOVER_model->ln_create(array(
+                    $this->LEDGER_model->ln_create(array(
                         'ln_type_source_id' => 4230, //Raw Source Link
                         'ln_creator_source_id' => $ln_creator_source_id,
-                        'ln_parent_source_id' => $ln_type_source_id,
-                        'ln_child_source_id' => $en_url['en_id'],
+                        'ln_profile_source_id' => $ln_type_source_id,
+                        'ln_portfolio_source_id' => $en_url['en_id'],
                     ));
 
                 } else {
                     //Log error:
-                    $this->DISCOVER_model->ln_create(array(
+                    $this->LEDGER_model->ln_create(array(
                         'ln_content' => 'en_url['.$url.'] FAILED to en_verify_create['.$page_title.'] with message: '.$added_en['message'],
                         'ln_type_source_id' => 4246, //Platform Bug Reports
                         'ln_creator_source_id' => $ln_creator_source_id,
-                        'ln_parent_source_id' => $domain_source['en_domain']['en_id'],
+                        'ln_profile_source_id' => $domain_source['en_domain']['en_id'],
                         'ln_metadata' => array(
                             'url' => $url,
                             'ln_creator_source_id' => $ln_creator_source_id,
@@ -776,22 +776,22 @@ class SOURCE_model extends CI_Model
         if (!$url_previously_existed && count($link_parent_en_ids) > 0) {
             //Link URL to its parent domain:
             foreach($link_parent_en_ids as $p_en_id){
-                $this->DISCOVER_model->ln_create(array(
+                $this->LEDGER_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_type_source_id' => 4230, //Raw
-                    'ln_parent_source_id' => $p_en_id,
-                    'ln_child_source_id' => $en_url['en_id'],
+                    'ln_profile_source_id' => $p_en_id,
+                    'ln_portfolio_source_id' => $en_url['en_id'],
                 ));
             }
         }
 
         if (!$url_previously_existed && $add_to_child_en_id) {
             //Link URL to its parent domain:
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $ln_creator_source_id,
                 'ln_type_source_id' => 4230, //Raw
-                'ln_child_source_id' => $add_to_child_en_id,
-                'ln_parent_source_id' => $en_url['en_id'],
+                'ln_portfolio_source_id' => $add_to_child_en_id,
+                'ln_profile_source_id' => $en_url['en_id'],
             ));
         }
 
@@ -837,8 +837,8 @@ class SOURCE_model extends CI_Model
 
 
         //Search and see if we can find $value in the link content:
-        $matching_sources = $this->DISCOVER_model->ln_fetch(array(
-            'ln_parent_source_id' => $en_parent_id,
+        $matching_sources = $this->LEDGER_model->ln_fetch(array(
+            'ln_profile_source_id' => $en_parent_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_content' => trim($value),
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
@@ -848,15 +848,15 @@ class SOURCE_model extends CI_Model
         if (count($matching_sources) == 1) {
 
             //Bingo, return result:
-            return intval($matching_sources[0]['ln_child_source_id']);
+            return intval($matching_sources[0]['ln_portfolio_source_id']);
 
         } else {
 
             //Ooooopsi, this value did not exist! Notify the Player so we can look into this:
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_content' => 'en_search_match() found [' . count($matching_sources) . '] results as the children of en_id=[' . $en_parent_id . '] that had the value of [' . $value . '].',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
-                'ln_child_source_id' => $en_parent_id,
+                'ln_portfolio_source_id' => $en_parent_id,
             ));
 
             return 0;
@@ -918,12 +918,12 @@ class SOURCE_model extends CI_Model
 
         //Fetch all children:
         $applied_success = 0; //To be populated...
-        $children = $this->DISCOVER_model->ln_fetch(array(
-            'ln_parent_source_id' => $en_id,
+        $children = $this->LEDGER_model->ln_fetch(array(
+            'ln_profile_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-        ), array('en_child'), 0);
+        ), array('en_portfolio'), 0);
 
 
         //Process request:
@@ -954,10 +954,10 @@ class SOURCE_model extends CI_Model
                 $parent_en_id = intval(one_two_explode('@',' ',$action_command1));
 
                 //See if child source has searched parent source:
-                $child_parent_ens = $this->DISCOVER_model->ln_fetch(array(
+                $child_parent_ens = $this->LEDGER_model->ln_fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                    'ln_child_source_id' => $en['en_id'], //This child source
-                    'ln_parent_source_id' => $parent_en_id,
+                    'ln_portfolio_source_id' => $en['en_id'], //This child source
+                    'ln_profile_source_id' => $parent_en_id,
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 ));
 
@@ -966,11 +966,11 @@ class SOURCE_model extends CI_Model
                     //Parent Player Addition
 
                     //Does not exist, need to be added as parent:
-                    $this->DISCOVER_model->ln_create(array(
+                    $this->LEDGER_model->ln_create(array(
                         'ln_creator_source_id' => $ln_creator_source_id,
                         'ln_type_source_id' => 4230, //Raw
-                        'ln_child_source_id' => $en['en_id'], //This child source
-                        'ln_parent_source_id' => $parent_en_id,
+                        'ln_portfolio_source_id' => $en['en_id'], //This child source
+                        'ln_profile_source_id' => $parent_en_id,
                     ));
 
                     $applied_success++;
@@ -982,7 +982,7 @@ class SOURCE_model extends CI_Model
                         //Parent Player Removal
                         foreach($child_parent_ens as $delete_tr){
 
-                            $this->DISCOVER_model->ln_update($delete_tr['ln_id'], array(
+                            $this->LEDGER_model->ln_update($delete_tr['ln_id'], array(
                                 'ln_status_source_id' => 6173, //Link Deleted
                             ), $ln_creator_source_id, 10673 /* Player Link Unlinked  */);
 
@@ -994,11 +994,11 @@ class SOURCE_model extends CI_Model
                         $parent_new_en_id = intval(one_two_explode('@',' ',$action_command2));
 
                         //Add as a parent because it meets the condition
-                        $this->DISCOVER_model->ln_create(array(
+                        $this->LEDGER_model->ln_create(array(
                             'ln_creator_source_id' => $ln_creator_source_id,
                             'ln_type_source_id' => 4230, //Raw
-                            'ln_child_source_id' => $en['en_id'], //This child source
-                            'ln_parent_source_id' => $parent_new_en_id,
+                            'ln_portfolio_source_id' => $en['en_id'], //This child source
+                            'ln_profile_source_id' => $parent_new_en_id,
                         ));
 
                         $applied_success++;
@@ -1041,7 +1041,7 @@ class SOURCE_model extends CI_Model
 
             } elseif ($action_en_id == 5001 && substr_count($en['ln_content'], $action_command1) > 0) { //Replace Link Matching String
 
-                $this->DISCOVER_model->ln_update($en['ln_id'], array(
+                $this->LEDGER_model->ln_update($en['ln_id'], array(
                     'ln_content' => str_replace($action_command1, $action_command2, $en['ln_content']),
                 ), $ln_creator_source_id, 10657 /* Player Link Updated Content  */);
 
@@ -1063,7 +1063,7 @@ class SOURCE_model extends CI_Model
 
             } elseif ($action_en_id == 5865 && ($action_command1=='*' || $en['ln_status_source_id']==$action_command1) && in_array($action_command2, $this->config->item('en_ids_6186') /* Transaction Status */)) { //Update Matching Transaction Status
 
-                $this->DISCOVER_model->ln_update($en['ln_id'], array(
+                $this->LEDGER_model->ln_update($en['ln_id'], array(
                     'ln_status_source_id' => $action_command2,
                 ), $ln_creator_source_id, ( in_array($action_command2, $this->config->item('en_ids_7360') /* Transaction Status Active */) ? 10656 /* Player Link Updated Status */ : 10673 /* Player Link Unlinked */ ));
 
@@ -1074,10 +1074,10 @@ class SOURCE_model extends CI_Model
 
 
         //Log mass source edit link:
-        $this->DISCOVER_model->ln_create(array(
+        $this->LEDGER_model->ln_create(array(
             'ln_creator_source_id' => $ln_creator_source_id,
             'ln_type_source_id' => $action_en_id,
-            'ln_child_source_id' => $en_id,
+            'ln_portfolio_source_id' => $en_id,
             'ln_metadata' => array(
                 'payload' => $_POST,
                 'sources_total' => count($children),
@@ -1102,12 +1102,12 @@ class SOURCE_model extends CI_Model
         $en__child_count = 0;
 
         //Do a child count:
-        $child_links = $this->DISCOVER_model->ln_fetch(array(
-            'ln_parent_source_id' => $en_id,
+        $child_links = $this->LEDGER_model->ln_fetch(array(
+            'ln_profile_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'en_status_source_id IN (' . join(',', $en_statuses) . ')' => null,
-        ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
+        ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
 
         if (count($child_links) > 0) {
             $en__child_count = intval($child_links[0]['totals']);
@@ -1129,7 +1129,7 @@ class SOURCE_model extends CI_Model
 
         if ($psid < 1) {
             //Ooops, this should never happen:
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_content' => 'en_messenger_auth() got called without a valid Facebook $psid variable',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
             ));
@@ -1137,12 +1137,12 @@ class SOURCE_model extends CI_Model
         }
 
         //Try matching Facebook PSID to existing Users:
-        $user_messenger = $this->DISCOVER_model->ln_fetch(array(
+        $user_messenger = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-            'ln_parent_source_id' => 6196, //Mench Messenger
+            'ln_profile_source_id' => 6196, //Mench Messenger
             'ln_external_id' => $psid,
-        ), array('en_child'));
+        ), array('en_portfolio'));
 
         //So, did we find them?
         if (count($user_messenger) > 0) {
@@ -1214,15 +1214,15 @@ class SOURCE_model extends CI_Model
 
         if ($psid < 1) {
             //Ooops, this should never happen:
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_content' => 'en_messenger_add() got called without a valid Facebook $psid variable',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
             ));
             return false;
-        } elseif(count($this->DISCOVER_model->ln_fetch(array(
+        } elseif(count($this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_parent_source_id' => 6196, //Mench Messenger
+                'ln_profile_source_id' => 6196, //Mench Messenger
                 'ln_external_id' => $psid,
             )))>0){
             //PSID Previously added:
@@ -1230,7 +1230,7 @@ class SOURCE_model extends CI_Model
         }
 
         //Call facebook messenger API and get user graph profile:
-        $graph_fetch = $this->DISCOVER_model->facebook_graph('GET', '/' . $psid, array());
+        $graph_fetch = $this->COMMUNICATION_model->comm_facebook_graph('GET', '/' . $psid, array());
 
 
         $fetch_result = ( isset($graph_fetch['status']) && $graph_fetch['status'] && isset($graph_fetch['ln_metadata']['result']['first_name']) && strlen($graph_fetch['ln_metadata']['result']['first_name']) > 0);
@@ -1271,17 +1271,17 @@ class SOURCE_model extends CI_Model
                              $this->SOURCE_model->en_search_match(3290, strtolower(substr($fb_profile['gender'], 0, 1))), //Gender either m/f
                              $this->SOURCE_model->en_search_match(3287, strtolower($locale[0])), //Language
                              $this->SOURCE_model->en_search_match(3089, strtolower($locale[1])), //Country
-                         ) as $ln_parent_source_id) {
+                         ) as $ln_profile_source_id) {
 
                     //Did we find a relation? Create the link:
-                    if ($ln_parent_source_id > 0) {
+                    if ($ln_profile_source_id > 0) {
 
                         //Create new link:
-                        $this->DISCOVER_model->ln_create(array(
+                        $this->LEDGER_model->ln_create(array(
                             'ln_type_source_id' => 4230, //Raw link
                             'ln_creator_source_id' => $added_en['en']['en_id'], //User gets credit as player
-                            'ln_parent_source_id' => $ln_parent_source_id,
-                            'ln_child_source_id' => $added_en['en']['en_id'],
+                            'ln_profile_source_id' => $ln_profile_source_id,
+                            'ln_portfolio_source_id' => $added_en['en']['en_id'],
                         ));
 
                     }
@@ -1294,35 +1294,35 @@ class SOURCE_model extends CI_Model
         //Now create more relevant links:
 
         //Activate Mench Messenger
-        $this->DISCOVER_model->ln_create(array(
-            'ln_parent_source_id' => 6196, //Mench Messenger
+        $this->LEDGER_model->ln_create(array(
+            'ln_profile_source_id' => 6196, //Mench Messenger
             'ln_type_source_id' => 4230, //Raw link
             'ln_creator_source_id' => $added_en['en']['en_id'],
-            'ln_child_source_id' => $added_en['en']['en_id'],
+            'ln_portfolio_source_id' => $added_en['en']['en_id'],
             'ln_external_id' => $psid,
         ));
 
         //Add default Notification Level:
-        $this->DISCOVER_model->ln_create(array(
-            'ln_parent_source_id' => 4456, //Receive Regular Notifications (User can change later on...)
+        $this->LEDGER_model->ln_create(array(
+            'ln_profile_source_id' => 4456, //Receive Regular Notifications (User can change later on...)
             'ln_type_source_id' => 4230, //Raw link
             'ln_creator_source_id' => $added_en['en']['en_id'],
-            'ln_child_source_id' => $added_en['en']['en_id'],
+            'ln_portfolio_source_id' => $added_en['en']['en_id'],
         ));
 
 
         //Add Player:
-        $this->DISCOVER_model->ln_create(array(
-            'ln_parent_source_id' => 4430, //MENCH PLAYERS
+        $this->LEDGER_model->ln_create(array(
+            'ln_profile_source_id' => 4430, //MENCH PLAYERS
             'ln_type_source_id' => 4230, //Raw link
             'ln_creator_source_id' => $added_en['en']['en_id'],
-            'ln_child_source_id' => $added_en['en']['en_id'],
+            'ln_portfolio_source_id' => $added_en['en']['en_id'],
         ));
 
 
         if(!$fetch_result){
             //Let them know to complete their profile:
-            $this->DISCOVER_model->dispatch_message(
+            $this->COMMUNICATION_model->comm_send_message(
                 'Hi! I just added you as a new source. You can update your account at any time. 🤗 /link:Update My Account:https://mench.com/source/'.$added_en['en'],
                 $added_en['en'],
                 true

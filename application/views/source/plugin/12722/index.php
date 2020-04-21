@@ -10,7 +10,7 @@ if(!isset($_GET['ln_id']) || !intval($_GET['ln_id'])){
 
 
     //Fetch link metadata and display it:
-    $lns = $this->DISCOVER_model->ln_fetch(array(
+    $lns = $this->LEDGER_model->ln_fetch(array(
         'ln_id' => $_GET['ln_id'],
     ));
 

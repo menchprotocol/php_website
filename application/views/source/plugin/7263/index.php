@@ -13,12 +13,12 @@ echo '<td colspan="4" style="text-align: left;">'.$en_all_6103[6402]['m_icon'].'
 echo '</tr>';
 $counter = 0;
 $total_count = 0;
-foreach ($this->DISCOVER_model->ln_fetch(array(
+foreach ($this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
     'ln_type_source_id' => 4229, //Idea Link Locked Discovery
     'LENGTH(ln_metadata) > 0' => null,
-), array('in_child'), 0, 0) as $in_ln) {
+), array('in_next'), 0, 0) as $in_ln) {
     //Echo HTML format of this message:
     $metadata = unserialize($in_ln['ln_metadata']);
     $mark = echo_in_marks($in_ln);
@@ -46,13 +46,13 @@ foreach ($this->DISCOVER_model->ln_fetch(array(
         echo '<a href="/idea/'.$in_ln['in_id'].'">'.$in_ln['in_title'].' [child]</a>';
         echo '</div>';
 
-        if(count($this->DISCOVER_model->ln_fetch(array(
+        if(count($this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
                 'in_type_source_id NOT IN (6907,6914)' => null, //NOT AND/OR Lock
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                 'ln_next_idea_id' => $in_ln['in_id'],
-            ), array('in_parent'))) > 1 || $in_ln['in_type_source_id'] != 6677){
+            ), array('in_previous'))) > 1 || $in_ln['in_type_source_id'] != 6677){
 
             echo '<div>';
             echo 'NOT COOL';
@@ -61,7 +61,7 @@ foreach ($this->DISCOVER_model->ln_fetch(array(
         } else {
 
             //Update user progression link type:
-            $user_steps = $this->DISCOVER_model->ln_fetch(array(
+            $user_steps = $this->LEDGER_model->ln_fetch(array(
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
                 'ln_previous_idea_id' => $in_ln['in_id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -93,12 +93,12 @@ if(1){
     echo '</tr>';
 
     $counter = 0;
-    foreach ($this->DISCOVER_model->ln_fetch(array(
+    foreach ($this->LEDGER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
         'ln_type_source_id' => 4228, //Idea Link Regular Discovery
         'LENGTH(ln_metadata) > 0' => null,
-    ), array('in_child'), 0, 0) as $in_ln) {
+    ), array('in_next'), 0, 0) as $in_ln) {
         //Echo HTML format of this message:
         $metadata = unserialize($in_ln['ln_metadata']);
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );

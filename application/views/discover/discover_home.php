@@ -28,7 +28,7 @@ $all_completed = true;
 //List Discoveries:
 echo '<div id="actionplan_steps" class="list-group no-side-padding">';
 foreach ($player_discoveries as $priority => $in) {
-    $completion_rate = $this->DISCOVER_model->discover__completion_progress($session_en['en_id'], $in);
+    $completion_rate = $this->DISCOVER_model->discover_completion_progress($session_en['en_id'], $in);
     echo echo_in_discover($in, false, null, null, true, $completion_rate);
     if($completion_rate['completion_percentage']!=100 && $all_completed){
         $all_completed = false;

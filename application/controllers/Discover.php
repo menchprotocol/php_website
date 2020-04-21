@@ -23,19 +23,19 @@ class Discover extends CI_Controller
 
 
         //Fetch discovery list:
-        $player_discoveries = $this->DISCOVER_model->ln_fetch(array(
+        $player_discoveries = $this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
+        ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
         if(!count($player_discoveries)){
             //Nothing in their discovery list:
             return redirect_message('/');
         }
 
         //Log DISCOVER LIST View:
-        $this->DISCOVER_model->ln_create(array(
+        $this->LEDGER_model->ln_create(array(
             'ln_type_source_id' => 4283, //Opened DISCOVER LIST
             'ln_creator_source_id' => $session_en['en_id'],
         ));
@@ -101,7 +101,7 @@ class Discover extends CI_Controller
             } elseif($ins[0]['in_type_source_id']==6677){
 
                 //Mark as discover If not previously:
-                $discover_completes = $this->DISCOVER_model->ln_fetch(array(
+                $discover_completes = $this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                     'ln_creator_source_id' => $session_en['en_id'],
@@ -288,13 +288,13 @@ class Discover extends CI_Controller
 
 
         //Delete previous answer(s):
-        foreach($this->DISCOVER_model->ln_fetch(array(
+        foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
         )) as $discover_progress){
-            $this->DISCOVER_model->ln_update($discover_progress['ln_id'], array(
+            $this->LEDGER_model->ln_update($discover_progress['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Deleted
             ), $session_en['en_id'], 12129 /* DISCOVER ANSWER DELETED */);
         }
@@ -306,13 +306,13 @@ class Discover extends CI_Controller
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_content' => $new_message,
-            'ln_parent_source_id' => $cdn_status['cdn_en']['en_id'],
+            'ln_profile_source_id' => $cdn_status['cdn_en']['en_id'],
         ));
 
         //All good:
         return echo_json(array(
             'status' => 1,
-            'message' => '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->DISCOVER_model->dispatch_message($new_message).'</div>',
+            'message' => '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->comm_send_message($new_message).'</div>',
         ));
 
     }
@@ -353,13 +353,13 @@ class Discover extends CI_Controller
         }
 
         //Delete previous answer(s):
-        foreach($this->DISCOVER_model->ln_fetch(array(
+        foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
         )) as $discover_progress){
-            $this->DISCOVER_model->ln_update($discover_progress['ln_id'], array(
+            $this->LEDGER_model->ln_update($discover_progress['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Deleted
             ), $session_en['en_id'], 12129 /* DISCOVER ANSWER DELETED */);
         }
@@ -419,7 +419,7 @@ class Discover extends CI_Controller
         }
 
         //Log engagement:
-        echo_json($this->DISCOVER_model->ln_create($_POST));
+        echo_json($this->LEDGER_model->ln_create($_POST));
     }
 
 
@@ -434,7 +434,7 @@ class Discover extends CI_Controller
         }
 
         //Fetch their current progress links:
-        $progress_links = $this->DISCOVER_model->ln_fetch(array(
+        $progress_links = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12227')) . ')' => null,
             'ln_creator_source_id' => $en_id,
@@ -446,7 +446,7 @@ class Discover extends CI_Controller
             $message = 'Removed '.count($progress_links).' idea'.echo__s(count($progress_links)).' from your discovery list.';
 
             //Log link:
-            $clear_all_link = $this->DISCOVER_model->ln_create(array(
+            $clear_all_link = $this->LEDGER_model->ln_create(array(
                 'ln_content' => $message,
                 'ln_type_source_id' => 6415, //DISCOVER LIST Reset Discoveries
                 'ln_creator_source_id' => $en_id,
@@ -454,7 +454,7 @@ class Discover extends CI_Controller
 
             //Delete all progressions:
             foreach($progress_links as $progress_link){
-                $this->DISCOVER_model->ln_update($progress_link['ln_id'], array(
+                $this->LEDGER_model->ln_update($progress_link['ln_id'], array(
                     'ln_status_source_id' => 6173, //Link Deleted
                     'ln_parent_transaction_id' => $clear_all_link['ln_id'], //To indicate when it was deleted
                 ), $en_id, 6415 /* User Cleared DISCOVER LIST */);
@@ -536,7 +536,7 @@ class Discover extends CI_Controller
         foreach($_POST['new_actionplan_order'] as $ln_order => $ln_id){
             if(intval($ln_id) > 0 && intval($ln_order) > 0){
                 //Update order of this link:
-                $results[$ln_order] = $this->DISCOVER_model->ln_update(intval($ln_id), array(
+                $results[$ln_order] = $this->LEDGER_model->ln_update(intval($ln_id), array(
                     'ln_order' => $ln_order,
                 ), $_POST['js_pl_id'], 6132 /* Ideas Ordered by User */);
             }

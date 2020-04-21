@@ -45,7 +45,7 @@ class IDEA_model extends CI_Model
             if ($ln_creator_source_id > 0) {
 
                 //Log link new Idea:
-                $this->DISCOVER_model->ln_create(array(
+                $this->LEDGER_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_next_idea_id' => $insert_columns['in_id'],
                     'ln_content' => $insert_columns['in_title'],
@@ -53,9 +53,9 @@ class IDEA_model extends CI_Model
                 ));
 
                 //Also add as source:
-                $this->DISCOVER_model->ln_create(array(
+                $this->LEDGER_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
-                    'ln_parent_source_id' => $ln_creator_source_id,
+                    'ln_profile_source_id' => $ln_creator_source_id,
                     'ln_type_source_id' => 4983, //IDEA COIN
                     'ln_content' => '@'.$ln_creator_source_id,
                     'ln_next_idea_id' => $insert_columns['in_id'],
@@ -78,7 +78,7 @@ class IDEA_model extends CI_Model
         } else {
 
             //Ooopsi, something went wrong!
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_content' => 'in_create() failed to create a new idea',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $ln_creator_source_id,
@@ -150,8 +150,8 @@ class IDEA_model extends CI_Model
                 }
 
                 //Assume no source links unless specifically defined:
-                $ln_child_source_id = 0;
-                $ln_parent_source_id = 0;
+                $ln_portfolio_source_id = 0;
+                $ln_profile_source_id = 0;
 
 
                 if($key=='in_title') {
@@ -168,16 +168,16 @@ class IDEA_model extends CI_Model
                     }
                     $en_all_4737 = $this->config->item('en_all_4737'); //Idea Status
                     $ln_content = echo_db_field($key) . ' updated from [' . $en_all_4737[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4737[$value]['m_name'] . ']';
-                    $ln_parent_source_id = $value;
-                    $ln_child_source_id = $before_data[0][$key];
+                    $ln_profile_source_id = $value;
+                    $ln_portfolio_source_id = $before_data[0][$key];
 
                 } elseif($key=='in_type_source_id'){
 
                     $ln_type_source_id = 10651; //Idea updated Subtype
                     $en_all_7585 = $this->config->item('en_all_7585'); //Idea Subtypes
                     $ln_content = echo_db_field($key) . ' updated from [' . $en_all_7585[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_7585[$value]['m_name'] . ']';
-                    $ln_parent_source_id = $value;
-                    $ln_child_source_id = $before_data[0][$key];
+                    $ln_profile_source_id = $value;
+                    $ln_portfolio_source_id = $before_data[0][$key];
 
                 } elseif($key=='in_time_seconds') {
 
@@ -193,12 +193,12 @@ class IDEA_model extends CI_Model
 
 
                 //Value has changed, log link:
-                $this->DISCOVER_model->ln_create(array(
+                $this->LEDGER_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_type_source_id' => $ln_type_source_id,
                     'ln_next_idea_id' => $id,
-                    'ln_child_source_id' => $ln_child_source_id,
-                    'ln_parent_source_id' => $ln_parent_source_id,
+                    'ln_portfolio_source_id' => $ln_portfolio_source_id,
+                    'ln_profile_source_id' => $ln_profile_source_id,
                     'ln_content' => $ln_content,
                     'ln_metadata' => array(
                         'in_id' => $id,
@@ -218,7 +218,7 @@ class IDEA_model extends CI_Model
         } elseif($affected_rows < 1){
 
             //This should not happen:
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_next_idea_id' => $id,
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $ln_creator_source_id,
@@ -237,27 +237,27 @@ class IDEA_model extends CI_Model
 
         //REMOVE IDEA LINKS
         $links_deleted = 0;
-        foreach($this->DISCOVER_model->ln_fetch(array( //Idea Links
+        foreach($this->LEDGER_model->ln_fetch(array( //Idea Links
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             '(ln_next_idea_id = '.$in_id.' OR ln_previous_idea_id = '.$in_id.')' => null,
         ), array(), 0) as $ln){
             //Delete this link:
-            $links_deleted += $this->DISCOVER_model->ln_update($ln['ln_id'], array(
+            $links_deleted += $this->LEDGER_model->ln_update($ln['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Deleted
             ), $ln_creator_source_id, 10686 /* Idea Link Unlinked */);
         }
 
 
         //REMOVE NOTES:
-        $in_notes = $this->DISCOVER_model->ln_fetch(array( //Idea Links
+        $in_notes = $this->LEDGER_model->ln_fetch(array( //Idea Links
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
             'ln_next_idea_id' => $in_id,
         ), array(), 0);
         foreach($in_notes as $in_note){
             //Delete this link:
-            $links_deleted += $this->DISCOVER_model->ln_update($in_note['ln_id'], array(
+            $links_deleted += $this->LEDGER_model->ln_update($in_note['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Deleted
             ), $ln_creator_source_id, 10686 /* Idea Link Unlinked */);
         }
@@ -290,7 +290,7 @@ class IDEA_model extends CI_Model
             $stats['scanned']++;
 
             //Find creation discover:
-            $discoveries = $this->DISCOVER_model->ln_fetch(array(
+            $discoveries = $this->LEDGER_model->ln_fetch(array(
                 'ln_type_source_id' => $stats['ln_type_source_id'],
                 'ln_next_idea_id' => $in['in_id'],
             ));
@@ -299,7 +299,7 @@ class IDEA_model extends CI_Model
 
                 $stats['missing_creation_fix']++;
 
-                $this->DISCOVER_model->ln_create(array(
+                $this->LEDGER_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_next_idea_id' => $in['in_id'],
                     'ln_content' => $in['in_title'],
@@ -310,7 +310,7 @@ class IDEA_model extends CI_Model
             } elseif($discoveries[0]['ln_status_source_id'] != $status_converter[$in['in_status_source_id']]){
 
                 $stats['status_sync']++;
-                $this->DISCOVER_model->ln_update($discoveries[0]['ln_id'], array(
+                $this->LEDGER_model->ln_update($discoveries[0]['ln_id'], array(
                     'ln_status_source_id' => $status_converter[$in['in_status_source_id']],
                 ));
 
@@ -417,7 +417,7 @@ class IDEA_model extends CI_Model
             $in_new = $ins[0];
 
             //Make sure this is not a duplicate Idea for its parent:
-            $dup_links = $this->DISCOVER_model->ln_fetch(array(
+            $dup_links = $this->LEDGER_model->ln_fetch(array(
                 'ln_previous_idea_id' => $parent_in['in_id'],
                 'ln_next_idea_id' => $child_in['in_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
@@ -468,12 +468,12 @@ class IDEA_model extends CI_Model
         //Create Idea Link:
         if($link_to_in_id > 0){
 
-            $relation = $this->DISCOVER_model->ln_create(array(
+            $relation = $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $ln_creator_source_id,
                 'ln_type_source_id' => 4228, //Idea Link Regular Discovery
                 ( $is_parent ? 'ln_next_idea_id' : 'ln_previous_idea_id' ) => $link_to_in_id,
                 ( $is_parent ? 'ln_previous_idea_id' : 'ln_next_idea_id' ) => $in_new['in_id'],
-                'ln_order' => 1 + $this->DISCOVER_model->ln_max_order(array(
+                'ln_order' => 1 + $this->LEDGER_model->ln_max_order(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                         'ln_previous_idea_id' => ( $is_parent ? $in_new['in_id'] : $link_to_in_id ),
@@ -481,13 +481,13 @@ class IDEA_model extends CI_Model
             ), true);
 
             //Fetch and return full data to be properly shown on the UI using the echo_in() function
-            $new_ins = $this->DISCOVER_model->ln_fetch(array(
+            $new_ins = $this->LEDGER_model->ln_fetch(array(
                 ( $is_parent ? 'ln_next_idea_id' : 'ln_previous_idea_id' ) => $link_to_in_id,
                 ( $is_parent ? 'ln_previous_idea_id' : 'ln_next_idea_id' ) => $in_new['in_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-            ), array(($is_parent ? 'in_parent' : 'in_child')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
+            ), array(($is_parent ? 'in_previous' : 'in_next')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
             $child_in_html = echo_in($new_ins[0], $link_to_in_id, $is_parent, true /* Since they added it! */);
@@ -513,12 +513,12 @@ class IDEA_model extends CI_Model
         $grand_parents = array();
 
         //Fetch parents:
-        foreach($this->DISCOVER_model->ln_fetch(array(
+        foreach($this->LEDGER_model->ln_fetch(array(
             'in_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7355' : 'en_ids_7356' ))) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7359' : 'en_ids_7360' ))) . ')' => null,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             'ln_next_idea_id' => $in_id,
-        ), array('in_parent')) as $in_parent){
+        ), array('in_previous')) as $in_parent){
 
             //Prep ID:
             $p_id = intval($in_parent['in_id']);
@@ -552,12 +552,12 @@ class IDEA_model extends CI_Model
         $child_ids = array();
 
         //Fetch parents:
-        foreach($this->DISCOVER_model->ln_fetch(array(
+        foreach($this->LEDGER_model->ln_fetch(array(
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             'ln_previous_idea_id' => $in_id,
-        ), array('in_child')) as $child_in){
+        ), array('in_next')) as $child_in){
 
             array_push($child_ids, intval($child_in['in_id']));
 
@@ -593,12 +593,12 @@ class IDEA_model extends CI_Model
         );
 
         //Fetch children:
-        foreach($this->DISCOVER_model->ln_fetch(array(
+        foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             'ln_previous_idea_id' => $focus_in['in_id'],
-        ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_in){
+        ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $child_in){
 
             //Determine action based on parent idea type:
             if($child_in['ln_type_source_id']==4229){
@@ -708,12 +708,12 @@ class IDEA_model extends CI_Model
         //Fetch all children:
         $applied_success = 0; //To be populated...
 
-        $in__children = $this->DISCOVER_model->ln_fetch(array(
+        $in__children = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
             'ln_type_source_id' => 4228, //Idea Link Regular Discovery
             'ln_previous_idea_id' => $in_id,
-        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+        ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
 
         //Process request:
@@ -725,19 +725,19 @@ class IDEA_model extends CI_Model
 
                 //Check if it hs this item:
                 $parent_en_id = intval(one_two_explode('@',' ',$action_command1));
-                $in_has_sources = $this->DISCOVER_model->ln_fetch(array(
+                $in_has_sources = $this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                     'ln_next_idea_id' => $in['in_id'],
-                    'ln_parent_source_id' => $parent_en_id,
+                    'ln_profile_source_id' => $parent_en_id,
                 ));
 
                 if($action_en_id==12591 && !count($in_has_sources)){
 
                     //Missing & Must be Added:
-                    $this->DISCOVER_model->ln_create(array(
+                    $this->LEDGER_model->ln_create(array(
                         'ln_creator_source_id' => $ln_creator_source_id,
-                        'ln_parent_source_id' => $parent_en_id,
+                        'ln_profile_source_id' => $parent_en_id,
                         'ln_type_source_id' => 4983, //IDEA COIN
                         'ln_content' => '@'.$parent_en_id,
                         'ln_next_idea_id' => $in['in_id'],
@@ -748,7 +748,7 @@ class IDEA_model extends CI_Model
                 } elseif($action_en_id==12592 && count($in_has_sources)){
 
                     //Has and must be deleted:
-                    $this->DISCOVER_model->ln_update($in_has_sources[0]['ln_id'], array(
+                    $this->LEDGER_model->ln_update($in_has_sources[0]['ln_id'], array(
                         'ln_status_source_id' => 6173,
                     ), $ln_creator_source_id, 10678 /* Idea Notes Unlinked */);
 
@@ -766,7 +766,7 @@ class IDEA_model extends CI_Model
 
 
         //Log mass source edit link:
-        $this->DISCOVER_model->ln_create(array(
+        $this->LEDGER_model->ln_create(array(
             'ln_creator_source_id' => $ln_creator_source_id,
             'ln_type_source_id' => $action_en_id,
             'ln_next_idea_id' => $in_id,
@@ -800,12 +800,12 @@ class IDEA_model extends CI_Model
 
         $total_child_weights = 0;
 
-        foreach($this->DISCOVER_model->ln_fetch(array(
+        foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_type_source_id' => 4228, //Fixed Idea Link
             'ln_previous_idea_id' => $in_id,
-        ), array('in_child'), 0, 0, array(), 'in_id, in_weight') as $in_child){
+        ), array('in_next'), 0, 0, array(), 'in_id, in_weight') as $in_child){
             $total_child_weights += $in_child['in_weight'] + $this->IDEA_model->in_weight($in_child['in_id']);
         }
 
@@ -880,30 +880,30 @@ class IDEA_model extends CI_Model
 
         //Add-up Idea Notes References:
         //The sources we need to check and see if they are industry experts:
-        foreach ($this->DISCOVER_model->ln_fetch(array(
-            'ln_parent_source_id >' => 0,
+        foreach ($this->LEDGER_model->ln_fetch(array(
+            'ln_profile_source_id >' => 0,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')).')' => null, //Idea Notes
             '(ln_next_idea_id = ' . $in_id . ( count($flat_common_steps) > 0 ? ' OR ln_next_idea_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-        ), array('en_parent'), 0) as $pads_en) {
+        ), array('en_proflie'), 0) as $pads_en) {
 
             //Referenced source in Idea Notes... Fetch parents:
-            foreach($this->DISCOVER_model->ln_fetch(array(
-                'ln_child_source_id' => $pads_en['ln_parent_source_id'],
+            foreach($this->LEDGER_model->ln_fetch(array(
+                'ln_portfolio_source_id' => $pads_en['ln_profile_source_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Source Links
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             ), array(), 0) as $parent_en){
 
-                if(in_array($parent_en['ln_parent_source_id'], $this->config->item('en_ids_3000'))){
+                if(in_array($parent_en['ln_profile_source_id'], $this->config->item('en_ids_3000'))){
 
                     //Expert Source:
-                    if (!isset($metadata_this['__in__metadata_sources'][$parent_en['ln_parent_source_id']][$pads_en['en_id']])) {
+                    if (!isset($metadata_this['__in__metadata_sources'][$parent_en['ln_profile_source_id']][$pads_en['en_id']])) {
                         //Add since it's not there:
-                        $metadata_this['__in__metadata_sources'][$parent_en['ln_parent_source_id']][$pads_en['en_id']] = $pads_en;
+                        $metadata_this['__in__metadata_sources'][$parent_en['ln_profile_source_id']][$pads_en['en_id']] = $pads_en;
                     }
 
-                } elseif($parent_en['ln_parent_source_id']==3084) {
+                } elseif($parent_en['ln_profile_source_id']==3084) {
 
                     //Industry Expert:
                     if (!isset($metadata_this['__in__metadata_experts'][$pads_en['en_id']])) {
@@ -913,19 +913,19 @@ class IDEA_model extends CI_Model
                 } else {
 
                     //Industry Expert?
-                    $expert_parents = $this->DISCOVER_model->ln_fetch(array(
+                    $expert_parents = $this->LEDGER_model->ln_fetch(array(
                         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Source Links
-                        'ln_parent_source_id' => 3084, //Industry Experts
-                        'ln_child_source_id' => $parent_en['ln_parent_source_id'],
-                    ), array('en_child'), 0);
+                        'ln_profile_source_id' => 3084, //Industry Experts
+                        'ln_portfolio_source_id' => $parent_en['ln_profile_source_id'],
+                    ), array('en_portfolio'), 0);
 
                     if(count($expert_parents) > 0){
 
                         //Yes, Industry Expert:
-                        if (!isset($metadata_this['__in__metadata_experts'][$parent_en['ln_parent_source_id']])) {
-                            $metadata_this['__in__metadata_experts'][$parent_en['ln_parent_source_id']] = $expert_parents[0];
+                        if (!isset($metadata_this['__in__metadata_experts'][$parent_en['ln_profile_source_id']])) {
+                            $metadata_this['__in__metadata_experts'][$parent_en['ln_profile_source_id']] = $expert_parents[0];
                         }
 
                     } else {
@@ -1052,13 +1052,13 @@ class IDEA_model extends CI_Model
 
 
         //Discovery 1: Is there an OR parent that we can simply answer and unlock?
-        foreach($this->DISCOVER_model->ln_fetch(array(
+        foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_type_source_id' => 4228, //Idea Link Regular Discovery
             'ln_next_idea_id' => $in['in_id'],
             'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
-        ), array('in_parent'), 0) as $in_or_parent){
+        ), array('in_previous'), 0) as $in_or_parent){
             if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $in_or_parent['in_id'])) {
                 array_push($child_unlock_paths, $in_or_parent);
             }
@@ -1066,12 +1066,12 @@ class IDEA_model extends CI_Model
 
 
         //Discovery 2: Are there any locked link parents that the user might be able to unlock?
-        foreach($this->DISCOVER_model->ln_fetch(array(
+        foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_type_source_id' => 4229, //Idea Link Locked Discovery
             'ln_next_idea_id' => $in['in_id'],
-        ), array('in_parent'), 0) as $in_locked_parent){
+        ), array('in_previous'), 0) as $in_locked_parent){
             if(in_is_unlockable($in_locked_parent)){
                 //Need to check recursively:
                 foreach($this->IDEA_model->in_unlock_paths($in_locked_parent) as $locked_path){
@@ -1093,12 +1093,12 @@ class IDEA_model extends CI_Model
 
 
         //Discovery 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
-        $in__children = $this->DISCOVER_model->ln_fetch(array(
+        $in__children = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_type_source_id' => 4228, //Idea Link Regular Discovery
             'ln_previous_idea_id' => $in['in_id'],
-        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+        ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
         if(count($in__children) < 1){
             //No children, no path:
             return array();

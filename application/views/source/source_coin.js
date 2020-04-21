@@ -200,7 +200,7 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 'alg_obj_is_in=0',
+                    filters: 'alg_obj_type_id=4536',
                     hitsPerPage: 7,
                 }, function (error, content) {
                     if (error) {

@@ -14,7 +14,7 @@ $parent_tr_filter = ( isset($_GET['ln_parent_transaction_id']) && $_GET['ln_pare
 if(isset($_GET['in_status_source_id']) && strlen($_GET['in_status_source_id']) > 0){
     if(isset($_GET['ln_type_source_id']) && $_GET['ln_type_source_id']==4250){ //IDEA created
         //Filter idea status based on
-        $join_by = array('in_child');
+        $join_by = array('in_next');
 
         if (substr_count($_GET['in_status_source_id'], ',') > 0) {
             //This is multiple:
@@ -32,7 +32,7 @@ if(isset($_GET['in_status_source_id']) && strlen($_GET['in_status_source_id']) >
 if(isset($_GET['in_type_source_id']) && strlen($_GET['in_type_source_id']) > 0){
     if(isset($_GET['ln_type_source_id']) && $_GET['ln_type_source_id']==4250){ //IDEA created
         //Filter idea status based on
-        $join_by = array('in_child');
+        $join_by = array('in_next');
         if (substr_count($_GET['in_type_source_id'], ',') > 0) {
             //This is multiple:
             $filters['( in_type_source_id IN (' . $_GET['in_type_source_id'] . '))'] = null;
@@ -48,7 +48,7 @@ if(isset($_GET['en_status_source_id']) && strlen($_GET['en_status_source_id']) >
     if(isset($_GET['ln_type_source_id']) && $_GET['ln_type_source_id']==4251){ //SOURCE Created
 
         //Filter idea status based on
-        $join_by = array('en_child');
+        $join_by = array('en_portfolio');
 
         if (substr_count($_GET['en_status_source_id'], ',') > 0) {
             //This is multiple:
@@ -80,21 +80,21 @@ if(isset($_GET['ln_creator_source_id']) && strlen($_GET['ln_creator_source_id'])
 }
 
 
-if(isset($_GET['ln_parent_source_id']) && strlen($_GET['ln_parent_source_id']) > 0){
-    if (substr_count($_GET['ln_parent_source_id'], ',') > 0) {
+if(isset($_GET['ln_profile_source_id']) && strlen($_GET['ln_profile_source_id']) > 0){
+    if (substr_count($_GET['ln_profile_source_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_parent_source_id IN (' . $_GET['ln_parent_source_id'] . '))'] = null;
-    } elseif (intval($_GET['ln_parent_source_id']) > 0) {
-        $filters['ln_parent_source_id'] = $_GET['ln_parent_source_id'];
+        $filters['( ln_profile_source_id IN (' . $_GET['ln_profile_source_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_profile_source_id']) > 0) {
+        $filters['ln_profile_source_id'] = $_GET['ln_profile_source_id'];
     }
 }
 
-if(isset($_GET['ln_child_source_id']) && strlen($_GET['ln_child_source_id']) > 0){
-    if (substr_count($_GET['ln_child_source_id'], ',') > 0) {
+if(isset($_GET['ln_portfolio_source_id']) && strlen($_GET['ln_portfolio_source_id']) > 0){
+    if (substr_count($_GET['ln_portfolio_source_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_child_source_id IN (' . $_GET['ln_child_source_id'] . '))'] = null;
-    } elseif (intval($_GET['ln_child_source_id']) > 0) {
-        $filters['ln_child_source_id'] = $_GET['ln_child_source_id'];
+        $filters['( ln_portfolio_source_id IN (' . $_GET['ln_portfolio_source_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_portfolio_source_id']) > 0) {
+        $filters['ln_portfolio_source_id'] = $_GET['ln_portfolio_source_id'];
     }
 }
 
@@ -138,9 +138,9 @@ if(isset($_GET['any_en_id']) && strlen($_GET['any_en_id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_en_id'], ',') > 0) {
         //This is multiple:
-        $filters['( ln_child_source_id IN (' . $_GET['any_en_id'] . ') OR ln_parent_source_id IN (' . $_GET['any_en_id'] . ') OR ln_creator_source_id IN (' . $_GET['any_en_id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $filters['( ln_portfolio_source_id IN (' . $_GET['any_en_id'] . ') OR ln_profile_source_id IN (' . $_GET['any_en_id'] . ') OR ln_creator_source_id IN (' . $_GET['any_en_id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_en_id']) > 0) {
-        $filters['( ln_child_source_id = ' . $_GET['any_en_id'] . ' OR ln_parent_source_id = ' . $_GET['any_en_id'] . ' OR ln_creator_source_id = ' . $_GET['any_en_id'] . $parent_tr_filter . ' )'] = null;
+        $filters['( ln_portfolio_source_id = ' . $_GET['any_en_id'] . ' OR ln_profile_source_id = ' . $_GET['any_en_id'] . ' OR ln_creator_source_id = ' . $_GET['any_en_id'] . $parent_tr_filter . ' )'] = null;
     }
 }
 
@@ -269,9 +269,9 @@ echo '<div class="container">';
 
     echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="ln_creator_source_id" value="' . ((isset($_GET['ln_creator_source_id'])) ? $_GET['ln_creator_source_id'] : '') . '" class="form-control border"></td>';
 
-    echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="ln_parent_source_id" value="' . ((isset($_GET['ln_parent_source_id'])) ? $_GET['ln_parent_source_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="ln_profile_source_id" value="' . ((isset($_GET['ln_profile_source_id'])) ? $_GET['ln_profile_source_id'] : '') . '" class="form-control border"></td>';
 
-    echo '<td><span class="mini-header">SOURCE PORTFOLIO:</span><input type="text" name="ln_child_source_id" value="' . ((isset($_GET['ln_child_source_id'])) ? $_GET['ln_child_source_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">SOURCE PORTFOLIO:</span><input type="text" name="ln_portfolio_source_id" value="' . ((isset($_GET['ln_portfolio_source_id'])) ? $_GET['ln_portfolio_source_id'] : '') . '" class="form-control border"></td>';
 
     echo '</tr></table>';
 
@@ -358,7 +358,7 @@ echo '</div></td>';
             //Fetch details for this user:
             $all_link_count = 0;
             $select_ui = '';
-            foreach ($this->DISCOVER_model->ln_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_source_id) as total_count, en_name, ln_type_source_id', 'ln_type_source_id, en_name') as $ln) {
+            foreach ($this->LEDGER_model->ln_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_source_id) as total_count, en_name, ln_type_source_id', 'ln_type_source_id, en_name') as $ln) {
                 //Echo drop down:
                 $select_ui .= '<option value="' . $ln['ln_type_source_id'] . '" ' . ((isset($_GET['ln_type_source_id']) && $_GET['ln_type_source_id'] == $ln['ln_type_source_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . number_format($ln['total_count'], 0) . ')</option>';
                 $all_link_count += $ln['total_count'];

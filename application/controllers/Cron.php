@@ -140,13 +140,13 @@ class Cron extends CI_Controller
         $last_week_end = date("Y-m-d H:i:s", $last_week_end_timestamp);
 
         //IDEA
-        $idea_coins_new_last_week = $this->DISCOVER_model->ln_fetch(array(
+        $idea_coins_new_last_week = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $idea_coins_last_week = $this->DISCOVER_model->ln_fetch(array(
+        $idea_coins_last_week = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_timestamp <=' => $last_week_end,
@@ -155,13 +155,13 @@ class Cron extends CI_Controller
 
 
         //DISCOVER
-        $discover_coins_new_last_week = $this->DISCOVER_model->ln_fetch(array(
+        $discover_coins_new_last_week = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $discover_coins_last_week = $this->DISCOVER_model->ln_fetch(array(
+        $discover_coins_last_week = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
             'ln_timestamp <=' => $last_week_end,
@@ -171,13 +171,13 @@ class Cron extends CI_Controller
 
 
         //SOURCE
-        $source_coins_new_last_week = $this->DISCOVER_model->ln_fetch(array(
+        $source_coins_new_last_week = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $source_coins_last_week = $this->DISCOVER_model->ln_fetch(array(
+        $source_coins_last_week = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
             'ln_timestamp <=' => $last_week_end,
@@ -186,11 +186,11 @@ class Cron extends CI_Controller
 
 
         //ledger
-        $ledger_transactions_new_last_week = $this->DISCOVER_model->ln_fetch(array(
+        $ledger_transactions_new_last_week = $this->LEDGER_model->ln_fetch(array(
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $ledger_transactions_last_week = $this->DISCOVER_model->ln_fetch(array(
+        $ledger_transactions_last_week = $this->LEDGER_model->ln_fetch(array(
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $ledger_transactions_growth_rate = format_percentage(($ledger_transactions_last_week[0]['totals'] / ( $ledger_transactions_last_week[0]['totals'] - $ledger_transactions_new_last_week[0]['totals'] ) * 100)-100);
@@ -219,7 +219,7 @@ class Cron extends CI_Controller
         $html_message .= '<div>MENCH</div>';
 
         $subscriber_filters = array(
-            'ln_parent_source_id' => 12114,
+            'ln_profile_source_id' => 12114,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
@@ -227,23 +227,23 @@ class Cron extends CI_Controller
 
         //Should we limit the scope?
         if($this->is_player_request){
-            $subscriber_filters['ln_child_source_id'] = $this->session_en['en_id'];
+            $subscriber_filters['ln_portfolio_source_id'] = $this->session_en['en_id'];
         }
 
 
         $email_recipients = 0;
         //Send email to all subscribers:
-        foreach($this->DISCOVER_model->ln_fetch($subscriber_filters, array('en_child')) as $subscribed_player){
+        foreach($this->LEDGER_model->ln_fetch($subscriber_filters, array('en_portfolio')) as $subscribed_player){
             //Try fetching subscribers email:
-            foreach($this->DISCOVER_model->ln_fetch(array(
+            foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
-                'ln_parent_source_id' => 3288, //Mench Email
-                'ln_child_source_id' => $subscribed_player['en_id'],
+                'ln_profile_source_id' => 3288, //Mench Email
+                'ln_portfolio_source_id' => $subscribed_player['en_id'],
             )) as $en_email){
                 if(filter_var($en_email['ln_content'], FILTER_VALIDATE_EMAIL)){
                     //Send Email
-                    $this->DISCOVER_model->dispatch_emails(array($en_email['ln_content']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['en_name']).' 👋</div>'.$html_message);
+                    $this->COMMUNICATION_model->comm_send_email(array($en_email['ln_content']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['en_name']).' 👋</div>'.$html_message);
                     $email_recipients++;
                 }
             }
@@ -395,12 +395,12 @@ class Cron extends CI_Controller
             ));
 
             //Fetch children:
-            foreach($this->DISCOVER_model->ln_fetch(array(
+            foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                 'ln_previous_idea_id' => $in['in_id'],
-            ), array('in_child'), 0, 0) as $child_in){
+            ), array('in_next'), 0, 0) as $child_in){
 
                 $this->db->insert('gephi_edges', array(
                     'source' => $id_prefix['in'].$child_in['ln_previous_idea_id'],
@@ -431,16 +431,16 @@ class Cron extends CI_Controller
             ));
 
             //Fetch children:
-            foreach($this->DISCOVER_model->ln_fetch(array(
+            foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_parent_source_id' => $en['en_id'],
-            ), array('en_child'), 0, 0) as $en_child){
+                'ln_profile_source_id' => $en['en_id'],
+            ), array('en_portfolio'), 0, 0) as $en_child){
 
                 $this->db->insert('gephi_edges', array(
-                    'source' => $id_prefix['en'].$en_child['ln_parent_source_id'],
-                    'target' => $id_prefix['en'].$en_child['ln_child_source_id'],
+                    'source' => $id_prefix['en'].$en_child['ln_profile_source_id'],
+                    'target' => $id_prefix['en'].$en_child['ln_portfolio_source_id'],
                     'label' => $en_all_4593[$en_child['ln_type_source_id']]['m_name'].': '.$en_child['ln_content'],
                     'weight' => 1,
                     'edge_type_en_id' => $en_child['ln_type_source_id'],
@@ -451,11 +451,11 @@ class Cron extends CI_Controller
         }
 
         //Add messages:
-        $messages = $this->DISCOVER_model->ln_fetch(array(
+        $messages = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
-        ), array('in_child'), 0, 0);
+        ), array('in_next'), 0, 0);
         foreach($messages as $message) {
 
             //Add message node:
@@ -486,9 +486,9 @@ class Cron extends CI_Controller
             }
 
             //Add parent source link?
-            if ($message['ln_parent_source_id'] > 0) {
+            if ($message['ln_profile_source_id'] > 0) {
                 $this->db->insert('gephi_edges', array(
-                    'source' => $id_prefix['en'].$message['ln_parent_source_id'],
+                    'source' => $id_prefix['en'].$message['ln_profile_source_id'],
                     'target' => $message['ln_id'],
                     'label' => 'Parent Source',
                     'weight' => 1,
@@ -520,13 +520,13 @@ class Cron extends CI_Controller
 
         //Fetch all valid variable names:
         $valid_variables = array();
-        foreach($this->DISCOVER_model->ln_fetch(array(
-            'ln_parent_source_id' => 6232, //Variables Names
+        foreach($this->LEDGER_model->ln_fetch(array(
+            'ln_profile_source_id' => 6232, //Variables Names
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
             'LENGTH(ln_content) > 0' => null,
-        ), array('en_child'), 0) as $var_name){
+        ), array('en_portfolio'), 0) as $var_name){
             array_push($valid_variables, $var_name['ln_content']);
         }
 
@@ -586,10 +586,10 @@ class Cron extends CI_Controller
 
         if(count($invalid_variables) > 0){
             //Did we have anything to delete? Report with system bug:
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_content' => 'cron__7277() deleted '.count($invalid_variables).' unknown variables from idea/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
-                'ln_parent_source_id' => 6232, //Variables Names
+                'ln_profile_source_id' => 6232, //Variables Names
                 'ln_metadata' => $ln_metadata,
             ));
         }
@@ -617,7 +617,7 @@ class Cron extends CI_Controller
          *
          * */
 
-        $ln_pending = $this->DISCOVER_model->ln_fetch(array(
+        $ln_pending = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id' => 6175, //Link Drafting
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //User Sent/Received Media Links
         ), array(), 10);
@@ -632,9 +632,9 @@ class Cron extends CI_Controller
             }
 
             //Update link:
-            $this->DISCOVER_model->ln_update($ln['ln_id'], array(
+            $this->LEDGER_model->ln_update($ln['ln_id'], array(
                 'ln_content' => $cdn_status['cdn_url'], //CDN URL
-                'ln_child_source_id' => $cdn_status['cdn_en']['en_id'], //New URL Player
+                'ln_portfolio_source_id' => $cdn_status['cdn_en']['en_id'], //New URL Player
                 'ln_status_source_id' => 6176, //Link Published
             ), $ln['ln_creator_source_id'], 10690 /* User Media Uploaded */);
 
@@ -669,7 +669,7 @@ class Cron extends CI_Controller
 
 
         //Let's fetch all Media files without a Facebook attachment ID:
-        $ln_pending = $this->DISCOVER_model->ln_fetch(array(
+        $ln_pending = $this->LEDGER_model->ln_fetch(array(
             'ln_type_source_id IN (' . join(',', array_keys($en_all_11059)) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_metadata' => null, //Missing Facebook Attachment ID [Alert: Must make sure ln_metadata is not used for anything else for these link types]
@@ -702,7 +702,7 @@ class Cron extends CI_Controller
             );
 
             //Attempt to sync Media to Facebook:
-            $result = $this->DISCOVER_model->facebook_graph('POST', '/me/message_attachments', $payload);
+            $result = $this->COMMUNICATION_model->comm_facebook_graph('POST', '/me/message_attachments', $payload);
 
             if (isset($result['ln_metadata']['result']['attachment_id']) && $result['status']) {
 
@@ -721,7 +721,7 @@ class Cron extends CI_Controller
             } else {
 
                 //Log error:
-                $this->DISCOVER_model->ln_create(array(
+                $this->LEDGER_model->ln_create(array(
                     'ln_type_source_id' => 4246, //Platform Bug Reports
                     'ln_parent_transaction_id' => $ln['ln_id'],
                     'ln_content' => 'attachments() Failed to sync attachment to Facebook API: ' . (isset($result['ln_metadata']['result']['error']['message']) ? $result['ln_metadata']['result']['error']['message'] : 'Unknown Error'),
@@ -767,13 +767,13 @@ class Cron extends CI_Controller
         foreach($this->config->item('en_all_12523') as $en_id => $m) {
 
             //Update All Child Icons that are not the same:
-            foreach($this->DISCOVER_model->ln_fetch(array(
-                'ln_parent_source_id' => $en_id,
+            foreach($this->LEDGER_model->ln_fetch(array(
+                'ln_profile_source_id' => $en_id,
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
                 '(LENGTH(en_icon) < 1 OR en_icon IS NULL)' => null, //Missing Icon
-            ), array('en_child'), 0) as $en) {
+            ), array('en_portfolio'), 0) as $en) {
                 $updated++;
                 $this->SOURCE_model->en_update($en['en_id'], array(
                     'en_icon' => $m['m_icon'],

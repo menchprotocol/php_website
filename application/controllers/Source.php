@@ -30,7 +30,7 @@ class Source extends CI_Controller
 
         //Log View:
         if($session_en){
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_type_source_id' => 12489, //Opened Leaderboard
                 'ln_creator_source_id' => $session_en['en_id'],
             ));
@@ -71,10 +71,10 @@ class Source extends CI_Controller
 
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_type_source_id' => 4994, //Player Opened Player
-                'ln_child_source_id' => $en_id,
+                'ln_portfolio_source_id' => $en_id,
                 'ln_order' => $new_order,
             ));
 
@@ -132,7 +132,7 @@ class Source extends CI_Controller
 
 
         //Fetch leaderboard:
-        $in_source_coins = $this->DISCOVER_model->ln_fetch($filters_in, array('en_parent'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight');
+        $in_source_coins = $this->LEDGER_model->ln_fetch($filters_in, array('en_proflie'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight');
 
 
         //Start with top Players:
@@ -213,13 +213,13 @@ class Source extends CI_Controller
         if (!$detected_ln_type['status'] && isset($detected_ln_type['url_previously_existed']) && $detected_ln_type['url_previously_existed']) {
 
             //See if this is duplicate to either link:
-            $en_lns = $this->DISCOVER_model->ln_fetch(array(
+            $en_lns = $this->LEDGER_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Player URL Links
             ));
 
             //Are they both different?
-            if (count($en_lns) < 1 || ($en_lns[0]['ln_parent_source_id'] != $detected_ln_type['en_url']['en_id'] && $en_lns[0]['ln_child_source_id'] != $detected_ln_type['en_url']['en_id'])) {
+            if (count($en_lns) < 1 || ($en_lns[0]['ln_profile_source_id'] != $detected_ln_type['en_url']['en_id'] && $en_lns[0]['ln_portfolio_source_id'] != $detected_ln_type['en_url']['en_id'])) {
                 //return error:
                 return echo_json($detected_ln_type);
             }
@@ -289,14 +289,14 @@ class Source extends CI_Controller
         $en_focus_filter = intval($_POST['en_focus_filter']);
         $page = intval($_POST['page']);
         $filters = array(
-            'ln_parent_source_id' => $parent_en_id,
+            'ln_profile_source_id' => $parent_en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'en_status_source_id IN (' . join(',', ( $en_focus_filter<0 /* Remove Filters */ ? $this->config->item('en_ids_7358') /* Source Status Active */ : array($en_focus_filter) /* This specific filter*/ )) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         );
 
         //Fetch & display next batch of children:
-        $child_sources = $this->DISCOVER_model->ln_fetch($filters, array('en_child'), $items_per_page, ($page * $items_per_page), array(
+        $child_sources = $this->LEDGER_model->ln_fetch($filters, array('en_portfolio'), $items_per_page, ($page * $items_per_page), array(
             'ln_order' => 'ASC',
             'en_name' => 'ASC'
         ));
@@ -306,7 +306,7 @@ class Source extends CI_Controller
         }
 
         //Count total children:
-        $child_sources_count = $this->DISCOVER_model->ln_fetch($filters, array('en_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
+        $child_sources_count = $this->LEDGER_model->ln_fetch($filters, array('en_portfolio'), 0, 0, array(), 'COUNT(ln_id) as totals');
 
         //Do we need another load more button?
         if ($child_sources_count[0]['totals'] > (($page * $items_per_page) + count($child_sources))) {
@@ -439,13 +439,13 @@ class Source extends CI_Controller
             //Add links only if not previously added by the URL function:
             if ($_POST['is_parent']) {
 
-                $ln_child_source_id = $current_en[0]['en_id'];
-                $ln_parent_source_id = $source_new['en_id'];
+                $ln_portfolio_source_id = $current_en[0]['en_id'];
+                $ln_profile_source_id = $source_new['en_id'];
 
             } else {
 
-                $ln_child_source_id = $source_new['en_id'];
-                $ln_parent_source_id = $current_en[0]['en_id'];
+                $ln_portfolio_source_id = $source_new['en_id'];
+                $ln_profile_source_id = $current_en[0]['en_id'];
 
             }
 
@@ -468,12 +468,12 @@ class Source extends CI_Controller
             }
 
             // Link to new OR existing source:
-            $ur2 = $this->DISCOVER_model->ln_create(array(
+            $ur2 = $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_type_source_id' => $ln_type_source_id,
                 'ln_content' => $ln_content,
-                'ln_child_source_id' => $ln_child_source_id,
-                'ln_parent_source_id' => $ln_parent_source_id,
+                'ln_portfolio_source_id' => $ln_portfolio_source_id,
+                'ln_profile_source_id' => $ln_profile_source_id,
             ));
         }
 
@@ -509,10 +509,10 @@ class Source extends CI_Controller
         }
 
         //Simply counts the links for a given source:
-        $all_en_links = $this->DISCOVER_model->ln_fetch(array(
+        $all_en_links = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-            '(ln_child_source_id = ' . $_POST['en_id'] . ' OR ln_parent_source_id = ' . $_POST['en_id'] . ')' => null,
+            '(ln_portfolio_source_id = ' . $_POST['en_id'] . ' OR ln_profile_source_id = ' . $_POST['en_id'] . ')' => null,
         ), array(), 0);
 
         return echo_json(array(
@@ -568,10 +568,10 @@ class Source extends CI_Controller
 
 
         //Log Link:
-        $this->DISCOVER_model->ln_create(array(
+        $this->LEDGER_model->ln_create(array(
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_type_source_id' => 5007, //TOGGLE SUPERPOWER
-            'ln_parent_source_id' => $superpower_en_id,
+            'ln_profile_source_id' => $superpower_en_id,
             'ln_content' => 'SUPERPOWER '.$toggled_setting, //To be used when player logs in again
         ));
 
@@ -683,12 +683,12 @@ class Source extends CI_Controller
 
 
             //Count source references in Idea Notes:
-            $messages = $this->DISCOVER_model->ln_fetch(array(
+            $messages = $this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
-                'ln_parent_source_id' => $_POST['en_id'],
-            ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+                'ln_profile_source_id' => $_POST['en_id'],
+            ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
             //Assume no merge:
             $merged_ens = array();
@@ -749,12 +749,12 @@ class Source extends CI_Controller
             if($_POST['en_id'] == $_POST['en_focus_id']){
 
                 //Fetch parents to redirect to:
-                $en__parents = $this->DISCOVER_model->ln_fetch(array(
+                $en__parents = $this->LEDGER_model->ln_fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                    'ln_child_source_id' => $_POST['en_id'],
+                    'ln_portfolio_source_id' => $_POST['en_id'],
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-                ), array('en_parent'), 1);
+                ), array('en_proflie'), 1);
 
             }
 
@@ -791,7 +791,7 @@ class Source extends CI_Controller
         if (intval($_POST['ln_id']) > 0) { //DO we have a link to update?
 
             //Yes, first validate source link:
-            $en_lns = $this->DISCOVER_model->ln_fetch(array(
+            $en_lns = $this->LEDGER_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             ));
@@ -813,7 +813,7 @@ class Source extends CI_Controller
                     $ln_status_source_id = 10673; //Player Link Unlinked
                 }
 
-                $this->DISCOVER_model->ln_update($_POST['ln_id'], array(
+                $this->LEDGER_model->ln_update($_POST['ln_id'], array(
                     'ln_status_source_id' => intval($_POST['ln_status_source_id']),
                 ), $session_en['en_id'], $ln_status_source_id);
             }
@@ -841,7 +841,7 @@ class Source extends CI_Controller
 
                     if ($detected_ln_type['url_is_root']) {
 
-                        if ($en_lns[0]['ln_parent_source_id'] == 1326) {
+                        if ($en_lns[0]['ln_profile_source_id'] == 1326) {
 
                             //Override with the clean domain for consistency:
                             $_POST['ln_content'] = $detected_ln_type['url_clean_domain'];
@@ -858,7 +858,7 @@ class Source extends CI_Controller
 
                     } else {
 
-                        if ($en_lns[0]['ln_parent_source_id'] == 1326) {
+                        if ($en_lns[0]['ln_profile_source_id'] == 1326) {
 
                             return echo_json(array(
                                 'status' => 0,
@@ -867,7 +867,7 @@ class Source extends CI_Controller
 
                         } elseif ($detected_ln_type['en_domain']) {
                             //We do have the domain mapped! Is this connected to the domain source as its parent?
-                            if ($detected_ln_type['en_domain']['en_id'] != $en_lns[0]['ln_parent_source_id']) {
+                            if ($detected_ln_type['en_domain']['en_id'] != $en_lns[0]['ln_profile_source_id']) {
                                 return echo_json(array(
                                     'status' => 0,
                                     'message' => 'Must link to <b>@' . $detected_ln_type['en_domain']['en_id'] . ' ' . $detected_ln_type['en_domain']['en_name'] . '</b> as their parent source',
@@ -890,14 +890,14 @@ class Source extends CI_Controller
                 $js_ln_type_source_id = $detected_ln_type['ln_type_source_id'];
 
 
-                $this->DISCOVER_model->ln_update($_POST['ln_id'], array(
+                $this->LEDGER_model->ln_update($_POST['ln_id'], array(
                     'ln_content' => $ln_content,
                 ), $session_en['en_id'], 10657 /* Player Link updated Content */);
 
 
                 //Also, did the link type change based on the content change?
                 if($js_ln_type_source_id!=$en_lns[0]['ln_type_source_id']){
-                    $this->DISCOVER_model->ln_update($_POST['ln_id'], array(
+                    $this->LEDGER_model->ln_update($_POST['ln_id'], array(
                         'ln_type_source_id' => $js_ln_type_source_id,
                     ), $session_en['en_id'], 10659 /* Player Link updated Type */);
                 }
@@ -932,9 +932,9 @@ class Source extends CI_Controller
         if (intval($_POST['ln_id']) > 0) {
 
             //Fetch source link:
-            $lns = $this->DISCOVER_model->ln_fetch(array(
+            $lns = $this->LEDGER_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
-            ), array('en_owner'));
+            ), array('en_creator'));
 
             //Prep last updated:
             $return_array['ln_content'] = echo_ln_urls($ln_content, $js_ln_type_source_id);
@@ -1025,7 +1025,7 @@ class Source extends CI_Controller
 
             //Fetch all possible answers based on parent source:
             $filters = array(
-                'ln_parent_source_id' => $_POST['parent_en_id'],
+                'ln_profile_source_id' => $_POST['parent_en_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
@@ -1033,24 +1033,24 @@ class Source extends CI_Controller
 
             if($_POST['enable_mulitiselect'] && $_POST['was_previously_selected']){
                 //Just delete this single item, not the other ones:
-                $filters['ln_child_source_id'] = $_POST['selected_en_id'];
+                $filters['ln_portfolio_source_id'] = $_POST['selected_en_id'];
             }
 
             //List all possible answers:
             $possible_answers = array();
-            foreach($this->DISCOVER_model->ln_fetch($filters, array('en_child'), 0, 0) as $answer_en){
+            foreach($this->LEDGER_model->ln_fetch($filters, array('en_portfolio'), 0, 0) as $answer_en){
                 array_push($possible_answers, $answer_en['en_id']);
             }
 
             //Delete selected options for this player:
-            foreach($this->DISCOVER_model->ln_fetch(array(
-                'ln_parent_source_id IN (' . join(',', $possible_answers) . ')' => null,
-                'ln_child_source_id' => $session_en['en_id'],
+            foreach($this->LEDGER_model->ln_fetch(array(
+                'ln_profile_source_id IN (' . join(',', $possible_answers) . ')' => null,
+                'ln_portfolio_source_id' => $session_en['en_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             )) as $delete_en){
                 //Should usually delete a single option:
-                $this->DISCOVER_model->ln_update($delete_en['ln_id'], array(
+                $this->LEDGER_model->ln_update($delete_en['ln_id'], array(
                     'ln_status_source_id' => 6173, //Link Deleted
                 ), $session_en['en_id'], 6224 /* User Account Updated */);
             }
@@ -1059,9 +1059,9 @@ class Source extends CI_Controller
 
         //Add new option if not previously there:
         if(!$_POST['enable_mulitiselect'] || !$_POST['was_previously_selected']){
-            $this->DISCOVER_model->ln_create(array(
-                'ln_parent_source_id' => $_POST['selected_en_id'],
-                'ln_child_source_id' => $session_en['en_id'],
+            $this->LEDGER_model->ln_create(array(
+                'ln_profile_source_id' => $_POST['selected_en_id'],
+                'ln_portfolio_source_id' => $session_en['en_id'],
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_type_source_id' => 4230, //Raw
             ));
@@ -1070,13 +1070,13 @@ class Source extends CI_Controller
 
         //Log Account Update link type:
         $_POST['account_update_function'] = 'account_update_radio'; //Add this variable to indicate which My Account function created this link
-        $this->DISCOVER_model->ln_create(array(
+        $this->LEDGER_model->ln_create(array(
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_type_source_id' => 6224, //My Account updated
             'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Added' ),
             'ln_metadata' => $_POST,
-            'ln_parent_source_id' => $_POST['parent_en_id'],
-            'ln_child_source_id' => $_POST['selected_en_id'],
+            'ln_profile_source_id' => $_POST['parent_en_id'],
+            'ln_portfolio_source_id' => $_POST['selected_en_id'],
         ));
 
         //All good:
@@ -1218,11 +1218,11 @@ class Source extends CI_Controller
             $_POST['en_email'] = trim(strtolower($_POST['en_email']));
 
             //Check to make sure not duplicate:
-            $duplicates = $this->DISCOVER_model->ln_fetch(array(
+            $duplicates = $this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'ln_type_source_id' => 4255, //Emails are of type Text
-                'ln_parent_source_id' => 3288, //Mench Email
-                'ln_child_source_id !=' => $session_en['en_id'],
+                'ln_profile_source_id' => 3288, //Mench Email
+                'ln_portfolio_source_id !=' => $session_en['en_id'],
                 'LOWER(ln_content)' => $_POST['en_email'],
             ));
             if (count($duplicates) > 0) {
@@ -1236,18 +1236,18 @@ class Source extends CI_Controller
 
 
         //Fetch existing email:
-        $user_emails = $this->DISCOVER_model->ln_fetch(array(
+        $user_emails = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_child_source_id' => $session_en['en_id'],
+            'ln_portfolio_source_id' => $session_en['en_id'],
             'ln_type_source_id' => 4255, //Emails are of type Text
-            'ln_parent_source_id' => 3288, //Mench Email
+            'ln_profile_source_id' => 3288, //Mench Email
         ));
         if (count($user_emails) > 0) {
 
             if (strlen($_POST['en_email']) == 0) {
 
                 //Delete email:
-                $this->DISCOVER_model->ln_update($user_emails[0]['ln_id'], array(
+                $this->LEDGER_model->ln_update($user_emails[0]['ln_id'], array(
                     'ln_status_source_id' => 6173, //Link Deleted
                 ), $session_en['en_id'], 6224 /* User Account Updated */);
 
@@ -1259,7 +1259,7 @@ class Source extends CI_Controller
             } elseif ($user_emails[0]['ln_content'] != $_POST['en_email']) {
 
                 //Update if not duplicate:
-                $this->DISCOVER_model->ln_update($user_emails[0]['ln_id'], array(
+                $this->LEDGER_model->ln_update($user_emails[0]['ln_id'], array(
                     'ln_content' => $_POST['en_email'],
                 ), $session_en['en_id'], 6224 /* User Account Updated */);
 
@@ -1280,11 +1280,11 @@ class Source extends CI_Controller
         } elseif (strlen($_POST['en_email']) > 0) {
 
             //Create new link:
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
-                'ln_child_source_id' => $session_en['en_id'],
+                'ln_portfolio_source_id' => $session_en['en_id'],
                 'ln_type_source_id' => 4255, //Emails are of type Text
-                'ln_parent_source_id' => 3288, //Mench Email
+                'ln_profile_source_id' => 3288, //Mench Email
                 'ln_content' => $_POST['en_email'],
             ), true);
 
@@ -1306,7 +1306,7 @@ class Source extends CI_Controller
         if($return['status']){
             //Log Account Update link type:
             $_POST['account_update_function'] = 'account_update_email'; //Add this variable to indicate which My Account function created this link
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_type_source_id' => 6224, //My Account updated
                 'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_email']) > 0 ? ': '.$_POST['en_email'] : ''),
@@ -1340,11 +1340,11 @@ class Source extends CI_Controller
         }
 
         //Fetch existing password:
-        $user_passwords = $this->DISCOVER_model->ln_fetch(array(
+        $user_passwords = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id' => 4255, //Passwords are of type Text
-            'ln_parent_source_id' => 3286, //Password
-            'ln_child_source_id' => $session_en['en_id'],
+            'ln_profile_source_id' => 3286, //Password
+            'ln_portfolio_source_id' => $session_en['en_id'],
         ));
 
         $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $session_en['en_id']));
@@ -1362,7 +1362,7 @@ class Source extends CI_Controller
             } else {
 
                 //Update password:
-                $this->DISCOVER_model->ln_update($user_passwords[0]['ln_id'], array(
+                $this->LEDGER_model->ln_update($user_passwords[0]['ln_id'], array(
                     'ln_content' => $hashed_password,
                 ), $session_en['en_id'], 7578 /* User Updated Password  */);
 
@@ -1376,11 +1376,11 @@ class Source extends CI_Controller
         } else {
 
             //Create new link:
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_type_source_id' => 4255, //Passwords are of type Text
-                'ln_parent_source_id' => 3286, //Password
+                'ln_profile_source_id' => 3286, //Password
                 'ln_creator_source_id' => $session_en['en_id'],
-                'ln_child_source_id' => $session_en['en_id'],
+                'ln_portfolio_source_id' => $session_en['en_id'],
                 'ln_content' => $hashed_password,
             ), true);
 
@@ -1395,7 +1395,7 @@ class Source extends CI_Controller
         //Log Account Update link type:
         if($return['status']){
             $_POST['account_update_function'] = 'account_update_password'; //Add this variable to indicate which My Account function created this link
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_type_source_id' => 6224, //My Account Updated
                 'ln_content' => 'My Account '.$return['message'],
@@ -1557,26 +1557,26 @@ class Source extends CI_Controller
 
 
         //Add Player:
-        $this->DISCOVER_model->ln_create(array(
-            'ln_parent_source_id' => 4430, //MENCH PLAYERS
+        $this->LEDGER_model->ln_create(array(
+            'ln_profile_source_id' => 4430, //MENCH PLAYERS
             'ln_type_source_id' => 4230, //Raw link
             'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_child_source_id' => $user_en['en']['en_id'],
+            'ln_portfolio_source_id' => $user_en['en']['en_id'],
         ));
 
-        $this->DISCOVER_model->ln_create(array(
+        $this->LEDGER_model->ln_create(array(
             'ln_type_source_id' => 4255, //Text link
             'ln_content' => trim(strtolower($_POST['input_email'])),
-            'ln_parent_source_id' => 3288, //Mench Email
+            'ln_profile_source_id' => 3288, //Mench Email
             'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_child_source_id' => $user_en['en']['en_id'],
+            'ln_portfolio_source_id' => $user_en['en']['en_id'],
         ));
-        $this->DISCOVER_model->ln_create(array(
+        $this->LEDGER_model->ln_create(array(
             'ln_type_source_id' => 4255, //Text link
             'ln_content' => strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $user_en['en']['en_id'])),
-            'ln_parent_source_id' => 3286, //Mench Password
+            'ln_profile_source_id' => 3286, //Mench Password
             'ln_creator_source_id' => $user_en['en']['en_id'],
-            'ln_child_source_id' => $user_en['en']['en_id'],
+            'ln_portfolio_source_id' => $user_en['en']['en_id'],
         ));
 
 
@@ -1613,11 +1613,11 @@ class Source extends CI_Controller
         $html_message .= '<div>MENCH</div>';
 
         //Send Welcome Email:
-        $email_log = $this->DISCOVER_model->dispatch_emails(array($_POST['input_email']), $subject, $html_message);
+        $email_log = $this->COMMUNICATION_model->comm_send_email(array($_POST['input_email']), $subject, $html_message);
 
 
         //Log User Signin Joined Mench
-        $invite_link = $this->DISCOVER_model->ln_create(array(
+        $invite_link = $this->LEDGER_model->ln_create(array(
             'ln_type_source_id' => 7562, //User Signin Joined Mench
             'ln_creator_source_id' => $user_en['en']['en_id'],
             'ln_previous_idea_id' => intval($_POST['referrer_in_id']),
@@ -1727,11 +1727,11 @@ class Source extends CI_Controller
         }
 
         //Authenticate password:
-        $user_passwords = $this->DISCOVER_model->ln_fetch(array(
+        $user_passwords = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id' => 4255, //Text
-            'ln_parent_source_id' => 3286, //Password
-            'ln_child_source_id' => $ens[0]['en_id'],
+            'ln_profile_source_id' => 3286, //Password
+            'ln_portfolio_source_id' => $ens[0]['en_id'],
         ));
         if (count($user_passwords) == 0) {
             //They do not have a password assigned yet!
@@ -1801,7 +1801,7 @@ class Source extends CI_Controller
         } else {
 
             //Validate DISCOVER ID and matching email:
-            $validate_links = $this->DISCOVER_model->ln_fetch(array(
+            $validate_links = $this->LEDGER_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_content' => $_POST['input_email'],
                 'ln_type_source_id' => 7563, //User Signin Magic Link Email
@@ -1831,11 +1831,11 @@ class Source extends CI_Controller
 
 
             //Fetch their passwords to authenticate login:
-            $user_passwords = $this->DISCOVER_model->ln_fetch(array(
+            $user_passwords = $this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_parent_source_id' => 3286, //Mench Sign In Password
-                'ln_child_source_id' => $ens[0]['en_id'],
+                'ln_profile_source_id' => 3286, //Mench Sign In Password
+                'ln_portfolio_source_id' => $ens[0]['en_id'],
             ));
 
             if (count($user_passwords) > 0) {
@@ -1846,7 +1846,7 @@ class Source extends CI_Controller
                 }
 
                 //Update existing password:
-                $this->DISCOVER_model->ln_update($user_passwords[0]['ln_id'], array(
+                $this->LEDGER_model->ln_update($user_passwords[0]['ln_id'], array(
                     'ln_content' => $password_hash,
                     'ln_type_source_id' => $detected_ln_type['ln_type_source_id'],
                 ), $ens[0]['en_id'], 7578 /* User updated Password */);
@@ -1854,19 +1854,19 @@ class Source extends CI_Controller
             } else {
 
                 //Create new password link:
-                $this->DISCOVER_model->ln_create(array(
+                $this->LEDGER_model->ln_create(array(
                     'ln_type_source_id' => 4255, //Text link
                     'ln_content' => $password_hash,
-                    'ln_parent_source_id' => 3286, //Mench Password
+                    'ln_profile_source_id' => 3286, //Mench Password
                     'ln_creator_source_id' => $ens[0]['en_id'],
-                    'ln_child_source_id' => $ens[0]['en_id'],
+                    'ln_portfolio_source_id' => $ens[0]['en_id'],
                 ));
 
             }
 
 
             //Log password reset:
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $ens[0]['en_id'],
                 'ln_type_source_id' => 7578, //User updated Password
                 'ln_content' => $password_hash, //A copy of their password set at this time
@@ -1906,12 +1906,12 @@ class Source extends CI_Controller
 
         //Cleanup/validate email:
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
-        $user_emails = $this->DISCOVER_model->ln_fetch(array(
+        $user_emails = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_content' => $_POST['input_email'],
             'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
-            'ln_parent_source_id' => 3288, //Mench Email
-        ), array('en_child'));
+            'ln_profile_source_id' => 3288, //Mench Email
+        ), array('en_portfolio'));
         if(count($user_emails) < 1){
             return echo_json(array(
                 'status' => 0,
@@ -1920,7 +1920,7 @@ class Source extends CI_Controller
         }
 
         //Log email search attempt:
-        $reset_link = $this->DISCOVER_model->ln_create(array(
+        $reset_link = $this->LEDGER_model->ln_create(array(
             'ln_type_source_id' => 7563, //User Signin Magic Link Email
             'ln_content' => $_POST['input_email'],
             'ln_creator_source_id' => $user_emails[0]['en_id'], //User making request
@@ -1946,7 +1946,7 @@ class Source extends CI_Controller
         $html_message .= '<div>MENCH</div>';
 
         //Send email:
-        $this->DISCOVER_model->dispatch_emails(array($_POST['input_email']), $subject, $html_message);
+        $this->COMMUNICATION_model->comm_send_email(array($_POST['input_email']), $subject, $html_message);
 
         //Return success
         return echo_json(array(
@@ -1965,7 +1965,7 @@ class Source extends CI_Controller
         }
 
         //Validate DISCOVER ID and matching email:
-        $validate_links = $this->DISCOVER_model->ln_fetch(array(
+        $validate_links = $this->LEDGER_model->ln_fetch(array(
             'ln_id' => $ln_id,
             'ln_content' => $_GET['email'],
             'ln_type_source_id' => 7563, //User Signin Magic Link Email
@@ -2025,12 +2025,12 @@ class Source extends CI_Controller
 
 
         //Search for email to see if it exists...
-        $user_emails = $this->DISCOVER_model->ln_fetch(array(
+        $user_emails = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_content' => $_POST['input_email'],
             'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
-            'ln_parent_source_id' => 3288, //Mench Email
-        ), array('en_child'));
+            'ln_profile_source_id' => 3288, //Mench Email
+        ), array('en_portfolio'));
 
         if(count($user_emails) > 0){
 

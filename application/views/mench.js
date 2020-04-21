@@ -68,7 +68,7 @@ function load_editor(){
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 'alg_obj_is_in=0',
+                    filters: 'alg_obj_type_id=4536',
                     hitsPerPage: 5,
                 }, function (error, content) {
                     if (error) {
@@ -99,7 +99,7 @@ function load_editor(){
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: ' alg_obj_is_in=1 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_author_' + js_pl_id : '' ) + ' ) ',
+                    filters: ' alg_obj_type_id=4535 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_source_' + js_pl_id : '' ) + ' ) ',
                     hitsPerPage: 5,
                 }, function (error, content) {
                     if (error) {
@@ -143,12 +143,12 @@ function js_extract_icon_color(en_icon){
 function echo_search_result(alg_obj){
 
     //Determine object type:
-    var obj_type = ( parseInt(alg_obj.alg_obj_is_in) ? 'idea' : 'source' );
-    var is_public = ( parseInt(alg_obj.alg_obj_status) in ( parseInt(alg_obj.alg_obj_is_in) ? js_en_all_7355 : js_en_all_7357 ));
-    var obj_icon = ( parseInt(alg_obj.alg_obj_is_in) ? '<i class="fas fa-circle '+( js_session_superpowers_assigned.includes(10939) ? 'idea' : 'discover' )+'"></i>' : alg_obj.alg_obj_icon );
+    var is_idea = (parseInt(alg_obj.alg_obj_type_id)==4535);
+    var is_public = ( parseInt(alg_obj.alg_obj_status) in ( is_idea ? js_en_all_7355 : js_en_all_7357 ));
+    var obj_icon = ( is_idea ? '<i class="fas fa-circle '+( js_session_superpowers_assigned.includes(10939) ? 'idea' : 'discover' )+'"></i>' : alg_obj.alg_obj_icon );
     var obj_full_name = ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name );
 
-    return '<span class="icon-block-sm">'+ obj_icon +'</span>' + ( is_public ? '' : '<span class="icon-block-sm"><i class="far fa-spinner fa-spin"></i></span>' ) + '<span class="'+ ( obj_type=='source' ? js_extract_icon_color(obj_icon) : '' ) +'">' + obj_full_name + '</span>';
+    return '<span class="icon-block-sm">'+ obj_icon +'</span>' + ( is_public ? '' : '<span class="icon-block-sm"><i class="far fa-spinner fa-spin"></i></span>' ) + '<span class="'+ ( !is_idea ? js_extract_icon_color(obj_icon) : '' ) +'">' + obj_full_name + '</span>';
 
 }
 
@@ -304,12 +304,12 @@ $(document).ready(function () {
                                 if(search_only_source && js_session_superpowers_assigned.includes(12701)){
 
                                     //Can view ALL Players:
-                                    search_filters += ' ( alg_obj_is_in = 0 ) ';
+                                    search_filters += ' ( alg_obj_type_id=4536 ) ';
 
                                 } else {
 
                                     //Can view limited sources:
-                                    search_filters += ' ( alg_obj_is_in = '+( search_only_in ? '1' : '0' )+' AND ( _tags:is_featured OR _tags:alg_author_' + js_pl_id + ' )) ';
+                                    search_filters += ' ( alg_obj_type_id='+( search_only_in ? 4535 : 4536 )+' AND ( _tags:is_featured OR _tags:alg_source_' + js_pl_id + ' )) ';
                                 }
 
                             } else {
@@ -321,7 +321,7 @@ $(document).ready(function () {
                                 } else {
 
                                     //Can view limited sources:
-                                    search_filters += ' ( _tags:is_featured OR _tags:alg_author_' + js_pl_id + ' ) ';
+                                    search_filters += ' ( _tags:is_featured OR _tags:alg_source_' + js_pl_id + ' ) ';
 
                                 }
 
@@ -333,12 +333,12 @@ $(document).ready(function () {
                             if(search_only_source || search_only_in){
 
                                 //Guest can search sources only with a starting @ sign
-                                search_filters += ' ( alg_obj_is_in = '+( search_only_in ? '1' : '0' )+' AND _tags:is_featured ) ';
+                                search_filters += ' ( alg_obj_type_id='+( search_only_in ? 4535 : 4536 )+' AND _tags:is_featured ) ';
 
                             } else {
 
                                 //Guest can search ideas only by default as they start typing;
-                                search_filters += ' ( alg_obj_is_in = 1 AND _tags:is_featured ) ';
+                                search_filters += ' ( alg_obj_type_id=4535 AND _tags:is_featured ) ';
 
                             }
 
@@ -580,7 +580,7 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
             } else {
                 algolia_index.search(q, {
 
-                    filters: ' alg_obj_is_in=1 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_author_' + js_pl_id : '' ) + ' ) ',
+                    filters: ' alg_obj_type_id=4535 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_source_' + js_pl_id : '' ) + ' ) ',
                     hitsPerPage:( is_add_mode=='link_in' ? 7 : 10 ),
 
                 }, function (error, content) {

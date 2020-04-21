@@ -261,7 +261,7 @@ function echo_in_notes($ln)
 
     //Type & Delivery Method:
     $ui .= '<div class="text_message edit-off" id="msgbody_' . $ln['ln_id'] . '">';
-    $ui .= $CI->DISCOVER_model->dispatch_message($ln['ln_content'], $session_en, false, array(), $ln['ln_next_idea_id']);
+    $ui .= $CI->COMMUNICATION_model->comm_send_message($ln['ln_content'], $session_en, false, array(), $ln['ln_next_idea_id']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -558,14 +558,14 @@ function echo_ln($ln, $is_parent_tr = false)
 
 
         //Message
-        if(strlen($ln['ln_content']) > 0 && $ln['ln_content']!='@'.$ln['ln_parent_source_id']){
-            //$CI->DISCOVER_model->dispatch_message($ln['ln_content'])
+        if(strlen($ln['ln_content']) > 0 && $ln['ln_content']!='@'.$ln['ln_profile_source_id']){
+            //$CI->COMMUNICATION_model->comm_send_message($ln['ln_content'])
             $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.htmlentities($ln['ln_content']).'</div></div>';
         }
 
 
         //Creator (Do not repeat)
-        if($ln['ln_creator_source_id'] > 0 && $ln['ln_creator_source_id']!=$ln['ln_parent_source_id'] && $ln['ln_creator_source_id']!=$ln['ln_child_source_id']){
+        if($ln['ln_creator_source_id'] > 0 && $ln['ln_creator_source_id']!=$ln['ln_profile_source_id'] && $ln['ln_creator_source_id']!=$ln['ln_portfolio_source_id']){
 
             $player_ens = $CI->SOURCE_model->en_fetch(array(
                 'en_id' => $ln['ln_creator_source_id'],
@@ -606,7 +606,7 @@ function echo_ln($ln, $is_parent_tr = false)
             } elseif(in_array(4367 , $m['m_parents'])){
 
                 //PARENT TRANSACTION
-                $lns = $CI->DISCOVER_model->ln_fetch(array('ln_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
+                $lns = $CI->LEDGER_model->ln_fetch(array('ln_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
 
                 $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'">'.$en_all_4341[$en_id]['m_icon']. '</span><div class="transaction-ref">'.echo_ln($lns[0], true).'</div></div>';
 
@@ -964,7 +964,7 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 function echo_coins_count_discover($in_id = 0, $en_id = 0){
 
     $CI =& get_instance();
-    $discover_coins = $CI->DISCOVER_model->ln_fetch(array(
+    $discover_coins = $CI->LEDGER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
         ( $in_id > 0 ? 'ln_previous_idea_id' : 'ln_creator_source_id' ) => ( $in_id > 0 ? $in_id : $en_id ),
@@ -994,11 +994,11 @@ function echo_coins_count_source($in_id = 0, $en_id = 0){
         $coin_filter = array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-            'ln_parent_source_id' => $en_id,
+            'ln_profile_source_id' => $en_id,
         );
     }
 
-    $source_coins = $CI->DISCOVER_model->ln_fetch($coin_filter, array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    $source_coins = $CI->LEDGER_model->ln_fetch($coin_filter, array(), 0, 0, array(), 'COUNT(ln_id) as totals');
     if($source_coins[0]['totals'] > 0){
         return '<span class="montserrat '.$mench.'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($source_coins[0]['totals']).'</span>';
     }
@@ -1023,7 +1023,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
     if(!$completion_rate){
         if($recipient_en){
-            $completion_rate = $CI->DISCOVER_model->discover__completion_progress($recipient_en['en_id'], $in);
+            $completion_rate = $CI->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $in);
         } else {
             $completion_rate['completion_percentage'] = 0;
         }
@@ -1089,17 +1089,17 @@ function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $p
 
 
     $ui = null;
-    foreach($CI->DISCOVER_model->ln_fetch(array(
+    foreach($CI->LEDGER_model->ln_fetch(array(
         'ln_previous_idea_id' => $in_id,
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-    ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $in_ln){
+    ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $in_ln){
 
         //Prep Metadata:
         $metadata = unserialize($in_ln['ln_metadata']);
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
-        $messages = $CI->DISCOVER_model->ln_fetch(array(
+        $messages = $CI->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id' => 4231, //Idea Notes Messages
             'ln_next_idea_id' => $in_ln['in_id'],
@@ -1125,7 +1125,7 @@ function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $p
         $ui .= '<div class="messages-'.$in_ln['in_id'].' hidden">';
         foreach ($messages as $msg) {
             $ui .= '<div class="tip_bubble">';
-            $ui .= $CI->DISCOVER_model->dispatch_message($msg['ln_content']);
+            $ui .= $CI->COMMUNICATION_model->comm_send_message($msg['ln_content']);
             $ui .= '</div>';
         }
         $ui .= '</div>';
@@ -1155,9 +1155,9 @@ function echo_radio_sources($parent_en_id, $child_en_id, $enable_mulitiselect, $
     }
 
     foreach($CI->config->item('en_all_'.$parent_en_id) as $en_id => $m) {
-        $ui .= '<a href="javascript:void(0);" onclick="account_update_radio('.$parent_en_id.','.$en_id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m_icon']).' list-group-item montserrat itemsetting item-'.$en_id.' '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->DISCOVER_model->ln_fetch(array(
-                'ln_parent_source_id' => $en_id,
-                'ln_child_source_id' => $child_en_id,
+        $ui .= '<a href="javascript:void(0);" onclick="account_update_radio('.$parent_en_id.','.$en_id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m_icon']).' list-group-item montserrat itemsetting item-'.$en_id.' '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->LEDGER_model->ln_fetch(array(
+                'ln_profile_source_id' => $en_id,
+                'ln_portfolio_source_id' => $child_en_id,
                 'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             )))>0 ? ' active ' : '' ). '"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'<span class="change-results"></span></a>';
@@ -1258,12 +1258,12 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
 
             //PREVIOUS & NEXT IDEAS
-            $previous_ins = $CI->DISCOVER_model->ln_fetch(array(
+            $previous_ins = $CI->LEDGER_model->ln_fetch(array(
                 'ln_next_idea_id' => $in['in_id'],
                 'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
-            $next_ins = $CI->DISCOVER_model->ln_fetch(array(
+            $next_ins = $CI->LEDGER_model->ln_fetch(array(
                 'ln_previous_idea_id' => $in['in_id'],
                 'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
@@ -1457,7 +1457,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
         if($push_message){
 
-            $CI->DISCOVER_model->dispatch_message(
+            $CI->COMMUNICATION_model->comm_send_message(
                 $message_content,
                 $recipient_en,
                 true,
@@ -1492,7 +1492,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
 
     if($push_message){
 
-        $CI->DISCOVER_model->dispatch_message(
+        $CI->COMMUNICATION_model->comm_send_message(
             'Say next to continue your discovery.',
             $recipient_en,
             true,
@@ -1551,7 +1551,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
                     'in_id' => $parent_in_id,
                 ));
 
-                $completion_rate = $CI->DISCOVER_model->discover__completion_progress($recipient_en['en_id'], $ins_this[0]);
+                $completion_rate = $CI->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $ins_this[0]);
 
                 array_push($breadcrumb_items, echo_in_discover($ins_this[0], false, null, null, false, $completion_rate, $recipient_en));
 
@@ -1741,7 +1741,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $CI =& get_instance();
 
     if(!isset($en['en_id'])){
-        $CI->DISCOVER_model->ln_create(array(
+        $CI->LEDGER_model->ln_create(array(
             'ln_content' => 'echo_en() variable missing source',
             'ln_metadata' => $en,
             'ln_type_source_id' => 4246, //Platform Bug Reports
@@ -1759,19 +1759,19 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $is_discover_progress = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_12227')));
     $ui = null;
 
-    $en__parents = $CI->DISCOVER_model->ln_fetch(array(
+    $en__parents = $CI->LEDGER_model->ln_fetch(array(
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
-        'ln_child_source_id' => $en['en_id'], //This child source
+        'ln_portfolio_source_id' => $en['en_id'], //This child source
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-    ), array('en_parent'), 0, 0, array('en_name' => 'ASC'));
+    ), array('en_proflie'), 0, 0, array('en_name' => 'ASC'));
 
-    $child_links = $CI->DISCOVER_model->ln_fetch(array(
-        'ln_parent_source_id' => $en['en_id'],
+    $child_links = $CI->LEDGER_model->ln_fetch(array(
+        'ln_profile_source_id' => $en['en_id'],
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
         'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-    ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
+    ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
 
     $is_public = in_array($en['en_status_source_id'], $CI->config->item('en_ids_7357'));
     $is_link_published = ( !$ln_id || in_array($en['ln_status_source_id'], $CI->config->item('en_ids_7359')));
@@ -1825,7 +1825,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
             //DISCOVER PROGRESS
             $ui .= '<div class="message_content">';
-            $ui .= $CI->DISCOVER_model->dispatch_message($en['ln_content']);
+            $ui .= $CI->COMMUNICATION_model->comm_send_message($en['ln_content']);
             $ui .= '</div>';
 
         }
@@ -1854,7 +1854,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         if($is_link_source && $en['ln_external_id'] > 0){
 
             //External ID
-            if($en['ln_parent_source_id']==6196){
+            if($en['ln_profile_source_id']==6196){
                 //Give players the ability to ping Messenger profiles:
                 $ui .= '<span class="'.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/fetch_profile/'.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
             } else {

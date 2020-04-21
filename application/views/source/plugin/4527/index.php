@@ -8,12 +8,12 @@
  * */
 
 //First first all sources that have Cache in PHP Config @4527 as their parent:
-$config_ens = $this->DISCOVER_model->ln_fetch(array(
+$config_ens = $this->LEDGER_model->ln_fetch(array(
     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-    'ln_parent_source_id' => 4527,
-), array('en_child'), 0);
+    'ln_profile_source_id' => 4527,
+), array('en_portfolio'), 0);
 
 echo htmlentities('<?php').'<br /><br />';
 echo 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'.'<br /><br />';
@@ -28,16 +28,16 @@ echo '/*<br />
 
 //PLATFORM STATS
 $cache_timestamp = time();
-$transactions = $this->DISCOVER_model->ln_fetch(array(), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$discover_coins = $this->DISCOVER_model->ln_fetch(array(
+$transactions = $this->LEDGER_model->ln_fetch(array(), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+$discover_coins = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$idea_coins = $this->DISCOVER_model->ln_fetch(array(
+$idea_coins = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$source_coins = $this->DISCOVER_model->ln_fetch(array(
+$source_coins = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -59,16 +59,16 @@ echo '<br /><br />';
 foreach($config_ens as $en){
 
     //Now fetch all its children:
-    $children = $this->DISCOVER_model->ln_fetch(array(
+    $children = $this->LEDGER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-        'ln_parent_source_id' => $en['ln_child_source_id'],
+        'ln_profile_source_id' => $en['ln_portfolio_source_id'],
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-    ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
+    ), array('en_portfolio'), 0, 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
 
     //Find common base, if allowed:
-    $common_prefix = ( in_array($en['ln_child_source_id'], $this->config->item('en_ids_12588')) ? null : in_calc_common_prefix($children, 'en_name') );
+    $common_prefix = ( in_array($en['ln_portfolio_source_id'], $this->config->item('en_ids_12588')) ? null : in_calc_common_prefix($children, 'en_name') );
 
     //Generate raw IDs:
     $child_ids = array();
@@ -77,8 +77,8 @@ foreach($config_ens as $en){
     }
 
     echo '<br />//'.$en['en_name'].':<br />';
-    echo '$config[\'en_ids_'.$en['ln_child_source_id'].'\'] = array('.join(',',$child_ids).');<br />';
-    echo '$config[\'en_all_'.$en['ln_child_source_id'].'\'] = array(<br />';
+    echo '$config[\'en_ids_'.$en['ln_portfolio_source_id'].'\'] = array('.join(',',$child_ids).');<br />';
+    echo '$config[\'en_all_'.$en['ln_portfolio_source_id'].'\'] = array(<br />';
     foreach($children as $child){
 
         //Do we have an omit command?
@@ -88,12 +88,12 @@ foreach($config_ens as $en){
 
         //Fetch all parents for this child:
         $child_parent_ids = array(); //To be populated soon
-        $child_parents = $this->DISCOVER_model->ln_fetch(array(
+        $child_parents = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-            'ln_child_source_id' => $child['en_id'],
+            'ln_portfolio_source_id' => $child['en_id'],
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-        ), array('en_parent'), 0);
+        ), array('en_proflie'), 0);
         foreach($child_parents as $cp_en){
             array_push($child_parent_ids, intval($cp_en['en_id']));
         }

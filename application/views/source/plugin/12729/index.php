@@ -11,7 +11,7 @@ echo '</tr>';
 //Count them all:
 $en_all_12140 = $this->config->item('en_all_12140');
 
-$full_coins = $this->DISCOVER_model->ln_fetch(array(
+$full_coins = $this->LEDGER_model->ln_fetch(array(
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12141')) . ')' => null, //Full
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
 ), array(), 0, 0, array(), 'COUNT(ln_id) as total_transactions');
@@ -25,7 +25,7 @@ echo '</tr>';
 echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="4">&nbsp;</td></tr>';
 
 //Show each link type:
-foreach ($this->DISCOVER_model->ln_fetch(array(
+foreach ($this->LEDGER_model->ln_fetch(array(
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12141')) . ')' => null, //Full
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
 ), array('en_type'), 0, 0, array('total_transactions' => 'DESC'), 'COUNT(ln_id) as total_transactions, en_name, en_icon, en_id, ln_type_source_id', 'en_id, en_name, en_icon, ln_type_source_id') as $ln) {

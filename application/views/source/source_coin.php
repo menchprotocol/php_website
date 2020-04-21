@@ -10,21 +10,21 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 //Fetch general data in advance:
 
 //COUNT TOTAL CHILD
-$child_links = $this->DISCOVER_model->ln_fetch(array(
-    'ln_parent_source_id' => $source['en_id'],
+$child_links = $this->LEDGER_model->ln_fetch(array(
+    'ln_profile_source_id' => $source['en_id'],
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-), array('en_child'), 0, 0, array(), 'COUNT(en_id) as totals');
+), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
 $counter = $child_links[0]['totals'];
 
 //FETCH ALL PARENTS
-$source__parents = $this->DISCOVER_model->ln_fetch(array(
+$source__parents = $this->LEDGER_model->ln_fetch(array(
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-    'ln_child_source_id' => $source['en_id'],
-), array('en_parent'), 0, 0, array('en_name' => 'ASC'));
+    'ln_portfolio_source_id' => $source['en_id'],
+), array('en_proflie'), 0, 0, array('en_name' => 'ASC'));
 
 
 ?>
@@ -360,11 +360,11 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
 
                 } elseif ($acc_en_id == 3288 /* Email */) {
 
-                    $user_emails = $this->DISCOVER_model->ln_fetch(array(
+                    $user_emails = $this->LEDGER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                        'ln_child_source_id' => $session_en['en_id'],
+                        'ln_portfolio_source_id' => $session_en['en_id'],
                         'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
-                        'ln_parent_source_id' => 3288, //Mench Email
+                        'ln_profile_source_id' => 3288, //Mench Email
                     ));
 
                     $this_tab .= '<span class="white-wrapper"><input type="email" id="en_email" class="form-control border dotransparent" value="' . (count($user_emails) > 0 ? $user_emails[0]['ln_content'] : '') . '" placeholder="you@gmail.com" /></span>
@@ -417,7 +417,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                            maxlength="' . config_var(11072) . '"
                            id="newIdeaTitle"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="PROFILE SOURCE">
+                           placeholder="SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $this_tab .= '</div>';
@@ -438,23 +438,23 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
             } else {
 
                 //Child List
-                $source__children = $this->DISCOVER_model->ln_fetch(array(
+                $source__children = $this->LEDGER_model->ln_fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-                    'ln_parent_source_id' => $source['en_id'],
-                ), array('en_child'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
+                    'ln_profile_source_id' => $source['en_id'],
+                ), array('en_portfolio'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
                 //Source Status Filters:
                 if(superpower_active(12701, true)){
 
                     $source_count = $this->SOURCE_model->en_child_count($source['en_id'], $this->config->item('en_ids_7358') /* Source Status Active */);
-                    $child_en_filters = $this->DISCOVER_model->ln_fetch(array(
-                        'ln_parent_source_id' => $source['en_id'],
+                    $child_en_filters = $this->LEDGER_model->ln_fetch(array(
+                        'ln_profile_source_id' => $source['en_id'],
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-                    ), array('en_child'), 0, 0, array('en_status_source_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_source_id', 'en_status_source_id');
+                    ), array('en_portfolio'), 0, 0, array('en_status_source_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_source_id', 'en_status_source_id');
 
                     //Only show filtering UI if we find child sources with different Status (Otherwise no need to filter):
                     if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $source_count) {
@@ -500,7 +500,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                            maxlength="' . config_var(11072) . '"
                            id="newIdeaTitle"
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="PORTFOLIO SOURCE">
+                           placeholder="SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $this_tab .= '</div>';
@@ -512,17 +512,17 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
                 'ln_type_source_id' => $en_id,
-                '(ln_creator_source_id='.$source['en_id'].' OR ln_child_source_id='.$source['en_id'].' OR ln_parent_source_id='.$source['en_id'].')' => null,
+                '(ln_creator_source_id='.$source['en_id'].' OR ln_portfolio_source_id='.$source['en_id'].' OR ln_profile_source_id='.$source['en_id'].')' => null,
             );
 
             //COUNT ONLY
-            $item_counters = $this->DISCOVER_model->ln_fetch($in_notes_filters, array('in_child'), 0, 0, array(), 'COUNT(in_id) as totals');
+            $item_counters = $this->LEDGER_model->ln_fetch($in_notes_filters, array('in_next'), 0, 0, array(), 'COUNT(in_id) as totals');
             $counter = $item_counters[0]['totals'];
 
             //SHOW LASTEST 100
             if($counter>0 && (!$disable_content_loading || $auto_expand_tab)){
 
-                $in_notes_query = $this->DISCOVER_model->ln_fetch($in_notes_filters, array('in_child'), config_var(11064), 0, array('in_weight' => 'DESC'));
+                $in_notes_query = $this->LEDGER_model->ln_fetch($in_notes_filters, array('in_next'), config_var(11064), 0, array('in_weight' => 'DESC'));
 
 
                 $this_tab .= '<div class="list-group">';
@@ -537,7 +537,7 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
                         $infobar_details = null;
                         if($in_notes['ln_content']){
                             $infobar_details .= '<div class="message_content">';
-                            $infobar_details .= $this->DISCOVER_model->dispatch_message($in_notes['ln_content']);
+                            $infobar_details .= $this->COMMUNICATION_model->comm_send_message($in_notes['ln_content']);
                             $infobar_details .= '</div>';
                         }
 
@@ -556,12 +556,12 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
 
         } elseif($en_id == 7347 /* DISCOVER LIST */){
 
-            $player_discoveries = $this->DISCOVER_model->ln_fetch(array(
+            $player_discoveries = $this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $source['en_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            ), array('in_parent'), 1, 0, array(), 'COUNT(ln_id) as totals');
+            ), array('in_previous'), 1, 0, array(), 'COUNT(ln_id) as totals');
             $counter = $player_discoveries[0]['totals'];
 
         } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
@@ -576,16 +576,16 @@ $source__parents = $this->DISCOVER_model->ln_fetch(array(
 
             if($en_id == 12273){
                 //IDEA COIN
-                $match_columns['ln_parent_source_id'] = $source['en_id'];
+                $match_columns['ln_profile_source_id'] = $source['en_id'];
                 $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Idea Status Public
-                $join_objects = array('in_child');
+                $join_objects = array('in_next');
             } elseif($en_id == 6255){
                 //DISCOVER COIN
                 $match_columns['ln_creator_source_id'] = $source['en_id'];
             }
 
             //DISCOVER & BOOKMARKS
-            $item_counters = $this->DISCOVER_model->ln_fetch($match_columns, $join_objects, 1, 0, array(), 'COUNT(ln_id) as totals');
+            $item_counters = $this->LEDGER_model->ln_fetch($match_columns, $join_objects, 1, 0, array(), 'COUNT(ln_id) as totals');
 
             $counter = $item_counters[0]['totals'];
 

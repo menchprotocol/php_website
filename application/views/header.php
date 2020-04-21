@@ -63,6 +63,7 @@ if($found_at > 1){
     foreach($this->config->item('en_all_11054') as $en_id => $m){
         if(count($this->config->item('en_all_'.$en_id))){
             echo ' var js_en_all_'.$en_id.' = ' . json_encode($this->config->item('en_all_'.$en_id)) . '; ';
+            echo ' var js_en_ids_'.$en_id.' = ' . json_encode($this->config->item('en_ids_'.$en_id)) . '; ';
         }
     }
     ?>
@@ -223,7 +224,7 @@ if(!isset($hide_header)){
                                 if($en_id==12273){
                                     //IDEA
                                     $counts = $coin_counts[4535];
-                                    $source_field = 'ln_parent_source_id';
+                                    $source_field = 'ln_profile_source_id';
                                 } elseif($en_id==6255){
                                     //DISCOVER
                                     $counts = $coin_counts[6205];

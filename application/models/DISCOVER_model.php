@@ -14,573 +14,6 @@ class DISCOVER_model extends CI_Model
         parent::__construct();
     }
 
-    function ln_update($id, $update_columns, $ln_creator_source_id = 0, $ln_type_source_id = 0, $ln_content = '')
-    {
-
-        if (count($update_columns) == 0) {
-            return false;
-        } elseif ($ln_type_source_id>0 && !in_array($ln_type_source_id, $this->config->item('en_ids_4593'))) {
-            return false;
-        }
-
-        if($ln_creator_source_id > 0){
-            //Fetch link before updating:
-            $before_data = $this->DISCOVER_model->ln_fetch(array(
-                'ln_id' => $id,
-            ));
-        }
-
-        //Update metadata if needed:
-        if(isset($update_columns['ln_metadata']) && is_array($update_columns['ln_metadata'])){
-            $update_columns['ln_metadata'] = serialize($update_columns['ln_metadata']);
-        }
-
-        //Set content to null if defined as empty:
-        if(isset($update_columns['ln_content']) && !strlen($update_columns['ln_content'])){
-            $update_columns['ln_content'] = null;
-        }
-
-        //Update:
-        $this->db->where('ln_id', $id);
-        $this->db->update('mench_ledger', $update_columns);
-        $affected_rows = $this->db->affected_rows();
-
-        //Log changes if successful:
-        if ($affected_rows > 0 && $ln_creator_source_id > 0 && $ln_type_source_id > 0) {
-
-            if(strlen($ln_content) == 0){
-                if(in_array($ln_type_source_id, $this->config->item('en_ids_10593') /* Statement */)){
-
-                    //Since it's a statement we want to determine the change in content:
-                    if($before_data[0]['ln_content']!=$update_columns['ln_content']){
-                        $ln_content .= update_description($before_data[0]['ln_content'], $update_columns['ln_content']);
-                    }
-
-                } else {
-
-                    //Log modification link for every field changed:
-                    foreach ($update_columns as $key => $value) {
-                        if($before_data[0][$key]==$value){
-                            continue;
-                        }
-
-                        //Now determine what type is this:
-                        if($key=='ln_status_source_id'){
-
-                            $en_all_6186 = $this->config->item('en_all_6186'); //Transaction Status
-                            $ln_content .= echo_db_field($key) . ' updated from [' . $en_all_6186[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6186[$value]['m_name'] . ']'."\n";
-
-                        } elseif($key=='ln_type_source_id'){
-
-                            $en_all_4593 = $this->config->item('en_all_4593'); //Link Types
-                            $ln_content .= echo_db_field($key) . ' updated from [' . $en_all_4593[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4593[$value]['m_name'] . ']'."\n";
-
-                        } elseif(in_array($key, array('ln_parent_source_id', 'ln_child_source_id'))) {
-
-                            //Fetch new/old source names:
-                            $before_ens = $this->SOURCE_model->en_fetch(array(
-                                'en_id' => $before_data[0][$key],
-                            ));
-                            $after_ens = $this->SOURCE_model->en_fetch(array(
-                                'en_id' => $value,
-                            ));
-
-                            $ln_content .= echo_db_field($key) . ' updated from [' . $before_ens[0]['en_name'] . '] to [' . $after_ens[0]['en_name'] . ']' . "\n";
-
-                        } elseif(in_array($key, array('ln_previous_idea_id', 'ln_next_idea_id'))) {
-
-                            //Fetch new/old Idea outcomes:
-                            $before_ins = $this->IDEA_model->in_fetch(array(
-                                'in_id' => $before_data[0][$key],
-                            ));
-                            $after_ins = $this->IDEA_model->in_fetch(array(
-                                'in_id' => $value,
-                            ));
-
-                            $ln_content .= echo_db_field($key) . ' updated from [' . $before_ins[0]['in_title'] . '] to [' . $after_ins[0]['in_title'] . ']' . "\n";
-
-                        } elseif(in_array($key, array('ln_content', 'ln_order'))){
-
-                            $ln_content .= echo_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
-
-                        } else {
-
-                            //Should not log updates since not specifically programmed:
-                            continue;
-
-                        }
-                    }
-                }
-            }
-
-            //Determine fields that have changed:
-            $fields_changed = array();
-            foreach ($update_columns as $key => $value) {
-                if($before_data[0][$key]!=$value){
-                    array_push($fields_changed, array(
-                        'field' => $key,
-                        'before' => $before_data[0][$key],
-                        'after' => $value,
-                    ));
-                }
-            }
-
-            if(strlen($ln_content) > 0 && count($fields_changed) > 0){
-                //Value has changed, log link:
-                $this->DISCOVER_model->ln_create(array(
-                    'ln_parent_transaction_id' => $id, //Link Reference
-                    'ln_creator_source_id' => $ln_creator_source_id,
-                    'ln_type_source_id' => $ln_type_source_id,
-                    'ln_content' => $ln_content,
-                    'ln_metadata' => array(
-                        'ln_id' => $id,
-                        'fields_changed' => $fields_changed,
-                    ),
-                    //Copy old values for parent/child idea/source links:
-                    'ln_parent_source_id' => $before_data[0]['ln_parent_source_id'],
-                    'ln_child_source_id'  => $before_data[0]['ln_child_source_id'],
-                    'ln_previous_idea_id' => $before_data[0]['ln_previous_idea_id'],
-                    'ln_next_idea_id'  => $before_data[0]['ln_next_idea_id'],
-                ));
-            }
-        }
-
-        return $affected_rows;
-    }
-
-    function ln_fetch($match_columns = array(), $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('ln_id' => 'DESC'), $select = '*', $group_by = null)
-    {
-
-        $this->db->select($select);
-        $this->db->from('mench_ledger');
-
-        //Any Idea joins?
-        if (in_array('in_parent', $join_objects)) {
-            $this->db->join('mench_idea', 'ln_previous_idea_id=in_id','left');
-        } elseif (in_array('in_child', $join_objects)) {
-            $this->db->join('mench_idea', 'ln_next_idea_id=in_id','left');
-        }
-
-        //Any source joins?
-        if (in_array('en_parent', $join_objects)) {
-            $this->db->join('mench_source', 'ln_parent_source_id=en_id','left');
-        } elseif (in_array('en_child', $join_objects)) {
-            $this->db->join('mench_source', 'ln_child_source_id=en_id','left');
-        } elseif (in_array('en_type', $join_objects)) {
-            $this->db->join('mench_source', 'ln_type_source_id=en_id','left');
-        } elseif (in_array('en_owner', $join_objects)) {
-            $this->db->join('mench_source', 'ln_creator_source_id=en_id','left');
-        }
-
-        foreach ($match_columns as $key => $value) {
-            if (!is_null($value)) {
-                $this->db->where($key, $value);
-            } else {
-                $this->db->where($key);
-            }
-        }
-
-        if ($group_by) {
-            $this->db->group_by($group_by);
-        }
-
-        foreach ($order_columns as $key => $value) {
-            $this->db->order_by($key, $value);
-        }
-
-        if ($limit > 0) {
-            $this->db->limit($limit, $limit_offset);
-        }
-        $q = $this->db->get();
-        return $q->result_array();
-    }
-
-
-    function ln_create($insert_columns, $external_sync = false)
-    {
-
-        //Set some defaults:
-        if (!isset($insert_columns['ln_creator_source_id']) || intval($insert_columns['ln_creator_source_id']) < 1) {
-            $insert_columns['ln_creator_source_id'] = 0;
-        }
-
-        //Only require link type:
-        if (detect_missing_columns($insert_columns, array('ln_type_source_id'), $insert_columns['ln_creator_source_id'])) {
-            return false;
-        }
-
-        //Clean metadata is provided:
-        if (isset($insert_columns['ln_metadata']) && is_array($insert_columns['ln_metadata'])) {
-            $insert_columns['ln_metadata'] = serialize($insert_columns['ln_metadata']);
-        } else {
-            $insert_columns['ln_metadata'] = null;
-        }
-
-        //Set some defaults:
-        if (!isset($insert_columns['ln_content'])) {
-            $insert_columns['ln_content'] = null;
-        }
-
-
-        if (!isset($insert_columns['ln_timestamp']) || is_null($insert_columns['ln_timestamp'])) {
-            //Time with milliseconds:
-            $t = microtime(true);
-            $micro = sprintf("%06d", ($t - floor($t)) * 1000000);
-            $d = new DateTime(date('Y-m-d H:i:s.' . $micro, $t));
-            $insert_columns['ln_timestamp'] = $d->format("Y-m-d H:i:s.u");
-        }
-
-        if (!isset($insert_columns['ln_status_source_id'])|| is_null($insert_columns['ln_status_source_id'])) {
-            $insert_columns['ln_status_source_id'] = 6176; //Link Published
-        }
-
-        //Set some zero defaults if not set:
-        foreach (array('ln_next_idea_id', 'ln_previous_idea_id', 'ln_child_source_id', 'ln_parent_source_id', 'ln_parent_transaction_id', 'ln_external_id', 'ln_order') as $dz) {
-            if (!isset($insert_columns[$dz])) {
-                $insert_columns[$dz] = 0;
-            }
-        }
-
-        //Lets log:
-        $this->db->insert('mench_ledger', $insert_columns);
-
-
-        //Fetch inserted id:
-        $insert_columns['ln_id'] = $this->db->insert_id();
-
-
-        //All good huh?
-        if ($insert_columns['ln_id'] < 1) {
-
-            //This should not happen:
-            $this->DISCOVER_model->ln_create(array(
-                'ln_type_source_id' => 4246, //Platform Bug Reports
-                'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
-                'ln_content' => 'ln_create() Failed to create',
-                'ln_metadata' => array(
-                    'input' => $insert_columns,
-                ),
-            ));
-
-            return false;
-        }
-
-        //Sync algolia?
-        if ($external_sync) {
-            if ($insert_columns['ln_parent_source_id'] > 0) {
-                update_algolia('en', $insert_columns['ln_parent_source_id']);
-            }
-
-            if ($insert_columns['ln_child_source_id'] > 0) {
-                update_algolia('en', $insert_columns['ln_child_source_id']);
-            }
-
-            if ($insert_columns['ln_previous_idea_id'] > 0) {
-                update_algolia('in', $insert_columns['ln_previous_idea_id']);
-            }
-
-            if ($insert_columns['ln_next_idea_id'] > 0) {
-                update_algolia('in', $insert_columns['ln_next_idea_id']);
-            }
-        }
-
-
-        //SOURCE SYNC Status
-        if(in_array($insert_columns['ln_type_source_id'] , $this->config->item('en_ids_12401'))){
-            if($insert_columns['ln_child_source_id'] > 0){
-                $en_id = $insert_columns['ln_child_source_id'];
-            } elseif($insert_columns['ln_parent_source_id'] > 0){
-                $en_id = $insert_columns['ln_parent_source_id'];
-            }
-            $this->SOURCE_model->en_match_ln_status($insert_columns['ln_creator_source_id'], array(
-                'en_id' => $en_id,
-            ));
-        }
-
-        //IDEA SYNC Status
-        if(in_array($insert_columns['ln_type_source_id'] , $this->config->item('en_ids_12400'))){
-            if($insert_columns['ln_next_idea_id'] > 0){
-                $in_id = $insert_columns['ln_next_idea_id'];
-            } elseif($insert_columns['ln_previous_idea_id'] > 0){
-                $in_id = $insert_columns['ln_previous_idea_id'];
-            }
-            $this->IDEA_model->in_match_ln_status($insert_columns['ln_creator_source_id'], array(
-                'in_id' => $in_id,
-            ));
-        }
-
-        //Do we need to check for entity tagging after discover success?
-        if(in_array($insert_columns['ln_type_source_id'] , $this->config->item('en_ids_6255')) && in_array($insert_columns['ln_status_source_id'] , $this->config->item('en_ids_7359')) && $insert_columns['ln_previous_idea_id'] > 0 && $insert_columns['ln_creator_source_id'] > 0){
-
-            //See what this is:
-            $detected_ln_type = ln_detect_type($insert_columns['ln_content']);
-
-            if ($detected_ln_type['status']) {
-
-                //Any sources to append to profile?
-                foreach($this->DISCOVER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_type_source_id' => 7545, //ENTITY TAGGING
-                    'ln_next_idea_id' => $insert_columns['ln_previous_idea_id'],
-                    'ln_parent_source_id >' => 0, //Entity to be tagged for this Idea
-                )) as $ln_tag){
-
-                    //Generate stats:
-                    $links_added = 0;
-                    $links_edited = 0;
-                    $links_deleted = 0;
-
-
-                    //Assign tag if parent/child link NOT previously assigned:
-                    $existing_links = $this->DISCOVER_model->ln_fetch(array(
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                        'ln_parent_source_id' => $ln_tag['ln_parent_source_id'],
-                        'ln_child_source_id' => $insert_columns['ln_creator_source_id'],
-                    ));
-
-                    if(count($existing_links)){
-
-                        //Link previously exists, see if content value is the same:
-                        if($existing_links[0]['ln_content'] == $insert_columns['ln_content'] && $existing_links[0]['ln_type_source_id'] == $detected_ln_type['ln_type_source_id']){
-
-                            //Everything is the same, nothing to do here:
-                            continue;
-
-                        } else {
-
-                            $links_edited++;
-
-                            //Content value has changed, update the link:
-                            $this->DISCOVER_model->ln_update($existing_links[0]['ln_id'], array(
-                                'ln_content' => $insert_columns['ln_content'],
-                            ), $insert_columns['ln_creator_source_id'], 10657 /* Player Link Updated Content  */);
-
-                            //Also, did the link type change based on the content change?
-                            if($existing_links[0]['ln_type_source_id'] != $detected_ln_type['ln_type_source_id']){
-                                $this->DISCOVER_model->ln_update($existing_links[0]['ln_id'], array(
-                                    'ln_type_source_id' => $detected_ln_type['ln_type_source_id'],
-                                ), $insert_columns['ln_creator_source_id'], 10659 /* Player Link Updated Type */);
-                            }
-
-                        }
-
-                    } else {
-
-                        //See if we need to delete single selectable links:
-                        foreach($this->config->item('en_ids_6204') as $single_select_en_id){
-                            $single_selectable = $this->config->item('en_ids_'.$single_select_en_id);
-                            if(is_array($single_selectable) && count($single_selectable) && in_array($ln_tag['ln_parent_source_id'], $single_selectable)){
-                                //Delete other siblings, if any:
-                                foreach($this->DISCOVER_model->ln_fetch(array(
-                                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                                    'ln_parent_source_id IN (' . join(',', $single_selectable) . ')' => null,
-                                    'ln_parent_source_id !=' => $ln_tag['ln_parent_source_id'],
-                                    'ln_child_source_id' => $insert_columns['ln_creator_source_id'],
-                                )) as $single_selectable_siblings_preset){
-                                    $links_deleted += $this->DISCOVER_model->ln_update($single_selectable_siblings_preset['ln_id'], array(
-                                        'ln_status_source_id' => 6173, //Link Deleted
-                                    ), $insert_columns['ln_creator_source_id'], 10673 /* Player Link Unlinked */);
-                                }
-                            }
-                        }
-
-                        //Create link:
-                        $links_added++;
-                        $this->DISCOVER_model->ln_create(array(
-                            'ln_type_source_id' => $detected_ln_type['ln_type_source_id'],
-                            'ln_content' => $insert_columns['ln_content'],
-                            'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
-                            'ln_parent_source_id' => $ln_tag['ln_parent_source_id'],
-                            'ln_child_source_id' => $insert_columns['ln_creator_source_id'],
-                        ));
-
-                    }
-
-                    //Track Tag:
-                    $this->DISCOVER_model->ln_create(array(
-                        'ln_type_source_id' => 12197, //Tag Player
-                        'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
-                        'ln_parent_source_id' => $ln_tag['ln_parent_source_id'],
-                        'ln_child_source_id' => $insert_columns['ln_creator_source_id'],
-                        'ln_previous_idea_id' => $insert_columns['ln_previous_idea_id'],
-                        'ln_content' => $links_added.' added, '.$links_edited.' edited & '.$links_deleted.' deleted with new content ['.$insert_columns['ln_content'].']',
-                    ));
-
-                    if($links_added>0 || $links_edited>0 || $links_deleted>0){
-                        //See if Session needs to be updated:
-                        $session_en = superpower_assigned();
-                        if($session_en && $session_en['en_id']==$insert_columns['ln_creator_source_id']){
-                            //Yes, update session:
-                            $this->SOURCE_model->en_activate_session($session_en, true);
-                        }
-                    }
-                }
-            }
-        }
-
-
-        //See if this link type has any subscribers:
-        if(in_array($insert_columns['ln_type_source_id'] , $this->config->item('en_ids_5967')) && $insert_columns['ln_type_source_id']!=5967 /* Email Sent causes endless loop */ && !is_dev_environment()){
-
-            //Try to fetch subscribers:
-            $en_all_5967 = $this->config->item('en_all_5967'); //Include subscription details
-            $sub_emails = array();
-            $sub_en_ids = array();
-            foreach(explode(',', one_two_explode('&var_en_subscriber_ids=','', $en_all_5967[$insert_columns['ln_type_source_id']]['m_desc'])) as $subscriber_en_id){
-
-                //Do not inform the user who just took the action:
-                if($subscriber_en_id==$insert_columns['ln_creator_source_id']){
-                    continue;
-                }
-
-                //Try fetching subscribers email:
-                foreach($this->DISCOVER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-                    'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
-                    'ln_parent_source_id' => 3288, //Mench Email
-                    'ln_child_source_id' => $subscriber_en_id,
-                ), array('en_child')) as $en_email){
-                    if(filter_var($en_email['ln_content'], FILTER_VALIDATE_EMAIL)){
-                        //All good, add to list:
-                        array_push($sub_en_ids , $en_email['en_id']);
-                        array_push($sub_emails , $en_email['ln_content']);
-                    }
-                }
-            }
-
-
-            //Did we find any subscribers?
-            if(count($sub_en_ids) > 0){
-
-                //yes, start drafting email to be sent to them...
-
-                if($insert_columns['ln_creator_source_id'] > 0){
-
-                    //Fetch player details:
-                    $player_ens = $this->SOURCE_model->en_fetch(array(
-                        'en_id' => $insert_columns['ln_creator_source_id'],
-                    ));
-
-                    $player_name = $player_ens[0]['en_name'];
-
-                } else {
-
-                    //No player:
-                    $player_name = 'MENCH';
-
-                }
-
-
-                //Email Subject:
-                $subject = 'Notification: '  . $player_name . ' ' . $en_all_5967[$insert_columns['ln_type_source_id']]['m_name'];
-
-                //Compose email body, start with link content:
-                $html_message = '<div>' . ( strlen($insert_columns['ln_content']) > 0 ? $insert_columns['ln_content'] : '<i>No link content</i>') . '</div><br />';
-
-                $en_all_6232 = $this->config->item('en_all_6232'); //PLATFORM VARIABLES
-
-                //Append link object links:
-                foreach ($this->config->item('en_all_11081') as $en_id => $m) {
-
-                    if (!intval($insert_columns[$en_all_6232[$en_id]['m_desc']])) {
-                        continue;
-                    }
-
-                    if (in_array(6202 , $m['m_parents'])) {
-
-                        //IDEA
-                        $ins = $this->IDEA_model->in_fetch(array( 'in_id' => $insert_columns[$en_all_6232[$en_id]['m_desc']] ));
-                        $html_message .= '<div>' . $m['m_name'] . ': <a href="https://mench.com/idea/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_title'].'</a></div>';
-
-                    } elseif (in_array(6160 , $m['m_parents'])) {
-
-                        //SOURCE
-                        $ens = $this->SOURCE_model->en_fetch(array( 'en_id' => $insert_columns[$en_all_6232[$en_id]['m_desc']] ));
-                        $html_message .= '<div>' . $m['m_name'] . ': <a href="https://mench.com/source/' . $ens[0]['en_id'] . '" target="_parent">@'.$ens[0]['en_id'].' '.$ens[0]['en_name'].'</a></div>';
-
-                    } elseif (in_array(4367 , $m['m_parents'])) {
-
-                        //DISCOVER
-                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="https://mench.com/plugin/12722?ln_id=' . $insert_columns[$en_all_6232[$en_id]['m_desc']] . '" target="_parent">'.$insert_columns[$en_all_6232[$en_id]['m_desc']].'</a></div>';
-
-                    }
-
-                }
-
-                //Finally append DISCOVER ID:
-                $html_message .= '<div>TRANSACTION ID: <a href="https://mench.com/plugin/12722?ln_id=' . $insert_columns['ln_id'] . '">' . $insert_columns['ln_id'] . '</a></div>';
-
-                //Inform how to change settings:
-                $html_message .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/source/5967" target="_blank">@5967</a></div>';
-
-                //Send email:
-                $dispatched_email = $this->DISCOVER_model->dispatch_emails($sub_emails, $subject, $html_message);
-
-                //Log emails sent:
-                foreach($sub_en_ids as $to_en_id){
-                    $this->DISCOVER_model->ln_create(array(
-                        'ln_type_source_id' => 5967, //Link Carbon Copy Email
-                        'ln_creator_source_id' => $to_en_id, //Sent to this user
-                        'ln_metadata' => $dispatched_email, //Save a copy of email
-                        'ln_parent_transaction_id' => $insert_columns['ln_id'], //Save link
-
-                        //Import potential Idea/source connections from link:
-                        'ln_next_idea_id' => $insert_columns['ln_next_idea_id'],
-                        'ln_previous_idea_id' => $insert_columns['ln_previous_idea_id'],
-                        'ln_child_source_id' => $insert_columns['ln_child_source_id'],
-                        'ln_parent_source_id' => $insert_columns['ln_parent_source_id'],
-                    ));
-                }
-            }
-        }
-
-
-
-
-
-        //See if this is a Link Idea Subscription Types?
-        $related_ins = array();
-        if($insert_columns['ln_next_idea_id'] > 0){
-            array_push($related_ins, $insert_columns['ln_next_idea_id']);
-        }
-        if($insert_columns['ln_previous_idea_id'] > 0){
-            array_push($related_ins, $insert_columns['ln_previous_idea_id']);
-        }
-
-
-        //Return:
-        return $insert_columns;
-
-    }
-
-    function ln_max_order($match_columns)
-    {
-
-        //Counts the current highest order value
-        $this->db->select('MAX(ln_order) as largest_order');
-        $this->db->from('mench_ledger');
-        foreach ($match_columns as $key => $value) {
-            $this->db->where($key, $value);
-        }
-        $q = $this->db->get();
-        $stats = $q->row_array();
-        if (count($stats) > 0) {
-            return intval($stats['largest_order']);
-        } else {
-            //Nothing found:
-            return 0;
-        }
-    }
-
-
-
-
-
-
-
 
     function discover_next_find($en_id, $in, $first_step = true){
 
@@ -602,7 +35,7 @@ class DISCOVER_model extends CI_Model
         if(count($in_metadata['in__metadata_expansion_conditional']) > 0){
             $check_termination_answers = array_merge($check_termination_answers , array_flatten($in_metadata['in__metadata_expansion_conditional']));
         }
-        if(count($check_termination_answers) > 0 && count($this->DISCOVER_model->ln_fetch(array(
+        if(count($check_termination_answers) > 0 && count($this->LEDGER_model->ln_fetch(array(
                 'ln_type_source_id' => 7492, //TERMINATE
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',' , $check_termination_answers) . ')' => null, //All possible answers that might terminate...
@@ -624,15 +57,15 @@ class DISCOVER_model extends CI_Model
 
                 //First fetch all possible answers based on correct order:
                 $found_expansion = 0;
-                foreach ($this->DISCOVER_model->ln_fetch(array(
+                foreach ($this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                     'ln_type_source_id' => 4228, //Idea Link Regular Discovery
                     'ln_previous_idea_id' => $common_step_in_id,
-                ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $ln){
+                ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $ln){
 
                     //See if this answer was selected:
-                    if(count($this->DISCOVER_model->ln_fetch(array(
+                    if(count($this->LEDGER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINK
                         'ln_previous_idea_id' => $common_step_in_id,
@@ -643,7 +76,7 @@ class DISCOVER_model extends CI_Model
                         $found_expansion++;
 
                         //Yes was answered, see if it's completed:
-                        if(!count($this->DISCOVER_model->ln_fetch(array(
+                        if(!count($this->LEDGER_model->ln_fetch(array(
                             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                             'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                             'ln_creator_source_id' => $en_id, //Belongs to this User
@@ -672,13 +105,13 @@ class DISCOVER_model extends CI_Model
             } elseif($is_condition){
 
                 //See which path they got unlocked, if any:
-                foreach($this->DISCOVER_model->ln_fetch(array(
+                foreach($this->LEDGER_model->ln_fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                     'ln_creator_source_id' => $en_id, //Belongs to this User
                     'ln_previous_idea_id' => $common_step_in_id,
                     'ln_next_idea_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]) . ')' => null,
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                ), array('in_child')) as $unlocked_condition){
+                ), array('in_next')) as $unlocked_condition){
 
                     //Completed step that has OR expansions, check recursively to see if next step within here:
                     $found_in_id = $this->DISCOVER_model->discover_next_find($en_id, $unlocked_condition, false);
@@ -689,7 +122,7 @@ class DISCOVER_model extends CI_Model
 
                 }
 
-            } elseif(!count($this->DISCOVER_model->ln_fetch(array(
+            } elseif(!count($this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                     'ln_creator_source_id' => $en_id, //Belongs to this User
@@ -744,25 +177,25 @@ class DISCOVER_model extends CI_Model
          *
          * */
 
-        $player_discoveries = $this->DISCOVER_model->ln_fetch(array(
+        $player_discoveries = $this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
+        ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
 
         if(count($player_discoveries) == 0){
 
             if($advance_step){
 
-                $this->DISCOVER_model->dispatch_message(
+                $this->COMMUNICATION_model->comm_send_message(
                     'You have no ideas in your discovery list yet.',
                     array('en_id' => $en_id),
                     true
                 );
 
                 //DISCOVER RECOMMENDATIONS
-                $this->DISCOVER_model->dispatch_message(
+                $this->COMMUNICATION_model->comm_send_message(
                     echo_platform_message(12697),
                     array('en_id' => $en_id),
                     true
@@ -810,7 +243,7 @@ class DISCOVER_model extends CI_Model
                         'in_id' => $next_in_id,
                     ));
 
-                    $this->DISCOVER_model->dispatch_message(
+                    $this->COMMUNICATION_model->comm_send_message(
                         echo_platform_message(12692) . $next_step_ins[0]['in_title'],
                         array('en_id' => $en_id),
                         true
@@ -824,14 +257,14 @@ class DISCOVER_model extends CI_Model
             } else {
 
                 //Inform user that they are now complete with all steps:
-                $this->DISCOVER_model->dispatch_message(
+                $this->COMMUNICATION_model->comm_send_message(
                     'You completed your entire DISCOVERY LIST',
                     array('en_id' => $en_id),
                     true
                 );
 
                 //DISCOVER RECOMMENDATIONS
-                $this->DISCOVER_model->dispatch_message(
+                $this->COMMUNICATION_model->comm_send_message(
                     echo_platform_message(12697),
                     array('en_id' => $en_id),
                     true
@@ -857,15 +290,15 @@ class DISCOVER_model extends CI_Model
          * */
 
         $top_priority_in = false;
-        foreach($this->DISCOVER_model->ln_fetch(array(
+        foreach($this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ), array('in_parent'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
+        ), array('in_previous'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
 
             //See progress rate so far:
-            $completion_rate = $this->DISCOVER_model->discover__completion_progress($en_id, $actionplan_in);
+            $completion_rate = $this->DISCOVER_model->discover_completion_progress($en_id, $actionplan_in);
 
             if($completion_rate['completion_percentage'] < 100){
                 //This is the top priority now:
@@ -909,7 +342,7 @@ class DISCOVER_model extends CI_Model
         }
 
         //Go ahead and delete from DISCOVER LIST:
-        $player_discoveries = $this->DISCOVER_model->ln_fetch(array(
+        $player_discoveries = $this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -924,7 +357,7 @@ class DISCOVER_model extends CI_Model
 
         //Delete Bookmark:
         foreach($player_discoveries as $ln){
-            $this->DISCOVER_model->ln_update($ln['ln_id'], array(
+            $this->LEDGER_model->ln_update($ln['ln_id'], array(
                 'ln_content' => $stop_feedback,
                 'ln_status_source_id' => 6173, //DELETED
             ), $en_id, $stop_method_id);
@@ -950,7 +383,7 @@ class DISCOVER_model extends CI_Model
 
 
         //Make sure not previously added to this User's DISCOVER LIST:
-        if(!count($this->DISCOVER_model->ln_fetch(array(
+        if(!count($this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $in_id,
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
@@ -959,7 +392,7 @@ class DISCOVER_model extends CI_Model
 
             //Not added to their discovery list so far, let's go ahead and add it:
             $in_rank = 1;
-            $actionplan = $this->DISCOVER_model->ln_create(array(
+            $actionplan = $this->LEDGER_model->ln_create(array(
                 'ln_type_source_id' => ( $recommender_in_id > 0 ? 7495 /* User Idea Recommended */ : 4235 /* User Idea Set */ ),
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id' => $ins[0]['in_id'], //The Idea they are adding
@@ -977,7 +410,7 @@ class DISCOVER_model extends CI_Model
             }
 
             //Move other ideas down in the discovery list:
-            foreach($this->DISCOVER_model->ln_fetch(array(
+            foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_id !=' => $actionplan['ln_id'], //Not the newly added idea
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -988,7 +421,7 @@ class DISCOVER_model extends CI_Model
                 $in_rank++;
 
                 //Update order:
-                $this->DISCOVER_model->ln_update($current_ins['ln_id'], array(
+                $this->LEDGER_model->ln_update($current_ins['ln_id'], array(
                     'ln_order' => $in_rank,
                 ), $en_id, 10681 /* Ideas Ordered Automatically  */);
             }
@@ -1002,7 +435,7 @@ class DISCOVER_model extends CI_Model
 
 
 
-    function discover__completion_recursive_up($en_id, $in, $is_bottom_level = true){
+    function discover_completion_recursive_up($en_id, $in, $is_bottom_level = true){
 
         /*
          *
@@ -1014,7 +447,7 @@ class DISCOVER_model extends CI_Model
 
 
         //First let's make sure this entire Idea completed by the user:
-        $completion_rate = $this->DISCOVER_model->discover__completion_progress($en_id, $in);
+        $completion_rate = $this->DISCOVER_model->discover_completion_progress($en_id, $in);
 
 
         if($completion_rate['completion_percentage'] < 100){
@@ -1028,7 +461,7 @@ class DISCOVER_model extends CI_Model
         if(isset($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) && count($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) > 0){
 
             //Make sure previous link unlocks have NOT happened before:
-            $existing_expansions = $this->DISCOVER_model->ln_fetch(array(
+            $existing_expansions = $this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
                 'ln_creator_source_id' => $en_id,
@@ -1045,7 +478,7 @@ class DISCOVER_model extends CI_Model
                  * if we would ever try to process a conditional step twice? If it
                  * happens, is it an error or not, and should simply be ignored?
                  *
-                $this->DISCOVER_model->ln_create(array(
+                $this->LEDGER_model->ln_create(array(
                     'ln_previous_idea_id' => $in['in_id'],
                     'ln_next_idea_id' => $existing_expansions[0]['ln_next_idea_id'],
                     'ln_content' => 'completion_recursive_up() detected duplicate Label Expansion entries',
@@ -1060,7 +493,7 @@ class DISCOVER_model extends CI_Model
 
 
             //Yes, Let's calculate user's score for this idea:
-            $user_marks = $this->DISCOVER_model->discover__completion_marks($en_id, $in);
+            $user_marks = $this->DISCOVER_model->discover_completion_marks($en_id, $in);
 
 
 
@@ -1068,13 +501,13 @@ class DISCOVER_model extends CI_Model
 
             //Detect potential conditional steps to be Unlocked:
             $found_match = 0;
-            $locked_links = $this->DISCOVER_model->ln_fetch(array(
+            $locked_links = $this->LEDGER_model->ln_fetch(array(
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id' => 4229, //Idea Link Locked Discovery
                 'ln_previous_idea_id' => $in['in_id'],
                 'ln_next_idea_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
-            ), array('in_child'), 0, 0);
+            ), array('in_next'), 0, 0);
 
 
             foreach ($locked_links as $locked_link) {
@@ -1097,7 +530,7 @@ class DISCOVER_model extends CI_Model
                     $found_match++;
 
                     //Unlock DISCOVER LIST:
-                    $this->DISCOVER_model->ln_create(array(
+                    $this->LEDGER_model->ln_create(array(
                         'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
                         'ln_creator_source_id' => $en_id,
                         'ln_previous_idea_id' => $in['in_id'],
@@ -1114,7 +547,7 @@ class DISCOVER_model extends CI_Model
 
             //We must have exactly 1 match by now:
             if($found_match != 1){
-                $this->DISCOVER_model->ln_create(array(
+                $this->LEDGER_model->ln_create(array(
                     'ln_content' => 'completion_recursive_up() found ['.$found_match.'] routing logic matches!',
                     'ln_type_source_id' => 4246, //Platform Bug Reports
                     'ln_creator_source_id' => $en_id,
@@ -1168,7 +601,7 @@ class DISCOVER_model extends CI_Model
                     if(count($parent_ins) > 0){
 
                         //Fetch parent completion:
-                        $this->DISCOVER_model->discover__completion_recursive_up($en_id, $parent_ins[0], false);
+                        $this->DISCOVER_model->discover_completion_recursive_up($en_id, $parent_ins[0], false);
 
                     }
 
@@ -1185,7 +618,7 @@ class DISCOVER_model extends CI_Model
     }
 
 
-    function discover__unlock_locked_step($en_id, $in){
+    function discover_unlock_locked_step($en_id, $in){
 
         /*
          * A function that starts from a locked idea and checks:
@@ -1203,12 +636,12 @@ class DISCOVER_model extends CI_Model
         }
 
 
-        $in__children = $this->DISCOVER_model->ln_fetch(array(
+        $in__children = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_type_source_id' => 4228, //Idea Link Regular Discovery
             'ln_previous_idea_id' => $in['in_id'],
-        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+        ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
         if(count($in__children) < 1){
             return array(
                 'status' => 0,
@@ -1241,7 +674,7 @@ class DISCOVER_model extends CI_Model
             if($count==0){
 
                 //Always add all the first users to the full list:
-                $qualified_completed_users = $this->DISCOVER_model->ln_fetch(array(
+                $qualified_completed_users = $this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
                     'ln_previous_idea_id' => $child_in['in_id'],
@@ -1258,7 +691,7 @@ class DISCOVER_model extends CI_Model
                 if($requires_all_children){
 
                     //Update list of qualified users:
-                    $qualified_completed_users = $this->DISCOVER_model->ln_fetch(array(
+                    $qualified_completed_users = $this->LEDGER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
                         'ln_previous_idea_id' => $child_in['in_id'],
@@ -1283,10 +716,10 @@ class DISCOVER_model extends CI_Model
     function discover_is_complete($in, $insert_columns){
 
         //Log completion link:
-        $new_link = $this->DISCOVER_model->ln_create($insert_columns);
+        $new_link = $this->LEDGER_model->ln_create($insert_columns);
 
         //Process completion automations:
-        $this->DISCOVER_model->discover__completion_recursive_up($insert_columns['ln_creator_source_id'], $in);
+        $this->DISCOVER_model->discover_completion_recursive_up($insert_columns['ln_creator_source_id'], $in);
 
         return $new_link;
 
@@ -1308,7 +741,7 @@ class DISCOVER_model extends CI_Model
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
         ));
         if (count($ins) < 1) {
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ),
                 'ln_content' => 'step_echo() invalid idea ID',
@@ -1316,7 +749,7 @@ class DISCOVER_model extends CI_Model
             ));
 
             if($push_message){
-                $this->DISCOVER_model->dispatch_message(
+                $this->COMMUNICATION_model->comm_send_message(
                     'Alert: Invalid Idea ID',
                     $recipient_en,
                     true
@@ -1336,7 +769,7 @@ class DISCOVER_model extends CI_Model
             if($push_message){
 
                 //We cannot have a guest user on Messenger:
-                $this->DISCOVER_model->ln_create(array(
+                $this->LEDGER_model->ln_create(array(
                     'ln_type_source_id' => 4246, //Platform Bug Reports
                     'ln_content' => 'discover_coin() found guest user on Messenger',
                     'ln_previous_idea_id' => $in_id,
@@ -1362,7 +795,7 @@ class DISCOVER_model extends CI_Model
             if(count($ens)){
                 $recipient_en = $ens[0];
             } else {
-                $this->DISCOVER_model->ln_create(array(
+                $this->LEDGER_model->ln_create(array(
                     'ln_type_source_id' => 4246, //Platform Bug Reports
                     'ln_content' => 'discover_coin() could not locate source',
                     'ln_previous_idea_id' => $in_id,
@@ -1375,23 +808,23 @@ class DISCOVER_model extends CI_Model
 
 
         //Fetch Messages
-        $in__messages = $this->DISCOVER_model->ln_fetch(array(
+        $in__messages = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id' => 4231, //Idea Notes Messages
             'ln_next_idea_id' => $ins[0]['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         //Fetch Children:
-        $in__children = $this->DISCOVER_model->ln_fetch(array(
+        $in__children = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_type_source_id' => 4228, //Idea Link Regular Discovery
             'ln_previous_idea_id' => $ins[0]['in_id'],
-        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+        ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
 
         //Log View:
-        $this->DISCOVER_model->ln_create(array(
+        $this->LEDGER_model->ln_create(array(
             'ln_creator_source_id' => $recipient_en['en_id'],
             'ln_type_source_id' => 7610, //Idea Viewed by User
             'ln_previous_idea_id' => $ins[0]['in_id'],
@@ -1432,7 +865,7 @@ class DISCOVER_model extends CI_Model
 
             if($push_message){
 
-                $this->DISCOVER_model->dispatch_message(
+                $this->COMMUNICATION_model->comm_send_message(
                     'Interested to discover ' . $ins[0]['in_title'] . '?',
                     $recipient_en,
                     $push_message,
@@ -1460,7 +893,7 @@ class DISCOVER_model extends CI_Model
 
 
                 foreach ($in__messages as $message_ln) {
-                    echo $this->DISCOVER_model->dispatch_message(
+                    echo $this->COMMUNICATION_model->comm_send_message(
                         $message_ln['ln_content'],
                         $recipient_en,
                         $push_message
@@ -1542,7 +975,7 @@ class DISCOVER_model extends CI_Model
 
 
         //Fetch progress history:
-        $discover_completes = $this->DISCOVER_model->ln_fetch(array(
+        $discover_completes = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
             'ln_creator_source_id' => $recipient_en['en_id'],
@@ -1569,13 +1002,13 @@ class DISCOVER_model extends CI_Model
             } elseif (in_array($ins[0]['in_type_source_id'], array(6914,6907))) {
 
                 //Reverse check answers to see if they have previously unlocked a path:
-                $unlocked_connections = $this->DISCOVER_model->ln_fetch(array(
+                $unlocked_connections = $this->LEDGER_model->ln_fetch(array(
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                     'ln_next_idea_id' => $ins[0]['in_id'],
                     'ln_creator_source_id' => $recipient_en['en_id'],
-                ), array('in_parent'), 1);
+                ), array('in_previous'), 1);
 
                 if(count($unlocked_connections) > 0){
 
@@ -1603,7 +1036,7 @@ class DISCOVER_model extends CI_Model
                     } else {
 
                         //Oooops, we could not find it, report bug:
-                        $this->DISCOVER_model->ln_create(array(
+                        $this->LEDGER_model->ln_create(array(
                             'ln_type_source_id' => 4246, //Platform Bug Reports
                             'ln_creator_source_id' => $recipient_en['en_id'],
                             'ln_content' => 'discover_coin() found idea connector ['.$unlocked_connections[0]['ln_type_source_id'].'] without a valid unlock method @12327',
@@ -1639,7 +1072,7 @@ class DISCOVER_model extends CI_Model
         if(!$next_step_only){
 
             // % DONE
-            $completion_rate = $this->DISCOVER_model->discover__completion_progress($recipient_en['en_id'], $ins[0]);
+            $completion_rate = $this->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $ins[0]);
             $metadata = unserialize($ins[0]['in_metadata']);
             $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
@@ -1663,7 +1096,7 @@ class DISCOVER_model extends CI_Model
 
             } else {
 
-                $this->DISCOVER_model->dispatch_message(
+                $this->COMMUNICATION_model->comm_send_message(
                     'You are discovering: '.$ins[0]['in_title'],
                     $recipient_en,
                     $push_message
@@ -1673,7 +1106,7 @@ class DISCOVER_model extends CI_Model
 
             echo '<div class="previous_discoveries">';
             foreach ($in__messages as $message_ln) {
-                echo $this->DISCOVER_model->dispatch_message(
+                echo $this->COMMUNICATION_model->comm_send_message(
                     $message_ln['ln_content'],
                     $recipient_en,
                     $push_message
@@ -1705,13 +1138,13 @@ class DISCOVER_model extends CI_Model
         //PREVIOUSLY UNLOCKED:
         if(!$push_message){
 
-            $unlocked_steps = $this->DISCOVER_model->ln_fetch(array(
+            $unlocked_steps = $this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                 'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
                 'ln_creator_source_id' => $recipient_en['en_id'],
                 'ln_previous_idea_id' => $ins[0]['in_id'],
-            ), array('in_child'), 0);
+            ), array('in_next'), 0);
 
             //Did we have any steps unlocked?
             if(count($unlocked_steps) > 0){
@@ -1747,7 +1180,7 @@ class DISCOVER_model extends CI_Model
             if(!count($in__children)){
 
                 //Mark this as complete since there is no child to choose from:
-                if(!count($this->DISCOVER_model->ln_fetch(array(
+                if(!count($this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                     'ln_creator_source_id' => $recipient_en['en_id'],
@@ -1769,14 +1202,14 @@ class DISCOVER_model extends CI_Model
 
                 //First fetch answers based on correct order:
                 $discover_answers = array();
-                foreach ($this->DISCOVER_model->ln_fetch(array(
+                foreach ($this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                     'ln_type_source_id' => 4228, //Idea Link Regular Discovery
                     'ln_previous_idea_id' => $ins[0]['in_id'],
-                ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $ln){
+                ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $ln){
                     //See if this answer was seleted:
-                    if(count($this->DISCOVER_model->ln_fetch(array(
+                    if(count($this->LEDGER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINK
                         'ln_previous_idea_id' => $ins[0]['in_id'],
@@ -1877,7 +1310,7 @@ class DISCOVER_model extends CI_Model
                 foreach ($in__children as $key => $child_in) {
 
                     //Has this been previously selected?
-                    $previously_selected = count($this->DISCOVER_model->ln_fetch(array(
+                    $previously_selected = count($this->LEDGER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                         'ln_previous_idea_id' => $ins[0]['in_id'],
@@ -1940,7 +1373,7 @@ class DISCOVER_model extends CI_Model
                         }
                     }
 
-                    $this->DISCOVER_model->dispatch_message(
+                    $this->COMMUNICATION_model->comm_send_message(
                         $message_content,
                         $recipient_en,
                         $push_message,
@@ -2004,7 +1437,7 @@ class DISCOVER_model extends CI_Model
                 echo '<div class="playerUploader previous_discoveries">';
                 echo '<form class="box boxUpload" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-                echo '<div class="file_saving_result">'.( count($discover_completes) ? '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->DISCOVER_model->dispatch_message($discover_completes[0]['ln_content']).'</div>' : '' ).'</div>';
+                echo '<div class="file_saving_result">'.( count($discover_completes) ? '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->comm_send_message($discover_completes[0]['ln_content']).'</div>' : '' ).'</div>';
 
                 echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_source_id'].'" />';
 
@@ -2036,7 +1469,7 @@ class DISCOVER_model extends CI_Model
             } else {
 
                 //UNKNOWN IDEA TYPE
-                $this->DISCOVER_model->ln_create(array(
+                $this->LEDGER_model->ln_create(array(
                     'ln_type_source_id' => 4246, //Platform Bug Reports
                     'ln_creator_source_id' => $recipient_en['en_id'],
                     'ln_content' => 'step_echo() unknown idea type source ID ['.$ins[0]['in_type_source_id'].'] that could not be rendered',
@@ -2049,7 +1482,7 @@ class DISCOVER_model extends CI_Model
 
     }
 
-    function discover__completion_marks($en_id, $in, $top_level = true)
+    function discover_completion_marks($en_id, $in, $top_level = true)
     {
 
         //Fetch/validate DISCOVER LIST Common Ideas:
@@ -2057,7 +1490,7 @@ class DISCOVER_model extends CI_Model
         if(!isset($in_metadata['in__metadata_common_steps'])){
 
             //Should not happen, log error:
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_content' => 'completion_marks() Detected user DISCOVER LIST without in__metadata_common_steps value!',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $en_id,
@@ -2104,13 +1537,13 @@ class DISCOVER_model extends CI_Model
                 $local_max = null;
 
                 //Calculate min/max points for this based on answers:
-                foreach($this->DISCOVER_model->ln_fetch(array(
+                foreach($this->LEDGER_model->ln_fetch(array(
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id' => 4228, //Idea Link Regular Discovery
                     'ln_previous_idea_id' => $question_in_id,
                     'ln_next_idea_id IN (' . join(',', $answers_in_ids) . ')' => null, //Limit to cached answers
-                ), array('in_child')) as $in_answer){
+                ), array('in_next')) as $in_answer){
 
                     //Extract Link Metadata:
                     $possible_answer_metadata = unserialize($in_answer['ln_metadata']);
@@ -2139,7 +1572,7 @@ class DISCOVER_model extends CI_Model
 
 
             //Now let's check user answers to see what they have done:
-            $total_completion = $this->DISCOVER_model->ln_fetch(array(
+            $total_completion = $this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
@@ -2150,16 +1583,16 @@ class DISCOVER_model extends CI_Model
             $metadata_this['steps_answered_count'] += $total_completion[0]['total_completions'];
 
             //Go through answers:
-            foreach($this->DISCOVER_model->ln_fetch(array(
+            foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            ), array('in_child'), 500) as $answer_in) {
+            ), array('in_next'), 500) as $answer_in) {
 
                 //Fetch recursively:
-                $recursive_stats = $this->DISCOVER_model->discover__completion_marks($en_id, $answer_in, false);
+                $recursive_stats = $this->DISCOVER_model->discover_completion_marks($en_id, $answer_in, false);
 
                 $metadata_this['steps_answered_count'] += $recursive_stats['steps_answered_count'];
                 $metadata_this['steps_answered_marks'] += $answer_marks_index[$answer_in['in_id']] + $recursive_stats['steps_answered_marks'];
@@ -2190,7 +1623,7 @@ class DISCOVER_model extends CI_Model
 
 
 
-    function discover__completion_progress($en_id, $in, $top_level = true)
+    function discover_completion_progress($en_id, $in, $top_level = true)
     {
 
         if(!isset($in['in_metadata'])){
@@ -2217,13 +1650,13 @@ class DISCOVER_model extends CI_Model
 
 
         //Count completed for user:
-        $common_completed = $this->DISCOVER_model->ln_fetch(array(
+        $common_completed = $this->LEDGER_model->ln_fetch(array(
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
             'ln_creator_source_id' => $en_id, //Belongs to this User
             'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ), array('in_parent'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_time_seconds) as completed_seconds');
+        ), array('in_previous'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_time_seconds) as completed_seconds');
 
 
         //Calculate common steps and expansion steps recursively for this user:
@@ -2239,17 +1672,17 @@ class DISCOVER_model extends CI_Model
         if(isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0){
 
             //Now let's check user answers to see what they have done:
-            foreach($this->DISCOVER_model->ln_fetch(array(
+            foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_next_idea_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            ), array('in_child')) as $expansion_in) {
+            ), array('in_next')) as $expansion_in) {
 
                 //Fetch recursive:
-                $recursive_stats = $this->DISCOVER_model->discover__completion_progress($en_id, $expansion_in, false);
+                $recursive_stats = $this->DISCOVER_model->discover_completion_progress($en_id, $expansion_in, false);
 
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
@@ -2264,17 +1697,17 @@ class DISCOVER_model extends CI_Model
         if(isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0){
 
             //Now let's check if user has unlocked any Miletones:
-            foreach($this->DISCOVER_model->ln_fetch(array(
+            foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_next_idea_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_conditional'])) . ')' => null,
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            ), array('in_child')) as $expansion_in) {
+            ), array('in_next')) as $expansion_in) {
 
                 //Fetch recursive:
-                $recursive_stats = $this->DISCOVER_model->discover__completion_progress($en_id, $expansion_in, false);
+                $recursive_stats = $this->DISCOVER_model->discover_completion_progress($en_id, $expansion_in, false);
 
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
@@ -2329,12 +1762,12 @@ class DISCOVER_model extends CI_Model
     function discover_ids($en_id){
         //Simply returns all the idea IDs for a user's DISCOVER LIST:
         $player_discover_ids = array();
-        foreach($this->DISCOVER_model->ln_fetch(array(
+        foreach($this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ), array('in_parent'), 0) as $user_in){
+        ), array('in_previous'), 0) as $user_in){
             array_push($player_discover_ids, intval($user_in['in_id']));
         }
         return $player_discover_ids;
@@ -2342,144 +1775,6 @@ class DISCOVER_model extends CI_Model
 
 
 
-
-
-
-    function dispatch_message($input_message, $recipient_en = array(), $push_message = false, $quick_replies = array(), $message_in_id = 0)
-    {
-
-        /*
-         *
-         * The primary function that constructs messages based on the following inputs:
-         *
-         *
-         * - $input_message:        The message text which may include source
-         *                          references like "@123". This may NOT include
-         *                          URLs as they must be first turned into an
-         *                          source and then referenced within a message.
-         *
-         *
-         * - $recipient_en:         The source object that this message is supposed
-         *                          to be delivered to. May be an empty array for
-         *                          when we want to show these messages to guests,
-         *                          and it may contain the full source object or it
-         *                          may only contain the source ID, which enables this
-         *                          function to fetch further information from that
-         *                          source as required based on its other parameters.
-         *
-         *
-         * - $push_message:         If TRUE this function will prepare a message to be
-         *                          delivered to use using either Messenger or Chrome. If FALSE, it
-         *                          would prepare a message for immediate HTML view. The HTML
-         *                          format will consider if a Player is logged in or not,
-         *                          which will alter the HTML format.
-         *
-         *
-         * - $quick_replies:        Only supported if $push_message = TRUE, and
-         *                          will append an array of quick replies that will give
-         *                          Users an easy way to tap and select their next step.
-         *
-         * */
-
-        //This could happen with random messages
-        if(strlen($input_message) < 1){
-            return false;
-        }
-
-        //Validate message:
-        $msg_dispatching = $this->DISCOVER_model->dispatch_validate_message($input_message, $recipient_en, $push_message, $quick_replies, 0, $message_in_id, false);
-
-
-        //Did we have ane error in message validation?
-        if (!$msg_dispatching['status'] || !isset($msg_dispatching['output_messages'])) {
-
-            //Log Error Link:
-            $this->DISCOVER_model->ln_create(array(
-                'ln_type_source_id' => 4246, //Platform Bug Reports
-                'ln_creator_source_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
-                'ln_content' => 'dispatch_validate_message() returned error [' . $msg_dispatching['message'] . '] for input message [' . $input_message . ']',
-                'ln_metadata' => array(
-                    'input_message' => $input_message,
-                    'recipient_en' => $recipient_en,
-                    'push_message' => $push_message,
-                    'quick_replies' => $quick_replies,
-                    'message_in_id' => $message_in_id
-                ),
-            ));
-
-            return false;
-        }
-
-        //Message validation passed...
-        $html_message_body = '';
-
-        //Log message sent link:
-        foreach ($msg_dispatching['output_messages'] as $output_message) {
-
-            //Dispatch message based on format:
-            if ($push_message) {
-
-                if($msg_dispatching['user_chat_channel']==6196 /* Mench on Messenger */){
-
-                    //Attempt to dispatch message via Facebook Graph API:
-                    $fb_graph_process = $this->DISCOVER_model->facebook_graph('POST', '/me/messages', $output_message['message_body']);
-
-                    //Did we have an Error from the Facebook API side?
-                    if (!$fb_graph_process['status']) {
-
-                        //Ooopsi, we did! Log error Transcation:
-                        $this->DISCOVER_model->ln_create(array(
-                            'ln_type_source_id' => 4246, //Platform Bug Reports
-                            'ln_creator_source_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
-                            'ln_content' => 'dispatch_message() failed to send message via Facebook Graph API. See Metadata log for more details.',
-                            'ln_metadata' => array(
-                                'input_message' => $input_message,
-                                'output_message' => $output_message['message_body'],
-                                'fb_graph_process' => $fb_graph_process,
-                            ),
-                        ));
-
-                        //Terminate function:
-                        return false;
-
-                    }
-
-                } else {
-
-                    $fb_graph_process = null; //No Facebook call made
-
-                }
-
-            } else {
-
-                //HTML Format, add to message variable that will be returned at the end:
-                $html_message_body .= $output_message['message_body'];
-
-                $fb_graph_process = null; //No Facebook call made
-
-            }
-
-            //Log successful Link for message delivery:
-            if(isset($recipient_en['en_id']) && $push_message){
-                $this->DISCOVER_model->ln_create(array(
-                    'ln_content' => $msg_dispatching['input_message'],
-                    'ln_type_source_id' => $output_message['message_type_en_id'],
-                    'ln_creator_source_id' => $recipient_en['en_id'],
-                    'ln_parent_source_id' => $msg_dispatching['ln_parent_source_id'], //Might be set if message had a referenced source
-                    'ln_metadata' => array(
-                        'input_message' => $input_message,
-                        'output_message' => $output_message,
-                        'fb_graph_process' => $fb_graph_process,
-                    ),
-                ));
-            }
-
-        }
-
-        //If we're here it's all good:
-        return ( $push_message ? true : $html_message_body );
-
-    }
 
 
     function discover_history_ui($tab_group_id, $pads_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
@@ -2513,7 +1808,7 @@ class DISCOVER_model extends CI_Model
             $match_columns['ln_previous_idea_id'] = $pads_in_id;
             $list_url = '/idea/'.$pads_in_id;
             $list_class = 'itemidea';
-            $join_objects = array('en_owner');
+            $join_objects = array('en_creator');
 
         } elseif($owner_en_id > 0){
 
@@ -2521,8 +1816,8 @@ class DISCOVER_model extends CI_Model
 
                 $order_columns = array('in_weight' => 'DESC');
                 $list_class = 'itemdiscover';
-                $join_objects = array('in_child');
-                $match_columns['ln_parent_source_id'] = $owner_en_id;
+                $join_objects = array('in_next');
+                $match_columns['ln_profile_source_id'] = $owner_en_id;
                 $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null;
 
             } elseif($tab_group_id == 6255 /* DISCOVER COIN */){
@@ -2530,14 +1825,14 @@ class DISCOVER_model extends CI_Model
                 $order_columns = array('in_weight' => 'DESC');
                 $list_class = 'itemsource';
                 $list_url = '/source/'.$owner_en_id;
-                $join_objects = array('in_parent');
+                $join_objects = array('in_previous');
                 $match_columns['ln_creator_source_id'] = $owner_en_id;
 
             }
 
         }
 
-        $in_query = $this->DISCOVER_model->ln_fetch($match_columns, $join_objects, config_var(11064), 0, $order_columns);
+        $in_query = $this->LEDGER_model->ln_fetch($match_columns, $join_objects, config_var(11064), 0, $order_columns);
 
         //List Discovery History:
         $ui = '<div class="list-group dynamic-discoveries">';
@@ -2558,7 +1853,7 @@ class DISCOVER_model extends CI_Model
                 $infobar_details = null;
                 if(strlen($in_discover['ln_content'])){
                     $infobar_details .= '<div class="message_content">';
-                    $infobar_details .= $this->DISCOVER_model->dispatch_message($in_discover['ln_content']);
+                    $infobar_details .= $this->COMMUNICATION_model->comm_send_message($in_discover['ln_content']);
                     $infobar_details .= '</div>';
                 }
 
@@ -2587,801 +1882,6 @@ class DISCOVER_model extends CI_Model
 
     }
 
-
-
-    function dispatch_validate_message($input_message, $recipient_en = array(), $push_message = false, $quick_replies = array(), $message_type_en_id = 0, $message_in_id = 0, $strict_validation = true)
-    {
-
-        /*
-         *
-         * This function is used to validate Idea Notes.
-         *
-         * See dispatch_message() for more information on input variables.
-         *
-         * */
-
-
-        //Try to fetch session if recipient not provided:
-        if(!isset($recipient_en['en_id'])){
-            $recipient_en = superpower_assigned();
-        }
-
-        $is_being_modified = ( $message_type_en_id > 0 ); //IF $message_type_en_id > 0 means we're adding/editing and need to do extra checks
-
-        //Cleanup:
-        $input_message = trim($input_message);
-        $input_message = str_replace('’','\'',$input_message);
-
-        //Start with basic input validation:
-        if (strlen($input_message) < 1) {
-            return array(
-                'status' => 0,
-                'message' => 'Missing Message Content',
-            );
-        } elseif ($strict_validation && strlen($input_message) > config_var(11073)) {
-            return array(
-                'status' => 0,
-                'message' => 'Message is '.strlen($input_message).' characters long which is more than the allowed ' . config_var(11073) . ' characters',
-            );
-        } elseif (!preg_match('//u', $input_message)) {
-            return array(
-                'status' => 0,
-                'message' => 'Message must be UTF8',
-            );
-        } elseif ($push_message && !isset($recipient_en['en_id'])) {
-            return array(
-                'status' => 0,
-                'message' => 'Facebook Messenger Format requires a recipient source ID to construct a message',
-            );
-        } elseif (count($quick_replies) > 0 && !$push_message) {
-            /*
-             * TODO Enable later on...
-            return array(
-                'status' => 0,
-                'message' => 'Quick Replies are only supported for PUSH messages',
-            );
-            */
-        } elseif ($message_type_en_id > 0 && !in_array($message_type_en_id, $this->config->item('en_ids_4485'))) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Message type ID',
-            );
-        }
-
-
-        /*
-         *
-         * Let's do a generic message reference validation
-         * that does not consider $message_type_en_id if passed
-         *
-         * */
-        $string_references = extract_references($input_message);
-
-        if($strict_validation){
-            //Check only in strict mode:
-            if (count($string_references['ref_urls']) > 1) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'You can reference a maximum of 1 URL per message',
-                );
-
-            } elseif (count($string_references['ref_sources']) > 1) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Message can include a maximum of 1 source reference',
-                );
-
-            } elseif (!$push_message && count($string_references['ref_sources']) > 0 && count($string_references['ref_urls']) > 0) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'You can either reference an source OR a URL, as URLs are transformed to sources',
-                );
-
-            } elseif (count($string_references['ref_commands']) > 0) {
-
-                if(count($string_references['ref_commands']) != count(array_unique($string_references['ref_commands'])) && !in_array('/count:', $string_references['ref_commands'])){
-
-                    return array(
-                        'status' => 0,
-                        'message' => 'Each /command can only be used once per message',
-                    );
-
-                } elseif(in_array('/link:',$string_references['ref_commands']) && count($quick_replies) > 0){
-
-                    return array(
-                        'status' => 0,
-                        'message' => 'You cannot combine the /link command with quick replies',
-                    );
-
-                }
-
-            }
-        }
-
-
-
-        /*
-         *
-         * $message_type_en_id Validation
-         * only in strict mode!
-         *
-         * */
-        if($strict_validation && $message_type_en_id > 0){
-
-            //See if this message type has specific input requirements:
-            $en_all_4485 = $this->config->item('en_all_4485');
-
-            //Now check for source referencing settings:
-            if(!in_array(4986 , $en_all_4485[$message_type_en_id]['m_parents']) && !in_array(7551 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_sources']) > 0){
-
-                return array(
-                    'status' => 0,
-                    'message' => $en_all_4485[$message_type_en_id]['m_name'].' do not support source referencing.',
-                );
-
-            } elseif(in_array(7551 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_sources']) != 1 && count($string_references['ref_urls']) != 1){
-
-                return array(
-                    'status' => 0,
-                    'message' => $en_all_4485[$message_type_en_id]['m_name'].' require an source reference.',
-                );
-
-            }
-
-        }
-
-
-
-
-
-
-
-        /*
-         *
-         * Fetch more details on recipient source if needed
-         *
-         * */
-
-
-
-
-        //See if we have a valid way to connect to them if push:
-        if ($push_message) {
-
-            $user_messenger = $this->DISCOVER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_parent_source_id' => 6196, //Mench Messenger
-                'ln_child_source_id' => $recipient_en['en_id'],
-                'ln_external_id >' => 0,
-            ));
-
-            //Messenger has a higher priority than email, is the user connected?
-            if(count($user_messenger) > 0) {
-
-                $user_chat_channel = 6196; //Mench on Messenger
-
-            } else {
-
-                //See if they have an email:
-                $user_emails = $this->DISCOVER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_child_source_id' => $recipient_en['en_id'],
-                    'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
-                    'ln_parent_source_id' => 3288, //Mench Email
-                ));
-
-                if(count($user_emails) > 0){
-
-                    $user_chat_channel = 12103; //Web+Email
-
-                } else {
-
-                    //No way to communicate with user:
-                    return array(
-                        'status' => 0,
-                        'message' => 'User @' . $recipient_en['en_id'] . ' has not connected to a Mench platform yet',
-                    );
-
-                }
-            }
-
-        } else {
-
-            //No communication channel since the message is NOT being pushed:
-            $user_chat_channel = 0;
-
-        }
-
-
-        /*
-         *
-         * Fetch notification level IF $push_message = TRUE
-         *
-         * */
-
-        if ($push_message && $user_chat_channel==6196 /* Mench on Messenger */) {
-
-
-            $en_all_11058 = $this->config->item('en_all_11058');
-
-            //Fetch recipient notification type:
-            $lns_comm_level = $this->DISCOVER_model->ln_fetch(array(
-                'ln_parent_source_id IN (' . join(',', $this->config->item('en_ids_4454')) . ')' => null,
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_child_source_id' => $recipient_en['en_id'],
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            ));
-
-            //Start validating communication settings we fetched to ensure everything is A-OK:
-            if (count($lns_comm_level) < 1) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'User is missing their Messenger Notification Level',
-                );
-
-            } elseif (count($lns_comm_level) > 1) {
-
-                //This should find exactly one result
-                return array(
-                    'status' => 0,
-                    'message' => 'User has more than 1 Notification Level parent source relation',
-                );
-
-            } elseif (!array_key_exists($lns_comm_level[0]['ln_parent_source_id'], $en_all_11058)) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Fetched unknown Notification Level [' . $lns_comm_level[0]['ln_parent_source_id'] . ']',
-                );
-
-            } else {
-
-                //All good, Set notification type:
-                $notification_type = $en_all_11058[$lns_comm_level[0]['ln_parent_source_id']]['m_desc'];
-
-            }
-        }
-
-
-        /*
-         *
-         * Transform URLs into Player + Links
-         *
-         * */
-        if ($strict_validation && count($string_references['ref_urls']) > 0) {
-
-            //BUGGY
-            //No source linked, but we have a URL that we should turn into an source if not previously:
-            $url_source = $this->SOURCE_model->en_url($string_references['ref_urls'][0], ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ), ( isset($recipient_en['en_id']) ? array($recipient_en['en_id']) : array() ));
-
-            //Did we have an error?
-            if (!$url_source['status'] || !isset($url_source['en_url']['en_id']) || intval($url_source['en_url']['en_id']) < 1) {
-                return $url_source;
-            }
-
-            //Transform this URL into an source IF it was found/created:
-            if(intval($url_source['en_url']['en_id']) > 0){
-
-                $string_references['ref_sources'][0] = intval($url_source['en_url']['en_id']);
-
-                //Replace the URL with this new @source in message.
-                //This is the only valid modification we can do to $input_message before storing it in the DB:
-                $input_message = str_replace($string_references['ref_urls'][0], '@' . $string_references['ref_sources'][0], $input_message);
-
-                //Delete URL:
-                unset($string_references['ref_urls'][0]);
-
-            }
-
-        }
-
-
-        /*
-         *
-         * Process Commands
-         *
-         * */
-
-        //Start building the Output message body based on format:
-        $output_body_message = ( $push_message ? $input_message : htmlentities($input_message) );
-
-
-        if (in_array('/count:', $string_references['ref_commands'])) {
-
-            $count_parts = explode('/count:', $output_body_message);
-            foreach($count_parts as $i=>$count_part){
-                if($i>0){
-                    $cache_var_name = one_two_explode('',' ', $count_part);
-                    $output_body_message = str_replace('/count:'.$cache_var_name, number_format($this->config->item('cache_count_'.$cache_var_name), 0), $output_body_message);
-                }
-            }
-
-
-        }
-
-
-        //Determine if we have a button link:
-        $fb_button_title = null;
-        $fb_button_url = null;
-        if (in_array('/link:', $string_references['ref_commands'])) {
-
-            //Validate /link format:
-            $link_anchor = trim(one_two_explode('/link:', ':http', $output_body_message));
-            $link_url = 'http' . one_two_explode(':http', ' ', $output_body_message);
-
-            if (strlen($link_anchor) < 1 || !filter_var($link_url, FILTER_VALIDATE_URL)) {
-                return array(
-                    'status' => 0,
-                    'message' => 'Invalid link command',
-                );
-            }
-
-            //Make adjustments:
-            if ($push_message) {
-
-                //Update variables to later include in message:
-                $fb_button_title = $link_anchor;
-                $fb_button_url = $link_url;
-
-                //Delete command from input message:
-                $output_body_message = str_replace('/link:' . $link_anchor . ':' . $link_url, '', $output_body_message);
-
-            } else {
-
-                //Replace in HTML message:
-                $output_body_message = str_replace('/link:' . $link_anchor . ':' . $link_url, '<a href="' . $link_url . '">' . $link_anchor . '</a>', $output_body_message);
-
-            }
-
-        }
-
-
-
-
-        /*
-         *
-         * Referenced Player
-         *
-         * */
-
-        //Will contain media from referenced source:
-        $fb_media_attachments = array();
-
-        //We assume this message has text, unless its only content is an source reference like "@123"
-        $has_text = true;
-
-        //Where is this request being made from? Public landing pages will have some restrictions on what they displat:
-        $is_landing_page = is_numeric(str_replace('_','', $this->uri->segment(1)));
-        $is_user_message = ($is_landing_page || $this->uri->segment(1)=='discover');
-
-        if (count($string_references['ref_sources']) > 0) {
-
-            //We have a reference within this message, let's fetch it to better understand it:
-            $ens = $this->SOURCE_model->en_fetch(array(
-                'en_id' => $string_references['ref_sources'][0], //Alert: We will only have a single reference per message
-            ));
-
-            if (count($ens) < 1) {
-                return array(
-                    'status' => 0,
-                    'message' => 'The referenced source @' . $string_references['ref_sources'][0] . ' not found',
-                );
-            }
-
-            //Direct Media URLs supported:
-            $en_all_11059 = $this->config->item('en_all_11059');
-            $en_all_6177 = $this->config->item('en_all_6177');
-
-            //We send Media in their original format IF $push_message = TRUE, which means we need to convert link types:
-            if ($push_message) {
-                //Converts Player Link Types to their corresponding User Message Sent Link Types:
-                $master_media_sent_conv = array(
-                    4258 => 4553, //video
-                    4259 => 4554, //audio
-                    4260 => 4555, //image
-                    4261 => 4556, //file
-                );
-            }
-
-            //See if this source has any parent links to be shown in this appendix
-            $valid_url = array();
-            $message_visual_media = 0;
-            $source_appendix = null;
-            $current_mench = current_mench();
-
-            //Determine what type of Media this reference has:
-            if(!($current_mench['x_name']=='source' && $this->uri->segment(2)==$string_references['ref_sources'][0])){
-
-                //Parents
-                foreach ($this->DISCOVER_model->ln_fetch(array(
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Source URL
-                    'ln_child_source_id' => $string_references['ref_sources'][0], //This child source
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-                ), array('en_parent'), 0) as $parent_en) {
-
-                    if($parent_en['ln_content']=="https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']){
-                        continue;
-                    }
-
-                    if (in_array($parent_en['ln_type_source_id'], $this->config->item('en_ids_12524'))) {
-                        //Raw media file: Audio, Video, Image OR File...
-                        $message_visual_media++;
-                    } elseif($parent_en['ln_type_source_id'] == 4256 /* URL */){
-                        array_push($valid_url, $parent_en['ln_content']);
-                    }
-
-                    if($push_message){
-
-                        //Messenger templates:
-                        if (in_array($parent_en['ln_type_source_id'], $this->config->item('en_ids_11059'))) {
-
-                            //Search for Facebook Attachment ID IF $push_message = TRUE
-                            $fb_att_id = 0;
-                            if (strlen($parent_en['ln_metadata']) > 0) {
-                                //We might have a Facebook Attachment ID saved in Metadata, check to see:
-                                $metadata = unserialize($parent_en['ln_metadata']);
-                                if (isset($metadata['fb_att_id']) && intval($metadata['fb_att_id']) > 0) {
-                                    //Yes we do, use this for faster media attachments:
-                                    $fb_att_id = intval($metadata['fb_att_id']);
-                                }
-                            }
-
-                            //Push raw file to Media Array:
-                            array_push($fb_media_attachments, array(
-                                'ln_type_source_id' => $master_media_sent_conv[$parent_en['ln_type_source_id']],
-                                'ln_content' => ($fb_att_id > 0 ? null : $parent_en['ln_content']),
-                                'fb_att_id' => $fb_att_id,
-                                'fb_att_type' => $en_all_11059[$parent_en['ln_type_source_id']]['m_desc'],
-                            ));
-
-                        } else {
-
-                            //Generic URL:
-                            array_push($fb_media_attachments, array(
-                                'ln_type_source_id' => 4552, //Text Message Sent
-                                'ln_content' => $parent_en['ln_content'],
-                                'fb_att_id' => 0,
-                                'fb_att_type' => null,
-                            ));
-
-                        }
-
-                    } else {
-
-                        $source_appendix .= '<div class="source-appendix">' . echo_url_types($parent_en['ln_content'], $parent_en['ln_type_source_id']) . '</div>';
-
-                    }
-                }
-            }
-
-            //Determine if we have text:
-            $has_text = !(trim($output_body_message) == '@' . $string_references['ref_sources'][0]);
-
-
-            //Append any appendix generated:
-            if($source_appendix && (count($valid_url)>0 || $message_visual_media > 0)){
-                $output_body_message .= $source_appendix;
-            }
-
-
-
-            //Adjust
-            if (!$push_message) {
-
-                /*
-                 *
-                 * HTML Message format, which will
-                 * include a link to the Player for quick access
-                 * to more information about that source:=.
-                 *
-                 * */
-
-                $en_icon = '<span class="img-block">'.echo_en_icon($ens[0]['en_icon']).'</span> ';
-
-                if($is_user_message){
-
-                    $source_name_replacement = ( $has_text ? $en_icon.'<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">'.$ens[0]['en_name'].'</span>' : '' );
-                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], $source_name_replacement, $output_body_message);
-
-                } else {
-
-                    //Show source link with status:
-                    $current_mench = current_mench();
-                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block '.( $message_visual_media > 0 ? superpower_active(10939) : '' ).'">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).$en_icon.( $current_mench['x_name']=='discover' && !superpower_assigned(10939) ? '<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">' . $ens[0]['en_name']  . '</span>' : '<a class="montserrat doupper underline '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
-
-                }
-
-            } else {
-
-                //Just replace with the source name, which ensure we're always have a text in our message even if $has_text = FALSE
-                $source_name_replacement = ( $has_text ? $ens[0]['en_name'] : '' );
-                $output_body_message = str_replace('@' . $string_references['ref_sources'][0], $source_name_replacement, $output_body_message);
-
-            }
-        }
-
-
-
-
-        /*
-         *
-         * Construct Message based on current data
-         *
-         * $output_messages will determines the type & content of the
-         * message(s) that will to be sent. We might need to send
-         * multiple messages IF $push_message = TRUE and the
-         * text message has a referenced source with a one or more
-         * media file (Like video, image, file or audio).
-         *
-         * The format of this will be array( $ln_child_source_id => $ln_content )
-         * to define both message and it's type.
-         *
-         * See all sent message types here: https://mench.com/source/4280
-         *
-         * */
-        $output_messages = array();
-
-        if ($push_message && $user_chat_channel==6196 /* Mench on Messenger */) {
-
-
-            //Do we have a text message?
-            if ($has_text || $fb_button_title) {
-
-                if ($fb_button_title) {
-
-                    //We have a fixed button to append to this message:
-                    $fb_message = array(
-                        'attachment' => array(
-                            'type' => 'template',
-                            'payload' => array(
-                                'template_type' => 'button',
-                                'text' => $output_body_message,
-                                'buttons' => array(
-                                    array(
-                                        'type' => 'web_url',
-                                        'url' => $fb_button_url,
-                                        'title' => $fb_button_title,
-                                        'webview_height_ratio' => 'tall',
-                                        'webview_share_button' => 'hide',
-                                        'messenger_extensions' => true,
-                                    ),
-                                ),
-                            ),
-                        ),
-                        'metadata' => 'system_logged', //Prevents duplicate Link logs
-                    );
-
-                } elseif ($has_text) {
-
-                    //No button, just text:
-                    $fb_message = array(
-                        'text' => $output_body_message,
-                        'metadata' => 'system_logged', //Prevents duplicate Link logs
-                    );
-
-                    if(count($quick_replies) > 0){
-                        $fb_message['quick_replies'] = $quick_replies;
-                    }
-
-                }
-
-                //Add to output message:
-                array_push($output_messages, array(
-                    'message_type_en_id' => ( isset($fb_message['quick_replies']) && count($fb_message['quick_replies']) > 0 ? 6563 : 4552 ), //Text OR Quick Reply Message Sent
-                    'message_body' => array(
-                        'recipient' => array(
-                            'id' => $user_messenger[0]['ln_external_id'],
-                        ),
-                        'message' => $fb_message,
-                        'notification_type' => $notification_type,
-                        'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION',
-                    ),
-                ));
-
-            }
-
-
-            if (!$has_text && count($quick_replies) > 0) {
-
-                //This is an error:
-                $this->DISCOVER_model->ln_create(array(
-                    'ln_content' => 'dispatch_validate_message() was given quick replies without a text message',
-                    'ln_metadata' => array(
-                        'input_message' => $input_message,
-                        'push_message' => $push_message,
-                        'quick_replies' => $quick_replies,
-                    ),
-                    'ln_type_source_id' => 4246, //Platform Bug Reports
-                    'ln_creator_source_id' => $recipient_en['en_id'],
-                    'ln_parent_source_id' => $message_type_en_id,
-                    'ln_next_idea_id' => $message_in_id,
-                ));
-
-            }
-
-
-            if (count($fb_media_attachments) > 0) {
-
-                //We do have additional messages...
-                //TODO Maybe add another message to give User some context on these?
-
-                //Append messages:
-                foreach ($fb_media_attachments as $fb_media_attachment) {
-
-                    //See what type of attachment (if any) this is:
-                    if (!$fb_media_attachment['fb_att_type']) {
-
-                        //This is a text message, not an attachment:
-                        $fb_message = array(
-                            'text' => $fb_media_attachment['ln_content'],
-                            'metadata' => 'system_logged', //Prevents duplicate Link logs
-                        );
-
-                    } elseif ($fb_media_attachment['fb_att_id'] > 0) {
-
-                        //Saved Attachment that can be served instantly:
-                        $fb_message = array(
-                            'attachment' => array(
-                                'type' => $fb_media_attachment['fb_att_type'],
-                                'payload' => array(
-                                    'attachment_id' => $fb_media_attachment['fb_att_id'],
-                                ),
-                            ),
-                            'metadata' => 'system_logged', //Prevents duplicate Link logs
-                        );
-
-                    } else {
-
-                        //Attachment that needs to be uploaded via URL which will take a few seconds:
-                        $fb_message = array(
-                            'attachment' => array(
-                                'type' => $fb_media_attachment['fb_att_type'],
-                                'payload' => array(
-                                    'url' => $fb_media_attachment['ln_content'],
-                                    'is_reusable' => true,
-                                ),
-                            ),
-                            'metadata' => 'system_logged', //Prevents duplicate Link logs
-                        );
-
-                    }
-
-                    //Add to output message:
-                    array_push($output_messages, array(
-                        'message_type_en_id' => $fb_media_attachment['ln_type_source_id'],
-                        'message_body' => array(
-                            'recipient' => array(
-                                'id' => $user_messenger[0]['ln_external_id'],
-                            ),
-                            'message' => $fb_message,
-                            'notification_type' => $notification_type,
-                            'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION',
-                        ),
-                    ));
-
-                }
-            }
-
-        } else {
-
-
-            //Always returns a single (sometimes long) HTML message:
-            array_push($output_messages, array(
-                'message_type_en_id' => 4570, //User Received Email Message
-                'message_body' => '<div class="i_content padded"><div class="msg">' . nl2br($output_body_message) . '</div></div>',
-            ));
-
-        }
-
-
-        //Return results:
-        return array(
-            'status' => 1,
-            'input_message' => trim($input_message),
-            'output_messages' => $output_messages,
-            'user_chat_channel' => $user_chat_channel,
-            'ln_parent_source_id' => (count($string_references['ref_sources']) > 0 ? $string_references['ref_sources'][0] : 0),
-        );
-
-    }
-
-
-
-    function facebook_graph($action, $graph_url, $payload = array())
-    {
-
-        //Do some initial checks
-        if (!in_array($action, array('GET', 'POST', 'DELETE'))) {
-
-            //Only 4 valid types of $action
-            return array(
-                'status' => 0,
-                'message' => '$action [' . $action . '] is invalid',
-            );
-
-        }
-
-        //Fetch access token and settings:
-        $cred_facebook = $this->config->item('cred_facebook');
-
-        $access_token_payload = array(
-            'access_token' => $cred_facebook['mench_access_token']
-        );
-
-        if ($action == 'GET' && count($payload) > 0) {
-            //Add $payload to GET variables:
-            $access_token_payload = array_merge($payload, $access_token_payload);
-            $payload = array();
-        }
-
-        $graph_url = 'https://graph.facebook.com/' . config_var(11077) . $graph_url;
-        $counter = 0;
-        foreach ($access_token_payload as $key => $val) {
-            $graph_url = $graph_url . ($counter == 0 ? '?' : '&') . $key . '=' . $val;
-            $counter++;
-        }
-
-        //Make the graph call:
-        $ch = curl_init($graph_url);
-
-        //Base setting:
-        $ch_setting = array(
-            CURLOPT_CUSTOMREQUEST => $action,
-            CURLOPT_RETURNTRANSFER => TRUE,
-        );
-
-        if (count($payload) > 0) {
-            $ch_setting[CURLOPT_HTTPHEADER] = array('Content-Type: application/json; charset=utf-8');
-            $ch_setting[CURLOPT_POSTFIELDS] = json_encode($payload);
-        }
-
-        //Apply settings:
-        curl_setopt_array($ch, $ch_setting);
-
-        //Process results and produce ln_metadata
-        $result = objectToArray(json_decode(curl_exec($ch)));
-        $ln_metadata = array(
-            'action' => $action,
-            'payload' => $payload,
-            'url' => $graph_url,
-            'result' => $result,
-        );
-
-        //Did we have any issues?
-        if (!$result) {
-
-            //Failed to fetch this profile:
-            $message_error = 'DISCOVER_model->facebook_graph() failed to ' . $action . ' ' . $graph_url;
-            $this->DISCOVER_model->ln_create(array(
-                'ln_content' => $message_error,
-                'ln_type_source_id' => 4246, //Platform Bug Reports
-                'ln_metadata' => $ln_metadata,
-            ));
-
-            //There was an issue accessing this on FB
-            return array(
-                'status' => 0,
-                'message' => $message_error,
-                'ln_metadata' => $ln_metadata,
-            );
-
-        } else {
-
-            //All seems good, return:
-            return array(
-                'status' => 1,
-                'message' => 'Success',
-                'ln_metadata' => $ln_metadata,
-            );
-
-        }
-    }
 
 
     function discover_answer($en_id, $question_in_id, $answer_in_ids){
@@ -3433,13 +1933,13 @@ class DISCOVER_model extends CI_Model
         }
 
         //Delete ALL previous answers:
-        foreach ($this->DISCOVER_model->ln_fetch(array(
+        foreach ($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //DISCOVER ANSWERED
             'ln_creator_source_id' => $en_id,
             'ln_previous_idea_id' => $ins[0]['in_id'],
         )) as $discover_progress){
-            $this->DISCOVER_model->ln_update($discover_progress['ln_id'], array(
+            $this->LEDGER_model->ln_update($discover_progress['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Deleted
             ), $en_id, 12129 /* DISCOVER ANSWER DELETED */);
         }
@@ -3448,7 +1948,7 @@ class DISCOVER_model extends CI_Model
         $answers_newly_added = 0;
         foreach($answer_in_ids as $answer_in_id){
             $answers_newly_added++;
-            $this->DISCOVER_model->ln_create(array(
+            $this->LEDGER_model->ln_create(array(
                 'ln_type_source_id' => $in_link_type_id,
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $ins[0]['in_id'],
@@ -3480,788 +1980,6 @@ class DISCOVER_model extends CI_Model
 
     }
 
-    function digest_received_payload($en, $quick_reply_payload)
-    {
-
-        /*
-         *
-         * With the assumption that chat platforms like Messenger,
-         * Slack and Telegram all offer a mechanism to manage a reference
-         * field other than the actual message itself (Facebook calls
-         * this the Reference key or Metadata), this function will
-         * process that metadata string from incoming messages sent to Mench
-         * by its Users and take appropriate action.
-         *
-         * Inputs:
-         *
-         * - $en:                   The User who made the request
-         *
-         * - $quick_reply_payload:  The payload string attached to the chat message
-         *
-         *
-         * */
-
-
-        if (strlen($quick_reply_payload) < 1) {
-
-            //Should never happen!
-            return array(
-                'status' => 0,
-                'message' => 'Missing quick reply payload',
-            );
-
-        } elseif (substr_count($quick_reply_payload, 'UNSUBSCRIBE_') == 1) {
-
-            $action_unsubscribe = one_two_explode('UNSUBSCRIBE_', '', $quick_reply_payload);
-
-            if ($action_unsubscribe == 'CANCEL') {
-
-                //User seems to have changed their mind, confirm with them:
-                $this->DISCOVER_model->dispatch_message(
-                    'Awesome, I am excited to continue our work together.',
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT_',
-                        )
-                    )
-                );
-
-            } elseif ($action_unsubscribe == 'ALL') {
-
-                //User wants to completely unsubscribe from Mench:
-                $deleted_ins = 0;
-                foreach ($this->DISCOVER_model->ln_fetch(array(
-                    'ln_creator_source_id' => $en['en_id'],
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                )) as $ln) {
-                    $deleted_ins++;
-                    $this->DISCOVER_model->ln_update($ln['ln_id'], array(
-                        'ln_status_source_id' => 6173, //Link Deleted
-                    ), $en['en_id'], 6155 /* User Idea Cancelled */);
-                }
-
-                //TODO DELETE THEIR ACCOUNT HERE
-
-                //Let them know about these changes:
-                $this->DISCOVER_model->dispatch_message(
-                    'Confirmed, I removed ' . $deleted_ins . ' idea' . echo__s($deleted_ins) . ' from your list. This is the final message you will receive from me unless you message me again. I hope you take good care of yourself 😘',
-                    $en,
-                    true
-                );
-
-            } elseif (is_numeric($action_unsubscribe)) {
-
-                //User wants to Delete a specific DISCOVER LIST, validate it:
-                $player_discoveries = $this->DISCOVER_model->ln_fetch(array(
-                    'ln_creator_source_id' => $en['en_id'],
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_previous_idea_id' => $action_unsubscribe,
-                ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
-
-                //All good?
-                if (count($player_discoveries) < 1) {
-                    return array(
-                        'status' => 0,
-                        'message' => 'UNSUBSCRIBE_ Failed to delete IDEA from DISCOVER LIST',
-                    );
-                }
-
-                //Update status for this single DISCOVER LIST:
-                $this->DISCOVER_model->ln_update($player_discoveries[0]['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Link Deleted
-                ), $en['en_id'], 6155 /* User Idea Cancelled */);
-
-                //Re-sort remaining DISCOVER LIST ideas:
-                foreach($this->DISCOVER_model->ln_fetch(array(
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                    'ln_creator_source_id' => $en['en_id'], //Belongs to this User
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
-                    $this->DISCOVER_model->ln_update($ln['ln_id'], array(
-                        'ln_order' => ($count+1),
-                    ), $en['en_id'], 10681 /* Ideas Ordered Automatically */);
-                }
-
-                //Show success message to user:
-                $this->DISCOVER_model->dispatch_message(
-                    'I have successfully removed [' . $player_discoveries[0]['in_title'] . '] from your list.',
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT_',
-                        )
-                    )
-                );
-
-            }
-
-        } elseif ($quick_reply_payload == 'SUBSCRIBE-REJECT') {
-
-            //They rejected the offer... Acknowledge and give response:
-            $this->DISCOVER_model->dispatch_message(
-                'Ok, so how can I help you move forward?',
-                $en,
-                true
-            );
-
-            //DISCOVER RECOMMENDATIONS
-            $this->DISCOVER_model->dispatch_message(
-                echo_platform_message(12697),
-                $en,
-                true
-            );
-
-        } elseif (is_numeric($quick_reply_payload)) {
-
-            //Validate Idea:
-            $in_id = intval($quick_reply_payload);
-            $ins = $this->IDEA_model->in_fetch(array(
-                'in_id' => $in_id,
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            ));
-            if (count($ins) < 1) {
-
-                //Confirm if they are interested to subscribe to this idea:
-                $this->DISCOVER_model->dispatch_message(
-                    '❌ Alert: I cannot add this idea to your DISCOVER LIST because its not yet published.',
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT_',
-                        ),
-                    )
-                );
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Failed to validate starting-point idea',
-                );
-            }
-
-            //Confirm if they are interested to subscribe to this idea:
-            $this->DISCOVER_model->dispatch_message(
-                'Hi 👋 are you interested to ' . $ins[0]['in_title'] . '?',
-                $en,
-                true,
-                array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Yes', //Yes, Learn More
-                        'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'], //'SUBSCRIBE-INITIATE_' . $ins[0]['in_id']
-                    ),
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Cancel',
-                        'payload' => 'SUBSCRIBE-REJECT',
-                    ),
-                ),
-                array(
-                    'ln_next_idea_id' => $ins[0]['in_id'],
-                )
-            );
-
-        } elseif ($quick_reply_payload=='NOTINTERESTED') {
-
-            //Affirm and educate:
-            $this->DISCOVER_model->dispatch_message(
-                echo_platform_message(12697),
-                $en,
-                true
-            //Do not give next option and listen for their idea command...
-            );
-
-        } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-INITIATE_') == 1) {
-
-            //User has confirmed their desire to subscribe to an IDEA:
-            $in_id = intval(one_two_explode('SUBSCRIBE-INITIATE_', '', $quick_reply_payload));
-
-            //Initiating an IDEA DISCOVER LIST:
-            $ins = $this->IDEA_model->in_fetch(array(
-                'in_id' => $in_id,
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            ));
-
-            if (count($ins) != 1) {
-                return array(
-                    'status' => 0,
-                    'message' => 'SUBSCRIBE-INITIATE_ Failed to locate published idea',
-                );
-            }
-
-            //Make sure idea has not previously been added to user DISCOVER LIST:
-            if (count($this->DISCOVER_model->ln_fetch(array(
-                    'ln_creator_source_id' => $en['en_id'],
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_previous_idea_id' => $ins[0]['in_id'],
-                ))) > 0) {
-
-                //Let User know that they have previously subscribed to this idea:
-                $this->DISCOVER_model->dispatch_message(
-                    'The idea [' . $ins[0]['in_title'] . '] has previously been added to your DISCOVER LIST. /link:DISCOVER LIST:https://mench.com/' . $ins[0]['in_id'],
-                    $en,
-                    true
-                );
-
-                //Give them option to go next:
-                $this->DISCOVER_model->dispatch_message(
-                    'Say "Next" to continue...',
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT_',
-                        )
-                    )
-                );
-
-            } else {
-
-                //Do final confirmation by giving User more context on this idea before adding to their DISCOVER LIST...
-
-                //See if we have an overview:
-                $overview_message = 'Should I add this idea to your DISCOVER LIST?';
-
-                //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this idea:
-                $this->DISCOVER_model->dispatch_message(
-                    $overview_message,
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Get Started',
-                            'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
-                        ),
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Cancel',
-                            'payload' => 'SUBSCRIBE-REJECT',
-                        ),
-                    )
-                );
-
-                //Log as DISCOVER LIST Considered:
-                $this->DISCOVER_model->ln_create(array(
-                    'ln_creator_source_id' => $en['en_id'],
-                    'ln_type_source_id' => 6149, //DISCOVER LIST Idea Considered
-                    'ln_previous_idea_id' => $ins[0]['in_id'],
-                    'ln_content' => $overview_message, //A copy of their message
-                ));
-
-            }
-
-        } elseif (substr_count($quick_reply_payload, 'GONEXT_') == 1) {
-
-            $next_in_id = 0;
-            $in_id = intval(one_two_explode('GONEXT_', '', $quick_reply_payload));
-
-            if($in_id > 0){
-                $ins = $this->IDEA_model->in_fetch(array(
-                    'in_id' => $in_id,
-                ));
-                $next_in_id = $this->DISCOVER_model->discover_next_find($en['en_id'], $ins[0]);
-            }
-
-            if($next_in_id > 0){
-                //Yes, communicate it:
-                $this->DISCOVER_model->discover_echo($next_in_id, $en, true);
-            } else {
-                //Fetch and communicate next idea:
-                $this->DISCOVER_model->discover_next_go($en['en_id'], true, true);
-            }
-
-        } elseif (substr_count($quick_reply_payload, 'ADD_RECOMMENDED_') == 1) {
-
-            $in_ids = explode('_', one_two_explode('ADD_RECOMMENDED_', '', $quick_reply_payload));
-            $recommender_in_id = $in_ids[0];
-            $recommended_in_id = $in_ids[1];
-
-            //Add this item to the tio of the DISCOVER LIST:
-            $this->DISCOVER_model->discover_start($en['en_id'], $recommended_in_id, $recommender_in_id);
-
-        } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-CONFIRM_') == 1) {
-
-            //User has requested to add this idea to their DISCOVER LIST:
-            $in_id = intval(one_two_explode('SUBSCRIBE-CONFIRM_', '', $quick_reply_payload));
-
-            //Add to DISCOVER LIST:
-            $this->DISCOVER_model->discover_start($en['en_id'], $in_id);
-
-        } elseif (substr_count($quick_reply_payload, 'ANSWERQUESTION_') == 1) {
-
-            /*
-             *
-             * When the user answers a quick reply question.
-             *
-             * */
-
-            //Extract variables:
-            $quickreply_parts = explode('_', one_two_explode('ANSWERQUESTION_', '', $quick_reply_payload));
-
-            //Save the answer:
-            return $this->DISCOVER_model->discover_answer($en['en_id'], $quickreply_parts[1], array($quickreply_parts[2]));
-
-        } else {
-
-            //Unknown quick reply!
-            return array(
-                'status' => 0,
-                'message' => 'Unknown quick reply command!',
-            );
-
-        }
-
-        //If here it was all good, return success:
-        return array(
-            'status' => 1,
-            'message' => 'Success',
-        );
-
-    }
-
-
-    function digest_received_text($en, $fb_received_message)
-    {
-
-        /*
-         *
-         * Will process the chat message only in the absence of a chat metadata
-         * otherwise the digest_received_payload() will process the message since we
-         * know that the medata would have more precise instructions on what
-         * needs to be done for the User response.
-         *
-         * This involves string analysis and matching terms to a ideas, sources
-         * and known commands that will help us understand the User and
-         * hopefully provide them with the information they need, right now.
-         *
-         * We'd eventually need to migrate the search engine to an NLP platform
-         * Like dialogflow.com (By Google) or wit.ai (By Facebook) to improve
-         * our ability to detect correlations specifically for ideas.
-         *
-         * */
-
-        if (!$fb_received_message) {
-            return false;
-        }
-
-
-        /*
-         *
-         * Ok, now attempt to understand User's message idea.
-         * We would do a very basic work pattern match to see what
-         * we can understand from their message, and we would expand
-         * upon this section as we improve our NLP technology.
-         *
-         *
-         * */
-
-        $fb_received_message = trim(strtolower($fb_received_message));
-
-        if (in_array($fb_received_message, array('next', 'continue', 'go'))) {
-
-            //Give them the next step of their DISCOVER LIST:
-            $next_in_id = $this->DISCOVER_model->discover_next_go($en['en_id'], true, true);
-
-            //Log command trigger:
-            $this->DISCOVER_model->ln_create(array(
-                'ln_creator_source_id' => $en['en_id'],
-                'ln_type_source_id' => 6559, //User Commanded Next
-                'ln_previous_idea_id' => $next_in_id,
-            ));
-
-        } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop', 'quit', 'resign', 'exit', 'cancel', 'abort'))) {
-
-            //List their DISCOVER LIST ideas and let user choose which one to unsubscribe:
-            $player_discoveries = $this->DISCOVER_model->ln_fetch(array(
-                'ln_creator_source_id' => $en['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            ), array('in_parent'), 10 /* Max quick replies allowed */, 0, array('ln_order' => 'ASC'));
-
-
-            //Do they have anything in their DISCOVER LIST?
-            if (count($player_discoveries) > 0) {
-
-                //Give them options to delete specific DISCOVER LISTs:
-                $quick_replies = array();
-                $message = 'Choose one of the following options:';
-                $increment = 1;
-
-                foreach ($player_discoveries as $counter => $in) {
-                    //Construct unsubscribe confirmation body:
-                    $message .= "\n\n" . ($counter + $increment) . '. Stop ' . $in['in_title'];
-                    array_push($quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => ($counter + $increment),
-                        'payload' => 'UNSUBSCRIBE_' . $in['in_id'],
-                    ));
-                }
-
-                if (count($player_discoveries) >= 2) {
-                    //Give option to skip all and unsubscribe:
-                    $increment++;
-                    $message .= "\n\n" . ($counter + $increment) . '. Delete all ideas and unsubscribe';
-                    array_push($quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => ($counter + $increment),
-                        'payload' => 'UNSUBSCRIBE_ALL',
-                    ));
-                }
-
-                //Alwyas give cancel option:
-                array_push($quick_replies, array(
-                    'content_type' => 'text',
-                    'title' => 'Cancel',
-                    'payload' => 'UNSUBSCRIBE_CANCEL',
-                ));
-
-            } else {
-
-                $message = 'Just to confirm, do you want to unsubscribe and stop all future communications with me and unsubscribe?';
-                $quick_replies = array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Yes, Unsubscribe',
-                        'payload' => 'UNSUBSCRIBE_ALL',
-                    ),
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'No, Stay Friends',
-                        'payload' => 'UNSUBSCRIBE_CANCEL',
-                    ),
-                );
-
-            }
-
-            //Send out message and let them confirm:
-            $this->DISCOVER_model->dispatch_message(
-                $message,
-                $en,
-                true,
-                $quick_replies
-            );
-
-            //Log command trigger:
-            $this->DISCOVER_model->ln_create(array(
-                'ln_creator_source_id' => $en['en_id'],
-                'ln_type_source_id' => 6578, //User Text Commanded Stop
-                'ln_content' => $message,
-                'ln_metadata' => $quick_replies,
-            ));
-
-        } elseif (substr($fb_received_message, 0, 11) == 'Discover ') {
-
-            $master_command = ltrim($fb_received_message, 'Discover ');
-            $new_idea_count = 0;
-            $quick_replies = array();
-
-
-            if(intval(config_var(12678))){
-
-                $search_index = load_algolia('alg_index');
-                $res = $search_index->search($master_command, [
-                    'hitsPerPage' => 6, //Max results
-                    'filters' => 'alg_obj_is_in=1 AND _tags:is_featured',
-                ]);
-                $search_results = $res['hits'];
-
-
-                //Show options for the User to add to their DISCOVER LIST:
-
-                foreach ($search_results as $alg) {
-
-                    //Fetch metadata:
-                    $ins = $this->IDEA_model->in_fetch(array(
-                        'in_id' => $alg['alg_obj_id'],
-                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                    ));
-                    if(count($ins) < 1){
-                        continue;
-                    }
-
-                    //Make sure not previously in DISCOVER LIST:
-                    if(count($this->DISCOVER_model->ln_fetch(array(
-                            'ln_creator_source_id' => $en['en_id'],
-                            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                            'ln_previous_idea_id' => $alg['alg_obj_id'],
-                        ))) > 0){
-                        continue;
-                    }
-
-                    $new_idea_count++;
-
-                    if($new_idea_count==1){
-                        $message = 'I found these ideas for "'.$master_command.'":';
-                    }
-
-                    //List Idea:
-                    $message .= "\n\n" . $new_idea_count . '. ' . $ins[0]['in_title'];
-                    array_push($quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => $new_idea_count,
-                        'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'], //'SUBSCRIBE-INITIATE_' . $ins[0]['in_id']
-                    ));
-                }
-
-
-                //Log idea search:
-                $this->DISCOVER_model->ln_create(array(
-                    'ln_content' => ( $new_idea_count > 0 ? $message : 'Found ' . $new_idea_count . ' idea' . echo__s($new_idea_count) . ' matching [' . $master_command . ']' ),
-                    'ln_metadata' => array(
-                        'new_idea_count' => $new_idea_count,
-                        'input_data' => $master_command,
-                        'output' => $search_results,
-                    ),
-                    'ln_creator_source_id' => $en['en_id'], //user who searched
-                    'ln_type_source_id' => 4275, //User Text Command Discover
-                ));
-
-            }
-
-
-            if($new_idea_count > 0){
-
-                //Give them a "None of the above" option:
-                array_push($quick_replies, array(
-                    'content_type' => 'text',
-                    'title' => 'Cancel',
-                    'payload' => 'SUBSCRIBE-REJECT',
-                ));
-
-                //return what we found to the user to decide:
-                $this->DISCOVER_model->dispatch_message(
-                    $message,
-                    $en,
-                    true,
-                    $quick_replies
-                );
-
-            } else {
-
-                //Respond to user:
-                $this->DISCOVER_model->dispatch_message(
-                    'I did not find any ideas to "' . $master_command . '", but I have made a idea of this and will let you know as soon as I am trained on this.',
-                    $en,
-                    true
-                );
-
-                //DISCOVER RECOMMENDATIONS
-                $this->DISCOVER_model->dispatch_message(
-                    echo_platform_message(12697),
-                    $en,
-                    true
-                );
-
-            }
-
-        } else {
-
-
-            /*
-             *
-             * Ok, if we're here it means we didn't really understand what
-             * the User's idea was within their message.
-             * So let's run through a few more options before letting them
-             * know that we did not understand them...
-             *
-             * */
-
-
-            //Quick Reply Manual Response...
-            //We could not match the user command to any other command...
-            //Now try to fetch the last quick reply that the user received from us:
-            $last_quick_replies = $this->DISCOVER_model->ln_fetch(array(
-                'ln_creator_source_id' => $en['en_id'],
-                'ln_type_source_id' => 6563, //User Received Quick Reply
-            ), array(), 1);
-
-            if(count($last_quick_replies) > 0){
-
-                //We did find a recent quick reply!
-                $ln_metadata = unserialize($last_quick_replies[0]['ln_metadata']);
-
-                if(isset($ln_metadata['output_message']['message_body']['message']['quick_replies'])){
-
-                    //Go through them:
-                    foreach($ln_metadata['output_message']['message_body']['message']['quick_replies'] as $quick_reply){
-
-                        //let's see if their text matches any of the quick reply options:
-                        if(substr($fb_received_message, 0, strlen($quick_reply['title'])) == strtolower($quick_reply['title'])){
-
-                            //Yes! We found a match, trigger the payload:
-                            $quick_reply_results = $this->DISCOVER_model->digest_received_payload($en, $quick_reply['payload']);
-
-                            if(!$quick_reply_results['status']){
-
-                                //There was an error, inform Player:
-                                $this->DISCOVER_model->ln_create(array(
-                                    'ln_content' => 'digest_received_payload() for custom response ['.$fb_received_message.'] returned error ['.$quick_reply_results['message'].']',
-                                    'ln_metadata' => $ln_metadata,
-                                    'ln_type_source_id' => 4246, //Platform Bug Reports
-                                    'ln_creator_source_id' => $en['en_id'],
-                                    'ln_parent_transaction_id' => $last_quick_replies[0]['ln_id'],
-                                ));
-
-                            } else {
-
-                                //All good, log link:
-                                $this->DISCOVER_model->ln_create(array(
-                                    'ln_creator_source_id' => $en['en_id'],
-                                    'ln_type_source_id' => 4460, //User Sent Answer
-                                    'ln_parent_transaction_id' => $last_quick_replies[0]['ln_id'],
-                                    'ln_content' => $fb_received_message,
-                                ));
-
-                                //We resolved it:
-                                return true;
-
-                            }
-                        }
-                    }
-                }
-            }
-
-
-
-
-            //Let's check to see if a Mench Player has not started a manual conversation with them via Facebook Inbox Chat:
-            if (count($this->DISCOVER_model->ln_fetch(array(
-                    'ln_order' => 1, //A HACK to identify messages sent from us via Facebook Page Inbox
-                    'ln_creator_source_id' => $en['en_id'],
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //User Received Messages with Messenger
-                    'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
-                ), array(), 1)) > 0) {
-
-                //Yes, this user is talking to an Player so do not interrupt their conversation:
-                return false;
-
-            }
-
-
-            //We don't know what they are talking about!
-
-
-            //Inform User of Mench's one-way communication limitation & that Mench did not understand their message:
-            $this->DISCOVER_model->dispatch_message(
-                echo_platform_message(12693),
-                $en,
-                true
-            );
-
-            //Log link:
-            $this->DISCOVER_model->ln_create(array(
-                'ln_creator_source_id' => $en['en_id'], //User who initiated this message
-                'ln_content' => $fb_received_message,
-                'ln_type_source_id' => 4287, //Log Unrecognizable Message Received
-            ));
-
-            //Call to Action: Does this user have any DISCOVER LISTs?
-            $next_in_id = $this->DISCOVER_model->discover_next_go($en['en_id'], false);
-
-            if($next_in_id > 0){
-
-                //Inform User of Mench's one-way communication limitation & that Mench did not understand their message:
-                $this->DISCOVER_model->dispatch_message(
-                    'You can continue with your DISCOVER LIST by saying "Next"',
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT_',
-                        )
-                    )
-                );
-
-            } else {
-
-                //DISCOVER RECOMMENDATIONS
-                $this->DISCOVER_model->dispatch_message(
-                    echo_platform_message(12697),
-                    $en,
-                    true
-                );
-
-            }
-        }
-    }
-
-
-
-    function dispatch_emails($to_array, $subject, $html_message)
-    {
-
-        /*
-         *
-         * Send an email via our Amazon server
-         *
-         * */
-
-        if (is_dev_environment()) {
-            return false; //We cannot send emails on Dev server
-        }
-
-        //Loadup amazon SES:
-        require_once('application/libraries/aws/aws-autoloader.php');
-        $this->CLIENT = new Aws\Ses\SesClient([
-            'version' => 'latest',
-            'region' => 'us-west-2',
-            'credentials' => $this->config->item('cred_aws'),
-        ]);
-
-        return $this->CLIENT->sendEmail(array(
-            // Source is required
-            'Source' => 'support@mench.com',
-            // Destination is required
-            'Destination' => array(
-                'ToAddresses' => $to_array,
-                'CcAddresses' => array(),
-                'BccAddresses' => array(),
-            ),
-            // Message is required
-            'Message' => array(
-                // Subject is required
-                'Subject' => array(
-                    // Data is required
-                    'Data' => $subject,
-                    'Charset' => 'UTF-8',
-                ),
-                // Body is required
-                'Body' => array(
-                    'Text' => array(
-                        // Data is required
-                        'Data' => strip_tags($html_message),
-                        'Charset' => 'UTF-8',
-                    ),
-                    'Html' => array(
-                        // Data is required
-                        'Data' => $html_message,
-                        'Charset' => 'UTF-8',
-                    ),
-                ),
-            ),
-            'ReplyToAddresses' => array('support@mench.com'),
-            'ReturnPath' => 'support@mench.com',
-        ));
-    }
 
 
 }

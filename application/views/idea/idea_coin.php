@@ -25,21 +25,21 @@ $source_focus_found = false; //Used to determine the first tab to be opened
 
 
 //IDEA NEXT
-$in__children = $this->DISCOVER_model->ln_fetch(array(
+$in__children = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
     'ln_previous_idea_id' => $in['in_id'],
-), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
 
 //IDEA PREVIOUS
-$in__parents = $this->DISCOVER_model->ln_fetch(array(
+$in__parents = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
     'ln_next_idea_id' => $in['in_id'],
-), array('in_parent'), 0);
+), array('in_previous'), 0);
 
 
 
@@ -86,7 +86,7 @@ echo '</div>';
 
 
 //IDEA MESSAGES:
-echo echo_in_note_mix(4231, $this->DISCOVER_model->ln_fetch(array(
+echo echo_in_note_mix(4231, $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'ln_type_source_id' => 4231,
     'ln_next_idea_id' => $in['in_id'],
@@ -166,11 +166,11 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
     } elseif(in_array($en_id, $this->config->item('en_ids_7551'))){
 
         //Reference Sources Only:
-        $in_notes = $this->DISCOVER_model->ln_fetch(array(
+        $in_notes = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id' => $en_id,
             'ln_next_idea_id' => $in['in_id'],
-        ), array('en_parent'), 0, 0, array('ln_order' => 'ASC'));
+        ), array('en_proflie'), 0, 0, array('ln_order' => 'ASC'));
 
         $counter = count($in_notes);
 
@@ -196,7 +196,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
     } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
 
         //Idea Notes
-        $in_notes = $this->DISCOVER_model->ln_fetch(array(
+        $in_notes = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id' => $en_id,
             'ln_next_idea_id' => $in['in_id'],
@@ -208,7 +208,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
     } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
 
         //DISCOVER & BOOKMARKS
-        $item_counters = $this->DISCOVER_model->ln_fetch(array(
+        $item_counters = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_'.$en_id)) . ')' => null,
             'ln_previous_idea_id' => $in['in_id'],
