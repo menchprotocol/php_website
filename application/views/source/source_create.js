@@ -3,6 +3,7 @@
 
 function preview_update_dropdown(element_id, new_en_id){
 
+    alert(element_id+': '+new_en_id);
     /*
     *
     * WARNING:
