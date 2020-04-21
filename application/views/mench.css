@@ -175,7 +175,12 @@ li a {
     text-decoration: underline;
 }
 
-.doupper, .new-source-input {
+.doupper {
+    text-transform: uppercase !important;
+}
+.new-source-input{
+    margin-bottom: 0;
+    padding: 5px 0 5px 1px;
     text-transform: uppercase;
 }
 
@@ -1272,6 +1277,7 @@ label {
     width:    -moz-calc(100% - 33px) !important;
     width:         calc(100% - 33px) !important;
 }
+
 
 .texttype_4736_sm{
     display: inline-block;
