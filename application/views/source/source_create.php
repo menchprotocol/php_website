@@ -34,9 +34,9 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
     echo '<h2 style="margin-top: 21px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span><a href="/idea/'.$ins[0]['in_id'].'">'.echo_in_title($ins[0]).'</a></h2>';
 
 
-    //Source Name
-    echo '<h2 style="margin-top: 21px;"><span class="icon-block">'.$en_all_12762[6197]['m_icon'].'</span>'.$en_all_12762[6197]['m_name'].'</h2>';
-    echo '<div class="form-group is-empty"><input type="text" id="source_name" '.( isset($_GET['source_name']) ? ' value="'.$_GET['source_name'].'" ' : '' ).' class="form-control border montserrat doupper" placeholder="'.$en_all_12762[6197]['m_desc'].'"></div>';
+    //Content Title
+    echo '<h2 style="margin-top: 21px;"><span class="icon-block">'.$en_all_12762[12772]['m_icon'].'</span>'.$en_all_12762[12772]['m_name'].'</h2>';
+    echo '<div class="form-group is-empty"><input type="text" id="source_name" '.( isset($_GET['source_name']) ? ' value="'.$_GET['source_name'].'" ' : '' ).' class="form-control border montserrat doupper" placeholder="'.$en_all_12762[12772]['m_desc'].'"></div>';
 
 
     //Source URL

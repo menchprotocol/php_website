@@ -24,7 +24,7 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
     'ln_portfolio_source_id' => $source['en_id'],
-), array('en_proflie'), 0, 0, array('en_name' => 'ASC'));
+), array('en_proflie'), 0, 0, array('en_weight' => 'DESC'));
 
 
 ?>
