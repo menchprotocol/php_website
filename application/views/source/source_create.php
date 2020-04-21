@@ -35,15 +35,15 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
 
     //Industry Experts
-    echo '<h2 style="margin-top: 21px;" class="source"><span class="icon-block">&nbsp;</span>'.$en_all_11035[3084]['m_name'].'</h2>';
+    echo '<h2 style="margin-top: 21px;" class="source"><span class="icon-block">&nbsp;</span>'.$en_all_12762[12764]['m_name'].'</h2>';
     echo '<div id="new-children" class="list-group-item list-adder itemsource no-side-padding">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_11035[3084]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_11035[3084]['m_icom'].'</span></span>
                     <input type="text"
                            class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
                            maxlength="' . config_var(11072) . '"
                            id="authorName"
-                           placeholder="AUTHOR FULL NAME">
+                           placeholder="'.$en_all_11035[3084]['m_name'].' FULL NAME">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
 
