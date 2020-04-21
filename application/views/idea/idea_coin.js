@@ -73,6 +73,14 @@ function en_load_source_search(element_focus, is_en_parent, shortcut) {
 
     if(parseInt(js_en_all_6404[12678]['m_desc'])){
 
+        //Define filters:
+        var extra_filters = null;
+        if(element_focus==4983){
+            extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_4983.join(' OR _tags:alg_source_') + ') ';
+        } else if(element_focus==10573){
+            extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_10573.join(' OR _tags:alg_source_') + ') ';
+        }
+
         $(element_focus + ' .new-source-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             //en_add_or_link(suggestion.alg_obj_id, is_en_parent);
@@ -81,7 +89,7 @@ function en_load_source_search(element_focus, is_en_parent, shortcut) {
         }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_en_parent ? 'q' : 'a' )]}, [{
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: ' alg_obj_type_id=4536 AND ( _tags:alg_source_' + js_en_ids_4983.join(' OR _tags:alg_source_') + ') ',
+                    filters: ' alg_obj_type_id=4536 ' + extra_filters,
                     hitsPerPage: 7,
                 }, function (error, content) {
                     if (error) {
