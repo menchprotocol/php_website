@@ -62,8 +62,8 @@ if($found_at > 1){
     //JAVASCRIPT PLATFORM MEMORY
     foreach($this->config->item('en_all_11054') as $en_id => $m){
         if(count($this->config->item('en_all_'.$en_id))){
-            echo ' var js_en_all_'.$en_id.' = ' . json_encode($this->config->item('en_all_'.$en_id)) . '; ';
-            echo ' var js_en_ids_'.$en_id.' = ' . json_encode($this->config->item('en_ids_'.$en_id)) . '; ';
+            echo ' var js_en_all_'.$en_id.' = ' . json_encode($this->config->item('en_all_'.$en_id)) . ';';
+            echo ' var js_en_ids_'.$en_id.' = ' . json_encode($this->config->item('en_ids_'.$en_id)) . ';';
         }
     }
     ?>
