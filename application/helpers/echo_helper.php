@@ -1984,7 +1984,7 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_source, $tab
 }
 
 
-function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_source, $show_full_name, $in_id = 0, $ln_id = 0){
+function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_source = true, $show_full_name = true, $in_id = 0, $ln_id = 0){
 
     $CI =& get_instance();
     $en_all_this = $CI->config->item('en_all_'.$cache_en_id);

@@ -1518,8 +1518,8 @@ class COMMUNICATION_model extends CI_Model
 
                 if($is_user_message){
 
-                    $source_name_replacement = ( $has_text ? $en_icon.'<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">'.$ens[0]['en_name'].'</span>' : '' );
-                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], $source_name_replacement, $output_body_message);
+                    $source_replace_name = ( $has_text ? $en_icon.'<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">'.$ens[0]['en_name'].'</span>' : '' );
+                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], $source_replace_name, $output_body_message);
 
                 } else {
 
@@ -1532,8 +1532,8 @@ class COMMUNICATION_model extends CI_Model
             } else {
 
                 //Just replace with the source name, which ensure we're always have a text in our message even if $has_text = FALSE
-                $source_name_replacement = ( $has_text ? $ens[0]['en_name'] : '' );
-                $output_body_message = str_replace('@' . $string_references['ref_sources'][0], $source_name_replacement, $output_body_message);
+                $source_replace_name = ( $has_text ? $ens[0]['en_name'] : '' );
+                $output_body_message = str_replace('@' . $string_references['ref_sources'][0], $source_replace_name, $output_body_message);
 
             }
         }

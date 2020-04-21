@@ -50,9 +50,9 @@ function in_update_text(this_handler){
 
 
 
-function en_load_source_search(source_type_id) {
+function en_load_source_search(note_type_id) {
 
-    var element_focus = ".source-map-"+source_type_id;
+    var element_focus = ".source-map-"+note_type_id;
 
     $(element_focus + ' .add-input').focus(function() {
 
@@ -76,9 +76,9 @@ function en_load_source_search(source_type_id) {
 
         //Define filters:
         var extra_filters = '';
-        if(source_type_id==4983){
+        if(note_type_id==4983){
             extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_4983.join(' OR _tags:alg_source_') + ') ';
-        } else if(source_type_id==10573){
+        } else if(note_type_id==10573){
             extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_10573.join(' OR _tags:alg_source_') + ') ';
         }
 
@@ -159,7 +159,7 @@ $(document).ready(function () {
     //Activate Source-Only Inputs:
 
     $(".source-mapper").each(function () {
-        en_load_source_search($(this).attr('source_type_id'));
+        en_load_source_search($(this).attr('note_type_id'));
     });
 
     //Load top/bottom idea searches:
