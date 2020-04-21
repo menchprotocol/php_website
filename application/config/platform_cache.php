@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-21 15:03:58 PST
+//Generated 2020-04-21 15:12:35 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587506638;
-$config['cache_count_transaction'] = 1150550;
+$config['cache_timestamp'] = 1587507155;
+$config['cache_count_transaction'] = 1150553;
 $config['cache_count_discover'] = 121120;
 $config['cache_count_idea'] = 4840;
-$config['cache_count_source'] = 5203;
+$config['cache_count_source'] = 5204;
 
 
 
@@ -37,29 +37,35 @@ $config['en_all_12769'] = array(
 );
 
 //IDEA SOURCE CREATOR:
-$config['en_ids_12762'] = array(12764,6197,12769,12763);
+$config['en_ids_12762'] = array(12771,12764,6197,12769,12763);
 $config['en_all_12762'] = array(
+    12771 => array(
+        'm_icon' => '<i class="far fa-plus-circle source"></i>',
+        'm_name' => 'CREATE SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(12762),
+    ),
     12764 => array(
         'm_icon' => '<i class="fad fa-user-edit source"></i>',
-        'm_name' => 'AUTHORS',
+        'm_name' => 'SOURCE AUTHORS',
         'm_desc' => '',
         'm_parents' => array(12762),
     ),
     6197 => array(
         'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
-        'm_name' => 'NAME',
+        'm_name' => 'SOURCE NAME',
         'm_desc' => 'Name of person or content',
         'm_parents' => array(12762,4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
     ),
     12769 => array(
         'm_icon' => '<i class="fad fa-shapes source"></i>',
-        'm_name' => 'TYPE',
+        'm_name' => 'SOURCE TYPE',
         'm_desc' => '',
         'm_parents' => array(11054,12079,4527,12762),
     ),
     12763 => array(
         'm_icon' => '<i class="fad fa-link source"></i>',
-        'm_name' => 'URL',
+        'm_name' => 'SOURCE URL',
         'm_desc' => 'https: //amazon.com/How-Win-Friends-Influence-People/dp/0671027034',
         'm_parents' => array(12762),
     ),

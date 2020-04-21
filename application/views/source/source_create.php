@@ -54,7 +54,6 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
     //Content Type
     echo '<div class="content_type_only hidden">';
 
-    echo '<h2 style="margin-top: 21px;"><span class="icon-block">'.$en_all_11035[3000]['m_icon'].'</span>'.$en_all_11035[3000]['m_name'].'</h2>';
     echo echo_in_dropdown(3000, 3005, 'btn-source');
 
     //Author(s)
@@ -74,7 +73,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
 
     //CREATE BUTTON:
-    echo '<div style="margin-top: 21px;"><a href="javascript:void();" onclick="create_process()" class="btn btn-source">CREATE</a></div>';
+    echo '<div style="margin-top: 21px;"><a href="javascript:void();" onclick="create_process()" class="btn btn-source">'.$en_all_12762[12771]['m_name'].'</a></div>';
 
 
     ?>
