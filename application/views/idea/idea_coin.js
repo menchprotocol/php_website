@@ -89,7 +89,7 @@ function en_load_source_search(source_type_id) {
         }).autocomplete({hint: false, minLength: 1}, [{
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: ' alg_obj_type_id=4536 ' + extra_filters,
+                    filters: 'alg_obj_type_id=4536' + extra_filters,
                     hitsPerPage: 7,
                 }, function (error, content) {
                     if (error) {

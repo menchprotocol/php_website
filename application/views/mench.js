@@ -100,7 +100,7 @@ function load_editor(){
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: ' alg_obj_type_id=4535 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_source_' + js_pl_id : '' ) + ' ) ',
+                    filters: 'alg_obj_type_id=4535 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_source_' + js_pl_id : '' ) + ')',
                     hitsPerPage: 5,
                 }, function (error, content) {
                     if (error) {
@@ -305,12 +305,12 @@ $(document).ready(function () {
                                 if(search_only_source && js_session_superpowers_assigned.includes(12701)){
 
                                     //Can view ALL Players:
-                                    search_filters += ' ( alg_obj_type_id=4536 ) ';
+                                    search_filters += 'alg_obj_type_id=4536 ';
 
                                 } else {
 
                                     //Can view limited sources:
-                                    search_filters += ' ( alg_obj_type_id='+( search_only_in ? 4535 : 4536 )+' AND ( _tags:is_featured OR _tags:alg_source_' + js_pl_id + ' )) ';
+                                    search_filters += 'alg_obj_type_id='+( search_only_in ? 4535 : 4536 )+' AND ( _tags:is_featured OR _tags:alg_source_' + js_pl_id + ') ';
                                 }
 
                             } else {
@@ -334,12 +334,12 @@ $(document).ready(function () {
                             if(search_only_source || search_only_in){
 
                                 //Guest can search sources only with a starting @ sign
-                                search_filters += ' ( alg_obj_type_id='+( search_only_in ? 4535 : 4536 )+' AND _tags:is_featured ) ';
+                                search_filters += '(alg_obj_type_id='+( search_only_in ? 4535 : 4536 )+' AND _tags:is_featured)';
 
                             } else {
 
                                 //Guest can search ideas only by default as they start typing;
-                                search_filters += ' ( alg_obj_type_id=4535 AND _tags:is_featured ) ';
+                                search_filters += '(alg_obj_type_id=4535 AND _tags:is_featured)';
 
                             }
 
@@ -581,7 +581,7 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
             } else {
                 algolia_index.search(q, {
 
-                    filters: ' alg_obj_type_id=4535 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_source_' + js_pl_id : '' ) + ' ) ',
+                    filters: 'alg_obj_type_id=4535 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_source_' + js_pl_id : '' ) + ')',
                     hitsPerPage:( is_add_mode=='link_in' ? 7 : 10 ),
 
                 }, function (error, content) {
