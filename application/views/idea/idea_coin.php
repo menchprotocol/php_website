@@ -187,7 +187,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
                            class="form-control source form-control-thick montserrat algolia_search dotransparent new-source-input"
                            maxlength="' . config_var(11072) . '"                          
                            style="margin-bottom: 0; padding: 5px 0;"
-                           placeholder="NEW SOURCE">
+                           placeholder="SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand source-pad-'.$en_id.'"></div></div>';
 
         $this_tab .= '</div>';
