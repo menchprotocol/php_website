@@ -5,7 +5,7 @@ function create_process(){
 
     console.log({
         in_loaded_id:in_loaded_id,
-        content_name: $('#content_name').val(),
+        content_title: $('#content_title').val(),
         content_url: $('#content_url').val(),
         source_en_3000: parseInt($('.dropi_3000_0_0.active').attr('new-en-id')),
     });

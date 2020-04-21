@@ -20,7 +20,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
     //Content Title
     echo '<h2 style="margin-top:34px;"><span class="icon-block">'.$en_all_12762[12772]['m_icon'].'</span>'.$en_all_12762[12772]['m_name'].'</h2>';
-    echo '<div class="form-group is-empty"><input type="text" id="content_name" '.( isset($_GET['content_name']) ? ' value="'.$_GET['content_name'].'" ' : '' ).' class="form-control border montserrat doupper" placeholder="'.$en_all_12762[12772]['m_desc'].'"></div>';
+    echo '<div class="form-group is-empty space-left"><input type="text" id="content_title" '.( isset($_GET['content_title']) ? ' value="'.$_GET['content_title'].'" ' : '' ).' class="form-control border montserrat doupper" placeholder="'.$en_all_12762[12772]['m_desc'].'"></div>';
 
 
     //Content Type
@@ -30,7 +30,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
     //Content URL
     echo '<h2 style="margin-top: 21px;"><span class="icon-block">'.$en_all_12762[12763]['m_icon'].'</span>'.$en_all_12762[12763]['m_name'].'</h2>';
-    echo '<div class="form-group is-empty"><input type="url" id="content_url" '.( isset($_GET['content_url']) ? ' value="'.$_GET['content_url'].'" ' : '' ).' class="form-control border" placeholder="'.str_replace(' ','',$en_all_12762[12763]['m_desc']).'"></div>';
+    echo '<div class="form-group is-empty space-left"><input type="url" id="content_url" '.( isset($_GET['content_url']) ? ' value="'.$_GET['content_url'].'" ' : '' ).' class="form-control border" placeholder="'.str_replace(' ','',$en_all_12762[12763]['m_desc']).'"></div>';
 
 
 
