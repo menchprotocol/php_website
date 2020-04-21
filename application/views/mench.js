@@ -692,7 +692,7 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
 
         in_id: in_id,
         ln_id: ln_id,
-        in_loaded_id:in_loaded_id,
+        in_loaded_id:( typeof in_loaded_id == 'undefined' ? 0 : in_loaded_id ),
         element_id: element_id,
         new_en_id: new_en_id
 
