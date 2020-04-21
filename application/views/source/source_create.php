@@ -1,4 +1,3 @@
-
 <?php
 
 $en_all_6206 = $this->config->item('en_all_6206'); //Player Table
@@ -7,80 +6,13 @@ $en_all_2738 = $this->config->item('en_all_2738');
 $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 
-//Fetch general data in advance:
-
-//COUNT TOTAL CHILD
-$child_links = $this->LEDGER_model->ln_fetch(array(
-    'ln_profile_source_id' => $source['en_id'],
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
-$counter = $child_links[0]['totals'];
-
-//FETCH ALL PARENTS
-$source__parents = $this->LEDGER_model->ln_fetch(array(
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-    'ln_portfolio_source_id' => $source['en_id'],
-), array('en_proflie'), 0, 0, array('en_name' => 'ASC'));
-
-
 ?>
 
-
-<style>
-    /* For a cleaner UI hide the current focused source parent */
-    .en_child_icon_<?= $source['en_id'] ?>{ display:none; }
-</style>
-
-<script>
-    //Set global variables:
-    var en_focus_filter = -1; //No filter, show all
-    var en_focus_id = <?= $source['en_id'] ?>;
-</script>
-
-<script src="/application/views/source/source_coin.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/source/source_create.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
 
-    <?php
-
-    //NAME & STATUS
-    $is_public = in_array($source['en_status_source_id'], $this->config->item('en_ids_7357'));
-
-
-    //LEFT
-    echo '<h1 class="'.extract_icon_color($source['en_icon']).' pull-left inline-block" style="padding-top:5px;"><span class="icon-block en_ui_icon_'.$source['en_id'].'">'.echo_en_icon($source['en_icon']).'</span><span class="icon-block en_status_source_id_' . $source['en_id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$source['en_status_source_id']]['m_name'].': '.$en_all_6177[$source['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$source['en_status_source_id']]['m_icon'] . '</span></span><span class="en_name_full_'.$source['en_id'].'">'.$source['en_name'].'</span></h1>';
-
-
-    //RIGHT
-    echo '<div class="pull-right inline-block">';
-
-        //REFERENCES
-        if(superpower_active(12701, true)){
-            echo '<div class="inline-block '.superpower_active(12701).'">'.join('',en_count_db_references($source['en_id'])).'</div>';
-        }
-
-        //Modify
-        echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $source['en_id'] . ',0)" class="btn btn-source btn-five icon-block-lg '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
-
-    echo '</div>';
-
-
-    echo '<div class="doclear">&nbsp;</div>';
-
-
-    ?>
-
-
-
-
-
-
-
-
+    <?= '<h1 class="'.extract_icon_color($en_all_11035[12762]['m_icon']).'" style="padding-top:5px;"><span class="icon-block">'.echo_en_icon($en_all_11035[12762]['m_icon']).'</span>'.$en_all_11035[12762]['m_name'].'</h1>'; ?>
 
 
 
@@ -423,164 +355,26 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
 
         } elseif($en_id==11029){
 
+            //SOURCE CHILD
+            $counter = $child_links[0]['totals'];
+            if(!$counter && !superpower_active(10967, true)){
+                continue;
+            }
 
-            //Fetch Portfolio
-            $source__children = $this->LEDGER_model->ln_fetch(array(
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-                'ln_profile_source_id' => $source['en_id'],
-            ), array('en_portfolio'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
+            if(!$counter){
 
+                //No results to fetch:
+                $source__children = array();
 
+            } else {
 
-
-
-            //SOURCE MASS EDITOR
-            if(superpower_active(10967, true)){
-
-                //Mass Editor:
-                $dropdown_options = '';
-                $input_options = '';
-                $editor_counter = 0;
-
-                foreach ($this->config->item('en_all_4997') as $action_en_id => $mass_action_en) {
-
-
-                    $editor_counter++;
-                    $dropdown_options .= '<option value="' . $action_en_id . '">' .$mass_action_en['m_name'] . '</option>';
-                    $is_upper = ( in_array($action_en_id, $this->config->item('en_ids_12577') /* SOURCE UPDATER UPPERCASE */) ? ' montserrat doupper ' : false );
-
-
-                    //Start with the input wrapper:
-                    $input_options .= '<span id="mass_id_'.$action_en_id.'" title="'.$mass_action_en['m_desc'].'" class="inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
-
-
-
-
-                    if(in_array($action_en_id, array(5000, 5001, 10625))){
-
-                        //String Find and Replace:
-
-                        //Find:
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" placeholder="Search" class="form-control border '.$is_upper.'">';
-
-                        //Replace:
-                        $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" placeholder="Replace" class="form-control border '.$is_upper.'">';
-
-
-                    } elseif(in_array($action_en_id, array(5981, 5982))){
-
-                        //Player search box:
-
-                        //String command:
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search sources..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
-
-                        //We don't need the second value field here:
-                        $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
-
-
-                    } elseif($action_en_id == 11956){
-
-                        //IF HAS THIS
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="IF THIS SOURCE..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
-
-                        //ADD THIS
-                        $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'"  placeholder="ADD THIS SOURCE..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
-
-
-                    } elseif($action_en_id == 5003){
-
-                        //Player Status update:
-
-                        //Find:
-                        $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
-                        $input_options .= '<option value="">Set Condition...</option>';
-                        $input_options .= '<option value="*">Update All Statuses</option>';
-                        foreach($this->config->item('en_all_6177') /* Source Status */ as $en_id3 => $m3){
-                            $input_options .= '<option value="'.$en_id3.'">Update All '.$m3['m_name'].'</option>';
-                        }
-                        $input_options .= '</select>';
-
-                        //Replace:
-                        $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
-                        $input_options .= '<option value="">Set New Status...</option>';
-                        foreach($this->config->item('en_all_6177') /* Source Status */ as $en_id3 => $m3){
-                            $input_options .= '<option value="'.$en_id3.'">Set to '.$m3['m_name'].'</option>';
-                        }
-                        $input_options .= '</select>';
-
-
-                    } elseif($action_en_id == 5865){
-
-                        //Transaction Status update:
-
-                        //Find:
-                        $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
-                        $input_options .= '<option value="">Set Condition...</option>';
-                        $input_options .= '<option value="*">Update All Statuses</option>';
-                        foreach($this->config->item('en_all_6186') /* Transaction Status */ as $en_id3 => $m3){
-                            $input_options .= '<option value="'.$en_id3.'">Update All '.$m3['m_name'].'</option>';
-                        }
-                        $input_options .= '</select>';
-
-                        //Replace:
-                        $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
-                        $input_options .= '<option value="">Set New Status...</option>';
-                        foreach($this->config->item('en_all_6186') /* Transaction Status */ as $en_id3 => $m3){
-                            $input_options .= '<option value="'.$en_id3.'">Set to '.$m3['m_name'].'</option>';
-                        }
-                        $input_options .= '</select>';
-
-
-                    } else {
-
-                        //String command:
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="String..." class="form-control border '.$is_upper.'">';
-
-                        //We don't need the second value field here:
-                        $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
-
-                    }
-
-                    $input_options .= '</span>';
-
-                }
-
-                $this_tab .= '<div class="source_editor pull-right"><a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="MODIFY" data-toggle="tooltip" data-placement="top"><i class="fas fa-cog"></i></a></div>';
-                $this_tab .= '<div class="doclear">&nbsp;</div>';
-                $this_tab .= '<div class="source_editor hidden">';
-                $this_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
-                $this_tab .= '<div class="inline-box">';
-
-                //Drop Down
-                $this_tab .= '<select class="form-control border" name="mass_action_en_id" id="set_mass_action">';
-                $this_tab .= $dropdown_options;
-                $this_tab .= '</select>';
-
-                $this_tab .= $input_options;
-
-                $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-source inline-block"></div>';
-
-                $this_tab .= '</div>';
-                $this_tab .= '</form>';
-
-                if(isset($source__children)){
-                    //Also add invisible child IDs for quick copy/pasting:
-                    $this_tab .= '<div style="color:transparent;">';
-                    foreach ($source__children as $en) {
-                        $this_tab .= $en['en_id'].',';
-                    }
-                    $this_tab .= '</div>';
-                }
-
-                $this_tab .= '</div>';
-
-
-
-
-
-
+                //Child List
+                $source__children = $this->LEDGER_model->ln_fetch(array(
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                    'ln_profile_source_id' => $source['en_id'],
+                ), array('en_portfolio'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
                 //Source Status Filters:
                 if(superpower_active(12701, true)){
@@ -617,7 +411,6 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
                     }
                 }
             }
-
 
 
             $this_tab .= '<div id="list-children" class="list-group">';
@@ -734,6 +527,139 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
 
             }
 
+        } elseif($en_id==4997 /* SOURCE UPDATER */){
+
+            $dropdown_options = '';
+            $input_options = '';
+            $counter = 0;
+
+            foreach ($this->config->item('en_all_4997') as $action_en_id => $mass_action_en) {
+
+                $counter++;
+                $dropdown_options .= '<option value="' . $action_en_id . '">' .$mass_action_en['m_name'] . '</option>';
+                $is_upper = ( in_array($action_en_id, $this->config->item('en_ids_12577') /* SOURCE UPDATER UPPERCASE */) ? ' montserrat doupper ' : false );
+
+
+                //Start with the input wrapper:
+                $input_options .= '<span id="mass_id_'.$action_en_id.'" title="'.$mass_action_en['m_desc'].'" class="inline-block '. ( $counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+
+
+
+
+                if(in_array($action_en_id, array(5000, 5001, 10625))){
+
+                    //String Find and Replace:
+
+                    //Find:
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" placeholder="Search" class="form-control border '.$is_upper.'">';
+
+                    //Replace:
+                    $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" placeholder="Replace" class="form-control border '.$is_upper.'">';
+
+
+                } elseif(in_array($action_en_id, array(5981, 5982))){
+
+                    //Player search box:
+
+                    //String command:
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search sources..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
+
+                    //We don't need the second value field here:
+                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
+
+
+                } elseif($action_en_id == 11956){
+
+                    //IF HAS THIS
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="IF THIS SOURCE..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
+
+                    //ADD THIS
+                    $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'"  placeholder="ADD THIS SOURCE..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
+
+
+                } elseif($action_en_id == 5003){
+
+                    //Player Status update:
+
+                    //Find:
+                    $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
+                    $input_options .= '<option value="">Set Condition...</option>';
+                    $input_options .= '<option value="*">Update All Statuses</option>';
+                    foreach($this->config->item('en_all_6177') /* Source Status */ as $en_id3 => $m3){
+                        $input_options .= '<option value="'.$en_id3.'">Update All '.$m3['m_name'].'</option>';
+                    }
+                    $input_options .= '</select>';
+
+                    //Replace:
+                    $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
+                    $input_options .= '<option value="">Set New Status...</option>';
+                    foreach($this->config->item('en_all_6177') /* Source Status */ as $en_id3 => $m3){
+                        $input_options .= '<option value="'.$en_id3.'">Set to '.$m3['m_name'].'</option>';
+                    }
+                    $input_options .= '</select>';
+
+
+                } elseif($action_en_id == 5865){
+
+                    //Transaction Status update:
+
+                    //Find:
+                    $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
+                    $input_options .= '<option value="">Set Condition...</option>';
+                    $input_options .= '<option value="*">Update All Statuses</option>';
+                    foreach($this->config->item('en_all_6186') /* Transaction Status */ as $en_id3 => $m3){
+                        $input_options .= '<option value="'.$en_id3.'">Update All '.$m3['m_name'].'</option>';
+                    }
+                    $input_options .= '</select>';
+
+                    //Replace:
+                    $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
+                    $input_options .= '<option value="">Set New Status...</option>';
+                    foreach($this->config->item('en_all_6186') /* Transaction Status */ as $en_id3 => $m3){
+                        $input_options .= '<option value="'.$en_id3.'">Set to '.$m3['m_name'].'</option>';
+                    }
+                    $input_options .= '</select>';
+
+
+                } else {
+
+                    //String command:
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="String..." class="form-control border '.$is_upper.'">';
+
+                    //We don't need the second value field here:
+                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
+
+                }
+
+                $input_options .= '</span>';
+
+            }
+
+            $this_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
+            $this_tab .= '<div class="inline-box">';
+
+            //Drop Down
+            $this_tab .= '<select class="form-control border" name="mass_action_en_id" id="set_mass_action">';
+            $this_tab .= $dropdown_options;
+            $this_tab .= '</select>';
+
+            $this_tab .= $input_options;
+
+            $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-source inline-block"></div>';
+
+            $this_tab .= '</div>';
+            $this_tab .= '</form>';
+
+            if(isset($source__children)){
+                //Also add invisible child IDs for quick copy/pasting:
+                $this_tab .= '<div style="color:transparent;">';
+                foreach ($source__children as $en) {
+                    $this_tab .= $en['en_id'].',';
+                }
+                $this_tab .= '</div>';
+            }
+
+            $counter = 0;
         }
 
         if(!$counter && (!in_array($en_id, $this->config->item('en_ids_12574')) || !$session_en)){

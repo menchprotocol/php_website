@@ -47,6 +47,17 @@ class Source extends CI_Controller
     }
 
 
+    function create(){
+
+        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
+        $this->load->view('header', array(
+            'title' => $en_all_11035[12762]['m_name'],
+        ));
+        $this->load->view('source/source_create');
+        $this->load->view('footer');
+
+    }
+
 
     //Lists sources
     function source_coin($en_id)
