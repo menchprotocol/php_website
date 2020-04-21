@@ -28,8 +28,12 @@ function create_process(){
 
 function preview_update_dropdown(element_id, new_en_id){
 
-    new_en_id = parseInt(new_en_id);
-    var current_selected = parseInt($('.dropi_'+element_id+'_0_0.active').attr('new-en-id'));
+    //Update UI:
+    var data_object = eval('js_en_all_'+element_id);
+    $('.dropd_'+element_id+'_0_0 .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + data_object[new_en_id]['m_name']);
+    $('.dropd_'+element_id+'_0_0 .dropi_' + element_id +'_0_0').removeClass('active');
+    $('.dropd_'+element_id+'_0_0 .optiond_' + new_en_id+'_0_0').addClass('active');
+    $('.dropd_'+element_id+'_0_0').attr('selected-val' , new_en_id);
 
     //Changing Idea Status?
     if(element_id==12769){
@@ -41,12 +45,5 @@ function preview_update_dropdown(element_id, new_en_id){
             $('.content_type_only').addClass('hidden');
         }
     }
-
-    //Update UI:
-    var data_object = eval('js_en_all_'+element_id);
-    $('.dropd_'+element_id+'_0_0 .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + data_object[new_en_id]['m_name']);
-    $('.dropd_'+element_id+'_0_0 .dropi_' + element_id +'_0_0').removeClass('active');
-    $('.dropd_'+element_id+'_0_0 .optiond_' + new_en_id+'_0_0').addClass('active');
-    $('.dropd_'+element_id+'_0_0').attr('selected-val' , new_en_id);
 
 }
