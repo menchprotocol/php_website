@@ -81,7 +81,7 @@ function en_load_source_search(element_focus, is_en_parent, shortcut) {
         }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_en_parent ? 'q' : 'a' )]}, [{
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: ' ( alg_obj_type_id=4536 AND ( _tags:alg_source_' + js_en_ids_12761.join(' OR _tags:alg_source_') + ')) ',
+                    filters: ' ( alg_obj_type_id=4536 AND ( _tags:alg_source_' + js_en_ids_4983.join(' OR _tags:alg_source_') + ')) ',
                     hitsPerPage: 7,
                 }, function (error, content) {
                     if (error) {
