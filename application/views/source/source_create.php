@@ -26,12 +26,12 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
     //Source Type
     echo '<span class="medium-header"><span class="icon-block">'.$en_all_12762[12769]['m_icon'].'</span>'.$en_all_12762[12769]['m_name'].'</span>';
-    $ui .= echo_in_dropdown(12769, 3084, 'btn-source');
+    echo echo_in_dropdown(12769, 3084, 'btn-source');
 
 
     //Content Type
     echo '<span class="medium-header"><span class="icon-block">'.$en_all_11035[3000]['m_icon'].'</span>'.$en_all_11035[3000]['m_name'].'</span>';
-    $ui .= echo_in_dropdown(3000, 3084, 'btn-source');
+    echo echo_in_dropdown(3000, 3084, 'btn-source');
 
 
     //Author(s)
