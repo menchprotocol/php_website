@@ -1642,7 +1642,7 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
 
 
 
-    $ui .= '<textarea onkeyup="in_new_notes_count('.$note_type_en_id.')" class="form-control msg pads-textarea algolia_search new-pads" pads-type-id="' . $note_type_en_id . '" id="ln_content' . $note_type_en_id . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+    $ui .= '<textarea onkeyup="in_notes_count_new('.$note_type_en_id.')" class="form-control msg pads-textarea algolia_search new-pads" pads-type-id="' . $note_type_en_id . '" id="ln_content' . $note_type_en_id . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 

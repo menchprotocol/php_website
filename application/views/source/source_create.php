@@ -41,7 +41,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
     //Source URL
     echo '<h2 style="margin-top: 21px;"><span class="icon-block">'.$en_all_12762[12763]['m_icon'].'</span>'.$en_all_12762[12763]['m_name'].'</h2>';
-    echo '<div class="form-group is-empty"><input type="url" id="source_url" '.( isset($_GET['source_url']) ? ' value="'.$_GET['source_url'].'" ' : '' ).' class="form-control border" placeholder="'.$en_all_12762[12763]['m_desc'].'"></div>';
+    echo '<div class="form-group is-empty"><input type="url" id="source_url" '.( isset($_GET['source_url']) ? ' value="'.$_GET['source_url'].'" ' : '' ).' class="form-control border" placeholder="'.str_replace(' ','',$en_all_12762[12763]['m_desc']).'"></div>';
 
 
     //Source Type

@@ -50,7 +50,7 @@ function in_update_text(this_handler){
 
 
 
-function en_load_source_search(note_type_id) {
+function in_notes_source_only_search(note_type_id) {
 
     var element_focus = ".source-map-"+note_type_id;
 
@@ -76,11 +76,14 @@ function en_load_source_search(note_type_id) {
 
         //Define filters:
         var extra_filters = '';
-        if(note_type_id==4983){
-            extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_4983.join(' OR _tags:alg_source_') + ') ';
-        } else if(note_type_id==10573){
-            extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_10573.join(' OR _tags:alg_source_') + ') ';
+        if(!js_session_superpowers_assigned.includes(10967) || 1) {
+            if(note_type_id==4983){
+                extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_3000.join(' OR _tags:alg_source_') + ') ';
+            } else if(note_type_id==10573){
+                extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_10573.join(' OR _tags:alg_source_') + ') ';
+            }
         }
+
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -159,7 +162,7 @@ $(document).ready(function () {
     //Activate Source-Only Inputs:
 
     $(".source-mapper").each(function () {
-        en_load_source_search($(this).attr('note_type_id'));
+        in_notes_source_only_search($(this).attr('note_type_id'));
     });
 
     //Load top/bottom idea searches:
@@ -328,12 +331,12 @@ function in_ui_delete(in_id,ln_id){
 
 function in_notes_insert_string(focus_ln_type_source_id, add_string) {
     $('#ln_content' + focus_ln_type_source_id).insertAtCaret(add_string);
-    in_new_notes_count(focus_ln_type_source_id);
+    in_notes_count_new(focus_ln_type_source_id);
 }
 
 
 //Count text area characters:
-function in_new_notes_count(focus_ln_type_source_id) {
+function in_notes_count_new(focus_ln_type_source_id) {
 
     //Update count:
     var len = $('#ln_content' + focus_ln_type_source_id).val().length;
@@ -708,7 +711,7 @@ function in_notes_add(focus_ln_type_source_id) {
 
             //Reset input field:
             $("#ln_content" + focus_ln_type_source_id).val("");
-            in_new_notes_count(focus_ln_type_source_id);
+            in_notes_count_new(focus_ln_type_source_id);
 
         }
 
