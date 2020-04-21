@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-21 12:45:11 PST
+//Generated 2020-04-21 12:48:50 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587498311;
-$config['cache_count_transaction'] = 1150217;
-$config['cache_count_discover'] = 121104;
+$config['cache_timestamp'] = 1587498530;
+$config['cache_count_transaction'] = 1150232;
+$config['cache_count_discover'] = 121105;
 $config['cache_count_idea'] = 4840;
-$config['cache_count_source'] = 5201;
+$config['cache_count_source'] = 5202;
 
 
 
@@ -4086,7 +4086,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION MENU:
-$config['en_ids_11035'] = array(6225,12749,7274,6415,7347,12707,12581,10573,11068,7291,4341,4430,12205,12211,6287,12750,7256,4269,12762,12275,10957,7540,12437);
+$config['en_ids_11035'] = array(6225,12749,7274,6415,7347,12707,12581,10573,11068,7291,4341,4430,12205,12211,6287,12750,7256,4269,12762,4997,12275,10957,7540,12437);
 $config['en_all_11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -4201,6 +4201,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'SOURCE CREATOR WIZARD',
         'm_desc' => '',
         'm_parents' => array(10876,4527,11035,4536),
+    ),
+    4997 => array(
+        'm_icon' => '<i class="fad fa-edit source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LIST EDITOR',
+        'm_desc' => '',
+        'm_parents' => array(11035,12703,12590,11029,4527),
     ),
     12275 => array(
         'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
@@ -5560,7 +5566,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fad fa-edit source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LIST EDITOR',
         'm_desc' => '',
-        'm_parents' => array(12703,12590,11029,4527),
+        'm_parents' => array(11035,12703,12590,11029,4527),
     ),
     4426 => array(
         'm_icon' => '<i class="fas fa-lock" aria-hidden="true"></i>',

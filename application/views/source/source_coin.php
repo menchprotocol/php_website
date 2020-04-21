@@ -547,9 +547,10 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
 
                 }
 
-                $this_tab .= '<div class="source_editor pull-right"><a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="MODIFY" data-toggle="tooltip" data-placement="top"><i class="fas fa-cog"></i></a></div>';
+                $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;"><a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="'.$en_all_11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$en_all_11035[4997]['m_icon'].'</a></div>';
                 $this_tab .= '<div class="doclear">&nbsp;</div>';
                 $this_tab .= '<div class="source_editor hidden">';
+                $this_tab .= '<div class="discover-topic"><span class="icon-block">'.$en_all_11035[4997]['m_icon'].'</span>'.$en_all_11035[4997]['m_name'].'</div>';
                 $this_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
                 $this_tab .= '<div class="inline-box">';
 
