@@ -1604,11 +1604,10 @@ function echo_in_note_source($in_id, $note_type_en_id, $in_notes, $is_source){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_11018[$note_type_en_id]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control IdeaAddPrevious form-control-thick montserrat algolia_search dotransparent"
+                           class="form-control IdeaAddPrevious form-control-thick add-input montserrat algolia_search dotransparent"
                            maxlength="' . config_var(11072) . '"
                            idea-id="' . $in_id . '"
                            id="add-source-idea-' . $in_id . '"
-                           style="margin-bottom: 0; padding: 5px 0;"
                            placeholder="'.$en_all_11018[$note_type_en_id]['m_name'].'">
                 </div><div class="algolia_pad_search hidden in_pad_top"></div></div>';
     }

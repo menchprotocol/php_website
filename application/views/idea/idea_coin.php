@@ -64,11 +64,10 @@ if( $is_source && $is_active && $in['in_id']!=config_var(12156)){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control IdeaAddPrevious form-control-thick montserrat algolia_search dotransparent"
+                           class="form-control IdeaAddPrevious form-control-thick montserrat add-input algolia_search dotransparent"
                            maxlength="' . config_var(11071) . '"
                            idea-id="' . $in['in_id'] . '"
                            id="addidea-c-' . $in['in_id'] . '-1"
-                           style="margin-bottom: 0; padding: 5px 0;"
                            placeholder="PREVIOUS IDEA">
                 </div><div class="algolia_pad_search hidden in_pad_top"></div></div>';
 }
@@ -152,11 +151,10 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control ideaadder-level-2-child form-control-thick montserrat algolia_search dotransparent"
+                           class="form-control ideaadder-level-2-child form-control-thick add-input montserrat algolia_search dotransparent"
                            maxlength="' . config_var(11071) . '"
                            idea-id="' . $in['in_id'] . '"
                            id="addidea-c-' . $in['in_id'] . '-0"
-                           style="margin-bottom: 0; padding: 5px 0;"
                            placeholder="NEXT IDEA">
                 </div><div class="algolia_pad_search hidden in_pad_bottom"></div></div>';
         }
@@ -184,7 +182,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control source form-control-thick montserrat algolia_search dotransparent new-source-input"
+                           class="form-control source form-control-thick montserrat algolia_search dotransparent add-input"
                            maxlength="' . config_var(11072) . '"                          
                            placeholder="SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand source-pad-'.$en_id.'"></div></div>';

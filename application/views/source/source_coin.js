@@ -172,7 +172,7 @@ $(document).ready(function () {
 
 function en_load_search(element_focus, is_en_parent, shortcut) {
 
-    $(element_focus + ' .new-source-input').focus(function() {
+    $(element_focus + ' .add-input').focus(function() {
 
         $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');
 
@@ -192,7 +192,7 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 
     if(parseInt(js_en_all_6404[12678]['m_desc'])){
 
-            $(element_focus + ' .new-source-input').on('autocomplete:selected', function (event, suggestion, dataset) {
+            $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
                 en_add_or_link(suggestion.alg_obj_id, is_en_parent);
 
@@ -280,11 +280,11 @@ function en_add_or_link(en_existing_id, is_parent) {
     //If en_existing_id=0 it means we are creating a new source and then linking it, in which case en_new_string is required
 
     if (is_parent) {
-        var input = $('#new-parent .new-source-input');
+        var input = $('#new-parent .add-input');
         var list_id = 'list-parent';
         var counter_class = '.counter-11030';
     } else {
-        var input = $('#new-children .new-source-input');
+        var input = $('#new-children .add-input');
         var list_id = 'list-children';
         var counter_class = '.counter-11029';
     }

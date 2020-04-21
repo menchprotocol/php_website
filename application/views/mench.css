@@ -166,7 +166,7 @@ li a {
 }
 
 /* FONTS */
-.montserrat, .new-source-input, .algolia-autocomplete, .discover-topic, .btn {
+.montserrat, .add-input, .algolia-autocomplete, .discover-topic, .btn {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     text-decoration: none;
@@ -178,7 +178,7 @@ li a {
 .doupper {
     text-transform: uppercase !important;
 }
-.new-source-input{
+.add-input{
     margin-bottom: 0;
     padding: 5px 0 5px 1px !important;
     text-transform: uppercase;

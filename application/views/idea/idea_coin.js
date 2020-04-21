@@ -54,7 +54,7 @@ function en_load_source_search(source_type_id) {
 
     var element_focus = ".source-map-"+source_type_id;
 
-    $(element_focus + ' .new-source-input').focus(function() {
+    $(element_focus + ' .add-input').focus(function() {
 
         $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');
 
@@ -82,7 +82,7 @@ function en_load_source_search(source_type_id) {
             extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_10573.join(' OR _tags:alg_source_') + ') ';
         }
 
-        $(element_focus + ' .new-source-input').on('autocomplete:selected', function (event, suggestion, dataset) {
+        $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             alert('ok');
 
