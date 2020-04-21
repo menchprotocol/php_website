@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-21 14:26:36 PST
+//Generated 2020-04-21 14:30:38 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587504396;
-$config['cache_count_transaction'] = 1150529;
+$config['cache_timestamp'] = 1587504638;
+$config['cache_count_transaction'] = 1150546;
 $config['cache_count_discover'] = 121120;
 $config['cache_count_idea'] = 4840;
 $config['cache_count_source'] = 5203;
@@ -32,7 +32,7 @@ $config['en_all_12769'] = array(
         'm_icon' => '<i class="fad fa-file-certificate source" aria-hidden="true"></i>',
         'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
-        'm_parents' => array(11035,12079,12769,4983,4600,4536,4527),
+        'm_parents' => array(11054,11035,12079,12769,4983,4600,4536,4527),
     ),
 );
 
@@ -55,7 +55,7 @@ $config['en_all_12762'] = array(
         'm_icon' => '<i class="fad fa-shapes source"></i>',
         'm_name' => 'TYPE',
         'm_desc' => '',
-        'm_parents' => array(12079,4527,12762),
+        'm_parents' => array(11054,12079,4527,12762),
     ),
     12763 => array(
         'm_icon' => '<i class="fad fa-link source"></i>',
@@ -875,7 +875,7 @@ $config['en_all_10876'] = array(
         'm_icon' => '<i class="far fa-plus-circle source"></i>',
         'm_name' => 'IDEA SOURCE CREATOR',
         'm_desc' => 'https://mench.com/source/create',
-        'm_parents' => array(12079,10876,4527,11035,4536),
+        'm_parents' => array(10876,4527,11035,4536),
     ),
     7291 => array(
         'm_icon' => '<i class="fad fa-power-off" aria-hidden="true"></i>',
@@ -978,13 +978,13 @@ $config['en_all_4536'] = array(
         'm_icon' => '<i class="fad fa-file-certificate source" aria-hidden="true"></i>',
         'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
-        'm_parents' => array(11035,12079,12769,4983,4600,4536,4527),
+        'm_parents' => array(11054,11035,12079,12769,4983,4600,4536,4527),
     ),
     12762 => array(
         'm_icon' => '<i class="far fa-plus-circle source"></i>',
         'm_name' => 'IDEA SOURCE CREATOR',
         'm_desc' => '',
-        'm_parents' => array(12079,10876,4527,11035,4536),
+        'm_parents' => array(10876,4527,11035,4536),
     ),
     7305 => array(
         'm_icon' => '<i class="fas fa-layer-group" aria-hidden="true"></i>',
@@ -3262,25 +3262,19 @@ $config['en_all_12112'] = array(
 );
 
 //DROPDOWN MENUS:
-$config['en_ids_12079'] = array(3000,4486,12762,4737,7585,12769);
+$config['en_ids_12079'] = array(3000,4486,4737,7585,12769);
 $config['en_all_12079'] = array(
     3000 => array(
         'm_icon' => '<i class="fad fa-file-certificate source" aria-hidden="true"></i>',
         'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
-        'm_parents' => array(11035,12079,12769,4983,4600,4536,4527),
+        'm_parents' => array(11054,11035,12079,12769,4983,4600,4536,4527),
     ),
     4486 => array(
         'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA LINKS',
         'm_desc' => '',
         'm_parents' => array(12700,11054,6232,12079,10662,4527),
-    ),
-    12762 => array(
-        'm_icon' => '<i class="far fa-plus-circle source"></i>',
-        'm_name' => 'IDEA SOURCE CREATOR',
-        'm_desc' => '',
-        'm_parents' => array(12079,10876,4527,11035,4536),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
@@ -3298,7 +3292,7 @@ $config['en_all_12079'] = array(
         'm_icon' => '<i class="fad fa-shapes source"></i>',
         'm_name' => 'SOURCE TYPE',
         'm_desc' => '',
-        'm_parents' => array(12079,4527,12762),
+        'm_parents' => array(11054,12079,4527,12762),
     ),
 );
 
@@ -3991,8 +3985,14 @@ $config['en_all_6404'] = array(
 );
 
 //MENCH MEMORY JAVASCRIPT:
-$config['en_ids_11054'] = array(10573,4486,4983,4737,7356,7355,7585,2738,6404,6201,12687,4592,6177,7357,6186);
+$config['en_ids_11054'] = array(3000,10573,4486,4983,4737,7356,7355,7585,2738,6404,6201,12687,4592,6177,7357,12769,6186);
 $config['en_all_11054'] = array(
+    3000 => array(
+        'm_icon' => '<i class="fad fa-file-certificate source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT CONTENT',
+        'm_desc' => '',
+        'm_parents' => array(11054,11035,12079,12769,4983,4600,4536,4527),
+    ),
     10573 => array(
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA BOOKMARKS',
@@ -4077,6 +4077,12 @@ $config['en_all_11054'] = array(
         'm_desc' => '',
         'm_parents' => array(12572,11054,4527),
     ),
+    12769 => array(
+        'm_icon' => '<i class="fad fa-shapes source"></i>',
+        'm_name' => 'SOURCE TYPE',
+        'm_desc' => '',
+        'm_parents' => array(11054,12079,4527,12762),
+    ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION STATUS',
@@ -4157,7 +4163,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fad fa-file-certificate source" aria-hidden="true"></i>',
         'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
-        'm_parents' => array(11035,12079,12769,4983,4600,4536,4527),
+        'm_parents' => array(11054,11035,12079,12769,4983,4600,4536,4527),
     ),
     12707 => array(
         'm_icon' => '<i class="far fa-filter" aria-hidden="true"></i>',
@@ -4181,7 +4187,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="far fa-plus-circle source"></i>',
         'm_name' => 'IDEA SOURCE CREATOR',
         'm_desc' => '',
-        'm_parents' => array(12079,10876,4527,11035,4536),
+        'm_parents' => array(10876,4527,11035,4536),
     ),
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -5115,7 +5121,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fad fa-file-certificate source" aria-hidden="true"></i>',
         'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
-        'm_parents' => array(11035,12079,12769,4983,4600,4536,4527),
+        'm_parents' => array(11054,11035,12079,12769,4983,4600,4536,4527),
     ),
     10627 => array(
         'm_icon' => '<i class="far fa-paperclip"></i>',
@@ -5223,7 +5229,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="far fa-plus-circle source"></i>',
         'm_name' => 'IDEA SOURCE CREATOR',
         'm_desc' => '',
-        'm_parents' => array(12079,10876,4527,11035,4536),
+        'm_parents' => array(10876,4527,11035,4536),
     ),
     4983 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -5685,7 +5691,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fad fa-shapes source"></i>',
         'm_name' => 'SOURCE TYPE',
         'm_desc' => '',
-        'm_parents' => array(12079,4527,12762),
+        'm_parents' => array(11054,12079,4527,12762),
     ),
     12683 => array(
         'm_icon' => '<i class="fad fa-shapes source" aria-hidden="true"></i>',
@@ -6206,7 +6212,7 @@ $config['en_all_4983'] = array(
         'm_icon' => '<i class="fad fa-file-certificate source" aria-hidden="true"></i>',
         'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
-        'm_parents' => array(11035,12079,12769,4983,4600,4536,4527),
+        'm_parents' => array(11054,11035,12079,12769,4983,4600,4536,4527),
     ),
     4430 => array(
         'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
