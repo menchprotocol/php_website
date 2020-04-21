@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-21 10:23:02 PST
+//Generated 2020-04-21 10:24:21 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587489782;
-$config['cache_count_transaction'] = 1149973;
+$config['cache_timestamp'] = 1587489861;
+$config['cache_count_transaction'] = 1149980;
 $config['cache_count_discover'] = 121096;
 $config['cache_count_idea'] = 4840;
 $config['cache_count_source'] = 5197;
@@ -721,7 +721,7 @@ $config['en_all_12523'] = array(
         'm_icon' => '<i class="fad fa-user-astronaut source" aria-hidden="true"></i>',
         'm_name' => 'INDUSTRY EXPERTS',
         'm_desc' => '',
-        'm_parents' => array(1278,12523),
+        'm_parents' => array(4983,1278,12523),
     ),
     3308 => array(
         'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
@@ -4112,7 +4112,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
         'm_name' => 'MENCH PLAYERS',
         'm_desc' => '',
-        'm_parents' => array(1278,11035,10573,4426),
+        'm_parents' => array(4983,1278,11035,10573,4426),
     ),
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
@@ -6083,7 +6083,7 @@ $config['en_all_10602'] = array(
 );
 
 //IDEA SOURCES:
-$config['en_ids_4983'] = array(2997,4446,3005,3147,4763,3192,2999,2998,1278);
+$config['en_ids_4983'] = array(2997,4446,3005,3147,4763,3192,2999,2998,3084,4430);
 $config['en_all_4983'] = array(
     2997 => array(
         'm_icon' => '<i class="fad fa-newspaper source" aria-hidden="true"></i>',
@@ -6133,11 +6133,17 @@ $config['en_all_4983'] = array(
         'm_desc' => '',
         'm_parents' => array(12523,4983,3000),
     ),
-    1278 => array(
-        'm_icon' => '<i class="fad fa-users source" aria-hidden="true"></i>',
-        'm_name' => 'PEOPLE',
+    3084 => array(
+        'm_icon' => '<i class="fad fa-user-astronaut source" aria-hidden="true"></i>',
+        'm_name' => 'INDUSTRY EXPERTS',
         'm_desc' => '',
-        'm_parents' => array(4983,4600),
+        'm_parents' => array(4983,1278,12523),
+    ),
+    4430 => array(
+        'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
+        'm_name' => 'MENCH PLAYERS',
+        'm_desc' => '',
+        'm_parents' => array(4983,1278,11035,10573,4426),
     ),
 );
 
@@ -7495,7 +7501,7 @@ $config['en_all_4426'] = array(
         'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
         'm_name' => 'MENCH PLAYERS',
         'm_desc' => '',
-        'm_parents' => array(1278,11035,10573,4426),
+        'm_parents' => array(4983,1278,11035,10573,4426),
     ),
     4755 => array(
         'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
