@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-21 16:10:13 PST
+//Generated 2020-04-21 16:23:25 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587510613;
-$config['cache_count_transaction'] = 1150652;
+$config['cache_timestamp'] = 1587511405;
+$config['cache_count_transaction'] = 1150658;
 $config['cache_count_discover'] = 121120;
 $config['cache_count_idea'] = 4840;
 $config['cache_count_source'] = 5204;
@@ -20,8 +20,14 @@ $config['cache_count_source'] = 5204;
 
 
 //ADD CONTENT WIZARD:
-$config['en_ids_12762'] = array(12772,3000,12763,12771,12764);
+$config['en_ids_12762'] = array(12764,12772,3000,12763,12771);
 $config['en_all_12762'] = array(
+    12764 => array(
+        'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
+        'm_name' => 'CONTENT AUTHOR(S)',
+        'm_desc' => '',
+        'm_parents' => array(12762),
+    ),
     12772 => array(
         'm_icon' => '<i class="fad fa-edit source"></i>',
         'm_name' => 'CONTENT TITLE',
@@ -43,12 +49,6 @@ $config['en_all_12762'] = array(
     12771 => array(
         'm_icon' => '<i class="far fa-plus-circle source"></i>',
         'm_name' => 'CREATE',
-        'm_desc' => '',
-        'm_parents' => array(12762),
-    ),
-    12764 => array(
-        'm_icon' => '<i class="fad fa-user-edit source"></i>',
-        'm_name' => 'EXPERT AUTHOR(S)',
         'm_desc' => '',
         'm_parents' => array(12762),
     ),
@@ -761,7 +761,7 @@ $config['en_all_12523'] = array(
         'm_icon' => '<i class="fad fa-user-astronaut source" aria-hidden="true"></i>',
         'm_name' => 'INDUSTRY EXPERT',
         'm_desc' => '',
-        'm_parents' => array(11035,1278,12523),
+        'm_parents' => array(12764,11035,1278,12523),
     ),
     3308 => array(
         'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
@@ -4164,7 +4164,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fad fa-user-astronaut source" aria-hidden="true"></i>',
         'm_name' => 'INDUSTRY EXPERT',
         'm_desc' => '',
-        'm_parents' => array(11035,1278,12523),
+        'm_parents' => array(12764,11035,1278,12523),
     ),
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
