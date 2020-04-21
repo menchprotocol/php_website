@@ -1222,8 +1222,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
     $ui .= '<td class="MENCHcolumn1">';
-
-
         $ui .= '<div class="block">';
             //IDEA ICON:
             $ui .= '<span class="icon-block"><a href="/idea/'.$in['in_id'].'" title="Idea Weight: '.number_format($in['in_weight'], 0).'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
@@ -1235,84 +1233,13 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
                 $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in) . '</a>';
             }
         $ui .= '</div>';
-
-
-        //SECOND STATS ROW
-        $ui .= '<div class="doclear">&nbsp;</div>';
-
-
-
-        if($control_enabled){
-
-            //Idea Toolbar
-            $ui .= '<div class="space-content ' . superpower_active(12673) . '">';
-
-            //IDEA STATUS
-            $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
-
-            //IDEA TYPE
-            $ui .= echo_in_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']);
-
-            //IDEA DISCOVER TIME
-            $ui .= echo_in_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source, ($in['ln_order']*10)+1);
-
-
-            //PREVIOUS & NEXT IDEAS
-            $previous_ins = $CI->LEDGER_model->ln_fetch(array(
-                'ln_next_idea_id' => $in['in_id'],
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
-            $next_ins = $CI->LEDGER_model->ln_fetch(array(
-                'ln_previous_idea_id' => $in['in_id'],
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
-
-
-            //Previous idea:
-            $ui .= '<span class="montserrat idea idea-previous">' . ( $previous_ins[0]['total_ins'] >= 2 ? $previous_ins[0]['total_ins'] . $en_all_12413[11019]['m_icon'] : '&nbsp;') . '</span>';
-
-            //Next Ideas:
-            $ui .= '<span class="montserrat idea idea-next">' . ( $next_ins[0]['total_ins'] > 0 ? $en_all_12413[11020]['m_icon'] . $next_ins[0]['total_ins']: '&nbsp;' ) . '</span>';
-
-
-
-            //Idea Wand
-            $ui .= '<div class="inline-block ' . superpower_active(12700) . '">';
-            //LINK TYPE
-            $ui .= echo_in_dropdown(4486, $in['ln_type_source_id'], null, $is_source, false, $in['in_id'], $in['ln_id']);
-
-            //LINK MARKS
-            $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_source_id']==4228 ? : 'hidden' ).'">';
-            $ui .= echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+2 );
-            $ui .='</span>';
-
-
-            //LINK CONDIITONAL RANGE
-            $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_source_id']==4229 ? : 'hidden' ).'">';
-            //MIN
-            $ui .= echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+3);
-            //MAX
-            $ui .= echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+4);
-            $ui .= '</span>';
-            $ui .= '</div>';
-
-
-
-            $ui .= '</div>';
-        }
-
     $ui .= '</td>';
-
-
 
 
     //DISCOVER
     $ui .= '<td class="MENCHcolumn2 discover">';
     $ui .= echo_coins_count_discover($in['in_id']);
     $ui .= '</td>';
-
 
 
 
@@ -1361,6 +1288,67 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
     if($infobar_details){
         $ui .= '<div class="idea-footer">' . $infobar_details . '</div>';
+    }
+
+    if($control_enabled){
+
+        //Idea Toolbar
+        $ui .= '<div class="space-content ' . superpower_active(12673) . '">';
+
+        //IDEA STATUS
+        $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
+
+        //IDEA TYPE
+        $ui .= echo_in_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']);
+
+        //IDEA DISCOVER TIME
+        $ui .= echo_in_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source, ($in['ln_order']*10)+1);
+
+
+        //PREVIOUS & NEXT IDEAS
+        $previous_ins = $CI->LEDGER_model->ln_fetch(array(
+            'ln_next_idea_id' => $in['in_id'],
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
+        $next_ins = $CI->LEDGER_model->ln_fetch(array(
+            'ln_previous_idea_id' => $in['in_id'],
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
+
+
+        //Previous idea:
+        $ui .= '<span class="montserrat idea idea-previous">' . ( $previous_ins[0]['total_ins'] >= 2 ? $previous_ins[0]['total_ins'] . $en_all_12413[11019]['m_icon'] : '&nbsp;') . '</span>';
+
+        //Next Ideas:
+        $ui .= '<span class="montserrat idea idea-next">' . ( $next_ins[0]['total_ins'] > 0 ? $en_all_12413[11020]['m_icon'] . $next_ins[0]['total_ins']: '&nbsp;' ) . '</span>';
+
+
+
+        //Idea Wand
+        $ui .= '<div class="inline-block ' . superpower_active(12700) . '">';
+        //LINK TYPE
+        $ui .= echo_in_dropdown(4486, $in['ln_type_source_id'], null, $is_source, false, $in['in_id'], $in['ln_id']);
+
+        //LINK MARKS
+        $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_source_id']==4228 ? : 'hidden' ).'">';
+        $ui .= echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+2 );
+        $ui .='</span>';
+
+
+        //LINK CONDIITONAL RANGE
+        $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_source_id']==4229 ? : 'hidden' ).'">';
+        //MIN
+        $ui .= echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+3);
+        //MAX
+        $ui .= echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+4);
+        $ui .= '</span>';
+        $ui .= '</div>';
+
+
+
+        $ui .= '</div>';
     }
 
     $ui .= '</div>';

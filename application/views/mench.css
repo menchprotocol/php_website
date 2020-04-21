@@ -1358,9 +1358,6 @@ label {
 
 
     .ln_content { max-width: 100%; }
-    .texttype_4736_sm {
-        width: calc(100vw - 60px) !important;
-    }
 
     .show-max{display: none !important;}
 }
