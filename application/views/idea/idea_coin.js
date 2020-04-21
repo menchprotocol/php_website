@@ -75,7 +75,7 @@ function en_load_source_search(source_type_id) {
     if(parseInt(js_en_all_6404[12678]['m_desc'])){
 
         //Define filters:
-        var extra_filters = null;
+        var extra_filters = '';
         if(source_type_id==4983){
             extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_4983.join(' OR _tags:alg_source_') + ') ';
         } else if(source_type_id==10573){
