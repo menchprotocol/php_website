@@ -103,7 +103,7 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 2: Enter Email -->
         <div id="step2" class="signup-steps hidden">
-            <span class="medium-header"><?= $en_all_4269[3288]['m_icon'].' '.$en_all_4269[3288]['m_name'] ?></span>
+            <span><?= $en_all_4269[3288]['m_icon'].' '.$en_all_4269[3288]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="discover margin-top-down"></div>
             <span id="step2buttons">
@@ -123,7 +123,7 @@ if(count($current_sign_in_attempt) == 0){
             <!-- To be updated to >0 IF email was found -->
             <input type="hidden" id="login_en_id" value="0" />
 
-            <span class="medium-header"><?= $en_all_4269[3286]['m_icon'].' '.$en_all_4269[3286]['m_name'] ?></span>
+            <span><?= $en_all_4269[3286]['m_icon'].' '.$en_all_4269[3286]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
             <div id="password_errors" class="discover margin-top-down"></div>
             <span id="step3buttons">
@@ -148,20 +148,20 @@ if(count($current_sign_in_attempt) == 0){
 
             <!-- pre-set Email -->
             <div class="margin-top-down">
-                <span class="medium-header"><?= $en_all_4269[3288]['m_icon'].' '.$en_all_4269[3288]['m_name'] ?>:</span>
+                <span><?= $en_all_4269[3288]['m_icon'].' '.$en_all_4269[3288]['m_name'] ?>:</span>
                 <div><b><span class="focus_email"></span></b></div>
             </div>
 
 
             <!-- Full Name -->
             <div class="margin-top-down">
-                <span class="medium-header"><?= $en_all_4269[6197]['m_icon'].' '.$en_all_4269[6197]['m_name'] ?>:</span>
+                <span><?= $en_all_4269[6197]['m_icon'].' '.$en_all_4269[6197]['m_name'] ?>:</span>
                 <div class="form-group is-empty"><input type="text" placeholder="<?= $en_all_4269[6197]['m_desc'] ?>" id="input_name" maxlength="<?= config_var(11072) ?>" class="form-control border"></div>
             </div>
 
             <!-- New Password -->
             <div class="margin-top-down">
-                <span class="medium-header"><?= $en_all_4269[3286]['m_icon'] ?> NEW PASSWORD:</span>
+                <span><?= $en_all_4269[3286]['m_icon'] ?> NEW PASSWORD:</span>
                 <div class="form-group is-empty"><input type="password" id="new_password" class="form-control border"></div>
             </div>
 
@@ -180,7 +180,7 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 5: Check your email -->
         <div id="step5" class="signup-steps hidden">
-            <span class="medium-header"><i class="fas fa-envelope-open"></i> <span class="focus_email"></span></span>
+            <span><i class="fas fa-envelope-open"></i> <span class="focus_email"></span></span>
             <span class="medium-header magic_result"></span>
         </div>
 

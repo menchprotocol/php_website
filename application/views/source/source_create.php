@@ -15,27 +15,27 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
 
     //Full Name
-    echo '<span class="medium-header"><span class="icon-block">'.$en_all_12762[6197]['m_icon'].'</span>'.$en_all_12762[6197]['m_name'].'</span>';
+    echo '<h2><span class="icon-block">'.$en_all_12762[6197]['m_icon'].'</span>'.$en_all_12762[6197]['m_name'].'</h2>';
     echo '<div class="form-group is-empty"><input type="text" id="source_name" '.( isset($_GET['source_name']) ? ' value="'.$_GET['source_name'].'" ' : '' ).' class="form-control border"></div>';
 
 
     //URL
-    echo '<span class="medium-header"><span class="icon-block">'.$en_all_12762[12763]['m_icon'].'</span>'.$en_all_12762[12763]['m_name'].'</span>';
+    echo '<h3><span class="icon-block">'.$en_all_12762[12763]['m_icon'].'</span>'.$en_all_12762[12763]['m_name'].'</h3>';
     echo '<div class="form-group is-empty"><input type="url" id="source_url" '.( isset($_GET['source_url']) ? ' value="'.$_GET['source_url'].'" ' : '' ).' class="form-control border"></div>';
 
 
     //Source Type
-    echo '<span class="medium-header"><span class="icon-block">'.$en_all_12762[12769]['m_icon'].'</span>'.$en_all_12762[12769]['m_name'].'</span>';
+    echo '<h4><span class="icon-block">'.$en_all_12762[12769]['m_icon'].'</span>'.$en_all_12762[12769]['m_name'].'</h4>';
     echo echo_in_dropdown(12769, 3084, 'btn-source');
 
 
     //Content Type
-    echo '<span class="medium-header"><span class="icon-block">'.$en_all_11035[3000]['m_icon'].'</span>'.$en_all_11035[3000]['m_name'].'</span>';
-    echo echo_in_dropdown(3000, 3084, 'btn-source');
+    echo '<div><span class="icon-block">'.$en_all_11035[3000]['m_icon'].'</span>'.$en_all_11035[3000]['m_name'].'</div>';
+    echo echo_in_dropdown(3000, 3005, 'btn-source');
 
 
     //Author(s)
-    echo '<span class="medium-header"><span class="icon-block">'.$en_all_12762[12764]['m_icon'].'</span>'.$en_all_12762[12764]['m_name'].'</span>';
+    echo '<div><span class="icon-block">'.$en_all_12762[12764]['m_icon'].'</span>'.$en_all_12762[12764]['m_name'].'</div>';
     echo '<div id="new-children" class="list-group-item list-adder itemsource no-side-padding">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
