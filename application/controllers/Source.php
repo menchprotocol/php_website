@@ -47,13 +47,24 @@ class Source extends CI_Controller
     }
 
 
-    function create(){
+    function create($in_id){
+
+        $ins = $this->IDEA_model->in_fetch(array(
+            'in_id' => $in_id,
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+        ));
+
+        if(!isset($ins[0]['in_id'])){
+            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid Idea ID</div>');
+        }
 
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
-            'title' => $en_all_11035[12762]['m_name'],
+            'title' => $ins[0]['in_title'].' | '.$en_all_11035[12762]['m_name'],
         ));
-        $this->load->view('source/source_create');
+        $this->load->view('source/source_create', array(
+            'in' => $ins[0],
+        ));
         $this->load->view('footer');
 
     }

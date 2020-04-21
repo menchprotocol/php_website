@@ -1,24 +1,11 @@
 <?php
-
-
-$ins = $this->IDEA_model->in_fetch(array(
-    'in_id' => @$_GET['in_id'],
-    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-));
-
-if(!isset($ins[0]['in_id'])){
-    die('Missing Idea ID (in_id) variable');
-}
-
-
-
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 $en_all_12762 = $this->config->item('en_all_12762'); //IDEA SOURCE CREATOR
 $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 ?>
 
 <script>
-    var in_loaded_id = <?= $ins[0]['in_id'] ?>;
+    var in_loaded_id = <?= $in['in_id'] ?>;
 </script>
 <script src="/application/views/source/source_create.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
@@ -27,36 +14,31 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
     <?php
 
     //SOURCE CREATOR TITLE
-    echo '<h1 class="'.extract_icon_color($en_all_11035[12762]['m_icon']).'" style="padding-top:5px;"><span class="icon-block">'.echo_en_icon($en_all_11035[12762]['m_icon']).'</span>'.$en_all_11035[12762]['m_name'].'</h1>';
-
-
-    //IDEA REFERENCE
-    echo '<h2 style="margin-top: 21px;"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.$en_all_2738[4535]['m_name'].'</h2>';
-    echo '<p class="space-left">You are about to create a new content source that references <b class="montserrat inline-block"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span><a href="/idea/'.$ins[0]['in_id'].'">'.echo_in_title($ins[0]).'</a></b></p>';
+    echo '<h1 class="idea" style="padding-top:5px;"><a href="/idea/'.$in['in_id'].'"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_in_title($in).'</a></h1>';
+    echo '<p class="space-left">You are about to create a new source that references this idea.</p>';
 
 
     //Content Title
     echo '<h2 style="margin-top:34px;"><span class="icon-block">'.$en_all_12762[12772]['m_icon'].'</span>'.$en_all_12762[12772]['m_name'].'</h2>';
-    echo '<div class="form-group is-empty"><input type="text" id="source_name" '.( isset($_GET['source_name']) ? ' value="'.$_GET['source_name'].'" ' : '' ).' class="form-control border montserrat doupper" placeholder="'.$en_all_12762[12772]['m_desc'].'"></div>';
+    echo '<div class="form-group is-empty"><input type="text" id="content_name" '.( isset($_GET['content_name']) ? ' value="'.$_GET['content_name'].'" ' : '' ).' class="form-control border montserrat doupper" placeholder="'.$en_all_12762[12772]['m_desc'].'"></div>';
 
 
     //Content Type
     echo '<h2><span class="icon-block">'.$en_all_12762[3000]['m_icon'].'</span>'.$en_all_12762[3000]['m_name'].'</h2>';
-    echo echo_in_dropdown(3000, 3005, 'btn-source');
+    echo '<div class="space-left">'.echo_in_dropdown(3000, ( isset($_GET['content_type']) ? $_GET['content_type'] : 3005 /* Books */ ), 'btn-source').'</div>';
 
 
     //Content URL
     echo '<h2 style="margin-top: 21px;"><span class="icon-block">'.$en_all_12762[12763]['m_icon'].'</span>'.$en_all_12762[12763]['m_name'].'</h2>';
-    echo '<div class="form-group is-empty"><input type="url" id="source_url" '.( isset($_GET['source_url']) ? ' value="'.$_GET['source_url'].'" ' : '' ).' class="form-control border" placeholder="'.str_replace(' ','',$en_all_12762[12763]['m_desc']).'"></div>';
+    echo '<div class="form-group is-empty"><input type="url" id="content_url" '.( isset($_GET['content_url']) ? ' value="'.$_GET['content_url'].'" ' : '' ).' class="form-control border" placeholder="'.str_replace(' ','',$en_all_12762[12763]['m_desc']).'"></div>';
 
 
 
-
-    //Content Author(s)
-    echo '<h2 style="margin-top: 21px;"><span class="icon-block">'.$en_all_12762[12764]['m_icon'].'</span>'.$en_all_12762[12764]['m_name'].'</h2>';
+    //Industry Experts
+    echo '<h2 style="margin-top: 21px;"><span class="icon-block">&nbsp;</span>'.$en_all_11035[3084]['m_name'].'</h2>';
     echo '<div id="new-children" class="list-group-item list-adder itemsource no-side-padding">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_11035[3084]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
                            maxlength="' . config_var(11072) . '"

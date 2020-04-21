@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-21 15:53:18 PST
+//Generated 2020-04-21 16:10:13 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587509598;
-$config['cache_count_transaction'] = 1150641;
+$config['cache_timestamp'] = 1587510613;
+$config['cache_count_transaction'] = 1150652;
 $config['cache_count_discover'] = 121120;
 $config['cache_count_idea'] = 4840;
 $config['cache_count_source'] = 5204;
@@ -761,7 +761,7 @@ $config['en_all_12523'] = array(
         'm_icon' => '<i class="fad fa-user-astronaut source" aria-hidden="true"></i>',
         'm_name' => 'INDUSTRY EXPERT',
         'm_desc' => '',
-        'm_parents' => array(1278,12523),
+        'm_parents' => array(11035,1278,12523),
     ),
     3308 => array(
         'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
@@ -4098,7 +4098,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION MENU:
-$config['en_ids_11035'] = array(6225,12762,3000,12749,7274,6415,7347,12707,12581,10573,11068,7291,4341,4430,12205,12211,6287,12750,7256,4269,4997,12275,10957,7540,12437);
+$config['en_ids_11035'] = array(6225,12762,3000,12749,7274,6415,7347,12707,12581,10573,3084,11068,7291,4341,4430,12205,12211,6287,12750,7256,4269,4997,12275,10957,7540,12437);
 $config['en_all_11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -4159,6 +4159,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'IDEA BOOKMARKS',
         'm_desc' => '',
         'm_parents' => array(11054,4527,10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
+    ),
+    3084 => array(
+        'm_icon' => '<i class="fad fa-user-astronaut source" aria-hidden="true"></i>',
+        'm_name' => 'INDUSTRY EXPERT',
+        'm_desc' => '',
+        'm_parents' => array(11035,1278,12523),
     ),
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
