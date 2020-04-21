@@ -50,7 +50,9 @@ function in_update_text(this_handler){
 
 
 
-function en_load_source_search(element_focus, is_en_parent, shortcut) {
+function en_load_source_search(source_type_id) {
+
+    var element_focus = ".source-map-"+source_type_id;
 
     $(element_focus + ' .new-source-input').focus(function() {
 
@@ -64,7 +66,6 @@ function en_load_source_search(element_focus, is_en_parent, shortcut) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            //en_add_or_link(0, is_en_parent);
             alert('ok');
             return true;
         }
@@ -75,18 +76,17 @@ function en_load_source_search(element_focus, is_en_parent, shortcut) {
 
         //Define filters:
         var extra_filters = null;
-        if(element_focus==4983){
+        if(source_type_id==4983){
             extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_4983.join(' OR _tags:alg_source_') + ') ';
-        } else if(element_focus==10573){
+        } else if(source_type_id==10573){
             extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_10573.join(' OR _tags:alg_source_') + ') ';
         }
 
         $(element_focus + ' .new-source-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            //en_add_or_link(suggestion.alg_obj_id, is_en_parent);
             alert('ok');
 
-        }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_en_parent ? 'q' : 'a' )]}, [{
+        }).autocomplete({hint: false, minLength: 1}, [{
             source: function (q, cb) {
                 algolia_index.search(q, {
                     filters: ' alg_obj_type_id=4536 ' + extra_filters,
@@ -106,11 +106,11 @@ function en_load_source_search(element_focus, is_en_parent, shortcut) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                        return '<a href="javascript:" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
@@ -159,7 +159,7 @@ $(document).ready(function () {
     //Activate Source-Only Inputs:
 
     $(".source-mapper").each(function () {
-        en_load_source_search(".source-map-"+$(this).attr('source-type-id'), 0, 'w');
+        en_load_source_search($(this).attr('source_type_id'));
     });
 
     //Load top/bottom idea searches:
