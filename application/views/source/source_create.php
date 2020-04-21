@@ -14,10 +14,6 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
     echo '<h1 class="'.extract_icon_color($en_all_11035[12762]['m_icon']).'" style="padding-top:5px;"><span class="icon-block">'.echo_en_icon($en_all_11035[12762]['m_icon']).'</span>'.$en_all_11035[12762]['m_name'].'</h1>';
 
 
-    //Source Type
-    echo '<h2><span class="icon-block">'.$en_all_12762[12769]['m_icon'].'</span>'.$en_all_12762[12769]['m_name'].'</h2>';
-    echo echo_in_dropdown(12769, 3084, 'btn-source');
-
 
     //Full Name
     echo '<h2 style="margin-top: 21px;"><span class="icon-block">'.$en_all_12762[6197]['m_icon'].'</span>'.$en_all_12762[6197]['m_name'].'</h2>';
@@ -28,7 +24,11 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
     echo '<h2 style="margin-top: 21px;"><span class="icon-block">'.$en_all_12762[12763]['m_icon'].'</span>'.$en_all_12762[12763]['m_name'].'</h2>';
     echo '<div class="form-group is-empty"><input type="url" id="source_url" '.( isset($_GET['source_url']) ? ' value="'.$_GET['source_url'].'" ' : '' ).' class="form-control border" placeholder="'.$en_all_12762[12763]['m_desc'].'"></div>';
 
-    echo '<h2 style="margin-top: 21px;"><span class="icon-block">'.$en_all_11035[3000]['m_icon'].'</span>'.$en_all_11035[3000]['m_name'].'</h2>';
+
+    //Source Type
+    echo '<h2><span class="icon-block">'.$en_all_12762[12769]['m_icon'].'</span>'.$en_all_12762[12769]['m_name'].'</h2>';
+    echo echo_in_dropdown(12769, 3084, 'btn-source');
+
 
 
     //Content Type
