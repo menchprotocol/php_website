@@ -2020,7 +2020,7 @@ function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_source 
         } elseif(!$in_id && !$ln_id){
 
             //Source creator:
-            $anchor_url = ( $en_id==$selected_en_id ? 'href="javascript:void();"' : 'href="javascript:void();" new-en-id="'.$en_id.'" onclick="preview_update_dropdown('.$cache_en_id.', '.$en_id.')"' );
+            $anchor_url = 'href="javascript:void();" new-en-id="'.$en_id.'" onclick="preview_update_dropdown('.$cache_en_id.', '.$en_id.')"';
 
         } else{
 

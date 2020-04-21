@@ -29,6 +29,12 @@ function create_process(){
 function preview_update_dropdown(element_id, new_en_id){
 
     //Update UI:
+    new_en_id = parseInt(new_en_id);
+    var current_selected = parseInt($('.dropi_'+element_id+'_0_0.active').attr('new-en-id'));
+    if(current_selected == new_en_id){
+        //Nothing changed:
+        return false;
+    }
     var data_object = eval('js_en_all_'+element_id);
     $('.dropd_'+element_id+'_0_0 .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + data_object[new_en_id]['m_name']);
     $('.dropd_'+element_id+'_0_0 .dropi_' + element_id +'_0_0').removeClass('active');
