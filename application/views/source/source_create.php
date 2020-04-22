@@ -44,7 +44,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
     //CREATE BUTTON:
     echo '<div style="margin-top:34px;">';
     echo echo_in_dropdown(3000, ( isset($_GET['content_type']) ? $_GET['content_type'] : 3005 /* Books */ ), 'btn-source');
-    echo '&nbsp;&nbsp;<a href="javascript:void();" onclick="create_process()" class="btn btn-source">'.$en_all_12762[12771]['m_name'].'</a>';
+    echo '&nbsp;&nbsp;<a href="javascript:void();" onclick="create_process()" class="btn btn-source">'.$en_all_12762[12771]['m_icon'].' '.$en_all_12762[12771]['m_name'].'</a>';
     echo '</div>';
 
 
