@@ -49,7 +49,7 @@ function in_update_text(this_handler){
 }
 
 function in_notes_counter(note_type_id, adjustment_count){
-    var current_count = $('.en-type-counter-'+note_type_id).text();
+    var current_count = parseInt($('.en-type-counter-'+note_type_id).text());
     var new_count = current_count + adjustment_count;
     $('.en-type-counter-'+note_type_id).text(new_count);
 }
