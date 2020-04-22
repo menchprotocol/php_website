@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-21 22:39:24 PST
+//Generated 2020-04-22 14:52:23 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587533964;
-$config['cache_count_transaction'] = 1150935;
-$config['cache_count_discover'] = 121120;
-$config['cache_count_idea'] = 4840;
-$config['cache_count_source'] = 5205;
+$config['cache_timestamp'] = 1587592343;
+$config['cache_count_transaction'] = 1151649;
+$config['cache_count_discover'] = 121128;
+$config['cache_count_idea'] = 4855;
+$config['cache_count_source'] = 5212;
 
 
 
@@ -967,7 +967,7 @@ $config['en_all_12400'] = array(
 );
 
 //SOURCE:
-$config['en_ids_4536'] = array(12762,3000,7305,6206,12646,12500,4600,12289,4251,10645,11089,4758,12437);
+$config['en_ids_4536'] = array(12762,3000,7305,6206,12646,12500,4600,12289,4251,10645,11089,7504,12775,4758,12437);
 $config['en_all_4536'] = array(
     12762 => array(
         'm_icon' => '<i class="far fa-plus-circle source"></i>',
@@ -1035,6 +1035,18 @@ $config['en_all_4536'] = array(
         'm_desc' => '',
         'm_parents' => array(4536,4527),
     ),
+    7504 => array(
+        'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE PENDING MODERATION',
+        'm_desc' => '',
+        'm_parents' => array(4536,5967,4755,4593),
+    ),
+    12775 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE PENDING REVIEW',
+        'm_desc' => '',
+        'm_parents' => array(1,4536),
+    ),
     4758 => array(
         'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE SETTINGS',
@@ -1050,7 +1062,7 @@ $config['en_all_4536'] = array(
 );
 
 //IDEA:
-$config['en_ids_4535'] = array(12773,7545,10573,12419,4250,12453,4601,11018,4229,4228,10686,10663,10664,10643,12589,6226,4231,4485,10676,10678,10679,10677,12682,6768,10681,10675,12450,4983,7302,10662,10648,10650,10644,10651,4993,6201,12647,12591,12592,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,4246,10653,4259,10657,4257,4261,10669,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,10689,10646,7504,10654,5007,4994);
+$config['en_ids_4535'] = array(12773,7545,10573,12419,4250,12453,4601,11018,4229,4228,10686,10663,10664,10643,12589,6226,4231,4485,10676,10678,10679,10677,12682,6768,10681,10675,12450,4983,7302,10662,10648,10650,10644,10651,4993,6201,12647,12591,12592,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,4246,10653,4259,10657,4257,4261,10669,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,10689,10646,10654,5007,4994);
 $config['en_all_4535'] = array(
     12773 => array(
         'm_icon' => '<i class="far fa-plus-circle idea"></i>',
@@ -1477,12 +1489,6 @@ $config['en_all_4535'] = array(
         'm_name' => 'SOURCE NAME UPDATE',
         'm_desc' => '',
         'm_parents' => array(4535,10593,4593,10645),
-    ),
-    7504 => array(
-        'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE REVIEW TRIGGER',
-        'm_desc' => '',
-        'm_parents' => array(4535,5967,4755,4593),
     ),
     10654 => array(
         'm_icon' => '<i class="fad fa-sliders-h source" aria-hidden="true"></i>',
@@ -3217,7 +3223,7 @@ $config['en_all_12138'] = array(
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA FEATURED',
         'm_desc' => '',
-        'm_parents' => array(10648,12138,7356,7355,4737),
+        'm_parents' => array(10986,10648,12138,7356,7355,4737),
     ),
 );
 
@@ -3914,7 +3920,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.345',
+        'm_desc' => 'v1.35',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -6703,9 +6709,9 @@ $config['en_all_5967'] = array(
     ),
     7504 => array(
         'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE REVIEW TRIGGER',
+        'm_name' => 'SOURCE PENDING MODERATION',
         'm_desc' => '&var_en_subscriber_ids=1',
-        'm_parents' => array(4535,5967,4755,4593),
+        'm_parents' => array(4536,5967,4755,4593),
     ),
 );
 
@@ -7037,7 +7043,7 @@ $config['en_all_7356'] = array(
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
         'm_name' => 'FEATURED',
         'm_desc' => '',
-        'm_parents' => array(10648,12138,7356,7355,4737),
+        'm_parents' => array(10986,10648,12138,7356,7355,4737),
     ),
     6184 => array(
         'm_icon' => '<i class="far fa-globe idea" aria-hidden="true"></i>',
@@ -7054,7 +7060,7 @@ $config['en_all_7355'] = array(
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
         'm_name' => 'FEATURED',
         'm_desc' => '',
-        'm_parents' => array(10648,12138,7356,7355,4737),
+        'm_parents' => array(10986,10648,12138,7356,7355,4737),
     ),
     6184 => array(
         'm_icon' => '<i class="far fa-globe idea" aria-hidden="true"></i>',
@@ -7344,7 +7350,7 @@ $config['en_all_4737'] = array(
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
         'm_name' => 'FEATURED',
         'm_desc' => 'Starting point idea, Searchable by all players',
-        'm_parents' => array(10648,12138,7356,7355,4737),
+        'm_parents' => array(10986,10648,12138,7356,7355,4737),
     ),
     6184 => array(
         'm_icon' => '<i class="far fa-globe idea" aria-hidden="true"></i>',
@@ -8078,9 +8084,9 @@ $config['en_all_4755'] = array(
     ),
     7504 => array(
         'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE REVIEW TRIGGER',
+        'm_name' => 'SOURCE PENDING MODERATION',
         'm_desc' => '',
-        'm_parents' => array(4535,5967,4755,4593),
+        'm_parents' => array(4536,5967,4755,4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-keyboard discover" aria-hidden="true"></i>',
@@ -8899,9 +8905,9 @@ $config['en_all_4593'] = array(
     ),
     7504 => array(
         'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE REVIEW TRIGGER',
+        'm_name' => 'SOURCE PENDING MODERATION',
         'm_desc' => 'Certain links that match an unknown behavior would require an admin to review and ensure it\'s all good',
-        'm_parents' => array(4535,5967,4755,4593),
+        'm_parents' => array(4536,5967,4755,4593),
     ),
     10654 => array(
         'm_icon' => '<i class="fad fa-sliders-h source" aria-hidden="true"></i>',

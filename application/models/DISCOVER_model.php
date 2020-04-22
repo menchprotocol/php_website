@@ -889,7 +889,7 @@ class DISCOVER_model extends CI_Model
             } else {
 
                 //IDEA TITLE
-                echo '<div style="padding-top:6px;">'.( $recipient_en['en_id']>0 || 1 ? '<span class="icon-block top-icon"><i class="fas fa-circle discover"></i></span>' : '<span class="icon-block">&nbsp;</span>' ).'<h1 class="inline-block block-one">' . echo_in_title($ins[0]) . '</h1></div>';
+                echo '<h1 style="padding-top:5px;" class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle discover"></i></span>' . echo_in_title($ins[0]) . '</h1>';
 
 
                 foreach ($in__messages as $message_ln) {
@@ -1092,7 +1092,7 @@ class DISCOVER_model extends CI_Model
                 }
 
                 //DISCOVER TITLE
-                echo '<div style="padding-top:1px;"><span class="icon-block top-icon"><i class="fas fa-circle discover" aria-hidden="true"></i></span><h1 class="inline-block block-one">' . echo_in_title($ins[0]) . '</h1></div>';
+                echo '<h1 style="padding-top:1px;" class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle discover" aria-hidden="true"></i></span>' . echo_in_title($ins[0]) . '</h1>';
 
             } else {
 

@@ -1299,7 +1299,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
         $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
 
         //IDEA TYPE
-        $ui .= echo_in_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']);
+        $ui .= '<div class="inline-block '.superpower_active(10986).'">'.echo_in_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']).'</div>';
 
         //IDEA DISCOVER TIME
         $ui .= echo_in_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source, ($in['ln_order']*10)+1);
@@ -1971,8 +1971,8 @@ function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_source, $tab
     //Determine ICON
     if($is_in_title_lg){
         //IDEA COIN:
-        $icon = '<span class="icon-block title-icon">'.$en_all_12112[4535]['m_icon'].'</span>';
-    } elseif(in_array($cache_en_id, $CI->config->item('en_ids_12420'))){
+        $icon = '<span class="icon-block title-icon" style="font-size: 1.4em;">'.$en_all_12112[4535]['m_icon'].'</span>';
+    } elseif(in_array($cache_en_id, $CI->config->item('en_ids_12420'))){ //IDEA TEXT INPUT SHOW ICON
         $icon = '<span class="icon-block">'.$en_all_12112[$cache_en_id]['m_icon'].'</span>';
     } else {
         $icon = null;

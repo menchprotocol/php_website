@@ -99,7 +99,7 @@ echo '<div class="inline-block pull-left both-margin left-margin">'.echo_in_drop
 echo '<div class="inline-block pull-left both-margin left-half-margin">'.echo_in_dropdown(4737, $in['in_status_source_id'], 'btn-idea', $is_source, true, $in['in_id']).'</div>';
 
 //IDEA TIME
-echo '<div class="inline-block pull-left both-margin left-half-margin">'.echo_in_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source && $is_active, 0).'</div>';
+echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.echo_in_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source && $is_active, 0).'</div>';
 
 //IDEA DISCOVER (IF PUBLIC)
 echo '<div class="inline-block pull-right both-margin left-half-margin idea-discover '.( $is_public ? '' : ' hidden ' ).'"><a class="btn btn-discover" href="/'.$in['in_id'].'"><span class="show-max">'.$en_all_11035[12750]['m_name'].'&nbsp;</span>'.$en_all_11035[12750]['m_icon'].'</a></div>';
