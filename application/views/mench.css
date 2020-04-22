@@ -758,6 +758,9 @@ textarea.pads-textarea{
 .space-left{
     padding-left: 33px;
 }
+#en_link_preview{
+    max-width: 377px;
+}
 .space-content{
     padding-left:33px;
     padding-right:33px;
