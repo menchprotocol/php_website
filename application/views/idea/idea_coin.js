@@ -52,7 +52,7 @@ function in_update_text(this_handler){
 
 function in_notes_source_only_add(en_existing_id, note_type_id) {
 
-    return alert('Type '+note_type_id+': ' + ( en_existing_id ? en_existing_id : $('#new-parent .add-input').val() ));
+    return alert('Type '+note_type_id+': ' + ( en_existing_id ? en_existing_id : $('#source-map-'+note_type_id+' .add-input').val() ));
 
     //if en_existing_id>0 it means we're linking to an existing source, in which case en_new_string should be null
     //If en_existing_id=0 it means we are creating a new source and then linking it, in which case en_new_string is required
