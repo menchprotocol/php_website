@@ -257,11 +257,9 @@ function en_add_or_link(en_existing_id, is_parent) {
     if (is_parent) {
         var input = $('#new-parent .add-input');
         var list_id = 'list-parent';
-        var counter_class = '.counter-11030';
     } else {
         var input = $('#new-children .add-input');
         var list_id = 'list-children';
-        var counter_class = '.counter-11029';
     }
 
     var en_new_string = null;
@@ -297,7 +295,6 @@ function en_add_or_link(en_existing_id, is_parent) {
             add_to_list(list_id, '.en-item', data.en_new_echo);
 
             //Adjust counters:
-            $(counter_class).text((parseInt($(counter_class + ':first').text()) + 1));
             $('.count-en-status-' + data.en_new_status).text((parseInt($('.count-en-status-' + data.en_new_status).text()) + 1));
 
             //Tooltips:

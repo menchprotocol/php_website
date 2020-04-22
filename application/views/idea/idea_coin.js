@@ -52,14 +52,15 @@ function in_update_text(this_handler){
 
 function in_notes_source_only_add(en_existing_id, note_type_id) {
 
-    return alert('Type '+note_type_id+': ' + ( en_existing_id ? en_existing_id : $('#source-map-'+note_type_id+' .add-input').val() ));
 
     //if en_existing_id>0 it means we're linking to an existing source, in which case en_new_string should be null
     //If en_existing_id=0 it means we are creating a new source and then linking it, in which case en_new_string is required
 
-    var input = $('#new-parent .add-input');
-    var list_id = 'list-parent';
-    var counter_class = '.counter-11030';
+    var input = $('.source-map-'+note_type_id+' .add-input');
+    var list_id = 'add-source-'+note_type_id;
+
+    return alert('Type '+note_type_id+': ' + ( en_existing_id ? en_existing_id : input.val() ));
+
 
     var en_new_string = null;
     if (en_existing_id == 0) {
@@ -95,7 +96,6 @@ function in_notes_source_only_add(en_existing_id, note_type_id) {
             add_to_list(list_id, '.en-item', data.en_new_echo);
 
             //Adjust counters:
-            $(counter_class).text((parseInt($(counter_class + ':first').text()) + 1));
             $('.count-en-status-' + data.en_new_status).text((parseInt($('.count-en-status-' + data.en_new_status).text()) + 1));
 
             //Tooltips:
