@@ -324,6 +324,38 @@ class Source extends CI_Controller
 
     }
 
+    function in_notes_source_only_remove(){
+
+        //Auth user and check required variables:
+        $session_en = superpower_assigned(10939);
+
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => echo_unauthorized_message(10939),
+            ));
+        } elseif (!isset($_POST['ln_id'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Transaction ID',
+            ));
+        } elseif (!isset($_POST['in_id']) || !in_is_source($_POST['in_id'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'You are not the author of this source',
+            ));
+        }
+
+        //Archive Link:
+        $this->LEDGER_model->ln_update($_POST['ln_id'], array(
+            'ln_status_source_id' => 6173,
+        ), $session_en['en_id'], 10678 /* Idea Notes Unlinked */);
+
+        return echo_json(array(
+            'status' => 1,
+        ));
+
+    }
 
     function en_add_source_ref_only()
     {
@@ -385,7 +417,6 @@ class Source extends CI_Controller
                 ));
             }
 
-
             //Make sure not already linked:
             if(count($this->LEDGER_model->ln_fetch(array(
                 'ln_next_idea_id' => $ins[0]['in_id'],
@@ -396,7 +427,7 @@ class Source extends CI_Controller
                 $en_all_7551 = $this->config->item('en_all_7551');
                 return echo_json(array(
                     'status' => 0,
-                    'message' => $ens[0]['en_name'].' is already added as a ['.$en_all_7551[$_POST['note_type_id']]['m_name'].'] for this idea',
+                    'message' => $ens[0]['en_name'].' is already added as idea '.$en_all_7551[$_POST['note_type_id']]['m_name'],
                 ));
             }
 
@@ -416,9 +447,8 @@ class Source extends CI_Controller
             //Assign new source:
             $focus_en = $added_en['en'];
 
-
-            //Organize this source:
-            if(!superpower_assigned(10967) || 1 /* Remove later... */){
+            //Review source later:
+            if(!superpower_assigned(10967)){
 
                 //Add Pending Review:
                 $this->LEDGER_model->ln_create(array(
@@ -438,9 +468,6 @@ class Source extends CI_Controller
                 ));
 
             }
-
-
-
         }
 
         //Create Note:

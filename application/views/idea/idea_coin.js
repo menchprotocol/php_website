@@ -50,59 +50,29 @@ function in_update_text(this_handler){
 
 
 
-function in_notes_source_only_remove(ln_id) {
+function in_notes_source_only_remove(ln_id, note_type_id) {
 
-    return alert('Removing '+ln_id);
+    var r = confirm("Remove this source?");
+    if (r == true) {
+        $.post("/source/in_notes_source_only_remove", {
 
+            in_id: in_loaded_id,
+            ln_id: ln_id,
 
-    //if en_existing_id>0 it means we're linking to an existing source, in which case en_new_string should be null
-    //If en_existing_id=0 it means we are creating a new source and then linking it, in which case en_new_string is required
+        }, function (data) {
+            if (data.status) {
 
-    var en_new_string = null;
-    var input = $('.source-map-'+note_type_id+' .add-input');
-    var list_id = 'add-source-'+note_type_id;
+                $(".tr_" + ln_id).fadeOut();
+                setTimeout(function () {
+                    $(".tr_" + ln_id).remove();
+                }, 610);
 
-    if (en_existing_id == 0) {
-
-        en_new_string = input.val();
-        if (en_new_string.length < 1) {
-            alert('Alert: Missing source name or URL, try again');
-            input.focus();
-            return false;
-        }
+            } else {
+                //We had an error:
+                alert('Alert: ' + data.message);
+            }
+        });
     }
-
-    //Add via Ajax:
-    input.prop('disabled', true);
-    $.post("/source/en_add_source_ref_only", {
-
-        in_id: in_loaded_id,
-        note_type_id: note_type_id,
-        en_existing_id: en_existing_id,
-        en_new_string: en_new_string,
-
-    }, function (data) {
-
-        //Release lock:
-        input.prop('disabled', false);
-
-        if (data.status) {
-
-            //Raw input to make it discovery for next URL:
-            input.focus().val('');
-
-            //Add new object to list:
-            add_to_list(list_id, '.en-item', data.en_new_echo);
-
-            //Tooltips:
-            $('[data-toggle="tooltip"]').tooltip();
-
-        } else {
-            //We had an error:
-            alert('Alert: ' + data.message);
-        }
-
-    });
 
 }
 
@@ -143,7 +113,7 @@ function in_notes_source_only_add(en_existing_id, note_type_id) {
         if (data.status) {
 
             //Raw input to make it discovery for next URL:
-            input.focus().val('');
+            input.focus();
 
             //Add new object to list:
             add_to_list(list_id, '.en-item', data.en_new_echo);
