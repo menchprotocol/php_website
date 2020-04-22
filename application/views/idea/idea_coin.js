@@ -87,7 +87,7 @@ function in_notes_source_only_add(en_existing_id, note_type_id) {
         if (data.status) {
 
             //Raw input to make it discovery for next URL:
-            input.focus();
+            input.focus().val('');
 
             //Add new object to list:
             add_to_list(list_id, '.en-item', data.en_new_echo);

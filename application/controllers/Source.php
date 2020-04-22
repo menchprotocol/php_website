@@ -429,7 +429,7 @@ class Source extends CI_Controller
 
                 //SOURCE PENDING MODERATION TYPE:
                 $this->LEDGER_model->ln_create(array(
-                    'ln_type_source_id' => 4246, //SOURCE PENDING MODERATION
+                    'ln_type_source_id' => 7504, //SOURCE PENDING MODERATION
                     'ln_creator_source_id' => $session_en['en_id'],
                     'ln_profile_source_id' => 12775, //PENDING REVIEW
                     'ln_portfolio_source_id' => $focus_en['en_id'],
