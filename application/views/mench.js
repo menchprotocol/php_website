@@ -445,11 +445,11 @@ function en_ln_type_preview() {
     //Fetch Idea Data to load modify widget:
     $.post("/source/en_ln_type_preview", {
         ln_content: $('#ln_content').val(),
-        ln_id: parseInt($('#modifybox').attr('source-link-id')),
+        ln_id: ( $( "#modifybox" ).length ? parseInt($('#modifybox').attr('source-link-id')) : 0 ),
     }, function (data) {
 
         //All good, let's load the data into the Modify Widget...
-        $('#en_type_link_id').html((data.status ? data.html_ui : 'Alert: ' + data.message));
+        $('#en_type_link_id').html((data.status ? data.html_ui : '<b class="discover montserrat">ERROR: ' + data.message+'</b>'));
 
         if(data.status && data.en_link_preview.length > 0){
             $('#en_link_preview').html(data.en_link_preview);
