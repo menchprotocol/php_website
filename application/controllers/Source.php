@@ -173,7 +173,7 @@ class Source extends CI_Controller
 
 
         //Fetch leaderboard:
-        $in_source_coins = $this->LEDGER_model->ln_fetch($filters_in, array('en_proflie'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight');
+        $in_source_coins = $this->LEDGER_model->ln_fetch($filters_in, array('en_profile'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight');
 
 
         //Start with top Players:
@@ -795,7 +795,7 @@ class Source extends CI_Controller
                     'ln_portfolio_source_id' => $_POST['en_id'],
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-                ), array('en_proflie'), 1);
+                ), array('en_profile'), 1);
 
             }
 

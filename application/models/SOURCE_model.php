@@ -45,7 +45,7 @@ class SOURCE_model extends CI_Model
             'ln_portfolio_source_id' => $en['en_id'], //This child source
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-        ), array('en_proflie')) as $en_parent){
+        ), array('en_profile')) as $en_parent){
 
             //Push to parent IDs:
             array_push($session_data['session_parent_ids'], intval($en_parent['en_id']));

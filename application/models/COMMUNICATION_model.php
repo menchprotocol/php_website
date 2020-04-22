@@ -1435,7 +1435,7 @@ class COMMUNICATION_model extends CI_Model
                     'ln_portfolio_source_id' => $string_references['ref_sources'][0], //This child source
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-                ), array('en_proflie'), 0) as $parent_en) {
+                ), array('en_profile'), 0) as $parent_en) {
 
                     if($parent_en['ln_content']=="https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']){
                         continue;

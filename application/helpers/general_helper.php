@@ -1199,7 +1199,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                     'ln_portfolio_source_id' => $db_row['en_id'], //This child source
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                     'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-                ), array('en_proflie'), 0, 0, array('en_weight' => 'DESC')) as $ln) {
+                ), array('en_profile'), 0, 0, array('en_weight' => 'DESC')) as $ln) {
 
                     //Always add to tags:
                     array_push($export_row['_tags'], 'alg_source_' . $ln['en_id']);

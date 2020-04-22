@@ -168,7 +168,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'ln_type_source_id' => $en_id,
             'ln_next_idea_id' => $in['in_id'],
-        ), array('en_proflie'), 0, 0, array('ln_order' => 'ASC'));
+        ), array('en_profile'), 0, 0, array('ln_order' => 'ASC'));
 
         $counter = count($in_notes);
 

@@ -886,7 +886,7 @@ class IDEA_model extends CI_Model
             '(ln_next_idea_id = ' . $in_id . ( count($flat_common_steps) > 0 ? ' OR ln_next_idea_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-        ), array('en_proflie'), 0) as $pads_en) {
+        ), array('en_profile'), 0) as $pads_en) {
 
             //Referenced source in Idea Notes... Fetch parents:
             foreach($this->LEDGER_model->ln_fetch(array(

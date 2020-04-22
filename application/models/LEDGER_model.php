@@ -389,7 +389,7 @@ class LEDGER_model extends CI_Model
         }
 
         //Any source joins?
-        if (in_array('en_proflie', $join_objects)) {
+        if (in_array('en_profile', $join_objects)) {
             $this->db->join('mench_source', 'ln_profile_source_id=en_id','left');
         } elseif (in_array('en_portfolio', $join_objects)) {
             $this->db->join('mench_source', 'ln_portfolio_source_id=en_id','left');

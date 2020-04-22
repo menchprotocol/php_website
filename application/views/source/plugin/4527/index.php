@@ -93,7 +93,7 @@ foreach($config_ens as $en){
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
             'ln_portfolio_source_id' => $child['en_id'],
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-        ), array('en_proflie'), 0);
+        ), array('en_profile'), 0);
         foreach($child_parents as $cp_en){
             array_push($child_parent_ids, intval($cp_en['en_id']));
         }

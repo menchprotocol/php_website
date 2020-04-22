@@ -24,7 +24,7 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
     'ln_portfolio_source_id' => $source['en_id'],
-), array('en_proflie'), 0, 0, array('en_weight' => 'DESC'));
+), array('en_profile'), 0, 0, array('en_weight' => 'DESC'));
 
 
 ?>
@@ -373,15 +373,11 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
 
         } elseif($en_id==11030){
 
-            //SOURCE PARENT
+            //SOURCE PROFILE
             $counter = count($source__parents);
             if(!$counter && !superpower_active(10967, true)){
                 continue;
             }
-
-            //Auto expand Parents IF not children:
-            $auto_expand_tab = !$child_links[0]['totals'];
-
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
             foreach ($source__parents as $en) {
