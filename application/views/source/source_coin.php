@@ -409,9 +409,7 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
                 'ln_profile_source_id' => $source['en_id'],
             ), array('en_portfolio'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
-
-
-
+            $counter = count($source__children);
 
             //SOURCE MASS EDITOR
             if(superpower_active(10967, true)){
@@ -596,8 +594,6 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
                 }
             }
 
-
-
             $this_tab .= '<div id="list-children" class="list-group">';
 
             foreach ($source__children as $en) {
@@ -715,7 +711,7 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
         }
 
         if(!$counter && (!in_array($en_id, $this->config->item('en_ids_12574')) || !$session_en)){
-            //continue;
+            continue;
         }
 
 
