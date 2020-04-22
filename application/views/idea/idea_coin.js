@@ -355,7 +355,7 @@ function discover_preview(){
 }
 
 
-function in_unlink(in_id, ln_id){
+function in_unlink(in_id, ln_id, is_parent){
     var in_title = $('.text__4736_'+in_id).text();
     var r = confirm("Unlink ["+in_title+"]?");
     if (r == true) {
@@ -367,6 +367,9 @@ function in_unlink(in_id, ln_id){
         }, function (data) {
             if (data.status) {
                 in_ui_delete(in_id,ln_id);
+                if(!is_parent){
+                    in_notes_counter(11020, -1);
+                }
             }
         });
     }

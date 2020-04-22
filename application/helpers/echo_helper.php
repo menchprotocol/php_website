@@ -1257,7 +1257,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
         if($is_source || !$is_parent){
 
             //Unlink:
-            $ui .= '<span title="UNLINK" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].')"><i class="fas fa-times black"></i></a></span>';
+            $ui .= '<span title="UNLINK" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
 
             if($is_source && !$is_parent){
                 $ui .= '<span title="SORT" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars black idea-sort-handle"></i></span>';
