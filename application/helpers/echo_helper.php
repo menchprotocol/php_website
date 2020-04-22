@@ -1744,6 +1744,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $ln_id = (isset($en['ln_id']) ? $en['ln_id'] : 0);
     $is_link_source = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_4592')));
     $is_discover_progress = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_12227')));
+    $is_in_source = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_7551')));
     $ui = null;
 
     $en__parents = $CI->LEDGER_model->ln_fetch(array(
@@ -1895,8 +1896,13 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $ui .= '<span class="show-on-hover">';
 
     if($control_enabled){
-        //Option to Manage:
-        $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-pen-square black"></i></a></span>';
+        if($is_link_source){
+            //Manage source link:
+            $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-pen-square black"></i></a></span>';
+        } elseif($is_in_source){
+            //Allow to remove:
+            $ui .= '<span><a href="javascript:void(0);" onclick="in_notes_source_only_remove(' . $ln_id . ')"><i class="fas fa-times black"></i></a></span>';
+        }
     }
 
     $ui .= '</span>';

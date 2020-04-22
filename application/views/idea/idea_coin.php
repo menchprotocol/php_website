@@ -175,7 +175,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
         $this_tab .= '<div id="add-source-' .$en_id . '" class="list-group source-adder">';
 
         foreach ($in_notes as $in_note) {
-            $this_tab .= echo_en($in_note);
+            $this_tab .= echo_en($in_note, 0, null, $is_source && $is_active);
         }
 
         $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding source-mapper source-map-'.$en_id.'" note_type_id="' . $en_id . '">

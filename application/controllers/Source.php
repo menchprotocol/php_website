@@ -416,6 +416,7 @@ class Source extends CI_Controller
             //Assign new source:
             $focus_en = $added_en['en'];
 
+
             //Organize this source:
             if(!superpower_assigned(10967) || 1 /* Remove later... */){
 
