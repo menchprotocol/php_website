@@ -399,7 +399,7 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
 
         } elseif($en_id==11029){
 
-            echo 'hiiiiiiiii';
+
 
             //Fetch Portfolio
             $source__children = $this->LEDGER_model->ln_fetch(array(
@@ -410,7 +410,6 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
             ), array('en_portfolio'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
 
-            echo count($source__children);
 
 
 
@@ -715,14 +714,13 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
 
         }
 
-        /*
         if(!$counter && (!in_array($en_id, $this->config->item('en_ids_12574')) || !$session_en)){
-            continue;
+            //continue;
         }
-        */
+
 
         //HEADER
-        //echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
+        echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
         echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$en_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.$m['m_name'].( $counter>0 ? '<span title="'.number_format($counter, 0).'" class="'.superpower_active(12701).'">&nbsp;'.echo_number($counter).'</span>' : '').'</a></div>';
 
@@ -730,7 +728,7 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
         echo '<div class="contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';
         echo $this_tab;
         echo '</div>';
-        //echo '</div>';
+        echo '</div>';
 
     }
 
