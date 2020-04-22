@@ -140,6 +140,8 @@ $(document).ready(function () {
 
     //en_ln_type_preview_load();
 
+    $('#ln_content').focus();
+
     $('#addContent .add-input').focus(function() {
         $('#addContent .algolia_pad_search' ).removeClass('hidden');
     }).focusout(function() {

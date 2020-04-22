@@ -15,7 +15,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
     //SOURCE CREATOR TITLE
     echo '<h1 class="idea" style="padding-top:5px;"><a href="/idea/'.$in['in_id'].'"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_in_title($in).'</a></h1>';
-    echo '<p class="space-left">Add a new source for this idea:</p>';
+    echo '<p class="space-left">Add a new content source for this idea:</p>';
 
 
     //Content Title
