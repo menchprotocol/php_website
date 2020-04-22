@@ -55,15 +55,9 @@ function in_notes_source_only_add(en_existing_id, note_type_id) {
     //if en_existing_id>0 it means we're linking to an existing source, in which case en_new_string should be null
     //If en_existing_id=0 it means we are creating a new source and then linking it, in which case en_new_string is required
 
-    if (is_parent) {
-        var input = $('#new-parent .add-input');
-        var list_id = 'list-parent';
-        var counter_class = '.counter-11030';
-    } else {
-        var input = $('#new-children .add-input');
-        var list_id = 'list-children';
-        var counter_class = '.counter-11029';
-    }
+    var input = $('#new-parent .add-input');
+    var list_id = 'list-parent';
+    var counter_class = '.counter-11030';
 
     var en_new_string = null;
     if (en_existing_id == 0) {

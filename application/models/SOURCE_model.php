@@ -803,7 +803,7 @@ class SOURCE_model extends CI_Model
 
             array(
                 'status' => ($url_previously_existed && !$ln_creator_source_id ? 0 : 1),
-                'message' => ($url_previously_existed && !$ln_creator_source_id ? 'URL is previously linked to @' . $en_url['en_id'] . ' ' . $en_url['en_name'].' [TRANSACTION ID '.$en_url['ln_id'].']' : 'Success'),
+                'message' => ($url_previously_existed && !$ln_creator_source_id ? 'URL already belongs to [' . $en_url['en_name'].'] with source ID @' . $en_url['en_id'] : 'Success'),
                 'url_previously_existed' => $url_previously_existed,
                 'cleaned_url' => $url,
                 'ln_type_source_id' => $ln_type_source_id,
