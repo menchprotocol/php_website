@@ -47,48 +47,6 @@ class Source extends CI_Controller
     }
 
 
-    function create($in_id){
-
-        $ins = $this->IDEA_model->in_fetch(array(
-            'in_id' => $in_id,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-        ));
-
-        if(!isset($ins[0]['in_id'])){
-            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid Idea ID</div>');
-        }
-
-        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
-        $this->load->view('header', array(
-            'title' => $ins[0]['in_title'].' | '.$en_all_11035[12762]['m_name'],
-        ));
-        $this->load->view('source/source_create', array(
-            'in' => $ins[0],
-        ));
-        $this->load->view('footer');
-
-    }
-
-    function create_process(){
-
-        //The AJAX function for create() above
-        $session_en = superpower_assigned(10939);
-
-        if (!$session_en) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => echo_unauthorized_message(10939),
-            ));
-        } elseif (intval($_POST['en_id']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Parent Source',
-            ));
-        }
-
-    }
-
-
     //Lists sources
     function source_coin($en_id)
     {

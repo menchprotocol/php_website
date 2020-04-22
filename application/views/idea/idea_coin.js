@@ -52,6 +52,8 @@ function in_update_text(this_handler){
 
 function in_notes_source_only_add(en_existing_id, note_type_id) {
 
+    return alert('Type '+note_type_id+': ' + ( en_existing_id ? en_existing_id : $('#new-parent .add-input').val() ));
+
     //if en_existing_id>0 it means we're linking to an existing source, in which case en_new_string should be null
     //If en_existing_id=0 it means we are creating a new source and then linking it, in which case en_new_string is required
 
@@ -111,6 +113,7 @@ function in_notes_source_only_add(en_existing_id, note_type_id) {
 function in_notes_source_only_search(note_type_id) {
 
     var element_focus = ".source-map-"+note_type_id;
+
     var base_creator_url = '/source/create/'+in_loaded_id+'/?content_title=';
 
     $(element_focus + ' .add-input').focus(function() {
@@ -120,11 +123,7 @@ function in_notes_source_only_search(note_type_id) {
     }).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            if(note_type_id==4983){
-                window.location = base_creator_url+encodeURIComponent($(this).val());
-            } else {
-                in_notes_source_only_add(0, note_type_id);
-            }
+            in_notes_source_only_add(0, note_type_id);
             return true;
         }
     });
@@ -133,14 +132,11 @@ function in_notes_source_only_search(note_type_id) {
 
         //Define filters:
         var extra_filters = '';
-        if(!js_session_superpowers_assigned.includes(10967)) {
-            if(note_type_id==4983){
-                extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_3000.join(' OR _tags:alg_source_') + ') ';
-            } else if(note_type_id==10573){
-                extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_10573.join(' OR _tags:alg_source_') + ') ';
-            }
+        if(note_type_id==4983){
+            extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_4983.join(' OR _tags:alg_source_') + ') ';
+        } else if(note_type_id==10573){
+            extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_10573.join(' OR _tags:alg_source_') + ') ';
         }
-
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -167,11 +163,11 @@ function in_notes_source_only_search(note_type_id) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="'+base_creator_url+encodeURIComponent(data.query.toUpperCase())+'" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                        return '<a href="javascript:void(0);" onclick="in_notes_source_only_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="'+base_creator_url+encodeURIComponent(data.query.toUpperCase())+'" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="in_notes_source_only_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
