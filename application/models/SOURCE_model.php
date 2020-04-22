@@ -508,6 +508,7 @@ class SOURCE_model extends CI_Model
         return $stats;
     }
 
+
     function en_url($url, $ln_creator_source_id = 0, $link_parent_en_ids = array(), $add_to_child_en_id = 0, $page_title = null)
     {
 
@@ -1187,7 +1188,7 @@ class SOURCE_model extends CI_Model
 
 
         //Create source
-        $source_new = $this->SOURCE_model->en_create(array(
+        $focus_en = $this->SOURCE_model->en_create(array(
             'en_name' => trim($en_name),
             'en_icon' => $en_icon,
             'en_status_source_id' => $en_status_source_id,
@@ -1197,7 +1198,7 @@ class SOURCE_model extends CI_Model
         //Return success:
         return array(
             'status' => 1,
-            'en' => $source_new,
+            'en' => $focus_en,
         );
 
     }

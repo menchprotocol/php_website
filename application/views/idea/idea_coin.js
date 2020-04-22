@@ -56,13 +56,10 @@ function in_notes_source_only_add(en_existing_id, note_type_id) {
     //if en_existing_id>0 it means we're linking to an existing source, in which case en_new_string should be null
     //If en_existing_id=0 it means we are creating a new source and then linking it, in which case en_new_string is required
 
+    var en_new_string = null;
     var input = $('.source-map-'+note_type_id+' .add-input');
     var list_id = 'add-source-'+note_type_id;
 
-    return alert('Type '+note_type_id+': ' + ( en_existing_id ? en_existing_id : input.val() ));
-
-
-    var en_new_string = null;
     if (en_existing_id == 0) {
 
         en_new_string = input.val();
@@ -73,14 +70,14 @@ function in_notes_source_only_add(en_existing_id, note_type_id) {
         }
     }
 
-
     //Add via Ajax:
-    $.post("/source/en_add_or_link", {
+    input.prop('disabled', true);
+    $.post("/source/en_add_source_ref_only", {
 
-        en_id: en_focus_id,
+        in_id: in_loaded_id,
+        note_type_id: note_type_id,
         en_existing_id: en_existing_id,
         en_new_string: en_new_string,
-        is_parent: (is_parent ? 1 : 0),
 
     }, function (data) {
 
@@ -94,9 +91,6 @@ function in_notes_source_only_add(en_existing_id, note_type_id) {
 
             //Add new object to list:
             add_to_list(list_id, '.en-item', data.en_new_echo);
-
-            //Adjust counters:
-            $('.count-en-status-' + data.en_new_status).text((parseInt($('.count-en-status-' + data.en_new_status).text()) + 1));
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();

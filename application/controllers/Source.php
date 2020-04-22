@@ -325,6 +325,142 @@ class Source extends CI_Controller
     }
 
 
+    function en_add_source_ref_only()
+    {
+
+        //Auth user and check required variables:
+        $session_en = superpower_assigned(10939);
+
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => echo_unauthorized_message(10939),
+            ));
+        } elseif (intval($_POST['in_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Idea ID',
+            ));
+        } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('en_ids_7551'))) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Idea Note Type ID',
+            ));
+        } elseif (!isset($_POST['en_existing_id']) || !isset($_POST['en_new_string']) || (intval($_POST['en_existing_id']) < 1 && strlen($_POST['en_new_string']) < 1)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Either New Source ID or Source Name',
+            ));
+        }
+
+
+        //Validate Idea
+        $ins = $this->IDEA_model->in_fetch(array(
+            'in_id' => $_POST['in_id'],
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+        ));
+        if (count($ins) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Idea',
+            ));
+        }
+
+
+        //Set some variables:
+        $_POST['en_existing_id'] = intval($_POST['en_existing_id']);
+
+        //Are we linking to an existing source?
+        if ($_POST['en_existing_id'] > 0) {
+
+            //Validate this existing source:
+            $ens = $this->SOURCE_model->en_fetch(array(
+                'en_id' => $_POST['en_existing_id'],
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+            ));
+            if (count($ens) < 1) {
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid active source',
+                ));
+            }
+
+
+            //Make sure not already linked:
+            if(count($this->LEDGER_model->ln_fetch(array(
+                'ln_next_idea_id' => $ins[0]['in_id'],
+                'ln_profile_source_id' => $_POST['en_existing_id'],
+                'ln_type_source_id' => $_POST['note_type_id'],
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            )))){
+                $en_all_7551 = $this->config->item('en_all_7551');
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => $ens[0]['en_name'].' is already added as a ['.$en_all_7551[$_POST['note_type_id']]['m_name'].'] for this idea',
+                ));
+            }
+
+
+            //All good, assign:
+            $focus_en = $ens[0];
+
+        } else {
+
+            //Create source:
+            $added_en = $this->SOURCE_model->en_verify_create($_POST['en_new_string'], $session_en['en_id']);
+            if(!$added_en['status']){
+                //We had an error, return it:
+                return echo_json($added_en);
+            }
+
+            //Assign new source:
+            $focus_en = $added_en['en'];
+
+            //Organize this source:
+            if(!superpower_assigned(10967) || 1 /* Remove later... */){
+
+                //Add Pending Review:
+                $this->LEDGER_model->ln_create(array(
+                    'ln_type_source_id' => 4230, //Raw link
+                    'ln_creator_source_id' => $session_en['en_id'],
+                    'ln_profile_source_id' => 12775, //PENDING REVIEW
+                    'ln_portfolio_source_id' => $focus_en['en_id'],
+                ));
+
+                //SOURCE PENDING MODERATION TYPE:
+                $this->LEDGER_model->ln_create(array(
+                    'ln_type_source_id' => 4246, //SOURCE PENDING MODERATION
+                    'ln_creator_source_id' => $session_en['en_id'],
+                    'ln_profile_source_id' => 12775, //PENDING REVIEW
+                    'ln_portfolio_source_id' => $focus_en['en_id'],
+                    'ln_next_idea_id' => $ins[0]['in_id'],
+                ));
+
+            }
+
+
+
+        }
+
+        //Create Note:
+        $new_note = $this->LEDGER_model->ln_create(array(
+            'ln_creator_source_id' => $session_en['en_id'],
+            'ln_type_source_id' => $_POST['note_type_id'],
+            'ln_next_idea_id' => $ins[0]['in_id'],
+
+            'ln_profile_source_id' => $focus_en['en_id'],
+            'ln_content' => '@'.$focus_en['en_id'],
+        ));
+
+        //Return newly added or linked source:
+        return echo_json(array(
+            'status' => 1,
+            'en_new_echo' => echo_en(array_merge($focus_en, $new_note), 0, null, true),
+        ));
+
+    }
+
+
     function en_add_or_link()
     {
 
@@ -368,9 +504,7 @@ class Source extends CI_Controller
         //Set some variables:
         $_POST['is_parent'] = intval($_POST['is_parent']);
         $_POST['en_existing_id'] = intval($_POST['en_existing_id']);
-        $linking_to_existing_u = false;
         $is_url_input = false;
-        $ur1 = array();
 
         //Are we linking to an existing source?
         if (intval($_POST['en_existing_id']) > 0) {
@@ -389,8 +523,7 @@ class Source extends CI_Controller
             }
 
             //All good, assign:
-            $source_new = $ens[0];
-            $linking_to_existing_u = true;
+            $focus_en = $ens[0];
 
         } else {
 
@@ -409,7 +542,7 @@ class Source extends CI_Controller
                 if($url_source['url_is_root']){
 
                     //Link to domains parent:
-                    $source_new = array('en_id' => 1326);
+                    $focus_en = array('en_id' => 1326);
 
                     //Update domain to stay synced:
                     $_POST['en_new_string'] = $url_source['url_clean_domain'];
@@ -420,7 +553,7 @@ class Source extends CI_Controller
                     $domain_source = $this->SOURCE_model->en_domain($_POST['en_new_string'], $session_en['en_id']);
 
                     //Link to this source:
-                    $source_new = $domain_source['en_domain'];
+                    $focus_en = $domain_source['en_domain'];
                 }
 
             } else {
@@ -432,7 +565,7 @@ class Source extends CI_Controller
                     return echo_json($added_en);
                 } else {
                     //Assign new source:
-                    $source_new = $added_en['en'];
+                    $focus_en = $added_en['en'];
                 }
 
             }
@@ -449,11 +582,11 @@ class Source extends CI_Controller
             if ($_POST['is_parent']) {
 
                 $ln_portfolio_source_id = $current_en[0]['en_id'];
-                $ln_profile_source_id = $source_new['en_id'];
+                $ln_profile_source_id = $focus_en['en_id'];
 
             } else {
 
-                $ln_portfolio_source_id = $source_new['en_id'];
+                $ln_portfolio_source_id = $focus_en['en_id'];
                 $ln_profile_source_id = $current_en[0]['en_id'];
 
             }
@@ -488,7 +621,7 @@ class Source extends CI_Controller
 
         //Fetch latest version:
         $ens_latest = $this->SOURCE_model->en_fetch(array(
-            'en_id' => $source_new['en_id'],
+            'en_id' => $focus_en['en_id'],
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
         ));
         if(!count($ens_latest)){
@@ -501,7 +634,6 @@ class Source extends CI_Controller
         //Return newly added or linked source:
         return echo_json(array(
             'status' => 1,
-            'en_new_status' => $ens_latest[0]['en_status_source_id'],
             'en_new_echo' => echo_en(array_merge($ens_latest[0], $ur2), $_POST['is_parent'], null, true),
         ));
 

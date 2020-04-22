@@ -294,9 +294,6 @@ function en_add_or_link(en_existing_id, is_parent) {
             //Add new object to list:
             add_to_list(list_id, '.en-item', data.en_new_echo);
 
-            //Adjust counters:
-            $('.count-en-status-' + data.en_new_status).text((parseInt($('.count-en-status-' + data.en_new_status).text()) + 1));
-
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
 
