@@ -251,7 +251,14 @@ class Source extends CI_Controller
         //See what this is:
         $detected_ln_type = ln_detect_type($_POST['ln_content']);
 
-        if (!$detected_ln_type['status'] && isset($detected_ln_type['url_previously_existed']) && $detected_ln_type['url_previously_existed']) {
+        if(!$_POST['ln_id'] && !in_array($detected_ln_type['ln_type_source_id'], $this->config->item('en_ids_4537'))){
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid URL',
+            ));
+
+        } elseif (!$detected_ln_type['status'] && isset($detected_ln_type['url_previously_existed']) && $detected_ln_type['url_previously_existed']) {
 
             //See if this is duplicate to either link:
             $en_lns = $this->LEDGER_model->ln_fetch(array(
@@ -267,15 +274,12 @@ class Source extends CI_Controller
 
         }
 
-        if(!$_POST['ln_id'] && !in_array($detected_ln_type['ln_type_source_id'])){
-            
-        }
-
         return echo_json(array(
             'status' => 1,
             'html_ui' => '<b class="montserrat doupper '.extract_icon_color($en_all_4592[$detected_ln_type['ln_type_source_id']]['m_icon']).'">' . $en_all_4592[$detected_ln_type['ln_type_source_id']]['m_icon'] . ' ' . $en_all_4592[$detected_ln_type['ln_type_source_id']]['m_name'] . '</b>',
             'en_link_preview' => echo_url_types($_POST['ln_content'], $detected_ln_type['ln_type_source_id']),
         ));
+
     }
 
 
