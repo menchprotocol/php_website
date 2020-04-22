@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-21 20:19:04 PST
+//Generated 2020-04-21 20:29:26 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587525544;
-$config['cache_count_transaction'] = 1150803;
+$config['cache_timestamp'] = 1587526166;
+$config['cache_count_transaction'] = 1150821;
 $config['cache_count_discover'] = 121120;
 $config['cache_count_idea'] = 4840;
 $config['cache_count_source'] = 5205;
@@ -639,7 +639,7 @@ $config['en_all_12574'] = array(
         'm_icon' => '<i class="fas fa-id-badge source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12574,11089,11028),
+        'm_parents' => array(12571,12574,11089,11028),
     ),
 );
 
@@ -655,7 +655,7 @@ $config['en_all_12575'] = array(
 );
 
 //LAYOUT OPEN BY DEFAULT:
-$config['en_ids_12571'] = array(12273,11029);
+$config['en_ids_12571'] = array(12273,11029,11030);
 $config['en_all_12571'] = array(
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -668,6 +668,12 @@ $config['en_all_12571'] = array(
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
         'm_parents' => array(12574,12571,11089,11028),
+    ),
+    11030 => array(
+        'm_icon' => '<i class="fas fa-id-badge source" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(12571,12574,11089,11028),
     ),
 );
 
@@ -3346,7 +3352,7 @@ $config['en_all_11089'] = array(
         'm_icon' => '<i class="fas fa-id-badge source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12574,11089,11028),
+        'm_parents' => array(12571,12574,11089,11028),
     ),
     12682 => array(
         'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
@@ -4271,7 +4277,7 @@ $config['en_all_11028'] = array(
         'm_icon' => '<i class="fas fa-id-badge source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12574,11089,11028),
+        'm_parents' => array(12571,12574,11089,11028),
     ),
     11029 => array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
