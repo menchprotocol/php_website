@@ -184,7 +184,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
                     <input type="text"
                            class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
                            maxlength="' . config_var(11072) . '"                          
-                           placeholder="'.( $en_id==4983 ? 'BOOK/ARTICLE/VIDEO NAME' : 'SOURCE' ).'">
+                           placeholder="'.( $en_id==4983 ? 'BOOK/ARTICLE/VIDEO TITLE' : 'SOURCE' ).'">
                 </div><div class="algolia_pad_search hidden pad_expand source-pad-'.$en_id.'"></div></div>';
 
         $this_tab .= '</div>';

@@ -30,14 +30,15 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
     //Content URL
     echo '<h2 style="margin-top: 21px;" class="source"><span class="icon-block">'.$en_all_12762[12763]['m_icon'].'</span>'.$en_all_12762[12763]['m_name'].'</h2>';
-    echo '<div class="space-left"><div class="form-group is-empty"><input type="url" id="content_url" '.( isset($_GET['content_url']) ? ' value="'.$_GET['content_url'].'" ' : '' ).' class="form-control border" placeholder="'.str_replace(' ','',$en_all_12762[12763]['m_desc']).'"></div></div>';
-
+    echo '<div class="space-left"><div class="form-group is-empty"><input type="url" id="ln_content" '.( isset($_GET['ln_content']) ? ' value="'.$_GET['ln_content'].'" ' : '' ).' class="form-control border" placeholder="'.str_replace(' ','',$en_all_12762[12763]['m_desc']).'"></div></div>';
+    echo '<span id="en_type_link_id"></span>';
+    echo '<p id="en_link_preview" class="hideIfEmpty"></p>';
 
 
     //Industry Experts
     echo '<h2 style="margin-top: 21px;" class="source"><span class="icon-block">'.$en_all_11035[3084]['m_icon'].'</span>'.$en_all_12762[12764]['m_name'].'</h2>';
     echo '<div class="new_experts hideIfEmpty"></div>';
-    echo '<div id="new-children" class="list-group-item list-adder itemsource no-side-padding">
+    echo '<div id="addContent" class="list-group-item list-adder itemsource no-side-padding">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">&nbsp;</span></span>
                     <input type="text"

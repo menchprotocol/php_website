@@ -404,6 +404,68 @@ $(document).ready(function () {
 
 
 
+function en_ln_type_preview_load(){
+
+    //Watchout for content change
+    var textInput = document.getElementById('ln_content');
+
+    //Init a timeout variable to be used below
+    var timeout = null;
+
+    //Listen for keystroke events
+    textInput.onkeyup = function (e) {
+
+        // Clear the timeout if it has previously been set.
+        // This will prevent the previous step from executing
+        // if it has been less than <MILLISECONDS>
+        clearTimeout(timeout);
+
+        // Make a new timeout set to go off in 800ms
+        timeout = setTimeout(function () {
+            //update type:
+            en_ln_type_preview();
+        }, 610);
+    };
+
+}
+
+
+
+
+function en_ln_type_preview() {
+
+    /*
+     * Updates the type of link based on the link content
+     *
+     * */
+
+    $('#en_type_link_id').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+
+
+    //Fetch Idea Data to load modify widget:
+    $.post("/source/en_ln_type_preview", {
+        ln_content: $('#ln_content').val(),
+        ln_id: parseInt($('#modifybox').attr('source-link-id')),
+    }, function (data) {
+
+        //All good, let's load the data into the Modify Widget...
+        $('#en_type_link_id').html((data.status ? data.html_ui : 'Alert: ' + data.message));
+
+        if(data.status && data.en_link_preview.length > 0){
+            $('#en_link_preview').html(data.en_link_preview);
+        } else {
+            $('#en_link_preview').html('');
+        }
+
+        //Reload Tooltip again:
+        $('[data-toggle="tooltip"]').tooltip();
+
+    });
+}
+
+
+
+
 //For the drag and drop file uploader:
 var isAdvancedUpload = function () {
     var div = document.createElement('div');

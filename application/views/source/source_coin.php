@@ -199,7 +199,7 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
 
                             <span class="mini-header"><?= $en_all_4341[4593]['m_icon'].' '.$en_all_4341[4593]['m_name'] ?></span>
                             <span id="en_type_link_id"></span>
-                            <p id="en_link_preview"></p>
+                            <p id="en_link_preview" class="hideIfEmpty"></p>
 
 
 
