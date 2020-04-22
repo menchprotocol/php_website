@@ -447,6 +447,14 @@ class Source extends CI_Controller
             //Assign new source:
             $focus_en = $added_en['en'];
 
+            //Assign to Creator:
+            $this->LEDGER_model->ln_create(array(
+                'ln_type_source_id' => 4230, //Raw link
+                'ln_creator_source_id' => $session_en['en_id'],
+                'ln_profile_source_id' => $session_en['en_id'],
+                'ln_portfolio_source_id' => $focus_en['en_id'],
+            ));
+
             //Review source later:
             if(!superpower_assigned(10967)){
 

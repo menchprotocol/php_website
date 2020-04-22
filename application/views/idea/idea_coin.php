@@ -300,7 +300,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
 
     $default_active = in_array($en_id, $this->config->item('en_ids_12675'));
 
-    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$en_id.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$en_id.', '.$in['in_id'].', 0)" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id.'">'.echo_number($counter).'</span>' ).'</a></li>';
+    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$en_id.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$en_id.', '.$in['in_id'].', 0)" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$en_id.'">'.echo_number($counter).'</span>' ).'</a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$en_id.( $default_active ? '' : ' hidden ' ).'">';

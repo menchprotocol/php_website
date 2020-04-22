@@ -736,7 +736,7 @@ class Idea extends CI_Controller {
                 'message' => 'Invalid Idea ID',
             ));
 
-        } elseif (!isset($_POST['focus_ln_type_source_id']) || intval($_POST['focus_ln_type_source_id']) < 1) {
+        } elseif (!isset($_POST['note_type_id']) || intval($_POST['note_type_id']) < 1) {
 
             return echo_json(array(
                 'status' => 0,
@@ -759,7 +759,7 @@ class Idea extends CI_Controller {
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->COMMUNICATION_model->comm_validate_message($_POST['ln_content'], $session_en, false, array(), $_POST['focus_ln_type_source_id'], $_POST['in_id']);
+        $msg_validation = $this->COMMUNICATION_model->comm_validate_message($_POST['ln_content'], $session_en, false, array(), $_POST['note_type_id'], $_POST['in_id']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -771,11 +771,11 @@ class Idea extends CI_Controller {
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_order' => 1 + $this->LEDGER_model->ln_max_order(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                    'ln_type_source_id' => intval($_POST['focus_ln_type_source_id']),
+                    'ln_type_source_id' => intval($_POST['note_type_id']),
                     'ln_next_idea_id' => intval($_POST['in_id']),
                 )),
             //Referencing attributes:
-            'ln_type_source_id' => intval($_POST['focus_ln_type_source_id']),
+            'ln_type_source_id' => intval($_POST['note_type_id']),
             'ln_profile_source_id' => $msg_validation['ln_profile_source_id'],
             'ln_next_idea_id' => intval($_POST['in_id']),
             'ln_content' => $msg_validation['input_message'],
@@ -812,7 +812,7 @@ class Idea extends CI_Controller {
                 'message' => 'Missing IDEA',
             ));
 
-        } elseif (!isset($_POST['focus_ln_type_source_id'])) {
+        } elseif (!isset($_POST['note_type_id'])) {
 
             return echo_json(array(
                 'status' => 0,
@@ -879,12 +879,12 @@ class Idea extends CI_Controller {
         //Create message:
         $ln = $this->LEDGER_model->ln_create(array(
             'ln_creator_source_id' => $session_en['en_id'],
-            'ln_type_source_id' => $_POST['focus_ln_type_source_id'],
+            'ln_type_source_id' => $_POST['note_type_id'],
             'ln_profile_source_id' => $cdn_status['cdn_en']['en_id'],
             'ln_next_idea_id' => intval($_POST['in_id']),
             'ln_content' => '@' . $cdn_status['cdn_en']['en_id'],
             'ln_order' => 1 + $this->LEDGER_model->ln_max_order(array(
-                    'ln_type_source_id' => $_POST['focus_ln_type_source_id'],
+                    'ln_type_source_id' => $_POST['note_type_id'],
                     'ln_next_idea_id' => $_POST['in_id'],
                 )),
         ));
