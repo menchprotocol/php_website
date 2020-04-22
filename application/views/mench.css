@@ -777,6 +777,13 @@ textarea.note-textarea{
     margin-top: -17px !important;
     margin-bottom:0;
 }
+.title-block-lg{
+    display: block;
+    padding-left: 32px;
+    padding-right:0;
+    margin-top: -26px !important;
+    margin-bottom:0;
+}
 .title-no-right {
     padding-right:5px !important;
 }
