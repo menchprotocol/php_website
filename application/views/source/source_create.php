@@ -31,8 +31,8 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
     //Content URL
     echo '<h2 style="margin-top: 21px;" class="source"><span class="icon-block">'.$en_all_12762[12763]['m_icon'].'</span>'.$en_all_12762[12763]['m_name'].'</h2>';
     echo '<div class="space-left"><div class="form-group is-empty"><input type="url" id="ln_content" '.( isset($_GET['ln_content']) ? ' value="'.$_GET['ln_content'].'" ' : '' ).' class="form-control border" placeholder="'.str_replace(' ','',$en_all_12762[12763]['m_desc']).'"></div></div>';
-    echo '<span id="en_type_link_id"></span>';
-    echo '<p id="en_link_preview" class="hideIfEmpty"></p>';
+    echo '<span id="en_type_link_id" class="space-left"></span>';
+    echo '<p id="en_link_preview" class="hideIfEmpty space-left"></p>';
 
 
     //Industry Experts

@@ -71,6 +71,9 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
 
     echo '<div class="doclear">&nbsp;</div>';
 
+    //FOR EDITING ONLY (HIDDEN FROM UI):
+    echo '<div class="hidden">'.echo_en($source).'</div>';
+
 
     ?>
 

@@ -267,9 +267,13 @@ class Source extends CI_Controller
 
         }
 
+        if(!$_POST['ln_id'] && !in_array($detected_ln_type['ln_type_source_id'])){
+            
+        }
+
         return echo_json(array(
             'status' => 1,
-            'html_ui' => '<a href="/source/' . $detected_ln_type['ln_type_source_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $en_all_4592[$detected_ln_type['ln_type_source_id']]['m_desc'] . '">' . $en_all_4592[$detected_ln_type['ln_type_source_id']]['m_icon'] . ' ' . $en_all_4592[$detected_ln_type['ln_type_source_id']]['m_name'] . '</a>',
+            'html_ui' => '<b class="montserrat doupper '.extract_icon_color($en_all_4592[$detected_ln_type['ln_type_source_id']]['m_icon']).'">' . $en_all_4592[$detected_ln_type['ln_type_source_id']]['m_icon'] . ' ' . $en_all_4592[$detected_ln_type['ln_type_source_id']]['m_name'] . '</b>',
             'en_link_preview' => echo_url_types($_POST['ln_content'], $detected_ln_type['ln_type_source_id']),
         ));
     }
