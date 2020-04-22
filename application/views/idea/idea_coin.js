@@ -133,10 +133,12 @@ function in_notes_source_only_search(note_type_id) {
 
         //Define filters:
         var extra_filters = '';
-        if(note_type_id==4983){
-            extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_3000.join(' OR _tags:alg_source_') + ') ';
-        } else if(note_type_id==10573){
-            extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_10573.join(' OR _tags:alg_source_') + ') ';
+        if(!js_session_superpowers_assigned.includes(10967)) {
+            if(note_type_id==4983){
+                extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_3000.join(' OR _tags:alg_source_') + ') ';
+            } else if(note_type_id==10573){
+                extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_10573.join(' OR _tags:alg_source_') + ') ';
+            }
         }
 
 

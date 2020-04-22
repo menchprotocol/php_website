@@ -138,7 +138,7 @@ function expert_search() {
 
 $(document).ready(function () {
 
-    en_ln_type_preview_load();
+    //en_ln_type_preview_load();
 
     $('#addContent .add-input').focus(function() {
         $('#addContent .algolia_pad_search' ).removeClass('hidden');
