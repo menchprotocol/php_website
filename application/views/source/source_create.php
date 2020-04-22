@@ -15,7 +15,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
     //SOURCE CREATOR TITLE
     echo '<h1 class="idea" style="padding-top:5px;"><a href="/idea/'.$in['in_id'].'"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_in_title($in).'</a></h1>';
-    //echo '<p class="space-left">You are about to create a new source that references this idea.</p>';
+    echo '<p class="space-left">Add a new source for this idea:</p>';
 
 
     //Content Title
@@ -41,10 +41,12 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
 
 
+
     //CREATE BUTTON:
     echo '<div style="margin-top:34px;">';
     echo echo_in_dropdown(3000, ( isset($_GET['content_type']) ? $_GET['content_type'] : 3005 /* Books */ ), 'btn-source');
     echo '&nbsp;&nbsp;<a href="javascript:void();" onclick="create_process()" class="btn btn-source">'.$en_all_12762[12771]['m_icon'].' '.$en_all_12762[12771]['m_name'].'</a>';
+    echo '&nbsp;&nbsp;<p class="hideIfEmpty add_results inline-block"></p>';
     echo '</div>';
 
 

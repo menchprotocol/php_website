@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-21 21:52:51 PST
+//Generated 2020-04-21 21:56:38 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587531171;
-$config['cache_count_transaction'] = 1150898;
+$config['cache_timestamp'] = 1587531398;
+$config['cache_count_transaction'] = 1150902;
 $config['cache_count_discover'] = 121120;
 $config['cache_count_idea'] = 4840;
 $config['cache_count_source'] = 5205;
@@ -23,7 +23,7 @@ $config['cache_count_source'] = 5205;
 $config['en_ids_12762'] = array(12772,3000,12763,12771,12764);
 $config['en_all_12762'] = array(
     12772 => array(
-        'm_icon' => '<i class="fad fa-fingerprint source"></i>',
+        'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_name' => 'CONTENT TITLE',
         'm_desc' => '',
         'm_parents' => array(12762),
@@ -41,7 +41,7 @@ $config['en_all_12762'] = array(
         'm_parents' => array(12762),
     ),
     12771 => array(
-        'm_icon' => '<i class="fad fa-plus-circle source"></i>',
+        'm_icon' => '<i class="fas fa-plus-circle source"></i>',
         'm_name' => 'CREATE',
         'm_desc' => '',
         'm_parents' => array(12762),
