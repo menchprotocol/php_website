@@ -88,6 +88,9 @@ h1 {
     margin-left: 0;
     padding-left: 0;
 }
+h1 i {
+    font-size: 1em !important;
+}
 
 h2 {
     font-family: 'Montserrat', sans-serif;
