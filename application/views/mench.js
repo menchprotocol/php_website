@@ -166,13 +166,13 @@ function js_echo_platform_message(en_id){
 }
 
 
-function discover_in_history(tab_group_id, pads_in_id, owner_en_id, last_loaded_ln_id){
+function discover_in_history(tab_group_id, note_in_id, owner_en_id, last_loaded_ln_id){
 
     var load_class = '.tab-data-'+tab_group_id+' .dynamic-discoveries';
     $(load_class).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">LOADING...</b>');
 
     //Yes, we need to load dynamically:
-    $.post("/discover/discover_in_history/"+tab_group_id+"/"+pads_in_id+"/"+owner_en_id+"/"+last_loaded_ln_id, { }, function (data) {
+    $.post("/discover/discover_in_history/"+tab_group_id+"/"+note_in_id+"/"+owner_en_id+"/"+last_loaded_ln_id, { }, function (data) {
         if (data.status) {
             $(load_class).html(data.message);
         } else {
@@ -185,7 +185,7 @@ function discover_in_history(tab_group_id, pads_in_id, owner_en_id, last_loaded_
 
 }
 
-function loadtab(tab_group_id, tab_data_id, pads_in_id, owner_en_id){
+function loadtab(tab_group_id, tab_data_id, note_in_id, owner_en_id){
 
     //Hide all tabs:
     $('.tab-group-'+tab_group_id).addClass('hidden');
@@ -198,7 +198,7 @@ function loadtab(tab_group_id, tab_data_id, pads_in_id, owner_en_id){
     //Need to dynamically load data?
     if($('.tab-data-'+tab_data_id).find('div.dynamic-discoveries').length > 0){
         //Load First Page:
-        discover_in_history(tab_data_id, pads_in_id, owner_en_id, 0);
+        discover_in_history(tab_data_id, note_in_id, owner_en_id, 0);
     } else {
         //Do we need to focus on input field?
         $('#ln_content'+tab_data_id).focus();

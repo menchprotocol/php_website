@@ -145,9 +145,9 @@ class Discover extends CI_Controller
         }
     }
 
-    function discover_in_history($tab_group_id, $pads_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
+    function discover_in_history($tab_group_id, $note_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
 
-        return echo_json($this->DISCOVER_model->discover_history_ui($tab_group_id, $pads_in_id, $owner_en_id, $last_loaded_ln_id));
+        return echo_json($this->DISCOVER_model->discover_history_ui($tab_group_id, $note_in_id, $owner_en_id, $last_loaded_ln_id));
 
     }
 

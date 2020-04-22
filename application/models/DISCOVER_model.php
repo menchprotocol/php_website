@@ -1777,9 +1777,9 @@ class DISCOVER_model extends CI_Model
 
 
 
-    function discover_history_ui($tab_group_id, $pads_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
+    function discover_history_ui($tab_group_id, $note_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
 
-        if (!$pads_in_id && !$owner_en_id) {
+        if (!$note_in_id && !$owner_en_id) {
 
             return array(
                 'status' => 0,
@@ -1803,10 +1803,10 @@ class DISCOVER_model extends CI_Model
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_'.$tab_group_id)) . ')' => null,
         );
 
-        if($pads_in_id > 0){
+        if($note_in_id > 0){
 
-            $match_columns['ln_previous_idea_id'] = $pads_in_id;
-            $list_url = '/idea/'.$pads_in_id;
+            $match_columns['ln_previous_idea_id'] = $note_in_id;
+            $list_url = '/idea/'.$note_in_id;
             $list_class = 'itemidea';
             $join_objects = array('en_creator');
 
@@ -1836,7 +1836,7 @@ class DISCOVER_model extends CI_Model
 
         //List Discovery History:
         $ui = '<div class="list-group dynamic-discoveries">';
-        if($pads_in_id > 0){
+        if($note_in_id > 0){
 
             foreach($in_query as $count => $in_discover){
                 $ui .= echo_en($in_discover);

@@ -927,17 +927,17 @@ class COMMUNICATION_model extends CI_Model
         }
 
         //Validate message:
-        $msg_dispatching = $this->COMMUNICATION_model->comm_validate_message($input_message, $recipient_en, $push_message, $quick_replies, 0, $message_in_id, false);
+        $msg_validation = $this->COMMUNICATION_model->comm_validate_message($input_message, $recipient_en, $push_message, $quick_replies, 0, $message_in_id, false);
 
 
         //Did we have ane error in message validation?
-        if (!$msg_dispatching['status'] || !isset($msg_dispatching['output_messages'])) {
+        if (!$msg_validation['status'] || !isset($msg_validation['output_messages'])) {
 
             //Log Error Link:
             $this->LEDGER_model->ln_create(array(
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
-                'ln_content' => 'comm_validate_message() returned error [' . $msg_dispatching['message'] . '] for input message [' . $input_message . ']',
+                'ln_content' => 'comm_validate_message() returned error [' . $msg_validation['message'] . '] for input message [' . $input_message . ']',
                 'ln_metadata' => array(
                     'input_message' => $input_message,
                     'recipient_en' => $recipient_en,
@@ -954,12 +954,12 @@ class COMMUNICATION_model extends CI_Model
         $html_message_body = '';
 
         //Log message sent link:
-        foreach ($msg_dispatching['output_messages'] as $output_message) {
+        foreach ($msg_validation['output_messages'] as $output_message) {
 
             //Dispatch message based on format:
             if ($push_message) {
 
-                if($msg_dispatching['user_chat_channel']==6196 /* Mench on Messenger */){
+                if($msg_validation['user_chat_channel']==6196 /* Mench on Messenger */){
 
                     //Attempt to dispatch message via Facebook Graph API:
                     $fb_graph_process = $this->COMMUNICATION_model->comm_facebook_graph('POST', '/me/messages', $output_message['message_body']);
@@ -1002,10 +1002,10 @@ class COMMUNICATION_model extends CI_Model
             //Log successful Link for message delivery:
             if(isset($recipient_en['en_id']) && $push_message){
                 $this->LEDGER_model->ln_create(array(
-                    'ln_content' => $msg_dispatching['input_message'],
+                    'ln_content' => $msg_validation['input_message'],
                     'ln_type_source_id' => $output_message['message_type_en_id'],
                     'ln_creator_source_id' => $recipient_en['en_id'],
-                    'ln_profile_source_id' => $msg_dispatching['ln_profile_source_id'], //Might be set if message had a referenced source
+                    'ln_profile_source_id' => $msg_validation['ln_profile_source_id'], //Might be set if message had a referenced source
                     'ln_metadata' => array(
                         'input_message' => $input_message,
                         'output_message' => $output_message,

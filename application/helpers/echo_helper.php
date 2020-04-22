@@ -256,7 +256,7 @@ function echo_in_notes($ln)
 
     //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item itemidea is-msg pads_sortable msg_en_type_' . $ln['ln_type_source_id'] . '" id="ul-nav-' . $ln['ln_id'] . '" tr-id="' . $ln['ln_id'] . '">';
+    $ui .= '<div class="list-group-item itemidea is-msg note_sortable msg_en_type_' . $ln['ln_type_source_id'] . '" id="ul-nav-' . $ln['ln_id'] . '" tr-id="' . $ln['ln_id'] . '">';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
@@ -265,7 +265,7 @@ function echo_in_notes($ln)
     $ui .= '</div>';
 
     //Editing menu:
-    $ui .= '<div class="pads-editor edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
+    $ui .= '<div class="note-editor edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
 
         //Modify:
         $ui .= '<span title="MODIFY" data-toggle="tooltip" data-placement="left"><a href="javascript:in_notes_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
@@ -279,14 +279,14 @@ function echo_in_notes($ln)
 
 
     //Text editing:
-    $ui .= '<textarea onkeyup="in_edit_notes_count(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg pads-textarea algolia_search" placeholder="'.stripslashes($ln['ln_content']).'">' . $ln['ln_content'] . '</textarea>';
+    $ui .= '<textarea onkeyup="in_edit_notes_count(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($ln['ln_content']).'">' . $ln['ln_content'] . '</textarea>';
 
 
     //Editing menu:
     $ui .= '<ul class="msg-nav '.superpower_active(10939).'">';
 
     //Counter:
-    $ui .= '<li class="edit-on hidden"><span id="ideaPadsCount' . $ln['ln_id'] . '"><span id="charEditingNum' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</span></li>';
+    $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $ln['ln_id'] . '"><span id="charEditingNum' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</span></li>';
 
     //Save Edit:
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:in_notes_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_source_id'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
@@ -1050,7 +1050,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
     //Search for Idea Image:
     if($show_editor){
 
-        $ui .= '<div class="pads-editor edit-off">';
+        $ui .= '<div class="note-editor edit-off">';
 
         $ui .= '<span class="show-on-hover">';
 
@@ -1251,7 +1251,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
         //RIGHT EDITING:
         $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
-        $ui .= '<div class="pads-editor edit-off">';
+        $ui .= '<div class="note-editor edit-off">';
         $ui .= '<span class="show-on-hover">';
 
         if($is_source || !$is_parent){
@@ -1642,11 +1642,11 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
 
 
 
-    $ui .= '<textarea onkeyup="in_notes_count_new('.$note_type_en_id.')" class="form-control msg pads-textarea algolia_search new-pads" pads-type-id="' . $note_type_en_id . '" id="ln_content' . $note_type_en_id . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+    $ui .= '<textarea onkeyup="in_notes_count_new('.$note_type_en_id.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $note_type_en_id . '" id="ln_content' . $note_type_en_id . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
-    $ui .= '<table class="table table-condensed hidden" id="pads_control_'.$note_type_en_id.'"><tr>';
+    $ui .= '<table class="table table-condensed hidden" id="note_control_'.$note_type_en_id.'"><tr>';
 
 
     //Save button:
@@ -1654,7 +1654,7 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
 
 
     //File counter:
-    $ui .= '<td style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaPadsNewCount' . $note_type_en_id . '" class="hidden"><span id="charNum' . $note_type_en_id . '">0</span>/' . config_var(11073).'</span></td>';
+    $ui .= '<td style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaNoteNewCount' . $note_type_en_id . '" class="hidden"><span id="charNum' . $note_type_en_id . '">0</span>/' . config_var(11073).'</span></td>';
 
 
     //YouTube Clip:
@@ -1676,7 +1676,7 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
 
 
     //Response result:
-    $ui .= '<div class="pads_error_'.$note_type_en_id.'"></div>';
+    $ui .= '<div class="note_error_'.$note_type_en_id.'"></div>';
 
 
     $ui .= '</form>';
@@ -1892,7 +1892,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
     //RIGHT EDITING:
     $ui .= '<div class="pull-right inline-block">';
-    $ui .= '<div class="pads-editor edit-off">';
+    $ui .= '<div class="note-editor edit-off">';
     $ui .= '<span class="show-on-hover">';
 
     if($control_enabled){

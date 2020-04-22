@@ -886,11 +886,11 @@ class IDEA_model extends CI_Model
             '(ln_next_idea_id = ' . $in_id . ( count($flat_common_steps) > 0 ? ' OR ln_next_idea_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-        ), array('en_profile'), 0) as $pads_en) {
+        ), array('en_profile'), 0) as $note_en) {
 
             //Referenced source in Idea Notes... Fetch parents:
             foreach($this->LEDGER_model->ln_fetch(array(
-                'ln_portfolio_source_id' => $pads_en['ln_profile_source_id'],
+                'ln_portfolio_source_id' => $note_en['ln_profile_source_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Source Links
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             ), array(), 0) as $parent_en){
@@ -898,16 +898,16 @@ class IDEA_model extends CI_Model
                 if(in_array($parent_en['ln_profile_source_id'], $this->config->item('en_ids_3000'))){
 
                     //Expert Source:
-                    if (!isset($metadata_this['__in__metadata_sources'][$parent_en['ln_profile_source_id']][$pads_en['en_id']])) {
+                    if (!isset($metadata_this['__in__metadata_sources'][$parent_en['ln_profile_source_id']][$note_en['en_id']])) {
                         //Add since it's not there:
-                        $metadata_this['__in__metadata_sources'][$parent_en['ln_profile_source_id']][$pads_en['en_id']] = $pads_en;
+                        $metadata_this['__in__metadata_sources'][$parent_en['ln_profile_source_id']][$note_en['en_id']] = $note_en;
                     }
 
                 } elseif($parent_en['ln_profile_source_id']==3084) {
 
                     //Industry Expert:
-                    if (!isset($metadata_this['__in__metadata_experts'][$pads_en['en_id']])) {
-                        $metadata_this['__in__metadata_experts'][$pads_en['en_id']] = $pads_en;
+                    if (!isset($metadata_this['__in__metadata_experts'][$note_en['en_id']])) {
+                        $metadata_this['__in__metadata_experts'][$note_en['en_id']] = $note_en;
                     }
 
                 } else {

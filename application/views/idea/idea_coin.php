@@ -10,7 +10,7 @@ $is_public = in_array($in['in_status_source_id'], $this->config->item('en_ids_73
 
 <style>
     .in_child_icon_<?= $in['in_id'] ?> { display:none; }
-    <?= ( !$is_source ? '.pads-editor {display:none;}' : '' ) ?>
+    <?= ( !$is_source ? '.note-editor {display:none;}' : '' ) ?>
 </style>
 
 <script>

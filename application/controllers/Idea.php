@@ -736,7 +736,7 @@ class Idea extends CI_Controller {
                 'message' => 'Invalid Idea ID',
             ));
 
-        } elseif (!isset($_POST['note_type_id']) || intval($_POST['note_type_id']) < 1) {
+        } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('en_ids_12322'))) {
 
             return echo_json(array(
                 'status' => 0,
@@ -781,6 +781,19 @@ class Idea extends CI_Controller {
             'ln_content' => $msg_validation['input_message'],
         ), true);
 
+
+        //Also Append Message Source Reference as Idea Source?
+        if($_POST['note_type_id']==4231 && $msg_validation['ln_profile_source_id']>0){
+            //referencing a new source:
+            $this->LEDGER_model->ln_create(array(
+                'ln_creator_source_id' => $session_en['en_id'],
+                'ln_type_source_id' => 4983, //IDEA SOURCES
+                'ln_next_idea_id' => $ins[0]['in_id'],
+                'ln_profile_source_id' => $msg_validation['ln_profile_source_id'],
+                'ln_content' => '@'.$msg_validation['ln_profile_source_id'],
+            ));
+        }
+
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
@@ -812,11 +825,11 @@ class Idea extends CI_Controller {
                 'message' => 'Missing IDEA',
             ));
 
-        } elseif (!isset($_POST['note_type_id'])) {
+        } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('en_ids_12322'))) {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Pads Type',
+                'message' => 'Missing Note Type',
             ));
 
         } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
@@ -888,6 +901,19 @@ class Idea extends CI_Controller {
                     'ln_next_idea_id' => $_POST['in_id'],
                 )),
         ));
+
+
+        //Also Append Message Source Reference as Idea Source?
+        if($_POST['note_type_id']==4231){
+            //referencing a new source:
+            $this->LEDGER_model->ln_create(array(
+                'ln_creator_source_id' => $session_en['en_id'],
+                'ln_type_source_id' => 4983, //IDEA SOURCES
+                'ln_next_idea_id' => intval($_POST['in_id']),
+                'ln_profile_source_id' => $cdn_status['cdn_en']['en_id'],
+                'ln_content' => '@'.$cdn_status['cdn_en']['en_id'],
+            ));
+        }
 
 
         //Fetch full message for proper UI display:
@@ -1017,6 +1043,18 @@ class Idea extends CI_Controller {
                 'ln_content' => $msg_validation['input_message'],
                 'ln_profile_source_id' => $msg_validation['ln_profile_source_id'],
             ), $session_en['en_id'], 10679 /* Idea Notes updated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
+
+            //Did we add a new source here?
+            if($msg_validation['ln_profile_source_id']>0 && $msg_validation['ln_profile_source_id']!=$messages[0]['ln_profile_source_id']){
+                //referencing a new source:
+                $this->LEDGER_model->ln_create(array(
+                    'ln_creator_source_id' => $session_en['en_id'],
+                    'ln_type_source_id' => 4983, //IDEA SOURCES
+                    'ln_next_idea_id' => $ins[0]['in_id'],
+                    'ln_profile_source_id' => $msg_validation['ln_profile_source_id'],
+                    'ln_content' => '@'.$msg_validation['ln_profile_source_id'],
+                ));
+            }
 
         }
 

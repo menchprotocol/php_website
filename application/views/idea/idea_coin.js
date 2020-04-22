@@ -228,7 +228,7 @@ $(document).ready(function () {
     in_update_text_start();
 
     //Put focus on messages if no message:
-    if(!$('#in_notes_list_4231 .pads_sortable').length){
+    if(!$('#in_notes_list_4231 .note_sortable').length){
         $('#ln_content4231').focus();
     }
 
@@ -270,18 +270,18 @@ $(document).ready(function () {
 
 
     //Loop through all new idea inboxes:
-    $(".new-pads").each(function () {
+    $(".new-note").each(function () {
 
-        var note_type_id = parseInt($(this).attr('pads-type-id'));
+        var note_type_id = parseInt($(this).attr('note-type-id'));
 
         //Initiate @ search for all idea text areas:
         in_message_inline_en_search($(this));
 
         //Watch for focus:
         $(this).focus(function() {
-            $( '#pads_control_'+note_type_id ).removeClass('hidden');
+            $( '#note_control_'+note_type_id ).removeClass('hidden');
         }).keyup(function() {
-            $( '#pads_control_'+note_type_id ).removeClass('hidden');
+            $( '#note_control_'+note_type_id ).removeClass('hidden');
         });
 
         autosize($(this));
@@ -432,9 +432,9 @@ function in_notes_count_new(note_type_id) {
 
     //Only show counter if getting close to limit:
     if(len > ( js_en_all_6404[11073]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
-        $('#ideaPadsNewCount' + note_type_id).removeClass('hidden');
+        $('#ideaNoteNewCount' + note_type_id).removeClass('hidden');
     } else {
-        $('#ideaPadsNewCount' + note_type_id).addClass('hidden');
+        $('#ideaNoteNewCount' + note_type_id).addClass('hidden');
     }
 
 }
@@ -475,9 +475,9 @@ function in_edit_notes_count(ln_id) {
 
     //Only show counter if getting close to limit:
     if(len > ( js_en_all_6404[11073]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
-        $('#ideaPadsCount' + ln_id).removeClass('hidden');
+        $('#ideaNoteCount' + ln_id).removeClass('hidden');
     } else {
-        $('#ideaPadsCount' + ln_id).addClass('hidden');
+        $('#ideaNoteCount' + ln_id).addClass('hidden');
     }
 }
 
@@ -549,7 +549,7 @@ function in_notes_sort_load(note_type_id) {
     var sort_msg = Sortable.create( document.getElementById("in_notes_list_" + note_type_id) , {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         handle: ".in_notes_sorting", // Restricts sort start click/touch to the specified element
-        draggable: ".pads_sortable", // Specifies which items inside the element should be sortable
+        draggable: ".note_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
             in_notes_sort_apply(note_type_id);
@@ -697,7 +697,7 @@ function in_message_form_unlock(result, note_type_id) {
     $('.add_notes_' + note_type_id).removeClass('is-working');
     $("#ln_content" + note_type_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
-    $( '#pads_control_'+note_type_id ).addClass('hidden');
+    $( '#note_control_'+note_type_id ).addClass('hidden');
 
     //What was the result?
     if (result.status) {
@@ -710,12 +710,12 @@ function in_message_form_unlock(result, note_type_id) {
 
         //Hide any errors:
         setTimeout(function () {
-            $(".pads_error_"+note_type_id).fadeOut();
+            $(".note_error_"+note_type_id).fadeOut();
         }, 4181);
 
     } else {
 
-        $(".pads_error_"+note_type_id).html('<span class="discover">Alert: '+result.message+'</span>');
+        $(".note_error_"+note_type_id).html('<span class="discover">Alert: '+result.message+'</span>');
 
     }
 }
