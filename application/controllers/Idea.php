@@ -920,11 +920,14 @@ class Idea extends CI_Controller {
         $new_messages = $this->LEDGER_model->ln_fetch(array(
             'ln_id' => $ln['ln_id'],
         ));
+        $ens = $this->SOURCE_model->en_fetch(array(
+            'en_id' => $cdn_status['cdn_en']['en_id'],
+        ));
 
         //Echo message:
         echo_json(array(
             'status' => 1,
-            'en_new_echo' => echo_en($cdn_status['cdn_en'], 0, null, true),
+            'en_new_echo' => echo_en($ens[0], 0, null, true),
             'message' => echo_in_notes(array_merge($new_messages[0], array(
                 'ln_portfolio_source_id' => $session_en['en_id'],
             ))),
