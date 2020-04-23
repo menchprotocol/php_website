@@ -760,7 +760,12 @@ function in_notes_create_upload(droppedFiles, uploadType, note_type_id) {
             },
             success: function (data) {
 
+                in_notes_counter(note_type_id, +1);
                 in_message_form_unlock(data, note_type_id);
+
+                if(note_type_id==4231){
+                    in_notes_counter(4983, +1);
+                }
 
                 //Adjust icon again:
                 $('.file_label_' + note_type_id).html('<span class="icon-block"><i class="far fa-paperclip"></i></span>');
