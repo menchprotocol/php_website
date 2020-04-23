@@ -772,14 +772,14 @@ textarea.note-textarea{
 }
 .title-block{
     display: block;
-    padding-left: 32px;
+    padding-left: 33px;
     padding-right:0;
     margin-top: -17px !important;
     margin-bottom:0;
 }
 .title-block-lg{
     display: block;
-    padding-left: 32px;
+    padding-left: 33px;
     padding-right:0;
     margin-top: -24px !important;
     margin-bottom:0;
@@ -1244,7 +1244,7 @@ label {
     background-color: #FFFFFF !important;
 }
 
-.icon-block { width:32px !important; display: inline-block; text-align: center; }
+.icon-block { width:33px !important; display: inline-block; text-align: center; }
 .icon-block-xs{ width:24px; display: inline-block; text-align: center; }
 .icon-block-sm{ width:28px; display: inline-block; text-align: center; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; }
@@ -1357,9 +1357,9 @@ label {
     }
 
     .icon-block-lg img {
-        width: 32px !important;
+        width: 33px !important;
         margin: -13px 0 -8px -2px !important;
-        height: 32px !important;
+        height: 33px !important;
     }
     .container {
         max-width: none;
