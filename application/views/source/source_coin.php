@@ -651,7 +651,7 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
                         $infobar_details = null;
                         if($in_notes['ln_content']){
                             $infobar_details .= '<div class="message_content">';
-                            $infobar_details .= $this->COMMUNICATION_model->comm_send_message($in_notes['ln_content']);
+                            $infobar_details .= $this->COMMUNICATION_model->comm_message_send($in_notes['ln_content']);
                             $infobar_details .= '</div>';
                         }
 

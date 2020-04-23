@@ -52,7 +52,7 @@ class COMMUNICATION_model extends CI_Model
             if ($action_unsubscribe == 'CANCEL') {
 
                 //User seems to have changed their mind, confirm with them:
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     'Awesome, I am excited to continue our work together.',
                     $en,
                     true,
@@ -83,7 +83,7 @@ class COMMUNICATION_model extends CI_Model
                 //TODO DELETE THEIR ACCOUNT HERE
 
                 //Let them know about these changes:
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     'Confirmed, I removed ' . $deleted_ins . ' idea' . echo__s($deleted_ins) . ' from your list. This is the final message you will receive from me unless you message me again. I hope you take good care of yourself 😘',
                     $en,
                     true
@@ -124,7 +124,7 @@ class COMMUNICATION_model extends CI_Model
                 }
 
                 //Show success message to user:
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     'I have successfully removed [' . $player_discoveries[0]['in_title'] . '] from your list.',
                     $en,
                     true,
@@ -142,14 +142,14 @@ class COMMUNICATION_model extends CI_Model
         } elseif ($quick_reply_payload == 'SUBSCRIBE-REJECT') {
 
             //They rejected the offer... Acknowledge and give response:
-            $this->COMMUNICATION_model->comm_send_message(
+            $this->COMMUNICATION_model->comm_message_send(
                 'Ok, so how can I help you move forward?',
                 $en,
                 true
             );
 
             //DISCOVER RECOMMENDATIONS
-            $this->COMMUNICATION_model->comm_send_message(
+            $this->COMMUNICATION_model->comm_message_send(
                 echo_platform_message(12697),
                 $en,
                 true
@@ -166,7 +166,7 @@ class COMMUNICATION_model extends CI_Model
             if (count($ins) < 1) {
 
                 //Confirm if they are interested to subscribe to this idea:
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     '❌ Alert: I cannot add this idea to your DISCOVER LIST because its not yet published.',
                     $en,
                     true,
@@ -186,7 +186,7 @@ class COMMUNICATION_model extends CI_Model
             }
 
             //Confirm if they are interested to subscribe to this idea:
-            $this->COMMUNICATION_model->comm_send_message(
+            $this->COMMUNICATION_model->comm_message_send(
                 'Hi 👋 are you interested to ' . $ins[0]['in_title'] . '?',
                 $en,
                 true,
@@ -210,7 +210,7 @@ class COMMUNICATION_model extends CI_Model
         } elseif ($quick_reply_payload=='NOTINTERESTED') {
 
             //Affirm and educate:
-            $this->COMMUNICATION_model->comm_send_message(
+            $this->COMMUNICATION_model->comm_message_send(
                 echo_platform_message(12697),
                 $en,
                 true
@@ -244,14 +244,14 @@ class COMMUNICATION_model extends CI_Model
                 ))) > 0) {
 
                 //Let User know that they have previously subscribed to this idea:
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     'The idea [' . $ins[0]['in_title'] . '] has previously been added to your DISCOVER LIST. /link:DISCOVER LIST:https://mench.com/' . $ins[0]['in_id'],
                     $en,
                     true
                 );
 
                 //Give them option to go next:
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     'Say "Next" to continue...',
                     $en,
                     true,
@@ -272,7 +272,7 @@ class COMMUNICATION_model extends CI_Model
                 $overview_message = 'Should I add this idea to your DISCOVER LIST?';
 
                 //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this idea:
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     $overview_message,
                     $en,
                     true,
@@ -484,7 +484,7 @@ class COMMUNICATION_model extends CI_Model
             }
 
             //Send out message and let them confirm:
-            $this->COMMUNICATION_model->comm_send_message(
+            $this->COMMUNICATION_model->comm_message_send(
                 $message,
                 $en,
                 true,
@@ -580,7 +580,7 @@ class COMMUNICATION_model extends CI_Model
                 ));
 
                 //return what we found to the user to decide:
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     $message,
                     $en,
                     true,
@@ -590,14 +590,14 @@ class COMMUNICATION_model extends CI_Model
             } else {
 
                 //Respond to user:
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     'I did not find any ideas to "' . $master_command . '", but I have made a idea of this and will let you know as soon as I am trained on this.',
                     $en,
                     true
                 );
 
                 //DISCOVER RECOMMENDATIONS
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     echo_platform_message(12697),
                     $en,
                     true
@@ -693,7 +693,7 @@ class COMMUNICATION_model extends CI_Model
 
 
             //Inform User of Mench's one-way communication limitation & that Mench did not understand their message:
-            $this->COMMUNICATION_model->comm_send_message(
+            $this->COMMUNICATION_model->comm_message_send(
                 echo_platform_message(12693),
                 $en,
                 true
@@ -712,7 +712,7 @@ class COMMUNICATION_model extends CI_Model
             if($next_in_id > 0){
 
                 //Inform User of Mench's one-way communication limitation & that Mench did not understand their message:
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     'You can continue with your DISCOVER LIST by saying "Next"',
                     $en,
                     true,
@@ -728,7 +728,7 @@ class COMMUNICATION_model extends CI_Model
             } else {
 
                 //DISCOVER RECOMMENDATIONS
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     echo_platform_message(12697),
                     $en,
                     true
@@ -738,7 +738,7 @@ class COMMUNICATION_model extends CI_Model
         }
     }
 
-    function comm_send_email($to_array, $subject, $html_message)
+    function comm_email_send($to_array, $subject, $html_message)
     {
 
         /*
@@ -885,7 +885,7 @@ class COMMUNICATION_model extends CI_Model
         }
     }
 
-    function comm_send_message($input_message, $recipient_en = array(), $push_message = false, $quick_replies = array(), $message_in_id = 0)
+    function comm_message_send($input_message, $recipient_en = array(), $push_message = false, $quick_replies = array(), $message_in_id = 0)
     {
 
         /*
@@ -927,7 +927,7 @@ class COMMUNICATION_model extends CI_Model
         }
 
         //Validate message:
-        $msg_validation = $this->COMMUNICATION_model->comm_validate_message($input_message, $recipient_en, $push_message, $quick_replies, 0, $message_in_id, false);
+        $msg_validation = $this->COMMUNICATION_model->comm_message_construct($input_message, $recipient_en, $push_message, $quick_replies, 0, $message_in_id, false);
 
 
         //Did we have ane error in message validation?
@@ -937,7 +937,7 @@ class COMMUNICATION_model extends CI_Model
             $this->LEDGER_model->ln_create(array(
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
-                'ln_content' => 'comm_validate_message() returned error [' . $msg_validation['message'] . '] for input message [' . $input_message . ']',
+                'ln_content' => 'comm_message_construct() returned error [' . $msg_validation['message'] . '] for input message [' . $input_message . ']',
                 'ln_metadata' => array(
                     'input_message' => $input_message,
                     'recipient_en' => $recipient_en,
@@ -971,7 +971,7 @@ class COMMUNICATION_model extends CI_Model
                         $this->LEDGER_model->ln_create(array(
                             'ln_type_source_id' => 4246, //Platform Bug Reports
                             'ln_creator_source_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
-                            'ln_content' => 'comm_send_message() failed to send message via Facebook Graph API. See Metadata log for more details.',
+                            'ln_content' => 'comm_message_send() failed to send message via Facebook Graph API. See Metadata log for more details.',
                             'ln_metadata' => array(
                                 'input_message' => $input_message,
                                 'output_message' => $output_message['message_body'],
@@ -1021,14 +1021,14 @@ class COMMUNICATION_model extends CI_Model
 
     }
 
-    function comm_validate_message($input_message, $recipient_en = array(), $push_message = false, $quick_replies = array(), $message_type_en_id = 0, $message_in_id = 0, $strict_validation = true)
+    function comm_message_construct($input_message, $recipient_en = array(), $push_message = false, $quick_replies = array(), $message_type_en_id = 0, $message_in_id = 0, $strict_validation = true)
     {
 
         /*
          *
          * This function is used to validate Idea Notes.
          *
-         * See comm_send_message() for more information on input variables.
+         * See comm_message_send() for more information on input variables.
          *
          * */
 
@@ -1525,7 +1525,8 @@ class COMMUNICATION_model extends CI_Model
 
                     //Show source link with status:
                     $current_mench = current_mench();
-                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block '.( $message_visual_media > 0 ? superpower_active(10939) : '' ).'">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).$en_icon.( $current_mench['x_name']=='discover' && !superpower_assigned(10939) ? '<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">' . $ens[0]['en_name']  . '</span>' : '<a class="montserrat doupper underline '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
+
+                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block '.( $message_visual_media > 0 ? superpower_active(10939) : '' ).'">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).'<a class="montserrat doupper underline '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '">' . $en_icon . $ens[0]['en_name']  . '</a></span>', $output_body_message);
 
                 }
 
@@ -1623,7 +1624,7 @@ class COMMUNICATION_model extends CI_Model
 
                 //This is an error:
                 $this->LEDGER_model->ln_create(array(
-                    'ln_content' => 'comm_validate_message() was given quick replies without a text message',
+                    'ln_content' => 'comm_message_construct() was given quick replies without a text message',
                     'ln_metadata' => array(
                         'input_message' => $input_message,
                         'push_message' => $push_message,

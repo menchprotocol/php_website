@@ -261,7 +261,7 @@ function echo_in_notes($ln)
 
     //Type & Delivery Method:
     $ui .= '<div class="text_message edit-off" id="msgbody_' . $ln['ln_id'] . '">';
-    $ui .= $CI->COMMUNICATION_model->comm_send_message($ln['ln_content'], $session_en, false, array(), $ln['ln_next_idea_id']);
+    $ui .= $CI->COMMUNICATION_model->comm_message_send($ln['ln_content'], $session_en, false, array(), $ln['ln_next_idea_id']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -559,7 +559,7 @@ function echo_ln($ln, $is_parent_tr = false)
 
         //Message
         if(strlen($ln['ln_content']) > 0 && $ln['ln_content']!='@'.$ln['ln_profile_source_id']){
-            //$CI->COMMUNICATION_model->comm_send_message($ln['ln_content'])
+            //$CI->COMMUNICATION_model->comm_message_send($ln['ln_content'])
             $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.htmlentities($ln['ln_content']).'</div></div>';
         }
 
@@ -1125,7 +1125,7 @@ function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $p
         $ui .= '<div class="messages-'.$in_ln['in_id'].' hidden">';
         foreach ($messages as $msg) {
             $ui .= '<div class="tip_bubble">';
-            $ui .= $CI->COMMUNICATION_model->comm_send_message($msg['ln_content']);
+            $ui .= $CI->COMMUNICATION_model->comm_message_send($msg['ln_content']);
             $ui .= '</div>';
         }
         $ui .= '</div>';
@@ -1445,7 +1445,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
         if($push_message){
 
-            $CI->COMMUNICATION_model->comm_send_message(
+            $CI->COMMUNICATION_model->comm_message_send(
                 $message_content,
                 $recipient_en,
                 true,
@@ -1480,7 +1480,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
 
     if($push_message){
 
-        $CI->COMMUNICATION_model->comm_send_message(
+        $CI->COMMUNICATION_model->comm_message_send(
             'Say next to continue your discovery.',
             $recipient_en,
             true,
@@ -1813,7 +1813,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
             //DISCOVER PROGRESS
             $ui .= '<div class="message_content">';
-            $ui .= $CI->COMMUNICATION_model->comm_send_message($en['ln_content']);
+            $ui .= $CI->COMMUNICATION_model->comm_message_send($en['ln_content']);
             $ui .= '</div>';
 
         }

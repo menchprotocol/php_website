@@ -188,14 +188,14 @@ class DISCOVER_model extends CI_Model
 
             if($advance_step){
 
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     'You have no ideas in your discovery list yet.',
                     array('en_id' => $en_id),
                     true
                 );
 
                 //DISCOVER RECOMMENDATIONS
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     echo_platform_message(12697),
                     array('en_id' => $en_id),
                     true
@@ -243,7 +243,7 @@ class DISCOVER_model extends CI_Model
                         'in_id' => $next_in_id,
                     ));
 
-                    $this->COMMUNICATION_model->comm_send_message(
+                    $this->COMMUNICATION_model->comm_message_send(
                         echo_platform_message(12692) . $next_step_ins[0]['in_title'],
                         array('en_id' => $en_id),
                         true
@@ -257,14 +257,14 @@ class DISCOVER_model extends CI_Model
             } else {
 
                 //Inform user that they are now complete with all steps:
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     'You completed your entire DISCOVERY LIST',
                     array('en_id' => $en_id),
                     true
                 );
 
                 //DISCOVER RECOMMENDATIONS
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     echo_platform_message(12697),
                     array('en_id' => $en_id),
                     true
@@ -749,7 +749,7 @@ class DISCOVER_model extends CI_Model
             ));
 
             if($push_message){
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     'Alert: Invalid Idea ID',
                     $recipient_en,
                     true
@@ -865,7 +865,7 @@ class DISCOVER_model extends CI_Model
 
             if($push_message){
 
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     'Interested to discover ' . $ins[0]['in_title'] . '?',
                     $recipient_en,
                     $push_message,
@@ -893,7 +893,7 @@ class DISCOVER_model extends CI_Model
 
 
                 foreach ($in__messages as $message_ln) {
-                    echo $this->COMMUNICATION_model->comm_send_message(
+                    echo $this->COMMUNICATION_model->comm_message_send(
                         $message_ln['ln_content'],
                         $recipient_en,
                         $push_message
@@ -1096,7 +1096,7 @@ class DISCOVER_model extends CI_Model
 
             } else {
 
-                $this->COMMUNICATION_model->comm_send_message(
+                $this->COMMUNICATION_model->comm_message_send(
                     'You are discovering: '.$ins[0]['in_title'],
                     $recipient_en,
                     $push_message
@@ -1106,7 +1106,7 @@ class DISCOVER_model extends CI_Model
 
             echo '<div class="previous_discoveries">';
             foreach ($in__messages as $message_ln) {
-                echo $this->COMMUNICATION_model->comm_send_message(
+                echo $this->COMMUNICATION_model->comm_message_send(
                     $message_ln['ln_content'],
                     $recipient_en,
                     $push_message
@@ -1373,7 +1373,7 @@ class DISCOVER_model extends CI_Model
                         }
                     }
 
-                    $this->COMMUNICATION_model->comm_send_message(
+                    $this->COMMUNICATION_model->comm_message_send(
                         $message_content,
                         $recipient_en,
                         $push_message,
@@ -1437,7 +1437,7 @@ class DISCOVER_model extends CI_Model
                 echo '<div class="playerUploader previous_discoveries">';
                 echo '<form class="box boxUpload" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-                echo '<div class="file_saving_result">'.( count($discover_completes) ? '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->comm_send_message($discover_completes[0]['ln_content']).'</div>' : '' ).'</div>';
+                echo '<div class="file_saving_result">'.( count($discover_completes) ? '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->comm_message_send($discover_completes[0]['ln_content']).'</div>' : '' ).'</div>';
 
                 echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_source_id'].'" />';
 
@@ -1853,7 +1853,7 @@ class DISCOVER_model extends CI_Model
                 $infobar_details = null;
                 if(strlen($in_discover['ln_content'])){
                     $infobar_details .= '<div class="message_content">';
-                    $infobar_details .= $this->COMMUNICATION_model->comm_send_message($in_discover['ln_content']);
+                    $infobar_details .= $this->COMMUNICATION_model->comm_message_send($in_discover['ln_content']);
                     $infobar_details .= '</div>';
                 }
 

@@ -1790,7 +1790,7 @@ class Source extends CI_Controller
         $html_message .= '<div>MENCH</div>';
 
         //Send Welcome Email:
-        $email_log = $this->COMMUNICATION_model->comm_send_email(array($_POST['input_email']), $subject, $html_message);
+        $email_log = $this->COMMUNICATION_model->comm_email_send(array($_POST['input_email']), $subject, $html_message);
 
 
         //Log User Signin Joined Mench
@@ -2123,7 +2123,7 @@ class Source extends CI_Controller
         $html_message .= '<div>MENCH</div>';
 
         //Send email:
-        $this->COMMUNICATION_model->comm_send_email(array($_POST['input_email']), $subject, $html_message);
+        $this->COMMUNICATION_model->comm_email_send(array($_POST['input_email']), $subject, $html_message);
 
         //Return success
         return echo_json(array(

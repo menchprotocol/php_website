@@ -312,7 +312,7 @@ class Discover extends CI_Controller
         //All good:
         return echo_json(array(
             'status' => 1,
-            'message' => '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->comm_send_message($new_message).'</div>',
+            'message' => '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->comm_message_send($new_message).'</div>',
         ));
 
     }

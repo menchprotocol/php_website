@@ -243,7 +243,7 @@ class Cron extends CI_Controller
             )) as $en_email){
                 if(filter_var($en_email['ln_content'], FILTER_VALIDATE_EMAIL)){
                     //Send Email
-                    $this->COMMUNICATION_model->comm_send_email(array($en_email['ln_content']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['en_name']).' 👋</div>'.$html_message);
+                    $this->COMMUNICATION_model->comm_email_send(array($en_email['ln_content']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['en_name']).' 👋</div>'.$html_message);
                     $email_recipients++;
                 }
             }

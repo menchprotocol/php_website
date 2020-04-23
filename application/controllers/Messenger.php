@@ -523,7 +523,7 @@ class Messenger extends CI_Controller
                                 ));
 
                                 //Confirm with user:
-                                $this->COMMUNICATION_model->comm_send_message(
+                                $this->COMMUNICATION_model->comm_message_send(
                                     'Unable to accept your response. My players have previously been notified.',
                                     $en,
                                     true
@@ -544,7 +544,7 @@ class Messenger extends CI_Controller
                             $en_all_7585 = $this->config->item('en_all_7585');
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
-                            $this->COMMUNICATION_model->comm_send_message(
+                            $this->COMMUNICATION_model->comm_message_send(
                                 'Alert: You should '.$en_all_7585[$mismatch_focus['in_type_source_id']]['m_name'].' to complete this step.',
                                 $en,
                                 true
@@ -558,7 +558,7 @@ class Messenger extends CI_Controller
                         } else {
 
                             //Let them know that we did not understand them:
-                            $this->COMMUNICATION_model->comm_send_message(
+                            $this->COMMUNICATION_model->comm_message_send(
                                 echo_platform_message(12693),
                                 $en,
                                 true,
