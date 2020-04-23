@@ -1765,10 +1765,13 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
     $is_public = in_array($en['en_status_source_id'], $CI->config->item('en_ids_7357'));
     $is_link_published = ( !$ln_id || in_array($en['ln_status_source_id'], $CI->config->item('en_ids_7359')));
-    $is_hidden = filter_array($en__parents, 'en_id', '4755');
+    $is_hidden = filter_array($en__parents, 'en_id', '4755') || in_array($en['en_id'], $CI->config->item('en_ids_4755'));
 
-    if(!$session_en && ($is_hidden || !$is_public || !$is_link_published)){
+    if(!$session_en && (!$is_public || !$is_link_published)){
         //Not logged in, so should only see published:
+        return false;
+    } elseif($is_hidden && !superpower_assigned(12701)){
+        //Cannot see this private transaction:
         return false;
     } elseif($is_hidden && !superpower_active(12701, true)){
         //They don't have the needed superpower:
