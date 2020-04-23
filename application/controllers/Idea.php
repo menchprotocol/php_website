@@ -82,7 +82,7 @@ class Idea extends CI_Controller {
             'in_id' => $in_id,
         ));
         if ( count($ins) < 1) {
-            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle discover"></i></span>IDEA #' . $in_id . ' Not Found</div>');
+            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-circle discover"></i></span>IDEA #' . $in_id . ' Not Found</div>');
         }
 
 
@@ -102,7 +102,7 @@ class Idea extends CI_Controller {
             if($is_public){
                 return redirect_message('/'.$in_id);
             } else {
-                return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>IDEA #' . $in_id . ' is not published yet.</div>');
+                return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-circle"></i></span>IDEA #' . $in_id . ' is not published yet.</div>');
             }
         }
 
@@ -163,7 +163,7 @@ class Idea extends CI_Controller {
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_next_idea_id' => $in_id,
         )))){
-            return redirect_message('/idea/'.$in_id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>You have previously requested to join this idea. No further action is necessary.</div>');
+            return redirect_message('/idea/'.$in_id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-circle"></i></span>You have previously requested to join this idea. No further action is necessary.</div>');
 
         }
 

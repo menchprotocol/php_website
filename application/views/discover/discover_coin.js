@@ -140,7 +140,7 @@ function discover_text_answer(){
                 window.location = '/discover/next/'+in_loaded_id;
             }, 987);
         } else {
-            $('.text_saving_result').html('<span class="icon-block"><i class="fad fa-exclamation-triangle discover"></i></span><span class="discover">'+data.message+'</span>');
+            $('.text_saving_result').html('<span class="icon-block"><i class="fad fa-exclamation-circle discover"></i></span><span class="discover">'+data.message+'</span>');
         }
     });
 }
@@ -168,7 +168,7 @@ function discover_answer(){
                 window.location = '/discover/next/'+in_loaded_id;
             }, 987);
         } else {
-            $('.result-update').html('<span class="icon-block"><i class="fad fa-exclamation-triangle discover"></i></span><span class="discover">'+data.message+'</span>');
+            $('.result-update').html('<span class="icon-block"><i class="fad fa-exclamation-circle discover"></i></span><span class="discover">'+data.message+'</span>');
         }
     });
 }

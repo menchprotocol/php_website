@@ -101,7 +101,7 @@ class Ledger extends CI_Controller
         } else {
 
             //Show no link warning:
-            $message .= '<div class="alert alert-warning" role="alert" style="margin-top:20px;"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>No Links found with the selected filters. Modify filters and try again.</div>';
+            $message .= '<div class="alert alert-warning" role="alert" style="margin-top:20px;"><span class="icon-block"><i class="fad fa-exclamation-circle"></i></span>No Links found with the selected filters. Modify filters and try again.</div>';
 
         }
 

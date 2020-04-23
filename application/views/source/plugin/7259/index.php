@@ -75,7 +75,7 @@ if($search_for_is_set){
             if($replace_with_is_set){
 
                 echo '<td style="text-align: left;">'.$new_outcome.'</td>';
-                echo '<td style="text-align: left;">'.( !$in_titlevalidation['status'] ? '<span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>'.$in_titlevalidation['message'] : ( $replace_with_is_confirmed && $in_titlevalidation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
+                echo '<td style="text-align: left;">'.( !$in_titlevalidation['status'] ? '<span class="icon-block"><i class="fad fa-exclamation-circle"></i></span>'.$in_titlevalidation['message'] : ( $replace_with_is_confirmed && $in_titlevalidation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
             } else {
                 //Show parents now:
                 echo '<td style="text-align: left;">';
@@ -122,7 +122,7 @@ if($replace_with_is_set && !$completed_replacements){
         echo '<div class="mini-header">Confirm Replacement by Typing "'.$confirmation_keyword.'":</div>';
         echo '<input type="text" class="form-control border maxout" name="confirm_statement" value="'. @$_GET['confirm_statement'] .'"><br />';
     } else {
-        echo '<div class="alert alert-danger"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>Fix errors above to then apply search/replace</div>';
+        echo '<div class="alert alert-danger"><span class="icon-block"><i class="fad fa-exclamation-circle"></i></span>Fix errors above to then apply search/replace</div>';
     }
 }
 

@@ -114,7 +114,7 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
                         <div class="notify_en_delete hidden">
 
                             <input type="hidden" id="en_link_count" value="0" />
-                            <div class="alert alert-danger"><span class="icon-block"><i class="fad fa-exclamation-triangle discover"></i></span>Saving will delete this source and UNLINK ALL <span class="source_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
+                            <div class="alert alert-danger"><span class="icon-block"><i class="fad fa-exclamation-circle discover"></i></span>Saving will delete this source and UNLINK ALL <span class="source_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
 
                             <span class="mini-header"><span class="tr_in_link_title"></span> Merge Source Into:</span>
                             <input style="padding-left:3px;" type="text" class="form-control algolia_search border en_quick_search" id="en_merge" value="" placeholder="Search source to merge..." />
@@ -174,7 +174,7 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
                             </select>
 
                             <div class="notify_unlink_en hidden">
-                                <div class="alert alert-warning"><span class="icon-block"><i class="fad fa-exclamation-triangle discover"></i></span>Saving will unlink source</div>
+                                <div class="alert alert-warning"><span class="icon-block"><i class="fad fa-exclamation-circle discover"></i></span>Saving will unlink source</div>
                             </div>
 
 

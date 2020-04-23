@@ -757,7 +757,7 @@ class DISCOVER_model extends CI_Model
             } else {
                 //HTML:
 
-                echo '<div class="alert alert-danger"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>Invalid Idea ID</div>';
+                echo '<div class="alert alert-danger"><span class="icon-block"><i class="fad fa-exclamation-circle"></i></span>Invalid Idea ID</div>';
             }
             return false;
         }

@@ -3920,7 +3920,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.358',
+        'm_desc' => 'v1.359',
         'm_parents' => array(6404),
     ),
     11079 => array(
