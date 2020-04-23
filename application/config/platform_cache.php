@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-23 10:52:51 PST
+//Generated 2020-04-23 12:23:09 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587664371;
-$config['cache_count_transaction'] = 1153188;
-$config['cache_count_discover'] = 121125;
-$config['cache_count_idea'] = 4860;
-$config['cache_count_source'] = 5224;
+$config['cache_timestamp'] = 1587669789;
+$config['cache_count_transaction'] = 1153588;
+$config['cache_count_discover'] = 121130;
+$config['cache_count_idea'] = 4888;
+$config['cache_count_source'] = 5229;
 
 
 
@@ -678,19 +678,13 @@ $config['en_all_12571'] = array(
 );
 
 //MESSAGE VISUAL MEDIA:
-$config['en_ids_12524'] = array(4259,4257,4261,4260,4258);
+$config['en_ids_12524'] = array(4259,4261,4260,4257,4258);
 $config['en_all_12524'] = array(
     4259 => array(
         'm_icon' => '<i class="fad fa-volume-up source"></i>',
         'm_name' => 'AUDIO',
         'm_desc' => '',
         'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
-    ),
-    4257 => array(
-        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
-        'm_name' => 'EMBED PLAYER',
-        'm_desc' => '',
-        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
     ),
     4261 => array(
         'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
@@ -703,6 +697,12 @@ $config['en_all_12524'] = array(
         'm_name' => 'IMAGE',
         'm_desc' => '',
         'm_parents' => array(12605,12524,4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4257 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="fad fa-video source"></i>',
@@ -914,7 +914,7 @@ $config['en_ids_12403'] = array(4257);
 $config['en_all_12403'] = array(
     4257 => array(
         'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE LINK EMBED PLAYER',
+        'm_name' => 'SOURCE LINK VIDEO',
         'm_desc' => '',
         'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
     ),
@@ -1062,7 +1062,7 @@ $config['en_all_4536'] = array(
 );
 
 //IDEA:
-$config['en_ids_4535'] = array(12773,7545,10573,12419,4250,12453,4601,11018,4229,4228,10686,10663,10664,10643,12589,6226,4231,4485,10676,10678,10679,10677,12682,6768,10681,10675,12450,4983,7302,10662,10648,10650,10644,10651,4993,6201,12647,12591,12592,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,4246,10653,4259,10657,4257,4261,10669,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,10689,10646,10654,5007,4994);
+$config['en_ids_4535'] = array(12773,7545,10573,12419,4250,12453,4601,11018,4229,4228,10686,10663,10664,10643,12589,6226,4231,4485,10676,10678,10679,10677,12682,6768,10681,10675,12450,4983,7302,10662,10648,10650,10644,10651,4993,6201,12647,12591,12592,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,4246,10653,4259,10657,4261,10669,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4257,4258,10689,10646,10654,5007,4994);
 $config['en_all_4535'] = array(
     12773 => array(
         'm_icon' => '<i class="far fa-plus-circle idea"></i>',
@@ -1394,12 +1394,6 @@ $config['en_all_4535'] = array(
         'm_desc' => '',
         'm_parents' => array(4535,10593,4593,10658,10645),
     ),
-    4257 => array(
-        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE LINK EMBED PLAYER',
-        'm_desc' => '',
-        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
-    ),
     4261 => array(
         'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINK FILE',
@@ -1471,6 +1465,12 @@ $config['en_all_4535'] = array(
         'm_name' => 'SOURCE LINK URL',
         'm_desc' => '',
         'm_parents' => array(11080,4535,4593,4592,4537),
+    ),
+    4257 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="fad fa-video source"></i>',
@@ -3920,7 +3920,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.3597',
+        'm_desc' => 'v1.3594',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -8115,7 +8115,7 @@ $config['en_all_4755'] = array(
 );
 
 //TRANSACTION TYPE:
-$config['en_ids_4593'] = array(12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,6415,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,12489,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,4235,7495,12773,7545,10573,12419,4250,6182,12453,4601,4229,4228,10686,10663,10664,10643,6226,4231,10676,10678,10679,10677,12682,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,12591,12592,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,7563,6157,7489,4246,4251,6178,4559,12117,10653,4259,10657,4257,4261,10669,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,10689,10646,7504,10654,6144,5007,7485,7486,6997,4994);
+$config['en_ids_4593'] = array(12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,6415,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,12489,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,4235,7495,12773,7545,10573,12419,4250,6182,12453,4601,4229,4228,10686,10663,10664,10643,6226,4231,10676,10678,10679,10677,12682,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,12591,12592,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,7563,6157,7489,4246,4251,6178,4559,12117,10653,4259,10657,4261,10669,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,4257,10689,10646,7504,10654,6144,5007,7485,7486,6997,4994);
 $config['en_all_4593'] = array(
     12129 => array(
         'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
@@ -8807,12 +8807,6 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(4535,10593,4593,10658,10645),
     ),
-    4257 => array(
-        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE LINK EMBED PLAYER',
-        'm_desc' => '',
-        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
-    ),
     4261 => array(
         'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINK FILE',
@@ -8891,6 +8885,12 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
+    4257 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
+    ),
     10689 => array(
         'm_icon' => '<i class="fad fa-share-alt rotate90 source"></i>',
         'm_name' => 'SOURCE MERGED IN SOURCE',
@@ -8954,19 +8954,13 @@ $config['en_all_4593'] = array(
 );
 
 //SOURCE LINKS:
-$config['en_ids_4592'] = array(4259,4257,4261,10669,4260,4319,7657,4230,4255,4318,4256,4258);
+$config['en_ids_4592'] = array(4259,4261,10669,4260,4319,7657,4230,4255,4318,4256,4257,4258);
 $config['en_all_4592'] = array(
     4259 => array(
         'm_icon' => '<i class="fad fa-volume-up source"></i>',
         'm_name' => 'AUDIO',
         'm_desc' => '',
         'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
-    ),
-    4257 => array(
-        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
-        'm_name' => 'EMBED PLAYER',
-        'm_desc' => '',
-        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
     ),
     4261 => array(
         'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
@@ -9022,10 +9016,16 @@ $config['en_all_4592'] = array(
         'm_desc' => '',
         'm_parents' => array(11080,4535,4593,4592,4537),
     ),
+    4257 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'VIDEO',
+        'm_desc' => 'Embeddable videos',
+        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
+    ),
     4258 => array(
         'm_icon' => '<i class="fad fa-video source"></i>',
         'm_name' => 'VIDEO',
-        'm_desc' => '',
+        'm_desc' => 'Uploaded videos',
         'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
     ),
 );
@@ -9124,19 +9124,13 @@ $config['en_all_4486'] = array(
 );
 
 //SOURCE LINK URLS:
-$config['en_ids_4537'] = array(4259,4257,4261,4260,4256,4258);
+$config['en_ids_4537'] = array(4259,4261,4260,4256,4257,4258);
 $config['en_all_4537'] = array(
     4259 => array(
         'm_icon' => '<i class="fad fa-volume-up source"></i>',
         'm_name' => 'AUDIO',
         'm_desc' => 'URL to a raw audio file',
         'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
-    ),
-    4257 => array(
-        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
-        'm_name' => 'EMBED PLAYER',
-        'm_desc' => 'Recognizable URL that offers an embed widget for a more engaging play-back experience',
-        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
     ),
     4261 => array(
         'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
@@ -9155,6 +9149,12 @@ $config['en_all_4537'] = array(
         'm_name' => 'URL',
         'm_desc' => 'Link note contains a generic URL only',
         'm_parents' => array(11080,4535,4593,4592,4537),
+    ),
+    4257 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'VIDEO',
+        'm_desc' => 'Recognizable URL that offers an embed widget for a more engaging play-back experience',
+        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="fad fa-video source"></i>',
