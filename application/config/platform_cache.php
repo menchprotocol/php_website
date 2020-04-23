@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-22 18:24:21 PST
+//Generated 2020-04-22 18:34:13 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587605061;
-$config['cache_count_transaction'] = 1151925;
-$config['cache_count_discover'] = 121129;
+$config['cache_timestamp'] = 1587605653;
+$config['cache_count_transaction'] = 1152021;
+$config['cache_count_discover'] = 121112;
 $config['cache_count_idea'] = 4854;
 $config['cache_count_source'] = 5213;
 
@@ -1963,7 +1963,7 @@ $config['en_all_6205'] = array(
 $config['en_ids_12330'] = array(6677,6914,6907);
 $config['en_all_12330'] = array(
     6677 => array(
-        'm_icon' => '<i class="far fa-eye idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'GO NEXT',
         'm_desc' => '',
         'm_parents' => array(12330,7585,4559,6192),
@@ -6170,7 +6170,7 @@ $config['en_all_6192'] = array(
         'm_parents' => array(12324,12117,7751,7585,6192),
     ),
     6677 => array(
-        'm_icon' => '<i class="far fa-eye idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'GO NEXT',
         'm_desc' => '',
         'm_parents' => array(12330,7585,4559,6192),
@@ -6619,7 +6619,7 @@ $config['en_all_6193'] = array(
 $config['en_ids_7585'] = array(6677,6683,7637,6914,6684,7231,6907);
 $config['en_all_7585'] = array(
     6677 => array(
-        'm_icon' => '<i class="far fa-eye idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'GO NEXT',
         'm_desc' => 'Read messages & go next',
         'm_parents' => array(12330,7585,4559,6192),
