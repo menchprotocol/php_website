@@ -1092,7 +1092,7 @@ class DISCOVER_model extends CI_Model
                 }
 
                 //DISCOVER TITLE
-                echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle discover" aria-hidden="true"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
+                echo '<h1 class="block-one" style="margin-top: -6px;"><span class="icon-block top-icon"><i class="fas fa-circle discover" aria-hidden="true"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
 
             } else {
 
