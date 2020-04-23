@@ -81,7 +81,7 @@ function in_notes_source_only_remove(ln_id, note_type_id) {
 
 }
 
-function in_notes_source_only_add(en_existing_id, note_type_id) {
+function en_add_source_ref_only(en_existing_id, note_type_id) {
 
 
     //if en_existing_id>0 it means we're linking to an existing source, in which case en_new_string should be null
@@ -150,7 +150,7 @@ function in_notes_source_only_search(note_type_id) {
     }).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            in_notes_source_only_add(0, note_type_id);
+            en_add_source_ref_only(0, note_type_id);
             return true;
         }
     });
@@ -167,7 +167,7 @@ function in_notes_source_only_search(note_type_id) {
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            in_notes_source_only_add(suggestion.alg_obj_id, note_type_id);
+            en_add_source_ref_only(suggestion.alg_obj_id, note_type_id);
 
         }).autocomplete({hint: false, minLength: 1}, [{
 
@@ -190,11 +190,11 @@ function in_notes_source_only_search(note_type_id) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:void(0);" onclick="in_notes_source_only_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                        return '<a href="javascript:void(0);" onclick="en_add_source_ref_only(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="in_notes_source_only_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="en_add_source_ref_only(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);

@@ -438,7 +438,7 @@ class IDEA_model extends CI_Model
                 //Make sure none of the parents are the same:
                 return array(
                     'status' => 0,
-                    'message' => 'You cannot add "' . $in_new['in_title'] . '" as its own '.( $is_parent ? 'parent' : 'child' ).'.',
+                    'message' => 'You cannot add "' . $in_new['in_title'] . '" as its own '.( $is_parent ? 'previous' : 'next' ).' idea.',
                 );
 
             }

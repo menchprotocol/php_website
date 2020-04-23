@@ -391,7 +391,7 @@ function en_count_db_references($en_id, $return_html = true){
 
 
 
-function in_weight_calculator($in){
+function in_weight_updater($in){
 
     //TRANSACTIONS
     $CI =& get_instance();
@@ -409,12 +409,21 @@ function in_weight_calculator($in){
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     //Returns the weight of a idea:
-    return ( $count_transactions[0]['totals'] * config_var(12568) )
+    $weight = ( $count_transactions[0]['totals'] * config_var(12568) )
         + ( $counts[0]['totals'] * config_var(12565) );
+
+    //Should we update?
+    if($weight != $in['in_weight']){
+        return $CI->IDEA_model->in_update($in['in_id'], array(
+            'in_weight' => $weight,
+        ));
+    } else {
+        return 0;
+    }
 
 }
 
-function en_weight_calculator($en){
+function en_weight_updater($en){
 
     //TRANSACTIONS
     $CI =& get_instance();
@@ -432,8 +441,17 @@ function en_weight_calculator($en){
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     //Returns the weight of a source:
-    return ( $count_transactions[0]['totals'] * config_var(12568) )
+    $weight = ( $count_transactions[0]['totals'] * config_var(12568) )
             + ( $counts[0]['totals'] * config_var(12565) );
+
+    //Should we update?
+    if($weight != $en['en_weight']){
+        return $CI->SOURCE_model->en_update($en['en_id'], array(
+            'en_weight' => $weight,
+        ));
+    } else {
+        return 0;
+    }
 
 }
 
@@ -1104,7 +1122,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
     $synced_count = 0;
     foreach($fetch_objects as $loop_obj){
 
-        //Delete any limits:
+        //Reset limits:
         unset($limits);
 
         //Fetch item(s) for updates including their parents:
@@ -1145,6 +1163,17 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             //Prepare variables:
             unset($export_row);
             $export_row = array();
+
+
+            //Update Weight if single update:
+            if($input_obj_id){
+                //Update weight before updating this object:
+                if($input_obj_type=='en'){
+                    en_weight_updater($db_row);
+                } elseif($input_obj_type=='in'){
+                    in_weight_updater($db_row);
+                }
+            }
 
 
             //Attempt to fetch Algolia object ID from object Metadata:

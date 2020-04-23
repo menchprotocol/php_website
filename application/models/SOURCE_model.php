@@ -430,7 +430,7 @@ class SOURCE_model extends CI_Model
         } elseif ($ln_creator_source_id) {
 
             //Yes, let's add a new source:
-            $added_en = $this->SOURCE_model->en_verify_create(( $page_title ? $page_title : $domain_analysis['url_domain_name'] ), $ln_creator_source_id, 6181, detect_fav_icon($domain_analysis['url_clean_domain']));
+            $added_en = $this->SOURCE_model->en_verify_create(( $page_title ? $page_title : $domain_analysis['url_domain_name'] ), $ln_creator_source_id, true, 6181, detect_fav_icon($domain_analysis['url_clean_domain']));
             $en_domain = $added_en['en'];
 
             //And link source to the domains source:
@@ -726,7 +726,7 @@ class SOURCE_model extends CI_Model
                 $page_title = $en_all_4592[$ln_type_source_id]['m_name'].' '.$page_title;
 
                 //Create a new source for this URL ONLY If player source is provided...
-                $added_en = $this->SOURCE_model->en_verify_create($page_title, $ln_creator_source_id, 6181, $en_all_4592[$ln_type_source_id]['m_icon']);
+                $added_en = $this->SOURCE_model->en_verify_create($page_title, $ln_creator_source_id, true, 6181, $en_all_4592[$ln_type_source_id]['m_icon']);
                 if($added_en['status']){
 
                     //All good:
@@ -1160,7 +1160,7 @@ class SOURCE_model extends CI_Model
 
     }
 
-    function en_verify_create($en_name, $ln_creator_source_id = 0, $en_status_source_id = 6181 /* Player Drafting */, $en_icon = null){
+    function en_verify_create($en_name, $ln_creator_source_id = 0, $external_sync = true, $en_status_source_id = 6181 /* SOURCE PUBLISHED */, $en_icon = null){
 
         //If PSID exists, make sure it's not a duplicate:
         if(!in_array($en_status_source_id, $this->config->item('en_ids_6177'))){
@@ -1192,7 +1192,7 @@ class SOURCE_model extends CI_Model
             'en_name' => trim($en_name),
             'en_icon' => $en_icon,
             'en_status_source_id' => $en_status_source_id,
-        ), true, $ln_creator_source_id);
+        ), $external_sync, $ln_creator_source_id);
 
 
         //Return success:
@@ -1249,7 +1249,7 @@ class SOURCE_model extends CI_Model
              * */
 
             //Create user source:
-            $added_en = $this->SOURCE_model->en_verify_create('User '.rand(100000000, 999899999), 0, 6181, random_player_avatar());
+            $added_en = $this->SOURCE_model->en_verify_create('Player '.rand(100000000, 999899999), 0, false, 6181, random_player_avatar());
 
         } else {
 
@@ -1257,7 +1257,7 @@ class SOURCE_model extends CI_Model
             $fb_profile = $graph_fetch['ln_metadata']['result'];
 
             //Create user source with their Facebook Graph name:
-            $added_en = $this->SOURCE_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, 6181, random_player_avatar());
+            $added_en = $this->SOURCE_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, false, 6181, random_player_avatar());
 
 
             //See if we could fetch FULL profile data:
@@ -1320,6 +1320,8 @@ class SOURCE_model extends CI_Model
             'ln_portfolio_source_id' => $added_en['en']['en_id'],
         ));
 
+        //Now update Algolia:
+        update_algolia('en',  $added_en['en']['en_id']);
 
         if(!$fetch_result){
             //Let them know to complete their profile:

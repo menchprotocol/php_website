@@ -58,11 +58,13 @@ class Cron extends CI_Controller
 
     function cron__12569($obj = null /* Can be in or en */){
 
+        //Update object weight
+
         $stats = array(
             'start_time' => time(),
             'in_scanned' => 0,
             'in_updated' => 0,
-            'in_weight' => 0,
+            'in_total_weights' => 0,
             'en_scanned' => 0,
             'en_updated' => 0,
         );
@@ -73,23 +75,12 @@ class Cron extends CI_Controller
             foreach($this->IDEA_model->in_fetch(array(
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
             )) as $in) {
-
                 $stats['in_scanned']++;
-
-                //Calculate the weight for this:
-                $weight = in_weight_calculator($in);
-
-                //Should we update?
-                if($weight != $in['in_weight']){
-                    $stats['in_updated']++;
-                    $this->IDEA_model->in_update($in['in_id'], array(
-                        'in_weight' => $weight,
-                    ));
-                }
+                $stats['in_updated'] += in_weight_updater($in);
             }
 
-            //Now Update Main Idea:
-            $stats['in_weight'] = $this->IDEA_model->in_weight(config_var(12156));
+            //Now addup weights starting from primary Idea:
+            $stats['in_total_weights'] = $this->IDEA_model->in_weight(config_var(12156));
 
         }
 
@@ -99,19 +90,8 @@ class Cron extends CI_Controller
             foreach($this->SOURCE_model->en_fetch(array(
                 'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
             )) as $en) {
-
                 $stats['en_scanned']++;
-
-                //Calculate the weight for this:
-                $weight = en_weight_calculator($en);
-
-                //Should we update?
-                if($weight != $en['en_weight']){
-                    $stats['en_updated']++;
-                    $this->SOURCE_model->en_update($en['en_id'], array(
-                        'en_weight' => $weight,
-                    ));
-                }
+                $stats['en_updated'] += en_weight_updater($en);
             }
         }
 

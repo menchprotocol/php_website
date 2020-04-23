@@ -443,7 +443,7 @@ class Source extends CI_Controller
         } else {
 
             //Create source:
-            $added_en = $this->SOURCE_model->en_verify_create($_POST['en_new_string'], $session_en['en_id']);
+            $added_en = $this->SOURCE_model->en_verify_create($_POST['en_new_string'], $session_en['en_id'], false);
             if(!$added_en['status']){
                 //We had an error, return it:
                 return echo_json($added_en);
@@ -481,6 +481,10 @@ class Source extends CI_Controller
                 ));
 
             }
+
+            //Update Algolia:
+            update_algolia('en', $focus_en['en_id']);
+
         }
 
         //Create Note:
@@ -1731,7 +1735,7 @@ class Source extends CI_Controller
 
 
         //All good, create new source:
-        $user_en = $this->SOURCE_model->en_verify_create(trim($_POST['input_name']), 0, 6181, random_player_avatar());
+        $user_en = $this->SOURCE_model->en_verify_create(trim($_POST['input_name']), 0, false, 6181, random_player_avatar());
         if(!$user_en['status']){
             //We had an error, return it:
             return echo_json($user_en);
@@ -1761,6 +1765,8 @@ class Source extends CI_Controller
             'ln_portfolio_source_id' => $user_en['en']['en_id'],
         ));
 
+        //Now update Algolia:
+        update_algolia('en',  $user_en['en']['en_id']);
 
         //Fetch referral Idea, if any:
         if(intval($_POST['referrer_in_id']) > 0){
