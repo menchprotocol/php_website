@@ -7,21 +7,20 @@ $en_all_2738 = $this->config->item('en_all_2738');
 $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 $is_public = in_array($source['en_status_source_id'], $this->config->item('en_ids_7357'));
-
+$superpower_10967 = superpower_active(10967, true);
 
 //Fetch general data in advance:
 
 //COUNT TOTAL CHILD
-$child_links = $this->LEDGER_model->ln_fetch(array(
+$en__portfolios_count = $this->LEDGER_model->ln_fetch(array(
     'ln_profile_source_id' => $source['en_id'],
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
 ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
-$counter = $child_links[0]['totals'];
 
 //FETCH ALL PARENTS
-$source__parents = $this->LEDGER_model->ln_fetch(array(
+$en__profiles = $this->LEDGER_model->ln_fetch(array(
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
@@ -375,13 +374,13 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
         } elseif($en_id==11030){
 
             //SOURCE PROFILE
-            $counter = count($source__parents);
-            if(!$counter && !superpower_active(10967, true)){
+            $counter = count($en__profiles);
+            if(!$counter && !$superpower_10967){
                 continue;
             }
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
-            foreach ($source__parents as $en) {
+            foreach ($en__profiles as $en) {
                 $this_tab .= echo_en($en,true, null, true);
             }
 
@@ -400,20 +399,23 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
 
         } elseif($en_id==11029){
 
+            $counter = $en__portfolios_count[0]['totals'];
+            $en__portfolios = array(); //Fetch some
+            if(!$counter && !$superpower_10967){
+                continue;
+            } elseif($counter){
+                //Fetch Portfolios
+                $en__portfolios = $this->LEDGER_model->ln_fetch(array(
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                    'ln_profile_source_id' => $source['en_id'],
+                ), array('en_portfolio'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
+            }
 
-
-            //Fetch Portfolio
-            $source__children = $this->LEDGER_model->ln_fetch(array(
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-                'ln_profile_source_id' => $source['en_id'],
-            ), array('en_portfolio'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
-
-            $counter = count($source__children);
 
             //SOURCE MASS EDITOR
-            if(superpower_active(10967, true)){
+            if($superpower_10967){
 
                 //Mass Editor:
                 $dropdown_options = '';
@@ -542,10 +544,10 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
                 $this_tab .= '</div>';
                 $this_tab .= '</form>';
 
-                if(isset($source__children)){
+                if(isset($en__portfolios)){
                     //Also add invisible child IDs for quick copy/pasting:
                     $this_tab .= '<div style="color:transparent;">';
-                    foreach ($source__children as $en) {
+                    foreach ($en__portfolios as $en) {
                         $this_tab .= $en['en_id'].',';
                     }
                     $this_tab .= '</div>';
@@ -597,10 +599,10 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
 
             $this_tab .= '<div id="list-children" class="list-group">';
 
-            foreach ($source__children as $en) {
+            foreach ($en__portfolios as $en) {
                 $this_tab .= echo_en($en,false, null, true);
             }
-            if ($counter > count($source__children)) {
+            if ($counter > count($en__portfolios)) {
                 $this_tab .= echo_en_load_more(1, config_var(11064), $counter);
             }
 

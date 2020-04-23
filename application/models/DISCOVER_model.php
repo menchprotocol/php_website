@@ -636,13 +636,13 @@ class DISCOVER_model extends CI_Model
         }
 
 
-        $in__children = $this->LEDGER_model->ln_fetch(array(
+        $in__next = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_type_source_id' => 4228, //Idea Link Regular Discovery
             'ln_previous_idea_id' => $in['in_id'],
         ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
-        if(count($in__children) < 1){
+        if(count($in__next) < 1){
             return array(
                 'status' => 0,
                 'message' => 'Idea has no child ideas',
@@ -668,7 +668,7 @@ class DISCOVER_model extends CI_Model
         $qualified_completed_users = array();
 
         //Go through children and see how many completed:
-        foreach($in__children as $count => $child_in){
+        foreach($in__next as $count => $child_in){
 
             //Fetch users who completed this:
             if($count==0){
@@ -815,7 +815,7 @@ class DISCOVER_model extends CI_Model
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         //Fetch Children:
-        $in__children = $this->LEDGER_model->ln_fetch(array(
+        $in__next = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_type_source_id' => 4228, //Idea Link Regular Discovery
@@ -907,7 +907,7 @@ class DISCOVER_model extends CI_Model
 
                 if($is_or){
                     $all_child_featured = true;
-                    foreach($in__children as $key => $child_in){
+                    foreach($in__next as $key => $child_in){
                         if(!in_array($child_in['in_status_source_id'], $this->config->item('en_ids_12138'))){
                             $all_child_featured = false;
                             break;
@@ -921,17 +921,17 @@ class DISCOVER_model extends CI_Model
 
 
                 //Any Sub Topics?
-                if(count($in__children) > 0){
+                if(count($in__next) > 0){
 
                     //List Children:
                     echo '<div id="discoverScroll no-height">&nbsp;</div>';
-                    $common_prefix = in_calc_common_prefix($in__children, 'in_title');
+                    $common_prefix = in_calc_common_prefix($in__next, 'in_title');
 
                     echo '<div class="'.( !$all_child_featured ? ' discover_topics hidden ' : '' ).'">';
 
                     echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>'.( !$all_child_featured ? 'PREVIEW TOPICS:' : 'SELECT ONE:' ).'</div>';
                     echo '<div class="list-group">';
-                    foreach($in__children as $key => $child_in){
+                    foreach($in__next as $key => $child_in){
                         echo echo_in_discover($child_in, $is_or, $common_prefix);
                     }
                     echo '</div>';
@@ -946,10 +946,10 @@ class DISCOVER_model extends CI_Model
                     echo '<div class="inline-block margin-top-down discover-add pull-left"><a class="btn btn-discover" href="/discover/start/'.$ins[0]['in_id'].'">START <i class="fad fa-step-forward"></i></a></div>';
 
                     //Any Sub Topics?
-                    if(count($in__children) > 0){
+                    if(count($in__next) > 0){
 
                         //Give option to review:
-                        echo '<div class="inline-block margin-top-down discover-add discover_topics pull-left" style="margin-top: 39px;">&nbsp;or&nbsp;<a href="javascript:void();" onclick="toggle_discover()"><i class="far fa-plus-circle discover_topics"></i><i class="fad fa-search-minus discover_topics hidden"></i> <u>Preview '.count($in__children).' Topic'.echo__s(count($in__children)).'</u></a></div>';
+                        echo '<div class="inline-block margin-top-down discover-add discover_topics pull-left" style="margin-top: 39px;">&nbsp;or&nbsp;<a href="javascript:void();" onclick="toggle_discover()"><i class="far fa-plus-circle discover_topics"></i><i class="fad fa-search-minus discover_topics hidden"></i> <u>Preview '.count($in__next).' Topic'.echo__s(count($in__next)).'</u></a></div>';
 
                     }
 
@@ -982,7 +982,7 @@ class DISCOVER_model extends CI_Model
             'ln_previous_idea_id' => $ins[0]['in_id'],
         ));
 
-        $qualify_for_autocomplete = ( isset($_GET['check_if_empty']) && !count($in__children) || (count($in__children)==1 && $ins[0]['in_type_source_id'] == 6677)) && !count($in__messages) && !in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_12324'));
+        $qualify_for_autocomplete = ( isset($_GET['check_if_empty']) && !count($in__next) || (count($in__next)==1 && $ins[0]['in_type_source_id'] == 6677)) && !count($in__messages) && !in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_12324'));
 
 
         //Is it incomplete & can it be instantly marked as complete?
@@ -1169,7 +1169,7 @@ class DISCOVER_model extends CI_Model
             }
 
             //List Children if any:
-            echo_in_list($ins[0], $in__children, $recipient_en, $push_message,  null, ( $completion_rate['completion_percentage'] < 100 ));
+            echo_in_list($ins[0], $in__next, $recipient_en, $push_message,  null, ( $completion_rate['completion_percentage'] < 100 ));
 
 
         } elseif (in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7712'))){
@@ -1177,7 +1177,7 @@ class DISCOVER_model extends CI_Model
             //SELECT ANSWER
 
             //Has no children:
-            if(!count($in__children)){
+            if(!count($in__next)){
 
                 //Mark this as complete since there is no child to choose from:
                 if(!count($this->LEDGER_model->ln_fetch(array(
@@ -1270,13 +1270,13 @@ class DISCOVER_model extends CI_Model
                     if ($ins[0]['in_type_source_id'] == 6684) {
 
                         //SELECT ONE
-                        $quick_replies_allowed = ( count($in__children) <= config_var(12124) );
+                        $quick_replies_allowed = ( count($in__next) <= config_var(12124) );
                         $message_content = 'Select one option to continue:'."\n\n";
 
                     } elseif ($ins[0]['in_type_source_id'] == 7231) {
 
                         //SELECT SOME
-                        $quick_replies_allowed = ( count($in__children)==1 );
+                        $quick_replies_allowed = ( count($in__next)==1 );
                         $message_content = 'Select one or more options to continue:'."\n\n";
 
                     }
@@ -1303,11 +1303,11 @@ class DISCOVER_model extends CI_Model
                 }
 
                 //Determine Prefix:
-                $common_prefix = in_calc_common_prefix($in__children, 'in_title');
+                $common_prefix = in_calc_common_prefix($in__next, 'in_title');
 
 
                 //List children to choose from:
-                foreach ($in__children as $key => $child_in) {
+                foreach ($in__next as $key => $child_in) {
 
                     //Has this been previously selected?
                     $previously_selected = count($this->LEDGER_model->ln_fetch(array(
@@ -1359,13 +1359,13 @@ class DISCOVER_model extends CI_Model
 
                         if ($ins[0]['in_type_source_id'] == 6684) {
 
-                            $message_content .= "\n\n".'Reply with a number between 1 - '.count($in__children).' to continue.';
+                            $message_content .= "\n\n".'Reply with a number between 1 - '.count($in__next).' to continue.';
 
                         } elseif ($ins[0]['in_type_source_id'] == 7231) {
 
-                            $message_content .= "\n\n".'Reply with one or more numbers between 1 - '.count($in__children).' to continue (add space between). For example, to select the first option reply "1", or to select the first & ';
+                            $message_content .= "\n\n".'Reply with one or more numbers between 1 - '.count($in__next).' to continue (add space between). For example, to select the first option reply "1", or to select the first & ';
 
-                            if(count($in__children) >= 3){
+                            if(count($in__next) >= 3){
                                 $message_content .= 'third option reply "1 3"';
                             } else {
                                 $message_content .= 'second option reply "1 2"';
@@ -1405,7 +1405,7 @@ class DISCOVER_model extends CI_Model
                 //DISCOVER ONLY
 
                 //Next Ideas:
-                echo_in_list($ins[0], $in__children, $recipient_en, $push_message);
+                echo_in_list($ins[0], $in__next, $recipient_en, $push_message);
 
             } elseif ($ins[0]['in_type_source_id'] == 6683) {
 
@@ -1424,7 +1424,7 @@ class DISCOVER_model extends CI_Model
 
                 if(count($discover_completes)){
                     //Next Ideas:
-                    echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null,false);
+                    echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null,false);
                 }
 
                 echo '<script> $(document).ready(function () { autosize($(\'#discover_text_answer\')); $(\'#discover_text_answer\').focus(); }); </script>';
@@ -1462,7 +1462,7 @@ class DISCOVER_model extends CI_Model
                 } else {
 
                     //Next Ideas:
-                    echo_in_list($ins[0], $in__children, $recipient_en, $push_message, null, true, true, '<label class="btn btn-discover inline-block previous_discoveries pull-left" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><span class="icon-block"><i class="fad fa-cloud-upload-alt"></i></span><span class="show-max">REPLACE</span></label>');
+                    echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null, true, true, '<label class="btn btn-discover inline-block previous_discoveries pull-left" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><span class="icon-block"><i class="fad fa-cloud-upload-alt"></i></span><span class="show-max">REPLACE</span></label>');
 
                 }
 

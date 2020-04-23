@@ -1112,21 +1112,21 @@ class SOURCE_model extends CI_Model
     {
 
         //Count the active children of source:
-        $en__child_count = 0;
+        $en__portfolios_count = 0;
 
         //Do a child count:
-        $child_links = $this->LEDGER_model->ln_fetch(array(
+        $en__portfolios_count = $this->LEDGER_model->ln_fetch(array(
             'ln_profile_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'en_status_source_id IN (' . join(',', $en_statuses) . ')' => null,
         ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
 
-        if (count($child_links) > 0) {
-            $en__child_count = intval($child_links[0]['totals']);
+        if (count($en__portfolios_count) > 0) {
+            $en__portfolios_count = intval($en__portfolios_count[0]['totals']);
         }
 
-        return $en__child_count;
+        return $en__portfolios_count;
     }
 
     function en_messenger_auth($psid, $quick_reply_payload = null)

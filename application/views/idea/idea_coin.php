@@ -25,7 +25,7 @@ $source_focus_found = false; //Used to determine the first tab to be opened
 
 
 //IDEA NEXT
-$in__children = $this->LEDGER_model->ln_fetch(array(
+$in__next = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
@@ -34,7 +34,7 @@ $in__children = $this->LEDGER_model->ln_fetch(array(
 
 
 //IDEA PREVIOUS
-$in__parents = $this->LEDGER_model->ln_fetch(array(
+$in__previous = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
@@ -56,7 +56,7 @@ if(!$is_source){
 
 //IDEA PREVIOUS
 echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group previous_ins">';
-foreach ($in__parents as $parent_in) {
+foreach ($in__previous as $parent_in) {
     echo echo_in($parent_in, 0, true, in_is_source($parent_in['in_id']));
 }
 if( $is_source && $is_active && $in['in_id']!=config_var(12156)){
@@ -137,11 +137,11 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
     if($en_id==11020){
 
         //CHILD IDEAS
-        $counter = count($in__children);
+        $counter = count($in__next);
 
 
         $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group next_ins">';
-        foreach ($in__children as $child_in) {
+        foreach ($in__next as $child_in) {
             $this_tab .= echo_in($child_in, $in['in_id'], false, $is_source);
         }
 

@@ -935,7 +935,7 @@ class Source extends CI_Controller
             if($_POST['en_id'] == $_POST['en_focus_id']){
 
                 //Fetch parents to redirect to:
-                $en__parents = $this->LEDGER_model->ln_fetch(array(
+                $en__profiles = $this->LEDGER_model->ln_fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                     'ln_portfolio_source_id' => $_POST['en_id'],
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
@@ -963,7 +963,7 @@ class Source extends CI_Controller
             } else {
 
                 if($_POST['en_id'] == $_POST['en_focus_id']){
-                    $delete_redirect_url = '/source/' . ( count($en__parents) ? $en__parents[0]['en_id'] : $session_en['en_id'] );
+                    $delete_redirect_url = '/source/' . ( count($en__profiles) ? $en__profiles[0]['en_id'] : $session_en['en_id'] );
                 }
 
                 //Display proper message:

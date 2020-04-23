@@ -708,7 +708,7 @@ class IDEA_model extends CI_Model
         //Fetch all children:
         $applied_success = 0; //To be populated...
 
-        $in__children = $this->LEDGER_model->ln_fetch(array(
+        $in__next = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
             'ln_type_source_id' => 4228, //Idea Link Regular Discovery
@@ -717,7 +717,7 @@ class IDEA_model extends CI_Model
 
 
         //Process request:
-        foreach ($in__children as $in) {
+        foreach ($in__next as $in) {
 
             //Logic here must match items in en_mass_actions config variable
 
@@ -772,7 +772,7 @@ class IDEA_model extends CI_Model
             'ln_next_idea_id' => $in_id,
             'ln_metadata' => array(
                 'payload' => $_POST,
-                'ideas_total' => count($in__children),
+                'ideas_total' => count($in__next),
                 'ideas_updated' => $applied_success,
                 'command1' => $action_command1,
                 'command2' => $action_command2,
@@ -782,7 +782,7 @@ class IDEA_model extends CI_Model
         //Return results:
         return array(
             'status' => 1,
-            'message' => '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$applied_success . '/' . count($in__children) . ' ideas updated</div>',
+            'message' => '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$applied_success . '/' . count($in__next) . ' ideas updated</div>',
         );
 
     }
@@ -1093,19 +1093,19 @@ class IDEA_model extends CI_Model
 
 
         //Discovery 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
-        $in__children = $this->LEDGER_model->ln_fetch(array(
+        $in__next = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             'ln_type_source_id' => 4228, //Idea Link Regular Discovery
             'ln_previous_idea_id' => $in['in_id'],
         ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
-        if(count($in__children) < 1){
+        if(count($in__next) < 1){
             //No children, no path:
             return array();
         }
 
         //Go through children to see if any/all can be completed:
-        foreach($in__children as $child_in){
+        foreach($in__next as $child_in){
             if(in_is_unlockable($child_in)){
 
                 //Need to check recursively:

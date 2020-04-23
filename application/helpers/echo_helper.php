@@ -1,6 +1,6 @@
 <?php
 
-function echo_en_load_more($page, $limit, $en__child_count)
+function echo_en_load_more($page, $limit, $en__portfolios_count)
 {
     /*
      * Gives an option to "Load More" sources when we have too many to show in one go
@@ -10,7 +10,7 @@ function echo_en_load_more($page, $limit, $en__child_count)
 
     //Regular section:
     $max_sources = (($page + 1) * $limit);
-    $max_sources = ($max_sources > $en__child_count ? $en__child_count : $max_sources);
+    $max_sources = ($max_sources > $en__portfolios_count ? $en__portfolios_count : $max_sources);
     $ui .= '<span class="icon-block"><i class="far fa-plus-circle source"></i></span><b class="montserrat source">SEE MORE</b>';
     $ui .= '</a></div>';
 
@@ -1381,16 +1381,16 @@ function echo_caret($en_id, $m, $url_append){
 }
 
 
-function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_statement = null, $show_next = true, $append_button = null){
+function echo_in_list($in, $in__next, $recipient_en, $push_message, $prefix_statement = null, $show_next = true, $append_button = null){
 
     //If no list just return the next step:
-    if(!count($in__children)){
+    if(!count($in__next)){
         return ( $show_next ? echo_in_next($in['in_id'], $recipient_en, $push_message) : false );
     }
 
     $CI =& get_instance();
 
-    if(count($in__children)){
+    if(count($in__next)){
 
         if(!$push_message){
             echo '<div class="previous_discoveries">';
@@ -1398,7 +1398,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
         //List children so they know what's ahead:
         $max_and_list = ( $push_message ? 5 : 0 );
-        $common_prefix = in_calc_common_prefix($in__children, 'in_title', $in, $max_and_list);
+        $common_prefix = in_calc_common_prefix($in__next, 'in_title', $in, $max_and_list);
         $has_content = ($prefix_statement || strlen($common_prefix));
 
         if($push_message){
@@ -1421,7 +1421,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
 
 
 
-        foreach($in__children as $key => $child_in){
+        foreach($in__next as $key => $child_in){
 
             if($push_message){
 
@@ -1431,7 +1431,7 @@ function echo_in_list($in, $in__children, $recipient_en, $push_message, $prefix_
                 //We know that the $next_step_message length cannot surpass the limit defined by facebook
                 if (($key >= $max_and_list || strlen($message_content) > (config_var(11074) - 150))) {
                     //We cannot add any more, indicate truncating:
-                    $remainder = count($in__children) - $max_and_list;
+                    $remainder = count($in__next) - $max_and_list;
                     $message_content .= "\n\n".'... plus ' . $remainder . ' more discover' . echo__s($remainder) . '.';
                     break;
                 }
@@ -1749,14 +1749,14 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $is_in_source = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_7551')));
     $ui = null;
 
-    $en__parents = $CI->LEDGER_model->ln_fetch(array(
+    $en__profiles = $CI->LEDGER_model->ln_fetch(array(
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
         'ln_portfolio_source_id' => $en['en_id'], //This child source
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Source Status Active
     ), array('en_profile'), 0, 0, array('en_weight' => 'DESC'));
 
-    $child_links = $CI->LEDGER_model->ln_fetch(array(
+    $en__portfolios_count = $CI->LEDGER_model->ln_fetch(array(
         'ln_profile_source_id' => $en['en_id'],
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -1765,7 +1765,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
     $is_public = in_array($en['en_status_source_id'], $CI->config->item('en_ids_7357'));
     $is_link_published = ( !$ln_id || in_array($en['ln_status_source_id'], $CI->config->item('en_ids_7359')));
-    $is_hidden = filter_array($en__parents, 'en_id', '4755') || in_array($en['en_id'], $CI->config->item('en_ids_4755'));
+    $is_hidden = filter_array($en__profiles, 'en_id', '4755') || in_array($en['en_id'], $CI->config->item('en_ids_4755'));
 
     if(!$session_en && (!$is_public || !$is_link_published)){
         //Not logged in, so should only see published:
@@ -1796,8 +1796,8 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
         //SOURCE NAME
         $ui .= '<span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>';
-        if($child_links[0]['totals'] > 0){
-            $ui .= '<span class="'.superpower_active(12701).'" title="'.number_format($child_links[0]['totals'], 0).'">&nbsp;'.echo_number($child_links[0]['totals']).'</span>';
+        if($en__portfolios_count[0]['totals'] > 0){
+            $ui .= '<span class="'.superpower_active(12701).'" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">&nbsp;'.echo_number($en__portfolios_count[0]['totals']).'</span>';
         }
 
 
@@ -1898,7 +1898,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     //PROFILE
     $ui .= '<div class="space-content">';
     $ui .= '<span class="'. superpower_active(12706) .'">';
-    foreach ($en__parents as $en_parent) {
+    foreach ($en__profiles as $en_parent) {
         $ui .= '<span class="icon-block-img en_child_icon_' . $en_parent['en_id'] . '"><a href="/source/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span> ';
     }
     $ui .= '</span>';
