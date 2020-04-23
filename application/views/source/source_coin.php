@@ -6,6 +6,8 @@ $en_all_4341 = $this->config->item('en_all_4341'); //Link Table
 $en_all_2738 = $this->config->item('en_all_2738');
 $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
+$is_public = in_array($source['en_status_source_id'], $this->config->item('en_ids_7357'));
+
 
 //Fetch general data in advance:
 
@@ -48,7 +50,9 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
     <?php
 
     //NAME & STATUS
-    $is_public = in_array($source['en_status_source_id'], $this->config->item('en_ids_7357'));
+
+    //SOURCE NAME
+    //echo echo_in_text(4736, $source['en_name'], $in['in_id'], ($is_source && $is_active), 0, true);
 
 
     //LEFT
@@ -657,8 +661,12 @@ $source__parents = $this->LEDGER_model->ln_fetch(array(
 
             } else {
 
-                //TODO Delete message:
-                $this_tab .= '<div class="alert alert-warning"><span class="icon-block"><i class="fad fa-info-circle"></i></span>This Section is Under Development...</div>';
+                if(!superpower_assigned(12701)){
+                    continue;
+                } else {
+                    //TODO Implement this UI:
+                    $this_tab .= '<div class="alert alert-warning"><span class="icon-block"><i class="fad fa-info-circle"></i></span>This Section is Under Development...</div>';
+                }
 
             }
 
