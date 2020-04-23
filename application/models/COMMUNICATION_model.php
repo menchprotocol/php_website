@@ -1,1728 +1,9218 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-
-class COMMUNICATION_model extends CI_Model
-{
-
-    /*
-     *
-     * Functions to send & receive messages
-     * through Email & Messenger
-     *
-     * */
-
-    function __construct()
-    {
-        parent::__construct();
-    }
-
-    function comm_digest_payload($en, $quick_reply_payload)
-    {
-
-        /*
-         *
-         * With the assumption that chat platforms like Messenger,
-         * Slack and Telegram all offer a mechanism to manage a reference
-         * field other than the actual message itself (Facebook calls
-         * this the Reference key or Metadata), this function will
-         * process that metadata string from incoming messages sent to Mench
-         * by its Users and take appropriate action.
-         *
-         * Inputs:
-         *
-         * - $en:                   The User who made the request
-         *
-         * - $quick_reply_payload:  The payload string attached to the chat message
-         *
-         *
-         * */
-
-
-        if (strlen($quick_reply_payload) < 1) {
-
-            //Should never happen!
-            return array(
-                'status' => 0,
-                'message' => 'Missing quick reply payload',
-            );
-
-        } elseif (substr_count($quick_reply_payload, 'UNSUBSCRIBE_') == 1) {
-
-            $action_unsubscribe = one_two_explode('UNSUBSCRIBE_', '', $quick_reply_payload);
-
-            if ($action_unsubscribe == 'CANCEL') {
-
-                //User seems to have changed their mind, confirm with them:
-                $this->COMMUNICATION_model->comm_send_message(
-                    'Awesome, I am excited to continue our work together.',
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT_',
-                        )
-                    )
-                );
-
-            } elseif ($action_unsubscribe == 'ALL') {
-
-                //User wants to completely unsubscribe from Mench:
-                $deleted_ins = 0;
-                foreach ($this->LEDGER_model->ln_fetch(array(
-                    'ln_creator_source_id' => $en['en_id'],
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                )) as $ln) {
-                    $deleted_ins++;
-                    $this->LEDGER_model->ln_update($ln['ln_id'], array(
-                        'ln_status_source_id' => 6173, //Link Deleted
-                    ), $en['en_id'], 6155 /* User Idea Cancelled */);
-                }
-
-                //TODO DELETE THEIR ACCOUNT HERE
-
-                //Let them know about these changes:
-                $this->COMMUNICATION_model->comm_send_message(
-                    'Confirmed, I removed ' . $deleted_ins . ' idea' . echo__s($deleted_ins) . ' from your list. This is the final message you will receive from me unless you message me again. I hope you take good care of yourself 😘',
-                    $en,
-                    true
-                );
-
-            } elseif (is_numeric($action_unsubscribe)) {
-
-                //User wants to Delete a specific DISCOVER LIST, validate it:
-                $player_discoveries = $this->LEDGER_model->ln_fetch(array(
-                    'ln_creator_source_id' => $en['en_id'],
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_previous_idea_id' => $action_unsubscribe,
-                ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
-
-                //All good?
-                if (count($player_discoveries) < 1) {
-                    return array(
-                        'status' => 0,
-                        'message' => 'UNSUBSCRIBE_ Failed to delete IDEA from DISCOVER LIST',
-                    );
-                }
-
-                //Update status for this single DISCOVER LIST:
-                $this->LEDGER_model->ln_update($player_discoveries[0]['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Link Deleted
-                ), $en['en_id'], 6155 /* User Idea Cancelled */);
-
-                //Re-sort remaining DISCOVER LIST ideas:
-                foreach($this->LEDGER_model->ln_fetch(array(
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                    'ln_creator_source_id' => $en['en_id'], //Belongs to this User
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
-                    $this->LEDGER_model->ln_update($ln['ln_id'], array(
-                        'ln_order' => ($count+1),
-                    ), $en['en_id'], 10681 /* Ideas Ordered Automatically */);
-                }
-
-                //Show success message to user:
-                $this->COMMUNICATION_model->comm_send_message(
-                    'I have successfully removed [' . $player_discoveries[0]['in_title'] . '] from your list.',
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT_',
-                        )
-                    )
-                );
-
-            }
-
-        } elseif ($quick_reply_payload == 'SUBSCRIBE-REJECT') {
-
-            //They rejected the offer... Acknowledge and give response:
-            $this->COMMUNICATION_model->comm_send_message(
-                'Ok, so how can I help you move forward?',
-                $en,
-                true
-            );
-
-            //DISCOVER RECOMMENDATIONS
-            $this->COMMUNICATION_model->comm_send_message(
-                echo_platform_message(12697),
-                $en,
-                true
-            );
-
-        } elseif (is_numeric($quick_reply_payload)) {
-
-            //Validate Idea:
-            $in_id = intval($quick_reply_payload);
-            $ins = $this->IDEA_model->in_fetch(array(
-                'in_id' => $in_id,
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            ));
-            if (count($ins) < 1) {
-
-                //Confirm if they are interested to subscribe to this idea:
-                $this->COMMUNICATION_model->comm_send_message(
-                    '❌ Alert: I cannot add this idea to your DISCOVER LIST because its not yet published.',
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT_',
-                        ),
-                    )
-                );
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Failed to validate starting-point idea',
-                );
-            }
-
-            //Confirm if they are interested to subscribe to this idea:
-            $this->COMMUNICATION_model->comm_send_message(
-                'Hi 👋 are you interested to ' . $ins[0]['in_title'] . '?',
-                $en,
-                true,
-                array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Yes', //Yes, Learn More
-                        'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'], //'SUBSCRIBE-INITIATE_' . $ins[0]['in_id']
-                    ),
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Cancel',
-                        'payload' => 'SUBSCRIBE-REJECT',
-                    ),
-                ),
-                array(
-                    'ln_next_idea_id' => $ins[0]['in_id'],
-                )
-            );
-
-        } elseif ($quick_reply_payload=='NOTINTERESTED') {
-
-            //Affirm and educate:
-            $this->COMMUNICATION_model->comm_send_message(
-                echo_platform_message(12697),
-                $en,
-                true
-            //Do not give next option and listen for their idea command...
-            );
-
-        } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-INITIATE_') == 1) {
-
-            //User has confirmed their desire to subscribe to an IDEA:
-            $in_id = intval(one_two_explode('SUBSCRIBE-INITIATE_', '', $quick_reply_payload));
-
-            //Initiating an IDEA DISCOVER LIST:
-            $ins = $this->IDEA_model->in_fetch(array(
-                'in_id' => $in_id,
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            ));
-
-            if (count($ins) != 1) {
-                return array(
-                    'status' => 0,
-                    'message' => 'SUBSCRIBE-INITIATE_ Failed to locate published idea',
-                );
-            }
-
-            //Make sure idea has not previously been added to user DISCOVER LIST:
-            if (count($this->LEDGER_model->ln_fetch(array(
-                    'ln_creator_source_id' => $en['en_id'],
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_previous_idea_id' => $ins[0]['in_id'],
-                ))) > 0) {
-
-                //Let User know that they have previously subscribed to this idea:
-                $this->COMMUNICATION_model->comm_send_message(
-                    'The idea [' . $ins[0]['in_title'] . '] has previously been added to your DISCOVER LIST. /link:DISCOVER LIST:https://mench.com/' . $ins[0]['in_id'],
-                    $en,
-                    true
-                );
-
-                //Give them option to go next:
-                $this->COMMUNICATION_model->comm_send_message(
-                    'Say "Next" to continue...',
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT_',
-                        )
-                    )
-                );
-
-            } else {
-
-                //Do final confirmation by giving User more context on this idea before adding to their DISCOVER LIST...
-
-                //See if we have an overview:
-                $overview_message = 'Should I add this idea to your DISCOVER LIST?';
-
-                //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this idea:
-                $this->COMMUNICATION_model->comm_send_message(
-                    $overview_message,
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Get Started',
-                            'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
-                        ),
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Cancel',
-                            'payload' => 'SUBSCRIBE-REJECT',
-                        ),
-                    )
-                );
-
-                //Log as DISCOVER LIST Considered:
-                $this->LEDGER_model->ln_create(array(
-                    'ln_creator_source_id' => $en['en_id'],
-                    'ln_type_source_id' => 6149, //DISCOVER LIST Idea Considered
-                    'ln_previous_idea_id' => $ins[0]['in_id'],
-                    'ln_content' => $overview_message, //A copy of their message
-                ));
-
-            }
-
-        } elseif (substr_count($quick_reply_payload, 'GONEXT_') == 1) {
-
-            $next_in_id = 0;
-            $in_id = intval(one_two_explode('GONEXT_', '', $quick_reply_payload));
-
-            if($in_id > 0){
-                $ins = $this->IDEA_model->in_fetch(array(
-                    'in_id' => $in_id,
-                ));
-                $next_in_id = $this->DISCOVER_model->discover_next_find($en['en_id'], $ins[0]);
-            }
-
-            if($next_in_id > 0){
-                //Yes, communicate it:
-                $this->DISCOVER_model->discover_echo($next_in_id, $en, true);
-            } else {
-                //Fetch and communicate next idea:
-                $this->DISCOVER_model->discover_next_go($en['en_id'], true, true);
-            }
-
-        } elseif (substr_count($quick_reply_payload, 'ADD_RECOMMENDED_') == 1) {
-
-            $in_ids = explode('_', one_two_explode('ADD_RECOMMENDED_', '', $quick_reply_payload));
-            $recommender_in_id = $in_ids[0];
-            $recommended_in_id = $in_ids[1];
-
-            //Add this item to the tio of the DISCOVER LIST:
-            $this->DISCOVER_model->discover_start($en['en_id'], $recommended_in_id, $recommender_in_id);
-
-        } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-CONFIRM_') == 1) {
-
-            //User has requested to add this idea to their DISCOVER LIST:
-            $in_id = intval(one_two_explode('SUBSCRIBE-CONFIRM_', '', $quick_reply_payload));
-
-            //Add to DISCOVER LIST:
-            $this->DISCOVER_model->discover_start($en['en_id'], $in_id);
-
-        } elseif (substr_count($quick_reply_payload, 'ANSWERQUESTION_') == 1) {
-
-            /*
-             *
-             * When the user answers a quick reply question.
-             *
-             * */
-
-            //Extract variables:
-            $quickreply_parts = explode('_', one_two_explode('ANSWERQUESTION_', '', $quick_reply_payload));
-
-            //Save the answer:
-            return $this->DISCOVER_model->discover_answer($en['en_id'], $quickreply_parts[1], array($quickreply_parts[2]));
-
-        } else {
-
-            //Unknown quick reply!
-            return array(
-                'status' => 0,
-                'message' => 'Unknown quick reply command!',
-            );
-
-        }
-
-        //If here it was all good, return success:
-        return array(
-            'status' => 1,
-            'message' => 'Success',
-        );
-
-    }
-
-    function comm_digest_text($en, $fb_received_message)
-    {
-
-        /*
-         *
-         * Will process the chat message only in the absence of a chat metadata
-         * otherwise the comm_digest_payload() will process the message since we
-         * know that the medata would have more precise instructions on what
-         * needs to be done for the User response.
-         *
-         * This involves string analysis and matching terms to a ideas, sources
-         * and known commands that will help us understand the User and
-         * hopefully provide them with the information they need, right now.
-         *
-         * We'd eventually need to migrate the search engine to an NLP platform
-         * Like dialogflow.com (By Google) or wit.ai (By Facebook) to improve
-         * our ability to detect correlations specifically for ideas.
-         *
-         * */
-
-        if (!$fb_received_message) {
-            return false;
-        }
-
-
-        /*
-         *
-         * Ok, now attempt to understand User's message idea.
-         * We would do a very basic work pattern match to see what
-         * we can understand from their message, and we would expand
-         * upon this section as we improve our NLP technology.
-         *
-         *
-         * */
-
-        $fb_received_message = trim(strtolower($fb_received_message));
-
-        if (in_array($fb_received_message, array('next', 'continue', 'go'))) {
-
-            //Give them the next step of their DISCOVER LIST:
-            $next_in_id = $this->DISCOVER_model->discover_next_go($en['en_id'], true, true);
-
-            //Log command trigger:
-            $this->LEDGER_model->ln_create(array(
-                'ln_creator_source_id' => $en['en_id'],
-                'ln_type_source_id' => 6559, //User Commanded Next
-                'ln_previous_idea_id' => $next_in_id,
-            ));
-
-        } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop', 'quit', 'resign', 'exit', 'cancel', 'abort'))) {
-
-            //List their DISCOVER LIST ideas and let user choose which one to unsubscribe:
-            $player_discoveries = $this->LEDGER_model->ln_fetch(array(
-                'ln_creator_source_id' => $en['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            ), array('in_previous'), 10 /* Max quick replies allowed */, 0, array('ln_order' => 'ASC'));
-
-
-            //Do they have anything in their DISCOVER LIST?
-            if (count($player_discoveries) > 0) {
-
-                //Give them options to delete specific DISCOVER LISTs:
-                $quick_replies = array();
-                $message = 'Choose one of the following options:';
-                $increment = 1;
-
-                foreach ($player_discoveries as $counter => $in) {
-                    //Construct unsubscribe confirmation body:
-                    $message .= "\n\n" . ($counter + $increment) . '. Stop ' . $in['in_title'];
-                    array_push($quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => ($counter + $increment),
-                        'payload' => 'UNSUBSCRIBE_' . $in['in_id'],
-                    ));
-                }
-
-                if (count($player_discoveries) >= 2) {
-                    //Give option to skip all and unsubscribe:
-                    $increment++;
-                    $message .= "\n\n" . ($counter + $increment) . '. Delete all ideas and unsubscribe';
-                    array_push($quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => ($counter + $increment),
-                        'payload' => 'UNSUBSCRIBE_ALL',
-                    ));
-                }
-
-                //Alwyas give cancel option:
-                array_push($quick_replies, array(
-                    'content_type' => 'text',
-                    'title' => 'Cancel',
-                    'payload' => 'UNSUBSCRIBE_CANCEL',
-                ));
-
-            } else {
-
-                $message = 'Just to confirm, do you want to unsubscribe and stop all future communications with me and unsubscribe?';
-                $quick_replies = array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Yes, Unsubscribe',
-                        'payload' => 'UNSUBSCRIBE_ALL',
-                    ),
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'No, Stay Friends',
-                        'payload' => 'UNSUBSCRIBE_CANCEL',
-                    ),
-                );
-
-            }
-
-            //Send out message and let them confirm:
-            $this->COMMUNICATION_model->comm_send_message(
-                $message,
-                $en,
-                true,
-                $quick_replies
-            );
-
-            //Log command trigger:
-            $this->LEDGER_model->ln_create(array(
-                'ln_creator_source_id' => $en['en_id'],
-                'ln_type_source_id' => 6578, //User Text Commanded Stop
-                'ln_content' => $message,
-                'ln_metadata' => $quick_replies,
-            ));
-
-        } elseif (substr($fb_received_message, 0, 11) == 'Discover ') {
-
-            $master_command = ltrim($fb_received_message, 'Discover ');
-            $new_idea_count = 0;
-            $quick_replies = array();
-
-
-            if(intval(config_var(12678))){
-
-                $search_index = load_algolia('alg_index');
-                $res = $search_index->search($master_command, [
-                    'hitsPerPage' => 6, //Max results
-                    'filters' => 'alg_obj_type_id=4535 AND _tags:is_featured',
-                ]);
-                $search_results = $res['hits'];
-
-
-                //Show options for the User to add to their DISCOVER LIST:
-
-                foreach ($search_results as $alg) {
-
-                    //Fetch metadata:
-                    $ins = $this->IDEA_model->in_fetch(array(
-                        'in_id' => $alg['alg_obj_id'],
-                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                    ));
-                    if(count($ins) < 1){
-                        continue;
-                    }
-
-                    //Make sure not previously in DISCOVER LIST:
-                    if(count($this->LEDGER_model->ln_fetch(array(
-                            'ln_creator_source_id' => $en['en_id'],
-                            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                            'ln_previous_idea_id' => $alg['alg_obj_id'],
-                        ))) > 0){
-                        continue;
-                    }
-
-                    $new_idea_count++;
-
-                    if($new_idea_count==1){
-                        $message = 'I found these ideas for "'.$master_command.'":';
-                    }
-
-                    //List Idea:
-                    $message .= "\n\n" . $new_idea_count . '. ' . $ins[0]['in_title'];
-                    array_push($quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => $new_idea_count,
-                        'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'], //'SUBSCRIBE-INITIATE_' . $ins[0]['in_id']
-                    ));
-                }
-
-
-                //Log idea search:
-                $this->LEDGER_model->ln_create(array(
-                    'ln_content' => ( $new_idea_count > 0 ? $message : 'Found ' . $new_idea_count . ' idea' . echo__s($new_idea_count) . ' matching [' . $master_command . ']' ),
-                    'ln_metadata' => array(
-                        'new_idea_count' => $new_idea_count,
-                        'input_data' => $master_command,
-                        'output' => $search_results,
-                    ),
-                    'ln_creator_source_id' => $en['en_id'], //user who searched
-                    'ln_type_source_id' => 4275, //User Text Command Discover
-                ));
-
-            }
-
-
-            if($new_idea_count > 0){
-
-                //Give them a "None of the above" option:
-                array_push($quick_replies, array(
-                    'content_type' => 'text',
-                    'title' => 'Cancel',
-                    'payload' => 'SUBSCRIBE-REJECT',
-                ));
-
-                //return what we found to the user to decide:
-                $this->COMMUNICATION_model->comm_send_message(
-                    $message,
-                    $en,
-                    true,
-                    $quick_replies
-                );
-
-            } else {
-
-                //Respond to user:
-                $this->COMMUNICATION_model->comm_send_message(
-                    'I did not find any ideas to "' . $master_command . '", but I have made a idea of this and will let you know as soon as I am trained on this.',
-                    $en,
-                    true
-                );
-
-                //DISCOVER RECOMMENDATIONS
-                $this->COMMUNICATION_model->comm_send_message(
-                    echo_platform_message(12697),
-                    $en,
-                    true
-                );
-
-            }
-
-        } else {
-
-
-            /*
-             *
-             * Ok, if we're here it means we didn't really understand what
-             * the User's idea was within their message.
-             * So let's run through a few more options before letting them
-             * know that we did not understand them...
-             *
-             * */
-
-
-            //Quick Reply Manual Response...
-            //We could not match the user command to any other command...
-            //Now try to fetch the last quick reply that the user received from us:
-            $last_quick_replies = $this->LEDGER_model->ln_fetch(array(
-                'ln_creator_source_id' => $en['en_id'],
-                'ln_type_source_id' => 6563, //User Received Quick Reply
-            ), array(), 1);
-
-            if(count($last_quick_replies) > 0){
-
-                //We did find a recent quick reply!
-                $ln_metadata = unserialize($last_quick_replies[0]['ln_metadata']);
-
-                if(isset($ln_metadata['output_message']['message_body']['message']['quick_replies'])){
-
-                    //Go through them:
-                    foreach($ln_metadata['output_message']['message_body']['message']['quick_replies'] as $quick_reply){
-
-                        //let's see if their text matches any of the quick reply options:
-                        if(substr($fb_received_message, 0, strlen($quick_reply['title'])) == strtolower($quick_reply['title'])){
-
-                            //Yes! We found a match, trigger the payload:
-                            $quick_reply_results = $this->COMMUNICATION_model->comm_digest_payload($en, $quick_reply['payload']);
-
-                            if(!$quick_reply_results['status']){
-
-                                //There was an error, inform Player:
-                                $this->LEDGER_model->ln_create(array(
-                                    'ln_content' => 'comm_digest_payload() for custom response ['.$fb_received_message.'] returned error ['.$quick_reply_results['message'].']',
-                                    'ln_metadata' => $ln_metadata,
-                                    'ln_type_source_id' => 4246, //Platform Bug Reports
-                                    'ln_creator_source_id' => $en['en_id'],
-                                    'ln_parent_transaction_id' => $last_quick_replies[0]['ln_id'],
-                                ));
-
-                            } else {
-
-                                //All good, log link:
-                                $this->LEDGER_model->ln_create(array(
-                                    'ln_creator_source_id' => $en['en_id'],
-                                    'ln_type_source_id' => 4460, //User Sent Answer
-                                    'ln_parent_transaction_id' => $last_quick_replies[0]['ln_id'],
-                                    'ln_content' => $fb_received_message,
-                                ));
-
-                                //We resolved it:
-                                return true;
-
-                            }
-                        }
-                    }
-                }
-            }
-
-
-
-
-            //Let's check to see if a Mench Player has not started a manual conversation with them via Facebook Inbox Chat:
-            if (count($this->LEDGER_model->ln_fetch(array(
-                    'ln_order' => 1, //A HACK to identify messages sent from us via Facebook Page Inbox
-                    'ln_creator_source_id' => $en['en_id'],
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //User Received Messages with Messenger
-                    'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
-                ), array(), 1)) > 0) {
-
-                //Yes, this user is talking to an Player so do not interrupt their conversation:
-                return false;
-
-            }
-
-
-            //We don't know what they are talking about!
-
-
-            //Inform User of Mench's one-way communication limitation & that Mench did not understand their message:
-            $this->COMMUNICATION_model->comm_send_message(
-                echo_platform_message(12693),
-                $en,
-                true
-            );
-
-            //Log link:
-            $this->LEDGER_model->ln_create(array(
-                'ln_creator_source_id' => $en['en_id'], //User who initiated this message
-                'ln_content' => $fb_received_message,
-                'ln_type_source_id' => 4287, //Log Unrecognizable Message Received
-            ));
-
-            //Call to Action: Does this user have any DISCOVER LISTs?
-            $next_in_id = $this->DISCOVER_model->discover_next_go($en['en_id'], false);
-
-            if($next_in_id > 0){
-
-                //Inform User of Mench's one-way communication limitation & that Mench did not understand their message:
-                $this->COMMUNICATION_model->comm_send_message(
-                    'You can continue with your DISCOVER LIST by saying "Next"',
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT_',
-                        )
-                    )
-                );
-
-            } else {
-
-                //DISCOVER RECOMMENDATIONS
-                $this->COMMUNICATION_model->comm_send_message(
-                    echo_platform_message(12697),
-                    $en,
-                    true
-                );
-
-            }
-        }
-    }
-
-    function comm_send_email($to_array, $subject, $html_message)
-    {
-
-        /*
-         *
-         * Send an email via our Amazon server
-         *
-         * */
-
-        if (is_dev_environment()) {
-            return false; //We cannot send emails on Dev server
-        }
-
-        //Loadup amazon SES:
-        require_once('application/libraries/aws/aws-autoloader.php');
-        $this->CLIENT = new Aws\Ses\SesClient([
-            'version' => 'latest',
-            'region' => 'us-west-2',
-            'credentials' => $this->config->item('cred_aws'),
-        ]);
-
-        return $this->CLIENT->sendEmail(array(
-            // Source is required
-            'Source' => 'support@mench.com',
-            // Destination is required
-            'Destination' => array(
-                'ToAddresses' => $to_array,
-                'CcAddresses' => array(),
-                'BccAddresses' => array(),
-            ),
-            // Message is required
-            'Message' => array(
-                // Subject is required
-                'Subject' => array(
-                    // Data is required
-                    'Data' => $subject,
-                    'Charset' => 'UTF-8',
-                ),
-                // Body is required
-                'Body' => array(
-                    'Text' => array(
-                        // Data is required
-                        'Data' => strip_tags($html_message),
-                        'Charset' => 'UTF-8',
-                    ),
-                    'Html' => array(
-                        // Data is required
-                        'Data' => $html_message,
-                        'Charset' => 'UTF-8',
-                    ),
-                ),
-            ),
-            'ReplyToAddresses' => array('support@mench.com'),
-            'ReturnPath' => 'support@mench.com',
-        ));
-    }
-
-    function comm_facebook_graph($action, $graph_url, $payload = array())
-    {
-
-        //Do some initial checks
-        if (!in_array($action, array('GET', 'POST', 'DELETE'))) {
-
-            //Only 4 valid types of $action
-            return array(
-                'status' => 0,
-                'message' => '$action [' . $action . '] is invalid',
-            );
-
-        }
-
-        //Fetch access token and settings:
-        $cred_facebook = $this->config->item('cred_facebook');
-
-        $access_token_payload = array(
-            'access_token' => $cred_facebook['mench_access_token']
-        );
-
-        if ($action == 'GET' && count($payload) > 0) {
-            //Add $payload to GET variables:
-            $access_token_payload = array_merge($payload, $access_token_payload);
-            $payload = array();
-        }
-
-        $graph_url = 'https://graph.facebook.com/' . config_var(11077) . $graph_url;
-        $counter = 0;
-        foreach ($access_token_payload as $key => $val) {
-            $graph_url = $graph_url . ($counter == 0 ? '?' : '&') . $key . '=' . $val;
-            $counter++;
-        }
-
-        //Make the graph call:
-        $ch = curl_init($graph_url);
-
-        //Base setting:
-        $ch_setting = array(
-            CURLOPT_CUSTOMREQUEST => $action,
-            CURLOPT_RETURNTRANSFER => TRUE,
-        );
-
-        if (count($payload) > 0) {
-            $ch_setting[CURLOPT_HTTPHEADER] = array('Content-Type: application/json; charset=utf-8');
-            $ch_setting[CURLOPT_POSTFIELDS] = json_encode($payload);
-        }
-
-        //Apply settings:
-        curl_setopt_array($ch, $ch_setting);
-
-        //Process results and produce ln_metadata
-        $result = objectToArray(json_decode(curl_exec($ch)));
-        $ln_metadata = array(
-            'action' => $action,
-            'payload' => $payload,
-            'url' => $graph_url,
-            'result' => $result,
-        );
-
-        //Did we have any issues?
-        if (!$result) {
-
-            //Failed to fetch this profile:
-            $message_error = 'COMMUNICATION_model->comm_facebook_graph() failed to ' . $action . ' ' . $graph_url;
-            $this->LEDGER_model->ln_create(array(
-                'ln_content' => $message_error,
-                'ln_type_source_id' => 4246, //Platform Bug Reports
-                'ln_metadata' => $ln_metadata,
-            ));
-
-            //There was an issue accessing this on FB
-            return array(
-                'status' => 0,
-                'message' => $message_error,
-                'ln_metadata' => $ln_metadata,
-            );
-
-        } else {
-
-            //All seems good, return:
-            return array(
-                'status' => 1,
-                'message' => 'Success',
-                'ln_metadata' => $ln_metadata,
-            );
-
-        }
-    }
-
-    function comm_send_message($input_message, $recipient_en = array(), $push_message = false, $quick_replies = array(), $message_in_id = 0)
-    {
-
-        /*
-         *
-         * The primary function that constructs messages based on the following inputs:
-         *
-         *
-         * - $input_message:        The message text which may include source
-         *                          references like "@123". This may NOT include
-         *                          URLs as they must be first turned into an
-         *                          source and then referenced within a message.
-         *
-         *
-         * - $recipient_en:         The source object that this message is supposed
-         *                          to be delivered to. May be an empty array for
-         *                          when we want to show these messages to guests,
-         *                          and it may contain the full source object or it
-         *                          may only contain the source ID, which enables this
-         *                          function to fetch further information from that
-         *                          source as required based on its other parameters.
-         *
-         *
-         * - $push_message:         If TRUE this function will prepare a message to be
-         *                          delivered to use using either Messenger or Chrome. If FALSE, it
-         *                          would prepare a message for immediate HTML view. The HTML
-         *                          format will consider if a Player is logged in or not,
-         *                          which will alter the HTML format.
-         *
-         *
-         * - $quick_replies:        Only supported if $push_message = TRUE, and
-         *                          will append an array of quick replies that will give
-         *                          Users an easy way to tap and select their next step.
-         *
-         * */
-
-        //This could happen with random messages
-        if(strlen($input_message) < 1){
-            return false;
-        }
-
-        //Validate message:
-        $msg_validation = $this->COMMUNICATION_model->comm_validate_message($input_message, $recipient_en, $push_message, $quick_replies, 0, $message_in_id, false);
-
-
-        //Did we have ane error in message validation?
-        if (!$msg_validation['status'] || !isset($msg_validation['output_messages'])) {
-
-            //Log Error Link:
-            $this->LEDGER_model->ln_create(array(
-                'ln_type_source_id' => 4246, //Platform Bug Reports
-                'ln_creator_source_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
-                'ln_content' => 'comm_validate_message() returned error [' . $msg_validation['message'] . '] for input message [' . $input_message . ']',
-                'ln_metadata' => array(
-                    'input_message' => $input_message,
-                    'recipient_en' => $recipient_en,
-                    'push_message' => $push_message,
-                    'quick_replies' => $quick_replies,
-                    'message_in_id' => $message_in_id
-                ),
-            ));
-
-            return false;
-        }
-
-        //Message validation passed...
-        $html_message_body = '';
-
-        //Log message sent link:
-        foreach ($msg_validation['output_messages'] as $output_message) {
-
-            //Dispatch message based on format:
-            if ($push_message) {
-
-                if($msg_validation['user_chat_channel']==6196 /* Mench on Messenger */){
-
-                    //Attempt to dispatch message via Facebook Graph API:
-                    $fb_graph_process = $this->COMMUNICATION_model->comm_facebook_graph('POST', '/me/messages', $output_message['message_body']);
-
-                    //Did we have an Error from the Facebook API side?
-                    if (!$fb_graph_process['status']) {
-
-                        //Ooopsi, we did! Log error Transcation:
-                        $this->LEDGER_model->ln_create(array(
-                            'ln_type_source_id' => 4246, //Platform Bug Reports
-                            'ln_creator_source_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
-                            'ln_content' => 'comm_send_message() failed to send message via Facebook Graph API. See Metadata log for more details.',
-                            'ln_metadata' => array(
-                                'input_message' => $input_message,
-                                'output_message' => $output_message['message_body'],
-                                'fb_graph_process' => $fb_graph_process,
-                            ),
-                        ));
-
-                        //Terminate function:
-                        return false;
-
-                    }
-
-                } else {
-
-                    $fb_graph_process = null; //No Facebook call made
-
-                }
-
-            } else {
-
-                //HTML Format, add to message variable that will be returned at the end:
-                $html_message_body .= $output_message['message_body'];
-
-                $fb_graph_process = null; //No Facebook call made
-
-            }
-
-            //Log successful Link for message delivery:
-            if(isset($recipient_en['en_id']) && $push_message){
-                $this->LEDGER_model->ln_create(array(
-                    'ln_content' => $msg_validation['input_message'],
-                    'ln_type_source_id' => $output_message['message_type_en_id'],
-                    'ln_creator_source_id' => $recipient_en['en_id'],
-                    'ln_profile_source_id' => $msg_validation['ln_profile_source_id'], //Might be set if message had a referenced source
-                    'ln_metadata' => array(
-                        'input_message' => $input_message,
-                        'output_message' => $output_message,
-                        'fb_graph_process' => $fb_graph_process,
-                    ),
-                ));
-            }
-
-        }
-
-        //If we're here it's all good:
-        return ( $push_message ? true : $html_message_body );
-
-    }
-
-    function comm_validate_message($input_message, $recipient_en = array(), $push_message = false, $quick_replies = array(), $message_type_en_id = 0, $message_in_id = 0, $strict_validation = true)
-    {
-
-        /*
-         *
-         * This function is used to validate Idea Notes.
-         *
-         * See comm_send_message() for more information on input variables.
-         *
-         * */
-
-
-        //Try to fetch session if recipient not provided:
-        if(!isset($recipient_en['en_id'])){
-            $recipient_en = superpower_assigned();
-        }
-
-        $is_being_modified = ( $message_type_en_id > 0 ); //IF $message_type_en_id > 0 means we're adding/editing and need to do extra checks
-
-        //Cleanup:
-        $input_message = trim($input_message);
-        $input_message = str_replace('’','\'',$input_message);
-
-        //Start with basic input validation:
-        if (strlen($input_message) < 1) {
-            return array(
-                'status' => 0,
-                'message' => 'Missing Message Content',
-            );
-        } elseif ($strict_validation && strlen($input_message) > config_var(11073)) {
-            return array(
-                'status' => 0,
-                'message' => 'Message is '.strlen($input_message).' characters long which is more than the allowed ' . config_var(11073) . ' characters',
-            );
-        } elseif (!preg_match('//u', $input_message)) {
-            return array(
-                'status' => 0,
-                'message' => 'Message must be UTF8',
-            );
-        } elseif ($push_message && !isset($recipient_en['en_id'])) {
-            return array(
-                'status' => 0,
-                'message' => 'Facebook Messenger Format requires a recipient source ID to construct a message',
-            );
-        } elseif (count($quick_replies) > 0 && !$push_message) {
-            /*
-             * TODO Enable later on...
-            return array(
-                'status' => 0,
-                'message' => 'Quick Replies are only supported for PUSH messages',
-            );
-            */
-        } elseif ($message_type_en_id > 0 && !in_array($message_type_en_id, $this->config->item('en_ids_4485'))) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Message type ID',
-            );
-        }
-
-
-        /*
-         *
-         * Let's do a generic message reference validation
-         * that does not consider $message_type_en_id if passed
-         *
-         * */
-        $string_references = extract_references($input_message);
-
-        if($strict_validation){
-            //Check only in strict mode:
-            if (count($string_references['ref_urls']) > 1) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'You can reference a maximum of 1 URL per message',
-                );
-
-            } elseif (count($string_references['ref_sources']) > 1) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Message can include a maximum of 1 source reference',
-                );
-
-            } elseif (!$push_message && count($string_references['ref_sources']) > 0 && count($string_references['ref_urls']) > 0) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'You can either reference an source OR a URL, as URLs are transformed to sources',
-                );
-
-            } elseif (count($string_references['ref_commands']) > 0) {
-
-                if(count($string_references['ref_commands']) != count(array_unique($string_references['ref_commands'])) && !in_array('/count:', $string_references['ref_commands'])){
-
-                    return array(
-                        'status' => 0,
-                        'message' => 'Each /command can only be used once per message',
-                    );
-
-                } elseif(in_array('/link:',$string_references['ref_commands']) && count($quick_replies) > 0){
-
-                    return array(
-                        'status' => 0,
-                        'message' => 'You cannot combine the /link command with quick replies',
-                    );
-
-                }
-
-            }
-        }
-
-
-
-        /*
-         *
-         * $message_type_en_id Validation
-         * only in strict mode!
-         *
-         * */
-        if($strict_validation && $message_type_en_id > 0){
-
-            //See if this message type has specific input requirements:
-            $en_all_4485 = $this->config->item('en_all_4485');
-
-            //Now check for source referencing settings:
-            if(!in_array(4986 , $en_all_4485[$message_type_en_id]['m_parents']) && !in_array(7551 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_sources']) > 0){
-
-                return array(
-                    'status' => 0,
-                    'message' => $en_all_4485[$message_type_en_id]['m_name'].' do not support source referencing.',
-                );
-
-            } elseif(in_array(7551 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_sources']) != 1 && count($string_references['ref_urls']) != 1){
-
-                return array(
-                    'status' => 0,
-                    'message' => $en_all_4485[$message_type_en_id]['m_name'].' require an source reference.',
-                );
-
-            }
-
-        }
-
-
-
-
-
-
-
-        /*
-         *
-         * Fetch more details on recipient source if needed
-         *
-         * */
-
-
-
-
-        //See if we have a valid way to connect to them if push:
-        if ($push_message) {
-
-            $user_messenger = $this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_profile_source_id' => 6196, //Mench Messenger
-                'ln_portfolio_source_id' => $recipient_en['en_id'],
-                'ln_external_id >' => 0,
-            ));
-
-            //Messenger has a higher priority than email, is the user connected?
-            if(count($user_messenger) > 0) {
-
-                $user_chat_channel = 6196; //Mench on Messenger
-
-            } else {
-
-                //See if they have an email:
-                $user_emails = $this->LEDGER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_portfolio_source_id' => $recipient_en['en_id'],
-                    'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
-                    'ln_profile_source_id' => 3288, //Mench Email
-                ));
-
-                if(count($user_emails) > 0){
-
-                    $user_chat_channel = 12103; //Web+Email
-
-                } else {
-
-                    //No way to communicate with user:
-                    return array(
-                        'status' => 0,
-                        'message' => 'User @' . $recipient_en['en_id'] . ' has not connected to a Mench platform yet',
-                    );
-
-                }
-            }
-
-        } else {
-
-            //No communication channel since the message is NOT being pushed:
-            $user_chat_channel = 0;
-
-        }
-
-
-        /*
-         *
-         * Fetch notification level IF $push_message = TRUE
-         *
-         * */
-
-        if ($push_message && $user_chat_channel==6196 /* Mench on Messenger */) {
-
-
-            $en_all_11058 = $this->config->item('en_all_11058');
-
-            //Fetch recipient notification type:
-            $lns_comm_level = $this->LEDGER_model->ln_fetch(array(
-                'ln_profile_source_id IN (' . join(',', $this->config->item('en_ids_4454')) . ')' => null,
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_portfolio_source_id' => $recipient_en['en_id'],
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            ));
-
-            //Start validating communication settings we fetched to ensure everything is A-OK:
-            if (count($lns_comm_level) < 1) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'User is missing their Messenger Notification Level',
-                );
-
-            } elseif (count($lns_comm_level) > 1) {
-
-                //This should find exactly one result
-                return array(
-                    'status' => 0,
-                    'message' => 'User has more than 1 Notification Level parent source relation',
-                );
-
-            } elseif (!array_key_exists($lns_comm_level[0]['ln_profile_source_id'], $en_all_11058)) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Fetched unknown Notification Level [' . $lns_comm_level[0]['ln_profile_source_id'] . ']',
-                );
-
-            } else {
-
-                //All good, Set notification type:
-                $notification_type = $en_all_11058[$lns_comm_level[0]['ln_profile_source_id']]['m_desc'];
-
-            }
-        }
-
-
-        /*
-         *
-         * Transform URLs into Player + Links
-         *
-         * */
-        if ($strict_validation && count($string_references['ref_urls']) > 0) {
-
-            //BUGGY
-            //No source linked, but we have a URL that we should turn into an source if not previously:
-            $url_source = $this->SOURCE_model->en_url($string_references['ref_urls'][0], ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ), ( isset($recipient_en['en_id']) ? array($recipient_en['en_id']) : array() ));
-
-            //Did we have an error?
-            if (!$url_source['status'] || !isset($url_source['en_url']['en_id']) || intval($url_source['en_url']['en_id']) < 1) {
-                return $url_source;
-            }
-
-            //Transform this URL into an source IF it was found/created:
-            if(intval($url_source['en_url']['en_id']) > 0){
-
-                $string_references['ref_sources'][0] = intval($url_source['en_url']['en_id']);
-
-                //Replace the URL with this new @source in message.
-                //This is the only valid modification we can do to $input_message before storing it in the DB:
-                $input_message = str_replace($string_references['ref_urls'][0], '@' . $string_references['ref_sources'][0], $input_message);
-
-                //Delete URL:
-                unset($string_references['ref_urls'][0]);
-
-            }
-
-        }
-
-
-        /*
-         *
-         * Process Commands
-         *
-         * */
-
-        //Start building the Output message body based on format:
-        $output_body_message = ( $push_message ? $input_message : htmlentities($input_message) );
-
-
-        if (in_array('/count:', $string_references['ref_commands'])) {
-
-            $count_parts = explode('/count:', $output_body_message);
-            foreach($count_parts as $i=>$count_part){
-                if($i>0){
-                    $cache_var_name = one_two_explode('',' ', $count_part);
-                    $output_body_message = str_replace('/count:'.$cache_var_name, number_format($this->config->item('cache_count_'.$cache_var_name), 0), $output_body_message);
-                }
-            }
-
-
-        }
-
-
-        //Determine if we have a button link:
-        $fb_button_title = null;
-        $fb_button_url = null;
-        if (in_array('/link:', $string_references['ref_commands'])) {
-
-            //Validate /link format:
-            $link_anchor = trim(one_two_explode('/link:', ':http', $output_body_message));
-            $link_url = 'http' . one_two_explode(':http', ' ', $output_body_message);
-
-            if (strlen($link_anchor) < 1 || !filter_var($link_url, FILTER_VALIDATE_URL)) {
-                return array(
-                    'status' => 0,
-                    'message' => 'Invalid link command',
-                );
-            }
-
-            //Make adjustments:
-            if ($push_message) {
-
-                //Update variables to later include in message:
-                $fb_button_title = $link_anchor;
-                $fb_button_url = $link_url;
-
-                //Delete command from input message:
-                $output_body_message = str_replace('/link:' . $link_anchor . ':' . $link_url, '', $output_body_message);
-
-            } else {
-
-                //Replace in HTML message:
-                $output_body_message = str_replace('/link:' . $link_anchor . ':' . $link_url, '<a href="' . $link_url . '">' . $link_anchor . '</a>', $output_body_message);
-
-            }
-
-        }
-
-
-
-
-        /*
-         *
-         * Referenced Player
-         *
-         * */
-
-        //Will contain media from referenced source:
-        $fb_media_attachments = array();
-
-        //We assume this message has text, unless its only content is an source reference like "@123"
-        $has_text = true;
-
-        //Where is this request being made from? Public landing pages will have some restrictions on what they displat:
-        $is_landing_page = is_numeric(str_replace('_','', $this->uri->segment(1)));
-        $is_user_message = ($is_landing_page || $this->uri->segment(1)=='discover');
-
-        if (count($string_references['ref_sources']) > 0) {
-
-            //We have a reference within this message, let's fetch it to better understand it:
-            $ens = $this->SOURCE_model->en_fetch(array(
-                'en_id' => $string_references['ref_sources'][0], //Alert: We will only have a single reference per message
-            ));
-
-            if (count($ens) < 1) {
-                return array(
-                    'status' => 0,
-                    'message' => 'The referenced source @' . $string_references['ref_sources'][0] . ' not found',
-                );
-            }
-
-            //Direct Media URLs supported:
-            $en_all_11059 = $this->config->item('en_all_11059');
-            $en_all_6177 = $this->config->item('en_all_6177');
-
-            //We send Media in their original format IF $push_message = TRUE, which means we need to convert link types:
-            if ($push_message) {
-                //Converts Player Link Types to their corresponding User Message Sent Link Types:
-                $master_media_sent_conv = array(
-                    4258 => 4553, //video
-                    4259 => 4554, //audio
-                    4260 => 4555, //image
-                    4261 => 4556, //file
-                );
-            }
-
-            //See if this source has any parent links to be shown in this appendix
-            $valid_url = array();
-            $message_visual_media = 0;
-            $source_appendix = null;
-            $current_mench = current_mench();
-
-            //Determine what type of Media this reference has:
-            if(!($current_mench['x_name']=='source' && $this->uri->segment(2)==$string_references['ref_sources'][0])){
-
-                //Parents
-                foreach ($this->LEDGER_model->ln_fetch(array(
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Source URL
-                    'ln_portfolio_source_id' => $string_references['ref_sources'][0], //This child source
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-                ), array('en_profile'), 0) as $parent_en) {
-
-                    if($parent_en['ln_content']=="https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']){
-                        continue;
-                    }
-
-                    if (in_array($parent_en['ln_type_source_id'], $this->config->item('en_ids_12524'))) {
-                        //Raw media file: Audio, Video, Image OR File...
-                        $message_visual_media++;
-                    } elseif($parent_en['ln_type_source_id'] == 4256 /* URL */){
-                        array_push($valid_url, $parent_en['ln_content']);
-                    }
-
-                    if($push_message){
-
-                        //Messenger templates:
-                        if (in_array($parent_en['ln_type_source_id'], $this->config->item('en_ids_11059'))) {
-
-                            //Search for Facebook Attachment ID IF $push_message = TRUE
-                            $fb_att_id = 0;
-                            if (strlen($parent_en['ln_metadata']) > 0) {
-                                //We might have a Facebook Attachment ID saved in Metadata, check to see:
-                                $metadata = unserialize($parent_en['ln_metadata']);
-                                if (isset($metadata['fb_att_id']) && intval($metadata['fb_att_id']) > 0) {
-                                    //Yes we do, use this for faster media attachments:
-                                    $fb_att_id = intval($metadata['fb_att_id']);
-                                }
-                            }
-
-                            //Push raw file to Media Array:
-                            array_push($fb_media_attachments, array(
-                                'ln_type_source_id' => $master_media_sent_conv[$parent_en['ln_type_source_id']],
-                                'ln_content' => ($fb_att_id > 0 ? null : $parent_en['ln_content']),
-                                'fb_att_id' => $fb_att_id,
-                                'fb_att_type' => $en_all_11059[$parent_en['ln_type_source_id']]['m_desc'],
-                            ));
-
-                        } else {
-
-                            //Generic URL:
-                            array_push($fb_media_attachments, array(
-                                'ln_type_source_id' => 4552, //Text Message Sent
-                                'ln_content' => $parent_en['ln_content'],
-                                'fb_att_id' => 0,
-                                'fb_att_type' => null,
-                            ));
-
-                        }
-
-                    } else {
-
-                        $source_appendix .= '<div class="source-appendix">' . echo_url_types($parent_en['ln_content'], $parent_en['ln_type_source_id']) . '</div>';
-
-                    }
-                }
-            }
-
-            //Determine if we have text:
-            $has_text = !(trim($output_body_message) == '@' . $string_references['ref_sources'][0]);
-
-
-            //Append any appendix generated:
-            if($source_appendix && (count($valid_url)>0 || $message_visual_media > 0)){
-                $output_body_message .= $source_appendix;
-            }
-
-
-
-            //Adjust
-            if (!$push_message) {
-
-                /*
-                 *
-                 * HTML Message format, which will
-                 * include a link to the Player for quick access
-                 * to more information about that source:=.
-                 *
-                 * */
-
-                $en_icon = '<span class="img-block">'.echo_en_icon($ens[0]['en_icon']).'</span> ';
-
-                if($is_user_message){
-
-                    $source_replace_name = ( $has_text ? $en_icon.'<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">'.$ens[0]['en_name'].'</span>' : '' );
-                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], $source_replace_name, $output_body_message);
-
-                } else {
-
-                    //Show source link with status:
-                    $current_mench = current_mench();
-                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block '.( $message_visual_media > 0 ? superpower_active(10939) : '' ).'">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).$en_icon.( $current_mench['x_name']=='discover' && !superpower_assigned(10939) ? '<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">' . $ens[0]['en_name']  . '</span>' : '<a class="montserrat doupper underline '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '">' . $ens[0]['en_name']  . '</a>' ).'</span>', $output_body_message);
-
-                }
-
-            } else {
-
-                //Just replace with the source name, which ensure we're always have a text in our message even if $has_text = FALSE
-                $source_replace_name = ( $has_text ? $ens[0]['en_name'] : '' );
-                $output_body_message = str_replace('@' . $string_references['ref_sources'][0], $source_replace_name, $output_body_message);
-
-            }
-        }
-
-
-
-
-        /*
-         *
-         * Construct Message based on current data
-         *
-         * $output_messages will determines the type & content of the
-         * message(s) that will to be sent. We might need to send
-         * multiple messages IF $push_message = TRUE and the
-         * text message has a referenced source with a one or more
-         * media file (Like video, image, file or audio).
-         *
-         * The format of this will be array( $ln_portfolio_source_id => $ln_content )
-         * to define both message and it's type.
-         *
-         * See all sent message types here: https://mench.com/source/4280
-         *
-         * */
-        $output_messages = array();
-
-        if ($push_message && $user_chat_channel==6196 /* Mench on Messenger */) {
-
-
-            //Do we have a text message?
-            if ($has_text || $fb_button_title) {
-
-                if ($fb_button_title) {
-
-                    //We have a fixed button to append to this message:
-                    $fb_message = array(
-                        'attachment' => array(
-                            'type' => 'template',
-                            'payload' => array(
-                                'template_type' => 'button',
-                                'text' => $output_body_message,
-                                'buttons' => array(
-                                    array(
-                                        'type' => 'web_url',
-                                        'url' => $fb_button_url,
-                                        'title' => $fb_button_title,
-                                        'webview_height_ratio' => 'tall',
-                                        'webview_share_button' => 'hide',
-                                        'messenger_extensions' => true,
-                                    ),
-                                ),
-                            ),
-                        ),
-                        'metadata' => 'system_logged', //Prevents duplicate Link logs
-                    );
-
-                } elseif ($has_text) {
-
-                    //No button, just text:
-                    $fb_message = array(
-                        'text' => $output_body_message,
-                        'metadata' => 'system_logged', //Prevents duplicate Link logs
-                    );
-
-                    if(count($quick_replies) > 0){
-                        $fb_message['quick_replies'] = $quick_replies;
-                    }
-
-                }
-
-                //Add to output message:
-                array_push($output_messages, array(
-                    'message_type_en_id' => ( isset($fb_message['quick_replies']) && count($fb_message['quick_replies']) > 0 ? 6563 : 4552 ), //Text OR Quick Reply Message Sent
-                    'message_body' => array(
-                        'recipient' => array(
-                            'id' => $user_messenger[0]['ln_external_id'],
-                        ),
-                        'message' => $fb_message,
-                        'notification_type' => $notification_type,
-                        'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION',
-                    ),
-                ));
-
-            }
-
-
-            if (!$has_text && count($quick_replies) > 0) {
-
-                //This is an error:
-                $this->LEDGER_model->ln_create(array(
-                    'ln_content' => 'comm_validate_message() was given quick replies without a text message',
-                    'ln_metadata' => array(
-                        'input_message' => $input_message,
-                        'push_message' => $push_message,
-                        'quick_replies' => $quick_replies,
-                    ),
-                    'ln_type_source_id' => 4246, //Platform Bug Reports
-                    'ln_creator_source_id' => $recipient_en['en_id'],
-                    'ln_profile_source_id' => $message_type_en_id,
-                    'ln_next_idea_id' => $message_in_id,
-                ));
-
-            }
-
-
-            if (count($fb_media_attachments) > 0) {
-
-                //We do have additional messages...
-                //TODO Maybe add another message to give User some context on these?
-
-                //Append messages:
-                foreach ($fb_media_attachments as $fb_media_attachment) {
-
-                    //See what type of attachment (if any) this is:
-                    if (!$fb_media_attachment['fb_att_type']) {
-
-                        //This is a text message, not an attachment:
-                        $fb_message = array(
-                            'text' => $fb_media_attachment['ln_content'],
-                            'metadata' => 'system_logged', //Prevents duplicate Link logs
-                        );
-
-                    } elseif ($fb_media_attachment['fb_att_id'] > 0) {
-
-                        //Saved Attachment that can be served instantly:
-                        $fb_message = array(
-                            'attachment' => array(
-                                'type' => $fb_media_attachment['fb_att_type'],
-                                'payload' => array(
-                                    'attachment_id' => $fb_media_attachment['fb_att_id'],
-                                ),
-                            ),
-                            'metadata' => 'system_logged', //Prevents duplicate Link logs
-                        );
-
-                    } else {
-
-                        //Attachment that needs to be uploaded via URL which will take a few seconds:
-                        $fb_message = array(
-                            'attachment' => array(
-                                'type' => $fb_media_attachment['fb_att_type'],
-                                'payload' => array(
-                                    'url' => $fb_media_attachment['ln_content'],
-                                    'is_reusable' => true,
-                                ),
-                            ),
-                            'metadata' => 'system_logged', //Prevents duplicate Link logs
-                        );
-
-                    }
-
-                    //Add to output message:
-                    array_push($output_messages, array(
-                        'message_type_en_id' => $fb_media_attachment['ln_type_source_id'],
-                        'message_body' => array(
-                            'recipient' => array(
-                                'id' => $user_messenger[0]['ln_external_id'],
-                            ),
-                            'message' => $fb_message,
-                            'notification_type' => $notification_type,
-                            'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION',
-                        ),
-                    ));
-
-                }
-            }
-
-        } else {
-
-
-            //Always returns a single (sometimes long) HTML message:
-            array_push($output_messages, array(
-                'message_type_en_id' => 4570, //User Received Email Message
-                'message_body' => '<div class="i_content padded"><div class="msg">' . nl2br($output_body_message) . '</div></div>',
-            ));
-
-        }
-
-
-        //Return results:
-        return array(
-            'status' => 1,
-            'input_message' => trim($input_message),
-            'output_messages' => $output_messages,
-            'user_chat_channel' => $user_chat_channel,
-            'ln_profile_source_id' => (count($string_references['ref_sources']) > 0 ? $string_references['ref_sources'][0] : 0),
-        );
-
-    }
-
-}
-
-?>
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+/*
+* Keep a cache of certain parts of the idea for faster processing
+* See here for more details: https://mench.com/source/4527
+*
+*/
+
+//Generated 2020-04-22 18:22:16 PST
+
+//PLATFORM STATS:
+$config['cache_timestamp'] = 1587604936;
+$config['cache_count_transaction'] = 1151925;
+$config['cache_count_discover'] = 121129;
+$config['cache_count_idea'] = 4854;
+$config['cache_count_source'] = 5213;
+
+
+
+//ADD CONTENT WIZARD:
+$config['en_ids_12762'] = array(12772,3000,12763,12771,12764);
+$config['en_all_12762'] = array(
+    12772 => array(
+        'm_icon' => '<i class="fas fa-circle source"></i>',
+        'm_name' => 'CONTENT TITLE',
+        'm_desc' => '',
+        'm_parents' => array(12762),
+    ),
+    3000 => array(
+        'm_icon' => '<i class="fad fa-file-certificate source" aria-hidden="true"></i>',
+        'm_name' => 'CONTENT TYPE',
+        'm_desc' => '',
+        'm_parents' => array(12762,11054,11035,12079,4600,4536,4527),
+    ),
+    12763 => array(
+        'm_icon' => '<i class="fad fa-link source"></i>',
+        'm_name' => 'CONTENT URL',
+        'm_desc' => '',
+        'm_parents' => array(12762),
+    ),
+    12771 => array(
+        'm_icon' => '<i class="fas fa-plus-circle source"></i>',
+        'm_name' => 'CREATE',
+        'm_desc' => '',
+        'm_parents' => array(12762),
+    ),
+    12764 => array(
+        'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
+        'm_name' => 'EXPERT AUTHOR',
+        'm_desc' => '',
+        'm_parents' => array(12762),
+    ),
+);
+
+//IDEA BOOKMARKS:
+$config['en_ids_10573'] = array(4430);
+$config['en_all_10573'] = array(
+    4430 => array(
+        'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
+        'm_name' => 'MENCH PLAYER',
+        'm_desc' => '',
+        'm_parents' => array(4983,1278,11035,10573,4426),
+    ),
+);
+
+//SOURCE APPLICATIONS:
+$config['en_ids_12744'] = array(7274,6287);
+$config['en_all_12744'] = array(
+    7274 => array(
+        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_name' => 'CRON JOBS',
+        'm_desc' => '/cron/cron__',
+        'm_parents' => array(12744,6194,11035,12728,12500,10876,4527,6405),
+    ),
+    6287 => array(
+        'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
+        'm_name' => 'PLUGINS',
+        'm_desc' => '/plugin/',
+        'm_parents' => array(12744,6194,12699,12500,10876,11035,4527),
+    ),
+);
+
+//PLUGIN EXCLUDE MENCH UI:
+$config['en_ids_12741'] = array(11049,12733,12712,12722,4527,12710,12709,12732);
+$config['en_all_12741'] = array(
+    11049 => array(
+        'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
+        'm_name' => 'IDEA JSON REVIEW',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287,11047),
+    ),
+    12733 => array(
+        'm_icon' => '',
+        'm_name' => 'JSON REVIEW DISCOVER',
+        'm_desc' => '',
+        'm_parents' => array(12741,12701,6287),
+    ),
+    12712 => array(
+        'm_icon' => '',
+        'm_name' => 'JSON REVIEW SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
+    ),
+    12722 => array(
+        'm_icon' => '',
+        'm_name' => 'JSON REVIEW TRANSACTION',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
+    ),
+    4527 => array(
+        'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
+        'm_name' => 'MENCH MEMORY',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287,4527,7254),
+    ),
+    12710 => array(
+        'm_icon' => '👤',
+        'm_name' => 'MY SESSION VARIABLES',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
+    ),
+    12709 => array(
+        'm_icon' => 'ℹ️',
+        'm_name' => 'PHP INFO',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
+    ),
+    12732 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE/IDEA SYNC STATUSES',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
+    ),
+);
+
+//CRON JOBS:
+$config['en_ids_7274'] = array(7275,7276,12114,7277,7278,12523,7279,12569);
+$config['en_all_7274'] = array(
+    7275 => array(
+        'm_icon' => '',
+        'm_name' => 'IDEA METADATA SYNC COMMON BASE',
+        'm_desc' => '',
+        'm_parents' => array(7286,7274),
+    ),
+    7276 => array(
+        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SYNC INSIGHTS',
+        'm_desc' => '',
+        'm_parents' => array(11047,7286,7274),
+    ),
+    12114 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'MENCH WEEKLY GROWTH REPORT',
+        'm_desc' => '',
+        'm_parents' => array(12701,7274,7569),
+    ),
+    7277 => array(
+        'm_icon' => '',
+        'm_name' => 'METADATA CLEAN VARIABLES',
+        'm_desc' => '',
+        'm_parents' => array(7287,7274),
+    ),
+    7278 => array(
+        'm_icon' => '',
+        'm_name' => 'SYNC GEPHI INDEX',
+        'm_desc' => '',
+        'm_parents' => array(7311,7287,7274),
+    ),
+    12523 => array(
+        'm_icon' => '<i class="fad fa-portrait source" aria-hidden="true"></i>',
+        'm_name' => 'SYNC ICONS IF MISSING',
+        'm_desc' => '',
+        'm_parents' => array(7274,4527,4758),
+    ),
+    7279 => array(
+        'm_icon' => '<i class="fad fa-search"></i>',
+        'm_name' => 'SYNC SEARCH INDEX',
+        'm_desc' => '',
+        'm_parents' => array(11047,3323,7287,7274),
+    ),
+    12569 => array(
+        'm_icon' => '<i class="fad fa-weight"></i>',
+        'm_name' => 'WEIGHT ALGORITHM',
+        'm_desc' => '',
+        'm_parents' => array(7274),
+    ),
+);
+
+//MENCH MESSAGES:
+$config['en_ids_12687'] = array(12693,12691,12694,12697,12696,12692,12695);
+$config['en_all_12687'] = array(
+    12693 => array(
+        'm_icon' => '',
+        'm_name' => 'DOES NOT SUPPORT TEXT COMMANDS',
+        'm_desc' => 'I am not designed to respond to custom messages. I can understand you only when you choose one of the options that I recommend to you. | I cannot understand if you send me an out-of-context message. I would only understand if you choose one of the options that I recommend to you. | I cannot respond to your custom messages and can only understand if you select one of the options that I recommend to you.',
+        'm_parents' => array(12687),
+    ),
+    12691 => array(
+        'm_icon' => '',
+        'm_name' => 'EMAIL YOURS TRULY LINE',
+        'm_desc' => 'Cheers, | Have an Awesome Day, | Have a Blast, | All The Best, | Enjoy, | Have Fun, | Many Thanks,',
+        'm_parents' => array(12687),
+    ),
+    12694 => array(
+        'm_icon' => '',
+        'm_name' => 'LOADING MESSAGE',
+        'm_desc' => 'Are you having a good day today? | Be gentle with yourself today. | Congratulate yourself for the great job you\'re doing | Crunching the latest data, just for you. Hang tight... | Have a glass of water nearby? Time for a sip! | Offer hugs. Someone probably needs them. | You are unique! | Get a drink of water. Stay hydrated! | Have you danced today? | Have you listened to your favourite song recently? 🎵 | Have you stretched recently? | Have you recently told someone you\'re proud of them? | Help is out there. Don\'t be afraid to ask. | Hey! Life is tough, but so are you! 💪 | Hey, jump up for a sec and stretch, yeah? 👐 | I know it\'s cheesey but I hope you have a grate day! | Is there a window you can look through? The world is beautiful. 🌆 | Is your seat comfortable? Can you adjust your chair properly? | It can be hard to get started, can\'t it? That\'s okay, you got this. | It\'s so great to have you here today | Keep growing, keep learning, keep moving forward! | Learning new things is important - open your eyes to the world around you! | Making things awesome... | Novel, new, silly, & unusual activities can help lift your mood. | Play for a few minutes. Doodle, learn solitaire, fold a paper airplane, do something fun. | Don\'t take yourself for granted. You\'re important. | Rest your eyes for a moment. Look at something in the distance and count to five! 🌳 | Self care is important, look after and love yourself, you\'re amazing! | Set aside time for a hobby. Gardening, drone building, knitting, do something for the pure pleasure of it. | So often our power lies not in ourselves, but in how we help others find their own strength | Sometimes doing something nice for somebody else is the best way to feel good about yourself! 👭 | Stop. Breathe. Be here now. | Stop. Take three slow deep breaths. | Take 5 minutes to straighten the space around you. Set a timer. | Take a break before you need it. It will make it easier to prevent burnout. | Take a moment to send a message to someone you love 😻 | Take care of yourself. We need you. | Technology is a tool. Use it wisely. | The impact you leave on the universe can never be erased. | There are no impostors here | There\'s someone who is so so grateful that you exist together. | Today is a great day to let a friend know how much you appreciate them. | Water is good for you year round. If you\'re thirsty, you\'re dehydrated. | We all have superpowers. You included. I hope you are using yours to make your life a joyful one. | When\'s the last time you treated yourself? | With the dawning of a new day comes a clean slate and lots of opportunity. | You are fantastic | You are loved. <3 | You are so very important 💛💛💕 | You can do this! | You cannot compare your successes to the apparent achievements of others. 🌄 | You deserve to be safe and to have nice things happen to you. | You have the power to change the world. | You\'re allowed to start small. 🐞 | have you hugged anyone lately? | it\'s time to check your thirst level, human. | 💗: don\'t forget to take a little bit of time to say hi to a friend | 🌸: remember to let your eyes rest, maybe by looking at a plant... | 🙌: take a second to adjust your posture | 😎🌈💕',
+        'm_parents' => array(12687),
+    ),
+    12697 => array(
+        'm_icon' => '',
+        'm_name' => 'MESSENGER FIND NEXT',
+        'm_desc' => 'What would you like to discover next? Start a sentence with "Discover" or /link:BROWSE IDEAS:https://mench.com',
+        'm_parents' => array(12687),
+    ),
+    12696 => array(
+        'm_icon' => '',
+        'm_name' => 'MESSENGER SEARCH FOR IDEAS',
+        'm_desc' => 'You can search for new ideas by sending me a message starting with "Search for", for example: "Search for assess my back-end skills" or "Search for recruit top talent"',
+        'm_parents' => array(12687),
+    ),
+    12692 => array(
+        'm_icon' => '',
+        'm_name' => 'NEXT IDEA IS',
+        'm_desc' => 'Next: | Next idea is: | The next idea is: | Ok moving on to the next idea: | Moving to the next idea:',
+        'm_parents' => array(12687),
+    ),
+    12695 => array(
+        'm_icon' => '',
+        'm_name' => 'SAVING MESSAGE',
+        'm_desc' => 'Learning everyday 😎 | Growing with you 🌸 | Getting smarter ^~^',
+        'm_parents' => array(12687),
+    ),
+);
+
+//SOURCE TYPE GROUPS:
+$config['en_ids_12683'] = array(4983);
+$config['en_all_12683'] = array(
+    4983 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4485,11018,12683,12141,10939,12450,12273,12228,4535,10593,4527,7551,4593),
+    ),
+);
+
+//IDEA LAYOUT DEFAULT SELECTED:
+$config['en_ids_12675'] = array(11020);
+$config['en_all_12675'] = array(
+    11020 => array(
+        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12675,12413,11018),
+    ),
+);
+
+//IDEA LAYOUT HIDE IF ZERO:
+$config['en_ids_12677'] = array(6255,6146,7347);
+$config['en_all_12677'] = array(
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12677,10939,11018,12655,12648,12467,11089,12410,6771,12228,4527),
+    ),
+    6146 => array(
+        'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'INCOMPLETES',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
+    ),
+    7347 => array(
+        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_name' => 'START',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
+    ),
+);
+
+//PLAYER MENU:
+$config['en_ids_12500'] = array(12205,12274,12273,6255,6287,7274,7291);
+$config['en_all_12500'] = array(
+    12205 => array(
+        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
+        'm_name' => 'MY SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(12500,11035),
+    ),
+    12274 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12654,12655,12646,12467,12228,4527,4758),
+    ),
+    12273 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12655,12647,12571,12467,12321,12410,11089,12228,4527,6768),
+    ),
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12677,10939,11018,12655,12648,12467,11089,12410,6771,12228,4527),
+    ),
+    6287 => array(
+        'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
+        'm_name' => 'PLUGINS',
+        'm_desc' => '',
+        'm_parents' => array(12744,6194,12699,12500,10876,11035,4527),
+    ),
+    7274 => array(
+        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_name' => 'CRON JOBS',
+        'm_desc' => '',
+        'm_parents' => array(12744,6194,11035,12728,12500,10876,4527,6405),
+    ),
+    7291 => array(
+        'm_icon' => '<i class="fad fa-power-off" aria-hidden="true"></i>',
+        'm_name' => 'LOGOUT',
+        'm_desc' => '',
+        'm_parents' => array(12500,10876,11035),
+    ),
+);
+
+//TRIPLE NAVIGATION COUNT:
+$config['en_ids_12655'] = array(6255,7347,10573,12273,6182,12274);
+$config['en_all_12655'] = array(
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12677,10939,11018,12655,12648,12467,11089,12410,6771,12228,4527),
+    ),
+    7347 => array(
+        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER START',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA BOOKMARKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
+    ),
+    12273 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12655,12647,12571,12467,12321,12410,11089,12228,4527,6768),
+    ),
+    6182 => array(
+        'm_icon' => '<i class="fad fa-trash-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA DELETED',
+        'm_desc' => '',
+        'm_parents' => array(12655,12400,4593,12647,4737),
+    ),
+    12274 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12654,12655,12646,12467,12228,4527,4758),
+    ),
+);
+
+//TRIPLE NAVIGATION DEFAULT:
+$config['en_ids_12654'] = array(7347,10573,12274);
+$config['en_all_12654'] = array(
+    7347 => array(
+        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER START',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA BOOKMARKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
+    ),
+    12274 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12654,12655,12646,12467,12228,4527,4758),
+    ),
+);
+
+//TRIPLE NAVIGATION MENU:
+$config['en_ids_12645'] = array(12648,12647,12646);
+$config['en_all_12645'] = array(
+    12648 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER',
+        'm_desc' => '',
+        'm_parents' => array(6205,4527,12645),
+    ),
+    12647 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA',
+        'm_desc' => '',
+        'm_parents' => array(4535,4527,12645),
+    ),
+    12646 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(4536,4527,12645),
+    ),
+);
+
+//NAVIGATE IDEA:
+$config['en_ids_12647'] = array(10573,12273,6182);
+$config['en_all_12647'] = array(
+    10573 => array(
+        'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
+        'm_name' => 'BOOKMARKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
+    ),
+    12273 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12655,12647,12571,12467,12321,12410,11089,12228,4527,6768),
+    ),
+    6182 => array(
+        'm_icon' => '<i class="fad fa-trash-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'DELETED',
+        'm_desc' => '',
+        'm_parents' => array(12655,12400,4593,12647,4737),
+    ),
+);
+
+//NAVIGATE DISCOVER:
+$config['en_ids_12648'] = array(12581,7347,6255);
+$config['en_all_12648'] = array(
+    12581 => array(
+        'm_icon' => '<i class="fad fa-home discover" aria-hidden="true"></i>',
+        'm_name' => 'HOME',
+        'm_desc' => '',
+        'm_parents' => array(12648,11035),
+    ),
+    7347 => array(
+        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER START',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
+    ),
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12677,10939,11018,12655,12648,12467,11089,12410,6771,12228,4527),
+    ),
+);
+
+//NAVIGATE SOURCE:
+$config['en_ids_12646'] = array(12274);
+$config['en_all_12646'] = array(
+    12274 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12654,12655,12646,12467,12228,4527,4758),
+    ),
+);
+
+//IDEA NOTES STATUS:
+$config['en_ids_12012'] = array(6176,6173);
+$config['en_all_12012'] = array(
+    6176 => array(
+        'm_icon' => '<i class="far fa-globe" aria-hidden="true"></i>',
+        'm_name' => 'PUBLISHED',
+        'm_desc' => '',
+        'm_parents' => array(12012,7360,7359,6186),
+    ),
+    6173 => array(
+        'm_icon' => '<i class="fas fa-trash-alt" aria-hidden="true"></i>',
+        'm_name' => 'UNLINKED',
+        'm_desc' => '',
+        'm_parents' => array(12012,10686,10678,10673,6186),
+    ),
+);
+
+//MENCH COINS:
+$config['en_ids_12467'] = array(12274,12273,6255);
+$config['en_all_12467'] = array(
+    12274 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12654,12655,12646,12467,12228,4527,4758),
+    ),
+    12273 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12655,12647,12571,12467,12321,12410,11089,12228,4527,6768),
+    ),
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12677,10939,11018,12655,12648,12467,11089,12410,6771,12228,4527),
+    ),
+);
+
+//IDEA LIST EDITOR:
+$config['en_ids_12589'] = array(12591,12592);
+$config['en_all_12589'] = array(
+    12591 => array(
+        'm_icon' => '<i class="fas fa-plus-circle source" aria-hidden="true"></i>',
+        'm_name' => 'ADD SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,12589),
+    ),
+    12592 => array(
+        'm_icon' => '<i class="fas fa-minus-circle source" aria-hidden="true"></i>',
+        'm_name' => 'REMOVE SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,12589),
+    ),
+);
+
+//AVOID PREFIX REMOVAL:
+$config['en_ids_12588'] = array(4341);
+$config['en_all_12588'] = array(
+    4341 => array(
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
+        'm_name' => 'MENCH LEDGER',
+        'm_desc' => '',
+        'm_parents' => array(11047,12707,10876,12588,11035,4527,7735,6205),
+    ),
+);
+
+//SIGN IN/UP:
+$config['en_ids_4269'] = array(3288,6197,3286);
+$config['en_all_4269'] = array(
+    3288 => array(
+        'm_icon' => '<i class="fad fa-envelope-open source" aria-hidden="true"></i>',
+        'm_name' => 'EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(4269,12103,6225,4426,4755),
+    ),
+    6197 => array(
+        'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
+        'm_name' => 'FULL NAME',
+        'm_desc' => '',
+        'm_parents' => array(12772,4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
+    ),
+    3286 => array(
+        'm_icon' => '<i class="fad fa-key source" aria-hidden="true"></i>',
+        'm_name' => 'PASSWORD',
+        'm_desc' => '',
+        'm_parents' => array(4269,4426,7578,6225,4755),
+    ),
+);
+
+//FILE UPLOADING ALLOWED:
+$config['en_ids_12359'] = array(12419,4231);
+$config['en_all_12359'] = array(
+    12419 => array(
+        'm_icon' => '<i class="fas fa-comments-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'COMMENTS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,12359,5967,10593,12322,4986,4535,11089,4593,4485),
+    ),
+    4231 => array(
+        'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
+        'm_name' => 'MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(11089,10939,12359,4535,12322,10593,4986,4603,4593,4485),
+    ),
+);
+
+//PORTFOLIO EDITOR UPPERCASE:
+$config['en_ids_12577'] = array(4999,4998,5000,5981,11956,5982);
+$config['en_all_12577'] = array(
+    4999 => array(
+        'm_icon' => '<i class="source fad fa-fingerprint"></i>',
+        'm_name' => 'NAME POSTFIX',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    4998 => array(
+        'm_icon' => '<i class="source fad fa-fingerprint"></i>',
+        'm_name' => 'NAME PREFIX',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    5000 => array(
+        'm_icon' => '<i class="source fad fa-fingerprint"></i>',
+        'm_name' => 'NAME REPLACE',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    5981 => array(
+        'm_icon' => '<i class="source fad fa-layer-plus"></i>',
+        'm_name' => 'PROFILE ADD',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    11956 => array(
+        'm_icon' => '<i class="source fad fa-layer-plus" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE IF ADD',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    5982 => array(
+        'm_icon' => '<i class="source fad fa-layer-minus"></i>',
+        'm_name' => 'PROFILE REMOVE',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+);
+
+//LAYOUT SHOW EVEN IF ZERO:
+$config['en_ids_12574'] = array(6225,11029,11030);
+$config['en_all_12574'] = array(
+    6225 => array(
+        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_name' => 'ACCOUNT SETTINGS',
+        'm_desc' => '',
+        'm_parents' => array(12574,11089,12205,11035,4527),
+    ),
+    11029 => array(
+        'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO',
+        'm_desc' => '',
+        'm_parents' => array(12574,12571,11089,11028),
+    ),
+    11030 => array(
+        'm_icon' => '<i class="fas fa-id-badge source" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(12571,12574,11089,11028),
+    ),
+);
+
+//SOURCE STATUS FEATURED:
+$config['en_ids_12575'] = array(12563);
+$config['en_all_12575'] = array(
+    12563 => array(
+        'm_icon' => '<i class="fas fa-star source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(12575,10654,7358,7357,6177),
+    ),
+);
+
+//LAYOUT OPEN BY DEFAULT:
+$config['en_ids_12571'] = array(12273,11029,11030);
+$config['en_all_12571'] = array(
+    12273 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12655,12647,12571,12467,12321,12410,11089,12228,4527,6768),
+    ),
+    11029 => array(
+        'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO',
+        'm_desc' => '',
+        'm_parents' => array(12574,12571,11089,11028),
+    ),
+    11030 => array(
+        'm_icon' => '<i class="fas fa-id-badge source" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(12571,12574,11089,11028),
+    ),
+);
+
+//MESSAGE VISUAL MEDIA:
+$config['en_ids_12524'] = array(4259,4257,4261,4260,4258);
+$config['en_all_12524'] = array(
+    4259 => array(
+        'm_icon' => '<i class="fad fa-volume-up source"></i>',
+        'm_name' => 'AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4257 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'EMBED PLAYER',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
+    ),
+    4261 => array(
+        'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
+        'm_name' => 'FILE',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4260 => array(
+        'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
+        'm_name' => 'IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4258 => array(
+        'm_icon' => '<i class="fad fa-video source"></i>',
+        'm_name' => 'VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+);
+
+//SYNC ICONS IF MISSING:
+$config['en_ids_12523'] = array(2997,4446,3005,3147,4763,2999,3192,2998,3084,3308);
+$config['en_all_12523'] = array(
+    2997 => array(
+        'm_icon' => '<i class="fad fa-newspaper source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT ARTICLE',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,3000),
+    ),
+    4446 => array(
+        'm_icon' => '<i class="fad fa-tachometer source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT ASSESSMENT',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,3000),
+    ),
+    3005 => array(
+        'm_icon' => '<i class="fad fa-book source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT BOOK',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+    3147 => array(
+        'm_icon' => '<i class="fad fa-presentation source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT COURSE',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+    4763 => array(
+        'm_icon' => '<i class="fad fa-megaphone source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT MARKETING',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+    2999 => array(
+        'm_icon' => '<i class="fad fa-microphone source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT PODCAST',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,10809,6805,3000),
+    ),
+    3192 => array(
+        'm_icon' => '<i class="fad fa-tools source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT TOOL',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+    2998 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,3000),
+    ),
+    3084 => array(
+        'm_icon' => '<i class="fad fa-user-astronaut source" aria-hidden="true"></i>',
+        'm_name' => 'INDUSTRY EXPERT',
+        'm_desc' => '',
+        'm_parents' => array(4983,12764,11035,1278,12523),
+    ),
+    3308 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'YOUTUBE VIDEOS',
+        'm_desc' => '',
+        'm_parents' => array(12523,4763,4257,2750,1326),
+    ),
+);
+
+//NAVIGATION MENUS:
+$config['en_ids_12501'] = array();
+$config['en_all_12501'] = array(
+);
+
+//DISCOVER ICONS:
+$config['en_ids_12446'] = array(6146,12447,12448);
+$config['en_all_12446'] = array(
+    6146 => array(
+        'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'INCOMPLETES',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
+    ),
+    12447 => array(
+        'm_icon' => '<i class="fad fa-spinner-third discover fa-spin" aria-hidden="true"></i>',
+        'm_name' => 'IN PROGRESS',
+        'm_desc' => '',
+        'm_parents' => array(12446),
+    ),
+    12448 => array(
+        'm_icon' => '<i class="far fa-circle discover"></i>',
+        'm_name' => 'NOT STARTED',
+        'm_desc' => '',
+        'm_parents' => array(12446),
+    ),
+);
+
+//IDEA TEXT INPUT SHOW ICON:
+$config['en_ids_12420'] = array(4358,4356,4739,4735);
+$config['en_all_12420'] = array(
+    4358 => array(
+        'm_icon' => '<i class="fad fa-comment-alt-check" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER MARKS',
+        'm_desc' => '',
+        'm_parents' => array(12700,12420,12112,10663,6103,6410,6232),
+    ),
+    4356 => array(
+        'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA READ TIME (SECONDS)',
+        'm_desc' => '',
+        'm_parents' => array(12112,12420,10888,10650,6232,6201),
+    ),
+    4739 => array(
+        'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
+        'm_name' => 'UNLOCK MAX PERCENTAGE',
+        'm_desc' => '',
+        'm_parents' => array(12420,12112,6402,6232),
+    ),
+    4735 => array(
+        'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
+        'm_name' => 'UNLOCK MIN PERCENTAGE',
+        'm_desc' => '',
+        'm_parents' => array(12420,12112,6402,6232),
+    ),
+);
+
+//IDEA TREE:
+$config['en_ids_12413'] = array(11020,11019);
+$config['en_all_12413'] = array(
+    11020 => array(
+        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
+        'm_name' => 'NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12675,12413,11018),
+    ),
+    11019 => array(
+        'm_icon' => '<i class="fad fa-step-backward idea" aria-hidden="true"></i>',
+        'm_name' => 'PREVIOUS',
+        'm_desc' => '',
+        'm_parents' => array(12413,10990),
+    ),
+);
+
+//MENCH URL:
+$config['en_ids_10876'] = array(12762,7274,10939,7291,4341,6287);
+$config['en_all_10876'] = array(
+    12762 => array(
+        'm_icon' => '<i class="far fa-plus-circle source"></i>',
+        'm_name' => 'ADD CONTENT WIZARD',
+        'm_desc' => 'https://mench.com/source/create',
+        'm_parents' => array(12773,10876,4527,11035,4536),
+    ),
+    7274 => array(
+        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_name' => 'CRON JOBS',
+        'm_desc' => 'https://mench.com/cron',
+        'm_parents' => array(12744,6194,11035,12728,12500,10876,4527,6405),
+    ),
+    10939 => array(
+        'm_icon' => '<i class="fad fa-pen idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA PEN',
+        'm_desc' => 'https://mench.com/13467',
+        'm_parents' => array(10876,10957),
+    ),
+    7291 => array(
+        'm_icon' => '<i class="fad fa-power-off" aria-hidden="true"></i>',
+        'm_name' => 'LOGOUT',
+        'm_desc' => 'https://mench.com/source/signout',
+        'm_parents' => array(12500,10876,11035),
+    ),
+    4341 => array(
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
+        'm_name' => 'MENCH LEDGER',
+        'm_desc' => 'https://mench.com/ledger',
+        'm_parents' => array(11047,12707,10876,12588,11035,4527,7735,6205),
+    ),
+    6287 => array(
+        'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
+        'm_name' => 'PLUGINS',
+        'm_desc' => 'https://mench.com/plugin',
+        'm_parents' => array(12744,6194,12699,12500,10876,11035,4527),
+    ),
+);
+
+//SOURCE COIN TYPES:
+$config['en_ids_12410'] = array(12273,6255);
+$config['en_all_12410'] = array(
+    12273 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12655,12647,12571,12467,12321,12410,11089,12228,4527,6768),
+    ),
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12677,10939,11018,12655,12648,12467,11089,12410,6771,12228,4527),
+    ),
+);
+
+//SOURCE LINK TYPE CUSTOM UI:
+$config['en_ids_12403'] = array(4257);
+$config['en_all_12403'] = array(
+    4257 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK EMBED PLAYER',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
+    ),
+);
+
+//SOURCE SYNC STATUS:
+$config['en_ids_12401'] = array(4251,6178,10654);
+$config['en_all_12401'] = array(
+    4251 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'CREATED',
+        'm_desc' => '',
+        'm_parents' => array(4536,12274,12401,12149,12141,10645,10593,4593),
+    ),
+    6178 => array(
+        'm_icon' => '<i class="fad fa-trash-alt source" aria-hidden="true"></i>',
+        'm_name' => 'DELETED',
+        'm_desc' => '',
+        'm_parents' => array(10645,4593,12401,6177),
+    ),
+    10654 => array(
+        'm_icon' => '<i class="fad fa-sliders-h source" aria-hidden="true"></i>',
+        'm_name' => 'STATUS UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(12401,4535,4593,10645),
+    ),
+);
+
+//IDEA SYNC STATUS:
+$config['en_ids_12400'] = array(4250,6182,10648);
+$config['en_all_12400'] = array(
+    4250 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'CREATED',
+        'm_desc' => '',
+        'm_parents' => array(5967,12400,4535,12149,10593,4593),
+    ),
+    6182 => array(
+        'm_icon' => '<i class="fad fa-trash-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'DELETED',
+        'm_desc' => '',
+        'm_parents' => array(12655,12400,4593,12647,4737),
+    ),
+    10648 => array(
+        'm_icon' => '<i class="fad fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'UPDATE STATUS',
+        'm_desc' => '',
+        'm_parents' => array(12400,4535,4593),
+    ),
+);
+
+//SOURCE:
+$config['en_ids_4536'] = array(12762,3000,7305,6206,12646,12500,4600,12289,4251,10645,11089,7504,12775,4758,12437);
+$config['en_all_4536'] = array(
+    12762 => array(
+        'm_icon' => '<i class="far fa-plus-circle source"></i>',
+        'm_name' => 'ADD CONTENT WIZARD',
+        'm_desc' => '',
+        'm_parents' => array(12773,10876,4527,11035,4536),
+    ),
+    3000 => array(
+        'm_icon' => '<i class="fad fa-file-certificate source" aria-hidden="true"></i>',
+        'm_name' => 'CONTENT TYPE',
+        'm_desc' => '',
+        'm_parents' => array(12762,11054,11035,12079,4600,4536,4527),
+    ),
+    7305 => array(
+        'm_icon' => '<i class="fas fa-layer-group" aria-hidden="true"></i>',
+        'm_name' => 'MENCH PLATFORM',
+        'm_desc' => '',
+        'm_parents' => array(4536),
+    ),
+    6206 => array(
+        'm_icon' => '<i class="fas fa-table source" aria-hidden="true"></i>',
+        'm_name' => 'MENCH SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(4527,7735,4536),
+    ),
+    12646 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'NAVIGATE SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(4536,4527,12645),
+    ),
+    12500 => array(
+        'm_icon' => '<i class="fad fa-user" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER MENU',
+        'm_desc' => '',
+        'm_parents' => array(4536,4527),
+    ),
+    4600 => array(
+        'm_icon' => '<i class="far fa-badge-check"></i>',
+        'm_name' => 'REFERENCE TYPES',
+        'm_desc' => '',
+        'm_parents' => array(4536),
+    ),
+    12289 => array(
+        'm_icon' => '<i class="fad fa-paw source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE AVATAR',
+        'm_desc' => '',
+        'm_parents' => array(4536,6225),
+    ),
+    4251 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE CREATED',
+        'm_desc' => '',
+        'm_parents' => array(4536,12274,12401,12149,12141,10645,10593,4593),
+    ),
+    10645 => array(
+        'm_icon' => '<i class="fas fa-sync source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE DISCOVERIES',
+        'm_desc' => '',
+        'm_parents' => array(4536),
+    ),
+    11089 => array(
+        'm_icon' => '<i class="fad fa-crop-alt source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LAYOUT',
+        'm_desc' => '',
+        'm_parents' => array(4536,4527),
+    ),
+    7504 => array(
+        'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE PENDING MODERATION',
+        'm_desc' => '',
+        'm_parents' => array(4536,5967,4755,4593),
+    ),
+    12775 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE PENDING REVIEW',
+        'm_desc' => '',
+        'm_parents' => array(1,4536),
+    ),
+    4758 => array(
+        'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE SETTINGS',
+        'm_desc' => '',
+        'm_parents' => array(4536),
+    ),
+    12437 => array(
+        'm_icon' => '<i class="fad fa-medal source" aria-hidden="true"></i>',
+        'm_name' => 'TOP SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(4536,12489,11035,11986),
+    ),
+);
+
+//IDEA:
+$config['en_ids_4535'] = array(12773,7545,10573,12419,4250,12453,4601,11018,4229,4228,10686,10663,10664,10643,12589,6226,4231,4485,10676,10678,10679,10677,12682,6768,10681,10675,12450,4983,7302,10662,10648,10650,10644,10651,4993,6201,12647,12591,12592,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,4246,10653,4259,10657,4257,4261,10669,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,10689,10646,10654,5007,4994);
+$config['en_all_4535'] = array(
+    12773 => array(
+        'm_icon' => '<i class="far fa-plus-circle idea"></i>',
+        'm_name' => 'IDEA APPEND CONTENT',
+        'm_desc' => '',
+        'm_parents' => array(5967,4535,4755,4593),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA APPEND PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(12197,11030,11018,10986,11089,4535,12321,7551,4593,4485),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA BOOKMARKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
+    ),
+    12419 => array(
+        'm_icon' => '<i class="fas fa-comments-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COMMENTS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,12359,5967,10593,12322,4986,4535,11089,4593,4485),
+    ),
+    4250 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA CREATED',
+        'm_desc' => '',
+        'm_parents' => array(5967,12400,4535,12149,10593,4593),
+    ),
+    12453 => array(
+        'm_icon' => '<i class="fad fa-megaphone idea"></i>',
+        'm_name' => 'IDEA FEATURE REQUEST',
+        'm_desc' => '',
+        'm_parents' => array(12137,4535,4755,4593,5967),
+    ),
+    4601 => array(
+        'm_icon' => '<i class="fas fa-tags idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA KEYWORDS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,11089,4535,12322,4986,10593,4593,4485),
+    ),
+    11018 => array(
+        'm_icon' => '<i class="fad fa-crop-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LAYOUT',
+        'm_desc' => '',
+        'm_parents' => array(12676,4535,4527),
+    ),
+    4229 => array(
+        'm_icon' => '<i class="fad fa-question-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK CONDITIONAL',
+        'm_desc' => '',
+        'm_parents' => array(4535,4527,6410,6283,4593,4486),
+    ),
+    4228 => array(
+        'm_icon' => '<i class="fad fa-play-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK FIXED',
+        'm_desc' => '',
+        'm_parents' => array(4535,6410,4593,4486),
+    ),
+    10686 => array(
+        'm_icon' => '<i class="fad fa-times idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK UNLINKED',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    10663 => array(
+        'm_icon' => '<i class="fad fa-coin idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK UPDATE MARKS',
+        'm_desc' => '',
+        'm_parents' => array(4535,4228,4593,10658),
+    ),
+    10664 => array(
+        'm_icon' => '<i class="fad fa-bolt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK UPDATE SCORE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4229,10658),
+    ),
+    10643 => array(
+        'm_icon' => '<i class="fas fa-yin-yang mench-spin idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK YIN YANG',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,6410,4486),
+    ),
+    12589 => array(
+        'm_icon' => '<i class="fad fa-edit idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LIST EDITOR',
+        'm_desc' => '',
+        'm_parents' => array(12702,11018,4527,4535,12590),
+    ),
+    6226 => array(
+        'm_icon' => '<i class="fad fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA MASS UPDATE STATUS',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593),
+    ),
+    4231 => array(
+        'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(11089,10939,12359,4535,12322,10593,4986,4603,4593,4485),
+    ),
+    4485 => array(
+        'm_icon' => '<i class="fas fa-comment-plus idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES',
+        'm_desc' => '',
+        'm_parents' => array(4535,4527),
+    ),
+    10676 => array(
+        'm_icon' => '<i class="fad fa-bars idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES SORTED',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    10678 => array(
+        'm_icon' => '<i class="fad fa-trash-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES UNLINKED',
+        'm_desc' => '',
+        'm_parents' => array(4535,10658,4593),
+    ),
+    10679 => array(
+        'm_icon' => '<i class="fad fa-comment-plus idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES UPDATE CONTENT',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10593,10658),
+    ),
+    10677 => array(
+        'm_icon' => '<i class="fad fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES UPDATE STATUS',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    12682 => array(
+        'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA REQUIRE PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(4593,12321,7551,4535,11089,10986,11018,4485),
+    ),
+    6768 => array(
+        'm_icon' => '<i class="far fa-cog idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SETTINGS',
+        'm_desc' => '',
+        'm_parents' => array(4535),
+    ),
+    10681 => array(
+        'm_icon' => '<i class="fad fa-bars idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SORT AUTO',
+        'm_desc' => '',
+        'm_parents' => array(4535,4755,4593,10658),
+    ),
+    10675 => array(
+        'm_icon' => '<i class="fad fa-bars idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SORT MANUAL',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    12450 => array(
+        'm_icon' => '<i class="fas fa-pen-square source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCE REQUEST',
+        'm_desc' => '',
+        'm_parents' => array(4593,4755,4535,5967),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4485,11018,12683,12141,10939,12450,12273,12228,4535,10593,4527,7551,4593),
+    ),
+    7302 => array(
+        'm_icon' => '<i class="far fa-chart-bar idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA STATS',
+        'm_desc' => '',
+        'm_parents' => array(4527,4535),
+    ),
+    10662 => array(
+        'm_icon' => '<i class="fad fa-hashtag idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA UPDATE LINK',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    10648 => array(
+        'm_icon' => '<i class="fad fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA UPDATE STATUS',
+        'm_desc' => '',
+        'm_parents' => array(12400,4535,4593),
+    ),
+    10650 => array(
+        'm_icon' => '<i class="fad fa-clock idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA UPDATE TIME',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593),
+    ),
+    10644 => array(
+        'm_icon' => '<i class="fad fa-bullseye-arrow idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA UPDATE TITLE',
+        'm_desc' => '',
+        'm_parents' => array(4535,10593,4593),
+    ),
+    10651 => array(
+        'm_icon' => '<i class="fad fa-shapes idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA UPDATE TYPE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593),
+    ),
+    4993 => array(
+        'm_icon' => '<i class="fad fa-eye idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA VIEWED',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593),
+    ),
+    6201 => array(
+        'm_icon' => '<i class="fas fa-table idea" aria-hidden="true"></i>',
+        'm_name' => 'MENCH IDEA',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,7735,4535),
+    ),
+    12647 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'NAVIGATE IDEA',
+        'm_desc' => '',
+        'm_parents' => array(4535,4527,12645),
+    ),
+    12591 => array(
+        'm_icon' => '<i class="fas fa-plus-circle source" aria-hidden="true"></i>',
+        'm_name' => 'NEXT EDITOR ADD SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,12589),
+    ),
+    12592 => array(
+        'm_icon' => '<i class="fas fa-minus-circle source" aria-hidden="true"></i>',
+        'm_name' => 'NEXT EDITOR REMOVE SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,12589),
+    ),
+    5001 => array(
+        'm_icon' => '<i class="source fad fa-sticky-note"></i>',
+        'm_name' => 'PORTFOLIO EDITOR CONTENT REPLACE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    10625 => array(
+        'm_icon' => '<i class="source fad fa-user-circle"></i>',
+        'm_name' => 'PORTFOLIO EDITOR ICON REPLACE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    5943 => array(
+        'm_icon' => '<i class="fad fa-user-circle source" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO EDITOR ICON UPDATE FOR ALL',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    12318 => array(
+        'm_icon' => '<i class="fad fa-user-circle source" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO EDITOR ICON UPDATE IF MISSING',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    5865 => array(
+        'm_icon' => '<i class="source fad fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO EDITOR LINK STATUS REPLACE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    4999 => array(
+        'm_icon' => '<i class="source fad fa-fingerprint"></i>',
+        'm_name' => 'PORTFOLIO EDITOR NAME POSTFIX',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    4998 => array(
+        'm_icon' => '<i class="source fad fa-fingerprint"></i>',
+        'm_name' => 'PORTFOLIO EDITOR NAME PREFIX',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    5000 => array(
+        'm_icon' => '<i class="source fad fa-fingerprint"></i>',
+        'm_name' => 'PORTFOLIO EDITOR NAME REPLACE',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    5981 => array(
+        'm_icon' => '<i class="source fad fa-layer-plus"></i>',
+        'm_name' => 'PORTFOLIO EDITOR PROFILE ADD',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    11956 => array(
+        'm_icon' => '<i class="source fad fa-layer-plus" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO EDITOR PROFILE IF ADD',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    5982 => array(
+        'm_icon' => '<i class="source fad fa-layer-minus"></i>',
+        'm_name' => 'PORTFOLIO EDITOR PROFILE REMOVE',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    5003 => array(
+        'm_icon' => '<i class="source fad fa-sliders-h"></i>',
+        'm_name' => 'PORTFOLIO EDITOR STATUS REPLACE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    4246 => array(
+        'm_icon' => '<i class="fad fa-bug source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE BUG REPORTS',
+        'm_desc' => '',
+        'm_parents' => array(4535,5967,4755,4593),
+    ),
+    10653 => array(
+        'm_icon' => '<i class="fad fa-user-circle source"></i>',
+        'm_name' => 'SOURCE ICON UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10645),
+    ),
+    4259 => array(
+        'm_icon' => '<i class="fad fa-volume-up source"></i>',
+        'm_name' => 'SOURCE LINK AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    10657 => array(
+        'm_icon' => '<i class="fad fa-comment-plus source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK CONTENT UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(4535,10593,4593,10658,10645),
+    ),
+    4257 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK EMBED PLAYER',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
+    ),
+    4261 => array(
+        'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK FILE',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    10669 => array(
+        'm_icon' => '<i class="fab fa-font-awesome-alt source"></i>',
+        'm_name' => 'SOURCE LINK ICON',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,6198,4592),
+    ),
+    4260 => array(
+        'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4319 => array(
+        'm_icon' => '<i class="fad fa-sort-numeric-down source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK INTEGER',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    7657 => array(
+        'm_icon' => '<i class="fas fa-divide source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK PERCENT',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    4230 => array(
+        'm_icon' => '<i class="fad fa-link rotate90 source"></i>',
+        'm_name' => 'SOURCE LINK RAW',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    10656 => array(
+        'm_icon' => '<i class="fad fa-sliders-h source"></i>',
+        'm_name' => 'SOURCE LINK STATUS UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658,10645),
+    ),
+    4255 => array(
+        'm_icon' => '<i class="fad fa-align-left source"></i>',
+        'm_name' => 'SOURCE LINK TEXT',
+        'm_desc' => '',
+        'm_parents' => array(4535,10593,4593,4592),
+    ),
+    4318 => array(
+        'm_icon' => '<i class="fad fa-clock source"></i>',
+        'm_name' => 'SOURCE LINK TIME',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    10659 => array(
+        'm_icon' => '<i class="fad fa-plug source"></i>',
+        'm_name' => 'SOURCE LINK TYPE UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(4535,10658,4593,10645),
+    ),
+    10673 => array(
+        'm_icon' => '<i class="fad fa-trash-alt source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK UNLINKED',
+        'm_desc' => '',
+        'm_parents' => array(4535,10645,4593,10658),
+    ),
+    4256 => array(
+        'm_icon' => '<i class="fad fa-browser source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK URL',
+        'm_desc' => '',
+        'm_parents' => array(11080,4535,4593,4592,4537),
+    ),
+    4258 => array(
+        'm_icon' => '<i class="fad fa-video source"></i>',
+        'm_name' => 'SOURCE LINK VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    10689 => array(
+        'm_icon' => '<i class="fad fa-share-alt rotate90 source"></i>',
+        'm_name' => 'SOURCE MERGED IN SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658,10645),
+    ),
+    10646 => array(
+        'm_icon' => '<i class="fad fa-fingerprint source"></i>',
+        'm_name' => 'SOURCE NAME UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(4535,10593,4593,10645),
+    ),
+    10654 => array(
+        'm_icon' => '<i class="fad fa-sliders-h source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE STATUS UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(12401,4535,4593,10645),
+    ),
+    5007 => array(
+        'm_icon' => '<i class="fad fa-bolt source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE TOGGLE SUPERPOWERS',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593),
+    ),
+    4994 => array(
+        'm_icon' => '<i class="fad fa-eye source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE VIEWED',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593),
+    ),
+);
+
+//DISCOVER:
+$config['en_ids_6205'] = array(12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,6415,10683,4556,6149,4283,6969,4275,7610,4555,6132,10690,4266,4267,12489,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,6771,7560,7561,7564,7559,7558,6143,7347,7304,7492,4552,6140,12328,7578,6224,10658,4553,7562,4235,7495,4341,12024,12648,7563,6157,7489,4559,12117,6144,7485,7486,6997);
+$config['en_all_6205'] = array(
+    12129 => array(
+        'm_icon' => '<i class="fas fa-times-square discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER DELETED',
+        'm_desc' => '',
+        'm_parents' => array(6205,6153,4593),
+    ),
+    12336 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER ONE LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7704,4755,4593,12326,12227),
+    ),
+    12334 => array(
+        'm_icon' => '<i class="fas fa-check-square discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER SOME LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7704,4755,4593,12326,12227),
+    ),
+    12197 => array(
+        'm_icon' => '<i class="fad fa-user-plus discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER APPEND PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593),
+    ),
+    4554 => array(
+        'm_icon' => '<i class="discover fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    7757 => array(
+        'm_icon' => '<i class="discover fad fa-bookmark discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER BOOKMARK REMOVED AUTO',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6150),
+    ),
+    6155 => array(
+        'm_icon' => '<i class="discover fad fa-bookmark discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER BOOKMARK REMOVED MANUAL',
+        'm_desc' => '',
+        'm_parents' => array(6205,10888,6150,4593,4755),
+    ),
+    5967 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER CARBON COPY',
+        'm_desc' => '',
+        'm_parents' => array(6205,4527,7569,4755,4593),
+    ),
+    6559 => array(
+        'm_icon' => '<i class="discover fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED NEXT',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6554),
+    ),
+    6560 => array(
+        'm_icon' => '<i class="discover fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED SKIP',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6554),
+    ),
+    6556 => array(
+        'm_icon' => '<i class="discover fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED STATS',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6554),
+    ),
+    6578 => array(
+        'm_icon' => '<i class="discover fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED STOP',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6554),
+    ),
+    6415 => array(
+        'm_icon' => '<i class="fad fa-trash-alt discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER DELETE ALL',
+        'm_desc' => '',
+        'm_parents' => array(6205,11035,4755,4593,6414),
+    ),
+    10683 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(6205,6153,10658,4593,7654),
+    ),
+    4556 => array(
+        'm_icon' => '<i class="discover fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER FILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    6149 => array(
+        'm_icon' => '<i class="fad fa-search-plus discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA CONSIDERED',
+        'm_desc' => '',
+        'm_parents' => array(6205,6153,4755,4593),
+    ),
+    4283 => array(
+        'm_icon' => '<i class="fad fa-eye discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA LISTED',
+        'm_desc' => '',
+        'm_parents' => array(6205,6153,4755,4593),
+    ),
+    6969 => array(
+        'm_icon' => '<i class="discover fad fa-megaphone"></i>',
+        'm_name' => 'DISCOVER IDEA RECOMMENDED',
+        'm_desc' => '',
+        'm_parents' => array(6205,4593,4755,6153),
+    ),
+    4275 => array(
+        'm_icon' => '<i class="discover fad fa-search"></i>',
+        'm_name' => 'DISCOVER IDEA SEARCH',
+        'm_desc' => '',
+        'm_parents' => array(6205,6554,4755,4593),
+    ),
+    7610 => array(
+        'm_icon' => '<i class="fad fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA VIEW',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593),
+    ),
+    4555 => array(
+        'm_icon' => '<i class="discover fad fa-image"></i>',
+        'm_name' => 'DISCOVER IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    6132 => array(
+        'm_icon' => '<i class="fad fa-bars discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER LIST SORTED',
+        'm_desc' => '',
+        'm_parents' => array(6205,6153,4755,4593),
+    ),
+    10690 => array(
+        'm_icon' => '<i class="discover fad fa-upload"></i>',
+        'm_name' => 'DISCOVER MEDIA UPLOADED',
+        'm_desc' => '',
+        'm_parents' => array(6205,6153,4593,10658),
+    ),
+    4266 => array(
+        'm_icon' => '<i class="discover fab fa-facebook-messenger"></i>',
+        'm_name' => 'DISCOVER MESSENGER OPT-IN',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593),
+    ),
+    4267 => array(
+        'm_icon' => '<i class="discover fab fa-facebook-messenger"></i>',
+        'm_name' => 'DISCOVER MESSENGER REFERRAL',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593),
+    ),
+    12489 => array(
+        'm_icon' => '<i class="far fa-medal discover"></i>',
+        'm_name' => 'DISCOVER OPENED LEADERBOARD',
+        'm_desc' => '',
+        'm_parents' => array(4755,6205,4593,6222),
+    ),
+    4282 => array(
+        'm_icon' => '<i class="discover fad fa-eye"></i>',
+        'm_name' => 'DISCOVER OPENED PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,6222,4593),
+    ),
+    6563 => array(
+        'm_icon' => '<i class="discover fad fa-check"></i>',
+        'm_name' => 'DISCOVER QUICK REPLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,10593,4593,4755,4280),
+    ),
+    4570 => array(
+        'm_icon' => '<i class="discover fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECEIVED',
+        'm_desc' => '',
+        'm_parents' => array(6205,10683,10593,7569,4755,4593),
+    ),
+    7702 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECEIVED IDEA',
+        'm_desc' => '',
+        'm_parents' => array(6205,10593,4593,4755,7569),
+    ),
+    4577 => array(
+        'm_icon' => '<i class="discover fad fa-user-plus"></i>',
+        'm_name' => 'DISCOVER SENT ACCESS',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4549 => array(
+        'm_icon' => '<i class="discover fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER SENT AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4551 => array(
+        'm_icon' => '<i class="discover fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER SENT FILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4550 => array(
+        'm_icon' => '<i class="discover fad fa-image"></i>',
+        'm_name' => 'DISCOVER SENT IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4557 => array(
+        'm_icon' => '<i class="discover fad fa-location-circle"></i>',
+        'm_name' => 'DISCOVER SENT LOCATION',
+        'm_desc' => '',
+        'm_parents' => array(6205,7653,4755,4593),
+    ),
+    4278 => array(
+        'm_icon' => '<i class="fad fa-eye discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SENT MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4279 => array(
+        'm_icon' => '<i class="discover fad fa-cloud-download"></i>',
+        'm_name' => 'DISCOVER SENT MESSENGER RECEIVED',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4268 => array(
+        'm_icon' => '<i class="discover fad fa-user-tag"></i>',
+        'm_name' => 'DISCOVER SENT POSTBACK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4460 => array(
+        'm_icon' => '<i class="discover fad fa-check"></i>',
+        'm_name' => 'DISCOVER SENT QUICK REPLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,7653,4755,4593),
+    ),
+    4547 => array(
+        'm_icon' => '<i class="discover fad fa-align-left"></i>',
+        'm_name' => 'DISCOVER SENT TEXT',
+        'm_desc' => '',
+        'm_parents' => array(6205,7653,4755,4593),
+    ),
+    4287 => array(
+        'm_icon' => '<i class="discover fad fa-comment-exclamation"></i>',
+        'm_name' => 'DISCOVER SENT UNKNOWN MESSAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4548 => array(
+        'm_icon' => '<i class="discover fad fa-video"></i>',
+        'm_name' => 'DISCOVER SENT VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    6771 => array(
+        'm_icon' => '<i class="far fa-cog discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SETTINGS',
+        'm_desc' => '',
+        'm_parents' => array(6205),
+    ),
+    7560 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SIGNIN FROM IDEA',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    7561 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover"></i>',
+        'm_name' => 'DISCOVER SIGNIN GENERALLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    7564 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover"></i>',
+        'm_name' => 'DISCOVER SIGNIN SUCCESS',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    7559 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover"></i>',
+        'm_name' => 'DISCOVER SIGNIN WITH EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    7558 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover"></i>',
+        'm_name' => 'DISCOVER SIGNIN WITH MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    6143 => array(
+        'm_icon' => '<i class="far fa-comment-times discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SKIPPED',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,6146,4755,4593),
+    ),
+    7347 => array(
+        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER START',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
+    ),
+    7304 => array(
+        'm_icon' => '<i class="far fa-chart-bar discover"></i>',
+        'm_name' => 'DISCOVER STATS',
+        'm_desc' => 'An overview of key link stats',
+        'm_parents' => array(10888,4527,6205),
+    ),
+    7492 => array(
+        'm_icon' => '<i class="fas fa-times-octagon discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER TERMINATE',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,4755,4593,6146),
+    ),
+    4552 => array(
+        'm_icon' => '<i class="discover fad fa-align-left"></i>',
+        'm_name' => 'DISCOVER TEXT',
+        'm_desc' => '',
+        'm_parents' => array(6205,10593,4755,4593,4280),
+    ),
+    6140 => array(
+        'm_icon' => '<i class="fad fa-lock-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER UNLOCK CONDITION LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,12326,12227,6410,4229,4755,4593),
+    ),
+    12328 => array(
+        'm_icon' => '<i class="fad fa-sync discover"></i>',
+        'm_name' => 'DISCOVER UPDATE COMPLETION',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,10658,6153),
+    ),
+    7578 => array(
+        'm_icon' => '<i class="discover fad fa-key"></i>',
+        'm_name' => 'DISCOVER UPDATE PASSWORD',
+        'm_desc' => '',
+        'm_parents' => array(6205,6222,10658,6153,4755,4593),
+    ),
+    6224 => array(
+        'm_icon' => '<i class="discover fad fa-sync"></i>',
+        'm_name' => 'DISCOVER UPDATE PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,6222,4593),
+    ),
+    10658 => array(
+        'm_icon' => '<i class="fas fa-sync discover"></i>',
+        'm_name' => 'DISCOVER UPDATES',
+        'm_desc' => '',
+        'm_parents' => array(4527,6205),
+    ),
+    4553 => array(
+        'm_icon' => '<i class="discover fad fa-video"></i>',
+        'm_name' => 'DISCOVER VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    7562 => array(
+        'm_icon' => '<i class="discover fad fa-envelope-open"></i>',
+        'm_name' => 'DISCOVER WELCOME',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,7569,4593),
+    ),
+    4235 => array(
+        'm_icon' => '<i class="fad fa-play-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY INITIATED',
+        'm_desc' => '',
+        'm_parents' => array(6205,12227,7347,5967,4755,4593),
+    ),
+    7495 => array(
+        'm_icon' => '<i class="fad fa-megaphone discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY RECOMMEND',
+        'm_desc' => '',
+        'm_parents' => array(6205,12227,7347,4755,4593),
+    ),
+    4341 => array(
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
+        'm_name' => 'MENCH LEDGER',
+        'm_desc' => '',
+        'm_parents' => array(11047,12707,10876,12588,11035,4527,7735,6205),
+    ),
+    12024 => array(
+        'm_icon' => '<i class="fas fa-flag discover" aria-hidden="true"></i>',
+        'm_name' => 'MENCH PROJECT MILESTONES',
+        'm_desc' => '',
+        'm_parents' => array(1,6205),
+    ),
+    12648 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'NAVIGATE DISCOVER',
+        'm_desc' => '',
+        'm_parents' => array(6205,4527,12645),
+    ),
+    7563 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'SIGN MAGIC EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,7569,4593),
+    ),
+    6157 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ANSWER ONE',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,6255,4755,4593),
+    ),
+    7489 => array(
+        'm_icon' => '<i class="fas fa-check-square discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ANSWER SOME',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,4755,6255,4593),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_name' => 'SOURCE DISCOVER MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
+    ),
+    12117 => array(
+        'm_icon' => '<i class="far fa-paperclip discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE FILE UPLOAD',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="far fa-keyboard discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE TEXT REPLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
+    ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK ANSWER',
+        'm_desc' => '',
+        'm_parents' => array(6205,12334,12336,7489,6157,12327,12229,12227,12141,4593,4755,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK CHILDREN',
+        'm_desc' => '',
+        'm_parents' => array(6205,12327,12229,12227,12141,4755,4593,6255),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK CONDITION',
+        'm_desc' => '',
+        'm_parents' => array(6205,6140,12327,12229,12227,12141,4229,6255,4593,4755),
+    ),
+);
+
+//IDEA TYPE INSTANTLY DONE:
+$config['en_ids_12330'] = array(6677,6914,6907);
+$config['en_all_12330'] = array(
+    6677 => array(
+        'm_icon' => '<i class="far fa-eye idea" aria-hidden="true"></i>',
+        'm_name' => 'GO NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12330,7585,4559,6192),
+    ),
+    6914 => array(
+        'm_icon' => '<i class="fas fa-cubes idea" aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ALL',
+        'm_desc' => '',
+        'm_parents' => array(12700,12330,7486,7485,6140,6192,7585,7309,6997),
+    ),
+    6907 => array(
+        'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ANY',
+        'm_desc' => '',
+        'm_parents' => array(12700,12330,7486,7485,6140,7585,7309,6997,6193),
+    ),
+);
+
+//DISCOVER UNLOCKS:
+$config['en_ids_12327'] = array(7485,7486,6997);
+$config['en_all_12327'] = array(
+    7485 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'ANSWER',
+        'm_desc' => '',
+        'm_parents' => array(6205,12334,12336,7489,6157,12327,12229,12227,12141,4593,4755,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'CHILDREN',
+        'm_desc' => '',
+        'm_parents' => array(6205,12327,12229,12227,12141,4755,4593,6255),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'CONDITION',
+        'm_desc' => '',
+        'm_parents' => array(6205,6140,12327,12229,12227,12141,4229,6255,4593,4755),
+    ),
+);
+
+//DISCOVER EXPANSIONS:
+$config['en_ids_12326'] = array(12336,12334,6140);
+$config['en_all_12326'] = array(
+    12336 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'ANSWER ONE LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7704,4755,4593,12326,12227),
+    ),
+    12334 => array(
+        'm_icon' => '<i class="fas fa-check-square discover" aria-hidden="true"></i>',
+        'm_name' => 'ANSWER SOME LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7704,4755,4593,12326,12227),
+    ),
+    6140 => array(
+        'm_icon' => '<i class="fad fa-lock-open discover" aria-hidden="true"></i>',
+        'm_name' => 'UNLOCK CONDITION LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,12326,12227,6410,4229,4755,4593),
+    ),
+);
+
+//IDEA TYPE MANUAL INPUT:
+$config['en_ids_12324'] = array(6683,7637);
+$config['en_all_12324'] = array(
+    6683 => array(
+        'm_icon' => '<i class="far fa-keyboard idea" aria-hidden="true"></i>',
+        'm_name' => 'REPLY & GO NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12324,6144,7585,6192),
+    ),
+    7637 => array(
+        'm_icon' => '<i class="far fa-paperclip idea" aria-hidden="true"></i>',
+        'm_name' => 'UPLOAD & GO NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12324,12117,7751,7585,6192),
+    ),
+);
+
+//TEMPLATE IDEA MESSAGES:
+$config['en_ids_12322'] = array(12419,4601,4231);
+$config['en_all_12322'] = array(
+    12419 => array(
+        'm_icon' => '<i class="fas fa-comments-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'COMMENTS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,12359,5967,10593,12322,4986,4535,11089,4593,4485),
+    ),
+    4601 => array(
+        'm_icon' => '<i class="fas fa-tags idea" aria-hidden="true"></i>',
+        'm_name' => 'KEYWORDS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,11089,4535,12322,4986,10593,4593,4485),
+    ),
+    4231 => array(
+        'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
+        'm_name' => 'MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(11089,10939,12359,4535,12322,10593,4986,4603,4593,4485),
+    ),
+);
+
+//TEMPLATE IDEA DISCOVER:
+$config['en_ids_12321'] = array(7545,10573,12273,12682);
+$config['en_all_12321'] = array(
+    7545 => array(
+        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_name' => 'APPEND PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(12197,11030,11018,10986,11089,4535,12321,7551,4593,4485),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
+        'm_name' => 'BOOKMARKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
+    ),
+    12273 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12655,12647,12571,12467,12321,12410,11089,12228,4527,6768),
+    ),
+    12682 => array(
+        'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(4593,12321,7551,4535,11089,10986,11018,4485),
+    ),
+);
+
+//SOURCE AVATAR SUPER:
+$config['en_ids_12279'] = array(12280,12281,12282,12286,12287,12288,12308,12309,12310,12234,12233,10965,12236,12235,10979,12295,12294,12293,12296,12297,12298,12300,12301,12299,12237,12238,10978,12314,12315,12316,12240,12239,10963,12241,12242,12207,12244,12243,10966,12245,12246,10976,12248,12247,10962,12249,12250,10975,12252,12251,10982,12253,12254,10970,12302,12303,12304,12256,12255,10972,12306,12307,12305,12257,12258,10969,12312,12313,12311,12260,12259,10960,12277,12276,12278,12439,12262,10981,12264,12263,10968,12265,12266,10974,12290,12291,12292,12268,12267,12206,12269,12270,10958,12285,12284,12283,12272,12271,12231);
+$config['en_all_12279'] = array(
+    12280 => array(
+        'm_icon' => '<i class="fas fa-alicorn source"></i>',
+        'm_name' => 'ALICORN BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12281 => array(
+        'm_icon' => '<i class="far fa-alicorn source"></i>',
+        'm_name' => 'ALICORN LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12282 => array(
+        'm_icon' => '<i class="fad fa-alicorn source"></i>',
+        'm_name' => 'ALICORN MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12286 => array(
+        'm_icon' => '<i class="fas fa-bat source" aria-hidden="true"></i>',
+        'm_name' => 'BAT BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12287 => array(
+        'm_icon' => '<i class="far fa-bat source" aria-hidden="true"></i>',
+        'm_name' => 'BAT LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12288 => array(
+        'm_icon' => '<i class="fad fa-bat source" aria-hidden="true"></i>',
+        'm_name' => 'BAT MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12308 => array(
+        'm_icon' => '<i class="fas fa-spider-black-widow source"></i>',
+        'm_name' => 'BLACK WIDOW BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12309 => array(
+        'm_icon' => '<i class="far fa-spider-black-widow source"></i>',
+        'm_name' => 'BLACK WIDOW LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12310 => array(
+        'm_icon' => '<i class="fad fa-spider-black-widow source"></i>',
+        'm_name' => 'BLACK WIDOW MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12234 => array(
+        'm_icon' => '<i class="fas fa-dog source"></i>',
+        'm_name' => 'DOGY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12233 => array(
+        'm_icon' => '<i class="far fa-dog source"></i>',
+        'm_name' => 'DOGY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10965 => array(
+        'm_icon' => '<i class="fad fa-dog source"></i>',
+        'm_name' => 'DOGY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12236 => array(
+        'm_icon' => '<i class="fas fa-duck source" aria-hidden="true"></i>',
+        'm_name' => 'DONALD BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12235 => array(
+        'm_icon' => '<i class="far fa-duck source" aria-hidden="true"></i>',
+        'm_name' => 'DONALD LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10979 => array(
+        'm_icon' => '<i class="fad fa-duck source"></i>',
+        'm_name' => 'DONALD MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12295 => array(
+        'm_icon' => '<i class="fas fa-dove source" aria-hidden="true"></i>',
+        'm_name' => 'DOVE BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12294 => array(
+        'm_icon' => '<i class="far fa-dove source" aria-hidden="true"></i>',
+        'm_name' => 'DOVE LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12293 => array(
+        'm_icon' => '<i class="fad fa-dove source" aria-hidden="true"></i>',
+        'm_name' => 'DOVE MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12296 => array(
+        'm_icon' => '<i class="fas fa-dragon source"></i>',
+        'm_name' => 'DRAGON BOLD',
+        'm_desc' => '',
+        'm_parents' => array(10967,12279),
+    ),
+    12297 => array(
+        'm_icon' => '<i class="far fa-dragon source"></i>',
+        'm_name' => 'DRAGON LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(10967,12279),
+    ),
+    12298 => array(
+        'm_icon' => '<i class="fad fa-dragon source"></i>',
+        'm_name' => 'DRAGON MIX',
+        'm_desc' => '',
+        'm_parents' => array(10967,12279),
+    ),
+    12300 => array(
+        'm_icon' => '<i class="fas fa-elephant source" aria-hidden="true"></i>',
+        'm_name' => 'ELEPHANT BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12301 => array(
+        'm_icon' => '<i class="far fa-elephant source" aria-hidden="true"></i>',
+        'm_name' => 'ELEPHANT LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12299 => array(
+        'm_icon' => '<i class="fad fa-elephant source" aria-hidden="true"></i>',
+        'm_name' => 'ELEPHANT MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12237 => array(
+        'm_icon' => '<i class="fas fa-fish source" aria-hidden="true"></i>',
+        'm_name' => 'FISHY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12238 => array(
+        'm_icon' => '<i class="far fa-fish source" aria-hidden="true"></i>',
+        'm_name' => 'FISHY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10978 => array(
+        'm_icon' => '<i class="fad fa-fish source"></i>',
+        'm_name' => 'FISHY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12314 => array(
+        'm_icon' => '<i class="fas fa-frog source" aria-hidden="true"></i>',
+        'm_name' => 'FROG BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12315 => array(
+        'm_icon' => '<i class="far fa-frog source" aria-hidden="true"></i>',
+        'm_name' => 'FROG LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12316 => array(
+        'm_icon' => '<i class="fad fa-frog source" aria-hidden="true"></i>',
+        'm_name' => 'FROG MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12240 => array(
+        'm_icon' => '<i class="fas fa-hippo source" aria-hidden="true"></i>',
+        'm_name' => 'HIPPOY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12239 => array(
+        'm_icon' => '<i class="far fa-hippo source" aria-hidden="true"></i>',
+        'm_name' => 'HIPPOY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10963 => array(
+        'm_icon' => '<i class="fad fa-hippo source"></i>',
+        'm_name' => 'HIPPOY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12241 => array(
+        'm_icon' => '<i class="fas fa-badger-honey source" aria-hidden="true"></i>',
+        'm_name' => 'HONEY BADGER BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12242 => array(
+        'm_icon' => '<i class="far fa-badger-honey source" aria-hidden="true"></i>',
+        'm_name' => 'HONEY BADGER LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12207 => array(
+        'm_icon' => '<i class="fad fa-badger-honey source"></i>',
+        'm_name' => 'HONEY BADGER MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12244 => array(
+        'm_icon' => '<i class="fas fa-deer source" aria-hidden="true"></i>',
+        'm_name' => 'HONEY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12243 => array(
+        'm_icon' => '<i class="far fa-deer source" aria-hidden="true"></i>',
+        'm_name' => 'HONEY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10966 => array(
+        'm_icon' => '<i class="fad fa-deer source"></i>',
+        'm_name' => 'HONEY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12245 => array(
+        'm_icon' => '<i class="fas fa-horse source" aria-hidden="true"></i>',
+        'm_name' => 'HORSY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12246 => array(
+        'm_icon' => '<i class="far fa-horse source" aria-hidden="true"></i>',
+        'm_name' => 'HORSY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10976 => array(
+        'm_icon' => '<i class="fad fa-horse source"></i>',
+        'm_name' => 'HORSY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12248 => array(
+        'm_icon' => '<i class="fas fa-monkey source" aria-hidden="true"></i>',
+        'm_name' => 'HUMAN BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12247 => array(
+        'm_icon' => '<i class="far fa-monkey source" aria-hidden="true"></i>',
+        'm_name' => 'HUMAN LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10962 => array(
+        'm_icon' => '<i class="fad fa-monkey source"></i>',
+        'm_name' => 'HUMAN MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12249 => array(
+        'm_icon' => '<i class="fas fa-kiwi-bird source" aria-hidden="true"></i>',
+        'm_name' => 'KIWI BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12250 => array(
+        'm_icon' => '<i class="far fa-kiwi-bird source" aria-hidden="true"></i>',
+        'm_name' => 'KIWI LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10975 => array(
+        'm_icon' => '<i class="fad fa-kiwi-bird source"></i>',
+        'm_name' => 'KIWI MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12252 => array(
+        'm_icon' => '<i class="fas fa-cat source" aria-hidden="true"></i>',
+        'm_name' => 'MIMY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12251 => array(
+        'm_icon' => '<i class="far fa-cat source" aria-hidden="true"></i>',
+        'm_name' => 'MIMY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10982 => array(
+        'm_icon' => '<i class="fad fa-cat source"></i>',
+        'm_name' => 'MIMY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12253 => array(
+        'm_icon' => '<i class="fas fa-cow source" aria-hidden="true"></i>',
+        'm_name' => 'MOMY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12254 => array(
+        'm_icon' => '<i class="far fa-cow source" aria-hidden="true"></i>',
+        'm_name' => 'MOMY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10970 => array(
+        'm_icon' => '<i class="fad fa-cow source"></i>',
+        'm_name' => 'MOMY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12302 => array(
+        'm_icon' => '<i class="fas fa-narwhal source"></i>',
+        'm_name' => 'NARWHAL BOLD',
+        'm_desc' => '',
+        'm_parents' => array(10984,12279),
+    ),
+    12303 => array(
+        'm_icon' => '<i class="far fa-narwhal source"></i>',
+        'm_name' => 'NARWHAL LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(10984,12279),
+    ),
+    12304 => array(
+        'm_icon' => '<i class="fad fa-narwhal source"></i>',
+        'm_name' => 'NARWHAL MIX',
+        'm_desc' => '',
+        'm_parents' => array(10984,12279),
+    ),
+    12256 => array(
+        'm_icon' => '<i class="fas fa-turtle source" aria-hidden="true"></i>',
+        'm_name' => 'NINJA BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12255 => array(
+        'm_icon' => '<i class="far fa-turtle source" aria-hidden="true"></i>',
+        'm_name' => 'NINJA LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10972 => array(
+        'm_icon' => '<i class="fad fa-turtle source"></i>',
+        'm_name' => 'NINJA MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12306 => array(
+        'm_icon' => '<i class="fas fa-pegasus source"></i>',
+        'm_name' => 'PEGASUS BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12307 => array(
+        'm_icon' => '<i class="far fa-pegasus source"></i>',
+        'm_name' => 'PEGASUS LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12305 => array(
+        'm_icon' => '<i class="fad fa-pegasus source" aria-hidden="true"></i>',
+        'm_name' => 'PEGASUS MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12257 => array(
+        'm_icon' => '<i class="fas fa-pig source" aria-hidden="true"></i>',
+        'm_name' => 'PIGGY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12258 => array(
+        'm_icon' => '<i class="far fa-pig source" aria-hidden="true"></i>',
+        'm_name' => 'PIGGY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10969 => array(
+        'm_icon' => '<i class="fad fa-pig source"></i>',
+        'm_name' => 'PIGGY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12312 => array(
+        'm_icon' => '<i class="fas fa-ram source"></i>',
+        'm_name' => 'RAM BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12313 => array(
+        'm_icon' => '<i class="far fa-ram source"></i>',
+        'm_name' => 'RAM LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12311 => array(
+        'm_icon' => '<i class="fad fa-ram source"></i>',
+        'm_name' => 'RAM MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12260 => array(
+        'm_icon' => '<i class="fas fa-rabbit source" aria-hidden="true"></i>',
+        'm_name' => 'ROGER BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12259 => array(
+        'm_icon' => '<i class="far fa-rabbit source" aria-hidden="true"></i>',
+        'm_name' => 'ROGER LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10960 => array(
+        'm_icon' => '<i class="fad fa-rabbit source"></i>',
+        'm_name' => 'ROGER MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12277 => array(
+        'm_icon' => '<i class="fas fa-deer-rudolph source" aria-hidden="true"></i>',
+        'm_name' => 'RUDOLPH BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12276 => array(
+        'm_icon' => '<i class="far fa-deer-rudolph source" aria-hidden="true"></i>',
+        'm_name' => 'RUDOLPH LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12278 => array(
+        'm_icon' => '<i class="fad fa-deer-rudolph source" aria-hidden="true"></i>',
+        'm_name' => 'RUDOLPH MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12439 => array(
+        'm_icon' => '<i class="fad fa-crow source" aria-hidden="true"></i>',
+        'm_name' => 'RUSSEL BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12262 => array(
+        'm_icon' => '<i class="far fa-crow source" aria-hidden="true"></i>',
+        'm_name' => 'RUSSEL LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10981 => array(
+        'm_icon' => '<i class="fad fa-crow source"></i>',
+        'm_name' => 'RUSSEL MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12264 => array(
+        'm_icon' => '<i class="fas fa-sheep source" aria-hidden="true"></i>',
+        'm_name' => 'SHEEPY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12263 => array(
+        'm_icon' => '<i class="far fa-sheep source" aria-hidden="true"></i>',
+        'm_name' => 'SHEEPY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10968 => array(
+        'm_icon' => '<i class="fad fa-sheep source"></i>',
+        'm_name' => 'SHEEPY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12265 => array(
+        'm_icon' => '<i class="fas fa-snake source" aria-hidden="true"></i>',
+        'm_name' => 'SNAKY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12266 => array(
+        'm_icon' => '<i class="far fa-snake source" aria-hidden="true"></i>',
+        'm_name' => 'SNAKY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10974 => array(
+        'm_icon' => '<i class="fad fa-snake source"></i>',
+        'm_name' => 'SNAKY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12290 => array(
+        'm_icon' => '<i class="fas fa-cat-space source"></i>',
+        'm_name' => 'SPACE CAT BOLD',
+        'm_desc' => '',
+        'm_parents' => array(10984,12279),
+    ),
+    12291 => array(
+        'm_icon' => '<i class="far fa-cat-space source"></i>',
+        'm_name' => 'SPACE CAT LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(10984,12279),
+    ),
+    12292 => array(
+        'm_icon' => '<i class="fad fa-cat-space source"></i>',
+        'm_name' => 'SPACE CAT MIX',
+        'm_desc' => '',
+        'm_parents' => array(10984,12279),
+    ),
+    12268 => array(
+        'm_icon' => '<i class="fas fa-spider source" aria-hidden="true"></i>',
+        'm_name' => 'SPIDER BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12267 => array(
+        'm_icon' => '<i class="far fa-spider source" aria-hidden="true"></i>',
+        'm_name' => 'SPIDER LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12206 => array(
+        'm_icon' => '<i class="fad fa-spider source"></i>',
+        'm_name' => 'SPIDER MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12269 => array(
+        'm_icon' => '<i class="fas fa-squirrel source" aria-hidden="true"></i>',
+        'm_name' => 'SQUIRRELY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12270 => array(
+        'm_icon' => '<i class="far fa-squirrel source" aria-hidden="true"></i>',
+        'm_name' => 'SQUIRRELY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10958 => array(
+        'm_icon' => '<i class="fad fa-squirrel source"></i>',
+        'm_name' => 'SQUIRRELY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12285 => array(
+        'm_icon' => '<i class="fas fa-unicorn source"></i>',
+        'm_name' => 'UNICORN BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12284 => array(
+        'm_icon' => '<i class="far fa-unicorn source"></i>',
+        'm_name' => 'UNICORN LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12283 => array(
+        'm_icon' => '<i class="fad fa-unicorn source"></i>',
+        'm_name' => 'UNICORN MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279),
+    ),
+    12272 => array(
+        'm_icon' => '<i class="fas fa-whale source" aria-hidden="true"></i>',
+        'm_name' => 'WHALE BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12271 => array(
+        'm_icon' => '<i class="far fa-whale source" aria-hidden="true"></i>',
+        'm_name' => 'WHALE LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12231 => array(
+        'm_icon' => '<i class="fad fa-whale source"></i>',
+        'm_name' => 'WHALE MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+);
+
+//SOURCE COINS:
+$config['en_ids_12274'] = array(4251);
+$config['en_all_12274'] = array(
+    4251 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE CREATED',
+        'm_desc' => '',
+        'm_parents' => array(4536,12274,12401,12149,12141,10645,10593,4593),
+    ),
+);
+
+//IDEA COINS:
+$config['en_ids_12273'] = array(4983);
+$config['en_all_12273'] = array(
+    4983 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4485,11018,12683,12141,10939,12450,12273,12228,4535,10593,4527,7551,4593),
+    ),
+);
+
+//DISCOVER COMPLETION:
+$config['en_ids_12229'] = array(6143,7492,6157,7489,4559,12117,6144,7485,7486,6997);
+$config['en_all_12229'] = array(
+    6143 => array(
+        'm_icon' => '<i class="far fa-comment-times discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SKIPPED',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,6146,4755,4593),
+    ),
+    7492 => array(
+        'm_icon' => '<i class="fas fa-times-octagon discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER TERMINATE',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,4755,4593,6146),
+    ),
+    6157 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ANSWER ONE',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,6255,4755,4593),
+    ),
+    7489 => array(
+        'm_icon' => '<i class="fas fa-check-square discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ANSWER SOME',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,4755,6255,4593),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_name' => 'SOURCE DISCOVER MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
+    ),
+    12117 => array(
+        'm_icon' => '<i class="far fa-paperclip discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE FILE UPLOAD',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="far fa-keyboard discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE TEXT REPLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
+    ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK ANSWER',
+        'm_desc' => '',
+        'm_parents' => array(6205,12334,12336,7489,6157,12327,12229,12227,12141,4593,4755,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK CHILDREN',
+        'm_desc' => '',
+        'm_parents' => array(6205,12327,12229,12227,12141,4755,4593,6255),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK CONDITION',
+        'm_desc' => '',
+        'm_parents' => array(6205,6140,12327,12229,12227,12141,4229,6255,4593,4755),
+    ),
+);
+
+//TRANSACTION TYPE GROUPS:
+$config['en_ids_12228'] = array(7704,6255,12229,12326,6146,12227,7347,12327,12273,4983,12274);
+$config['en_all_12228'] = array(
+    7704 => array(
+        'm_icon' => '<i class="far fa-hand-pointer discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWERED',
+        'm_desc' => '',
+        'm_parents' => array(12228,4527),
+    ),
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12677,10939,11018,12655,12648,12467,11089,12410,6771,12228,4527),
+    ),
+    12229 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER COMPLETION',
+        'm_desc' => '',
+        'm_parents' => array(4527,12228),
+    ),
+    12326 => array(
+        'm_icon' => '<i class="fad fa-bars discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER EXPANSIONS',
+        'm_desc' => '',
+        'm_parents' => array(4527,12228),
+    ),
+    6146 => array(
+        'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER INCOMPLETES',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
+    ),
+    12227 => array(
+        'm_icon' => '<i class="fas fa-walking discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER PROGRESS',
+        'm_desc' => '',
+        'm_parents' => array(12228,4527),
+    ),
+    7347 => array(
+        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER START',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
+    ),
+    12327 => array(
+        'm_icon' => '<i class="fas fa-lock-open discover"></i>',
+        'm_name' => 'DISCOVER UNLOCKS',
+        'm_desc' => '',
+        'm_parents' => array(4527,12228),
+    ),
+    12273 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12655,12647,12571,12467,12321,12410,11089,12228,4527,6768),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4485,11018,12683,12141,10939,12450,12273,12228,4535,10593,4527,7551,4593),
+    ),
+    12274 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12654,12655,12646,12467,12228,4527,4758),
+    ),
+);
+
+//DISCOVER PROGRESS:
+$config['en_ids_12227'] = array(12336,12334,6143,7492,6140,4235,7495,6157,7489,4559,12117,6144,7485,7486,6997);
+$config['en_all_12227'] = array(
+    12336 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER ONE LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7704,4755,4593,12326,12227),
+    ),
+    12334 => array(
+        'm_icon' => '<i class="fas fa-check-square discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER SOME LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7704,4755,4593,12326,12227),
+    ),
+    6143 => array(
+        'm_icon' => '<i class="far fa-comment-times discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SKIPPED',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,6146,4755,4593),
+    ),
+    7492 => array(
+        'm_icon' => '<i class="fas fa-times-octagon discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER TERMINATE',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,4755,4593,6146),
+    ),
+    6140 => array(
+        'm_icon' => '<i class="fad fa-lock-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER UNLOCK CONDITION LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,12326,12227,6410,4229,4755,4593),
+    ),
+    4235 => array(
+        'm_icon' => '<i class="fad fa-play-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY INITIATED',
+        'm_desc' => '',
+        'm_parents' => array(6205,12227,7347,5967,4755,4593),
+    ),
+    7495 => array(
+        'm_icon' => '<i class="fad fa-megaphone discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY RECOMMEND',
+        'm_desc' => '',
+        'm_parents' => array(6205,12227,7347,4755,4593),
+    ),
+    6157 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ANSWER ONE',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,6255,4755,4593),
+    ),
+    7489 => array(
+        'm_icon' => '<i class="fas fa-check-square discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ANSWER SOME',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,4755,6255,4593),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_name' => 'SOURCE DISCOVER MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
+    ),
+    12117 => array(
+        'm_icon' => '<i class="far fa-paperclip discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE FILE UPLOAD',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="far fa-keyboard discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE TEXT REPLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
+    ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK ANSWER',
+        'm_desc' => '',
+        'm_parents' => array(6205,12334,12336,7489,6157,12327,12229,12227,12141,4593,4755,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK CHILDREN',
+        'm_desc' => '',
+        'm_parents' => array(6205,12327,12229,12227,12141,4755,4593,6255),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK CONDITION',
+        'm_desc' => '',
+        'm_parents' => array(6205,6140,12327,12229,12227,12141,4229,6255,4593,4755),
+    ),
+);
+
+//SOURCE TIMEZONE:
+$config['en_ids_3289'] = array(3486,3487,3485,3488,3484,3483,3489,3482,3490,3481,3491,3480,3492,3479,3493,3478,3494,3495,3477,3496,3476,3475,3497,3498,3474,3499,3473,3500,3501);
+$config['en_all_3289'] = array(
+    3486 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT 0:00 LONDON',
+        'm_desc' => '0',
+        'm_parents' => array(3289),
+    ),
+    3487 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+01:00 AMSTERDAM/PARIS',
+        'm_desc' => '1',
+        'm_parents' => array(3289),
+    ),
+    3485 => array(
+        'm_icon' => '<i class="fal fa-map" aria-hidden="true"></i>',
+        'm_name' => 'GMT-01:00 AZORES',
+        'm_desc' => '-1',
+        'm_parents' => array(3289),
+    ),
+    3488 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+02:00 ATHENS',
+        'm_desc' => '2',
+        'm_parents' => array(3289),
+    ),
+    3484 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-02:00 STANLEY',
+        'm_desc' => '-2',
+        'm_parents' => array(3289),
+    ),
+    3483 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-03:00 BUENOS AIRES',
+        'm_desc' => '-3',
+        'm_parents' => array(3289),
+    ),
+    3489 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+03:00 MOSCOW',
+        'm_desc' => '3',
+        'm_parents' => array(3289),
+    ),
+    3482 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-03:30 NEWFOUNDLAND',
+        'm_desc' => '-3.5',
+        'm_parents' => array(3289),
+    ),
+    3490 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+03:30 TEHRAN',
+        'm_desc' => '3.5',
+        'm_parents' => array(3289),
+    ),
+    3481 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-04:00 ATLANTIC TIME',
+        'm_desc' => '-4',
+        'm_parents' => array(3289),
+    ),
+    3491 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+04:00 BAKU',
+        'm_desc' => '4',
+        'm_parents' => array(3289),
+    ),
+    3480 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-04:30 CARACAS',
+        'm_desc' => '-4.5',
+        'm_parents' => array(3289),
+    ),
+    3492 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+04:30 KABUL',
+        'm_desc' => '4.5',
+        'm_parents' => array(3289),
+    ),
+    3479 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-05:00 EASTERN TIME',
+        'm_desc' => '-5',
+        'm_parents' => array(3289),
+    ),
+    3493 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+05:00 KARACHI',
+        'm_desc' => '5',
+        'm_parents' => array(3289),
+    ),
+    3478 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-06:00 CENTRAL TIME',
+        'm_desc' => '-6',
+        'm_parents' => array(3289),
+    ),
+    3494 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+06:00 EKATERINBURG',
+        'm_desc' => '6',
+        'm_parents' => array(3289),
+    ),
+    3495 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+07:00 BANGKOK',
+        'm_desc' => '7',
+        'm_parents' => array(3289),
+    ),
+    3477 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-07:00 MOUNTAIN TIME',
+        'm_desc' => '-7',
+        'm_parents' => array(3289),
+    ),
+    3496 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+08:00 HONG KONG/PERTH',
+        'm_desc' => '8',
+        'm_parents' => array(3289),
+    ),
+    3476 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-08:00 PACIFIC STANDARD TIME',
+        'm_desc' => '-8',
+        'm_parents' => array(3289),
+    ),
+    3475 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-09:00 ALASKA',
+        'm_desc' => '-9',
+        'm_parents' => array(3289),
+    ),
+    3497 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+09:00 TOKYO',
+        'm_desc' => '9',
+        'm_parents' => array(3289),
+    ),
+    3498 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+09:30 DARWIN',
+        'm_desc' => '9.5',
+        'm_parents' => array(3289),
+    ),
+    3474 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-10:00 HAWAII',
+        'm_desc' => '-10',
+        'm_parents' => array(3289),
+    ),
+    3499 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+10:00 SYDNEY',
+        'm_desc' => '10',
+        'm_parents' => array(3289),
+    ),
+    3473 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT-11:00 SAMOA',
+        'm_desc' => '-11',
+        'm_parents' => array(3289),
+    ),
+    3500 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+11:00 VLADIVOSTOK',
+        'm_desc' => '11',
+        'm_parents' => array(3289),
+    ),
+    3501 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'GMT+12:00 FIJI',
+        'm_desc' => '12',
+        'm_parents' => array(3289),
+    ),
+);
+
+//SOURCE GENDER:
+$config['en_ids_3290'] = array(3292,3291,6121);
+$config['en_all_3290'] = array(
+    3292 => array(
+        'm_icon' => '<i class="fal fa-female" aria-hidden="true"></i>',
+        'm_name' => 'FEMALE',
+        'm_desc' => 'f',
+        'm_parents' => array(3290),
+    ),
+    3291 => array(
+        'm_icon' => '<i class="fal fa-male" aria-hidden="true"></i>',
+        'm_name' => 'MALE',
+        'm_desc' => 'm',
+        'm_parents' => array(3290),
+    ),
+    6121 => array(
+        'm_icon' => '<i class="fal fa-venus-mars"></i>',
+        'm_name' => 'OTHER GENDER',
+        'm_desc' => '',
+        'm_parents' => array(3290),
+    ),
+);
+
+//TRANSACTION TYPE COIN AWARD:
+$config['en_ids_12141'] = array(4983,6157,7489,4251,4559,12117,6144,7485,7486,6997);
+$config['en_all_12141'] = array(
+    4983 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4485,11018,12683,12141,10939,12450,12273,12228,4535,10593,4527,7551,4593),
+    ),
+    6157 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ANSWER ONE',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,6255,4755,4593),
+    ),
+    7489 => array(
+        'm_icon' => '<i class="fas fa-check-square discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ANSWER SOME',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,4755,6255,4593),
+    ),
+    4251 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE CREATED',
+        'm_desc' => '',
+        'm_parents' => array(4536,12274,12401,12149,12141,10645,10593,4593),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_name' => 'SOURCE DISCOVER MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
+    ),
+    12117 => array(
+        'm_icon' => '<i class="far fa-paperclip discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE FILE UPLOAD',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="far fa-keyboard discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE TEXT REPLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
+    ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK ANSWER',
+        'm_desc' => '',
+        'm_parents' => array(6205,12334,12336,7489,6157,12327,12229,12227,12141,4593,4755,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK CHILDREN',
+        'm_desc' => '',
+        'm_parents' => array(6205,12327,12229,12227,12141,4755,4593,6255),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK CONDITION',
+        'm_desc' => '',
+        'm_parents' => array(6205,6140,12327,12229,12227,12141,4229,6255,4593,4755),
+    ),
+);
+
+//IDEA STATUS FEATURED:
+$config['en_ids_12138'] = array(12137);
+$config['en_all_12138'] = array(
+    12137 => array(
+        'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(10986,10648,12138,7356,7355,4737),
+    ),
+);
+
+//IDEA TEXT INPUTS:
+$config['en_ids_12112'] = array(4358,4535,4356,4736,4739,4735);
+$config['en_all_12112'] = array(
+    4358 => array(
+        'm_icon' => '<i class="fad fa-comment-alt-check" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER MARKS',
+        'm_desc' => '',
+        'm_parents' => array(12700,12420,12112,10663,6103,6410,6232),
+    ),
+    4535 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA',
+        'm_desc' => '',
+        'm_parents' => array(12761,12499,12112,4527,12155,2738),
+    ),
+    4356 => array(
+        'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA READ TIME (SECONDS)',
+        'm_desc' => '',
+        'm_parents' => array(12112,12420,10888,10650,6232,6201),
+    ),
+    4736 => array(
+        'm_icon' => '<i class="fas fa-h1 idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TITLE',
+        'm_desc' => '',
+        'm_parents' => array(10990,12112,11071,10644,6232,6201),
+    ),
+    4739 => array(
+        'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
+        'm_name' => 'UNLOCK MAX PERCENTAGE',
+        'm_desc' => '',
+        'm_parents' => array(12420,12112,6402,6232),
+    ),
+    4735 => array(
+        'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
+        'm_name' => 'UNLOCK MIN PERCENTAGE',
+        'm_desc' => '',
+        'm_parents' => array(12420,12112,6402,6232),
+    ),
+);
+
+//DROPDOWN MENUS:
+$config['en_ids_12079'] = array(3000,4486,4737,7585);
+$config['en_all_12079'] = array(
+    3000 => array(
+        'm_icon' => '<i class="fad fa-file-certificate source" aria-hidden="true"></i>',
+        'm_name' => 'CONTENT TYPE',
+        'm_desc' => '',
+        'm_parents' => array(12762,11054,11035,12079,4600,4536,4527),
+    ),
+    4486 => array(
+        'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINKS',
+        'm_desc' => '',
+        'm_parents' => array(12700,11054,6232,12079,10662,4527),
+    ),
+    4737 => array(
+        'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
+    ),
+    7585 => array(
+        'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TYPE',
+        'm_desc' => '',
+        'm_parents' => array(11054,12079,6204,10651,6160,6194,6232,4527,6201),
+    ),
+);
+
+//SOURCE LAYOUT:
+$config['en_ids_11089'] = array(6225,10573,12273,12419,4231,4601,7347,6255,6146,11030,12682,7545,11029);
+$config['en_all_11089'] = array(
+    6225 => array(
+        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_name' => 'ACCOUNT SETTINGS',
+        'm_desc' => '',
+        'm_parents' => array(12574,11089,12205,11035,4527),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA BOOKMARKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
+    ),
+    12273 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12655,12647,12571,12467,12321,12410,11089,12228,4527,6768),
+    ),
+    12419 => array(
+        'm_icon' => '<i class="fas fa-comments-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COMMENTS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,12359,5967,10593,12322,4986,4535,11089,4593,4485),
+    ),
+    4231 => array(
+        'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(11089,10939,12359,4535,12322,10593,4986,4603,4593,4485),
+    ),
+    4601 => array(
+        'm_icon' => '<i class="fas fa-tags idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA KEYWORDS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,11089,4535,12322,4986,10593,4593,4485),
+    ),
+    7347 => array(
+        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER START',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
+    ),
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12677,10939,11018,12655,12648,12467,11089,12410,6771,12228,4527),
+    ),
+    6146 => array(
+        'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER INCOMPLETES',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
+    ),
+    11030 => array(
+        'm_icon' => '<i class="fas fa-id-badge source" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(12571,12574,11089,11028),
+    ),
+    12682 => array(
+        'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA REQUIRE PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(4593,12321,7551,4535,11089,10986,11018,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA APPEND PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(12197,11030,11018,10986,11089,4535,12321,7551,4593,4485),
+    ),
+    11029 => array(
+        'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO',
+        'm_desc' => '',
+        'm_parents' => array(12574,12571,11089,11028),
+    ),
+);
+
+//IT:
+$config['en_ids_10717'] = array(10761,10762,10763,10764,10765);
+$config['en_all_10717'] = array(
+    10761 => array(
+        'm_icon' => '<i class="far fa-file-certificate"></i>',
+        'm_name' => 'IT CERTIFICATION',
+        'm_desc' => '',
+        'm_parents' => array(10717),
+    ),
+    10762 => array(
+        'm_icon' => '<i class="far fa-network-wired"></i>',
+        'm_name' => 'NETWORK & SECURITY',
+        'm_desc' => '',
+        'm_parents' => array(10717),
+    ),
+    10763 => array(
+        'm_icon' => '<i class="far fa-hdd"></i>',
+        'm_name' => 'HARDWARE',
+        'm_desc' => '',
+        'm_parents' => array(10717),
+    ),
+    10764 => array(
+        'm_icon' => '<i class="far fa-laptop-code"></i>',
+        'm_name' => 'OPERATING SYSTEMS',
+        'm_desc' => '',
+        'm_parents' => array(10717),
+    ),
+    10765 => array(
+        'm_icon' => '<i class="far fa-window"></i>',
+        'm_name' => 'OTHER IT & SOFWTARE',
+        'm_desc' => '',
+        'm_parents' => array(10717),
+    ),
+);
+
+//DISCOVER ALL CONNECTIONS:
+$config['en_ids_11081'] = array(4364,4369,4429,4368,4366,4371,4593);
+$config['en_all_11081'] = array(
+    4364 => array(
+        'm_icon' => '<i class="fad fa-user-edit" aria-hidden="true"></i>',
+        'm_name' => 'CREATOR',
+        'm_desc' => '',
+        'm_parents' => array(11081,6160,6232,6194,4341),
+    ),
+    4369 => array(
+        'm_icon' => '<i class="fad fa-step-forward" aria-hidden="true"></i>',
+        'm_name' => 'NEXT IDEA',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,6202,6232,4341),
+    ),
+    4429 => array(
+        'm_icon' => '<i class="fad fa-sitemap" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,6160,6232,4341),
+    ),
+    4368 => array(
+        'm_icon' => '<i class="fad fa-step-backward" aria-hidden="true"></i>',
+        'm_name' => 'PREVIOUS IDEA',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,6202,6232,4341),
+    ),
+    4366 => array(
+        'm_icon' => '<i class="fas fa-id-badge" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,6160,6232,4341),
+    ),
+    4371 => array(
+        'm_icon' => '<i class="fad fa-link" aria-hidden="true"></i>',
+        'm_name' => 'REFERENCE',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,4367,6232,4341),
+    ),
+    4593 => array(
+        'm_icon' => '<i class="fad fa-shapes" aria-hidden="true"></i>',
+        'm_name' => 'TYPE',
+        'm_desc' => '',
+        'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
+    ),
+);
+
+//MENCH VARIABLES:
+$config['en_ids_6232'] = array(4358,6203,6202,4486,6159,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,4356,4737,4736,7585,6197,6198,6160,6172,6207,6177,4364,7694,4367,4372,6103,4369,4429,4368,4366,4370,4371,6186,4362,4593,4739,4735);
+$config['en_all_6232'] = array(
+    4358 => array(
+        'm_icon' => '<i class="fad fa-comment-alt-check" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER MARKS',
+        'm_desc' => 'tr__assessment_points',
+        'm_parents' => array(12700,12420,12112,10663,6103,6410,6232),
+    ),
+    6203 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'FACEBOOK ATTACHMENT ID',
+        'm_desc' => 'fb_att_id',
+        'm_parents' => array(6232,6215,2793,6103),
+    ),
+    6202 => array(
+        'm_icon' => '<i class="fas fa-hashtag idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA ID',
+        'm_desc' => 'in_id',
+        'm_parents' => array(6232,6215,6201),
+    ),
+    4486 => array(
+        'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINKS',
+        'm_desc' => 'ln_type_source_id',
+        'm_parents' => array(12700,11054,6232,12079,10662,4527),
+    ),
+    6159 => array(
+        'm_icon' => '<i class="fas fa-lambda idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA METADATA',
+        'm_desc' => 'in_metadata',
+        'm_parents' => array(11049,6232,6201,6195),
+    ),
+    6208 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'IDEA METADATA ALGOLIA ID',
+        'm_desc' => 'in__algolia_id',
+        'm_parents' => array(6232,6215,3323,6159),
+    ),
+    6168 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'IDEA METADATA COMMON STEPS',
+        'm_desc' => 'in__metadata_common_steps',
+        'm_parents' => array(6232,6214,6159),
+    ),
+    6283 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'IDEA METADATA EXPANSION CONDITIONAL',
+        'm_desc' => 'in__metadata_expansion_conditional',
+        'm_parents' => array(6214,6232,6159),
+    ),
+    6228 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'IDEA METADATA EXPANSION STEPS',
+        'm_desc' => 'in__metadata_expansion_steps',
+        'm_parents' => array(6232,6214,6159),
+    ),
+    6165 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'IDEA METADATA EXPERTS',
+        'm_desc' => 'in__metadata_experts',
+        'm_parents' => array(6232,6214,6159),
+    ),
+    6162 => array(
+        'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
+        'm_name' => 'IDEA METADATA MAXIMUM SECONDS',
+        'm_desc' => 'in__metadata_max_seconds',
+        'm_parents' => array(4739,6232,6214,4356,6159),
+    ),
+    6170 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'IDEA METADATA MAXIMUM STEPS',
+        'm_desc' => 'in__metadata_max_steps',
+        'm_parents' => array(6232,6214,6159),
+    ),
+    6161 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'IDEA METADATA MINIMUM SECONDS',
+        'm_desc' => 'in__metadata_min_seconds',
+        'm_parents' => array(4735,6232,6214,4356,6159),
+    ),
+    6169 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'IDEA METADATA MINIMUM STEPS',
+        'm_desc' => 'in__metadata_min_steps',
+        'm_parents' => array(6232,6214,6159),
+    ),
+    6167 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'IDEA METADATA SOURCES',
+        'm_desc' => 'in__metadata_sources',
+        'm_parents' => array(6232,6214,6159),
+    ),
+    4356 => array(
+        'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA READ TIME (SECONDS)',
+        'm_desc' => 'in_time_seconds',
+        'm_parents' => array(12112,12420,10888,10650,6232,6201),
+    ),
+    4737 => array(
+        'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA STATUS',
+        'm_desc' => 'in_status_source_id',
+        'm_parents' => array(11054,10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
+    ),
+    4736 => array(
+        'm_icon' => '<i class="fas fa-h1 idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TITLE',
+        'm_desc' => 'in_title',
+        'm_parents' => array(10990,12112,11071,10644,6232,6201),
+    ),
+    7585 => array(
+        'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TYPE',
+        'm_desc' => 'in_type_source_id',
+        'm_parents' => array(11054,12079,6204,10651,6160,6194,6232,4527,6201),
+    ),
+    6197 => array(
+        'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE FULL NAME',
+        'm_desc' => 'en_name',
+        'm_parents' => array(12772,4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
+    ),
+    6198 => array(
+        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ICON',
+        'm_desc' => 'en_icon',
+        'm_parents' => array(12605,10653,5943,10625,6232,6206),
+    ),
+    6160 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ID',
+        'm_desc' => 'en_id',
+        'm_parents' => array(6232,6215,6206),
+    ),
+    6172 => array(
+        'm_icon' => '<i class="fas fa-lambda source"></i>',
+        'm_name' => 'SOURCE METADATA',
+        'm_desc' => 'en_metadata',
+        'm_parents' => array(6232,6206,6195),
+    ),
+    6207 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'SOURCE METADATA ALGOLIA ID',
+        'm_desc' => 'en__algolia_id',
+        'm_parents' => array(3323,6232,6215,6172),
+    ),
+    6177 => array(
+        'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE STATUS',
+        'm_desc' => 'en_status_source_id',
+        'm_parents' => array(12766,11054,6204,5003,6160,6232,6194,6206,4527),
+    ),
+    4364 => array(
+        'm_icon' => '<i class="fad fa-user-edit" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION CREATOR',
+        'm_desc' => 'ln_creator_source_id',
+        'm_parents' => array(11081,6160,6232,6194,4341),
+    ),
+    7694 => array(
+        'm_icon' => '<i class="fad fa-project-diagram"></i>',
+        'm_name' => 'TRANSACTION EXTERNAL ID',
+        'm_desc' => 'ln_external_id',
+        'm_parents' => array(6215,6232,4341),
+    ),
+    4367 => array(
+        'm_icon' => '<i class="fad fa-atlas" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION ID',
+        'm_desc' => 'ln_id',
+        'm_parents' => array(6232,6215,4341),
+    ),
+    4372 => array(
+        'm_icon' => '<i class="fad fa-comment-lines" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION MESSAGE',
+        'm_desc' => 'ln_content',
+        'm_parents' => array(7578,10679,10657,5001,6232,4341),
+    ),
+    6103 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'TRANSACTION METADATA',
+        'm_desc' => 'ln_metadata',
+        'm_parents' => array(4527,6232,6195,4341),
+    ),
+    4369 => array(
+        'm_icon' => '<i class="fad fa-step-forward" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION NEXT IDEA',
+        'm_desc' => 'ln_next_idea_id',
+        'm_parents' => array(11081,10692,6202,6232,4341),
+    ),
+    4429 => array(
+        'm_icon' => '<i class="fad fa-sitemap" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION PORTFOLIO SOURCE',
+        'm_desc' => 'ln_portfolio_source_id',
+        'm_parents' => array(11081,10692,6160,6232,4341),
+    ),
+    4368 => array(
+        'm_icon' => '<i class="fad fa-step-backward" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION PREVIOUS IDEA',
+        'm_desc' => 'ln_previous_idea_id',
+        'm_parents' => array(11081,10692,6202,6232,4341),
+    ),
+    4366 => array(
+        'm_icon' => '<i class="fas fa-id-badge" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION PROFILE SOURCE',
+        'm_desc' => 'ln_profile_source_id',
+        'm_parents' => array(11081,10692,6160,6232,4341),
+    ),
+    4370 => array(
+        'm_icon' => '<i class="fad fa-bars" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION RANK',
+        'm_desc' => 'ln_order',
+        'm_parents' => array(10676,10675,6232,4341),
+    ),
+    4371 => array(
+        'm_icon' => '<i class="fad fa-link" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION REFERENCE',
+        'm_desc' => 'ln_parent_transaction_id',
+        'm_parents' => array(11081,10692,4367,6232,4341),
+    ),
+    6186 => array(
+        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION STATUS',
+        'm_desc' => 'ln_status_source_id',
+        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
+    ),
+    4362 => array(
+        'm_icon' => '<i class="fad fa-clock" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION TIME',
+        'm_desc' => 'ln_timestamp',
+        'm_parents' => array(6232,4341),
+    ),
+    4593 => array(
+        'm_icon' => '<i class="fad fa-shapes" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION TYPE',
+        'm_desc' => 'ln_type_source_id',
+        'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
+    ),
+    4739 => array(
+        'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
+        'm_name' => 'UNLOCK MAX PERCENTAGE',
+        'm_desc' => 'tr__conditional_score_max',
+        'm_parents' => array(12420,12112,6402,6232),
+    ),
+    4735 => array(
+        'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
+        'm_name' => 'UNLOCK MIN PERCENTAGE',
+        'm_desc' => 'tr__conditional_score_min',
+        'm_parents' => array(12420,12112,6402,6232),
+    ),
+);
+
+//MEDIA FILE EXTENSIONS:
+$config['en_ids_11080'] = array(4259,4261,4260,4256,4258);
+$config['en_all_11080'] = array(
+    4259 => array(
+        'm_icon' => '<i class="fad fa-volume-up source"></i>',
+        'm_name' => 'AUDIO',
+        'm_desc' => 'pcm|wav|aiff|mp3|aac|ogg|wma|flac|alac|m4a|m4b|m4p',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4261 => array(
+        'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
+        'm_name' => 'FILE',
+        'm_desc' => 'pdf|pdc|doc|docx|tex|txt|7z|rar|zip|csv|sql|tar|xml|exe',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4260 => array(
+        'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
+        'm_name' => 'IMAGE',
+        'm_desc' => 'jpeg|jpg|png|gif|tiff|bmp|img|svg|ico|webp',
+        'm_parents' => array(12605,12524,4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4256 => array(
+        'm_icon' => '<i class="fad fa-browser source" aria-hidden="true"></i>',
+        'm_name' => 'URL',
+        'm_desc' => 'htm|html',
+        'm_parents' => array(11080,4535,4593,4592,4537),
+    ),
+    4258 => array(
+        'm_icon' => '<i class="fad fa-video source"></i>',
+        'm_name' => 'VIDEO',
+        'm_desc' => 'mp4|m4v|m4p|avi|mov|flv|f4v|f4p|f4a|f4b|wmv|webm|mkv|vob|ogv|ogg|3gp|mpg|mpeg|m2v',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+);
+
+//MESSENGER MEDIA CODES:
+$config['en_ids_11059'] = array(4259,4261,4260,4258);
+$config['en_all_11059'] = array(
+    4259 => array(
+        'm_icon' => '<i class="fad fa-volume-up source"></i>',
+        'm_name' => 'AUDIO',
+        'm_desc' => 'audio',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4261 => array(
+        'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
+        'm_name' => 'FILE',
+        'm_desc' => 'file',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4260 => array(
+        'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
+        'm_name' => 'IMAGE',
+        'm_desc' => 'image',
+        'm_parents' => array(12605,12524,4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4258 => array(
+        'm_icon' => '<i class="fad fa-video source"></i>',
+        'm_name' => 'VIDEO',
+        'm_desc' => 'video',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+);
+
+//MESSENGER NOTIFICATION CODES:
+$config['en_ids_11058'] = array(4458,4456,4457);
+$config['en_all_11058'] = array(
+    4458 => array(
+        'm_icon' => '<i class="far fa-volume-mute source" aria-hidden="true"></i>',
+        'm_name' => 'DISABLED',
+        'm_desc' => 'NO_PUSH',
+        'm_parents' => array(11058,4454),
+    ),
+    4456 => array(
+        'm_icon' => '<i class="far fa-volume-up source" aria-hidden="true"></i>',
+        'm_name' => 'REGULAR',
+        'm_desc' => 'REGULAR',
+        'm_parents' => array(11058,4454),
+    ),
+    4457 => array(
+        'm_icon' => '<i class="far fa-volume-down source" aria-hidden="true"></i>',
+        'm_name' => 'SILENT',
+        'm_desc' => 'SILENT_PUSH',
+        'm_parents' => array(11058,4454),
+    ),
+);
+
+//MENCH CONFIG VARIABLES:
+$config['en_ids_6404'] = array(12678,11057,11056,12331,12113,12427,11077,11074,12124,11076,12587,11075,12176,11073,11071,11064,11065,11063,12156,11060,11079,11066,12088,11986,11072,12232,11162,11163,12565,12568);
+$config['en_all_6404'] = array(
+    12678 => array(
+        'm_icon' => '',
+        'm_name' => 'ALGOLIA SEARCH ENABLED (0 OR 1)',
+        'm_desc' => '1',
+        'm_parents' => array(3323,6404),
+    ),
+    11057 => array(
+        'm_icon' => '',
+        'm_name' => 'DISCOVER MARKS MAX',
+        'm_desc' => '89',
+        'm_parents' => array(6404,4358),
+    ),
+    11056 => array(
+        'm_icon' => '',
+        'm_name' => 'DISCOVER MARKS MIN',
+        'm_desc' => '-89',
+        'm_parents' => array(6404,4358),
+    ),
+    12331 => array(
+        'm_icon' => '',
+        'm_name' => 'DISCOVER MIN TIME SHOW',
+        'm_desc' => '120',
+        'm_parents' => array(6404),
+    ),
+    12113 => array(
+        'm_icon' => '',
+        'm_name' => 'DISCOVER TIME MAX. SECONDS',
+        'm_desc' => '7200',
+        'm_parents' => array(4356,6404),
+    ),
+    12427 => array(
+        'm_icon' => '',
+        'm_name' => 'DISCOVER TIME MIN. SECONDS',
+        'm_desc' => '3',
+        'm_parents' => array(6404,4356),
+    ),
+    11077 => array(
+        'm_icon' => '',
+        'm_name' => 'FACEBOOK GRAPH VERSION',
+        'm_desc' => 'v6.0',
+        'm_parents' => array(6404),
+    ),
+    11074 => array(
+        'm_icon' => '',
+        'm_name' => 'FACEBOOK MAX MESSAGE LENGTH',
+        'm_desc' => '2000',
+        'm_parents' => array(6404),
+    ),
+    12124 => array(
+        'm_icon' => '',
+        'm_name' => 'FACEBOOK MAX QUICK REPLIES',
+        'm_desc' => '13',
+        'm_parents' => array(6404),
+    ),
+    11076 => array(
+        'm_icon' => '',
+        'm_name' => 'FACEBOOK MENCH APP ID',
+        'm_desc' => '1782431902047009',
+        'm_parents' => array(6404),
+    ),
+    12587 => array(
+        'm_icon' => '',
+        'm_name' => 'FACEBOOK MENCH PAGE HANDLER',
+        'm_desc' => 'menchcoins',
+        'm_parents' => array(6404),
+    ),
+    11075 => array(
+        'm_icon' => '',
+        'm_name' => 'FACEBOOK MENCH PAGE ID',
+        'm_desc' => '381488558920384',
+        'm_parents' => array(6404),
+    ),
+    12176 => array(
+        'm_icon' => '<i class="fad fa-clock idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA DEFAULT TIME SECONDS',
+        'm_desc' => '30',
+        'm_parents' => array(6404),
+    ),
+    11073 => array(
+        'm_icon' => '',
+        'm_name' => 'IDEA NOTES MAX LENGTH',
+        'm_desc' => '1000',
+        'm_parents' => array(6404),
+    ),
+    11071 => array(
+        'm_icon' => '<i class="fad fa-ruler-horizontal idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TITLE MAX LENGTH',
+        'm_desc' => '100',
+        'm_parents' => array(6404),
+    ),
+    11064 => array(
+        'm_icon' => '',
+        'm_name' => 'ITEMS PER PAGE',
+        'm_desc' => '100',
+        'm_parents' => array(6404),
+    ),
+    11065 => array(
+        'm_icon' => '',
+        'm_name' => 'LOGIN LINK VALID SECONDS',
+        'm_desc' => '3600',
+        'm_parents' => array(6404),
+    ),
+    11063 => array(
+        'm_icon' => '',
+        'm_name' => 'MAX FILE SIZE [MB]',
+        'm_desc' => '25',
+        'm_parents' => array(6404),
+    ),
+    12156 => array(
+        'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
+        'm_name' => 'MENCH HOME IDEA ID',
+        'm_desc' => '7766',
+        'm_parents' => array(6404),
+    ),
+    11060 => array(
+        'm_icon' => '',
+        'm_name' => 'MENCH PLATFORM VERSION',
+        'm_desc' => 'v1.356',
+        'm_parents' => array(6404),
+    ),
+    11079 => array(
+        'm_icon' => '',
+        'm_name' => 'MENCH TIMEZONE',
+        'm_desc' => 'America/Los_Angeles',
+        'm_parents' => array(6404),
+    ),
+    11066 => array(
+        'm_icon' => '',
+        'm_name' => 'PASSWORD MIN CHARACTERS',
+        'm_desc' => '6',
+        'm_parents' => array(6404),
+    ),
+    12088 => array(
+        'm_icon' => '',
+        'm_name' => 'SHOW TEXT COUNTER THRESHOLD',
+        'm_desc' => '0.8',
+        'm_parents' => array(6404),
+    ),
+    11986 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE LIST VISIBLE',
+        'm_desc' => '10',
+        'm_parents' => array(6404),
+    ),
+    11072 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE NAME MAX LENGTH',
+        'm_desc' => '233',
+        'm_parents' => array(6404),
+    ),
+    12232 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE NAME MIN LENGTH',
+        'm_desc' => '2',
+        'm_parents' => array(6404),
+    ),
+    11162 => array(
+        'm_icon' => '',
+        'm_name' => 'SUBSCRIPTION USD RATE MONTHLY',
+        'm_desc' => '5',
+        'm_parents' => array(6404),
+    ),
+    11163 => array(
+        'm_icon' => '',
+        'm_name' => 'SUBSCRIPTION USD RATE YEARLY',
+        'm_desc' => '50',
+        'm_parents' => array(6404),
+    ),
+    12565 => array(
+        'm_icon' => '',
+        'm_name' => 'WEIGHT ALGORITHM RATE',
+        'm_desc' => '89',
+        'm_parents' => array(12569,6404),
+    ),
+    12568 => array(
+        'm_icon' => '',
+        'm_name' => 'WEIGHT ALGORITHM TRANSACTION RATE',
+        'm_desc' => '1',
+        'm_parents' => array(12569,6404),
+    ),
+);
+
+//MENCH MEMORY JAVASCRIPT:
+$config['en_ids_11054'] = array(3000,10573,4486,4983,4737,7356,7355,7585,2738,6404,6201,12687,4592,6177,7357,6186);
+$config['en_all_11054'] = array(
+    3000 => array(
+        'm_icon' => '<i class="fad fa-file-certificate source" aria-hidden="true"></i>',
+        'm_name' => 'CONTENT TYPE',
+        'm_desc' => '',
+        'm_parents' => array(12762,11054,11035,12079,4600,4536,4527),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA BOOKMARKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
+    ),
+    4486 => array(
+        'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINKS',
+        'm_desc' => '',
+        'm_parents' => array(12700,11054,6232,12079,10662,4527),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4485,11018,12683,12141,10939,12450,12273,12228,4535,10593,4527,7551,4593),
+    ),
+    4737 => array(
+        'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
+    ),
+    7356 => array(
+        'm_icon' => '<i class="far fa-check-circle"></i>',
+        'm_name' => 'IDEA STATUS ACTIVE',
+        'm_desc' => '',
+        'm_parents' => array(11054,10891,4527),
+    ),
+    7355 => array(
+        'm_icon' => '<i class="far fa-eye" aria-hidden="true"></i>',
+        'm_name' => 'IDEA STATUS PUBLIC',
+        'm_desc' => '',
+        'm_parents' => array(11054,10891,4527),
+    ),
+    7585 => array(
+        'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TYPE',
+        'm_desc' => '',
+        'm_parents' => array(11054,12079,6204,10651,6160,6194,6232,4527,6201),
+    ),
+    2738 => array(
+        'm_icon' => '<img src="/img/mench.png" class="mench-spin no-radius">',
+        'm_name' => 'MENCH',
+        'm_desc' => '',
+        'm_parents' => array(12497,11054,12041,3303,7524,3325,3326,3324,4527,1,7312,2750),
+    ),
+    6404 => array(
+        'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
+        'm_name' => 'MENCH CONFIG VARIABLES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,7254,6403),
+    ),
+    6201 => array(
+        'm_icon' => '<i class="fas fa-table idea" aria-hidden="true"></i>',
+        'm_name' => 'MENCH IDEA',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,7735,4535),
+    ),
+    12687 => array(
+        'm_icon' => '<i class="fad fa-comments-alt" aria-hidden="true"></i>',
+        'm_name' => 'MENCH MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,7254),
+    ),
+    4592 => array(
+        'm_icon' => '<i class="fas fa-link source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,5982,5981,4527),
+    ),
+    6177 => array(
+        'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE STATUS',
+        'm_desc' => '',
+        'm_parents' => array(12766,11054,6204,5003,6160,6232,6194,6206,4527),
+    ),
+    7357 => array(
+        'm_icon' => '<i class="far fa-globe" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE STATUS PUBLIC',
+        'm_desc' => '',
+        'm_parents' => array(12572,11054,4527),
+    ),
+    6186 => array(
+        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
+    ),
+);
+
+//IDEA ADMIN MENU:
+$config['en_ids_11047'] = array(7264,11049,7276,4341,7279);
+$config['en_all_11047'] = array(
+    7264 => array(
+        'm_icon' => '<i class="fad fa-eye"></i>',
+        'm_name' => 'IDEA BIRDS EYE MARKS',
+        'm_desc' => '/plugin/7264?in_id=',
+        'm_parents' => array(11047,6287),
+    ),
+    11049 => array(
+        'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
+        'm_name' => 'IDEA JSON REVIEW',
+        'm_desc' => '/plugin/11049?in_id=',
+        'm_parents' => array(12741,6287,11047),
+    ),
+    7276 => array(
+        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SYNC INSIGHTS',
+        'm_desc' => '/cron/cron__7276/',
+        'm_parents' => array(11047,7286,7274),
+    ),
+    4341 => array(
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
+        'm_name' => 'MENCH LEDGER',
+        'm_desc' => '/ledger?any_in_id=',
+        'm_parents' => array(11047,12707,10876,12588,11035,4527,7735,6205),
+    ),
+    7279 => array(
+        'm_icon' => '<i class="fad fa-search"></i>',
+        'm_name' => 'SYNC SEARCH INDEX',
+        'm_desc' => '/cron/cron__7279/in/',
+        'm_parents' => array(11047,3323,7287,7274),
+    ),
+);
+
+//MENCH NAVIGATION MENU:
+$config['en_ids_11035'] = array(6225,12762,3000,12749,7274,6415,7347,12707,12581,10573,3084,11068,7291,4341,4430,12205,12211,6287,12750,7256,4269,4997,12275,10957,7540,12437);
+$config['en_all_11035'] = array(
+    6225 => array(
+        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_name' => 'ACCOUNT SETTINGS',
+        'm_desc' => 'Manage avatar, superpowers, subscription & name',
+        'm_parents' => array(12574,11089,12205,11035,4527),
+    ),
+    12762 => array(
+        'm_icon' => '<i class="far fa-plus-circle source"></i>',
+        'm_name' => 'ADD CONTENT WIZARD',
+        'm_desc' => '',
+        'm_parents' => array(12773,10876,4527,11035,4536),
+    ),
+    3000 => array(
+        'm_icon' => '<i class="fad fa-file-certificate source" aria-hidden="true"></i>',
+        'm_name' => 'CONTENT TYPE',
+        'm_desc' => '',
+        'm_parents' => array(12762,11054,11035,12079,4600,4536,4527),
+    ),
+    12749 => array(
+        'm_icon' => '<i class="fad fa-pen-square idea"></i>',
+        'm_name' => 'CONTRIBUTE',
+        'm_desc' => '',
+        'm_parents' => array(11035),
+    ),
+    7274 => array(
+        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_name' => 'CRON JOBS',
+        'm_desc' => '',
+        'm_parents' => array(12744,6194,11035,12728,12500,10876,4527,6405),
+    ),
+    6415 => array(
+        'm_icon' => '<i class="fad fa-trash-alt discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER DELETE ALL',
+        'm_desc' => '',
+        'm_parents' => array(6205,11035,4755,4593,6414),
+    ),
+    7347 => array(
+        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER START',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
+    ),
+    12707 => array(
+        'm_icon' => '<i class="far fa-filter" aria-hidden="true"></i>',
+        'm_name' => 'FILTER TRANSACTIONS',
+        'm_desc' => '',
+        'm_parents' => array(11035,12701),
+    ),
+    12581 => array(
+        'm_icon' => '<i class="fad fa-home discover" aria-hidden="true"></i>',
+        'm_name' => 'HOME',
+        'm_desc' => '',
+        'm_parents' => array(12648,11035),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA BOOKMARKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
+    ),
+    3084 => array(
+        'm_icon' => '<i class="fad fa-user-astronaut source" aria-hidden="true"></i>',
+        'm_name' => 'INDUSTRY EXPERT',
+        'm_desc' => '',
+        'm_parents' => array(4983,12764,11035,1278,12523),
+    ),
+    11068 => array(
+        'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
+        'm_name' => 'LOGIN LINK',
+        'm_desc' => '',
+        'm_parents' => array(11035,11065),
+    ),
+    7291 => array(
+        'm_icon' => '<i class="fad fa-power-off" aria-hidden="true"></i>',
+        'm_name' => 'LOGOUT',
+        'm_desc' => '',
+        'm_parents' => array(12500,10876,11035),
+    ),
+    4341 => array(
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
+        'm_name' => 'MENCH LEDGER',
+        'm_desc' => '',
+        'm_parents' => array(11047,12707,10876,12588,11035,4527,7735,6205),
+    ),
+    4430 => array(
+        'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
+        'm_name' => 'MENCH PLAYER',
+        'm_desc' => '',
+        'm_parents' => array(4983,1278,11035,10573,4426),
+    ),
+    12205 => array(
+        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
+        'm_name' => 'MY SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(12500,11035),
+    ),
+    12211 => array(
+        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_name' => 'NEXT',
+        'm_desc' => '',
+        'm_parents' => array(11035),
+    ),
+    6287 => array(
+        'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
+        'm_name' => 'PLUGINS',
+        'm_desc' => '',
+        'm_parents' => array(12744,6194,12699,12500,10876,11035,4527),
+    ),
+    12750 => array(
+        'm_icon' => '<i class="fad fa-step-forward discover"></i>',
+        'm_name' => 'PREVIEW',
+        'm_desc' => '',
+        'm_parents' => array(11035),
+    ),
+    7256 => array(
+        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
+        'm_name' => 'SEARCH MENCH',
+        'm_desc' => '',
+        'm_parents' => array(12701,12497,11035,3323),
+    ),
+    4269 => array(
+        'm_icon' => '<i class="fad fa-sign-in-alt" aria-hidden="true"></i>',
+        'm_name' => 'SIGN IN/UP',
+        'm_desc' => '',
+        'm_parents' => array(4527,11035),
+    ),
+    4997 => array(
+        'm_icon' => '<i class="fad fa-edit source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LIST EDITOR',
+        'm_desc' => '',
+        'm_parents' => array(11035,12703,12590,11029,4527),
+    ),
+    12275 => array(
+        'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE MODIFY',
+        'm_desc' => '',
+        'm_parents' => array(12412,11035),
+    ),
+    10957 => array(
+        'm_icon' => '<i class="fad fa-bolt source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE SUPERPOWERS',
+        'm_desc' => '',
+        'm_parents' => array(6225,11035,5007,4527),
+    ),
+    7540 => array(
+        'm_icon' => '<i class="fad fa-university" aria-hidden="true"></i>',
+        'm_name' => 'TERMS OF SERVICE',
+        'm_desc' => '',
+        'm_parents' => array(11035),
+    ),
+    12437 => array(
+        'm_icon' => '<i class="fad fa-medal source" aria-hidden="true"></i>',
+        'm_name' => 'TOP SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(4536,12489,11035,11986),
+    ),
+);
+
+//SOURCE TREE:
+$config['en_ids_11028'] = array(11030,11029);
+$config['en_all_11028'] = array(
+    11030 => array(
+        'm_icon' => '<i class="fas fa-id-badge source" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(12571,12574,11089,11028),
+    ),
+    11029 => array(
+        'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO',
+        'm_desc' => '',
+        'm_parents' => array(12574,12571,11089,11028),
+    ),
+);
+
+//IDEA LAYOUT:
+$config['en_ids_11018'] = array(11020,4601,12419,10573,12589,7347,6255,6146,4983,12682,7545,11047);
+$config['en_all_11018'] = array(
+    11020 => array(
+        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12675,12413,11018),
+    ),
+    4601 => array(
+        'm_icon' => '<i class="fas fa-tags idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA KEYWORDS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,11089,4535,12322,4986,10593,4593,4485),
+    ),
+    12419 => array(
+        'm_icon' => '<i class="fas fa-comments-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COMMENTS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,12359,5967,10593,12322,4986,4535,11089,4593,4485),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA BOOKMARKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
+    ),
+    12589 => array(
+        'm_icon' => '<i class="fad fa-edit idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LIST EDITOR',
+        'm_desc' => '',
+        'm_parents' => array(12702,11018,4527,4535,12590),
+    ),
+    7347 => array(
+        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER START',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
+    ),
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12677,10939,11018,12655,12648,12467,11089,12410,6771,12228,4527),
+    ),
+    6146 => array(
+        'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER INCOMPLETES',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4485,11018,12683,12141,10939,12450,12273,12228,4535,10593,4527,7551,4593),
+    ),
+    12682 => array(
+        'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA REQUIRE PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(4593,12321,7551,4535,11089,10986,11018,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA APPEND PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(12197,11030,11018,10986,11089,4535,12321,7551,4593,4485),
+    ),
+    11047 => array(
+        'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
+        'm_name' => 'IDEA ADMIN MENU',
+        'm_desc' => '',
+        'm_parents' => array(12700,11018,4527,11040),
+    ),
+);
+
+//IDEA PREVIOUS SECTION:
+$config['en_ids_10990'] = array(11019,4737,4736);
+$config['en_all_10990'] = array(
+    11019 => array(
+        'm_icon' => '<i class="fad fa-step-backward idea" aria-hidden="true"></i>',
+        'm_name' => 'PREVIOUS',
+        'm_desc' => '',
+        'm_parents' => array(12413,10990),
+    ),
+    4737 => array(
+        'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
+    ),
+    4736 => array(
+        'm_icon' => '<i class="fas fa-h1 idea" aria-hidden="true"></i>',
+        'm_name' => 'TITLE',
+        'm_desc' => '',
+        'm_parents' => array(10990,12112,11071,10644,6232,6201),
+    ),
+);
+
+//SOURCE SUPERPOWERS:
+$config['en_ids_10957'] = array(12701,12705,12700,12702,10939,10986,12673,10984,12728,10967,12703,12699,12706);
+$config['en_all_10957'] = array(
+    12701 => array(
+        'm_icon' => '<i class="fad fa-glasses discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER GLASSES',
+        'm_desc' => 'Read info from all players',
+        'm_parents' => array(10957),
+    ),
+    12705 => array(
+        'm_icon' => '<i class="fad fa-list discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER LIST EDIT',
+        'm_desc' => 'Mass Edit Ledger Transactions',
+        'm_parents' => array(10957),
+    ),
+    12700 => array(
+        'm_icon' => '<i class="fad fa-link idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA CHAIN',
+        'm_desc' => 'Advance Idea Linking',
+        'm_parents' => array(10957),
+    ),
+    12702 => array(
+        'm_icon' => '<i class="fad fa-list idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LIST EDIT',
+        'm_desc' => 'Mass Edit Ideas',
+        'm_parents' => array(10957),
+    ),
+    10939 => array(
+        'm_icon' => '<i class="fad fa-pen idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA PEN',
+        'm_desc' => 'Basic Publishing Powers',
+        'm_parents' => array(10876,10957),
+    ),
+    10986 => array(
+        'm_icon' => '<i class="fad fa-scrubber idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCING',
+        'm_desc' => 'Advance Source Tools',
+        'm_parents' => array(10957),
+    ),
+    12673 => array(
+        'm_icon' => '<i class="fad fa-rectangle-wide idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TOOLBAR',
+        'm_desc' => 'Edit next & previous ideas on the fly',
+        'm_parents' => array(10957),
+    ),
+    10984 => array(
+        'm_icon' => '<i class="fas fa-walkie-talkie idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA WALKIE TALKIE',
+        'm_desc' => 'Collaborative Publishing Powers',
+        'm_parents' => array(10957),
+    ),
+    12728 => array(
+        'm_icon' => '<i class="fad fa-alarm-plus source"></i>',
+        'm_name' => 'SOURCE CRON',
+        'm_desc' => 'Manage Cron Jobs',
+        'm_parents' => array(10957),
+    ),
+    10967 => array(
+        'm_icon' => '<i class="fad fa-edit source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE EDITOR',
+        'm_desc' => 'Organize Sources',
+        'm_parents' => array(10957),
+    ),
+    12703 => array(
+        'm_icon' => '<i class="fad fa-list source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LIST EDIT',
+        'm_desc' => 'Mass Source Edit',
+        'm_parents' => array(10957),
+    ),
+    12699 => array(
+        'm_icon' => '<i class="fad fa-plug source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE PLUG',
+        'm_desc' => 'Access Mench Plugins',
+        'm_parents' => array(10957),
+    ),
+    12706 => array(
+        'm_icon' => '<i class="fad fa-rectangle-wide source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE TOOLBAR',
+        'm_desc' => 'List Parent Sources',
+        'm_parents' => array(10957),
+    ),
+);
+
+//SOURCE AVATAR BASIC:
+$config['en_ids_10956'] = array(12286,12287,12288,12234,12233,10965,12236,12235,10979,12295,12294,12293,12300,12301,12299,12237,12238,10978,12314,12315,12316,12240,12239,10963,12241,12242,12207,12244,12243,10966,12245,12246,10976,12248,12247,10962,12249,12250,10975,12252,12251,10982,12253,12254,10970,12256,12255,10972,12257,12258,10969,12260,12259,10960,12439,12262,10981,12264,12263,10968,12265,12266,10974,12268,12267,12206,12269,12270,10958,12272,12271,12231);
+$config['en_all_10956'] = array(
+    12286 => array(
+        'm_icon' => '<i class="fas fa-bat source" aria-hidden="true"></i>',
+        'm_name' => 'BAT BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12287 => array(
+        'm_icon' => '<i class="far fa-bat source" aria-hidden="true"></i>',
+        'm_name' => 'BAT LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12288 => array(
+        'm_icon' => '<i class="fad fa-bat source" aria-hidden="true"></i>',
+        'm_name' => 'BAT MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12234 => array(
+        'm_icon' => '<i class="fas fa-dog source"></i>',
+        'm_name' => 'DOGY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12233 => array(
+        'm_icon' => '<i class="far fa-dog source"></i>',
+        'm_name' => 'DOGY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10965 => array(
+        'm_icon' => '<i class="fad fa-dog source"></i>',
+        'm_name' => 'DOGY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12236 => array(
+        'm_icon' => '<i class="fas fa-duck source" aria-hidden="true"></i>',
+        'm_name' => 'DONALD BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12235 => array(
+        'm_icon' => '<i class="far fa-duck source" aria-hidden="true"></i>',
+        'm_name' => 'DONALD LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10979 => array(
+        'm_icon' => '<i class="fad fa-duck source"></i>',
+        'm_name' => 'DONALD MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12295 => array(
+        'm_icon' => '<i class="fas fa-dove source" aria-hidden="true"></i>',
+        'm_name' => 'DOVE BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12294 => array(
+        'm_icon' => '<i class="far fa-dove source" aria-hidden="true"></i>',
+        'm_name' => 'DOVE LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12293 => array(
+        'm_icon' => '<i class="fad fa-dove source" aria-hidden="true"></i>',
+        'm_name' => 'DOVE MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12300 => array(
+        'm_icon' => '<i class="fas fa-elephant source" aria-hidden="true"></i>',
+        'm_name' => 'ELEPHANT BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12301 => array(
+        'm_icon' => '<i class="far fa-elephant source" aria-hidden="true"></i>',
+        'm_name' => 'ELEPHANT LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12299 => array(
+        'm_icon' => '<i class="fad fa-elephant source" aria-hidden="true"></i>',
+        'm_name' => 'ELEPHANT MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12237 => array(
+        'm_icon' => '<i class="fas fa-fish source" aria-hidden="true"></i>',
+        'm_name' => 'FISHY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12238 => array(
+        'm_icon' => '<i class="far fa-fish source" aria-hidden="true"></i>',
+        'm_name' => 'FISHY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10978 => array(
+        'm_icon' => '<i class="fad fa-fish source"></i>',
+        'm_name' => 'FISHY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12314 => array(
+        'm_icon' => '<i class="fas fa-frog source" aria-hidden="true"></i>',
+        'm_name' => 'FROG BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12315 => array(
+        'm_icon' => '<i class="far fa-frog source" aria-hidden="true"></i>',
+        'm_name' => 'FROG LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12316 => array(
+        'm_icon' => '<i class="fad fa-frog source" aria-hidden="true"></i>',
+        'm_name' => 'FROG MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12240 => array(
+        'm_icon' => '<i class="fas fa-hippo source" aria-hidden="true"></i>',
+        'm_name' => 'HIPPOY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12239 => array(
+        'm_icon' => '<i class="far fa-hippo source" aria-hidden="true"></i>',
+        'm_name' => 'HIPPOY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10963 => array(
+        'm_icon' => '<i class="fad fa-hippo source"></i>',
+        'm_name' => 'HIPPOY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12241 => array(
+        'm_icon' => '<i class="fas fa-badger-honey source" aria-hidden="true"></i>',
+        'm_name' => 'HONEY BADGER BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12242 => array(
+        'm_icon' => '<i class="far fa-badger-honey source" aria-hidden="true"></i>',
+        'm_name' => 'HONEY BADGER LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12207 => array(
+        'm_icon' => '<i class="fad fa-badger-honey source"></i>',
+        'm_name' => 'HONEY BADGER MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12244 => array(
+        'm_icon' => '<i class="fas fa-deer source" aria-hidden="true"></i>',
+        'm_name' => 'HONEY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12243 => array(
+        'm_icon' => '<i class="far fa-deer source" aria-hidden="true"></i>',
+        'm_name' => 'HONEY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10966 => array(
+        'm_icon' => '<i class="fad fa-deer source"></i>',
+        'm_name' => 'HONEY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12245 => array(
+        'm_icon' => '<i class="fas fa-horse source" aria-hidden="true"></i>',
+        'm_name' => 'HORSY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12246 => array(
+        'm_icon' => '<i class="far fa-horse source" aria-hidden="true"></i>',
+        'm_name' => 'HORSY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10976 => array(
+        'm_icon' => '<i class="fad fa-horse source"></i>',
+        'm_name' => 'HORSY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12248 => array(
+        'm_icon' => '<i class="fas fa-monkey source" aria-hidden="true"></i>',
+        'm_name' => 'HUMAN BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12247 => array(
+        'm_icon' => '<i class="far fa-monkey source" aria-hidden="true"></i>',
+        'm_name' => 'HUMAN LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10962 => array(
+        'm_icon' => '<i class="fad fa-monkey source"></i>',
+        'm_name' => 'HUMAN MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12249 => array(
+        'm_icon' => '<i class="fas fa-kiwi-bird source" aria-hidden="true"></i>',
+        'm_name' => 'KIWI BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12250 => array(
+        'm_icon' => '<i class="far fa-kiwi-bird source" aria-hidden="true"></i>',
+        'm_name' => 'KIWI LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10975 => array(
+        'm_icon' => '<i class="fad fa-kiwi-bird source"></i>',
+        'm_name' => 'KIWI MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12252 => array(
+        'm_icon' => '<i class="fas fa-cat source" aria-hidden="true"></i>',
+        'm_name' => 'MIMY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12251 => array(
+        'm_icon' => '<i class="far fa-cat source" aria-hidden="true"></i>',
+        'm_name' => 'MIMY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10982 => array(
+        'm_icon' => '<i class="fad fa-cat source"></i>',
+        'm_name' => 'MIMY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12253 => array(
+        'm_icon' => '<i class="fas fa-cow source" aria-hidden="true"></i>',
+        'm_name' => 'MOMY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12254 => array(
+        'm_icon' => '<i class="far fa-cow source" aria-hidden="true"></i>',
+        'm_name' => 'MOMY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10970 => array(
+        'm_icon' => '<i class="fad fa-cow source"></i>',
+        'm_name' => 'MOMY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12256 => array(
+        'm_icon' => '<i class="fas fa-turtle source" aria-hidden="true"></i>',
+        'm_name' => 'NINJA BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12255 => array(
+        'm_icon' => '<i class="far fa-turtle source" aria-hidden="true"></i>',
+        'm_name' => 'NINJA LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10972 => array(
+        'm_icon' => '<i class="fad fa-turtle source"></i>',
+        'm_name' => 'NINJA MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12257 => array(
+        'm_icon' => '<i class="fas fa-pig source" aria-hidden="true"></i>',
+        'm_name' => 'PIGGY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12258 => array(
+        'm_icon' => '<i class="far fa-pig source" aria-hidden="true"></i>',
+        'm_name' => 'PIGGY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10969 => array(
+        'm_icon' => '<i class="fad fa-pig source"></i>',
+        'm_name' => 'PIGGY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12260 => array(
+        'm_icon' => '<i class="fas fa-rabbit source" aria-hidden="true"></i>',
+        'm_name' => 'ROGER BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12259 => array(
+        'm_icon' => '<i class="far fa-rabbit source" aria-hidden="true"></i>',
+        'm_name' => 'ROGER LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10960 => array(
+        'm_icon' => '<i class="fad fa-rabbit source"></i>',
+        'm_name' => 'ROGER MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12439 => array(
+        'm_icon' => '<i class="fad fa-crow source" aria-hidden="true"></i>',
+        'm_name' => 'RUSSEL BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12262 => array(
+        'm_icon' => '<i class="far fa-crow source" aria-hidden="true"></i>',
+        'm_name' => 'RUSSEL LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10981 => array(
+        'm_icon' => '<i class="fad fa-crow source"></i>',
+        'm_name' => 'RUSSEL MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12264 => array(
+        'm_icon' => '<i class="fas fa-sheep source" aria-hidden="true"></i>',
+        'm_name' => 'SHEEPY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12263 => array(
+        'm_icon' => '<i class="far fa-sheep source" aria-hidden="true"></i>',
+        'm_name' => 'SHEEPY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10968 => array(
+        'm_icon' => '<i class="fad fa-sheep source"></i>',
+        'm_name' => 'SHEEPY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12265 => array(
+        'm_icon' => '<i class="fas fa-snake source" aria-hidden="true"></i>',
+        'm_name' => 'SNAKY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12266 => array(
+        'm_icon' => '<i class="far fa-snake source" aria-hidden="true"></i>',
+        'm_name' => 'SNAKY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10974 => array(
+        'm_icon' => '<i class="fad fa-snake source"></i>',
+        'm_name' => 'SNAKY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12268 => array(
+        'm_icon' => '<i class="fas fa-spider source" aria-hidden="true"></i>',
+        'm_name' => 'SPIDER BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12267 => array(
+        'm_icon' => '<i class="far fa-spider source" aria-hidden="true"></i>',
+        'm_name' => 'SPIDER LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12206 => array(
+        'm_icon' => '<i class="fad fa-spider source"></i>',
+        'm_name' => 'SPIDER MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12269 => array(
+        'm_icon' => '<i class="fas fa-squirrel source" aria-hidden="true"></i>',
+        'm_name' => 'SQUIRRELY BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12270 => array(
+        'm_icon' => '<i class="far fa-squirrel source" aria-hidden="true"></i>',
+        'm_name' => 'SQUIRRELY LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    10958 => array(
+        'm_icon' => '<i class="fad fa-squirrel source"></i>',
+        'm_name' => 'SQUIRRELY MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12272 => array(
+        'm_icon' => '<i class="fas fa-whale source" aria-hidden="true"></i>',
+        'm_name' => 'WHALE BOLD',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12271 => array(
+        'm_icon' => '<i class="far fa-whale source" aria-hidden="true"></i>',
+        'm_name' => 'WHALE LIGHT',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+    12231 => array(
+        'm_icon' => '<i class="fad fa-whale source"></i>',
+        'm_name' => 'WHALE MIX',
+        'm_desc' => '',
+        'm_parents' => array(12279,10956),
+    ),
+);
+
+//MENCH:
+$config['en_ids_2738'] = array(4536,4535,6205);
+$config['en_all_2738'] = array(
+    4536 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(12761,12499,4527,12155,2738),
+    ),
+    4535 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA',
+        'm_desc' => '',
+        'm_parents' => array(12761,12499,12112,4527,12155,2738),
+    ),
+    6205 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER',
+        'm_desc' => '',
+        'm_parents' => array(12499,4527,12155,2738),
+    ),
+);
+
+//DISCOVER OPTIONAL CONNECTIONS:
+$config['en_ids_10692'] = array(4366,4429,4368,4369,4371);
+$config['en_all_10692'] = array(
+    4366 => array(
+        'm_icon' => '<i class="fas fa-id-badge" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,6160,6232,4341),
+    ),
+    4429 => array(
+        'm_icon' => '<i class="fad fa-sitemap" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,6160,6232,4341),
+    ),
+    4368 => array(
+        'm_icon' => '<i class="fad fa-step-backward" aria-hidden="true"></i>',
+        'm_name' => 'PREVIOUS IDEA',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,6202,6232,4341),
+    ),
+    4369 => array(
+        'm_icon' => '<i class="fad fa-step-forward" aria-hidden="true"></i>',
+        'm_name' => 'NEXT IDEA',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,6202,6232,4341),
+    ),
+    4371 => array(
+        'm_icon' => '<i class="fad fa-link" aria-hidden="true"></i>',
+        'm_name' => 'REFERENCE',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,4367,6232,4341),
+    ),
+);
+
+//MENCH MEMORY:
+$config['en_ids_4527'] = array(6225,12762,12588,6150,3000,7274,6205,11081,7704,5967,6255,12229,12326,12446,6146,10692,12227,7347,7304,7360,7364,7359,12327,10658,12079,10627,12359,4535,11047,6192,10573,12273,11018,12675,12677,4229,4486,12589,4485,12012,6193,10990,4983,7302,4737,7356,12138,7355,12400,12112,12420,12413,7585,10602,12330,12324,7309,7712,7751,10717,12571,12574,11080,2738,7555,12467,6404,6201,4341,4527,11054,12687,11035,6206,10876,6232,12524,11059,11058,12648,12647,12646,12501,12500,4280,4277,6102,12741,6287,12577,4755,4269,6204,4536,12744,10956,12279,12274,12410,6194,3290,11089,4592,12403,4537,4997,4426,4454,4986,7551,6177,7358,12575,7357,10957,12401,3289,11028,12683,12523,12321,12322,6805,6103,6186,4593,10593,12141,12228,12655,12654,12645);
+$config['en_all_4527'] = array(
+    6225 => array(
+        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_name' => 'ACCOUNT SETTINGS',
+        'm_desc' => '',
+        'm_parents' => array(12574,11089,12205,11035,4527),
+    ),
+    12762 => array(
+        'm_icon' => '<i class="far fa-plus-circle source"></i>',
+        'm_name' => 'ADD CONTENT WIZARD',
+        'm_desc' => '',
+        'm_parents' => array(12773,10876,4527,11035,4536),
+    ),
+    12588 => array(
+        'm_icon' => '',
+        'm_name' => 'AVOID PREFIX REMOVAL',
+        'm_desc' => '',
+        'm_parents' => array(4527,7254),
+    ),
+    6150 => array(
+        'm_icon' => '<i class="far fa-bookmark discover" aria-hidden="true"></i>',
+        'm_name' => 'BOOKMARK REMOVED',
+        'm_desc' => '',
+        'm_parents' => array(6771,4527),
+    ),
+    3000 => array(
+        'm_icon' => '<i class="fad fa-file-certificate source" aria-hidden="true"></i>',
+        'm_name' => 'CONTENT TYPE',
+        'm_desc' => '',
+        'm_parents' => array(12762,11054,11035,12079,4600,4536,4527),
+    ),
+    7274 => array(
+        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_name' => 'CRON JOBS',
+        'm_desc' => '',
+        'm_parents' => array(12744,6194,11035,12728,12500,10876,4527,6405),
+    ),
+    6205 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER',
+        'm_desc' => '',
+        'm_parents' => array(12499,4527,12155,2738),
+    ),
+    11081 => array(
+        'm_icon' => '<i class="far fa-bezier-curve discover"></i>',
+        'm_name' => 'DISCOVER ALL CONNECTIONS',
+        'm_desc' => '',
+        'm_parents' => array(4527,6771),
+    ),
+    7704 => array(
+        'm_icon' => '<i class="far fa-hand-pointer discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWERED',
+        'm_desc' => '',
+        'm_parents' => array(12228,4527),
+    ),
+    5967 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER CARBON COPY',
+        'm_desc' => '',
+        'm_parents' => array(6205,4527,7569,4755,4593),
+    ),
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12677,10939,11018,12655,12648,12467,11089,12410,6771,12228,4527),
+    ),
+    12229 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER COMPLETION',
+        'm_desc' => '',
+        'm_parents' => array(4527,12228),
+    ),
+    12326 => array(
+        'm_icon' => '<i class="fad fa-bars discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER EXPANSIONS',
+        'm_desc' => '',
+        'm_parents' => array(4527,12228),
+    ),
+    12446 => array(
+        'm_icon' => '<i class="fad fa-question-circle discover"></i>',
+        'm_name' => 'DISCOVER ICONS',
+        'm_desc' => '',
+        'm_parents' => array(4527,6771),
+    ),
+    6146 => array(
+        'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER INCOMPLETES',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
+    ),
+    10692 => array(
+        'm_icon' => '<i class="fas fa-bezier-curve discover"></i>',
+        'm_name' => 'DISCOVER OPTIONAL CONNECTIONS',
+        'm_desc' => '',
+        'm_parents' => array(4527,6771),
+    ),
+    12227 => array(
+        'm_icon' => '<i class="fas fa-walking discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER PROGRESS',
+        'm_desc' => '',
+        'm_parents' => array(12228,4527),
+    ),
+    7347 => array(
+        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER START',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12654,12655,12648,11035,11089,6205,12228,4527),
+    ),
+    7304 => array(
+        'm_icon' => '<i class="far fa-chart-bar discover"></i>',
+        'm_name' => 'DISCOVER STATS',
+        'm_desc' => '',
+        'm_parents' => array(10888,4527,6205),
+    ),
+    7360 => array(
+        'm_icon' => '<i class="far fa-check-circle" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER STATUS ACTIVE',
+        'm_desc' => '',
+        'm_parents' => array(10624,4527),
+    ),
+    7364 => array(
+        'm_icon' => '<i class="far fa-spinner fa-spin" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER STATUS INCOMPLETE',
+        'm_desc' => '',
+        'm_parents' => array(10624,4527),
+    ),
+    7359 => array(
+        'm_icon' => '<i class="far fa-eye" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER STATUS PUBLIC',
+        'm_desc' => '',
+        'm_parents' => array(10624,4527),
+    ),
+    12327 => array(
+        'm_icon' => '<i class="fas fa-lock-open discover"></i>',
+        'm_name' => 'DISCOVER UNLOCKS',
+        'm_desc' => '',
+        'm_parents' => array(4527,12228),
+    ),
+    10658 => array(
+        'm_icon' => '<i class="fas fa-sync discover"></i>',
+        'm_name' => 'DISCOVER UPDATES',
+        'm_desc' => '',
+        'm_parents' => array(4527,6205),
+    ),
+    12079 => array(
+        'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
+        'm_name' => 'DROPDOWN MENUS',
+        'm_desc' => '',
+        'm_parents' => array(7254,4527),
+    ),
+    10627 => array(
+        'm_icon' => '<i class="far fa-paperclip"></i>',
+        'm_name' => 'FILE TYPE ATTACHMENT',
+        'm_desc' => '',
+        'm_parents' => array(4527,6771),
+    ),
+    12359 => array(
+        'm_icon' => '<i class="fad fa-file-check"></i>',
+        'm_name' => 'FILE UPLOADING ALLOWED',
+        'm_desc' => '',
+        'm_parents' => array(4527,6768),
+    ),
+    4535 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA',
+        'm_desc' => '',
+        'm_parents' => array(12761,12499,12112,4527,12155,2738),
+    ),
+    11047 => array(
+        'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
+        'm_name' => 'IDEA ADMIN MENU',
+        'm_desc' => '',
+        'm_parents' => array(12700,11018,4527,11040),
+    ),
+    6192 => array(
+        'm_icon' => '<i class="fad fa-sitemap" aria-hidden="true"></i>',
+        'm_name' => 'IDEA AND',
+        'm_desc' => '',
+        'm_parents' => array(4527,10602),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA BOOKMARKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
+    ),
+    12273 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12655,12647,12571,12467,12321,12410,11089,12228,4527,6768),
+    ),
+    11018 => array(
+        'm_icon' => '<i class="fad fa-crop-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LAYOUT',
+        'm_desc' => '',
+        'm_parents' => array(12676,4535,4527),
+    ),
+    12675 => array(
+        'm_icon' => '<i class="fad fa-badge-check idea"></i>',
+        'm_name' => 'IDEA LAYOUT DEFAULT SELECTED',
+        'm_desc' => '',
+        'm_parents' => array(4527,12676),
+    ),
+    12677 => array(
+        'm_icon' => '<i class="fad fa-eye-slash idea"></i>',
+        'm_name' => 'IDEA LAYOUT HIDE IF ZERO',
+        'm_desc' => '',
+        'm_parents' => array(4527,12676),
+    ),
+    4229 => array(
+        'm_icon' => '<i class="fad fa-question-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK CONDITIONAL',
+        'm_desc' => '',
+        'm_parents' => array(4535,4527,6410,6283,4593,4486),
+    ),
+    4486 => array(
+        'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINKS',
+        'm_desc' => '',
+        'm_parents' => array(12700,11054,6232,12079,10662,4527),
+    ),
+    12589 => array(
+        'm_icon' => '<i class="fad fa-edit idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LIST EDITOR',
+        'm_desc' => '',
+        'm_parents' => array(12702,11018,4527,4535,12590),
+    ),
+    4485 => array(
+        'm_icon' => '<i class="fas fa-comment-plus idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES',
+        'm_desc' => '',
+        'm_parents' => array(4535,4527),
+    ),
+    12012 => array(
+        'm_icon' => '<i class="far fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES STATUS',
+        'm_desc' => '',
+        'm_parents' => array(10889,4527),
+    ),
+    6193 => array(
+        'm_icon' => '<i class="fad fa-code-branch rotate180 " aria-hidden="true"></i>',
+        'm_name' => 'IDEA OR',
+        'm_desc' => '',
+        'm_parents' => array(10602,4527),
+    ),
+    10990 => array(
+        'm_icon' => '<i class="fad fa-browser idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA PREVIOUS SECTION',
+        'm_desc' => '',
+        'm_parents' => array(4527),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4485,11018,12683,12141,10939,12450,12273,12228,4535,10593,4527,7551,4593),
+    ),
+    7302 => array(
+        'm_icon' => '<i class="far fa-chart-bar idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA STATS',
+        'm_desc' => '',
+        'm_parents' => array(4527,4535),
+    ),
+    4737 => array(
+        'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
+    ),
+    7356 => array(
+        'm_icon' => '<i class="far fa-check-circle"></i>',
+        'm_name' => 'IDEA STATUS ACTIVE',
+        'm_desc' => '',
+        'm_parents' => array(11054,10891,4527),
+    ),
+    12138 => array(
+        'm_icon' => '<i class="fad fa-search idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA STATUS FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(4527,10891),
+    ),
+    7355 => array(
+        'm_icon' => '<i class="far fa-eye" aria-hidden="true"></i>',
+        'm_name' => 'IDEA STATUS PUBLIC',
+        'm_desc' => '',
+        'm_parents' => array(11054,10891,4527),
+    ),
+    12400 => array(
+        'm_icon' => '<i class="fad fa-sync idea"></i>',
+        'm_name' => 'IDEA SYNC STATUS',
+        'm_desc' => '',
+        'm_parents' => array(12732,4527,6768),
+    ),
+    12112 => array(
+        'm_icon' => '<i class="fas fa-text" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TEXT INPUTS',
+        'm_desc' => '',
+        'm_parents' => array(4527,6768),
+    ),
+    12420 => array(
+        'm_icon' => '<i class="far fa-user-circle" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TEXT INPUT SHOW ICON',
+        'm_desc' => '',
+        'm_parents' => array(4527,6768),
+    ),
+    12413 => array(
+        'm_icon' => '<i class="fad fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TREE',
+        'm_desc' => '',
+        'm_parents' => array(4527),
+    ),
+    7585 => array(
+        'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TYPE',
+        'm_desc' => '',
+        'm_parents' => array(11054,12079,6204,10651,6160,6194,6232,4527,6201),
+    ),
+    10602 => array(
+        'm_icon' => '<i class="far fa-puzzle-piece idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TYPE GROUPS',
+        'm_desc' => '',
+        'm_parents' => array(10893,6204,7302,4527),
+    ),
+    12330 => array(
+        'm_icon' => '<i class="fas fa-bolt"></i>',
+        'm_name' => 'IDEA TYPE INSTANTLY DONE',
+        'm_desc' => '',
+        'm_parents' => array(4527,10893),
+    ),
+    12324 => array(
+        'm_icon' => '<i class="fad fa-check-circle" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TYPE MANUAL INPUT',
+        'm_desc' => '',
+        'm_parents' => array(4527,10893),
+    ),
+    7309 => array(
+        'm_icon' => '<i class="far fa-cubes"></i>',
+        'm_name' => 'IDEA TYPE REQUIREMENT',
+        'm_desc' => '',
+        'm_parents' => array(10893,4527),
+    ),
+    7712 => array(
+        'm_icon' => '<i class="far fa-question-circle" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TYPE SELECT',
+        'm_desc' => '',
+        'm_parents' => array(6287,10893,4527),
+    ),
+    7751 => array(
+        'm_icon' => '<i class="far fa-upload" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TYPE UPLOAD',
+        'm_desc' => '',
+        'm_parents' => array(10893,4527),
+    ),
+    10717 => array(
+        'm_icon' => '<i class="fas fa-desktop" aria-hidden="true"></i>',
+        'm_name' => 'IT',
+        'm_desc' => '',
+        'm_parents' => array(10710,4527),
+    ),
+    12571 => array(
+        'm_icon' => '<i class="fas fa-expand" aria-hidden="true"></i>',
+        'm_name' => 'LAYOUT OPEN BY DEFAULT',
+        'm_desc' => '',
+        'm_parents' => array(12573,4527),
+    ),
+    12574 => array(
+        'm_icon' => '<i class="fad fa-check-double"></i>',
+        'm_name' => 'LAYOUT SHOW EVEN IF ZERO',
+        'm_desc' => '',
+        'm_parents' => array(4527,12573),
+    ),
+    11080 => array(
+        'm_icon' => '<i class="far fa-file"></i>',
+        'm_name' => 'MEDIA FILE EXTENSIONS',
+        'm_desc' => '',
+        'm_parents' => array(7254,4527),
+    ),
+    2738 => array(
+        'm_icon' => '<img src="/img/mench.png" class="mench-spin no-radius">',
+        'm_name' => 'MENCH',
+        'm_desc' => '',
+        'm_parents' => array(12497,11054,12041,3303,7524,3325,3326,3324,4527,1,7312,2750),
+    ),
+    7555 => array(
+        'm_icon' => '<i class="fas fa-paper-plane" aria-hidden="true"></i>',
+        'm_name' => 'MENCH CHANNELS',
+        'm_desc' => '',
+        'm_parents' => array(7305,4527),
+    ),
+    12467 => array(
+        'm_icon' => '<i class="fas fa-circle" aria-hidden="true"></i>',
+        'm_name' => 'MENCH COINS',
+        'm_desc' => '',
+        'm_parents' => array(7305,4527),
+    ),
+    6404 => array(
+        'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
+        'm_name' => 'MENCH CONFIG VARIABLES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,7254,6403),
+    ),
+    6201 => array(
+        'm_icon' => '<i class="fas fa-table idea" aria-hidden="true"></i>',
+        'm_name' => 'MENCH IDEA',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,7735,4535),
+    ),
+    4341 => array(
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
+        'm_name' => 'MENCH LEDGER',
+        'm_desc' => '',
+        'm_parents' => array(11047,12707,10876,12588,11035,4527,7735,6205),
+    ),
+    4527 => array(
+        'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
+        'm_name' => 'MENCH MEMORY',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287,4527,7254),
+    ),
+    11054 => array(
+        'm_icon' => '<i class="fal fa-memory" aria-hidden="true"></i>',
+        'm_name' => 'MENCH MEMORY JAVASCRIPT',
+        'm_desc' => '',
+        'm_parents' => array(4527,7254),
+    ),
+    12687 => array(
+        'm_icon' => '<i class="fad fa-comments-alt" aria-hidden="true"></i>',
+        'm_name' => 'MENCH MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,7254),
+    ),
+    11035 => array(
+        'm_icon' => '<i class="fad fa-compass" aria-hidden="true"></i>',
+        'm_name' => 'MENCH NAVIGATION MENU',
+        'm_desc' => '',
+        'm_parents' => array(4527,7305),
+    ),
+    6206 => array(
+        'm_icon' => '<i class="fas fa-table source" aria-hidden="true"></i>',
+        'm_name' => 'MENCH SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(4527,7735,4536),
+    ),
+    10876 => array(
+        'm_icon' => '<i class="fas fa-browser" aria-hidden="true"></i>',
+        'm_name' => 'MENCH URL',
+        'm_desc' => '',
+        'm_parents' => array(4527,1326,7305),
+    ),
+    6232 => array(
+        'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
+        'm_name' => 'MENCH VARIABLES',
+        'm_desc' => '',
+        'm_parents' => array(4755,4527,6212),
+    ),
+    12524 => array(
+        'm_icon' => '<i class="fad fa-film-alt source" aria-hidden="true"></i>',
+        'm_name' => 'MESSAGE VISUAL MEDIA',
+        'm_desc' => '',
+        'm_parents' => array(4758,4527),
+    ),
+    11059 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger source"></i>',
+        'm_name' => 'MESSENGER MEDIA CODES',
+        'm_desc' => '',
+        'm_parents' => array(6196,4527,7254),
+    ),
+    11058 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger source"></i>',
+        'm_name' => 'MESSENGER NOTIFICATION CODES',
+        'm_desc' => '',
+        'm_parents' => array(7254,6196,4527),
+    ),
+    12648 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'NAVIGATE DISCOVER',
+        'm_desc' => '',
+        'm_parents' => array(6205,4527,12645),
+    ),
+    12647 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'NAVIGATE IDEA',
+        'm_desc' => '',
+        'm_parents' => array(4535,4527,12645),
+    ),
+    12646 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'NAVIGATE SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(4536,4527,12645),
+    ),
+    12501 => array(
+        'm_icon' => '<i class="fad fa-list" aria-hidden="true"></i>',
+        'm_name' => 'NAVIGATION MENUS',
+        'm_desc' => '',
+        'm_parents' => array(4527,7254),
+    ),
+    12500 => array(
+        'm_icon' => '<i class="fad fa-user" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER MENU',
+        'm_desc' => '',
+        'm_parents' => array(4536,4527),
+    ),
+    4280 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_name' => 'PLAYER RECEIVED MESSAGES WITH MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(6771,4527),
+    ),
+    4277 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_name' => 'PLAYER SENT MESSAGES WITH MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(6771,4527),
+    ),
+    6102 => array(
+        'm_icon' => '<i class="far fa-paperclip"></i>',
+        'm_name' => 'PLAYER SENT/RECEIVED ATTACHMENT',
+        'm_desc' => '',
+        'm_parents' => array(6771,4527),
+    ),
+    12741 => array(
+        'm_icon' => '',
+        'm_name' => 'PLUGIN EXCLUDE MENCH UI',
+        'm_desc' => '',
+        'm_parents' => array(4527,7254),
+    ),
+    6287 => array(
+        'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
+        'm_name' => 'PLUGINS',
+        'm_desc' => '',
+        'm_parents' => array(12744,6194,12699,12500,10876,11035,4527),
+    ),
+    12577 => array(
+        'm_icon' => '<i class="fad fa-text" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO EDITOR UPPERCASE',
+        'm_desc' => '',
+        'm_parents' => array(4527,4758),
+    ),
+    4755 => array(
+        'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
+        'm_name' => 'PRIVATE TRANSACTION',
+        'm_desc' => '',
+        'm_parents' => array(12701,4755,6771,4426,4527),
+    ),
+    4269 => array(
+        'm_icon' => '<i class="fad fa-sign-in-alt" aria-hidden="true"></i>',
+        'm_name' => 'SIGN IN/UP',
+        'm_desc' => '',
+        'm_parents' => array(4527,11035),
+    ),
+    6204 => array(
+        'm_icon' => '<i class="fas fa-check" aria-hidden="true"></i>',
+        'm_name' => 'SINGLE SELECTABLE',
+        'm_desc' => '',
+        'm_parents' => array(4527,4758),
+    ),
+    4536 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(12761,12499,4527,12155,2738),
+    ),
+    12744 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE APPLICATIONS',
+        'm_desc' => '',
+        'm_parents' => array(4758,4527),
+    ),
+    10956 => array(
+        'm_icon' => '<i class="fad fa-paw-alt source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE AVATAR BASIC',
+        'm_desc' => '',
+        'm_parents' => array(12289,4527),
+    ),
+    12279 => array(
+        'm_icon' => '<i class="fad fa-paw-claws source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE AVATAR SUPER',
+        'm_desc' => '',
+        'm_parents' => array(12289,4527),
+    ),
+    12274 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE COINS',
+        'm_desc' => '',
+        'm_parents' => array(12500,12654,12655,12646,12467,12228,4527,4758),
+    ),
+    12410 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE COIN TYPES',
+        'm_desc' => '',
+        'm_parents' => array(4758,4527),
+    ),
+    6194 => array(
+        'm_icon' => '<i class="fad fa-database source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE DATABASE REFERENCES',
+        'm_desc' => '',
+        'm_parents' => array(12412,12701,4758,4527),
+    ),
+    3290 => array(
+        'm_icon' => '<i class="far fa-transgender source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE GENDER',
+        'm_desc' => '',
+        'm_parents' => array(4527,6204),
+    ),
+    11089 => array(
+        'm_icon' => '<i class="fad fa-crop-alt source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LAYOUT',
+        'm_desc' => '',
+        'm_parents' => array(4536,4527),
+    ),
+    4592 => array(
+        'm_icon' => '<i class="fas fa-link source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,5982,5981,4527),
+    ),
+    12403 => array(
+        'm_icon' => '<i class="far fa-object-ungroup" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK TYPE CUSTOM UI',
+        'm_desc' => '',
+        'm_parents' => array(4527,4758),
+    ),
+    4537 => array(
+        'm_icon' => '<i class="fad fa-spider-web source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK URLS',
+        'm_desc' => '',
+        'm_parents' => array(4758,4527),
+    ),
+    4997 => array(
+        'm_icon' => '<i class="fad fa-edit source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LIST EDITOR',
+        'm_desc' => '',
+        'm_parents' => array(11035,12703,12590,11029,4527),
+    ),
+    4426 => array(
+        'm_icon' => '<i class="fas fa-lock" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LOCK',
+        'm_desc' => '',
+        'm_parents' => array(4758,3303,4426,4527),
+    ),
+    4454 => array(
+        'm_icon' => '<i class="fad fa-volume source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE MESSENGER NOTIFICATIONS',
+        'm_desc' => '',
+        'm_parents' => array(6196,6204,4527),
+    ),
+    4986 => array(
+        'm_icon' => '<i class="fal fa-at" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE REFERENCE ALLOWED',
+        'm_desc' => '',
+        'm_parents' => array(10889,4758,4527),
+    ),
+    7551 => array(
+        'm_icon' => '<i class="fas fa-at source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE REFERENCE ONLY',
+        'm_desc' => '',
+        'm_parents' => array(10889,4527,4758),
+    ),
+    6177 => array(
+        'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE STATUS',
+        'm_desc' => '',
+        'm_parents' => array(12766,11054,6204,5003,6160,6232,6194,6206,4527),
+    ),
+    7358 => array(
+        'm_icon' => '<i class="far fa-check-circle" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE STATUS ACTIVE',
+        'm_desc' => '',
+        'm_parents' => array(12572,4527),
+    ),
+    12575 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'SOURCE STATUS FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(4527,12572),
+    ),
+    7357 => array(
+        'm_icon' => '<i class="far fa-globe" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE STATUS PUBLIC',
+        'm_desc' => '',
+        'm_parents' => array(12572,11054,4527),
+    ),
+    10957 => array(
+        'm_icon' => '<i class="fad fa-bolt source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE SUPERPOWERS',
+        'm_desc' => '',
+        'm_parents' => array(6225,11035,5007,4527),
+    ),
+    12401 => array(
+        'm_icon' => '<i class="fad fa-sync source"></i>',
+        'm_name' => 'SOURCE SYNC STATUS',
+        'm_desc' => '',
+        'm_parents' => array(12732,4527,4758),
+    ),
+    3289 => array(
+        'm_icon' => '<i class="fas fa-map-marked source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE TIMEZONE',
+        'm_desc' => '',
+        'm_parents' => array(4527,6204),
+    ),
+    11028 => array(
+        'm_icon' => '<i class="fas fa-exchange rotate90 source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE TREE',
+        'm_desc' => '',
+        'm_parents' => array(4527),
+    ),
+    12683 => array(
+        'm_icon' => '<i class="fad fa-shapes source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE TYPE GROUPS',
+        'm_desc' => '',
+        'm_parents' => array(4527,4758),
+    ),
+    12523 => array(
+        'm_icon' => '<i class="fad fa-portrait source" aria-hidden="true"></i>',
+        'm_name' => 'SYNC ICONS IF MISSING',
+        'm_desc' => '',
+        'm_parents' => array(7274,4527,4758),
+    ),
+    12321 => array(
+        'm_icon' => '<i class="fad fa-object-group discover" aria-hidden="true"></i>',
+        'm_name' => 'TEMPLATE IDEA DISCOVER',
+        'm_desc' => '',
+        'm_parents' => array(10889,4527),
+    ),
+    12322 => array(
+        'm_icon' => '<i class="fas fa-comment discover" aria-hidden="true"></i>',
+        'm_name' => 'TEMPLATE IDEA MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(10889,4527),
+    ),
+    6805 => array(
+        'm_icon' => '<i class="far fa-align-left"></i>',
+        'm_name' => 'THING INTERACTION CONTENT REQUIRES TEXT',
+        'm_desc' => '',
+        'm_parents' => array(4527,4758),
+    ),
+    6103 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'TRANSACTION METADATA',
+        'm_desc' => '',
+        'm_parents' => array(4527,6232,6195,4341),
+    ),
+    6186 => array(
+        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
+    ),
+    4593 => array(
+        'm_icon' => '<i class="fad fa-shapes" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION TYPE',
+        'm_desc' => '',
+        'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
+    ),
+    10593 => array(
+        'm_icon' => '<i class="fas fa-file-alt" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION TYPE ADD CONTENT',
+        'm_desc' => '',
+        'm_parents' => array(12144,4527),
+    ),
+    12141 => array(
+        'm_icon' => '<i class="fad fa-coin" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION TYPE COIN AWARD',
+        'm_desc' => '',
+        'm_parents' => array(12144,4527),
+    ),
+    12228 => array(
+        'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION TYPE GROUPS',
+        'm_desc' => '',
+        'm_parents' => array(4527,6771),
+    ),
+    12655 => array(
+        'm_icon' => '<i class="fad fa-calculator" aria-hidden="true"></i>',
+        'm_name' => 'TRIPLE NAVIGATION COUNT',
+        'm_desc' => '',
+        'm_parents' => array(4527,12653),
+    ),
+    12654 => array(
+        'm_icon' => '<i class="fas fa-badge-check" aria-hidden="true"></i>',
+        'm_name' => 'TRIPLE NAVIGATION DEFAULT',
+        'm_desc' => '',
+        'm_parents' => array(4527,12653),
+    ),
+    12645 => array(
+        'm_icon' => '<i class="fad fa-folder-tree" aria-hidden="true"></i>',
+        'm_name' => 'TRIPLE NAVIGATION MENU',
+        'm_desc' => '',
+        'm_parents' => array(4527,7254),
+    ),
+);
+
+//DISCOVER UPDATES:
+$config['en_ids_10658'] = array(10683,10690,12328,7578,10686,10663,10664,10676,10678,10679,10677,10681,10675,10662,10657,10656,10659,10673,10689);
+$config['en_all_10658'] = array(
+    10683 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(6205,6153,10658,4593,7654),
+    ),
+    10690 => array(
+        'm_icon' => '<i class="discover fad fa-upload"></i>',
+        'm_name' => 'DISCOVER MEDIA UPLOADED',
+        'm_desc' => '',
+        'm_parents' => array(6205,6153,4593,10658),
+    ),
+    12328 => array(
+        'm_icon' => '<i class="fad fa-sync discover"></i>',
+        'm_name' => 'DISCOVER UPDATE COMPLETION',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,10658,6153),
+    ),
+    7578 => array(
+        'm_icon' => '<i class="discover fad fa-key"></i>',
+        'm_name' => 'DISCOVER UPDATE PASSWORD',
+        'm_desc' => '',
+        'm_parents' => array(6205,6222,10658,6153,4755,4593),
+    ),
+    10686 => array(
+        'm_icon' => '<i class="fad fa-times idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK UNLINKED',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    10663 => array(
+        'm_icon' => '<i class="fad fa-coin idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK UPDATE MARKS',
+        'm_desc' => '',
+        'm_parents' => array(4535,4228,4593,10658),
+    ),
+    10664 => array(
+        'm_icon' => '<i class="fad fa-bolt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK UPDATE SCORE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4229,10658),
+    ),
+    10676 => array(
+        'm_icon' => '<i class="fad fa-bars idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES SORTED',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    10678 => array(
+        'm_icon' => '<i class="fad fa-trash-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES UNLINKED',
+        'm_desc' => '',
+        'm_parents' => array(4535,10658,4593),
+    ),
+    10679 => array(
+        'm_icon' => '<i class="fad fa-comment-plus idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES UPDATE CONTENT',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10593,10658),
+    ),
+    10677 => array(
+        'm_icon' => '<i class="fad fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES UPDATE STATUS',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    10681 => array(
+        'm_icon' => '<i class="fad fa-bars idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SORT AUTO',
+        'm_desc' => '',
+        'm_parents' => array(4535,4755,4593,10658),
+    ),
+    10675 => array(
+        'm_icon' => '<i class="fad fa-bars idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SORT MANUAL',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    10662 => array(
+        'm_icon' => '<i class="fad fa-hashtag idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA UPDATE LINK',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    10657 => array(
+        'm_icon' => '<i class="fad fa-comment-plus source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK CONTENT UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(4535,10593,4593,10658,10645),
+    ),
+    10656 => array(
+        'm_icon' => '<i class="fad fa-sliders-h source"></i>',
+        'm_name' => 'SOURCE LINK STATUS UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658,10645),
+    ),
+    10659 => array(
+        'm_icon' => '<i class="fad fa-plug source"></i>',
+        'm_name' => 'SOURCE LINK TYPE UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(4535,10658,4593,10645),
+    ),
+    10673 => array(
+        'm_icon' => '<i class="fad fa-trash-alt source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK UNLINKED',
+        'm_desc' => '',
+        'm_parents' => array(4535,10645,4593,10658),
+    ),
+    10689 => array(
+        'm_icon' => '<i class="fad fa-share-alt rotate90 source"></i>',
+        'm_name' => 'SOURCE MERGED IN SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658,10645),
+    ),
+);
+
+//FILE TYPE ATTACHMENT:
+$config['en_ids_10627'] = array(4554,4556,4555,4549,4551,4550,4548,4553,4259,4261,4260,4258);
+$config['en_all_10627'] = array(
+    4554 => array(
+        'm_icon' => '<i class="discover fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    4556 => array(
+        'm_icon' => '<i class="discover fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER FILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    4555 => array(
+        'm_icon' => '<i class="discover fad fa-image"></i>',
+        'm_name' => 'DISCOVER IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    4549 => array(
+        'm_icon' => '<i class="discover fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER SENT AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4551 => array(
+        'm_icon' => '<i class="discover fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER SENT FILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4550 => array(
+        'm_icon' => '<i class="discover fad fa-image"></i>',
+        'm_name' => 'DISCOVER SENT IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4548 => array(
+        'm_icon' => '<i class="discover fad fa-video"></i>',
+        'm_name' => 'DISCOVER SENT VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4553 => array(
+        'm_icon' => '<i class="discover fad fa-video"></i>',
+        'm_name' => 'DISCOVER VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    4259 => array(
+        'm_icon' => '<i class="fad fa-volume-up source"></i>',
+        'm_name' => 'SOURCE LINK AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4261 => array(
+        'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK FILE',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4260 => array(
+        'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4258 => array(
+        'm_icon' => '<i class="fad fa-video source"></i>',
+        'm_name' => 'SOURCE LINK VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+);
+
+//TRANSACTION TYPE ADD CONTENT:
+$config['en_ids_10593'] = array(4554,4556,4555,6563,4570,7702,4549,4551,4550,4548,4552,4553,12419,4250,4601,4231,10679,4983,10644,4251,4259,10657,4261,4260,4255,4258,10646);
+$config['en_all_10593'] = array(
+    4554 => array(
+        'm_icon' => '<i class="discover fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    4556 => array(
+        'm_icon' => '<i class="discover fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER FILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    4555 => array(
+        'm_icon' => '<i class="discover fad fa-image"></i>',
+        'm_name' => 'DISCOVER IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    6563 => array(
+        'm_icon' => '<i class="discover fad fa-check"></i>',
+        'm_name' => 'DISCOVER QUICK REPLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,10593,4593,4755,4280),
+    ),
+    4570 => array(
+        'm_icon' => '<i class="discover fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECEIVED',
+        'm_desc' => '',
+        'm_parents' => array(6205,10683,10593,7569,4755,4593),
+    ),
+    7702 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECEIVED IDEA',
+        'm_desc' => '',
+        'm_parents' => array(6205,10593,4593,4755,7569),
+    ),
+    4549 => array(
+        'm_icon' => '<i class="discover fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER SENT AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4551 => array(
+        'm_icon' => '<i class="discover fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER SENT FILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4550 => array(
+        'm_icon' => '<i class="discover fad fa-image"></i>',
+        'm_name' => 'DISCOVER SENT IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4548 => array(
+        'm_icon' => '<i class="discover fad fa-video"></i>',
+        'm_name' => 'DISCOVER SENT VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4552 => array(
+        'm_icon' => '<i class="discover fad fa-align-left"></i>',
+        'm_name' => 'DISCOVER TEXT',
+        'm_desc' => '',
+        'm_parents' => array(6205,10593,4755,4593,4280),
+    ),
+    4553 => array(
+        'm_icon' => '<i class="discover fad fa-video"></i>',
+        'm_name' => 'DISCOVER VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    12419 => array(
+        'm_icon' => '<i class="fas fa-comments-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COMMENTS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,12359,5967,10593,12322,4986,4535,11089,4593,4485),
+    ),
+    4250 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA CREATED',
+        'm_desc' => '',
+        'm_parents' => array(5967,12400,4535,12149,10593,4593),
+    ),
+    4601 => array(
+        'm_icon' => '<i class="fas fa-tags idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA KEYWORDS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,11089,4535,12322,4986,10593,4593,4485),
+    ),
+    4231 => array(
+        'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(11089,10939,12359,4535,12322,10593,4986,4603,4593,4485),
+    ),
+    10679 => array(
+        'm_icon' => '<i class="fad fa-comment-plus idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES UPDATE CONTENT',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10593,10658),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4485,11018,12683,12141,10939,12450,12273,12228,4535,10593,4527,7551,4593),
+    ),
+    10644 => array(
+        'm_icon' => '<i class="fad fa-bullseye-arrow idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA UPDATE TITLE',
+        'm_desc' => '',
+        'm_parents' => array(4535,10593,4593),
+    ),
+    4251 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE CREATED',
+        'm_desc' => '',
+        'm_parents' => array(4536,12274,12401,12149,12141,10645,10593,4593),
+    ),
+    4259 => array(
+        'm_icon' => '<i class="fad fa-volume-up source"></i>',
+        'm_name' => 'SOURCE LINK AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    10657 => array(
+        'm_icon' => '<i class="fad fa-comment-plus source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK CONTENT UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(4535,10593,4593,10658,10645),
+    ),
+    4261 => array(
+        'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK FILE',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4260 => array(
+        'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4255 => array(
+        'm_icon' => '<i class="fad fa-align-left source"></i>',
+        'm_name' => 'SOURCE LINK TEXT',
+        'm_desc' => '',
+        'm_parents' => array(4535,10593,4593,4592),
+    ),
+    4258 => array(
+        'm_icon' => '<i class="fad fa-video source"></i>',
+        'm_name' => 'SOURCE LINK VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    10646 => array(
+        'm_icon' => '<i class="fad fa-fingerprint source"></i>',
+        'm_name' => 'SOURCE NAME UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(4535,10593,4593,10645),
+    ),
+);
+
+//DISCOVER START:
+$config['en_ids_7347'] = array(4235,7495);
+$config['en_all_7347'] = array(
+    4235 => array(
+        'm_icon' => '<i class="fad fa-play-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'INITIATED',
+        'm_desc' => 'Bookmarked to begin with',
+        'm_parents' => array(6205,12227,7347,5967,4755,4593),
+    ),
+    7495 => array(
+        'm_icon' => '<i class="fad fa-megaphone discover" aria-hidden="true"></i>',
+        'm_name' => 'RECOMMEND',
+        'm_desc' => 'Bookmarked as a requirement',
+        'm_parents' => array(6205,12227,7347,4755,4593),
+    ),
+);
+
+//IDEA AND:
+$config['en_ids_6192'] = array(6914,7637,6677,6683);
+$config['en_all_6192'] = array(
+    6914 => array(
+        'm_icon' => '<i class="fas fa-cubes idea" aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ALL',
+        'm_desc' => '',
+        'm_parents' => array(12700,12330,7486,7485,6140,6192,7585,7309,6997),
+    ),
+    7637 => array(
+        'm_icon' => '<i class="far fa-paperclip idea" aria-hidden="true"></i>',
+        'm_name' => 'UPLOAD & GO NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12324,12117,7751,7585,6192),
+    ),
+    6677 => array(
+        'm_icon' => '<i class="far fa-eye idea" aria-hidden="true"></i>',
+        'm_name' => 'GO NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12330,7585,4559,6192),
+    ),
+    6683 => array(
+        'm_icon' => '<i class="far fa-keyboard idea" aria-hidden="true"></i>',
+        'm_name' => 'REPLY & GO NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12324,6144,7585,6192),
+    ),
+);
+
+//IDEA TYPE GROUPS:
+$config['en_ids_10602'] = array(6192,6193);
+$config['en_all_10602'] = array(
+    6192 => array(
+        'm_icon' => '<i class="fad fa-sitemap" aria-hidden="true"></i>',
+        'm_name' => 'AND',
+        'm_desc' => 'Idea complete when ALL next ideas are completed',
+        'm_parents' => array(4527,10602),
+    ),
+    6193 => array(
+        'm_icon' => '<i class="fad fa-code-branch rotate180 " aria-hidden="true"></i>',
+        'm_name' => 'OR',
+        'm_desc' => 'Idea complete when ANY of the next ideas are completed',
+        'm_parents' => array(10602,4527),
+    ),
+);
+
+//IDEA SOURCES:
+$config['en_ids_4983'] = array(2997,4446,3005,3147,4763,2999,3192,2998,3084,4430);
+$config['en_all_4983'] = array(
+    2997 => array(
+        'm_icon' => '<i class="fad fa-newspaper source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT ARTICLE',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,3000),
+    ),
+    4446 => array(
+        'm_icon' => '<i class="fad fa-tachometer source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT ASSESSMENT',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,3000),
+    ),
+    3005 => array(
+        'm_icon' => '<i class="fad fa-book source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT BOOK',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+    3147 => array(
+        'm_icon' => '<i class="fad fa-presentation source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT COURSE',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+    4763 => array(
+        'm_icon' => '<i class="fad fa-megaphone source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT MARKETING',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+    2999 => array(
+        'm_icon' => '<i class="fad fa-microphone source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT PODCAST',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,10809,6805,3000),
+    ),
+    3192 => array(
+        'm_icon' => '<i class="fad fa-tools source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT TOOL',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+    2998 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'EXPERT VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,3000),
+    ),
+    3084 => array(
+        'm_icon' => '<i class="fad fa-user-astronaut source" aria-hidden="true"></i>',
+        'm_name' => 'INDUSTRY EXPERT',
+        'm_desc' => '',
+        'm_parents' => array(4983,12764,11035,1278,12523),
+    ),
+    4430 => array(
+        'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
+        'm_name' => 'MENCH PLAYER',
+        'm_desc' => '',
+        'm_parents' => array(4983,1278,11035,10573,4426),
+    ),
+);
+
+//IDEA TYPE UPLOAD:
+$config['en_ids_7751'] = array(7637);
+$config['en_all_7751'] = array(
+    7637 => array(
+        'm_icon' => '<i class="far fa-paperclip idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA UPLOAD & GO NEXT',
+        'm_desc' => '',
+        'm_parents' => array(12324,12117,7751,7585,6192),
+    ),
+);
+
+//TRANSACTION METADATA:
+$config['en_ids_6103'] = array(6402,4358,6203);
+$config['en_all_6103'] = array(
+    6402 => array(
+        'm_icon' => '<i class="fas fa-bolt" aria-hidden="true"></i>',
+        'm_name' => 'CONDITION SCORE RANGE',
+        'm_desc' => '',
+        'm_parents' => array(12700,10664,6103,6410),
+    ),
+    4358 => array(
+        'm_icon' => '<i class="fad fa-comment-alt-check" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER MARKS',
+        'm_desc' => '',
+        'm_parents' => array(12700,12420,12112,10663,6103,6410,6232),
+    ),
+    6203 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'FACEBOOK ATTACHMENT ID',
+        'm_desc' => 'For media files such as videos, audios, images and other files, we cache them with the Facebook Server so we can instantly deliver them to students. This variables in the link metadata is where we store the attachment ID. See the children to better understand which links types support this caching feature.',
+        'm_parents' => array(6232,6215,2793,6103),
+    ),
+);
+
+//MENCH LEDGER:
+$config['en_ids_4341'] = array(4364,7694,4367,4372,6103,4369,4429,4368,4366,4370,4371,6186,4362,4593);
+$config['en_all_4341'] = array(
+    4364 => array(
+        'm_icon' => '<i class="fad fa-user-edit" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION CREATOR',
+        'm_desc' => '',
+        'm_parents' => array(11081,6160,6232,6194,4341),
+    ),
+    7694 => array(
+        'm_icon' => '<i class="fad fa-project-diagram"></i>',
+        'm_name' => 'TRANSACTION EXTERNAL ID',
+        'm_desc' => '',
+        'm_parents' => array(6215,6232,4341),
+    ),
+    4367 => array(
+        'm_icon' => '<i class="fad fa-atlas" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION ID',
+        'm_desc' => '',
+        'm_parents' => array(6232,6215,4341),
+    ),
+    4372 => array(
+        'm_icon' => '<i class="fad fa-comment-lines" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION MESSAGE',
+        'm_desc' => '',
+        'm_parents' => array(7578,10679,10657,5001,6232,4341),
+    ),
+    6103 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'TRANSACTION METADATA',
+        'm_desc' => '',
+        'm_parents' => array(4527,6232,6195,4341),
+    ),
+    4369 => array(
+        'm_icon' => '<i class="fad fa-step-forward" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION NEXT IDEA',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,6202,6232,4341),
+    ),
+    4429 => array(
+        'm_icon' => '<i class="fad fa-sitemap" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION PORTFOLIO SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,6160,6232,4341),
+    ),
+    4368 => array(
+        'm_icon' => '<i class="fad fa-step-backward" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION PREVIOUS IDEA',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,6202,6232,4341),
+    ),
+    4366 => array(
+        'm_icon' => '<i class="fas fa-id-badge" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION PROFILE SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,6160,6232,4341),
+    ),
+    4370 => array(
+        'm_icon' => '<i class="fad fa-bars" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION RANK',
+        'm_desc' => '',
+        'm_parents' => array(10676,10675,6232,4341),
+    ),
+    4371 => array(
+        'm_icon' => '<i class="fad fa-link" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION REFERENCE',
+        'm_desc' => '',
+        'm_parents' => array(11081,10692,4367,6232,4341),
+    ),
+    6186 => array(
+        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
+    ),
+    4362 => array(
+        'm_icon' => '<i class="fad fa-clock" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION TIME',
+        'm_desc' => '',
+        'm_parents' => array(6232,4341),
+    ),
+    4593 => array(
+        'm_icon' => '<i class="fad fa-shapes" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION TYPE',
+        'm_desc' => '',
+        'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
+    ),
+);
+
+//MENCH SOURCE:
+$config['en_ids_6206'] = array(6197,6198,6160,6172,6177);
+$config['en_all_6206'] = array(
+    6197 => array(
+        'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
+        'm_name' => 'FULL NAME',
+        'm_desc' => '',
+        'm_parents' => array(12772,4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
+    ),
+    6198 => array(
+        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
+        'm_name' => 'ICON',
+        'm_desc' => '',
+        'm_parents' => array(12605,10653,5943,10625,6232,6206),
+    ),
+    6160 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'ID',
+        'm_desc' => '',
+        'm_parents' => array(6232,6215,6206),
+    ),
+    6172 => array(
+        'm_icon' => '<i class="fas fa-lambda source"></i>',
+        'm_name' => 'METADATA',
+        'm_desc' => '',
+        'm_parents' => array(6232,6206,6195),
+    ),
+    6177 => array(
+        'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
+        'm_name' => 'STATUS',
+        'm_desc' => '',
+        'm_parents' => array(12766,11054,6204,5003,6160,6232,6194,6206,4527),
+    ),
+);
+
+//MENCH IDEA:
+$config['en_ids_6201'] = array(6202,6159,4356,4737,4736,7585);
+$config['en_all_6201'] = array(
+    6202 => array(
+        'm_icon' => '<i class="fas fa-hashtag idea" aria-hidden="true"></i>',
+        'm_name' => 'ID',
+        'm_desc' => '',
+        'm_parents' => array(6232,6215,6201),
+    ),
+    6159 => array(
+        'm_icon' => '<i class="fas fa-lambda idea" aria-hidden="true"></i>',
+        'm_name' => 'METADATA',
+        'm_desc' => '',
+        'm_parents' => array(11049,6232,6201,6195),
+    ),
+    4356 => array(
+        'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
+        'm_name' => 'READ TIME (SECONDS)',
+        'm_desc' => '',
+        'm_parents' => array(12112,12420,10888,10650,6232,6201),
+    ),
+    4737 => array(
+        'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
+    ),
+    4736 => array(
+        'm_icon' => '<i class="fas fa-h1 idea" aria-hidden="true"></i>',
+        'm_name' => 'TITLE',
+        'm_desc' => '',
+        'm_parents' => array(10990,12112,11071,10644,6232,6201),
+    ),
+    7585 => array(
+        'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
+        'm_name' => 'TYPE',
+        'm_desc' => '',
+        'm_parents' => array(11054,12079,6204,10651,6160,6194,6232,4527,6201),
+    ),
+);
+
+//SINGLE SELECTABLE:
+$config['en_ids_6204'] = array(4737,7585,10602,3290,4454,6177,3289,6186,4593);
+$config['en_all_6204'] = array(
+    4737 => array(
+        'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
+    ),
+    7585 => array(
+        'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TYPE',
+        'm_desc' => '',
+        'm_parents' => array(11054,12079,6204,10651,6160,6194,6232,4527,6201),
+    ),
+    10602 => array(
+        'm_icon' => '<i class="far fa-puzzle-piece idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TYPE GROUPS',
+        'm_desc' => '',
+        'm_parents' => array(10893,6204,7302,4527),
+    ),
+    3290 => array(
+        'm_icon' => '<i class="far fa-transgender source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE GENDER',
+        'm_desc' => '',
+        'm_parents' => array(4527,6204),
+    ),
+    4454 => array(
+        'm_icon' => '<i class="fad fa-volume source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE MESSENGER NOTIFICATIONS',
+        'm_desc' => '',
+        'm_parents' => array(6196,6204,4527),
+    ),
+    6177 => array(
+        'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE STATUS',
+        'm_desc' => '',
+        'm_parents' => array(12766,11054,6204,5003,6160,6232,6194,6206,4527),
+    ),
+    3289 => array(
+        'm_icon' => '<i class="fas fa-map-marked source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE TIMEZONE',
+        'm_desc' => '',
+        'm_parents' => array(4527,6204),
+    ),
+    6186 => array(
+        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
+    ),
+    4593 => array(
+        'm_icon' => '<i class="fad fa-shapes" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION TYPE',
+        'm_desc' => '',
+        'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
+    ),
+);
+
+//IDEA TYPE SELECT:
+$config['en_ids_7712'] = array(6684,7231);
+$config['en_all_7712'] = array(
+    6684 => array(
+        'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'ONE',
+        'm_desc' => '',
+        'm_parents' => array(12336,12129,7712,7585,6157,6193),
+    ),
+    7231 => array(
+        'm_icon' => '<i class="fas fa-check-square idea" aria-hidden="true"></i>',
+        'm_name' => 'SOME',
+        'm_desc' => '',
+        'm_parents' => array(12334,12129,7712,7489,7585,6193),
+    ),
+);
+
+//DISCOVER ANSWERED:
+$config['en_ids_7704'] = array(12336,12334,6157,7489);
+$config['en_all_7704'] = array(
+    12336 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER ONE LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7704,4755,4593,12326,12227),
+    ),
+    12334 => array(
+        'm_icon' => '<i class="fas fa-check-square discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER SOME LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7704,4755,4593,12326,12227),
+    ),
+    6157 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ANSWER ONE',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,6255,4755,4593),
+    ),
+    7489 => array(
+        'm_icon' => '<i class="fas fa-check-square discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ANSWER SOME',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,4755,6255,4593),
+    ),
+);
+
+//IDEA LINK CONDITIONAL:
+$config['en_ids_4229'] = array(6140,10664,6997);
+$config['en_all_4229'] = array(
+    6140 => array(
+        'm_icon' => '<i class="fad fa-lock-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER UNLOCK CONDITION LINK',
+        'm_desc' => 'A step that has become available because of the score generated from student answers',
+        'm_parents' => array(6205,12326,12227,6410,4229,4755,4593),
+    ),
+    10664 => array(
+        'm_icon' => '<i class="fad fa-bolt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK UPDATE SCORE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4229,10658),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK CONDITION',
+        'm_desc' => '',
+        'm_parents' => array(6205,6140,12327,12229,12227,12141,4229,6255,4593,4755),
+    ),
+);
+
+//IDEA OR:
+$config['en_ids_6193'] = array(6684,7231,6907);
+$config['en_all_6193'] = array(
+    6684 => array(
+        'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'SELECT ONE',
+        'm_desc' => '',
+        'm_parents' => array(12336,12129,7712,7585,6157,6193),
+    ),
+    7231 => array(
+        'm_icon' => '<i class="fas fa-check-square idea" aria-hidden="true"></i>',
+        'm_name' => 'SELECT SOME',
+        'm_desc' => '',
+        'm_parents' => array(12334,12129,7712,7489,7585,6193),
+    ),
+    6907 => array(
+        'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ANY',
+        'm_desc' => '',
+        'm_parents' => array(12700,12330,7486,7485,6140,7585,7309,6997,6193),
+    ),
+);
+
+//IDEA TYPE:
+$config['en_ids_7585'] = array(6677,6683,7637,6914,6684,7231,6907);
+$config['en_all_7585'] = array(
+    6677 => array(
+        'm_icon' => '<i class="far fa-eye idea" aria-hidden="true"></i>',
+        'm_name' => 'GO NEXT',
+        'm_desc' => 'Read messages & go next',
+        'm_parents' => array(12330,7585,4559,6192),
+    ),
+    6683 => array(
+        'm_icon' => '<i class="far fa-keyboard idea" aria-hidden="true"></i>',
+        'm_name' => 'REPLY & GO NEXT',
+        'm_desc' => 'Reply with text & go next',
+        'm_parents' => array(12324,6144,7585,6192),
+    ),
+    7637 => array(
+        'm_icon' => '<i class="far fa-paperclip idea" aria-hidden="true"></i>',
+        'm_name' => 'UPLOAD & GO NEXT',
+        'm_desc' => 'Upload a file & go next',
+        'm_parents' => array(12324,12117,7751,7585,6192),
+    ),
+    6914 => array(
+        'm_icon' => '<i class="fas fa-cubes idea" aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ALL',
+        'm_desc' => 'Complete by discovering all next ideas',
+        'm_parents' => array(12700,12330,7486,7485,6140,6192,7585,7309,6997),
+    ),
+    6684 => array(
+        'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'SELECT ONE',
+        'm_desc' => 'Select a single next idea',
+        'm_parents' => array(12336,12129,7712,7585,6157,6193),
+    ),
+    7231 => array(
+        'm_icon' => '<i class="fas fa-check-square idea" aria-hidden="true"></i>',
+        'm_name' => 'SELECT SOME',
+        'm_desc' => 'Select 1 or more next idea(s)',
+        'm_parents' => array(12334,12129,7712,7489,7585,6193),
+    ),
+    6907 => array(
+        'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ANY',
+        'm_desc' => 'Complete by discovering one of the next ideas',
+        'm_parents' => array(12700,12330,7486,7485,6140,7585,7309,6997,6193),
+    ),
+);
+
+//DISCOVER CARBON COPY:
+$config['en_ids_5967'] = array(4235,12773,12419,4250,12453,12450,4246,7504);
+$config['en_all_5967'] = array(
+    4235 => array(
+        'm_icon' => '<i class="fad fa-play-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY INITIATED',
+        'm_desc' => '&var_en_subscriber_ids=1',
+        'm_parents' => array(6205,12227,7347,5967,4755,4593),
+    ),
+    12773 => array(
+        'm_icon' => '<i class="far fa-plus-circle idea"></i>',
+        'm_name' => 'IDEA APPEND CONTENT',
+        'm_desc' => '&var_en_subscriber_ids=1',
+        'm_parents' => array(5967,4535,4755,4593),
+    ),
+    12419 => array(
+        'm_icon' => '<i class="fas fa-comments-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COMMENTS',
+        'm_desc' => '&var_en_subscriber_ids=1',
+        'm_parents' => array(10984,11018,12359,5967,10593,12322,4986,4535,11089,4593,4485),
+    ),
+    4250 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA CREATED',
+        'm_desc' => '&var_en_subscriber_ids=1',
+        'm_parents' => array(5967,12400,4535,12149,10593,4593),
+    ),
+    12453 => array(
+        'm_icon' => '<i class="fad fa-megaphone idea"></i>',
+        'm_name' => 'IDEA FEATURE REQUEST',
+        'm_desc' => '&var_en_subscriber_ids=1',
+        'm_parents' => array(12137,4535,4755,4593,5967),
+    ),
+    12450 => array(
+        'm_icon' => '<i class="fas fa-pen-square source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCE REQUEST',
+        'm_desc' => '&var_en_subscriber_ids=1',
+        'm_parents' => array(4593,4755,4535,5967),
+    ),
+    4246 => array(
+        'm_icon' => '<i class="fad fa-bug source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE BUG REPORTS',
+        'm_desc' => '&var_en_subscriber_ids=1',
+        'm_parents' => array(4535,5967,4755,4593),
+    ),
+    7504 => array(
+        'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE PENDING MODERATION',
+        'm_desc' => '&var_en_subscriber_ids=1',
+        'm_parents' => array(4536,5967,4755,4593),
+    ),
+);
+
+//MENCH CHANNELS:
+$config['en_ids_7555'] = array(12103);
+$config['en_all_7555'] = array(
+    12103 => array(
+        'm_icon' => '<i class="fab fa-chrome" aria-hidden="true"></i>',
+        'm_name' => 'MENCH WEBSITE',
+        'm_desc' => 'Read using modern web browsers & receive notifications using email.',
+        'm_parents' => array(7555),
+    ),
+);
+
+//SOURCE REFERENCE ONLY:
+$config['en_ids_7551'] = array(7545,10573,12682,4983);
+$config['en_all_7551'] = array(
+    7545 => array(
+        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_name' => 'APPEND PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(12197,11030,11018,10986,11089,4535,12321,7551,4593,4485),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
+        'm_name' => 'BOOKMARKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
+    ),
+    12682 => array(
+        'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(4593,12321,7551,4535,11089,10986,11018,4485),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4485,11018,12683,12141,10939,12450,12273,12228,4535,10593,4527,7551,4593),
+    ),
+);
+
+//IDEA TYPE REQUIREMENT:
+$config['en_ids_7309'] = array(6914,6907);
+$config['en_all_7309'] = array(
+    6914 => array(
+        'm_icon' => '<i class="fas fa-cubes idea" aria-hidden="true"></i>',
+        'm_name' => 'ALL',
+        'm_desc' => '',
+        'm_parents' => array(12700,12330,7486,7485,6140,6192,7585,7309,6997),
+    ),
+    6907 => array(
+        'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
+        'm_name' => 'ANY',
+        'm_desc' => '',
+        'm_parents' => array(12700,12330,7486,7485,6140,7585,7309,6997,6193),
+    ),
+);
+
+//PLUGINS:
+$config['en_ids_6287'] = array(7264,11049,7261,12731,12734,7260,7263,7259,12735,7712,12733,12712,12722,4527,12710,12709,12729,7267,12732,7268,7269,12730,12738,7270,12737,12736,12739);
+$config['en_all_6287'] = array(
+    7264 => array(
+        'm_icon' => '<i class="fad fa-eye"></i>',
+        'm_name' => 'IDEA BIRDS EYE MARKS',
+        'm_desc' => '',
+        'm_parents' => array(11047,6287),
+    ),
+    11049 => array(
+        'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
+        'm_name' => 'IDEA JSON REVIEW',
+        'm_desc' => '?in_id=',
+        'm_parents' => array(12741,6287,11047),
+    ),
+    7261 => array(
+        'm_icon' => '',
+        'm_name' => 'IDEA LIST DUPLICATES',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12731 => array(
+        'm_icon' => '',
+        'm_name' => 'IDEA LIST INVALID TITLES',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12734 => array(
+        'm_icon' => '',
+        'm_name' => 'IDEA LIST NEXT/PREVIOUS CROSSOVERS',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    7260 => array(
+        'm_icon' => '👶',
+        'm_name' => 'IDEA LIST ORPHANED',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    7263 => array(
+        'm_icon' => '',
+        'm_name' => 'IDEA MARKS LIST ALL',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    7259 => array(
+        'm_icon' => '',
+        'm_name' => 'IDEA SEARCH & REPLACE',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12735 => array(
+        'm_icon' => '',
+        'm_name' => 'IDEA SYNC/FIX SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    7712 => array(
+        'm_icon' => '<i class="far fa-question-circle" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TYPE SELECT',
+        'm_desc' => '',
+        'm_parents' => array(6287,10893,4527),
+    ),
+    12733 => array(
+        'm_icon' => '',
+        'm_name' => 'JSON REVIEW DISCOVER',
+        'm_desc' => '?in_id=',
+        'm_parents' => array(12741,12701,6287),
+    ),
+    12712 => array(
+        'm_icon' => '',
+        'm_name' => 'JSON REVIEW SOURCE',
+        'm_desc' => '?en_id=',
+        'm_parents' => array(12741,6287),
+    ),
+    12722 => array(
+        'm_icon' => '',
+        'm_name' => 'JSON REVIEW TRANSACTION',
+        'm_desc' => '?ln_id=',
+        'm_parents' => array(12741,6287),
+    ),
+    4527 => array(
+        'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
+        'm_name' => 'MENCH MEMORY',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287,4527,7254),
+    ),
+    12710 => array(
+        'm_icon' => '👤',
+        'm_name' => 'MY SESSION VARIABLES',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
+    ),
+    12709 => array(
+        'm_icon' => 'ℹ️',
+        'm_name' => 'PHP INFO',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
+    ),
+    12729 => array(
+        'm_icon' => '',
+        'm_name' => 'PLATFORM COIN STATS',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    7267 => array(
+        'm_icon' => '🔍',
+        'm_name' => 'SOURCE ICON SEARCH',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12732 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE/IDEA SYNC STATUSES',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
+    ),
+    7268 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE LIST DUPLICATES',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    7269 => array(
+        'm_icon' => '👶',
+        'm_name' => 'SOURCE LIST ORPHANED',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12730 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE NAME SEARCH & REPLACE',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12738 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE PLAYER RANDOM AVATARS',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    7270 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE SEND TEST MESSAGE',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12737 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE SYNC & FIX LINK TRANSACTIONS',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12736 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE SYNC & FIX PLAYERS',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12739 => array(
+        'm_icon' => '',
+        'm_name' => 'TRANSACTION ANALYZE URLS',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+);
+
+//DISCOVER STATUS INCOMPLETE:
+$config['en_ids_7364'] = array(6175);
+$config['en_all_7364'] = array(
+    6175 => array(
+        'm_icon' => '<i class="fas fa-spinner-third fa-spin" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION DRAFTING',
+        'm_desc' => '',
+        'm_parents' => array(7364,7360,6186),
+    ),
+);
+
+//DISCOVER STATUS ACTIVE:
+$config['en_ids_7360'] = array(6175,12399,6176);
+$config['en_all_7360'] = array(
+    6175 => array(
+        'm_icon' => '<i class="fas fa-spinner-third fa-spin" aria-hidden="true"></i>',
+        'm_name' => 'DRAFTING',
+        'm_desc' => '',
+        'm_parents' => array(7364,7360,6186),
+    ),
+    12399 => array(
+        'm_icon' => '<i class="fas fa-star" aria-hidden="true"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(7360,7359,6186),
+    ),
+    6176 => array(
+        'm_icon' => '<i class="far fa-globe" aria-hidden="true"></i>',
+        'm_name' => 'PUBLISHED',
+        'm_desc' => '',
+        'm_parents' => array(12012,7360,7359,6186),
+    ),
+);
+
+//DISCOVER STATUS PUBLIC:
+$config['en_ids_7359'] = array(12399,6176);
+$config['en_all_7359'] = array(
+    12399 => array(
+        'm_icon' => '<i class="fas fa-star" aria-hidden="true"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(7360,7359,6186),
+    ),
+    6176 => array(
+        'm_icon' => '<i class="far fa-globe" aria-hidden="true"></i>',
+        'm_name' => 'PUBLISHED',
+        'm_desc' => '',
+        'm_parents' => array(12012,7360,7359,6186),
+    ),
+);
+
+//SOURCE STATUS ACTIVE:
+$config['en_ids_7358'] = array(6180,12563,6181);
+$config['en_all_7358'] = array(
+    6180 => array(
+        'm_icon' => '<i class="far fa-spinner fa-spin source" aria-hidden="true"></i>',
+        'm_name' => 'DRAFTING',
+        'm_desc' => '',
+        'm_parents' => array(10654,7358,6177),
+    ),
+    12563 => array(
+        'm_icon' => '<i class="fas fa-star source" aria-hidden="true"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(12575,10654,7358,7357,6177),
+    ),
+    6181 => array(
+        'm_icon' => '<i class="far fa-globe source" aria-hidden="true"></i>',
+        'm_name' => 'PUBLISHED',
+        'm_desc' => '',
+        'm_parents' => array(10654,7358,7357,6177),
+    ),
+);
+
+//SOURCE STATUS PUBLIC:
+$config['en_ids_7357'] = array(12563,6181);
+$config['en_all_7357'] = array(
+    12563 => array(
+        'm_icon' => '<i class="fas fa-star source" aria-hidden="true"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(12575,10654,7358,7357,6177),
+    ),
+    6181 => array(
+        'm_icon' => '<i class="far fa-globe source" aria-hidden="true"></i>',
+        'm_name' => 'PUBLISHED',
+        'm_desc' => '',
+        'm_parents' => array(10654,7358,7357,6177),
+    ),
+);
+
+//IDEA STATUS ACTIVE:
+$config['en_ids_7356'] = array(6183,12137,6184);
+$config['en_all_7356'] = array(
+    6183 => array(
+        'm_icon' => '<i class="far fa-spinner fa-spin idea" aria-hidden="true"></i>',
+        'm_name' => 'DRAFTING',
+        'm_desc' => '',
+        'm_parents' => array(10648,7356,4737),
+    ),
+    12137 => array(
+        'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(10986,10648,12138,7356,7355,4737),
+    ),
+    6184 => array(
+        'm_icon' => '<i class="far fa-globe idea" aria-hidden="true"></i>',
+        'm_name' => 'PUBLISHED',
+        'm_desc' => '',
+        'm_parents' => array(10648,7355,7356,4737),
+    ),
+);
+
+//IDEA STATUS PUBLIC:
+$config['en_ids_7355'] = array(12137,6184);
+$config['en_all_7355'] = array(
+    12137 => array(
+        'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(10986,10648,12138,7356,7355,4737),
+    ),
+    6184 => array(
+        'm_icon' => '<i class="far fa-globe idea" aria-hidden="true"></i>',
+        'm_name' => 'PUBLISHED',
+        'm_desc' => '',
+        'm_parents' => array(10648,7355,7356,4737),
+    ),
+);
+
+//IDEA STATS:
+$config['en_ids_7302'] = array(4737,10602);
+$config['en_all_7302'] = array(
+    4737 => array(
+        'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
+    ),
+    10602 => array(
+        'm_icon' => '<i class="far fa-puzzle-piece idea" aria-hidden="true"></i>',
+        'm_name' => 'TYPE GROUPS',
+        'm_desc' => '',
+        'm_parents' => array(10893,6204,7302,4527),
+    ),
+);
+
+//DISCOVER STATS:
+$config['en_ids_7304'] = array(6186);
+$config['en_all_7304'] = array(
+    6186 => array(
+        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
+    ),
+);
+
+//TRANSACTION STATUS:
+$config['en_ids_6186'] = array(12399,6176,6175,6173);
+$config['en_all_6186'] = array(
+    12399 => array(
+        'm_icon' => '<i class="fas fa-star" aria-hidden="true"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(7360,7359,6186),
+    ),
+    6176 => array(
+        'm_icon' => '<i class="far fa-globe" aria-hidden="true"></i>',
+        'm_name' => 'PUBLISHED',
+        'm_desc' => '',
+        'm_parents' => array(12012,7360,7359,6186),
+    ),
+    6175 => array(
+        'm_icon' => '<i class="fas fa-spinner-third fa-spin" aria-hidden="true"></i>',
+        'm_name' => 'DRAFTING',
+        'm_desc' => '',
+        'm_parents' => array(7364,7360,6186),
+    ),
+    6173 => array(
+        'm_icon' => '<i class="fas fa-trash-alt" aria-hidden="true"></i>',
+        'm_name' => 'UNLINKED',
+        'm_desc' => '',
+        'm_parents' => array(12012,10686,10678,10673,6186),
+    ),
+);
+
+//SOURCE DATABASE REFERENCES:
+$config['en_ids_6194'] = array(7274,4737,7585,6287,6177,4364,6186,4593);
+$config['en_all_6194'] = array(
+    7274 => array(
+        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_name' => 'CRON JOBS',
+        'm_desc' => '',
+        'm_parents' => array(12744,6194,11035,12728,12500,10876,4527,6405),
+    ),
+    4737 => array(
+        'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10990,12079,6204,6226,6160,6232,7302,6194,6201,4527),
+    ),
+    7585 => array(
+        'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TYPE',
+        'm_desc' => '',
+        'm_parents' => array(11054,12079,6204,10651,6160,6194,6232,4527,6201),
+    ),
+    6287 => array(
+        'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
+        'm_name' => 'PLUGINS',
+        'm_desc' => '',
+        'm_parents' => array(12744,6194,12699,12500,10876,11035,4527),
+    ),
+    6177 => array(
+        'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE STATUS',
+        'm_desc' => '',
+        'm_parents' => array(12766,11054,6204,5003,6160,6232,6194,6206,4527),
+    ),
+    4364 => array(
+        'm_icon' => '<i class="fad fa-user-edit" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION CREATOR',
+        'm_desc' => '',
+        'm_parents' => array(11081,6160,6232,6194,4341),
+    ),
+    6186 => array(
+        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
+    ),
+    4593 => array(
+        'm_icon' => '<i class="fad fa-shapes" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION TYPE',
+        'm_desc' => '',
+        'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
+    ),
+);
+
+//THING INTERACTION CONTENT REQUIRES TEXT:
+$config['en_ids_6805'] = array(3005,3147,4763,2999,3192);
+$config['en_all_6805'] = array(
+    3005 => array(
+        'm_icon' => '<i class="fad fa-book source" aria-hidden="true"></i>',
+        'm_name' => 'BOOK',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+    3147 => array(
+        'm_icon' => '<i class="fad fa-presentation source" aria-hidden="true"></i>',
+        'm_name' => 'COURSE',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+    4763 => array(
+        'm_icon' => '<i class="fad fa-megaphone source" aria-hidden="true"></i>',
+        'm_name' => 'MARKETING',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+    2999 => array(
+        'm_icon' => '<i class="fad fa-microphone source" aria-hidden="true"></i>',
+        'm_name' => 'PODCAST',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,10809,6805,3000),
+    ),
+    3192 => array(
+        'm_icon' => '<i class="fad fa-tools source" aria-hidden="true"></i>',
+        'm_name' => 'TOOL',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+);
+
+//DISCOVER COINS:
+$config['en_ids_6255'] = array(6157,7489,4559,12117,6144,7485,7486,6997);
+$config['en_all_6255'] = array(
+    6157 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'ANSWER ONE',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,6255,4755,4593),
+    ),
+    7489 => array(
+        'm_icon' => '<i class="fas fa-check-square discover" aria-hidden="true"></i>',
+        'm_name' => 'ANSWER SOME',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,4755,6255,4593),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_name' => 'DISCOVER MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
+    ),
+    12117 => array(
+        'm_icon' => '<i class="far fa-paperclip discover" aria-hidden="true"></i>',
+        'm_name' => 'FILE UPLOAD',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="far fa-keyboard discover" aria-hidden="true"></i>',
+        'm_name' => 'TEXT REPLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
+    ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'UNLOCK ANSWER',
+        'm_desc' => '',
+        'm_parents' => array(6205,12334,12336,7489,6157,12327,12229,12227,12141,4593,4755,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'UNLOCK CHILDREN',
+        'm_desc' => '',
+        'm_parents' => array(6205,12327,12229,12227,12141,4755,4593,6255),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'UNLOCK CONDITION',
+        'm_desc' => '',
+        'm_parents' => array(6205,6140,12327,12229,12227,12141,4229,6255,4593,4755),
+    ),
+);
+
+//BOOKMARK REMOVED:
+$config['en_ids_6150'] = array(7757,6155);
+$config['en_all_6150'] = array(
+    7757 => array(
+        'm_icon' => '<i class="discover fad fa-bookmark discover" aria-hidden="true"></i>',
+        'm_name' => 'AUTO',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6150),
+    ),
+    6155 => array(
+        'm_icon' => '<i class="discover fad fa-bookmark discover" aria-hidden="true"></i>',
+        'm_name' => 'MANUAL',
+        'm_desc' => '',
+        'm_parents' => array(6205,10888,6150,4593,4755),
+    ),
+);
+
+//SOURCE REFERENCE ALLOWED:
+$config['en_ids_4986'] = array(12419,4601,4231);
+$config['en_all_4986'] = array(
+    12419 => array(
+        'm_icon' => '<i class="fas fa-comments-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'COMMENTS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,12359,5967,10593,12322,4986,4535,11089,4593,4485),
+    ),
+    4601 => array(
+        'm_icon' => '<i class="fas fa-tags idea" aria-hidden="true"></i>',
+        'm_name' => 'KEYWORDS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,11089,4535,12322,4986,10593,4593,4485),
+    ),
+    4231 => array(
+        'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
+        'm_name' => 'MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(11089,10939,12359,4535,12322,10593,4986,4603,4593,4485),
+    ),
+);
+
+//ACCOUNT SETTINGS:
+$config['en_ids_6225'] = array(6197,12289,10957,3288,3286);
+$config['en_all_6225'] = array(
+    6197 => array(
+        'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
+        'm_name' => 'FULL NAME',
+        'm_desc' => '',
+        'm_parents' => array(12772,4269,12412,12232,6225,11072,10646,5000,4998,4999,6232,6206),
+    ),
+    12289 => array(
+        'm_icon' => '<i class="fad fa-paw source" aria-hidden="true"></i>',
+        'm_name' => 'AVATAR',
+        'm_desc' => '',
+        'm_parents' => array(4536,6225),
+    ),
+    10957 => array(
+        'm_icon' => '<i class="fad fa-bolt source" aria-hidden="true"></i>',
+        'm_name' => 'SUPERPOWERS',
+        'm_desc' => '',
+        'm_parents' => array(6225,11035,5007,4527),
+    ),
+    3288 => array(
+        'm_icon' => '<i class="fad fa-envelope-open source" aria-hidden="true"></i>',
+        'm_name' => 'EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(4269,12103,6225,4426,4755),
+    ),
+    3286 => array(
+        'm_icon' => '<i class="fad fa-key source" aria-hidden="true"></i>',
+        'm_name' => 'PASSWORD',
+        'm_desc' => '',
+        'm_parents' => array(4269,4426,7578,6225,4755),
+    ),
+);
+
+//IDEA STATUS:
+$config['en_ids_4737'] = array(12137,6184,6183,6182);
+$config['en_all_4737'] = array(
+    12137 => array(
+        'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => 'Starting point idea, Searchable by all players',
+        'm_parents' => array(10986,10648,12138,7356,7355,4737),
+    ),
+    6184 => array(
+        'm_icon' => '<i class="far fa-globe idea" aria-hidden="true"></i>',
+        'm_name' => 'PUBLISHED',
+        'm_desc' => 'Continuation idea, accessible to anyone who has the URL',
+        'm_parents' => array(10648,7355,7356,4737),
+    ),
+    6183 => array(
+        'm_icon' => '<i class="far fa-spinner fa-spin idea" aria-hidden="true"></i>',
+        'm_name' => 'DRAFTING',
+        'm_desc' => 'Undiscoverable idea until published live',
+        'm_parents' => array(10648,7356,4737),
+    ),
+    6182 => array(
+        'm_icon' => '<i class="fad fa-trash-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'DELETED',
+        'm_desc' => 'Archived idea',
+        'm_parents' => array(12655,12400,4593,12647,4737),
+    ),
+);
+
+//SOURCE STATUS:
+$config['en_ids_6177'] = array(12563,6181,6180,6178);
+$config['en_all_6177'] = array(
+    12563 => array(
+        'm_icon' => '<i class="fas fa-star source" aria-hidden="true"></i>',
+        'm_name' => 'FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(12575,10654,7358,7357,6177),
+    ),
+    6181 => array(
+        'm_icon' => '<i class="far fa-globe source" aria-hidden="true"></i>',
+        'm_name' => 'PUBLISHED',
+        'm_desc' => '',
+        'm_parents' => array(10654,7358,7357,6177),
+    ),
+    6180 => array(
+        'm_icon' => '<i class="far fa-spinner fa-spin source" aria-hidden="true"></i>',
+        'm_name' => 'DRAFTING',
+        'm_desc' => '',
+        'm_parents' => array(10654,7358,6177),
+    ),
+    6178 => array(
+        'm_icon' => '<i class="fad fa-trash-alt source" aria-hidden="true"></i>',
+        'm_name' => 'DELETED',
+        'm_desc' => '',
+        'm_parents' => array(10645,4593,12401,6177),
+    ),
+);
+
+//DISCOVER INCOMPLETES:
+$config['en_ids_6146'] = array(6143,7492);
+$config['en_all_6146'] = array(
+    6143 => array(
+        'm_icon' => '<i class="far fa-comment-times discover" aria-hidden="true"></i>',
+        'm_name' => 'SKIPPED',
+        'm_desc' => 'Completed when students skip an intention and all its child intentions from their Action Plan',
+        'm_parents' => array(6205,12229,12227,6146,4755,4593),
+    ),
+    7492 => array(
+        'm_icon' => '<i class="fas fa-times-octagon discover" aria-hidden="true"></i>',
+        'm_name' => 'TERMINATE',
+        'm_desc' => 'Logged when users arrive at a locked intent that has no public OR parents or no children, which means there is no way to unlock it.',
+        'm_parents' => array(6205,12229,12227,4755,4593,6146),
+    ),
+);
+
+//PLAYER SENT MESSAGES WITH MESSENGER:
+$config['en_ids_4277'] = array(7654,6554,7653);
+$config['en_all_4277'] = array(
+    7654 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_name' => 'AUTOMATED MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(4277),
+    ),
+    6554 => array(
+        'm_icon' => '<i class="fas fa-wand-magic"></i>',
+        'm_name' => 'COMMAND MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(4277),
+    ),
+    7653 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_name' => 'MANUAL MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(4277),
+    ),
+);
+
+//PLAYER SENT/RECEIVED ATTACHMENT:
+$config['en_ids_6102'] = array(4554,4556,4555,4549,4551,4550,4548,4553);
+$config['en_all_6102'] = array(
+    4554 => array(
+        'm_icon' => '<i class="discover fad fa-volume-up"></i>',
+        'm_name' => 'AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    4556 => array(
+        'm_icon' => '<i class="discover fad fa-file-pdf"></i>',
+        'm_name' => 'FILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    4555 => array(
+        'm_icon' => '<i class="discover fad fa-image"></i>',
+        'm_name' => 'IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    4549 => array(
+        'm_icon' => '<i class="discover fad fa-volume-up"></i>',
+        'm_name' => 'SENT AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4551 => array(
+        'm_icon' => '<i class="discover fad fa-file-pdf"></i>',
+        'm_name' => 'SENT FILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4550 => array(
+        'm_icon' => '<i class="discover fad fa-image"></i>',
+        'm_name' => 'SENT IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4548 => array(
+        'm_icon' => '<i class="discover fad fa-video"></i>',
+        'm_name' => 'SENT VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4553 => array(
+        'm_icon' => '<i class="discover fad fa-video"></i>',
+        'm_name' => 'VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+);
+
+//PLAYER RECEIVED MESSAGES WITH MESSENGER:
+$config['en_ids_4280'] = array(4554,4556,4555,6563,4552,4553);
+$config['en_all_4280'] = array(
+    4554 => array(
+        'm_icon' => '<i class="discover fad fa-volume-up"></i>',
+        'm_name' => 'AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    4556 => array(
+        'm_icon' => '<i class="discover fad fa-file-pdf"></i>',
+        'm_name' => 'FILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    4555 => array(
+        'm_icon' => '<i class="discover fad fa-image"></i>',
+        'm_name' => 'IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    6563 => array(
+        'm_icon' => '<i class="discover fad fa-check"></i>',
+        'm_name' => 'QUICK REPLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,10593,4593,4755,4280),
+    ),
+    4552 => array(
+        'm_icon' => '<i class="discover fad fa-align-left"></i>',
+        'm_name' => 'TEXT',
+        'm_desc' => '',
+        'm_parents' => array(6205,10593,4755,4593,4280),
+    ),
+    4553 => array(
+        'm_icon' => '<i class="discover fad fa-video"></i>',
+        'm_name' => 'VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+);
+
+//SOURCE LIST EDITOR:
+$config['en_ids_4997'] = array(5000,4998,4999,5001,5003,5865,5943,12318,10625,5982,5981,11956);
+$config['en_all_4997'] = array(
+    5000 => array(
+        'm_icon' => '<i class="source fad fa-fingerprint"></i>',
+        'm_name' => 'NAME REPLACE',
+        'm_desc' => 'Search for occurrence of string in child entity names and if found, updates it with a replacement string',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    4998 => array(
+        'm_icon' => '<i class="source fad fa-fingerprint"></i>',
+        'm_name' => 'NAME PREFIX',
+        'm_desc' => 'Adds string to the beginning of all child entities. Make sure to include a space for it to look good',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    4999 => array(
+        'm_icon' => '<i class="source fad fa-fingerprint"></i>',
+        'm_name' => 'NAME POSTFIX',
+        'm_desc' => 'Adds string to the end of all child entities',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    5001 => array(
+        'm_icon' => '<i class="source fad fa-sticky-note"></i>',
+        'm_name' => 'CONTENT REPLACE',
+        'm_desc' => 'Search for occurance of string in child entity link contents and if found, updates it with a replacement string',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    5003 => array(
+        'm_icon' => '<i class="source fad fa-sliders-h"></i>',
+        'm_name' => 'STATUS REPLACE',
+        'm_desc' => 'Updates all child entity statuses that match the initial entity status condition',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    5865 => array(
+        'm_icon' => '<i class="source fad fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'LINK STATUS REPLACE',
+        'm_desc' => 'Updates all child entity link statuses that match the initial link status condition',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    5943 => array(
+        'm_icon' => '<i class="fad fa-user-circle source" aria-hidden="true"></i>',
+        'm_name' => 'ICON UPDATE FOR ALL',
+        'm_desc' => 'Updates all child entity icons with string which needs to be a valid icon',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    12318 => array(
+        'm_icon' => '<i class="fad fa-user-circle source" aria-hidden="true"></i>',
+        'm_name' => 'ICON UPDATE IF MISSING',
+        'm_desc' => 'Updates all icons that are not set to the new value.',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    10625 => array(
+        'm_icon' => '<i class="source fad fa-user-circle"></i>',
+        'm_name' => 'ICON REPLACE',
+        'm_desc' => 'Search for occurrence of string in child entity icons and if found, updates it with a replacement string',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    5982 => array(
+        'm_icon' => '<i class="source fad fa-layer-minus"></i>',
+        'm_name' => 'PROFILE REMOVE',
+        'm_desc' => 'If already added as the parent, this will remove searched entity as the parent of all child entities',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    5981 => array(
+        'm_icon' => '<i class="source fad fa-layer-plus"></i>',
+        'm_name' => 'PROFILE ADD',
+        'm_desc' => 'If not already done so, will add searched entity as the parent of all child entities',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    11956 => array(
+        'm_icon' => '<i class="source fad fa-layer-plus" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE IF ADD',
+        'm_desc' => 'Adds a parent entity only IF the entity has another parent entity.',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+);
+
+//SOURCE LOCK:
+$config['en_ids_4426'] = array(6196,4430,4755,3288,4426,3286);
+$config['en_all_4426'] = array(
+    6196 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger source" aria-hidden="true"></i>',
+        'm_name' => 'MENCH MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(4426,3320),
+    ),
+    4430 => array(
+        'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
+        'm_name' => 'MENCH PLAYER',
+        'm_desc' => '',
+        'm_parents' => array(4983,1278,11035,10573,4426),
+    ),
+    4755 => array(
+        'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
+        'm_name' => 'PRIVATE TRANSACTION',
+        'm_desc' => '',
+        'm_parents' => array(12701,4755,6771,4426,4527),
+    ),
+    3288 => array(
+        'm_icon' => '<i class="fad fa-envelope-open source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(4269,12103,6225,4426,4755),
+    ),
+    4426 => array(
+        'm_icon' => '<i class="fas fa-lock" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LOCK',
+        'm_desc' => '',
+        'm_parents' => array(4758,3303,4426,4527),
+    ),
+    3286 => array(
+        'm_icon' => '<i class="fad fa-key source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE PASSWORD',
+        'm_desc' => '',
+        'm_parents' => array(4269,4426,7578,6225,4755),
+    ),
+);
+
+//PRIVATE TRANSACTION:
+$config['en_ids_4755'] = array(12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,6415,4556,6149,4283,6969,4275,7610,4555,6132,12360,4266,4267,12489,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,4235,7495,12773,12453,10681,12450,6232,4783,4755,7563,6157,7489,4246,4559,3288,12117,3286,7504,6144,7485,7486,6997);
+$config['en_all_4755'] = array(
+    12336 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER ONE LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7704,4755,4593,12326,12227),
+    ),
+    12334 => array(
+        'm_icon' => '<i class="fas fa-check-square discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER SOME LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7704,4755,4593,12326,12227),
+    ),
+    12197 => array(
+        'm_icon' => '<i class="fad fa-user-plus discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER APPEND PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593),
+    ),
+    4554 => array(
+        'm_icon' => '<i class="discover fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    7757 => array(
+        'm_icon' => '<i class="discover fad fa-bookmark discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER BOOKMARK REMOVED AUTO',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6150),
+    ),
+    6155 => array(
+        'm_icon' => '<i class="discover fad fa-bookmark discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER BOOKMARK REMOVED MANUAL',
+        'm_desc' => '',
+        'm_parents' => array(6205,10888,6150,4593,4755),
+    ),
+    5967 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER CARBON COPY',
+        'm_desc' => '',
+        'm_parents' => array(6205,4527,7569,4755,4593),
+    ),
+    6559 => array(
+        'm_icon' => '<i class="discover fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED NEXT',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6554),
+    ),
+    6560 => array(
+        'm_icon' => '<i class="discover fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED SKIP',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6554),
+    ),
+    6556 => array(
+        'm_icon' => '<i class="discover fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED STATS',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6554),
+    ),
+    6578 => array(
+        'm_icon' => '<i class="discover fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED STOP',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6554),
+    ),
+    6415 => array(
+        'm_icon' => '<i class="fad fa-trash-alt discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER DELETE ALL',
+        'm_desc' => '',
+        'm_parents' => array(6205,11035,4755,4593,6414),
+    ),
+    4556 => array(
+        'm_icon' => '<i class="discover fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER FILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    6149 => array(
+        'm_icon' => '<i class="fad fa-search-plus discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA CONSIDERED',
+        'm_desc' => '',
+        'm_parents' => array(6205,6153,4755,4593),
+    ),
+    4283 => array(
+        'm_icon' => '<i class="fad fa-eye discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA LISTED',
+        'm_desc' => '',
+        'm_parents' => array(6205,6153,4755,4593),
+    ),
+    6969 => array(
+        'm_icon' => '<i class="discover fad fa-megaphone"></i>',
+        'm_name' => 'DISCOVER IDEA RECOMMENDED',
+        'm_desc' => '',
+        'm_parents' => array(6205,4593,4755,6153),
+    ),
+    4275 => array(
+        'm_icon' => '<i class="discover fad fa-search"></i>',
+        'm_name' => 'DISCOVER IDEA SEARCH',
+        'm_desc' => '',
+        'm_parents' => array(6205,6554,4755,4593),
+    ),
+    7610 => array(
+        'm_icon' => '<i class="fad fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA VIEW',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593),
+    ),
+    4555 => array(
+        'm_icon' => '<i class="discover fad fa-image"></i>',
+        'm_name' => 'DISCOVER IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    6132 => array(
+        'm_icon' => '<i class="fad fa-bars discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER LIST SORTED',
+        'm_desc' => '',
+        'm_parents' => array(6205,6153,4755,4593),
+    ),
+    12360 => array(
+        'm_icon' => '<i class="fad fa-pen discover"></i>',
+        'm_name' => 'DISCOVER MASS CONTENT UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(6771,4593,4755),
+    ),
+    4266 => array(
+        'm_icon' => '<i class="discover fab fa-facebook-messenger"></i>',
+        'm_name' => 'DISCOVER MESSENGER OPT-IN',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593),
+    ),
+    4267 => array(
+        'm_icon' => '<i class="discover fab fa-facebook-messenger"></i>',
+        'm_name' => 'DISCOVER MESSENGER REFERRAL',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593),
+    ),
+    12489 => array(
+        'm_icon' => '<i class="far fa-medal discover"></i>',
+        'm_name' => 'DISCOVER OPENED LEADERBOARD',
+        'm_desc' => '',
+        'm_parents' => array(4755,6205,4593,6222),
+    ),
+    4282 => array(
+        'm_icon' => '<i class="discover fad fa-eye"></i>',
+        'm_name' => 'DISCOVER OPENED PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,6222,4593),
+    ),
+    6563 => array(
+        'm_icon' => '<i class="discover fad fa-check"></i>',
+        'm_name' => 'DISCOVER QUICK REPLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,10593,4593,4755,4280),
+    ),
+    4570 => array(
+        'm_icon' => '<i class="discover fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECEIVED',
+        'm_desc' => '',
+        'm_parents' => array(6205,10683,10593,7569,4755,4593),
+    ),
+    7702 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECEIVED IDEA',
+        'm_desc' => '',
+        'm_parents' => array(6205,10593,4593,4755,7569),
+    ),
+    4577 => array(
+        'm_icon' => '<i class="discover fad fa-user-plus"></i>',
+        'm_name' => 'DISCOVER SENT ACCESS',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4549 => array(
+        'm_icon' => '<i class="discover fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER SENT AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4551 => array(
+        'm_icon' => '<i class="discover fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER SENT FILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4550 => array(
+        'm_icon' => '<i class="discover fad fa-image"></i>',
+        'm_name' => 'DISCOVER SENT IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4557 => array(
+        'm_icon' => '<i class="discover fad fa-location-circle"></i>',
+        'm_name' => 'DISCOVER SENT LOCATION',
+        'm_desc' => '',
+        'm_parents' => array(6205,7653,4755,4593),
+    ),
+    4278 => array(
+        'm_icon' => '<i class="fad fa-eye discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SENT MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4279 => array(
+        'm_icon' => '<i class="discover fad fa-cloud-download"></i>',
+        'm_name' => 'DISCOVER SENT MESSENGER RECEIVED',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4268 => array(
+        'm_icon' => '<i class="discover fad fa-user-tag"></i>',
+        'm_name' => 'DISCOVER SENT POSTBACK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4460 => array(
+        'm_icon' => '<i class="discover fad fa-check"></i>',
+        'm_name' => 'DISCOVER SENT QUICK REPLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,7653,4755,4593),
+    ),
+    4547 => array(
+        'm_icon' => '<i class="discover fad fa-align-left"></i>',
+        'm_name' => 'DISCOVER SENT TEXT',
+        'm_desc' => '',
+        'm_parents' => array(6205,7653,4755,4593),
+    ),
+    4287 => array(
+        'm_icon' => '<i class="discover fad fa-comment-exclamation"></i>',
+        'm_name' => 'DISCOVER SENT UNKNOWN MESSAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4548 => array(
+        'm_icon' => '<i class="discover fad fa-video"></i>',
+        'm_name' => 'DISCOVER SENT VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    7560 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SIGNIN FROM IDEA',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    7561 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover"></i>',
+        'm_name' => 'DISCOVER SIGNIN GENERALLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    7564 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover"></i>',
+        'm_name' => 'DISCOVER SIGNIN SUCCESS',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    7559 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover"></i>',
+        'm_name' => 'DISCOVER SIGNIN WITH EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    7558 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover"></i>',
+        'm_name' => 'DISCOVER SIGNIN WITH MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    6143 => array(
+        'm_icon' => '<i class="far fa-comment-times discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SKIPPED',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,6146,4755,4593),
+    ),
+    7492 => array(
+        'm_icon' => '<i class="fas fa-times-octagon discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER TERMINATE',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,4755,4593,6146),
+    ),
+    4552 => array(
+        'm_icon' => '<i class="discover fad fa-align-left"></i>',
+        'm_name' => 'DISCOVER TEXT',
+        'm_desc' => '',
+        'm_parents' => array(6205,10593,4755,4593,4280),
+    ),
+    6140 => array(
+        'm_icon' => '<i class="fad fa-lock-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER UNLOCK CONDITION LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,12326,12227,6410,4229,4755,4593),
+    ),
+    12328 => array(
+        'm_icon' => '<i class="fad fa-sync discover"></i>',
+        'm_name' => 'DISCOVER UPDATE COMPLETION',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,10658,6153),
+    ),
+    7578 => array(
+        'm_icon' => '<i class="discover fad fa-key"></i>',
+        'm_name' => 'DISCOVER UPDATE PASSWORD',
+        'm_desc' => '',
+        'm_parents' => array(6205,6222,10658,6153,4755,4593),
+    ),
+    6224 => array(
+        'm_icon' => '<i class="discover fad fa-sync"></i>',
+        'm_name' => 'DISCOVER UPDATE PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,6222,4593),
+    ),
+    4553 => array(
+        'm_icon' => '<i class="discover fad fa-video"></i>',
+        'm_name' => 'DISCOVER VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    7562 => array(
+        'm_icon' => '<i class="discover fad fa-envelope-open"></i>',
+        'm_name' => 'DISCOVER WELCOME',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,7569,4593),
+    ),
+    4235 => array(
+        'm_icon' => '<i class="fad fa-play-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY INITIATED',
+        'm_desc' => '',
+        'm_parents' => array(6205,12227,7347,5967,4755,4593),
+    ),
+    7495 => array(
+        'm_icon' => '<i class="fad fa-megaphone discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY RECOMMEND',
+        'm_desc' => '',
+        'm_parents' => array(6205,12227,7347,4755,4593),
+    ),
+    12773 => array(
+        'm_icon' => '<i class="far fa-plus-circle idea"></i>',
+        'm_name' => 'IDEA APPEND CONTENT',
+        'm_desc' => '',
+        'm_parents' => array(5967,4535,4755,4593),
+    ),
+    12453 => array(
+        'm_icon' => '<i class="fad fa-megaphone idea"></i>',
+        'm_name' => 'IDEA FEATURE REQUEST',
+        'm_desc' => '',
+        'm_parents' => array(12137,4535,4755,4593,5967),
+    ),
+    10681 => array(
+        'm_icon' => '<i class="fad fa-bars idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SORT AUTO',
+        'm_desc' => '',
+        'm_parents' => array(4535,4755,4593,10658),
+    ),
+    12450 => array(
+        'm_icon' => '<i class="fas fa-pen-square source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCE REQUEST',
+        'm_desc' => '',
+        'm_parents' => array(4593,4755,4535,5967),
+    ),
+    6232 => array(
+        'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
+        'm_name' => 'MENCH VARIABLES',
+        'm_desc' => '',
+        'm_parents' => array(4755,4527,6212),
+    ),
+    4783 => array(
+        'm_icon' => '<i class="far fa-phone source"></i>',
+        'm_name' => 'PHONE',
+        'm_desc' => '',
+        'm_parents' => array(4755,4319),
+    ),
+    4755 => array(
+        'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
+        'm_name' => 'PRIVATE TRANSACTION',
+        'm_desc' => '',
+        'm_parents' => array(12701,4755,6771,4426,4527),
+    ),
+    7563 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'SIGN MAGIC EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,7569,4593),
+    ),
+    6157 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ANSWER ONE',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,6255,4755,4593),
+    ),
+    7489 => array(
+        'm_icon' => '<i class="fas fa-check-square discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ANSWER SOME',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,4755,6255,4593),
+    ),
+    4246 => array(
+        'm_icon' => '<i class="fad fa-bug source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE BUG REPORTS',
+        'm_desc' => '',
+        'm_parents' => array(4535,5967,4755,4593),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_name' => 'SOURCE DISCOVER MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
+    ),
+    3288 => array(
+        'm_icon' => '<i class="fad fa-envelope-open source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(4269,12103,6225,4426,4755),
+    ),
+    12117 => array(
+        'm_icon' => '<i class="far fa-paperclip discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE FILE UPLOAD',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
+    ),
+    3286 => array(
+        'm_icon' => '<i class="fad fa-key source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE PASSWORD',
+        'm_desc' => '',
+        'm_parents' => array(4269,4426,7578,6225,4755),
+    ),
+    7504 => array(
+        'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE PENDING MODERATION',
+        'm_desc' => '',
+        'm_parents' => array(4536,5967,4755,4593),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="far fa-keyboard discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE TEXT REPLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
+    ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK ANSWER',
+        'm_desc' => '',
+        'm_parents' => array(6205,12334,12336,7489,6157,12327,12229,12227,12141,4593,4755,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK CHILDREN',
+        'm_desc' => '',
+        'm_parents' => array(6205,12327,12229,12227,12141,4755,4593,6255),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK CONDITION',
+        'm_desc' => '',
+        'm_parents' => array(6205,6140,12327,12229,12227,12141,4229,6255,4593,4755),
+    ),
+);
+
+//TRANSACTION TYPE:
+$config['en_ids_4593'] = array(12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,6415,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,12489,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,4235,7495,12773,7545,10573,12419,4250,6182,12453,4601,4229,4228,10686,10663,10664,10643,6226,4231,10676,10678,10679,10677,12682,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,12591,12592,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,7563,6157,7489,4246,4251,6178,4559,12117,10653,4259,10657,4257,4261,10669,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,10689,10646,7504,10654,6144,5007,7485,7486,6997,4994);
+$config['en_all_4593'] = array(
+    12129 => array(
+        'm_icon' => '<i class="fas fa-times-square discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER DELETED',
+        'm_desc' => '',
+        'm_parents' => array(6205,6153,4593),
+    ),
+    12336 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER ONE LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7704,4755,4593,12326,12227),
+    ),
+    12334 => array(
+        'm_icon' => '<i class="fas fa-check-square discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER SOME LINK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7704,4755,4593,12326,12227),
+    ),
+    12197 => array(
+        'm_icon' => '<i class="fad fa-user-plus discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER APPEND PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593),
+    ),
+    4554 => array(
+        'm_icon' => '<i class="discover fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    7757 => array(
+        'm_icon' => '<i class="discover fad fa-bookmark discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER BOOKMARK REMOVED AUTO',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6150),
+    ),
+    6155 => array(
+        'm_icon' => '<i class="discover fad fa-bookmark discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER BOOKMARK REMOVED MANUAL',
+        'm_desc' => 'Student prematurely removed an intention from their Action Plan without accomplishing it.',
+        'm_parents' => array(6205,10888,6150,4593,4755),
+    ),
+    5967 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER CARBON COPY',
+        'm_desc' => '',
+        'm_parents' => array(6205,4527,7569,4755,4593),
+    ),
+    6559 => array(
+        'm_icon' => '<i class="discover fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED NEXT',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6554),
+    ),
+    6560 => array(
+        'm_icon' => '<i class="discover fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED SKIP',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6554),
+    ),
+    6556 => array(
+        'm_icon' => '<i class="discover fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED STATS',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6554),
+    ),
+    6578 => array(
+        'm_icon' => '<i class="discover fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED STOP',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,6554),
+    ),
+    6415 => array(
+        'm_icon' => '<i class="fad fa-trash-alt discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER DELETE ALL',
+        'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for trainers.',
+        'm_parents' => array(6205,11035,4755,4593,6414),
+    ),
+    10683 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(6205,6153,10658,4593,7654),
+    ),
+    4556 => array(
+        'm_icon' => '<i class="discover fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER FILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    6149 => array(
+        'm_icon' => '<i class="fad fa-search-plus discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA CONSIDERED',
+        'm_desc' => 'When a student chooses to review a given intention from the intentions they have searched or have been recommended after selecting GET STARTED from a mench.com intent landing page.',
+        'm_parents' => array(6205,6153,4755,4593),
+    ),
+    4283 => array(
+        'm_icon' => '<i class="fad fa-eye discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA LISTED',
+        'm_desc' => 'Once a student has added an Intention to their Action Plan, this link will be logged every time they access that Action Plan and view its intentions.',
+        'm_parents' => array(6205,6153,4755,4593),
+    ),
+    6969 => array(
+        'm_icon' => '<i class="discover fad fa-megaphone"></i>',
+        'm_name' => 'DISCOVER IDEA RECOMMENDED',
+        'm_desc' => 'Logged every time an intention is recommended to a user by Mench',
+        'm_parents' => array(6205,4593,4755,6153),
+    ),
+    4275 => array(
+        'm_icon' => '<i class="discover fad fa-search"></i>',
+        'm_name' => 'DISCOVER IDEA SEARCH',
+        'm_desc' => 'When students invokes the [I want to] command and search for a new intention that they would like to add to their Action Plan.',
+        'm_parents' => array(6205,6554,4755,4593),
+    ),
+    7610 => array(
+        'm_icon' => '<i class="fad fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA VIEW',
+        'm_desc' => 'When a user viewes the public intent landing page.',
+        'm_parents' => array(6205,4755,4593),
+    ),
+    4555 => array(
+        'm_icon' => '<i class="discover fad fa-image"></i>',
+        'm_name' => 'DISCOVER IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    6132 => array(
+        'm_icon' => '<i class="fad fa-bars discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER LIST SORTED',
+        'm_desc' => 'Student re-prioritized their top-level intentions to focus on intentions that currently matter the most.',
+        'm_parents' => array(6205,6153,4755,4593),
+    ),
+    12360 => array(
+        'm_icon' => '<i class="fad fa-pen discover"></i>',
+        'm_name' => 'DISCOVER MASS CONTENT UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(6771,4593,4755),
+    ),
+    10690 => array(
+        'm_icon' => '<i class="discover fad fa-upload"></i>',
+        'm_name' => 'DISCOVER MEDIA UPLOADED',
+        'm_desc' => 'When a file added by the user is synced to the CDN',
+        'm_parents' => array(6205,6153,4593,10658),
+    ),
+    4266 => array(
+        'm_icon' => '<i class="discover fab fa-facebook-messenger"></i>',
+        'm_name' => 'DISCOVER MESSENGER OPT-IN',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593),
+    ),
+    4267 => array(
+        'm_icon' => '<i class="discover fab fa-facebook-messenger"></i>',
+        'm_name' => 'DISCOVER MESSENGER REFERRAL',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593),
+    ),
+    12489 => array(
+        'm_icon' => '<i class="far fa-medal discover"></i>',
+        'm_name' => 'DISCOVER OPENED LEADERBOARD',
+        'm_desc' => '',
+        'm_parents' => array(4755,6205,4593,6222),
+    ),
+    4282 => array(
+        'm_icon' => '<i class="discover fad fa-eye"></i>',
+        'm_name' => 'DISCOVER OPENED PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,6222,4593),
+    ),
+    6563 => array(
+        'm_icon' => '<i class="discover fad fa-check"></i>',
+        'm_name' => 'DISCOVER QUICK REPLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,10593,4593,4755,4280),
+    ),
+    4570 => array(
+        'm_icon' => '<i class="discover fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECEIVED',
+        'm_desc' => '',
+        'm_parents' => array(6205,10683,10593,7569,4755,4593),
+    ),
+    7702 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECEIVED IDEA',
+        'm_desc' => 'Emails sent to intent subscribers who are looking for updates on an intent.',
+        'm_parents' => array(6205,10593,4593,4755,7569),
+    ),
+    4577 => array(
+        'm_icon' => '<i class="discover fad fa-user-plus"></i>',
+        'm_name' => 'DISCOVER SENT ACCESS',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4549 => array(
+        'm_icon' => '<i class="discover fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER SENT AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4551 => array(
+        'm_icon' => '<i class="discover fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER SENT FILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4550 => array(
+        'm_icon' => '<i class="discover fad fa-image"></i>',
+        'm_name' => 'DISCOVER SENT IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    4557 => array(
+        'm_icon' => '<i class="discover fad fa-location-circle"></i>',
+        'm_name' => 'DISCOVER SENT LOCATION',
+        'm_desc' => '',
+        'm_parents' => array(6205,7653,4755,4593),
+    ),
+    4278 => array(
+        'm_icon' => '<i class="fad fa-eye discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SENT MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4279 => array(
+        'm_icon' => '<i class="discover fad fa-cloud-download"></i>',
+        'm_name' => 'DISCOVER SENT MESSENGER RECEIVED',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4268 => array(
+        'm_icon' => '<i class="discover fad fa-user-tag"></i>',
+        'm_name' => 'DISCOVER SENT POSTBACK',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4460 => array(
+        'm_icon' => '<i class="discover fad fa-check"></i>',
+        'm_name' => 'DISCOVER SENT QUICK REPLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,7653,4755,4593),
+    ),
+    4547 => array(
+        'm_icon' => '<i class="discover fad fa-align-left"></i>',
+        'm_name' => 'DISCOVER SENT TEXT',
+        'm_desc' => '',
+        'm_parents' => array(6205,7653,4755,4593),
+    ),
+    4287 => array(
+        'm_icon' => '<i class="discover fad fa-comment-exclamation"></i>',
+        'm_name' => 'DISCOVER SENT UNKNOWN MESSAGE',
+        'm_desc' => '',
+        'm_parents' => array(6205,7654,4755,4593),
+    ),
+    4548 => array(
+        'm_icon' => '<i class="discover fad fa-video"></i>',
+        'm_name' => 'DISCOVER SENT VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,7653,6102,4755,4593),
+    ),
+    7560 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SIGNIN FROM IDEA',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    7561 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover"></i>',
+        'm_name' => 'DISCOVER SIGNIN GENERALLY',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    7564 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover"></i>',
+        'm_name' => 'DISCOVER SIGNIN SUCCESS',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    7559 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover"></i>',
+        'm_name' => 'DISCOVER SIGNIN WITH EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    7558 => array(
+        'm_icon' => '<i class="fad fa-sign-in discover"></i>',
+        'm_name' => 'DISCOVER SIGNIN WITH MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(6205,12351,4755,4593),
+    ),
+    6143 => array(
+        'm_icon' => '<i class="far fa-comment-times discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SKIPPED',
+        'm_desc' => 'Logged every time a student consciously skips an intent and it\'s recursive children.',
+        'm_parents' => array(6205,12229,12227,6146,4755,4593),
+    ),
+    7492 => array(
+        'm_icon' => '<i class="fas fa-times-octagon discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER TERMINATE',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,4755,4593,6146),
+    ),
+    4552 => array(
+        'm_icon' => '<i class="discover fad fa-align-left"></i>',
+        'm_name' => 'DISCOVER TEXT',
+        'm_desc' => '',
+        'm_parents' => array(6205,10593,4755,4593,4280),
+    ),
+    6140 => array(
+        'm_icon' => '<i class="fad fa-lock-open discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER UNLOCK CONDITION LINK',
+        'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
+        'm_parents' => array(6205,12326,12227,6410,4229,4755,4593),
+    ),
+    12328 => array(
+        'm_icon' => '<i class="fad fa-sync discover"></i>',
+        'm_name' => 'DISCOVER UPDATE COMPLETION',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,4593,10658,6153),
+    ),
+    7578 => array(
+        'm_icon' => '<i class="discover fad fa-key"></i>',
+        'm_name' => 'DISCOVER UPDATE PASSWORD',
+        'm_desc' => '',
+        'm_parents' => array(6205,6222,10658,6153,4755,4593),
+    ),
+    6224 => array(
+        'm_icon' => '<i class="discover fad fa-sync"></i>',
+        'm_name' => 'DISCOVER UPDATE PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,6222,4593),
+    ),
+    4553 => array(
+        'm_icon' => '<i class="discover fad fa-video"></i>',
+        'm_name' => 'DISCOVER VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(6205,10627,10593,6102,4755,4593,4280),
+    ),
+    7562 => array(
+        'm_icon' => '<i class="discover fad fa-envelope-open"></i>',
+        'm_name' => 'DISCOVER WELCOME',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,7569,4593),
+    ),
+    4235 => array(
+        'm_icon' => '<i class="fad fa-play-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY INITIATED',
+        'm_desc' => '',
+        'm_parents' => array(6205,12227,7347,5967,4755,4593),
+    ),
+    7495 => array(
+        'm_icon' => '<i class="fad fa-megaphone discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY RECOMMEND',
+        'm_desc' => 'Intention recommended by Mench and added to Action Plan to enable the user to complete their intention',
+        'm_parents' => array(6205,12227,7347,4755,4593),
+    ),
+    12773 => array(
+        'm_icon' => '<i class="far fa-plus-circle idea"></i>',
+        'm_name' => 'IDEA APPEND CONTENT',
+        'm_desc' => '',
+        'm_parents' => array(5967,4535,4755,4593),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA APPEND PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(12197,11030,11018,10986,11089,4535,12321,7551,4593,4485),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA BOOKMARKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
+    ),
+    12419 => array(
+        'm_icon' => '<i class="fas fa-comments-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA COMMENTS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,12359,5967,10593,12322,4986,4535,11089,4593,4485),
+    ),
+    4250 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA CREATED',
+        'm_desc' => '',
+        'm_parents' => array(5967,12400,4535,12149,10593,4593),
+    ),
+    6182 => array(
+        'm_icon' => '<i class="fad fa-trash-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA DELETED',
+        'm_desc' => '',
+        'm_parents' => array(12655,12400,4593,12647,4737),
+    ),
+    12453 => array(
+        'm_icon' => '<i class="fad fa-megaphone idea"></i>',
+        'm_name' => 'IDEA FEATURE REQUEST',
+        'm_desc' => '',
+        'm_parents' => array(12137,4535,4755,4593,5967),
+    ),
+    4601 => array(
+        'm_icon' => '<i class="fas fa-tags idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA KEYWORDS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,11089,4535,12322,4986,10593,4593,4485),
+    ),
+    4229 => array(
+        'm_icon' => '<i class="fad fa-question-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK CONDITIONAL',
+        'm_desc' => '',
+        'm_parents' => array(4535,4527,6410,6283,4593,4486),
+    ),
+    4228 => array(
+        'm_icon' => '<i class="fad fa-play-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK FIXED',
+        'm_desc' => '',
+        'm_parents' => array(4535,6410,4593,4486),
+    ),
+    10686 => array(
+        'm_icon' => '<i class="fad fa-times idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK UNLINKED',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    10663 => array(
+        'm_icon' => '<i class="fad fa-coin idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK UPDATE MARKS',
+        'm_desc' => '',
+        'm_parents' => array(4535,4228,4593,10658),
+    ),
+    10664 => array(
+        'm_icon' => '<i class="fad fa-bolt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK UPDATE SCORE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4229,10658),
+    ),
+    10643 => array(
+        'm_icon' => '<i class="fas fa-yin-yang mench-spin idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LINK YIN YANG',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,6410,4486),
+    ),
+    6226 => array(
+        'm_icon' => '<i class="fad fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA MASS UPDATE STATUS',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593),
+    ),
+    4231 => array(
+        'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(11089,10939,12359,4535,12322,10593,4986,4603,4593,4485),
+    ),
+    10676 => array(
+        'm_icon' => '<i class="fad fa-bars idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES SORTED',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    10678 => array(
+        'm_icon' => '<i class="fad fa-trash-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES UNLINKED',
+        'm_desc' => '',
+        'm_parents' => array(4535,10658,4593),
+    ),
+    10679 => array(
+        'm_icon' => '<i class="fad fa-comment-plus idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES UPDATE CONTENT',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10593,10658),
+    ),
+    10677 => array(
+        'm_icon' => '<i class="fad fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA NOTES UPDATE STATUS',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    12682 => array(
+        'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA REQUIRE PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(4593,12321,7551,4535,11089,10986,11018,4485),
+    ),
+    10681 => array(
+        'm_icon' => '<i class="fad fa-bars idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SORT AUTO',
+        'm_desc' => '',
+        'm_parents' => array(4535,4755,4593,10658),
+    ),
+    10675 => array(
+        'm_icon' => '<i class="fad fa-bars idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SORT MANUAL',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    12450 => array(
+        'm_icon' => '<i class="fas fa-pen-square source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCE REQUEST',
+        'm_desc' => '',
+        'm_parents' => array(4593,4755,4535,5967),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4485,11018,12683,12141,10939,12450,12273,12228,4535,10593,4527,7551,4593),
+    ),
+    10662 => array(
+        'm_icon' => '<i class="fad fa-hashtag idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA UPDATE LINK',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658),
+    ),
+    10648 => array(
+        'm_icon' => '<i class="fad fa-sliders-h idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA UPDATE STATUS',
+        'm_desc' => '',
+        'm_parents' => array(12400,4535,4593),
+    ),
+    10650 => array(
+        'm_icon' => '<i class="fad fa-clock idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA UPDATE TIME',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593),
+    ),
+    10644 => array(
+        'm_icon' => '<i class="fad fa-bullseye-arrow idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA UPDATE TITLE',
+        'm_desc' => 'Logged when trainers update the intent outcome',
+        'm_parents' => array(4535,10593,4593),
+    ),
+    10651 => array(
+        'm_icon' => '<i class="fad fa-shapes idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA UPDATE TYPE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593),
+    ),
+    4993 => array(
+        'm_icon' => '<i class="fad fa-eye idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA VIEWED',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593),
+    ),
+    12591 => array(
+        'm_icon' => '<i class="fas fa-plus-circle source" aria-hidden="true"></i>',
+        'm_name' => 'NEXT EDITOR ADD SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,12589),
+    ),
+    12592 => array(
+        'm_icon' => '<i class="fas fa-minus-circle source" aria-hidden="true"></i>',
+        'm_name' => 'NEXT EDITOR REMOVE SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,12589),
+    ),
+    5001 => array(
+        'm_icon' => '<i class="source fad fa-sticky-note"></i>',
+        'm_name' => 'PORTFOLIO EDITOR CONTENT REPLACE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    10625 => array(
+        'm_icon' => '<i class="source fad fa-user-circle"></i>',
+        'm_name' => 'PORTFOLIO EDITOR ICON REPLACE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    5943 => array(
+        'm_icon' => '<i class="fad fa-user-circle source" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO EDITOR ICON UPDATE FOR ALL',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    12318 => array(
+        'm_icon' => '<i class="fad fa-user-circle source" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO EDITOR ICON UPDATE IF MISSING',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    5865 => array(
+        'm_icon' => '<i class="source fad fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO EDITOR LINK STATUS REPLACE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    4999 => array(
+        'm_icon' => '<i class="source fad fa-fingerprint"></i>',
+        'm_name' => 'PORTFOLIO EDITOR NAME POSTFIX',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    4998 => array(
+        'm_icon' => '<i class="source fad fa-fingerprint"></i>',
+        'm_name' => 'PORTFOLIO EDITOR NAME PREFIX',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    5000 => array(
+        'm_icon' => '<i class="source fad fa-fingerprint"></i>',
+        'm_name' => 'PORTFOLIO EDITOR NAME REPLACE',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    5981 => array(
+        'm_icon' => '<i class="source fad fa-layer-plus"></i>',
+        'm_name' => 'PORTFOLIO EDITOR PROFILE ADD',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    11956 => array(
+        'm_icon' => '<i class="source fad fa-layer-plus" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO EDITOR PROFILE IF ADD',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    5982 => array(
+        'm_icon' => '<i class="source fad fa-layer-minus"></i>',
+        'm_name' => 'PORTFOLIO EDITOR PROFILE REMOVE',
+        'm_desc' => '',
+        'm_parents' => array(12577,4535,4593,4997),
+    ),
+    5003 => array(
+        'm_icon' => '<i class="source fad fa-sliders-h"></i>',
+        'm_name' => 'PORTFOLIO EDITOR STATUS REPLACE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4997),
+    ),
+    7563 => array(
+        'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
+        'm_name' => 'SIGN MAGIC EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(6205,4755,7569,4593),
+    ),
+    6157 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ANSWER ONE',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,6255,4755,4593),
+    ),
+    7489 => array(
+        'm_icon' => '<i class="fas fa-check-square discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE ANSWER SOME',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,7704,4755,6255,4593),
+    ),
+    4246 => array(
+        'm_icon' => '<i class="fad fa-bug source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE BUG REPORTS',
+        'm_desc' => '',
+        'm_parents' => array(4535,5967,4755,4593),
+    ),
+    4251 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE CREATED',
+        'm_desc' => 'Logged when a new entity is created.',
+        'm_parents' => array(4536,12274,12401,12149,12141,10645,10593,4593),
+    ),
+    6178 => array(
+        'm_icon' => '<i class="fad fa-trash-alt source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE DELETED',
+        'm_desc' => '',
+        'm_parents' => array(10645,4593,12401,6177),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_name' => 'SOURCE DISCOVER MESSAGES',
+        'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
+        'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
+    ),
+    12117 => array(
+        'm_icon' => '<i class="far fa-paperclip discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE FILE UPLOAD',
+        'm_desc' => '',
+        'm_parents' => array(6205,12229,12227,12141,4593,4755,6255),
+    ),
+    10653 => array(
+        'm_icon' => '<i class="fad fa-user-circle source"></i>',
+        'm_name' => 'SOURCE ICON UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10645),
+    ),
+    4259 => array(
+        'm_icon' => '<i class="fad fa-volume-up source"></i>',
+        'm_name' => 'SOURCE LINK AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    10657 => array(
+        'm_icon' => '<i class="fad fa-comment-plus source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK CONTENT UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(4535,10593,4593,10658,10645),
+    ),
+    4257 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK EMBED PLAYER',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
+    ),
+    4261 => array(
+        'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK FILE',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    10669 => array(
+        'm_icon' => '<i class="fab fa-font-awesome-alt source"></i>',
+        'm_name' => 'SOURCE LINK ICON',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,6198,4592),
+    ),
+    4260 => array(
+        'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4319 => array(
+        'm_icon' => '<i class="fad fa-sort-numeric-down source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK INTEGER',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    7657 => array(
+        'm_icon' => '<i class="fas fa-divide source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK PERCENT',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    4230 => array(
+        'm_icon' => '<i class="fad fa-link rotate90 source"></i>',
+        'm_name' => 'SOURCE LINK RAW',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    10656 => array(
+        'm_icon' => '<i class="fad fa-sliders-h source"></i>',
+        'm_name' => 'SOURCE LINK STATUS UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,10658,10645),
+    ),
+    4255 => array(
+        'm_icon' => '<i class="fad fa-align-left source"></i>',
+        'm_name' => 'SOURCE LINK TEXT',
+        'm_desc' => '',
+        'm_parents' => array(4535,10593,4593,4592),
+    ),
+    4318 => array(
+        'm_icon' => '<i class="fad fa-clock source"></i>',
+        'm_name' => 'SOURCE LINK TIME',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    10659 => array(
+        'm_icon' => '<i class="fad fa-plug source"></i>',
+        'm_name' => 'SOURCE LINK TYPE UPDATE',
+        'm_desc' => 'Iterations happens automatically based on link content',
+        'm_parents' => array(4535,10658,4593,10645),
+    ),
+    10673 => array(
+        'm_icon' => '<i class="fad fa-trash-alt source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK UNLINKED',
+        'm_desc' => '',
+        'm_parents' => array(4535,10645,4593,10658),
+    ),
+    4256 => array(
+        'm_icon' => '<i class="fad fa-browser source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LINK URL',
+        'm_desc' => '',
+        'm_parents' => array(11080,4535,4593,4592,4537),
+    ),
+    4258 => array(
+        'm_icon' => '<i class="fad fa-video source"></i>',
+        'm_name' => 'SOURCE LINK VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    10689 => array(
+        'm_icon' => '<i class="fad fa-share-alt rotate90 source"></i>',
+        'm_name' => 'SOURCE MERGED IN SOURCE',
+        'm_desc' => 'When an entity is merged with another entity and the links are carried over',
+        'm_parents' => array(4535,4593,10658,10645),
+    ),
+    10646 => array(
+        'm_icon' => '<i class="fad fa-fingerprint source"></i>',
+        'm_name' => 'SOURCE NAME UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(4535,10593,4593,10645),
+    ),
+    7504 => array(
+        'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE PENDING MODERATION',
+        'm_desc' => 'Certain links that match an unknown behavior would require an admin to review and ensure it\'s all good',
+        'm_parents' => array(4536,5967,4755,4593),
+    ),
+    10654 => array(
+        'm_icon' => '<i class="fad fa-sliders-h source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE STATUS UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(12401,4535,4593,10645),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="far fa-keyboard discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE TEXT REPLY',
+        'm_desc' => 'Logged when a student submits the requirements (text, video, etc...) of an AND intent which could not be completed by simply receiving messages.',
+        'm_parents' => array(6205,12229,12227,12141,6255,4755,4593),
+    ),
+    5007 => array(
+        'm_icon' => '<i class="fad fa-bolt source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE TOGGLE SUPERPOWERS',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593),
+    ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK ANSWER',
+        'm_desc' => '',
+        'm_parents' => array(6205,12334,12336,7489,6157,12327,12229,12227,12141,4593,4755,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK CHILDREN',
+        'm_desc' => '',
+        'm_parents' => array(6205,12327,12229,12227,12141,4755,4593,6255),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE UNLOCK CONDITION',
+        'm_desc' => '',
+        'm_parents' => array(6205,6140,12327,12229,12227,12141,4229,6255,4593,4755),
+    ),
+    4994 => array(
+        'm_icon' => '<i class="fad fa-eye source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE VIEWED',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593),
+    ),
+);
+
+//SOURCE LINKS:
+$config['en_ids_4592'] = array(4259,4257,4261,10669,4260,4319,7657,4230,4255,4318,4256,4258);
+$config['en_all_4592'] = array(
+    4259 => array(
+        'm_icon' => '<i class="fad fa-volume-up source"></i>',
+        'm_name' => 'AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4257 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'EMBED PLAYER',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
+    ),
+    4261 => array(
+        'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
+        'm_name' => 'FILE',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    10669 => array(
+        'm_icon' => '<i class="fab fa-font-awesome-alt source"></i>',
+        'm_name' => 'ICON',
+        'm_desc' => 'Icons maping to the Font Awesome database',
+        'm_parents' => array(4535,4593,6198,4592),
+    ),
+    4260 => array(
+        'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
+        'm_name' => 'IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4319 => array(
+        'm_icon' => '<i class="fad fa-sort-numeric-down source" aria-hidden="true"></i>',
+        'm_name' => 'INTEGER',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    7657 => array(
+        'm_icon' => '<i class="fas fa-divide source" aria-hidden="true"></i>',
+        'm_name' => 'PERCENT',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    4230 => array(
+        'm_icon' => '<i class="fad fa-link rotate90 source"></i>',
+        'm_name' => 'RAW',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    4255 => array(
+        'm_icon' => '<i class="fad fa-align-left source"></i>',
+        'm_name' => 'TEXT',
+        'm_desc' => '',
+        'm_parents' => array(4535,10593,4593,4592),
+    ),
+    4318 => array(
+        'm_icon' => '<i class="fad fa-clock source"></i>',
+        'm_name' => 'TIME',
+        'm_desc' => '',
+        'm_parents' => array(4535,4593,4592),
+    ),
+    4256 => array(
+        'm_icon' => '<i class="fad fa-browser source" aria-hidden="true"></i>',
+        'm_name' => 'URL',
+        'm_desc' => '',
+        'm_parents' => array(11080,4535,4593,4592,4537),
+    ),
+    4258 => array(
+        'm_icon' => '<i class="fad fa-video source"></i>',
+        'm_name' => 'VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+);
+
+//SOURCE MESSENGER NOTIFICATIONS:
+$config['en_ids_4454'] = array(4456,4457,4458);
+$config['en_all_4454'] = array(
+    4456 => array(
+        'm_icon' => '<i class="far fa-volume-up source" aria-hidden="true"></i>',
+        'm_name' => 'REGULAR',
+        'm_desc' => 'User is connected and will be notified by sound & vibration for new Mench messages',
+        'm_parents' => array(11058,4454),
+    ),
+    4457 => array(
+        'm_icon' => '<i class="far fa-volume-down source" aria-hidden="true"></i>',
+        'm_name' => 'SILENT',
+        'm_desc' => 'User is connected and will be notified by on-screen notification only for new Mench messages',
+        'm_parents' => array(11058,4454),
+    ),
+    4458 => array(
+        'm_icon' => '<i class="far fa-volume-mute source" aria-hidden="true"></i>',
+        'm_name' => 'DISABLED',
+        'm_desc' => 'User is connected but will not be notified for new Mench messages except the red icon indicator on the Messenger app which would indicate the total number of new messages they have',
+        'm_parents' => array(11058,4454),
+    ),
+);
+
+//IDEA NOTES:
+$config['en_ids_4485'] = array(4231,12419,10573,4601,4983,12682,7545);
+$config['en_all_4485'] = array(
+    4231 => array(
+        'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
+        'm_name' => 'MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(11089,10939,12359,4535,12322,10593,4986,4603,4593,4485),
+    ),
+    12419 => array(
+        'm_icon' => '<i class="fas fa-comments-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'COMMENTS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,12359,5967,10593,12322,4986,4535,11089,4593,4485),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
+        'm_name' => 'BOOKMARKS',
+        'm_desc' => '',
+        'm_parents' => array(11054,4527,10984,11018,12654,12655,12647,11035,11089,4535,12321,4593,7551,4485),
+    ),
+    4601 => array(
+        'm_icon' => '<i class="fas fa-tags idea" aria-hidden="true"></i>',
+        'm_name' => 'KEYWORDS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,11089,4535,12322,4986,10593,4593,4485),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(11054,4485,11018,12683,12141,10939,12450,12273,12228,4535,10593,4527,7551,4593),
+    ),
+    12682 => array(
+        'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(4593,12321,7551,4535,11089,10986,11018,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_name' => 'APPEND PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(12197,11030,11018,10986,11089,4535,12321,7551,4593,4485),
+    ),
+);
+
+//IDEA LINKS:
+$config['en_ids_4486'] = array(10643,4228,4229);
+$config['en_all_4486'] = array(
+    10643 => array(
+        'm_icon' => '<i class="fas fa-yin-yang mench-spin idea" aria-hidden="true"></i>',
+        'm_name' => 'YIN YANG',
+        'm_desc' => 'Oppose each other',
+        'm_parents' => array(4535,4593,6410,4486),
+    ),
+    4228 => array(
+        'm_icon' => '<i class="fad fa-play-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'FIXED',
+        'm_desc' => 'Follow each other',
+        'm_parents' => array(4535,6410,4593,4486),
+    ),
+    4229 => array(
+        'm_icon' => '<i class="fad fa-question-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'CONDITIONAL',
+        'm_desc' => 'May follow each other',
+        'm_parents' => array(4535,4527,6410,6283,4593,4486),
+    ),
+);
+
+//SOURCE LINK URLS:
+$config['en_ids_4537'] = array(4259,4257,4261,4260,4256,4258);
+$config['en_all_4537'] = array(
+    4259 => array(
+        'm_icon' => '<i class="fad fa-volume-up source"></i>',
+        'm_name' => 'AUDIO',
+        'm_desc' => 'URL to a raw audio file',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4257 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'EMBED PLAYER',
+        'm_desc' => 'Recognizable URL that offers an embed widget for a more engaging play-back experience',
+        'm_parents' => array(12605,12524,12403,4535,4593,4592,4537),
+    ),
+    4261 => array(
+        'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
+        'm_name' => 'FILE',
+        'm_desc' => 'URL to a raw file',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4260 => array(
+        'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
+        'm_name' => 'IMAGE',
+        'm_desc' => 'URL to a raw image file',
+        'm_parents' => array(12605,12524,4535,6198,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+    4256 => array(
+        'm_icon' => '<i class="fad fa-browser source" aria-hidden="true"></i>',
+        'm_name' => 'URL',
+        'm_desc' => 'Link note contains a generic URL only',
+        'm_parents' => array(11080,4535,4593,4592,4537),
+    ),
+    4258 => array(
+        'm_icon' => '<i class="fad fa-video source"></i>',
+        'm_name' => 'VIDEO',
+        'm_desc' => 'URL to a raw video file',
+        'm_parents' => array(12605,12524,4535,11080,11059,10627,10593,6203,4593,4592,4537),
+    ),
+);
+
+//CONTENT TYPE:
+$config['en_ids_3000'] = array(3005,2999,2998,2997,3147,4446,3192,4763);
+$config['en_all_3000'] = array(
+    3005 => array(
+        'm_icon' => '<i class="fad fa-book source" aria-hidden="true"></i>',
+        'm_name' => 'BOOK',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+    2999 => array(
+        'm_icon' => '<i class="fad fa-microphone source" aria-hidden="true"></i>',
+        'm_name' => 'PODCAST',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,10809,6805,3000),
+    ),
+    2998 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,3000),
+    ),
+    2997 => array(
+        'm_icon' => '<i class="fad fa-newspaper source" aria-hidden="true"></i>',
+        'm_name' => 'ARTICLE',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,3000),
+    ),
+    3147 => array(
+        'm_icon' => '<i class="fad fa-presentation source" aria-hidden="true"></i>',
+        'm_name' => 'COURSE',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+    4446 => array(
+        'm_icon' => '<i class="fad fa-tachometer source" aria-hidden="true"></i>',
+        'm_name' => 'ASSESSMENT',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,3000),
+    ),
+    3192 => array(
+        'm_icon' => '<i class="fad fa-tools source" aria-hidden="true"></i>',
+        'm_name' => 'TOOL',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+    4763 => array(
+        'm_icon' => '<i class="fad fa-megaphone source" aria-hidden="true"></i>',
+        'm_name' => 'MARKETING',
+        'm_desc' => '',
+        'm_parents' => array(4983,12523,6805,3000),
+    ),
+);
