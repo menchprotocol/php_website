@@ -54,11 +54,11 @@ function in_notes_counter(note_type_id, adjustment_count){
     $('.en-type-counter-'+note_type_id).text(new_count);
 }
 
-function en_source_only_ref_delete(ln_id, note_type_id) {
+function en_source_only_unlink(ln_id, note_type_id) {
 
     var r = confirm("Remove this source?");
     if (r == true) {
-        $.post("/source/en_source_only_ref_delete", {
+        $.post("/source/en_source_only_unlink", {
 
             in_id: in_loaded_id,
             ln_id: ln_id,
@@ -81,7 +81,7 @@ function en_source_only_ref_delete(ln_id, note_type_id) {
 
 }
 
-function en_source_only_ref_add(en_existing_id, note_type_id) {
+function en_source_only_add(en_existing_id, note_type_id) {
 
 
     //if en_existing_id>0 it means we're linking to an existing source, in which case en_new_string should be null
@@ -103,7 +103,7 @@ function en_source_only_ref_add(en_existing_id, note_type_id) {
 
     //Add via Ajax:
     input.prop('disabled', true);
-    $.post("/source/en_source_only_ref_add", {
+    $.post("/source/en_source_only_add", {
 
         in_id: in_loaded_id,
         note_type_id: note_type_id,
@@ -137,7 +137,7 @@ function en_source_only_ref_add(en_existing_id, note_type_id) {
 
 }
 
-function en_source_only_ref_search(note_type_id) {
+function en_source_only_search(note_type_id) {
 
     if(!js_pl_id){
         return false;
@@ -154,7 +154,7 @@ function en_source_only_ref_search(note_type_id) {
     }).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            en_source_only_ref_add(0, note_type_id);
+            en_source_only_add(0, note_type_id);
             return true;
         }
     });
@@ -171,7 +171,7 @@ function en_source_only_ref_search(note_type_id) {
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            en_source_only_ref_add(suggestion.alg_obj_id, note_type_id);
+            en_source_only_add(suggestion.alg_obj_id, note_type_id);
 
         }).autocomplete({hint: false, minLength: 1}, [{
 
@@ -194,11 +194,11 @@ function en_source_only_ref_search(note_type_id) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:void(0);" onclick="en_source_only_ref_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                        return '<a href="javascript:void(0);" onclick="en_source_only_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="en_source_only_ref_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="en_source_only_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
@@ -247,7 +247,7 @@ $(document).ready(function () {
     //Activate Source-Only Inputs:
 
     $(".source-mapper").each(function () {
-        en_source_only_ref_search($(this).attr('note_type_id'));
+        en_source_only_search($(this).attr('note_type_id'));
     });
 
     //Load top/bottom idea searches:

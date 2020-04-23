@@ -329,7 +329,7 @@ class Source extends CI_Controller
 
     }
 
-    function en_source_only_ref_delete(){
+    function en_source_only_unlink(){
 
         //Auth user and check required variables:
         $session_en = superpower_assigned(10939);
@@ -362,7 +362,7 @@ class Source extends CI_Controller
 
     }
 
-    function en_source_only_ref_add()
+    function en_source_only_add()
     {
 
         //Auth user and check required variables:

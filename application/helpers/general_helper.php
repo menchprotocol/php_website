@@ -829,100 +829,93 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
         $fp = @fopen($file_path . $file_name, 'w');
     }
 
-    //Then upload to AWS S3:
-    if (($is_local || (isset($fp) && $fp)) && @require_once('application/libraries/aws/aws-autoloader.php')) {
-
-        if (isset($fp)) {
-            fwrite($fp, $result);
-            fclose($fp);
-        }
-
-        $s3 = new Aws\S3\S3Client([
-            'version' => 'latest',
-            'region' => 'us-west-2',
-            'credentials' => $CI->config->item('cred_aws'),
-        ]);
-        $result = $s3->putObject(array(
-            'Bucket' => 's3foundation', //Same bucket for now
-            'Key' => $file_name,
-            'SourceFile' => ($is_local ? $file_url : $file_path . $file_name),
-            'ACL' => 'public-read'
-        ));
-
-        if (isset($result['ObjectURL']) && strlen($result['ObjectURL']) > 10) {
-
-            //Delete local file:
-            @unlink(($is_local ? $file_url : $file_path . $file_name));
-
-            //Define new URL:
-            $cdn_new_url = trim($result['ObjectURL']);
-
-            if($ln_creator_source_id < 1){
-                //Just return URL:
-                return array(
-                    'status' => 1,
-                    'cdn_url' => $cdn_new_url,
-                );
-            }
-
-            //Create and link new source to CDN and uploader:
-            $url_source = $CI->SOURCE_model->en_url($cdn_new_url, $ln_creator_source_id, array($ln_creator_source_id), 0, $page_title);
-
-            if(isset($url_source['en_url']['en_id']) && $url_source['en_url']['en_id'] > 0){
-
-                //All good:
-                return array(
-                    'status' => 1,
-                    'cdn_en' => $url_source['en_url'],
-                    'cdn_url' => $cdn_new_url,
-                );
-
-            } else {
-
-                $CI->LEDGER_model->ln_create(array(
-                    'ln_type_source_id' => 4246, //Platform Bug Reports
-                    'ln_creator_source_id' => $ln_creator_source_id,
-                    'ln_content' => 'upload_to_cdn() Failed to create new source from CDN file',
-                    'ln_metadata' => array(
-                        'file_url' => $file_url,
-                        'ln_metadata' => $ln_metadata,
-                        'is_local' => ( $is_local ? 1 : 0 ),
-                    ),
-                ));
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Failed to create new source from CDN file',
-                );
-            }
-
-        } else {
-
-            $CI->LEDGER_model->ln_create(array(
-                'ln_type_source_id' => 4246, //Platform Bug Reports
-                'ln_creator_source_id' => $ln_creator_source_id,
-                'ln_content' => 'upload_to_cdn() Failed to upload file to Mench CDN',
-                'ln_metadata' => array(
-                    'file_url' => $file_url,
-                    'ln_metadata' => $ln_metadata,
-                    'is_local' => ( $is_local ? 1 : 0 ),
-                ),
-            ));
-
-            return array(
-                'status' => 0,
-                'message' => 'Failed to upload file to Mench CDN',
-            );
-
-        }
-
-    } else {
-
-        //Log error:
+    //MAKE SURE WE CAN ACCESS AWS:
+    if (!($is_local || (isset($fp) && $fp)) || !require_once('application/libraries/aws/aws-autoloader.php')) {
         $CI->LEDGER_model->ln_create(array(
             'ln_type_source_id' => 4246, //Platform Bug Reports
             'ln_creator_source_id' => $ln_creator_source_id,
-            'ln_content' => 'upload_to_cdn() Failed to load AWS S3 module',
+            'ln_content' => 'upload_to_cdn() Failed to load AWS S3',
+            'ln_metadata' => array(
+                'file_url' => $file_url,
+                'ln_metadata' => $ln_metadata,
+                'is_local' => ( $is_local ? 1 : 0 ),
+            ),
+        ));
+        return array(
+            'status' => 0,
+            'message' => 'Failed to load AWS S3 module',
+        );
+    }
+
+
+    if (isset($fp)) {
+        fwrite($fp, $result);
+        fclose($fp);
+    }
+
+    $s3 = new Aws\S3\S3Client([
+        'version' => 'latest',
+        'region' => 'us-west-2',
+        'credentials' => $CI->config->item('cred_aws'),
+    ]);
+    $result = $s3->putObject(array(
+        'Bucket' => 's3foundation', //Same bucket for now
+        'Key' => $file_name,
+        'SourceFile' => ($is_local ? $file_url : $file_path . $file_name),
+        'ACL' => 'public-read'
+    ));
+
+
+    if (!isset($result['ObjectURL']) || !strlen($result['ObjectURL'])) {
+        $CI->LEDGER_model->ln_create(array(
+            'ln_type_source_id' => 4246, //Platform Bug Reports
+            'ln_creator_source_id' => $ln_creator_source_id,
+            'ln_content' => 'upload_to_cdn() Failed to upload file to Mench CDN',
+            'ln_metadata' => array(
+                'file_url' => $file_url,
+                'ln_metadata' => $ln_metadata,
+                'is_local' => ( $is_local ? 1 : 0 ),
+            ),
+        ));
+        return array(
+            'status' => 0,
+            'message' => 'Failed to upload file to Mench CDN',
+        );
+    }
+
+
+    //Delete local file:
+    @unlink(($is_local ? $file_url : $file_path . $file_name));
+
+    //Define new URL:
+    $cdn_new_url = trim($result['ObjectURL']);
+
+    if($ln_creator_source_id < 1){
+        //Just return URL:
+        return array(
+            'status' => 1,
+            'cdn_url' => $cdn_new_url,
+        );
+    }
+
+    //Create and link new source to CDN and uploader:
+    $url_source = $CI->SOURCE_model->en_url($cdn_new_url, $ln_creator_source_id, array($ln_creator_source_id), 0, $page_title);
+
+    if(isset($url_source['en_url']['en_id']) && $url_source['en_url']['en_id'] > 0){
+
+        //All good:
+        return array(
+            'status' => 1,
+            'cdn_en' => $url_source['en_url'],
+            'cdn_url' => $cdn_new_url,
+        );
+
+    } else {
+
+        $CI->LEDGER_model->ln_create(array(
+            'ln_type_source_id' => 4246, //Platform Bug Reports
+            'ln_creator_source_id' => $ln_creator_source_id,
+            'ln_content' => 'upload_to_cdn() Failed to create new source from CDN file',
             'ln_metadata' => array(
                 'file_url' => $file_url,
                 'ln_metadata' => $ln_metadata,
@@ -930,10 +923,9 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
             ),
         ));
 
-        //Probably local, ignore this!
         return array(
             'status' => 0,
-            'message' => 'Failed to load AWS S3 module',
+            'message' => 'Failed to create new source from CDN file',
         );
     }
 }

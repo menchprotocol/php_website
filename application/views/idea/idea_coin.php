@@ -109,7 +109,6 @@ echo '<div class="doclear">&nbsp;</div>';
 
 
 
-
 //IDEA LAYOUT
 $tab_group = 1;
 $tab_content = '';

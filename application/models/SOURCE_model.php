@@ -787,14 +787,20 @@ class SOURCE_model extends CI_Model
         }
 
         if (!$url_previously_existed && $add_to_child_en_id) {
+
             //Link URL to its parent domain:
             $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $ln_creator_source_id,
                 'ln_type_source_id' => 4230, //Raw
-                'ln_portfolio_source_id' => $add_to_child_en_id,
                 'ln_profile_source_id' => $en_url['en_id'],
+                'ln_portfolio_source_id' => $add_to_child_en_id,
             ));
+
+            //Update Search Index:
+            update_algolia('en', $add_to_child_en_id);
+
         }
+
 
 
         //Return results:
