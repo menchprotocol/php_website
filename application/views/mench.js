@@ -1,5 +1,4 @@
 
-/*
 window['_fs_debug'] = false;
 window['_fs_host'] = 'fullstory.com';
 window['_fs_script'] = 'edge.fullstory.com/s/fs.js';
@@ -30,7 +29,7 @@ if(js_pl_id>0){
         profileURL: 'https://mench.com/source/'+js_pl_id
     });
 }
-*/
+
 
 //JS DISCOVER Creator:
 function js_ln_create(new_ln_data){
