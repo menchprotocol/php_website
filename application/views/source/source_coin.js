@@ -222,7 +222,7 @@ function account_toggle_superpower(superpower_id){
 
         if(!data.status){
 
-            alert('Alert: ' + data.message);
+            alert(data.message);
 
         } else {
 
@@ -266,7 +266,7 @@ function en_add_or_link(en_existing_id, is_parent) {
     if (en_existing_id == 0) {
         en_new_string = input.val();
         if (en_new_string.length < 1) {
-            alert('Alert: Missing source name or URL, try again');
+            alert('Missing source name or URL, try again');
             input.focus();
             return false;
         }
@@ -299,7 +299,7 @@ function en_add_or_link(en_existing_id, is_parent) {
 
         } else {
             //We had an error:
-            alert('Alert: ' + data.message);
+            alert(data.message);
         }
 
     });
@@ -372,7 +372,7 @@ function en_modify_load(en_id, ln_id) {
 
     //Make sure inputs are valid:
     if (!$('.en___' + en_id).length) {
-        alert('Alert: Invalid Source ID');
+        alert('Invalid Source ID');
         return false;
     }
 
@@ -444,7 +444,7 @@ function source_link_form_unlock(result){
 
     //What was the result?
     if (!result.status) {
-        alert('Alert: ' + result.message);
+        alert(result.message);
     }
 
     //Unlock either way:
@@ -662,7 +662,7 @@ function en_modify_save() {
 
         } else {
             //Ooops there was an error!
-            $('.save_source_changes').html('<span style="color:#FF0000;"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
+            $('.save_source_changes').html('<span class="discover"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
         }
 
     });
@@ -716,7 +716,7 @@ function account_update_avatar_icon(type_css, icon_css){
         if (!data.status) {
 
             //Ooops there was an error!
-            alert('Alert: ' + data.message);
+            alert(data.message);
 
         } else {
 
@@ -766,7 +766,7 @@ function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect)
         if (!data.status) {
 
             //Ooops there was an error!
-            $(notify_el).html('<span style="color:#FF0000;"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</span>');
+            $(notify_el).html('<span class="discover"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</span>');
 
         } else {
 
@@ -793,7 +793,7 @@ function account_update_name(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_full_name').html('<span style="color:#FF0000;"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
+            $('.save_full_name').html('<span class="discover"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
 
         } else {
 
@@ -829,7 +829,7 @@ function account_update_email(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_email').html('<span style="color:#FF0000;"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
+            $('.save_email').html('<span class="discover"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
 
         } else {
 
@@ -860,7 +860,7 @@ function account_update_password(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_password').html('<span style="color:#FF0000;"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
+            $('.save_password').html('<span class="discover"><i class="fad fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
 
         } else {
 

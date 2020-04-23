@@ -167,7 +167,7 @@ class COMMUNICATION_model extends CI_Model
 
                 //Confirm if they are interested to subscribe to this idea:
                 $this->COMMUNICATION_model->comm_message_send(
-                    '❌ Alert: I cannot add this idea to your DISCOVER LIST because its not yet published.',
+                    '❌ I cannot add this idea to your DISCOVER LIST because its not yet published.',
                     $en,
                     true,
                     array(

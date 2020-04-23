@@ -176,7 +176,7 @@ function discover_in_history(tab_group_id, note_in_id, owner_en_id, last_loaded_
         if (data.status) {
             $(load_class).html(data.message);
         } else {
-            $(load_class).html('<b style="color:#FF0000 !important; line-height: 110% !important;"><i class="fad fa-exclamation-triangle"></i> Alert: ' + data.message + '</b>');
+            $(load_class).html('<b class="discover"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>' + data.message + '</b>');
         }
 
         //Tooltips:
@@ -449,7 +449,7 @@ function en_ln_type_preview() {
     }, function (data) {
 
         //All good, let's load the data into the Modify Widget...
-        $('#en_type_link_id').html((data.status ? data.html_ui : '<b class="discover montserrat">ERROR: ' + data.message+'</b>'));
+        $('#en_type_link_id').html((data.status ? data.html_ui : '<b class="discover">' + data.message+'</b>'));
 
         if(data.status && data.en_link_preview.length > 0){
             $('#en_link_preview').html(data.en_link_preview);

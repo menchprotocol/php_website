@@ -41,7 +41,7 @@ class Plugin extends CI_Controller
 
         //Valud Plugin?
         if(!in_array($plugin_en_id, $this->config->item('en_ids_6287'))){
-            die('ERROR: Invalid Plugin ID');
+            die('Invalid Plugin ID');
         }
 
         //Needs extra superpowers?

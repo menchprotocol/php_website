@@ -126,7 +126,7 @@ function search_email(){
 
         } else {
             //Show errors:
-            $('#email_errors').html('<i class="fad fa-exclamation-triangle"></i> Alert: ' + data.message + '</b>').hide().fadeIn();
+            $('#email_errors').html('<span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>' + data.message + '</b>').hide().fadeIn();
             $('#input_email').focus();
         }
     });
@@ -179,7 +179,7 @@ function add_account(){
             }
 
             //Show errors:
-            $('#new_account_errors').html('<i class="fad fa-exclamation-triangle"></i> Alert: ' + data.message + '</b>').hide().fadeIn();
+            $('#new_account_errors').html('<span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>' + data.message + '</b>').hide().fadeIn();
         }
 
     });
@@ -223,7 +223,7 @@ function singin_check_password(){
             $('#input_password').prop('disabled', false).css('background-color','#FFFFFF').focus();
 
             //Show errors:
-            $('#password_errors').html('<i class="fad fa-exclamation-triangle"></i> Alert: ' + data.message + '</b>').hide().fadeIn();
+            $('#password_errors').html('<span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>' + data.message + '</b>').hide().fadeIn();
         }
 
     });
@@ -248,7 +248,7 @@ function magicemail(){
                 $('.magic_result').html('<div><i class="fas fa-eye"></i> Check your email and SPAM FOLDER</div>').hide().fadeIn();
             } else {
                 //Show errors:
-                $('.magic_result').html('<b style="color: #FF0000;"><i class="fad fa-exclamation-triangle"></i> Alert: ' + data.message + '</b>').hide().fadeIn();
+                $('.magic_result').html('<div class="discover"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>' + data.message + '</div>').hide().fadeIn();
             }
         });
     }

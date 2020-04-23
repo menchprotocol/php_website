@@ -16,7 +16,7 @@ if(!isset($_GET['ln_id']) || !intval($_GET['ln_id'])){
 
     if (count($lns) < 1) {
 
-        echo 'ERROR: Invalid Transaction ID';
+        echo 'Invalid Transaction ID';
 
     } elseif(!superpower_assigned(12701)) {
 

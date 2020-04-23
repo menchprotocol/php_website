@@ -17,7 +17,7 @@ function actionplan_sort_save() {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
-                alert('Alert: ' + data.message);
+                alert(data.message);
             }
         });
     }
@@ -49,7 +49,7 @@ $(document).ready(function () {
                 if (!data.status) {
 
                     //There was some sort of an error returned!
-                    alert('Alert: ' + data.message);
+                    alert(data.message);
 
                 } else {
 

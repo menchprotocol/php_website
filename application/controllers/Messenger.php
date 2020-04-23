@@ -545,7 +545,7 @@ class Messenger extends CI_Controller
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->COMMUNICATION_model->comm_message_send(
-                                'Alert: You should '.$en_all_7585[$mismatch_focus['in_type_source_id']]['m_name'].' to complete this step.',
+                                'You should '.$en_all_7585[$mismatch_focus['in_type_source_id']]['m_name'].' to complete this step.',
                                 $en,
                                 true
                             );

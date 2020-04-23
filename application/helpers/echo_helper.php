@@ -1709,12 +1709,12 @@ function echo_unauthorized_message($superpower_en_id = 0, $push_message = true){
     if(!$session_en){
 
         //Missing Session
-        return 'ERROR: Login to continue.';
+        return 'Login to continue.';
 
     } elseif($superpower_en_id>0) {
 
         //Missing Superpower:
-        return 'ERROR: You are missing the required supowerpower of '.( $push_message ? $en_all_10957[$superpower_en_id]['m_name'] : '<b class="montserrat '.extract_icon_color($en_all_10957[$superpower_en_id]['m_icon']).'">'.$en_all_10957[$superpower_en_id]['m_icon'].' '.$en_all_10957[$superpower_en_id]['m_name'].'</b>' ).'';
+        return 'You are missing the required supowerpower of '.( $push_message ? $en_all_10957[$superpower_en_id]['m_name'] : '<b class="montserrat '.extract_icon_color($en_all_10957[$superpower_en_id]['m_icon']).'">'.$en_all_10957[$superpower_en_id]['m_icon'].' '.$en_all_10957[$superpower_en_id]['m_name'].'</b>' ).'';
 
     }
 

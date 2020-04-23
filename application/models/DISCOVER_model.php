@@ -750,7 +750,7 @@ class DISCOVER_model extends CI_Model
 
             if($push_message){
                 $this->COMMUNICATION_model->comm_message_send(
-                    'Alert: Invalid Idea ID',
+                    'Invalid Idea ID',
                     $recipient_en,
                     true
                 );

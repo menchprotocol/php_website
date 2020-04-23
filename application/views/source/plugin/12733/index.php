@@ -29,7 +29,7 @@ if(!isset($_GET['in_id']) || !intval($_GET['in_id'])) {
 
     if(count($ins) < 1){
 
-        echo 'ERROR: Public Idea not found';
+        echo 'Public Idea not found';
 
     } else {
 
