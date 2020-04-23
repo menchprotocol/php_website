@@ -1786,7 +1786,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $ui .= '<td class="MENCHcolumn1">';
 
         //SOURCE ICON
-        $ui .= '<a href="/source/'.$en['en_id'] . '" '.( $is_link_source ? ' data-toggle="tooltip" data-placement="bottom" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'" ' : '' ).'><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
+        $ui .= '<a href="/source/'.$en['en_id'] . '" '.( $is_link_source ? ' title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'" ' : '' ).'><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
 
 
         //SOURCE NAME
