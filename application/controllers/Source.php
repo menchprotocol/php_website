@@ -51,7 +51,12 @@ class Source extends CI_Controller
     function source_coin($en_id)
     {
 
-        $session_en = superpower_assigned();
+        //Make sure not a private transaction:
+        if(in_array($en_id, $this->config->item('en_ids_4755'))){
+            $session_en = superpower_assigned(12701, true);
+        } else {
+            $session_en = superpower_assigned();
+        }
 
         //Do we have any mass action to process here?
         if (superpower_assigned(12703) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
