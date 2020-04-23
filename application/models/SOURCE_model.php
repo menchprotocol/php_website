@@ -774,32 +774,38 @@ class SOURCE_model extends CI_Model
 
 
         //Have we been asked to also add URL to another parent or child?
-        if (!$url_previously_existed && count($link_parent_en_ids) > 0) {
-            //Link URL to its parent domain:
-            foreach($link_parent_en_ids as $p_en_id){
+        if(!$url_previously_existed){
+
+            //Link URL to its parent domain?
+            if (count($link_parent_en_ids) > 0) {
+                foreach($link_parent_en_ids as $p_en_id){
+                    $this->LEDGER_model->ln_create(array(
+                        'ln_creator_source_id' => $ln_creator_source_id,
+                        'ln_type_source_id' => 4230, //Raw
+                        'ln_profile_source_id' => $p_en_id,
+                        'ln_portfolio_source_id' => $en_url['en_id'],
+                    ));
+                }
+
+                //Update Search Index:
+                update_algolia('en', $en_url['en_id']);
+            }
+
+            //Link URL to its parent domain?
+            if ($add_to_child_en_id) {
                 $this->LEDGER_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_type_source_id' => 4230, //Raw
-                    'ln_profile_source_id' => $p_en_id,
-                    'ln_portfolio_source_id' => $en_url['en_id'],
+                    'ln_profile_source_id' => $en_url['en_id'],
+                    'ln_portfolio_source_id' => $add_to_child_en_id,
                 ));
+
+                //Update Search Index:
+                update_algolia('en', $add_to_child_en_id);
             }
-        }
-
-        if (!$url_previously_existed && $add_to_child_en_id) {
-
-            //Link URL to its parent domain:
-            $this->LEDGER_model->ln_create(array(
-                'ln_creator_source_id' => $ln_creator_source_id,
-                'ln_type_source_id' => 4230, //Raw
-                'ln_profile_source_id' => $en_url['en_id'],
-                'ln_portfolio_source_id' => $add_to_child_en_id,
-            ));
-
-            //Update Search Index:
-            update_algolia('en', $add_to_child_en_id);
 
         }
+
 
 
 
