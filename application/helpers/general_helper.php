@@ -690,7 +690,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-circle discover"></i></span>'.echo_unauthorized_message($superpower_en_id).'</div>');
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'.echo_unauthorized_message($superpower_en_id).'</div>');
     }
 
 }

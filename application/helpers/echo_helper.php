@@ -488,7 +488,7 @@ function echo_ln($ln, $is_parent_tr = false)
     if(!isset($en_all_4593[$ln['ln_type_source_id']])){
         //We've probably have not yet updated php cache, set error:
         $en_all_4593[$ln['ln_type_source_id']] = array(
-            'm_icon' => '<i class="fad fa-exclamation-circle"></i>',
+            'm_icon' => '<i class="fas fa-exclamation-circle"></i>',
             'm_name' => 'Link Type Not Synced in PHP Cache',
             'm_desc' => '',
             'm_parents' => array(),

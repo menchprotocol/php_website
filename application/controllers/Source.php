@@ -2143,7 +2143,7 @@ class Source extends CI_Controller
             return redirect_message('/');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/source/sign', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-circle discover"></i></span>Missing Email</div>');
+            return redirect_message('/source/sign', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Missing Email</div>');
         }
 
         //Validate DISCOVER ID and matching email:
@@ -2154,10 +2154,10 @@ class Source extends CI_Controller
         )); //The user making the request
         if(count($validate_links) < 1){
             //Probably previously completed the reset password:
-            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-circle discover"></i></span>Invalid data source</div>');
+            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>');
         } elseif(strtotime($validate_links[0]['ln_timestamp']) + config_var(11065) < time()){
             //Probably previously completed the reset password:
-            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-circle discover"></i></span>Magic link has expired. Try again.</div>');
+            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic link has expired. Try again.</div>');
         }
 
         //Fetch source:
@@ -2165,7 +2165,7 @@ class Source extends CI_Controller
             'en_id' => $validate_links[0]['ln_creator_source_id'],
         ));
         if(count($ens) < 1){
-            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-circle discover"></i></span>User not found</div>');
+            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>User not found</div>');
         }
 
         //Log them in:

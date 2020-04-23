@@ -256,7 +256,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
 
             } elseif(in_array($action_en_id, array(12611, 12612))){
 
-                $input_options .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-exclamation-circle"></i></span>Ideas will be deleted.</div>';
+                $input_options .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Ideas will be deleted.</div>';
 
                 //No values for this:
                 $input_options .= '<input type="hidden" name="mass_value1_'.$action_en_id.'" value="" />';
