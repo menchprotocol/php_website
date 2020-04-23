@@ -1059,7 +1059,7 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
 
     //Show Loading...
     var data_object = eval('js_en_all_'+element_id);
-    $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
+    $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">'+ ( show_full_name ? '<span class="show-max">SAVING...</span>' : '' ) +'</b>');
 
     $.post("/idea/in_update_dropdown", {
 
