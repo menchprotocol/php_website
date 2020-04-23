@@ -19,7 +19,7 @@ if(isset($_GET['update_user_icons'])){
             'en_icon' => random_player_avatar(),
         ));
     }
-    echo '<div class="alert alert-success"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$updated.' User profiles updated with new random animal icons</div>';
+    echo '<span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$updated.' User profiles updated with new random animal icons';
 }
 
 for($i=0;$i<750;$i++){

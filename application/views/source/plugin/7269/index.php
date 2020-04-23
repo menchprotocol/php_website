@@ -44,5 +44,5 @@ if(count($orphan_ens) > 0){
     }
 
 } else {
-    echo '<div class="alert alert-success maxout"><span class="icon-block"><i class="fas fa-check-circle"></i></span>No orphans found!</div>';
+    echo '<span class="icon-block"><i class="fas fa-check-circle"></i></span>No orphans found!';
 }

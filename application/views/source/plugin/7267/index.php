@@ -49,7 +49,7 @@ if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
         }
 
         if($replaced > 0){
-            echo '<div class="alert alert-success"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Updated icons for '.$replaced.' sources.</div>';
+            echo '<span class="icon-block"><i class="fas fa-check-circle"></i></span>Updated icons for '.$replaced.' sources.';
         }
     }
 

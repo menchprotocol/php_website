@@ -283,7 +283,7 @@ class Cron extends CI_Controller
         $success_message = 'Common Base Metadata updated for '.count($published_ins).' published idea'.echo__s(count($published_ins)).'.';
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
-            $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . $success_message . '</div>');
+            $this->session->set_flashdata('flash_message', $success_message);
             header('Location: ' . $_GET['redirect']);
         } else {
             //Show json:
