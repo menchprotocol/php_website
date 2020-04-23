@@ -1789,18 +1789,24 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         $ui .= '<a href="/source/'.$en['en_id'] . '" '.( $is_link_source ? ' title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'" ' : '' ).'><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
 
 
+        $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
+
         //SOURCE NAME
-        $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'"><span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>'.($child_links[0]['totals'] > 0 ? '<span class="'.superpower_active(12701).'" title="'.number_format($child_links[0]['totals'], 0).'">&nbsp;'.echo_number($child_links[0]['totals']).'</span>' : '').'</a>';
+        $ui .= '<span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>';
+        if($child_links[0]['totals'] > 0){
+            $ui .= '<span class="'.superpower_active(12701).'" title="'.number_format($child_links[0]['totals'], 0).'">&nbsp;'.echo_number($child_links[0]['totals']).'</span>';
+        }
+
 
 
         //SOURCE STATUS
-        $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].': '.$en_all_6177[$en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
+        $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'] . ( $is_public ? ' hidden ' : '' ).'">&nbsp;<span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].': '.$en_all_6177[$en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span>';
 
         //LINK
         if ($ln_id > 0) {
 
             //LINK STATUS
-            $ui .= '<span class="inline-block ln_status_source_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_source_id']]['m_name'].' @'.$en['ln_status_source_id'].': '.$en_all_6186[$en['ln_status_source_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
+            $ui .= '<span class="inline-block ln_status_source_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) .'">&nbsp;<span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_source_id']]['m_name'].' @'.$en['ln_status_source_id'].': '.$en_all_6186[$en['ln_status_source_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_source_id']]['m_icon'] . '</span></span>';
 
             //Show link index
             if($is_link_source && $en['ln_external_id'] > 0){
@@ -1808,13 +1814,15 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
                 //External ID
                 if($en['ln_profile_source_id']==6196){
                     //Give players the ability to ping Messenger profiles:
-                    $ui .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/fetch_profile/'.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
+                    $ui .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]">&nbsp;<i class="fas fa-project-diagram"></i></span>';
                 } else {
-                    $ui .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i>&nbsp;</span>';
+                    $ui .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'">&nbsp;<i class="fas fa-project-diagram"></i></span>';
                 }
 
             }
         }
+
+        $ui .= '</a>';
 
     $ui .= '</td>';
 
