@@ -1073,7 +1073,7 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
         if (data.status) {
 
             //Update on page:
-            $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span>' + ( show_full_name ? data_object[new_en_id]['m_name'] : '' ));
+            $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .btn').html('<span class="icon-block">'+data_object[new_en_id]['m_icon']+'</span><span class="show-max">' + ( show_full_name ? data_object[new_en_id]['m_name'] : '' ) + '</span>');
             $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .dropi_' + element_id +'_'+in_id+ '_' + ln_id).removeClass('active');
             $('.dropd_'+element_id+'_'+in_id+'_'+ln_id+' .optiond_' + new_en_id+'_'+in_id+ '_' + ln_id).addClass('active');
 
