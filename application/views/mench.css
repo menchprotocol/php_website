@@ -51,7 +51,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     padding-top: 9px;
     display: inline-block;
 }
-.media-content, .ln_content img, .ln_content video {
+.media-content, .ln_content img, .ln_content video, .i_content img {
     max-width: 377px;
 }
 .yt-container{
@@ -793,7 +793,6 @@ textarea.note-textarea{
     overflow: hidden;
     max-width: 100%;
 }
-.ln_content img, .i_content img { max-width: 100%; }
 
 
 td.MENCHcolumn1  { width: 74%; }
@@ -1375,7 +1374,7 @@ label {
     td.MENCHcolumn2  { width: 20%; }
     td.MENCHcolumn3  { width: 20%; }
 
-    .media-content, .ln_content img, .ln_content video { max-width: 100%; }
+    .media-content, .ln_content img, .ln_content video, .i_content img { max-width: 100%; }
 
     .show-max{display: none !important;}
 }
