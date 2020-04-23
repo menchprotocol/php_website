@@ -1740,6 +1740,8 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $en_all_6177 = $CI->config->item('en_all_6177'); //Source Status
     $en_all_2738 = $CI->config->item('en_all_2738');
     $en_all_11028 = $CI->config->item('en_all_11028'); //SOURCEERS LINKS DIRECTION
+    $en_all_4592 = $CI->config->item('en_all_4592');
+    $en_all_6186 = $CI->config->item('en_all_6186'); //Transaction Status
 
     $ln_id = (isset($en['ln_id']) ? $en['ln_id'] : 0);
     $is_link_source = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_4592')));
@@ -1779,102 +1781,42 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
+
+    //SOURCE
     $ui .= '<td class="MENCHcolumn1">';
 
+        //SOURCE ICON
+        $ui .= '<a href="/source/'.$en['en_id'] . '" '.( $is_link_source ? ' data-toggle="tooltip" data-placement="bottom" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'" ' : '' ).'><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
 
 
-    $ui .= '<div class="inline-block">';
+        //SOURCE NAME
+        $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'"><span class="en_name_full_' . $en['en_id'] . '" style="padding-left:1px;">'.$en['en_name'].'</span>'.($child_links[0]['totals'] > 0 ? '<span class="'.superpower_active(12701).'" title="'.number_format($child_links[0]['totals'], 0).'">&nbsp;'.echo_number($child_links[0]['totals']).'</span>' : '').'</a>';
 
 
-    //SOURCE ICON
-    $ui .= '<a href="/source/'.$en['en_id'] . '"><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
+        //SOURCE STATUS
+        $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].': '.$en_all_6177[$en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
 
-    //SOURCE NAME
-    $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'"><span class="en_name_full_' . $en['en_id'] . '" style="padding-left:1px;">'.$en['en_name'].'</span>'.($child_links[0]['totals'] > 0 ? '<span class="'.superpower_active(12701).'" title="'.number_format($child_links[0]['totals'], 0).'">&nbsp;'.echo_number($child_links[0]['totals']).'</span>' : '').'</a>';
+        //LINK
+        if ($ln_id > 0) {
 
-    $ui .= '</div>';
+            //LINK STATUS
+            $ui .= '<span class="inline-block ln_status_source_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_source_id']]['m_name'].' @'.$en['ln_status_source_id'].': '.$en_all_6186[$en['ln_status_source_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
 
+            //Show link index
+            if($is_link_source && $en['ln_external_id'] > 0){
 
+                //External ID
+                if($en['ln_profile_source_id']==6196){
+                    //Give players the ability to ping Messenger profiles:
+                    $ui .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/fetch_profile/'.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
+                } else {
+                    $ui .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i>&nbsp;</span>';
+                }
 
-
-    //Does this source also include a link?
-    if ($ln_id > 0) {
-        if($is_link_source){
-
-            //SOURCE LINKS:
-            $ui .= '<div class="doclear">&nbsp;</div>';
-
-            $ui .= '<span class="message_content ln_content hideIfEmpty ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_source_id']) . '</span>';
-
-            //For JS editing only (HACK):
-            $ui .= '<div class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</div>';
-
-        } elseif($is_discover_progress && strlen($en['ln_content'])){
-
-            //DISCOVER PROGRESS
-            $ui .= '<div class="message_content">';
-            $ui .= $CI->COMMUNICATION_model->comm_message_send($en['ln_content']);
-            $ui .= '</div>';
-
-        }
-    }
-
-
-
-    //CHILDREN & PARENTS
-    $ui .= '<div class="doclear">&nbsp;</div>';
-    $ui .= '<div class="space-content">';
-
-
-    //SOURCE STATUS
-    $ui .= '<span class="en_status_source_id_' . $en['en_id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].': '.$en_all_6177[$en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
-
-    //LINK
-    if ($ln_id > 0) {
-
-        //Link Type Full List:
-        $en_all_6186 = $CI->config->item('en_all_6186'); //Transaction Status
-
-        //LINK STATUS
-        $ui .= '<span class="ln_status_source_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_source_id']]['m_name'].' @'.$en['ln_status_source_id'].': '.$en_all_6186[$en['ln_status_source_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
-
-        //Show link index
-        if($is_link_source && $en['ln_external_id'] > 0){
-
-            //External ID
-            if($en['ln_profile_source_id']==6196){
-                //Give players the ability to ping Messenger profiles:
-                $ui .= '<span class="'.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/fetch_profile/'.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></a>&nbsp;</span>';
-            } else {
-                $ui .= '<span class="'.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i>&nbsp;</span>';
             }
-
         }
-    }
-
-
-
-    $ui .= '<span class="'. superpower_active(12706) .'">';
-
-    if($is_link_source){
-        //Link Type
-        $en_all_4592 = $CI->config->item('en_all_4592');
-        $ui .= '<span class="icon-block-img ln_type_' . $ln_id .'" data-toggle="tooltip" data-placement="bottom" title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'">' . $en_all_4592[$en['ln_type_source_id']]['m_icon'] . '</span> ';
-    }
-
-    foreach ($en__parents as $en_parent) {
-        $ui .= '<span class="icon-block-img en_child_icon_' . $en_parent['en_id'] . '"><a href="/source/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span> ';
-    }
-    $ui .= ' </span>';
-
-    $ui .= '</div>';
-
-
 
     $ui .= '</td>';
-
-
-
 
 
 
@@ -1917,6 +1859,44 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
 
     $ui .= '</tr></table>';
+
+
+
+
+
+    //MESSAGE
+    if ($ln_id > 0) {
+        if($is_link_source){
+
+            $ui .= '<span class="message_content ln_content hideIfEmpty ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_source_id']) . '</span>';
+
+            //For JS editing only (HACK):
+            $ui .= '<div class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</div>';
+
+        } elseif($is_discover_progress && strlen($en['ln_content'])){
+
+            //DISCOVER PROGRESS
+            $ui .= '<div class="message_content">';
+            $ui .= $CI->COMMUNICATION_model->comm_message_send($en['ln_content']);
+            $ui .= '</div>';
+
+        }
+    }
+
+
+    //PROFILE
+    $ui .= '<div class="space-content">';
+    $ui .= '<span class="'. superpower_active(12706) .'">';
+    foreach ($en__parents as $en_parent) {
+        $ui .= '<span class="icon-block-img en_child_icon_' . $en_parent['en_id'] . '"><a href="/source/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span> ';
+    }
+    $ui .= '</span>';
+    $ui .= '</div>';
+
+
+
+
+
     $ui .= '</div>';
 
     return $ui;
