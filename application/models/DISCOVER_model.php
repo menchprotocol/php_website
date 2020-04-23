@@ -889,7 +889,7 @@ class DISCOVER_model extends CI_Model
             } else {
 
                 //IDEA TITLE
-                echo '<h1 style="padding-top:5px;" class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle discover"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
+                echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle discover"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
 
 
                 foreach ($in__messages as $message_ln) {

@@ -267,13 +267,13 @@ function echo_in_notes($ln)
     //Editing menu:
     $ui .= '<div class="note-editor edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
 
-        //Modify:
-        $ui .= '<span title="MODIFY" data-toggle="tooltip" data-placement="left"><a href="javascript:in_notes_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
-
         //Sort:
         if(in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents'])){
             $ui .= '<span title="SORT" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars '.( in_array(4603, $en_all_4485[$ln['ln_type_source_id']]['m_parents']) ? 'in_notes_sorting' : '' ).'"></i></span>';
         }
+
+        //Modify:
+        $ui .= '<span title="MODIFY" data-toggle="tooltip" data-placement="left"><a href="javascript:in_notes_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
 
     $ui .= '</span></div>';
 
@@ -1054,9 +1054,9 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
         $ui .= '<span class="show-on-hover">';
 
-        $ui .= '<span title="REMOVE" data-toggle="tooltip" data-placement="left"><span class="actionplan_delete" in-id="'.$in['in_id'].'"><i class="fas fa-times"></i></span></span>';
-
         $ui .= '<span class="discover-sorter" title="SORT" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars"></i></span>';
+
+        $ui .= '<span title="REMOVE" data-toggle="tooltip" data-placement="left"><span class="actionplan_delete" in-id="'.$in['in_id'].'"><i class="fas fa-times"></i></span></span>';
 
         $ui .= '</span>';
         $ui .= '</div>';
@@ -1256,12 +1256,12 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
         if($is_source || !$is_parent){
 
-            //Unlink:
-            $ui .= '<span title="UNLINK" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
-
             if($is_source && !$is_parent){
                 $ui .= '<span title="SORT" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars black idea-sort-handle"></i></span>';
             }
+
+            //Unlink:
+            $ui .= '<span title="UNLINK" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
 
         } elseif(!$is_source) {
 
