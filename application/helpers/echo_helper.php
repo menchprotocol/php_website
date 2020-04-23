@@ -1854,7 +1854,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
             $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-pen-square black"></i></a></span>';
         } elseif($is_in_source){
             //Allow to remove:
-            $ui .= '<span><a href="javascript:void(0);" onclick="in_notes_source_only_remove(' . $ln_id . ', '.$en['ln_type_source_id'].')"><i class="fas fa-times black"></i></a></span>';
+            $ui .= '<span><a href="javascript:void(0);" onclick="en_source_only_ref_delete(' . $ln_id . ', '.$en['ln_type_source_id'].')"><i class="fas fa-times black"></i></a></span>';
         }
     }
 

@@ -54,11 +54,11 @@ function in_notes_counter(note_type_id, adjustment_count){
     $('.en-type-counter-'+note_type_id).text(new_count);
 }
 
-function in_notes_source_only_remove(ln_id, note_type_id) {
+function en_source_only_ref_delete(ln_id, note_type_id) {
 
     var r = confirm("Remove this source?");
     if (r == true) {
-        $.post("/source/in_notes_source_only_remove", {
+        $.post("/source/en_source_only_ref_delete", {
 
             in_id: in_loaded_id,
             ln_id: ln_id,
@@ -81,7 +81,7 @@ function in_notes_source_only_remove(ln_id, note_type_id) {
 
 }
 
-function en_add_source_ref_only(en_existing_id, note_type_id) {
+function en_source_only_ref_add(en_existing_id, note_type_id) {
 
 
     //if en_existing_id>0 it means we're linking to an existing source, in which case en_new_string should be null
@@ -103,7 +103,7 @@ function en_add_source_ref_only(en_existing_id, note_type_id) {
 
     //Add via Ajax:
     input.prop('disabled', true);
-    $.post("/source/en_add_source_ref_only", {
+    $.post("/source/en_source_only_ref_add", {
 
         in_id: in_loaded_id,
         note_type_id: note_type_id,
@@ -137,7 +137,11 @@ function en_add_source_ref_only(en_existing_id, note_type_id) {
 
 }
 
-function in_notes_source_only_search(note_type_id) {
+function en_source_only_ref_search(note_type_id) {
+
+    if(!js_pl_id){
+        return false;
+    }
 
     var element_focus = ".source-map-"+note_type_id;
 
@@ -150,7 +154,7 @@ function in_notes_source_only_search(note_type_id) {
     }).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            en_add_source_ref_only(0, note_type_id);
+            en_source_only_ref_add(0, note_type_id);
             return true;
         }
     });
@@ -160,14 +164,14 @@ function in_notes_source_only_search(note_type_id) {
         //Define filters:
         var extra_filters = '';
         if(note_type_id==4983){
-            extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_4983.join(' OR _tags:alg_source_') + ') ';
+            extra_filters = ' AND ( _tags:alg_source_'+js_pl_id+' OR _tags:alg_source_' + js_en_ids_4983.join(' OR _tags:alg_source_') + ') ';
         } else if(note_type_id==10573){
-            extra_filters = ' AND ( _tags:alg_source_' + js_en_ids_10573.join(' OR _tags:alg_source_') + ') ';
+            extra_filters = ' AND ( _tags:alg_source_'+js_pl_id+' OR _tags:alg_source_' + js_en_ids_10573.join(' OR _tags:alg_source_') + ') ';
         }
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            en_add_source_ref_only(suggestion.alg_obj_id, note_type_id);
+            en_source_only_ref_add(suggestion.alg_obj_id, note_type_id);
 
         }).autocomplete({hint: false, minLength: 1}, [{
 
@@ -190,11 +194,11 @@ function in_notes_source_only_search(note_type_id) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:void(0);" onclick="en_add_source_ref_only(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                        return '<a href="javascript:void(0);" onclick="en_source_only_ref_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="en_add_source_ref_only(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="en_source_only_ref_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
@@ -243,7 +247,7 @@ $(document).ready(function () {
     //Activate Source-Only Inputs:
 
     $(".source-mapper").each(function () {
-        in_notes_source_only_search($(this).attr('note_type_id'));
+        en_source_only_ref_search($(this).attr('note_type_id'));
     });
 
     //Load top/bottom idea searches:

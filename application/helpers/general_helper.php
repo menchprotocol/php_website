@@ -1214,8 +1214,11 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_weight'] = intval($db_row['en_weight']);
 
                 //Add source as their own author:
-                array_push($export_row['_tags'], 'alg_source_' . $db_row['en_id']);
                 array_push($export_row['_tags'], 'alg_source_' . $db_row['ln_creator_source_id']);
+                if($db_row['ln_creator_source_id']!=$db_row['en_id']){
+                    //Also give access to source themselves, in case they can login:
+                    array_push($export_row['_tags'], 'alg_source_' . $db_row['en_id']);
+                }
 
                 if(in_array($db_row['en_status_source_id'], $CI->config->item('en_ids_12575'))){
                     array_push($export_row['_tags'], 'is_featured');

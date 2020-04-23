@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-23 10:37:40 PST
+//Generated 2020-04-23 10:52:51 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587663460;
-$config['cache_count_transaction'] = 1153161;
+$config['cache_timestamp'] = 1587664371;
+$config['cache_count_transaction'] = 1153188;
 $config['cache_count_discover'] = 121125;
-$config['cache_count_idea'] = 4859;
-$config['cache_count_source'] = 5223;
+$config['cache_count_idea'] = 4860;
+$config['cache_count_source'] = 5224;
 
 
 
@@ -1039,7 +1039,7 @@ $config['en_all_4536'] = array(
         'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE PENDING MODERATION',
         'm_desc' => '',
-        'm_parents' => array(4983,4536,5967,4755,4593),
+        'm_parents' => array(4536,5967,4755,4593),
     ),
     12775 => array(
         'm_icon' => '',
@@ -3920,7 +3920,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.3595',
+        'm_desc' => 'v1.3596',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -6201,7 +6201,7 @@ $config['en_all_10602'] = array(
 );
 
 //IDEA SOURCES:
-$config['en_ids_4983'] = array(2997,4446,3005,3147,4763,2999,3192,2998,3084,4430,7504);
+$config['en_ids_4983'] = array(2997,4446,3005,3147,4763,2999,3192,2998,3084,4430);
 $config['en_all_4983'] = array(
     2997 => array(
         'm_icon' => '<i class="fad fa-newspaper source" aria-hidden="true"></i>',
@@ -6262,12 +6262,6 @@ $config['en_all_4983'] = array(
         'm_name' => 'MENCH PLAYER',
         'm_desc' => '',
         'm_parents' => array(4983,1278,11035,10573,4426),
-    ),
-    7504 => array(
-        'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE PENDING MODERATION',
-        'm_desc' => '',
-        'm_parents' => array(4983,4536,5967,4755,4593),
     ),
 );
 
@@ -6717,7 +6711,7 @@ $config['en_all_5967'] = array(
         'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE PENDING MODERATION',
         'm_desc' => '&var_en_subscriber_ids=1',
-        'm_parents' => array(4983,4536,5967,4755,4593),
+        'm_parents' => array(4536,5967,4755,4593),
     ),
 );
 
@@ -8092,7 +8086,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE PENDING MODERATION',
         'm_desc' => '',
-        'm_parents' => array(4983,4536,5967,4755,4593),
+        'm_parents' => array(4536,5967,4755,4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-keyboard discover" aria-hidden="true"></i>',
@@ -8913,7 +8907,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE PENDING MODERATION',
         'm_desc' => 'Certain links that match an unknown behavior would require an admin to review and ensure it\'s all good',
-        'm_parents' => array(4983,4536,5967,4755,4593),
+        'm_parents' => array(4536,5967,4755,4593),
     ),
     10654 => array(
         'm_icon' => '<i class="fad fa-sliders-h source" aria-hidden="true"></i>',
