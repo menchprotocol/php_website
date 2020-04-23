@@ -1387,10 +1387,6 @@ class COMMUNICATION_model extends CI_Model
         //We assume this message has text, unless its only content is an source reference like "@123"
         $has_text = true;
 
-        //Where is this request being made from? Public landing pages will have some restrictions on what they displat:
-        $is_landing_page = is_numeric(str_replace('_','', $this->uri->segment(1)));
-        $is_user_message = ($is_landing_page || $this->uri->segment(1)=='discover');
-
         if (count($string_references['ref_sources']) > 0) {
 
             //We have a reference within this message, let's fetch it to better understand it:
@@ -1514,21 +1510,10 @@ class COMMUNICATION_model extends CI_Model
                  *
                  * */
 
-                $en_icon = '<span class="img-block">'.echo_en_icon($ens[0]['en_icon']).'</span> ';
+                //Show source link with status:
+                $current_mench = current_mench();
 
-                if($is_user_message){
-
-                    $source_replace_name = ( $has_text ? $en_icon.'<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'">'.$ens[0]['en_name'].'</span>' : '' );
-                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], $source_replace_name, $output_body_message);
-
-                } else {
-
-                    //Show source link with status:
-                    $current_mench = current_mench();
-
-                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block '.( $message_visual_media > 0 ? superpower_active(10939) : '' ).'">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).'<a class="montserrat doupper underline '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '">' . $en_icon . $ens[0]['en_name']  . '</a></span>', $output_body_message);
-
-                }
+                $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block '.( $message_visual_media > 0 && $current_mench['x_name']=='discover' ? superpower_active(10939) : '' ).'">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).'<a class="montserrat doupper underline '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '"><span class="img-block">'.echo_en_icon($ens[0]['en_icon']).'</span>&nbsp;' . $ens[0]['en_name']  . '</a></span>', $output_body_message);
 
             } else {
 
