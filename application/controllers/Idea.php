@@ -82,7 +82,7 @@ class Idea extends CI_Controller {
             'in_id' => $in_id,
         ));
         if ( count($ins) < 1) {
-            return redirect_message('/', '<div class="alert alert-danger" role="alert">IDEA #' . $in_id . ' Not Found</div>');
+            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle discover"></i></span>IDEA #' . $in_id . ' Not Found</div>');
         }
 
 
@@ -102,7 +102,7 @@ class Idea extends CI_Controller {
             if($is_public){
                 return redirect_message('/'.$in_id);
             } else {
-                return redirect_message('/', '<div class="alert alert-danger" role="alert">IDEA #' . $in_id . ' is not published yet.</div>');
+                return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle"></i></span>IDEA #' . $in_id . ' is not published yet.</div>');
             }
         }
 
@@ -118,7 +118,7 @@ class Idea extends CI_Controller {
             $process_mass_action = $this->IDEA_model->in_mass_update($in_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
 
             //Pass-on results to UI:
-            $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-warning' : 'alert-danger' ).'" role="alert">'.$process_mass_action['message'].'</div>';
+            $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-warning' : 'alert-danger' ).'" role="alert"><i class="fad fa-info-circle"></i></span>'.$process_mass_action['message'].'</div>';
 
         } else {
 
@@ -175,7 +175,7 @@ class Idea extends CI_Controller {
         ));
 
         //Go back to idea:
-        return redirect_message('/idea/'.$in_id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-thumbs-up"></i></span>Successfully submitted your request to become a source for this idea. You will receive a confirmation once your request has been reviewed.</div>');
+        return redirect_message('/idea/'.$in_id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>Successfully submitted your request to become a source for this idea. You will receive a confirmation once your request has been reviewed.</div>');
 
     }
 
@@ -194,7 +194,7 @@ class Idea extends CI_Controller {
         ));
 
         //Go back to idea:
-        return redirect_message('/idea/'.$in_id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-thumbs-up"></i></span>SUCCESSFULLY JOINED</div>');
+        return redirect_message('/idea/'.$in_id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY JOINED</div>');
 
     }
 

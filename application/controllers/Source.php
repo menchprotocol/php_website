@@ -65,7 +65,7 @@ class Source extends CI_Controller
             $process_mass_action = $this->SOURCE_model->en_mass_update($en_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
 
             //Pass-on results to UI:
-            $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-info' : 'alert-danger' ).'" role="alert">'.$process_mass_action['message'].'</div>';
+            $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-info' : 'alert-danger' ).'" role="alert"><i class="fad fa-info-circle"></i></span>'.$process_mass_action['message'].'</div>';
 
         } else {
 
@@ -2143,7 +2143,7 @@ class Source extends CI_Controller
             return redirect_message('/');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/source/sign', '<div class="alert alert-danger" role="alert">Missing Email</div>');
+            return redirect_message('/source/sign', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle discover"></i></span>Missing Email</div>');
         }
 
         //Validate DISCOVER ID and matching email:
@@ -2154,10 +2154,10 @@ class Source extends CI_Controller
         )); //The user making the request
         if(count($validate_links) < 1){
             //Probably previously completed the reset password:
-            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid data source</div>');
+            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle discover"></i></span>Invalid data source</div>');
         } elseif(strtotime($validate_links[0]['ln_timestamp']) + config_var(11065) < time()){
             //Probably previously completed the reset password:
-            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
+            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle discover"></i></span>Magic link has expired. Try again.</div>');
         }
 
         //Fetch source:
@@ -2165,7 +2165,7 @@ class Source extends CI_Controller
             'en_id' => $validate_links[0]['ln_creator_source_id'],
         ));
         if(count($ens) < 1){
-            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
+            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fad fa-exclamation-triangle discover"></i></span>User not found</div>');
         }
 
         //Log them in:
