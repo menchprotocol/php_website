@@ -766,7 +766,7 @@ function in_notes_create_upload(droppedFiles, uploadType, note_type_id) {
                 if(note_type_id==4231){
                     //Also append source:
                     in_notes_counter(4983, +1);
-                    add_to_list('add-source-'+note_type_id, '.en-item', data.en_new_echo);
+                    add_to_list('add-source-4983', '.en-item', data.en_new_echo);
                 }
 
                 //Adjust icon again:
