@@ -6,9 +6,9 @@ $(document).ready(function () {
     in_load_search("#newIdeaTitle",0, 'a', 'link_my_in');
 
     $('#newIdeaTitle').focus(function() {
-        $('#newIdeaTitle .pad_expand' ).removeClass('hidden');
+        $('.algolia_pad_search').removeClass('hidden');
     }).focusout(function() {
-        $('#newIdeaTitle .pad_expand' ).addClass('hidden');
+        $('.algolia_pad_search').addClass('hidden');
     });
 
 });

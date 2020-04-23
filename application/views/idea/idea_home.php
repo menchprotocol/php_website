@@ -32,7 +32,7 @@
                            maxlength="' . config_var(11071) . '"
                            id="newIdeaTitle"
                            placeholder="NEW IDEA">
-                </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
+                </div><div class="algolia_pad_search hidden"></div></div>';
 
         echo '</div>';
 
