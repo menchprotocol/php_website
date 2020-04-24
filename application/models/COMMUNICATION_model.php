@@ -1362,7 +1362,7 @@ class COMMUNICATION_model extends CI_Model
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                     'ln_portfolio_source_id' => $string_references['ref_sources'][0],
-                ), array('en_profile'), 0) as $parent_en) {
+                ), array('en_profile'), 0, 0, array('en_id' => 'ASC' /* Hack to get Text first */)) as $parent_en) {
 
                     if (in_array($parent_en['ln_type_source_id'], $this->config->item('en_ids_12524'))) {
 
@@ -1379,7 +1379,7 @@ class COMMUNICATION_model extends CI_Model
 
                         } else {
                             //Also append text:
-                            $source_appendix .= '<div class="source-appendix" style="padding:10px 0;">' . $parent_en['ln_content'] . '</div>';
+                            $source_appendix .= '<div class="source-appendix inline-block">' . $parent_en['ln_content'] . '</div>';
                         }
                         continue;
 
