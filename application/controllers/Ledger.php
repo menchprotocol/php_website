@@ -267,6 +267,9 @@ class Ledger extends CI_Controller
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             ));
             $ln_metadata = unserialize($lns[0]['ln_metadata']);
+            if(!$ln_metadata){
+                $ln_metadata = array();
+            }
 
             if(!count($lns)){
 
