@@ -77,7 +77,7 @@ function echo_url_types($url, $en_type_link_id)
 
     if ($en_type_link_id == 4256 /* Generic URL */) {
 
-        return '<a href="' . $url . '"><span class="url_truncate"><span class="icon-block-sm"><i class="far fa-external-link"></i></span>' . echo_url_clean($url) . '</span></a>';
+        return '<a href="' . $url . '"><span class="url_truncate"><span class="icon-block-xs"><i class="far fa-external-link"></i></span>' . echo_url_clean($url) . '</span></a>';
 
     } elseif ($en_type_link_id == 4257 /* Embed Widget URL? */) {
 
