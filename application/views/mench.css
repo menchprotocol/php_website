@@ -225,8 +225,8 @@ li a {
 a.btn, .btn.dropdown-toggle, label.btn {
     padding:15px;
 }
-.main_nav .btn{
-    padding:10px !important;
+.main_nav a.btn, .main_nav .btn.dropdown-toggle, .main_nav label.btn{
+    padding:10px;
 }
 
 .main_nav .btn {
