@@ -8,13 +8,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-23 17:32:53 PST
+//Generated 2020-04-23 22:23:00 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587688373;
-$config['cache_count_transaction'] = 1153956;
-$config['cache_count_discover'] = 121140;
-$config['cache_count_idea'] = 4896;
+$config['cache_timestamp'] = 1587705780;
+$config['cache_count_transaction'] = 1154324;
+$config['cache_count_discover'] = 121142;
+$config['cache_count_idea'] = 4898;
 $config['cache_count_source'] = 5234;
 
 
@@ -61,7 +61,7 @@ $config['en_all_10573'] = array(
         'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
         'm_name' => 'MENCH PLAYER',
         'm_desc' => '',
-        'm_parents' => array(4983,1278,11035,10573,4426),
+        'm_parents' => array(4983,1278,11035,10573),
     ),
 );
 
@@ -441,7 +441,7 @@ $config['en_all_12647'] = array(
 $config['en_ids_12648'] = array(12581,7347,6255);
 $config['en_all_12648'] = array(
     12581 => array(
-        'm_icon' => '<i class="fad fa-home discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-home" aria-hidden="true"></i>',
         'm_name' => 'HOME',
         'm_desc' => '',
         'm_parents' => array(12648,11035),
@@ -556,7 +556,7 @@ $config['en_all_4269'] = array(
     ),
     3286 => array(
         'm_icon' => '<i class="fad fa-key source" aria-hidden="true"></i>',
-        'm_name' => 'PASSWORD',
+        'm_name' => 'PASSWORD HASH',
         'm_desc' => '',
         'm_parents' => array(4269,4426,7578,6225,4755),
     ),
@@ -771,7 +771,7 @@ $config['en_all_12523'] = array(
     ),
     3308 => array(
         'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
-        'm_name' => 'YOUTUBE VIDEOS',
+        'm_name' => 'YOUTUBE URL',
         'm_desc' => '',
         'm_parents' => array(12523,4763,4257,2750,1326),
     ),
@@ -3926,7 +3926,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.35955',
+        'm_desc' => 'v1.3594',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -4179,7 +4179,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035,12701),
     ),
     12581 => array(
-        'm_icon' => '<i class="fad fa-home discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-home" aria-hidden="true"></i>',
         'm_name' => 'HOME',
         'm_desc' => '',
         'm_parents' => array(12648,11035),
@@ -4218,7 +4218,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
         'm_name' => 'MENCH PLAYER',
         'm_desc' => '',
-        'm_parents' => array(4983,1278,11035,10573,4426),
+        'm_parents' => array(4983,1278,11035,10573),
     ),
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
@@ -6267,7 +6267,7 @@ $config['en_all_4983'] = array(
         'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
         'm_name' => 'MENCH PLAYER',
         'm_desc' => '',
-        'm_parents' => array(4983,1278,11035,10573,4426),
+        'm_parents' => array(4983,1278,11035,10573),
     ),
 );
 
@@ -7343,7 +7343,7 @@ $config['en_all_6225'] = array(
     ),
     3286 => array(
         'm_icon' => '<i class="fad fa-key source" aria-hidden="true"></i>',
-        'm_name' => 'PASSWORD',
+        'm_name' => 'PASSWORD HASH',
         'm_desc' => '',
         'm_parents' => array(4269,4426,7578,6225,4755),
     ),
@@ -7619,19 +7619,13 @@ $config['en_all_4997'] = array(
 );
 
 //SOURCE LOCK:
-$config['en_ids_4426'] = array(6196,4430,4755,3288,4426,3286);
+$config['en_ids_4426'] = array(6196,4755,3288,4426,3286);
 $config['en_all_4426'] = array(
     6196 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger source" aria-hidden="true"></i>',
         'm_name' => 'MENCH MESSENGER',
         'm_desc' => '',
         'm_parents' => array(4426,3320),
-    ),
-    4430 => array(
-        'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
-        'm_name' => 'MENCH PLAYER',
-        'm_desc' => '',
-        'm_parents' => array(4983,1278,11035,10573,4426),
     ),
     4755 => array(
         'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
@@ -7653,7 +7647,7 @@ $config['en_all_4426'] = array(
     ),
     3286 => array(
         'm_icon' => '<i class="fad fa-key source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE PASSWORD',
+        'm_name' => 'SOURCE PASSWORD HASH',
         'm_desc' => '',
         'm_parents' => array(4269,4426,7578,6225,4755),
     ),
@@ -8084,7 +8078,7 @@ $config['en_all_4755'] = array(
     ),
     3286 => array(
         'm_icon' => '<i class="fad fa-key source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE PASSWORD',
+        'm_name' => 'SOURCE PASSWORD HASH',
         'm_desc' => '',
         'm_parents' => array(4269,4426,7578,6225,4755),
     ),

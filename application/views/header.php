@@ -264,6 +264,9 @@ if(!isset($hide_header)){
                         echo '</div>';
                         echo '</td>';
 
+                        //Sign In/Up
+                        echo '<td class="block-link"><a href="/" title="'.$en_all_11035[12581]['m_name'].'">'.$en_all_11035[12581]['m_icon'].'</a></td>';
+
                     } else {
 
                         //Sign In/Up
