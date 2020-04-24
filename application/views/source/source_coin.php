@@ -51,38 +51,29 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
     <?php
 
     //NAME & STATUS
+    echo '<div class="pull-right inline-block" style="margin-bottom: -30px;">';
 
-    //SOURCE NAME
-    echo echo_input_text(6197, $en['en_name'], $en['en_id'], ($is_source && $is_active), 0, true, $en['en_icon'], extract_icon_color($en['en_icon']));
+    //REFERENCES
+    if(superpower_active(12701, true)){
+        echo '<div class="inline-block '.superpower_active(12701).'">'.join('',en_count_db_references($en['en_id'])).'</div>';
+    }
 
+    //SOURCE DRAFTING?
+    echo '<span class="icon-block en_status_source_id_' . $en['en_id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].': '.$en_all_6177[$en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span>';
 
-    //LEFT
-    /*
-    echo '<h1 class="'.extract_icon_color($en['en_icon']).' pull-left inline-block" style="padding-top:3px;"><span class="icon-block en_ui_icon_'.$en['en_id'].'">'.echo_en_icon($en['en_icon']).'</span><span class="icon-block en_status_source_id_' . $en['en_id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].': '.$en_all_6177[$en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span><span class="en_name_full_'.$en['en_id'].' title-block-lg">'.$en['en_name'].'</span></h1>';
-
-
-    //RIGHT
-    echo '<div class="pull-right inline-block">';
-
-        //REFERENCES
-        if(superpower_active(12701, true)){
-            echo '<div class="inline-block '.superpower_active(12701).'">'.join('',en_count_db_references($en['en_id'])).'</div>';
-        }
-
-        //Modify
-        echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',0)" class="btn btn-source btn-five icon-block-lg '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
+    //Modify
+    echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',0)" class="icon-block '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
 
     echo '</div>';
-
-
     echo '<div class="doclear">&nbsp;</div>';
 
-    */
 
-    //FOR EDITING ONLY (HIDDEN FROM UI):
+    //SOURCE NAME
+    echo '<div class="itemsource">'.echo_input_text(6197, $en['en_name'], $en['en_id'], ($is_source && $is_active), 0, true, $en['en_icon'], extract_icon_color($en['en_icon'])).'</div>';
+
+
+    //FOR EDITING ONLY:
     echo '<div class="hidden">'.echo_en($en).'</div>';
-
-
     ?>
 
 
@@ -94,14 +85,11 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
         <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
             <a href="javascript:void(0);" onclick="modify_cancel()"><i class="fas fa-times"></i></a>
         </div>
-        <div class="grey-box">
 
+        <div class="grey-box">
             <div class="row">
                 <div class="col-md-6">
-
                     <div class="inline-box">
-
-
 
                         <!-- Player Status -->
                         <span class="mini-header"><?= $en_all_6206[6177]['m_icon'].' '.$en_all_6206[6177]['m_name'] ?></span>

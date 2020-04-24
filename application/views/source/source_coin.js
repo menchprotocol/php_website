@@ -614,6 +614,7 @@ function en_modify_save() {
                 //Reflect changed:
                 //Update variables:
                 $(".en_name_full_" + modify_data['en_id']).text(modify_data['en_name']);
+                $(".text__6197_" + modify_data['en_id']).text(modify_data['en_name']);
 
 
                 //Player Status:
