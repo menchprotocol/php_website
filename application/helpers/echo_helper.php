@@ -1949,7 +1949,7 @@ function echo_input_text($cache_en_id, $current_value, $object_id, $is_source, $
     $current_value = htmlentities($current_value);
 
     //Define element attributes:
-    $attributes = ( $is_source ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block echo_input_text_update text__'.$cache_en_id.'_'.$object_id.' texttype_'.($extra_large?'_lg':'_sm').' '.$append_css.'" cache_en_id="'.$cache_en_id.'" object_id="'.$object_id.'" ';
+    $attributes = ( $is_source ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block echo_input_text_update text__'.$cache_en_id.'_'.$object_id.' texttype_'.($extra_large?'_lg':'_sm').' text_en_'.$cache_en_id.' '.$append_css.'" cache_en_id="'.$cache_en_id.'" object_id="'.$object_id.'" ';
 
     //Also Append Counter to the end?
     if($extra_large){

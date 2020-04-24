@@ -180,7 +180,7 @@ li a {
     text-decoration: underline;
 }
 
-.doupper {
+.doupper, .text_en_6197 {
     text-transform: uppercase !important;
 }
 .add-input{
