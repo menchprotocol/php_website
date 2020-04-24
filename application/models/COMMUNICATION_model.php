@@ -1365,17 +1365,29 @@ class COMMUNICATION_model extends CI_Model
                 ), array('en_profile'), 0) as $parent_en) {
 
                     if (in_array($parent_en['ln_type_source_id'], $this->config->item('en_ids_12524'))) {
+
                         //Raw media file: Audio, Video, Image OR File...
                         $message_visual_media++;
+
                     } elseif($parent_en['ln_type_source_id'] == 4256 /* URL */){
+
                         array_push($valid_url, $parent_en['ln_content']);
-                    } elseif($parent_en['ln_type_source_id'] == 4255 /* TEXT */ && !$push_message){
-                        //Also append text:
-                        $source_appendix .= '<div class="source-appendix">' . $parent_en['ln_content'] . '</div>';
+
+                    } elseif($parent_en['ln_type_source_id'] == 4255 /* TEXT */){
+
+                        if($push_message){
+
+                        } else {
+                            //Also append text:
+                            $source_appendix .= '<div class="source-appendix">' . $parent_en['ln_content'] . '</div>';
+                        }
                         continue;
+
                     } else {
+
                         //Not supported for now:
                         continue;
+
                     }
 
                     if($push_message){
@@ -1441,9 +1453,6 @@ class COMMUNICATION_model extends CI_Model
                  * to more information about that source:=.
                  *
                  * */
-
-                //Show source link with status:
-                $current_mench = current_mench();
 
                 $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block '.( $message_visual_media > 0 && $current_mench['x_name']=='discover' ? superpower_active(10939) : '' ).'">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).'<a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '"><span class="img-block">'.echo_en_icon($ens[0]['en_icon']).'</span>&nbsp;' . $ens[0]['en_name']  . '</a></span>', $output_body_message);
 
