@@ -63,7 +63,7 @@ function echo_time_minutes($sec_int)
     return ( $min ? $min . ' Min.' : ( $sec ? $sec . ' Sec.' : false ) );
 }
 
-function echo_url_types($url, $en_type_link_id, $do_mini = false)
+function echo_url_types($url, $en_type_link_id)
 {
 
     /*
@@ -77,7 +77,7 @@ function echo_url_types($url, $en_type_link_id, $do_mini = false)
 
     if ($en_type_link_id == 4256 /* Generic URL */) {
 
-        return '<a href="' . $url . '">'.( $do_mini ? '<i class="fas fa-external-link"></i>' : '<span class="url_truncate">' . echo_url_clean($url) . '</span>' ).'</a>';
+        return '<a href="' . $url . '"><span class="url_truncate"><span class="inline-block"><i class="far fa-external-link"></i></span>' . echo_url_clean($url) . '</span></a>';
 
     } elseif ($en_type_link_id == 4257 /* Embed Widget URL? */) {
 
