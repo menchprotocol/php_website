@@ -50,8 +50,19 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
 
     <?php
 
+
+    //SOURCE NAME
+    echo '<div class="itemsource">'.echo_input_text(6197, $en['en_name'], $en['en_id'], ($is_source && $is_active), 0, true, $en['en_icon'], extract_icon_color($en['en_icon'])).'</div>';
+
+
+    //FOR EDITING ONLY:
+    echo '<div class="hidden">'.echo_en($en).'</div>';
+
+
+
     //NAME & STATUS
-    echo '<div class="pull-right inline-block" style="margin-bottom: -30px;">';
+    echo '<div class="doclear">&nbsp;</div>';
+    echo '<div class="pull-right inline-block" style="margin-bottom: -28px;">';
 
     //REFERENCES
     if(superpower_active(12701, true)){
@@ -67,13 +78,6 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
     echo '</div>';
     echo '<div class="doclear">&nbsp;</div>';
 
-
-    //SOURCE NAME
-    echo '<div class="itemsource">'.echo_input_text(6197, $en['en_name'], $en['en_id'], ($is_source && $is_active), 0, true, $en['en_icon'], extract_icon_color($en['en_icon'])).'</div>';
-
-
-    //FOR EDITING ONLY:
-    echo '<div class="hidden">'.echo_en($en).'</div>';
     ?>
 
 
