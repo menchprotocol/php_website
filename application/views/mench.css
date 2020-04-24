@@ -1324,7 +1324,7 @@ label {
 .form-control::placeholder{
     color: #999999;
 }
-.texttype__sm{
+.text_en_4736{
     width:calc(100% - 33px); /* Used to be 377px */
     margin-bottom: 5px;
 }
