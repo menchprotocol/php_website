@@ -1234,13 +1234,16 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
             } else {
 
-                $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in) . '</a>';
+                $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">';
 
                 //IDEA STATUS
                 if(!$is_public){
                     $ui .= '<span class="inline-block">&nbsp;<span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].' @'.$in['in_status_source_id'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span></span>';
-
                 }
+
+                $ui .= echo_in_title($in);
+                $ui .= '</a>';
+
             }
         $ui .= '</div>';
     $ui .= '</td>';
