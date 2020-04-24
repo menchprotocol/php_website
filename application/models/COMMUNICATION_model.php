@@ -1427,9 +1427,7 @@ class COMMUNICATION_model extends CI_Model
 
 
             //Append any appendix generated:
-            if($source_appendix && (count($valid_url)>0 || $message_visual_media > 0)){
-                $output_body_message .= $source_appendix;
-            }
+            $output_body_message .= $source_appendix;
 
 
 
