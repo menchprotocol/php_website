@@ -671,7 +671,7 @@ class SOURCE_model extends CI_Model
             } else {
 
                 //did not find a <title> tag, so let's use URL Type & identifier as its name:
-                $page_title = $url_identified;
+                $page_title = $en_all_4592[$ln_type_source_id]['m_name'].' '.$url_identified;
 
             }
 
@@ -719,11 +719,11 @@ class SOURCE_model extends CI_Model
 
                 if(!$page_title){
                     //Assign a generic source name:
-                    $page_title = substr(md5($url), 0, 8);
+                    $page_title = $en_all_4592[$ln_type_source_id]['m_name'].' '.substr(md5($url), 0, 8);
                 }
 
                 //Prefix type in name:
-                $page_title = $en_all_4592[$ln_type_source_id]['m_name'].' '.$page_title;
+                $page_title = $page_title;
 
                 //Create a new source for this URL ONLY If player source is provided...
                 $added_en = $this->SOURCE_model->en_verify_create($page_title, $ln_creator_source_id, true, 6181, $en_all_4592[$ln_type_source_id]['m_icon']);

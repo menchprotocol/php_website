@@ -5,49 +5,6 @@
 *
 * */
 
-function in_update_text(this_handler){
-
-    var handler = '.text__'+$(this_handler).attr('cache_en_id')+'_'+$(this_handler).attr('in_ln__id');
-    var new_value = $(this_handler).val().trim();
-
-    //See if anything changes:
-    if( $(this_handler).attr('old-value') == new_value ){
-        //Nothing changed:
-        return false;
-    }
-
-    //Grey background to indicate saving...
-    $(handler).addClass('dynamic_saving');
-
-    $.post("/idea/in_update_text", {
-
-        in_ln__id: $(this_handler).attr('in_ln__id'),
-        cache_en_id: $(this_handler).attr('cache_en_id'),
-        field_value: new_value
-
-    }, function (data) {
-
-        if (!data.status) {
-
-            //Reset to original value:
-            $(handler).val(data.original_val);
-
-            //Show error:
-            alert(data.message);
-
-        } else {
-            //Update value:
-            $(this_handler).attr('old-value', new_value)
-        }
-
-        setTimeout(function () {
-            //Restore background:
-            $(handler).removeClass('dynamic_saving');
-        }, 233);
-
-    });
-}
-
 function in_notes_counter(note_type_id, adjustment_count){
     var current_count = parseInt($('.en-type-counter-'+note_type_id).text());
     var new_count = current_count + adjustment_count;
@@ -211,25 +168,13 @@ function en_source_only_search(note_type_id) {
 
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
-function in_update_text_start(){
-    $('.in_update_text').keypress(function(e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if (code == 13) {
-            in_update_text(this);
-            e.preventDefault();
-        }
-    }).change(function() {
-        in_update_text(this);
-    });
-}
-
 $(document).ready(function () {
 
     //Load search for mass update function:
     load_editor();
 
     //Lookout for textinput updates
-    in_update_text_start();
+    echo_input_text_update_start();
 
     //Put focus on messages if no message:
     if(!$('#in_notes_list_4231 .note_sortable').length){
@@ -428,14 +373,14 @@ function in_notes_count_new(note_type_id) {
 
     //Update count:
     var len = $('#ln_content' + note_type_id).val().length;
-    if (len > js_en_all_6404[11073]['m_desc']) {
+    if (len > js_en_all_6404[4485]['m_desc']) {
         $('#charNum' + note_type_id).addClass('overload').text(len);
     } else {
         $('#charNum' + note_type_id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
-    if(len > ( js_en_all_6404[11073]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
+    if(len > ( js_en_all_6404[4485]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
         $('#ideaNoteNewCount' + note_type_id).removeClass('hidden');
     } else {
         $('#ideaNoteNewCount' + note_type_id).addClass('hidden');
@@ -445,24 +390,6 @@ function in_notes_count_new(note_type_id) {
 
 
 
-//Count text area characters:
-function in_title_count() {
-
-    //Update count:
-    var len = $('.text__4736_'+in_loaded_id).val().length;
-    if (len > js_en_all_6404[11071]['m_desc']) {
-        $('#charTitleNum').addClass('overload').text(len);
-    } else {
-        $('#charTitleNum').removeClass('overload').text(len);
-    }
-
-    //Only show counter if getting close to limit:
-    if(len > ( js_en_all_6404[11071]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
-        $('.title_counter').removeClass('hidden');
-    } else {
-        $('.title_counter').addClass('hidden');
-    }
-}
 
 function in_edit_notes_count(ln_id) {
     //See if this is a valid text message editing:
@@ -471,14 +398,14 @@ function in_edit_notes_count(ln_id) {
     }
     //Update count:
     var len = $('#message_body_' + ln_id).val().length;
-    if (len > js_en_all_6404[11073]['m_desc']) {
+    if (len > js_en_all_6404[4485]['m_desc']) {
         $('#charEditingNum' + ln_id).addClass('overload').text(len);
     } else {
         $('#charEditingNum' + ln_id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
-    if(len > ( js_en_all_6404[11073]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
+    if(len > ( js_en_all_6404[4485]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
         $('#ideaNoteCount' + ln_id).removeClass('hidden');
     } else {
         $('#ideaNoteCount' + ln_id).addClass('hidden');
@@ -986,7 +913,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
             in_sort_load(in_linked_id);
 
             //Lookout for textinput updates
-            in_update_text_start();
+            echo_input_text_update_start();
 
             //Expand selections:
             prep_search_pad();

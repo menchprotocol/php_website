@@ -11,6 +11,9 @@ var $input = $('.drag-box').find('input[type="file"]'),
 
 $(document).ready(function () {
 
+    //Lookout for textinput updates
+    echo_input_text_update_start();
+
     //Setup auto focus:
     $('#openEn6197').on('show.bs.collapse', function () {
         //call a service here
@@ -140,7 +143,6 @@ $(document).ready(function () {
     en_ln_type_preview_load();
 
 });
-
 
 
 
@@ -317,7 +319,7 @@ function en_filter_status(new_val) {
 
 function en_name_word_count() {
     var len = $('#en_name').val().length;
-    if (len > js_en_all_6404[11072]['m_desc']) {
+    if (len > js_en_all_6404[6197]['m_desc']) {
         $('#charEnNum').addClass('overload').text(len);
     } else {
         $('#charEnNum').removeClass('overload').text(len);

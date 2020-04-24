@@ -1143,11 +1143,11 @@ class IDEA_model extends CI_Model
                 'message' => 'Title cannot include double spaces',
             );
 
-        } elseif (strlen($in_title) > config_var(11071)) {
+        } elseif (strlen($in_title) > config_var(4736)) {
 
             return array(
                 'status' => 0,
-                'message' => 'Title must be '.config_var(11071).' characters or less',
+                'message' => 'Title must be '.config_var(4736).' characters or less',
             );
 
         }

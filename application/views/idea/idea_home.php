@@ -29,7 +29,7 @@
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control form-control-thick montserrat algolia_search dotransparent add-input"
-                           maxlength="' . config_var(11071) . '"
+                           maxlength="' . config_var(4736) . '"
                            id="newIdeaTitle"
                            placeholder="NEW IDEA">
                 </div><div class="algolia_pad_search hidden"></div></div>';

@@ -99,7 +99,7 @@ class Source extends CI_Controller
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
         $this->load->view('source/source_coin', array(
-            'source' => $ens[0],
+            'en' => $ens[0],
             'session_en' => $session_en,
         ));
         $this->load->view('footer');
@@ -814,10 +814,10 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing source link data',
             ));
-        } elseif (strlen($_POST['en_name']) > config_var(11072)) {
+        } elseif (strlen($_POST['en_name']) > config_var(6197)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Name is longer than the allowed ' . config_var(11072) . ' characters.',
+                'message' => 'Name is longer than the allowed ' . config_var(6197) . ' characters.',
             ));
         } elseif (strlen($_POST['en_name']) < config_var(12232)) {
             return echo_json(array(
@@ -1351,10 +1351,10 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'Name must be at-least '.config_var(12232).' characters long',
             ));
-        } elseif (strlen($_POST['en_name']) > config_var(11072)) {
+        } elseif (strlen($_POST['en_name']) > config_var(6197)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Name is longer than the allowed ' . config_var(11072) . ' characters.',
+                'message' => 'Name is longer than the allowed ' . config_var(6197) . ' characters.',
             ));
         }
 
@@ -1690,10 +1690,10 @@ class Source extends CI_Controller
                 'message' => 'Name must longer than '.config_var(12232).' characters',
                 'focus_input_field' => 'input_name',
             ));
-        } elseif (strlen($_POST['input_name']) > config_var(11072)) {
+        } elseif (strlen($_POST['input_name']) > config_var(6197)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Name must be less than '.config_var(11072).' characters',
+                'message' => 'Name must be less than '.config_var(6197).' characters',
                 'focus_input_field' => 'input_name',
             ));
 

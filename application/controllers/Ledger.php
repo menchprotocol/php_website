@@ -117,4 +117,211 @@ class Ledger extends CI_Controller
 
 
 
+
+
+    function echo_input_text_update(){
+
+        //Authenticate Player:
+        $session_en = superpower_assigned();
+        $en_all_12112 = $this->config->item('en_all_12112');
+
+        if (!$session_en) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => echo_unauthorized_message(),
+                'original_val' => '',
+            ));
+
+        } elseif(!isset($_POST['object_id']) || !isset($_POST['cache_en_id']) || !isset($_POST['field_value'])){
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing core variables',
+                'original_val' => '',
+            ));
+
+        } elseif($_POST['cache_en_id']==4736 /* IDEA TITLE */){
+
+            $ins = $this->IDEA_model->in_fetch(array(
+                'in_id' => $_POST['object_id'],
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+            ));
+            if(!count($ins)){
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Idea ID.',
+                    'original_val' => '',
+                ));
+            }
+
+            //Validate Idea Outcome:
+            $in_titlevalidation = $this->IDEA_model->in_titlevalidate($_POST['field_value']);
+            if(!$in_titlevalidation['status']){
+                //We had an error, return it:
+                return echo_json(array_merge($in_titlevalidation, array(
+                    'original_val' => $ins[0]['in_title'],
+                )));
+            } else {
+
+                //All good, go ahead and update:
+                $this->IDEA_model->in_update($_POST['object_id'], array(
+                    'in_title' => trim($_POST['field_value']),
+                ), true, $session_en['en_id']);
+
+                return echo_json(array(
+                    'status' => 1,
+                ));
+
+            }
+
+        } elseif($_POST['cache_en_id']==4356 /* DISCOVER TIME */){
+
+            $ins = $this->IDEA_model->in_fetch(array(
+                'in_id' => $_POST['object_id'],
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+            ));
+
+            if(!count($ins)){
+
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Idea ID.',
+                    'original_val' => '',
+                ));
+
+            } elseif(!is_numeric($_POST['field_value']) || $_POST['field_value'] < 0){
+
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be a number greater than zero.',
+                    'original_val' => $ins[0]['in_time_seconds'],
+                ));
+
+            } elseif($_POST['field_value'] > config_var(4356)){
+
+                $hours = rtrim(number_format((config_var(4356)/3600), 1), '.0');
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be less than '.$hours.' Hour'.echo__s($hours).', or '.config_var(4356).' Seconds long. You can break down your idea into smaller ideas.',
+                    'original_val' => $ins[0]['in_time_seconds'],
+                ));
+
+            } elseif($_POST['field_value'] < config_var(12427)){
+
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to discover ideas ;)',
+                    'original_val' => $ins[0]['in_time_seconds'],
+                ));
+
+            } else {
+
+                //All good, go ahead and update:
+                $this->IDEA_model->in_update($_POST['object_id'], array(
+                    'in_time_seconds' => $_POST['field_value'],
+                ), true, $session_en['en_id']);
+
+                return echo_json(array(
+                    'status' => 1,
+                ));
+
+            }
+
+        } elseif($_POST['cache_en_id']==4358 /* DISCOVER MARKS */){
+
+            //Fetch/Validate Link:
+            $lns = $this->LEDGER_model->ln_fetch(array(
+                'ln_id' => $_POST['object_id'],
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            ));
+            $ln_metadata = unserialize($lns[0]['ln_metadata']);
+
+            if(!count($lns)){
+
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Link ID.',
+                    'original_val' => '',
+                ));
+
+            } elseif(!is_numeric($_POST['field_value']) || fmod($_POST['field_value'], 1)>0 || $_POST['field_value'] < config_var(11056) ||  $_POST['field_value'] > config_var(11057)){
+
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be an integer between '.config_var(11056).' and '.config_var(11057).'.',
+                    'original_val' => ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : 0 ),
+                ));
+
+            } else {
+
+                //All good, go ahead and update:
+                $this->LEDGER_model->ln_update($_POST['object_id'], array(
+                    'ln_metadata' => array_merge($ln_metadata, array(
+                        'tr__assessment_points' => intval($_POST['field_value']),
+                    )),
+                ), $session_en['en_id'], 10663 /* Idea Link updated Marks */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' updated'.( isset($ln_metadata['tr__assessment_points']) ? ' from [' . $ln_metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
+
+                return echo_json(array(
+                    'status' => 1,
+                ));
+
+            }
+
+        } elseif($_POST['cache_en_id']==4735 /* UNLOCK MIN SCORE */ || $_POST['cache_en_id']==4739 /* UNLOCK MAX SCORE */){
+
+            //Fetch/Validate Link:
+            $lns = $this->LEDGER_model->ln_fetch(array(
+                'ln_id' => $_POST['object_id'],
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            ));
+            $ln_metadata = unserialize($lns[0]['ln_metadata']);
+            $field_name = ( $_POST['cache_en_id']==4735 ? 'tr__conditional_score_min' : 'tr__conditional_score_max' );
+
+            if(!count($lns)){
+
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Link ID.',
+                    'original_val' => '',
+                ));
+
+            } elseif(!is_numeric($_POST['field_value']) || fmod($_POST['field_value'], 1)>0 || $_POST['field_value'] < 0 || $_POST['field_value'] > 100){
+
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be an integer between 0 and 100.',
+                    'original_val' => ( isset($ln_metadata[$field_name]) ? $ln_metadata[$field_name] : '' ),
+                ));
+
+            } else {
+
+                //All good, go ahead and update:
+                $this->LEDGER_model->ln_update($_POST['object_id'], array(
+                    'ln_metadata' => array_merge($ln_metadata, array(
+                        $field_name => intval($_POST['field_value']),
+                    )),
+                ), $session_en['en_id'], 10664 /* Idea Link updated Score */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' updated'.( isset($ln_metadata[$field_name]) ? ' from [' . $ln_metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
+
+                return echo_json(array(
+                    'status' => 1,
+                ));
+
+            }
+
+        } else {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Unkown Update Type ['.$_POST['cache_en_id'].']',
+                'original_val' => '',
+            ));
+
+        }
+    }
+
+
+
 }

@@ -286,7 +286,7 @@ function echo_in_notes($ln)
     $ui .= '<ul class="msg-nav '.superpower_active(10939).'">';
 
     //Counter:
-    $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $ln['ln_id'] . '"><span id="charEditingNum' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</span></li>';
+    $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $ln['ln_id'] . '"><span id="charEditingNum' . $ln['ln_id'] . '">0</span>/' . config_var(4485) . '</span></li>';
 
     //Save Edit:
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:in_notes_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_source_id'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
@@ -1228,7 +1228,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
             //IDEA TITLE
             if($is_in_link && superpower_active(12673, true)){
-                $ui .= echo_in_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
+                $ui .= echo_input_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
             } else {
                 $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in) . '</a>';
             }
@@ -1247,28 +1247,19 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
     $ui .= '<td class="MENCHcolumn3 source">';
 
 
-    if($is_in_link && $control_enabled){
+    if($is_in_link && $control_enabled && $is_source){
 
         //RIGHT EDITING:
         $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
         $ui .= '<div class="note-editor edit-off">';
         $ui .= '<span class="show-on-hover">';
 
-        if($is_source || !$is_parent){
-
-            if($is_source && !$is_parent){
-                $ui .= '<span title="SORT" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars black idea-sort-handle"></i></span>';
-            }
-
-            //Unlink:
-            $ui .= '<span title="UNLINK" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
-
-        } elseif(!$is_source) {
-
-            //Indicate if NOT a Source:
-            $ui .= '<span data-toggle="tooltip" title="You are not yet a source of this idea" data-placement="bottom"><i class="fas fa-user-minus discover"></i></span>';
-
+        if(!$is_parent){
+            $ui .= '<span title="SORT" data-toggle="tooltip" data-placement="left"><i class="fas fa-bars black idea-sort-handle"></i></span>';
         }
+
+        //Unlink:
+        $ui .= '<span title="UNLINK" data-toggle="tooltip" data-placement="left"><a href="javascript:void(0);" onclick="in_unlink('.$in['in_id'].', '.$in['ln_id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
 
         $ui .= '</span>';
         $ui .= '</div>';
@@ -1296,13 +1287,13 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
         $ui .= '<div class="space-content ' . superpower_active(12673) . '">';
 
         //IDEA STATUS
-        $ui .= '<div class="inline-block">' . echo_in_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
+        $ui .= '<div class="inline-block">' . echo_input_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
 
         //IDEA TYPE
-        $ui .= '<div class="inline-block '.superpower_active(10986).'">'.echo_in_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']).'</div>';
+        $ui .= '<div class="inline-block '.superpower_active(10986).'">'.echo_input_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']).'</div>';
 
         //IDEA DISCOVER TIME
-        $ui .= echo_in_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source, ($in['ln_order']*10)+1);
+        $ui .= echo_input_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source, ($in['ln_order']*10)+1);
 
 
         //PREVIOUS & NEXT IDEAS
@@ -1329,26 +1320,26 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
         //Idea Wand
         $ui .= '<div class="inline-block ' . superpower_active(12700) . '">';
         //LINK TYPE
-        $ui .= echo_in_dropdown(4486, $in['ln_type_source_id'], null, $is_source, false, $in['in_id'], $in['ln_id']);
+        $ui .= echo_input_dropdown(4486, $in['ln_type_source_id'], null, $is_source, false, $in['in_id'], $in['ln_id']);
 
         //LINK MARKS
         $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_source_id']==4228 ? : 'hidden' ).'">';
-        $ui .= echo_in_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+2 );
+        $ui .= echo_input_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+2 );
         $ui .='</span>';
 
 
         //LINK CONDIITONAL RANGE
         $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_source_id']==4229 ? : 'hidden' ).'">';
         //MIN
-        $ui .= echo_in_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+3);
+        $ui .= echo_input_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+3);
         //MAX
-        $ui .= echo_in_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+4);
+        $ui .= echo_input_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+4);
         $ui .= '</span>';
         $ui .= '</div>';
 
 
-
         $ui .= '</div>';
+
     }
 
     $ui .= '</div>';
@@ -1605,7 +1596,7 @@ function echo_in_note_source($in_id, $note_type_en_id, $in_notes, $is_source){
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_11018[$note_type_en_id]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control IdeaAddPrevious form-control-thick doupper add-input montserrat algolia_search dotransparent"
-                           maxlength="' . config_var(11072) . '"
+                           maxlength="' . config_var(6197) . '"
                            idea-id="' . $in_id . '"
                            id="add-source-idea-' . $in_id . '"
                            placeholder="'.$en_all_11018[$note_type_en_id]['m_name'].'">
@@ -1654,7 +1645,7 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
 
 
     //File counter:
-    $ui .= '<td style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaNoteNewCount' . $note_type_en_id . '" class="hidden"><span id="charNum' . $note_type_en_id . '">0</span>/' . config_var(11073).'</span></td>';
+    $ui .= '<td style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaNoteNewCount' . $note_type_en_id . '" class="hidden"><span id="charNum' . $note_type_en_id . '">0</span>/' . config_var(4485).'</span></td>';
 
 
     //YouTube Clip:
@@ -1722,7 +1713,8 @@ function echo_unauthorized_message($superpower_en_id = 0, $push_message = true){
 
 }
 
-function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled = false)
+
+function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled = false, $is_source = false)
 {
 
     $CI =& get_instance();
@@ -1746,7 +1738,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $ln_id = (isset($en['ln_id']) ? $en['ln_id'] : 0);
     $is_link_source = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_4592')));
     $is_discover_progress = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_12227')));
-    $is_in_source = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_7551')));
+    $is_source_only = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_7551')));
     $ui = null;
 
     $en__profiles = $CI->LEDGER_model->ln_fetch(array(
@@ -1839,7 +1831,6 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
 
 
-
     //DISCOVER
     $ui .= '<td class="MENCHcolumn2 discover">';
 
@@ -1848,13 +1839,17 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $ui .= '<div class="note-editor edit-off">';
     $ui .= '<span class="show-on-hover">';
 
-    if($control_enabled){
+    if($control_enabled && $is_source){
         if($is_link_source){
+
             //Manage source link:
             $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-pen-square black"></i></a></span>';
-        } elseif($is_in_source){
+
+        } elseif($is_source_only){
+
             //Allow to remove:
             $ui .= '<span><a href="javascript:void(0);" onclick="en_source_only_unlink(' . $ln_id . ', '.$en['ln_type_source_id'].')"><i class="fas fa-times black"></i></a></span>';
+
         }
     }
 
@@ -1945,42 +1940,43 @@ function echo_basic_list_link($m, $url){
 
 }
 
-function echo_in_text($cache_en_id, $current_value, $in_ln__id, $is_source, $tabindex = 0, $is_in_title_lg = false){
+
+
+function echo_input_text($cache_en_id, $current_value, $object_id, $is_source, $tabindex = 0, $extra_large = false, $en_icon = null, $append_css = null){
 
     $CI =& get_instance();
     $en_all_12112 = $CI->config->item('en_all_12112');
     $current_value = htmlentities($current_value);
 
     //Define element attributes:
-    $attributes = ( $is_source ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block in_update_text text__'.$cache_en_id.'_'.$in_ln__id.' texttype_'.$cache_en_id.($is_in_title_lg?'_lg':'_sm').'" cache_en_id="'.$cache_en_id.'" in_ln__id="'.$in_ln__id.'" ';
+    $attributes = ( $is_source ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block echo_input_text_update text__'.$cache_en_id.'_'.$object_id.' texttype_'.$cache_en_id.($extra_large?'_lg':'_sm').' '.$append_css.'" cache_en_id="'.$cache_en_id.'" object_id="'.$object_id.'" ';
 
+    //Also Append Counter to the end?
+    if($extra_large){
 
-    $tooltip_span_start = '<span class="span__'.$cache_en_id.' '.( !$is_source ? 'edit-locked' : '' ).'" '.( !$is_in_title_lg || !$is_source ? 'data-toggle="tooltip" data-placement="top" title="'.$en_all_12112[$cache_en_id]['m_name'].'"' : '').'>';
-    $tooltip_span_end = '</span>';
-
-
-    //Determine ICON
-    if($is_in_title_lg){
-        //IDEA COIN:
-        $icon = '<span class="icon-block title-icon">'.$en_all_12112[4535]['m_icon'].'</span>';
-    } elseif(in_array($cache_en_id, $CI->config->item('en_ids_12420'))){ //IDEA TEXT INPUT SHOW ICON
-        $icon = '<span class="icon-block">'.$en_all_12112[$cache_en_id]['m_icon'].'</span>';
-    } else {
-        $icon = null;
-    }
-
-    if($is_in_title_lg){
-
-        return $tooltip_span_start.$icon.'<textarea onkeyup="in_title_count()" placeholder="'.$en_all_12112[$cache_en_id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>'.$tooltip_span_end;
+        $main_element = '<textarea onkeyup="echo_input_text_count('.$cache_en_id.','.$object_id.')" placeholder="'.$en_all_12112[$cache_en_id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>';
+        $character_counter = '<div class="title_counter title_counter_'.$cache_en_id.'_'.$object_id.' hidden grey montserrat doupper" style="text-align: right;"><span id="current_count_'.$cache_en_id.'_'.$object_id.'">0</span>/'.config_var($cache_en_id).' CHARACTERS</div>';
+        $icon = '<span class="icon-block title-icon">'.( $en_icon ? $en_icon : $en_all_12112[4535]['m_icon'] ).'</span>';
 
     } else {
 
-        return $tooltip_span_start.$icon.'<input type="text" placeholder="__" value="'.$current_value.'" '.$attributes.' />'.$tooltip_span_end;
+        $main_element = '<input type="text" placeholder="__" value="'.$current_value.'" '.$attributes.' />';
+        $character_counter = ''; //None
+        if(in_array($cache_en_id, $CI->config->item('en_ids_12420'))){ //IDEA TEXT INPUT SHOW ICON
+            $icon = '<span class="icon-block">'.( $en_icon ? $en_icon : $en_all_12112[$cache_en_id]['m_icon'] ).'</span>';
+        } else {
+            $icon = $en_icon;
+        }
 
     }
+
+    return '<span class="span__'.$cache_en_id.' '.( !$is_source ? 'edit-locked' : '' ).'" '.( !$extra_large || !$is_source ? 'data-toggle="tooltip" data-placement="top" title="'.$en_all_12112[$cache_en_id]['m_name'].'"' : '').'>'.$icon.$main_element.'</span>'.$character_counter;
 }
 
-function echo_in_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_source = true, $show_full_name = true, $in_id = 0, $ln_id = 0){
+
+
+
+function echo_input_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_source = true, $show_full_name = true, $in_id = 0, $ln_id = 0){
 
     $CI =& get_instance();
     $en_all_this = $CI->config->item('en_all_'.$cache_en_id);

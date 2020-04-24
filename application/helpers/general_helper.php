@@ -989,10 +989,40 @@ function analyze_domain($full_url){
 }
 
 
+function en_is_source($en_id, $session_en = array()){
+
+
+    if(!$session_en){
+        //Fetch from session:
+        $session_en = superpower_assigned();
+    }
+
+    if(!$session_en || $en_id < 1){
+        return false;
+    }
+
+    //Ways a player can modify a source:
+    $CI =& get_instance();
+    return (
+        $en_id==$session_en['en_id'] || //Player is the source
+        superpower_active(10967, true) || //Player has Global source editing superpower
+        count($CI->LEDGER_model->ln_fetch(array( //Player created the source
+            'ln_creator_source_id' => $session_en['en_id'],
+            'ln_portfolio_source_id' => $en_id,
+            'ln_type_source_id' => 4251, //New Source Created
+        ))) ||
+        count($CI->LEDGER_model->ln_fetch(array( //Player has source in their portfolio
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_profile_source_id' => $session_en['en_id'],
+            'ln_portfolio_source_id' => $en_id,
+        )))
+    );
+
+}
+
 
 function in_is_source($in_id, $session_en = array()){
-
-    $CI =& get_instance();
 
     if(!$session_en){
         //Fetch from session:
@@ -1003,18 +1033,18 @@ function in_is_source($in_id, $session_en = array()){
         return false;
     }
 
-    //Always have power to edit ideas from anyone:
-    if(superpower_active(10984, true)){
-        return true;
-    }
+    //Ways a player can modify an idea:
+    $CI =& get_instance();
+    return (
+        superpower_active(10984, true) || //Player has Global idea editing superpower
+        count($CI->LEDGER_model->ln_fetch(array( //Player has an idea coin by being listed as a source
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+            'ln_next_idea_id' => $in_id,
+            'ln_profile_source_id' => $session_en['en_id'],
+        )))
+    );
 
-    //Check if Idea Source:
-    return count($CI->LEDGER_model->ln_fetch(array(
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-        'ln_next_idea_id' => $in_id,
-        'ln_profile_source_id' => $session_en['en_id'],
-    )));
 }
 
 

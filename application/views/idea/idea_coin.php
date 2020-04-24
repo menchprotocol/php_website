@@ -65,7 +65,7 @@ if( $is_source && $is_active && $in['in_id']!=config_var(12156)){
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control IdeaAddPrevious form-control-thick montserrat add-input algolia_search dotransparent"
-                           maxlength="' . config_var(11071) . '"
+                           maxlength="' . config_var(4736) . '"
                            idea-id="' . $in['in_id'] . '"
                            id="addidea-c-' . $in['in_id'] . '-1"
                            placeholder="PREVIOUS IDEA">
@@ -79,8 +79,7 @@ echo '</div>';
 
 //IDEA TITLE
 echo '<div class="itemidea">';
-echo echo_in_text(4736, $in['in_title'], $in['in_id'], ($is_source && $is_active), 0, true);
-echo '<div class="title_counter hidden grey montserrat doupper" style="text-align: right;"><span id="charTitleNum">0</span>/'.config_var(11071).' CHARACTERS</div>';
+echo echo_input_text(4736, $in['in_title'], $in['in_id'], ($is_source && $is_active), 0, true);
 echo '</div>';
 
 
@@ -93,13 +92,13 @@ echo echo_in_note_mix(4231, $this->LEDGER_model->ln_fetch(array(
 
 
 //IDEA TYPE
-echo '<div class="inline-block pull-left both-margin left-margin">'.echo_in_dropdown(7585, $in['in_type_source_id'], 'btn-idea', $is_source && $is_active, true, $in['in_id']).'</div>';
+echo '<div class="inline-block pull-left both-margin left-margin">'.echo_input_dropdown(7585, $in['in_type_source_id'], 'btn-idea', $is_source && $is_active, true, $in['in_id']).'</div>';
 
 //IDEA STATUS
-echo '<div class="inline-block pull-left both-margin left-half-margin">'.echo_in_dropdown(4737, $in['in_status_source_id'], 'btn-idea', $is_source, true, $in['in_id']).'</div>';
+echo '<div class="inline-block pull-left both-margin left-half-margin">'.echo_input_dropdown(4737, $in['in_status_source_id'], 'btn-idea', $is_source, true, $in['in_id']).'</div>';
 
 //IDEA TIME
-echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.echo_in_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source && $is_active, 0).'</div>';
+echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.echo_input_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source && $is_active, 0).'</div>';
 
 //IDEA DISCOVER (IF PUBLIC)
 echo '<div class="inline-block pull-right both-margin left-half-margin idea-discover '.( $is_public ? '' : ' hidden ' ).'"><a class="btn btn-discover" href="/'.$in['in_id'].'"><span class="show-max">'.$en_all_11035[12750]['m_name'].'&nbsp;</span>'.$en_all_11035[12750]['m_icon'].'</a></div>';
@@ -151,7 +150,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4535]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control ideaadder-level-2-child form-control-thick add-input montserrat algolia_search dotransparent"
-                           maxlength="' . config_var(11071) . '"
+                           maxlength="' . config_var(4736) . '"
                            idea-id="' . $in['in_id'] . '"
                            id="addidea-c-' . $in['in_id'] . '-0"
                            placeholder="NEXT IDEA">
@@ -182,8 +181,8 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
-                           maxlength="' . config_var(11072) . '"                          
-                           placeholder="SOURCE">
+                           maxlength="' . config_var(6197) . '"                          
+                           placeholder="NEW SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand source-pad-'.$en_id.'"></div></div>';
 
         $this_tab .= '</div>';

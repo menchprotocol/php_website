@@ -1,19 +1,21 @@
 
 <?php
 
-$en_all_6206 = $this->config->item('en_all_6206'); //Player Table
+$en_all_6206 = $this->config->item('en_all_6206'); //MENCH SOURCE
 $en_all_4341 = $this->config->item('en_all_4341'); //Link Table
-$en_all_2738 = $this->config->item('en_all_2738');
+$en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
-$is_public = in_array($source['en_status_source_id'], $this->config->item('en_ids_7357'));
+$is_public = in_array($en['en_status_source_id'], $this->config->item('en_ids_7357'));
+$is_active = in_array($en['en_status_source_id'], $this->config->item('en_ids_7358'));
 $superpower_10967 = superpower_active(10967, true);
+$is_source = en_is_source($en['en_id']);
 
 //Fetch general data in advance:
 
 //COUNT TOTAL CHILD
 $en__portfolios_count = $this->LEDGER_model->ln_fetch(array(
-    'ln_profile_source_id' => $source['en_id'],
+    'ln_profile_source_id' => $en['en_id'],
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
@@ -24,7 +26,7 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-    'ln_portfolio_source_id' => $source['en_id'],
+    'ln_portfolio_source_id' => $en['en_id'],
 ), array('en_profile'), 0, 0, array('en_weight' => 'DESC'));
 
 
@@ -33,13 +35,13 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
 
 <style>
     /* For a cleaner UI hide the current focused source parent */
-    .en_child_icon_<?= $source['en_id'] ?>{ display:none; }
+    .en_child_icon_<?= $en['en_id'] ?>{ display:none; }
 </style>
 
 <script>
     //Set global variables:
     var en_focus_filter = -1; //No filter, show all
-    var en_focus_id = <?= $source['en_id'] ?>;
+    var en_focus_id = <?= $en['en_id'] ?>;
 </script>
 
 <script src="/application/views/source/source_coin.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
@@ -51,11 +53,12 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
     //NAME & STATUS
 
     //SOURCE NAME
-    //echo echo_in_text(4736, $source['en_name'], $in['in_id'], ($is_source && $is_active), 0, true);
+    echo echo_input_text(6197, $en['en_name'], $en['en_id'], ($is_source && $is_active), 0, true, $en['en_icon'], extract_icon_color($en['en_icon']));
 
 
     //LEFT
-    echo '<h1 class="'.extract_icon_color($source['en_icon']).' pull-left inline-block" style="padding-top:3px;"><span class="icon-block en_ui_icon_'.$source['en_id'].'">'.echo_en_icon($source['en_icon']).'</span><span class="icon-block en_status_source_id_' . $source['en_id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$source['en_status_source_id']]['m_name'].': '.$en_all_6177[$source['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$source['en_status_source_id']]['m_icon'] . '</span></span><span class="en_name_full_'.$source['en_id'].' title-block-lg">'.$source['en_name'].'</span></h1>';
+    /*
+    echo '<h1 class="'.extract_icon_color($en['en_icon']).' pull-left inline-block" style="padding-top:3px;"><span class="icon-block en_ui_icon_'.$en['en_id'].'">'.echo_en_icon($en['en_icon']).'</span><span class="icon-block en_status_source_id_' . $en['en_id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].': '.$en_all_6177[$en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span><span class="en_name_full_'.$en['en_id'].' title-block-lg">'.$en['en_name'].'</span></h1>';
 
 
     //RIGHT
@@ -63,29 +66,24 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
 
         //REFERENCES
         if(superpower_active(12701, true)){
-            echo '<div class="inline-block '.superpower_active(12701).'">'.join('',en_count_db_references($source['en_id'])).'</div>';
+            echo '<div class="inline-block '.superpower_active(12701).'">'.join('',en_count_db_references($en['en_id'])).'</div>';
         }
 
         //Modify
-        echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $source['en_id'] . ',0)" class="btn btn-source btn-five icon-block-lg '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
+        echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',0)" class="btn btn-source btn-five icon-block-lg '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
 
     echo '</div>';
 
 
     echo '<div class="doclear">&nbsp;</div>';
 
+    */
+
     //FOR EDITING ONLY (HIDDEN FROM UI):
-    echo '<div class="hidden">'.echo_en($source).'</div>';
+    echo '<div class="hidden">'.echo_en($en).'</div>';
 
 
     ?>
-
-
-
-
-
-
-
 
 
 
@@ -127,7 +125,7 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
 
 
                         <!-- Player Name -->
-                        <span class="mini-header" style="margin-top:20px;"><?= $en_all_6206[6197]['m_icon'].' '.$en_all_6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(11072) ?></span>]</span>
+                        <span class="mini-header" style="margin-top:20px;"><?= $en_all_6206[6197]['m_icon'].' '.$en_all_6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</span>
                         <span class="white-wrapper">
                                 <textarea class="form-control text-edit border montserrat doupper" id="en_name"
                                           onkeyup="en_name_word_count()" data-lpignore="true"
@@ -149,7 +147,7 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
                              style="margin:1px 0 10px;">
                             <div class="input-group border">
                                 <input type="text" id="en_icon" value=""
-                                       maxlength="<?= config_var(11072) ?>" data-lpignore="true" placeholder=""
+                                       maxlength="<?= config_var(6197) ?>" data-lpignore="true" placeholder=""
                                        class="form-control">
                                 <span class="input-group-addon addon-lean addon-grey icon-demo icon-block"></span>
                             </div>
@@ -243,7 +241,7 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
         if($en_id==6225){
 
             //Account Setting
-            if(!$session_en || $session_en['en_id']!=$source['en_id']){
+            if(!$session_en || $session_en['en_id']!=$en['en_id']){
                 continue;
             }
 
@@ -277,12 +275,12 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
 
                 if ($acc_en_id == 12289) {
 
-                    $source_icon_parts = explode(' ',one_two_explode('class="', '"', $session_en['en_icon']));
+                    $en_icon_parts = explode(' ',one_two_explode('class="', '"', $session_en['en_icon']));
 
                     $this_tab .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">
-                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'far\')" class="btn btn-far '.( $source_icon_parts[0]=='far' ? ' active ' : '' ).'"><i class="far fa-paw source"></i></a>
-                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fad\')" class="btn btn-fad '.( $source_icon_parts[0]=='fad' ? ' active ' : '' ).'"><i class="fad fa-paw source"></i></a>
-                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fas\')" class="btn btn-fas '.( $source_icon_parts[0]=='fas' ? ' active ' : '' ).'"><i class="fas fa-paw source"></i></a>
+                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'far\')" class="btn btn-far '.( $en_icon_parts[0]=='far' ? ' active ' : '' ).'"><i class="far fa-paw source"></i></a>
+                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fad\')" class="btn btn-fad '.( $en_icon_parts[0]=='fad' ? ' active ' : '' ).'"><i class="fad fa-paw source"></i></a>
+                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fas\')" class="btn btn-fas '.( $en_icon_parts[0]=='fas' ? ' active ' : '' ).'"><i class="fas fa-paw source"></i></a>
                 </div><div class="doclear">&nbsp;</div></div>';
 
 
@@ -290,11 +288,11 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
                     foreach ($this->config->item('en_all_12279') as $en_id3 => $m3) {
 
                         $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m3['m_icon']));
-                        $avatar_type_match = ($source_icon_parts[0] == $avatar_icon_parts[0]);
+                        $avatar_type_match = ($en_icon_parts[0] == $avatar_icon_parts[0]);
                         $superpower_actives3 = array_intersect($this->config->item('en_ids_10957'), $m3['m_parents']);
 
                         $this_tab .= '<span class="'.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'">';
-                        $this_tab .= '<a href="javascript:void(0);" onclick="account_update_avatar_icon(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemsource avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $source_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m_icon'] . '</div></a>';
+                        $this_tab .= '<a href="javascript:void(0);" onclick="account_update_avatar_icon(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemsource avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $en_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m_icon'] . '</div></a>';
                         $this_tab .= '</span>';
 
                     }
@@ -319,8 +317,7 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
                         if(superpower_assigned($superpower_en_id)){
 
                             //Allow Toggle
-                            $is_active = in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated'));
-                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_en_id.' '.( $is_active ? ' active ' : '' ).'" href="javascript:void();" onclick="account_toggle_superpower('.$superpower_en_id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_en_id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
+                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" href="javascript:void();" onclick="account_toggle_superpower('.$superpower_en_id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_en_id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
 
                         } elseif($has_req_powers && $has_discover_url){
 
@@ -381,7 +378,7 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
             foreach ($en__profiles as $en) {
-                $this_tab .= echo_en($en,true, null, true);
+                $this_tab .= echo_en($en,true, null, true, $is_source);
             }
 
             //Input to add new parents:
@@ -390,9 +387,9 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
-                           maxlength="' . config_var(11072) . '"
+                           maxlength="' . config_var(6197) . '"
                            id="newIdeaTitle"
-                           placeholder="SOURCE">
+                           placeholder="NEW SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $this_tab .= '</div>';
@@ -409,7 +406,7 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-                    'ln_profile_source_id' => $source['en_id'],
+                    'ln_profile_source_id' => $en['en_id'],
                 ), array('en_portfolio'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
             }
 
@@ -564,16 +561,16 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
                 //Source Status Filters:
                 if(superpower_active(12701, true)){
 
-                    $source_count = $this->SOURCE_model->en_child_count($source['en_id'], $this->config->item('en_ids_7358') /* Source Status Active */);
+                    $en_count = $this->SOURCE_model->en_child_count($en['en_id'], $this->config->item('en_ids_7358') /* Source Status Active */);
                     $child_en_filters = $this->LEDGER_model->ln_fetch(array(
-                        'ln_profile_source_id' => $source['en_id'],
+                        'ln_profile_source_id' => $en['en_id'],
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
                     ), array('en_portfolio'), 0, 0, array('en_status_source_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_source_id', 'en_status_source_id');
 
                     //Only show filtering UI if we find child sources with different Status (Otherwise no need to filter):
-                    if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $source_count) {
+                    if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $en_count) {
 
                         //Load status definitions:
                         $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
@@ -582,7 +579,7 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
                         $this_tab .= '<div class="nav nav-pills nav-sm">';
 
                         //Show fixed All button:
-                        $this_tab .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link en-status-filter active en-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $source_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
+                        $this_tab .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link en-status-filter active en-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $en_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
 
                         //Show each specific filter based on DB counts:
                         foreach ($child_en_filters as $c_c) {
@@ -600,7 +597,7 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
             $this_tab .= '<div id="list-children" class="list-group">';
 
             foreach ($en__portfolios as $en) {
-                $this_tab .= echo_en($en,false, null, true);
+                $this_tab .= echo_en($en,false, null, true, $is_source);
             }
             if ($counter > count($en__portfolios)) {
                 $this_tab .= echo_en_load_more(1, config_var(11064), $counter);
@@ -612,9 +609,9 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
-                           maxlength="' . config_var(11072) . '"
+                           maxlength="' . config_var(6197) . '"
                            id="newIdeaTitle"
-                           placeholder="SOURCE">
+                           placeholder="NEW SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $this_tab .= '</div>';
@@ -626,7 +623,7 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
                 'ln_type_source_id' => $en_id,
-                '(ln_creator_source_id='.$source['en_id'].' OR ln_portfolio_source_id='.$source['en_id'].' OR ln_profile_source_id='.$source['en_id'].')' => null,
+                '(ln_creator_source_id='.$en['en_id'].' OR ln_portfolio_source_id='.$en['en_id'].' OR ln_profile_source_id='.$en['en_id'].')' => null,
             );
 
             //COUNT ONLY
@@ -675,7 +672,7 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
         } elseif($en_id == 7347 /* DISCOVER LIST */){
 
             $player_discoveries = $this->LEDGER_model->ln_fetch(array(
-                'ln_creator_source_id' => $source['en_id'],
+                'ln_creator_source_id' => $en['en_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
@@ -694,12 +691,12 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
 
             if($en_id == 12273){
                 //IDEA COIN
-                $match_columns['ln_profile_source_id'] = $source['en_id'];
+                $match_columns['ln_profile_source_id'] = $en['en_id'];
                 $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Idea Status Public
                 $join_objects = array('in_next');
             } elseif($en_id == 6255){
                 //DISCOVER COIN
-                $match_columns['ln_creator_source_id'] = $source['en_id'];
+                $match_columns['ln_creator_source_id'] = $en['en_id'];
             }
 
             //DISCOVER & BOOKMARKS
@@ -710,7 +707,7 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
             if($counter > 0 && (!$disable_content_loading || $auto_expand_tab)){
 
                 //Dynamic Loading when clicked:
-                $discover_history_ui = $this->DISCOVER_model->discover_history_ui($en_id, 0, $source['en_id']);
+                $discover_history_ui = $this->DISCOVER_model->discover_history_ui($en_id, 0, $en['en_id']);
                 $this_tab .= $discover_history_ui['message'];
 
             }

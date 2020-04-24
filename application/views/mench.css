@@ -232,7 +232,7 @@ img.no-radius {
 }
 
 .alert{
-    padding:10px 0;
+    padding:10px 0 !important;
     border-radius: 0;
     margin:0;
     font-family: 'Montserrat', sans-serif;

@@ -156,7 +156,7 @@ if(count($current_sign_in_attempt) == 0){
             <!-- Full Name -->
             <div class="margin-top-down">
                 <span><?= $en_all_4269[6197]['m_icon'].' '.$en_all_4269[6197]['m_name'] ?>:</span>
-                <div class="form-group is-empty"><input type="text" placeholder="<?= $en_all_4269[6197]['m_desc'] ?>" id="input_name" maxlength="<?= config_var(11072) ?>" class="form-control border"></div>
+                <div class="form-group is-empty"><input type="text" placeholder="<?= $en_all_4269[6197]['m_desc'] ?>" id="input_name" maxlength="<?= config_var(6197) ?>" class="form-control border"></div>
             </div>
 
             <!-- New Password -->

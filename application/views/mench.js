@@ -682,3 +682,83 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
     }]);
 
 }
+
+
+
+function echo_input_text_update_start(){
+    $('.echo_input_text_update').keypress(function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            echo_input_text_update(this);
+            e.preventDefault();
+        }
+    }).change(function() {
+        echo_input_text_update(this);
+    });
+}
+
+function echo_input_text_count(cache_en_id, object_id) {
+
+    //Count text area characters:
+
+    //Update count:
+    var len = $('.text__'+cache_en_id+'_'+object_id).val().length;
+    if (len > js_en_all_6404[cache_en_id]['m_desc']) {
+        $('#current_count_'+cache_en_id+'_'+object_id).addClass('overload').text(len);
+    } else {
+        $('#current_count_'+cache_en_id+'_'+object_id).removeClass('overload').text(len);
+    }
+
+    //Only show counter if getting close to limit:
+    if(len > ( js_en_all_6404[cache_en_id]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
+        $('.title_counter_'+cache_en_id+'_'+object_id).removeClass('hidden');
+    } else {
+        $('.title_counter_'+cache_en_id+'_'+object_id).addClass('hidden');
+    }
+
+}
+
+
+function echo_input_text_update(this_handler){
+
+    var handler = '.text__'+$(this_handler).attr('cache_en_id')+'_'+$(this_handler).attr('object_id');
+    var new_value = $(this_handler).val().trim();
+
+    //See if anything changes:
+    if( $(this_handler).attr('old-value') == new_value ){
+        //Nothing changed:
+        return false;
+    }
+
+    //Grey background to indicate saving...
+    $(handler).addClass('dynamic_saving');
+
+    $.post("/ledger/echo_input_text_update", {
+
+        object_id: $(this_handler).attr('object_id'),
+        cache_en_id: $(this_handler).attr('cache_en_id'),
+        field_value: new_value
+
+    }, function (data) {
+
+        if (!data.status) {
+
+            //Reset to original value:
+            $(handler).val(data.original_val);
+
+            //Show error:
+            alert(data.message);
+
+        } else {
+            //Update value:
+            $(this_handler).attr('old-value', new_value)
+        }
+
+        setTimeout(function () {
+            //Restore background:
+            $(handler).removeClass('dynamic_saving');
+        }, 233);
+
+    });
+}
+
