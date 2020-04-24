@@ -501,7 +501,7 @@ class Source extends CI_Controller
         //Return newly added or linked source:
         return echo_json(array(
             'status' => 1,
-            'en_new_echo' => echo_en(array_merge($focus_en, $new_note), 0, null, true),
+            'en_new_echo' => echo_en(array_merge($focus_en, $new_note), 0, null, true, true),
         ));
 
     }
@@ -680,7 +680,7 @@ class Source extends CI_Controller
         //Return newly added or linked source:
         return echo_json(array(
             'status' => 1,
-            'en_new_echo' => echo_en(array_merge($ens_latest[0], $ur2), $_POST['is_parent'], null, true),
+            'en_new_echo' => echo_en(array_merge($ens_latest[0], $ur2), $_POST['is_parent'], null, true, true),
         ));
 
     }

@@ -1596,7 +1596,7 @@ function echo_in_note_source($in_id, $note_type_en_id, $in_notes, $is_source){
 
     $ui = '<div class="list-group">';
     foreach ($in_notes as $en) {
-        $ui .= echo_en($en, false, null, true);
+        $ui .= echo_en($en, false, null, true, $is_source);
     }
 
     if( $is_source ){

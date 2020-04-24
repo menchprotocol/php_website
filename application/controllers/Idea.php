@@ -725,7 +725,7 @@ class Idea extends CI_Controller {
         //Echo message:
         echo_json(array(
             'status' => 1,
-            'en_new_echo' => echo_en($ens[0], 0, null, true),
+            'en_new_echo' => echo_en($ens[0], 0, null, true, true),
             'message' => echo_in_notes(array_merge($new_messages[0], array(
                 'ln_portfolio_source_id' => $session_en['en_id'],
             ))),
