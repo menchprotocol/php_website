@@ -1261,7 +1261,7 @@ class SOURCE_model extends CI_Model
              * */
 
             //Create user source:
-            $added_en = $this->SOURCE_model->en_verify_create('Player '.rand(100000000, 999899999), 0, false, 6181, random_player_avatar());
+            $added_en = $this->SOURCE_model->en_verify_create('Player '.rand(100000000, 999899999), 0, true, 6181, random_player_avatar());
 
         } else {
 
@@ -1269,7 +1269,7 @@ class SOURCE_model extends CI_Model
             $fb_profile = $graph_fetch['ln_metadata']['result'];
 
             //Create user source with their Facebook Graph name:
-            $added_en = $this->SOURCE_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, false, 6181, random_player_avatar());
+            $added_en = $this->SOURCE_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, true, 6181, random_player_avatar());
 
 
             //See if we could fetch FULL profile data:
