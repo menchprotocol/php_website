@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-24 12:30:35 PST
+//Generated 2020-04-24 12:49:23 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587756635;
-$config['cache_count_transaction'] = 1155717;
+$config['cache_timestamp'] = 1587757763;
+$config['cache_count_transaction'] = 1155741;
 $config['cache_count_discover'] = 121156;
 $config['cache_count_idea'] = 4935;
-$config['cache_count_source'] = 5228;
+$config['cache_count_source'] = 5229;
 
 
 
@@ -660,7 +660,7 @@ $config['en_all_12577'] = array(
         'm_parents' => array(12577,4593,4997),
     ),
     5981 => array(
-        'm_icon' => '<i class="source fad fa-layer-plus"></i>',
+        'm_icon' => '<i class="fad fa-layer-plus source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE ADD',
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
@@ -3307,7 +3307,7 @@ $config['en_all_11054'] = array(
         'm_icon' => '<i class="fas fa-link source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINKS',
         'm_desc' => '',
-        'm_parents' => array(11054,5982,5981,4527),
+        'm_parents' => array(11054,5982,4527),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
@@ -4833,7 +4833,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-link source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINKS',
         'm_desc' => '',
-        'm_parents' => array(11054,5982,5981,4527),
+        'm_parents' => array(11054,5982,4527),
     ),
     12403 => array(
         'm_icon' => '<i class="far fa-object-ungroup source" aria-hidden="true"></i>',
@@ -6712,7 +6712,7 @@ $config['en_all_4997'] = array(
         'm_parents' => array(12577,4593,4997),
     ),
     5981 => array(
-        'm_icon' => '<i class="source fad fa-layer-plus"></i>',
+        'm_icon' => '<i class="fad fa-layer-plus source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE ADD',
         'm_desc' => 'If not already done so, will add searched entity as the parent of all child entities',
         'm_parents' => array(12577,4593,4997),
@@ -7187,7 +7187,7 @@ $config['en_all_4755'] = array(
 );
 
 //TRANSACTION TYPE:
-$config['en_ids_4593'] = array(12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,6415,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,12489,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,4235,7495,12773,7545,10573,12419,4250,6182,12453,4601,4229,4228,10686,10663,10664,10643,6226,4231,10676,10678,10679,10677,12682,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,12591,12592,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,7563,6157,7489,4246,4251,6178,4559,12117,10653,4259,10657,4261,12826,10669,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,4257,10689,10646,7504,10654,6144,5007,7485,7486,6997,4994);
+$config['en_ids_4593'] = array(12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,6415,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,12489,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,4235,7495,12773,7545,10573,12419,4250,6182,12453,4601,4229,4228,10686,10663,10664,10643,6226,4231,10676,10678,10679,10677,12682,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,12591,12592,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,7563,6157,7489,4246,4251,6178,4559,12117,10653,4259,10657,4261,12826,10669,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,4257,12827,10689,10646,7504,10654,6144,5007,7485,7486,6997,4994);
 $config['en_all_4593'] = array(
     12129 => array(
         'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
@@ -7790,7 +7790,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(12577,4593,4997),
     ),
     5981 => array(
-        'm_icon' => '<i class="source fad fa-layer-plus"></i>',
+        'm_icon' => '<i class="fad fa-layer-plus source" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO EDITOR PROFILE ADD',
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
@@ -7969,6 +7969,12 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(12822,12605,12524,12403,4593,4592,4537),
     ),
+    12827 => array(
+        'm_icon' => '<i class="fad fa-font source"></i>',
+        'm_name' => 'SOURCE LINK WORD',
+        'm_desc' => '',
+        'm_parents' => array(4593,4592),
+    ),
     10689 => array(
         'm_icon' => '<i class="fad fa-share-alt rotate90 source"></i>',
         'm_name' => 'SOURCE MERGED IN SOURCE',
@@ -8032,7 +8038,7 @@ $config['en_all_4593'] = array(
 );
 
 //SOURCE LINKS:
-$config['en_ids_4592'] = array(4259,4261,12826,10669,4260,4319,7657,4230,4255,4318,4256,4258,4257);
+$config['en_ids_4592'] = array(4259,4261,12826,10669,4260,4319,7657,4230,4255,4318,4256,4257,4258,12827);
 $config['en_all_4592'] = array(
     4259 => array(
         'm_icon' => '<i class="fad fa-volume-up source"></i>',
@@ -8100,17 +8106,23 @@ $config['en_all_4592'] = array(
         'm_desc' => '',
         'm_parents' => array(12822,11080,4593,4592,4537),
     ),
+    4257 => array(
+        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_name' => 'VIDEO',
+        'm_desc' => 'Embeddable videos',
+        'm_parents' => array(12822,12605,12524,12403,4593,4592,4537),
+    ),
     4258 => array(
         'm_icon' => '<i class="fad fa-video source"></i>',
         'm_name' => 'VIDEO',
         'm_desc' => 'Uploaded videos',
         'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
     ),
-    4257 => array(
-        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
-        'm_name' => 'VIDEO',
-        'm_desc' => 'Embeddable videos',
-        'm_parents' => array(12822,12605,12524,12403,4593,4592,4537),
+    12827 => array(
+        'm_icon' => '<i class="fad fa-font source"></i>',
+        'm_name' => 'WORD',
+        'm_desc' => 'Single Word',
+        'm_parents' => array(4593,4592),
     ),
 );
 

@@ -455,7 +455,7 @@ class Source extends CI_Controller
 
             //Assign to Creator:
             $this->LEDGER_model->ln_create(array(
-                'ln_type_source_id' => 4230, //Raw link
+                'ln_type_source_id' => en_link_type_id(),
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_profile_source_id' => $session_en['en_id'],
                 'ln_portfolio_source_id' => $focus_en['en_id'],
@@ -466,7 +466,7 @@ class Source extends CI_Controller
 
                 //Add Pending Review:
                 $this->LEDGER_model->ln_create(array(
-                    'ln_type_source_id' => 4230, //Raw link
+                    'ln_type_source_id' => en_link_type_id(),
                     'ln_creator_source_id' => $session_en['en_id'],
                     'ln_profile_source_id' => 12775, //PENDING REVIEW
                     'ln_portfolio_source_id' => $focus_en['en_id'],
@@ -1241,7 +1241,7 @@ class Source extends CI_Controller
                 'ln_profile_source_id' => $_POST['selected_en_id'],
                 'ln_portfolio_source_id' => $session_en['en_id'],
                 'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id' => 4230, //Raw
+                'ln_type_source_id' => en_link_type_id(),
             ));
         }
 
@@ -1355,7 +1355,7 @@ class Source extends CI_Controller
             //Check to make sure not duplicate:
             $duplicates = $this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'ln_type_source_id' => 4255, //Emails are of type Text
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                 'ln_profile_source_id' => 3288, //Mench Email
                 'ln_portfolio_source_id !=' => $session_en['en_id'],
                 'LOWER(ln_content)' => $_POST['en_email'],
@@ -1374,7 +1374,7 @@ class Source extends CI_Controller
         $user_emails = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_portfolio_source_id' => $session_en['en_id'],
-            'ln_type_source_id' => 4255, //Emails are of type Text
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_profile_source_id' => 3288, //Mench Email
         ));
         if (count($user_emails) > 0) {
@@ -1418,7 +1418,7 @@ class Source extends CI_Controller
             $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_portfolio_source_id' => $session_en['en_id'],
-                'ln_type_source_id' => 4255, //Emails are of type Text
+                'ln_type_source_id' => en_link_type_id($_POST['en_email']),
                 'ln_profile_source_id' => 3288, //Mench Email
                 'ln_content' => $_POST['en_email'],
             ), true);
@@ -1512,7 +1512,7 @@ class Source extends CI_Controller
 
             //Create new link:
             $this->LEDGER_model->ln_create(array(
-                'ln_type_source_id' => 12826, //HASH
+                'ln_type_source_id' => en_link_type_id($hashed_password),
                 'ln_profile_source_id' => 3286, //Password
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_portfolio_source_id' => $session_en['en_id'],
@@ -1694,21 +1694,22 @@ class Source extends CI_Controller
         //Add Player:
         $this->LEDGER_model->ln_create(array(
             'ln_profile_source_id' => 4430, //MENCH PLAYERS
-            'ln_type_source_id' => 4230, //Raw link
+            'ln_type_source_id' => en_link_type_id(),
             'ln_creator_source_id' => $user_en['en']['en_id'],
             'ln_portfolio_source_id' => $user_en['en']['en_id'],
         ));
 
         $this->LEDGER_model->ln_create(array(
-            'ln_type_source_id' => 4255, //Text link
+            'ln_type_source_id' => en_link_type_id(trim(strtolower($_POST['input_email']))),
             'ln_content' => trim(strtolower($_POST['input_email'])),
             'ln_profile_source_id' => 3288, //Mench Email
             'ln_creator_source_id' => $user_en['en']['en_id'],
             'ln_portfolio_source_id' => $user_en['en']['en_id'],
         ));
+        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $user_en['en']['en_id']));
         $this->LEDGER_model->ln_create(array(
-            'ln_type_source_id' => 12826, //HASH
-            'ln_content' => strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $user_en['en']['en_id'])),
+            'ln_type_source_id' => en_link_type_id($hash),
+            'ln_content' => $hash,
             'ln_profile_source_id' => 3286, //Mench Password
             'ln_creator_source_id' => $user_en['en']['en_id'],
             'ln_portfolio_source_id' => $user_en['en']['en_id'],
@@ -1964,7 +1965,7 @@ class Source extends CI_Controller
 
 
             //Generate the password hash:
-            $password_hash = hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']. $ens[0]['en_id']);
+            $password_hash = hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']. $ens[0]['en_id'] );
 
 
             //Fetch their passwords to authenticate login:
@@ -1992,7 +1993,7 @@ class Source extends CI_Controller
 
                 //Create new password link:
                 $this->LEDGER_model->ln_create(array(
-                    'ln_type_source_id' => 12826, //HASH
+                    'ln_type_source_id' => en_link_type_id($password_hash),
                     'ln_content' => $password_hash,
                     'ln_profile_source_id' => 3286, //Mench Password
                     'ln_creator_source_id' => $ens[0]['en_id'],
@@ -2046,7 +2047,7 @@ class Source extends CI_Controller
         $user_emails = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_content' => $_POST['input_email'],
-            'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_profile_source_id' => 3288, //Mench Email
         ), array('en_portfolio'));
         if(count($user_emails) < 1){
@@ -2165,7 +2166,7 @@ class Source extends CI_Controller
         $user_emails = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_content' => $_POST['input_email'],
-            'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_profile_source_id' => 3288, //Mench Email
         ), array('en_portfolio'));
 

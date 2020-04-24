@@ -217,7 +217,7 @@ class Cron extends CI_Controller
             //Try fetching subscribers email:
             foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id' => 4255, //Text
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
                 'ln_profile_source_id' => 3288, //Mench Email
                 'ln_portfolio_source_id' => $subscribed_player['en_id'],
             )) as $en_email){

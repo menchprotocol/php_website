@@ -36,7 +36,7 @@ foreach($this->SOURCE_model->en_fetch() as $en) {
     if($is_ledger && !$is_player){
         $stats['ledger_not_source_count']++;
         $this->LEDGER_model->ln_create(array(
-            'ln_type_source_id' => 4230, //Raw link
+            'ln_type_source_id' => en_link_type_id(),
             'ln_profile_source_id' => 4430, //MENCH PLAYERS
             'ln_creator_source_id' => $en['en_id'],
             'ln_portfolio_source_id' => $en['en_id'],

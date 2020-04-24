@@ -331,7 +331,7 @@ class SOURCE_model extends CI_Model
                 'ln_creator_source_id' => $ln_creator_source_id,
                 'ln_portfolio_source_id' => $ln_creator_source_id,
                 'ln_profile_source_id' => $set_en_child_id,
-                'ln_type_source_id' => 4230, //Raw link
+                'ln_type_source_id' => en_link_type_id(),
                 'ln_parent_transaction_id' => $updated_ln_id,
             ));
         }
@@ -743,7 +743,7 @@ class SOURCE_model extends CI_Model
 
                     //Also map to source type:
                     $this->LEDGER_model->ln_create(array(
-                        'ln_type_source_id' => 4230, //Raw Source Link
+                        'ln_type_source_id' => en_link_type_id(),
                         'ln_creator_source_id' => $ln_creator_source_id,
                         'ln_profile_source_id' => $ln_type_source_id,
                         'ln_portfolio_source_id' => $en_url['en_id'],
@@ -781,7 +781,7 @@ class SOURCE_model extends CI_Model
                 foreach($link_parent_en_ids as $p_en_id){
                     $this->LEDGER_model->ln_create(array(
                         'ln_creator_source_id' => $ln_creator_source_id,
-                        'ln_type_source_id' => 4230, //Raw
+                        'ln_type_source_id' => en_link_type_id(),
                         'ln_profile_source_id' => $p_en_id,
                         'ln_portfolio_source_id' => $en_url['en_id'],
                     ));
@@ -795,7 +795,7 @@ class SOURCE_model extends CI_Model
             if ($add_to_child_en_id) {
                 $this->LEDGER_model->ln_create(array(
                     'ln_creator_source_id' => $ln_creator_source_id,
-                    'ln_type_source_id' => 4230, //Raw
+                    'ln_type_source_id' => en_link_type_id(),
                     'ln_profile_source_id' => $en_url['en_id'],
                     'ln_portfolio_source_id' => $add_to_child_en_id,
                 ));
@@ -981,7 +981,7 @@ class SOURCE_model extends CI_Model
                     //Does not exist, need to be added as parent:
                     $this->LEDGER_model->ln_create(array(
                         'ln_creator_source_id' => $ln_creator_source_id,
-                        'ln_type_source_id' => 4230, //Raw
+                        'ln_type_source_id' => en_link_type_id(),
                         'ln_portfolio_source_id' => $en['en_id'], //This child source
                         'ln_profile_source_id' => $parent_en_id,
                     ));
@@ -1009,7 +1009,7 @@ class SOURCE_model extends CI_Model
                         //Add as a parent because it meets the condition
                         $this->LEDGER_model->ln_create(array(
                             'ln_creator_source_id' => $ln_creator_source_id,
-                            'ln_type_source_id' => 4230, //Raw
+                            'ln_type_source_id' => en_link_type_id(),
                             'ln_portfolio_source_id' => $en['en_id'], //This child source
                             'ln_profile_source_id' => $parent_new_en_id,
                         ));
@@ -1291,7 +1291,7 @@ class SOURCE_model extends CI_Model
 
                         //Create new link:
                         $this->LEDGER_model->ln_create(array(
-                            'ln_type_source_id' => 4230, //Raw link
+                            'ln_type_source_id' => en_link_type_id(),
                             'ln_creator_source_id' => $added_en['en']['en_id'], //User gets credit as player
                             'ln_profile_source_id' => $ln_profile_source_id,
                             'ln_portfolio_source_id' => $added_en['en']['en_id'],
@@ -1309,7 +1309,7 @@ class SOURCE_model extends CI_Model
         //Activate Mench Messenger
         $this->LEDGER_model->ln_create(array(
             'ln_profile_source_id' => 6196, //Mench Messenger
-            'ln_type_source_id' => 4230, //Raw link
+            'ln_type_source_id' => en_link_type_id(),
             'ln_creator_source_id' => $added_en['en']['en_id'],
             'ln_portfolio_source_id' => $added_en['en']['en_id'],
             'ln_external_id' => $psid,
@@ -1318,7 +1318,7 @@ class SOURCE_model extends CI_Model
         //Add default Notification Level:
         $this->LEDGER_model->ln_create(array(
             'ln_profile_source_id' => 4456, //Receive Regular Notifications (User can change later on...)
-            'ln_type_source_id' => 4230, //Raw link
+            'ln_type_source_id' => en_link_type_id(),
             'ln_creator_source_id' => $added_en['en']['en_id'],
             'ln_portfolio_source_id' => $added_en['en']['en_id'],
         ));
@@ -1327,7 +1327,7 @@ class SOURCE_model extends CI_Model
         //Add Player:
         $this->LEDGER_model->ln_create(array(
             'ln_profile_source_id' => 4430, //MENCH PLAYERS
-            'ln_type_source_id' => 4230, //Raw link
+            'ln_type_source_id' => en_link_type_id(),
             'ln_creator_source_id' => $added_en['en']['en_id'],
             'ln_portfolio_source_id' => $added_en['en']['en_id'],
         ));

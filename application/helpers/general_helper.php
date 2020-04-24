@@ -177,6 +177,14 @@ function detect_fav_icon($url_clean_domain, $return_icon = false){
     }
 }
 
+function en_link_type_id($string = null){
+    $detected_ln_type = ln_detect_type($string);
+    if ($detected_ln_type['status']){
+        return $detected_ln_type['ln_type_source_id'];
+    }
+    return 0;
+}
+
 function ln_detect_type($string)
 {
 
@@ -223,14 +231,6 @@ function ln_detect_type($string)
             'ln_type_source_id' => 4318,
         );
 
-    } elseif (strlen($string) > 9 && (is_valid_date($string) || strtotime($string) > 0)) {
-
-        //Date/time:
-        return array(
-            'status' => 1,
-            'ln_type_source_id' => 4318,
-        );
-
     } elseif (preg_match("/^([a-f0-9]{64})$/", $string) == 1) {
 
         //Hash:
@@ -245,6 +245,14 @@ function ln_detect_type($string)
         return array(
             'status' => 1,
             'ln_type_source_id' => 7657,
+        );
+
+    } elseif (!substr_count($string, ' ')) {
+
+        //Single Word:
+        return array(
+            'status' => 1,
+            'ln_type_source_id' => 12827,
         );
 
     } else {
