@@ -1583,7 +1583,7 @@ function echo_in_contribute_btn($in_id){
         //Allow Edit:
         $CI =& get_instance();
         $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
-        return '<div class="inline-block margin-top-down previous_discoveries pull-right"><a class="btn btn-idea" href="/idea/'.$in_id.'"><span class="show-max">'.$en_all_11035[12749]['m_name'].'&nbsp;</span>'.$en_all_11035[12749]['m_icon'].'</a></div>';
+        return '<div class="inline-block margin-top-down previous_discoveries pull-right '.superpower_active(10984).'"><a class="btn btn-idea" href="/idea/'.$in_id.'"><span class="show-max">'.$en_all_11035[12749]['m_name'].'&nbsp;</span>'.$en_all_11035[12749]['m_icon'].'</a></div>';
     } else {
         return null;
     }
