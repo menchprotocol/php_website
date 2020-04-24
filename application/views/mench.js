@@ -492,7 +492,7 @@ function toggle_search(){
 
         setTimeout(function () {
             $('#mench_search').focus();
-        }, 144);
+        }, 233);
 
     }
 }

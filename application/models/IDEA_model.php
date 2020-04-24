@@ -782,7 +782,7 @@ class IDEA_model extends CI_Model
         //Return results:
         return array(
             'status' => 1,
-            'message' => '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$applied_success . '/' . count($in__next) . ' ideas updated</div>',
+            'message' => $applied_success . '/' . count($in__next) . ' ideas updated',
         );
 
     }
