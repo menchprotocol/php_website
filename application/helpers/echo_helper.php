@@ -1029,7 +1029,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
         }
     }
 
-    $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor );
+    $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $recipient_en || $completion_rate['completion_percentage']>0 || $show_editor );
 
 
     $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'actionplan_sort' : '' ).' itemdiscover '.$extra_class.'">';
