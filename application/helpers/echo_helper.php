@@ -1727,28 +1727,18 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 {
 
     $CI =& get_instance();
-
-    if(!isset($en['en_id'])){
-        $CI->LEDGER_model->ln_create(array(
-            'ln_content' => 'echo_en() variable missing source',
-            'ln_metadata' => $en,
-            'ln_type_source_id' => 4246, //Platform Bug Reports
-        ));
-        return false;
-    }
-
     $session_en = superpower_assigned();
     $en_all_6177 = $CI->config->item('en_all_6177'); //Source Status
     $en_all_2738 = $CI->config->item('en_all_2738');
-    $en_all_11028 = $CI->config->item('en_all_11028'); //SOURCEERS LINKS DIRECTION
     $en_all_4592 = $CI->config->item('en_all_4592');
     $en_all_6186 = $CI->config->item('en_all_6186'); //Transaction Status
+    $en_all_11028 = $CI->config->item('en_all_11028'); //SOURCEERS LINKS DIRECTION
 
     $ln_id = (isset($en['ln_id']) ? $en['ln_id'] : 0);
     $is_link_source = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_4592')));
     $is_discover_progress = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_12227')));
     $is_source_only = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_7551')));
-    $ui = null;
+
 
     $en__profiles = $CI->LEDGER_model->ln_fetch(array(
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
@@ -1756,13 +1746,6 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Source Status Active
     ), array('en_profile'), 0, 0, array('en_weight' => 'DESC'));
-
-    $en__portfolios_count = $CI->LEDGER_model->ln_fetch(array(
-        'ln_profile_source_id' => $en['en_id'],
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-    ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
 
     $is_public = in_array($en['en_status_source_id'], $CI->config->item('en_ids_7357'));
     $is_link_published = ( !$ln_id || in_array($en['ln_status_source_id'], $CI->config->item('en_ids_7359')));
@@ -1780,7 +1763,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     }
 
     //ROW
-    $ui .= '<div class="list-group-item no-side-padding itemsource en-item object_highlight highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $en['en_id'] . '" en-status="' . $en['en_status_source_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_source_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
+    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_highlight highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $en['en_id'] . '" en-status="' . $en['en_status_source_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_source_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1802,7 +1785,15 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
 
         //PORTFOLIO COUNT
-        $ui .= '<span class="'.superpower_active(12701).' icon-block center" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">'.echo_number($en__portfolios_count[0]['totals']).'</span>';
+        if(superpower_active(12701, true)){
+            $en__portfolios_count = $CI->LEDGER_model->ln_fetch(array(
+                'ln_profile_source_id' => $en['en_id'],
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+            ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
+            $ui .= '<span class="'.superpower_active(12701).'"><span class="icon-block center" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
+        }
 
         //STATUS
         if(!$is_public){
