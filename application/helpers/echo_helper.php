@@ -1802,7 +1802,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
 
         //PORTFOLIO COUNT
-        $ui .= '<span class="'.superpower_active(12701).' icon-block-sm center" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">'.echo_number($en__portfolios_count[0]['totals']).'</span>';
+        $ui .= '<span class="'.superpower_active(12701).' icon-block center" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">'.echo_number($en__portfolios_count[0]['totals']).'</span>';
 
         //STATUS
         if(!$is_public){
