@@ -1890,7 +1890,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         } elseif($is_discover_progress && strlen($en['ln_content'])){
 
             //DISCOVER PROGRESS
-            $ui .= '<div class="message_content">';
+            $ui .= '<div class="message_content paddingup">';
             $ui .= $CI->COMMUNICATION_model->comm_message_send($en['ln_content']);
             $ui .= '</div>';
 
@@ -1900,7 +1900,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
     //PROFILE
     $ui .= '<div class="space-content hideIfEmpty">';
-    $ui .= '<span class="'. superpower_active(12706) .' paddingup">';
+    $ui .= '<span class="'. superpower_active(12706) .' paddingup icon-block">';
     foreach ($en__profiles as $en_parent) {
         $ui .= '<span class="icon-block-img en_child_icon_' . $en_parent['en_id'] . '"><a href="/source/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span> ';
     }
