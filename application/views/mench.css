@@ -41,6 +41,9 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .margin-top-down{
     margin:30px 0;
 }
+.padding-top-down{
+    padding:10px 0;
+}
 .container-wide .content-image {
     margin: 10px 0 0 0;
     max-width: calc(100% - 66px);
@@ -1401,9 +1404,6 @@ label {
     padding:5px 0;
 }
 
-.ideas_sortable.itemidea {
-    padding: 10px 0;
-}
 .sequal-topic{
     padding: 20px 0 5px;
 }

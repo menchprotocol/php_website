@@ -1217,7 +1217,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
     $is_source = ( !$is_in_link ? false : $is_source ); //Disable Edits on Idea List Page
 
 
-    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.' '.$extra_class.'" style="padding-left:0;">';
+    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable padding-top-down level2_in object_highlight highlight_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.' '.$extra_class.'" style="padding-left:0;">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
