@@ -14,12 +14,6 @@ body {
     font-family: 'Rubik', sans-serif;
 }
 
-.dorubik{
-    font-family: 'Rubik', sans-serif !important;
-    font-weight: 400;
-}
-
-
 /*
 
 h1, h2, h3, ul, p { padding: 0 5px; }
@@ -51,6 +45,13 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     margin: 10px 0 0 0;
     max-width: calc(100% - 66px);
     max-height:377px;
+}
+.dorubik{
+    font-family: 'Rubik', sans-serif !important;
+    font-weight: 400;
+}
+.doleft{
+    text-align: left !important;
 }
 .span__4356{
     padding-top: 9px;
