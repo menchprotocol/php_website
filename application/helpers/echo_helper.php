@@ -1235,13 +1235,13 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
             } else {
 
                 $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">';
-                $ui .= echo_in_title($in);
 
                 //IDEA STATUS
                 if(!$is_public){
-                    $ui .= '<span class="inline-block">&nbsp;<span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].' @'.$in['in_status_source_id'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span></span>';
+                    $ui .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].' @'.$in['in_status_source_id'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
                 }
 
+                $ui .= echo_in_title($in);
                 $ui .= '</a>';
 
             }
@@ -1799,6 +1799,13 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
         $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
 
+
+        //SOURCE STATUS
+        if($is_public){
+            $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
+        }
+
+
         //SOURCE NAME
         $ui .= '<span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>';
         if($en__portfolios_count[0]['totals'] > 0){
@@ -1806,11 +1813,6 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         }
 
 
-
-        //SOURCE STATUS
-        if($is_public){
-            $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'].'">&nbsp;<span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span>';
-        }
 
         //LINK
         if ($ln_id > 0) {
