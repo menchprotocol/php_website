@@ -301,6 +301,7 @@ class Source extends CI_Controller
         $items_per_page = config_var(11064);
         $parent_en_id = intval($_POST['parent_en_id']);
         $en_focus_filter = intval($_POST['en_focus_filter']);
+        $is_source = en_is_source($parent_en_id);
         $page = intval($_POST['page']);
         $filters = array(
             'ln_profile_source_id' => $parent_en_id,
@@ -316,7 +317,7 @@ class Source extends CI_Controller
         ));
 
         foreach ($child_sources as $en) {
-            echo echo_en($en,false, null, true);
+            echo echo_en($en,false, null, true, $is_source);
         }
 
         //Count total children:
