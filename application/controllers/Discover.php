@@ -295,7 +295,7 @@ class Discover extends CI_Controller
             'ln_creator_source_id' => $session_en['en_id'],
         )) as $discover_progress){
             $this->LEDGER_model->ln_update($discover_progress['ln_id'], array(
-                'ln_status_source_id' => 6173, //Link Deleted
+                'ln_status_source_id' => 6173, //Transaction Deleted
             ), $session_en['en_id'], 12129 /* DISCOVER ANSWER DELETED */);
         }
 
@@ -360,7 +360,7 @@ class Discover extends CI_Controller
             'ln_creator_source_id' => $session_en['en_id'],
         )) as $discover_progress){
             $this->LEDGER_model->ln_update($discover_progress['ln_id'], array(
-                'ln_status_source_id' => 6173, //Link Deleted
+                'ln_status_source_id' => 6173, //Transaction Deleted
             ), $session_en['en_id'], 12129 /* DISCOVER ANSWER DELETED */);
         }
 
@@ -455,7 +455,7 @@ class Discover extends CI_Controller
             //Delete all progressions:
             foreach($progress_links as $progress_link){
                 $this->LEDGER_model->ln_update($progress_link['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Link Deleted
+                    'ln_status_source_id' => 6173, //Transaction Deleted
                     'ln_parent_transaction_id' => $clear_all_link['ln_id'], //To indicate when it was deleted
                 ), $en_id, 6415 /* User Cleared DISCOVER LIST */);
             }

@@ -245,7 +245,7 @@ class COMMUNICATION_model extends CI_Model
 
                 //Let User know that they have previously subscribed to this idea:
                 $this->COMMUNICATION_model->comm_message_send(
-                    'The idea [' . $ins[0]['in_title'] . '] has previously been added to your DISCOVER LIST. /link:DISCOVER LIST:https://mench.com/' . $ins[0]['in_id'],
+                    'The idea [' . $ins[0]['in_title'] . '] has previously been added to your DISCOVER LIST.',
                     $en,
                     true
                 );
@@ -1087,7 +1087,7 @@ class COMMUNICATION_model extends CI_Model
          * that does not consider $message_type_en_id if passed
          *
          * */
-        $string_references = extract_references($input_message);
+        $string_references = extract_source_references($input_message);
 
         if($strict_validation){
             //Check only in strict mode:
@@ -1111,24 +1111,6 @@ class COMMUNICATION_model extends CI_Model
                     'status' => 0,
                     'message' => 'You can either reference an source OR a URL, as URLs are transformed to sources',
                 );
-
-            } elseif (count($string_references['ref_commands']) > 0) {
-
-                if(count($string_references['ref_commands']) != count(array_unique($string_references['ref_commands'])) && !in_array('/count:', $string_references['ref_commands'])){
-
-                    return array(
-                        'status' => 0,
-                        'message' => 'Each /command can only be used once per message',
-                    );
-
-                } elseif(in_array('/link:',$string_references['ref_commands']) && count($quick_replies) > 0){
-
-                    return array(
-                        'status' => 0,
-                        'message' => 'You cannot combine the /link command with quick replies',
-                    );
-
-                }
 
             }
         }
@@ -1215,10 +1197,11 @@ class COMMUNICATION_model extends CI_Model
                     //No way to communicate with user:
                     return array(
                         'status' => 0,
-                        'message' => 'User @' . $recipient_en['en_id'] . ' has not connected to a Mench platform yet',
+                        'message' => 'Player @' . $recipient_en['en_id'] . ' has not joined yet',
                     );
 
                 }
+
             }
 
         } else {
@@ -1287,7 +1270,6 @@ class COMMUNICATION_model extends CI_Model
          * */
         if ($strict_validation && count($string_references['ref_urls']) > 0) {
 
-            //BUGGY
             //No source linked, but we have a URL that we should turn into an source if not previously:
             $url_source = $this->SOURCE_model->en_url($string_references['ref_urls'][0], ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ), ( isset($recipient_en['en_id']) ? array($recipient_en['en_id']) : array() ));
 
@@ -1321,57 +1303,6 @@ class COMMUNICATION_model extends CI_Model
 
         //Start building the Output message body based on format:
         $output_body_message = ( $push_message ? $input_message : htmlentities($input_message) );
-
-
-        if (in_array('/count:', $string_references['ref_commands'])) {
-
-            $count_parts = explode('/count:', $output_body_message);
-            foreach($count_parts as $i=>$count_part){
-                if($i>0){
-                    $cache_var_name = one_two_explode('',' ', $count_part);
-                    $output_body_message = str_replace('/count:'.$cache_var_name, number_format($this->config->item('cache_count_'.$cache_var_name), 0), $output_body_message);
-                }
-            }
-
-
-        }
-
-
-        //Determine if we have a button link:
-        $fb_button_title = null;
-        $fb_button_url = null;
-        if (in_array('/link:', $string_references['ref_commands'])) {
-
-            //Validate /link format:
-            $link_anchor = trim(one_two_explode('/link:', ':http', $output_body_message));
-            $link_url = 'http' . one_two_explode(':http', ' ', $output_body_message);
-
-            if (strlen($link_anchor) < 1 || !filter_var($link_url, FILTER_VALIDATE_URL)) {
-                return array(
-                    'status' => 0,
-                    'message' => 'Invalid link command',
-                );
-            }
-
-            //Make adjustments:
-            if ($push_message) {
-
-                //Update variables to later include in message:
-                $fb_button_title = $link_anchor;
-                $fb_button_url = $link_url;
-
-                //Delete command from input message:
-                $output_body_message = str_replace('/link:' . $link_anchor . ':' . $link_url, '', $output_body_message);
-
-            } else {
-
-                //Replace in HTML message:
-                $output_body_message = str_replace('/link:' . $link_anchor . ':' . $link_url, '<a href="' . $link_url . '">' . $link_anchor . '</a>', $output_body_message);
-
-            }
-
-        }
-
 
 
 
@@ -1425,12 +1356,12 @@ class COMMUNICATION_model extends CI_Model
             //Determine what type of Media this reference has:
             if(!($current_mench['x_name']=='source' && $this->uri->segment(2)==$string_references['ref_sources'][0])){
 
-                //Parents
+                //Source Profile
                 foreach ($this->LEDGER_model->ln_fetch(array(
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Source URL
-                    'ln_portfolio_source_id' => $string_references['ref_sources'][0], //This child source
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Source URL
+                    'ln_portfolio_source_id' => $string_references['ref_sources'][0],
                 ), array('en_profile'), 0) as $parent_en) {
 
                     if($parent_en['ln_content']=="https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']){
@@ -1442,6 +1373,10 @@ class COMMUNICATION_model extends CI_Model
                         $message_visual_media++;
                     } elseif($parent_en['ln_type_source_id'] == 4256 /* URL */){
                         array_push($valid_url, $parent_en['ln_content']);
+                    } elseif($parent_en['ln_type_source_id'] == 4255 /* TEXT */ && !$push_message){
+                        //Also append text:
+                        $source_appendix .= '<div class="source-appendix">' . $parent_en['ln_content'] . '</div>';
+                        continue;
                     }
 
                     if($push_message){
@@ -1482,7 +1417,7 @@ class COMMUNICATION_model extends CI_Model
 
                     } else {
 
-                        $source_appendix .= '<div class="source-appendix">' . echo_url_types($parent_en['ln_content'], $parent_en['ln_type_source_id']) . '</div>';
+                        $source_appendix .= '<div class="source-appendix inline-block">' . echo_url_types($parent_en['ln_content'], $parent_en['ln_type_source_id'], $current_mench['x_name']!='source') . '</div>';
 
                     }
                 }
@@ -1549,9 +1484,10 @@ class COMMUNICATION_model extends CI_Model
 
 
             //Do we have a text message?
-            if ($has_text || $fb_button_title) {
+            if ($has_text) {
 
-                if ($fb_button_title) {
+                //Have Link?
+                if (0) {
 
                     //We have a fixed button to append to this message:
                     $fb_message = array(
@@ -1563,8 +1499,8 @@ class COMMUNICATION_model extends CI_Model
                                 'buttons' => array(
                                     array(
                                         'type' => 'web_url',
-                                        'url' => $fb_button_url,
-                                        'title' => $fb_button_title,
+                                        'url' => 'URL',
+                                        'title' => 'TITLE',
                                         'webview_height_ratio' => 'tall',
                                         'webview_share_button' => 'hide',
                                         'messenger_extensions' => true,

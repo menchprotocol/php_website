@@ -364,7 +364,7 @@ class Idea extends CI_Controller {
 
         //Delete this link:
         $this->LEDGER_model->ln_update($_POST['ln_id'], array(
-            'ln_status_source_id' => 6173, //Link Deleted
+            'ln_status_source_id' => 6173, //Transaction Deleted
         ), $session_en['en_id'], 10686 /* Idea Link Unlinked */);
 
         return echo_json(array(
@@ -871,7 +871,7 @@ class Idea extends CI_Controller {
                 if(in_array($_POST['message_ln_status_source_id'], $this->config->item('en_ids_7359') /* Transaction Status Public */)){
 
                     //We're publishing, make sure potential source references are also published:
-                    $string_references = extract_references($_POST['ln_content']);
+                    $string_references = extract_source_references($_POST['ln_content']);
 
                     if (count($string_references['ref_sources']) > 0) {
 

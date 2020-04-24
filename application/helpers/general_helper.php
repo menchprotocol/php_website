@@ -106,47 +106,34 @@ function base64_url_decode($input)
 }
 
 
-function extract_references($ln_content)
+function extract_source_references($ln_content)
 {
 
-    //Analyzes a message text to extract Player References (Like @123) and URLs
+    //Analyzes a message text to extract Source References (Like @123) and URLs
     $CI =& get_instance();
 
     //Replace non-ascii characters with space:
     $ln_content = preg_replace('/[[:^print:]]/', ' ', $ln_content);
-    $words = preg_split('/\s+/', $ln_content);
 
     //Analyze the message to find referencing URLs and Players in the message text:
     $string_references = array(
         'ref_urls' => array(),
         'ref_sources' => array(),
-        'ref_commands' => array(),
-        'ref_custom' => array(),
     );
 
-
     //See what we can find:
-    foreach ($words as $word) {
-
-        if(substr($word, 0, 1) == '/') {
-
-            //Check maybe it's a command?
-            $command = includes_any($word, array('/link:', '/setyourpassword', '/count:'));
-            if ($command) {
-                //Yes!
-                array_push($string_references['ref_commands'], $command);
-            }
-
-        } elseif (filter_var($word, FILTER_VALIDATE_URL)) {
+    foreach (preg_split('/\s+/', $ln_content) as $word) {
+        if (filter_var($word, FILTER_VALIDATE_URL)) {
 
             array_push($string_references['ref_urls'], $word);
 
-        } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1)) && intval(substr($word, 1)) > 0) {
+        } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1, 1))) {
 
             array_push($string_references['ref_sources'], intval(substr($word, 1)));
 
         }
     }
+
     return $string_references;
 }
 

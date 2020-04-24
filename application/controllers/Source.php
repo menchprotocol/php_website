@@ -1229,7 +1229,7 @@ class Source extends CI_Controller
             )) as $delete_en){
                 //Should usually delete a single option:
                 $this->LEDGER_model->ln_update($delete_en['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Link Deleted
+                    'ln_status_source_id' => 6173, //Transaction Deleted
                 ), $session_en['en_id'], 6224 /* User Account Updated */);
             }
 
@@ -1383,7 +1383,7 @@ class Source extends CI_Controller
 
                 //Delete email:
                 $this->LEDGER_model->ln_update($user_emails[0]['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Link Deleted
+                    'ln_status_source_id' => 6173, //Transaction Deleted
                 ), $session_en['en_id'], 6224 /* User Account Updated */);
 
                 $return = array(

@@ -53,6 +53,9 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .doleft{
     text-align: left !important;
 }
+.doright{
+    text-align: right !important;
+}
 .span__4356{
     padding-top: 9px;
     display: inline-block;

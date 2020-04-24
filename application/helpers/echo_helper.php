@@ -63,7 +63,7 @@ function echo_time_minutes($sec_int)
     return ( $min ? $min . ' Min.' : ( $sec ? $sec . ' Sec.' : false ) );
 }
 
-function echo_url_types($url, $en_type_link_id)
+function echo_url_types($url, $en_type_link_id, $do_mini = false)
 {
 
     /*
@@ -77,7 +77,7 @@ function echo_url_types($url, $en_type_link_id)
 
     if ($en_type_link_id == 4256 /* Generic URL */) {
 
-        return '<a href="' . $url . '"><span class="url_truncate">' . echo_url_clean($url) . '</span></a>';
+        return '<a href="' . $url . '">'.( $do_mini ? '<i class="fas fa-external-link"></i>' : '<span class="url_truncate">' . echo_url_clean($url) . '</span>' ).'</a>';
 
     } elseif ($en_type_link_id == 4257 /* Embed Widget URL? */) {
 
@@ -1784,17 +1784,6 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         //SOURCE NAME
         $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
 
-        //PORTFOLIO COUNT
-        if(superpower_active(12701, true)){
-            $en__portfolios_count = $CI->LEDGER_model->ln_fetch(array(
-                'ln_profile_source_id' => $en['en_id'],
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-            ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
-            $ui .= '<span class="'.superpower_active(12701).'"><span class="icon-block dorubik black doleft" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
-        }
-
         //STATUS
         if(!$is_public){
             $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
@@ -1822,6 +1811,18 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
                 }
 
             }
+        }
+
+        //PORTFOLIO COUNT
+        if(superpower_active(12701, true)){
+            $en__portfolios_count = $CI->LEDGER_model->ln_fetch(array(
+                'ln_profile_source_id' => $en['en_id'],
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+            ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
+            $ui .= '<span class="'.superpower_active(12701).' pull-right"><span class="icon-block dorubik black doright" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
+            $ui .= '<div class="doclear">&nbsp;</div>';
         }
 
         $ui .= '</a>';

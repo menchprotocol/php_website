@@ -8,13 +8,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-23 22:23:00 PST
+//Generated 2020-04-24 08:32:49 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587705780;
-$config['cache_count_transaction'] = 1154324;
+$config['cache_timestamp'] = 1587742369;
+$config['cache_count_transaction'] = 1154915;
 $config['cache_count_discover'] = 121142;
-$config['cache_count_idea'] = 4898;
+$config['cache_count_idea'] = 4931;
 $config['cache_count_source'] = 5234;
 
 
@@ -212,7 +212,7 @@ $config['en_all_12687'] = array(
     12697 => array(
         'm_icon' => '',
         'm_name' => 'MESSENGER FIND NEXT',
-        'm_desc' => 'What would you like to discover next? Start a sentence with "Discover" or /link:BROWSE IDEAS:https://mench.com',
+        'm_desc' => 'What would you like to discover next? Start a sentence with "Discover"',
         'm_parents' => array(12687),
     ),
     12696 => array(
@@ -285,7 +285,7 @@ $config['en_ids_12500'] = array(12205,12274,12273,6255,6287,7274,7291);
 $config['en_all_12500'] = array(
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'MY SOURCE',
+        'm_name' => 'MY PROFILE',
         'm_desc' => '',
         'm_parents' => array(12500,11035),
     ),
@@ -4222,7 +4222,7 @@ $config['en_all_11035'] = array(
     ),
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'MY SOURCE',
+        'm_name' => 'MY PROFILE',
         'm_desc' => '',
         'm_parents' => array(12500,11035),
     ),

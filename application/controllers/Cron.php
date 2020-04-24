@@ -200,7 +200,7 @@ class Cron extends CI_Controller
 
         $subscriber_filters = array(
             'ln_profile_source_id' => 12114,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Transactions
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
         );
@@ -217,7 +217,7 @@ class Cron extends CI_Controller
             //Try fetching subscribers email:
             foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id' => 4255, //Linked Players Text (Email is text)
+                'ln_type_source_id' => 4255, //Text
                 'ln_profile_source_id' => 3288, //Mench Email
                 'ln_portfolio_source_id' => $subscribed_player['en_id'],
             )) as $en_email){
@@ -598,7 +598,7 @@ class Cron extends CI_Controller
          * */
 
         $ln_pending = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id' => 6175, //Link Drafting
+            'ln_status_source_id' => 6175, //Transaction Drafting
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //User Sent/Received Media Links
         ), array(), 10);
 
@@ -615,7 +615,7 @@ class Cron extends CI_Controller
             $this->LEDGER_model->ln_update($ln['ln_id'], array(
                 'ln_content' => $cdn_status['cdn_url'], //CDN URL
                 'ln_portfolio_source_id' => $cdn_status['cdn_en']['en_id'], //New URL Player
-                'ln_status_source_id' => 6176, //Link Published
+                'ln_status_source_id' => 6176, //Transaction Published
             ), $ln['ln_creator_source_id'], 10690 /* User Media Uploaded */);
 
             //Increase counter:
