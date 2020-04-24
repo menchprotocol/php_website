@@ -1412,7 +1412,7 @@ function echo_in_list($in, $in__next, $recipient_en, $push_message, $prefix_stat
             if($has_content){
                 echo '<div class="discover-topic">'.trim($prefix_statement).'</div>';
             } else {
-                echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>KEY IDAES:</div>';
+                echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>IDEAS::</div>';
             }
             echo '<div class="list-group">';
 
