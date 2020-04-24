@@ -1882,7 +1882,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     if ($ln_id > 0) {
         if($is_link_source){
 
-            $ui .= '<span class="message_content ln_content hideIfEmpty ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_source_id']) . '</span>';
+            $ui .= '<span class="message_content ln_content paddingup hideIfEmpty ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_source_id']) . '</span>';
 
             //For JS editing only (HACK):
             $ui .= '<div class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</div>';
