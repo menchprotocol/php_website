@@ -166,7 +166,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
 
                 //Inform User that this is a sliced video
                 if ($start_sec || $end_sec) {
-                    $embed_html_code .= '<div class="discover-topic">' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'">WATCH ' . echo_time_minutes(($end_sec - $start_sec)) . ' CLIP</b>' : '<b>WATCH FROM ' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
+                    $embed_html_code .= '<div class="discover-topic">' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'"><span class="icon-block-xs"><i class="fas fa-play"></i></span>WATCH ' . echo_time_minutes(($end_sec - $start_sec)) . ' CLIP</b>' : '<b><span class="icon-block-xs"><i class="fas fa-play"></i></span>WATCH FROM ' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
                 }
 
                 $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
@@ -1412,7 +1412,7 @@ function echo_in_list($in, $in__next, $recipient_en, $push_message, $prefix_stat
             if($has_content){
                 echo '<div class="discover-topic">'.trim($prefix_statement).'</div>';
             } else {
-                echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>PREVIEW TOPICS:</div>';
+                echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>KEY IDAES:</div>';
             }
             echo '<div class="list-group">';
 
