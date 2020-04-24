@@ -1060,7 +1060,7 @@ function en_name_validate($string){
     //All good, return success:
     return array(
         'status' => 1,
-        'en_clean_name' => trim($string),
+        'en_clean_name' => strtoupper(trim($string)),
     );
 
 }
