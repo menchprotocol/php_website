@@ -1970,7 +1970,7 @@ function echo_input_text($cache_en_id, $current_value, $object_id, $is_source, $
 
     }
 
-    return '<span class="span__'.$cache_en_id.' '.( !$is_source ? 'edit-locked' : '' ).'" '.( !$extra_large || !$is_source ? 'data-toggle="tooltip" data-placement="top" title="'.$en_all_12112[$cache_en_id]['m_name'].'"' : '').'>'.$icon.$main_element.'</span>'.$character_counter;
+    return '<span class="span__'.$cache_en_id.' '.( !$is_source ? 'edit-locked' : '' ).'" '.( $extra_large ? '' : 'data-toggle="tooltip" data-placement="top" title="'.$en_all_12112[$cache_en_id]['m_name'].'"').'>'.$icon.$main_element.'</span>'.$character_counter;
 }
 
 
