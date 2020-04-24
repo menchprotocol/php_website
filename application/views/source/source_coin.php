@@ -38,7 +38,7 @@ $is_source = en_is_source($en['en_id']);
 
     <div id="modifybox" class="fixed-box hidden" source-id="0" source-link-id="0" style="padding: 5px;">
 
-        <h5 class="badge badge-h edit-header"><i class="fas fa-cog"></i> Modify</h5>
+        <h5 class="badge badge-h edit-header"><i class="fas fa-pen-square"></i> Modify</h5>
         <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
             <a href="javascript:void(0);" onclick="modify_cancel()"><i class="fas fa-times"></i></a>
         </div>

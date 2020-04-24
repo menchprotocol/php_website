@@ -396,7 +396,7 @@ function en_modify_load(en_id, ln_id) {
 
     var en_full_name = $(".en_name_full_" + en_id + ":first").text();
     $('#en_name').val(en_full_name.toUpperCase()).focus();
-    $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
+    $('.edit-header').html('<i class="fas fa-pen-square"></i> ' + en_full_name);
     $('#en_status_source_id').val($(".en___" + en_id + ":first").attr('en-status'));
     $('.save_source_changes').html('');
     $('.source_delete_stats').html('');
