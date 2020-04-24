@@ -55,10 +55,6 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
     echo '<div class="itemsource">'.echo_input_text(6197, $en['en_name'], $en['en_id'], ($is_source && $is_active), 0, true, $en['en_icon'], extract_icon_color($en['en_icon'])).'</div>';
 
 
-    //FOR EDITING ONLY:
-    echo '<div class="hidden">'.echo_en($en).'</div>';
-
-
 
     //NAME & STATUS
     echo '<div class="doclear">&nbsp;</div>';
@@ -77,6 +73,10 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
 
     echo '</div>';
     echo '<div class="doclear">&nbsp;</div>';
+
+
+    //FOR EDITING ONLY:
+    echo '<div class="hidden">'.echo_en($en).'</div>';
 
     ?>
 
