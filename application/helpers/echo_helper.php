@@ -1821,7 +1821,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
             ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
-            $ui .= '<span class="'.superpower_active(12701).' pull-right"><span class="icon-block dorubik black doright" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
+            $ui .= '<span class="'.superpower_active(12701).' pull-right"><span class="icon-block doright" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
             $ui .= '<div class="doclear">&nbsp;</div>';
         }
 
