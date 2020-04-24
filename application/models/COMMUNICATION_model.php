@@ -1379,7 +1379,7 @@ class COMMUNICATION_model extends CI_Model
 
                         } else {
                             //Also append text:
-                            $source_appendix .= '<div class="source-appendix">' . $parent_en['ln_content'] . '</div>';
+                            $source_appendix .= '<div class="source-appendix"><span class="icon-block"><i class="fad fa-info-circle"></i></span>' . $parent_en['ln_content'] . '</div>';
                         }
                         continue;
 
@@ -1428,7 +1428,7 @@ class COMMUNICATION_model extends CI_Model
 
                     } else {
 
-                        $source_appendix .= '<div class="source-appendix inline-block">&nbsp;' . echo_url_types($parent_en['ln_content'], $parent_en['ln_type_source_id'], false) . '</div>';
+                        $source_appendix .= '<div class="source-appendix">' . echo_url_types($parent_en['ln_content'], $parent_en['ln_type_source_id'], false) . '</div>';
 
                     }
                 }
