@@ -1792,11 +1792,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
         //SOURCE ICON
         $ui .= '<a href="/source/'.$en['en_id'] . '" '.( $is_link_source ? ' title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'" ' : '' ).'>';
-        if($is_public){
-            $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
-        } else {
-            $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span>';
-        }
+    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
         $ui .= '</a>';
 
 
@@ -1805,11 +1801,15 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         //SOURCE NAME
         $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
 
+        //PORTFOLIO COUNT
+        $ui .= '<span class="'.superpower_active(12701).' icon-block center" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">'.($en__portfolios_count[0]['totals'] > 0 ? echo_number($en__portfolios_count[0]['totals']) : '&nbsp;').'</span>';
+
+        //STATUS
+        if(!$is_public){
+            $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'].'">&nbsp;<span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span>';
+        }
 
         $ui .= '<span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>';
-        if($en__portfolios_count[0]['totals'] > 0){
-            $ui .= '<span class="'.superpower_active(12701).'" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">&nbsp;'.echo_number($en__portfolios_count[0]['totals']).'</span>';
-        }
 
 
 

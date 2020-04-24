@@ -373,6 +373,9 @@ img.no-radius {
     padding: 15px;
     margin: 0 auto;
 }
+.center{
+    text-align: center;
+}
 
 .featured-frame{
     text-align: center;
@@ -886,6 +889,7 @@ td.MENCHcolumn3  { width: 13%; }
     display: block;
     float: left;
     padding-top: 13px;
+    padding-left: 2px;
 }
 .ledger-list {
     padding:21px 0;
