@@ -1802,11 +1802,11 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
 
         //PORTFOLIO COUNT
-        $ui .= '<span class="'.superpower_active(12701).' icon-block center" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">'.($en__portfolios_count[0]['totals'] > 0 ? echo_number($en__portfolios_count[0]['totals']) : '&nbsp;').'</span>';
+        $ui .= '<span class="'.superpower_active(12701).' icon-block-sm center" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">'.echo_number($en__portfolios_count[0]['totals']).'</span>';
 
         //STATUS
         if(!$is_public){
-            $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'].'">&nbsp;<span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span>';
+            $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
         }
 
         $ui .= '<span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>';
