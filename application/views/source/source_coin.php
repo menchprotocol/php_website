@@ -49,38 +49,9 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
 <div class="container">
 
     <?php
-
-
     //SOURCE NAME
     echo '<div class="itemsource">'.echo_input_text(6197, $en['en_name'], $en['en_id'], ($is_source && $is_active), 0, true, $en['en_icon'], extract_icon_color($en['en_icon'])).'</div>';
-
-
-    //FOR EDITING ONLY:
-    echo '<div class="hidden">'.echo_en($en).'</div>';
-
-
-    //NAME & STATUS
-    echo '<div class="doclear">&nbsp;</div>';
-    echo '<div class="pull-right inline-block" style="margin-bottom: -28px;">';
-
-    //REFERENCES
-    if(superpower_active(12701, true)){
-        echo '<div class="inline-block '.superpower_active(12701).'">'.join('',en_count_db_references($en['en_id'])).'</div>';
-    }
-
-    //SOURCE DRAFTING?
-    echo '<span class="icon-block en_status_source_id_' . $en['en_id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].': '.$en_all_6177[$en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span>';
-
-    //Modify
-    echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',0)" class="icon-block '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
-
-    echo '</div>';
-    echo '<div class="doclear">&nbsp;</div>';
-
-
     ?>
-
-
 
 
     <div id="modifybox" class="fixed-box hidden" source-id="0" source-link-id="0" style="padding: 5px;">
@@ -213,6 +184,37 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
     </div>
 
     <?php
+
+
+
+
+    //FOR EDITING ONLY:
+    echo '<div class="hidden">'.echo_en($en).'</div>';
+
+
+
+    //NAME & STATUS
+    echo '<div class="doclear">&nbsp;</div>';
+    echo '<div class="pull-right inline-block" style="margin-bottom: -28px;">';
+
+    //REFERENCES
+    if(superpower_active(12701, true)){
+        echo '<div class="inline-block '.superpower_active(12701).'">'.join('',en_count_db_references($en['en_id'])).'</div>';
+    }
+
+    //SOURCE DRAFTING?
+    echo '<span class="icon-block en_status_source_id_' . $en['en_id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].': '.$en_all_6177[$en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span>';
+
+    //Modify
+    echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',0)" class="icon-block '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
+
+    echo '</div>';
+    echo '<div class="doclear">&nbsp;</div>';
+
+
+
+
+
     //Print Play Layout
     $disable_content_loading = !isset($_GET['load']);
 
