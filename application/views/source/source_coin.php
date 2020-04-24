@@ -50,7 +50,7 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
 
     <?php
     //SOURCE NAME
-    echo '<div class="itemsource">'.echo_input_text(6197, $en['en_name'], $en['en_id'], ($is_source && $is_active), 0, true, $en['en_icon'], extract_icon_color($en['en_icon'])).'</div>';
+    echo '<div class="itemsource">'.echo_input_text(6197, $en['en_name'], $en['en_id'], ($is_source && $is_active), 0, true, '<span class="en_ui_icon_'.$en['en_id'].'">'.$en['en_icon'].'</span>', extract_icon_color($en['en_icon'])).'</div>';
     ?>
 
 
