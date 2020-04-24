@@ -1477,7 +1477,7 @@ class Source extends CI_Controller
         //Fetch existing password:
         $user_passwords = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4255, //Passwords are of type Text
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_profile_source_id' => 3286, //Password
             'ln_portfolio_source_id' => $session_en['en_id'],
         ));
@@ -1512,7 +1512,7 @@ class Source extends CI_Controller
 
             //Create new link:
             $this->LEDGER_model->ln_create(array(
-                'ln_type_source_id' => 4255, //Passwords are of type Text
+                'ln_type_source_id' => 12826, //HASH
                 'ln_profile_source_id' => 3286, //Password
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_portfolio_source_id' => $session_en['en_id'],
@@ -1707,7 +1707,7 @@ class Source extends CI_Controller
             'ln_portfolio_source_id' => $user_en['en']['en_id'],
         ));
         $this->LEDGER_model->ln_create(array(
-            'ln_type_source_id' => 4255, //Text link
+            'ln_type_source_id' => 12826, //HASH
             'ln_content' => strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $user_en['en']['en_id'])),
             'ln_profile_source_id' => 3286, //Mench Password
             'ln_creator_source_id' => $user_en['en']['en_id'],
@@ -1866,7 +1866,7 @@ class Source extends CI_Controller
         //Authenticate password:
         $user_passwords = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id' => 4255, //Text
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
             'ln_profile_source_id' => 3286, //Password
             'ln_portfolio_source_id' => $ens[0]['en_id'],
         ));
@@ -1992,7 +1992,7 @@ class Source extends CI_Controller
 
                 //Create new password link:
                 $this->LEDGER_model->ln_create(array(
-                    'ln_type_source_id' => 4255, //Text link
+                    'ln_type_source_id' => 12826, //HASH
                     'ln_content' => $password_hash,
                     'ln_profile_source_id' => 3286, //Mench Password
                     'ln_creator_source_id' => $ens[0]['en_id'],
