@@ -1899,7 +1899,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
 
     //PROFILE
-    $ui .= '<div class="space-content">';
+    $ui .= '<div class="space-content hideIfEmpty">';
     $ui .= '<span class="'. superpower_active(12706) .' paddingup">';
     foreach ($en__profiles as $en_parent) {
         $ui .= '<span class="icon-block-img en_child_icon_' . $en_parent['en_id'] . '"><a href="/source/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span> ';
