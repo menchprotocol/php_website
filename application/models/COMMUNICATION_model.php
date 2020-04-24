@@ -1417,7 +1417,7 @@ class COMMUNICATION_model extends CI_Model
 
                     } else {
 
-                        $source_appendix .= '<div class="source-appendix inline-block">' . echo_url_types($parent_en['ln_content'], $parent_en['ln_type_source_id'], $current_mench['x_name']!='source') . '</div>';
+                        $source_appendix .= '<div class="source-appendix inline-block">&nbsp;' . echo_url_types($parent_en['ln_content'], $parent_en['ln_type_source_id'], $current_mench['x_name']!='source') . '</div>';
 
                     }
                 }
