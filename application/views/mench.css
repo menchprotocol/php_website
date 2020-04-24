@@ -226,11 +226,11 @@ a.btn, .btn.dropdown-toggle, label.btn {
     padding:15px;
 }
 
-.main_nav .btn {
-    padding-left: 0;
-}
 .main_nav a.btn, .main_nav .btn.dropdown-toggle, .main_nav label.btn{
     padding:10px;
+}
+.main_nav .btn {
+    padding-left: 0 !important;
 }
 
 img.no-radius {
