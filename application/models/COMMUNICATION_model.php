@@ -1457,7 +1457,7 @@ class COMMUNICATION_model extends CI_Model
                  *
                  * */
 
-                $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block '.( $message_visual_media == 1 && $message_any==1 && $current_mench['x_name']=='discover' ? superpower_active(10939) : '' ).'">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block icon-block-xs">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).'<a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '"><span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span>' . $ens[0]['en_name']  . '</a></span>', $output_body_message);
+                $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block '.( ($message_visual_media == 1 || count($valid_url)==1) && $message_any==1 && $current_mench['x_name']=='discover' ? superpower_active(10939) : '' ).'">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block icon-block-xs">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).'<a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '"><span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span>' . $ens[0]['en_name']  . '</a></span>', $output_body_message);
 
             } else {
 
