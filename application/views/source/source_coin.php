@@ -651,7 +651,7 @@ $is_source = en_is_source($en['en_id']);
                     continue;
                 } else {
                     //TODO Implement this UI:
-                    $this_tab .= '<div class="alert alert-warning"><span class="icon-block"><i class="fad fa-info-circle"></i></span>This Section is Under Development...</div>';
+                    $this_tab .= '<div class="alert alert-warning"><span class="icon-block"><i class="fas fa-info-circle"></i></span>This Section is Under Development...</div>';
                 }
 
             }

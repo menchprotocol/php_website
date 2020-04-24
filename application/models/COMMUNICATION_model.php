@@ -1379,7 +1379,7 @@ class COMMUNICATION_model extends CI_Model
 
                         } else {
                             //Also append text:
-                            $source_appendix .= '<div class="source-appendix"><span class="icon-block"><i class="fad fa-info-circle"></i></span>' . $parent_en['ln_content'] . '</div>';
+                            $source_appendix .= '<div class="source-appendix"><i class="fad fa-info-circle"></i>&nbsp;' . $parent_en['ln_content'] . '</div>';
                         }
                         continue;
 
