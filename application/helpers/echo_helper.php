@@ -77,7 +77,7 @@ function echo_url_types($url, $en_type_link_id)
 
     if ($en_type_link_id == 4256 /* Generic URL */) {
 
-        return '<div class="paddingup block"><a href="' . $url . '" target="_blank"><span class="url_truncate"><span class="icon-block-xs"><i class="far fa-external-link"></i></span>' . echo_url_clean($url) . '</span></a></div>';
+        return '<div class="block"><a href="' . $url . '" target="_blank"><span class="url_truncate"><span class="icon-block-xs"><i class="far fa-external-link"></i></span>' . echo_url_clean($url) . '</span></a></div>';
 
     } elseif ($en_type_link_id == 4257 /* Embed Widget URL? */) {
 
@@ -1882,7 +1882,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     if ($ln_id > 0) {
         if($is_link_source){
 
-            $ui .= '<span class="message_content ln_content paddingup hideIfEmpty ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_source_id']) . '</span>';
+            $ui .= '<span class="message_content paddingup ln_content hideIfEmpty ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_source_id']) . '</span>';
 
             //For JS editing only (HACK):
             $ui .= '<div class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</div>';
