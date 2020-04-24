@@ -6,7 +6,7 @@ function echo_en_load_more($page, $limit, $en__portfolios_count)
      * Gives an option to "Load More" sources when we have too many to show in one go
      * */
 
-    $ui = '<div class="load-more montserrat list-group-item itemsource no-left-padding" style="padding-bottom:20px;"><a href="javascript:void(0);" onclick="en_load_next_page(' . $page . ', 0)">';
+    $ui = '<div class="load-more montserrat list-group-item itemsource no-left-padding"><a href="javascript:void(0);" onclick="en_load_next_page(' . $page . ', 0)">';
 
     //Regular section:
     $max_sources = (($page + 1) * $limit);
