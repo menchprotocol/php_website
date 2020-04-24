@@ -41,8 +41,8 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .margin-top-down{
     margin:30px 0;
 }
-.padding-top-down{
-    padding:10px 0;
+.paddingup{
+    padding:10px 0 0;
 }
 .container-wide .content-image {
     margin: 10px 0 0 0;
