@@ -176,14 +176,16 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
             $this_tab .= echo_en($in_note, 0, null, $is_source && $is_active);
         }
 
-        $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding source-mapper source-map-'.$en_id.'" note_type_id="' . $en_id . '">
+        if($is_source && $is_active) {
+            $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding source-mapper source-map-' . $en_id . '" note_type_id="' . $en_id . '">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $en_all_2738[4536]['m_icon'] . '</span></span>
                     <input type="text"
                            class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"                          
                            placeholder="NEW SOURCE">
-                </div><div class="algolia_pad_search hidden pad_expand source-pad-'.$en_id.'"></div></div>';
+                </div><div class="algolia_pad_search hidden pad_expand source-pad-' . $en_id . '"></div></div>';
+        }
 
         $this_tab .= '</div>';
 

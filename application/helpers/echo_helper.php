@@ -1216,6 +1216,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
     $is_in_link = in_array($in['ln_type_source_id'], $CI->config->item('en_ids_4486'));
     $is_source = ( !$is_in_link ? false : $is_source ); //Disable Edits on Idea List Page
 
+
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.' '.$extra_class.'" style="padding-left:0;">';
 
 
@@ -1228,9 +1229,18 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
             //IDEA TITLE
             if($is_in_link && superpower_active(12673, true)){
+
                 $ui .= echo_input_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
+
             } else {
+
                 $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">' . echo_in_title($in) . '</a>';
+
+                //IDEA STATUS
+                if(!$is_public){
+                    $ui .= '<span class="inline-block">&nbsp;<span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].' @'.$in['in_status_source_id'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span></span>';
+
+                }
             }
         $ui .= '</div>';
     $ui .= '</td>';
@@ -1795,7 +1805,9 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
 
         //SOURCE STATUS
-        $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'] . ( $is_public ? ' hidden ' : '' ).'">&nbsp;<span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].': '.$en_all_6177[$en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span>';
+        if($is_public){
+            $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'].'">&nbsp;<span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span>';
+        }
 
         //LINK
         if ($ln_id > 0) {
