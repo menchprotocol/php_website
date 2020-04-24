@@ -784,6 +784,12 @@ class Source extends CI_Controller
             'en_id' => intval($_POST['en_id']),
         ));
 
+
+        $en_name_validate = en_name_validate($_POST['en_name']);
+        if(!$en_name_validate['status']){
+            return echo_json($en_name_validate);
+        }
+
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -799,11 +805,6 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Focus ID',
             ));
-        } elseif (!isset($_POST['en_name']) || strlen($_POST['en_name']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing name',
-            ));
         } elseif (!isset($_POST['en_status_source_id'])) {
             return echo_json(array(
                 'status' => 0,
@@ -813,16 +814,6 @@ class Source extends CI_Controller
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing source link data',
-            ));
-        } elseif (strlen($_POST['en_name']) > config_var(6197)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Name is longer than the allowed ' . config_var(6197) . ' characters.',
-            ));
-        } elseif (strlen($_POST['en_name']) < config_var(12232)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Name is shorter than the minimum ' . config_var(12232) . ' characters.',
             ));
         } elseif(!$is_valid_icon['status']){
             //Check if valid icon:
@@ -838,7 +829,7 @@ class Source extends CI_Controller
 
         //Prepare data to be updated:
         $en_update = array(
-            'en_name' => trim($_POST['en_name']),
+            'en_name' => $en_name_validate['en_clean_name'],
             'en_icon' => trim($_POST['en_icon']),
             'en_status_source_id' => intval($_POST['en_status_source_id']),
         );
@@ -1335,49 +1326,6 @@ class Source extends CI_Controller
         ));
     }
 
-
-    function account_update_name()
-    {
-
-        $session_en = superpower_assigned();
-
-        if (!$session_en) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => echo_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['en_name']) || strlen(trim($_POST['en_name'])) < config_var(12232)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Name must be at-least '.config_var(12232).' characters long',
-            ));
-        } elseif (strlen($_POST['en_name']) > config_var(6197)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Name is longer than the allowed ' . config_var(6197) . ' characters.',
-            ));
-        }
-
-        //Cleanup:
-        $_POST['en_name'] = trim($_POST['en_name']);
-
-        //Update name:
-        $this->SOURCE_model->en_update($session_en['en_id'], array(
-            'en_name' => $_POST['en_name'],
-        ), true, $session_en['en_id']);
-
-
-        //Update Session:
-        $session_en['en_name'] = $_POST['en_name'];
-        $this->SOURCE_model->en_activate_session($session_en, true);
-
-
-        return echo_json(array(
-            'status' => 1,
-            'message' => 'Name updated',
-            'first__name' => one_two_explode('',' ', $_POST['en_name']),
-        ));
-    }
 
 
     function account_update_email()

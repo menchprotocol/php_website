@@ -156,24 +156,54 @@ class Ledger extends CI_Controller
             }
 
             //Validate Idea Outcome:
-            $in_titlevalidation = $this->IDEA_model->in_titlevalidate($_POST['field_value']);
-            if(!$in_titlevalidation['status']){
+            $in_title_validation = in_title_validate($_POST['field_value']);
+            if(!$in_title_validation['status']){
                 //We had an error, return it:
-                return echo_json(array_merge($in_titlevalidation, array(
+                return echo_json(array_merge($in_title_validation, array(
                     'original_val' => $ins[0]['in_title'],
                 )));
-            } else {
-
-                //All good, go ahead and update:
-                $this->IDEA_model->in_update($_POST['object_id'], array(
-                    'in_title' => trim($_POST['field_value']),
-                ), true, $session_en['en_id']);
-
-                return echo_json(array(
-                    'status' => 1,
-                ));
-
             }
+
+
+            //All good, go ahead and update:
+            $this->IDEA_model->in_update($_POST['object_id'], array(
+                'in_title' => trim($_POST['field_value']),
+            ), true, $session_en['en_id']);
+
+            return echo_json(array(
+                'status' => 1,
+            ));
+
+        } elseif($_POST['cache_en_id']==6197 /* SOURCE FULL NAME */){
+
+            $ens = $this->SOURCE_model->en_fetch(array(
+                'en_id' => $_POST['object_id'],
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Idea Status Active
+            ));
+            if(!count($ens)){
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Source ID.',
+                    'original_val' => '',
+                ));
+            }
+
+
+            $en_name_validate = en_name_validate($_POST['field_value']);
+            if(!$en_name_validate['status']){
+                return echo_json(array_merge($en_name_validate, array(
+                    'original_val' => $ens[0]['en_name'],
+                )));
+            }
+
+            //All good, go ahead and update:
+            $this->SOURCE_model->en_update($ens[0]['en_id'], array(
+                'en_name' => $en_name_validate['en_clean_name'],
+            ), true, $session_en['en_id']);
+
+            return echo_json(array(
+                'status' => 1,
+            ));
 
         } elseif($_POST['cache_en_id']==4356 /* DISCOVER TIME */){
 
@@ -315,7 +345,7 @@ class Ledger extends CI_Controller
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Unkown Update Type ['.$_POST['cache_en_id'].']',
+                'message' => 'Unknown Update Type ['.$_POST['cache_en_id'].']',
                 'original_val' => '',
             ));
 

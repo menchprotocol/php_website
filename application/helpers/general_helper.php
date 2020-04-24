@@ -989,6 +989,84 @@ function analyze_domain($full_url){
 }
 
 
+
+function in_title_validate($string){
+
+    //Validate:
+    if(!strlen(trim($string))){
+
+        return array(
+            'status' => 0,
+            'message' => 'Title missing',
+        );
+
+    } elseif(substr_count($string , '  ') > 0){
+
+        return array(
+            'status' => 0,
+            'message' => 'Title cannot include double spaces',
+        );
+
+    } elseif (strlen($string) > config_var(4736)) {
+
+        return array(
+            'status' => 0,
+            'message' => 'Title must be '.config_var(4736).' characters or less',
+        );
+
+    }
+
+    //All good, return success:
+    return array(
+        'status' => 1,
+        'in_clean_title' => trim($string),
+    );
+
+}
+
+function en_name_validate($string){
+
+    //Validate:
+    if(!strlen(trim($string))){
+
+        return array(
+            'status' => 0,
+            'message' => 'Name missing',
+        );
+
+    } elseif(strlen(trim($string)) < config_var(12232)){
+
+        return array(
+            'status' => 0,
+            'message' => 'Name is shorter than the minimum ' . config_var(12232) . ' characters.',
+        );
+
+    } elseif(substr_count($string , '  ') > 0){
+
+        return array(
+            'status' => 0,
+            'message' => 'Name cannot include double spaces',
+        );
+
+    } elseif (strlen($string) > config_var(6197)) {
+
+        return array(
+            'status' => 0,
+            'message' => 'Name must be '.config_var(6197).' characters or less',
+        );
+
+    }
+
+    //All good, return success:
+    return array(
+        'status' => 1,
+        'en_clean_name' => trim($string),
+    );
+
+}
+
+
+
 function en_is_source($en_id, $session_en = array()){
 
 
@@ -1020,7 +1098,6 @@ function en_is_source($en_id, $session_en = array()){
     );
 
 }
-
 
 function in_is_source($in_id, $session_en = array()){
 

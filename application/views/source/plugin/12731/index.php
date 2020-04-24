@@ -7,7 +7,7 @@ $active_ins = $this->IDEA_model->in_fetch(array(
 ));
 
 //Give an overview:
-echo '<p>When the validation criteria change within the in_titlevalidate() function, this page lists all the ideas that no longer have a valid outcome.</p>';
+echo '<p>When the validation criteria change within the in_title_validate() function, this page lists all the ideas that no longer have a valid outcome.</p>';
 
 
 //List the matching search:
@@ -22,9 +22,9 @@ echo '</tr>';
 $invalid_outcomes = 0;
 foreach($active_ins as $count=>$in){
 
-    $in_titlevalidation = $this->IDEA_model->in_titlevalidate($in['in_title']);
+    $in_title_validation = in_title_validate($in['in_title']);
 
-    if(!$in_titlevalidation['status']){
+    if(!$in_title_validation['status']){
 
         $invalid_outcomes++;
 

@@ -35,15 +35,15 @@ class Idea extends CI_Controller {
         }
 
         //Validate Title:
-        $in_titlevalidation = $this->IDEA_model->in_titlevalidate($_POST['newIdeaTitle']);
-        if(!$in_titlevalidation['status']){
+        $in_title_validation = in_title_validate($_POST['newIdeaTitle']);
+        if(!$in_title_validation['status']){
             //We had an error, return it:
-            return echo_json($in_titlevalidation);
+            return echo_json($in_title_validation);
         }
 
 
         //Create Idea:
-        $in = $this->IDEA_model->in_link_or_create($in_titlevalidation['in_cleaned_outcome'], $session_en['en_id']);
+        $in = $this->IDEA_model->in_link_or_create($in_title_validation['in_clean_title'], $session_en['en_id']);
 
         //Also add to bookmarks:
         $this->LEDGER_model->ln_create(array(

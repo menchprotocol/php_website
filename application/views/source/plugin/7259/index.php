@@ -54,17 +54,17 @@ if($search_for_is_set){
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
                 $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_title']).$append_text;
-                $in_titlevalidation = $this->IDEA_model->in_titlevalidate($new_outcome);
+                $in_title_validation = in_title_validate($new_outcome);
 
-                if($in_titlevalidation['status']){
+                if($in_title_validation['status']){
                     $qualifying_replacements++;
                 }
             }
 
-            if($replace_with_is_confirmed && $in_titlevalidation['status']){
+            if($replace_with_is_confirmed && $in_title_validation['status']){
                 //Update idea:
                 $this->IDEA_model->in_update($in['in_id'], array(
-                    'in_title' => $in_titlevalidation['in_cleaned_outcome'],
+                    'in_title' => $in_title_validation['in_clean_title'],
                 ), true, $session_en['en_id']);
             }
 
@@ -75,7 +75,7 @@ if($search_for_is_set){
             if($replace_with_is_set){
 
                 echo '<td style="text-align: left;">'.$new_outcome.'</td>';
-                echo '<td style="text-align: left;">'.( !$in_titlevalidation['status'] ? '<span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$in_titlevalidation['message'] : ( $replace_with_is_confirmed && $in_titlevalidation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
+                echo '<td style="text-align: left;">'.( !$in_title_validation['status'] ? '<span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$in_title_validation['message'] : ( $replace_with_is_confirmed && $in_title_validation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
             } else {
                 //Show parents now:
                 echo '<td style="text-align: left;">';

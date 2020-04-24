@@ -781,42 +781,6 @@ function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect)
 
 }
 
-function account_update_name(){
-
-    //Show spinner:
-    $('.save_full_name').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_echo_platform_message(12695)).hide().fadeIn();
-
-    //Save the rest of the content:
-    var en_name_new = $('#en_setting_name').val().toUpperCase();
-    $.post("/source/account_update_name", {
-        en_name: en_name_new,
-    }, function (data) {
-
-        if (!data.status) {
-
-            //Ooops there was an error!
-            $('.save_full_name').html('<span class="discover"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>').hide().fadeIn();
-
-        } else {
-
-            //Show success:
-            $('.save_full_name').html('<i class="fas fa-check-circle"></i> ' + data.message + '</span>').hide().fadeIn();
-
-            //Update name on page:
-            $('.en_name_first_'+js_pl_id).text(data.first__name);
-            $('.en_name_full_'+js_pl_id).text(en_name_new);
-
-            //Disappear in a while:
-            setTimeout(function () {
-
-                $('.save_full_name').html('');
-
-            }, 1597);
-
-        }
-    });
-
-}
 
 function account_update_email(){
 

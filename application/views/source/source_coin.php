@@ -329,12 +329,6 @@ $en__profiles = $this->LEDGER_model->ln_fetch(array(
 
                     $this_tab .= '</div>';
 
-                } elseif ($acc_en_id == 6197 /* Name */) {
-
-                    $this_tab .= '<span class="white-wrapper"><input type="text" id="en_setting_name" class="form-control border source doupper montserrat dotransparent" value="' . $session_en['en_name'] . '" /></span>
-                <a href="javascript:void(0)" onclick="account_update_name()" class="btn btn-source">Save</a>
-                <span class="saving-account save_full_name"></span>';
-
                 } elseif ($acc_en_id == 3288 /* Email */) {
 
                     $user_emails = $this->LEDGER_model->ln_fetch(array(

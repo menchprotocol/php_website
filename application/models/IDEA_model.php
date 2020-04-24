@@ -448,16 +448,16 @@ class IDEA_model extends CI_Model
             //We are NOT linking to an existing Idea, but instead, we're creating a new Idea
 
             //Validate Idea Outcome:
-            $in_titlevalidation = $this->IDEA_model->in_titlevalidate($in_title);
-            if(!$in_titlevalidation['status']){
+            $in_title_validation = in_title_validate($in_title);
+            if(!$in_title_validation['status']){
                 //We had an error, return it:
-                return $in_titlevalidation;
+                return $in_title_validation;
             }
 
 
             //Create new Idea:
             $in_new = $this->IDEA_model->in_create(array(
-                'in_title' => $in_titlevalidation['in_cleaned_outcome'],
+                'in_title' => $in_title_validation['in_clean_title'],
                 'in_type_source_id' => $in_type_source_id,
                 'in_status_source_id' => $new_in_status,
             ), true, $ln_creator_source_id);
@@ -1125,40 +1125,5 @@ class IDEA_model extends CI_Model
         return $child_unlock_paths;
 
     }
-
-    function in_titlevalidate($in_title){
-
-        //Validate:
-        if(!strlen(trim($in_title))){
-
-            return array(
-                'status' => 0,
-                'message' => 'Title missing',
-            );
-
-        } elseif(substr_count($in_title , '  ') > 0){
-
-            return array(
-                'status' => 0,
-                'message' => 'Title cannot include double spaces',
-            );
-
-        } elseif (strlen($in_title) > config_var(4736)) {
-
-            return array(
-                'status' => 0,
-                'message' => 'Title must be '.config_var(4736).' characters or less',
-            );
-
-        }
-
-        //All good, return success:
-        return array(
-            'status' => 1,
-            'in_cleaned_outcome' => trim($in_title),
-        );
-
-    }
-
 
 }
