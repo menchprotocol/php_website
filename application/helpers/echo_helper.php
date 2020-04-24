@@ -1224,26 +1224,22 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
     $ui .= '<td class="MENCHcolumn1">';
         $ui .= '<div class="block">';
+
             //IDEA ICON:
-            $ui .= '<span class="icon-block"><a href="/idea/'.$in['in_id'].'" title="Idea Weight: '.number_format($in['in_weight'], 0).'">' . $en_all_2738[4535]['m_icon'] . '</a></span>';
+            $ui .= '<span class="icon-block"><a href="/idea/'.$in['in_id'].'" title="Idea Weight: '.number_format($in['in_weight'], 0).'">';
+            if($is_public){
+                $ui .= $en_all_2738[4535]['m_icon'];
+            } else {
+                //IDEA STATUS
+                $ui .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].' @'.$in['in_status_source_id'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
+            }
+            $ui .='</a></span>';
 
             //IDEA TITLE
             if($is_in_link && superpower_active(12673, true)){
-
                 $ui .= echo_input_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
-
             } else {
-
-                $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">';
-
-                //IDEA STATUS
-                if(!$is_public){
-                    $ui .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].' @'.$in['in_status_source_id'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
-                }
-
-                $ui .= echo_in_title($in);
-                $ui .= '</a>';
-
+                $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">'.echo_in_title($in).'</a>';
             }
         $ui .= '</div>';
     $ui .= '</td>';
@@ -1793,20 +1789,23 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     //SOURCE
     $ui .= '<td class="MENCHcolumn1">';
 
+
         //SOURCE ICON
-        $ui .= '<a href="/source/'.$en['en_id'] . '" '.( $is_link_source ? ' title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'" ' : '' ).'><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
-
-
-        $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
-
-
-        //SOURCE STATUS
+        $ui .= '<a href="/source/'.$en['en_id'] . '" '.( $is_link_source ? ' title="LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'" ' : '' ).'>';
         if($is_public){
-            $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
+            $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
+        } else {
+            $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span>';
         }
+        $ui .= '</a>';
+
+
 
 
         //SOURCE NAME
+        $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
+
+
         $ui .= '<span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>';
         if($en__portfolios_count[0]['totals'] > 0){
             $ui .= '<span class="'.superpower_active(12701).'" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">&nbsp;'.echo_number($en__portfolios_count[0]['totals']).'</span>';
