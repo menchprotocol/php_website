@@ -1360,7 +1360,7 @@ class COMMUNICATION_model extends CI_Model
                 foreach ($this->LEDGER_model->ln_fetch(array(
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Source URL
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                     'ln_portfolio_source_id' => $string_references['ref_sources'][0],
                 ), array('en_profile'), 0) as $parent_en) {
 
