@@ -1364,10 +1364,6 @@ class COMMUNICATION_model extends CI_Model
                     'ln_portfolio_source_id' => $string_references['ref_sources'][0],
                 ), array('en_profile'), 0) as $parent_en) {
 
-                    if($parent_en['ln_content']=="https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']){
-                        continue;
-                    }
-
                     if (in_array($parent_en['ln_type_source_id'], $this->config->item('en_ids_12524'))) {
                         //Raw media file: Audio, Video, Image OR File...
                         $message_visual_media++;
@@ -1376,6 +1372,9 @@ class COMMUNICATION_model extends CI_Model
                     } elseif($parent_en['ln_type_source_id'] == 4255 /* TEXT */ && !$push_message){
                         //Also append text:
                         $source_appendix .= '<div class="source-appendix">' . $parent_en['ln_content'] . '</div>';
+                        continue;
+                    } else {
+                        //Not supported for now:
                         continue;
                     }
 
@@ -1417,7 +1416,7 @@ class COMMUNICATION_model extends CI_Model
 
                     } else {
 
-                        $source_appendix .= '<div class="source-appendix inline-block">&nbsp;' . echo_url_types($parent_en['ln_content'], $parent_en['ln_type_source_id'], $current_mench['x_name']!='source') . '</div>';
+                        $source_appendix .= '<div class="source-appendix inline-block">&nbsp;' . echo_url_types($parent_en['ln_content'], $parent_en['ln_type_source_id'], false) . '</div>';
 
                     }
                 }
