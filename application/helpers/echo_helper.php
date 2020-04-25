@@ -1545,6 +1545,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
             foreach ($grand_parent_ids as $parent_in_id) {
 
                 if($in_level_up==0){
+                    //Remember the first parent for the back button:
                     $previous_level_id = $parent_in_id;
                 }
 
@@ -1570,7 +1571,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
     }
 
     //Did We Find It?
-    if(!in_array($in_id, $player_discover_ids)){
+    if($previous_level_id > 0){
         //Previous
         $ui .= '<div class="inline-block margin-top-down selected_before pull-left"><a class="btn btn-discover btn-circle" href="/discover/previous/'.$previous_level_id.'/'.$in_id.'"><i class="fad fa-step-backward"></i></a></div>';
     }
