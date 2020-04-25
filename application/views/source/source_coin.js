@@ -599,7 +599,7 @@ function en_modify_save() {
                     delete_all_highlights();
 
                     //Delete from UI:
-                    $('.tr_' + modify_data['ln_id']).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i> Deleted</span>').fadeOut();
+                    $('.tr_' + modify_data['ln_id']).html('<span><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Deleted</span>').fadeOut();
 
                     //Disappear in a while:
                     setTimeout(function () {
@@ -662,7 +662,7 @@ function en_modify_save() {
 
 
                 //Update source timestamp:
-                $('.save_source_changes').html(data.message);
+                $('.save_source_changes').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span>'+data.message);
 
                 //Reload Tooltip again:
                 $('[data-toggle="tooltip"]').tooltip();
@@ -670,7 +670,7 @@ function en_modify_save() {
 
         } else {
             //Ooops there was an error!
-            $('.save_source_changes').html('<span class="discover"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>').hide().fadeIn();
+            $('.save_source_changes').html('<span class="discover"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
         }
 
     });
