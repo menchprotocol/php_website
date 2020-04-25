@@ -1044,7 +1044,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
 
     //DISCOVER ICON
-    $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle discover"></i>' : '<i class="fas fa-circle idea"></i>' ).'</span>';
+    $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle discover"></i>' : '<i class="far fa-lock discover"></i>' ).'</span>';
     $ui .= '<b class="montserrat idea-url title-block" style="padding-right:23px;">'.echo_in_title($in, false, $common_prefix).'</b>';
 
 
@@ -1527,7 +1527,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
 
         //NEXT:
         $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
-        echo '<div class="inline-block margin-top-down previous_discoveries pull-left"><a class="btn btn-discover" href="/discover/next/'.$in_id.'">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a></div>';
+        echo '<div class="inline-block margin-top-down previous_discoveries pull-right"><a class="btn btn-discover btn-circle" href="/discover/next/'.$in_id.'">'.$en_all_11035[12211]['m_icon'].'</a></div>';
 
     }
 
@@ -1595,7 +1595,9 @@ function echo_in_previous_discover($in_id, $recipient_en){
     //Did We Find It?
     if($ui){
         //Previous
-        $ui .= '<div class="inline-block margin-top-down selected_before pull-left"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.previous_discoveries\').toggleClass(\'hidden\');"><span class="previous_discoveries"><i class="fad fa-step-backward"></i>&nbsp;<b class="montserrat">'.$top_progress.'%</b></span><span class="previous_discoveries hidden"><i class="fas fa-times"></i></span></a>&nbsp;</div>';
+        //onclick="$('.previous_discoveries').toggleClass('hidden');"
+        //<b class="montserrat">'.$top_progress.'%</b>
+        $ui .= '<div class="inline-block margin-top-down selected_before pull-left"><a class="btn btn-discover btn-circle" href="/discover/next/'.$in_id.'"><i class="fad fa-step-backward"></i></a></div>';
     }
 
     $ui .=echo_in_contribute_btn($in_id);
