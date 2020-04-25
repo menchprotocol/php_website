@@ -1862,7 +1862,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
             //SOURCE NAME
             $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
             $ui .= $info_items_list;
-            $ui .= '<span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>';
+            $ui .= '<span class="text__6197_' . $en['en_id'] . '">'.$en['en_name'].'</span>';
             $ui .= $child_counter;
             $ui .= '</a>';
 
