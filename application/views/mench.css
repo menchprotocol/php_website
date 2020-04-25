@@ -46,8 +46,8 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 }
 .container-wide .content-image {
     margin:0;
-    max-width: calc(100% - 66px);
-    max-height:377px;
+    max-width: 530px;
+    max-height: 530px;
 }
 .dorubik{
     font-family: 'Rubik', sans-serif !important;
