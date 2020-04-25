@@ -960,7 +960,7 @@ class Source extends CI_Controller
                 }
 
                 //Display proper message:
-                $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Source deleted & its ' . $links_adjusted . ' links have been unlinked.</div>';
+                $success_message = 'Source deleted & its ' . $links_adjusted . ' links have been unlinked.';
 
             }
 
