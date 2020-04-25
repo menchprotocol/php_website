@@ -8,13 +8,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-25 09:08:44 PST
+//Generated 2020-04-25 09:53:23 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587830924;
-$config['cache_count_transaction'] = 1156875;
+$config['cache_timestamp'] = 1587833603;
+$config['cache_count_transaction'] = 1156957;
 $config['cache_count_discover'] = 121158;
-$config['cache_count_idea'] = 5398;
+$config['cache_count_idea'] = 5396;
 $config['cache_count_source'] = 5205;
 
 
@@ -1033,7 +1033,7 @@ $config['en_ids_12330'] = array(6677,6914,6907);
 $config['en_all_12330'] = array(
     6677 => array(
         'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
-        'm_name' => 'GO NEXT',
+        'm_name' => 'READ & NEXT',
         'm_desc' => '',
         'm_parents' => array(12330,7585,4559,6192),
     ),
@@ -1102,13 +1102,13 @@ $config['en_ids_12324'] = array(6683,7637);
 $config['en_all_12324'] = array(
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard idea" aria-hidden="true"></i>',
-        'm_name' => 'REPLY & GO NEXT',
+        'm_name' => 'REPLY & NEXT',
         'm_desc' => '',
         'm_parents' => array(12324,6144,7585,6192),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip idea" aria-hidden="true"></i>',
-        'm_name' => 'UPLOAD & GO NEXT',
+        'm_name' => 'UPLOAD & NEXT',
         'm_desc' => '',
         'm_parents' => array(12324,12117,7751,7585,6192),
     ),
@@ -2531,7 +2531,7 @@ $config['en_all_11081'] = array(
     ),
 );
 
-//MENCH VARIABLES:
+//MENCH VARIABLE:
 $config['en_ids_6232'] = array(4358,6203,6202,4486,6159,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,4356,4737,4736,7585,6197,6198,6160,6172,6207,6177,4364,7694,4367,4372,6103,4369,4429,4368,4366,4370,4371,6186,4362,4593,4739,4735);
 $config['en_all_6232'] = array(
     4358 => array(
@@ -4465,7 +4465,7 @@ $config['en_all_4527'] = array(
     ),
     6232 => array(
         'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
-        'm_name' => 'MENCH VARIABLES',
+        'm_name' => 'MENCH VARIABLE',
         'm_desc' => '',
         'm_parents' => array(6403,4755,4527,6212),
     ),
@@ -5097,19 +5097,19 @@ $config['en_all_6192'] = array(
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip idea" aria-hidden="true"></i>',
-        'm_name' => 'UPLOAD & GO NEXT',
+        'm_name' => 'UPLOAD & NEXT',
         'm_desc' => '',
         'm_parents' => array(12324,12117,7751,7585,6192),
     ),
     6677 => array(
         'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
-        'm_name' => 'GO NEXT',
+        'm_name' => 'READ & NEXT',
         'm_desc' => '',
         'm_parents' => array(12330,7585,4559,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard idea" aria-hidden="true"></i>',
-        'm_name' => 'REPLY & GO NEXT',
+        'm_name' => 'REPLY & NEXT',
         'm_desc' => '',
         'm_parents' => array(12324,6144,7585,6192),
     ),
@@ -5202,7 +5202,7 @@ $config['en_ids_7751'] = array(7637);
 $config['en_all_7751'] = array(
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA UPLOAD & GO NEXT',
+        'm_name' => 'IDEA UPLOAD & NEXT',
         'm_desc' => '',
         'm_parents' => array(12324,12117,7751,7585,6192),
     ),
@@ -5552,19 +5552,19 @@ $config['en_ids_7585'] = array(6677,6683,7637,6914,6684,7231,6907);
 $config['en_all_7585'] = array(
     6677 => array(
         'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
-        'm_name' => 'GO NEXT',
+        'm_name' => 'READ & NEXT',
         'm_desc' => 'Read messages & go next',
         'm_parents' => array(12330,7585,4559,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard idea" aria-hidden="true"></i>',
-        'm_name' => 'REPLY & GO NEXT',
+        'm_name' => 'REPLY & NEXT',
         'm_desc' => 'Reply with text & go next',
         'm_parents' => array(12324,6144,7585,6192),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip idea" aria-hidden="true"></i>',
-        'm_name' => 'UPLOAD & GO NEXT',
+        'm_name' => 'UPLOAD & NEXT',
         'm_desc' => 'Upload a file & go next',
         'm_parents' => array(12324,12117,7751,7585,6192),
     ),
@@ -6845,7 +6845,7 @@ $config['en_all_4755'] = array(
     ),
     6232 => array(
         'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
-        'm_name' => 'MENCH VARIABLES',
+        'm_name' => 'MENCH VARIABLE',
         'm_desc' => '',
         'm_parents' => array(6403,4755,4527,6212),
     ),
