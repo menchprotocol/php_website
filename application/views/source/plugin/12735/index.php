@@ -6,6 +6,7 @@ $stats = array(
     'note_deleted' => 0,
     'is_deleted' => 0,
     'creator_missing' => 0,
+    'creator_extra' => 0,
     'creator_fixed' => 0,
     'source_duplicate' => 0,
 );
@@ -27,7 +28,7 @@ foreach($this->IDEA_model->in_fetch() as $in) {
     $in_creators = $this->LEDGER_model->ln_fetch(array(
         'ln_type_source_id' => 4250, //New Idea Created
         'ln_next_idea_id' => $in['in_id'],
-    ));
+    ), array(), 0, 0, array('ln_id' => 'ASC')); //Order in case we have extra & need to remove
     $in_notes = $this->LEDGER_model->ln_fetch(array( //Idea Links
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
@@ -42,6 +43,16 @@ foreach($this->IDEA_model->in_fetch() as $in) {
             'ln_content' => $in['in_title'],
             'ln_type_source_id' => 4250, //New Idea Created
         ));
+    } elseif(count($in_creators) >= 2) {
+        //Remove extra:
+        foreach($in_creators as $count => $in_creator_tr){
+            if($count == 0){
+                continue; //Keep first one
+            } else {
+                $stats['creator_extra']++;
+                $this->db->query("DELETE FROM mench_ledger WHERE ln_id=".$in_creator_tr['ln_id']);
+            }
+        }
     }
 
 
