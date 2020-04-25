@@ -388,6 +388,44 @@ class SOURCE_model extends CI_Model
         return $adjusted_count;
     }
 
+    function en_assign_session_player($en_id){
+
+        $session_en = superpower_assigned();
+        if(!$session_en){
+            return false;
+        }
+
+        //Assign to Creator:
+        $this->LEDGER_model->ln_create(array(
+            'ln_type_source_id' => en_link_type_id(),
+            'ln_creator_source_id' => $session_en['en_id'],
+            'ln_profile_source_id' => $session_en['en_id'],
+            'ln_portfolio_source_id' => $en_id,
+        ));
+
+        //Review source later:
+        if(!superpower_assigned(10967)){
+
+            //Add Pending Review:
+            $this->LEDGER_model->ln_create(array(
+                'ln_type_source_id' => en_link_type_id(),
+                'ln_creator_source_id' => $session_en['en_id'],
+                'ln_profile_source_id' => 12775, //PENDING REVIEW
+                'ln_portfolio_source_id' => $en_id,
+            ));
+
+            //SOURCE PENDING MODERATION TYPE:
+            $this->LEDGER_model->ln_create(array(
+                'ln_type_source_id' => 7504, //SOURCE PENDING MODERATION
+                'ln_creator_source_id' => $session_en['en_id'],
+                'ln_profile_source_id' => 12775, //PENDING REVIEW
+                'ln_portfolio_source_id' => $en_id,
+            ));
+
+        }
+
+    }
+
     function en_domain($url, $ln_creator_source_id = 0, $page_title = null)
     {
         /*
@@ -741,15 +779,11 @@ class SOURCE_model extends CI_Model
                         'ln_content' => $url,
                     ));
 
-                    //Also map to source type:
-                    $this->LEDGER_model->ln_create(array(
-                        'ln_type_source_id' => en_link_type_id(),
-                        'ln_creator_source_id' => $ln_creator_source_id,
-                        'ln_profile_source_id' => $ln_type_source_id,
-                        'ln_portfolio_source_id' => $en_url['en_id'],
-                    ));
+                    //Assign to Player:
+                    $this->SOURCE_model->en_assign_session_player($en_url['en_id']);
 
                 } else {
+
                     //Log error:
                     $this->LEDGER_model->ln_create(array(
                         'ln_content' => 'en_url['.$url.'] FAILED to en_verify_create['.$page_title.'] with message: '.$added_en['message'],
@@ -764,6 +798,7 @@ class SOURCE_model extends CI_Model
                             'page_title' => $page_title,
                         ),
                     ));
+
                 }
 
             } else {
@@ -778,6 +813,7 @@ class SOURCE_model extends CI_Model
 
             //Link URL to its parent domain?
             if (count($link_parent_en_ids) > 0) {
+
                 foreach($link_parent_en_ids as $p_en_id){
                     $this->LEDGER_model->ln_create(array(
                         'ln_creator_source_id' => $ln_creator_source_id,

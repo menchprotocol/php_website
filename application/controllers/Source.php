@@ -454,35 +454,8 @@ class Source extends CI_Controller
             //Assign new source:
             $focus_en = $added_en['en'];
 
-            //Assign to Creator:
-            $this->LEDGER_model->ln_create(array(
-                'ln_type_source_id' => en_link_type_id(),
-                'ln_creator_source_id' => $session_en['en_id'],
-                'ln_profile_source_id' => $session_en['en_id'],
-                'ln_portfolio_source_id' => $focus_en['en_id'],
-            ));
-
-            //Review source later:
-            if(!superpower_assigned(10967)){
-
-                //Add Pending Review:
-                $this->LEDGER_model->ln_create(array(
-                    'ln_type_source_id' => en_link_type_id(),
-                    'ln_creator_source_id' => $session_en['en_id'],
-                    'ln_profile_source_id' => 12775, //PENDING REVIEW
-                    'ln_portfolio_source_id' => $focus_en['en_id'],
-                ));
-
-                //SOURCE PENDING MODERATION TYPE:
-                $this->LEDGER_model->ln_create(array(
-                    'ln_type_source_id' => 7504, //SOURCE PENDING MODERATION
-                    'ln_creator_source_id' => $session_en['en_id'],
-                    'ln_profile_source_id' => 12775, //PENDING REVIEW
-                    'ln_portfolio_source_id' => $focus_en['en_id'],
-                    'ln_next_idea_id' => $ins[0]['in_id'],
-                ));
-
-            }
+            //Assign to Player:
+            $this->SOURCE_model->en_assign_session_player($focus_en['en_id']);
 
             //Update Algolia:
             update_algolia('en', $focus_en['en_id']);

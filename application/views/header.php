@@ -49,7 +49,7 @@ if($found_at > 1){
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" href="/img/<?= $current_mench['x_class'] ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?= ( isset($title) ? $title.' | ' : '' ) ?>MENCH</title>
+    <title><?= ( isset($title) ? $title : '' ) ?></title>
 
 
     <script type="text/javascript">
