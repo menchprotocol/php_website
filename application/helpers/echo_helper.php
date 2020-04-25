@@ -1829,7 +1829,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
             'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
         ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
         if($en__portfolios_count[0]['totals'] > 0){
-            $child_counter .= '<span class="'.superpower_active(10939).' pull-right" '.( $show_toolbar ? ' style="margin-top: -24px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($en__portfolios_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
+            $child_counter .= '<span class="'.superpower_active(10939).' pull-right" '.( $show_toolbar ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($en__portfolios_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
             $child_counter .= '<div class="doclear">&nbsp;</div>';
         }
     }
