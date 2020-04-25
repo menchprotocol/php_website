@@ -45,7 +45,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     padding:10px 0 0;
 }
 .container-wide .content-image {
-    margin: 10px 0 0 0;
+    margin:0;
     max-width: calc(100% - 66px);
     max-height:377px;
 }
@@ -60,7 +60,6 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     text-align: right !important;
 }
 .span__4356{
-    padding-top: 9px;
     display: inline-block;
 }
 .media-content, .ln_content img, .ln_content video, .i_content img {
