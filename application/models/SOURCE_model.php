@@ -106,11 +106,6 @@ class SOURCE_model extends CI_Model
 
         if ($insert_columns['en_id'] > 0) {
 
-            if($external_sync){
-                //Update Algolia:
-                update_algolia('en', $insert_columns['en_id']);
-            }
-
             //Log link new source:
             $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => ($ln_creator_source_id > 0 ? $ln_creator_source_id : $insert_columns['en_id']),
@@ -123,6 +118,11 @@ class SOURCE_model extends CI_Model
             $ens = $this->SOURCE_model->en_fetch(array(
                 'en_id' => $insert_columns['en_id'],
             ));
+
+            if($external_sync){
+                //Update Algolia:
+                update_algolia('en', $insert_columns['en_id']);
+            }
 
             return $ens[0];
 
@@ -948,7 +948,7 @@ class SOURCE_model extends CI_Model
             if ($action_en_id == 4998) { //Add Prefix String
 
                 $this->SOURCE_model->en_update($en['en_id'], array(
-                    'en_name' => strtoupper($action_command1) . $en['en_name'],
+                    'en_name' => $action_command1 . $en['en_name'],
                 ), true, $ln_creator_source_id);
 
                 $applied_success++;
@@ -956,7 +956,7 @@ class SOURCE_model extends CI_Model
             } elseif ($action_en_id == 4999) { //Add Postfix String
 
                 $this->SOURCE_model->en_update($en['en_id'], array(
-                    'en_name' => $en['en_name'] . strtoupper($action_command1),
+                    'en_name' => $en['en_name'] . $action_command1,
                 ), true, $ln_creator_source_id);
 
                 $applied_success++;

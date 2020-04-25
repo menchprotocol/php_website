@@ -15,7 +15,7 @@ class IDEA_model extends CI_Model
     }
 
 
-    function in_create($insert_columns, $external_sync = false, $ln_creator_source_id = 0)
+    function in_create($insert_columns, $ln_creator_source_id = 0)
     {
 
         //What is required to create a new Idea?
@@ -37,11 +37,6 @@ class IDEA_model extends CI_Model
 
         if ($insert_columns['in_id'] > 0) {
 
-            if($external_sync){
-                //Update Algolia:
-                update_algolia('in', $insert_columns['in_id']);
-            }
-
             if ($ln_creator_source_id > 0) {
 
                 //Log link new Idea:
@@ -59,12 +54,15 @@ class IDEA_model extends CI_Model
                     'ln_type_source_id' => 4983, //IDEA COIN
                     'ln_content' => '@'.$ln_creator_source_id,
                     'ln_next_idea_id' => $insert_columns['in_id'],
-                ), $external_sync);
+                ), true);
 
                 //Fetch to return the complete source data:
                 $ins = $this->IDEA_model->in_fetch(array(
                     'in_id' => $insert_columns['in_id'],
                 ));
+
+                //Update Algolia:
+                update_algolia('in', $insert_columns['in_id']);
 
                 return $ins[0];
 
@@ -460,7 +458,7 @@ class IDEA_model extends CI_Model
                 'in_title' => $in_title_validation['in_clean_title'],
                 'in_type_source_id' => $in_type_source_id,
                 'in_status_source_id' => $new_in_status,
-            ), true, $ln_creator_source_id);
+            ));
 
         }
 
