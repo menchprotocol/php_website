@@ -1096,7 +1096,7 @@ class Source extends CI_Controller
 
         if ($delete_redirect_url) {
             //Page will be refresh, set flash message to be shown after restart:
-            $this->session->set_flashdata('flash_message', '<div class="alert alert-info" role="alert">' . $success_message . '</div>');
+            $this->session->set_flashdata('flash_message', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>' . $success_message . '</div>');
         }
 
         //Start return array:

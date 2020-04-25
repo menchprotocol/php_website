@@ -662,7 +662,7 @@ function en_modify_save() {
 
 
                 //Update source timestamp:
-                $('.save_source_changes').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span>'+data.message);
+                $('.save_source_changes').html(data.message);
 
                 //Reload Tooltip again:
                 $('[data-toggle="tooltip"]').tooltip();
