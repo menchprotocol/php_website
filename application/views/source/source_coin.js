@@ -396,7 +396,7 @@ function en_modify_load(en_id, ln_id) {
     $(".highlight_en_"+en_id).addClass('en_highlight');
 
 
-    var en_full_name = $(".text__6197_" + en_id + ":first").text();
+    var en_full_name = $(".text__6197_" + en_id + ":first").val();
     $('#en_name').val(en_full_name.toUpperCase()).focus();
     $('.edit-header').html('<i class="fas fa-pen-square"></i> ' + en_full_name);
     $('#en_status_source_id').val($(".en___" + en_id + ":first").attr('en-status'));
@@ -615,8 +615,8 @@ function en_modify_save() {
 
                 //Reflect changed:
                 //Update variables:
-                $(".text__6197_" + modify_data['en_id']).text(modify_data['en_name']);
-                $(".text__6197_" + modify_data['en_id']).text(modify_data['en_name']);
+                $(".text__6197_" + modify_data['en_id']).val(modify_data['en_name']);
+                $(".text__6197_" + modify_data['en_id']).val(modify_data['en_name']);
 
 
                 //Player Status:
