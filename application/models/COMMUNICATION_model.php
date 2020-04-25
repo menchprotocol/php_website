@@ -1271,7 +1271,7 @@ class COMMUNICATION_model extends CI_Model
         if ($strict_validation && count($string_references['ref_urls']) > 0) {
 
             //No source linked, but we have a URL that we should turn into an source if not previously:
-            $url_source = $this->SOURCE_model->en_url($string_references['ref_urls'][0], ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ), ( isset($recipient_en['en_id']) ? array($recipient_en['en_id']) : array() ));
+            $url_source = $this->SOURCE_model->en_url($string_references['ref_urls'][0], ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ));
 
             //Did we have an error?
             if (!$url_source['status'] || !isset($url_source['en_url']['en_id']) || intval($url_source['en_url']['en_id']) < 1) {

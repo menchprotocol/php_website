@@ -902,7 +902,7 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
     }
 
     //Create and link new source to CDN and uploader:
-    $url_source = $CI->SOURCE_model->en_url($cdn_new_url, $ln_creator_source_id, array($ln_creator_source_id), 0, $page_title);
+    $url_source = $CI->SOURCE_model->en_url($cdn_new_url, $ln_creator_source_id, 0, $page_title);
 
     if(isset($url_source['en_url']['en_id']) && $url_source['en_url']['en_id'] > 0){
 

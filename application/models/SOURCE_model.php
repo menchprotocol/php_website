@@ -547,7 +547,7 @@ class SOURCE_model extends CI_Model
     }
 
 
-    function en_url($url, $ln_creator_source_id = 0, $link_parent_en_ids = array(), $add_to_child_en_id = 0, $page_title = null)
+    function en_url($url, $ln_creator_source_id = 0, $add_to_child_en_id = 0, $page_title = null)
     {
 
         /*
@@ -557,7 +557,6 @@ class SOURCE_model extends CI_Model
          *
          * - $url:                  Input URL
          * - $ln_creator_source_id:       IF > 0 will save URL (if not previously there) and give credit to this source as the player
-         * - $link_parent_en_ids:  IF array includes source IDs that will be added as parent source of this URL
          * - $add_to_child_en_id:   IF > 0 Will also add URL to this child if present
          * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable players to edit auto generated title)
          *
@@ -570,7 +569,7 @@ class SOURCE_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid URL',
             );
-        } elseif ((count($link_parent_en_ids) > 0 || $add_to_child_en_id > 0) && $ln_creator_source_id < 1) {
+        } elseif ($add_to_child_en_id > 0 && $ln_creator_source_id < 1) {
             return array(
                 'status' => 0,
                 'message' => 'Parent source is required to add a parent URL',
@@ -782,6 +781,9 @@ class SOURCE_model extends CI_Model
                     //Assign to Player:
                     $this->SOURCE_model->en_assign_session_player($en_url['en_id']);
 
+                    //Update Search Index:
+                    update_algolia('en', $en_url['en_id']);
+
                 } else {
 
                     //Log error:
@@ -793,7 +795,6 @@ class SOURCE_model extends CI_Model
                         'ln_metadata' => array(
                             'url' => $url,
                             'ln_creator_source_id' => $ln_creator_source_id,
-                            'link_parent_en_ids' => $link_parent_en_ids,
                             'add_to_child_en_id' => $add_to_child_en_id,
                             'page_title' => $page_title,
                         ),
@@ -809,40 +810,15 @@ class SOURCE_model extends CI_Model
 
 
         //Have we been asked to also add URL to another parent or child?
-        if(!$url_previously_existed){
-
+        if(!$url_previously_existed && $add_to_child_en_id){
             //Link URL to its parent domain?
-            if (count($link_parent_en_ids) > 0) {
-
-                foreach($link_parent_en_ids as $p_en_id){
-                    $this->LEDGER_model->ln_create(array(
-                        'ln_creator_source_id' => $ln_creator_source_id,
-                        'ln_type_source_id' => en_link_type_id(),
-                        'ln_profile_source_id' => $p_en_id,
-                        'ln_portfolio_source_id' => $en_url['en_id'],
-                    ));
-                }
-
-                //Update Search Index:
-                update_algolia('en', $en_url['en_id']);
-            }
-
-            //Link URL to its parent domain?
-            if ($add_to_child_en_id) {
-                $this->LEDGER_model->ln_create(array(
-                    'ln_creator_source_id' => $ln_creator_source_id,
-                    'ln_type_source_id' => en_link_type_id(),
-                    'ln_profile_source_id' => $en_url['en_id'],
-                    'ln_portfolio_source_id' => $add_to_child_en_id,
-                ));
-
-                //Update Search Index:
-                update_algolia('en', $add_to_child_en_id);
-            }
-
+            $this->LEDGER_model->ln_create(array(
+                'ln_creator_source_id' => $ln_creator_source_id,
+                'ln_type_source_id' => en_link_type_id(),
+                'ln_profile_source_id' => $en_url['en_id'],
+                'ln_portfolio_source_id' => $add_to_child_en_id,
+            ));
         }
-
-
 
 
         //Return results:
