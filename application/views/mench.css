@@ -1264,7 +1264,7 @@ label {
 }
 
 .icon-block { width:33px !important; display: inline-block; text-align: center; }
-.icon-block-xs{ width:18px; display: inline-block; text-align: center; }
+.icon-block-xs{ width:20px; display: inline-block; text-align: center; }
 .icon-block-sm{ width:28px; display: inline-block; text-align: center; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; }
 

@@ -1216,6 +1216,38 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
     $is_link_published = in_array($in['ln_status_source_id'], $CI->config->item('en_ids_7359'));
     $is_in_link = in_array($in['ln_type_source_id'], $CI->config->item('en_ids_4486'));
     $is_source = ( !$is_in_link ? false : $is_source ); //Disable Edits on Idea List Page
+    $show_toolbar = ($control_enabled && $is_in_link && superpower_active(12673, true));
+
+
+
+
+    //IDAE INFO BAR
+    $info_bar = '';
+    //TRANSACTION STATUS
+    if($ln_id && !$is_link_published){
+        $info_bar .= '<span class="inline-block ln_status_source_id_' . $ln_id .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_source_id']]['m_name'].' @'.$in['ln_status_source_id'].'">' . $en_all_6186[$in['ln_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
+    }
+
+
+
+
+
+    //NEXT IDEAS COUNT
+    $child_counter = '';
+    if(superpower_active(10939, true)) {
+        $next_ins = $CI->LEDGER_model->ln_fetch(array(
+            'ln_previous_idea_id' => $in['in_id'],
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
+        if($next_ins[0]['total_ins'] > 0){
+            $child_counter .= '<span class="pull-right '.superpower_active(10939).'"><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).' NEXT IDEAS">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
+            $child_counter .= '<div class="doclear">&nbsp;</div>';
+        }
+    }
+
+
+
 
 
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_highlight highlight_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.' '.$extra_class.'" style="padding-left:0;">';
@@ -1226,44 +1258,30 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
     $ui .= '<td class="MENCHcolumn1">';
         $ui .= '<div class="block">';
 
+
             //IDEA ICON:
-            $ui .= '<span class="icon-block"><a href="/idea/'.$in['in_id'].'" title="Idea Weight: '.number_format($in['in_weight'], 0).'">';
-            if($is_public){
-                $ui .= $en_all_2738[4535]['m_icon'];
-            } else {
-                //IDEA STATUS
-                $ui .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].' @'.$in['in_status_source_id'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
-            }
-            $ui .='</a></span>';
+            $ui .= '<span class="icon-block"><a href="/idea/'.$in['in_id'].'" title="Idea Weight: '.number_format($in['in_weight'], 0).'">'.$en_all_2738[4535]['m_icon'].'</a></span>';
+
 
             //IDEA TITLE
-            if($is_in_link && superpower_active(12673, true)){
+            if($show_toolbar){
+
                 $ui .= echo_input_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
+
             } else {
 
                 $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">';
-
-                //IDEA TITLE
-                $ui .= echo_in_title($in);
-
-                //NEXT IDEAS COUNT
-                if(superpower_active(10939, true)) {
-                    $next_ins = $CI->LEDGER_model->ln_fetch(array(
-                        'ln_previous_idea_id' => $in['in_id'],
-                        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-                        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
-                    if($next_ins[0]['total_ins'] > 0){
-                        $ui .= '<span class="pull-right '.superpower_active(10939).'"><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).' NEXT IDEAS">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
-                        $ui .= '<div class="doclear">&nbsp;</div>';
-                    }
+                $ui .= $info_bar;
+                //IDEA STATUS
+                if(!$is_public){
+                    $ui .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].' @'.$in['in_status_source_id'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
                 }
-
-
+                $ui .= echo_in_title($in); //IDEA TITLE
+                $ui .= $child_counter;
                 $ui .= '</a>';
 
-
             }
+
         $ui .= '</div>';
     $ui .= '</td>';
 
@@ -1304,19 +1322,22 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
     $ui .= echo_coins_count_source($in['in_id'], 0);
 
     $ui .= '</td>';
-
-
-
     $ui .= '</tr></table>';
+
+
+
 
     if($infobar_details){
         $ui .= '<div class="idea-footer">' . $infobar_details . '</div>';
     }
 
-    if($control_enabled){
+
+    if($show_toolbar){
 
         //Idea Toolbar
         $ui .= '<div class="space-content ' . superpower_active(12673) . '">';
+
+        $ui .= $info_bar;
 
         //IDEA STATUS
         $ui .= '<div class="inline-block">' . echo_input_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
@@ -1349,6 +1370,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
         $ui .= '</span>';
         $ui .= '</div>';
 
+        $ui .= $child_counter;
 
         $ui .= '</div>';
 
@@ -1741,7 +1763,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $is_link_source = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_4592')));
     $is_discover_progress = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_12227')));
     $is_source_only = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_7551')));
-
+    $show_toolbar = ($control_enabled && superpower_active(12673, true));
 
     $en__profiles = $CI->LEDGER_model->ln_fetch(array(
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
@@ -1765,6 +1787,52 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         return false;
     }
 
+
+    //SOURCE INFO BAR
+    $info_bar = '';
+
+    //SOURCE STATUS
+    if(!$is_public){
+        $info_bar .= '<span class="inline-block en_status_source_id_' . $en['en_id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
+    }
+
+    //TRANSACTION STATUS
+    if($ln_id){
+
+        if(!$is_link_published){
+            $info_bar .= '<span class="inline-block ln_status_source_id_' . $ln_id .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_source_id']]['m_name'].' @'.$en['ln_status_source_id'].'">' . $en_all_6186[$en['ln_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
+        }
+
+        //Show link index
+        if($is_link_source && $en['ln_external_id'] > 0){
+            //External ID
+            if($en['ln_profile_source_id']==6196){
+                //Give players the ability to ping Messenger profiles:
+                $info_bar .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]">&nbsp;<i class="fas fa-project-diagram"></i></span>';
+            } else {
+                $info_bar .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'">&nbsp;<i class="fas fa-project-diagram"></i></span>';
+            }
+        }
+    }
+
+
+
+    //PORTFOLIO COUNT
+    $child_counter = '';
+    if(superpower_active(12701, true)){
+        $en__portfolios_count = $CI->LEDGER_model->ln_fetch(array(
+            'ln_profile_source_id' => $en['en_id'],
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+        ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
+        if($en__portfolios_count[0]['totals'] > 0){
+            $child_counter .= '<span class="'.superpower_active(12701).' pull-right"><span class="icon-block doright montserrat source" title="'.number_format($en__portfolios_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
+            $child_counter .= '<div class="doclear">&nbsp;</div>';
+        }
+    }
+
+
     //ROW
     $ui = '<div class="list-group-item no-side-padding itemsource en-item object_highlight highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $en['en_id'] . '" en-status="' . $en['en_status_source_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_source_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
@@ -1777,62 +1845,24 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
 
         //SOURCE ICON
-        $ui .= '<a href="/source/'.$en['en_id'] . '" '.( $is_link_source ? ' title="WEIGHT '.$en['en_weight'].' LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'" ' : '' ).'>';
-    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
-        $ui .= '</a>';
+        $ui .= '<a href="/source/'.$en['en_id'] . '" '.( $is_link_source ? ' title="WEIGHT '.$en['en_weight'].' LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'" ' : '' ).'><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
 
 
+        //SOURCE TOOLBAR?
+        if($show_toolbar){
 
+            $ui .= echo_input_text(6197, $en['en_name'], $en['en_id'], $is_source);
 
-        //SOURCE NAME
-        $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
+        } else {
 
-        //SOURCE STATUS
-        if(!$is_public){
-            $ui .= '<span class="inline-block en_status_source_id_' . $en['en_id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
+            //SOURCE NAME
+            $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
+            $ui .= $info_bar;
+            $ui .= '<span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>';
+            $ui .= $child_counter;
+            $ui .= '</a>';
+
         }
-
-        //LINK STATUS
-        if($ln_id && !$is_link_published){
-            $ui .= '<span class="inline-block ln_status_source_id_' . $ln_id .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_source_id']]['m_name'].' @'.$en['ln_status_source_id'].'">' . $en_all_6186[$en['ln_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
-        }
-
-        $ui .= '<span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>';
-
-
-
-        //LINK
-        if ($ln_id) {
-
-            //Show link index
-            if($is_link_source && $en['ln_external_id'] > 0){
-
-                //External ID
-                if($en['ln_profile_source_id']==6196){
-                    //Give players the ability to ping Messenger profiles:
-                    $ui .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]">&nbsp;<i class="fas fa-project-diagram"></i></span>';
-                } else {
-                    $ui .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'">&nbsp;<i class="fas fa-project-diagram"></i></span>';
-                }
-
-            }
-        }
-
-        //PORTFOLIO COUNT
-        if(superpower_active(12701, true)){
-            $en__portfolios_count = $CI->LEDGER_model->ln_fetch(array(
-                'ln_profile_source_id' => $en['en_id'],
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-            ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
-            if($en__portfolios_count[0]['totals'] > 0){
-                $ui .= '<span class="'.superpower_active(12701).' pull-right"><span class="icon-block doright montserrat source" title="'.number_format($en__portfolios_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
-                $ui .= '<div class="doclear">&nbsp;</div>';
-            }
-        }
-
-        $ui .= '</a>';
 
     $ui .= '</td>';
 
@@ -1883,6 +1913,20 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
 
 
+    //PROFILE
+    $ui .= '<div class="space-content hideIfEmpty">';
+    if($show_toolbar){
+        $ui .= $info_bar;
+        $ui .= $child_counter;
+    }
+    //PROFILE SOURCES:
+    $ui .= '<span class="'. superpower_active(12706) .' paddingup inline-block">';
+    foreach ($en__profiles as $en_parent) {
+        $ui .= '<span class="icon-block-img en_child_icon_' . $en_parent['en_id'] . '"><a href="/source/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span> ';
+    }
+    $ui .= '</span>';
+    $ui .= '</div>';
+
 
 
     //MESSAGE
@@ -1903,16 +1947,6 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
         }
     }
-
-
-    //PROFILE
-    $ui .= '<div class="space-content hideIfEmpty">';
-    $ui .= '<span class="'. superpower_active(12706) .' paddingup inline-block">';
-    foreach ($en__profiles as $en_parent) {
-        $ui .= '<span class="icon-block-img en_child_icon_' . $en_parent['en_id'] . '"><a href="/source/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span> ';
-    }
-    $ui .= '</span>';
-    $ui .= '</div>';
 
 
 
