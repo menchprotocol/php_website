@@ -1241,7 +1241,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
         if($next_ins[0]['total_ins'] > 0){
-            $child_counter .= '<span class="pull-right '.superpower_active(10939).' '.( $show_toolbar ? 'counter-over-input' : '' ).'"><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).' NEXT IDEAS">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
+            $child_counter .= '<span class="'.superpower_active(10939).' pull-right '.( $show_toolbar ? 'counter-over-input' : '' ).'"><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).' NEXT IDEAS">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
             $child_counter .= '<div class="doclear">&nbsp;</div>';
         }
     }
@@ -1765,7 +1765,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $is_link_source = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_4592')));
     $is_discover_progress = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_12227')));
     $is_source_only = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_7551')));
-    $show_toolbar = ($control_enabled && superpower_active(12673, true));
+    $show_toolbar = ($control_enabled && superpower_active(12706, true));
 
     $en__profiles = $CI->LEDGER_model->ln_fetch(array(
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
