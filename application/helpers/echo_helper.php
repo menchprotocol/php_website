@@ -523,7 +523,7 @@ function echo_ln($ln, $is_parent_tr = false)
         $coin_type = 'discover';
     } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12274'))){
         $coin_type = 'source';
-    } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12273'))){
+    } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12273')) && $ln['ln_profile_source_id']>0){
         $coin_type = 'idea';
     } else {
         $coin_type = null;
@@ -987,6 +987,7 @@ function echo_coins_count_source($in_id = 0, $en_id = 0){
         $coin_filter = array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+            'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
             'ln_next_idea_id' => $in_id,
         );
     } elseif($en_id){
@@ -1043,7 +1044,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
 
     //DISCOVER ICON
-    $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle discover"></i>' : '<i class="fas fa-lightbulb-on idea"></i>' ).'</span>';
+    $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle discover"></i>' : '<i class="fas fa-circle idea"></i>' ).'</span>';
     $ui .= '<b class="montserrat idea-url title-block" style="padding-right:23px;">'.echo_in_title($in, false, $common_prefix).'</b>';
 
 
@@ -2018,11 +2019,6 @@ function echo_input_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_sour
 
             //Basic link:
             $anchor_url = ( $en_id==$selected_en_id ? 'href="javascript:void();"' : 'href="'.$m['m_desc'].'"' );
-
-        } elseif(!$in_id && !$ln_id){
-
-            //Source creator:
-            $anchor_url = 'href="javascript:void();" new-en-id="'.$en_id.'" onclick="preview_update_dropdown('.$cache_en_id.', '.$en_id.')"';
 
         } else{
 

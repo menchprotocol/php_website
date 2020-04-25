@@ -694,12 +694,6 @@ function in_notes_create_upload(droppedFiles, uploadType, note_type_id) {
                 in_notes_counter(note_type_id, +1);
                 in_message_form_unlock(data, note_type_id);
 
-                if(note_type_id==4231){
-                    //Also append source:
-                    in_notes_counter(4983, +1);
-                    add_to_list('add-source-4983', '.en-item', data.en_new_echo);
-                }
-
                 //Adjust icon again:
                 $('.file_label_' + note_type_id).html('<span class="icon-block"><i class="far fa-paperclip"></i></span>');
 

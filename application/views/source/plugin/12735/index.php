@@ -22,6 +22,7 @@ foreach($this->IDEA_model->in_fetch() as $in) {
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
         'ln_next_idea_id' => $in['in_id'],
+        'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
     ));
     $in_creators = $this->LEDGER_model->ln_fetch(array(
         'ln_type_source_id' => 4250, //New Idea Created

@@ -580,18 +580,6 @@ class Idea extends CI_Controller {
         ), true);
 
 
-        //Also Append Message Source Reference as Idea Source?
-        if($_POST['note_type_id']==4231 && $msg_validation['ln_profile_source_id']>0){
-            //referencing a new source:
-            $this->LEDGER_model->ln_create(array(
-                'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id' => 4983, //IDEA SOURCES
-                'ln_next_idea_id' => $ins[0]['in_id'],
-                'ln_profile_source_id' => $msg_validation['ln_profile_source_id'],
-                'ln_content' => '@'.$msg_validation['ln_profile_source_id'],
-            ));
-        }
-
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
@@ -664,8 +652,6 @@ class Idea extends CI_Controller {
             ));
         }
 
-        //See if this message type has specific input requirements:
-        $valid_file_types = array(4258, 4259, 4260, 4261); //This must be a valid file type:  Video, Image, Audio or File
 
         //Attempt to save file locally:
         $file_parts = explode('.', $_FILES[$_POST['upload_type']]["name"]);
@@ -701,35 +687,20 @@ class Idea extends CI_Controller {
         ));
 
 
-        //Also Append Message Source Reference as Idea Source?
-        if($_POST['note_type_id']==4231){
-            //referencing a new source:
-            $this->LEDGER_model->ln_create(array(
-                'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id' => 4983, //IDEA SOURCES
-                'ln_next_idea_id' => intval($_POST['in_id']),
-                'ln_profile_source_id' => $cdn_status['cdn_en']['en_id'],
-                'ln_content' => '@'.$cdn_status['cdn_en']['en_id'],
-            ));
-        }
-
 
         //Fetch full message for proper UI display:
         $new_messages = $this->LEDGER_model->ln_fetch(array(
             'ln_id' => $ln['ln_id'],
         ));
-        $ens = $this->SOURCE_model->en_fetch(array(
-            'en_id' => $cdn_status['cdn_en']['en_id'],
-        ));
 
         //Echo message:
         echo_json(array(
             'status' => 1,
-            'en_new_echo' => echo_en($ens[0], 0, null, true, true),
             'message' => echo_in_notes(array_merge($new_messages[0], array(
                 'ln_portfolio_source_id' => $session_en['en_id'],
             ))),
         ));
+
     }
 
 
