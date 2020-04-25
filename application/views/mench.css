@@ -63,7 +63,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     display: inline-block;
 }
 .media-content, .ln_content img, .ln_content video, .i_content img {
-    max-width: 377px;
+    max-width: 530px;
 }
 .yt-container{
     margin: 10px 0 0;
