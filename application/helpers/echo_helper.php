@@ -1267,7 +1267,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
             if($show_toolbar){
 
                 $ui .= echo_input_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
-                $ui .= $info_items_list;
                 $ui .= $child_counter;
 
             } else {
@@ -1276,6 +1275,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
                 $ui .= $info_items_list;
                 //IDEA STATUS
                 if(!$is_public){
+                    //Show the drafting status:
                     $ui .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].' @'.$in['in_status_source_id'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
                 }
                 $ui .= echo_in_title($in); //IDEA TITLE
@@ -1852,8 +1852,8 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         if($show_toolbar){
 
             $ui .= echo_input_text(6197, $en['en_name'], $en['en_id'], $is_source);
-            $ui .= $info_items_list;
             $ui .= $child_counter;
+            $ui .= '<div class="space-content">'.$info_items_list.'</div>';
 
         } else {
 
