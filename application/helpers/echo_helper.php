@@ -1348,10 +1348,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
         $ui .= '<div class="inline-block">' . echo_input_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
 
 
-        //IDEA DISCOVER TIME
-        $ui .= echo_input_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source, ($in['ln_order']*10)+1);
-
-
 
         //IDEA LINK BAR
         $ui .= '<div class="inline-block ' . superpower_active(12700) . '">';
@@ -1372,6 +1368,11 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
         $ui .= echo_input_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+4);
         $ui .= '</span>';
         $ui .= '</div>';
+
+
+        //IDEA DISCOVER TIME
+        $ui .= echo_input_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source, ($in['ln_order']*10)+1);
+
 
         $ui .= '</div>';
 
