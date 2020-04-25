@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-25 10:06:40 PST
+//Generated 2020-04-25 10:23:01 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587834400;
-$config['cache_count_transaction'] = 1156984;
+$config['cache_timestamp'] = 1587835381;
+$config['cache_count_transaction'] = 1157020;
 $config['cache_count_discover'] = 121158;
 $config['cache_count_idea'] = 5396;
 $config['cache_count_source'] = 5205;
@@ -748,7 +748,7 @@ $config['en_all_12446'] = array(
 $config['en_ids_12420'] = array(4358,4356,4739,4735);
 $config['en_all_12420'] = array(
     4358 => array(
-        'm_icon' => '<i class="fad fa-comment-alt-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER MARKS',
         'm_desc' => '',
         'm_parents' => array(12700,12420,12112,10663,6103,6410,6232),
@@ -760,13 +760,13 @@ $config['en_all_12420'] = array(
         'm_parents' => array(6404,12112,12420,10888,10650,6232,6201),
     ),
     4739 => array(
-        'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-temperature-up idea" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MAX PERCENTAGE',
         'm_desc' => '',
         'm_parents' => array(12420,12112,6402,6232),
     ),
     4735 => array(
-        'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-temperature-down idea" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MIN PERCENTAGE',
         'm_desc' => '',
         'm_parents' => array(12420,12112,6402,6232),
@@ -2306,7 +2306,7 @@ $config['en_all_12138'] = array(
 $config['en_ids_12112'] = array(4358,4535,4356,4736,6197,4739,4735);
 $config['en_all_12112'] = array(
     4358 => array(
-        'm_icon' => '<i class="fad fa-comment-alt-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER MARKS',
         'm_desc' => '',
         'm_parents' => array(12700,12420,12112,10663,6103,6410,6232),
@@ -2336,13 +2336,13 @@ $config['en_all_12112'] = array(
         'm_parents' => array(6404,12112,4269,12412,12232,10646,5000,4998,4999,6232,6206),
     ),
     4739 => array(
-        'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-temperature-up idea" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MAX PERCENTAGE',
         'm_desc' => '',
         'm_parents' => array(12420,12112,6402,6232),
     ),
     4735 => array(
-        'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-temperature-down idea" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MIN PERCENTAGE',
         'm_desc' => '',
         'm_parents' => array(12420,12112,6402,6232),
@@ -2535,7 +2535,7 @@ $config['en_all_11081'] = array(
 $config['en_ids_6232'] = array(4358,6203,6202,4486,6159,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,4356,4737,4736,7585,6197,6198,6160,6172,6207,6177,4364,7694,4367,4372,6103,4369,4429,4368,4366,4370,4371,6186,4362,4593,4739,4735);
 $config['en_all_6232'] = array(
     4358 => array(
-        'm_icon' => '<i class="fad fa-comment-alt-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER MARKS',
         'm_desc' => 'tr__assessment_points',
         'm_parents' => array(12700,12420,12112,10663,6103,6410,6232),
@@ -2769,13 +2769,13 @@ $config['en_all_6232'] = array(
         'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
     ),
     4739 => array(
-        'm_icon' => '<i class="fad fa-temperature-up" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-temperature-up idea" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MAX PERCENTAGE',
         'm_desc' => 'tr__conditional_score_max',
         'm_parents' => array(12420,12112,6402,6232),
     ),
     4735 => array(
-        'm_icon' => '<i class="fad fa-temperature-down" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-temperature-down idea" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MIN PERCENTAGE',
         'm_desc' => 'tr__conditional_score_min',
         'm_parents' => array(12420,12112,6402,6232),
@@ -5212,13 +5212,13 @@ $config['en_all_7751'] = array(
 $config['en_ids_6103'] = array(6402,4358,6203);
 $config['en_all_6103'] = array(
     6402 => array(
-        'm_icon' => '<i class="fas fa-bolt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-temperature-high idea" aria-hidden="true"></i>',
         'm_name' => 'CONDITION SCORE RANGE',
         'm_desc' => '',
         'm_parents' => array(12700,10664,6103,6410),
     ),
     4358 => array(
-        'm_icon' => '<i class="fad fa-comment-alt-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER MARKS',
         'm_desc' => '',
         'm_parents' => array(12700,12420,12112,10663,6103,6410,6232),
