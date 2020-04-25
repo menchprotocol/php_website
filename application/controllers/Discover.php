@@ -145,6 +145,60 @@ class Discover extends CI_Controller
         }
     }
 
+    function previous($previous_level_id, $in_id){
+
+
+        return redirect_message('/'.$previous_level_id);
+
+
+        //Fetch Idea:
+        $ins = $this->IDEA_model->in_fetch(array(
+            'in_id' => $in_id,
+        ));
+
+
+        //Should we check for auto next redirect if empty? Only if this is a selection:
+        $append_url = null;
+        if(in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7712'))){
+
+            $append_url = '?check_if_empty=1';
+
+        } elseif($ins[0]['in_type_source_id']==6677){
+
+            //Mark as discover If not previously:
+            $discover_completes = $this->LEDGER_model->ln_fetch(array(
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
+                'ln_creator_source_id' => $session_en['en_id'],
+                'ln_previous_idea_id' => $ins[0]['in_id'],
+            ));
+
+            if(!count($discover_completes)){
+                $this->DISCOVER_model->discover_is_complete($ins[0], array(
+                    'ln_type_source_id' => 4559, //DISCOVER MESSAGES
+                    'ln_creator_source_id' => $session_en['en_id'],
+                    'ln_previous_idea_id' => $ins[0]['in_id'],
+                ));
+            }
+
+        }
+
+
+        //Find next Idea based on source's discovery list:
+        $next_in_id = $this->DISCOVER_model->discover_next_find($session_en['en_id'], $ins[0]);
+        if($next_in_id > 0){
+            return redirect_message('/' . $next_in_id.$append_url);
+        } else {
+            $next_in_id = $this->DISCOVER_model->discover_next_go($session_en['en_id'], false);
+            if($next_in_id > 0){
+                return redirect_message('/' . $next_in_id.$append_url);
+            } else {
+                return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully discovered your entire list.</div></div>');
+            }
+        }
+
+    }
+
     function discover_in_history($tab_group_id, $note_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
 
         return echo_json($this->DISCOVER_model->discover_history_ui($tab_group_id, $note_in_id, $owner_en_id, $last_loaded_ln_id));

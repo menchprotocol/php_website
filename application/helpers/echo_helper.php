@@ -1419,10 +1419,6 @@ function echo_in_list($in, $in__next, $recipient_en, $push_message, $prefix_stat
 
     if(count($in__next)){
 
-        if(!$push_message){
-            echo '<div class="previous_discoveries">';
-        }
-
         //List children so they know what's ahead:
         $max_and_list = ( $push_message ? 5 : 0 );
         $common_prefix = in_calc_common_prefix($in__next, 'in_title', $in, $max_and_list);
@@ -1486,10 +1482,6 @@ function echo_in_list($in, $in__next, $recipient_en, $push_message, $prefix_stat
         }
     }
 
-    if(!$push_message){
-        echo '</div>';
-    }
-
     if($show_next){
         echo_in_next($in['in_id'], $recipient_en, $push_message);
     }
@@ -1527,7 +1519,7 @@ function echo_in_next($in_id, $recipient_en, $push_message){
 
         //NEXT:
         $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
-        echo '<div class="inline-block margin-top-down previous_discoveries pull-right"><a class="btn btn-discover btn-circle" href="/discover/next/'.$in_id.'">'.$en_all_11035[12211]['m_icon'].'</a></div>';
+        echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="/discover/next/'.$in_id.'">'.$en_all_11035[12211]['m_icon'].'</a></div>';
 
     }
 
@@ -1539,28 +1531,22 @@ function echo_in_previous_discover($in_id, $recipient_en){
         return null;
     }
 
-    //Now fetch the parent of the current
-    $ui = null;
-    $CI =& get_instance();
-    $en_all_4737 = $CI->config->item('en_all_4737'); // Idea Status
-    $en_all_2738 = $CI->config->item('en_all_2738');
-
     //DISCOVER LIST
+    $CI =& get_instance();
+    $ui = null;
+    $in_level_up = 0;
+    $previous_level_id = 0; //The ID of the Idea one level up
     $player_discover_ids = $CI->DISCOVER_model->discover_ids($recipient_en['en_id']);
     $recursive_parents = $CI->IDEA_model->in_recursive_parents($in_id, true, true);
-    $top_progress = null;
+    $top_completion_rate = null;
+
     foreach ($recursive_parents as $grand_parent_ids) {
         foreach(array_intersect($grand_parent_ids, $player_discover_ids) as $intersect) {
-
-            //Show the breadcrumb since it's connected:
-            $ui .= '<div id="previous_start_position">';
-            $ui .= '<div class="previous_discoveries hidden">';
-            //$ui .= '<div class="discover-topic"><span class="icon-block">&nbsp;</span>SELECT PREVIOUS:</div>';
-            $ui .= '<div class="list-group bottom-discover-line">';
-
-            $breadcrumb_items = array();
-
             foreach ($grand_parent_ids as $parent_in_id) {
+
+                if($in_level_up==1){
+                    $previous_level_id = $parent_in_id;
+                }
 
                 $ins_this = $CI->IDEA_model->in_fetch(array(
                     'in_id' => $parent_in_id,
@@ -1568,54 +1554,45 @@ function echo_in_previous_discover($in_id, $recipient_en){
 
                 $completion_rate = $CI->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $ins_this[0]);
 
-                array_push($breadcrumb_items, echo_in_discover($ins_this[0], false, null, null, false, $completion_rate, $recipient_en));
+                $in_level_up++;
 
                 if ($parent_in_id == $intersect) {
-                    $top_progress = $completion_rate['completion_percentage'];
+                    $top_completion_rate = $completion_rate;
                     break;
                 }
+
             }
-
-            $ui .= join('', array_reverse($breadcrumb_items));
-            $ui .= '</div>';
-            $ui .= '</div>';
-            $ui .= '</div>';
-
-            break;
-
+            break; //Just look into the first intersect for now (Expand later)
         }
-
-        if($ui){
+        if($top_completion_rate){
             break;
         }
-
     }
-
 
     //Did We Find It?
-    if($ui){
+    if(!in_array($in_id, $player_discover_ids)){
         //Previous
-        //onclick="$('.previous_discoveries').toggleClass('hidden');"
-        //<b class="montserrat">'.$top_progress.'%</b>
-        $ui .= '<div class="inline-block margin-top-down selected_before pull-left"><a class="btn btn-discover btn-circle" href="/discover/next/'.$in_id.'"><i class="fad fa-step-backward"></i></a></div>';
+        $ui .= '<div class="inline-block margin-top-down selected_before pull-left"><a class="btn btn-discover btn-circle" href="/discover/previous/'.$previous_level_id.'/'.$in_id.'"><i class="fad fa-step-backward"></i></a></div>';
     }
 
-    $ui .=echo_in_contribute_btn($in_id);
-
+    $ui .= echo_in_contribute_btn($in_id, $top_completion_rate);
 
     return $ui;
+
 }
 
-function echo_in_contribute_btn($in_id){
+function echo_in_contribute_btn($in_id, $top_completion_rate = null){
+
     //Append Edit Option:
-    if(superpower_active(10939, true)){
-        //Allow Edit:
-        $CI =& get_instance();
-        $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
-        return '<div class="inline-block margin-top-down previous_discoveries pull-right '.superpower_active(10984).'"><a class="btn btn-idea" href="/idea/'.$in_id.'"><span class="show-max">'.$en_all_11035[12749]['m_name'].'&nbsp;</span>'.$en_all_11035[12749]['m_icon'].'</a></div>';
-    } else {
+    $can_modify = superpower_active(10939, true);
+    if(!$can_modify && !$top_completion_rate){
         return null;
     }
+
+    $CI =& get_instance();
+    $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
+    return '<div class="margin-top-down pull-middle">'.( $can_modify ? '<a href="/idea/'.$in_id.'" title="'.$en_all_11035[12749]['m_name'].'">' : '<span>' ).( $top_completion_rate && $top_completion_rate['completion_percentage']>0 ? $top_completion_rate['completion_percentage'].'%' : $en_all_11035[12749]['m_icon'] ).( $can_modify ? '</a>' : '</span>' ).'</div>';
+
 }
 
 function echo_in_note_source($in_id, $note_type_en_id, $in_notes, $is_source){

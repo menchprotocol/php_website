@@ -1359,7 +1359,12 @@ label {
     margin-bottom: 0;
 }
 
-
+.pull-middle{
+    display: block;
+    width: 60px;
+    background-color: #666;
+    margin: 0 auto;
+}
 .discover-topic{
     padding: 10px 0;
 }

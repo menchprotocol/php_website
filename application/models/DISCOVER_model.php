@@ -943,7 +943,7 @@ class DISCOVER_model extends CI_Model
                 if(!$all_child_featured){
 
                     //Redirect to login page:
-                    echo '<div class="inline-block margin-top-down discover-add pull-left"><a class="btn btn-discover" href="/discover/start/'.$ins[0]['in_id'].'">START <i class="fad fa-step-forward"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down discover-add pull-left"><a class="btn btn-discover btn-circle" href="/discover/start/'.$ins[0]['in_id'].'"><i class="fad fa-step-forward"></i></a></div>';
 
                     //Any Sub Topics?
                     if(count($in__next) > 0){
@@ -1104,7 +1104,6 @@ class DISCOVER_model extends CI_Model
 
             }
 
-            echo '<div class="previous_discoveries">';
             foreach ($in__messages as $message_ln) {
                 echo $this->COMMUNICATION_model->comm_message_send(
                     $message_ln['ln_content'],
@@ -1112,7 +1111,6 @@ class DISCOVER_model extends CI_Model
                     $push_message
                 );
             }
-            echo '</div>';
 
         }
 
@@ -1233,7 +1231,7 @@ class DISCOVER_model extends CI_Model
                         echo '<div class="selected_before">';
 
                         //List answers:
-                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', true, '<div class="inline-block margin-top-down previous_discoveries pull-left">&nbsp;<a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-pen-square"></i></a></div>');
+                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', true, '<div class="inline-block margin-top-down pull-left">&nbsp;<a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-pen-square"></i></a></div>');
 
                         echo '</div>';
 
@@ -1284,7 +1282,6 @@ class DISCOVER_model extends CI_Model
                 } else {
 
                     echo '<div class="selected_before '.( count($discover_answers)>0 ? 'hidden' : '' ).'">';
-                    echo '<div class="previous_discoveries">';
 
                     //HTML:
                     if ($ins[0]['in_type_source_id'] == 6684) {
@@ -1384,14 +1381,13 @@ class DISCOVER_model extends CI_Model
 
                     //Close list:
                     echo '</div>';
-                    echo '</div>';
 
                     echo '<div class="result-update margin-top-down"></div>';
 
                     echo echo_in_previous_discover($in_id, $recipient_en);
 
                     //Button to submit selection:
-                    echo '<div class="inline-block margin-top-down previous_discoveries pull-left">'.( count($discover_answers)>0 ? '<a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-times"></i></a>&nbsp;' : '' ).'<a class="btn btn-discover" href="javascript:void(0)" onclick="discover_answer()">'.( count($discover_answers)>0 ? 'UPDATE' : 'SELECT' ).' & NEXT <i class="fad fa-step-forward"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down pull-left">'.( count($discover_answers)>0 ? '<a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-times"></i></a>' : '' ).'<a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fad fa-step-forward"></i></a></div>';
 
                     echo '</div>';
 
@@ -1411,15 +1407,15 @@ class DISCOVER_model extends CI_Model
 
                 //TEXT RESPONSE
 
-                echo '<div class="previous_discoveries"><textarea class="border i_content padded discover_input" placeholder="Your Answer Here..." id="discover_text_answer">'.( count($discover_completes) ? trim($discover_completes[0]['ln_content']) : '' ).'</textarea></div>';
+                echo '<textarea class="border i_content padded discover_input" placeholder="Your Answer Here..." id="discover_text_answer">'.( count($discover_completes) ? trim($discover_completes[0]['ln_content']) : '' ).'</textarea>';
 
-                echo '<div class="text_saving_result margin-top-down previous_discoveries"></div>';
+                echo '<div class="text_saving_result margin-top-down"></div>';
 
                 //Show Previous Button:
                 echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
 
                 //Save/Upload & Next:
-                echo '<div class="margin-top-down inline-block previous_discoveries pull-left"><a class="btn btn-discover" href="javascript:void(0);" onclick="discover_text_answer()">SAVE & NEXT <i class="fad fa-step-forward"></i></a>&nbsp;&nbsp;</div>';
+                echo '<div class="margin-top-down inline-block pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="discover_text_answer()"><i class="fad fa-step-forward"></i></a></div>';
 
 
                 if(count($discover_completes)){
@@ -1434,7 +1430,7 @@ class DISCOVER_model extends CI_Model
 
                 //FILE UPLOAD
 
-                echo '<div class="playerUploader previous_discoveries">';
+                echo '<div class="playerUploader">';
                 echo '<form class="box boxUpload" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
                 echo '<div class="file_saving_result">'.( count($discover_completes) ? '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->comm_message_send($discover_completes[0]['ln_content']).'</div>' : '' ).'</div>';
@@ -1450,19 +1446,19 @@ class DISCOVER_model extends CI_Model
                     //Show Previous Button:
                     echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
 
-                    echo '<label class="btn btn-discover inline-block previous_discoveries pull-left" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD</label>';
+                    echo '<label class="btn btn-discover inline-block pull-left" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD</label>';
 
                     echo '<div class="doclear">&nbsp;</div>';
 
                     //Show next here but keep hidden until file is uploaded:
-                    echo '<div class="go_next_upload hidden inline-block previous_discoveries">';
+                    echo '<div class="go_next_upload hidden inline-block">';
                     echo_in_next($ins[0]['in_id'], $recipient_en, $push_message);
                     echo '</div>';
 
                 } else {
 
                     //Next Ideas:
-                    echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null, true, true, '<label class="btn btn-discover inline-block previous_discoveries pull-left" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><span class="icon-block"><i class="fad fa-cloud-upload-alt"></i></span><span class="show-max">REPLACE</span></label>');
+                    echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null, true, true, '<label class="btn btn-discover inline-block pull-left" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><span class="icon-block"><i class="fad fa-cloud-upload-alt"></i></span><span class="show-max">REPLACE</span></label>');
 
                 }
 
