@@ -1377,6 +1377,14 @@ label {
     margin:5px 0;
     color: #000000;
 }
+
+.btn-circle{
+    margin:0 10px;
+    border-radius: 50% !important;
+    font-size: 2.5em !important;
+    width: 70px;
+    height: 70px;
+}
 .btn-five{ margin-left:5px; }
 .list-group-item.active {color:#000000;}
 /* RESPONSIVE */
