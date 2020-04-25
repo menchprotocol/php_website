@@ -87,9 +87,9 @@ function echo_url_types($url, $en_type_link_id)
 
         $current_mench = current_mench();
         if($current_mench['x_name']=='source'){
-            return '<a href="' . $url . '"><img data-src="' . $url . '" alt="IMAGE" class="content-image lazyimage" /></a>';
+            return '<a href="' . $url . '"><img data-src="' . $url . '" src="/img/mench.png" alt="IMAGE" class="content-image lazyimage" /></a>';
         } else {
-            return '<img data-src="' . $url . '" alt="IMAGE" class="content-image lazyimage" />';
+            return '<img data-src="' . $url . '" src="/img/mench.png" alt="IMAGE" class="content-image lazyimage" />';
         }
 
     } elseif ($en_type_link_id == 4259 /* Audio URL */) {
