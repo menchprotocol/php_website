@@ -1247,15 +1247,18 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
                 $ui .= echo_in_title($in);
 
                 //NEXT IDEAS COUNT
-                $next_ins = $CI->LEDGER_model->ln_fetch(array(
-                    'ln_previous_idea_id' => $in['in_id'],
-                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
-                if($next_ins[0]['total_ins'] > 0){
-                    $ui .= '<span class="pull-right"><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).'">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
-                    $ui .= '<div class="doclear">&nbsp;</div>';
+                if(superpower_active(10939, true)) {
+                    $next_ins = $CI->LEDGER_model->ln_fetch(array(
+                        'ln_previous_idea_id' => $in['in_id'],
+                        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
+                    if($next_ins[0]['total_ins'] > 0){
+                        $ui .= '<span class="pull-right '.superpower_active(10939).'"><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).' NEXT IDEAS">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
+                        $ui .= '<div class="doclear">&nbsp;</div>';
+                    }
                 }
+
 
                 $ui .= '</a>';
 
@@ -1824,7 +1827,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
                 'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
             ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
             if($en__portfolios_count[0]['totals'] > 0){
-                $ui .= '<span class="'.superpower_active(12701).' pull-right"><span class="icon-block doright montserrat source" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
+                $ui .= '<span class="'.superpower_active(12701).' pull-right"><span class="icon-block doright montserrat source" title="'.number_format($en__portfolios_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
                 $ui .= '<div class="doclear">&nbsp;</div>';
             }
         }

@@ -1117,6 +1117,11 @@ function in_is_source($in_id, $session_en = array()){
     $CI =& get_instance();
     return (
         superpower_active(10984, true) || //Player has Global idea editing superpower
+        count($CI->LEDGER_model->ln_fetch(array( //Player created the idea
+            'ln_type_source_id' => 4250, //IDEA CREATOR
+            'ln_next_idea_id' => $in_id,
+            'ln_creator_source_id' => $session_en['en_id'],
+        ))) ||
         count($CI->LEDGER_model->ln_fetch(array( //Player has an idea coin by being listed as a source
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
