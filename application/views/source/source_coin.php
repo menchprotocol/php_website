@@ -374,7 +374,7 @@ $is_source = en_is_source($en['en_id']);
 
         } elseif($en_id==11029){
 
-            //COUNT TOTAL CHILD
+            //SOURCE PORTFOLIO
             $en__portfolios_count = $this->LEDGER_model->ln_fetch(array(
                 'ln_profile_source_id' => $en['en_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
@@ -603,6 +603,40 @@ $is_source = en_is_source($en['en_id']);
 
             $this_tab .= '</div>';
 
+        } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
+
+
+            //SOURCE COINS (DISCOVER & IDEA)
+            $join_objects = array();
+            $match_columns = array(
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_'.$en_id)) . ')' => null,
+            );
+
+            if($en_id == 12273){
+                //IDEA COIN
+                $match_columns['ln_profile_source_id'] = $en['en_id'];
+                $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Idea Status Public
+                $join_objects = array('in_next');
+            } elseif($en_id == 6255){
+                //DISCOVER COIN
+                $match_columns['ln_creator_source_id'] = $en['en_id'];
+            }
+
+            //DISCOVER & BOOKMARKS
+            $item_counters = $this->LEDGER_model->ln_fetch($match_columns, $join_objects, 1, 0, array(), 'COUNT(ln_id) as totals');
+
+            $counter = $item_counters[0]['totals'];
+
+            if($counter > 0 && (!$disable_content_loading || $auto_expand_tab)){
+
+                //Dynamic Loading when clicked:
+                $discover_history_ui = $this->DISCOVER_model->discover_history_ui($en_id, 0, $en['en_id']);
+                $this_tab .= $discover_history_ui['message'];
+
+            }
+
+
         } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
 
             //Idea Notes
@@ -665,39 +699,6 @@ $is_source = en_is_source($en['en_id']);
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             ), array('in_previous'), 1, 0, array(), 'COUNT(ln_id) as totals');
             $counter = $player_discoveries[0]['totals'];
-
-        } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
-
-            //SOURCE COINS (DISCOVER & IDEA)
-
-            $join_objects = array();
-            $match_columns = array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_'.$en_id)) . ')' => null,
-            );
-
-            if($en_id == 12273){
-                //IDEA COIN
-                $match_columns['ln_profile_source_id'] = $en['en_id'];
-                $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Idea Status Public
-                $join_objects = array('in_next');
-            } elseif($en_id == 6255){
-                //DISCOVER COIN
-                $match_columns['ln_creator_source_id'] = $en['en_id'];
-            }
-
-            //DISCOVER & BOOKMARKS
-            $item_counters = $this->LEDGER_model->ln_fetch($match_columns, $join_objects, 1, 0, array(), 'COUNT(ln_id) as totals');
-
-            $counter = $item_counters[0]['totals'];
-
-            if($counter > 0 && (!$disable_content_loading || $auto_expand_tab)){
-
-                //Dynamic Loading when clicked:
-                $discover_history_ui = $this->DISCOVER_model->discover_history_ui($en_id, 0, $en['en_id']);
-                $this_tab .= $discover_history_ui['message'];
-
-            }
 
         }
 
