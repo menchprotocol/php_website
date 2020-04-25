@@ -205,6 +205,13 @@ function loadtab(tab_group_id, tab_data_id, note_in_id, owner_en_id){
 
 }
 
+function lazy_load(){
+    //Lazyload photos:
+    var lazyLoadInstance = new LazyLoad({
+        elements_selector: "img.lazyimage"
+    });
+}
+
 var algolia_index = false;
 $(document).ready(function () {
 
@@ -215,11 +222,7 @@ $(document).ready(function () {
         }
     });
 
-
-    //Lazyload photos:
-    var lazyLoadInstance = new LazyLoad({
-        elements_selector: "img.lazyimage"
-    });
+    lazy_load();
 
 
     $('#topnav li a').click(function (e) {
@@ -548,6 +551,7 @@ function validURL(str) {
 
 
 function add_to_list(sort_list_id, sort_handler, html_content) {
+
     //See if we previously have a list in place?
     if ($("#" + sort_list_id + " " + sort_handler).length > 0) {
         //yes we do! add this:
@@ -556,6 +560,8 @@ function add_to_list(sort_list_id, sort_handler, html_content) {
         //Raw list, add before input filed:
         $("#" + sort_list_id).prepend(html_content);
     }
+
+    lazy_load();
 }
 
 jQuery.fn.extend({

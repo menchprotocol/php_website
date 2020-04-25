@@ -9,6 +9,9 @@ function in_notes_counter(note_type_id, adjustment_count){
     var current_count = parseInt($('.en-type-counter-'+note_type_id).text());
     var new_count = current_count + adjustment_count;
     $('.en-type-counter-'+note_type_id).text(new_count);
+    if(adjustment_count > 0){
+        lazy_load();
+    }
 }
 
 function en_source_only_unlink(ln_id, note_type_id) {
