@@ -1222,10 +1222,10 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
 
     //IDAE INFO BAR
-    $info_bar = '';
+    $info_items_list = '';
     //TRANSACTION STATUS
     if($ln_id && !$is_link_published){
-        $info_bar .= '<span class="inline-block ln_status_source_id_' . $ln_id .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_source_id']]['m_name'].' @'.$in['ln_status_source_id'].'">' . $en_all_6186[$in['ln_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
+        $info_items_list .= '<span class="inline-block ln_status_source_id_' . $ln_id .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_source_id']]['m_name'].' @'.$in['ln_status_source_id'].'">' . $en_all_6186[$in['ln_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
     }
 
 
@@ -1267,13 +1267,13 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
             if($show_toolbar){
 
                 $ui .= echo_input_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
-                $ui .= $info_bar;
+                $ui .= $info_items_list;
                 $ui .= $child_counter;
 
             } else {
 
                 $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">';
-                $ui .= $info_bar;
+                $ui .= $info_items_list;
                 //IDEA STATUS
                 if(!$is_public){
                     $ui .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].' @'.$in['in_status_source_id'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
@@ -1339,7 +1339,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
         //Idea Toolbar
         $ui .= '<div class="space-content ' . superpower_active(12673) . '">';
 
-        $ui .= $info_bar;
+        $ui .= $info_items_list;
 
         //IDEA STATUS
         $ui .= '<div class="inline-block">' . echo_input_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
@@ -1371,8 +1371,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
         $ui .= echo_input_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+4);
         $ui .= '</span>';
         $ui .= '</div>';
-
-        $ui .= $child_counter;
 
         $ui .= '</div>';
 
@@ -1791,18 +1789,18 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
 
     //SOURCE INFO BAR
-    $info_bar = '';
+    $info_items_list = '';
 
     //SOURCE STATUS
     if(!$is_public){
-        $info_bar .= '<span class="inline-block en_status_source_id_' . $en['en_id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
+        $info_items_list .= '<span class="inline-block en_status_source_id_' . $en['en_id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].' @'.$en['en_status_source_id'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
     }
 
     //TRANSACTION STATUS
     if($ln_id){
 
         if(!$is_link_published){
-            $info_bar .= '<span class="inline-block ln_status_source_id_' . $ln_id .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_source_id']]['m_name'].' @'.$en['ln_status_source_id'].'">' . $en_all_6186[$en['ln_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
+            $info_items_list .= '<span class="inline-block ln_status_source_id_' . $ln_id .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_source_id']]['m_name'].' @'.$en['ln_status_source_id'].'">' . $en_all_6186[$en['ln_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
         }
 
         //Show link index
@@ -1810,9 +1808,9 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
             //External ID
             if($en['ln_profile_source_id']==6196){
                 //Give players the ability to ping Messenger profiles:
-                $info_bar .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]">&nbsp;<i class="fas fa-project-diagram"></i></span>';
+                $info_items_list .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]">&nbsp;<i class="fas fa-project-diagram"></i></span>';
             } else {
-                $info_bar .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'">&nbsp;<i class="fas fa-project-diagram"></i></span>';
+                $info_items_list .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'">&nbsp;<i class="fas fa-project-diagram"></i></span>';
             }
         }
     }
@@ -1854,14 +1852,14 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         if($show_toolbar){
 
             $ui .= echo_input_text(6197, $en['en_name'], $en['en_id'], $is_source);
-            $ui .= $info_bar;
+            $ui .= $info_items_list;
             $ui .= $child_counter;
 
         } else {
 
             //SOURCE NAME
             $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
-            $ui .= $info_bar;
+            $ui .= $info_items_list;
             $ui .= '<span class="en_name_full_' . $en['en_id'] . '">'.$en['en_name'].'</span>';
             $ui .= $child_counter;
             $ui .= '</a>';
