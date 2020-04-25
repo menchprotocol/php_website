@@ -218,7 +218,7 @@ $(document).ready(function () {
 
     //Lazyload photos:
     var lazyLoadInstance = new LazyLoad({
-        elements_selector: ".lazyimage"
+        elements_selector: "img.lazyimage"
     });
 
 
