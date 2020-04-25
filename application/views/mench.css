@@ -1361,9 +1361,19 @@ label {
 
 .pull-middle{
     display: block;
-    width: 60px;
-    background-color: #666;
+    width: 90px;
     margin: 0 auto;
+    font-size: 1.7em;
+    text-align: center;
+    height: 30px;
+    padding-top: 7px;
+    margin-bottom: -77px;
+    margin-top: 47px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.pull-middle a, .pull-middle span{
+    color: #999999;
 }
 .discover-topic{
     padding: 10px 0;
