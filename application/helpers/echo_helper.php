@@ -1241,7 +1241,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
         if($next_ins[0]['total_ins'] > 0){
-            $child_counter .= '<span class="'.superpower_active(10939).' pull-right '.( $show_toolbar ? 'counter-over-input' : '' ).'"><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).' NEXT IDEAS">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
+            $child_counter .= '<span class="'.superpower_active(10939).' pull-right" '.( $show_toolbar ? ' style="margin-top: -18px;" ' : '' ).'><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).' NEXT IDEAS">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
             $child_counter .= '<div class="doclear">&nbsp;</div>';
         }
     }
@@ -1829,7 +1829,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
             'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
         ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
         if($en__portfolios_count[0]['totals'] > 0){
-            $child_counter .= '<span class="'.superpower_active(10939).' pull-right '.( $show_toolbar ? 'counter-over-input' : '' ).'"><span class="icon-block doright montserrat source" title="'.number_format($en__portfolios_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
+            $child_counter .= '<span class="'.superpower_active(10939).' pull-right" '.( $show_toolbar ? ' style="margin-top: -24px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($en__portfolios_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
             $child_counter .= '<div class="doclear">&nbsp;</div>';
         }
     }
