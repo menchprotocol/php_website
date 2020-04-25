@@ -1544,7 +1544,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
         foreach(array_intersect($grand_parent_ids, $player_discover_ids) as $intersect) {
             foreach ($grand_parent_ids as $parent_in_id) {
 
-                if($in_level_up==1){
+                if($in_level_up==0){
                     $previous_level_id = $parent_in_id;
                 }
 
