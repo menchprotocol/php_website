@@ -578,7 +578,7 @@ function extract_icon_color($en_icon){
     } elseif(substr_count($en_icon, 'source')>0 || !$en_icon){
         return ' source ';
     } else {
-        return ' black ';
+        return '';
     }
 }
 

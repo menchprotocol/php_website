@@ -1965,7 +1965,7 @@ function echo_input_text($cache_en_id, $current_value, $object_id, $is_source, $
     //Also Append Counter to the end?
     if($extra_large){
 
-        $main_element = '<textarea onkeyup="echo_input_text_count('.$cache_en_id.','.$object_id.')" placeholder="'.$en_all_12112[$cache_en_id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>';
+        $main_element = '<textarea '.( !strlen($append_css) ? ' style="color:#000000 !important;" ' : '' ).' onkeyup="echo_input_text_count('.$cache_en_id.','.$object_id.')" placeholder="'.$en_all_12112[$cache_en_id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>';
         $character_counter = '<div class="title_counter title_counter_'.$cache_en_id.'_'.$object_id.' hidden grey montserrat doupper" style="text-align: right;"><span id="current_count_'.$cache_en_id.'_'.$object_id.'">0</span>/'.config_var($cache_en_id).' CHARACTERS</div>';
         $icon = '<span class="icon-block title-icon">'.( $en_icon ? $en_icon : $en_all_12112[4535]['m_icon'] ).'</span>';
 
