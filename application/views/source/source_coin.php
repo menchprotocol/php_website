@@ -616,7 +616,6 @@ $is_source = en_is_source($en['en_id']);
             if($en_id == 12273){
                 //IDEA COIN
                 $match_columns['ln_profile_source_id'] = $en['en_id'];
-                $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //Idea Status Public
                 $join_objects = array('in_next');
             } elseif($en_id == 6255){
                 //DISCOVER COIN
