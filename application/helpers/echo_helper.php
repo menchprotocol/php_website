@@ -1337,15 +1337,16 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
     if($show_toolbar){
 
         //Idea Toolbar
-        $ui .= '<div class="space-content ' . superpower_active(12673) . '">';
+        $ui .= '<div class="space-content ' . superpower_active(12673) . '" style="padding-left:25px;">';
 
         $ui .= $info_items_list;
+
+        //IDEA TYPE
+        $ui .= '<div class="inline-block '.superpower_active(10986).'">'.echo_input_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']).'</div>';
 
         //IDEA STATUS
         $ui .= '<div class="inline-block">' . echo_input_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
 
-        //IDEA TYPE
-        $ui .= '<div class="inline-block '.superpower_active(10986).'">'.echo_input_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']).'</div>';
 
         //IDEA DISCOVER TIME
         $ui .= echo_input_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source, ($in['ln_order']*10)+1);
