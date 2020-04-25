@@ -458,7 +458,7 @@ class IDEA_model extends CI_Model
                 'in_title' => $in_title_validation['in_clean_title'],
                 'in_type_source_id' => $in_type_source_id,
                 'in_status_source_id' => $new_in_status,
-            ));
+            ), $ln_creator_source_id);
 
         }
 
