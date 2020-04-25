@@ -1352,7 +1352,9 @@ label {
     margin-bottom: 5px;
 }
 
-
+.counter-over-input{
+    margin-top: -24px;
+}
 
 .discover-topic{
     padding: 10px 0;
