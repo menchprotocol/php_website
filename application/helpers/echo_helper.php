@@ -1241,7 +1241,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
         if($next_ins[0]['total_ins'] > 0){
-            $child_counter .= '<span class="pull-right '.superpower_active(10939).'"><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).' NEXT IDEAS">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
+            $child_counter .= '<span class="pull-right '.superpower_active(10939).'" '.( $show_toolbar ? 'style="margin-top: -23px;"' : '' ).'><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).' NEXT IDEAS">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
             $child_counter .= '<div class="doclear">&nbsp;</div>';
         }
     }
@@ -1267,6 +1267,8 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
             if($show_toolbar){
 
                 $ui .= echo_input_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
+                $ui .= $info_bar;
+                $ui .= $child_counter;
 
             } else {
 
@@ -1852,6 +1854,8 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         if($show_toolbar){
 
             $ui .= echo_input_text(6197, $en['en_name'], $en['en_id'], $is_source);
+            $ui .= $info_bar;
+            $ui .= $child_counter;
 
         } else {
 
@@ -1915,12 +1919,8 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
     //PROFILE
     $ui .= '<div class="space-content hideIfEmpty">';
-    if($show_toolbar){
-        $ui .= $info_bar;
-        $ui .= $child_counter;
-    }
     //PROFILE SOURCES:
-    $ui .= '<span class="'. superpower_active(12706) .' paddingup inline-block">';
+    $ui .= '<span class="'. superpower_active(12706) .' paddingup inline-block hideIfEmpty">';
     foreach ($en__profiles as $en_parent) {
         $ui .= '<span class="icon-block-img en_child_icon_' . $en_parent['en_id'] . '"><a href="/source/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span> ';
     }
