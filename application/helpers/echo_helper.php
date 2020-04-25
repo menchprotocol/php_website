@@ -1240,7 +1240,26 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
             if($is_in_link && superpower_active(12673, true)){
                 $ui .= echo_input_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
             } else {
-                $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">'.echo_in_title($in).'</a>';
+
+                $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">';
+
+                //IDEA TITLE
+                $ui .= echo_in_title($in);
+
+                //NEXT IDEAS COUNT
+                $next_ins = $CI->LEDGER_model->ln_fetch(array(
+                    'ln_previous_idea_id' => $in['in_id'],
+                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
+                if($next_ins[0]['total_ins'] > 0){
+                    $ui .= '<span class="pull-right"><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).'">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
+                    $ui .= '<div class="doclear">&nbsp;</div>';
+                }
+
+                $ui .= '</a>';
+
+
             }
         $ui .= '</div>';
     $ui .= '</td>';
@@ -1306,28 +1325,8 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
         $ui .= echo_input_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source, ($in['ln_order']*10)+1);
 
 
-        //PREVIOUS & NEXT IDEAS
-        $previous_ins = $CI->LEDGER_model->ln_fetch(array(
-            'ln_next_idea_id' => $in['in_id'],
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
-        $next_ins = $CI->LEDGER_model->ln_fetch(array(
-            'ln_previous_idea_id' => $in['in_id'],
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
 
-
-        //Previous idea:
-        $ui .= '<span class="montserrat idea idea-previous">' . ( $previous_ins[0]['total_ins'] >= 2 ? $previous_ins[0]['total_ins'] . $en_all_12413[11019]['m_icon'] : '&nbsp;') . '</span>';
-
-        //Next Ideas:
-        $ui .= '<span class="montserrat idea idea-next">' . ( $next_ins[0]['total_ins'] > 0 ? $en_all_12413[11020]['m_icon'] . $next_ins[0]['total_ins']: '&nbsp;' ) . '</span>';
-
-
-
-        //Idea Wand
+        //IDEA LINK BAR
         $ui .= '<div class="inline-block ' . superpower_active(12700) . '">';
         //LINK TYPE
         $ui .= echo_input_dropdown(4486, $in['ln_type_source_id'], null, $is_source, false, $in['in_id'], $in['ln_id']);
@@ -1824,8 +1823,10 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
             ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
-            $ui .= '<span class="'.superpower_active(12701).' pull-right"><span class="icon-block doright montserrat source" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
-            $ui .= '<div class="doclear">&nbsp;</div>';
+            if($en__portfolios_count[0]['totals'] > 0){
+                $ui .= '<span class="'.superpower_active(12701).' pull-right"><span class="icon-block doright montserrat source" title="'.number_format($en__portfolios_count[0]['totals'], 0).'">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
+                $ui .= '<div class="doclear">&nbsp;</div>';
+            }
         }
 
         $ui .= '</a>';
