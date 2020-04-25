@@ -395,8 +395,11 @@ function en_modify_load(en_id, ln_id) {
     delete_all_highlights();
     $(".highlight_en_"+en_id).addClass('en_highlight');
 
-
-    var en_full_name = $(".text__6197_" + en_id + ":first").html();
+    //Might be in an INPUT or a DIV based on active superpowers:
+    var en_full_name = $(".text__6197_" + en_id + ":first").val();
+    if(!en_full_name.length){
+        en_full_name = $(".text__6197_" + en_id + ":first").text();
+    }
     $('#en_name').val(en_full_name.toUpperCase()).focus();
     $('.edit-header').html('<i class="fas fa-pen-square"></i> ' + en_full_name);
     $('#en_status_source_id').val($(".en___" + en_id + ":first").attr('en-status'));
@@ -614,8 +617,9 @@ function en_modify_save() {
             } else {
 
                 //Reflect changed:
-                //Update variables:
-                $(".text__6197_" + modify_data['en_id']).html(modify_data['en_name']);
+                //Might be in an INPUT or a DIV based on active superpowers:
+                $(".text__6197_" + modify_data['en_id']).val(modify_data['en_name']).text(modify_data['en_name']);
+
 
 
                 //Player Status:
