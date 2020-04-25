@@ -521,6 +521,11 @@ img.no-radius {
     -webkit-animation: mench-spin 13s infinite linear;
     animation: mench-spin 13s infinite linear;
 }
+.lazyimage:not(.loaded) {
+    -webkit-animation: mench-spin 13s infinite linear;
+    animation: mench-spin 13s infinite linear;
+    width: 55px;
+}
 .mench-large{
     width: 89px;
     margin-bottom: 34px;
