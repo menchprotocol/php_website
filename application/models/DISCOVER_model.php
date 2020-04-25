@@ -1818,7 +1818,6 @@ class DISCOVER_model extends CI_Model
                 $list_class = 'itemdiscover';
                 $join_objects = array('in_next');
                 $match_columns['ln_profile_source_id'] = $owner_en_id;
-                $match_columns['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null;
 
             } elseif($tab_group_id == 6255 /* DISCOVER COIN */){
 
