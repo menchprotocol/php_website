@@ -445,7 +445,7 @@ class Source extends CI_Controller
         } else {
 
             //Create source:
-            $added_en = $this->SOURCE_model->en_verify_create($_POST['en_new_string'], $session_en['en_id'], false);
+            $added_en = $this->SOURCE_model->en_verify_create($_POST['en_new_string'], $session_en['en_id']);
             if(!$added_en['status']){
                 //We had an error, return it:
                 return echo_json($added_en);
@@ -1685,7 +1685,7 @@ class Source extends CI_Controller
 
 
         //All good, create new source:
-        $user_en = $this->SOURCE_model->en_verify_create(trim($_POST['input_name']), 0, false, 6181, random_player_avatar());
+        $user_en = $this->SOURCE_model->en_verify_create(trim($_POST['input_name']), 0, 6181, random_player_avatar());
         if(!$user_en['status']){
             //We had an error, return it:
             return echo_json($user_en);
