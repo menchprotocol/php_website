@@ -522,9 +522,10 @@ img.no-radius {
     animation: mench-spin 13s infinite linear;
 }
 .lazyimage:not(.loaded) {
-    -webkit-animation: mench-spin 3s infinite linear;
-    animation: mench-spin 3s infinite linear;
-    width: 34px;
+    -webkit-animation: mench-spin 5s infinite linear;
+    animation: mench-spin 5s infinite linear;
+    width: 55px;
+    padding: 20px;
 }
 .mench-large{
     width: 89px;
