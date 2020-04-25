@@ -366,7 +366,6 @@ $is_source = en_is_source($en['en_id']);
                     <input type="text"
                            class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
-                           id="newIdeaTitle"
                            placeholder="NEW SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
@@ -597,7 +596,6 @@ $is_source = en_is_source($en['en_id']);
                     <input type="text"
                            class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
-                           id="newIdeaTitle"
                            placeholder="NEW SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
