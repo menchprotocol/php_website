@@ -358,6 +358,8 @@ function en_load_next_page(page, load_new_filter) {
             $(data).insertBefore('#new-children');
         }
 
+        echo_input_text_update_start();
+
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();
     });
