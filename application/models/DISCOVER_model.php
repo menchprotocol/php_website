@@ -1452,7 +1452,7 @@ class DISCOVER_model extends CI_Model
                 } else {
 
                     //Next Ideas:
-                    echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null, true, true, '<label class="btn btn-discover inline-block pull-left" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><span class="icon-block"><i class="fad fa-cloud-upload-alt"></i></span><span class="show-max">REPLACE</span></label>');
+                    echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null, true, true, '<label class="btn btn-discover inline-block pull-left btn-circle" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i></label>');
 
                 }
 
