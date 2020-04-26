@@ -206,6 +206,9 @@ if(!isset($hide_header)){
                             } elseif($en_id==7291 && intval($this->session->userdata('session_6196_sign'))){
                                 //Messenger sign in does not allow Signout:
                                 continue;
+                            } elseif($en_id==6415 && !($first_segment=='discover' && !$second_segment)){
+                                //Deleting discoveries only available on Discovery home
+                                continue;
                             }
 
                             $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
@@ -215,12 +218,17 @@ if(!isset($hide_header)){
                             if(in_array($en_id, $this->config->item('en_ids_10876'))){
 
                                 $en_all_10876 = $this->config->item('en_all_10876'); //Mench Website
-                                $page_url = $en_all_10876[$en_id]['m_desc'];
+                                $page_url = 'href="'.$en_all_10876[$en_id]['m_desc'].'"';
 
                             } elseif($en_id==12205) {
 
                                 //Profile Page:
-                                $page_url = '/source/'.$session_en['en_id'];
+                                $page_url = 'href="/source/'.$session_en['en_id'].'"';
+
+                            } elseif($en_id==6415) {
+
+                                //CLEAR DISCOVERIES
+                                $page_url = 'href="javascript:void(0)" onclick="$(\'.clear-discovery-list\').toggleClass(\'hidden\')"';
 
                             } elseif(in_array($en_id, $this->config->item('en_ids_12467'))) {
 
@@ -248,7 +256,7 @@ if(!isset($hide_header)){
                                 }
 
                                 //MENCH COIN
-                                $page_url = '/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_'.$en_id)).'&'.$source_field.'='.$session_en['en_id'];
+                                $page_url = 'href="/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_'.$en_id)).'&'.$source_field.'='.$session_en['en_id'].'"';
 
                                 //APPEND COUNT:
                                 $m['m_name'] = echo_number($counts).' '.$m['m_name'];
@@ -260,7 +268,7 @@ if(!isset($hide_header)){
                             }
 
                             //Navigation
-                            echo '<a href="'.$page_url.'" class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+                            echo '<a '.$page_url.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
 
                         }
 
