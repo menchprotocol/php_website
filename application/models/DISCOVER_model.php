@@ -942,16 +942,16 @@ class DISCOVER_model extends CI_Model
 
                 if(!$all_child_featured){
 
-                    //Redirect to login page:
-                    echo '<div class="inline-block margin-top-down discover-add pull-left"><a class="btn btn-discover btn-circle" href="/discover/start/'.$ins[0]['in_id'].'"><i class="fad fa-step-forward"></i></a></div>';
-
                     //Any Sub Topics?
                     if(count($in__next) > 0){
 
                         //Give option to review:
-                        echo '<div class="inline-block margin-top-down discover-add pull-left" style="margin-top:45px;">&nbsp;or&nbsp;<a href="javascript:void();" onclick="toggle_discover()"><i class="fas fa-plus-circle discover_topics"></i><i class="fas fa-minus-circle discover_topics hidden"></i> <u>Preview '.count($in__next).' Idea'.echo__s(count($in__next)).'</u></a></div>';
+                        echo '<div class="inline-block margin-top-down discover-add pull-left" style="margin-top:45px;"><a href="javascript:void();" onclick="toggle_discover()"><i class="fas fa-plus-circle discover_topics"></i><i class="fas fa-minus-circle discover_topics hidden"></i> <u>Preview '.count($in__next).' Idea'.echo__s(count($in__next)).'</u></a>&nbsp;or&nbsp;</div>';
 
                     }
+
+                    //Redirect to login page:
+                    echo '<div class="inline-block margin-top-down discover-add pull-right"><a class="btn btn-discover btn-circle" href="/discover/start/'.$ins[0]['in_id'].'"><i class="fad fa-step-forward"></i></a></div>';
 
                 }
 
