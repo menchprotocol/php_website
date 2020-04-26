@@ -773,7 +773,7 @@ function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect)
         if (!data.status) {
 
             //Ooops there was an error!
-            $(notify_el).html('<span class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>');
+            $(notify_el).html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
 
         } else {
 
@@ -800,7 +800,7 @@ function account_update_email(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_email').html('<span class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>').hide().fadeIn();
+            $('.save_email').html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
@@ -831,7 +831,7 @@ function account_update_password(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_password').html('<span class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>').hide().fadeIn();
+            $('.save_password').html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 

@@ -952,7 +952,6 @@ class DISCOVER_model extends CI_Model
 
                 }
 
-                echo echo_in_contribute_btn($in_id);
                 echo '<div class="doclear">&nbsp;</div>';
 
             }

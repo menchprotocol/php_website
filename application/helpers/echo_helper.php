@@ -1545,8 +1545,6 @@ function echo_in_previous_discover($in_id, $recipient_en){
         $ins_this = $CI->IDEA_model->in_fetch(array(
             'in_id' => $in_id,
         ));
-        $top_completion_rate = $CI->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $ins_this[0]);
-        $top_completion_rate['top_in'] = null;
 
     } else {
 
@@ -1574,7 +1572,6 @@ function echo_in_previous_discover($in_id, $recipient_en){
                         $top_completion_rate['top_in'] = $ins_this[0];
                         break;
                     }
-
                 }
                 break; //Just look into the first intersect for now (Expand later)
             }
@@ -1585,34 +1582,23 @@ function echo_in_previous_discover($in_id, $recipient_en){
     }
 
 
-
     //Did We Find It?
     if($previous_level_id > 0){
+
         //Previous
         $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/discover/previous/'.$previous_level_id.'/'.$in_id.'"><i class="fad fa-step-backward"></i></a></div>';
-    }
 
-    $ui .= echo_in_contribute_btn($in_id, $top_completion_rate);
+        //Main Breadcrumb:
+        if($top_completion_rate){
+            $ui .= '<div class="container fixed-bottom"><a href="/'.$top_completion_rate['top_in']['in_id'].'">'.$top_completion_rate['completion_percentage'].'% OF '.$top_completion_rate['top_in']['in_name'].'</a></div>';
+        }
+
+    }
 
     return $ui;
 
 }
 
-function echo_in_contribute_btn($in_id, $top_completion_rate = null){
-
-    //Append Edit Option:
-    $is_source = in_is_source($in_id);
-    if(!$is_source && !$top_completion_rate){
-        return null;
-    }
-
-    $CI =& get_instance();
-    $can_click = ( $top_completion_rate && $top_completion_rate['top_in'] );
-    $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
-
-    return '<div class="pull-middle">'.( $can_click ? '<a href="/'.$top_completion_rate['top_in']['in_id'].'" title="'.$top_completion_rate['top_in']['in_title'].'" data-toggle="tooltip" data-placement="top">' : '<span>' ).( $top_completion_rate && $top_completion_rate['completion_percentage']>0 ? $top_completion_rate['completion_percentage'].'%' : '' ).( $can_click ? '</a>' : '</span>' ).( $is_source ? '<a href="/idea/'.$in_id.'" class="small-click">'.$en_all_11035[12749]['m_name'].'</a>' : '' ).'</div>';
-
-}
 
 function echo_in_note_source($in_id, $note_type_en_id, $in_notes, $is_source){
 

@@ -1012,8 +1012,14 @@ td.MENCHcolumn3  { width: 13%; }
     padding: 0;
 }
 
-.overflowhide, .url_truncate{
+.overflowhide {
     max-width: 100%;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.url_truncate {
+    max-width: calc(100% - 33px);
     overflow: hidden;
     display: inline-block;
 }
