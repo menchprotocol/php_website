@@ -1078,7 +1078,7 @@ class DISCOVER_model extends CI_Model
 
                 //DISCOVER PROGRESS
                 if($completion_rate['completion_percentage']>0){
-                    echo '<div class="progress-bg no-horizonal-margin" title="You are '.$completion_rate['completion_percentage'].'% done as you have discover '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' ideas'.( $has_time_estimate ? ' (Total Estimate '.echo_time_range($ins[0], true).')' : '' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+                    echo '<div class="progress-bg no-horizonal-margin" title="Discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
                 } else {
                     //Replace with empty space:
                     echo '<div class="high5x">&nbsp;</div>';

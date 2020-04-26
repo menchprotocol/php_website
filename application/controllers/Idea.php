@@ -99,7 +99,7 @@ class Idea extends CI_Controller {
         $session_en = superpower_assigned(10939); //Idea Pen?
         $is_public = in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7355'));
 
-        if(!$is_source){
+        if(!$is_source && !($session_en && isset($_GET['grant_access']))){
             if($is_public){
                 return redirect_message('/'.$in_id);
             } elseif(!$session_en) {
