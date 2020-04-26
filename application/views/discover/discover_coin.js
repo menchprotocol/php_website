@@ -165,7 +165,7 @@ function discover_answer(){
                 window.location = '/discover/next/'+in_loaded_id;
             }, 987);
         } else {
-            $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><span class="discover">'+data.message+'</span>');
+            $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><span class="discover montserrat">'+data.message+'</span>');
         }
     });
 }
