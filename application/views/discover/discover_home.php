@@ -55,7 +55,10 @@ echo '</div>';
 
 //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
 echo '<div class="clear-discovery-list hidden margin-top-down">';
-echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><b class="discover montserrat">DELETE ALL DISCOVER COINS?</b><br /><span class="icon-block">&nbsp;</span>Action cannot be undone.</div>';
+echo '<div class="alert alert-danger" role="alert">';
+echo '<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><b class="discover montserrat">DELETE ALL DISCOVER COINS?</b>';
+echo '<br /><span class="icon-block">&nbsp;</span>Action cannot be undone.';
+echo '</div>';
 echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="clear_all_discoveries()" class="btn btn-discover"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.clear-discovery-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
 echo '</div>';
 
