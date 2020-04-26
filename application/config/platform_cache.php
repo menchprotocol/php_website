@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-25 13:39:41 PST
+//Generated 2020-04-25 17:53:44 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587847181;
-$config['cache_count_transaction'] = 1153034;
-$config['cache_count_discover'] = 121158;
-$config['cache_count_idea'] = 5391;
-$config['cache_count_source'] = 5202;
+$config['cache_timestamp'] = 1587862424;
+$config['cache_count_transaction'] = 1153437;
+$config['cache_count_discover'] = 121170;
+$config['cache_count_idea'] = 5392;
+$config['cache_count_source'] = 5207;
 
 
 
@@ -3191,8 +3191,14 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(6225,12749,7274,6415,7347,12707,12581,10573,3084,4341,11068,7291,4430,12205,12211,6287,12750,7256,4269,3000,12437,4997,12275,10957,7540);
+$config['en_ids_11035'] = array(11068,6225,12749,7274,6415,7347,12707,12581,10573,3084,4341,7291,4430,12205,12211,6287,12750,7256,4269,3000,12437,4997,12275,10957,7540);
 $config['en_all_11035'] = array(
+    11068 => array(
+        'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
+        'm_name' => '1-CLICK LOGIN',
+        'm_desc' => '',
+        'm_parents' => array(11035,11065),
+    ),
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'ACCOUNT SETTINGS',
@@ -3252,12 +3258,6 @@ $config['en_all_11035'] = array(
         'm_name' => 'LEDGER TABLE',
         'm_desc' => '',
         'm_parents' => array(11047,12707,10876,12588,11035,4527,7735,6205),
-    ),
-    11068 => array(
-        'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
-        'm_name' => 'LOGIN LINK',
-        'm_desc' => '',
-        'm_parents' => array(11035,11065),
     ),
     7291 => array(
         'm_icon' => '<i class="fad fa-power-off" aria-hidden="true"></i>',
