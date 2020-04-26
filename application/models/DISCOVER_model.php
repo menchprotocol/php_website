@@ -1427,34 +1427,46 @@ class DISCOVER_model extends CI_Model
                 echo '<div class="playerUploader">';
                 echo '<form class="box boxUpload" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-                echo '<div class="file_saving_result">'.( count($discover_completes) ? '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->comm_message_send($discover_completes[0]['ln_content']).'</div>' : '' ).'</div>';
-
                 echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_source_id'].'" />';
-
-                echo '</form>';
-                echo '</div>';
 
 
                 if(!count($discover_completes)) {
 
                     //Show Previous Button:
+                    echo '<div class="file_saving_result">';
+
                     echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
 
                     echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-discover btn-circle inline-block" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt" style="margin-left: -3px;"></i></label></div>';
 
-                    echo '<div class="doclear">&nbsp;</div>';
+                    echo '</div>';
+
 
                     //Show next here but keep hidden until file is uploaded:
                     echo '<div class="go_next_upload hidden inline-block">';
                     echo_in_next($ins[0]['in_id'], $recipient_en, $push_message);
                     echo '</div>';
 
+                    echo '<div class="doclear">&nbsp;</div>';
+
+
                 } else {
+
+                    echo '<div class="file_saving_result">';
+
+                    echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->comm_message_send($discover_completes[0]['ln_content']).'</div>';
+
+                    echo '</div>';
 
                     //Next Ideas:
                     echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null, true, true, '<div class="inline-block margin-top-down pull-right"><label class="btn btn-discover inline-block btn-circle" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt" style="margin-left: -3px;"></i></label></div>');
 
                 }
+
+
+                echo '</form>';
+                echo '</div>';
+
 
             } else {
 

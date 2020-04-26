@@ -110,6 +110,7 @@ function discover_file_upload(droppedFiles, uploadType) {
                 //Render new file:
                 $('.file_saving_result').html(data.message);
                 $('.go_next_upload').removeClass('hidden');
+                lazy_load();
             },
             error: function (data) {
                 //Show Error:
