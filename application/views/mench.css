@@ -493,10 +493,10 @@ img.no-radius {
     background-color: #FC1B44;
 }
 .fixed-bottom a{
-    padding: 0 5px 0 0;
+    padding: 0 5px;
     overflow: hidden;
     width: 100%;
-    text-align:left;
+    text-align: center;
     display: block;
     height: 16px;
     margin-top: -20px;
