@@ -1804,7 +1804,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
     //PORTFOLIO COUNT (SYNC WITH NEXT IDEA COUNT)
     $child_counter = '';
-    if(superpower_active(10939, true)){
+    if(superpower_active(10967, true)){
         $en__portfolios_count = $CI->LEDGER_model->ln_fetch(array(
             'ln_profile_source_id' => $en['en_id'],
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
@@ -1812,7 +1812,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
             'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
         ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
         if($en__portfolios_count[0]['totals'] > 0){
-            $child_counter .= '<span class="'.superpower_active(10939).' pull-right" '.( $show_toolbar ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($en__portfolios_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
+            $child_counter .= '<span class="pull-right" '.( $show_toolbar ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($en__portfolios_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
             $child_counter .= '<div class="doclear">&nbsp;</div>';
         }
     }
