@@ -31,6 +31,7 @@ echo '<div id="actionplan_steps" class="list-group no-side-padding">';
 foreach ($player_discoveries as $priority => $in) {
     $completion_rate = $this->DISCOVER_model->discover_completion_progress($session_en['en_id'], $in);
     echo echo_in_discover($in, false, null, null, true, $completion_rate);
+    echo $completion_rate['completion_percentage'];
     if($completion_rate['completion_percentage']!=100 && $all_completed){
         $all_completed = false;
     }
@@ -50,7 +51,7 @@ return '<div class="pull-middle"><a href="javascript:void(0)" onclick="$(\'.clea
 
 
 //NEXT
-if(!$all_completed){
+if(!$all_completed || 1){
     echo '<div class="inline-block margin-top-down pull-right"><a href="/discover/next" class="btn btn-discover btn-circle">'.$en_all_11035[12211]['m_icon'].'</a></div>';
 }
 
