@@ -1371,7 +1371,12 @@ label {
     margin-top: 47px;
     font-family: 'Montserrat', sans-serif;
 }
-
+.small-click{
+    display: block;
+    font-size: 0.5em;
+    margin-top: 10px;
+    text-decoration: underline;
+}
 .pull-middle a, .pull-middle span{
     color: #999999;
 }
