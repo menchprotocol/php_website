@@ -927,9 +927,18 @@ class DISCOVER_model extends CI_Model
                     echo '<div id="discoverScroll no-height">&nbsp;</div>';
                     $common_prefix = in_calc_common_prefix($in__next, 'in_title');
 
+                    //Any Sub Topics?
+                    if(!$all_child_featured && count($in__next) > 0){
+
+                        //Give option to review:
+                        echo '<div class="inline-block margin-top-down discover-add pull-left" style="margin-top:45px;"><a href="javascript:void();" onclick="toggle_discover()"><i class="fas fa-plus-circle discover_topics"></i><i class="fas fa-minus-circle discover_topics hidden"></i> <u>Preview '.count($in__next).' Idea'.echo__s(count($in__next)).'</u></a>&nbsp;or&nbsp;</div>';
+
+                    }
+
                     echo '<div class="'.( !$all_child_featured ? ' discover_topics hidden ' : '' ).'">';
 
                     //echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>'.( !$all_child_featured ? 'IDEAS:' : 'SELECT:' ).'</div>';
+
                     echo '<div class="list-group">';
                     foreach($in__next as $key => $child_in){
                         echo echo_in_discover($child_in, $is_or, $common_prefix);
@@ -941,14 +950,6 @@ class DISCOVER_model extends CI_Model
 
 
                 if(!$all_child_featured){
-
-                    //Any Sub Topics?
-                    if(count($in__next) > 0){
-
-                        //Give option to review:
-                        echo '<div class="inline-block margin-top-down discover-add pull-left" style="margin-top:45px;"><a href="javascript:void();" onclick="toggle_discover()"><i class="fas fa-plus-circle discover_topics"></i><i class="fas fa-minus-circle discover_topics hidden"></i> <u>Preview '.count($in__next).' Idea'.echo__s(count($in__next)).'</u></a>&nbsp;or&nbsp;</div>';
-
-                    }
 
                     //Redirect to login page:
                     echo '<div class="inline-block margin-top-down discover-add pull-right"><a class="btn btn-discover btn-circle" href="/discover/start/'.$ins[0]['in_id'].'"><i class="fad fa-step-forward"></i></a></div>';
@@ -1078,10 +1079,6 @@ class DISCOVER_model extends CI_Model
 
 
             if(!$push_message){
-
-                //DISCOVER PREVIOUS (To be moved here using Javascript)
-                echo '<div id="previous_final_position"></div>';
-
 
                 //DISCOVER PROGRESS
                 if($completion_rate['completion_percentage']>0){

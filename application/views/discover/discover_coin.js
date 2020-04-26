@@ -9,10 +9,6 @@ $(document).ready(function () {
         discover_file_upload(droppedFiles, 'file');
     });
 
-    //Move Previous Discoveries Up:
-    $("#previous_final_position").append($("#previous_start_position").html());
-    $("#previous_start_position").remove();
-
 
     //Should we auto start?
     if (isAdvancedUpload) {
