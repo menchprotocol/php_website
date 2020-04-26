@@ -1540,6 +1540,11 @@ function echo_in_previous_discover($in_id, $recipient_en){
     $recursive_parents = $CI->IDEA_model->in_recursive_parents($in_id, true, true);
     $top_completion_rate = null;
 
+    echo print_r(array(
+        'player_discover_ids' => $player_discover_ids,
+        'recursive_parents' => $recursive_parents,
+    ));
+
     foreach ($recursive_parents as $grand_parent_ids) {
         foreach(array_intersect($grand_parent_ids, $player_discover_ids) as $intersect) {
             foreach ($grand_parent_ids as $parent_in_id) {
