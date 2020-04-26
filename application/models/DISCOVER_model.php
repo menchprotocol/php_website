@@ -1381,7 +1381,11 @@ class DISCOVER_model extends CI_Model
                     echo echo_in_previous_discover($in_id, $recipient_en);
 
                     //Button to submit selection:
-                    echo '<div class="inline-block margin-top-down pull-right">'.( count($discover_answers)>0 ? '<a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a>' : '' ).'<a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fad fa-step-forward"></i></a></div>';
+                    if(count($discover_answers)>0){
+                        echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
+                    }
+
+                    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fad fa-step-forward"></i></a></div>';
 
                     echo '</div>';
 
