@@ -1601,15 +1601,16 @@ function echo_in_previous_discover($in_id, $recipient_en){
 function echo_in_contribute_btn($in_id, $top_completion_rate = null){
 
     //Append Edit Option:
-    $can_modify = superpower_active(10939, true);
-    if(!$can_modify && !$top_completion_rate){
+    $is_source = in_is_source($in_id);
+    if(!$is_source && !$top_completion_rate){
         return null;
     }
 
     $CI =& get_instance();
-    $can_click = ($top_completion_rate && $top_completion_rate['top_in']);
+    $can_click = ( $top_completion_rate && $top_completion_rate['top_in'] );
     $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
-    return '<div class="pull-middle">'.( $can_click ? '<a href="/'.$top_completion_rate['top_in']['in_id'].'" title="'.$top_completion_rate['top_in']['in_title'].'" data-toggle="tooltip" data-placement="top">' : '<span>' ).( $top_completion_rate && $top_completion_rate['completion_percentage']>0 ? $top_completion_rate['completion_percentage'].'%' : '' ).( $can_click ? '</a>' : '</span>' ).($can_modify ? '<a href="/idea/'.$top_completion_rate['top_in']['in_id'].'" class="small-click">'.$en_all_11035[12749]['m_name'].'</a>' : '' ).'</div>';
+
+    return '<div class="pull-middle">'.( $can_click ? '<a href="/'.$top_completion_rate['top_in']['in_id'].'" title="'.$top_completion_rate['top_in']['in_title'].'" data-toggle="tooltip" data-placement="top">' : '<span>' ).( $top_completion_rate && $top_completion_rate['completion_percentage']>0 ? $top_completion_rate['completion_percentage'].'%' : '' ).( $can_click ? '</a>' : '</span>' ).( $is_source ? '<a href="/idea/'.$top_completion_rate['top_in']['in_id'].'" class="small-click">'.$en_all_11035[12749]['m_name'].'</a>' : '' ).'</div>';
 
 }
 
