@@ -9,6 +9,8 @@ $(document).ready(function () {
         discover_file_upload(droppedFiles, 'file');
     });
 
+    //Move main discovery, if any:
+    $('.main_discovery_top').html($('.main_discovery_bottom').html()).fadeIn();
 
     //Should we auto start?
     if (isAdvancedUpload) {

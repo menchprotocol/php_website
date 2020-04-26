@@ -1076,6 +1076,8 @@ class DISCOVER_model extends CI_Model
 
             if(!$push_message){
 
+                echo '<div class="hideIfEmpty main_discovery_top"></div>';
+
                 //DISCOVER PROGRESS
                 if($completion_rate['completion_percentage']>0){
                     echo '<div class="progress-bg no-horizonal-margin" title="Discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
