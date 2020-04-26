@@ -1440,7 +1440,7 @@ class DISCOVER_model extends CI_Model
                     //Show Previous Button:
                     echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
 
-                    echo '<label class="btn btn-discover inline-block pull-right" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i></label>';
+                    echo '<label class="btn btn-discover inline-block pull-right" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i></label>';
 
                     echo '<div class="doclear">&nbsp;</div>';
 

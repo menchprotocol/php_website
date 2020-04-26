@@ -23,14 +23,12 @@ $is_public = in_array($in['in_status_source_id'], $this->config->item('en_ids_73
 
 $source_focus_found = false; //Used to determine the first tab to be opened
 
+echo '<div class="container" style="padding-bottom:42px;">';
 
-//IDEA NEXT
-$in__next = $this->LEDGER_model->ln_fetch(array(
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-    'ln_previous_idea_id' => $in['in_id'],
-), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
+if(!$is_source){
+    echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/idea/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/idea/in_become_source/'.$in['in_id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
+}
+
 
 
 //IDEA PREVIOUS
@@ -41,20 +39,6 @@ $in__previous = $this->LEDGER_model->ln_fetch(array(
     'ln_next_idea_id' => $in['in_id'],
 ), array('in_previous'), 0);
 
-
-
-
-echo '<div class="container" style="padding-bottom:42px;">';
-
-
-
-if(!$is_source){
-    echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/idea/in_request_invite/'.$in['in_id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/idea/in_become_source/'.$in['in_id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
-}
-
-
-
-//IDEA PREVIOUS
 echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group previous_ins">';
 foreach ($in__previous as $parent_in) {
     echo echo_in($parent_in, 0, true, in_is_source($parent_in['in_id']));
@@ -134,6 +118,16 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
 
 
     if($en_id==11020){
+
+
+        //IDEA NEXT
+        $in__next = $this->LEDGER_model->ln_fetch(array(
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            'ln_previous_idea_id' => $in['in_id'],
+        ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
+
 
         //CHILD IDEAS
         $counter = count($in__next);
