@@ -623,8 +623,8 @@ img.no-radius {
 
 .msg-nav {
     list-style-type: none;
-    margin: 0;
-    padding:2px 0 0 0;
+    margin:10px 0 0 0;
+    padding:0;
 }
 
 .msg-nav > li {
