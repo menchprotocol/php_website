@@ -1224,9 +1224,16 @@ class DISCOVER_model extends CI_Model
                         echo '<div class="edit_select_answer">';
 
                         //List answers:
-                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', true, '<div class="inline-block margin-top-down pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>');
+                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
 
                         echo '</div>';
+
+
+                        echo_in_next($ins[0]['in_id'], $recipient_en, $push_message);
+
+                        echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
+
+
 
                     }
                 }
@@ -1442,7 +1449,7 @@ class DISCOVER_model extends CI_Model
 
                     echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
 
-                    echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-discover btn-circle inline-block" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt" style="margin-left: -3px;"></i></label></div>';
+                    echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-discover btn-circle inline-block" for="fileType'.$ins[0]['in_type_source_id'].'"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 
                     echo '</div>';
 
@@ -1463,8 +1470,13 @@ class DISCOVER_model extends CI_Model
 
                     echo '</div>';
 
-                    //Next Ideas:
-                    echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null, true, true, '<div class="inline-block margin-top-down pull-right"><label class="btn btn-discover inline-block btn-circle" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt" style="margin-left: -3px;"></i></label></div>');
+                    //Any child ideas?
+                    echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null, true, false);
+
+                    //Next button:
+                    echo_in_next($ins[0]['in_id'], $recipient_en, $push_message);
+
+                    echo '<div class="inline-block margin-top-down pull-left"><label class="btn btn-discover inline-block btn-circle" for="fileType'.$ins[0]['in_type_source_id'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 
                 }
 

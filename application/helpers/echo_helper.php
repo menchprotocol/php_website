@@ -1241,7 +1241,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
         if($next_ins[0]['total_ins'] > 0){
-            $child_counter .= '<span class="'.superpower_active(10939).' pull-right" '.( $show_toolbar ? ' style="margin-top: -18px;" ' : '' ).'><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).' NEXT IDEAS">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
+            $child_counter .= '<span class="pull-right" '.( $show_toolbar ? ' style="margin-top: -18px;" ' : '' ).'><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).' NEXT IDEAS">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
             $child_counter .= '<div class="doclear">&nbsp;</div>';
         }
     }
@@ -1408,7 +1408,7 @@ function echo_caret($en_id, $m, $url_append){
 }
 
 
-function echo_in_list($in, $in__next, $recipient_en, $push_message, $prefix_statement = null, $show_next = true, $append_button = null){
+function echo_in_list($in, $in__next, $recipient_en, $push_message, $prefix_statement = null, $show_next = true){
 
     //If no list just return the next step:
     if(!count($in__next)){
@@ -1484,12 +1484,8 @@ function echo_in_list($in, $in__next, $recipient_en, $push_message, $prefix_stat
 
     if($show_next){
         echo_in_next($in['in_id'], $recipient_en, $push_message);
+        echo '<div class="doclear">&nbsp;</div>';
     }
-
-    echo $append_button;
-
-    echo '<div class="doclear">&nbsp;</div>';
-
 }
 
 function echo_in_next($in_id, $recipient_en, $push_message){
