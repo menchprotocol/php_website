@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-26 09:18:45 PST
+//Generated 2020-04-26 09:32:52 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587917925;
-$config['cache_count_transaction'] = 1154092;
-$config['cache_count_discover'] = 121209;
+$config['cache_timestamp'] = 1587918772;
+$config['cache_count_transaction'] = 1154290;
+$config['cache_count_discover'] = 121090;
 $config['cache_count_idea'] = 5390;
 $config['cache_count_source'] = 5208;
 
@@ -333,9 +333,9 @@ $config['en_all_12500'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="fad fa-trash-alt discover" aria-hidden="true"></i>',
-        'm_name' => 'REMOVE ALL',
+        'm_name' => 'CLEAR DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(12500,11035,4755,4593,6414),
+        'm_parents' => array(12500,4755,4593),
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
@@ -906,7 +906,7 @@ $config['en_all_12400'] = array(
 );
 
 //SOURCE:
-$config['en_ids_4536'] = array(12289,3000,11089,12437,12775,7305,4758,6206,4600);
+$config['en_ids_4536'] = array(12289,3000,12437,11089,12775,7305,4758,6206,4600);
 $config['en_all_4536'] = array(
     12289 => array(
         'm_icon' => '<i class="fad fa-paw source" aria-hidden="true"></i>',
@@ -920,17 +920,17 @@ $config['en_all_4536'] = array(
         'm_desc' => '',
         'm_parents' => array(11054,11035,12079,4600,4536,4527),
     ),
+    12437 => array(
+        'm_icon' => '<i class="fad fa-medal source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LEADERBOARD',
+        'm_desc' => '',
+        'm_parents' => array(4536,12489,11035,11986),
+    ),
     11089 => array(
         'm_icon' => '<i class="fad fa-crop-alt source" aria-hidden="true"></i>',
         'm_name' => 'LAYOUT',
         'm_desc' => '',
         'm_parents' => array(4536,4527),
-    ),
-    12437 => array(
-        'm_icon' => '<i class="fad fa-medal source" aria-hidden="true"></i>',
-        'm_name' => 'LEADERBOARD',
-        'm_desc' => '',
-        'm_parents' => array(4536,12489,11035,11986),
     ),
     12775 => array(
         'm_icon' => '<i class="fad fa-eye source"></i>',
@@ -3197,7 +3197,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(11068,6225,12749,7274,12581,7347,12707,10573,3084,4341,7291,4430,12205,12211,6287,12750,6415,7256,4269,3000,12437,4997,12275,10957,7540);
+$config['en_ids_11035'] = array(11068,6225,12749,7274,12581,7347,12707,10573,3084,4341,7291,4430,12205,12211,6287,12750,7256,4269,3000,12437,4997,12275,10957,7540);
 $config['en_all_11035'] = array(
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -3291,15 +3291,9 @@ $config['en_all_11035'] = array(
     ),
     12750 => array(
         'm_icon' => '<i class="fad fa-step-forward discover"></i>',
-        'm_name' => 'PREVIEW',
+        'm_name' => 'PREVIEW IDEA DISCOVERY',
         'm_desc' => '',
         'm_parents' => array(11035),
-    ),
-    6415 => array(
-        'm_icon' => '<i class="fad fa-trash-alt discover" aria-hidden="true"></i>',
-        'm_name' => 'REMOVE ALL',
-        'm_desc' => '',
-        'm_parents' => array(12500,11035,4755,4593,6414),
     ),
     7256 => array(
         'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
@@ -3321,7 +3315,7 @@ $config['en_all_11035'] = array(
     ),
     12437 => array(
         'm_icon' => '<i class="fad fa-medal source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE LEADERBOARD',
+        'm_name' => 'SOURCE IDEA LEADERBOARD',
         'm_desc' => '',
         'm_parents' => array(4536,12489,11035,11986),
     ),
@@ -6487,8 +6481,14 @@ $config['en_all_4997'] = array(
 );
 
 //PRIVATE TRANSACTION:
-$config['en_ids_4755'] = array(12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,6132,12360,4266,4267,12489,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,4235,7495,12773,12453,10681,12450,6232,4783,4755,6415,7563,6157,7489,4246,4559,3288,12117,3286,7504,6144,7485,7486,6997);
+$config['en_ids_4755'] = array(6415,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,6132,12360,4266,4267,12489,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,4235,7495,12773,12453,10681,12450,6232,4783,4755,7563,6157,7489,4246,4559,3288,12117,3286,7504,6144,7485,7486,6997);
 $config['en_all_4755'] = array(
+    6415 => array(
+        'm_icon' => '<i class="fad fa-trash-alt discover" aria-hidden="true"></i>',
+        'm_name' => 'CLEAR DISCOVERIES',
+        'm_desc' => '',
+        'm_parents' => array(12500,4755,4593),
+    ),
     12336 => array(
         'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER ANSWER ONE LINK',
@@ -6861,12 +6861,6 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(12701,4755,6771,4527),
     ),
-    6415 => array(
-        'm_icon' => '<i class="fad fa-trash-alt discover" aria-hidden="true"></i>',
-        'm_name' => 'REMOVE ALL',
-        'm_desc' => '',
-        'm_parents' => array(12500,11035,4755,4593,6414),
-    ),
     7563 => array(
         'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
         'm_name' => 'SIGN MAGIC EMAIL',
@@ -6948,8 +6942,14 @@ $config['en_all_4755'] = array(
 );
 
 //TRANSACTION TYPE:
-$config['en_ids_4593'] = array(12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,12489,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,4235,7495,12773,7545,10573,12419,4250,6182,12453,4601,4229,4228,10686,10663,10664,10643,6226,4231,10676,10678,10679,10677,12682,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,12591,12592,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,6415,7563,6157,7489,4246,4251,6178,4559,12117,10653,4259,10657,4261,10669,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,4257,12827,10689,10646,7504,10654,6144,5007,7485,7486,6997,4994);
+$config['en_ids_4593'] = array(6415,12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,12489,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,4235,7495,12773,7545,10573,12419,4250,6182,12453,4601,4229,4228,10686,10663,10664,10643,6226,4231,10676,10678,10679,10677,12682,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,12591,12592,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,7563,6157,7489,4246,4251,6178,4559,12117,10653,4259,10657,4261,10669,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,4257,12827,10689,10646,7504,10654,6144,5007,7485,7486,6997,4994);
 $config['en_all_4593'] = array(
+    6415 => array(
+        'm_icon' => '<i class="fad fa-trash-alt discover" aria-hidden="true"></i>',
+        'm_name' => 'CLEAR DISCOVERIES',
+        'm_desc' => 'Removes all player discovery coins so everything is reset to 0% again.',
+        'm_parents' => array(12500,4755,4593),
+    ),
     12129 => array(
         'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER ANSWER DELETED',
@@ -7567,12 +7567,6 @@ $config['en_all_4593'] = array(
         'm_name' => 'PORTFOLIO EDITOR STATUS REPLACE',
         'm_desc' => '',
         'm_parents' => array(4593,4997),
-    ),
-    6415 => array(
-        'm_icon' => '<i class="fad fa-trash-alt discover" aria-hidden="true"></i>',
-        'm_name' => 'REMOVE ALL',
-        'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for trainers.',
-        'm_parents' => array(12500,11035,4755,4593,6414),
     ),
     7563 => array(
         'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',

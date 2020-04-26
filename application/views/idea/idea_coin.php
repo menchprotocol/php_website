@@ -85,7 +85,7 @@ echo '<div class="inline-block pull-left both-margin left-half-margin">'.echo_in
 echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.echo_input_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source && $is_active, 0).'</div>';
 
 //IDEA DISCOVER (IF PUBLIC)
-echo '<div class="inline-block pull-right both-margin left-half-margin idea-discover '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-discover btn-circle" href="/'.$in['in_id'].'" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12750]['m_name'].'">'.$en_all_11035[12750]['m_icon'].'</a></div>';
+echo '<div class="inline-block pull-right both-margin left-half-margin idea-discover '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-discover btn-circle" href="/'.$in['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_11035[12750]['m_name'].'">'.$en_all_11035[12750]['m_icon'].'</a></div>';
 
 echo '<div class="doclear">&nbsp;</div>';
 
