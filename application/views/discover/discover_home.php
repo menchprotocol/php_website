@@ -25,6 +25,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 //We'll see if we can prove the opposite:
 $all_completed = true;
 
+
 //List Discoveries:
 echo '<div id="actionplan_steps" class="list-group no-side-padding">';
 foreach ($player_discoveries as $priority => $in) {
@@ -39,28 +40,27 @@ echo '</div>';
 
 
 
-//Call to Actions:
-echo '<div class="margin-top-down">';
-
 
 //HOME
-echo '<a href="/" class="btn btn-discover">'.$en_all_11035[12581]['m_icon'].' '.$en_all_11035[12581]['m_name'].'</a>&nbsp;';
+echo '<div class="inline-block margin-top-down pull-left"><a href="/" class="btn btn-discover btn-circle">'.$en_all_11035[12581]['m_icon'].'</a></div>';
 
 
+//Clear All
+return '<div class="pull-middle"><a href="javascript:void(0)" onclick="$(\'.clear-discovery-list\').toggleClass(\'hidden\')" class="pull-right grey"><span class="icon-block-sm">'.$en_all_11035[6415]['m_icon'].'</span></a></div>';
 
-//DISCOVER NEXT
+
+//NEXT
 if(!$all_completed){
-    echo '<a href="/discover/next" class="btn btn-discover">'.$en_all_11035[12211]['m_name'].' '.$en_all_11035[12211]['m_icon'].'</a>&nbsp;';
+    echo '<div class="inline-block margin-top-down pull-right"><a href="/discover/next" class="btn btn-discover btn-circle">'.$en_all_11035[12211]['m_icon'].'</a></div>';
 }
 
+echo '<div class="doclear">&nbsp;</div>';
 
 //DISCOVER DELETE ALL
-echo '<a href="javascript:void(0)" onclick="$(\'.clear-discovery-list\').toggleClass(\'hidden\')" class="pull-right grey"><span class="icon-block-sm" style="margin-top: 9px;" title="'.$en_all_11035[6415]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$en_all_11035[6415]['m_icon'].'</span></a>';
-echo '<div class="clear-discovery-list hidden" style="padding:34px 0;">';
+echo '<div class="clear-discovery-list hidden margin-top-down">';
 echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><b class="discover montserrat">DELETE ALL DISCOVER COINS?</b><br /><span class="icon-block">&nbsp;</span>Action cannot be undone.</div>';
 echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="clear_all_discoveries()" class="btn btn-discover"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.clear-discovery-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
 echo '</div>';
 
-echo '</div>';
 ?>
 </div>

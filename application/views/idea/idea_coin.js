@@ -583,7 +583,7 @@ function in_notes_modify_save(ln_id, note_type_id) {
 
             } else {
 
-                //Nope, message was just edited...
+                //IDEA NOTE EDITED...
 
                 //Update text message:
                 $("#ul-nav-" + ln_id + " .text_message").html(data.message);
@@ -593,6 +593,8 @@ function in_notes_modify_save(ln_id, note_type_id) {
 
                 //Show success here
                 $("#ul-nav-" + ln_id + " .edit-updates").html('<b>' + data.success_icon + '</b>');
+
+                lazy_load();
 
             }
 

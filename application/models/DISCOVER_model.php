@@ -1376,6 +1376,8 @@ class DISCOVER_model extends CI_Model
                     //Close list:
                     echo '</div>';
 
+
+
                     echo '<div class="result-update margin-top-down"></div>';
 
                     echo echo_in_previous_discover($in_id, $recipient_en);
