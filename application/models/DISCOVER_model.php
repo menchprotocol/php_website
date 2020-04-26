@@ -1440,7 +1440,7 @@ class DISCOVER_model extends CI_Model
                     //Show Previous Button:
                     echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
 
-                    echo '<div class="inline-block margin-top-down edit_select_answer pull-left"><label class="btn btn-discover btn-circle inline-block" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i></label></div>';
+                    echo '<div class="inline-block margin-top-down edit_select_answer pull-left"><label class="btn btn-discover btn-circle inline-block" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt" style="margin-right: -3px;"></i></label></div>';
 
                     echo '<div class="doclear">&nbsp;</div>';
 
@@ -1452,7 +1452,7 @@ class DISCOVER_model extends CI_Model
                 } else {
 
                     //Next Ideas:
-                    echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null, true, true, '<div class="inline-block margin-top-down pull-left"><label class="btn btn-discover inline-block btn-circle" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i></label></div>');
+                    echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null, true, true, '<div class="inline-block margin-top-down pull-left"><label class="btn btn-discover inline-block btn-circle" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt" style="margin-right: -3px;"></i></label></div>');
 
                 }
 
