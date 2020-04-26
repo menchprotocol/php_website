@@ -858,24 +858,24 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
     var sort_handler = ".ideas_sortable";
     var sort_list_id = "list-in-" + in_loaded_id + '-' + is_parent;
     var input_field = $('#addidea-c-' + in_linked_id + '-' + is_parent);
-    var in_name = input_field.val();
+    var in_title = input_field.val();
 
 
-    if( in_name.charAt(0)=='#'){
-        if(isNaN(in_name.substr(1))){
+    if( in_title.charAt(0)=='#'){
+        if(isNaN(in_title.substr(1))){
             alert('Use numbers only. Example: #1234');
             return false;
         } else {
             //Update the references:
-            in_link_child_id = parseInt(in_name.substr(1));
-            in_name = in_link_child_id; //As if we were just linking
+            in_link_child_id = parseInt(in_title.substr(1));
+            in_title = in_link_child_id; //As if we were just linking
         }
     }
 
 
 
     //We either need the idea name (to create a new idea) or the in_link_child_id>0 to create an IDEA link:
-    if (!in_link_child_id && in_name.length < 1) {
+    if (!in_link_child_id && in_title.length < 1) {
         alert('Enter something');
         input_field.focus();
         return false;
@@ -890,7 +890,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
     $.post("/idea/in_link_or_create", {
         in_linked_id: in_linked_id,
         is_parent:is_parent,
-        in_title: in_name,
+        in_title: in_title,
         in_link_child_id: in_link_child_id
     }, function (data) {
 

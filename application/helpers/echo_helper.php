@@ -1590,7 +1590,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
 
         //Main Breadcrumb:
         if($top_completion_rate){
-            $ui .= '<div class="container fixed-bottom"><a href="/'.$top_completion_rate['top_in']['in_id'].'">'.$top_completion_rate['completion_percentage'].'% OF '.$top_completion_rate['top_in']['in_name'].'</a></div>';
+            $ui .= '<div class="container fixed-bottom"><a href="/'.$top_completion_rate['top_in']['in_id'].'">'.$top_completion_rate['completion_percentage'].'% OF '.$top_completion_rate['top_in']['in_title'].'</a></div>';
         }
 
     }
