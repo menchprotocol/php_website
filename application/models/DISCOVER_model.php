@@ -1222,10 +1222,10 @@ class DISCOVER_model extends CI_Model
 
                         //In HTML Give extra option to change answer:
 
-                        echo '<div class=" edit_select_answer">';
+                        echo '<div class="edit_select_answer">';
 
                         //List answers:
-                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', true, '<div class="inline-block margin-top-down pull-left">&nbsp;<a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'. edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen-square"></i></a></div>');
+                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', true, '<div class="inline-block margin-top-down pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>');
 
                         echo '</div>';
 
@@ -1275,7 +1275,7 @@ class DISCOVER_model extends CI_Model
 
                 } else {
 
-                    echo '<div class=" edit_select_answer '.( count($discover_answers)>0 ? 'hidden' : '' ).'">';
+                    echo '<div class="edit_select_answer '.( count($discover_answers)>0 ? 'hidden' : '' ).'">';
 
                     //HTML:
                     if ($ins[0]['in_type_source_id'] == 6684) {
@@ -1381,7 +1381,7 @@ class DISCOVER_model extends CI_Model
                     echo echo_in_previous_discover($in_id, $recipient_en);
 
                     //Button to submit selection:
-                    echo '<div class="inline-block margin-top-down pull-right">'.( count($discover_answers)>0 ? '<a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'. edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-times"></i></a>' : '' ).'<a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fad fa-step-forward"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down pull-right">'.( count($discover_answers)>0 ? '<a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a>' : '' ).'<a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fad fa-step-forward"></i></a></div>';
 
                     echo '</div>';
 

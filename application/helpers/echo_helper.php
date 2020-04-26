@@ -1589,7 +1589,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
     //Did We Find It?
     if($previous_level_id > 0){
         //Previous
-        $ui .= '<div class="inline-block margin-top-down  edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/discover/previous/'.$previous_level_id.'/'.$in_id.'"><i class="fad fa-step-backward"></i></a></div>';
+        $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/discover/previous/'.$previous_level_id.'/'.$in_id.'"><i class="fad fa-step-backward"></i></a></div>';
     }
 
     $ui .= echo_in_contribute_btn($in_id, $top_completion_rate);
