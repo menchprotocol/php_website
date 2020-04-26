@@ -1546,7 +1546,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
             'in_id' => $in_id,
         ));
         $top_completion_rate = $CI->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $ins_this[0]);
-        $top_completion_rate['in_id'] = 0;
+        $top_completion_rate['top_in'] = null;
 
     } else {
 
@@ -1571,7 +1571,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
 
                     if ($parent_in_id == $intersect) {
                         $top_completion_rate = $completion_rate;
-                        $top_completion_rate['in_id'] = $parent_in_id;
+                        $top_completion_rate['top_in'] = $ins_this[0];
                         break;
                     }
 
@@ -1607,9 +1607,9 @@ function echo_in_contribute_btn($in_id, $top_completion_rate = null){
     }
 
     $CI =& get_instance();
-    $can_click = ($top_completion_rate && $top_completion_rate['in_id']>0);
+    $can_click = ($top_completion_rate && $top_completion_rate['top_in']);
     $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
-    return '<div class="pull-middle">'.( $can_click ? '<a href="/'.$top_completion_rate['in_id'].'" title="'.$en_all_11035[12749]['m_name'].'">' : '<span>' ).( $top_completion_rate && $top_completion_rate['completion_percentage']>0 ? $top_completion_rate['completion_percentage'].'%' : '0%' ).( $can_click ? '</a>' : '</span>' ).($can_modify ? '<a href="/idea/'.$top_completion_rate['in_id'].'" class="small-click">'.$en_all_11035[12749]['m_name'].'</a>' : '' ).'</div>';
+    return '<div class="pull-middle">'.( $can_click ? '<a href="/'.$top_completion_rate['top_in']['in_id'].'" title="'.$top_completion_rate['top_in']['in_title'].'" data-toggle="tooltip" data-placement="top">' : '<span>' ).( $top_completion_rate && $top_completion_rate['completion_percentage']>0 ? $top_completion_rate['completion_percentage'].'%' : '0%' ).( $can_click ? '</a>' : '</span>' ).($can_modify ? '<a href="/idea/'.$top_completion_rate['top_in']['in_id'].'" class="small-click">'.$en_all_11035[12749]['m_name'].'</a>' : '' ).'</div>';
 
 }
 
