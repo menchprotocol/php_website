@@ -1588,11 +1588,10 @@ function echo_in_previous_discover($in_id, $recipient_en){
         //Previous
         $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/discover/previous/'.$previous_level_id.'/'.$in_id.'"><i class="fad fa-step-backward"></i></a></div>';
 
-        //Main Breadcrumb:
+        //Main Discovery:
         if($top_completion_rate){
-            $ui .= '<div class="container fixed-bottom montserrat"><a href="/'.$top_completion_rate['top_in']['in_id'].'">'.$top_completion_rate['completion_percentage'].'% OF '.$top_completion_rate['top_in']['in_title'].'</a></div>';
+            $ui .= '<div class="container fixed-bottom montserrat"><div class="progress-bg-big" title="You are '.$top_completion_rate['completion_percentage'].'% done as you have discover '.$top_completion_rate['steps_completed'].' of '.$top_completion_rate['steps_total'].' ideas"><div class="progress-done" style="width:'.$top_completion_rate['completion_percentage'].'%"><a href="/'.$top_completion_rate['top_in']['in_id'].'">'.$top_completion_rate['top_in']['in_title'].'</a></div></div></div>';
         }
-
     }
 
     return $ui;

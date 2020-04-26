@@ -334,13 +334,15 @@ img.no-radius {
 }
 .fixed-bottom{
     padding: 0;
+    height: 20px;
 }
 .fixed-bottom a{
-    padding: 5px;
+    padding: 5px !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+    text-align: center;
 }
 
 .no-margin{
@@ -491,15 +493,25 @@ img.no-radius {
     width: 100% !important;
 }
 
+.progress-bg .progress-done{
+    height: 5px;
+    background-color: #FC1B44;
+}
+
+.progress-bg-big{
+    width: 100% !important;
+}
+
+.progress-bg-big .progress-done{
+    height: 20px;
+    background-color: #FC1B44;
+}
+
 .no-horizonal-margin{
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 }
 
-.progress-done{
-    height: 5px;
-    background-color: #FC1B44;
-}
 
 /* Color Palette @10604 */
 .isgrey, .isgrey a, .lightgrey      { color:#f4f5f7 !important; }
