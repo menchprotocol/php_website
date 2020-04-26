@@ -1425,7 +1425,7 @@ class DISCOVER_model extends CI_Model
                 //FILE UPLOAD
 
                 echo '<div class="playerUploader">';
-                echo '<form class="box boxUpload" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
+                echo '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
 
                 echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_source_id'].'" />';
 
