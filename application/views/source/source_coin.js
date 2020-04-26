@@ -618,8 +618,7 @@ function en_modify_save() {
 
                 //Reflect changed:
                 //Might be in an INPUT or a DIV based on active superpowers:
-                $(".text__6197_" + modify_data['en_id']).val(modify_data['en_name']).text(modify_data['en_name']);
-
+                $(".text__6197_" + modify_data['en_id']).val(modify_data['en_name']).text(modify_data['en_name']).attr('old-value', modify_data['en_name']);
 
 
                 //Player Status:

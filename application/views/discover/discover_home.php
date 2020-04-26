@@ -23,14 +23,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 <?php
 
 
-//DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
-echo '<div class="clear-discovery-list hidden margin-top-down">';
-echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><b class="discover montserrat">DELETE ALL DISCOVER COINS?</b><br /><span class="icon-block">&nbsp;</span>Action cannot be undone.</div>';
-echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="clear_all_discoveries()" class="btn btn-discover"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.clear-discovery-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
-echo '</div>';
-
-
-
+echo '<div class="clear-discovery-list">';
 
 //List Discoveries:
 $all_completed = true;
@@ -53,6 +46,20 @@ echo '<div class="inline-block margin-top-down pull-left"><a href="/" class="btn
 if(!$all_completed){
     echo '<div class="inline-block margin-top-down pull-right"><a href="/discover/next" class="btn btn-discover btn-circle">'.$en_all_11035[12211]['m_icon'].'</a></div>';
 }
+
+echo '</div>';
+
+
+
+
+
+//DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
+echo '<div class="clear-discovery-list hidden margin-top-down">';
+echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><b class="discover montserrat">DELETE ALL DISCOVER COINS?</b><br /><span class="icon-block">&nbsp;</span>Action cannot be undone.</div>';
+echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="clear_all_discoveries()" class="btn btn-discover"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.clear-discovery-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
+echo '</div>';
+
+
 
 ?>
 </div>
