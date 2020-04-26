@@ -147,7 +147,7 @@ class Discover extends CI_Controller
 
     function previous($previous_level_id, $in_id){
 
-        $current_in_id = $in_id;
+        $current_in_id = $previous_level_id;
 
         //IDEA NEXT
         foreach($this->LEDGER_model->ln_fetch(array(
