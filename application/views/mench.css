@@ -332,6 +332,16 @@ img.no-radius {
 .fixed-top, .fixed-bottom {
     z-index: 99999 !important;
 }
+.fixed-bottom{
+    padding: 0;
+}
+.fixed-bottom a{
+    padding: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
 
 .no-margin{
     margin:10px 0 0;
