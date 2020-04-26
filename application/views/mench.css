@@ -908,7 +908,7 @@ td.MENCHcolumn3  { width: 13%; }
     vertical-align: top;
 }
 .mench-navigation .block-link, .mench-navigation .block-menu {
-    width:42px;
+    width:40px;
     margin: 0;
     padding: 0;
     line-height: 100% !important;
