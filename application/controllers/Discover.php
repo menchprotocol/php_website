@@ -73,7 +73,7 @@ class Discover extends CI_Controller
         }
 
         //Go to this newly added idea:
-        return redirect_message('/'.$in_id, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Added to your discovery list! Continue below...</div>');
+        return redirect_message('/'.$in_id, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to discovery list</div>');
 
     }
 
