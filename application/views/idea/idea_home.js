@@ -44,7 +44,7 @@ function in_create(){
         } else {
 
             //Unlock:
-            $('#tempLoader').html('<span class="discover"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>');
+            $('#tempLoader').html('<span class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>');
             $('#newIdeaTitle').prop('disabled', false).focus();
 
         }

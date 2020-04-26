@@ -137,7 +137,7 @@ function discover_text_answer(){
                 window.location = '/discover/next/'+in_loaded_id;
             }, 987);
         } else {
-            $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><span class="discover">'+data.message+'</span>');
+            $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><span class="discover montserrat">'+data.message+'</span>');
         }
     });
 }

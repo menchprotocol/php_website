@@ -86,7 +86,7 @@ function load_editor(){
                     return echo_search_result(suggestion);
                 },
                 empty: function (data) {
-                    return '<div class="not-found"><i class="fas fa-exclamation-circle"></i> No Sources Found</div>';
+                    return '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> No Sources Found</div>';
                 },
             }
         }]);
@@ -117,7 +117,7 @@ function load_editor(){
                     return echo_search_result(suggestion);
                 },
                 empty: function (data) {
-                    return '<div class="not-found"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
+                    return '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
                 },
             }
         }]);
@@ -175,7 +175,7 @@ function discover_in_history(tab_group_id, note_in_id, owner_en_id, last_loaded_
         if (data.status) {
             $(load_class).html(data.message);
         } else {
-            $(load_class).html('<b class="discover"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>');
+            $(load_class).html('<b class="discover montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>');
         }
 
         //Tooltips:
@@ -393,14 +393,14 @@ $(document).ready(function () {
                             return en_fetch_canonical_url(data.query, true);
                         } else if($("#mench_search").val().charAt(0)=='#'){
                             if(isNaN($("#mench_search").val().substr(1))){
-                                return '<div class="not-found"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No IDEA found</div>';
+                                return '<div class="not-found montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No IDEA found</div>';
                             }
                         } else if($("#mench_search").val().charAt(0)=='@'){
                             if(isNaN($("#mench_search").val().substr(1))) {
-                                return '<div class="not-found"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No SOURCE found</div>';
+                                return '<div class="not-found montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No SOURCE found</div>';
                             }
                         } else {
-                            return '<div class="not-found suggestion"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No results found</div>';
+                            return '<div class="not-found suggestion montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No results found</div>';
                         }
                     },
                 }
@@ -531,7 +531,7 @@ function en_fetch_canonical_url(query_string, not_found){
     });
 
     //We did not find the URL:
-    return ( not_found ? '<div class="not-found"><i class="fas fa-exclamation-circle"></i> URL not found</div>' : '');
+    return ( not_found ? '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> URL not found</div>' : '');
 }
 
 

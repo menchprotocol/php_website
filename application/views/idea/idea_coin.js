@@ -600,7 +600,7 @@ function in_notes_modify_save(ln_id, note_type_id) {
 
         } else {
             //Oops, some sort of an error, lets
-            $("#ul-nav-" + ln_id + " .edit-updates").html('<b class="discover"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
+            $("#ul-nav-" + ln_id + " .edit-updates").html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
         }
 
         //Tooltips:
