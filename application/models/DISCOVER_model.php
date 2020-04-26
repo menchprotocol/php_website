@@ -1222,10 +1222,10 @@ class DISCOVER_model extends CI_Model
 
                         //In HTML Give extra option to change answer:
 
-                        echo '<div class="selected_before">';
+                        echo '<div class=" edit_select_answer">';
 
                         //List answers:
-                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', true, '<div class="inline-block margin-top-down pull-left">&nbsp;<a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-pen-square"></i></a></div>');
+                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', true, '<div class="inline-block margin-top-down pull-left">&nbsp;<a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'. edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen-square"></i></a></div>');
 
                         echo '</div>';
 
@@ -1275,7 +1275,7 @@ class DISCOVER_model extends CI_Model
 
                 } else {
 
-                    echo '<div class="selected_before '.( count($discover_answers)>0 ? 'hidden' : '' ).'">';
+                    echo '<div class=" edit_select_answer '.( count($discover_answers)>0 ? 'hidden' : '' ).'">';
 
                     //HTML:
                     if ($ins[0]['in_type_source_id'] == 6684) {
@@ -1381,7 +1381,7 @@ class DISCOVER_model extends CI_Model
                     echo echo_in_previous_discover($in_id, $recipient_en);
 
                     //Button to submit selection:
-                    echo '<div class="inline-block margin-top-down pull-right">'.( count($discover_answers)>0 ? '<a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-times"></i></a>' : '' ).'<a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fad fa-step-forward"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down pull-right">'.( count($discover_answers)>0 ? '<a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'. edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-times"></i></a>' : '' ).'<a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fad fa-step-forward"></i></a></div>';
 
                     echo '</div>';
 
@@ -1440,7 +1440,7 @@ class DISCOVER_model extends CI_Model
                     //Show Previous Button:
                     echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
 
-                    echo '<label class="btn btn-discover btn-circle inline-block pull-right" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i></label>';
+                    echo '<div class="inline-block margin-top-down edit_select_answer pull-left"><label class="btn btn-discover btn-circle inline-block" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i></label></div>';
 
                     echo '<div class="doclear">&nbsp;</div>';
 
@@ -1452,7 +1452,7 @@ class DISCOVER_model extends CI_Model
                 } else {
 
                     //Next Ideas:
-                    echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null, true, true, '<label class="btn btn-discover inline-block pull-left btn-circle" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i></label>');
+                    echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null, true, true, '<div class="inline-block margin-top-down pull-left"><label class="btn btn-discover inline-block btn-circle" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-left:5px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i></label></div>');
 
                 }
 
