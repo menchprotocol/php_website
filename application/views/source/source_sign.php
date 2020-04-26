@@ -103,7 +103,7 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 2: Enter Email -->
         <div id="step2" class="signup-steps hidden">
-            <span><?= $en_all_4269[3288]['m_icon'].' '.$en_all_4269[3288]['m_name'] ?></span>
+            <span class="montserrat"><?= $en_all_4269[3288]['m_icon'].' '.$en_all_4269[3288]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="discover margin-top-down"></div>
             <span id="step2buttons">
@@ -123,7 +123,7 @@ if(count($current_sign_in_attempt) == 0){
             <!-- To be updated to >0 IF email was found -->
             <input type="hidden" id="login_en_id" value="0" />
 
-            <span><?= $en_all_4269[3286]['m_icon'].' '.$en_all_4269[3286]['m_name'] ?></span>
+            <span class="montserrat"><?= $en_all_4269[3286]['m_icon'].' '.$en_all_4269[3286]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
             <div id="password_errors" class="discover margin-top-down"></div>
             <span id="step3buttons">
@@ -144,7 +144,7 @@ if(count($current_sign_in_attempt) == 0){
         <!-- Step 4: Create New Account -->
         <div id="step4" class="signup-steps hidden">
 
-            <div class="discover-topic"><span class="icon-block-sm"><i class="fas fa-user-plus"></i></span>NEW ACCOUNT</div>
+            <div class="discover-topic montserrat"><span class="icon-block-sm"><i class="fas fa-user-plus"></i></span>NEW ACCOUNT</div>
 
             <!-- pre-set Email -->
             <div class="margin-top-down">
