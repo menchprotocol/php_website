@@ -1226,13 +1226,13 @@ class DISCOVER_model extends CI_Model
                         //List answers:
                         echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
 
+                        echo '<div class="doclear">&nbsp;</div>';
                         echo '</div>';
 
 
+                        echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
+
                         echo_in_next_previous($ins[0]['in_id'], $recipient_en, $push_message);
-
-                        echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
-
 
 
                     }
@@ -1467,7 +1467,7 @@ class DISCOVER_model extends CI_Model
                     //Any child ideas?
                     echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null, true, false);
 
-                    echo '<div class="inline-block margin-top-down pull-left"><label class="btn btn-discover inline-block btn-circle" for="fileType'.$ins[0]['in_type_source_id'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
+                    echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-discover inline-block btn-circle" for="fileType'.$ins[0]['in_type_source_id'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 
                 }
 
