@@ -149,17 +149,23 @@ class Discover extends CI_Controller
 
         $current_in_id = $previous_level_id;
 
-        //IDEA NEXT
-        foreach($this->LEDGER_model->ln_fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-            'ln_previous_idea_id' => $previous_level_id,
-        ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $in_next){
-            if($in_next['in_id']==$in_id){
-                break;
-            } else {
-                $current_in_id = $in_next['in_id'];
+        //Make sure not a select idea:
+        if(!count($this->IDEA_model->in_fetch(array(
+            'in_id' => $current_in_id,
+            'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null, //SELECT IDEA
+        )))){
+            //FIND NEXT IDEAS
+            foreach($this->LEDGER_model->ln_fetch(array(
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                'ln_previous_idea_id' => $previous_level_id,
+            ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $in_next){
+                if($in_next['in_id']==$in_id){
+                    break;
+                } else {
+                    $current_in_id = $in_next['in_id'];
+                }
             }
         }
 
