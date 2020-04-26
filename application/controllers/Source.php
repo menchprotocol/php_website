@@ -1075,7 +1075,7 @@ class Source extends CI_Controller
         //Start return array:
         $return_array = array(
             'status' => 1,
-            'message' => '<i class="fas fa-check"></i> ' . $success_message,
+            'message' => '<i class="fas fa-check-circle"></i> ' . $success_message,
             'delete_from_ui' => $delete_from_ui,
             'delete_redirect_url' => $delete_redirect_url,
             'js_ln_type_source_id' => intval($js_ln_type_source_id),

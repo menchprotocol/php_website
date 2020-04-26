@@ -1387,7 +1387,7 @@ class DISCOVER_model extends CI_Model
                         echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
                     }
 
-                    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fas fa-check"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fad fa-step-forward"></i></a></div>';
 
                     echo '</div>';
 

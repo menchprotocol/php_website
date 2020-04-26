@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-26 08:00:42 PST
+//Generated 2020-04-26 08:44:44 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587913242;
-$config['cache_count_transaction'] = 1154007;
-$config['cache_count_discover'] = 121203;
+$config['cache_timestamp'] = 1587915884;
+$config['cache_count_transaction'] = 1154046;
+$config['cache_count_discover'] = 121205;
 $config['cache_count_idea'] = 5390;
 $config['cache_count_source'] = 5208;
 
@@ -3191,7 +3191,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(11068,6225,12749,7274,6415,7347,12707,12581,10573,3084,4341,7291,4430,12205,12211,6287,12750,7256,4269,3000,12437,4997,12275,10957,7540);
+$config['en_ids_11035'] = array(11068,6225,12749,7274,6415,12581,7347,12707,10573,3084,4341,7291,4430,12205,12211,6287,12750,7256,4269,3000,12437,4997,12275,10957,7540);
 $config['en_all_11035'] = array(
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -3223,6 +3223,12 @@ $config['en_all_11035'] = array(
         'm_desc' => '',
         'm_parents' => array(11035,4755,4593,6414),
     ),
+    12581 => array(
+        'm_icon' => '<i class="fas fa-plus" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER HOME',
+        'm_desc' => '',
+        'm_parents' => array(11035),
+    ),
     7347 => array(
         'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER START',
@@ -3234,12 +3240,6 @@ $config['en_all_11035'] = array(
         'm_name' => 'FILTER TRANSACTIONS',
         'm_desc' => '',
         'm_parents' => array(11035,12701),
-    ),
-    12581 => array(
-        'm_icon' => '<i class="fad fa-home" aria-hidden="true"></i>',
-        'm_name' => 'HOME',
-        'm_desc' => '',
-        'm_parents' => array(11035),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',

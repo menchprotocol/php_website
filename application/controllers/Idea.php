@@ -507,7 +507,7 @@ class Idea extends CI_Controller {
                 //Display message:
                 echo_json(array(
                     'status' => 1,
-                    'message' => '<i class="fas fa-check"></i> Sorted',
+                    'message' => '<i class="fas fa-check-circle"></i> Sorted',
                 ));
             }
         }
@@ -897,7 +897,7 @@ class Idea extends CI_Controller {
             'delete_from_ui' => 0,
             'message' => $this->COMMUNICATION_model->comm_message_send($msg_validation['input_message'], $session_en, false, array(), $_POST['in_id']),
             'message_new_status_icon' => '<span title="' . $en_all_6186[$_POST['message_ln_status_source_id']]['m_name'] . ': ' . $en_all_6186[$_POST['message_ln_status_source_id']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $en_all_6186[$_POST['message_ln_status_source_id']]['m_icon'] . '</span>', //This might have changed
-            'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
+            'success_icon' => '<span><i class="fas fa-check-circle"></i> Saved</span>',
         ));
 
     }
