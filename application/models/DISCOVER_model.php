@@ -981,6 +981,7 @@ class DISCOVER_model extends CI_Model
             'ln_previous_idea_id' => $ins[0]['in_id'],
         ));
 
+
         $qualify_for_autocomplete = ( isset($_GET['check_if_empty']) && !count($in__next) || (count($in__next)==1 && $ins[0]['in_type_source_id'] == 6677)) && !count($in__messages) && !in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_12324'));
 
 
