@@ -209,6 +209,9 @@ if(!isset($hide_header)){
                             } elseif($en_id==6415 && !($first_segment=='discover' && !$second_segment)){
                                 //Deleting discoveries only available on Discovery home
                                 continue;
+                            } elseif($en_id==12749 && (!is_numeric($first_segment) || !superpower_active(10939, true))){
+                                //Contributing to ideas can only happen when reading
+                                continue;
                             }
 
                             $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
@@ -224,6 +227,11 @@ if(!isset($hide_header)){
 
                                 //Profile Page:
                                 $page_url = 'href="/source/'.$session_en['en_id'].'"';
+
+                            } elseif($en_id==12749) {
+
+                                //Contribute to Idea
+                                $page_url = 'href="/idea/'.$first_segment.'"';
 
                             } elseif($en_id==6415) {
 
