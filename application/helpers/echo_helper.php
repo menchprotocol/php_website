@@ -1537,48 +1537,52 @@ function echo_in_previous_discover($in_id, $recipient_en){
     $in_level_up = 0;
     $previous_level_id = 0; //The ID of the Idea one level up
     $player_discover_ids = $CI->DISCOVER_model->discover_ids($recipient_en['en_id']);
-    $recursive_parents = $CI->IDEA_model->in_recursive_parents($in_id, true, true);
     $top_completion_rate = null;
 
-    echo print_r(array(
-        'player_discover_ids' => $player_discover_ids,
-        'recursive_parents' => $recursive_parents,
-    ));
+    if(in_array($in_id, $player_discover_ids)){
 
-    foreach ($recursive_parents as $grand_parent_ids) {
-        foreach(array_intersect($grand_parent_ids, $player_discover_ids) as $intersect) {
-            foreach ($grand_parent_ids as $parent_in_id) {
+        //A reading list item:
+        $ins_this = $CI->IDEA_model->in_fetch(array(
+            'in_id' => $in_id,
+        ));
+        $top_completion_rate = $CI->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $ins_this[0]);
 
-                if($in_level_up==0){
-                    //Remember the first parent for the back button:
-                    $previous_level_id = $parent_in_id;
+    } else {
+
+        //Find it:
+        $recursive_parents = $CI->IDEA_model->in_recursive_parents($in_id, true, true);
+        foreach ($recursive_parents as $grand_parent_ids) {
+            foreach(array_intersect($grand_parent_ids, $player_discover_ids) as $intersect) {
+                foreach ($grand_parent_ids as $parent_in_id) {
+
+                    if($in_level_up==0){
+                        //Remember the first parent for the back button:
+                        $previous_level_id = $parent_in_id;
+                    }
+
+                    $ins_this = $CI->IDEA_model->in_fetch(array(
+                        'in_id' => $parent_in_id,
+                    ));
+
+                    $completion_rate = $CI->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $ins_this[0]);
+
+                    $in_level_up++;
+
+                    if ($parent_in_id == $intersect) {
+                        $top_completion_rate = $completion_rate;
+                        break;
+                    }
+
                 }
-
-                $ins_this = $CI->IDEA_model->in_fetch(array(
-                    'in_id' => $parent_in_id,
-                ));
-
-                $completion_rate = $CI->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $ins_this[0]);
-
-                echo print_r(array(
-                    'in_id' => $parent_in_id,
-                    'results' => $completion_rate,
-                ));
-
-                $in_level_up++;
-
-                if ($parent_in_id == $intersect) {
-                    $top_completion_rate = $completion_rate;
-                    break;
-                }
-
+                break; //Just look into the first intersect for now (Expand later)
             }
-            break; //Just look into the first intersect for now (Expand later)
-        }
-        if($top_completion_rate){
-            break;
+            if($top_completion_rate){
+                break;
+            }
         }
     }
+
+
 
     //Did We Find It?
     if($previous_level_id > 0){
