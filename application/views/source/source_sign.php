@@ -81,11 +81,11 @@ if(count($current_sign_in_attempt) == 0){
         <div id="step1" class="signup-steps hidden">
 
             <?php
-            echo '<p>Choose a discovery platform:</p>';
+            echo '<p>Choose your preferred channel:</p>';
             foreach ($en_all_7555 as $en_id => $m) {
                 echo '<div class="row" style="padding:5px 0;">';
 
-                echo '<a class="btn btn-source" href="javascript:void(0);" onclick="select_channel('.$en_id.', '.$referrer_in_id.')"><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . ' <i class="fad fa-step-forward"></i></a>';
+                echo '<a class="btn btn-source btn-circle" href="javascript:void(0);" onclick="select_channel('.$en_id.', '.$referrer_in_id.')"><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . ' <i class="fad fa-step-forward"></i></a>';
 
                 echo '<div class="help_me_choose hidden"><i class="fal fa-info-circle"></i> '.$m['m_desc'].'<br /></div>';
 
@@ -107,8 +107,8 @@ if(count($current_sign_in_attempt) == 0){
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="discover margin-top-down"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-source transparent pass btn-raised btn-round <?= ( $referrer_in_id > 0 && count($en_all_7555)>=2 ? '' : ' hidden ' ) ?>"><i class="fad fa-step-backward"></i></a>
-                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-source pass btn-raised btn-round">NEXT <i class="fad fa-step-forward"></i></a>
+                <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-source transparent btn-circle btn-raised  <?= ( $referrer_in_id > 0 && count($en_all_7555)>=2 ? '' : ' hidden ' ) ?>"><i class="fad fa-step-backward"></i></a>
+                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-source btn-raised btn-circle"><i class="fad fa-step-forward"></i></a>
             </span>
             <span id="messenger_sign" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 || !in_array(6196 , $this->config->item('en_ids_7555')) ? ' hidden ' : '' ) ?>">OR <a href="javascript:void(0)" onclick="confirm_sign_on_messenger(<?= $referrer_in_id ?>)" class="dounderline">USE MESSENGER</a> <i class="fab fa-facebook-messenger source"></i></span>
         </div>
@@ -117,7 +117,7 @@ if(count($current_sign_in_attempt) == 0){
 
 
 
-        <!-- Step 3: Enter Password -->
+        <!-- Step 3: Enter password -->
         <div id="step3" class="signup-steps hidden">
 
             <!-- To be updated to >0 IF email was found -->
@@ -127,8 +127,8 @@ if(count($current_sign_in_attempt) == 0){
             <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
             <div id="password_errors" class="discover margin-top-down"></div>
             <span id="step3buttons">
-                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-source transparent pass btn-raised btn-round"><i class="fad fa-step-backward"></i></a>
-                <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-source pass btn-raised btn-round">NEXT <i class="fad fa-step-forward"></i></a>
+                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-source transparent btn-raised  btn-circle"><i class="fad fa-step-backward"></i></a>
+                <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-source btn-raised  btn-circle"><i class="fad fa-step-forward"></i></a>
             </span>
 
             <span style="padding-left:5px; font-size:0.9em !important;">OR EMAIL <a href="javascript:void(0)" onclick="magicemail()" class="dounderline"><?= $en_all_11035[11068]['m_name'] ?></a> <?= $en_all_11035[11068]['m_icon'] ?></span>
@@ -169,8 +169,8 @@ if(count($current_sign_in_attempt) == 0){
             <!-- Signup Buttons -->
             <div id="new_account_errors" class="discover margin-top-down"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-source transparent pass btn-raised btn-round"><i class="fad fa-step-backward"></i></a>
-                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-source pass btn-raised btn-round">NEXT <i class="fad fa-step-forward"></i></a>
+                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-source transparent btn-raised btn-circle"><i class="fad fa-step-backward"></i></a>
+                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-source btn-raised btn-circle"><i class="fad fa-step-forward"></i></a>
             </span>
 
         </div>
