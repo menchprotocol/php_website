@@ -10,7 +10,7 @@ $(document).ready(function () {
     });
 
     //Move main discovery, if any:
-    $('.main_discovery_top').html($('.main_discovery_bottom').html()).fadeIn();
+    $('.main_discovery_top').html($('.main_discovery_bottom').html());
 
     //Should we auto start?
     if (isAdvancedUpload) {
