@@ -119,7 +119,7 @@ function search_email(){
             //Update email:
             $('#input_email').val(data.clean_input_email);
             $('.focus_email').html(data.clean_input_email);
-            $('#email_errors').html('&nbsp;');
+            $('#email_errors').html('');
 
             //Go to next discovery:
             goto_step(( data.email_existed_previously ? 3 /* To ask for password */ : 4 /* To check their email and create new account */ ));
@@ -158,7 +158,7 @@ function add_account(){
 
             //Release field lock:
             $('#add_acount_next').html('<i class="fas fa-check-circle"></i>');
-            $('#new_account_errors').html('&nbsp;');
+            $('#new_account_errors').html('');
 
             setTimeout(function () {
                 //Redirect to next discovery:
