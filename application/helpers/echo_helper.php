@@ -1590,7 +1590,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
 
         //Main Discovery:
         if($top_completion_rate){
-            $ui .= '<div class="container fixed-bottom montserrat" title="Discovered '.$top_completion_rate['steps_completed'].'/'.$top_completion_rate['steps_total'].' Ideas ('.$top_completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="top"><div class="progress-bg-big"><div class="progress-done" style="width:'.$top_completion_rate['completion_percentage'].'%"></div><a href="/'.$top_completion_rate['top_in']['in_id'].'">'.$top_completion_rate['top_in']['in_title'].'</a></div></div>';
+            $ui .= '<div class="container fixed-bottom montserrat" title="Discovered '.$top_completion_rate['steps_completed'].'/'.$top_completion_rate['steps_total'].' Ideas ('.$top_completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="top"><div class="progress-bg-big"><div class="progress-done" style="width:'.$top_completion_rate['completion_percentage'].'%"></div><a href="/'.$top_completion_rate['top_in']['in_id'].'"><span class="icon-block"><i class="fas fa-circle discover"></i></span>'.$top_completion_rate['top_in']['in_title'].'</a></div></div>';
         }
     }
 
