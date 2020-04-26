@@ -641,8 +641,8 @@ img.no-radius {
 }
 
 .msg-nav > li .btn {
-    margin: -10px 0px 0 0 !important;
-    padding: 0px 4px;
+    margin: -10px 10px 0 -5px !important;
+    padding: 10px;
 }
 
 .msg-nav li > .dropup {
