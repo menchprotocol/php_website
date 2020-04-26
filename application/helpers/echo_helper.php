@@ -1609,7 +1609,7 @@ function echo_in_contribute_btn($in_id, $top_completion_rate = null){
     $CI =& get_instance();
     $can_click = ($top_completion_rate && $top_completion_rate['in_id']>0);
     $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
-    return '<div class="pull-middle">'.( $can_click ? '<a href="/idea/'.$top_completion_rate['in_id'].'" title="'.$en_all_11035[12749]['m_name'].'">' : '<span>' ).( $top_completion_rate && $top_completion_rate['completion_percentage']>0 ? $top_completion_rate['completion_percentage'].'%' : '0%' ).( $can_click ? '</a>' : '</span>' ).($can_modify ? '<a href="/idea/'.$top_completion_rate['in_id'].'" class="small-click">'.$en_all_11035[12749]['m_name'].'</a>' : '' ).'</div>';
+    return '<div class="pull-middle">'.( $can_click ? '<a href="/'.$top_completion_rate['in_id'].'" title="'.$en_all_11035[12749]['m_name'].'">' : '<span>' ).( $top_completion_rate && $top_completion_rate['completion_percentage']>0 ? $top_completion_rate['completion_percentage'].'%' : '0%' ).( $can_click ? '</a>' : '</span>' ).($can_modify ? '<a href="/idea/'.$top_completion_rate['in_id'].'" class="small-click">'.$en_all_11035[12749]['m_name'].'</a>' : '' ).'</div>';
 
 }
 
