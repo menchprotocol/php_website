@@ -1229,8 +1229,7 @@ class DISCOVER_model extends CI_Model
                         echo '<div class="doclear">&nbsp;</div>';
                         echo '</div>';
 
-
-                        echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
+                        echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
 
                         echo_in_next_previous($ins[0]['in_id'], $recipient_en, $push_message);
 
