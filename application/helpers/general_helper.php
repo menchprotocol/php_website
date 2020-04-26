@@ -231,14 +231,6 @@ function ln_detect_type($string)
             'ln_type_source_id' => 4318,
         );
 
-    } elseif (preg_match("/^([a-f0-9]{64})$/", $string) == 1) {
-
-        //Hash:
-        return array(
-            'status' => 1,
-            'ln_type_source_id' => 12826,
-        );
-
     } elseif (substr($string, -1)=='%' && is_numeric(substr($string, 0, (strlen($string)-1)))) {
 
         //Percent:

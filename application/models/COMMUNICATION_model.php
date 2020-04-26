@@ -1065,14 +1065,6 @@ class COMMUNICATION_model extends CI_Model
                 'status' => 0,
                 'message' => 'Facebook Messenger Format requires a recipient source ID to construct a message',
             );
-        } elseif (count($quick_replies) > 0 && !$push_message) {
-            /*
-             * TODO Enable later on...
-            return array(
-                'status' => 0,
-                'message' => 'Quick Replies are only supported for PUSH messages',
-            );
-            */
         } elseif ($message_type_en_id > 0 && !in_array($message_type_en_id, $this->config->item('en_ids_4485'))) {
             return array(
                 'status' => 0,
