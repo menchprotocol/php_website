@@ -498,9 +498,9 @@ img.no-radius {
     width: 100%;
     text-align: center;
     display: block;
-    height: 16px;
+    height: 17px;
     margin-top: -20px;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
     line-height: 100%;
 }
 .fixed-bottom{
