@@ -1381,7 +1381,7 @@ class DISCOVER_model extends CI_Model
                     echo echo_in_previous_discover($in_id, $recipient_en);
 
                     //Button to submit selection:
-                    echo '<div class="inline-block margin-top-down pull-left">'.( count($discover_answers)>0 ? '<a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-times"></i></a>' : '' ).'<a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fad fa-step-forward"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down pull-right">'.( count($discover_answers)>0 ? '<a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.selected_before\').toggleClass(\'hidden\');"><i class="fas fa-times"></i></a>' : '' ).'<a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fad fa-step-forward"></i></a></div>';
 
                     echo '</div>';
 
@@ -1409,7 +1409,7 @@ class DISCOVER_model extends CI_Model
                 echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
 
                 //Save/Upload & Next:
-                echo '<div class="margin-top-down inline-block pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="discover_text_answer()"><i class="fad fa-step-forward"></i></a></div>';
+                echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="discover_text_answer()"><i class="fad fa-step-forward"></i></a></div>';
 
 
                 if(count($discover_completes)){
@@ -1440,7 +1440,7 @@ class DISCOVER_model extends CI_Model
                     //Show Previous Button:
                     echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
 
-                    echo '<label class="btn btn-discover inline-block pull-left" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i> UPLOAD</label>';
+                    echo '<label class="btn btn-discover inline-block pull-right" for="fileType'.$ins[0]['in_type_source_id'].'" data-toggle="tooltip" style="margin-right:10px;" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fad fa-cloud-upload-alt"></i></label>';
 
                     echo '<div class="doclear">&nbsp;</div>';
 
