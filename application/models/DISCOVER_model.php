@@ -928,9 +928,7 @@ class DISCOVER_model extends CI_Model
                     $common_prefix = in_calc_common_prefix($in__next, 'in_title');
 
                     echo '<div class="'.( !$all_child_featured ? ' discover_topics hidden ' : '' ).'">';
-
-                    //echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>'.( !$all_child_featured ? 'IDEAS:' : 'SELECT:' ).'</div>';
-
+                    echo ( !$all_child_featured ? '<div class="discover-topic"><span class="icon-block">&nbsp;</span>PREVIEW IDEAS:</div>' : '' );
                     echo '<div class="list-group">';
                     foreach($in__next as $key => $child_in){
                         echo echo_in_discover($child_in, $is_or, $common_prefix);
