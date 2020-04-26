@@ -1412,7 +1412,7 @@ function echo_in_list($in, $in__next, $recipient_en, $push_message, $prefix_stat
 
     //If no list just return the next step:
     if(!count($in__next)){
-        return ( $show_next ? echo_in_next($in['in_id'], $recipient_en, $push_message) : false );
+        return ( $show_next ? echo_in_next_previous($in['in_id'], $recipient_en, $push_message) : false );
     }
 
     $CI =& get_instance();
@@ -1483,12 +1483,12 @@ function echo_in_list($in, $in__next, $recipient_en, $push_message, $prefix_stat
     }
 
     if($show_next){
-        echo_in_next($in['in_id'], $recipient_en, $push_message);
+        echo_in_next_previous($in['in_id'], $recipient_en, $push_message);
         echo '<div class="doclear">&nbsp;</div>';
     }
 }
 
-function echo_in_next($in_id, $recipient_en, $push_message){
+function echo_in_next_previous($in_id, $recipient_en, $push_message){
 
     //A function to display warning/success messages to users:
     $CI =& get_instance();
