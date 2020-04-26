@@ -26,11 +26,11 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .no-left-padding {padding-left:0px;}
 .row {margin-left:0px;margin-right:0px;}
 .container {
-    max-width:767px;
+    max-width:575px;
     padding:0 0 60px;
 }
 .container-wide {
-    max-width:767px;
+    max-width:575px;
 }
 .padded {
     margin: 0 33px 15px 33px;
@@ -1409,7 +1409,7 @@ label {
 .btn-five{ margin-left:5px; }
 .list-group-item.active {color:#000000;}
 /* RESPONSIVE */
-@media (max-width:767px) {
+@media (max-width:575px) {
     .mini-hidden{
         display: none;
     }
@@ -1461,7 +1461,7 @@ label {
     display: inline-block;
 }
 
-@media (min-width:767px) {
+@media (min-width:575px) {
     .itemidea:hover {
         background-color:#fff4b5 !important;
     }
