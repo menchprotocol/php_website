@@ -474,22 +474,6 @@ img.no-radius {
 }
 
 
-.fixed-top, .fixed-bottom {
-    z-index: 99999 !important;
-}
-.fixed-bottom{
-    padding: 0;
-    background-color: #f4f5f7;
-}
-.fixed-bottom a{
-    padding: 5px !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-    text-align: center;
-}
-
 .progress-bg{
     margin: -10px 0 10px 0;
     width: 100% !important;
@@ -508,6 +492,23 @@ img.no-radius {
     height: 20px;
     background-color: #FC1B44;
 }
+.fixed-bottom a{
+    padding:0;
+    overflow: hidden;
+    width: 100%;
+    text-align: center;
+    margin-top: -20px;
+    display: block;
+    height: 20px;
+}
+.fixed-bottom{
+    padding: 0;
+    background-color: #f4f5f7;
+}
+.fixed-top, .fixed-bottom {
+    z-index: 99999 !important;
+}
+
 
 .no-horizonal-margin{
     margin-top: 0 !important;
