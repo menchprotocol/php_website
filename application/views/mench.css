@@ -1136,7 +1136,7 @@ label {
     line-height: 100%;
     border: 0;
     padding: 12px;
-    border-radius: 50% !important;
+    border-radius: 5px !important;
 }
 
 .btn.dropdown-toggle{
