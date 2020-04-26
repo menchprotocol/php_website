@@ -1220,14 +1220,12 @@ class DISCOVER_model extends CI_Model
                     } else {
 
                         //In HTML Give extra option to change answer:
-
                         echo '<div class="edit_select_answer">';
 
                         //List answers:
                         echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
 
                         echo '<div class="doclear">&nbsp;</div>';
-                        echo '</div>';
 
                         echo_in_next_previous($ins[0]['in_id'], $recipient_en, $push_message);
 
@@ -1235,6 +1233,7 @@ class DISCOVER_model extends CI_Model
 
                         echo '<div class="doclear">&nbsp;</div>';
 
+                        echo '</div>';
                     }
                 }
 
