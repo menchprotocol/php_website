@@ -329,22 +329,6 @@ img.no-radius {
 }
 
 
-.fixed-top, .fixed-bottom {
-    z-index: 99999 !important;
-}
-.fixed-bottom{
-    padding: 0;
-    height: 20px;
-}
-.fixed-bottom a{
-    padding: 5px !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-    text-align: center;
-}
-
 .no-margin{
     margin:10px 0 0;
 }
@@ -488,6 +472,24 @@ img.no-radius {
     margin: 0;
     padding: 0;
 }
+
+
+.fixed-top, .fixed-bottom {
+    z-index: 99999 !important;
+}
+.fixed-bottom{
+    padding: 0;
+    background-color: #f4f5f7;
+}
+.fixed-bottom a{
+    padding: 5px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    text-align: center;
+}
+
 .progress-bg{
     margin: -10px 0 10px 0;
     width: 100% !important;

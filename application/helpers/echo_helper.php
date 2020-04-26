@@ -1590,7 +1590,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
 
         //Main Discovery:
         if($top_completion_rate){
-            $ui .= '<div class="container fixed-bottom montserrat"><div class="progress-bg-big" title="You are '.$top_completion_rate['completion_percentage'].'% done as you have discover '.$top_completion_rate['steps_completed'].' of '.$top_completion_rate['steps_total'].' ideas"><div class="progress-done" style="width:'.$top_completion_rate['completion_percentage'].'%"><a href="/'.$top_completion_rate['top_in']['in_id'].'">'.$top_completion_rate['top_in']['in_title'].'</a></div></div></div>';
+            $ui .= '<div class="container fixed-bottom montserrat"><div class="progress-bg-big" title="You are '.$top_completion_rate['completion_percentage'].'% done as you have discover '.$top_completion_rate['steps_completed'].' of '.$top_completion_rate['steps_total'].' ideas"><div class="progress-done" style="width:'.$top_completion_rate['completion_percentage'].'%"></div><a href="/'.$top_completion_rate['top_in']['in_id'].'">'.$top_completion_rate['top_in']['in_title'].'</a></div></div>';
         }
     }
 
