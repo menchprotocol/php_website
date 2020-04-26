@@ -1555,6 +1555,11 @@ function echo_in_previous_discover($in_id, $recipient_en){
 
                 $completion_rate = $CI->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $ins_this[0]);
 
+                echo print_r(array(
+                    'in_id' => $parent_in_id,
+                    'results' => $completion_rate,
+                ));
+
                 $in_level_up++;
 
                 if ($parent_in_id == $intersect) {
