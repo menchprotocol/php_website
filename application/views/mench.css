@@ -497,12 +497,11 @@ img.no-radius {
     overflow: hidden;
     width: 100%;
     text-align: center;
-    margin-top: -21px;
     display: block;
     height: 16px;
-    margin-bottom: 0px;
+    margin-top: -20px;
+    margin-bottom: 4px;
     line-height: 100%;
-    margin-bottom: 5px;
 }
 .fixed-bottom{
     padding: 0;
