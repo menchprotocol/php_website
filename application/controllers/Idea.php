@@ -75,7 +75,7 @@ class Idea extends CI_Controller {
     }
 
 
-    function idea_coin($in_id){
+    function in_coin($in_id){
 
         //Validate/fetch Idea:
         $ins = $this->IDEA_model->in_fetch(array(
@@ -95,13 +95,14 @@ class Idea extends CI_Controller {
          * comes through /idea/ID
          *
          * */
+        $is_source = in_is_source($in_id);
         $session_en = superpower_assigned(10939); //Idea Pen?
         $is_public = in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7355'));
 
-        if(!$session_en){
+        if(!$is_source){
             if($is_public){
                 return redirect_message('/'.$in_id);
-            } else {
+            } elseif(!$session_en) {
                 return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>IDEA #' . $in_id . ' is not published yet.</div>');
             }
         }
@@ -146,6 +147,7 @@ class Idea extends CI_Controller {
         $this->load->view('idea/idea_coin', array(
             'in' => $ins[0],
             'session_en' => $session_en,
+            'is_source' => $is_source,
         ));
         $this->load->view('footer');
 

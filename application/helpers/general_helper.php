@@ -624,21 +624,21 @@ function count_ln_type($en_id){
         //We need to count this:
         if($en_id==12274){
 
-            $source_coins = $CI->LEDGER_model->ln_fetch(array(
+            $en_coins = $CI->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
                 'ln_creator_source_id' => $session_en['en_id'],
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            return $source_coins[0]['totals'];
+            return $en_coins[0]['totals'];
 
         } elseif($en_id==12273){
 
-            $idea_coins = $CI->LEDGER_model->ln_fetch(array(
+            $in_coins = $CI->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                 'ln_profile_source_id' => $session_en['en_id'],
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            return $idea_coins[0]['totals'];
+            return $in_coins[0]['totals'];
 
         } elseif($en_id==6255){
 

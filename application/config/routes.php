@@ -9,6 +9,6 @@ $route['plugin/(:num)']             = "plugin/plugin_load/$1";
 $route['default_controller']        = "discover/discover_coin";
 $route['(:num)']                    = "discover/discover_coin/$1";
 
-$route['source/(:num)']             = "source/source_coin/$1";
+$route['source/(:num)']             = "source/en_coin/$1";
 
-$route['idea/(:num)']               = "idea/idea_coin/$1";
+$route['idea/(:num)']               = "idea/in_coin/$1";

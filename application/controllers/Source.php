@@ -48,7 +48,7 @@ class Source extends CI_Controller
 
 
     //Lists sources
-    function source_coin($en_id)
+    function en_coin($en_id)
     {
 
         //Make sure not a private transaction:
@@ -137,12 +137,12 @@ class Source extends CI_Controller
 
 
         //Fetch leaderboard:
-        $in_source_coins = $this->LEDGER_model->ln_fetch($filters_in, array('en_profile'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight');
+        $in_en_coins = $this->LEDGER_model->ln_fetch($filters_in, array('en_profile'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight');
 
 
         //Start with top Players:
         echo '<div class="list-group">';
-        foreach ($in_source_coins as $count=>$en) {
+        foreach ($in_en_coins as $count=>$en) {
 
             if($count==$show_max){
 

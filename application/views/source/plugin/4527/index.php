@@ -33,12 +33,12 @@ $discover_coins = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$idea_coins = $this->LEDGER_model->ln_fetch(array(
+$in_coins = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
     'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$source_coins = $this->LEDGER_model->ln_fetch(array(
+$en_coins = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -51,8 +51,8 @@ echo '<br />//PLATFORM STATS:<br />';
 echo '$config[\'cache_timestamp\'] = '.$cache_timestamp.';<br />';
 echo '$config[\'cache_count_transaction\'] = '.$transactions[0]['totals'].';<br />';
 echo '$config[\'cache_count_discover\'] = '.$discover_coins[0]['totals'].';<br />';
-echo '$config[\'cache_count_idea\'] = '.$idea_coins[0]['totals'].';<br />';
-echo '$config[\'cache_count_source\'] = '.$source_coins[0]['totals'].';<br />';
+echo '$config[\'cache_count_idea\'] = '.$in_coins[0]['totals'].';<br />';
+echo '$config[\'cache_count_source\'] = '.$en_coins[0]['totals'].';<br />';
 echo '<br /><br />';
 
 

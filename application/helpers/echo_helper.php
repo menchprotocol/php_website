@@ -999,9 +999,9 @@ function echo_coins_count_source($in_id = 0, $en_id = 0){
         );
     }
 
-    $source_coins = $CI->LEDGER_model->ln_fetch($coin_filter, array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-    if($source_coins[0]['totals'] > 0){
-        return '<span class="montserrat '.$mench.'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($source_coins[0]['totals']).'</span>';
+    $en_coins = $CI->LEDGER_model->ln_fetch($coin_filter, array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    if($en_coins[0]['totals'] > 0){
+        return '<span class="montserrat '.$mench.'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($en_coins[0]['totals']).'</span>';
     }
 
     return null;
