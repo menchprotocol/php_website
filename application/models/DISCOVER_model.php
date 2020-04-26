@@ -931,7 +931,7 @@ class DISCOVER_model extends CI_Model
                     if(!$all_child_featured && count($in__next) > 0){
 
                         //Give option to review:
-                        echo '<div class="inline-block margin-top-down discover-add pull-left" style="margin-top:45px;"><a href="javascript:void();" onclick="toggle_discover()"><i class="fas fa-plus-circle discover_topics"></i><i class="fas fa-minus-circle discover_topics hidden"></i> <u>Preview '.count($in__next).' Idea'.echo__s(count($in__next)).'</u></a>&nbsp;or&nbsp;</div>';
+                        echo '<div class="margin-top-down discover-add"><a href="javascript:void();" onclick="toggle_discover()"><i class="fas fa-plus-circle discover_topics"></i><i class="fas fa-minus-circle discover_topics hidden"></i>&nbsp;<u>Preview '.count($in__next).' Idea'.echo__s(count($in__next)).'</u></a></div>';
 
                     }
 
