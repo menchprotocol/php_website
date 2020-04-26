@@ -6,7 +6,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 ?>
 
 <style>
-    <?= ( count($player_discoveries) < 2 ? '.discover-sorter {display:none;}' : '' ) //Need 2 or more to sort ?>
+    <?= ( count($player_discoveries) < 2 ? '.discover-sorter {display:none !important;}' : '' ) //Need 2 or more to sort ?>
 </style>
 <script>
 
