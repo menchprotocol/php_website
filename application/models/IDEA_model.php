@@ -542,7 +542,23 @@ class IDEA_model extends CI_Model
 
         }
 
-        return $grand_parents;
+
+        if($first_level){
+
+            $return_array = array();
+            $start_in_id = config_var(12156);
+            $index = 0;
+            foreach($grand_parents as $this_in_id){
+                array_push($return_array[$index], intval($this_in_id));
+                if($this_in_id==$start_in_id){
+                    $index++;
+                }
+            }
+            return $return_array;
+
+        } else {
+            return $grand_parents;
+        }
     }
 
     function in_recursive_parents_new($in_id, $first_level = true, $public_only = true){
@@ -562,16 +578,7 @@ class IDEA_model extends CI_Model
 
         if($first_level && !isset($_GET['original'])){
 
-            $return_array = array();
-            $start_in_id = config_var(12156);
-            $index = 0;
-            foreach(array_flatten($this_level) as $this_in_id){
-                array_push($return_array[$index], intval($this_in_id));
-                if($this_in_id==$start_in_id){
-                    $index++;
-                }
-            }
-            return $return_array;
+
 
         } else {
 
