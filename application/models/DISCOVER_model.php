@@ -948,7 +948,7 @@ class DISCOVER_model extends CI_Model
                     }
 
                     //Redirect to login page:
-                    echo '<div class="inline-block margin-top-down discover-add pull-right"><a class="btn btn-discover btn-circle" href="/discover/start/'.$ins[0]['in_id'].'"><i class="fad fa-step-forward"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down discover-add pull-right"><a class="btn btn-discover btn-circle" href="/discover/start/'.$ins[0]['in_id'].'"><i class="fas fa-step-forward"></i></a></div>';
 
                 }
 
@@ -1157,7 +1157,7 @@ class DISCOVER_model extends CI_Model
             if(!count($discover_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
                 //List Unlock paths:
-                echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block"><i class="fad fa-step-forward"></i></span>SUGGESTED IDEAS:');
+                echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-step-forward"></i></span>SUGGESTED IDEAS:');
 
             }
 
@@ -1394,7 +1394,7 @@ class DISCOVER_model extends CI_Model
                         echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
                     }
 
-                    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fad fa-step-forward"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fas fa-step-forward"></i></a></div>';
 
                     echo '</div>';
 
@@ -1422,7 +1422,7 @@ class DISCOVER_model extends CI_Model
                 echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
 
                 //Save/Upload & Next:
-                echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="discover_text_answer()"><i class="fad fa-step-forward"></i></a></div>';
+                echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="discover_text_answer()"><i class="fas fa-step-forward"></i></a></div>';
 
 
                 if(count($discover_completes)){

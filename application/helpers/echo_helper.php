@@ -1585,9 +1585,9 @@ function echo_in_previous_discover($in_id, $recipient_en){
 
         //Previous
         if(isset($_GET['came_from']) && $_GET['came_from']>0){
-            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/'.$_GET['came_from'].'"><i class="fad fa-step-backward"></i></a></div>';
+            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/'.$_GET['came_from'].'"><i class="fas fa-step-backward"></i></a></div>';
         } else {
-            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/discover/previous/'.$previous_level_id.'/'.$in_id.'"><i class="fad fa-step-backward"></i></a></div>';
+            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/discover/previous/'.$previous_level_id.'/'.$in_id.'"><i class="fas fa-step-backward"></i></a></div>';
         }
 
         //Main Discovery:

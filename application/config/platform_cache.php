@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-27 15:53:39 PST
+//Generated 2020-04-27 16:05:21 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588028019;
-$config['cache_count_transaction'] = 1156813;
+$config['cache_timestamp'] = 1588028721;
+$config['cache_count_transaction'] = 1156885;
 $config['cache_count_discover'] = 121127;
-$config['cache_count_idea'] = 5399;
-$config['cache_count_source'] = 5212;
+$config['cache_count_idea'] = 5401;
+$config['cache_count_source'] = 5215;
 
 
 
@@ -290,7 +290,7 @@ $config['en_all_12687'] = array(
 $config['en_ids_12675'] = array(11020);
 $config['en_all_12675'] = array(
     11020 => array(
-        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA NEXT',
         'm_desc' => '',
         'm_parents' => array(12675,12413,11018),
@@ -313,7 +313,7 @@ $config['en_all_12677'] = array(
         'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
     ),
     7347 => array(
-        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
         'm_name' => 'START',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,11035,11089,6205,12228,4527),
@@ -389,7 +389,7 @@ $config['en_all_12655'] = array(
         'm_parents' => array(12500,12677,10939,11018,12655,12467,11089,12410,6771,12228,4527),
     ),
     7347 => array(
-        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER START',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,11035,11089,6205,12228,4527),
@@ -424,7 +424,7 @@ $config['en_all_12655'] = array(
 $config['en_ids_12654'] = array(7347,10573,12274);
 $config['en_all_12654'] = array(
     7347 => array(
-        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER START',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,11035,11089,6205,12228,4527),
@@ -811,13 +811,13 @@ $config['en_all_12420'] = array(
 $config['en_ids_12413'] = array(11020,11019);
 $config['en_all_12413'] = array(
     11020 => array(
-        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'NEXT',
         'm_desc' => '',
         'm_parents' => array(12675,12413,11018),
     ),
     11019 => array(
-        'm_icon' => '<i class="fad fa-step-backward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-backward idea" aria-hidden="true"></i>',
         'm_name' => 'PREVIOUS',
         'm_desc' => '',
         'm_parents' => array(12413,10990),
@@ -1037,7 +1037,7 @@ $config['en_all_6205'] = array(
         'm_parents' => array(6205),
     ),
     7347 => array(
-        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER START',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,11035,11089,6205,12228,4527),
@@ -1066,7 +1066,7 @@ $config['en_all_6205'] = array(
 $config['en_ids_12330'] = array(6677,6914,6907);
 $config['en_all_12330'] = array(
     6677 => array(
-        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
         'm_desc' => '',
         'm_parents' => array(12330,7585,4559,6192),
@@ -1932,7 +1932,7 @@ $config['en_all_12228'] = array(
         'm_parents' => array(12228,4527),
     ),
     7347 => array(
-        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER START',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,11035,11089,6205,12228,4527),
@@ -2440,7 +2440,7 @@ $config['en_all_11089'] = array(
         'm_parents' => array(10984,11018,12359,5967,10593,12322,4986,11089,4593,4485),
     ),
     7347 => array(
-        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER START',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,11035,11089,6205,12228,4527),
@@ -2528,7 +2528,7 @@ $config['en_all_11081'] = array(
         'm_parents' => array(11081,6160,6232,6194,4341),
     ),
     4369 => array(
-        'm_icon' => '<i class="fad fa-step-forward" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward" aria-hidden="true"></i>',
         'm_name' => 'NEXT IDEA',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6202,6232,4341),
@@ -2540,7 +2540,7 @@ $config['en_all_11081'] = array(
         'm_parents' => array(11081,10692,6160,6232,4341),
     ),
     4368 => array(
-        'm_icon' => '<i class="fad fa-step-backward" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-backward" aria-hidden="true"></i>',
         'm_name' => 'PREVIOUS IDEA',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6202,6232,4341),
@@ -2749,7 +2749,7 @@ $config['en_all_6232'] = array(
         'm_parents' => array(4527,6232,6195,4341),
     ),
     4369 => array(
-        'm_icon' => '<i class="fad fa-step-forward" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION NEXT IDEA',
         'm_desc' => 'ln_next_idea_id',
         'm_parents' => array(11081,10692,6202,6232,4341),
@@ -2761,7 +2761,7 @@ $config['en_all_6232'] = array(
         'm_parents' => array(11081,10692,6160,6232,4341),
     ),
     4368 => array(
-        'm_icon' => '<i class="fad fa-step-backward" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-backward" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION PREVIOUS IDEA',
         'm_desc' => 'ln_previous_idea_id',
         'm_parents' => array(11081,10692,6202,6232,4341),
@@ -3252,7 +3252,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(12744,6194,11035,12728,12500,10876,4527,6405),
     ),
     7347 => array(
-        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER START',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,11035,11089,6205,12228,4527),
@@ -3312,7 +3312,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(12500,11035),
     ),
     12211 => array(
-        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
         'm_name' => 'NEXT',
         'm_desc' => '',
         'm_parents' => array(11035),
@@ -3324,7 +3324,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(6405,12744,6194,12699,12500,10876,11035,4527),
     ),
     12750 => array(
-        'm_icon' => '<i class="fad fa-step-forward discover"></i>',
+        'm_icon' => '<i class="fas fa-step-forward discover"></i>',
         'm_name' => 'PREVIEW IDEA DISCOVERY',
         'm_desc' => '',
         'm_parents' => array(11035),
@@ -3400,7 +3400,7 @@ $config['en_all_11028'] = array(
 $config['en_ids_11018'] = array(11020,4601,12419,10573,12589,7347,6255,6146,4983,12682,7545,11047);
 $config['en_all_11018'] = array(
     11020 => array(
-        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA NEXT',
         'm_desc' => 'Define discovery flow',
         'm_parents' => array(12675,12413,11018),
@@ -3430,7 +3430,7 @@ $config['en_all_11018'] = array(
         'm_parents' => array(12702,11018,4527,12590),
     ),
     7347 => array(
-        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER START',
         'm_desc' => 'Players who started here',
         'm_parents' => array(12701,12677,11018,12654,12655,11035,11089,6205,12228,4527),
@@ -3477,7 +3477,7 @@ $config['en_all_11018'] = array(
 $config['en_ids_10990'] = array(11019,4737,4736);
 $config['en_all_10990'] = array(
     11019 => array(
-        'm_icon' => '<i class="fad fa-step-backward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-backward idea" aria-hidden="true"></i>',
         'm_name' => 'PREVIOUS',
         'm_desc' => '',
         'm_parents' => array(12413,10990),
@@ -4055,13 +4055,13 @@ $config['en_all_10692'] = array(
         'm_parents' => array(11081,10692,6160,6232,4341),
     ),
     4368 => array(
-        'm_icon' => '<i class="fad fa-step-backward" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-backward" aria-hidden="true"></i>',
         'm_name' => 'PREVIOUS IDEA',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6202,6232,4341),
     ),
     4369 => array(
-        'm_icon' => '<i class="fad fa-step-forward" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward" aria-hidden="true"></i>',
         'm_name' => 'NEXT IDEA',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6202,6232,4341),
@@ -4168,7 +4168,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(12228,4527),
     ),
     7347 => array(
-        'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER START',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12654,12655,11035,11089,6205,12228,4527),
@@ -5148,7 +5148,7 @@ $config['en_all_6192'] = array(
         'm_parents' => array(12324,12117,7751,7585,6192),
     ),
     6677 => array(
-        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
         'm_desc' => '',
         'm_parents' => array(12330,7585,4559,6192),
@@ -5311,7 +5311,7 @@ $config['en_all_4341'] = array(
         'm_parents' => array(4527,6232,6195,4341),
     ),
     4369 => array(
-        'm_icon' => '<i class="fad fa-step-forward" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION NEXT IDEA',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6202,6232,4341),
@@ -5323,7 +5323,7 @@ $config['en_all_4341'] = array(
         'm_parents' => array(11081,10692,6160,6232,4341),
     ),
     4368 => array(
-        'm_icon' => '<i class="fad fa-step-backward" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-backward" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION PREVIOUS IDEA',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6202,6232,4341),
@@ -5597,7 +5597,7 @@ $config['en_all_6193'] = array(
 $config['en_ids_7585'] = array(6677,6683,7637,6914,6684,7231,6907);
 $config['en_all_7585'] = array(
     6677 => array(
-        'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
         'm_desc' => 'Read messages & go next',
         'm_parents' => array(12330,7585,4559,6192),
