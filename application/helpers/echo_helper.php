@@ -1064,7 +1064,13 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
     }
 
+    if($can_click && $completion_rate['completion_percentage']>0){
+        $ui .= '<div class="high5x">&nbsp;</div>';
+    }
+
     $ui .= ( $can_click ? '</a>' : '' );
+
+
     $ui .= '</div>';
 
     return $ui;
