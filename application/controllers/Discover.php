@@ -79,7 +79,7 @@ class Discover extends CI_Controller
 
     function next($in_id = 0){
 
-        $append_url = '?came_from='.$in_id;
+        $append_url = '?came_from='.( isset($_GET['came_from']) && $_GET['came_from']>0 ? $_GET['came_from'] : $in_id );
         $session_en = superpower_assigned();
         if(!$session_en){
             return redirect_message('/source/sign');
