@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-27 07:27:32 PST
+//Generated 2020-04-27 07:37:04 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587997652;
-$config['cache_count_transaction'] = 1156319;
-$config['cache_count_discover'] = 121106;
+$config['cache_timestamp'] = 1587998224;
+$config['cache_count_transaction'] = 1156446;
+$config['cache_count_discover'] = 121125;
 $config['cache_count_idea'] = 5399;
 $config['cache_count_source'] = 5212;
 
@@ -3456,7 +3456,7 @@ $config['en_all_11018'] = array(
     4983 => array(
         'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
-        'm_desc' => 'People & Content that reference this idea',
+        'm_desc' => 'People & Content referencing this idea',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
     ),
     12682 => array(
