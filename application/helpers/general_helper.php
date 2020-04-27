@@ -258,19 +258,6 @@ function ln_detect_type($string)
     }
 }
 
-function array_multilevel_merge($array){
-
-    $this_level = array();
-
-    foreach($array as $key => $value){
-        array_push($this_level, array($key));
-        array_push($this_level, array_multilevel_merge($value));
-    }
-
-    return array_flatten($this_level);
-
-}
-
 function is_https_url($url){
     return substr($url, 0, 8) == 'https://';
 }
