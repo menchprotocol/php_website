@@ -547,16 +547,18 @@ class IDEA_model extends CI_Model
 
             $start_in_id = config_var(12156);
             $index = 0;
-            foreach($grand_parents as $this_in_id){
-                if(!isset($return_array[$index])){
-                    $return_array[$index] = array();
+            foreach($grand_parents as $grand_parent_ids){
+                if(!isset($recursive_parents[$index])){
+                    $recursive_parents[$index] = array();
                 }
-                array_push($return_array[$index], intval($this_in_id));
-                if($this_in_id==$start_in_id){
-                    $index++;
+                foreach($grand_parent_ids as $this_in_id){
+                    array_push($recursive_parents[$index], intval($this_in_id));
+                    if($this_in_id==$start_in_id){
+                        $index++;
+                    }
                 }
             }
-            return $return_array;
+            return $recursive_parents;
 
         } else {
             return $grand_parents;
