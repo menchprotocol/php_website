@@ -1351,7 +1351,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 $export_row['alg_obj_type_id'] = 4535; //IDEA
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
-                $export_row['alg_obj_url'] = '/idea/' . $db_row['in_id'];
+                $export_row['alg_obj_url'] = '/idea/go/' . $db_row['in_id'];
                 $export_row['alg_obj_status'] = intval($db_row['in_status_source_id']);
                 $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_source_id']]['m_icon']; //Player type icon
                 $export_row['alg_obj_name'] = $db_row['in_title'];

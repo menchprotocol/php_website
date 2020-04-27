@@ -38,12 +38,12 @@ foreach ($this->LEDGER_model->ln_fetch(array(
 
         echo '<div>';
         echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_source_id']]['m_icon'].'</span>';
-        echo '<a href="/idea/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
+        echo '<a href="/idea/go/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
         echo '</div>';
 
         echo '<div>';
         echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_source_id']]['m_icon'].'</span>';
-        echo '<a href="/idea/'.$in_ln['in_id'].'">'.$in_ln['in_title'].' [child]</a>';
+        echo '<a href="/idea/go/'.$in_ln['in_id'].'">'.$in_ln['in_title'].' [child]</a>';
         echo '</div>';
 
         if(count($this->LEDGER_model->ln_fetch(array(
@@ -117,12 +117,12 @@ if(1){
             echo '<td style="text-align: left;">';
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_source_id']]['m_icon'].'</span>';
-            echo '<a href="/idea/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
+            echo '<a href="/idea/go/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_title'].'</a>';
             echo '</div>';
 
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_source_id']]['m_icon'].'</span>';
-            echo '<a href="/idea/'.$in_ln['in_id'].'">'.$in_ln['in_title'].'</a>';
+            echo '<a href="/idea/go/'.$in_ln['in_id'].'">'.$in_ln['in_title'].'</a>';
             echo '</div>';
             echo '</td>';
             echo '</tr>';

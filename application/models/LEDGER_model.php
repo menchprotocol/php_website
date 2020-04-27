@@ -312,7 +312,7 @@ class LEDGER_model extends CI_Model
 
                         //IDEA
                         $ins = $this->IDEA_model->in_fetch(array( 'in_id' => $insert_columns[$en_all_6232[$en_id]['m_desc']] ));
-                        $html_message .= '<div>' . $m['m_name'] . ': <a href="https://mench.com/idea/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_title'].'</a></div>';
+                        $html_message .= '<div>' . $m['m_name'] . ': <a href="https://mench.com/idea/go/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_title'].'</a></div>';
 
                     } elseif (in_array(6160 , $m['m_parents'])) {
 

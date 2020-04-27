@@ -122,11 +122,11 @@ class Discover extends CI_Controller
             //Find next Idea based on source's discovery list:
             $next_in_id = $this->DISCOVER_model->discover_next_find($session_en['en_id'], $ins[0]);
             if($next_in_id > 0){
-                return redirect_message('/' . $next_in_id.$append_url);
+                return redirect_message('/'.$next_in_id.$append_url);
             } else {
                 $next_in_id = $this->DISCOVER_model->discover_next_go($session_en['en_id'], false);
                 if($next_in_id > 0){
-                    return redirect_message('/' . $next_in_id.$append_url);
+                    return redirect_message('/'.$next_in_id.$append_url);
                 } else {
                     return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully discovered your entire list.</div></div>');
                 }
@@ -137,7 +137,7 @@ class Discover extends CI_Controller
             //Find the next idea in the DISCOVER LIST:
             $next_in_id = $this->DISCOVER_model->discover_next_go($session_en['en_id'], false);
             if($next_in_id > 0){
-                return redirect_message('/' . $next_in_id);
+                return redirect_message('/'.$next_in_id);
             } else {
                 return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully discovered your entire list.</div></div>');
             }

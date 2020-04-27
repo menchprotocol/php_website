@@ -230,7 +230,7 @@ if(!isset($hide_header)){
                             } elseif($en_id==12749) {
 
                                 //Contribute to Idea
-                                $page_url = 'href="/idea/'.$first_segment.'?grant_access=1"';
+                                $page_url = 'href="/idea/'.$first_segment.'"';
 
                             } elseif($en_id==6415) {
 

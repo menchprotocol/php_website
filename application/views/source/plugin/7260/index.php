@@ -15,7 +15,7 @@ if(count($orphan_ins) > 0){
     foreach ($orphan_ins as $count => $orphan_in) {
 
         //Show idea:
-        echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_source_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_source_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_source_id']]['m_icon'] . '</span> <a href="/idea/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_title'].'</b></a>';
+        echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_source_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_source_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_source_id']]['m_icon'] . '</span> <a href="/idea/go/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_title'].'</b></a>';
 
         //Do we need to delete?
         if(isset($_GET['take_action']) && $_GET['take_action']=='delete_all'){

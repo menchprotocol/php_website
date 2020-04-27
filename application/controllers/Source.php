@@ -1545,7 +1545,7 @@ class Source extends CI_Controller
         if ($session_en) {
             //Lead player and above, go to console:
             if($in_id > 0){
-                return redirect_message('/' . $in_id);
+                return redirect_message('/idea/go/' . $in_id);
             } else {
                 return redirect_message('/discover');
             }
@@ -1745,7 +1745,7 @@ class Source extends CI_Controller
         if (strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
         } elseif(intval($_POST['referrer_in_id']) > 0) {
-            $login_url = '/'.$_POST['referrer_in_id'];
+            $login_url = '/idea/go/'.$_POST['referrer_in_id'];
         } else {
             //Go to home page and let them continue from there:
             $login_url = '/';
@@ -1880,7 +1880,7 @@ class Source extends CI_Controller
 
 
         if (intval($_POST['referrer_in_id']) > 0) {
-            $login_url = '/'.$_POST['referrer_in_id'];
+            $login_url = '/idea/go/'.$_POST['referrer_in_id'];
         } elseif (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
         } else {

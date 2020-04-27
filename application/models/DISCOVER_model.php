@@ -1817,7 +1817,7 @@ class DISCOVER_model extends CI_Model
         if($note_in_id > 0){
 
             $match_columns['ln_previous_idea_id'] = $note_in_id;
-            $list_url = '/idea/'.$note_in_id;
+            $list_url = '/idea/go/'.$note_in_id;
             $list_class = 'itemidea';
             $join_objects = array('en_creator');
 

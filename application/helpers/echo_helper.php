@@ -601,7 +601,7 @@ function echo_ln($ln, $is_parent_tr = false)
                 //IDEA
                 $ins = $CI->IDEA_model->in_fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/idea/'.$ins[0]['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span>'.$en_all_2738[4535]['m_icon']. '&nbsp;'.echo_in_title($ins[0]).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/idea/go/'.$ins[0]['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span>'.$en_all_2738[4535]['m_icon']. '&nbsp;'.echo_in_title($ins[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
@@ -1262,7 +1262,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
 
             //IDEA ICON:
-            $ui .= '<span class="icon-block"><a href="/idea/'.$in['in_id'].'" title="Idea Weight: '.number_format($in['in_weight'], 0).'">'.$en_all_2738[4535]['m_icon'].'</a></span>';
+            $ui .= '<span class="icon-block"><a href="/idea/go/'.$in['in_id'].'" title="Idea Weight: '.number_format($in['in_weight'], 0).'">'.$en_all_2738[4535]['m_icon'].'</a></span>';
 
 
             //IDEA TITLE
@@ -1273,7 +1273,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
             } else {
 
-                $ui .= '<a href="/idea/'.$in['in_id'].'" class="title-block montserrat">';
+                $ui .= '<a href="/idea/go/'.$in['in_id'].'" class="title-block montserrat">';
                 $ui .= $info_items_list;
                 //IDEA STATUS
                 if(!$is_public){
