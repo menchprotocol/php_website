@@ -36,7 +36,6 @@ if(!isset($_GET['in_id']) || !intval($_GET['in_id'])) {
         //List the idea:
         echo_json(array(
             'in_general' => array(
-                'in_recursive_parents_new' => $this->IDEA_model->in_recursive_parents_new($ins[0]['in_id']),
                 'in_recursive_parents' => $this->IDEA_model->in_recursive_parents($ins[0]['in_id']),
                 'in_metadata_common_base' => $this->IDEA_model->in_metadata_common_base($ins[0]),
             ),

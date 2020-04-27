@@ -506,23 +506,24 @@ class IDEA_model extends CI_Model
     }
 
 
-    function in_recursive_parents($in_id, $first_level = true, $public_only = true){
+    function in_recursive_parents($in_id, $first_level = true, $public_only = true)
+    {
 
         $grand_parents = array();
 
         //Fetch parents:
-        foreach($this->LEDGER_model->ln_fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7355' : 'en_ids_7356' ))) . ')' => null,
-            'ln_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7359' : 'en_ids_7360' ))) . ')' => null,
+        foreach ($this->LEDGER_model->ln_fetch(array(
+            'in_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7355' : 'en_ids_7356'))) . ')' => null,
+            'ln_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7359' : 'en_ids_7360'))) . ')' => null,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_next_idea_id' => $in_id,
-        ), array('in_previous')) as $in_parent){
+        ), array('in_previous')) as $in_parent) {
 
             //Prep ID:
             $p_id = intval($in_parent['in_id']);
 
             //Add to appropriate array:
-            if(!$first_level){
+            if (!$first_level) {
                 array_push($grand_parents, $p_id);
             }
 
@@ -530,31 +531,32 @@ class IDEA_model extends CI_Model
             //Fetch parents of parents:
             $recursive_parents = $this->IDEA_model->in_recursive_parents($p_id, false);
 
-            if(count($recursive_parents) > 0){
-                if($first_level){
+            if (count($recursive_parents) > 0) {
+                if ($first_level) {
                     array_push($grand_parents, array_merge(array($p_id), $recursive_parents));
                 } else {
                     $grand_parents = array_merge($grand_parents, $recursive_parents);
                 }
-            } elseif($first_level){
+            } elseif ($first_level) {
                 array_push($grand_parents, array($p_id));
             }
 
         }
 
 
-        if($first_level){
+        if ($first_level) {
 
+            //Now we must break down the array:
             $recursive_parents = array();
             $start_in_id = config_var(12156);
             $index = 0;
             foreach ($grand_parents as $grand_parent_ids) {
                 foreach ($grand_parent_ids as $grand_parent_id) {
-                    if(!isset($recursive_parents[$index])){
+                    if (!isset($recursive_parents[$index])) {
                         $recursive_parents[$index] = array();
                     }
                     array_push($recursive_parents[$index], intval($grand_parent_id));
-                    if($grand_parent_id==$start_in_id){
+                    if ($grand_parent_id == $start_in_id) {
                         $index++;
                     }
                 }
@@ -566,33 +568,6 @@ class IDEA_model extends CI_Model
             return $grand_parents;
         }
     }
-
-    function in_recursive_parents_new($in_id, $first_level = true, $public_only = true){
-
-        $this_level = array();
-
-
-        //Fetch parents:
-        foreach($this->LEDGER_model->ln_fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7355' : 'en_ids_7356' ))) . ')' => null,
-            'ln_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7359' : 'en_ids_7360' ))) . ')' => null,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-            'ln_next_idea_id' => $in_id,
-        ), array('in_previous')) as $in_parent){
-            $this_level[$in_parent['in_id']] = $this->IDEA_model->in_recursive_parents_new($in_parent['in_id'], false);
-        }
-
-        if($first_level && !isset($_GET['original'])){
-
-
-
-        } else {
-
-            return $this_level;
-
-        }
-    }
-
 
 
     function in_recursive_child_ids($in_id, $first_level = true){
