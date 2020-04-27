@@ -1663,7 +1663,7 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
 
 
     //Save button:
-    $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_notes_add('.$note_type_en_id.');" class="btn btn-idea save_notes_'.$note_type_en_id.'">ADD</a></td>';
+    $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_notes_add('.$note_type_en_id.');" class="btn btn-idea save_notes_'.$note_type_en_id.'"><i class="fas fa-plus"></i></a></td>';
 
 
     //File counter:
