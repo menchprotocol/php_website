@@ -547,7 +547,7 @@ class IDEA_model extends CI_Model
 
     function in_recursive_parents_new($in_id, $first_level = true, $public_only = true){
 
-        $parents = array();
+        $this_level = array();
 
         //Fetch parents:
         foreach($this->LEDGER_model->ln_fetch(array(
@@ -556,18 +556,10 @@ class IDEA_model extends CI_Model
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_next_idea_id' => $in_id,
         ), array('in_previous')) as $in_parent){
-
-            //Add this:
-            $grandparents = $this->IDEA_model->in_recursive_parents_new($in_parent['in_id'], false);
-            foreach($grandparents as $grandparent){
-                array_push($parents, $grandparents);
-            }
-
-            array_push($parents, intval($in_parent['in_id']));
-
+            $this_level[$in_parent['in_id']] = $this->IDEA_model->in_recursive_parents_new($in_parent['in_id'], false);
         }
 
-        return $parents;
+        return $this_level;
     }
 
 
