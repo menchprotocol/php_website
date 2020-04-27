@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-26 17:00:15 PST
+//Generated 2020-04-26 17:59:45 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587945615;
-$config['cache_count_transaction'] = 1155318;
-$config['cache_count_discover'] = 121178;
+$config['cache_timestamp'] = 1587949185;
+$config['cache_count_transaction'] = 1155611;
+$config['cache_count_discover'] = 121102;
 $config['cache_count_idea'] = 5390;
 $config['cache_count_source'] = 5210;
 
@@ -118,19 +118,19 @@ $config['en_all_12744'] = array(
 );
 
 //PLUGIN EXCLUDE MENCH UI:
-$config['en_ids_12741'] = array(11049,12733,12712,12722,4527,12710,12709,12732);
+$config['en_ids_12741'] = array(12733,11049,12712,12722,4527,12710,12709,12732);
 $config['en_all_12741'] = array(
+    12733 => array(
+        'm_icon' => '<i class="fad fa-code discover"></i>',
+        'm_name' => 'IDEA REVIEW DISCOVERY',
+        'm_desc' => '',
+        'm_parents' => array(11047,12741,12701,6287),
+    ),
     11049 => array(
-        'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
-        'm_name' => 'IDEA JSON REVIEW',
+        'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA REVIEW JSON',
         'm_desc' => '',
         'm_parents' => array(12741,6287,11047),
-    ),
-    12733 => array(
-        'm_icon' => '',
-        'm_name' => 'JSON REVIEW DISCOVER',
-        'm_desc' => '',
-        'm_parents' => array(12741,12701,6287),
     ),
     12712 => array(
         'm_icon' => '',
@@ -180,7 +180,7 @@ $config['en_all_7274'] = array(
         'm_parents' => array(7286,7274),
     ),
     7276 => array(
-        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-sync idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA SYNC INSIGHTS',
         'm_desc' => '',
         'm_parents' => array(11047,7286,7274),
@@ -3168,22 +3168,28 @@ $config['en_all_11054'] = array(
 );
 
 //IDEA ADMIN MENU:
-$config['en_ids_11047'] = array(7264,11049,7276,4341,7279);
+$config['en_ids_11047'] = array(7264,12733,11049,7276,4341,7279);
 $config['en_all_11047'] = array(
     7264 => array(
-        'm_icon' => '<i class="fad fa-eye"></i>',
+        'm_icon' => '<i class="fad fa-sitemap idea"></i>',
         'm_name' => 'IDEA BIRDS EYE MARKS',
         'm_desc' => '/plugin/7264?in_id=',
         'm_parents' => array(11047,6287),
     ),
+    12733 => array(
+        'm_icon' => '<i class="fad fa-code discover"></i>',
+        'm_name' => 'IDEA REVIEW DISCOVERY',
+        'm_desc' => '/plugin/12733?in_id=',
+        'm_parents' => array(11047,12741,12701,6287),
+    ),
     11049 => array(
-        'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
-        'm_name' => 'IDEA JSON REVIEW',
+        'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA REVIEW JSON',
         'm_desc' => '/plugin/11049?in_id=',
         'm_parents' => array(12741,6287,11047),
     ),
     7276 => array(
-        'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-sync idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA SYNC INSIGHTS',
         'm_desc' => '/cron/cron__7276/',
         'm_parents' => array(11047,7286,7274),
@@ -5711,19 +5717,13 @@ $config['en_all_7309'] = array(
 );
 
 //PLUGINS:
-$config['en_ids_6287'] = array(7264,11049,7261,12731,12734,7260,7263,7259,12735,7712,12733,12712,12722,4527,12710,12709,12729,7267,12732,7268,7269,12730,12738,7270,12737,12736,12739);
+$config['en_ids_6287'] = array(7264,7261,12731,12734,7260,7263,12733,11049,7259,12735,7712,12712,12722,4527,12710,12709,12729,7267,12732,7268,7269,12730,12738,7270,12737,12736,12739);
 $config['en_all_6287'] = array(
     7264 => array(
-        'm_icon' => '<i class="fad fa-eye"></i>',
+        'm_icon' => '<i class="fad fa-sitemap idea"></i>',
         'm_name' => 'IDEA BIRDS EYE MARKS',
         'm_desc' => '',
         'm_parents' => array(11047,6287),
-    ),
-    11049 => array(
-        'm_icon' => '<i class="fas fa-lambda" aria-hidden="true"></i>',
-        'm_name' => 'IDEA JSON REVIEW',
-        'm_desc' => '?in_id=',
-        'm_parents' => array(12741,6287,11047),
     ),
     7261 => array(
         'm_icon' => '',
@@ -5755,6 +5755,18 @@ $config['en_all_6287'] = array(
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
+    12733 => array(
+        'm_icon' => '<i class="fad fa-code discover"></i>',
+        'm_name' => 'IDEA REVIEW DISCOVERY',
+        'm_desc' => '?in_id=',
+        'm_parents' => array(11047,12741,12701,6287),
+    ),
+    11049 => array(
+        'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA REVIEW JSON',
+        'm_desc' => '?in_id=',
+        'm_parents' => array(12741,6287,11047),
+    ),
     7259 => array(
         'm_icon' => '',
         'm_name' => 'IDEA SEARCH & REPLACE',
@@ -5772,12 +5784,6 @@ $config['en_all_6287'] = array(
         'm_name' => 'IDEA TYPE SELECT',
         'm_desc' => '',
         'm_parents' => array(6287,10893,4527),
-    ),
-    12733 => array(
-        'm_icon' => '',
-        'm_name' => 'JSON REVIEW DISCOVER',
-        'm_desc' => '?in_id=',
-        'm_parents' => array(12741,12701,6287),
     ),
     12712 => array(
         'm_icon' => '',
