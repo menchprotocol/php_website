@@ -468,8 +468,8 @@ img.no-radius {
 .table-condense{
     margin-bottom: 5px;
 }
-.high5x{
-    height: 5px;
+.high3x{
+    height: 3px;
     margin: 0;
     padding: 0;
 }
@@ -481,29 +481,11 @@ img.no-radius {
 }
 
 .progress-bg .progress-done{
-    height: 5px;
+    height: 3px;
     background-color: #FC1B44;
 }
 
-.progress-bg-big{
-    width: 100% !important;
-}
 
-.progress-bg-big .progress-done{
-    height: 25px;
-    background-color: #FC1B44;
-}
-.fixed-bottom a{
-    padding: 0 5px;
-    overflow: hidden;
-    width: 100%;
-    text-align: center;
-    display: block;
-    height: 17px;
-    margin-top: -20px;
-    margin-bottom: 3px;
-    line-height: 100%;
-}
 .fixed-bottom{
     padding: 0;
     background-color: #f4f5f7;

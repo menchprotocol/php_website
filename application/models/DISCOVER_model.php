@@ -1083,7 +1083,7 @@ class DISCOVER_model extends CI_Model
                     echo '<div class="progress-bg no-horizonal-margin" title="Discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
                 } else {
                     //Replace with empty space:
-                    echo '<div class="high5x">&nbsp;</div>';
+                    echo '<div class="high3x">&nbsp;</div>';
                 }
 
                 //DISCOVER TITLE
