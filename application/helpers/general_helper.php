@@ -263,15 +263,10 @@ function array_multilevel_merge($array){
     $this_level = array();
 
     foreach($array as $key => $value){
-        if(count($value) >= 2){
-            array_push($this_level, array_multilevel_merge($value));
-        } else {
-            //Single item:
-            array_push($this_level, array($key));
-        }
+        array_push($this_level, array_multilevel_merge($value));
     }
 
-    return $this_level;
+    return array_flatten($this_level);
 
 }
 
