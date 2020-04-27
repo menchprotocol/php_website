@@ -545,10 +545,12 @@ class IDEA_model extends CI_Model
 
         if($first_level){
 
-            $return_array = array();
             $start_in_id = config_var(12156);
             $index = 0;
             foreach($grand_parents as $this_in_id){
+                if(!isset($return_array[$index])){
+                    $return_array[$index] = array();
+                }
                 array_push($return_array[$index], intval($this_in_id));
                 if($this_in_id==$start_in_id){
                     $index++;
