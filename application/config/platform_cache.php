@@ -8,13 +8,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-26 18:30:34 PST
+//Generated 2020-04-27 07:27:32 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587951034;
-$config['cache_count_transaction'] = 1155701;
-$config['cache_count_discover'] = 121102;
-$config['cache_count_idea'] = 5390;
+$config['cache_timestamp'] = 1587997652;
+$config['cache_count_transaction'] = 1156319;
+$config['cache_count_discover'] = 121106;
+$config['cache_count_idea'] = 5399;
 $config['cache_count_source'] = 5212;
 
 
@@ -226,7 +226,7 @@ $config['en_all_7274'] = array(
         'm_parents' => array(7311,7287,7274),
     ),
     12523 => array(
-        'm_icon' => '<i class="fad fa-portrait source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-sync source" aria-hidden="true"></i>',
         'm_name' => 'SYNC ICONS IF MISSING',
         'm_desc' => '',
         'm_parents' => array(7274,4527,4758),
@@ -1826,7 +1826,7 @@ $config['en_all_12273'] = array(
         'm_parents' => array(12273,10939,12359,12322,10593,4986,4603,4593,4485),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-quote-right source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
         'm_name' => 'SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -1956,7 +1956,7 @@ $config['en_all_12228'] = array(
         'm_parents' => array(4535,12500,12655,12571,12467,12321,12410,11089,12228,4527),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-quote-right source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -2270,7 +2270,7 @@ $config['en_all_3290'] = array(
 $config['en_ids_12141'] = array(4983,6157,7489,4251,4559,12117,6144,7485,7486,6997);
 $config['en_all_12141'] = array(
     4983 => array(
-        'm_icon' => '<i class="fas fa-quote-right source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -3110,7 +3110,7 @@ $config['en_all_11054'] = array(
         'm_parents' => array(12700,11054,6232,12079,10662,4527),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-quote-right source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -3408,67 +3408,67 @@ $config['en_all_11018'] = array(
     11020 => array(
         'm_icon' => '<i class="fad fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA NEXT',
-        'm_desc' => '',
+        'm_desc' => 'Define discovery flow',
         'm_parents' => array(12675,12413,11018),
     ),
     4601 => array(
         'm_icon' => '<i class="fas fa-tags idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA KEYWORDS',
-        'm_desc' => '',
+        'm_desc' => 'Improve idea search',
         'm_parents' => array(10984,11018,12322,10593,4593,4485),
     ),
     12419 => array(
         'm_icon' => '<i class="fas fa-comments-alt idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA COMMENTS',
-        'm_desc' => '',
+        'm_desc' => 'Contributor-only chats',
         'm_parents' => array(10984,11018,12359,5967,10593,12322,4986,11089,4593,4485),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA BOOKMARKS',
-        'm_desc' => '',
+        'm_desc' => 'Active contributors',
         'm_parents' => array(11054,4527,10984,11018,12654,12655,11035,11089,12321,4593,7551,4485),
     ),
     12589 => array(
         'm_icon' => '<i class="fad fa-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA LIST EDITOR',
-        'm_desc' => '',
+        'm_desc' => 'Mass modify next ideas',
         'm_parents' => array(12702,11018,4527,12590),
     ),
     7347 => array(
         'm_icon' => '<i class="fad fa-step-forward discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER START',
-        'm_desc' => '',
+        'm_desc' => 'Players who started here',
         'm_parents' => array(12701,12677,11018,12654,12655,11035,11089,6205,12228,4527),
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER COINS',
-        'm_desc' => '',
+        'm_desc' => 'Players who discovered idea',
         'm_parents' => array(12500,12677,10939,11018,12655,12467,11089,12410,6771,12228,4527),
     ),
     6146 => array(
         'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER INCOMPLETES',
-        'm_desc' => '',
+        'm_desc' => 'Players who failed to discover',
         'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-quote-right source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
-        'm_desc' => '',
+        'm_desc' => 'People & Content that reference this idea',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
     ),
     12682 => array(
         'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
         'm_name' => 'IDEA REQUIRE PROFILE',
-        'm_desc' => '',
+        'm_desc' => 'Requirements to discover this idea',
         'm_parents' => array(4593,12321,7551,11089,10986,11018,4485),
     ),
     7545 => array(
         'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
         'm_name' => 'IDEA APPEND PROFILE',
-        'm_desc' => '',
+        'm_desc' => 'Profile(s) enhancements once discovered idea',
         'm_parents' => array(12197,11030,11018,10986,11089,12321,7551,4593,4485),
     ),
     11047 => array(
@@ -4324,7 +4324,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-quote-right source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -4762,7 +4762,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527),
     ),
     12523 => array(
-        'm_icon' => '<i class="fad fa-portrait source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-sync source" aria-hidden="true"></i>',
         'm_name' => 'SYNC ICONS IF MISSING',
         'm_desc' => '',
         'm_parents' => array(7274,4527,4758),
@@ -5060,7 +5060,7 @@ $config['en_all_10593'] = array(
         'm_parents' => array(4593,10593,10658),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-quote-right source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -5732,7 +5732,7 @@ $config['en_all_7551'] = array(
         'm_parents' => array(4593,12321,7551,11089,10986,11018,4485),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-quote-right source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
         'm_name' => 'SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -7489,7 +7489,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4593,4755,5967),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-quote-right source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -7966,7 +7966,7 @@ $config['en_all_4485'] = array(
         'm_parents' => array(10984,11018,12322,10593,4593,4485),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-quote-right source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
         'm_name' => 'SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),

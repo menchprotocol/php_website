@@ -79,6 +79,7 @@ class Discover extends CI_Controller
 
     function next($in_id = 0){
 
+        $append_url = '?came_from='.$in_id;
         $session_en = superpower_assigned();
         if(!$session_en){
             return redirect_message('/source/sign');
@@ -93,10 +94,9 @@ class Discover extends CI_Controller
 
 
             //Should we check for auto next redirect if empty? Only if this is a selection:
-            $append_url = null;
             if(in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7712'))){
 
-                $append_url = '?check_if_empty=1';
+                $append_url .= '&check_if_empty=1';
 
             } elseif($ins[0]['in_type_source_id']==6677){
 
@@ -137,7 +137,7 @@ class Discover extends CI_Controller
             //Find the next idea in the DISCOVER LIST:
             $next_in_id = $this->DISCOVER_model->discover_next_go($session_en['en_id'], false);
             if($next_in_id > 0){
-                return redirect_message('/'.$next_in_id);
+                return redirect_message('/'.$next_in_id.$append_url);
             } else {
                 return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully discovered your entire list.</div></div>');
             }
