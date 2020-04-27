@@ -16,7 +16,7 @@ $total_count = 0;
 foreach ($this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-    'ln_type_source_id' => 4229, //Idea Link Locked Discovery
+    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12842')) . ')' => null, //IDEA LINKS ONE-WAY
     'LENGTH(ln_metadata) > 0' => null,
 ), array('in_next'), 0, 0) as $in_ln) {
     //Echo HTML format of this message:
@@ -96,7 +96,7 @@ if(1){
     foreach ($this->LEDGER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-        'ln_type_source_id' => 4228, //Idea Link Regular Discovery
+        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'LENGTH(ln_metadata) > 0' => null,
     ), array('in_next'), 0, 0) as $in_ln) {
         //Echo HTML format of this message:

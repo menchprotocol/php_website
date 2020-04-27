@@ -16,7 +16,7 @@ foreach ($this->IDEA_model->in_fetch(array(
     foreach($this->LEDGER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-        'ln_type_source_id' => 4228, //Idea Link Regular Discovery
+        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'ln_previous_idea_id' => $in['in_id'],
     ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 

@@ -514,7 +514,7 @@ class IDEA_model extends CI_Model
         foreach($this->LEDGER_model->ln_fetch(array(
             'in_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7355' : 'en_ids_7356' ))) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7359' : 'en_ids_7360' ))) . ')' => null,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_next_idea_id' => $in_id,
         ), array('in_previous')) as $in_parent){
 
@@ -529,6 +529,7 @@ class IDEA_model extends CI_Model
 
             //Fetch parents of parents:
             $recursive_parents = $this->IDEA_model->in_recursive_parents($p_id, false);
+
             if(count($recursive_parents) > 0){
                 if($first_level){
                     array_push($grand_parents, array_merge(array($p_id), $recursive_parents));
@@ -538,9 +539,27 @@ class IDEA_model extends CI_Model
             } elseif($first_level){
                 array_push($grand_parents, array($p_id));
             }
+
         }
 
         return $grand_parents;
+    }
+
+    function in_recursive_parents_new($in_id, $first_level = true, $public_only = true){
+
+        $this_level = array();
+
+        //Fetch parents:
+        foreach($this->LEDGER_model->ln_fetch(array(
+            'in_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7355' : 'en_ids_7356' ))) . ')' => null,
+            'ln_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7359' : 'en_ids_7360' ))) . ')' => null,
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+            'ln_next_idea_id' => $in_id,
+        ), array('in_previous')) as $in_parent){
+            $this_level[$in_parent['in_id']] = $this->IDEA_model->in_recursive_parents_new($in_parent['in_id'], false);
+        }
+
+        return $this_level;
     }
 
 
@@ -599,7 +618,7 @@ class IDEA_model extends CI_Model
         ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $child_in){
 
             //Determine action based on parent idea type:
-            if($child_in['ln_type_source_id']==4229){
+            if(in_array($child_in['ln_type_source_id'], $this->config->item('en_ids_12842'))){
 
                 //Conditional Idea Link:
                 array_push($conditional_steps, intval($child_in['in_id']));
@@ -709,7 +728,7 @@ class IDEA_model extends CI_Model
         $in__next = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-            'ln_type_source_id' => 4228, //Idea Link Regular Discovery
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_previous_idea_id' => $in_id,
         ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -801,7 +820,7 @@ class IDEA_model extends CI_Model
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            'ln_type_source_id' => 4228, //Fixed Idea Link
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_previous_idea_id' => $in_id,
         ), array('in_next'), 0, 0, array(), 'in_id, in_weight') as $in_child){
             $total_child_weights += $in_child['in_weight'] + $this->IDEA_model->in_weight($in_child['in_id']);
@@ -1053,7 +1072,7 @@ class IDEA_model extends CI_Model
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            'ln_type_source_id' => 4228, //Idea Link Regular Discovery
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_next_idea_id' => $in['in_id'],
             'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
         ), array('in_previous'), 0) as $in_or_parent){
@@ -1067,7 +1086,7 @@ class IDEA_model extends CI_Model
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            'ln_type_source_id' => 4229, //Idea Link Locked Discovery
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12842')) . ')' => null, //IDEA LINKS ONE-WAY
             'ln_next_idea_id' => $in['in_id'],
         ), array('in_previous'), 0) as $in_locked_parent){
             if(in_is_unlockable($in_locked_parent)){
@@ -1094,7 +1113,7 @@ class IDEA_model extends CI_Model
         $in__next = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            'ln_type_source_id' => 4228, //Idea Link Regular Discovery
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_previous_idea_id' => $in['in_id'],
         ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
         if(count($in__next) < 1){

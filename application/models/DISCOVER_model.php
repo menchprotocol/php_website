@@ -60,7 +60,7 @@ class DISCOVER_model extends CI_Model
                 foreach ($this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                    'ln_type_source_id' => 4228, //Idea Link Regular Discovery
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'ln_previous_idea_id' => $common_step_in_id,
                 ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $ln){
 
@@ -504,7 +504,7 @@ class DISCOVER_model extends CI_Model
             $locked_links = $this->LEDGER_model->ln_fetch(array(
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id' => 4229, //Idea Link Locked Discovery
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12842')) . ')' => null, //IDEA LINKS ONE-WAY
                 'ln_previous_idea_id' => $in['in_id'],
                 'ln_next_idea_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
             ), array('in_next'), 0, 0);
@@ -639,7 +639,7 @@ class DISCOVER_model extends CI_Model
         $in__next = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            'ln_type_source_id' => 4228, //Idea Link Regular Discovery
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_previous_idea_id' => $in['in_id'],
         ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
         if(count($in__next) < 1){
@@ -818,7 +818,7 @@ class DISCOVER_model extends CI_Model
         $in__next = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            'ln_type_source_id' => 4228, //Idea Link Regular Discovery
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_previous_idea_id' => $ins[0]['in_id'],
         ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1198,7 +1198,7 @@ class DISCOVER_model extends CI_Model
                 foreach ($this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                    'ln_type_source_id' => 4228, //Idea Link Regular Discovery
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'ln_previous_idea_id' => $ins[0]['in_id'],
                 ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $ln){
                     //See if this answer was seleted:
@@ -1551,7 +1551,7 @@ class DISCOVER_model extends CI_Model
                 foreach($this->LEDGER_model->ln_fetch(array(
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'ln_type_source_id' => 4228, //Idea Link Regular Discovery
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'ln_previous_idea_id' => $question_in_id,
                     'ln_next_idea_id IN (' . join(',', $answers_in_ids) . ')' => null, //Limit to cached answers
                 ), array('in_next')) as $in_answer){

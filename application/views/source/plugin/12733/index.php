@@ -35,14 +35,15 @@ if(!isset($_GET['in_id']) || !intval($_GET['in_id'])) {
 
         //List the idea:
         echo_json(array(
-            'in_user' => array(
-                'next_in_id' => $this->DISCOVER_model->discover_next_find($_GET['en_id'], $ins[0]),
-                'progress' => $this->DISCOVER_model->discover_completion_progress($_GET['en_id'], $ins[0]),
-                'marks' => $this->DISCOVER_model->discover_completion_marks($_GET['en_id'], $ins[0]),
-            ),
             'in_general' => array(
-                'recursive_parents' => $this->IDEA_model->in_recursive_parents($ins[0]['in_id']),
-                'common_base' => $this->IDEA_model->in_metadata_common_base($ins[0]),
+                'in_recursive_parents_new' => $this->IDEA_model->in_recursive_parents_new($ins[0]['in_id']),
+                'in_recursive_parents' => $this->IDEA_model->in_recursive_parents($ins[0]['in_id']),
+                'in_metadata_common_base' => $this->IDEA_model->in_metadata_common_base($ins[0]),
+            ),
+            'in_user' => array(
+                'discover_next_find' => $this->DISCOVER_model->discover_next_find($_GET['en_id'], $ins[0]),
+                'discover_completion_progress' => $this->DISCOVER_model->discover_completion_progress($_GET['en_id'], $ins[0]),
+                'discover_completion_marks' => $this->DISCOVER_model->discover_completion_marks($_GET['en_id'], $ins[0]),
             ),
         ));
 
