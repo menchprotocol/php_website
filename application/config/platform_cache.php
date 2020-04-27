@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-27 07:39:43 PST
+//Generated 2020-04-27 15:53:39 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1587998383;
-$config['cache_count_transaction'] = 1156450;
-$config['cache_count_discover'] = 121125;
+$config['cache_timestamp'] = 1588028019;
+$config['cache_count_transaction'] = 1156813;
+$config['cache_count_discover'] = 121127;
 $config['cache_count_idea'] = 5399;
 $config['cache_count_source'] = 5212;
 
@@ -65,7 +65,7 @@ $config['en_all_12216'] = array(
 );
 
 //SOURCE LINK MESSAGE DISPLAY:
-$config['en_ids_12822'] = array(4259,4261,4260,4255,4256,4257,4258);
+$config['en_ids_12822'] = array(4259,4261,4260,4256,4257,4258);
 $config['en_all_12822'] = array(
     4259 => array(
         'm_icon' => '<i class="fad fa-volume-up source"></i>',
@@ -84,12 +84,6 @@ $config['en_all_12822'] = array(
         'm_name' => 'IMAGE',
         'm_desc' => '',
         'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,6203,4593,4592,4537),
-    ),
-    4255 => array(
-        'm_icon' => '<i class="fad fa-align-left source"></i>',
-        'm_name' => 'TEXT',
-        'm_desc' => '',
-        'm_parents' => array(12822,10593,4593,4592),
     ),
     4256 => array(
         'm_icon' => '<i class="fad fa-browser source" aria-hidden="true"></i>',
@@ -5105,7 +5099,7 @@ $config['en_all_10593'] = array(
         'm_icon' => '<i class="fad fa-align-left source"></i>',
         'm_name' => 'SOURCE LINK TEXT',
         'm_desc' => '',
-        'm_parents' => array(12822,10593,4593,4592),
+        'm_parents' => array(10593,4593,4592),
     ),
     4258 => array(
         'm_icon' => '<i class="fad fa-video source"></i>',
@@ -7726,7 +7720,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fad fa-align-left source"></i>',
         'm_name' => 'SOURCE LINK TEXT',
         'm_desc' => '',
-        'm_parents' => array(12822,10593,4593,4592),
+        'm_parents' => array(10593,4593,4592),
     ),
     4318 => array(
         'm_icon' => '<i class="fad fa-clock source"></i>',
@@ -7881,7 +7875,7 @@ $config['en_all_4592'] = array(
         'm_icon' => '<i class="fad fa-align-left source"></i>',
         'm_name' => 'TEXT',
         'm_desc' => '',
-        'm_parents' => array(12822,10593,4593,4592),
+        'm_parents' => array(10593,4593,4592),
     ),
     4318 => array(
         'm_icon' => '<i class="fad fa-clock source"></i>',
