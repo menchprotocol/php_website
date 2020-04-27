@@ -559,7 +559,8 @@ class IDEA_model extends CI_Model
             $this_level[$in_parent['in_id']] = $this->IDEA_model->in_recursive_parents_new($in_parent['in_id'], false);
         }
 
-        return $this_level;
+        return ( $first_level ? array_multilevel_merge($this_level) : $this_level );
+
     }
 
 
