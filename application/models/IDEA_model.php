@@ -567,7 +567,7 @@ class IDEA_model extends CI_Model
             $index = 0;
             foreach(array_flatten($this_level) as $this_in_id){
                 array_push($return_array[$index], intval($this_in_id));
-                if($in_id==$start_in_id){
+                if($this_in_id==$start_in_id){
                     $index++;
                 }
             }
