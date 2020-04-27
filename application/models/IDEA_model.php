@@ -549,6 +549,7 @@ class IDEA_model extends CI_Model
 
         $this_level = array();
 
+
         //Fetch parents:
         foreach($this->LEDGER_model->ln_fetch(array(
             'in_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7355' : 'en_ids_7356' ))) . ')' => null,
@@ -559,8 +560,24 @@ class IDEA_model extends CI_Model
             $this_level[$in_parent['in_id']] = $this->IDEA_model->in_recursive_parents_new($in_parent['in_id'], false);
         }
 
-        return ( $first_level && !isset($_GET['original']) ? array_flatten($this_level) : $this_level );
+        if($first_level && !isset($_GET['original'])){
 
+            $return_array = array();
+            $start_in_id = config_var(12156);
+            $index = 0;
+            foreach(array_flatten($this_level) as $i => $in_id){
+                array_push($return_array[$index], $in_id);
+                if($in_id==$start_in_id){
+                    $index++;
+                }
+            }
+            return $return_array;
+
+        } else {
+
+            return $this_level;
+
+        }
     }
 
 
