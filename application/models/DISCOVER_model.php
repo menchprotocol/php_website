@@ -1120,7 +1120,7 @@ class DISCOVER_model extends CI_Model
             } else {
 
                 //JS Redirect asap:
-                echo "<script> $(document).ready(function () { window.location = '/discover/next/' + in_loaded_id; }); </script>";
+                echo "<script> $(document).ready(function () { window.location = '/discover/next/' + in_loaded_id + '?came_from=".$in_id."'; }); </script>";
 
             }
         }
