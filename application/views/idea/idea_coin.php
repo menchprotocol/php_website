@@ -2,7 +2,7 @@
 $en_all_2738 = $this->config->item('en_all_2738');
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 
-$is_source = in_is_source($in_id);
+$is_source = in_is_source($in['in_id']);
 $is_active = in_array($in['in_status_source_id'], $this->config->item('en_ids_7356'));
 $is_public = in_array($in['in_status_source_id'], $this->config->item('en_ids_7355'));
 
