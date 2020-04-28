@@ -926,7 +926,7 @@ class IDEA_model extends CI_Model
                         $metadata_this['__in__metadata_sources'][$parent_en['ln_profile_source_id']][$note_en['en_id']] = $note_en;
                     }
 
-                } elseif($parent_en['ln_profile_source_id']==3084) {
+                } elseif(in_array($parent_en['ln_profile_source_id'], $this->config->item('en_ids_12864'))) {
 
                     //Industry Expert:
                     if (!isset($metadata_this['__in__metadata_experts'][$note_en['en_id']])) {
@@ -940,7 +940,7 @@ class IDEA_model extends CI_Model
                         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Source Links
-                        'ln_profile_source_id' => 3084, //Industry Experts
+                        'ln_profile_source_id IN (' . join(',', $this->config->item('en_ids_12864')).')' => null, //EXPERT SOURCES
                         'ln_portfolio_source_id' => $parent_en['ln_profile_source_id'],
                     ), array('en_portfolio'), 0);
 
