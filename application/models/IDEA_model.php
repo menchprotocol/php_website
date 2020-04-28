@@ -997,7 +997,6 @@ class IDEA_model extends CI_Model
                 $metadata_recursion = $this->IDEA_model->in_metadata_source_insights($expansion_in_id, false);
 
                 if(!$metadata_recursion){
-                    echo 'Skip '.$expansion_in_id;
                     continue;
                 }
 
@@ -1047,10 +1046,9 @@ class IDEA_model extends CI_Model
 
         }
 
-        print_r($metadata_this);
-
 
         //EXPANSION ONE
+        /*
         foreach(array_merge($expansion_steps_one, $locked_steps) as $expansion_group){
 
             //Determine OR Answer local min/max:
@@ -1118,7 +1116,7 @@ class IDEA_model extends CI_Model
             }
 
         }
-
+        */
 
         if($update_db){
 
