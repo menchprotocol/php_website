@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-28 14:17:03 PST
+//Generated 2020-04-28 14:35:41 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588108623;
-$config['cache_count_transaction'] = 1158531;
+$config['cache_timestamp'] = 1588109741;
+$config['cache_count_transaction'] = 1158551;
 $config['cache_count_discover'] = 121153;
 $config['cache_count_idea'] = 5431;
 $config['cache_count_source'] = 5253;
@@ -232,19 +232,19 @@ $config['en_all_12741'] = array(
 );
 
 //CRON JOBS:
-$config['en_ids_7274'] = array(7275,4356,7276,12114,7277,7278,12523,7279,12569);
+$config['en_ids_7274'] = array(4356,7275,7276,12114,7277,7278,12523,7279,12569);
 $config['en_all_7274'] = array(
-    7275 => array(
-        'm_icon' => '',
-        'm_name' => 'IDEA METADATA SYNC COMMON BASE',
-        'm_desc' => '',
-        'm_parents' => array(7286,7274),
-    ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME (SECONDS)',
         'm_desc' => 'Auto update idea read time based on messages',
         'm_parents' => array(11047,7274,6404,12112,12420,10888,10650,6232,6201),
+    ),
+    7275 => array(
+        'm_icon' => '<i class="fad fa-sync idea"></i>',
+        'm_name' => 'IDEA SYNC COMMON BASE',
+        'm_desc' => '',
+        'm_parents' => array(11047,7286,7274),
     ),
     7276 => array(
         'm_icon' => '<i class="fad fa-sync idea" aria-hidden="true"></i>',
@@ -3241,7 +3241,7 @@ $config['en_all_11054'] = array(
 );
 
 //IDEA ADMIN MENU:
-$config['en_ids_11047'] = array(7264,4356,12733,11049,7276,4341,7279);
+$config['en_ids_11047'] = array(7264,4356,12733,11049,7275,7276,4341,7279);
 $config['en_all_11047'] = array(
     7264 => array(
         'm_icon' => '<i class="fad fa-sitemap idea"></i>',
@@ -3266,6 +3266,12 @@ $config['en_all_11047'] = array(
         'm_name' => 'IDEA REVIEW JSON',
         'm_desc' => '/plugin/11049?in_id=',
         'm_parents' => array(12741,6287,11047),
+    ),
+    7275 => array(
+        'm_icon' => '<i class="fad fa-sync idea"></i>',
+        'm_name' => 'IDEA SYNC COMMON BASE',
+        'm_desc' => '/cron/cron__7275/',
+        'm_parents' => array(11047,7286,7274),
     ),
     7276 => array(
         'm_icon' => '<i class="fad fa-sync idea" aria-hidden="true"></i>',
