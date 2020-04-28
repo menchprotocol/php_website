@@ -32,6 +32,9 @@ class DISCOVER_model extends CI_Model
         if(count($in_metadata['in__metadata_expansion_steps']) > 0){
             $check_termination_answers = array_merge($check_termination_answers , array_flatten($in_metadata['in__metadata_expansion_steps']));
         }
+        if(count($in_metadata['in__metadata_expansion_some']) > 0){
+            $check_termination_answers = array_merge($check_termination_answers , array_flatten($in_metadata['in__metadata_expansion_some']));
+        }
         if(count($in_metadata['in__metadata_expansion_conditional']) > 0){
             $check_termination_answers = array_merge($check_termination_answers , array_flatten($in_metadata['in__metadata_expansion_conditional']));
         }
@@ -49,7 +52,7 @@ class DISCOVER_model extends CI_Model
         foreach(array_flatten($in_metadata['in__metadata_common_steps']) as $common_step_in_id){
 
             //Is this an expansion step?
-            $is_expansion = isset($in_metadata['in__metadata_expansion_steps'][$common_step_in_id]);
+            $is_expansion = isset($in_metadata['in__metadata_expansion_steps'][$common_step_in_id]) || isset($in_metadata['in__metadata_expansion_some'][$common_step_in_id]);
             $is_condition = isset($in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]);
 
             //Have they completed this?
@@ -1530,7 +1533,7 @@ class DISCOVER_model extends CI_Model
         );
 
 
-        //Fetch expansion steps recursively, if any:
+        //Process Answer ONE:
         if(isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0){
 
             //We need expansion steps (OR Ideas) to calculate question/answers:
@@ -1612,6 +1615,87 @@ class DISCOVER_model extends CI_Model
         }
 
 
+        //Process Answer SOME:
+        if(isset($in_metadata['in__metadata_expansion_some']) && count($in_metadata['in__metadata_expansion_some']) > 0){
+
+            //We need expansion steps (OR Ideas) to calculate question/answers:
+            //To save all the marks for specific answers:
+            $question_in_ids = array();
+            $answer_marks_index = array();
+
+            //Go through these expansion steps:
+            foreach($in_metadata['in__metadata_expansion_some'] as $question_in_id => $answers_in_ids ){
+
+                //Calculate local min/max marks:
+                array_push($question_in_ids, $question_in_id);
+                $metadata_this['steps_question_count'] += 1;
+                $local_min = null;
+                $local_max = null;
+
+                //Calculate min/max points for this based on answers:
+                foreach($this->LEDGER_model->ln_fetch(array(
+                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                    'ln_previous_idea_id' => $question_in_id,
+                    'ln_next_idea_id IN (' . join(',', $answers_in_ids) . ')' => null, //Limit to cached answers
+                ), array('in_next')) as $in_answer){
+
+                    //Extract Link Metadata:
+                    $possible_answer_metadata = unserialize($in_answer['ln_metadata']);
+
+                    //Assign to this question:
+                    $answer_marks_index[$in_answer['in_id']] = ( isset($possible_answer_metadata['tr__assessment_points']) ? intval($possible_answer_metadata['tr__assessment_points']) : 0 );
+
+                    //Addup local min/max marks:
+                    if(is_null($local_min) || $answer_marks_index[$in_answer['in_id']] < $local_min){
+                        $local_min = $answer_marks_index[$in_answer['in_id']];
+                    }
+                }
+
+                //Did we have any marks for this question?
+                if(!is_null($local_min)){
+                    $metadata_this['steps_marks_min'] += $local_min;
+                }
+
+                //Always Add local max:
+                $metadata_this['steps_marks_max'] += $answer_marks_index[$in_answer['in_id']];
+
+            }
+
+
+
+            //Now let's check user answers to see what they have done:
+            $total_completion = $this->LEDGER_model->ln_fetch(array(
+                'ln_creator_source_id' => $en_id, //Belongs to this User
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
+                'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as total_completions');
+
+            //Add to total answer count:
+            $metadata_this['steps_answered_count'] += $total_completion[0]['total_completions'];
+
+            //Go through answers:
+            foreach($this->LEDGER_model->ln_fetch(array(
+                'ln_creator_source_id' => $en_id, //Belongs to this User
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
+                'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            ), array('in_next'), 500) as $answer_in) {
+
+                //Fetch recursively:
+                $recursive_stats = $this->DISCOVER_model->discover_completion_marks($en_id, $answer_in, false);
+
+                $metadata_this['steps_answered_count'] += $recursive_stats['steps_answered_count'];
+                $metadata_this['steps_answered_marks'] += $answer_marks_index[$answer_in['in_id']] + $recursive_stats['steps_answered_marks'];
+
+            }
+        }
+
+
+
         if($top_level && $metadata_this['steps_answered_count'] > 0){
 
             $divider = ( $metadata_this['steps_marks_max'] - $metadata_this['steps_marks_min'] ) * 100;
@@ -1679,15 +1763,23 @@ class DISCOVER_model extends CI_Model
         );
 
 
-        //Expansion Ideas Recursive
-        if(isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0){
+        //Expansion Answer ONE
+        $answer_array = array();
+        if(isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0) {
+            $answer_array = array_merge($answer_array , array_flatten($in_metadata['in__metadata_expansion_steps']));
+        }
+        if(isset($in_metadata['in__metadata_expansion_some']) && count($in_metadata['in__metadata_expansion_some']) > 0) {
+            $answer_array = array_merge($answer_array , array_flatten($in_metadata['in__metadata_expansion_some']));
+        }
+
+        if(count($answer_array)){
 
             //Now let's check user answers to see what they have done:
             foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
-                'ln_next_idea_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
+                'ln_next_idea_id IN (' . join(',', $answer_array) . ')' => null,
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
             ), array('in_next')) as $expansion_in) {
