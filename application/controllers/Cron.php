@@ -236,7 +236,143 @@ class Cron extends CI_Controller
     }
 
 
+    function cron__4356($in_id = 0)
+    {
 
+        //Update Idea Read Time:
+        $total_scanned = 0;
+        $total_updated = 0;
+        $en_all_12822 = $this->config->item('en_all_12822');
+        $filters = array();
+        if($in_id > 0){
+            $filters['in_id'] = $in_id;
+        } else {
+            //All Public Ideas
+            $filters['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null;
+        }
+
+        foreach($this->IDEA_model->in_fetch($filters) as $in){
+
+            //Start by counting the title:
+            $total_scanned++;
+            $estimated_time = words_to_seconds($in['in_title']);
+            if($in_id){
+                //Show details:
+                echo $estimated_time.' Seconds TITLE: '.$in['in_title'].'<hr />';
+            }
+
+
+            //Then count the title of next ideas:
+            foreach ($this->LEDGER_model->ln_fetch(array(
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                'ln_previous_idea_id' => $in['in_id'],
+            ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $in__next){
+                $this_time = words_to_seconds($in__next['in_title']);
+                $estimated_time += $this_time;
+                if($in_id){
+                    //Show details:
+                    echo $this_time.' Seconds NEXT: '.$in__next['in_title'].'<hr />';
+                }
+            }
+
+
+            //Fetch All Messages for this:
+            foreach($this->LEDGER_model->ln_fetch(array(
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_type_source_id' => 4231, //Idea Notes Messages
+                'ln_next_idea_id' => $in['in_id'],
+            ), array(), 0, 0, array('ln_order' => 'ASC')) as $message){
+
+                //Count text in this message:
+                $this_time = words_to_seconds(trim(str_replace('@' . $message['ln_profile_source_id'],'', $message['ln_content'])));
+                $estimated_time += $this_time;
+                if($in_id){
+                    //Show details:
+                    echo $this_time.' Seconds MESSAGE: '.$message['ln_content'].'<hr />';
+                }
+
+
+                //Any source references?
+                if($message['ln_profile_source_id'] > 0){
+                    //Yes, see
+                    //Source Profile
+                    foreach ($this->LEDGER_model->ln_fetch(array(
+                        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
+                        'ln_portfolio_source_id' => $message['ln_profile_source_id'],
+                    ), array('en_profile'), 0, 0, array('en_id' => 'ASC' /* Hack to get Text first */)) as $parent_en) {
+
+                        $this_time = 0;
+
+                        if($parent_en['ln_type_source_id'] == 4257 /* EMBED */){
+
+                            //See if we have a Start/End time:
+                            if(substr_count($parent_en['ln_content'], 'youtube.com/embed/')){
+                                $start_time = intval(one_two_explode('start=', '&', $parent_en['ln_content']));
+                                $end_time = intval(one_two_explode('end=', '&', $parent_en['ln_content']));
+                                $this_time = $end_time - $start_time;
+                            }
+
+                            if(!$this_time){
+                                $this_time = 90;
+                            }
+
+                        } elseif($parent_en['ln_type_source_id'] == 4255 /* TEXT */){
+
+                            //Count Words:
+                            $this_time = words_to_seconds($parent_en['ln_content']);
+
+                        } elseif($parent_en['ln_type_source_id'] == 4259 /* AUDIO */){
+
+                            $this_time = 60;
+
+                        } elseif($parent_en['ln_type_source_id'] == 4258 /* VIDEO */){
+
+                            $this_time = 90;
+
+                        } else {
+
+                            $this_time = 15;
+
+                        }
+
+                        $estimated_time += $this_time;
+                        if($in_id){
+                            //Show details:
+                            echo '&nbsp;&nbsp;'.$this_time.' Seconds MESSAGE SOURCE ['.$en_all_12822[$parent_en['ln_type_source_id']]['m_name'].']: '.$parent_en['ln_content'].'<hr />';
+                        }
+                    }
+                }
+
+
+                $estimated_time = round($estimated_time);
+                if($in_id){
+                    //Show details:
+                    echo $estimated_time.' SECONDS TOTAL<hr />';
+                }
+
+                //Update if necessary:
+                if($estimated_time != $in['in_time_seconds']){
+
+                    $this->IDEA_model->in_update($in['in_id'], array(
+                        'in_time_seconds' => $estimated_time,
+                    ));
+                    $total_updated++;
+
+                    if($in_id){
+                        //Show details:
+                        echo 'UPDATED DB';
+                    }
+                }
+            }
+        }
+
+        //Return results:
+        echo $total_updated.'/'.$total_scanned.' Ideas Updated with new estimated times.';
+    }
 
 
     function cron__7275($in_id = 0)

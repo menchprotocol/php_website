@@ -258,6 +258,11 @@ function ln_detect_type($string)
     }
 }
 
+function words_to_seconds($text){
+    //Average reading speed assumed to be 250 words/minute
+    return ( strlen($text) ? round( (substr_count($text, ' ') + 1) / 250 * 60 , 4 ) : 0 );
+}
+
 function is_https_url($url){
     return substr($url, 0, 8) == 'https://';
 }
