@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-28 14:35:41 PST
+//Generated 2020-04-28 16:15:35 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588109741;
-$config['cache_count_transaction'] = 1158551;
+$config['cache_timestamp'] = 1588115735;
+$config['cache_count_transaction'] = 1158597;
 $config['cache_count_discover'] = 121153;
 $config['cache_count_idea'] = 5431;
-$config['cache_count_source'] = 5253;
+$config['cache_count_source'] = 5254;
 
 
 
@@ -2617,7 +2617,7 @@ $config['en_all_11081'] = array(
 );
 
 //MENCH VARIABLE:
-$config['en_ids_6232'] = array(4358,6203,6202,4486,6159,6208,6168,6283,6228,6165,6162,6170,6161,6169,6167,4356,4737,4736,7585,6197,6198,6160,6172,6207,6177,4364,7694,4367,4372,6103,4369,4429,4368,4366,4370,4371,6186,4362,4593,4739,4735);
+$config['en_ids_6232'] = array(4358,6203,6202,4486,6159,6208,6168,6283,12885,6228,6165,6162,6170,6161,6169,6167,4356,4737,4736,7585,6197,6198,6160,6172,6207,6177,4364,7694,4367,4372,6103,4369,4429,4368,4366,4370,4371,6186,4362,4593,4739,4735);
 $config['en_all_6232'] = array(
     4358 => array(
         'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
@@ -2665,6 +2665,12 @@ $config['en_all_6232'] = array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'IDEA METADATA EXPANSION CONDITIONAL',
         'm_desc' => 'in__metadata_expansion_conditional',
+        'm_parents' => array(6214,6232,6159),
+    ),
+    12885 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'IDEA METADATA EXPANSION SOME',
+        'm_desc' => 'in__metadata_expansion_some',
         'm_parents' => array(6214,6232,6159),
     ),
     6228 => array(
