@@ -346,26 +346,25 @@ class Cron extends CI_Controller
                         }
                     }
                 }
+            }
 
+            $estimated_time = round($estimated_time);
+            if($in_id){
+                //Show details:
+                echo $estimated_time.' SECONDS TOTAL<hr />';
+            }
 
-                $estimated_time = round($estimated_time);
+            //Update if necessary:
+            if($estimated_time != $in['in_time_seconds']){
+
+                $this->IDEA_model->in_update($in['in_id'], array(
+                    'in_time_seconds' => $estimated_time,
+                ));
+                $total_updated++;
+
                 if($in_id){
                     //Show details:
-                    echo $estimated_time.' SECONDS TOTAL<hr />';
-                }
-
-                //Update if necessary:
-                if($estimated_time != $in['in_time_seconds']){
-
-                    $this->IDEA_model->in_update($in['in_id'], array(
-                        'in_time_seconds' => $estimated_time,
-                    ));
-                    $total_updated++;
-
-                    if($in_id){
-                        //Show details:
-                        echo 'UPDATED DB';
-                    }
+                    echo 'UPDATED DB<hr />';
                 }
             }
         }
