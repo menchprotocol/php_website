@@ -1009,8 +1009,8 @@ class IDEA_model extends CI_Model
                 }
 
                 //MAX
-                $metadata_local['local__in__metadata_max_steps'] = $metadata_recursion['__in__metadata_max_steps'];
-                $metadata_local['local__in__metadata_max_seconds'] = $metadata_recursion['__in__metadata_max_seconds'];
+                $metadata_this['__in__metadata_max_steps'] += intval($metadata_recursion['__in__metadata_max_steps']);
+                $metadata_this['__in__metadata_max_seconds'] += intval($metadata_recursion['__in__metadata_max_seconds']);
 
 
                 //Addup Experts:
@@ -1040,15 +1040,10 @@ class IDEA_model extends CI_Model
                 $metadata_this['__in__metadata_min_seconds'] += intval($metadata_local['local__in__metadata_min_seconds']);
             }
 
-            //MAX
-            $metadata_this['__in__metadata_max_steps'] += intval($metadata_local['local__in__metadata_max_steps']);
-            $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
-
         }
 
 
         //EXPANSION ONE
-        /*
         foreach(array_merge($expansion_steps_one, $locked_steps) as $expansion_group){
 
             //Determine OR Answer local min/max:
@@ -1116,7 +1111,7 @@ class IDEA_model extends CI_Model
             }
 
         }
-        */
+
 
         if($update_db){
 
