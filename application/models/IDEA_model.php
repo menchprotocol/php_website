@@ -981,6 +981,72 @@ class IDEA_model extends CI_Model
         }
 
 
+        //EXPANSION SOME
+        foreach($expansion_steps_some as $expansion_group){
+
+            //Determine OR Answer local min/max:
+            $metadata_local = array(
+                'local__in__metadata_min_steps'=> null,
+                'local__in__metadata_max_steps'=> null,
+                'local__in__metadata_min_seconds'=> null,
+                'local__in__metadata_max_seconds'=> null,
+            );
+
+            foreach($expansion_group as $expansion_in_id){
+
+                $metadata_recursion = $this->IDEA_model->in_metadata_source_insights($expansion_in_id, false);
+
+                if(!$metadata_recursion){
+                    continue;
+                }
+
+                //MIN
+                if(is_null($metadata_local['local__in__metadata_min_steps']) || $metadata_recursion['__in__metadata_min_steps'] < $metadata_local['local__in__metadata_min_steps']){
+                    $metadata_local['local__in__metadata_min_steps'] = $metadata_recursion['__in__metadata_min_steps'];
+                }
+                if(is_null($metadata_local['local__in__metadata_min_seconds']) || $metadata_recursion['__in__metadata_min_seconds'] < $metadata_local['local__in__metadata_min_seconds']){
+                    $metadata_local['local__in__metadata_min_seconds'] = $metadata_recursion['__in__metadata_min_seconds'];
+                }
+
+                //MAX
+                $metadata_local['local__in__metadata_max_steps'] = $metadata_recursion['__in__metadata_max_steps'];
+                $metadata_local['local__in__metadata_max_seconds'] = $metadata_recursion['__in__metadata_max_seconds'];
+
+
+                //Addup Experts:
+                foreach ($metadata_recursion['__in__metadata_experts'] as $en_id => $expert_en) {
+                    //Is this a new expert?
+                    if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
+                        //Yes, add them to the list:
+                        $metadata_this['__in__metadata_experts'][$en_id] = $expert_en;
+                    }
+                }
+
+                //Addup Sources:
+                foreach ($metadata_recursion['__in__metadata_sources'] as $type_en_id => $source_ens) {
+                    foreach ($source_ens as $en_id => $source_en) {
+                        if (!isset($metadata_this['__in__metadata_sources'][$type_en_id][$en_id])) {
+                            $metadata_this['__in__metadata_sources'][$type_en_id][$en_id] = $source_en;
+                        }
+                    }
+                }
+            }
+
+            //MIN
+            if(!is_null($metadata_local['local__in__metadata_min_steps'])){
+                $metadata_this['__in__metadata_min_steps'] += intval($metadata_local['local__in__metadata_min_steps']);
+            }
+            if(!is_null($metadata_local['local__in__metadata_min_seconds'])){
+                $metadata_this['__in__metadata_min_seconds'] += intval($metadata_local['local__in__metadata_min_seconds']);
+            }
+
+            //MAX
+            $metadata_this['__in__metadata_max_steps'] += intval($metadata_local['local__in__metadata_max_steps']);
+            $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
+
+        }
+
+
         //EXPANSION ONE
         foreach(array_merge($expansion_steps_one, $locked_steps) as $expansion_group){
 
@@ -1049,72 +1115,6 @@ class IDEA_model extends CI_Model
             }
 
         }
-
-
-        //EXPANSION SOME
-        foreach($expansion_steps_some as $expansion_group){
-
-            //Determine OR Answer local min/max:
-            $metadata_local = array(
-                'local__in__metadata_min_steps'=> null,
-                'local__in__metadata_max_steps'=> null,
-                'local__in__metadata_min_seconds'=> null,
-                'local__in__metadata_max_seconds'=> null,
-            );
-
-            foreach($expansion_group as $expansion_in_id){
-
-                $metadata_recursion = $this->IDEA_model->in_metadata_source_insights($expansion_in_id, false);
-
-                if(!$metadata_recursion){
-                    continue;
-                }
-
-                //MIN
-                if(is_null($metadata_local['local__in__metadata_min_steps']) || $metadata_recursion['__in__metadata_min_steps'] < $metadata_local['local__in__metadata_min_steps']){
-                    $metadata_local['local__in__metadata_min_steps'] = $metadata_recursion['__in__metadata_min_steps'];
-                }
-                if(is_null($metadata_local['local__in__metadata_min_seconds']) || $metadata_recursion['__in__metadata_min_seconds'] < $metadata_local['local__in__metadata_min_seconds']){
-                    $metadata_local['local__in__metadata_min_seconds'] = $metadata_recursion['__in__metadata_min_seconds'];
-                }
-
-                //MAX
-                $metadata_local['local__in__metadata_max_steps'] = $metadata_recursion['__in__metadata_max_steps'];
-                $metadata_local['local__in__metadata_max_seconds'] = $metadata_recursion['__in__metadata_max_seconds'];
-
-
-                //Addup Experts:
-                foreach ($metadata_recursion['__in__metadata_experts'] as $en_id => $expert_en) {
-                    //Is this a new expert?
-                    if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
-                        //Yes, add them to the list:
-                        $metadata_this['__in__metadata_experts'][$en_id] = $expert_en;
-                    }
-                }
-
-                //Addup Sources:
-                foreach ($metadata_recursion['__in__metadata_sources'] as $type_en_id => $source_ens) {
-                    foreach ($source_ens as $en_id => $source_en) {
-                        if (!isset($metadata_this['__in__metadata_sources'][$type_en_id][$en_id])) {
-                            $metadata_this['__in__metadata_sources'][$type_en_id][$en_id] = $source_en;
-                        }
-                    }
-                }
-            }
-
-            //MIN
-            if(!is_null($metadata_local['local__in__metadata_min_steps'])){
-                $metadata_this['__in__metadata_min_steps'] += intval($metadata_local['local__in__metadata_min_steps']);
-            }
-            if(!is_null($metadata_local['local__in__metadata_min_seconds'])){
-                $metadata_this['__in__metadata_min_seconds'] += intval($metadata_local['local__in__metadata_min_seconds']);
-            }
-
-            //MAX
-            $metadata_this['__in__metadata_max_steps'] += intval($metadata_local['local__in__metadata_max_steps']);
-            $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
-        }
-
 
 
         if($update_db){

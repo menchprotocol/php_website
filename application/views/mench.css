@@ -1334,6 +1334,11 @@ label {
     width:    -moz-calc(100% - 33px) !important;
     width:         calc(100% - 33px) !important;
 }
+.block-one {
+    width: -webkit-calc(100% - 10px) !important;
+    width:    -moz-calc(100% - 10px) !important;
+    width:         calc(100% - 10px) !important;
+}
 
 
 .texttype__sm{
