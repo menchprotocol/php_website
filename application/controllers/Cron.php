@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 # ACTIVE:
 * * * * *       /usr/bin/php /var/www/platform/index.php cron cron__7275  # Common Base
+5 * * * *       /usr/bin/php /var/www/platform/index.php cron cron__4356  # Idea Time
 10 * * * *      /usr/bin/php /var/www/platform/index.php cron cron__7276  # Extra Insights
 20 * * * *      /usr/bin/php /var/www/platform/index.php cron cron__12523 # Icon Sync
 30 * * * *      /usr/bin/php /var/www/platform/index.php cron cron__12569 # Weight Sync
@@ -240,6 +241,7 @@ class Cron extends CI_Controller
     {
 
         //Update Idea Read Time:
+        $total_time = 0;
         $total_scanned = 0;
         $total_updated = 0;
         $en_all_12822 = $this->config->item('en_all_12822');
@@ -356,21 +358,17 @@ class Cron extends CI_Controller
 
             //Update if necessary:
             if($estimated_time != $in['in_time_seconds']){
-
                 $this->IDEA_model->in_update($in['in_id'], array(
                     'in_time_seconds' => $estimated_time,
                 ));
                 $total_updated++;
-
-                if($in_id){
-                    //Show details:
-                    echo 'UPDATED DB<hr />';
-                }
             }
+
+            $total_time += $estimated_time;
         }
 
         //Return results:
-        echo $total_updated.'/'.$total_scanned.' Ideas Updated with new estimated times.';
+        echo $total_updated.'/'.$total_scanned.' Ideas Updated with new estimated times totalling '.round(($total_time/3600), 1).' Hours.';
     }
 
 
