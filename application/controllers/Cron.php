@@ -434,13 +434,13 @@ class Cron extends CI_Controller
         }
 
         //Update extra insights:
-        $idea = $this->IDEA_model->in_metadata_source_insights($in_id);
+        $results = $this->IDEA_model->in_metadata_extra_insights($in_id);
 
-        $success_message = 'Extra Insights Metadata updated.';
 
         //Show json:
         echo_json(array(
-            'message' => $success_message,
+            'message' => 'Extra Insights Metadata updated.',
+            'results' => $results,
         ));
 
     }
