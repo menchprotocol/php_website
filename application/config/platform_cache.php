@@ -8,16 +8,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-28 10:22:50 PST
+//Generated 2020-04-28 14:17:03 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588094570;
-$config['cache_count_transaction'] = 1158321;
-$config['cache_count_discover'] = 121135;
+$config['cache_timestamp'] = 1588108623;
+$config['cache_count_transaction'] = 1158531;
+$config['cache_count_discover'] = 121153;
 $config['cache_count_idea'] = 5431;
-$config['cache_count_source'] = 5250;
+$config['cache_count_source'] = 5253;
 
 
+
+//IDEA TYPE SELECT ONE:
+$config['en_ids_12883'] = array(6684);
+$config['en_all_12883'] = array(
+    6684 => array(
+        'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SELECT ONE',
+        'm_desc' => '',
+        'm_parents' => array(12883,12336,12129,7712,7585,6157,6193),
+    ),
+);
+
+//IDEA TYPE SELECT SOME:
+$config['en_ids_12884'] = array(7231);
+$config['en_all_12884'] = array(
+    7231 => array(
+        'm_icon' => '<i class="fas fa-check-square idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SELECT SOME',
+        'm_desc' => '',
+        'm_parents' => array(12884,12334,12129,7712,7489,7585,6193),
+    ),
+);
 
 //EXPERT SOURCES:
 $config['en_ids_12864'] = array(2750,3084);
@@ -4110,7 +4132,7 @@ $config['en_all_10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['en_ids_4527'] = array(6225,12588,6150,7274,6205,11081,7704,5967,6255,12229,12326,12446,6146,10692,12227,7347,7304,7360,7364,7359,12327,10658,12864,12359,4535,11047,6192,10573,12273,11018,12675,12677,4229,12842,4486,12840,12589,4485,12012,6193,10990,4983,4737,7356,12138,7355,12400,6201,12420,12413,7585,10602,12330,12324,7309,7712,7751,10717,12571,12574,4341,2738,12744,7555,12467,6404,12079,4527,11054,12687,11035,12112,10876,6232,11058,12410,12500,4280,4277,6102,12741,6287,12577,4755,4269,6204,4536,10956,12279,3000,12274,6194,3290,11089,11080,12822,11059,4592,12403,4537,12524,4997,4454,4986,7551,6177,7358,12575,7357,12401,10957,6206,3289,11028,12523,12321,12322,12216,6103,6186,4593,10593,12141,12228,12655,12654);
+$config['en_ids_4527'] = array(6225,12588,6150,7274,6205,11081,7704,5967,6255,12229,12326,12446,6146,10692,12227,7347,7304,7360,7364,7359,12327,10658,12864,12359,4535,11047,6192,10573,12273,11018,12675,12677,4229,12842,4486,12840,12589,4485,12012,6193,10990,4983,4737,7356,12138,7355,12400,6201,12420,12413,7585,10602,12330,12324,7309,7712,12883,12884,7751,10717,12571,12574,4341,2738,12744,7555,12467,6404,12079,4527,11054,12687,11035,12112,10876,6232,11058,12410,12500,4280,4277,6102,12741,6287,12577,4755,4269,6204,4536,10956,12279,3000,12274,6194,3290,11089,11080,12822,11059,4592,12403,4537,12524,4997,4454,4986,7551,6177,7358,12575,7357,12401,10957,6206,3289,11028,12523,12321,12322,12216,6103,6186,4593,10593,12141,12228,12655,12654);
 $config['en_all_4527'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -4447,6 +4469,18 @@ $config['en_all_4527'] = array(
         'm_name' => 'IDEA TYPE SELECT',
         'm_desc' => '',
         'm_parents' => array(6287,10893,4527),
+    ),
+    12883 => array(
+        'm_icon' => '<i class="fas fa-check"></i>',
+        'm_name' => 'IDEA TYPE SELECT ONE',
+        'm_desc' => '',
+        'm_parents' => array(4527,10893),
+    ),
+    12884 => array(
+        'm_icon' => '<i class="fas fa-check-double"></i>',
+        'm_name' => 'IDEA TYPE SELECT SOME',
+        'm_desc' => '',
+        'm_parents' => array(4527,10893),
     ),
     7751 => array(
         'm_icon' => '<i class="far fa-upload" aria-hidden="true"></i>',
@@ -5549,13 +5583,13 @@ $config['en_all_7712'] = array(
         'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
         'm_name' => 'ONE',
         'm_desc' => '',
-        'm_parents' => array(12336,12129,7712,7585,6157,6193),
+        'm_parents' => array(12883,12336,12129,7712,7585,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-square idea" aria-hidden="true"></i>',
         'm_name' => 'SOME',
         'm_desc' => '',
-        'm_parents' => array(12334,12129,7712,7489,7585,6193),
+        'm_parents' => array(12884,12334,12129,7712,7489,7585,6193),
     ),
 );
 
@@ -5618,13 +5652,13 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
         'm_name' => 'SELECT ONE',
         'm_desc' => '',
-        'm_parents' => array(12336,12129,7712,7585,6157,6193),
+        'm_parents' => array(12883,12336,12129,7712,7585,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-square idea" aria-hidden="true"></i>',
         'm_name' => 'SELECT SOME',
         'm_desc' => '',
-        'm_parents' => array(12334,12129,7712,7489,7585,6193),
+        'm_parents' => array(12884,12334,12129,7712,7489,7585,6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
@@ -5665,13 +5699,13 @@ $config['en_all_7585'] = array(
         'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
         'm_name' => 'SELECT ONE',
         'm_desc' => 'Select a single next idea',
-        'm_parents' => array(12336,12129,7712,7585,6157,6193),
+        'm_parents' => array(12883,12336,12129,7712,7585,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-square idea" aria-hidden="true"></i>',
         'm_name' => 'SELECT SOME',
         'm_desc' => 'Select 1 or more next idea(s)',
-        'm_parents' => array(12334,12129,7712,7489,7585,6193),
+        'm_parents' => array(12884,12334,12129,7712,7489,7585,6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',

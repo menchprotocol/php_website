@@ -606,12 +606,15 @@ class IDEA_model extends CI_Model
 
         //Set variables:
         $is_first_in = ( !isset($focus_in['ln_id']) ); //First idea does not have a link, just the idea
-        $has_or_parent = in_array($focus_in['in_type_source_id'] , $this->config->item('en_ids_6193') /* OR Ideas */ );
-        $or_children = array(); //To be populated only if $focus_in is an OR idea
+        $select_one = in_array($focus_in['in_type_source_id'] , $this->config->item('en_ids_12883')); //IDEA TYPE SELECT ONE
+        $select_some = in_array($focus_in['in_type_source_id'] , $this->config->item('en_ids_12884')); //IDEA TYPE SELECT SOME
+        $select_one_children = array(); //To be populated only if $focus_in is select one
+        $select_some_children = array(); //To be populated only if $focus_in is select some
         $conditional_steps = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
             '__in__metadata_common_steps' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
             '__in__metadata_expansion_steps' => array(), //Ideas that may exist as a link to expand an DISCOVER LIST idea by answering OR ideas
+            '__in__metadata_expansion_some' => array(), //Ideas that allows players to select one or more
             '__in__metadata_expansion_conditional' => array(), //Ideas that may exist as a link to expand an DISCOVER LIST idea via Conditional Idea links
         );
 
@@ -629,10 +632,15 @@ class IDEA_model extends CI_Model
                 //Conditional Idea Link:
                 array_push($conditional_steps, intval($child_in['in_id']));
 
-            } elseif($has_or_parent){
+            } elseif($select_one){
 
                 //OR parent Idea with Fixed Idea Link:
-                array_push($or_children, intval($child_in['in_id']));
+                array_push($select_one_children, intval($child_in['in_id']));
+
+            } elseif($select_some){
+
+                //OR parent Idea with Fixed Idea Link:
+                array_push($select_some_children, intval($child_in['in_id']));
 
             } else {
 
@@ -656,6 +664,13 @@ class IDEA_model extends CI_Model
                         }
                     }
                 }
+                if(count($child_recursion['__in__metadata_expansion_some']) > 0){
+                    foreach($child_recursion['__in__metadata_expansion_some'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__in__metadata_expansion_some'])){
+                            $metadata_this['__in__metadata_expansion_some'][$key] = $value;
+                        }
+                    }
+                }
                 if(count($child_recursion['__in__metadata_expansion_conditional']) > 0){
                     foreach($child_recursion['__in__metadata_expansion_conditional'] as $key => $value){
                         if(!array_key_exists($key, $metadata_this['__in__metadata_expansion_conditional'])){
@@ -668,10 +683,12 @@ class IDEA_model extends CI_Model
 
 
         //Was this an OR branch that needs it's children added to the array?
-        if($has_or_parent && count($or_children) > 0){
-            $metadata_this['__in__metadata_expansion_steps'][$focus_in['in_id']] = $or_children;
+        if($select_one && count($select_one_children) > 0){
+            $metadata_this['__in__metadata_expansion_steps'][$focus_in['in_id']] = $select_one_children;
         }
-
+        if($select_some && count($select_some_children) > 0){
+            $metadata_this['__in__metadata_expansion_some'][$focus_in['in_id']] = $select_some_children;
+        }
         if(count($conditional_steps) > 0){
             $metadata_this['__in__metadata_expansion_conditional'][$focus_in['in_id']] = $conditional_steps;
         }
@@ -690,6 +707,7 @@ class IDEA_model extends CI_Model
             update_metadata('in', $focus_in['in_id'], array(
                 'in__metadata_common_steps' => $metadata_this['__in__metadata_common_steps'],
                 'in__metadata_expansion_steps' => $metadata_this['__in__metadata_expansion_steps'],
+                'in__metadata_expansion_some' => $metadata_this['__in__metadata_expansion_some'],
                 'in__metadata_expansion_conditional' => $metadata_this['__in__metadata_expansion_conditional'],
             ));
 
