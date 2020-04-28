@@ -997,6 +997,7 @@ class IDEA_model extends CI_Model
                 $metadata_recursion = $this->IDEA_model->in_metadata_source_insights($expansion_in_id, false);
 
                 if(!$metadata_recursion){
+                    echo 'Skip '.$expansion_in_id;
                     continue;
                 }
 
@@ -1045,6 +1046,8 @@ class IDEA_model extends CI_Model
             $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
 
         }
+
+        print_r($metadata_this);
 
 
         //EXPANSION ONE
