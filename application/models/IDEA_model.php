@@ -915,6 +915,13 @@ class IDEA_model extends CI_Model
         }
 
 
+        $metadata_local = array(
+            'local__in__metadata_min_steps'=> null,
+            'local__in__metadata_max_steps'=> null,
+            'local__in__metadata_min_seconds'=> null,
+            'local__in__metadata_max_seconds'=> null,
+        );
+
         //NEXT IDEAS
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -923,20 +930,13 @@ class IDEA_model extends CI_Model
             'ln_previous_idea_id' => $in['in_id'],
         ), array('in_next'), 0) as $in__next){
 
-            $metadata_local = array(
-                'local__in__metadata_min_steps'=> null,
-                'local__in__metadata_max_steps'=> null,
-                'local__in__metadata_min_seconds'=> null,
-                'local__in__metadata_max_seconds'=> null,
-            );
-
             //RECURSION
             $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights2($in__next);
             if(!$metadata_recursion){
                 continue;
             }
 
-            //MERGE - 3 General Scenarios can happen here...
+            //MERGE (3 SCENARIOS)
             if(in_array($in__next['ln_type_source_id'], $this->config->item('en_ids_12842')) || in_array($in['in_type_source_id'], $this->config->item('en_ids_12883'))){
 
                 //ONE
@@ -970,36 +970,21 @@ class IDEA_model extends CI_Model
                 }
 
                 //MAX
-                $metadata_this['local__in__metadata_max_steps'] = intval($metadata_recursion['__in__metadata_max_steps']);
-                $metadata_this['local__in__metadata_max_seconds'] = intval($metadata_recursion['__in__metadata_max_seconds']);
+                $metadata_this['__in__metadata_max_steps'] += intval($metadata_recursion['__in__metadata_max_steps']);
+                $metadata_this['__in__metadata_max_seconds'] += intval($metadata_recursion['__in__metadata_max_seconds']);
 
             } else {
 
                 //ALL
 
                 //MIN
-                $metadata_this['local__in__metadata_min_steps'] = intval($metadata_recursion['__in__metadata_min_steps']);
-                $metadata_this['local__in__metadata_min_seconds'] = intval($metadata_recursion['__in__metadata_min_seconds']);
+                $metadata_this['local__in__metadata_min_steps'] += intval($metadata_recursion['__in__metadata_min_steps']);
+                $metadata_this['local__in__metadata_min_seconds'] += intval($metadata_recursion['__in__metadata_min_seconds']);
 
                 //MAX
-                $metadata_this['local__in__metadata_max_steps'] = intval($metadata_recursion['__in__metadata_max_steps']);
-                $metadata_this['local__in__metadata_max_seconds'] = intval($metadata_recursion['__in__metadata_max_seconds']);
+                $metadata_this['local__in__metadata_max_steps'] += intval($metadata_recursion['__in__metadata_max_steps']);
+                $metadata_this['local__in__metadata_max_seconds'] += intval($metadata_recursion['__in__metadata_max_seconds']);
 
-            }
-
-
-            //ADD LOCAL MIN/MAX
-            if(!is_null($metadata_local['local__in__metadata_min_steps'])){
-                $metadata_this['__in__metadata_min_steps'] += intval($metadata_local['local__in__metadata_min_steps']);
-            }
-            if(!is_null($metadata_local['local__in__metadata_max_steps'])){
-                $metadata_this['__in__metadata_max_steps'] += intval($metadata_local['local__in__metadata_max_steps']);
-            }
-            if(!is_null($metadata_local['local__in__metadata_min_seconds'])){
-                $metadata_this['__in__metadata_min_seconds'] += intval($metadata_local['local__in__metadata_min_seconds']);
-            }
-            if(!is_null($metadata_local['local__in__metadata_max_seconds'])){
-                $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
             }
 
 
@@ -1023,6 +1008,20 @@ class IDEA_model extends CI_Model
             }
         }
 
+
+        //ADD LOCAL MIN/MAX
+        if(!is_null($metadata_local['local__in__metadata_min_steps'])){
+            $metadata_this['__in__metadata_min_steps'] += intval($metadata_local['local__in__metadata_min_steps']);
+        }
+        if(!is_null($metadata_local['local__in__metadata_max_steps'])){
+            $metadata_this['__in__metadata_max_steps'] += intval($metadata_local['local__in__metadata_max_steps']);
+        }
+        if(!is_null($metadata_local['local__in__metadata_min_seconds'])){
+            $metadata_this['__in__metadata_min_seconds'] += intval($metadata_local['local__in__metadata_min_seconds']);
+        }
+        if(!is_null($metadata_local['local__in__metadata_max_seconds'])){
+            $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
+        }
 
         //Save to DB
         /*
