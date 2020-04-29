@@ -897,56 +897,11 @@ class IDEA_model extends CI_Model
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')).')' => null, //IDEA COIN
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
-        ), array('en_profile'), 0) as $note_en) {
-
-            //SOURCE PROFILE
-            foreach($this->LEDGER_model->ln_fetch(array(
-                'ln_portfolio_source_id' => $note_en['ln_profile_source_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //SOURCE LINKS
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            ), array(), 0) as $en__profile){
-
-                if(in_array($en__profile['ln_profile_source_id'], $this->config->item('en_ids_3000'))){
-
-                    //Expert Source:
-                    if (!isset($metadata_this['__in__metadata_sources'][$en__profile['ln_profile_source_id']][$note_en['en_id']])) {
-                        //Add since it's not there:
-                        $metadata_this['__in__metadata_sources'][$en__profile['ln_profile_source_id']][$note_en['en_id']] = $note_en;
-                    }
-
-                } elseif(in_array($en__profile['ln_profile_source_id'], $this->config->item('en_ids_12864'))) {
-
-                    //Industry Expert:
-                    if (!isset($metadata_this['__in__metadata_experts'][$note_en['en_id']])) {
-                        $metadata_this['__in__metadata_experts'][$note_en['en_id']] = $note_en;
-                    }
-
-                }
-
-                //Industry Expert?
-                $expert_parents = $this->LEDGER_model->ln_fetch(array(
-                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //SOURCE LINKS
-                    'ln_profile_source_id IN (' . join(',', $this->config->item('en_ids_12864')).')' => null, //EXPERT SOURCES
-                    'ln_portfolio_source_id' => $en__profile['ln_profile_source_id'],
-                ), array('en_portfolio'), 0);
-
-                if(count($expert_parents) > 0){
-
-                    //Yes, Industry Expert:
-                    if (!isset($metadata_this['__in__metadata_experts'][$en__profile['ln_profile_source_id']])) {
-                        $metadata_this['__in__metadata_experts'][$en__profile['ln_profile_source_id']] = $expert_parents[0];
-                    }
-
-                } else {
-
-                    //TODO Maybe this is an expert source that is a child of another expert source? Go another level-up and check parents...
-                    //We might want to discourage this via mining principles... Need to think more on this.
-
-                }
-            }
+        ), array('en_profile'), 0) as $en) {
+            //Fetch experts for this source:
+            $metadata_this = $this->SOURCE_model->en_metadat_experts($en);
         }
+
 
 
         //EXPANSION SOME
@@ -1082,7 +1037,7 @@ class IDEA_model extends CI_Model
 
 
         //Save to DB
-        update_metadata('in', $in_id, array(
+        update_metadata('in', $in['in_id'], array(
             'in__metadata_min_steps' => intval($metadata_this['__in__metadata_min_steps']),
             'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
             'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
