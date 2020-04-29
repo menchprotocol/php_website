@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-28 21:06:31 PST
+//Generated 2020-04-29 05:24:51 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588133191;
-$config['cache_count_transaction'] = 1158908;
+$config['cache_timestamp'] = 1588163091;
+$config['cache_count_transaction'] = 1159549;
 $config['cache_count_discover'] = 121153;
 $config['cache_count_idea'] = 5431;
 $config['cache_count_source'] = 5256;
@@ -20,8 +20,14 @@ $config['cache_count_source'] = 5256;
 
 
 //SOURCE ADMIN MENU:
-$config['en_ids_12887'] = array(4341,12888,7267,12712,7279);
+$config['en_ids_12887'] = array(2792,4341,12888,7267,12712,7279);
 $config['en_all_12887'] = array(
+    2792 => array(
+        'm_icon' => '<i class="fab fa-google" aria-hidden="true"></i>',
+        'm_name' => 'GOOGLE URL',
+        'm_desc' => '/source/search_google/',
+        'm_parents' => array(12887,1326,1326,12193,1326),
+    ),
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'LEDGER TABLE',
@@ -37,7 +43,7 @@ $config['en_all_12887'] = array(
     7267 => array(
         'm_icon' => '🔍',
         'm_name' => 'SOURCE ICON SEARCH',
-        'm_desc' => '/plugin/7267?search_for=',
+        'm_desc' => '/source/search_icon/',
         'm_parents' => array(12887,6287),
     ),
     12712 => array(

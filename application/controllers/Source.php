@@ -1003,7 +1003,7 @@ class Source extends CI_Controller
                             //Domains can only be added to the domain source:
                             return echo_json(array(
                                 'status' => 0,
-                                'message' => 'Domain URLs must link to <b>@1326 Domains</b> as their parent source',
+                                'message' => 'Domain URLs must link to <b>@1326 Domains</b> as source profile',
                             ));
 
                         }
@@ -1022,7 +1022,7 @@ class Source extends CI_Controller
                             if ($detected_ln_type['en_domain']['en_id'] != $en_lns[0]['ln_profile_source_id']) {
                                 return echo_json(array(
                                     'status' => 0,
-                                    'message' => 'Must link to <b>@' . $detected_ln_type['en_domain']['en_id'] . ' ' . $detected_ln_type['en_domain']['en_name'] . '</b> as their parent source',
+                                    'message' => 'Must link to <b>@' . $detected_ln_type['en_domain']['en_id'] . ' ' . $detected_ln_type['en_domain']['en_name'] . '</b> as source profile',
                                 ));
                             }
                         } else {
@@ -1800,6 +1800,48 @@ class Source extends CI_Controller
     }
 
 
+    function search_google($en_id){
+        $ens = $this->SOURCE_model->en_fetch(array(
+            'en_id' => $en_id,
+        ));
+        if(count($ens)){
+            return redirect_message('https://www.google.com/search?q='.urlencode($ens[0]['en_name']));
+        } else {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Source ID'
+            ));
+        }
+    }
+
+    function search_icon($en_id){
+        $ens = $this->SOURCE_model->en_fetch(array(
+            'en_id' => $en_id,
+        ));
+        if(count($ens)){
+
+            if(( substr_count($ens[0]['en_icon'], 'class="') ?  : null )){
+
+                return redirect_message('/plugin/7267?search_for='.urlencode(one_two_explode('class="','"',$ens[0]['en_icon'])));
+
+            } elseif(strlen($ens[0]['en_icon'])) {
+
+                return redirect_message('/plugin/7267?search_for=' . urlencode($ens[0]['en_icon']));
+
+            } else {
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Source Missing Icon'
+                ));
+            }
+
+        } else {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Source ID'
+            ));
+        }
+    }
 
     function singin_check_password(){
 

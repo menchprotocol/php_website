@@ -543,7 +543,6 @@ function en_save_file_upload(droppedFiles, uploadType) {
     }
 }
 
-
 function en_modify_save() {
 
     //Validate that we have all we need:

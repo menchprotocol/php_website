@@ -194,7 +194,7 @@ $is_source = en_is_source($en['en_id']);
     if(superpower_assigned(12703)){
         $en_all_4527 = $this->config->item('en_all_4527'); //Platform Memory
         echo '<ul class="nav nav-tabs nav-sm" style="display: inline-block; border: 0; margin: 0;">';
-        echo echo_caret(12887, $en_all_4527[12887], $en['en_id'], ( substr_count($en['en_icon'], 'class="') ? one_two_explode('class="','"',$en['en_icon']) : null ));
+        echo echo_caret(12887, $en_all_4527[12887], $en['en_id']);
         echo '</ul>';
     }
 
