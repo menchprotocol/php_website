@@ -862,8 +862,7 @@ class IDEA_model extends CI_Model
 
 
 
-
-    function in_metadata_extra_insights2($in)
+    function in_metadata_extra_insights($in)
     {
 
         /*
@@ -931,7 +930,7 @@ class IDEA_model extends CI_Model
         ), array('in_next'), 0) as $in__next){
 
             //RECURSION
-            $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights2($in__next);
+            $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($in__next);
             if(!$metadata_recursion){
                 continue;
             }
@@ -1024,7 +1023,6 @@ class IDEA_model extends CI_Model
         }
 
         //Save to DB
-        /*
         update_metadata('in', $in['in_id'], array(
             'in__metadata_min_steps' => intval($metadata_this['__in__metadata_min_steps']),
             'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
@@ -1033,282 +1031,12 @@ class IDEA_model extends CI_Model
             'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
             'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
         ));
-        */
 
         //Return data:
         return $metadata_this;
 
     }
 
-
-    function in_metadata_extra_insights($in_id, $skip_condition = false)
-    {
-
-        /*
-         *
-         * Generates additional insights like
-         * min/max ideas, time and
-         * referenced sources in IDEA NOTES.
-         *
-         * */
-
-        //Fetch this idea:
-        $ins = $this->IDEA_model->in_fetch(array(
-            'in_id' => $in_id,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-        ));
-        if(count($ins) < 1){
-            return false;
-        }
-
-        $in_metadata = unserialize( $ins[0]['in_metadata'] );
-        if(!isset($in_metadata['in__metadata_common_steps'])){
-            return false;
-        }
-
-        //Fetch common base and expansion paths from idea metadata:
-        $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
-        $expansion_steps_one = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
-        $expansion_steps_some = ( isset($in_metadata['in__metadata_expansion_some']) && count($in_metadata['in__metadata_expansion_some']) > 0 ? $in_metadata['in__metadata_expansion_some'] : array() );
-        $locked_steps = ( isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0 ? $in_metadata['in__metadata_expansion_conditional'] : array() );
-
-        //Fetch totals for published common step ideas:
-        $common_totals = $this->IDEA_model->in_fetch(array(
-            'in_id IN ('.join(',',$flat_common_steps).')' => null,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-        ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_time_seconds) as total_seconds');
-
-        $common_base_resources = array(
-            'steps' => $common_totals[0]['total_steps'],
-            'seconds' => $common_totals[0]['total_seconds'],
-        );
-
-        $metadata_this = array(
-
-            //Required steps/ideas range to complete idea:
-            '__in__metadata_min_steps' => $common_base_resources['steps'],
-            '__in__metadata_max_steps' => $common_base_resources['steps'],
-
-            //Required time range to complete idea:
-            '__in__metadata_min_seconds' => $common_base_resources['seconds'],
-            '__in__metadata_max_seconds' => $common_base_resources['seconds'],
-
-            //Player references within IDEA NOTES:
-            '__in__metadata_experts' => array(),
-            '__in__metadata_sources' => array(),
-
-        );
-
-
-
-        //Add-up IDEA NOTES References:
-        //The sources we need to check and see if they are industry experts:
-        foreach($this->LEDGER_model->ln_fetch(array(
-            'ln_profile_source_id >' => 0,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')).')' => null, //IDEA NOTES
-            '(ln_next_idea_id = ' . $in_id . ( count($flat_common_steps) > 0 ? ' OR ln_next_idea_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
-        ), array('en_profile'), 0) as $note_en) {
-
-            //Referenced source in IDEA NOTES... Fetch parents:
-            foreach($this->LEDGER_model->ln_fetch(array(
-                'ln_portfolio_source_id' => $note_en['ln_profile_source_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //SOURCE LINKS
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            ), array(), 0) as $en__profile){
-
-                if(in_array($en__profile['ln_profile_source_id'], $this->config->item('en_ids_3000'))){
-
-                    //Expert Source:
-                    if (!isset($metadata_this['__in__metadata_sources'][$en__profile['ln_profile_source_id']][$note_en['en_id']])) {
-                        //Add since it's not there:
-                        $metadata_this['__in__metadata_sources'][$en__profile['ln_profile_source_id']][$note_en['en_id']] = $note_en;
-                    }
-
-                } elseif(in_array($en__profile['ln_profile_source_id'], $this->config->item('en_ids_12864'))) {
-
-                    //Industry Expert:
-                    if (!isset($metadata_this['__in__metadata_experts'][$note_en['en_id']])) {
-                        $metadata_this['__in__metadata_experts'][$note_en['en_id']] = $note_en;
-                    }
-
-                } else {
-
-                    //Industry Expert?
-                    $expert_parents = $this->LEDGER_model->ln_fetch(array(
-                        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //SOURCE LINKS
-                        'ln_profile_source_id IN (' . join(',', $this->config->item('en_ids_12864')).')' => null, //EXPERT SOURCES
-                        'ln_portfolio_source_id' => $en__profile['ln_profile_source_id'],
-                    ), array('en_portfolio'), 0);
-
-                    if(count($expert_parents) > 0){
-
-                        //Yes, Industry Expert:
-                        if (!isset($metadata_this['__in__metadata_experts'][$en__profile['ln_profile_source_id']])) {
-                            $metadata_this['__in__metadata_experts'][$en__profile['ln_profile_source_id']] = $expert_parents[0];
-                        }
-
-                    } else {
-
-                        //TODO Maybe this is an expert source that is a child of another expert source? Go another level-up and check parents...
-                        //We might want to discourage this via mining principles... Need to think more on this.
-
-                    }
-                }
-            }
-        }
-
-
-        //EXPANSION SOME
-        foreach($expansion_steps_some as $expansion_group){
-
-            //Determine OR Answer local min/max:
-            $metadata_local = array(
-                'local__in__metadata_min_steps'=> null,
-                'local__in__metadata_max_steps'=> null,
-                'local__in__metadata_min_seconds'=> null,
-                'local__in__metadata_max_seconds'=> null,
-            );
-
-            foreach($expansion_group as $expansion_in_id){
-
-                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id);
-
-                if(!$metadata_recursion){
-                    continue;
-                }
-
-                //MIN
-                if(is_null($metadata_local['local__in__metadata_min_steps']) || $metadata_recursion['__in__metadata_min_steps'] < $metadata_local['local__in__metadata_min_steps']){
-                    $metadata_local['local__in__metadata_min_steps'] = $metadata_recursion['__in__metadata_min_steps'];
-                }
-                if(is_null($metadata_local['local__in__metadata_min_seconds']) || $metadata_recursion['__in__metadata_min_seconds'] < $metadata_local['local__in__metadata_min_seconds']){
-                    $metadata_local['local__in__metadata_min_seconds'] = $metadata_recursion['__in__metadata_min_seconds'];
-                }
-
-                //MAX
-                $metadata_this['__in__metadata_max_steps'] += intval($metadata_recursion['__in__metadata_max_steps']);
-                $metadata_this['__in__metadata_max_seconds'] += intval($metadata_recursion['__in__metadata_max_seconds']);
-
-
-                //Addup Experts:
-                foreach($metadata_recursion['__in__metadata_experts'] as $en_id => $expert_en) {
-                    //Is this a new expert?
-                    if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
-                        //Yes, add them to the list:
-                        $metadata_this['__in__metadata_experts'][$en_id] = $expert_en;
-                    }
-                }
-
-                //Addup Sources:
-                foreach($metadata_recursion['__in__metadata_sources'] as $type_en_id => $source_ens) {
-                    foreach($source_ens as $en_id => $source_en) {
-                        if (!isset($metadata_this['__in__metadata_sources'][$type_en_id][$en_id])) {
-                            $metadata_this['__in__metadata_sources'][$type_en_id][$en_id] = $source_en;
-                        }
-                    }
-                }
-            }
-
-            //MIN
-            if(!is_null($metadata_local['local__in__metadata_min_steps'])){
-                $metadata_this['__in__metadata_min_steps'] += intval($metadata_local['local__in__metadata_min_steps']);
-            }
-            if(!is_null($metadata_local['local__in__metadata_min_seconds'])){
-                $metadata_this['__in__metadata_min_seconds'] += intval($metadata_local['local__in__metadata_min_seconds']);
-            }
-
-        }
-
-
-        //EXPANSION ONE
-        foreach(array_merge($expansion_steps_one, $locked_steps) as $expansion_group){
-
-            //Determine OR Answer local min/max:
-            $metadata_local = array(
-                'local__in__metadata_min_steps'=> null,
-                'local__in__metadata_max_steps'=> null,
-                'local__in__metadata_min_seconds'=> null,
-                'local__in__metadata_max_seconds'=> null,
-            );
-
-            foreach($expansion_group as $expansion_in_id){
-
-                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id);
-
-                if(!$metadata_recursion){
-                    continue;
-                }
-
-                //MIN/MAX updates:
-                if(is_null($metadata_local['local__in__metadata_min_steps']) || $metadata_recursion['__in__metadata_min_steps'] < $metadata_local['local__in__metadata_min_steps']){
-                    $metadata_local['local__in__metadata_min_steps'] = $metadata_recursion['__in__metadata_min_steps'];
-                }
-                if(is_null($metadata_local['local__in__metadata_max_steps']) || $metadata_recursion['__in__metadata_max_steps'] > $metadata_local['local__in__metadata_max_steps']){
-                    $metadata_local['local__in__metadata_max_steps'] = $metadata_recursion['__in__metadata_max_steps'];
-                }
-                if(is_null($metadata_local['local__in__metadata_min_seconds']) || $metadata_recursion['__in__metadata_min_seconds'] < $metadata_local['local__in__metadata_min_seconds']){
-                    $metadata_local['local__in__metadata_min_seconds'] = $metadata_recursion['__in__metadata_min_seconds'];
-                }
-                if(is_null($metadata_local['local__in__metadata_max_seconds']) || $metadata_recursion['__in__metadata_max_seconds'] > $metadata_local['local__in__metadata_max_seconds']){
-                    $metadata_local['local__in__metadata_max_seconds'] = $metadata_recursion['__in__metadata_max_seconds'];
-                }
-
-
-                //Addup Experts:
-                foreach($metadata_recursion['__in__metadata_experts'] as $en_id => $expert_en) {
-                    //Is this a new expert?
-                    if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
-                        //Yes, add them to the list:
-                        $metadata_this['__in__metadata_experts'][$en_id] = $expert_en;
-                    }
-                }
-
-                //Addup Sources:
-                foreach($metadata_recursion['__in__metadata_sources'] as $type_en_id => $source_ens) {
-                    foreach($source_ens as $en_id => $source_en) {
-                        if (!isset($metadata_this['__in__metadata_sources'][$type_en_id][$en_id])) {
-                            $metadata_this['__in__metadata_sources'][$type_en_id][$en_id] = $source_en;
-                        }
-                    }
-                }
-            }
-
-            //Add to totals if set:
-            if(!is_null($metadata_local['local__in__metadata_min_steps'])){
-                $metadata_this['__in__metadata_min_steps'] += intval($metadata_local['local__in__metadata_min_steps']);
-            }
-            if(!is_null($metadata_local['local__in__metadata_max_steps'])){
-                $metadata_this['__in__metadata_max_steps'] += intval($metadata_local['local__in__metadata_max_steps']);
-            }
-            if(!is_null($metadata_local['local__in__metadata_min_seconds'])){
-                $metadata_this['__in__metadata_min_seconds'] += intval($metadata_local['local__in__metadata_min_seconds']);
-            }
-            if(!is_null($metadata_local['local__in__metadata_max_seconds'])){
-                $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
-            }
-
-        }
-
-
-        //Save to DB
-        update_metadata('in', $in_id, array(
-            'in__metadata_min_steps' => intval($metadata_this['__in__metadata_min_steps']),
-            'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
-            'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
-            'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
-            'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
-            'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
-        ));
-
-
-        //Return data:
-        return $metadata_this;
-
-    }
 
 
     function in_unlock_paths($in)

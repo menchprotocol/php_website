@@ -430,7 +430,7 @@ class Cron extends CI_Controller
 
         if(count($ins)){
             return echo_json(array(
-                'results' => $this->IDEA_model->in_metadata_extra_insights2( $ins[0] ),
+                'results' => $this->IDEA_model->in_metadata_extra_insights( $ins[0] ),
             ));
         } else {
             return echo_json(array(
