@@ -781,7 +781,18 @@ class DISCOVER_model extends CI_Model
 
 
 
-            if(!$all_child_featured){
+            if($all_child_featured){
+
+                if(count($in__next) > 0){
+                    //List Children:
+                    echo '<div class="list-group">';
+                    foreach($in__next as $key => $child_in){
+                        echo echo_in_discover($child_in, $is_or, in_calc_common_prefix($in__next, 'in_title'));
+                    }
+                    echo '</div>';
+                }
+
+            } else {
 
                 //IDEA METADATA
                 $metadata = unserialize($ins[0]['in_metadata']);
