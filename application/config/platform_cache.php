@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-29 08:05:15 PST
+//Generated 2020-04-29 11:00:02 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588172715;
-$config['cache_count_transaction'] = 1160956;
+$config['cache_timestamp'] = 1588183202;
+$config['cache_count_transaction'] = 1161306;
 $config['cache_count_discover'] = 121153;
 $config['cache_count_idea'] = 5431;
 $config['cache_count_source'] = 5256;
@@ -1297,7 +1297,7 @@ $config['en_all_12321'] = array(
         'm_parents' => array(4535,12500,12655,12571,12467,12321,12410,11089,12228,4527),
     ),
     12682 => array(
-        'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-lightbulb-exclamation source" aria-hidden="true"></i>',
         'm_name' => 'REQUIRE PROFILE',
         'm_desc' => '',
         'm_parents' => array(4593,12321,7551,11089,10986,11018,4485),
@@ -2568,7 +2568,7 @@ $config['en_all_11089'] = array(
         'm_parents' => array(12571,12574,11089,11028),
     ),
     12682 => array(
-        'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-lightbulb-exclamation source" aria-hidden="true"></i>',
         'm_name' => 'IDEA REQUIRE PROFILE',
         'm_desc' => '',
         'm_parents' => array(4593,12321,7551,11089,10986,11018,4485),
@@ -3576,7 +3576,7 @@ $config['en_all_11018'] = array(
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
     ),
     12682 => array(
-        'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-lightbulb-exclamation source" aria-hidden="true"></i>',
         'm_name' => 'IDEA REQUIRE PROFILE',
         'm_desc' => 'Requirements to discover this idea',
         'm_parents' => array(4593,12321,7551,11089,10986,11018,4485),
@@ -5866,7 +5866,7 @@ $config['en_all_7551'] = array(
         'm_parents' => array(11054,4527,10984,11018,12654,12655,11035,11089,12321,4593,7551,4485),
     ),
     12682 => array(
-        'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-lightbulb-exclamation source" aria-hidden="true"></i>',
         'm_name' => 'REQUIRE PROFILE',
         'm_desc' => '',
         'm_parents' => array(4593,12321,7551,11089,10986,11018,4485),
@@ -5897,7 +5897,7 @@ $config['en_all_7309'] = array(
 );
 
 //PLUGINS:
-$config['en_ids_6287'] = array(7264,7261,12731,12734,7260,7263,12733,11049,7259,12735,7712,4527,12710,12709,12729,12888,7267,12732,7268,7269,12730,12738,12712,7270,12737,12736,12739,12722);
+$config['en_ids_6287'] = array(7264,7261,12731,12734,7260,7263,12733,11049,7259,12735,7712,4527,12710,12709,12729,12888,7267,12732,7268,7269,12730,12738,12712,12737,12736,12739,12722);
 $config['en_all_6287'] = array(
     7264 => array(
         'm_icon' => '<i class="fad fa-sitemap idea"></i>',
@@ -6036,12 +6036,6 @@ $config['en_all_6287'] = array(
         'm_name' => 'SOURCE REVIEW JSON',
         'm_desc' => '?en_id=',
         'm_parents' => array(12887,12741,6287),
-    ),
-    7270 => array(
-        'm_icon' => '',
-        'm_name' => 'SOURCE SEND TEST MESSAGE',
-        'm_desc' => '',
-        'm_parents' => array(6287),
     ),
     12737 => array(
         'm_icon' => '',
@@ -7611,7 +7605,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4593,10658),
     ),
     12682 => array(
-        'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-lightbulb-exclamation source" aria-hidden="true"></i>',
         'm_name' => 'IDEA REQUIRE PROFILE',
         'm_desc' => '',
         'm_parents' => array(4593,12321,7551,11089,10986,11018,4485),
@@ -8118,7 +8112,7 @@ $config['en_all_4485'] = array(
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
     ),
     12682 => array(
-        'm_icon' => '<i class="fas fa-shield-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-lightbulb-exclamation source" aria-hidden="true"></i>',
         'm_name' => 'REQUIRE PROFILE',
         'm_desc' => '',
         'm_parents' => array(4593,12321,7551,11089,10986,11018,4485),
