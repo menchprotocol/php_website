@@ -137,7 +137,7 @@ class Messenger extends CI_Controller
         //Show results:
         echo_json($this->COMMUNICATION_model->comm_facebook_graph('DELETE', '/me/custom_user_settings', array(
             'params' => '[%22persistent_menu%22]',
-            'psid' => '1782431902047009',
+            'psid' => '1443101719058431',
         )));
     }
 
