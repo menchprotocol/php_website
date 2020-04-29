@@ -422,27 +422,12 @@ class Cron extends CI_Controller
          *
          * */
 
-
-        //Update a specific idea OR all featured ideas
-        $updated = 0;
-        foreach($this->IDEA_model->in_fetch((
-            $in_id ? array('in_id' => $in_id) :
-            array('in_status_source_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null)
-        )) as $in){
-            $this->IDEA_model->in_metadata_common_base($in);
-            $this->IDEA_model->in_metadata_extra_insights($in['in_id']);
-            $updated++;
-        }
-
         //Show json:
         echo_json(array(
-            'message' => 'Extra Insights Metadata updated for '.$updated.' ideas.',
+            'results' => $this->IDEA_model->in_metadata_extra_insights(( $in_id>0 ? $in_id : config_var(12156) )),
         ));
 
     }
-
-
-
 
 
 
