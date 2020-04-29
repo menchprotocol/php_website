@@ -12,7 +12,7 @@ $orphan_ins = $this->IDEA_model->in_fetch(array(
 if(count($orphan_ins) > 0){
 
     //List orphans:
-    foreach ($orphan_ins as $count => $orphan_in) {
+    foreach($orphan_ins as $count => $orphan_in) {
 
         //Show idea:
         echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_source_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_source_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_source_id']]['m_icon'] . '</span> <a href="/idea/go/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_title'].'</b></a>';

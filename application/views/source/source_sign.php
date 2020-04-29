@@ -82,7 +82,7 @@ if(count($current_sign_in_attempt) == 0){
 
             <?php
             echo '<p>Choose your preferred channel:</p>';
-            foreach ($en_all_7555 as $en_id => $m) {
+            foreach($en_all_7555 as $en_id => $m) {
                 echo '<div class="row" style="padding:5px 0;">';
 
                 echo '<a class="btn btn-source btn-circle" href="javascript:void(0);" onclick="select_channel('.$en_id.', '.$referrer_in_id.')"><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . ' <i class="fas fa-step-forward"></i></a>';

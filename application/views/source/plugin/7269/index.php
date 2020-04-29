@@ -10,7 +10,7 @@ $orphan_ens = $this->SOURCE_model->en_fetch(array(
 if(count($orphan_ens) > 0){
 
     //List orphans:
-    foreach ($orphan_ens  as $count => $orphan_en) {
+    foreach($orphan_ens  as $count => $orphan_en) {
 
         //Show source:
         echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$orphan_en['en_status_source_id']]['m_name'].': '.$en_all_6177[$orphan_en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$orphan_en['en_status_source_id']]['m_icon'] . '</span> <a href="/source/'.$orphan_en['en_id'].'"><b>'.$orphan_en['en_name'].'</b></a>';

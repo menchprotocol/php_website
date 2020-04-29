@@ -12,7 +12,7 @@ if(count($duplicates) > 0){
     $prev_title = null;
     $en_all_4737 = $this->config->item('en_all_4737'); //Idea Status
 
-    foreach ($duplicates as $in) {
+    foreach($duplicates as $in) {
         if ($prev_title != $in['in_title']) {
             echo '<hr />';
             $prev_title = $in['in_title'];

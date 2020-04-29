@@ -16,7 +16,7 @@ if(!isset($_GET['in_id']) || !intval($_GET['in_id'])) {
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
     ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
 
-    foreach ($player_discoveries as $priority => $ln) {
+    foreach($player_discoveries as $priority => $ln) {
         echo '<div>' . ($priority + 1) . ') <a href="?in_id=' . $ln['in_id'] . '&en_id=' . $_GET['en_id'] . '">' . echo_in_title($ln) . '</a></div>';
     }
 

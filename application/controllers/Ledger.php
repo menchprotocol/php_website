@@ -70,7 +70,7 @@ class Ledger extends CI_Controller
         if(count($lns)>0){
 
             $message .= '<div class="list-group list-grey">';
-            foreach ($lns as $ln) {
+            foreach($lns as $ln) {
 
                 $message .= echo_ln($ln);
 
@@ -264,7 +264,7 @@ class Ledger extends CI_Controller
             $lns = $this->LEDGER_model->ln_fetch(array(
                 'ln_id' => $_POST['object_id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
             ));
             $ln_metadata = unserialize($lns[0]['ln_metadata']);
             if(!$ln_metadata){
@@ -308,7 +308,7 @@ class Ledger extends CI_Controller
             $lns = $this->LEDGER_model->ln_fetch(array(
                 'ln_id' => $_POST['object_id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
             ));
             $ln_metadata = unserialize($lns[0]['ln_metadata']);
             $field_name = ( $_POST['cache_en_id']==4735 ? 'tr__conditional_score_min' : 'tr__conditional_score_max' );

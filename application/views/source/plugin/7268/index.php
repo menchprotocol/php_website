@@ -10,7 +10,7 @@ if(count($duplicates) > 0){
     $prev_title = null;
     $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
 
-    foreach ($duplicates as $en) {
+    foreach($duplicates as $en) {
 
         if ($prev_title != $en['en_name']) {
             echo '<hr />';

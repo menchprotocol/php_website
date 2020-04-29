@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE === TRUE): ?>
 
 	<p>Backtrace:</p>
-	<?php foreach (debug_backtrace() as $error): ?>
+	<?php foreach(debug_backtrace() as $error): ?>
 
 		<?php if (isset($error['file']) && strpos($error['file'], realpath(BASEPATH)) !== 0): ?>
 

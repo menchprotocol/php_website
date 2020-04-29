@@ -4,7 +4,7 @@ $all_steps = 0;
 $all_children = 0;
 $updated = 0;
 
-foreach ($this->IDEA_model->in_fetch(array(
+foreach($this->IDEA_model->in_fetch(array(
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
     'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
 ), 0, 0, array('in_id' => 'DESC')) as $count => $in) {

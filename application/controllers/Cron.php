@@ -264,7 +264,7 @@ class Cron extends CI_Controller
 
 
             //Then count the title of next ideas:
-            foreach ($this->LEDGER_model->ln_fetch(array(
+            foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
@@ -282,7 +282,7 @@ class Cron extends CI_Controller
             //Fetch All Messages for this:
             foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id' => 4231, //Idea Notes Messages
+                'ln_type_source_id' => 4231, //IDEA NOTES Messages
                 'ln_next_idea_id' => $in['in_id'],
             ), array(), 0, 0, array('ln_order' => 'ASC')) as $message){
 
@@ -299,7 +299,7 @@ class Cron extends CI_Controller
                 if($message['ln_profile_source_id'] > 0){
                     //Yes, see
                     //Source Profile
-                    foreach ($this->LEDGER_model->ln_fetch(array(
+                    foreach($this->LEDGER_model->ln_fetch(array(
                         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
@@ -423,7 +423,7 @@ class Cron extends CI_Controller
 
         //Show json:
         echo_json(array(
-            'results' => $this->IDEA_model->in_metadata_extra_insights(( $in_id>0 ? $in_id : config_var(12156) )),
+            'results' => $this->IDEA_model->in_metadata_extra_insights2( $in_id>0 ? $in_id : config_var(12156) ),
         ));
 
     }
@@ -454,7 +454,7 @@ class Cron extends CI_Controller
         $this->db->query("TRUNCATE TABLE public.gephi_edges CONTINUE IDENTITY RESTRICT;");
         $this->db->query("TRUNCATE TABLE public.gephi_nodes CONTINUE IDENTITY RESTRICT;");
 
-        //Load Idea-to-Idea Links:
+        //Load IDEA LINKS:
         $en_all_4593 = $this->config->item('en_all_4593');
 
         //To make sure Idea/source IDs are unique:
@@ -493,7 +493,7 @@ class Cron extends CI_Controller
             foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
                 'ln_previous_idea_id' => $in['in_id'],
             ), array('in_next'), 0, 0) as $child_in){
 
@@ -549,7 +549,7 @@ class Cron extends CI_Controller
         $messages = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //IDEA NOTES
         ), array('in_next'), 0, 0);
         foreach($messages as $message) {
 
@@ -718,7 +718,7 @@ class Cron extends CI_Controller
         ), array(), 10);
 
         $counter = 0;
-        foreach ($ln_pending as $ln) {
+        foreach($ln_pending as $ln) {
 
             //Store to CDN:
             $cdn_status = upload_to_cdn($ln['ln_content'], $ln['ln_creator_source_id'], $ln);
@@ -772,13 +772,13 @@ class Cron extends CI_Controller
 
 
         //Put something in the ln_metadata so other cron jobs do not pick up on it:
-        foreach ($ln_pending as $ln) {
+        foreach($ln_pending as $ln) {
             update_metadata('ln', $ln['ln_id'], array(
                 'fb_att_id' => 0,
             ));
         }
 
-        foreach ($ln_pending as $ln) {
+        foreach($ln_pending as $ln) {
 
             //To be set to true soon (hopefully):
             $db_result = false;

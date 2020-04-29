@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-29 06:13:17 PST
+//Generated 2020-04-29 08:05:15 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588165997;
-$config['cache_count_transaction'] = 1159704;
+$config['cache_timestamp'] = 1588172715;
+$config['cache_count_transaction'] = 1160956;
 $config['cache_count_discover'] = 121153;
 $config['cache_count_idea'] = 5431;
 $config['cache_count_source'] = 5256;
@@ -61,11 +61,17 @@ $config['en_all_12887'] = array(
 );
 
 //IDEA TYPE SELECT ONE:
-$config['en_ids_12883'] = array(6684);
+$config['en_ids_12883'] = array(6907,6684);
 $config['en_all_12883'] = array(
+    6907 => array(
+        'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ANY',
+        'm_desc' => '',
+        'm_parents' => array(12883,12700,12330,7486,7485,6140,7585,7309,6997,6193),
+    ),
     6684 => array(
         'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA SELECT ONE',
+        'm_name' => 'SELECT ONE',
         'm_desc' => '',
         'm_parents' => array(12883,12336,12129,7712,7585,6157,6193),
     ),
@@ -1179,7 +1185,7 @@ $config['en_all_12330'] = array(
         'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ANY',
         'm_desc' => '',
-        'm_parents' => array(12700,12330,7486,7485,6140,7585,7309,6997,6193),
+        'm_parents' => array(12883,12700,12330,7486,7485,6140,7585,7309,6997,6193),
     ),
 );
 
@@ -5729,7 +5735,7 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ANY',
         'm_desc' => '',
-        'm_parents' => array(12700,12330,7486,7485,6140,7585,7309,6997,6193),
+        'm_parents' => array(12883,12700,12330,7486,7485,6140,7585,7309,6997,6193),
     ),
 );
 
@@ -5776,7 +5782,7 @@ $config['en_all_7585'] = array(
         'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ANY',
         'm_desc' => 'Complete by discovering one of the next ideas',
-        'm_parents' => array(12700,12330,7486,7485,6140,7585,7309,6997,6193),
+        'm_parents' => array(12883,12700,12330,7486,7485,6140,7585,7309,6997,6193),
     ),
 );
 
@@ -5886,7 +5892,7 @@ $config['en_all_7309'] = array(
         'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
         'm_name' => 'ANY',
         'm_desc' => '',
-        'm_parents' => array(12700,12330,7486,7485,6140,7585,7309,6997,6193),
+        'm_parents' => array(12883,12700,12330,7486,7485,6140,7585,7309,6997,6193),
     ),
 );
 

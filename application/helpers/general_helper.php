@@ -9,7 +9,7 @@ function is_dev_environment()
 function includes_any($string, $items)
 {
     //Determines if any of the items in array $items includes $string
-    foreach ($items as $item) {
+    foreach($items as $item) {
         if (substr_count($string, $item) > 0) {
             return $item;
         }
@@ -30,7 +30,7 @@ function load_algolia($index_name)
 function detect_missing_columns($insert_columns, $required_columns, $ln_creator_source_id)
 {
     //A function used to review and require certain fields when inserting new rows in DB
-    foreach ($required_columns as $req_field) {
+    foreach($required_columns as $req_field) {
         if (!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field]) == 0) {
             //Ooops, we're missing this required field:
             $CI =& get_instance();
@@ -122,7 +122,7 @@ function extract_source_references($ln_content)
     );
 
     //See what we can find:
-    foreach (preg_split('/\s+/', $ln_content) as $word) {
+    foreach(preg_split('/\s+/', $ln_content) as $word) {
         if (filter_var($word, FILTER_VALIDATE_URL)) {
 
             array_push($string_references['ref_urls'], $word);
@@ -369,7 +369,7 @@ function en_count_db_references($en_id, $return_html = true){
     ) as $en_app_id => $query){
 
         $query = $CI->db->query( $query . $en_id );
-        foreach ($query->result() as $row)
+        foreach($query->result() as $row)
         {
             if($row->totals > 0){
                 $en_count_db_references[$en_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($en_all_6194[$en_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$en_all_6194[$en_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$en_all_6194[$en_app_id]['m_icon'] . ' '. echo_number($row->totals).'</span>&nbsp;' : $row->totals );
@@ -404,7 +404,7 @@ function in_weight_updater($in){
     //IDEAS
     $counts = $CI->LEDGER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
         '(ln_next_idea_id='.$in['in_id'].' OR ln_previous_idea_id='.$in['in_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -460,7 +460,7 @@ function filter_cache_group($search_en_id, $cache_en_id){
     //Determines which category an source belongs to
 
     $CI =& get_instance();
-    foreach ($CI->config->item('en_all_'.$cache_en_id) as $en_id => $m) {
+    foreach($CI->config->item('en_all_'.$cache_en_id) as $en_id => $m) {
         if(in_array($search_en_id, $CI->config->item('en_ids_'.$en_id))){
             return $m;
         }
@@ -497,7 +497,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
     }
 
     $all_matches = array();
-    foreach ($array as $key => $value) {
+    foreach($array as $key => $value) {
         if (isset($value[$match_key]) && ( is_array($match_value) ? in_array($value[$match_key], $match_value) : $value[$match_key]==$match_value )) {
             if($return_all){
                 array_push($all_matches, $value[$match_key]);
@@ -650,7 +650,7 @@ function count_ln_type($en_id){
 
             $idea_bookmarks = $CI->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id' => 10573, //Idea Notes Bookmarks
+                'ln_type_source_id' => 10573, //IDEA NOTES Bookmarks
                 'ln_profile_source_id' => $session_en['en_id'], //For this player
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             return $idea_bookmarks[0]['totals'];
@@ -736,7 +736,7 @@ function fetch_cookie_order($cookie_name){
 function in_calc_bold_upto_weight($child_list){
     $bold_upto_weight = 0;
     $previous_weight = null;
-    foreach ($child_list as $count => $child_item) {
+    foreach($child_list as $count => $child_item) {
 
         if(!is_null($previous_weight)){
             if($previous_weight<1000){
@@ -960,7 +960,7 @@ function analyze_domain($full_url){
 
     //Delete the TLD:
     $tld = null;
-    foreach ($second_level_tlds as $second_level_tld){
+    foreach($second_level_tlds as $second_level_tld){
         if(substr_count($analyze['host'], $second_level_tld)==1){
             $tld = $second_level_tld;
             break;
@@ -1262,7 +1262,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 
         //Build the index:
-        foreach ($db_rows[$loop_obj] as $db_row) {
+        foreach($db_rows[$loop_obj] as $db_row) {
 
             //Prepare variables:
             unset($export_row);
@@ -1330,7 +1330,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Fetch Profiles:
                 $export_row['alg_obj_keywords'] = '';
-                foreach ($CI->LEDGER_model->ln_fetch(array(
+                foreach($CI->LEDGER_model->ln_fetch(array(
                     'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                     'ln_portfolio_source_id' => $db_row['en_id'], //This child source
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
@@ -1368,9 +1368,9 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Add keywords:
                 $export_row['alg_obj_keywords'] = '';
-                foreach ($CI->LEDGER_model->ln_fetch(array(
+                foreach($CI->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
+                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //IDEA NOTES
                     'ln_next_idea_id' => $db_row['in_id'],
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
                     $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
@@ -1453,7 +1453,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Now update local database with the new objectIDs:
                 if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1 ) {
-                    foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
+                    foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
                         update_metadata($input_obj_type, $all_db_rows[$key][$input_obj_type.'_id'], array(
                             $input_obj_type . '__algolia_id' => $algolia_id, //The newly created algolia object
                         ));
@@ -1485,7 +1485,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         //Now update database with the objectIDs:
         if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == count($all_db_rows) ) {
 
-            foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
+            foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
 
                 $object_this = ( isset($all_db_rows[$key]['in_id']) ? 'in' : 'en');
                 update_metadata($object_this, $all_db_rows[$key][$object_this.'_id'], array(
@@ -1567,7 +1567,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
     }
 
     //Go through all the new fields and see if they differ from current metadata fields:
-    foreach ($new_fields as $metadata_key => $metadata_value) {
+    foreach($new_fields as $metadata_key => $metadata_value) {
         //We are doing an absolute adjustment if needed:
         if (is_null($metadata_value) && isset($metadata[$metadata_key])) {
 

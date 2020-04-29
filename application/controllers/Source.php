@@ -142,7 +142,7 @@ class Source extends CI_Controller
 
         //Start with top Players:
         echo '<div class="list-group">';
-        foreach ($in_en_coins as $count=>$en) {
+        foreach($in_en_coins as $count=>$en) {
 
             if($count==$show_max){
 
@@ -317,7 +317,7 @@ class Source extends CI_Controller
             'en_name' => 'ASC'
         ));
 
-        foreach ($child_sources as $en) {
+        foreach($child_sources as $en) {
             echo echo_en($en,false, null, true, $is_source);
         }
 
@@ -356,7 +356,7 @@ class Source extends CI_Controller
         //Archive Link:
         $this->LEDGER_model->ln_update($_POST['ln_id'], array(
             'ln_status_source_id' => 6173,
-        ), $session_en['en_id'], 10678 /* Idea Notes Unlinked */);
+        ), $session_en['en_id'], 10678 /* IDEA NOTES Unlinked */);
 
         return echo_json(array(
             'status' => 1,
@@ -834,11 +834,11 @@ class Source extends CI_Controller
 
 
 
-            //Count source references in Idea Notes:
+            //Count source references in IDEA NOTES:
             $messages = $this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //IDEA NOTES
                 'ln_profile_source_id' => $_POST['en_id'],
             ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -892,7 +892,7 @@ class Source extends CI_Controller
                 //Cannot delete this source until Idea references are deleted:
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'You can delete source after removing all its Idea Notes references',
+                    'message' => 'You can delete source after removing all its IDEA NOTES references',
                 ));
 
             }
@@ -1268,7 +1268,7 @@ class Source extends CI_Controller
         //Validate:
         $icon_new_css = $_POST['type_css'].' '.$_POST['icon_css'].' source';
         $validated = false;
-        foreach ($this->config->item('en_all_12279') as $en_id => $m) {
+        foreach($this->config->item('en_all_12279') as $en_id => $m) {
             if(substr_count($m['m_icon'], $icon_new_css) == 1){
                 $validated = true;
                 break;

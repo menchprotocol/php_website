@@ -169,7 +169,7 @@ class Messenger extends CI_Controller
         }
 
         //Loop through entries:
-        foreach ($ln_metadata['entry'] as $entry) {
+        foreach($ln_metadata['entry'] as $entry) {
 
             //check the page ID:
             if (!isset($entry['id']) || !($entry['id'] == config_var(11075))) {
@@ -185,7 +185,7 @@ class Messenger extends CI_Controller
             }
 
             //loop though the messages:
-            foreach ($entry['messaging'] as $im) {
+            foreach($entry['messaging'] as $im) {
 
                 if (isset($im['discover']) || isset($im['delivery'])) {
 
@@ -314,7 +314,7 @@ class Messenger extends CI_Controller
                     } elseif (isset($im['message']['attachments'])) {
 
                         //We have some attachments, lets loops through them:
-                        foreach ($im['message']['attachments'] as $att) {
+                        foreach($im['message']['attachments'] as $att) {
 
                             //Define 4 main Attachment Message Types:
                             $att_media_types = array( //Converts video, audio, image and file messages

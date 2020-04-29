@@ -9,7 +9,7 @@ foreach($active_ins as $count=>$in){
     $recursive_children = $this->IDEA_model->in_recursive_child_ids($in['in_id'], false);
     if(count($recursive_children) > 0){
         $recursive_parents = $this->IDEA_model->in_recursive_parents($in['in_id']);
-        foreach ($recursive_parents as $grand_parent_ids) {
+        foreach($recursive_parents as $grand_parent_ids) {
             $crossovers = array_intersect($recursive_children, $grand_parent_ids);
             if(count($crossovers) > 0){
                 //Ooooopsi, this should not happen:

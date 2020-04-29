@@ -279,8 +279,8 @@ class Idea extends CI_Controller {
                     if($_POST['in_id'] == $_POST['in_loaded_id']){
 
                         //Since we're removing the FOCUS IDEA we need to move to the first parent idea:
-                        foreach ($this->IDEA_model->in_recursive_parents($_POST['in_id'], true, false) as $grand_parent_ids) {
-                            foreach ($grand_parent_ids as $parent_in_id) {
+                        foreach($this->IDEA_model->in_recursive_parents($_POST['in_id'], true, false) as $grand_parent_ids) {
+                            foreach($grand_parent_ids as $parent_in_id) {
                                 $deletion_redirect = '/idea/'.$parent_in_id; //First parent in first branch of parents
                                 break;
                             }
@@ -486,12 +486,12 @@ class Idea extends CI_Controller {
                 //Fetch for the record:
                 $children_before = $this->LEDGER_model->ln_fetch(array(
                     'ln_previous_idea_id' => intval($_POST['in_id']),
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
                 //Update them all:
-                foreach ($_POST['new_ln_orders'] as $rank => $ln_id) {
+                foreach($_POST['new_ln_orders'] as $rank => $ln_id) {
                     $this->LEDGER_model->ln_update(intval($ln_id), array(
                         'ln_order' => intval($rank),
                     ), $session_en['en_id'], 10675 /* Ideas Ordered by Player */);
@@ -500,7 +500,7 @@ class Idea extends CI_Controller {
                 //Fetch again for the record:
                 $children_after = $this->LEDGER_model->ln_fetch(array(
                     'ln_previous_idea_id' => intval($_POST['in_id']),
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -730,13 +730,13 @@ class Idea extends CI_Controller {
 
         //Update all link orders:
         $sort_count = 0;
-        foreach ($_POST['new_ln_orders'] as $ln_order => $ln_id) {
+        foreach($_POST['new_ln_orders'] as $ln_order => $ln_id) {
             if (intval($ln_id) > 0) {
                 $sort_count++;
                 //Log update and give credit to the session Player:
                 $this->LEDGER_model->ln_update($ln_id, array(
                     'ln_order' => intval($ln_order),
-                ), $session_en['en_id'], 10676 /* Idea Notes Ordered */);
+                ), $session_en['en_id'], 10676 /* IDEA NOTES Ordered */);
             }
         }
 
@@ -815,7 +815,7 @@ class Idea extends CI_Controller {
             $this->LEDGER_model->ln_update(intval($_POST['ln_id']), array(
                 'ln_content' => $msg_validation['input_message'],
                 'ln_profile_source_id' => $msg_validation['ln_profile_source_id'],
-            ), $session_en['en_id'], 10679 /* Idea Notes updated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
+            ), $session_en['en_id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
 
             //Did we add a new source here?
             if($msg_validation['ln_profile_source_id']>0 && $msg_validation['ln_profile_source_id']!=$messages[0]['ln_profile_source_id']){
@@ -863,14 +863,14 @@ class Idea extends CI_Controller {
                 //yes, do so and return results:
                 $affected_rows = $this->LEDGER_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_source_id' => $_POST['message_ln_status_source_id'],
-                ), $session_en['en_id'], 10677 /* Idea Notes updated Status */);
+                ), $session_en['en_id'], 10677 /* IDEA NOTES updated Status */);
 
             } else {
 
-                //New status is no longer active, so delete the Idea Notes:
+                //New status is no longer active, so delete the IDEA NOTES:
                 $affected_rows = $this->LEDGER_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_source_id' => $_POST['message_ln_status_source_id'],
-                ), $session_en['en_id'], 10678 /* Idea Notes Unlinked */);
+                ), $session_en['en_id'], 10678 /* IDEA NOTES Unlinked */);
 
                 //Return success:
                 if($affected_rows > 0){

@@ -54,7 +54,7 @@ class LEDGER_model extends CI_Model
         }
 
         //Set some zero defaults if not set:
-        foreach (array('ln_next_idea_id', 'ln_previous_idea_id', 'ln_portfolio_source_id', 'ln_profile_source_id', 'ln_parent_transaction_id', 'ln_external_id', 'ln_order') as $dz) {
+        foreach(array('ln_next_idea_id', 'ln_previous_idea_id', 'ln_portfolio_source_id', 'ln_profile_source_id', 'ln_parent_transaction_id', 'ln_external_id', 'ln_order') as $dz) {
             if (!isset($insert_columns[$dz])) {
                 $insert_columns[$dz] = 0;
             }
@@ -302,7 +302,7 @@ class LEDGER_model extends CI_Model
                 $en_all_6232 = $this->config->item('en_all_6232'); //PLATFORM VARIABLES
 
                 //Append link object links:
-                foreach ($this->config->item('en_all_11081') as $en_id => $m) {
+                foreach($this->config->item('en_all_11081') as $en_id => $m) {
 
                     if (!intval($insert_columns[$en_all_6232[$en_id]['m_desc']])) {
                         continue;
@@ -399,7 +399,7 @@ class LEDGER_model extends CI_Model
             $this->db->join('mench_source', 'ln_creator_source_id=en_id','left');
         }
 
-        foreach ($match_columns as $key => $value) {
+        foreach($match_columns as $key => $value) {
             if (!is_null($value)) {
                 $this->db->where($key, $value);
             } else {
@@ -411,7 +411,7 @@ class LEDGER_model extends CI_Model
             $this->db->group_by($group_by);
         }
 
-        foreach ($order_columns as $key => $value) {
+        foreach($order_columns as $key => $value) {
             $this->db->order_by($key, $value);
         }
 
@@ -467,7 +467,7 @@ class LEDGER_model extends CI_Model
                 } else {
 
                     //Log modification link for every field changed:
-                    foreach ($update_columns as $key => $value) {
+                    foreach($update_columns as $key => $value) {
                         if($before_data[0][$key]==$value){
                             continue;
                         }
@@ -523,7 +523,7 @@ class LEDGER_model extends CI_Model
 
             //Determine fields that have changed:
             $fields_changed = array();
-            foreach ($update_columns as $key => $value) {
+            foreach($update_columns as $key => $value) {
                 if($before_data[0][$key]!=$value){
                     array_push($fields_changed, array(
                         'field' => $key,
@@ -562,7 +562,7 @@ class LEDGER_model extends CI_Model
         //Counts the current highest order value
         $this->db->select('MAX(ln_order) as largest_order');
         $this->db->from('mench_ledger');
-        foreach ($match_columns as $key => $value) {
+        foreach($match_columns as $key => $value) {
             $this->db->where($key, $value);
         }
         $q = $this->db->get();

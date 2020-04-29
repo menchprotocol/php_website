@@ -150,7 +150,7 @@ if(!isset($hide_header)){
                             );
 
                             //Show Mench Menu:
-                            foreach ($en_all_2738_mench as $en_id => $m) {
+                            foreach($en_all_2738_mench as $en_id => $m) {
 
                                 $is_current_mench = ($current_mench['x_id'] == $en_id);
                                 $this_mench = current_mench(strtolower($m['m_name']));
@@ -197,7 +197,7 @@ if(!isset($hide_header)){
 
                         echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton12500">';
 
-                        foreach ($this->config->item('en_all_12500') as $en_id => $m) {
+                        foreach($this->config->item('en_all_12500') as $en_id => $m) {
 
                             //Skip superpowers if not assigned
                             if($en_id==10957 && !count($this->session->userdata('session_superpowers_assigned'))){

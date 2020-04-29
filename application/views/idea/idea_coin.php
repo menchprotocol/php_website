@@ -35,12 +35,12 @@ if(!$is_source){
 $in__previous = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
     'ln_next_idea_id' => $in['in_id'],
 ), array('in_previous'), 0);
 
 echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group previous_ins">';
-foreach ($in__previous as $parent_in) {
+foreach($in__previous as $parent_in) {
     echo echo_in($parent_in, 0, true, in_is_source($parent_in['in_id']));
 }
 if( $is_source && $is_active && $in['in_id']!=config_var(12156)){
@@ -96,7 +96,7 @@ echo '<div class="doclear">&nbsp;</div>';
 $tab_group = 1;
 $tab_content = '';
 echo '<ul class="nav nav-tabs nav-sm">';
-foreach ($this->config->item('en_all_11018') as $en_id => $m){
+foreach($this->config->item('en_all_11018') as $en_id => $m){
 
 
     //Is this a caret menu?
@@ -124,7 +124,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
         $in__next = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
             'ln_previous_idea_id' => $in['in_id'],
         ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -134,7 +134,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
 
 
         $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group next_ins">';
-        foreach ($in__next as $child_in) {
+        foreach($in__next as $child_in) {
             $this_tab .= echo_in($child_in, $in['in_id'], false, $is_source);
         }
 
@@ -166,7 +166,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
 
         $this_tab .= '<div id="add-source-' .$en_id . '" class="list-group source-adder">';
 
-        foreach ($in_notes as $in_note) {
+        foreach($in_notes as $in_note) {
             $this_tab .= echo_en($in_note, 0, null, $is_source && $is_active, $is_source);
         }
 
@@ -186,7 +186,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
 
     } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
 
-        //Idea Notes
+        //IDEA NOTES
         $in_notes = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'ln_type_source_id' => $en_id,
@@ -228,7 +228,7 @@ foreach ($this->config->item('en_all_11018') as $en_id => $m){
         $input_options = '';
         $counter = 0;
 
-        foreach ($this->config->item('en_all_12589') as $action_en_id => $mass_action_en) {
+        foreach($this->config->item('en_all_12589') as $action_en_id => $mass_action_en) {
 
             $counter++;
             $dropdown_options .= '<option value="' . $action_en_id . '">' .$mass_action_en['m_name'] . '</option>';

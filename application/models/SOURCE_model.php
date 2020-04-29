@@ -147,7 +147,7 @@ class SOURCE_model extends CI_Model
         //Fetch the target sources:
         $this->db->select($select);
         $this->db->from('mench_source');
-        foreach ($match_columns as $key => $value) {
+        foreach($match_columns as $key => $value) {
             if (!is_null($value)) {
                 $this->db->where($key, $value);
             } else {
@@ -157,7 +157,7 @@ class SOURCE_model extends CI_Model
         if ($group_by) {
             $this->db->group_by($group_by);
         }
-        foreach ($order_columns as $key => $value) {
+        foreach($order_columns as $key => $value) {
             $this->db->order_by($key, $value);
         }
         if ($limit > 0) {
@@ -204,7 +204,7 @@ class SOURCE_model extends CI_Model
             }
 
             //Log modification link for every field changed:
-            foreach ($update_columns as $key => $value) {
+            foreach($update_columns as $key => $value) {
 
                 if ($before_data[0][$key] == $value){
                     //Nothing changed:
@@ -303,7 +303,7 @@ class SOURCE_model extends CI_Model
         //First delete existing parent/child links for this drop down:
         $previously_assigned = ($set_en_child_id < 1);
         $updated_ln_id = 0;
-        foreach ($this->LEDGER_model->ln_fetch(array(
+        foreach($this->LEDGER_model->ln_fetch(array(
             'ln_portfolio_source_id' => $ln_creator_source_id,
             'ln_profile_source_id IN (' . join(',', $children) . ')' => null, //Current children
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
@@ -343,11 +343,11 @@ class SOURCE_model extends CI_Model
         //Fetch all SOURCE LINKS:
         $adjusted_count = 0;
         foreach(array_merge(
-                //Player references within Idea Notes:
+                //Player references within IDEA NOTES:
                     $this->LEDGER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //IDEA NOTES
                         'ln_profile_source_id' => $en_id,
                     ), array('in_next'), 0, 0, array('ln_order' => 'ASC')),
                     //Player links:
@@ -367,7 +367,7 @@ class SOURCE_model extends CI_Model
                     $target_field => $merger_en_id,
                 );
 
-                //Also update possible source references within Idea Notes content:
+                //Also update possible source references within IDEA NOTES content:
                 if(substr_count($adjust_tr['ln_content'], '@'.$adjust_tr[$target_field]) == 1){
                     $updating_fields['ln_content'] = str_replace('@'.$adjust_tr[$target_field],'@'.$merger_en_id, $adjust_tr['ln_content']);
                 }
@@ -581,21 +581,21 @@ class SOURCE_model extends CI_Model
             //Go another level?
             if($level < $max_search_levels){
 
-                $recursive_metadata = $this->SOURCE_model->en_metadat_experts($en__profile, ($level + 1));
+                $metadata_recursion = $this->SOURCE_model->en_metadat_experts($en__profile, ($level + 1));
 
                 //CONTENT CHANNELS (GROUPED BY CHANNEL)
-                foreach($recursive_metadata['__in__metadata_sources'] as $channel_en_id => $content_en_array){
-                    foreach($content_en_array as $content_en_id => $content_en){
-                        if (!isset($metadata_this['__in__metadata_sources'][$channel_en_id][$content_en['en_id']])) {
-                            $metadata_this['__in__metadata_sources'][$channel_en_id][$content_en['en_id']] = $content_en;
+                foreach($metadata_recursion['__in__metadata_sources'] as $type_en_id => $source_ens) {
+                    foreach($source_ens as $en_id => $source_en){
+                        if (!isset($metadata_this['__in__metadata_sources'][$type_en_id][$en_id])) {
+                            $metadata_this['__in__metadata_sources'][$type_en_id][$en_id] = $source_en;
                         }
                     }
                 }
 
                 //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
-                foreach($recursive_metadata['__in__metadata_experts'] as $expert_en_id => $expert_en){
-                    if (!isset($metadata_this['__in__metadata_experts'][$expert_en_id])) {
-                        $metadata_this['__in__metadata_experts'][$expert_en_id] = $expert_en;
+                foreach($metadata_recursion['__in__metadata_experts'] as $en_id => $expert_en) {
+                    if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
+                        $metadata_this['__in__metadata_experts'][$en_id] = $expert_en;
                     }
                 }
             }
@@ -734,7 +734,7 @@ class SOURCE_model extends CI_Model
             if($url_content){
                 $page_title = one_two_explode('>', '', one_two_explode('<title', '</title', $url_content));
                 $title_exclusions = array('-', '|');
-                foreach ($title_exclusions as $keyword) {
+                foreach($title_exclusions as $keyword) {
                     if (substr_count($page_title, $keyword) > 0) {
                         $parts = explode($keyword, $page_title);
                         $last_peace = $parts[(count($parts) - 1)];
@@ -1011,7 +1011,7 @@ class SOURCE_model extends CI_Model
 
 
         //Process request:
-        foreach ($children as $en) {
+        foreach($children as $en) {
 
             //Logic here must match items in en_mass_actions config variable
 
@@ -1350,7 +1350,7 @@ class SOURCE_model extends CI_Model
                 $locale = explode('_', $fb_profile['locale'], 2);
 
                 //Try to match Facebook profile data to internal sources and create links for the ones we find:
-                foreach (array(
+                foreach(array(
                              $this->SOURCE_model->en_search_match(3289, $fb_profile['timezone']), //Timezone
                              $this->SOURCE_model->en_search_match(3290, strtolower(substr($fb_profile['gender'], 0, 1))), //Gender either m/f
                              $this->SOURCE_model->en_search_match(3287, strtolower($locale[0])), //Language

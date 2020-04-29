@@ -209,7 +209,7 @@ $is_source = en_is_source($en['en_id']);
     //Print Play Layout
     $disable_content_loading = !isset($_GET['load']);
 
-    foreach ($this->config->item('en_all_11089') as $en_id => $m){
+    foreach($this->config->item('en_all_11089') as $en_id => $m){
 
         //Don't show empty tabs:
         $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
@@ -234,7 +234,7 @@ $is_source = en_is_source($en['en_id']);
             $this_tab .= '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:34px;">';
 
             //Display account fields ordered with their SOURCE LINKS:
-            foreach ($this->config->item('en_all_6225') as $acc_en_id => $acc_detail) {
+            foreach($this->config->item('en_all_6225') as $acc_en_id => $acc_detail) {
 
                 //Print header:
                 $this_tab .= '<div class="card">
@@ -270,7 +270,7 @@ $is_source = en_is_source($en['en_id']);
 
 
                     //List avatars:
-                    foreach ($this->config->item('en_all_12279') as $en_id3 => $m3) {
+                    foreach($this->config->item('en_all_12279') as $en_id3 => $m3) {
 
                         $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m3['m_icon']));
                         $avatar_type_match = ($en_icon_parts[0] == $avatar_icon_parts[0]);
@@ -364,7 +364,7 @@ $is_source = en_is_source($en['en_id']);
             }
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
-            foreach ($en__profiles as $en_profile) {
+            foreach($en__profiles as $en_profile) {
                 $this_tab .= echo_en($en_profile,true, null, true, $is_source);
             }
 
@@ -416,7 +416,7 @@ $is_source = en_is_source($en['en_id']);
                 $input_options = '';
                 $editor_counter = 0;
 
-                foreach ($this->config->item('en_all_4997') as $action_en_id => $mass_action_en) {
+                foreach($this->config->item('en_all_4997') as $action_en_id => $mass_action_en) {
 
 
                     $editor_counter++;
@@ -540,7 +540,7 @@ $is_source = en_is_source($en['en_id']);
 
                 //Also add invisible child IDs for quick copy/pasting:
                 $this_tab .= '<div style="color:transparent;" class="hideIfEmpty">';
-                foreach ($en__portfolios as $en_portfolio) {
+                foreach($en__portfolios as $en_portfolio) {
                     $this_tab .= $en_portfolio['en_id'].',';
                 }
                 $this_tab .= '</div>';
@@ -577,7 +577,7 @@ $is_source = en_is_source($en['en_id']);
                         $this_tab .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link en-status-filter active en-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $en_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
 
                         //Show each specific filter based on DB counts:
-                        foreach ($child_en_filters as $c_c) {
+                        foreach($child_en_filters as $c_c) {
                             $st = $en_all_6177[$c_c['en_status_source_id']];
                             $extract_icon_color = extract_icon_color($st['m_icon']);
                             $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_source_id'] . '" onclick="en_filter_status(' . $c_c['en_status_source_id'] . ')" class="nav-link en-status-filter en-status-' . $c_c['en_status_source_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
@@ -591,7 +591,7 @@ $is_source = en_is_source($en['en_id']);
 
             $this_tab .= '<div id="list-children" class="list-group">';
 
-            foreach ($en__portfolios as $en_portfolio) {
+            foreach($en__portfolios as $en_portfolio) {
                 $this_tab .= echo_en($en_portfolio,false, null, true, $is_source);
             }
             if ($counter > count($en__portfolios)) {
@@ -645,7 +645,7 @@ $is_source = en_is_source($en['en_id']);
 
         } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
 
-            //Idea Notes
+            //IDEA NOTES
             $in_notes_filters = array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
@@ -664,7 +664,7 @@ $is_source = en_is_source($en['en_id']);
 
 
                 $this_tab .= '<div class="list-group">';
-                foreach ($in_notes_query as $count => $in_notes) {
+                foreach($in_notes_query as $count => $in_notes) {
                     if(in_array($en_id, $this->config->item('en_ids_12321'))){
 
                         $this_tab .= echo_in_discover($in_notes);

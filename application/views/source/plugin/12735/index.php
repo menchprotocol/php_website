@@ -31,7 +31,7 @@ foreach($this->IDEA_model->in_fetch() as $in) {
     ), array(), 0, 0, array('ln_id' => 'ASC')); //Order in case we have extra & need to remove
     $in_notes = $this->LEDGER_model->ln_fetch(array( //Idea Links
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
+        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //IDEA NOTES
         'ln_next_idea_id' => $in['in_id'],
     ), array(), 0);
 

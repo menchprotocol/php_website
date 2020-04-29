@@ -247,7 +247,7 @@ function echo_in_notes($ln)
 
     $CI =& get_instance();
     $session_en = superpower_assigned();
-    $en_all_4485 = $CI->config->item('en_all_4485'); //Idea Notes
+    $en_all_4485 = $CI->config->item('en_all_4485'); //IDEA NOTES
 
 
     //Transaction Status
@@ -582,7 +582,7 @@ function echo_ln($ln, $is_parent_tr = false)
     if(!$is_parent_tr){
 
         $en_all_6232 = $CI->config->item('en_all_6232'); //PLATFORM VARIABLES
-        foreach ($CI->config->item('en_all_10692') as $en_id => $m) {
+        foreach($CI->config->item('en_all_10692') as $en_id => $m) {
 
             //Do we have this set?
             if(!intval($ln[$en_all_6232[$en_id]['m_desc']])){
@@ -678,7 +678,7 @@ function echo_in_tree_sources($in, $push_message = false, $autoexpand = false)
     $source_count = 0;
 
     if(isset($metadata['in__metadata_sources'])){
-        foreach ($metadata['in__metadata_sources'] as $type_en_id => $referenced_ens) {
+        foreach($metadata['in__metadata_sources'] as $type_en_id => $referenced_ens) {
             $source_count += count($referenced_ens);
         }
     }
@@ -690,7 +690,7 @@ function echo_in_tree_sources($in, $push_message = false, $autoexpand = false)
         $en_all_3000 = $CI->config->item('en_all_3000');
         $visible_ppl = 3; //How many people to show before clicking on "see more"
         $type_count = 0;
-        foreach ($metadata['in__metadata_sources'] as $type_id => $referenced_ens) {
+        foreach($metadata['in__metadata_sources'] as $type_id => $referenced_ens) {
 
             if ($type_count > 0) {
                 if (($type_count + 1) >= $type_all_count) {
@@ -712,7 +712,7 @@ function echo_in_tree_sources($in, $push_message = false, $autoexpand = false)
 
                 //We only show details on our website's HTML landing pages:
                 $count = 0;
-                foreach ($referenced_ens as $en) {
+                foreach($referenced_ens as $en) {
 
                     if ($count > 0) {
                         if (($count + 1) >= count($referenced_ens)) {
@@ -748,7 +748,7 @@ function echo_in_tree_sources($in, $push_message = false, $autoexpand = false)
     $expert_info = '';
 
     if(isset($metadata['in__metadata_experts'])){
-        foreach ($metadata['in__metadata_experts'] as $count => $en) {
+        foreach($metadata['in__metadata_experts'] as $count => $en) {
 
             $is_last_fb_item = ($push_message && $count >= $visible_bot);
 
@@ -912,7 +912,7 @@ function echo_time_difference($t, $second_time = null)
         1 => 'Second'
     );
 
-    foreach ($time_units as $unit => $period) {
+    foreach($time_units as $unit => $period) {
         if ($time < $unit && $unit > 1) continue;
         if ($unit >= 2592000 && fmod(($time / $unit), 1) >= 0.33 && fmod(($time / $unit), 1) <= .67) {
             $numberOfUnits = number_format(($time / $unit), 1);
@@ -1020,6 +1020,8 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
     $metadata = unserialize($in['in_metadata']);
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+
+
     if(!$completion_rate){
         if($recipient_en){
             $completion_rate = $CI->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $in);
@@ -1027,16 +1029,17 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
             $completion_rate['completion_percentage'] = 0;
         }
     }
+
     $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor ); //|| $recipient_en
-    $has_completion = ($can_click && $completion_rate['completion_percentage']>0);
 
 
-    $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'actionplan_sort' : '' ).' itemdiscover '.$extra_class.'" '.( $has_completion ? ' title="Discovered '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="top"' : '' ).'>';
+    $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'actionplan_sort' : '' ).' itemdiscover '.$extra_class.'">';
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemdiscover">' : '' );
 
 
-    if($has_completion){
-        $ui .= '<div class="progress-bg"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+
+    if($can_click && $completion_rate['completion_percentage']>0){
+        $ui .= '<div class="progress-bg" title="Discovered '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
 
@@ -1091,7 +1094,7 @@ function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $p
     $ui = null;
     foreach($CI->LEDGER_model->ln_fetch(array(
         'ln_previous_idea_id' => $in_id,
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //ACTIVE
     ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $in_ln){
@@ -1101,7 +1104,7 @@ function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $p
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         $messages = $CI->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-            'ln_type_source_id' => 4231, //Idea Notes Messages
+            'ln_type_source_id' => 4231, //IDEA NOTES Messages
             'ln_next_idea_id' => $in_ln['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1123,7 +1126,7 @@ function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $p
 
         //Display Messages:
         $ui .= '<div class="messages-'.$in_ln['in_id'].' hidden">';
-        foreach ($messages as $msg) {
+        foreach($messages as $msg) {
             $ui .= '<div class="tip_bubble">';
             $ui .= $CI->COMMUNICATION_model->comm_message_send($msg['ln_content']);
             $ui .= '</div>';
@@ -1236,7 +1239,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
     if(superpower_active(10939, true)) {
         $next_ins = $CI->LEDGER_model->ln_fetch(array(
             'ln_previous_idea_id' => $in['in_id'],
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
         if($next_ins[0]['total_ins'] > 0){
@@ -1397,7 +1400,7 @@ function echo_caret($en_id, $m, $object_id){
     $ui = '<li class="nav-item dropdown '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m_name'].'" data-toggle="tooltip" data-placement="top">';
     $ui .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
     $ui .= '<div class="dropdown-menu">';
-    foreach ($CI->config->item('en_all_'.$en_id) as $en_id2 => $m2){
+    foreach($CI->config->item('en_all_'.$en_id) as $en_id2 => $m2){
         $ui .= '<a class="dropdown-item montserrat '.extract_icon_color($m2['m_icon']).'" href="' . $m2['m_desc'] . $object_id . '"><span class="icon-block">'.echo_en_icon($m2['m_icon']).'</span> '.$m2['m_name'].'</a>';
     }
     $ui .= '</div>';
@@ -1545,9 +1548,9 @@ function echo_in_previous_discover($in_id, $recipient_en){
 
         //Find it:
         $recursive_parents = $CI->IDEA_model->in_recursive_parents($in_id, true, true);
-        foreach ($recursive_parents as $grand_parent_ids) {
+        foreach($recursive_parents as $grand_parent_ids) {
             foreach(array_intersect($grand_parent_ids, $player_discover_ids) as $intersect) {
-                foreach ($grand_parent_ids as $parent_in_id) {
+                foreach($grand_parent_ids as $parent_in_id) {
 
                     if($in_level_up==0){
                         //Remember the first parent for the back button:
@@ -1609,7 +1612,7 @@ function echo_in_note_source($in_id, $note_type_en_id, $in_notes, $is_source){
     $en_all_11018 = $CI->config->item('en_all_11018');
 
     $ui = '<div class="list-group">';
-    foreach ($in_notes as $en) {
+    foreach($in_notes as $en) {
         $ui .= echo_en($en, false, null, true, $is_source);
     }
 
@@ -1633,7 +1636,7 @@ function echo_in_note_source($in_id, $note_type_en_id, $in_notes, $is_source){
 function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
 
     $CI =& get_instance();
-    $en_all_4485 = $CI->config->item('en_all_4485'); //Idea Notes
+    $en_all_4485 = $CI->config->item('en_all_4485'); //IDEA NOTES
     $handles_uploads = (in_array($note_type_en_id, $CI->config->item('en_ids_12359')));
     $handles_url = (in_array($note_type_en_id, $CI->config->item('en_ids_7551')) || in_array($note_type_en_id, $CI->config->item('en_ids_4986')));
 
@@ -1642,7 +1645,7 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
     //Show no-Message notifications for each message type:
     $ui = '<div id="in_notes_list_'.$note_type_en_id.'" class="list-group">';
 
-    foreach ($in_notes as $in_notes) {
+    foreach($in_notes as $in_notes) {
         $ui .= echo_in_notes($in_notes);
     }
 
@@ -1908,7 +1911,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $ui .= '<div class="space-content hideIfEmpty">';
     //PROFILE SOURCES:
     $ui .= '<span class="'. superpower_active(12706) .' paddingup inline-block hideIfEmpty">';
-    foreach ($en__profiles as $en_parent) {
+    foreach($en__profiles as $en_parent) {
         $ui .= '<span class="icon-block-img en_child_icon_' . $en_parent['en_id'] . '"><a href="/source/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span> ';
     }
     $ui .= '</span>';
@@ -2036,7 +2039,7 @@ function echo_input_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_sour
 
     $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$cache_en_id.'">';
 
-    foreach ($en_all_this as $en_id => $m) {
+    foreach($en_all_this as $en_id => $m) {
 
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
         $is_url_desc = ( substr($m['m_desc'], 0, 1)=='/' );

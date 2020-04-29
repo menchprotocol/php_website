@@ -69,7 +69,7 @@ class COMMUNICATION_model extends CI_Model
 
                 //User wants to completely unsubscribe from Mench:
                 $deleted_ins = 0;
-                foreach ($this->LEDGER_model->ln_fetch(array(
+                foreach($this->LEDGER_model->ln_fetch(array(
                     'ln_creator_source_id' => $en['en_id'],
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -437,7 +437,7 @@ class COMMUNICATION_model extends CI_Model
                 $message = 'Choose one of the following options:';
                 $increment = 1;
 
-                foreach ($player_discoveries as $counter => $in) {
+                foreach($player_discoveries as $counter => $in) {
                     //Construct unsubscribe confirmation body:
                     $message .= "\n\n" . ($counter + $increment) . '. Stop ' . $in['in_title'];
                     array_push($quick_replies, array(
@@ -518,7 +518,7 @@ class COMMUNICATION_model extends CI_Model
 
                 //Show options for the User to add to their DISCOVER LIST:
 
-                foreach ($search_results as $alg) {
+                foreach($search_results as $alg) {
 
                     //Fetch metadata:
                     $ins = $this->IDEA_model->in_fetch(array(
@@ -824,7 +824,7 @@ class COMMUNICATION_model extends CI_Model
 
         $graph_url = 'https://graph.facebook.com/' . config_var(11077) . $graph_url;
         $counter = 0;
-        foreach ($access_token_payload as $key => $val) {
+        foreach($access_token_payload as $key => $val) {
             $graph_url = $graph_url . ($counter == 0 ? '?' : '&') . $key . '=' . $val;
             $counter++;
         }
@@ -954,7 +954,7 @@ class COMMUNICATION_model extends CI_Model
         $html_message_body = '';
 
         //Log message sent link:
-        foreach ($msg_validation['output_messages'] as $output_message) {
+        foreach($msg_validation['output_messages'] as $output_message) {
 
             //Dispatch message based on format:
             if ($push_message) {
@@ -1026,7 +1026,7 @@ class COMMUNICATION_model extends CI_Model
 
         /*
          *
-         * This function is used to validate Idea Notes.
+         * This function is used to validate IDEA NOTES.
          *
          * See comm_message_send() for more information on input variables.
          *
@@ -1350,7 +1350,7 @@ class COMMUNICATION_model extends CI_Model
             if(!($current_mench['x_name']=='source' && $this->uri->segment(2)==$string_references['ref_sources'][0])){
 
                 //Source Profile
-                foreach ($this->LEDGER_model->ln_fetch(array(
+                foreach($this->LEDGER_model->ln_fetch(array(
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
@@ -1567,7 +1567,7 @@ class COMMUNICATION_model extends CI_Model
                 //TODO Maybe add another message to give User some context on these?
 
                 //Append messages:
-                foreach ($fb_media_attachments as $fb_media_attachment) {
+                foreach($fb_media_attachments as $fb_media_attachment) {
 
                     //See what type of attachment (if any) this is:
                     if (!$fb_media_attachment['fb_att_type']) {

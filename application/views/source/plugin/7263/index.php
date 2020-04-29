@@ -13,7 +13,7 @@ echo '<td colspan="4" style="text-align: left;">'.$en_all_6103[6402]['m_icon'].'
 echo '</tr>';
 $counter = 0;
 $total_count = 0;
-foreach ($this->LEDGER_model->ln_fetch(array(
+foreach($this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12842')) . ')' => null, //IDEA LINKS ONE-WAY
@@ -50,7 +50,7 @@ foreach ($this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
                 'in_type_source_id NOT IN (6907,6914)' => null, //NOT AND/OR Lock
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
                 'ln_next_idea_id' => $in_ln['in_id'],
             ), array('in_previous'))) > 1 || $in_ln['in_type_source_id'] != 6677){
 
@@ -93,7 +93,7 @@ if(1){
     echo '</tr>';
 
     $counter = 0;
-    foreach ($this->LEDGER_model->ln_fetch(array(
+    foreach($this->LEDGER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY

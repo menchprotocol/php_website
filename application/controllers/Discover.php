@@ -158,7 +158,7 @@ class Discover extends CI_Controller
             foreach($this->LEDGER_model->ln_fetch(array(
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
                 'ln_previous_idea_id' => $previous_level_id,
             ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $in_next){
                 if($in_next['in_id']==$in_id){

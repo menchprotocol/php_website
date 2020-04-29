@@ -60,7 +60,7 @@ class DISCOVER_model extends CI_Model
 
                 //First fetch all possible answers based on correct order:
                 $found_expansion = 0;
-                foreach ($this->LEDGER_model->ln_fetch(array(
+                foreach($this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
@@ -144,7 +144,7 @@ class DISCOVER_model extends CI_Model
         if($first_step){
             $player_discover_ids = $this->DISCOVER_model->discover_ids($en_id);
             if(!in_array($in['in_id'], $player_discover_ids)){
-                foreach ($this->IDEA_model->in_recursive_parents($in['in_id']) as $grand_parent_ids) {
+                foreach($this->IDEA_model->in_recursive_parents($in['in_id']) as $grand_parent_ids) {
                     if (array_intersect($grand_parent_ids, $player_discover_ids)) {
                         foreach($grand_parent_ids as $parent_in_id){
                             $ins = $this->IDEA_model->in_fetch(array(
@@ -513,7 +513,7 @@ class DISCOVER_model extends CI_Model
             ), array('in_next'), 0, 0);
 
 
-            foreach ($locked_links as $locked_link) {
+            foreach($locked_links as $locked_link) {
 
                 //See if it unlocks any of these ranges defined in the metadata:
                 $ln_metadata = unserialize($locked_link['ln_metadata']);
@@ -576,7 +576,7 @@ class DISCOVER_model extends CI_Model
             $parents_checked = array();
 
             //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-            foreach ($this->IDEA_model->in_recursive_parents($in['in_id']) as $grand_parent_ids) {
+            foreach($this->IDEA_model->in_recursive_parents($in['in_id']) as $grand_parent_ids) {
 
                 //Does this parent and its grandparents have an intersection with the user ideas?
                 if(!array_intersect($grand_parent_ids, $player_discover_ids)){
@@ -813,7 +813,7 @@ class DISCOVER_model extends CI_Model
         //Fetch Messages
         $in__messages = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id' => 4231, //Idea Notes Messages
+            'ln_type_source_id' => 4231, //IDEA NOTES Messages
             'ln_next_idea_id' => $ins[0]['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
@@ -846,7 +846,7 @@ class DISCOVER_model extends CI_Model
             } else {
 
                 //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-                foreach ($this->IDEA_model->in_recursive_parents($ins[0]['in_id']) as $grand_parent_ids) {
+                foreach($this->IDEA_model->in_recursive_parents($ins[0]['in_id']) as $grand_parent_ids) {
 
                     //Does this parent and its grandparents have an intersection with the user ideas?
                     if (array_intersect($grand_parent_ids, $player_discover_ids)) {
@@ -895,7 +895,7 @@ class DISCOVER_model extends CI_Model
                 echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle discover"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
 
 
-                foreach ($in__messages as $message_ln) {
+                foreach($in__messages as $message_ln) {
                     echo $this->COMMUNICATION_model->comm_message_send(
                         $message_ln['ln_content'],
                         $recipient_en,
@@ -1102,7 +1102,7 @@ class DISCOVER_model extends CI_Model
 
             }
 
-            foreach ($in__messages as $message_ln) {
+            foreach($in__messages as $message_ln) {
                 echo $this->COMMUNICATION_model->comm_message_send(
                     $message_ln['ln_content'],
                     $recipient_en,
@@ -1198,7 +1198,7 @@ class DISCOVER_model extends CI_Model
 
                 //First fetch answers based on correct order:
                 $discover_answers = array();
-                foreach ($this->LEDGER_model->ln_fetch(array(
+                foreach($this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
@@ -1255,7 +1255,7 @@ class DISCOVER_model extends CI_Model
                      * */
 
                     $answer_referencing = array(); //Start with nothing...
-                    foreach ($in__messages as $message_ln) {
+                    foreach($in__messages as $message_ln) {
                         //Let's see if we can find a reference:
                         for ($num = 1; $num <= config_var(12124); $num++) {
                             if(substr_count($message_ln['ln_content'] , $num.'. ')==1 || substr_count($message_ln['ln_content'] , $num.".\n")==1){
@@ -1308,7 +1308,7 @@ class DISCOVER_model extends CI_Model
 
 
                 //List children to choose from:
-                foreach ($in__next as $key => $child_in) {
+                foreach($in__next as $key => $child_in) {
 
                     //Has this been previously selected?
                     $previously_selected = count($this->LEDGER_model->ln_fetch(array(
@@ -2035,7 +2035,7 @@ class DISCOVER_model extends CI_Model
         }
 
         //Delete ALL previous answers:
-        foreach ($this->LEDGER_model->ln_fetch(array(
+        foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //DISCOVER ANSWERED
             'ln_creator_source_id' => $en_id,

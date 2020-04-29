@@ -1,7 +1,7 @@
 /*
 *
 * Functions related to modifying ideas
-* and managing Idea Notes.
+* and managing IDEA NOTES.
 *
 * */
 
@@ -358,7 +358,7 @@ function in_ui_delete(in_id,ln_id){
 
 /*
 *
-* Idea Notes
+* IDEA NOTES
 *
 * */
 
