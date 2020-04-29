@@ -1843,7 +1843,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         //SOURCE TOOLBAR?
         if($show_toolbar){
 
-            $ui .= echo_input_text(6197, $en['en_name'], $en['en_id'], $is_source);
+            $ui .= echo_input_text(6197, $en['en_name'], $en['en_id'], $is_source, 0, false, null, extract_icon_color($en['en_icon']));
             $ui .= $child_counter;
             $ui .= '<div class="space-content">'.$info_items_list.'</div>';
 
