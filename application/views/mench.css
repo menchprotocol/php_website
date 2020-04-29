@@ -663,8 +663,8 @@ img.no-radius {
     border-color:#000000 !important;
     border-bottom: 1px solid #f4f5f7 !important;
     background-color: #f4f5f7 !important;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .note-editor{
@@ -1120,7 +1120,7 @@ label {
     line-height: 100%;
     border: 0;
     padding: 12px;
-    border-radius: 5px !important;
+    border-radius:10px !important;
 }
 
 .btn.dropdown-toggle{

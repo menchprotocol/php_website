@@ -670,9 +670,12 @@ class DISCOVER_model extends CI_Model
          *
          */
 
+        if(!isset($recipient_en['en_id']) ){
+            $recipient_en['en_id'] = 0;
+        }
 
-        //Fetch/Validate idea:
 
+        //FETCH IDEA
         $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $in_id,
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
@@ -680,7 +683,7 @@ class DISCOVER_model extends CI_Model
         if (count($ins) < 1) {
             $this->LEDGER_model->ln_create(array(
                 'ln_type_source_id' => 4246, //Platform Bug Reports
-                'ln_creator_source_id' => ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ),
+                'ln_creator_source_id' => $recipient_en['en_id'],
                 'ln_content' => 'step_echo() invalid idea ID',
                 'ln_previous_idea_id' => $in_id,
             ));
@@ -689,14 +692,14 @@ class DISCOVER_model extends CI_Model
 
 
 
-        //Fetch Messages
+        //MESSAGES
         $in__messages = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id' => 4231, //IDEA NOTES Messages
             'ln_next_idea_id' => $ins[0]['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
-        //Fetch Children:
+        //NEXT IDEAS
         $in__next = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
@@ -704,11 +707,10 @@ class DISCOVER_model extends CI_Model
             'ln_previous_idea_id' => $ins[0]['in_id'],
         ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
-
         //Log View:
         $this->LEDGER_model->ln_create(array(
             'ln_creator_source_id' => $recipient_en['en_id'],
-            'ln_type_source_id' => 7610, //Idea Viewed by User
+            'ln_type_source_id' => 7610, //PLAYER VIEWED IDEA
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_order' => fetch_cookie_order('7610_'.$in_id),
         ));
@@ -721,7 +723,9 @@ class DISCOVER_model extends CI_Model
             $player_discover_ids = $this->DISCOVER_model->discover_ids($recipient_en['en_id']);
 
             if(in_array($ins[0]['in_id'], $player_discover_ids)){
+
                 $in_discovery_list = true;
+
             } else {
 
                 //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
@@ -736,6 +740,7 @@ class DISCOVER_model extends CI_Model
                 }
             }
         }
+
 
 
         /*
@@ -773,32 +778,61 @@ class DISCOVER_model extends CI_Model
 
 
 
-            //Any Sub Topics?
-            if(count($in__next) > 0){
 
-                //List Children:
-                echo '<div id="discoverScroll no-height">&nbsp;</div>';
-                $common_prefix = in_calc_common_prefix($in__next, 'in_title');
-
-                echo '<div class="'.( !$all_child_featured ? ' discover_topics hidden ' : '' ).'">';
-                echo ( !$all_child_featured ? '<div class="discover-topic"><span class="icon-block">&nbsp;</span>PREVIEW IDEAS:</div>' : '' );
-                echo '<div class="list-group">';
-                foreach($in__next as $key => $child_in){
-                    echo echo_in_discover($child_in, $is_or, $common_prefix);
-                }
-                echo '</div>';
-                echo '</div>';
-
-            }
 
 
             if(!$all_child_featured){
 
-                //Any Sub Topics?
-                if(count($in__next) > 0){
-                    //Give option to review:
-                    echo '<div class="inline-block margin-top-down discover-add pull-left discover_topics"><a class="btn btn-discover btn-circle" href="javascript:void();" onclick="toggle_discover()"><i class="fas fa-info"></i></a></div>';
+                //IDEA METADATA
+                $metadata = unserialize($ins[0]['in_metadata']);
+                $has_time = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+                $has_idea = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>0 );
+
+                if ($has_time || $has_idea || count($in__next)) {
+
+                    echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.( $has_idea ? $metadata['in__metadata_max_steps'].' Idea'.echo__s($metadata['in__metadata_max_steps']) : '' ).( $has_time ? ( $has_idea ? ' in ' : '' ).echo_time_hours($metadata['in__metadata_max_seconds']) : '' ).'</a></div>';
+
+                    //BODY
+                    echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
+                    if(count($in__next) > 0){
+                        //List Children:
+                        echo '<div class="list-group">';
+                        foreach($in__next as $key => $child_in){
+                            echo echo_in_discover($child_in, $is_or, in_calc_common_prefix($in__next, 'in_title'));
+                        }
+                        echo '</div>';
+                    }
+                    echo '</div>';
+
                 }
+
+
+                //Expert References?
+                $has_experts = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 );
+                $has_channels = ( isset($metadata['in__metadata_sources']) ? count($metadata['in__metadata_sources']) : 0 );
+                if ($has_experts || $has_channels) {
+
+                    echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $has_channels ? $has_channels.' Source'.echo__s($has_experts) : '' ).( $has_experts ? ( $has_channels ? ' from ' : '' ).$has_experts.' Expert'.echo__s($has_experts) : '' ).'</a></div>';
+
+                    //BODY
+                    echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
+
+                    foreach($metadata['in__metadata_experts'] as $expert){
+                        echo echo_en($expert);
+                    }
+
+                    //$en_all_3000 = $this->config->item('en_all_3000');
+                    foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
+                        foreach($channel_contents as $channel_content){
+                            echo echo_en($channel_content);
+                        }
+                    }
+
+                    echo '</div>';
+
+                }
+
+
 
                 //Redirect to login page:
                 echo '<div class="inline-block margin-top-down discover-add pull-right"><a class="btn btn-discover btn-circle" href="/discover/start/'.$ins[0]['in_id'].'"><i class="fas fa-step-forward"></i></a></div>';

@@ -31,15 +31,6 @@ if(js_pl_id>0){
 }
 
 
-function toggle_discover(){
-
-    $('.discover_topics').toggleClass('hidden');
-
-    $([document.documentElement, document.body]).animate({
-        scrollTop: $("#discoverScroll").offset().top
-    }, 500);
-
-}
 
 function mass_action_ui(){
     $('.mass_action_item').addClass('hidden');
