@@ -296,6 +296,9 @@ function en_add_or_link(en_existing_id, is_parent) {
             //Add new object to list:
             add_to_list(list_id, '.en-item', data.en_new_echo);
 
+            //Allow inline editing if enabled:
+            echo_input_text_update_start();
+
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
 

@@ -1406,9 +1406,11 @@ function echo_caret($en_id, $m, $url_append, $nasty_hack = null){
             if(!strlen($nasty_hack)){
                 continue;
             }
-            $url_append = urlencode($nasty_hack);
+            $this_url = urlencode($nasty_hack);
+        } else {
+            $this_url = $url_append;
         }
-        $ui .= '<a class="dropdown-item montserrat '.extract_icon_color($m2['m_icon']).'" href="' . $m2['m_desc'] . $url_append . '"><span class="icon-block">'.$m2['m_icon'].'</span> '.$m2['m_name'].'</a>';
+        $ui .= '<a class="dropdown-item montserrat '.extract_icon_color($m2['m_icon']).'" href="' . $m2['m_desc'] . $this_url . '"><span class="icon-block">'.echo_en_icon($m2['m_icon']).'</span> '.$m2['m_name'].'</a>';
     }
     $ui .= '</div>';
     $ui .= '</li>';
