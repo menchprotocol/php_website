@@ -890,8 +890,9 @@ class IDEA_model extends CI_Model
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
         ), array('en_profile'), 0) as $en) {
-            //AGGREGATE
-            $metadata_this = array_merge($metadata_this, $this->SOURCE_model->en_metadat_experts($en));
+            foreach($this->SOURCE_model->en_metadat_experts($en) as $key => $value){
+                $metadata_this[$key] = $value;
+            }
         }
 
 
