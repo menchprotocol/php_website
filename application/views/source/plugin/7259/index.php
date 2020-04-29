@@ -17,7 +17,7 @@ $replace_with_is_confirmed = false;
 if($search_for_is_set){
 
     $matching_results = $this->IDEA_model->in_fetch(array(
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
         'LOWER(in_title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
     ));
 
@@ -84,8 +84,8 @@ if($search_for_is_set){
                 //Loop through parents:
                 $en_all_7585 = $this->config->item('en_all_7585'); // Idea Subtypes
                 foreach ($this->LEDGER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                     'ln_next_idea_id' => $in['in_id'],
                 ), array('in_previous')) as $in_parent) {

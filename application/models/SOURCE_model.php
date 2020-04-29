@@ -41,10 +41,10 @@ class SOURCE_model extends CI_Model
         }
 
         foreach($this->LEDGER_model->ln_fetch(array(
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_portfolio_source_id' => $en['en_id'], //This child source
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
         ), array('en_profile')) as $en_parent){
 
             //Push to parent IDs:
@@ -60,7 +60,7 @@ class SOURCE_model extends CI_Model
                     'ln_creator_source_id' => $en['en_id'],
                     'ln_type_source_id' => 5007, //TOGGLE SUPERPOWER
                     'ln_profile_source_id' => $en_parent['en_id'],
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 ), array(), 1); //Fetch the single most recent supoerpower toggle only
                 if(!count($last_advance_settings) || !substr_count($last_advance_settings[0]['ln_content'] , ' DEACTIVATED')){
                     array_push($session_data['session_superpowers_activated'], intval($en_parent['en_id']));
@@ -220,7 +220,7 @@ class SOURCE_model extends CI_Model
 
                 } elseif($key=='en_status_source_id') {
 
-                    if(in_array($value, $this->config->item('en_ids_7358') /* Source Status Active */)){
+                    if(in_array($value, $this->config->item('en_ids_7358') /* ACTIVE */)){
                         $ln_type_source_id = 10654; //Source Updated Status
                     } else {
                         $ln_type_source_id = 6178; //Source Deleted
@@ -306,7 +306,7 @@ class SOURCE_model extends CI_Model
         foreach ($this->LEDGER_model->ln_fetch(array(
             'ln_portfolio_source_id' => $ln_creator_source_id,
             'ln_profile_source_id IN (' . join(',', $children) . ')' => null, //Current children
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         ), array(), config_var(11064)) as $ln) {
 
             if (!$previously_assigned && $ln['ln_profile_source_id'] == $set_en_child_id) {
@@ -340,20 +340,20 @@ class SOURCE_model extends CI_Model
 
     function en_unlink($en_id, $ln_creator_source_id = 0, $merger_en_id = 0){
 
-        //Fetch all source links:
+        //Fetch all SOURCE LINKS:
         $adjusted_count = 0;
         foreach(array_merge(
                 //Player references within Idea Notes:
                     $this->LEDGER_model->ln_fetch(array(
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
                         'ln_profile_source_id' => $en_id,
                     ), array('in_next'), 0, 0, array('ln_order' => 'ASC')),
                     //Player links:
                     $this->LEDGER_model->ln_fetch(array(
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                         '(ln_portfolio_source_id = ' . $en_id . ' OR ln_profile_source_id = ' . $en_id . ')' => null,
                     ), array(), 0)
                 ) as $adjust_tr){
@@ -451,8 +451,8 @@ class SOURCE_model extends CI_Model
 
         //Check to see if we have domain linked previously:
         $domain_links = $this->LEDGER_model->ln_fetch(array(
-            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'ln_type_source_id' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
             'ln_profile_source_id' => 1326, //Domain Player
             'ln_content' => $domain_analysis['url_clean_domain'],
@@ -545,6 +545,61 @@ class SOURCE_model extends CI_Model
 
         return $stats;
     }
+
+
+    function en_metadat_experts($en, $level = 1){
+
+        //Goes through $max_saerch_levels of sources to find expert channels, people & organizations
+        $max_saerch_levels = 2;
+        $metadata_this = array(
+            '__in__metadata_experts' => array(),
+            '__in__metadata_sources' => array(),
+        );
+
+        //SOURCE PROFILE
+        foreach($this->LEDGER_model->ln_fetch(array(
+            'ln_portfolio_source_id' => $en['en_id'],
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //SOURCE LINKS
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
+        ), array('en_profile'), 0) as $en__profile){
+
+            if(in_array($en__profile['en_id'], $this->config->item('en_ids_3000'))){
+                //CONTENT CHANNELS (GROUPED BY CHANNEL)
+                if (!isset($metadata_this['__in__metadata_sources'][$en__profile['en_id']][$en['en_id']])) {
+                    $metadata_this['__in__metadata_sources'][$en__profile['en_id']][$en['en_id']] = $en;
+                }
+            } elseif(in_array($en__profile['en_id'], $this->config->item('en_ids_12864'))) {
+                //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
+                if (!isset($metadata_this['__in__metadata_experts'][$en['en_id']])) {
+                    $metadata_this['__in__metadata_experts'][$en['en_id']] = $en;
+                }
+            }
+
+            //Go another level?
+            if($level < $max_saerch_levels){
+
+                $recursive_metadata = $this->SOURCE_model->en_match_ln_status($en__profile, ($level + 1));
+
+                //CONTENT CHANNELS (GROUPED BY CHANNEL)
+                foreach($recursive_metadata['__in__metadata_sources'] as $channel_en_id => $content_en){
+                    if (!isset($metadata_this['__in__metadata_sources'][$channel_en_id][$content_en['en_id']])) {
+                        $metadata_this['__in__metadata_sources'][$channel_en_id][$content_en['en_id']] = $content_en;
+                    }
+                }
+
+                //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
+                foreach($recursive_metadata['__in__metadata_experts'] as $expert_en_id => $expert_en){
+                    if (!isset($metadata_this['__in__metadata_experts'][$expert_en_id])) {
+                        $metadata_this['__in__metadata_experts'][$expert_en_id] = $expert_en;
+                    }
+                }
+            }
+        }
+
+        return $metadata_this;
+    }
+
 
 
     function en_url($url, $ln_creator_source_id = 0, $add_to_child_en_id = 0, $page_title = null)
@@ -696,7 +751,7 @@ class SOURCE_model extends CI_Model
 
                 //Make sure this is not a duplicate name:
                 $dup_name_us = $this->SOURCE_model->en_fetch(array(
-                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
                     'en_name' => $page_title,
                 ));
 
@@ -738,8 +793,8 @@ class SOURCE_model extends CI_Model
 
             //Check to see if URL previously exists:
             $url_links = $this->LEDGER_model->ln_fetch(array(
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Player URL Links
                 'ln_content' => $url,
             ), array('en_portfolio'));
@@ -864,9 +919,9 @@ class SOURCE_model extends CI_Model
         //Search and see if we can find $value in the link content:
         $matching_sources = $this->LEDGER_model->ln_fetch(array(
             'ln_profile_source_id' => $en_parent_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_content' => trim($value),
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         ), array(), 0);
 
 
@@ -945,9 +1000,9 @@ class SOURCE_model extends CI_Model
         $applied_success = 0; //To be populated...
         $children = $this->LEDGER_model->ln_fetch(array(
             'ln_profile_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
         ), array('en_portfolio'), 0);
 
 
@@ -980,10 +1035,10 @@ class SOURCE_model extends CI_Model
 
                 //See if child source has searched parent source:
                 $child_parent_ens = $this->LEDGER_model->ln_fetch(array(
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                     'ln_portfolio_source_id' => $en['en_id'], //This child source
                     'ln_profile_source_id' => $parent_en_id,
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 ));
 
                 if($action_en_id==5981 && count($child_parent_ens)==0){
@@ -1090,7 +1145,7 @@ class SOURCE_model extends CI_Model
 
                 $this->LEDGER_model->ln_update($en['ln_id'], array(
                     'ln_status_source_id' => $action_command2,
-                ), $ln_creator_source_id, ( in_array($action_command2, $this->config->item('en_ids_7360') /* Transaction Status Active */) ? 10656 /* Player Link Updated Status */ : 10673 /* Player Link Unlinked */ ));
+                ), $ln_creator_source_id, ( in_array($action_command2, $this->config->item('en_ids_7360') /* ACTIVE */) ? 10656 /* Player Link Updated Status */ : 10673 /* Player Link Unlinked */ ));
 
                 $applied_success++;
 
@@ -1129,8 +1184,8 @@ class SOURCE_model extends CI_Model
         //Do a child count:
         $en__portfolios_count = $this->LEDGER_model->ln_fetch(array(
             'ln_profile_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'en_status_source_id IN (' . join(',', $en_statuses) . ')' => null,
         ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
 
@@ -1163,8 +1218,8 @@ class SOURCE_model extends CI_Model
 
         //Try matching Facebook PSID to existing Users:
         $user_messenger = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_profile_source_id' => 6196, //Mench Messenger
             'ln_external_id' => $psid,
         ), array('en_portfolio'));
@@ -1206,7 +1261,7 @@ class SOURCE_model extends CI_Model
 
         //Check to make sure name is not duplicate:
         $duplicate_ens = $this->SOURCE_model->en_fetch(array(
-            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
             'LOWER(en_name)' => strtolower(trim($en_name)),
         ));
 
@@ -1245,8 +1300,8 @@ class SOURCE_model extends CI_Model
             ));
             return false;
         } elseif(count($this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_profile_source_id' => 6196, //Mench Messenger
                 'ln_external_id' => $psid,
             )))>0){

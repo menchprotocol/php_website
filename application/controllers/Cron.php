@@ -74,7 +74,7 @@ class Cron extends CI_Controller
 
             //Update the weights for ideas and sources
             foreach($this->IDEA_model->in_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
             )) as $in) {
                 $stats['in_scanned']++;
                 $stats['in_updated'] += in_weight_updater($in);
@@ -89,7 +89,7 @@ class Cron extends CI_Controller
         if(!$obj || $obj=='en'){
             //Update the weights for ideas and sources
             foreach($this->SOURCE_model->en_fetch(array(
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
             )) as $en) {
                 $stats['en_scanned']++;
                 $stats['en_updated'] += en_weight_updater($en);
@@ -122,14 +122,14 @@ class Cron extends CI_Controller
 
         //IDEA
         $in_coins_new_last_week = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $in_coins_last_week = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
             'ln_timestamp <=' => $last_week_end,
@@ -139,13 +139,13 @@ class Cron extends CI_Controller
 
         //DISCOVER
         $discover_coins_new_last_week = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $discover_coins_last_week = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -155,13 +155,13 @@ class Cron extends CI_Controller
 
         //SOURCE
         $en_coins_new_last_week = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $en_coins_last_week = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -203,9 +203,9 @@ class Cron extends CI_Controller
 
         $subscriber_filters = array(
             'ln_profile_source_id' => 12114,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
         );
 
         //Should we limit the scope?
@@ -219,8 +219,8 @@ class Cron extends CI_Controller
         foreach($this->LEDGER_model->ln_fetch($subscriber_filters, array('en_portfolio')) as $subscribed_player){
             //Try fetching subscribers email:
             foreach($this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_profile_source_id' => 3288, //Mench Email
                 'ln_portfolio_source_id' => $subscribed_player['en_id'],
             )) as $en_email){
@@ -249,8 +249,7 @@ class Cron extends CI_Controller
         if($in_id > 0){
             $filters['in_id'] = $in_id;
         } else {
-            //All Public Ideas
-            $filters['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null;
+            $filters['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //PUBLIC
         }
 
         foreach($this->IDEA_model->in_fetch($filters) as $in){
@@ -266,8 +265,8 @@ class Cron extends CI_Controller
 
             //Then count the title of next ideas:
             foreach ($this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'ln_previous_idea_id' => $in['in_id'],
             ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $in__next){
@@ -282,7 +281,7 @@ class Cron extends CI_Controller
 
             //Fetch All Messages for this:
             foreach($this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id' => 4231, //Idea Notes Messages
                 'ln_next_idea_id' => $in['in_id'],
             ), array(), 0, 0, array('ln_order' => 'ASC')) as $message){
@@ -301,8 +300,8 @@ class Cron extends CI_Controller
                     //Yes, see
                     //Source Profile
                     foreach ($this->LEDGER_model->ln_fetch(array(
-                        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                         'ln_portfolio_source_id' => $message['ln_profile_source_id'],
                     ), array('en_profile'), 0, 0, array('en_id' => 'ASC' /* Hack to get Text first */)) as $parent_en) {
@@ -383,7 +382,7 @@ class Cron extends CI_Controller
 
         $start_time = time();
         $filters = array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         );
         if($in_id > 0){
             $filters['in_id'] = $in_id;
@@ -473,7 +472,7 @@ class Cron extends CI_Controller
 
         //Add Ideas:
         $ins = $this->IDEA_model->in_fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
         ));
         foreach($ins as $in){
 
@@ -492,8 +491,8 @@ class Cron extends CI_Controller
 
             //Fetch children:
             foreach($this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                 'ln_previous_idea_id' => $in['in_id'],
             ), array('in_next'), 0, 0) as $child_in){
@@ -513,7 +512,7 @@ class Cron extends CI_Controller
 
         //Add sources:
         $ens = $this->SOURCE_model->en_fetch(array(
-            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
         ));
         foreach($ens as $en){
 
@@ -528,9 +527,9 @@ class Cron extends CI_Controller
 
             //Fetch children:
             foreach($this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_profile_source_id' => $en['en_id'],
             ), array('en_portfolio'), 0, 0) as $en_child){
 
@@ -548,8 +547,8 @@ class Cron extends CI_Controller
 
         //Add messages:
         $messages = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
         ), array('in_next'), 0, 0);
         foreach($messages as $message) {
@@ -618,9 +617,9 @@ class Cron extends CI_Controller
         $valid_variables = array();
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_profile_source_id' => 6232, //Variables Names
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
             'LENGTH(ln_content) > 0' => null,
         ), array('en_portfolio'), 0) as $var_name){
             array_push($valid_variables, $var_name['ln_content']);
@@ -767,7 +766,7 @@ class Cron extends CI_Controller
         //Let's fetch all Media files without a Facebook attachment ID:
         $ln_pending = $this->LEDGER_model->ln_fetch(array(
             'ln_type_source_id IN (' . join(',', array_keys($en_all_11059)) . ')' => null,
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_metadata' => null, //Missing Facebook Attachment ID [Alert: Must make sure ln_metadata is not used for anything else for these link types]
         ), array(), 10, 0, array('ln_id' => 'ASC')); //Sort by oldest added first
 
@@ -865,9 +864,9 @@ class Cron extends CI_Controller
             //Update All Child Icons that are not the same:
             foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_profile_source_id' => $en_id,
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
                 '(LENGTH(en_icon) < 1 OR en_icon IS NULL)' => null, //Missing Icon
             ), array('en_portfolio'), 0) as $en) {
                 $updated++;

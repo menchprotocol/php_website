@@ -138,7 +138,7 @@ class LEDGER_model extends CI_Model
 
                 //Any sources to append to profile?
                 foreach($this->LEDGER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id' => 7545, //ENTITY TAGGING
                     'ln_next_idea_id' => $insert_columns['ln_previous_idea_id'],
                     'ln_profile_source_id >' => 0, //Entity to be tagged for this Idea
@@ -152,8 +152,8 @@ class LEDGER_model extends CI_Model
 
                     //Assign tag if parent/child link NOT previously assigned:
                     $existing_links = $this->LEDGER_model->ln_fetch(array(
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                         'ln_profile_source_id' => $ln_tag['ln_profile_source_id'],
                         'ln_portfolio_source_id' => $insert_columns['ln_creator_source_id'],
                     ));
@@ -192,8 +192,8 @@ class LEDGER_model extends CI_Model
                             if(is_array($single_selectable) && count($single_selectable) && in_array($ln_tag['ln_profile_source_id'], $single_selectable)){
                                 //Delete other siblings, if any:
                                 foreach($this->LEDGER_model->ln_fetch(array(
-                                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                                     'ln_profile_source_id IN (' . join(',', $single_selectable) . ')' => null,
                                     'ln_profile_source_id !=' => $ln_tag['ln_profile_source_id'],
                                     'ln_portfolio_source_id' => $insert_columns['ln_creator_source_id'],
@@ -256,9 +256,9 @@ class LEDGER_model extends CI_Model
 
                 //Try fetching subscribers email:
                 foreach($this->LEDGER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                     'ln_profile_source_id' => 3288, //Mench Email
                     'ln_portfolio_source_id' => $subscriber_en_id,
                 ), array('en_portfolio')) as $en_email){
@@ -544,7 +544,7 @@ class LEDGER_model extends CI_Model
                         'ln_id' => $id,
                         'fields_changed' => $fields_changed,
                     ),
-                    //Copy old values for parent/child idea/source links:
+                    //Copy old values for parent/child idea/SOURCE LINKS:
                     'ln_profile_source_id' => $before_data[0]['ln_profile_source_id'],
                     'ln_portfolio_source_id'  => $before_data[0]['ln_portfolio_source_id'],
                     'ln_previous_idea_id' => $before_data[0]['ln_previous_idea_id'],

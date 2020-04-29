@@ -20,7 +20,7 @@ foreach($this->IDEA_model->in_fetch() as $in) {
 
     //Scan sources:
     $in_sources = $this->LEDGER_model->ln_fetch(array(
-        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
         'ln_next_idea_id' => $in['in_id'],
         'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
@@ -30,7 +30,7 @@ foreach($this->IDEA_model->in_fetch() as $in) {
         'ln_next_idea_id' => $in['in_id'],
     ), array(), 0, 0, array('ln_id' => 'ASC')); //Order in case we have extra & need to remove
     $in_notes = $this->LEDGER_model->ln_fetch(array( //Idea Links
-        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
         'ln_next_idea_id' => $in['in_id'],
     ), array(), 0);

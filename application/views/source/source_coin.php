@@ -33,8 +33,8 @@ $is_source = en_is_source($en['en_id']);
     <?php
     //SOURCE NAME
     echo '<div class="itemsource">'.echo_input_text(6197, $en['en_name'], $en['en_id'], ($is_source && $is_active), 0, true, '<span class="en_ui_icon_'.$en['en_id'].'">'.echo_en_icon($en['en_icon']).'</span>', extract_icon_color($en['en_icon'])).'</div>';
-    ?>
 
+    ?>
 
     <div id="modifybox" class="fixed-box hidden" source-id="0" source-link-id="0" style="padding: 5px;">
 
@@ -169,7 +169,6 @@ $is_source = en_is_source($en['en_id']);
 
 
 
-
     //FOR EDITING ONLY:
     echo '<div class="hidden">'.echo_en($en).'</div>';
 
@@ -189,6 +188,16 @@ $is_source = en_is_source($en['en_id']);
 
     //Modify
     echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',0)" class="icon-block '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
+
+
+    //ADMIN MENU
+    if(superpower_assigned(12703)){
+        $en_all_4527 = $this->config->item('en_all_4527'); //Platform Memory
+        echo '<ul class="nav nav-tabs nav-sm">';
+        echo echo_caret(12887, $en_all_4527[12887], $en['en_id'], ( substr_count($en['en_icon'], 'class="') ? one_two_explode('class="','"',$en['en_icon']) : null ));
+        echo '</ul>';
+    }
+
 
     echo '</div>';
     echo '<div class="doclear">&nbsp;</div>';
@@ -224,7 +233,7 @@ $is_source = en_is_source($en['en_id']);
 
             $this_tab .= '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:34px;">';
 
-            //Display account fields ordered with their source links:
+            //Display account fields ordered with their SOURCE LINKS:
             foreach ($this->config->item('en_all_6225') as $acc_en_id => $acc_detail) {
 
                 //Print header:
@@ -308,9 +317,9 @@ $is_source = en_is_source($en['en_id']);
                 } elseif ($acc_en_id == 3288 /* Email */) {
 
                     $user_emails = $this->LEDGER_model->ln_fetch(array(
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                         'ln_portfolio_source_id' => $session_en['en_id'],
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                         'ln_profile_source_id' => 3288, //Mench Email
                     ));
 
@@ -343,9 +352,9 @@ $is_source = en_is_source($en['en_id']);
             //SOURCE PROFILE
             //FETCH ALL PARENTS
             $en__profiles = $this->LEDGER_model->ln_fetch(array(
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
                 'ln_portfolio_source_id' => $en['en_id'],
             ), array('en_profile'), 0, 0, array('en_weight' => 'DESC'));
 
@@ -376,9 +385,9 @@ $is_source = en_is_source($en['en_id']);
             //SOURCE PORTFOLIO
             $en__portfolios_count = $this->LEDGER_model->ln_fetch(array(
                 'ln_profile_source_id' => $en['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
             ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
             $counter = $en__portfolios_count[0]['totals'];
             $en__portfolios = array(); //Fetch some
@@ -391,9 +400,9 @@ $is_source = en_is_source($en['en_id']);
             if($counter){
                 //Fetch Portfolios
                 $en__portfolios = $this->LEDGER_model->ln_fetch(array(
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
                     'ln_profile_source_id' => $en['en_id'],
                 ), array('en_portfolio'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
             }
@@ -547,12 +556,12 @@ $is_source = en_is_source($en['en_id']);
                 //Source Status Filters:
                 if(superpower_active(12701, true)){
 
-                    $en_count = $this->SOURCE_model->en_child_count($en['en_id'], $this->config->item('en_ids_7358') /* Source Status Active */);
+                    $en_count = $this->SOURCE_model->en_child_count($en['en_id'], $this->config->item('en_ids_7358') /* ACTIVE */);
                     $child_en_filters = $this->LEDGER_model->ln_fetch(array(
                         'ln_profile_source_id' => $en['en_id'],
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
                     ), array('en_portfolio'), 0, 0, array('en_status_source_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_source_id', 'en_status_source_id');
 
                     //Only show filtering UI if we find child sources with different Status (Otherwise no need to filter):
@@ -607,7 +616,7 @@ $is_source = en_is_source($en['en_id']);
             //SOURCE COINS (DISCOVER & IDEA)
             $join_objects = array();
             $match_columns = array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_'.$en_id)) . ')' => null,
             );
 
@@ -638,8 +647,8 @@ $is_source = en_is_source($en['en_id']);
 
             //Idea Notes
             $in_notes_filters = array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
                 'ln_type_source_id' => $en_id,
                 '(ln_creator_source_id='.$en['en_id'].' OR ln_portfolio_source_id='.$en['en_id'].' OR ln_profile_source_id='.$en['en_id'].')' => null,
             );
@@ -692,8 +701,8 @@ $is_source = en_is_source($en['en_id']);
             $player_discoveries = $this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en['en_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             ), array('in_previous'), 1, 0, array(), 'COUNT(ln_id) as totals');
             $counter = $player_discoveries[0]['totals'];
 

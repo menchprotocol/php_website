@@ -42,7 +42,7 @@ class DISCOVER_model extends CI_Model
                 'ln_type_source_id' => 7492, //TERMINATE
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',' , $check_termination_answers) . ')' => null, //All possible answers that might terminate...
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             ))) > 0){
             return -1;
         }
@@ -61,15 +61,15 @@ class DISCOVER_model extends CI_Model
                 //First fetch all possible answers based on correct order:
                 $found_expansion = 0;
                 foreach ($this->LEDGER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'ln_previous_idea_id' => $common_step_in_id,
                 ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $ln){
 
                     //See if this answer was selected:
                     if(count($this->LEDGER_model->ln_fetch(array(
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINK
                         'ln_previous_idea_id' => $common_step_in_id,
                         'ln_next_idea_id' => $ln['in_id'],
@@ -80,7 +80,7 @@ class DISCOVER_model extends CI_Model
 
                         //Yes was answered, see if it's completed:
                         if(!count($this->LEDGER_model->ln_fetch(array(
-                            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                             'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                             'ln_creator_source_id' => $en_id, //Belongs to this User
                             'ln_previous_idea_id' => $ln['in_id'],
@@ -113,7 +113,7 @@ class DISCOVER_model extends CI_Model
                     'ln_creator_source_id' => $en_id, //Belongs to this User
                     'ln_previous_idea_id' => $common_step_in_id,
                     'ln_next_idea_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]) . ')' => null,
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 ), array('in_next')) as $unlocked_condition){
 
                     //Completed step that has OR expansions, check recursively to see if next step within here:
@@ -126,7 +126,7 @@ class DISCOVER_model extends CI_Model
                 }
 
             } elseif(!count($this->LEDGER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                     'ln_creator_source_id' => $en_id, //Belongs to this User
                     'ln_previous_idea_id' => $common_step_in_id,
@@ -149,7 +149,7 @@ class DISCOVER_model extends CI_Model
                         foreach($grand_parent_ids as $parent_in_id){
                             $ins = $this->IDEA_model->in_fetch(array(
                                 'in_id' => $parent_in_id,
-                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                             ));
                             if(count($ins)){
                                 $found_in_id = $this->DISCOVER_model->discover_next_find($en_id, $ins[0], false);
@@ -183,8 +183,8 @@ class DISCOVER_model extends CI_Model
         $player_discoveries = $this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
 
         if(count($player_discoveries) == 0){
@@ -296,8 +296,8 @@ class DISCOVER_model extends CI_Model
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
 
             //See progress rate so far:
@@ -348,7 +348,7 @@ class DISCOVER_model extends CI_Model
         $player_discoveries = $this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_previous_idea_id' => $in_id,
         ));
         if(count($player_discoveries) < 1){
@@ -378,7 +378,7 @@ class DISCOVER_model extends CI_Model
         //Validate Idea ID:
         $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ));
         if (count($ins) != 1) {
             return false;
@@ -390,7 +390,7 @@ class DISCOVER_model extends CI_Model
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $in_id,
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             )))){
 
             //Not added to their discovery list so far, let's go ahead and add it:
@@ -416,7 +416,7 @@ class DISCOVER_model extends CI_Model
             foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_id !=' => $actionplan['ln_id'], //Not the newly added idea
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_creator_source_id' => $en_id, //Belongs to this User
             ), array(''), 0, 0, array('ln_order' => 'ASC')) as $current_ins){
 
@@ -465,7 +465,7 @@ class DISCOVER_model extends CI_Model
 
             //Make sure previous link unlocks have NOT happened before:
             $existing_expansions = $this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $in['in_id'],
@@ -505,8 +505,8 @@ class DISCOVER_model extends CI_Model
             //Detect potential conditional steps to be Unlocked:
             $found_match = 0;
             $locked_links = $this->LEDGER_model->ln_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12842')) . ')' => null, //IDEA LINKS ONE-WAY
                 'ln_previous_idea_id' => $in['in_id'],
                 'ln_next_idea_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
@@ -597,7 +597,7 @@ class DISCOVER_model extends CI_Model
                     //Fetch parent idea:
                     $parent_ins = $this->IDEA_model->in_fetch(array(
                         'in_id' => $p_id,
-                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                     ));
 
                     //Now see if this child completion resulted in a full parent completion:
@@ -640,8 +640,8 @@ class DISCOVER_model extends CI_Model
 
 
         $in__next = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_previous_idea_id' => $in['in_id'],
         ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
@@ -678,7 +678,7 @@ class DISCOVER_model extends CI_Model
 
                 //Always add all the first users to the full list:
                 $qualified_completed_users = $this->LEDGER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
                     'ln_previous_idea_id' => $child_in['in_id'],
                 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -695,7 +695,7 @@ class DISCOVER_model extends CI_Model
 
                     //Update list of qualified users:
                     $qualified_completed_users = $this->LEDGER_model->ln_fetch(array(
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
                         'ln_previous_idea_id' => $child_in['in_id'],
                     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -741,7 +741,7 @@ class DISCOVER_model extends CI_Model
 
         $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ));
         if (count($ins) < 1) {
             $this->LEDGER_model->ln_create(array(
@@ -792,7 +792,7 @@ class DISCOVER_model extends CI_Model
             //Fetch name:
             $ens = $this->SOURCE_model->en_fetch(array(
                 'en_id' => $recipient_en['en_id'],
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
             ));
 
             if(count($ens)){
@@ -812,15 +812,15 @@ class DISCOVER_model extends CI_Model
 
         //Fetch Messages
         $in__messages = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id' => 4231, //Idea Notes Messages
             'ln_next_idea_id' => $ins[0]['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         //Fetch Children:
         $in__next = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_previous_idea_id' => $ins[0]['in_id'],
         ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
@@ -975,7 +975,7 @@ class DISCOVER_model extends CI_Model
 
         //Fetch progress history:
         $discover_completes = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
             'ln_creator_source_id' => $recipient_en['en_id'],
             'ln_previous_idea_id' => $ins[0]['in_id'],
@@ -1003,8 +1003,8 @@ class DISCOVER_model extends CI_Model
 
                 //Reverse check answers to see if they have previously unlocked a path:
                 $unlocked_connections = $this->LEDGER_model->ln_fetch(array(
-                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                     'ln_next_idea_id' => $ins[0]['in_id'],
                     'ln_creator_source_id' => $recipient_en['en_id'],
@@ -1135,8 +1135,8 @@ class DISCOVER_model extends CI_Model
         if(!$push_message){
 
             $unlocked_steps = $this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                 'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
                 'ln_creator_source_id' => $recipient_en['en_id'],
                 'ln_previous_idea_id' => $ins[0]['in_id'],
@@ -1177,7 +1177,7 @@ class DISCOVER_model extends CI_Model
 
                 //Mark this as complete since there is no child to choose from:
                 if(!count($this->LEDGER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                     'ln_creator_source_id' => $recipient_en['en_id'],
                     'ln_previous_idea_id' => $ins[0]['in_id'],
@@ -1199,14 +1199,14 @@ class DISCOVER_model extends CI_Model
                 //First fetch answers based on correct order:
                 $discover_answers = array();
                 foreach ($this->LEDGER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'ln_previous_idea_id' => $ins[0]['in_id'],
                 ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $ln){
                     //See if this answer was seleted:
                     if(count($this->LEDGER_model->ln_fetch(array(
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINK
                         'ln_previous_idea_id' => $ins[0]['in_id'],
                         'ln_next_idea_id' => $ln['in_id'],
@@ -1312,7 +1312,7 @@ class DISCOVER_model extends CI_Model
 
                     //Has this been previously selected?
                     $previously_selected = count($this->LEDGER_model->ln_fetch(array(
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                         'ln_previous_idea_id' => $ins[0]['in_id'],
                         'ln_next_idea_id' => $child_in['in_id'],
@@ -1552,8 +1552,8 @@ class DISCOVER_model extends CI_Model
 
                 //Calculate min/max points for this based on answers:
                 foreach($this->LEDGER_model->ln_fetch(array(
-                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'ln_previous_idea_id' => $question_in_id,
                     'ln_next_idea_id IN (' . join(',', $answers_in_ids) . ')' => null, //Limit to cached answers
@@ -1590,7 +1590,7 @@ class DISCOVER_model extends CI_Model
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             ), array(), 0, 0, array(), 'COUNT(ln_id) as total_completions');
 
             //Add to total answer count:
@@ -1601,8 +1601,8 @@ class DISCOVER_model extends CI_Model
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             ), array('in_next'), 500) as $answer_in) {
 
                 //Fetch recursively:
@@ -1634,8 +1634,8 @@ class DISCOVER_model extends CI_Model
 
                 //Calculate min/max points for this based on answers:
                 foreach($this->LEDGER_model->ln_fetch(array(
-                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'ln_previous_idea_id' => $question_in_id,
                     'ln_next_idea_id IN (' . join(',', $answers_in_ids) . ')' => null, //Limit to cached answers
@@ -1670,7 +1670,7 @@ class DISCOVER_model extends CI_Model
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             ), array(), 0, 0, array(), 'COUNT(ln_id) as total_completions');
 
             //Add to total answer count:
@@ -1681,8 +1681,8 @@ class DISCOVER_model extends CI_Model
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             ), array('in_next'), 500) as $answer_in) {
 
                 //Fetch recursively:
@@ -1740,7 +1740,7 @@ class DISCOVER_model extends CI_Model
         //Count totals:
         $common_totals = $this->IDEA_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_time_seconds) as total_seconds');
 
 
@@ -1749,8 +1749,8 @@ class DISCOVER_model extends CI_Model
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
             'ln_creator_source_id' => $en_id, //Belongs to this User
             'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_time_seconds) as completed_seconds');
 
 
@@ -1780,8 +1780,8 @@ class DISCOVER_model extends CI_Model
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_next_idea_id IN (' . join(',', $answer_array) . ')' => null,
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             ), array('in_next')) as $expansion_in) {
 
                 //Fetch recursive:
@@ -1805,8 +1805,8 @@ class DISCOVER_model extends CI_Model
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_next_idea_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_conditional'])) . ')' => null,
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             ), array('in_next')) as $expansion_in) {
 
                 //Fetch recursive:
@@ -1868,8 +1868,8 @@ class DISCOVER_model extends CI_Model
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0) as $user_in){
             array_push($player_discover_ids, intval($user_in['in_id']));
         }
@@ -1902,7 +1902,7 @@ class DISCOVER_model extends CI_Model
         $order_columns = array('ln_id' => 'DESC');
         $match_columns = array(
             'ln_id >' => $last_loaded_ln_id,
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_'.$tab_group_id)) . ')' => null,
         );
 
@@ -1990,11 +1990,11 @@ class DISCOVER_model extends CI_Model
 
         $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $question_in_id,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ));
         $ens = $this->SOURCE_model->en_fetch(array(
             'en_id' => $en_id,
-            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
         ));
         if (!count($ins)) {
             return array(
@@ -2036,7 +2036,7 @@ class DISCOVER_model extends CI_Model
 
         //Delete ALL previous answers:
         foreach ($this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //DISCOVER ANSWERED
             'ln_creator_source_id' => $en_id,
             'ln_previous_idea_id' => $ins[0]['in_id'],

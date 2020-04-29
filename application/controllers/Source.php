@@ -116,7 +116,7 @@ class Source extends CI_Controller
         $show_max = config_var(11986);
         $start_date = null; //All-Time
         $filters_in = array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         );
@@ -306,9 +306,9 @@ class Source extends CI_Controller
         $page = intval($_POST['page']);
         $filters = array(
             'ln_profile_source_id' => $parent_en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-            'en_status_source_id IN (' . join(',', ( $en_focus_filter<0 /* Remove Filters */ ? $this->config->item('en_ids_7358') /* Source Status Active */ : array($en_focus_filter) /* This specific filter*/ )) . ')' => null,
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+            'en_status_source_id IN (' . join(',', ( $en_focus_filter<0 /* Remove Filters */ ? $this->config->item('en_ids_7358') /* ACTIVE */ : array($en_focus_filter) /* This specific filter*/ )) . ')' => null,
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         );
 
         //Fetch & display next batch of children:
@@ -396,7 +396,7 @@ class Source extends CI_Controller
         //Validate Idea
         $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
         ));
         if (count($ins) < 1) {
             return echo_json(array(
@@ -415,7 +415,7 @@ class Source extends CI_Controller
             //Validate this existing source:
             $ens = $this->SOURCE_model->en_fetch(array(
                 'en_id' => $_POST['en_existing_id'],
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
             ));
             if (count($ens) < 1) {
                 return echo_json(array(
@@ -429,7 +429,7 @@ class Source extends CI_Controller
                 'ln_next_idea_id' => $ins[0]['in_id'],
                 'ln_profile_source_id' => $_POST['en_existing_id'],
                 'ln_type_source_id' => $_POST['note_type_id'],
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             )))){
                 $en_all_7551 = $this->config->item('en_all_7551');
                 return echo_json(array(
@@ -532,7 +532,7 @@ class Source extends CI_Controller
             //Validate this existing source:
             $ens = $this->SOURCE_model->en_fetch(array(
                 'en_id' => $_POST['en_existing_id'],
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
             ));
 
             if (count($ens) < 1) {
@@ -642,7 +642,7 @@ class Source extends CI_Controller
         //Fetch latest version:
         $ens_latest = $this->SOURCE_model->en_fetch(array(
             'en_id' => $focus_en['en_id'],
-            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
         ));
         if(!count($ens_latest)){
             return echo_json(array(
@@ -671,8 +671,8 @@ class Source extends CI_Controller
 
         //Simply counts the links for a given source:
         $all_en_links = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             '(ln_portfolio_source_id = ' . $_POST['en_id'] . ' OR ln_profile_source_id = ' . $_POST['en_id'] . ')' => null,
         ), array(), 0);
 
@@ -810,7 +810,7 @@ class Source extends CI_Controller
         );
 
         //Is this being deleted?
-        if (!in_array($en_update['en_status_source_id'], $this->config->item('en_ids_7358') /* Source Status Active */) && !($en_update['en_status_source_id'] == $ens[0]['en_status_source_id'])) {
+        if (!in_array($en_update['en_status_source_id'], $this->config->item('en_ids_7358') /* ACTIVE */) && !($en_update['en_status_source_id'] == $ens[0]['en_status_source_id'])) {
 
 
             //Make sure source is not referenced in key DB reference fields:
@@ -836,8 +836,8 @@ class Source extends CI_Controller
 
             //Count source references in Idea Notes:
             $messages = $this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
                 'ln_profile_source_id' => $_POST['en_id'],
             ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
@@ -876,7 +876,7 @@ class Source extends CI_Controller
                     //Finally validate merger source:
                     $merged_ens = $this->SOURCE_model->en_fetch(array(
                         'en_id' => $merger_en_id,
-                        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
                     ));
                     if (count($merged_ens) == 0) {
                         return echo_json(array(
@@ -897,15 +897,15 @@ class Source extends CI_Controller
 
             }
 
-            //Delete/merge source links:
+            //Delete/merge SOURCE LINKS:
             if($_POST['en_id'] == $_POST['en_focus_id']){
 
                 //Fetch parents to redirect to:
                 $en__profiles = $this->LEDGER_model->ln_fetch(array(
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                     'ln_portfolio_source_id' => $_POST['en_id'],
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
                 ), array('en_profile'), 1);
 
             }
@@ -945,7 +945,7 @@ class Source extends CI_Controller
             //Yes, first validate source link:
             $en_lns = $this->LEDGER_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             ));
             if (count($en_lns) < 1) {
                 return echo_json(array(
@@ -958,7 +958,7 @@ class Source extends CI_Controller
             //Status change?
             if($en_lns[0]['ln_status_source_id']!=$_POST['ln_status_source_id']){
 
-                if (in_array($_POST['ln_status_source_id'], $this->config->item('en_ids_7360') /* Transaction Status Active */)) {
+                if (in_array($_POST['ln_status_source_id'], $this->config->item('en_ids_7360') /* ACTIVE */)) {
                     $ln_status_source_id = 10656; //Player Link updated Status
                 } else {
                     $delete_from_ui = 1;
@@ -1178,9 +1178,9 @@ class Source extends CI_Controller
             //Fetch all possible answers based on parent source:
             $filters = array(
                 'ln_profile_source_id' => $_POST['parent_en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
             );
 
             if($_POST['enable_mulitiselect'] && $_POST['was_previously_selected']){
@@ -1198,8 +1198,8 @@ class Source extends CI_Controller
             foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_profile_source_id IN (' . join(',', $possible_answers) . ')' => null,
                 'ln_portfolio_source_id' => $session_en['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             )) as $delete_en){
                 //Should usually delete a single option:
                 $this->LEDGER_model->ln_update($delete_en['ln_id'], array(
@@ -1328,8 +1328,8 @@ class Source extends CI_Controller
 
             //Check to make sure not duplicate:
             $duplicates = $this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_profile_source_id' => 3288, //Mench Email
                 'ln_portfolio_source_id !=' => $session_en['en_id'],
                 'LOWER(ln_content)' => $_POST['en_email'],
@@ -1346,9 +1346,9 @@ class Source extends CI_Controller
 
         //Fetch existing email:
         $user_emails = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_portfolio_source_id' => $session_en['en_id'],
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_profile_source_id' => 3288, //Mench Email
         ));
         if (count($user_emails) > 0) {
@@ -1450,8 +1450,8 @@ class Source extends CI_Controller
 
         //Fetch existing password:
         $user_passwords = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_profile_source_id' => 3286, //Password
             'ln_portfolio_source_id' => $session_en['en_id'],
         ));
@@ -1697,7 +1697,7 @@ class Source extends CI_Controller
 
             //Fetch the Idea:
             $referrer_ins = $this->IDEA_model->in_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                 'in_id' => $_POST['referrer_in_id'],
             ));
 
@@ -1831,7 +1831,7 @@ class Source extends CI_Controller
         $ens = $this->SOURCE_model->en_fetch(array(
             'en_id' => $_POST['login_en_id'],
         ));
-        if (!in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357') /* Source Status Public */)) {
+        if (!in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357') /* PUBLIC */)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Your account source is not public. Contact us to adjust your account.',
@@ -1840,8 +1840,8 @@ class Source extends CI_Controller
 
         //Authenticate password:
         $user_passwords = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_profile_source_id' => 3286, //Password
             'ln_portfolio_source_id' => $ens[0]['en_id'],
         ));
@@ -1851,7 +1851,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.',
             ));
-        } elseif (!in_array($user_passwords[0]['ln_status_source_id'], $this->config->item('en_ids_7359') /* Transaction Status Public */)) {
+        } elseif (!in_array($user_passwords[0]['ln_status_source_id'], $this->config->item('en_ids_7359') /* PUBLIC */)) {
             //They do not have a password assigned yet!
             return echo_json(array(
                 'status' => 0,
@@ -1944,8 +1944,8 @@ class Source extends CI_Controller
 
             //Fetch their passwords to authenticate login:
             $user_passwords = $this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_profile_source_id' => 3286, //Mench Sign In Password
                 'ln_portfolio_source_id' => $ens[0]['en_id'],
             ));
@@ -2019,9 +2019,9 @@ class Source extends CI_Controller
         //Cleanup/validate email:
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
         $user_emails = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_content' => $_POST['input_email'],
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_profile_source_id' => 3288, //Mench Email
         ), array('en_portfolio'));
         if(count($user_emails) < 1){
@@ -2128,7 +2128,7 @@ class Source extends CI_Controller
         if(intval($_POST['referrer_in_id']) > 0){
             //Fetch the idea:
             $referrer_ins = $this->IDEA_model->in_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                 'in_id' => $_POST['referrer_in_id'],
             ));
         } else {
@@ -2138,9 +2138,9 @@ class Source extends CI_Controller
 
         //Search for email to see if it exists...
         $user_emails = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_content' => $_POST['input_email'],
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_profile_source_id' => 3288, //Mench Email
         ), array('en_portfolio'));
 

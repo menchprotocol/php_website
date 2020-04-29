@@ -26,8 +26,8 @@ class Discover extends CI_Controller
         $player_discoveries = $this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
         if(!count($player_discoveries)){
             //Nothing in their discovery list:
@@ -102,7 +102,7 @@ class Discover extends CI_Controller
 
                 //Mark as discover If not previously:
                 $discover_completes = $this->LEDGER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
                     'ln_creator_source_id' => $session_en['en_id'],
                     'ln_previous_idea_id' => $ins[0]['in_id'],
@@ -156,8 +156,8 @@ class Discover extends CI_Controller
         )))){
             //FIND NEXT IDEAS
             foreach($this->LEDGER_model->ln_fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                 'ln_previous_idea_id' => $previous_level_id,
             ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $in_next){
@@ -209,7 +209,7 @@ class Discover extends CI_Controller
         //Make sure we found it:
         if ( count($ins) < 1) {
             return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Idea #' . $in_id . ' not found</div>');
-        } elseif(!in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7355') /* Idea Status Public */)){
+        } elseif(!in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7355') /* PUBLIC */)){
 
             if(superpower_assigned(10939)){
                 //Give them idea access:
@@ -285,7 +285,7 @@ class Discover extends CI_Controller
         //Validate Idea:
         $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ));
         if(count($ins)<1){
             return echo_json(array(
@@ -317,7 +317,7 @@ class Discover extends CI_Controller
 
         //Delete previous answer(s):
         foreach($this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
@@ -371,7 +371,7 @@ class Discover extends CI_Controller
         //Validate/Fetch idea:
         $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ));
         if(count($ins) < 1){
             return echo_json(array(
@@ -382,7 +382,7 @@ class Discover extends CI_Controller
 
         //Delete previous answer(s):
         foreach($this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
@@ -463,7 +463,7 @@ class Discover extends CI_Controller
 
         //Fetch their current progress links:
         $progress_links = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12227')) . ')' => null,
             'ln_creator_source_id' => $en_id,
         ), array(), 0);

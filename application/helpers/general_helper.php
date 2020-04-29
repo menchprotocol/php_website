@@ -397,13 +397,13 @@ function in_weight_updater($in){
     $CI =& get_instance();
 
     $count_transactions = $CI->LEDGER_model->ln_fetch(array(
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         '(ln_next_idea_id='.$in['in_id'].' OR ln_previous_idea_id='.$in['in_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     //IDEAS
     $counts = $CI->LEDGER_model->ln_fetch(array(
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
         '(ln_next_idea_id='.$in['in_id'].' OR ln_previous_idea_id='.$in['in_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -429,14 +429,14 @@ function en_weight_updater($en){
     $CI =& get_instance();
 
     $count_transactions = $CI->LEDGER_model->ln_fetch(array(
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         '(ln_portfolio_source_id='.$en['en_id'].' OR ln_profile_source_id='.$en['en_id'].' OR ln_creator_source_id='.$en['en_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     //IDEAS
     $counts = $CI->LEDGER_model->ln_fetch(array(
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         '(ln_portfolio_source_id='.$en['en_id'].' OR ln_profile_source_id='.$en['en_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -520,7 +520,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
 
 function in_is_unlockable($in){
     $CI =& get_instance();
-    return in_array($in['in_status_source_id'], $CI->config->item('en_ids_7355') /* Idea Status Public */);
+    return in_array($in['in_status_source_id'], $CI->config->item('en_ids_7355') /* PUBLIC */);
 }
 
 function redirect_message($url, $message = null)
@@ -622,7 +622,7 @@ function count_ln_type($en_id){
         if($en_id==12274){
 
             $en_coins = $CI->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
                 'ln_creator_source_id' => $session_en['en_id'],
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -631,7 +631,7 @@ function count_ln_type($en_id){
         } elseif($en_id==12273){
 
             $in_coins = $CI->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                 'ln_profile_source_id' => $session_en['en_id'],
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -640,7 +640,7 @@ function count_ln_type($en_id){
         } elseif($en_id==6255){
 
             $discover_coins = $CI->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
                 'ln_creator_source_id' => $session_en['en_id'],
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -649,7 +649,7 @@ function count_ln_type($en_id){
         } elseif($en_id==10573){
 
             $idea_bookmarks = $CI->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id' => 10573, //Idea Notes Bookmarks
                 'ln_profile_source_id' => $session_en['en_id'], //For this player
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -660,8 +660,8 @@ function count_ln_type($en_id){
             $discover_bookmarks = $CI->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             ), array('in_previous'), 0, 0, array(), 'COUNT(ln_id) as totals');
             return $discover_bookmarks[0]['totals'];
 
@@ -1090,8 +1090,8 @@ function en_is_source($en_id, $session_en = array()){
             'ln_type_source_id' => 4251, //New Source Created
         ))) ||
         count($CI->LEDGER_model->ln_fetch(array( //Player has source in their portfolio
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_profile_source_id' => $session_en['en_id'],
             'ln_portfolio_source_id' => $en_id,
         )))
@@ -1120,7 +1120,7 @@ function in_is_source($in_id, $session_en = array()){
             'ln_creator_source_id' => $session_en['en_id'],
         ))) ||
         count($CI->LEDGER_model->ln_fetch(array( //Player has an idea coin by being listed as a source
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_next_idea_id' => $in_id,
             'ln_profile_source_id' => $session_en['en_id'],
@@ -1237,8 +1237,8 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             if($input_obj_id){
                 $limits['ln_next_idea_id'] = $input_obj_id;
             } else {
-                $limits['in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //Idea Status Active
-                $limits['ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')'] = null; //Transaction Status Active
+                $limits['in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //ACTIVE
+                $limits['ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')'] = null; //ACTIVE
             }
 
             $db_rows['in'] = $CI->LEDGER_model->ln_fetch($limits, array('in_next'), 0);
@@ -1250,8 +1250,8 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             if($input_obj_id){
                 $limits['ln_portfolio_source_id'] = $input_obj_id;
             } else {
-                $limits['en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')'] = null; //Source Status Active
-                $limits['ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')'] = null; //Transaction Status Active
+                $limits['en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')'] = null; //ACTIVE
+                $limits['ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')'] = null; //ACTIVE
             }
 
             $db_rows['en'] = $CI->LEDGER_model->ln_fetch($limits, array('en_portfolio'), 0);
@@ -1331,10 +1331,10 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 //Fetch Profiles:
                 $export_row['alg_obj_keywords'] = '';
                 foreach ($CI->LEDGER_model->ln_fetch(array(
-                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
+                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                     'ln_portfolio_source_id' => $db_row['en_id'], //This child source
-                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                    'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                    'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //ACTIVE
                 ), array('en_profile'), 0, 0, array('en_weight' => 'DESC')) as $ln) {
 
                     //Always add to tags:
@@ -1369,7 +1369,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 //Add keywords:
                 $export_row['alg_obj_keywords'] = '';
                 foreach ($CI->LEDGER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                     'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
                     'ln_next_idea_id' => $db_row['in_id'],
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
@@ -1380,7 +1380,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Is SOURCE for any IDEA?
                 foreach($CI->LEDGER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                     'ln_next_idea_id' => $db_row['in_id'],
                     'ln_profile_source_id >' => 0, //Where the source is stored

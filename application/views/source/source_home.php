@@ -11,7 +11,7 @@
         $show_max = config_var(11986);
         echo '<div class="list-group" style="padding-bottom: 34px;">';
         foreach($this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
             'ln_creator_source_id' => $session_en['en_id'],
         ), array('en_portfolio'), config_var(11064), 0, array('en_weight' => 'DESC')) as $count=>$my_en){

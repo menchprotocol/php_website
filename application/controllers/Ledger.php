@@ -145,7 +145,7 @@ class Ledger extends CI_Controller
 
             $ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => $_POST['object_id'],
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
             ));
             if(!count($ins)){
                 return echo_json(array(
@@ -178,7 +178,7 @@ class Ledger extends CI_Controller
 
             $ens = $this->SOURCE_model->en_fetch(array(
                 'en_id' => $_POST['object_id'],
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Idea Status Active
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
             ));
             if(!count($ens)){
                 return echo_json(array(
@@ -209,7 +209,7 @@ class Ledger extends CI_Controller
 
             $ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => $_POST['object_id'],
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
             ));
 
             if(!count($ins)){
@@ -263,7 +263,7 @@ class Ledger extends CI_Controller
             //Fetch/Validate Link:
             $lns = $this->LEDGER_model->ln_fetch(array(
                 'ln_id' => $_POST['object_id'],
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             ));
             $ln_metadata = unserialize($lns[0]['ln_metadata']);
@@ -307,7 +307,7 @@ class Ledger extends CI_Controller
             //Fetch/Validate Link:
             $lns = $this->LEDGER_model->ln_fetch(array(
                 'ln_id' => $_POST['object_id'],
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             ));
             $ln_metadata = unserialize($lns[0]['ln_metadata']);

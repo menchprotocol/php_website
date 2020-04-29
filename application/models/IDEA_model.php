@@ -147,7 +147,7 @@ class IDEA_model extends CI_Model
                     continue;
                 }
 
-                //Assume no source links unless specifically defined:
+                //Assume no SOURCE LINKS unless specifically defined:
                 $ln_portfolio_source_id = 0;
                 $ln_profile_source_id = 0;
 
@@ -159,7 +159,7 @@ class IDEA_model extends CI_Model
 
                 } elseif($key=='in_status_source_id'){
 
-                    if(in_array($value, $this->config->item('en_ids_7356') /* Idea Status Active */)){
+                    if(in_array($value, $this->config->item('en_ids_7356') /* ACTIVE */)){
                         $ln_type_source_id = 10648; //Idea updated Status
                     } else {
                         $ln_type_source_id = 6182; //Idea Deleted
@@ -236,7 +236,7 @@ class IDEA_model extends CI_Model
         //REMOVE IDEA LINKS
         $links_deleted = 0;
         foreach($this->LEDGER_model->ln_fetch(array( //Idea Links
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             '(ln_next_idea_id = '.$in_id.' OR ln_previous_idea_id = '.$in_id.')' => null,
         ), array(), 0) as $ln){
@@ -249,7 +249,7 @@ class IDEA_model extends CI_Model
 
         //REMOVE NOTES:
         $in_notes = $this->LEDGER_model->ln_fetch(array( //Idea Links
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Idea Notes
             'ln_next_idea_id' => $in_id,
         ), array(), 0);
@@ -346,7 +346,7 @@ class IDEA_model extends CI_Model
                     'status' => 0,
                     'message' => 'Invalid Idea ID',
                 );
-            } elseif (!in_array($linked_ins[0]['in_status_source_id'], $this->config->item('en_ids_7356')) /* Idea Status Active */) {
+            } elseif (!in_array($linked_ins[0]['in_status_source_id'], $this->config->item('en_ids_7356')) /* ACTIVE */) {
                 return array(
                     'status' => 0,
                     'message' => 'You can only link to active ideas. This idea is not active.',
@@ -404,7 +404,7 @@ class IDEA_model extends CI_Model
                     'status' => 0,
                     'message' => 'Invalid Linked Idea ID',
                 );
-            } elseif (!in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7356') /* Idea Status Active */)) {
+            } elseif (!in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7356') /* ACTIVE */)) {
                 return array(
                     'status' => 0,
                     'message' => 'You can only link to active ideas. This idea is not active.',
@@ -419,7 +419,7 @@ class IDEA_model extends CI_Model
                 'ln_previous_idea_id' => $parent_in['in_id'],
                 'ln_next_idea_id' => $child_in['in_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             ));
 
             //Check for issues:
@@ -472,7 +472,7 @@ class IDEA_model extends CI_Model
                 ( $is_parent ? 'ln_next_idea_id' : 'ln_previous_idea_id' ) => $link_to_in_id,
                 ( $is_parent ? 'ln_previous_idea_id' : 'ln_next_idea_id' ) => $in_new['in_id'],
                 'ln_order' => 1 + $this->LEDGER_model->ln_max_order(array(
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                         'ln_previous_idea_id' => ( $is_parent ? $in_new['in_id'] : $link_to_in_id ),
                     )),
@@ -483,8 +483,8 @@ class IDEA_model extends CI_Model
                 ( $is_parent ? 'ln_next_idea_id' : 'ln_previous_idea_id' ) => $link_to_in_id,
                 ( $is_parent ? 'ln_previous_idea_id' : 'ln_next_idea_id' ) => $in_new['in_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
             ), array(($is_parent ? 'in_previous' : 'in_next')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
@@ -576,8 +576,8 @@ class IDEA_model extends CI_Model
 
         //Fetch parents:
         foreach($this->LEDGER_model->ln_fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             'ln_previous_idea_id' => $in_id,
         ), array('in_next')) as $child_in){
@@ -620,8 +620,8 @@ class IDEA_model extends CI_Model
 
         //Fetch children:
         foreach($this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
             'ln_previous_idea_id' => $focus_in['in_id'],
         ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $child_in){
@@ -750,8 +750,8 @@ class IDEA_model extends CI_Model
         $applied_success = 0; //To be populated...
 
         $in__next = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_previous_idea_id' => $in_id,
         ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
@@ -765,12 +765,12 @@ class IDEA_model extends CI_Model
             if(in_array($action_en_id , array(12591, 12592))){
 
                 //Check if it hs this item:
-                $parent_en_id = intval(one_two_explode('@',' ',$action_command1));
+                $en__profile_id = intval(one_two_explode('@',' ',$action_command1));
                 $in_has_sources = $this->LEDGER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                     'ln_next_idea_id' => $in['in_id'],
-                    'ln_profile_source_id' => $parent_en_id,
+                    'ln_profile_source_id' => $en__profile_id,
                 ));
 
                 if($action_en_id==12591 && !count($in_has_sources)){
@@ -778,9 +778,9 @@ class IDEA_model extends CI_Model
                     //Missing & Must be Added:
                     $this->LEDGER_model->ln_create(array(
                         'ln_creator_source_id' => $ln_creator_source_id,
-                        'ln_profile_source_id' => $parent_en_id,
+                        'ln_profile_source_id' => $en__profile_id,
                         'ln_type_source_id' => 4983, //IDEA COIN
-                        'ln_content' => '@'.$parent_en_id,
+                        'ln_content' => '@'.$en__profile_id,
                         'ln_next_idea_id' => $in['in_id'],
                     ), true);
 
@@ -842,8 +842,8 @@ class IDEA_model extends CI_Model
         $total_child_weights = 0;
 
         foreach($this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_previous_idea_id' => $in_id,
         ), array('in_next'), 0, 0, array(), 'in_id, in_weight') as $in_child){
@@ -860,7 +860,10 @@ class IDEA_model extends CI_Model
 
     }
 
-    function in_metadata_extra_insights($in_id, $update_db = true)
+
+
+
+    function in_metadata_extra_insights2($in)
     {
 
         /*
@@ -871,111 +874,76 @@ class IDEA_model extends CI_Model
          *
          * */
 
-        //Fetch this idea:
-        $ins = $this->IDEA_model->in_fetch(array(
-            'in_id' => $in_id,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ));
-        if(count($ins) < 1){
-            return false;
-        }
-
-        $in_metadata = unserialize( $ins[0]['in_metadata'] );
-        if(!isset($in_metadata['in__metadata_common_steps'])){
-            return false;
-        }
-
-        //Fetch common base and expansion paths from idea metadata:
-        $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
-        $expansion_steps_one = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
-        $expansion_steps_some = ( isset($in_metadata['in__metadata_expansion_some']) && count($in_metadata['in__metadata_expansion_some']) > 0 ? $in_metadata['in__metadata_expansion_some'] : array() );
-        $locked_steps = ( isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0 ? $in_metadata['in__metadata_expansion_conditional'] : array() );
-
-        //Fetch totals for published common step ideas:
-        $common_totals = $this->IDEA_model->in_fetch(array(
-            'in_id IN ('.join(',',$flat_common_steps).')' => null,
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
-        ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_time_seconds) as total_seconds');
-
-        $common_base_resources = array(
-            'steps' => $common_totals[0]['total_steps'],
-            'seconds' => $common_totals[0]['total_seconds'],
-        );
-
         $metadata_this = array(
-
             //Required steps/ideas range to complete idea:
-            '__in__metadata_min_steps' => $common_base_resources['steps'],
-            '__in__metadata_max_steps' => $common_base_resources['steps'],
+            '__in__metadata_min_steps' => 1,
+            '__in__metadata_max_steps' => 1,
 
             //Required time range to complete idea:
-            '__in__metadata_min_seconds' => $common_base_resources['seconds'],
-            '__in__metadata_max_seconds' => $common_base_resources['seconds'],
+            '__in__metadata_min_seconds' => $in['in_time_seconds'],
+            '__in__metadata_max_seconds' => $in['in_time_seconds'],
 
             //Player references within Idea Notes:
             '__in__metadata_experts' => array(),
             '__in__metadata_sources' => array(),
-
         );
 
 
 
-        //Add-up Idea Notes References:
-        //The sources we need to check and see if they are industry experts:
+        //IDEA SOURCES
         foreach ($this->LEDGER_model->ln_fetch(array(
             'ln_profile_source_id >' => 0,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')).')' => null, //Idea Notes
-            '(ln_next_idea_id = ' . $in_id . ( count($flat_common_steps) > 0 ? ' OR ln_next_idea_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+            'ln_next_idea_id' => $in['in_id'],
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')).')' => null, //IDEA COIN
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
         ), array('en_profile'), 0) as $note_en) {
 
-            //Referenced source in Idea Notes... Fetch parents:
+            //SOURCE PROFILE
             foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_portfolio_source_id' => $note_en['ln_profile_source_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            ), array(), 0) as $parent_en){
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //SOURCE LINKS
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            ), array(), 0) as $en__profile){
 
-                if(in_array($parent_en['ln_profile_source_id'], $this->config->item('en_ids_3000'))){
+                if(in_array($en__profile['ln_profile_source_id'], $this->config->item('en_ids_3000'))){
 
                     //Expert Source:
-                    if (!isset($metadata_this['__in__metadata_sources'][$parent_en['ln_profile_source_id']][$note_en['en_id']])) {
+                    if (!isset($metadata_this['__in__metadata_sources'][$en__profile['ln_profile_source_id']][$note_en['en_id']])) {
                         //Add since it's not there:
-                        $metadata_this['__in__metadata_sources'][$parent_en['ln_profile_source_id']][$note_en['en_id']] = $note_en;
+                        $metadata_this['__in__metadata_sources'][$en__profile['ln_profile_source_id']][$note_en['en_id']] = $note_en;
                     }
 
-                } elseif(in_array($parent_en['ln_profile_source_id'], $this->config->item('en_ids_12864'))) {
+                } elseif(in_array($en__profile['ln_profile_source_id'], $this->config->item('en_ids_12864'))) {
 
                     //Industry Expert:
                     if (!isset($metadata_this['__in__metadata_experts'][$note_en['en_id']])) {
                         $metadata_this['__in__metadata_experts'][$note_en['en_id']] = $note_en;
                     }
 
+                }
+
+                //Industry Expert?
+                $expert_parents = $this->LEDGER_model->ln_fetch(array(
+                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //SOURCE LINKS
+                    'ln_profile_source_id IN (' . join(',', $this->config->item('en_ids_12864')).')' => null, //EXPERT SOURCES
+                    'ln_portfolio_source_id' => $en__profile['ln_profile_source_id'],
+                ), array('en_portfolio'), 0);
+
+                if(count($expert_parents) > 0){
+
+                    //Yes, Industry Expert:
+                    if (!isset($metadata_this['__in__metadata_experts'][$en__profile['ln_profile_source_id']])) {
+                        $metadata_this['__in__metadata_experts'][$en__profile['ln_profile_source_id']] = $expert_parents[0];
+                    }
+
                 } else {
 
-                    //Industry Expert?
-                    $expert_parents = $this->LEDGER_model->ln_fetch(array(
-                        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Source Links
-                        'ln_profile_source_id IN (' . join(',', $this->config->item('en_ids_12864')).')' => null, //EXPERT SOURCES
-                        'ln_portfolio_source_id' => $parent_en['ln_profile_source_id'],
-                    ), array('en_portfolio'), 0);
+                    //TODO Maybe this is an expert source that is a child of another expert source? Go another level-up and check parents...
+                    //We might want to discourage this via mining principles... Need to think more on this.
 
-                    if(count($expert_parents) > 0){
-
-                        //Yes, Industry Expert:
-                        if (!isset($metadata_this['__in__metadata_experts'][$parent_en['ln_profile_source_id']])) {
-                            $metadata_this['__in__metadata_experts'][$parent_en['ln_profile_source_id']] = $expert_parents[0];
-                        }
-
-                    } else {
-
-                        //TODO Maybe this is an expert source that is a child of another expert source? Go another level-up and check parents...
-                        //We might want to discourage this via mining principles... Need to think more on this.
-
-                    }
                 }
             }
         }
@@ -994,7 +962,7 @@ class IDEA_model extends CI_Model
 
             foreach($expansion_group as $expansion_in_id){
 
-                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id, false);
+                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id);
 
                 if(!$metadata_recursion){
                     continue;
@@ -1056,7 +1024,7 @@ class IDEA_model extends CI_Model
 
             foreach($expansion_group as $expansion_in_id){
 
-                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id, false);
+                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id);
 
                 if(!$metadata_recursion){
                     continue;
@@ -1113,23 +1081,285 @@ class IDEA_model extends CI_Model
         }
 
 
-        if($update_db){
+        //Save to DB
+        update_metadata('in', $in_id, array(
+            'in__metadata_min_steps' => intval($metadata_this['__in__metadata_min_steps']),
+            'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
+            'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
+            'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
+            'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
+            'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
+        ));
 
-            /*
-             *
-             * Save to database
-             *
-             * */
-            update_metadata('in', $in_id, array(
-                'in__metadata_min_steps' => intval($metadata_this['__in__metadata_min_steps']),
-                'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
-                'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
-                'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
-                'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
-                'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
-            ));
+
+        //Return data:
+        return $metadata_this;
+
+    }
+
+
+    function in_metadata_extra_insights($in_id, $skip_condition = false)
+    {
+
+        /*
+         *
+         * Generates additional insights like
+         * min/max ideas, time and
+         * referenced sources in Idea Notes.
+         *
+         * */
+
+        //Fetch this idea:
+        $ins = $this->IDEA_model->in_fetch(array(
+            'in_id' => $in_id,
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+        ));
+        if(count($ins) < 1){
+            return false;
+        }
+
+        $in_metadata = unserialize( $ins[0]['in_metadata'] );
+        if(!isset($in_metadata['in__metadata_common_steps'])){
+            return false;
+        }
+
+        //Fetch common base and expansion paths from idea metadata:
+        $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
+        $expansion_steps_one = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
+        $expansion_steps_some = ( isset($in_metadata['in__metadata_expansion_some']) && count($in_metadata['in__metadata_expansion_some']) > 0 ? $in_metadata['in__metadata_expansion_some'] : array() );
+        $locked_steps = ( isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0 ? $in_metadata['in__metadata_expansion_conditional'] : array() );
+
+        //Fetch totals for published common step ideas:
+        $common_totals = $this->IDEA_model->in_fetch(array(
+            'in_id IN ('.join(',',$flat_common_steps).')' => null,
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+        ), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_time_seconds) as total_seconds');
+
+        $common_base_resources = array(
+            'steps' => $common_totals[0]['total_steps'],
+            'seconds' => $common_totals[0]['total_seconds'],
+        );
+
+        $metadata_this = array(
+
+            //Required steps/ideas range to complete idea:
+            '__in__metadata_min_steps' => $common_base_resources['steps'],
+            '__in__metadata_max_steps' => $common_base_resources['steps'],
+
+            //Required time range to complete idea:
+            '__in__metadata_min_seconds' => $common_base_resources['seconds'],
+            '__in__metadata_max_seconds' => $common_base_resources['seconds'],
+
+            //Player references within Idea Notes:
+            '__in__metadata_experts' => array(),
+            '__in__metadata_sources' => array(),
+
+        );
+
+
+
+        //Add-up Idea Notes References:
+        //The sources we need to check and see if they are industry experts:
+        foreach ($this->LEDGER_model->ln_fetch(array(
+            'ln_profile_source_id >' => 0,
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')).')' => null, //Idea Notes
+            '(ln_next_idea_id = ' . $in_id . ( count($flat_common_steps) > 0 ? ' OR ln_next_idea_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
+        ), array('en_profile'), 0) as $note_en) {
+
+            //Referenced source in Idea Notes... Fetch parents:
+            foreach($this->LEDGER_model->ln_fetch(array(
+                'ln_portfolio_source_id' => $note_en['ln_profile_source_id'],
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //SOURCE LINKS
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            ), array(), 0) as $en__profile){
+
+                if(in_array($en__profile['ln_profile_source_id'], $this->config->item('en_ids_3000'))){
+
+                    //Expert Source:
+                    if (!isset($metadata_this['__in__metadata_sources'][$en__profile['ln_profile_source_id']][$note_en['en_id']])) {
+                        //Add since it's not there:
+                        $metadata_this['__in__metadata_sources'][$en__profile['ln_profile_source_id']][$note_en['en_id']] = $note_en;
+                    }
+
+                } elseif(in_array($en__profile['ln_profile_source_id'], $this->config->item('en_ids_12864'))) {
+
+                    //Industry Expert:
+                    if (!isset($metadata_this['__in__metadata_experts'][$note_en['en_id']])) {
+                        $metadata_this['__in__metadata_experts'][$note_en['en_id']] = $note_en;
+                    }
+
+                } else {
+
+                    //Industry Expert?
+                    $expert_parents = $this->LEDGER_model->ln_fetch(array(
+                        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //SOURCE LINKS
+                        'ln_profile_source_id IN (' . join(',', $this->config->item('en_ids_12864')).')' => null, //EXPERT SOURCES
+                        'ln_portfolio_source_id' => $en__profile['ln_profile_source_id'],
+                    ), array('en_portfolio'), 0);
+
+                    if(count($expert_parents) > 0){
+
+                        //Yes, Industry Expert:
+                        if (!isset($metadata_this['__in__metadata_experts'][$en__profile['ln_profile_source_id']])) {
+                            $metadata_this['__in__metadata_experts'][$en__profile['ln_profile_source_id']] = $expert_parents[0];
+                        }
+
+                    } else {
+
+                        //TODO Maybe this is an expert source that is a child of another expert source? Go another level-up and check parents...
+                        //We might want to discourage this via mining principles... Need to think more on this.
+
+                    }
+                }
+            }
+        }
+
+
+        //EXPANSION SOME
+        foreach($expansion_steps_some as $expansion_group){
+
+            //Determine OR Answer local min/max:
+            $metadata_local = array(
+                'local__in__metadata_min_steps'=> null,
+                'local__in__metadata_max_steps'=> null,
+                'local__in__metadata_min_seconds'=> null,
+                'local__in__metadata_max_seconds'=> null,
+            );
+
+            foreach($expansion_group as $expansion_in_id){
+
+                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id);
+
+                if(!$metadata_recursion){
+                    continue;
+                }
+
+                //MIN
+                if(is_null($metadata_local['local__in__metadata_min_steps']) || $metadata_recursion['__in__metadata_min_steps'] < $metadata_local['local__in__metadata_min_steps']){
+                    $metadata_local['local__in__metadata_min_steps'] = $metadata_recursion['__in__metadata_min_steps'];
+                }
+                if(is_null($metadata_local['local__in__metadata_min_seconds']) || $metadata_recursion['__in__metadata_min_seconds'] < $metadata_local['local__in__metadata_min_seconds']){
+                    $metadata_local['local__in__metadata_min_seconds'] = $metadata_recursion['__in__metadata_min_seconds'];
+                }
+
+                //MAX
+                $metadata_this['__in__metadata_max_steps'] += intval($metadata_recursion['__in__metadata_max_steps']);
+                $metadata_this['__in__metadata_max_seconds'] += intval($metadata_recursion['__in__metadata_max_seconds']);
+
+
+                //Addup Experts:
+                foreach ($metadata_recursion['__in__metadata_experts'] as $en_id => $expert_en) {
+                    //Is this a new expert?
+                    if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
+                        //Yes, add them to the list:
+                        $metadata_this['__in__metadata_experts'][$en_id] = $expert_en;
+                    }
+                }
+
+                //Addup Sources:
+                foreach ($metadata_recursion['__in__metadata_sources'] as $type_en_id => $source_ens) {
+                    foreach ($source_ens as $en_id => $source_en) {
+                        if (!isset($metadata_this['__in__metadata_sources'][$type_en_id][$en_id])) {
+                            $metadata_this['__in__metadata_sources'][$type_en_id][$en_id] = $source_en;
+                        }
+                    }
+                }
+            }
+
+            //MIN
+            if(!is_null($metadata_local['local__in__metadata_min_steps'])){
+                $metadata_this['__in__metadata_min_steps'] += intval($metadata_local['local__in__metadata_min_steps']);
+            }
+            if(!is_null($metadata_local['local__in__metadata_min_seconds'])){
+                $metadata_this['__in__metadata_min_seconds'] += intval($metadata_local['local__in__metadata_min_seconds']);
+            }
 
         }
+
+
+        //EXPANSION ONE
+        foreach(array_merge($expansion_steps_one, $locked_steps) as $expansion_group){
+
+            //Determine OR Answer local min/max:
+            $metadata_local = array(
+                'local__in__metadata_min_steps'=> null,
+                'local__in__metadata_max_steps'=> null,
+                'local__in__metadata_min_seconds'=> null,
+                'local__in__metadata_max_seconds'=> null,
+            );
+
+            foreach($expansion_group as $expansion_in_id){
+
+                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id);
+
+                if(!$metadata_recursion){
+                    continue;
+                }
+
+                //MIN/MAX updates:
+                if(is_null($metadata_local['local__in__metadata_min_steps']) || $metadata_recursion['__in__metadata_min_steps'] < $metadata_local['local__in__metadata_min_steps']){
+                    $metadata_local['local__in__metadata_min_steps'] = $metadata_recursion['__in__metadata_min_steps'];
+                }
+                if(is_null($metadata_local['local__in__metadata_max_steps']) || $metadata_recursion['__in__metadata_max_steps'] > $metadata_local['local__in__metadata_max_steps']){
+                    $metadata_local['local__in__metadata_max_steps'] = $metadata_recursion['__in__metadata_max_steps'];
+                }
+                if(is_null($metadata_local['local__in__metadata_min_seconds']) || $metadata_recursion['__in__metadata_min_seconds'] < $metadata_local['local__in__metadata_min_seconds']){
+                    $metadata_local['local__in__metadata_min_seconds'] = $metadata_recursion['__in__metadata_min_seconds'];
+                }
+                if(is_null($metadata_local['local__in__metadata_max_seconds']) || $metadata_recursion['__in__metadata_max_seconds'] > $metadata_local['local__in__metadata_max_seconds']){
+                    $metadata_local['local__in__metadata_max_seconds'] = $metadata_recursion['__in__metadata_max_seconds'];
+                }
+
+
+                //Addup Experts:
+                foreach ($metadata_recursion['__in__metadata_experts'] as $en_id => $expert_en) {
+                    //Is this a new expert?
+                    if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
+                        //Yes, add them to the list:
+                        $metadata_this['__in__metadata_experts'][$en_id] = $expert_en;
+                    }
+                }
+
+                //Addup Sources:
+                foreach ($metadata_recursion['__in__metadata_sources'] as $type_en_id => $source_ens) {
+                    foreach ($source_ens as $en_id => $source_en) {
+                        if (!isset($metadata_this['__in__metadata_sources'][$type_en_id][$en_id])) {
+                            $metadata_this['__in__metadata_sources'][$type_en_id][$en_id] = $source_en;
+                        }
+                    }
+                }
+            }
+
+            //Add to totals if set:
+            if(!is_null($metadata_local['local__in__metadata_min_steps'])){
+                $metadata_this['__in__metadata_min_steps'] += intval($metadata_local['local__in__metadata_min_steps']);
+            }
+            if(!is_null($metadata_local['local__in__metadata_max_steps'])){
+                $metadata_this['__in__metadata_max_steps'] += intval($metadata_local['local__in__metadata_max_steps']);
+            }
+            if(!is_null($metadata_local['local__in__metadata_min_seconds'])){
+                $metadata_this['__in__metadata_min_seconds'] += intval($metadata_local['local__in__metadata_min_seconds']);
+            }
+            if(!is_null($metadata_local['local__in__metadata_max_seconds'])){
+                $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
+            }
+
+        }
+
+
+        //Save to DB
+        update_metadata('in', $in_id, array(
+            'in__metadata_min_steps' => intval($metadata_this['__in__metadata_min_steps']),
+            'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
+            'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
+            'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
+            'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
+            'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
+        ));
 
 
         //Return data:
@@ -1157,8 +1387,8 @@ class IDEA_model extends CI_Model
 
         //Discovery 1: Is there an OR parent that we can simply answer and unlock?
         foreach($this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_next_idea_id' => $in['in_id'],
             'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
@@ -1171,8 +1401,8 @@ class IDEA_model extends CI_Model
 
         //Discovery 2: Are there any locked link parents that the user might be able to unlock?
         foreach($this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12842')) . ')' => null, //IDEA LINKS ONE-WAY
             'ln_next_idea_id' => $in['in_id'],
         ), array('in_previous'), 0) as $in_locked_parent){
@@ -1198,8 +1428,8 @@ class IDEA_model extends CI_Model
 
         //Discovery 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
         $in__next = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_previous_idea_id' => $in['in_id'],
         ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));

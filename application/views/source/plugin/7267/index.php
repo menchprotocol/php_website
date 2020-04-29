@@ -11,7 +11,7 @@ echo '<input type="submit" class="btn btn-idea" value="Search">';
 if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
 
     $matching_results = $this->SOURCE_model->en_fetch(array(
-        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
         'LOWER(en_icon) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
     ));
 

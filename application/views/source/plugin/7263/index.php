@@ -14,8 +14,8 @@ echo '</tr>';
 $counter = 0;
 $total_count = 0;
 foreach ($this->LEDGER_model->ln_fetch(array(
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12842')) . ')' => null, //IDEA LINKS ONE-WAY
     'LENGTH(ln_metadata) > 0' => null,
 ), array('in_next'), 0, 0) as $in_ln) {
@@ -47,8 +47,8 @@ foreach ($this->LEDGER_model->ln_fetch(array(
         echo '</div>';
 
         if(count($this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
                 'in_type_source_id NOT IN (6907,6914)' => null, //NOT AND/OR Lock
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
                 'ln_next_idea_id' => $in_ln['in_id'],
@@ -64,7 +64,7 @@ foreach ($this->LEDGER_model->ln_fetch(array(
             $user_steps = $this->LEDGER_model->ln_fetch(array(
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
                 'ln_previous_idea_id' => $in_ln['in_id'],
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             ), array(), 0);
 
             $updated = 0;
@@ -94,8 +94,8 @@ if(1){
 
     $counter = 0;
     foreach ($this->LEDGER_model->ln_fetch(array(
-        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'LENGTH(ln_metadata) > 0' => null,
     ), array('in_next'), 0, 0) as $in_ln) {

@@ -5,7 +5,7 @@ $skipped = 0;
 $fixed = 0;
 
 foreach($this->LEDGER_model->ln_fetch(array(
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
 ), array(), 0) as $source_link){
 
     if(filter_var($source_link['ln_content'], FILTER_VALIDATE_URL)){

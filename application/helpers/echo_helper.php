@@ -60,7 +60,7 @@ function echo_time_minutes($sec_int)
         $min = floor($sec_int / 60);
     }
 
-    return ( $min ? $min . ' Min.' : ( $sec ? $sec . ' Sec.' : false ) );
+    return ( $min ? $min . ' MINUTE'.strtoupper(echo__s($min)) : ( $sec ? $sec . ' SECOND'.strtoupper(echo__s($min)) : false ) );
 }
 
 function echo_url_types($url, $en_type_link_id)
@@ -166,7 +166,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
 
                 //Inform User that this is a sliced video
                 if ($start_sec || $end_sec) {
-                    $embed_html_code .= '<div class="discover-topic">' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'"><span class="icon-block-xs"><i class="fas fa-play"></i></span>WATCH ' . echo_time_minutes(($end_sec - $start_sec)) . ' CLIP</b>' : '<b><span class="icon-block-xs"><i class="fas fa-play"></i></span>WATCH FROM ' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
+                    $embed_html_code .= '<div class="discover-topic">' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'"><span class="icon-block-xs"><i class="fas fa-clock"></i></span>' . echo_time_minutes(($end_sec - $start_sec)) . '</b>' : '<b><span class="icon-block-xs"><i class="fas fa-clock"></i></span>' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
                 }
 
                 $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
@@ -965,7 +965,7 @@ function echo_coins_count_discover($in_id = 0, $en_id = 0){
 
     $CI =& get_instance();
     $discover_coins = $CI->LEDGER_model->ln_fetch(array(
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
         ( $in_id > 0 ? 'ln_previous_idea_id' : 'ln_creator_source_id' ) => ( $in_id > 0 ? $in_id : $en_id ),
     ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
@@ -985,7 +985,7 @@ function echo_coins_count_source($in_id = 0, $en_id = 0){
     if($in_id){
         $mench = 'source';
         $coin_filter = array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
             'ln_next_idea_id' => $in_id,
@@ -993,7 +993,7 @@ function echo_coins_count_source($in_id = 0, $en_id = 0){
     } elseif($en_id){
         $mench = 'idea';
         $coin_filter = array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
             'ln_profile_source_id' => $en_id,
         );
@@ -1095,15 +1095,15 @@ function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $p
     foreach($CI->LEDGER_model->ln_fetch(array(
         'ln_previous_idea_id' => $in_id,
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-        'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+        'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //ACTIVE
     ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $in_ln){
 
         //Prep Metadata:
         $metadata = unserialize($in_ln['ln_metadata']);
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         $messages = $CI->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'ln_type_source_id' => 4231, //Idea Notes Messages
             'ln_next_idea_id' => $in_ln['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
@@ -1161,8 +1161,8 @@ function echo_radio_sources($parent_en_id, $child_en_id, $enable_mulitiselect, $
         $ui .= '<a href="javascript:void(0);" onclick="account_update_radio('.$parent_en_id.','.$en_id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m_icon']).' list-group-item montserrat itemsetting item-'.$en_id.' '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->LEDGER_model->ln_fetch(array(
                 'ln_profile_source_id' => $en_id,
                 'ln_portfolio_source_id' => $child_en_id,
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             )))>0 ? ' active ' : '' ). '"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'<span class="change-results"></span></a>';
         $count++;
     }
@@ -1240,7 +1240,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
         $next_ins = $CI->LEDGER_model->ln_fetch(array(
             'ln_previous_idea_id' => $in['in_id'],
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
         if($next_ins[0]['total_ins'] > 0){
             $child_counter .= '<span class="pull-right" '.( $show_toolbar ? ' style="margin-top: -18px;" ' : '' ).'><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).' NEXT IDEAS">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
@@ -1391,7 +1391,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
 
 
-function echo_caret($en_id, $m, $url_append){
+function echo_caret($en_id, $m, $url_append, $nasty_hack = null){
     //Display drop down menu:
     $CI =& get_instance();
 
@@ -1401,6 +1401,13 @@ function echo_caret($en_id, $m, $url_append){
     $ui .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
     $ui .= '<div class="dropdown-menu">';
     foreach ($CI->config->item('en_all_'.$en_id) as $en_id2 => $m2){
+        if($en_id2==7267){
+            //Need this hack to also be able to search for icons:
+            if(!strlen($nasty_hack)){
+                continue;
+            }
+            $url_append = urlencode($nasty_hack);
+        }
         $ui .= '<a class="dropdown-item montserrat '.extract_icon_color($m2['m_icon']).'" href="' . $m2['m_desc'] . $url_append . '"><span class="icon-block">'.$m2['m_icon'].'</span> '.$m2['m_name'].'</a>';
     }
     $ui .= '</div>';
@@ -1758,10 +1765,10 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $show_toolbar = ($control_enabled && superpower_active(12706, true));
 
     $en__profiles = $CI->LEDGER_model->ln_fetch(array(
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
+        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
         'ln_portfolio_source_id' => $en['en_id'], //This child source
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-        'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+        'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //ACTIVE
     ), array('en_profile'), 0, 0, array('en_weight' => 'DESC'));
 
     $is_public = in_array($en['en_status_source_id'], $CI->config->item('en_ids_7357'));
@@ -1814,9 +1821,9 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     if(superpower_active(10967, true)){
         $en__portfolios_count = $CI->LEDGER_model->ln_fetch(array(
             'ln_profile_source_id' => $en['en_id'],
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Source Links
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Source Status Public
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //PUBLIC
         ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
         if($en__portfolios_count[0]['totals'] > 0){
             $child_counter .= '<span class="pull-right" '.( $show_toolbar ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($en__portfolios_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';

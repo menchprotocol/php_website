@@ -72,7 +72,7 @@ class COMMUNICATION_model extends CI_Model
                 foreach ($this->LEDGER_model->ln_fetch(array(
                     'ln_creator_source_id' => $en['en_id'],
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 )) as $ln) {
                     $deleted_ins++;
                     $this->LEDGER_model->ln_update($ln['ln_id'], array(
@@ -95,7 +95,7 @@ class COMMUNICATION_model extends CI_Model
                 $player_discoveries = $this->LEDGER_model->ln_fetch(array(
                     'ln_creator_source_id' => $en['en_id'],
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_previous_idea_id' => $action_unsubscribe,
                 ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -116,7 +116,7 @@ class COMMUNICATION_model extends CI_Model
                 foreach($this->LEDGER_model->ln_fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
                     'ln_creator_source_id' => $en['en_id'], //Belongs to this User
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
                     $this->LEDGER_model->ln_update($ln['ln_id'], array(
                         'ln_order' => ($count+1),
@@ -161,7 +161,7 @@ class COMMUNICATION_model extends CI_Model
             $in_id = intval($quick_reply_payload);
             $ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => $in_id,
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             ));
             if (count($ins) < 1) {
 
@@ -225,7 +225,7 @@ class COMMUNICATION_model extends CI_Model
             //Initiating an IDEA DISCOVER LIST:
             $ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => $in_id,
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             ));
 
             if (count($ins) != 1) {
@@ -239,7 +239,7 @@ class COMMUNICATION_model extends CI_Model
             if (count($this->LEDGER_model->ln_fetch(array(
                     'ln_creator_source_id' => $en['en_id'],
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_previous_idea_id' => $ins[0]['in_id'],
                 ))) > 0) {
 
@@ -424,8 +424,8 @@ class COMMUNICATION_model extends CI_Model
             $player_discoveries = $this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en['en_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             ), array('in_previous'), 10 /* Max quick replies allowed */, 0, array('ln_order' => 'ASC'));
 
 
@@ -523,7 +523,7 @@ class COMMUNICATION_model extends CI_Model
                     //Fetch metadata:
                     $ins = $this->IDEA_model->in_fetch(array(
                         'in_id' => $alg['alg_obj_id'],
-                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                     ));
                     if(count($ins) < 1){
                         continue;
@@ -533,7 +533,7 @@ class COMMUNICATION_model extends CI_Model
                     if(count($this->LEDGER_model->ln_fetch(array(
                             'ln_creator_source_id' => $en['en_id'],
                             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
-                            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                             'ln_previous_idea_id' => $alg['alg_obj_id'],
                         ))) > 0){
                         continue;
@@ -1158,8 +1158,8 @@ class COMMUNICATION_model extends CI_Model
         if ($push_message) {
 
             $user_messenger = $this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_profile_source_id' => 6196, //Mench Messenger
                 'ln_portfolio_source_id' => $recipient_en['en_id'],
                 'ln_external_id >' => 0,
@@ -1174,9 +1174,9 @@ class COMMUNICATION_model extends CI_Model
 
                 //See if they have an email:
                 $user_emails = $this->LEDGER_model->ln_fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_portfolio_source_id' => $recipient_en['en_id'],
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                     'ln_profile_source_id' => 3288, //Mench Email
                 ));
 
@@ -1218,9 +1218,9 @@ class COMMUNICATION_model extends CI_Model
             //Fetch recipient notification type:
             $lns_comm_level = $this->LEDGER_model->ln_fetch(array(
                 'ln_profile_source_id IN (' . join(',', $this->config->item('en_ids_4454')) . ')' => null,
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_portfolio_source_id' => $recipient_en['en_id'],
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             ));
 
             //Start validating communication settings we fetched to ensure everything is A-OK:
@@ -1351,8 +1351,8 @@ class COMMUNICATION_model extends CI_Model
 
                 //Source Profile
                 foreach ($this->LEDGER_model->ln_fetch(array(
-                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Source Status Public
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                     'ln_portfolio_source_id' => $string_references['ref_sources'][0],
                 ), array('en_profile'), 0, 0, array('en_id' => 'ASC' /* Hack to get Text first */)) as $parent_en) {

@@ -15,9 +15,9 @@ foreach($this->SOURCE_model->en_fetch() as $en) {
 
     $is_player = count($this->LEDGER_model->ln_fetch(array(
         'ln_profile_source_id' => 4430, //MENCH PLAYERS
-        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
         'ln_portfolio_source_id' => $en['en_id'],
-        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
     ), array(), 1));
     $is_ledger = count($this->LEDGER_model->ln_fetch(array(
         'ln_creator_source_id' => $en['en_id'],

@@ -27,8 +27,8 @@ class Messenger extends CI_Controller
 
         //Validate messenger ID:
         $user_messenger = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_profile_source_id' => 6196, //Mench Messenger
             'ln_external_id' => $psid,
         ));
@@ -491,9 +491,9 @@ class Messenger extends CI_Controller
                                 'ln_id' => $first_chioce['ln_id'],
                                 //Also validate other requirements:
                                 'ln_type_source_id' => 6144, //DISCOVER LIST Submit Requirements
-                                'ln_creator_source_id' => $en['en_id'], //for this user
-                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Transaction Status Incomplete
-                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Idea Status Public
+                                'ln_creator_source_id' => $en['en_id'],
+                                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //INCOMPLETE
+                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                             ), array('in_previous'));
 
 

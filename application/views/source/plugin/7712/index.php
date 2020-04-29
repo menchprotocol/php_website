@@ -5,7 +5,7 @@ $all_children = 0;
 $updated = 0;
 
 foreach ($this->IDEA_model->in_fetch(array(
-    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
     'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
 ), 0, 0, array('in_id' => 'DESC')) as $count => $in) {
 
@@ -14,8 +14,8 @@ foreach ($this->IDEA_model->in_fetch(array(
     echo '<ul>';
     //Fetch all children for this OR:
     foreach($this->LEDGER_model->ln_fetch(array(
-        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'ln_previous_idea_id' => $in['in_id'],
     ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
@@ -23,7 +23,7 @@ foreach ($this->IDEA_model->in_fetch(array(
         $user_steps = $this->LEDGER_model->ln_fetch(array(
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
             'ln_previous_idea_id' => $child_or['in_id'],
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         ), array(), 0);
         $all_steps += count($user_steps);
 

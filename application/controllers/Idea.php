@@ -158,7 +158,7 @@ class Idea extends CI_Controller {
         $session_en = superpower_assigned(null, true);
 
         if(count($this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id' => 12450,
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_next_idea_id' => $in_id,
@@ -309,7 +309,7 @@ class Idea extends CI_Controller {
 
                 //Notify moderators of Feature request? Only if they don't have the powers themselves:
                 } elseif(in_array($_POST['new_en_id'], $this->config->item('en_ids_12138')) && !superpower_assigned(10984) && !count($this->LEDGER_model->ln_fetch(array(
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                         'ln_type_source_id' => 12453, //Idea Feature Request
                         'ln_creator_source_id' => $session_en['en_id'],
                         'ln_next_idea_id' => $_POST['in_id'],
@@ -429,7 +429,7 @@ class Idea extends CI_Controller {
             //Fetch link idea to determine idea type:
             $linked_ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => intval($_POST['in_link_child_id']),
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
             ));
 
             if(count($linked_ins)==0){
@@ -487,7 +487,7 @@ class Idea extends CI_Controller {
                 $children_before = $this->LEDGER_model->ln_fetch(array(
                     'ln_previous_idea_id' => intval($_POST['in_id']),
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
                 //Update them all:
@@ -501,7 +501,7 @@ class Idea extends CI_Controller {
                 $children_after = $this->LEDGER_model->ln_fetch(array(
                     'ln_previous_idea_id' => intval($_POST['in_id']),
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Idea-to-Idea Links
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
                 //Display message:
@@ -547,7 +547,7 @@ class Idea extends CI_Controller {
         //Fetch/Validate the idea:
         $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
         ));
         if(count($ins)<1){
             return echo_json(array(
@@ -568,7 +568,7 @@ class Idea extends CI_Controller {
         $ln = $this->LEDGER_model->ln_create(array(
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_order' => 1 + $this->LEDGER_model->ln_max_order(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                     'ln_type_source_id' => intval($_POST['note_type_id']),
                     'ln_next_idea_id' => intval($_POST['in_id']),
                 )),
@@ -793,7 +793,7 @@ class Idea extends CI_Controller {
         //Validate Message:
         $messages = $this->LEDGER_model->ln_fetch(array(
             'ln_id' => intval($_POST['ln_id']),
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Transaction Status Active
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         ));
         if (count($messages) < 1) {
             return echo_json(array(
@@ -836,10 +836,10 @@ class Idea extends CI_Controller {
         if($messages[0]['ln_status_source_id'] != $_POST['message_ln_status_source_id']){
 
             //Are we deleting this message?
-            if(in_array($_POST['message_ln_status_source_id'], $this->config->item('en_ids_7360') /* Transaction Status Active */)){
+            if(in_array($_POST['message_ln_status_source_id'], $this->config->item('en_ids_7360') /* ACTIVE */)){
 
                 //If making the link public, all referenced sources must also be public...
-                if(in_array($_POST['message_ln_status_source_id'], $this->config->item('en_ids_7359') /* Transaction Status Public */)){
+                if(in_array($_POST['message_ln_status_source_id'], $this->config->item('en_ids_7359') /* PUBLIC */)){
 
                     //We're publishing, make sure potential source references are also published:
                     $string_references = extract_source_references($_POST['ln_content']);
@@ -851,7 +851,7 @@ class Idea extends CI_Controller {
                             'en_id' => $string_references['ref_sources'][0],
                         ));
 
-                        if(count($ref_ens)>0 && !in_array($ref_ens[0]['en_status_source_id'], $this->config->item('en_ids_7357') /* Source Status Public */)){
+                        if(count($ref_ens)>0 && !in_array($ref_ens[0]['en_status_source_id'], $this->config->item('en_ids_7357') /* PUBLIC */)){
                             return echo_json(array(
                                 'status' => 0,
                                 'message' => 'You cannot published this message because its referenced source is not yet public',

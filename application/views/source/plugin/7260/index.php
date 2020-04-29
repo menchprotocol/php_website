@@ -4,8 +4,8 @@ $en_all_4737 = $this->config->item('en_all_4737'); // Idea Status
 
 
 $orphan_ins = $this->IDEA_model->in_fetch(array(
-    ' NOT EXISTS (SELECT 1 FROM mench_ledger WHERE in_id=ln_next_idea_id AND ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_source_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Transaction Status Active */.')) ' => null,
-    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Idea Status Active
+    ' NOT EXISTS (SELECT 1 FROM mench_ledger WHERE in_id=ln_next_idea_id AND ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_source_id IN ('.join(',', $this->config->item('en_ids_7360')) /* ACTIVE */.')) ' => null,
+    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
     'in_id !=' => config_var(12156), //Not the Starting Idea
 ));
 

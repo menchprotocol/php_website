@@ -3,8 +3,8 @@
 $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
 
 $orphan_ens = $this->SOURCE_model->en_fetch(array(
-    ' NOT EXISTS (SELECT 1 FROM mench_ledger WHERE en_id=ln_portfolio_source_id AND ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status_source_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Transaction Status Active */.')) ' => null,
-    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Source Status Active
+    ' NOT EXISTS (SELECT 1 FROM mench_ledger WHERE en_id=ln_portfolio_source_id AND ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status_source_id IN ('.join(',', $this->config->item('en_ids_7360')) /* ACTIVE */.')) ' => null,
+    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
 ));
 
 if(count($orphan_ens) > 0){
