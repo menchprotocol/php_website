@@ -860,7 +860,7 @@ class IDEA_model extends CI_Model
 
     }
 
-    function in_metadata_extra_insights($in_id)
+    function in_metadata_extra_insights($in_id, $update_db = true)
     {
 
         /*
@@ -880,19 +880,16 @@ class IDEA_model extends CI_Model
             return false;
         }
 
-
         $in_metadata = unserialize( $ins[0]['in_metadata'] );
         if(!isset($in_metadata['in__metadata_common_steps'])){
             return false;
         }
-
 
         //Fetch common base and expansion paths from idea metadata:
         $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
         $expansion_steps_one = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
         $expansion_steps_some = ( isset($in_metadata['in__metadata_expansion_some']) && count($in_metadata['in__metadata_expansion_some']) > 0 ? $in_metadata['in__metadata_expansion_some'] : array() );
         $locked_steps = ( isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0 ? $in_metadata['in__metadata_expansion_conditional'] : array() );
-
 
         //Fetch totals for published common step ideas:
         $common_totals = $this->IDEA_model->in_fetch(array(
@@ -997,7 +994,7 @@ class IDEA_model extends CI_Model
 
             foreach($expansion_group as $expansion_in_id){
 
-                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id);
+                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id, false);
 
                 if(!$metadata_recursion){
                     continue;
@@ -1059,7 +1056,7 @@ class IDEA_model extends CI_Model
 
             foreach($expansion_group as $expansion_in_id){
 
-                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id);
+                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id, false);
 
                 if(!$metadata_recursion){
                     continue;
@@ -1116,16 +1113,23 @@ class IDEA_model extends CI_Model
         }
 
 
-        //Update DB
-        echo '[['.$in_id.']]';
-        update_metadata('in', $in_id, array(
-            'in__metadata_min_steps' => intval($metadata_this['__in__metadata_min_steps']),
-            'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
-            'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
-            'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
-            'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
-            'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
-        ));
+        if($update_db){
+
+            /*
+             *
+             * Save to database
+             *
+             * */
+            update_metadata('in', $in_id, array(
+                'in__metadata_min_steps' => intval($metadata_this['__in__metadata_min_steps']),
+                'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
+                'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
+                'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
+                'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
+                'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
+            ));
+
+        }
 
 
         //Return data:

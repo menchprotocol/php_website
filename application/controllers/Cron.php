@@ -423,24 +423,20 @@ class Cron extends CI_Controller
          * */
 
 
-
-        $in_id = ( $in_id>0 ? $in_id : config_var(12156) );
-
-        //Increment count by 1:
-
-        //Start with common base:
-        foreach($this->IDEA_model->in_fetch(array('in_id' => $in_id)) as $published_in){
-            $this->IDEA_model->in_metadata_common_base($published_in);
+        //Update a specific idea OR all featured ideas
+        $updated = 0;
+        foreach($this->IDEA_model->in_fetch((
+            $in_id ? array('in_id' => $in_id) :
+            array('in_status_source_id IN (' . join(',', $this->config->item('en_ids_12138')) . ')' => null)
+        )) as $in){
+            $this->IDEA_model->in_metadata_common_base($in);
+            $this->IDEA_model->in_metadata_extra_insights($in['in_id']);
+            $updated++;
         }
-
-        //Update extra insights:
-        $results = $this->IDEA_model->in_metadata_extra_insights($in_id);
-
 
         //Show json:
         echo_json(array(
-            'message' => 'Extra Insights Metadata updated.',
-            'results' => $results,
+            'message' => 'Extra Insights Metadata updated for '.$updated.' ideas.',
         ));
 
     }
