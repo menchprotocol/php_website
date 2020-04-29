@@ -134,12 +134,10 @@ class Messenger extends CI_Controller
          *
          * */
 
-        array_push($res, $this->COMMUNICATION_model->comm_facebook_graph('DELETE', '/me/custom_user_settings', array(
+        //Show results:
+        echo_json($this->COMMUNICATION_model->comm_facebook_graph('DELETE', '/me/custom_user_settings', array(
             'params' => '[%22persistent_menu%22]',
         )));
-
-        //Show results:
-        echo_json($res);
     }
 
 
