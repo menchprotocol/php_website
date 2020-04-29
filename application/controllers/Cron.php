@@ -15,8 +15,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 # INACTIVE:
 # 45 1 19 * *   /usr/bin/php /var/www/platform/index.php cron cron__7279  # Algolia Search SYNC
-# * * * * *     /usr/bin/php /var/www/platform/index.php cron cron__7281  # Messenger Chat Media
-# 0 * * * *     /usr/bin/php /var/www/platform/index.php cron cron__7282  # Messenger Sync Attachments
 
 */
 
@@ -226,7 +224,7 @@ class Cron extends CI_Controller
             )) as $en_email){
                 if(filter_var($en_email['ln_content'], FILTER_VALIDATE_EMAIL)){
                     //Send Email
-                    $this->COMMUNICATION_model->comm_email_send(array($en_email['ln_content']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['en_name']).' 👋</div>'.$html_message);
+                    $this->COMMUNICATION_model->send_email(array($en_email['ln_content']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['en_name']).' 👋</div>'.$html_message);
                     $email_recipients++;
                 }
             }
@@ -705,158 +703,6 @@ class Cron extends CI_Controller
 
     }
 
-
-
-
-
-    function cron__7281()
-    {
-
-        /*
-         *
-         * Stores these media in Mench CDN:
-         *
-         * 1) Media received from users
-         * 2) Media sent from Mench Players via Facebook Chat Inbox
-         *
-         * Alert: It would not store media that is sent from idea
-         * ideas since those are previously stored.
-         *
-         * */
-
-        $ln_pending = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id' => 6175, //Transaction Drafting
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //User Sent/Received Media Links
-        ), array(), 10);
-
-        $counter = 0;
-        foreach($ln_pending as $ln) {
-
-            //Store to CDN:
-            $cdn_status = upload_to_cdn($ln['ln_content'], $ln['ln_creator_source_id'], $ln);
-            if(!$cdn_status['status']){
-                continue;
-            }
-
-            //Update link:
-            $this->LEDGER_model->ln_update($ln['ln_id'], array(
-                'ln_content' => $cdn_status['cdn_url'], //CDN URL
-                'ln_portfolio_source_id' => $cdn_status['cdn_en']['en_id'], //New URL Player
-                'ln_status_source_id' => 6176, //Transaction Published
-            ), $ln['ln_creator_source_id'], 10690 /* User Media Uploaded */);
-
-            //Increase counter:
-            $counter++;
-        }
-
-        //Echo message for cron job:
-        echo $counter . ' message media files saved to Mench CDN';
-
-    }
-
-
-
-    function cron__7282()
-    {
-
-        /*
-         *
-         * Messenger has a feature that allows us to cache
-         * media files in their servers so we can deliver
-         * them instantly without a need to re-upload them
-         * every time we want to send them to a user.
-         *
-         */
-
-
-        $en_all_11059 = $this->config->item('en_all_11059');
-
-        $success_count = 0; //Track success
-        $ln_metadata = array();
-
-
-        //Let's fetch all Media files without a Facebook attachment ID:
-        $ln_pending = $this->LEDGER_model->ln_fetch(array(
-            'ln_type_source_id IN (' . join(',', array_keys($en_all_11059)) . ')' => null,
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_metadata' => null, //Missing Facebook Attachment ID [Alert: Must make sure ln_metadata is not used for anything else for these link types]
-        ), array(), 10, 0, array('ln_id' => 'ASC')); //Sort by oldest added first
-
-
-        //Put something in the ln_metadata so other cron jobs do not pick up on it:
-        foreach($ln_pending as $ln) {
-            update_metadata('ln', $ln['ln_id'], array(
-                'fb_att_id' => 0,
-            ));
-        }
-
-        foreach($ln_pending as $ln) {
-
-            //To be set to true soon (hopefully):
-            $db_result = false;
-
-            //Payload to save attachment:
-            $payload = array(
-                'message' => array(
-                    'attachment' => array(
-                        'type' => $en_all_11059[$ln['ln_type_source_id']]['m_desc'],
-                        'payload' => array(
-                            'is_reusable' => true,
-                            'url' => $ln['ln_content'], //The URL to the media file
-                        ),
-                    ),
-                )
-            );
-
-            //Attempt to sync Media to Facebook:
-            $result = $this->COMMUNICATION_model->comm_facebook_graph('POST', '/me/message_attachments', $payload);
-
-            if (isset($result['ln_metadata']['result']['attachment_id']) && $result['status']) {
-
-                //Save Facebook Attachment ID to DB:
-                $db_result = update_metadata('ln', $ln['ln_id'], array(
-                    'fb_att_id' => intval($result['ln_metadata']['result']['attachment_id']),
-                ));
-
-            }
-
-            //Did it go well?
-            if ($db_result) {
-
-                $success_count++;
-
-            } else {
-
-                //Log error:
-                $this->LEDGER_model->ln_create(array(
-                    'ln_type_source_id' => 4246, //Platform Bug Reports
-                    'ln_parent_transaction_id' => $ln['ln_id'],
-                    'ln_content' => 'attachments() Failed to sync attachment to Facebook API: ' . (isset($result['ln_metadata']['result']['error']['message']) ? $result['ln_metadata']['result']['error']['message'] : 'Unknown Error'),
-                    'ln_metadata' => array(
-                        'payload' => $payload,
-                        'result' => $result,
-                        'ln' => $ln,
-                    ),
-                ));
-
-            }
-
-            //Save stats:
-            array_push($ln_metadata, array(
-                'payload' => $payload,
-                'fb_result' => $result,
-            ));
-
-        }
-
-        //Echo message:
-        echo_json(array(
-            'status' => ($success_count == count($ln_pending) && $success_count > 0 ? 1 : 0),
-            'message' => $success_count . '/' . count($ln_pending) . ' synced using Facebook Attachment API',
-            'ln_metadata' => $ln_metadata,
-        ));
-
-    }
 
 
 

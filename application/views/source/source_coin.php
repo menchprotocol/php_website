@@ -63,7 +63,7 @@ $is_source = en_is_source($en['en_id']);
                             <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete this source and UNLINK ALL <span class="source_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
 
                             <span class="mini-header"><span class="tr_in_link_title"></span> Merge Source Into:</span>
-                            <input style="padding-left:3px;" type="text" class="form-control algolia_search border en_quick_search" id="en_merge" value="" placeholder="Search source to merge..." />
+                            <input style="padding-left:3px;" type="text" class="form-control algolia_search border en_text_search" id="en_merge" value="" placeholder="Search source to merge..." />
 
                         </div>
 
@@ -446,7 +446,7 @@ $is_source = en_is_source($en['en_id']);
                         //Player search box:
 
                         //String command:
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search sources..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
+                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search sources..." class="form-control algolia_search en_text_search border '.$is_upper.'">';
 
                         //We don't need the second value field here:
                         $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
@@ -455,10 +455,10 @@ $is_source = en_is_source($en['en_id']);
                     } elseif($action_en_id == 11956){
 
                         //IF HAS THIS
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="IF THIS SOURCE..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
+                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="IF THIS SOURCE..." class="form-control algolia_search en_text_search border '.$is_upper.'">';
 
                         //ADD THIS
-                        $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'"  placeholder="ADD THIS SOURCE..." class="form-control algolia_search en_quick_search border '.$is_upper.'">';
+                        $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'"  placeholder="ADD THIS SOURCE..." class="form-control algolia_search en_text_search border '.$is_upper.'">';
 
 
                     } elseif($action_en_id == 5003){
@@ -675,7 +675,7 @@ $is_source = en_is_source($en['en_id']);
                         $infobar_details = null;
                         if($in_notes['ln_content']){
                             $infobar_details .= '<div class="message_content">';
-                            $infobar_details .= $this->COMMUNICATION_model->comm_message_send($in_notes['ln_content']);
+                            $infobar_details .= $this->COMMUNICATION_model->send_message($in_notes['ln_content']);
                             $infobar_details .= '</div>';
                         }
 

@@ -243,7 +243,7 @@ foreach($this->config->item('en_all_11018') as $en_id => $m){
                 //Source search box:
 
                 //String command:
-                $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search Sources..." class="form-control algolia_search en_quick_search border montserrat '.$is_upper.'">';
+                $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search Sources..." class="form-control algolia_search en_text_search border montserrat '.$is_upper.'">';
 
                 //We don't need the second value field here:
                 $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';

@@ -124,7 +124,7 @@ class Discover extends CI_Controller
             if($next_in_id > 0){
                 return redirect_message('/'.$next_in_id.$append_url);
             } else {
-                $next_in_id = $this->DISCOVER_model->discover_next_go($session_en['en_id'], false);
+                $next_in_id = $this->DISCOVER_model->discover_next_go($session_en['en_id']);
                 if($next_in_id > 0){
                     return redirect_message('/'.$next_in_id.$append_url);
                 } else {
@@ -135,7 +135,7 @@ class Discover extends CI_Controller
         } else {
 
             //Find the next idea in the DISCOVER LIST:
-            $next_in_id = $this->DISCOVER_model->discover_next_go($session_en['en_id'], false);
+            $next_in_id = $this->DISCOVER_model->discover_next_go($session_en['en_id']);
             if($next_in_id > 0){
                 return redirect_message('/'.$next_in_id.$append_url);
             } else {
@@ -340,7 +340,7 @@ class Discover extends CI_Controller
         //All good:
         return echo_json(array(
             'status' => 1,
-            'message' => '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->comm_message_send($new_message).'</div>',
+            'message' => '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->send_message($new_message).'</div>',
         ));
 
     }
@@ -437,25 +437,7 @@ class Discover extends CI_Controller
 
 
 
-
-    function js_ln_create(){
-
-        //Log link from JS source:
-        if(isset($_POST['ln_order']) && strlen($_POST['ln_order'])>0 && !is_numeric($_POST['ln_order'])){
-            //We have an order set, but its not an integer, which means it's a cookie name that needs to be analyzed:
-            $_POST['ln_order'] = fetch_cookie_order($_POST['ln_order']);
-        }
-
-        //Log engagement:
-        echo_json($this->LEDGER_model->ln_create($_POST));
-    }
-
-
-
-
-
-
-    function actionplan_reset_progress($en_id, $timestamp, $secret_key){
+    function discover_coins_remove_all($en_id, $timestamp, $secret_key){
 
         if($secret_key != md5($en_id . $this->config->item('cred_password_salt') . $timestamp)){
             die('Invalid Secret Key');
@@ -501,7 +483,7 @@ class Discover extends CI_Controller
     }
 
 
-    function actionplan_stop_save(){
+    function discover_remove_item(){
 
         /*
          *
@@ -538,7 +520,7 @@ class Discover extends CI_Controller
     }
 
 
-    function actionplan_sort_save()
+    function discover_sort_save()
     {
         /*
          *

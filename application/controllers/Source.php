@@ -1725,7 +1725,7 @@ class Source extends CI_Controller
         $html_message .= '<div>MENCH</div>';
 
         //Send Welcome Email:
-        $email_log = $this->COMMUNICATION_model->comm_email_send(array($_POST['input_email']), $subject, $html_message);
+        $email_log = $this->COMMUNICATION_model->send_email(array($_POST['input_email']), $subject, $html_message);
 
 
         //Log User Signin Joined Mench
@@ -1761,43 +1761,6 @@ class Source extends CI_Controller
     }
 
 
-
-    function singin_check_psid($psid){
-
-        if (!isset($_GET['sr']) || !parse_signed_request($_GET['sr'])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Failed to authenticate your origin',
-            ));
-        }
-
-        //Messenger Webview, authenticate PSID:
-        $session_en = $this->SOURCE_model->en_messenger_auth($psid);
-
-        //Make sure we found them:
-        if ($session_en) {
-
-            //Activate Session:
-            $this->SOURCE_model->en_activate_session($session_en, false, 1);
-
-            //Set message before refreshing:
-            $this->session->set_flashdata('flash_message', '<div class="alert alert-info" role="alert">Signed-in from Messenger</div>');
-
-            return echo_json(array(
-                'status' => 1,
-                'message' => 'Missing user ID',
-            ));
-
-        } else {
-
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Failed to authenticate PSID',
-            ));
-
-        }
-
-    }
 
 
     function search_google($en_id){
@@ -2100,7 +2063,7 @@ class Source extends CI_Controller
         $html_message .= '<div>MENCH</div>';
 
         //Send email:
-        $this->COMMUNICATION_model->comm_email_send(array($_POST['input_email']), $subject, $html_message);
+        $this->COMMUNICATION_model->send_email(array($_POST['input_email']), $subject, $html_message);
 
         //Return success
         return echo_json(array(

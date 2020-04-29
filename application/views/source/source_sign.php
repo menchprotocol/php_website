@@ -52,17 +52,6 @@ if(count($current_sign_in_attempt) == 0){
 <script>
     var referrer_in_id = <?= intval($referrer_in_id) ?>;
     var referrer_url = '<?= @$_GET['url'] ?>';
-    var channel_choice_count = <?= count($en_all_7555) ?>;
-    var channel_choice_messenger = {
-        ln_type_source_id: 7558, //User Signin with Messenger Choice
-        ln_previous_idea_id: <?= intval($referrer_in_id) ?>,
-        ln_parent_transaction_id: <?= $current_sign_in_attempt['ln_id'] ?>,
-    };
-    var channel_choice_website = {
-        ln_type_source_id: 7559, //User Signin with Website Choice
-        ln_previous_idea_id: <?= intval($referrer_in_id) ?>,
-        ln_parent_transaction_id: <?= $current_sign_in_attempt['ln_id'] ?>,
-    };
 </script>
 <script src="/application/views/source/source_sign.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
@@ -76,31 +65,6 @@ if(count($current_sign_in_attempt) == 0){
 
     <div class="login-content" style="margin-top:50px;">
 
-
-        <!-- Step 1: Choose Channel -->
-        <div id="step1" class="signup-steps hidden">
-
-            <?php
-            echo '<p>Choose your preferred channel:</p>';
-            foreach($en_all_7555 as $en_id => $m) {
-                echo '<div class="row" style="padding:5px 0;">';
-
-                echo '<a class="btn btn-source btn-circle" href="javascript:void(0);" onclick="select_channel('.$en_id.', '.$referrer_in_id.')"><span class="icon-block">' . $m['m_icon'] . '</span>' . $m['m_name'] . ' <i class="fas fa-step-forward"></i></a>';
-
-                echo '<div class="help_me_choose hidden"><i class="fal fa-info-circle"></i> '.$m['m_desc'].'<br /></div>';
-
-                echo '</div>';
-            }
-            ?>
-
-            <div class="row center" style="padding-top:20px;">
-                <a href="javascript:void(0);" onclick="$('.help_me_choose').toggleClass('hidden')" class="help_me_choose"><span class="icon-block"><i class="fas fa-question-circle"></i></span>Help me Choose</a>
-            </div>
-
-        </div>
-
-
-
         <!-- Step 2: Enter Email -->
         <div id="step2" class="signup-steps hidden">
             <span class="montserrat"><?= $en_all_4269[3288]['m_icon'].' '.$en_all_4269[3288]['m_name'] ?></span>
@@ -110,7 +74,6 @@ if(count($current_sign_in_attempt) == 0){
                 <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-source transparent btn-circle btn-raised  <?= ( $referrer_in_id > 0 && count($en_all_7555)>=2 ? '' : ' hidden ' ) ?>"><i class="fas fa-step-backward"></i></a>
                 <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-source btn-raised btn-circle"><i class="fas fa-step-forward"></i></a>
             </span>
-            <span id="messenger_sign" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 || !in_array(6196 , $this->config->item('en_ids_7555')) ? ' hidden ' : '' ) ?>">OR <a href="javascript:void(0)" onclick="confirm_sign_on_messenger(<?= $referrer_in_id ?>)" class="dounderline">USE MESSENGER</a> <i class="fab fa-facebook-messenger source"></i></span>
         </div>
 
 

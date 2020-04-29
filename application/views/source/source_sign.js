@@ -8,7 +8,7 @@ var step_count = 0;
 
 $(document).ready(function () {
 
-    goto_step(( referrer_in_id > 0 ? ( channel_choice_count >= 2 ? 1 : 2 ) : 2 ));
+    goto_step(2);
 
     $(document).keyup(function (e) {
         //Watch for action keys:
@@ -35,54 +35,6 @@ function goto_step(this_step_count){
     $('#step'+step_count+' :input:visible:first').focus();
 }
 
-function confirm_sign_on_messenger(referrer_in_id){
-    var r = confirm("Ok, I will take you to Messenger now...");
-    if (r == true) {
-        sign_on_messenger(referrer_in_id);
-    }
-}
-
-function sign_on_messenger(referrer_in_id){
-
-    if(!logged_messenger){
-        js_ln_create(channel_choice_messenger);
-        logged_messenger = true;
-    }
-
-    //Redirect to Messenger with a bit of delay to log the link above:
-    setTimeout(function () {
-        window.location = 'https://m.me/' + js_en_all_6404[12587]['m_desc'] + ( referrer_in_id > 0 ? '?ref=' + referrer_in_id : '' );
-    }, 377);
-
-}
-
-
-
-
-
-function select_channel(en_chosen, referrer_in_id){
-
-
-    if(parseInt(en_chosen) == 6196 /* Mench on Messenger */ ){
-
-        //Delete button:
-        $('#step1button').html('<div style="font-size: 1.2em; padding-top:10px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading Messenger...</div>');
-
-        //Log link:
-        sign_on_messenger(referrer_in_id);
-
-    } else if (parseInt(en_chosen) == 12103) {
-
-        //Log link:
-        if(!logged_website){
-            js_ln_create(channel_choice_website);
-            logged_website = true;
-        }
-
-        goto_step(2);
-
-    }
-}
 
 var email_is_searching = false;
 function search_email(){

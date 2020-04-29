@@ -250,7 +250,7 @@ function echo_in_notes($ln)
 
     //Type & Delivery Method:
     $ui .= '<div class="text_message edit-off" id="msgbody_' . $ln['ln_id'] . '">';
-    $ui .= $CI->COMMUNICATION_model->comm_message_send($ln['ln_content'], $session_en, false, array(), $ln['ln_next_idea_id']);
+    $ui .= $CI->COMMUNICATION_model->send_message($ln['ln_content'], $session_en, $ln['ln_next_idea_id']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -328,113 +328,49 @@ function echo_url($text)
 }
 
 
-function echo_number($number, $micro = true, $push_message = false)
+function echo_number($number)
 {
 
-    //Displays number with a nice format
+    //Round & format numbers
 
-    //Let's see if we need to apply special formatting:
-    $formatting = null;
-
-    if ($number > 0 && $number < 1) {
-
-        $original_format = $number; //Keep as is
-
-        //Format Decimal number:
-        if ($number < 0.000001) {
-            $formatting = array(
-                'multiplier' => 1000000000,
-                'decimals' => 0,
-                'micro_1' => 'n',
-                'micro_0' => ' Nano',
-            );
-        } elseif ($number < 0.001) {
-            $formatting = array(
-                'multiplier' => 1000000,
-                'decimals' => 0,
-                'micro_1' => 'µ',
-                'micro_0' => ' Micro',
-            );
-        } elseif ($number < 0.01) {
-            $formatting = array(
-                'multiplier' => 100000,
-                'decimals' => 0,
-                'micro_1' => 'm',
-                'micro_0' => ' Milli',
-            );
-        } else {
-            //Must be cents
-            $formatting = array(
-                'multiplier' => 100,
-                'decimals' => 0,
-                'micro_1' => 'c',
-                'micro_0' => ' Cent',
-            );
-        }
-
-    } elseif ($number >= 950) {
-
-        $original_format = number_format($number); //Add commas
-
-        if ($number >= 950000000) {
-            $formatting = array(
-                'multiplier' => (1 / 1000000000),
-                'decimals' => 1,
-                'micro_1' => 'B',
-                'micro_0' => ' Billion',
-            );
-        } elseif ($number >= 9500000) {
-            $formatting = array(
-                'multiplier' => (1 / 1000000),
-                'decimals' => 0,
-                'micro_1' => 'M',
-                'micro_0' => ' Million',
-            );
-        } elseif ($number >= 950000) {
-            $formatting = array(
-                'multiplier' => (1 / 1000000),
-                'decimals' => 1,
-                'micro_1' => 'M',
-                'micro_0' => ' Million',
-            );
-        } elseif ($number >= 9500) {
-            $formatting = array(
-                'multiplier' => (1 / 1000),
-                'decimals' => 0,
-                'micro_1' => 'K',
-                'micro_0' => ' Thousand',
-            );
-        } elseif ($number >= 950) {
-            $formatting = array(
-                'multiplier' => (1 / 1000),
-                'decimals' => 1,
-                'micro_1' => 'K',
-                'micro_0' => ' Thousand',
-            );
-        }
-
-    }
-
-
-    if ($formatting) {
-
-        //See what to show:
-        $rounded = round(($number * $formatting['multiplier']), $formatting['decimals']);
-        $append = $formatting['micro_' . (int)$micro] . (!$micro ? echo__s($rounded) : '');
-
-        if ($push_message) {
-            //Messaging format, show using plain text:
-            return $rounded . $append . ' (' . $original_format . ')';
-        } else {
-            //HTML, so we can show Tooltip:
-            return $rounded . $append;
-        }
-
-    } else {
-
+    if ($number < 950) {
         return intval($number);
-
     }
+
+    if ($number >= 950000000) {
+        $formatting = array(
+            'multiplier' => (1 / 1000000000),
+            'decimals' => 1,
+            'suffix' => 'B',
+        );
+    } elseif ($number >= 9500000) {
+        $formatting = array(
+            'multiplier' => (1 / 1000000),
+            'decimals' => 0,
+            'suffix' => 'M',
+        );
+    } elseif ($number >= 950000) {
+        $formatting = array(
+            'multiplier' => (1 / 1000000),
+            'decimals' => 1,
+            'suffix' => 'M',
+        );
+    } elseif ($number >= 9500) {
+        $formatting = array(
+            'multiplier' => (1 / 1000),
+            'decimals' => 0,
+            'suffix' => 'K',
+        );
+    } else {
+        $formatting = array(
+            'multiplier' => (1 / 1000),
+            'decimals' => 1,
+            'suffix' => 'K',
+        );
+    }
+
+    return $formatting['suffix'] . round(($number * $formatting['multiplier']), $formatting['decimals']);
+
 }
 
 
@@ -548,7 +484,6 @@ function echo_ln($ln, $is_parent_tr = false)
 
         //Message
         if(strlen($ln['ln_content']) > 0 && $ln['ln_content']!='@'.$ln['ln_profile_source_id']){
-            //$CI->COMMUNICATION_model->comm_message_send($ln['ln_content'])
             $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4372]['m_name'].'"><span class="icon-block">'.$en_all_4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.htmlentities($ln['ln_content']).'</div></div>';
         }
 
@@ -643,171 +578,6 @@ function echo_time_hours($seconds, $micro = false)
 
 
 
-
-
-function echo_in_tree_sources($in, $push_message = false, $autoexpand = false)
-{
-
-    /*
-     *
-     * a IDEA function to display experts sources for
-     * the entire Idea stored in the metadata field.
-     *
-     * */
-
-    //Do we have anything to return?
-    $metadata = unserialize($in['in_metadata']);
-    if ((!isset($metadata['in__metadata_experts']) || count($metadata['in__metadata_experts']) < 1) && (!isset($metadata['in__metadata_sources']) || count($metadata['in__metadata_sources']) < 1)) {
-        return false;
-    }
-
-
-    //Let's count to see how many content pieces we have references for this Idea:
-    $source_info = '';
-    $source_count = 0;
-
-    if(isset($metadata['in__metadata_sources'])){
-        foreach($metadata['in__metadata_sources'] as $type_en_id => $referenced_ens) {
-            $source_count += count($referenced_ens);
-        }
-    }
-    if ($source_count > 0) {
-
-        //Set some variables and settings to get started:
-        $type_all_count = count($metadata['in__metadata_sources']);
-        $CI =& get_instance();
-        $en_all_3000 = $CI->config->item('en_all_3000');
-        $visible_ppl = 3; //How many people to show before clicking on "see more"
-        $type_count = 0;
-        foreach($metadata['in__metadata_sources'] as $type_id => $referenced_ens) {
-
-            if ($type_count > 0) {
-                if (($type_count + 1) >= $type_all_count) {
-                    $source_info .= ' &';
-                } else {
-                    $source_info .= ',';
-                }
-            }
-
-            //Show category:
-            $cat_contribution = count($referenced_ens) . ' ' . $en_all_3000[$type_id]['m_name'];
-            if ($push_message) {
-
-                $source_info .= ' ' . $cat_contribution;
-
-            } else {
-
-                $source_info .= ' <span class="show_type_' . $type_id . '"><a href="javascript:void(0);" source-type-en-id="'.$type_id.'" onclick="$(\'.show_type_' . $type_id . '\').toggle()" style="text-decoration:underline; display:inline-block;">' . $cat_contribution . '</a></span><span class="show_type_' . $type_id . '" style="display:none;">';
-
-                //We only show details on our website's HTML landing pages:
-                $count = 0;
-                foreach($referenced_ens as $en) {
-
-                    if ($count > 0) {
-                        if (($count + 1) >= count($referenced_ens)) {
-                            $source_info .= ' &';
-                        } else {
-                            $source_info .= ',';
-                        }
-                    }
-
-                    $source_info .= ' ';
-
-                    //Show link to platform:
-                    //$source_info .= '<a href="/source/' . $en['en_id'] . '">';
-                    $source_info .= '<span>';
-                    $source_info .= $en['en_name'];
-                    $source_info .= '</span>';
-                    //$source_info .= '</a>';
-
-                    $count++;
-                }
-                $source_info .= '</span>';
-
-            }
-            $type_count++;
-        }
-    }
-
-
-    //Define some variables to get stared:
-    $expert_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 );
-    $visible_html = 4; //Landing page, beyond this is hidden and visible with a click
-    $visible_bot = 10; //Plain text style, but beyond this is cut out!
-    $expert_info = '';
-
-    if(isset($metadata['in__metadata_experts'])){
-        foreach($metadata['in__metadata_experts'] as $count => $en) {
-
-            $is_last_fb_item = ($push_message && $count >= $visible_bot);
-
-            if ($count > 0) {
-                if (($count + 1) >= $expert_count || $is_last_fb_item) {
-                    $expert_info .= ' &';
-                    if ($is_last_fb_item) {
-                        $expert_info .= ' ' . ($expert_count - $visible_bot) . ' more!';
-                        break;
-                    }
-                } else {
-                    $expert_info .= ',';
-                }
-            }
-
-            $expert_info .= ' ';
-
-            if ($push_message) {
-
-                //Just the name:
-                $expert_info .= $en['en_name'];
-
-            } else {
-
-                //HTML Format:
-                //$expert_info .= '<a href="/source/' . $en['en_id'] . '">';
-                $expert_info .= '<span>';
-                $expert_info .= $en['en_name'];
-                $expert_info .= '</span>';
-                //$expert_info .= '</a>';
-
-                if (($count + 1) == $visible_html && ($expert_count - $visible_html) > 0) {
-                    $expert_info .= '<span class="show_more_' . $in['in_id'] . '"> & <a href="javascript:void(0);" onclick="$(\'.show_more_' . $in['in_id'] . '\').toggle()" style="text-decoration:underline;">' . ($expert_count - $visible_html) . ' more</a>.</span><span class="show_more_' . $in['in_id'] . '" style="display:none;">';
-                }
-            }
-        }
-
-        if (!$push_message && ($count + 1) >= $visible_html) {
-            //Close the span:
-            $expert_info .= '.</span>';
-        } elseif ($push_message && !$is_last_fb_item) {
-            //Close the span:
-            $expert_info .= '.';
-        }
-    }
-
-
-
-    $pitch_title = '<span class="icon-block"><i class="fas fa-shield-check"></i></span>&nbsp;';
-    $pitch_body = 'References ';
-    if($source_count > 0){
-        $pitch_title .= $source_count . ' source' . echo__s($source_count);
-        $pitch_body .= trim($source_info);
-    }
-    if($expert_count > 0){
-        if($source_count > 0){
-            $pitch_title .= ' by ';
-            $pitch_body .= ' by ';
-        }
-        $pitch_title .= $expert_count . ' expert'. echo__s($expert_count);
-        $pitch_body .= $expert_count . ' industry expert'. echo__s($expert_count) . ($expert_count == 1 ? ':' : ' including') . $expert_info;
-    }
-
-    if ($push_message) {
-        return '⭐ ' . $pitch_body. "\n\n";
-    } else {
-        //HTML format
-        return $pitch_title.$pitch_body;
-    }
-}
 
 
 function echo_time_range($in, $micro = false, $hide_zero = false)
@@ -1046,7 +816,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
         $ui .= '<span class="discover-sorter" title="SORT"><i class="fas fa-bars"></i></span>';
 
-        $ui .= '<span title="REMOVE"><span class="actionplan_delete" in-id="'.$in['in_id'].'"><i class="fas fa-times"></i></span></span>';
+        $ui .= '<span title="REMOVE"><span class="discover_remove_item" in-id="'.$in['in_id'].'"><i class="fas fa-times"></i></span></span>';
 
         $ui .= '</span>';
         $ui .= '</div>';
@@ -1117,7 +887,7 @@ function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $p
         $ui .= '<div class="messages-'.$in_ln['in_id'].' hidden">';
         foreach($messages as $msg) {
             $ui .= '<div class="tip_bubble">';
-            $ui .= $CI->COMMUNICATION_model->comm_message_send($msg['ln_content']);
+            $ui .= $CI->COMMUNICATION_model->send_message($msg['ln_content']);
             $ui .= '</div>';
         }
         $ui .= '</div>';
@@ -1399,11 +1169,11 @@ function echo_caret($en_id, $m, $object_id){
 }
 
 
-function echo_in_list($in, $in__next, $recipient_en, $push_message, $prefix_statement = null, $show_next = true){
+function echo_in_list($in, $in__next, $recipient_en, $prefix_statement = null, $show_next = true){
 
     //If no list just return the next step:
     if(!count($in__next)){
-        return ( $show_next ? echo_in_next_previous($in['in_id'], $recipient_en, $push_message) : false );
+        return ( $show_next ? echo_in_next_previous($in['in_id'], $recipient_en) : false );
     }
 
     $CI =& get_instance();
@@ -1411,86 +1181,38 @@ function echo_in_list($in, $in__next, $recipient_en, $push_message, $prefix_stat
     if(count($in__next)){
 
         //List children so they know what's ahead:
-        $max_and_list = ( $push_message ? 5 : 0 );
-        $common_prefix = in_calc_common_prefix($in__next, 'in_title', $in, $max_and_list);
+        $common_prefix = in_calc_common_prefix($in__next, 'in_title', $in);
         $has_content = ($prefix_statement || strlen($common_prefix));
 
-        if($push_message){
-
-            $message_content = ( $has_content ? trim($prefix_statement)."\n\n" : '' );
-            $msg_quick_reply = array();
-
+        if($has_content){
+            echo '<div class="discover-topic">'.trim($prefix_statement).'</div>';
         } else {
-
-            //HTML:
-            if($has_content){
-                echo '<div class="discover-topic">'.trim($prefix_statement).'</div>';
-            } else {
-                echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>IDEAS</div>';
-            }
-            echo '<div class="list-group">';
-
+            echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>IDEAS</div>';
         }
 
-
-
-
+        echo '<div class="list-group">';
         foreach($in__next as $key => $child_in){
             echo echo_in_discover($child_in, false, $common_prefix);
         }
-
-        if($push_message){
-
-            $CI->COMMUNICATION_model->comm_message_send(
-                $message_content,
-                $recipient_en,
-                true,
-                $msg_quick_reply
-            );
-
-        } else {
-
-            echo '</div>';
-
-        }
+        echo '</div>';
     }
 
     if($show_next){
-        echo_in_next_previous($in['in_id'], $recipient_en, $push_message);
+        echo_in_next_previous($in['in_id'], $recipient_en);
         echo '<div class="doclear">&nbsp;</div>';
     }
 }
 
-function echo_in_next_previous($in_id, $recipient_en, $push_message){
+function echo_in_next_previous($in_id, $recipient_en){
 
-    //A function to display warning/success messages to users:
     $CI =& get_instance();
+    $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
 
-    if($push_message){
+    //PREVIOUS:
+    echo echo_in_previous_discover($in_id, $recipient_en);
 
-        $CI->COMMUNICATION_model->comm_message_send(
-            'Say next to continue your discovery.',
-            $recipient_en,
-            true,
-            array(
-                array(
-                    'content_type' => 'text',
-                    'title' => 'Next',
-                    'payload' => 'GONEXT_'.$in_id,
-                )
-            )
-        );
-
-    } else {
-
-        //PREVIOUS:
-        echo echo_in_previous_discover($in_id, $recipient_en);
-
-        //NEXT:
-        $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
-        echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="/discover/next/'.$in_id.'">'.$en_all_11035[12211]['m_icon'].'</a></div>';
-
-    }
+    //NEXT:
+    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="/discover/next/'.$in_id.'">'.$en_all_11035[12211]['m_icon'].'</a></div>';
 
 }
 
@@ -1688,11 +1410,9 @@ function echo_platform_message($en_id){
     }
 }
 
-function echo_unauthorized_message($superpower_en_id = 0, $push_message = true){
+function echo_unauthorized_message($superpower_en_id = 0){
 
-    $CI =& get_instance();
-    $en_all_10957 = $CI->config->item('en_all_10957');
-    $session_en = superpower_assigned();
+    $session_en = superpower_assigned($superpower_en_id);
 
     if(!$session_en){
 
@@ -1702,7 +1422,9 @@ function echo_unauthorized_message($superpower_en_id = 0, $push_message = true){
     } elseif($superpower_en_id>0) {
 
         //Missing Superpower:
-        return 'You are missing the required supowerpower of '.( $push_message ? $en_all_10957[$superpower_en_id]['m_name'] : '<b class="montserrat '.extract_icon_color($en_all_10957[$superpower_en_id]['m_icon']).'">'.$en_all_10957[$superpower_en_id]['m_icon'].' '.$en_all_10957[$superpower_en_id]['m_name'].'</b>' ).'';
+        $CI =& get_instance();
+        $en_all_10957 = $CI->config->item('en_all_10957');
+        return 'You are missing the required superpower of '.$en_all_10957[$superpower_en_id]['m_name'];
 
     }
 
@@ -1766,15 +1488,9 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
             $info_items_list .= '<span class="inline-block ln_status_source_id_' . $ln_id .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_source_id']]['m_name'].' @'.$en['ln_status_source_id'].'">' . $en_all_6186[$en['ln_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
         }
 
-        //Show link index
+        //External ID
         if($is_link_source && $en['ln_external_id'] > 0){
-            //External ID
-            if($en['ln_profile_source_id']==6196){
-                //Give players the ability to ping Messenger profiles:
-                $info_items_list .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]">&nbsp;<i class="fas fa-project-diagram"></i></span>';
-            } else {
-                $info_items_list .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'">&nbsp;<i class="fas fa-project-diagram"></i></span>';
-            }
+            $info_items_list .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'">&nbsp;<i class="fas fa-project-diagram"></i></span>';
         }
     }
 
@@ -1903,7 +1619,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
             //DISCOVER PROGRESS
             $ui .= '<div class="message_content paddingup">';
-            $ui .= $CI->COMMUNICATION_model->comm_message_send($en['ln_content']);
+            $ui .= $CI->COMMUNICATION_model->send_message($en['ln_content']);
             $ui .= '</div>';
 
         }

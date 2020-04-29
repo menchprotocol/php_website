@@ -170,13 +170,12 @@ class DISCOVER_model extends CI_Model
 
     }
 
-    function discover_next_go($en_id, $advance_step, $send_title_message = false)
+    function discover_next_go($en_id)
     {
 
         /*
          *
          * Searches for the next DISCOVER LIST step
-         * and advance it IF $advance_step = TRUE
          *
          * */
 
@@ -187,30 +186,9 @@ class DISCOVER_model extends CI_Model
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
 
-        if(count($player_discoveries) == 0){
-
-            if($advance_step){
-
-                $this->COMMUNICATION_model->comm_message_send(
-                    'You have no ideas in your discovery list yet.',
-                    array('en_id' => $en_id),
-                    true
-                );
-
-                //DISCOVER RECOMMENDATIONS
-                $this->COMMUNICATION_model->comm_message_send(
-                    echo_platform_message(12697),
-                    array('en_id' => $en_id),
-                    true
-                );
-
-            }
-
-            //No DISCOVER LISTs found!
+        if(!count($player_discoveries)){
             return 0;
-
         }
-
 
         //Loop through DISCOVER LIST Ideas and see what's next:
         foreach($player_discoveries as $user_in){
@@ -228,50 +206,6 @@ class DISCOVER_model extends CI_Model
 
                 //We found the next incomplete step, return:
                 break;
-
-            }
-        }
-
-        if($advance_step && $next_in_id >= 0 /* NOT If it was terminated... */){
-
-            //Did we find a next step?
-            if($next_in_id > 0){
-
-                if($send_title_message){
-
-                    //Fetch and append the title to be more informative:
-
-                    //Yes, we do have a next step, fetch it and give user more details:
-                    $next_step_ins = $this->IDEA_model->in_fetch(array(
-                        'in_id' => $next_in_id,
-                    ));
-
-                    $this->COMMUNICATION_model->comm_message_send(
-                        echo_platform_message(12692) . $next_step_ins[0]['in_title'],
-                        array('en_id' => $en_id),
-                        true
-                    );
-
-                }
-
-                //Yes, communicate it:
-                $this->DISCOVER_model->discover_echo($next_in_id, array('en_id' => $en_id), true);
-
-            } else {
-
-                //Inform user that they are now complete with all steps:
-                $this->COMMUNICATION_model->comm_message_send(
-                    'You completed your entire DISCOVERY LIST',
-                    array('en_id' => $en_id),
-                    true
-                );
-
-                //DISCOVER RECOMMENDATIONS
-                $this->COMMUNICATION_model->comm_message_send(
-                    echo_platform_message(12697),
-                    array('en_id' => $en_id),
-                    true
-                );
 
             }
         }
@@ -728,7 +662,7 @@ class DISCOVER_model extends CI_Model
 
     }
 
-    function discover_echo($in_id, $recipient_en, $push_message = false, $next_step_only = false){
+    function discover_echo($in_id, $recipient_en){
 
         /*
          * Function to discover na Idea, it's messages,
@@ -750,62 +684,7 @@ class DISCOVER_model extends CI_Model
                 'ln_content' => 'step_echo() invalid idea ID',
                 'ln_previous_idea_id' => $in_id,
             ));
-
-            if($push_message){
-                $this->COMMUNICATION_model->comm_message_send(
-                    'Invalid Idea ID',
-                    $recipient_en,
-                    true
-                );
-            } else {
-                //HTML:
-
-                echo '<div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Invalid Idea ID</div>';
-            }
-            return false;
-        }
-
-
-        //Validate Recipient, if specified:
-        if(!isset($recipient_en['en_id'])){
-
-            if($push_message){
-
-                //We cannot have a guest user on Messenger:
-                $this->LEDGER_model->ln_create(array(
-                    'ln_type_source_id' => 4246, //Platform Bug Reports
-                    'ln_content' => 'discover_coin() found guest user on Messenger',
-                    'ln_previous_idea_id' => $in_id,
-                ));
-                return false;
-
-            } else {
-
-                //Guest on the web:
-                $recipient_en['en_id'] = 0;
-                $recipient_en['en_name'] = 'Stranger';
-
-            }
-
-        } elseif(!isset($recipient_en['en_name'])){
-
-            //Fetch name:
-            $ens = $this->SOURCE_model->en_fetch(array(
-                'en_id' => $recipient_en['en_id'],
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
-            ));
-
-            if(count($ens)){
-                $recipient_en = $ens[0];
-            } else {
-                $this->LEDGER_model->ln_create(array(
-                    'ln_type_source_id' => 4246, //Platform Bug Reports
-                    'ln_content' => 'discover_coin() could not locate source',
-                    'ln_previous_idea_id' => $in_id,
-                ));
-                return false;
-            }
-
+            return '<div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Invalid Idea ID</div>';
         }
 
 
@@ -866,98 +745,67 @@ class DISCOVER_model extends CI_Model
          */
         if(!$in_discovery_list){
 
-            if($push_message){
+            //IDEA TITLE
+            echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle discover"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
 
-                $this->COMMUNICATION_model->comm_message_send(
-                    'Interested to discover ' . $ins[0]['in_title'] . '?',
-                    $recipient_en,
-                    $push_message,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Get Started',
-                            'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
-                        ),
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Cancel',
-                            'payload' => 'SUBSCRIBE-REJECT',
-                        ),
-                    ),
-                    array(
-                        'ln_next_idea_id' => $ins[0]['in_id'],
-                    )
+
+            foreach($in__messages as $message_ln) {
+                echo $this->COMMUNICATION_model->send_message(
+                    $message_ln['ln_content'],
+                    $recipient_en
                 );
+            }
 
-            } else {
+            $is_or = in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_6193'));
 
-                //IDEA TITLE
-                echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle discover"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
-
-
-                foreach($in__messages as $message_ln) {
-                    echo $this->COMMUNICATION_model->comm_message_send(
-                        $message_ln['ln_content'],
-                        $recipient_en,
-                        $push_message
-                    );
-                }
-
-                //OVERVIEW STATS
-                //echo echo_in_tree_sources($ins[0]);
-
-                $is_or = in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_6193'));
-
-                if($is_or){
-                    $all_child_featured = true;
-                    foreach($in__next as $key => $child_in){
-                        if(!in_array($child_in['in_status_source_id'], $this->config->item('en_ids_12138'))){
-                            $all_child_featured = false;
-                            break;
-                        }
+            if($is_or){
+                $all_child_featured = true;
+                foreach($in__next as $key => $child_in){
+                    if(!in_array($child_in['in_status_source_id'], $this->config->item('en_ids_12138'))){
+                        $all_child_featured = false;
+                        break;
                     }
-                } else {
-                    $all_child_featured = false;
                 }
+            } else {
+                $all_child_featured = false;
+            }
 
 
 
+
+            //Any Sub Topics?
+            if(count($in__next) > 0){
+
+                //List Children:
+                echo '<div id="discoverScroll no-height">&nbsp;</div>';
+                $common_prefix = in_calc_common_prefix($in__next, 'in_title');
+
+                echo '<div class="'.( !$all_child_featured ? ' discover_topics hidden ' : '' ).'">';
+                echo ( !$all_child_featured ? '<div class="discover-topic"><span class="icon-block">&nbsp;</span>PREVIEW IDEAS:</div>' : '' );
+                echo '<div class="list-group">';
+                foreach($in__next as $key => $child_in){
+                    echo echo_in_discover($child_in, $is_or, $common_prefix);
+                }
+                echo '</div>';
+                echo '</div>';
+
+            }
+
+
+            if(!$all_child_featured){
 
                 //Any Sub Topics?
                 if(count($in__next) > 0){
-
-                    //List Children:
-                    echo '<div id="discoverScroll no-height">&nbsp;</div>';
-                    $common_prefix = in_calc_common_prefix($in__next, 'in_title');
-
-                    echo '<div class="'.( !$all_child_featured ? ' discover_topics hidden ' : '' ).'">';
-                    echo ( !$all_child_featured ? '<div class="discover-topic"><span class="icon-block">&nbsp;</span>PREVIEW IDEAS:</div>' : '' );
-                    echo '<div class="list-group">';
-                    foreach($in__next as $key => $child_in){
-                        echo echo_in_discover($child_in, $is_or, $common_prefix);
-                    }
-                    echo '</div>';
-                    echo '</div>';
-
+                    //Give option to review:
+                    echo '<div class="inline-block margin-top-down discover-add pull-left discover_topics"><a class="btn btn-discover btn-circle" href="javascript:void();" onclick="toggle_discover()"><i class="fas fa-info"></i></a></div>';
                 }
 
-
-                if(!$all_child_featured){
-
-                    //Any Sub Topics?
-                    if(count($in__next) > 0){
-                        //Give option to review:
-                        echo '<div class="inline-block margin-top-down discover-add pull-left discover_topics"><a class="btn btn-discover btn-circle" href="javascript:void();" onclick="toggle_discover()"><i class="fas fa-info"></i></a></div>';
-                    }
-
-                    //Redirect to login page:
-                    echo '<div class="inline-block margin-top-down discover-add pull-right"><a class="btn btn-discover btn-circle" href="/discover/start/'.$ins[0]['in_id'].'"><i class="fas fa-step-forward"></i></a></div>';
-
-                }
-
-                echo '<div class="doclear">&nbsp;</div>';
+                //Redirect to login page:
+                echo '<div class="inline-block margin-top-down discover-add pull-right"><a class="btn btn-discover btn-circle" href="/discover/start/'.$ins[0]['in_id'].'"><i class="fas fa-step-forward"></i></a></div>';
 
             }
+
+            echo '<div class="doclear">&nbsp;</div>';
 
             return true;
         }
@@ -1068,85 +916,56 @@ class DISCOVER_model extends CI_Model
         }
 
 
-        //Define communication variables:
-        if(!$next_step_only){
-
-            // % DONE
-            $completion_rate = $this->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $ins[0]);
-            $metadata = unserialize($ins[0]['in_metadata']);
-            $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+        // % DONE
+        $completion_rate = $this->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $ins[0]);
+        $metadata = unserialize($ins[0]['in_metadata']);
+        $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
 
-            if(!$push_message){
+        echo '<div class="hideIfEmpty main_discovery_top"></div>';
 
-                echo '<div class="hideIfEmpty main_discovery_top"></div>';
+        //DISCOVER PROGRESS
+        if($completion_rate['completion_percentage']>0){
+            echo '<div class="progress-bg no-horizonal-margin" title="Discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+        } else {
+            //Replace with empty space:
+            echo '<div class="high3x">&nbsp;</div>';
+        }
 
-                //DISCOVER PROGRESS
-                if($completion_rate['completion_percentage']>0){
-                    echo '<div class="progress-bg no-horizonal-margin" title="Discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
-                } else {
-                    //Replace with empty space:
-                    echo '<div class="high3x">&nbsp;</div>';
-                }
+        //DISCOVER TITLE
+        echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle discover" aria-hidden="true"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
 
-                //DISCOVER TITLE
-                echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle discover" aria-hidden="true"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
 
-            } else {
 
-                $this->COMMUNICATION_model->comm_message_send(
-                    'You are discovering: '.$ins[0]['in_title'],
-                    $recipient_en,
-                    $push_message
-                );
-
-            }
-
-            foreach($in__messages as $message_ln) {
-                echo $this->COMMUNICATION_model->comm_message_send(
-                    $message_ln['ln_content'],
-                    $recipient_en,
-                    $push_message
-                );
-            }
-
+        foreach($in__messages as $message_ln) {
+            echo $this->COMMUNICATION_model->send_message(
+                $message_ln['ln_content'],
+                $recipient_en
+            );
         }
 
 
 
         if(count($discover_completes) && $qualify_for_autocomplete){
             //Move to the next one as there is nothing to do here:
-            if($push_message){
-
-                //Code later...
-
-            } else {
-
-                //JS Redirect asap:
-                echo "<script> $(document).ready(function () { window.location = '/discover/next/' + in_loaded_id + '".( isset($_GET['came_from']) && $_GET['came_from']>0 ? '?came_from='.$_GET['came_from'] : '' )."'; }); </script>";
-
-            }
+            echo "<script> $(document).ready(function () { window.location = '/discover/next/' + in_loaded_id + '".( isset($_GET['came_from']) && $_GET['came_from']>0 ? '?came_from='.$_GET['came_from'] : '' )."'; }); </script>";
         }
 
 
 
 
         //PREVIOUSLY UNLOCKED:
-        if(!$push_message){
+        $unlocked_steps = $this->LEDGER_model->ln_fetch(array(
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+            'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
+            'ln_creator_source_id' => $recipient_en['en_id'],
+            'ln_previous_idea_id' => $ins[0]['in_id'],
+        ), array('in_next'), 0);
 
-            $unlocked_steps = $this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-                'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
-                'ln_creator_source_id' => $recipient_en['en_id'],
-                'ln_previous_idea_id' => $ins[0]['in_id'],
-            ), array('in_next'), 0);
-
-            //Did we have any steps unlocked?
-            if(count($unlocked_steps) > 0){
-                echo_in_list($ins[0], $unlocked_steps, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:', false);
-            }
-
+        //Did we have any steps unlocked?
+        if(count($unlocked_steps) > 0){
+            echo_in_list($ins[0], $unlocked_steps, $recipient_en, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:', false);
         }
 
 
@@ -1160,12 +979,12 @@ class DISCOVER_model extends CI_Model
             if(!count($discover_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
                 //List Unlock paths:
-                echo_in_list($ins[0], $unlock_paths, $recipient_en, $push_message, '<span class="icon-block"><i class="fas fa-step-forward"></i></span>SUGGESTED IDEAS:');
+                echo_in_list($ins[0], $unlock_paths, $recipient_en, '<span class="icon-block"><i class="fas fa-step-forward"></i></span>SUGGESTED IDEAS:');
 
             }
 
             //List Children if any:
-            echo_in_list($ins[0], $in__next, $recipient_en, $push_message,  null, ( $completion_rate['completion_percentage'] < 100 ));
+            echo_in_list($ins[0], $in__next, $recipient_en, null, ( $completion_rate['completion_percentage'] < 100 ));
 
 
         } elseif (in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7712'))){
@@ -1191,7 +1010,7 @@ class DISCOVER_model extends CI_Model
 
                 }
 
-                echo_in_next_previous($ins[0]['in_id'], $recipient_en, $push_message);
+                echo_in_next_previous($ins[0]['in_id'], $recipient_en);
                 return true;
 
             } else {
@@ -1217,91 +1036,42 @@ class DISCOVER_model extends CI_Model
                 }
 
                 if(count($discover_answers) > 0){
+                    //MODIFY ANSWER
+                    echo '<div class="edit_select_answer">';
 
-                    if($push_message){
+                    //List answers:
+                    echo_in_list($ins[0], $discover_answers, $recipient_en, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
 
+                    echo '<div class="doclear">&nbsp;</div>';
 
+                    echo_in_next_previous($ins[0]['in_id'], $recipient_en);
 
-                    } else {
+                    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
 
-                        //In HTML Give extra option to change answer:
-                        echo '<div class="edit_select_answer">';
+                    echo '<div class="doclear">&nbsp;</div>';
 
-                        //List answers:
-                        echo_in_list($ins[0], $discover_answers, $recipient_en, $push_message, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
-
-                        echo '<div class="doclear">&nbsp;</div>';
-
-                        echo_in_next_previous($ins[0]['in_id'], $recipient_en, $push_message);
-
-                        echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
-
-                        echo '<div class="doclear">&nbsp;</div>';
-
-                        echo '</div>';
-                    }
+                    echo '</div>';
                 }
 
 
-                if($push_message){
+                echo '<div class="edit_select_answer '.( count($discover_answers)>0 ? 'hidden' : '' ).'">';
 
+                //HTML:
+                if ($ins[0]['in_type_source_id'] == 6684) {
 
-                    /*
-                     *
-                     * Let's see if we need to cleanup the OR answer
-                     * index by merging the answer response quick replies
-                     * (See Github Issue 2234 for more details)
-                     *
-                     * */
+                    echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
 
-                    $answer_referencing = array(); //Start with nothing...
-                    foreach($in__messages as $message_ln) {
-                        //Let's see if we can find a reference:
-                        for ($num = 1; $num <= config_var(12124); $num++) {
-                            if(substr_count($message_ln['ln_content'] , $num.'. ')==1 || substr_count($message_ln['ln_content'] , $num.".\n")==1){
-                                //Make sure we have have the previous number:
-                                if($num==1 || in_array(($num-1),$answer_referencing)){
-                                    array_push($answer_referencing, $num);
-                                }
-                            }
-                        }
-                    }
+                } elseif ($ins[0]['in_type_source_id'] == 7231) {
 
-                    $msg_quick_reply = array();
-
-                    if ($ins[0]['in_type_source_id'] == 6684) {
-
-                        //SELECT ONE
-                        $quick_replies_allowed = ( count($in__next) <= config_var(12124) );
-                        $message_content = 'Select one option to continue:'."\n\n";
-
-                    } elseif ($ins[0]['in_type_source_id'] == 7231) {
-
-                        //SELECT SOME
-                        $quick_replies_allowed = ( count($in__next)==1 );
-                        $message_content = 'Select one or more options to continue:'."\n\n";
-
-                    }
-
-                } else {
-
-                    echo '<div class="edit_select_answer '.( count($discover_answers)>0 ? 'hidden' : '' ).'">';
-
-                    //HTML:
-                    if ($ins[0]['in_type_source_id'] == 6684) {
-
-                        echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
-
-                    } elseif ($ins[0]['in_type_source_id'] == 7231) {
-
-                        echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</div>';
-
-                    }
-
-                    //Open for list to be printed:
-                    echo '<div class="list-group list-answers" in_type_source_id="'.$ins[0]['in_type_source_id'].'">';
+                    echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</div>';
 
                 }
+
+                //Open for list to be printed:
+                echo '<div class="list-group list-answers" in_type_source_id="'.$ins[0]['in_type_source_id'].'">';
+
+
+
 
                 //Determine Prefix:
                 $common_prefix = in_calc_common_prefix($in__next, 'in_title');
@@ -1337,54 +1107,25 @@ class DISCOVER_model extends CI_Model
                 }
 
 
-                if ($push_message) {
-
-                    if(!$quick_replies_allowed){
-
-                        if ($ins[0]['in_type_source_id'] == 6684) {
-
-                            $message_content .= "\n\n".'Reply with a number between 1 - '.count($in__next).' to continue.';
-
-                        } elseif ($ins[0]['in_type_source_id'] == 7231) {
-
-                            $message_content .= "\n\n".'Reply with one or more numbers between 1 - '.count($in__next).' to continue (add space between). For example, to select the first option reply "1", or to select the first & ';
-
-                            if(count($in__next) >= 3){
-                                $message_content .= 'third option reply "1 3"';
-                            } else {
-                                $message_content .= 'second option reply "1 2"';
-                            }
-                        }
-                    }
-
-                    $this->COMMUNICATION_model->comm_message_send(
-                        $message_content,
-                        $recipient_en,
-                        $push_message,
-                        $msg_quick_reply
-                    );
-
-                } else {
-
-                    //Close list:
-                    echo '</div>';
+                //Close list:
+                echo '</div>';
 
 
 
-                    echo '<div class="result-update margin-top-down"></div>';
 
-                    echo echo_in_previous_discover($in_id, $recipient_en);
+                echo '<div class="result-update margin-top-down"></div>';
 
-                    //Button to submit selection:
-                    if(count($discover_answers)>0){
-                        echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
-                    }
+                echo echo_in_previous_discover($in_id, $recipient_en);
 
-                    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fas fa-step-forward"></i></a></div>';
-
-                    echo '</div>';
-
+                //Button to submit selection:
+                if(count($discover_answers)>0){
+                    echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
                 }
+
+                echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fas fa-step-forward"></i></a></div>';
+
+                echo '</div>';
+
             }
 
         } else {
@@ -1394,7 +1135,7 @@ class DISCOVER_model extends CI_Model
                 //DISCOVER ONLY
 
                 //Next Ideas:
-                echo_in_list($ins[0], $in__next, $recipient_en, $push_message);
+                echo_in_list($ins[0], $in__next, $recipient_en);
 
             } elseif ($ins[0]['in_type_source_id'] == 6683) {
 
@@ -1413,7 +1154,7 @@ class DISCOVER_model extends CI_Model
 
                 if(count($discover_completes)){
                     //Next Ideas:
-                    echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null,false);
+                    echo_in_list($ins[0], $in__next, $recipient_en, null,false);
                 }
 
                 echo '<script> $(document).ready(function () { autosize($(\'#discover_text_answer\')); $(\'#discover_text_answer\').focus(); }); </script>';
@@ -1438,7 +1179,7 @@ class DISCOVER_model extends CI_Model
 
                     //Show next here but keep hidden until file is uploaded:
                     echo '<div class="go_next_upload hidden">';
-                    echo_in_next_previous($ins[0]['in_id'], $recipient_en, $push_message);
+                    echo_in_next_previous($ins[0]['in_id'], $recipient_en);
                     echo '</div>';
 
                     echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-discover btn-circle inline-block" for="fileType'.$ins[0]['in_type_source_id'].'"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
@@ -1447,12 +1188,12 @@ class DISCOVER_model extends CI_Model
 
                     echo '<div class="file_saving_result">';
 
-                    echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->comm_message_send($discover_completes[0]['ln_content']).'</div>';
+                    echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->send_message($discover_completes[0]['ln_content']).'</div>';
 
                     echo '</div>';
 
                     //Any child ideas?
-                    echo_in_list($ins[0], $in__next, $recipient_en, $push_message, null, true, false);
+                    echo_in_list($ins[0], $in__next, $recipient_en, null, true, false);
 
                     echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-discover inline-block btn-circle" for="fileType'.$ins[0]['in_type_source_id'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 
@@ -1938,7 +1679,7 @@ class DISCOVER_model extends CI_Model
                 $infobar_details = null;
                 if(strlen($in_discover['ln_content'])){
                     $infobar_details .= '<div class="message_content">';
-                    $infobar_details .= $this->COMMUNICATION_model->comm_message_send($in_discover['ln_content']);
+                    $infobar_details .= $this->COMMUNICATION_model->send_message($in_discover['ln_content']);
                     $infobar_details .= '</div>';
                 }
 

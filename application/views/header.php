@@ -202,9 +202,6 @@ if(!isset($hide_header)){
                             //Skip superpowers if not assigned
                             if($en_id==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
                                 continue;
-                            } elseif($en_id==7291 && intval($this->session->userdata('session_6196_sign'))){
-                                //Messenger sign in does not allow Signout:
-                                continue;
                             } elseif($en_id==6415 && !($first_segment=='discover' && !$second_segment)){
                                 //Deleting discoveries only available on Discovery home
                                 continue;

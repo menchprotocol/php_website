@@ -18,7 +18,7 @@ class SOURCE_model extends CI_Model
 
 
 
-    function en_activate_session($en, $update_session = false, $session_6196_sign = 0){
+    function en_activate_session($en, $update_session = false){
 
         //PROFILE
         $session_data = array(
@@ -29,15 +29,15 @@ class SOURCE_model extends CI_Model
         );
 
         if(!$update_session){
+
             //Append stats variables:
             $session_data['session_page_count'] = 0;
-            $session_data['session_6196_sign'] = $session_6196_sign;
 
-            //LOG
             $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $en['en_id'],
-                'ln_type_source_id' => 7564, //PLAYER Signin on Website Success
+                'ln_type_source_id' => 7564, //PLAYER SIGN
             ));
+
         }
 
         foreach($this->LEDGER_model->ln_fetch(array(
@@ -1200,48 +1200,6 @@ class SOURCE_model extends CI_Model
         return $en__portfolios_count;
     }
 
-    function en_messenger_auth($psid, $quick_reply_payload = null)
-    {
-
-        /*
-         *
-         * Detects the User source ID based on the
-         * PSID provided by the Facebook Webhook Call.
-         * This function returns the User's source object $en
-         *
-         */
-
-        if ($psid < 1) {
-            //Ooops, this should never happen:
-            $this->LEDGER_model->ln_create(array(
-                'ln_content' => 'en_messenger_auth() got called without a valid Facebook $psid variable',
-                'ln_type_source_id' => 4246, //Platform Bug Reports
-            ));
-            return false;
-        }
-
-        //Try matching Facebook PSID to existing Users:
-        $user_messenger = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-            'ln_profile_source_id' => 6196, //Mench Messenger
-            'ln_external_id' => $psid,
-        ), array('en_portfolio'));
-
-        //So, did we find them?
-        if (count($user_messenger) > 0) {
-
-            //User found...
-            return $user_messenger[0];
-
-        } else {
-
-            //User not found, create new User:
-            return $this->SOURCE_model->en_messenger_add($psid, $quick_reply_payload);
-
-        }
-
-    }
 
     function en_verify_create($en_name, $ln_creator_source_id = 0, $en_status_source_id = 6181 /* SOURCE PUBLISHED */, $en_icon = null){
 
@@ -1283,140 +1241,6 @@ class SOURCE_model extends CI_Model
             'status' => 1,
             'en' => $focus_en,
         );
-
-    }
-
-    function en_messenger_add($psid, $quick_reply_payload = null)
-    {
-
-        /*
-         *
-         * This function will attempt to create a new User Player
-         * Using the PSID provided by Facebook Graph API
-         *
-         * */
-
-        if ($psid < 1) {
-            //Ooops, this should never happen:
-            $this->LEDGER_model->ln_create(array(
-                'ln_content' => 'en_messenger_add() got called without a valid Facebook $psid variable',
-                'ln_type_source_id' => 4246, //Platform Bug Reports
-            ));
-            return false;
-        } elseif(count($this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-                'ln_profile_source_id' => 6196, //Mench Messenger
-                'ln_external_id' => $psid,
-            )))>0){
-            //PSID Previously added:
-            return false;
-        }
-
-        //Call facebook messenger API and get user graph profile:
-        $graph_fetch = $this->COMMUNICATION_model->comm_facebook_graph('GET', '/' . $psid, array());
-
-
-        $fetch_result = ( isset($graph_fetch['status']) && $graph_fetch['status'] && isset($graph_fetch['ln_metadata']['result']['first_name']) && strlen($graph_fetch['ln_metadata']['result']['first_name']) > 0);
-
-
-        //Did we find the profile from FB?
-        if (!$fetch_result ) {
-
-            /*
-             *
-             * No profile on Facebook! This happens when user has logged
-             * into messenger with their phone number or for any reason
-             * that Facebook does not provide profile details.
-             *
-             * */
-
-            //Create user source:
-            $added_en = $this->SOURCE_model->en_verify_create('Player '.rand(100000000, 999899999), 0, 6181, random_player_avatar());
-
-        } else {
-
-            //We did find the profile, move ahead:
-            $fb_profile = $graph_fetch['ln_metadata']['result'];
-
-            //Create user source with their Facebook Graph name:
-            $added_en = $this->SOURCE_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, 6181, random_player_avatar());
-
-
-            //See if we could fetch FULL profile data:
-            if(isset($fb_profile['locale'])){
-
-                //Split locale variable into language and country like "EN_GB" for English in England
-                $locale = explode('_', $fb_profile['locale'], 2);
-
-                //Try to match Facebook profile data to internal sources and create links for the ones we find:
-                foreach(array(
-                             $this->SOURCE_model->en_search_match(3289, $fb_profile['timezone']), //Timezone
-                             $this->SOURCE_model->en_search_match(3290, strtolower(substr($fb_profile['gender'], 0, 1))), //Gender either m/f
-                             $this->SOURCE_model->en_search_match(3287, strtolower($locale[0])), //Language
-                             $this->SOURCE_model->en_search_match(3089, strtolower($locale[1])), //Country
-                         ) as $ln_profile_source_id) {
-
-                    //Did we find a relation? Create the link:
-                    if ($ln_profile_source_id > 0) {
-
-                        //Create new link:
-                        $this->LEDGER_model->ln_create(array(
-                            'ln_type_source_id' => en_link_type_id(),
-                            'ln_creator_source_id' => $added_en['en']['en_id'], //User gets credit as player
-                            'ln_profile_source_id' => $ln_profile_source_id,
-                            'ln_portfolio_source_id' => $added_en['en']['en_id'],
-                        ));
-
-                    }
-                }
-            }
-        }
-
-
-        //New source link is previously logged in the source creation function
-        //Now create more relevant links:
-
-        //Activate Mench Messenger
-        $this->LEDGER_model->ln_create(array(
-            'ln_profile_source_id' => 6196, //Mench Messenger
-            'ln_type_source_id' => en_link_type_id(),
-            'ln_creator_source_id' => $added_en['en']['en_id'],
-            'ln_portfolio_source_id' => $added_en['en']['en_id'],
-            'ln_external_id' => $psid,
-        ));
-
-        //Add default Notification Level:
-        $this->LEDGER_model->ln_create(array(
-            'ln_profile_source_id' => 4456, //Receive Regular Notifications (User can change later on...)
-            'ln_type_source_id' => en_link_type_id(),
-            'ln_creator_source_id' => $added_en['en']['en_id'],
-            'ln_portfolio_source_id' => $added_en['en']['en_id'],
-        ));
-
-
-        //Add Player:
-        $this->LEDGER_model->ln_create(array(
-            'ln_profile_source_id' => 4430, //MENCH PLAYERS
-            'ln_type_source_id' => en_link_type_id(),
-            'ln_creator_source_id' => $added_en['en']['en_id'],
-            'ln_portfolio_source_id' => $added_en['en']['en_id'],
-        ));
-
-        //Now update Algolia:
-        update_algolia('en',  $added_en['en']['en_id']);
-
-        if(!$fetch_result){
-            //Let them know to complete their profile:
-            $this->COMMUNICATION_model->comm_message_send(
-                'Hi! I just added you as a new source. You can update your account at any time.',
-                $added_en['en'],
-                true
-            );
-        }
-
-        //Return source object:
-        return $added_en['en'];
 
     }
 

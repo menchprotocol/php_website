@@ -64,30 +64,6 @@ function fetch_file_ext($url)
 }
 
 
-function parse_signed_request($signed_request)
-{
-
-    //A function recommended by Facebook tp parse the signed request we receive from Facebook servers
-    //Fetch app settings:
-    $CI =& get_instance();
-    $cred_facebook = $CI->config->item('cred_facebook');
-
-    list($encoded_sig, $payload) = explode('.', $signed_request, 2);
-
-    // Decode the data
-    $sig = base64_url_decode($encoded_sig);
-    $data = json_decode(base64_url_decode($payload), true);
-
-    // Confirm the signature
-    $expected_sig = hash_hmac('sha256', $payload, $cred_facebook['client_secret'], $raw = true);
-    if ($sig !== $expected_sig) {
-        //error_log('Bad Signed JSON signature!');
-        return null;
-    }
-
-    return $data;
-}
-
 function array_flatten($hierarchical_array){
     if(!$hierarchical_array){
         return array();
@@ -97,12 +73,6 @@ function array_flatten($hierarchical_array){
         $result[] = $v;
     });
     return $result;
-}
-
-function base64_url_decode($input)
-{
-    //Another Facebook Recommended function that supports the parse_signed_request() function
-    return base64_decode(strtr($input, '-_', '+/'));
 }
 
 
@@ -752,7 +722,7 @@ function in_calc_bold_upto_weight($child_list){
     return $bold_upto_weight;
 }
 
-function in_calc_common_prefix($child_list, $child_field, $in = null, $max_look = 0){
+function in_calc_common_prefix($child_list, $child_field, $in = null){
 
     $CI =& get_instance();
 
@@ -763,10 +733,6 @@ function in_calc_common_prefix($child_list, $child_field, $in = null, $max_look 
     //Go through each child one by one and see if each word exists in all:
     $common_prefix = '';
     foreach(explode(' ', $child_list[0][$child_field]) as $word_pos=>$word){
-
-        if($max_look > 0 && $word_pos == $max_look){
-            break; //Look no more...
-        }
 
         //Make sure this is the same word across all ideas:
         $all_the_same = true;

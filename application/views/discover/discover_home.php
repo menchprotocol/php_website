@@ -11,9 +11,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 <script>
 
     //Include some cached sources:
-    var clear_discover_url = '<?= '/discover/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('cred_password_salt') . $timestamp) ?>';
+    var clear_discover_url = '<?= '/discover/discover_coins_remove_all/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('cred_password_salt') . $timestamp) ?>';
 
-    <?= ( count($player_discoveries) >= 2 ? '$(document).ready(function () {load_discover_sort()});' : '' ) ?>
+    <?= ( count($player_discoveries) >= 2 ? '$(document).ready(function () {discover_sort_load()});' : '' ) ?>
 
 </script>
 <script src="/application/views/discover/discover_home.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
@@ -59,7 +59,7 @@ echo '<div class="alert alert-danger" role="alert">';
 echo '<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><b class="discover montserrat">DELETE ALL DISCOVER COINS?</b>';
 echo '<br /><span class="icon-block">&nbsp;</span>Action cannot be undone.';
 echo '</div>';
-echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="clear_all_discoveries()" class="btn btn-discover"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.clear-discovery-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
+echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="discover_clear_all()" class="btn btn-discover"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.clear-discovery-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
 echo '</div>';
 
 

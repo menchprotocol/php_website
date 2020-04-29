@@ -31,13 +31,6 @@ if(js_pl_id>0){
 }
 
 
-//JS DISCOVER Creator:
-function js_ln_create(new_ln_data){
-    return $.post("/discover/js_ln_create", new_ln_data, function (data) {
-        return data;
-    });
-}
-
 function toggle_discover(){
 
     $('.discover_topics').toggleClass('hidden');
@@ -60,7 +53,7 @@ function load_editor(){
     });
 
     if(parseInt(js_en_all_6404[12678]['m_desc'])){
-        $('.en_quick_search').on('autocomplete:selected', function (event, suggestion, dataset) {
+        $('.en_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
 

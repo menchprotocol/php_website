@@ -1,5 +1,5 @@
 
-function actionplan_sort_save() {
+function discover_sort_save() {
 
     var sort_rank = 0;
     var new_actionplan_order = [];
@@ -13,7 +13,7 @@ function actionplan_sort_save() {
 
     //Update DISCOVER LIST order:
     if(sort_rank > 0){
-        $.post("/discover/actionplan_sort_save", {js_pl_id: js_pl_id, new_actionplan_order: new_actionplan_order}, function (data) {
+        $.post("/discover/discover_sort_save", {js_pl_id: js_pl_id, new_actionplan_order: new_actionplan_order}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -23,7 +23,7 @@ function actionplan_sort_save() {
     }
 }
 
-function clear_all_discoveries(){
+function discover_clear_all(){
 
     $('.clear-discovery-list').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">REMOVING ALL DISCOVR COINS...</b>');
 
@@ -38,13 +38,13 @@ function clear_all_discoveries(){
 $(document).ready(function () {
 
     //Watch for DISCOVER LIST removal click:
-    $('.actionplan_delete').on('click', function(e) {
+    $('.discover_remove_item').on('click', function(e) {
 
         var in_id = $(this).attr('in-id');
         var r = confirm("Remove ["+$('.text__4736_'+in_id).text()+"] from your discovery list?");
         if (r == true) {
             //Save changes:
-            $.post("/discover/actionplan_stop_save", { js_pl_id:js_pl_id ,in_id:in_id }, function (data) {
+            $.post("/discover/discover_remove_item", { js_pl_id:js_pl_id ,in_id:in_id }, function (data) {
                 //Update UI to confirm with user:
                 if (!data.status) {
 
@@ -63,7 +63,7 @@ $(document).ready(function () {
 
                         //Re-sort:
                         setTimeout(function () {
-                            actionplan_sort_save();
+                            discover_sort_save();
                         }, 89);
 
                     }, 233);
@@ -77,14 +77,14 @@ $(document).ready(function () {
 
 });
 
-function load_discover_sort(){
+function discover_sort_load(){
     //Load sorter:
     var sort = Sortable.create(document.getElementById('actionplan_steps'), {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: ".actionplan_sort", // Specifies which items inside the element should be sortable
         handle: ".fa-bars", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
-            actionplan_sort_save();
+            discover_sort_save();
         }
     });
 }
