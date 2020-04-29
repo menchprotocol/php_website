@@ -566,26 +566,6 @@ class SOURCE_model extends CI_Model
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
         ), array('en_profile'), 0) as $en__profile){
 
-            //Go another level?
-            if($level < $max_search_levels){
-
-                $recursive_metadata = $this->SOURCE_model->en_metadat_experts($en__profile, ($level + 1));
-
-                //CONTENT CHANNELS (GROUPED BY CHANNEL)
-                foreach($recursive_metadata['__in__metadata_sources'] as $channel_en_id => $content_en){
-                    if (!isset($metadata_this['__in__metadata_sources'][$channel_en_id][$content_en['en_id']])) {
-                        $metadata_this['__in__metadata_sources'][$channel_en_id][$content_en['en_id']] = $content_en;
-                    }
-                }
-
-                //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
-                foreach($recursive_metadata['__in__metadata_experts'] as $expert_en_id => $expert_en){
-                    if (!isset($metadata_this['__in__metadata_experts'][$expert_en_id])) {
-                        $metadata_this['__in__metadata_experts'][$expert_en_id] = $expert_en;
-                    }
-                }
-            }
-
             if(in_array($en__profile['en_id'], $this->config->item('en_ids_3000'))){
                 //CONTENT CHANNELS (GROUPED BY CHANNEL)
                 if (!isset($metadata_this['__in__metadata_sources'][$en__profile['en_id']][$en['en_id']])) {
@@ -595,6 +575,28 @@ class SOURCE_model extends CI_Model
                 //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
                 if (!isset($metadata_this['__in__metadata_experts'][$en['en_id']])) {
                     $metadata_this['__in__metadata_experts'][$en['en_id']] = $en;
+                }
+            }
+
+            //Go another level?
+            if($level < $max_search_levels){
+
+                $recursive_metadata = $this->SOURCE_model->en_metadat_experts($en__profile, ($level + 1));
+
+                //CONTENT CHANNELS (GROUPED BY CHANNEL)
+                foreach($recursive_metadata['__in__metadata_sources'] as $channel_en_id => $content_en_array){
+                    foreach($content_en_array as $content_en_id => $content_en){
+                        if (!isset($metadata_this['__in__metadata_sources'][$channel_en_id][$content_en['en_id']])) {
+                            $metadata_this['__in__metadata_sources'][$channel_en_id][$content_en['en_id']] = $content_en;
+                        }
+                    }
+                }
+
+                //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
+                foreach($recursive_metadata['__in__metadata_experts'] as $expert_en_id => $expert_en){
+                    if (!isset($metadata_this['__in__metadata_experts'][$expert_en_id])) {
+                        $metadata_this['__in__metadata_experts'][$expert_en_id] = $expert_en;
+                    }
                 }
             }
         }
