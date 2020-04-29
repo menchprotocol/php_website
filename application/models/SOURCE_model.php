@@ -566,18 +566,6 @@ class SOURCE_model extends CI_Model
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
         ), array('en_profile'), 0) as $en__profile){
 
-            if(in_array($en__profile['en_id'], $this->config->item('en_ids_3000'))){
-                //CONTENT CHANNELS (GROUPED BY CHANNEL)
-                if (!isset($metadata_this['__in__metadata_sources'][$en__profile['en_id']][$en['en_id']])) {
-                    $metadata_this['__in__metadata_sources'][$en__profile['en_id']][$en['en_id']] = $en;
-                }
-            } elseif(in_array($en__profile['en_id'], $this->config->item('en_ids_12864'))) {
-                //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
-                if (!isset($metadata_this['__in__metadata_experts'][$en['en_id']])) {
-                    $metadata_this['__in__metadata_experts'][$en['en_id']] = $en;
-                }
-            }
-
             //Go another level?
             if($level < $max_search_levels){
 
@@ -595,6 +583,18 @@ class SOURCE_model extends CI_Model
                     if (!isset($metadata_this['__in__metadata_experts'][$expert_en_id])) {
                         $metadata_this['__in__metadata_experts'][$expert_en_id] = $expert_en;
                     }
+                }
+            }
+
+            if(in_array($en__profile['en_id'], $this->config->item('en_ids_3000'))){
+                //CONTENT CHANNELS (GROUPED BY CHANNEL)
+                if (!isset($metadata_this['__in__metadata_sources'][$en__profile['en_id']][$en['en_id']])) {
+                    $metadata_this['__in__metadata_sources'][$en__profile['en_id']][$en['en_id']] = $en;
+                }
+            } elseif(in_array($en__profile['en_id'], $this->config->item('en_ids_12864'))) {
+                //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
+                if (!isset($metadata_this['__in__metadata_experts'][$en['en_id']])) {
+                    $metadata_this['__in__metadata_experts'][$en['en_id']] = $en;
                 }
             }
         }
