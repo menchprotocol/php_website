@@ -572,11 +572,9 @@ class SOURCE_model extends CI_Model
                 $recursive_metadata = $this->SOURCE_model->en_metadat_experts($en__profile, ($level + 1));
 
                 //CONTENT CHANNELS (GROUPED BY CHANNEL)
-                foreach($recursive_metadata['__in__metadata_sources'] as $channel_en_id => $content_en_array){
-                    foreach($content_en_array as $content_en_id => $content_en){
-                        if (!isset($metadata_this['__in__metadata_sources'][$channel_en_id][$content_en['en_id']])) {
-                            $metadata_this['__in__metadata_sources'][$channel_en_id][$content_en['en_id']] = $content_en;
-                        }
+                foreach($recursive_metadata['__in__metadata_sources'] as $channel_en_id => $content_en){
+                    if (!isset($metadata_this['__in__metadata_sources'][$channel_en_id][$content_en['en_id']])) {
+                        $metadata_this['__in__metadata_sources'][$channel_en_id][$content_en['en_id']] = $content_en;
                     }
                 }
 
