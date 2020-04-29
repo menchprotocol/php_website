@@ -547,10 +547,12 @@ class SOURCE_model extends CI_Model
     }
 
 
+
+
     function en_metadat_experts($en, $level = 1){
 
-        //Goes through $max_saerch_levels of sources to find expert channels, people & organizations
-        $max_saerch_levels = 2;
+        //Goes through $max_search_levels of sources to find expert channels, people & organizations
+        $max_search_levels = 2;
         $metadata_this = array(
             '__in__metadata_experts' => array(),
             '__in__metadata_sources' => array(),
@@ -577,9 +579,9 @@ class SOURCE_model extends CI_Model
             }
 
             //Go another level?
-            if($level < $max_saerch_levels){
+            if($level < $max_search_levels){
 
-                $recursive_metadata = $this->SOURCE_model->en_match_ln_status($en__profile, ($level + 1));
+                $recursive_metadata = $this->SOURCE_model->en_metadat_experts($en__profile, ($level + 1));
 
                 //CONTENT CHANNELS (GROUPED BY CHANNEL)
                 foreach($recursive_metadata['__in__metadata_sources'] as $channel_en_id => $content_en){
