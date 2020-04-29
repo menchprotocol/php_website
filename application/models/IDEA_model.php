@@ -879,6 +879,8 @@ class IDEA_model extends CI_Model
             '__in__metadata_max_steps' => 1,
             '__in__metadata_min_seconds' => $in['in_time_seconds'],
             '__in__metadata_max_seconds' => $in['in_time_seconds'],
+            '__in__metadata_experts' => array(),
+            '__in__metadata_sources' => array(),
         );
 
 
@@ -890,9 +892,9 @@ class IDEA_model extends CI_Model
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
         ), array('en_profile'), 0) as $en) {
-            foreach($this->SOURCE_model->en_metadat_experts($en) as $key => $value){
-                $metadata_this[$key] = $value;
-            }
+            $en_metadat_experts = $this->SOURCE_model->en_metadat_experts($en);
+            $metadata_this['__in__metadata_experts'] = array_merge($metadata_this['__in__metadata_experts'] , $en_metadat_experts['__in__metadata_experts']);
+            $metadata_this['__in__metadata_sources'] = array_merge($metadata_this['__in__metadata_sources'] , $en_metadat_experts['__in__metadata_sources']);
         }
 
 
