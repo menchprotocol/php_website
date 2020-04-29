@@ -86,13 +86,61 @@ class Messenger extends CI_Controller
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
         array_push($res, $this->COMMUNICATION_model->comm_facebook_graph('POST', '/me/messenger_profile', array(
-            'persistent_menu' => array(),
+            'persistent_menu' => array(
+                array(
+                    'locale' => 'default',
+                    'composer_input_disabled' => false,
+                    'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
+                    'call_to_actions' => array(
+                        array(
+                            'title' => '🔵 '.$en_all_2738[4536]['m_name'],
+                            'type' => 'web_url',
+                            'url' => 'https://mench.com/source',
+                            'webview_height_ratio' => 'tall',
+                            'webview_share_button' => 'hide',
+                            'messenger_extensions' => true,
+                        ),
+                        array(
+                            'title' => '🔴 '.$en_all_2738[6205]['m_name'],
+                            'type' => 'web_url',
+                            'url' => 'https://mench.com/discover',
+                            'webview_height_ratio' => 'tall',
+                            'webview_share_button' => 'hide',
+                            'messenger_extensions' => true,
+                        ),
+                        array(
+                            'title' => '🟡 '.$en_all_2738[4535]['m_name'],
+                            'type' => 'web_url',
+                            'url' => 'https://mench.com/idea',
+                            'webview_height_ratio' => 'tall',
+                            'webview_share_button' => 'hide',
+                            'messenger_extensions' => true,
+                        ),
+                    ),
+                ),
+            ),
         )));
 
         //Show results:
         echo_json($res);
     }
 
+    function delete_menu()
+    {
+
+        /*
+         * A function that will sync the fixed
+         * menu of Mench's Facebook Messenger.
+         *
+         * */
+
+        array_push($res, $this->COMMUNICATION_model->comm_facebook_graph('DELETE', '/me/custom_user_settings', array(
+            'params' => '[%22persistent_menu%22]',
+        )));
+
+        //Show results:
+        echo_json($res);
+    }
 
 
 
