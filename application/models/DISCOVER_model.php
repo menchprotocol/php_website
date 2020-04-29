@@ -827,18 +827,22 @@ class DISCOVER_model extends CI_Model
 
                     //BODY
                     echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
+                    echo '<div class="list-group">';
 
                     foreach($metadata['in__metadata_experts'] as $expert){
+                        unset($expert['ln_content']);
                         echo echo_en($expert);
                     }
 
                     //$en_all_3000 = $this->config->item('en_all_3000');
                     foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
                         foreach($channel_contents as $channel_content){
+                            unset($channel_content['ln_content']);
                             echo echo_en($channel_content);
                         }
                     }
 
+                    echo '</div>';
                     echo '</div>';
 
                 }
