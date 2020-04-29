@@ -978,12 +978,12 @@ class IDEA_model extends CI_Model
                 //ALL
 
                 //MIN
-                $metadata_this['local__in__metadata_min_steps'] += intval($metadata_recursion['__in__metadata_min_steps']);
-                $metadata_this['local__in__metadata_min_seconds'] += intval($metadata_recursion['__in__metadata_min_seconds']);
+                $metadata_this['__in__metadata_min_steps'] += intval($metadata_recursion['__in__metadata_min_steps']);
+                $metadata_this['__in__metadata_min_seconds'] += intval($metadata_recursion['__in__metadata_min_seconds']);
 
                 //MAX
-                $metadata_this['local__in__metadata_max_steps'] += intval($metadata_recursion['__in__metadata_max_steps']);
-                $metadata_this['local__in__metadata_max_seconds'] += intval($metadata_recursion['__in__metadata_max_seconds']);
+                $metadata_this['__in__metadata_max_steps'] += intval($metadata_recursion['__in__metadata_max_steps']);
+                $metadata_this['__in__metadata_max_seconds'] += intval($metadata_recursion['__in__metadata_max_seconds']);
 
             }
 
