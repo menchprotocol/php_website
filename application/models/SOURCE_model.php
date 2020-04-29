@@ -573,6 +573,7 @@ class SOURCE_model extends CI_Model
 
                 //CONTENT CHANNELS (GROUPED BY CHANNEL)
                 foreach($recursive_metadata['__in__metadata_sources'] as $channel_en_id => $content_en){
+                    return $content_en;
                     if (!isset($metadata_this['__in__metadata_sources'][$channel_en_id][$content_en['en_id']])) {
                         $metadata_this['__in__metadata_sources'][$channel_en_id][$content_en['en_id']] = $content_en;
                     }
